@@ -3,52 +3,16 @@ import React, {
   View,
   ScrollView,
   TouchableOpacity,
-  StyleSheet,
-  AlertIOS
+  StyleSheet
 } from 'react-native';
 
 // important imports, the magic is here
-import { Navigation, Screen } from 'react-native-navigation';
-
-// need to import every screen we push
-import './PushedScreen';
-import './StyledScreen';
-import './ModalScreen';
+import { Screen } from 'react-native-navigation';
 
 // instead of React.Component, we extend Screen (imported above)
-class FirstTabScreen extends Screen {
-  static navigatorButtons = {
-    leftButtons: [{
-      icon: require('../../img/navicon_menu.png'),
-      id: 'menu'
-    }],
-    rightButtons: [
-      {
-        title: 'Edit',
-        id: 'edit'
-      },
-      {
-        icon: require('../../img/navicon_add.png'),
-        id: 'add'
-      }
-    ]
-  };
+export default class ThirdTabScreen extends Screen {
   constructor(props) {
     super(props);
-  }
-  onNavigatorEvent(event) {
-    if (event.id == 'menu') {
-      this.navigator.toggleDrawer({
-        side: 'left',
-        animated: true
-      });
-    }
-    if (event.id == 'edit') {
-      AlertIOS.alert('NavBar', 'Edit button pressed');
-    }
-    if (event.id == 'add') {
-      AlertIOS.alert('NavBar', 'Add button pressed');
-    }
   }
   render() {
     return (
@@ -72,19 +36,19 @@ class FirstTabScreen extends Screen {
   onPushPress() {
     this.navigator.push({
       title: "More",
-      screen: "example.PushedScreen"
+      screen: "module_2.PushedScreen"
     });
   }
   onPushStyledPress() {
     this.navigator.push({
       title: "Styled",
-      screen: "example.StyledScreen"
+      screen: "module_1.StyledScreen"
     });
   }
   onModalPress() {
     this.navigator.showModal({
       title: "Modal",
-      screen: "example.ModalScreen"
+      screen: "module_1.ModalScreen"
     });
   }
 }
@@ -98,6 +62,3 @@ const styles = StyleSheet.create({
     color: 'blue'
   }
 });
-
-// every screen must be registered with a unique name
-Navigation.registerScreen('example.FirstTabScreen', () => FirstTabScreen);

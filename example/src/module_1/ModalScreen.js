@@ -7,14 +7,16 @@ import React, {
 } from 'react-native';
 
 // important imports, the magic is here
-import { Navigation, Screen } from 'react-native-navigation';
-
-// need to import every screen we push
-import './PushedScreen';
-import './StyledScreen';
+import { Screen } from 'react-native-navigation';
 
 // instead of React.Component, we extend Screen (imported above)
-class PushedScreen extends Screen {
+export default class ModalScreen extends Screen {
+  static navigatorButtons = {
+    leftButtons: [{
+      title: 'Close',
+      id: 'close'
+    }]
+  };
   constructor(props) {
     super(props);
   }
@@ -30,34 +32,32 @@ class PushedScreen extends Screen {
           <Text style={styles.button}>Push Styled Screen</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={ this.onPopPress.bind(this) }>
-          <Text style={styles.button}>Pop Screen</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={ this.onPopToRootPress.bind(this) }>
-          <Text style={styles.button}>Pop To Root</Text>
+        <TouchableOpacity onPress={ this.onClosePress.bind(this) }>
+          <Text style={styles.button}>Close Modal</Text>
         </TouchableOpacity>
 
       </View>
     );
   }
+  onNavigatorEvent(event) {
+    if (event.id == 'close') {
+      this.navigator.dismissModal();
+    }
+  }
   onPushPress() {
     this.navigator.push({
       title: "More",
-      screen: "example.PushedScreen"
+      screen: "module_2.PushedScreen"
     });
   }
   onPushStyledPress() {
     this.navigator.push({
       title: "More",
-      screen: "example.StyledScreen"
+      screen: "module_1.StyledScreen"
     });
   }
-  onPopPress() {
-    this.navigator.pop();
-  }
-  onPopToRootPress() {
-    this.navigator.popToRoot();
+  onClosePress() {
+    this.navigator.dismissModal();
   }
 }
 
@@ -70,6 +70,3 @@ const styles = StyleSheet.create({
     color: 'blue'
   }
 });
-
-// every screen must be registered with a unique name
-Navigation.registerScreen('example.PushedScreen', () => PushedScreen);

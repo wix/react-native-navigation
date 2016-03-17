@@ -7,15 +7,10 @@ import React, {
 } from 'react-native';
 
 // important imports, the magic is here
-import { Navigation, Screen } from 'react-native-navigation';
-
-// need to import every screen we push
-import './PushedScreen';
-import './StyledScreen';
-import './ModalScreen';
+import { Screen } from 'react-native-navigation';
 
 // instead of React.Component, we extend Screen (imported above)
-class ThirdTabScreen extends Screen {
+export default class PushedScreen extends Screen {
   constructor(props) {
     super(props);
   }
@@ -31,8 +26,12 @@ class ThirdTabScreen extends Screen {
           <Text style={styles.button}>Push Styled Screen</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={ this.onModalPress.bind(this) }>
-          <Text style={styles.button}>Show Modal Screen</Text>
+        <TouchableOpacity onPress={ this.onPopPress.bind(this) }>
+          <Text style={styles.button}>Pop Screen</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={ this.onPopToRootPress.bind(this) }>
+          <Text style={styles.button}>Pop To Root</Text>
         </TouchableOpacity>
 
       </View>
@@ -41,20 +40,20 @@ class ThirdTabScreen extends Screen {
   onPushPress() {
     this.navigator.push({
       title: "More",
-      screen: "example.PushedScreen"
+      screen: "module_2.PushedScreen"
     });
   }
   onPushStyledPress() {
     this.navigator.push({
-      title: "Styled",
-      screen: "example.StyledScreen"
+      title: "More",
+      screen: "module_1.StyledScreen"
     });
   }
-  onModalPress() {
-    this.navigator.showModal({
-      title: "Modal",
-      screen: "example.ModalScreen"
-    });
+  onPopPress() {
+    this.navigator.pop();
+  }
+  onPopToRootPress() {
+    this.navigator.popToRoot();
   }
 }
 
@@ -67,6 +66,3 @@ const styles = StyleSheet.create({
     color: 'blue'
   }
 });
-
-// every screen must be registered with a unique name
-Navigation.registerScreen('example.ThirdTabScreen', () => ThirdTabScreen);

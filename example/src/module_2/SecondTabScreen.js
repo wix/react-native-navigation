@@ -8,10 +8,10 @@ import React, {
 } from 'react-native';
 
 // important imports, the magic is here
-import { Navigation, Screen } from 'react-native-navigation';
+import { Screen } from 'react-native-navigation';
 
 // instead of React.Component, we extend Screen (imported above)
-class SecondTabScreen extends Screen {
+export default class SecondTabScreen extends Screen {
   constructor(props) {
     super(props);
     this.buttonsCounter = 0;
@@ -86,6 +86,3 @@ const styles = StyleSheet.create({
     color: 'blue'
   }
 });
-
-// every screen must be registered with a unique name
-Navigation.registerScreen('example.SecondTabScreen', () => SecondTabScreen);

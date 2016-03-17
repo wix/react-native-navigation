@@ -7,23 +7,14 @@ import React, {
   AlertIOS
 } from 'react-native';
 
-// important imports, the magic is here
-import { Navigation, Screen } from 'react-native-navigation';
-
-// instead of React.Component, we extend Screen (imported above)
-class SideMenu extends Screen {
-  constructor(props) {
-    super(props);
-  }
-  render() {
+// Note that it's not necessary to extend Navigation.Screen for all pushed screens
+// It's only necessary if you want to access the navigator from inside the screen
+export default function() {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-
         <Text>Side Menu</Text>
-
       </View>
     );
-  }
 }
 
 const styles = StyleSheet.create({
@@ -35,6 +26,3 @@ const styles = StyleSheet.create({
     color: 'blue'
   }
 });
-
-// every screen must be registered with a unique name
-Navigation.registerScreen('example.SideMenu', () => SideMenu);
