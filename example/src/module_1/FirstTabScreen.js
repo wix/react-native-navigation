@@ -3,26 +3,47 @@ import React, {
   View,
   ScrollView,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  AlertIOS
 } from 'react-native';
 
 // important imports, the magic is here
 import { Navigation, Screen } from 'react-native-navigation';
 
-// need to import every screen we push
-import './PushedScreen';
-import './StyledScreen';
-
 // instead of React.Component, we extend Screen (imported above)
-class ModalScreen extends Screen {
+export default class FirstTabScreen extends Screen {
   static navigatorButtons = {
     leftButtons: [{
-      title: 'Close',
-      id: 'close'
-    }]
+      icon: require('../../img/navicon_menu.png'),
+      id: 'menu'
+    }],
+    rightButtons: [
+      {
+        title: 'Edit',
+        id: 'edit'
+      },
+      {
+        icon: require('../../img/navicon_add.png'),
+        id: 'add'
+      }
+    ]
   };
   constructor(props) {
     super(props);
+  }
+  onNavigatorEvent(event) {
+    if (event.id == 'menu') {
+      this.navigator.toggleDrawer({
+        side: 'left',
+        animated: true
+      });
+    }
+    if (event.id == 'edit') {
+      AlertIOS.alert('NavBar', 'Edit button pressed');
+    }
+    if (event.id == 'add') {
+      AlertIOS.alert('NavBar', 'Add button pressed');
+    }
   }
   render() {
     return (
@@ -36,32 +57,30 @@ class ModalScreen extends Screen {
           <Text style={styles.button}>Push Styled Screen</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={ this.onClosePress.bind(this) }>
-          <Text style={styles.button}>Close Modal</Text>
+        <TouchableOpacity onPress={ this.onModalPress.bind(this) }>
+          <Text style={styles.button}>Show Modal Screen</Text>
         </TouchableOpacity>
 
       </View>
     );
   }
-  onNavigatorEvent(event) {
-    if (event.id == 'close') {
-      this.navigator.dismissModal();
-    }
-  }
   onPushPress() {
     this.navigator.push({
       title: "More",
-      screen: "example.PushedScreen"
+      screen: "module_2.PushedScreen"
     });
   }
   onPushStyledPress() {
     this.navigator.push({
-      title: "More",
-      screen: "example.StyledScreen"
+      title: "Styled",
+      screen: "module_1.StyledScreen"
     });
   }
-  onClosePress() {
-    this.navigator.dismissModal();
+  onModalPress() {
+    this.navigator.showModal({
+      title: "Modal",
+      screen: "module_1.ModalScreen"
+    });
   }
 }
 
@@ -74,6 +93,3 @@ const styles = StyleSheet.create({
     color: 'blue'
   }
 });
-
-// every screen must be registered with a unique name
-Navigation.registerScreen('example.ModalScreen', () => ModalScreen);

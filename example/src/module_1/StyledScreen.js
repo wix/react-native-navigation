@@ -9,14 +9,10 @@ import React, {
 } from 'react-native';
 
 // important imports, the magic is here
-import { Navigation, Screen } from 'react-native-navigation';
-
-// need to import every screen we push
-import './PushedScreen';
-import './StyledScreen';
+import { Screen } from 'react-native-navigation';
 
 // instead of React.Component, we extend Screen (imported above)
-class StyledScreen extends Screen {
+export default class StyledScreen extends Screen {
   static navigatorStyle = {
     drawUnderNavBar: true,
     drawUnderTabBar: true,
@@ -65,13 +61,13 @@ class StyledScreen extends Screen {
   onPushPress() {
     this.navigator.push({
       title: "More",
-      screen: "example.PushedScreen"
+      screen: "module_2.PushedScreen"
     });
   }
   onPushStyledPress() {
     this.navigator.push({
       title: "More",
-      screen: "example.StyledScreen"
+      screen: "module_1.StyledScreen"
     });
   }
   onPopPress() {
@@ -88,6 +84,3 @@ const styles = StyleSheet.create({
     color: 'blue'
   }
 });
-
-// every screen must be registered with a unique name
-Navigation.registerScreen('example.StyledScreen', () => StyledScreen);
