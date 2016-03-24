@@ -67,12 +67,20 @@ function dismissModal(params = {}) {
   return platformSpecific.dismissModal(params);
 }
 
+function startTabBasedApp(params) {
+  return platformSpecific.startTabBasedApp(params);
+}
+
+function startSingleScreenApp(params) {
+  return platformSpecific.startSingleScreenApp(params);
+}
+
 export default {
   registerScreen,
   getRegisteredScreen,
   registerComponent,
   showModal,
   dismissModal,
-  startTabBasedApp: platformSpecific.startTabBasedApp,
-  startSingleScreenApp: platformSpecific.startSingleScreenApp
+  startTabBasedApp,
+  startSingleScreenApp
 }
