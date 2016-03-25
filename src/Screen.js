@@ -12,31 +12,31 @@ class Navigator {
     this.navigatorEventSubscription = null;
   }
   push(params = {}) {
-    return platformSpecific.navigatorPush(this, params);
+    return platformSpecific.navigatorPush(this, Navigation.resolveRoute(params));
   }
   pop(params = {}) {
-    return platformSpecific.navigatorPop(this, params);
+    return platformSpecific.navigatorPop(this, Navigation.resolveRoute(params));
   }
   popToRoot(params = {}) {
-    return platformSpecific.navigatorPopToRoot(this, params);
+    return platformSpecific.navigatorPopToRoot(this, Navigation.resolveRoute(params));
   }
   resetTo(params = {}) {
-    return platformSpecific.navigatorResetTo(this, params);
+    return platformSpecific.navigatorResetTo(this, Navigation.resolveRoute(params));
   }
   showModal(params = {}) {
-    return Navigation.showModal(params);
+    return Navigation.showModal(Navigation.resolveRoute(params));
   }
   dismissModal(params = {}) {
-    return Navigation.dismissModal(params);
+    return Navigation.dismissModal(Navigation.resolveRoute(params));
   }
   setButtons(params = {}) {
-    return platformSpecific.navigatorSetButtons(this, this.navigatorEventID, params);
+    return platformSpecific.navigatorSetButtons(this, this.navigatorEventID, Navigation.resolveRoute(params));
   }
   setTitle(params = {}) {
-    return platformSpecific.navigatorSetTitle(this, params);
+    return platformSpecific.navigatorSetTitle(this, Navigation.resolveRoute(params));
   }
   toggleDrawer(params = {}) {
-    return platformSpecific.navigatorToggleDrawer(this, params);
+    return platformSpecific.navigatorToggleDrawer(this, Navigation.resolveRoute(params));
   }
   toggleTabs(params = {}) {
     return platformSpecific.navigatorToggleTabs(this, params);

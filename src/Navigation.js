@@ -3,6 +3,12 @@ import platformSpecific from './platformSpecific';
 import Screen from './Screen';
 
 const registeredScreens = {};
+const _routeResolver = null;
+
+function resolveRoute(params) {
+  if (!_routeResolver) return params;
+  return _routeResolver(params);
+}
 
 function registerScreen(screenID, generator) {
   registeredScreens[screenID] = generator;
@@ -67,12 +73,23 @@ function dismissModal(params = {}) {
   return platformSpecific.dismissModal(params);
 }
 
+function startTabBasedApp(params) {
+  if (params.routeResolver) _routeResolver = params.routeResolver;
+  return platformSpecific.startTabBasedApp(params);
+}
+
+function startSingleScreenApp(params) {
+  if (params.routeResolver) _routeResolver = params.routeResolver;
+  return platformSpecific.startSingleScreenApp(params);
+}
+
 export default {
+  resolveRoute,
   registerScreen,
   getRegisteredScreen,
   registerComponent,
   showModal,
   dismissModal,
-  startTabBasedApp: platformSpecific.startTabBasedApp,
-  startSingleScreenApp: platformSpecific.startSingleScreenApp
+  startTabBasedApp,
+  startSingleScreenApp
 }
