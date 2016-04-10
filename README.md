@@ -436,7 +436,7 @@ this.props.navigator.toggleDrawer({
 Toggle whether the tabs are displayed or not (only in tab-based apps).
 
 ```js
-this.props.navigator.toggleDrawer({
+this.props.navigator.toggleTabs({
   to: 'hidden', // required, 'hidden' = hide tab bar, 'shown' = show tab bar
   animated: true // does the toggle have transition animation or does it happen immediately (optional)
 });
