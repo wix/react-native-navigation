@@ -1,14 +1,10 @@
-import React, {
-  AppRegistry,
-  Component
-} from 'react-native';
+import React, { Component } from 'react';
+import { AppRegistry } from 'react-native';
 
 import Navigation from './Navigation';
 import utils from './utils';
 
-import {
-  RctActivity
-} from 'react-native-navigation';
+import { RctActivity } from 'react-native-navigation';
 
 var resolveAssetSource = require('resolveAssetSource');
 
@@ -32,7 +28,7 @@ function startTabBasedApp(params) {
   }
 
   params.tabs.forEach(function (tab, idx) {
-    addNavigatorParams(tab, null, idx)
+    addNavigatorParams(tab, null, idx);
     addNavigatorButtons(tab);
     addNavigationStyleParams(tab);
   });
@@ -41,7 +37,7 @@ function startTabBasedApp(params) {
 }
 
 function navigatorPush(navigator, params) {
-  addNavigatorParams(params, navigator)
+  addNavigatorParams(params, navigator);
   addNavigatorButtons(params);
   addNavigationStyleParams(params);
   RctActivity.navigatorPush(params);
