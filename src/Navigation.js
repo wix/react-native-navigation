@@ -1,4 +1,5 @@
-import React, { AppRegistry } from 'react-native';
+import React from 'react';
+import { AppRegistry } from 'react-native';
 import platformSpecific from './platformSpecific';
 import Screen from './Screen';
 
