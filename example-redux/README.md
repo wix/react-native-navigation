@@ -4,7 +4,7 @@ A simple usage example for an app based on redux. If you're not using redux, tak
 
 ## Installation - iOS
 
-* In the `example/` folder, run `npm install`
+* In the `example-redux/` folder, run `npm install`
 
 > Make sure you're using npm ver 3. If you normally use npm ver 2 on your system and reluctant to upgrade, you can install [npm 3 alongside 2](https://www.npmjs.com/package/npm3). For more details see https://github.com/wix/react-native-navigation/issues/1. In addition, redux also causes some issues with npm 2. If you have to use npm 2 on this project, fix those by running `npm run fix_npm2` in your project directory after running `npm install`.
 
