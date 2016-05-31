@@ -39,28 +39,28 @@ export default class App {
           screen: {
             screen: 'example.LoginScreen',
             title: 'Login',
-            navigatorStyle: {},
-            passProps: {
-              str: 'This is a prop passed in \'startSingleScreenApp()\'!',
-              obj: {
-                str: 'This is a prop passed in an object!',
-                arr: [
-                  {
-                    str: 'This is a prop in an object in an array in an object!'
-                  }
+            navigatorStyle: {}
+          },
+          passProps: {
+            str: 'This is a prop passed in \'startSingleScreenApp()\'!',
+            obj: {
+              str: 'This is a prop passed in an object!',
+              arr: [
+                {
+                  str: 'This is a prop in an object in an array in an object!'
+                }
+              ],
+              arr2: [
+                [
+                  'array of strings',
+                  'with two strings'
                 ],
-                arr2: [
-                    [
-                        'array of strings',
-                        'with two strings'
-                    ],
-                    [
-                        1, 2, 3
-                    ]
+                [
+                  1, 2, 3
                 ]
-              },
-              num: 1234
-            }
+              ]
+            },
+            num: 1234
           }
         });
         return;
@@ -73,19 +73,7 @@ export default class App {
               icon: require('../img/one.png'),
               selectedIcon: require('../img/one_selected.png'),
               title: 'Screen One',
-              navigatorStyle: {},
-              passProps: {
-                str: 'This is a prop passed in \'startTabBasedApp\'!',
-                obj: {
-                  str: 'This is a prop passed in an object!',
-                  arr: [
-                    {
-                      str: 'This is a prop in an object in an array in an object!'
-                    }
-                  ]
-                },
-                num: 1234
-              }
+              navigatorStyle: {}
             },
             {
               label: 'Two',
@@ -93,21 +81,21 @@ export default class App {
               icon: require('../img/two.png'),
               selectedIcon: require('../img/two_selected.png'),
               title: 'Screen Two',
-              navigatorStyle: {},
-              passProps: {
-                str: 'This is a prop passed in \'startTabBasedApp\'!',
-                obj: {
-                  str: 'This is a prop passed in an object!',
-                  arr: [
-                    {
-                      str: 'This is a prop in an object in an array in an object!'
-                    }
-                  ]
-                },
-                num: 1234
-              }
+              navigatorStyle: {}
             }
           ],
+          passProps: {
+            str: 'This is a prop passed in \'startTabBasedApp\'!',
+            obj: {
+              str: 'This is a prop passed in an object!',
+              arr: [
+                {
+                  str: 'This is a prop in an object in an array in an object!'
+                }
+              ]
+            },
+            num: 1234
+          },
           animationType: 'slide-down',
           title: 'Redux Example'
         });
