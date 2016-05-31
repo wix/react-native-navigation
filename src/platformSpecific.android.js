@@ -22,6 +22,7 @@ function startSingleScreenApp(params) {
   addNavigatorParams(screen);
   addNavigatorButtons(screen);
   addNavigationStyleParams(screen);
+  screen.passProps = params.passProps;
   RctActivity.startSingleScreenApp(screen);
 }
 
@@ -35,10 +36,12 @@ function startTabBasedApp(params) {
     addNavigatorParams(tab, null, idx);
     addNavigatorButtons(tab);
     addNavigationStyleParams(tab);
+    tab.screen.passProps = params.passProps;
   });
 
   RctActivity.startTabBasedApp(params.tabs);
 }
+
 
 function navigatorPush(navigator, params) {
   addNavigatorParams(params, navigator);
