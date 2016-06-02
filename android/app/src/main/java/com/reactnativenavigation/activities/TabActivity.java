@@ -26,17 +26,16 @@ public class TabActivity extends BaseReactActivity {
     protected void handleOnCreate() {
         mReactInstanceManager = RctManager.getInstance().getReactInstanceManager();
 
-        setContentView(R.layout.tab_activity);
-        mToolbar = (RnnToolBar) findViewById(R.id.toolbar);
+        ArrayList<Screen> screens = (ArrayList<Screen>) getIntent().getSerializableExtra(EXTRA_SCREENS);
+        Screen initialScreen = screens.get(0);
+        showHideToolbar(initialScreen);
+        
         mTabLayout = (RnnTabLayout) findViewById(R.id.tabLayout);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
 
-        ArrayList<Screen> screens = (ArrayList<Screen>) getIntent().getSerializableExtra(EXTRA_SCREENS);
-
-        setupToolbar(screens);
         setupViewPager(screens);
     }
-
+    
     private void setupToolbar(ArrayList<Screen> screens) {
         Screen initialScreen = screens.get(0);
         setNavigationStyle(initialScreen);
@@ -46,6 +45,17 @@ public class TabActivity extends BaseReactActivity {
         setSupportActionBar(mToolbar);
     }
 
+    private void showHideToolbar(Screen screen) {
+        if (screen.toolBarHidden != null && screen.toolBarHidden) {
+            setContentView(R.layout.bottom_tab_activity_without_toolbar);
+        } else {
+            ArrayList<Screen> screens = (ArrayList<Screen>) getIntent().getSerializableExtra(EXTRA_SCREENS);
+            setContentView(R.layout.bottom_tab_activity);
+            mToolbar = (RnnToolBar) findViewById(R.id.toolbar);
+            setupToolbar(screens);
+        }
+    }
+    
     @Override
     public void setNavigationStyle(Screen screen) {
         super.setNavigationStyle(screen);

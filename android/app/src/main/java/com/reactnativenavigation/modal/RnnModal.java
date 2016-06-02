@@ -40,14 +40,20 @@ public class RnnModal extends Dialog implements DialogInterface.OnDismissListene
     @SuppressLint("InflateParams")
     private void init(final Context context) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mContentView = LayoutInflater.from(context).inflate(R.layout.modal_layout, null, false);
-        RnnToolBar toolBar = (RnnToolBar) mContentView.findViewById(R.id.toolbar);
+        
+        if (mScreen.toolBarHidden != null && mScreen.toolBarHidden) {
+            mContentView = LayoutInflater.from(context).inflate(R.layout.modal_layout_without_toolbar, null, false);
+        } else {
+            mContentView = LayoutInflater.from(context).inflate(R.layout.modal_layout, null, false);
+            
+            RnnToolBar toolBar = (RnnToolBar) mContentView.findViewById(R.id.toolbar);
+            toolBar.setStyle(mScreen);
+            toolBar.setTitle(mScreen.title);
+            toolBar.setupToolbarButtonsAsync(mScreen);
+        }
+        
         mScreenStack = (ScreenStack) mContentView.findViewById(R.id.screenStack);
-
         setContentView(mContentView);
-        toolBar.setStyle(mScreen);
-        toolBar.setTitle(mScreen.title);
-        toolBar.setupToolbarButtonsAsync(mScreen);
         mScreenStack.push(mScreen, new RctView.OnDisplayedListener() {
             @Override
             public void onDisplayed() {

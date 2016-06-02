@@ -34,6 +34,7 @@ public class Screen extends JsonObject implements Serializable {
     private static final String KEY_TOOL_BAR_STYLE = "navigatorStyle";
     private static final String KEY_STATUS_BAR_COLOR = "statusBarColor";
     private static final String KEY_TOOL_BAR_COLOR = "toolBarColor";
+    private static final String KEY_TOOL_BAR_HIDDEN = "toolBarHidden";
     private static final String KEY_NAVIGATION_BAR_COLOR = "navigationBarColor";
     private static final String KEY_BUTTONS_TINT_COLOR = "buttonsTint";
     private static final String KEY_TITLE_COLOR = "titleColor";
@@ -54,6 +55,7 @@ public class Screen extends JsonObject implements Serializable {
 
     // Navigation styling
     @Nullable @ColorInt public Integer toolBarColor;
+    @Nullable public Boolean toolBarHidden;
     @Nullable @ColorInt public Integer statusBarColor;
     @Nullable @ColorInt public Integer navigationBarColor;
     @Nullable @ColorInt public Integer buttonsTintColor;
@@ -105,6 +107,7 @@ public class Screen extends JsonObject implements Serializable {
         ReadableMap style = getMap(screen, KEY_TOOL_BAR_STYLE);
         if (style != null) {
             toolBarColor = getColor(style, KEY_TOOL_BAR_COLOR);
+            toolBarHidden = getBoolean(style, KEY_TOOL_BAR_HIDDEN);
             statusBarColor = getColor(style, KEY_STATUS_BAR_COLOR);
             navigationBarColor = getColor(style, KEY_NAVIGATION_BAR_COLOR);
             buttonsTintColor = getColor(style, KEY_BUTTONS_TINT_COLOR);
