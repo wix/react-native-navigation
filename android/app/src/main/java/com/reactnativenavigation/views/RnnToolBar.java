@@ -70,6 +70,12 @@ public class RnnToolBar extends Toolbar {
         } else {
             resetTitleTextColor();
         }
+        
+        if (screen.toolBarHidden != null && screen.toolBarHidden) {
+            hideToolbar();
+        } else {
+            showToolbar();
+        }
     }
 
     private void resetBackground() {
@@ -92,6 +98,20 @@ public class RnnToolBar extends Toolbar {
     public void setupToolbarButtonsAsync(Screen oldScreen, Screen newScreen) {
         if (mSetupToolbarTask == null) {
             mSetupToolbarTask = new SetupToolbarButtonsTask(this, oldScreen, newScreen).execute();
+        }
+    }
+
+    public void showToolbar() {
+        ActionBar actionBar = ContextProvider.getActivityContext().getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.show();
+        }
+    }
+    
+    public void hideToolbar() {
+        ActionBar actionBar = ContextProvider.getActivityContext().getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
         }
     }
 

@@ -238,7 +238,7 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
 
     protected abstract String getCurrentNavigatorId();
 
-    protected abstract Screen getCurrentScreen();
+    public abstract Screen getCurrentScreen();
 
     public abstract int getScreenStackSize();
 

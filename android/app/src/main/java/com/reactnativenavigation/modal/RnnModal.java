@@ -28,26 +28,35 @@ public class RnnModal extends Dialog implements DialogInterface.OnDismissListene
 
     private ScreenStack mScreenStack;
     private View mContentView;
+    private Screen mOriginalScreen;
     private Screen mScreen;
+    private RnnToolBar mToolBar;
+    private BaseReactActivity mContext;
 
     public RnnModal(BaseReactActivity context, Screen screen) {
         super(context, R.style.Modal);
         mScreen = screen;
+        mOriginalScreen = context.getCurrentScreen();
+        mContext = context;
         ModalController.getInstance().add(this);
         init(context);
+    }
+
+    private void updateToolbar(Screen screen) {
+        mToolBar.setTitle(screen.title);
+        mContext.setSupportActionBar(mToolBar);
+        mToolBar.setStyle(screen);
+        mToolBar.setupToolbarButtonsAsync(screen);
     }
 
     @SuppressLint("InflateParams")
     private void init(final Context context) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         mContentView = LayoutInflater.from(context).inflate(R.layout.modal_layout, null, false);
-        RnnToolBar toolBar = (RnnToolBar) mContentView.findViewById(R.id.toolbar);
+        mToolBar = (RnnToolBar) mContentView.findViewById(R.id.toolbar);
         mScreenStack = (ScreenStack) mContentView.findViewById(R.id.screenStack);
-
         setContentView(mContentView);
-        toolBar.setStyle(mScreen);
-        toolBar.setTitle(mScreen.title);
-        toolBar.setupToolbarButtonsAsync(mScreen);
+        updateToolbar(mScreen);
         mScreenStack.push(mScreen, new RctView.OnDisplayedListener() {
             @Override
             public void onDisplayed() {
@@ -86,5 +95,18 @@ public class RnnModal extends Dialog implements DialogInterface.OnDismissListene
     @Override
     public void onDismiss(DialogInterface dialog) {
         ModalController.getInstance().remove();
+    }
+
+    @Override
+    public void dismiss(){
+        super.dismiss();
+        if (mContext != null && !mContext.isFinishing()) {
+            mContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    updateToolbar(mOriginalScreen);
+                }
+            });
+        }
     }
 }
