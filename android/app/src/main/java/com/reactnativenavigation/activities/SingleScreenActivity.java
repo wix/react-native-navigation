@@ -22,13 +22,17 @@ public class SingleScreenActivity extends BaseReactActivity {
     protected void handleOnCreate() {
         mReactInstanceManager = RctManager.getInstance().getReactInstanceManager();
 
-        setContentView(R.layout.single_screen_activity);
-        mToolbar = (RnnToolBar) findViewById(R.id.toolbar);
-
         Screen screen = (Screen) getIntent().getSerializableExtra(EXTRA_SCREEN);
         mNavigatorId = screen.navigatorId;
-        setupToolbar(screen);
-
+        
+        if (screen.toolBarHidden != null && screen.toolBarHidden) {
+            setContentView(R.layout.single_screen_activity_without_toolbar);
+        } else {
+            setContentView(R.layout.single_screen_activity);
+            mToolbar = (RnnToolBar) findViewById(R.id.toolbar);
+            setupToolbar(screen);
+        }
+        
         mScreenStack = new ScreenStack(this);
         FrameLayout contentFrame = (FrameLayout) findViewById(R.id.contentFrame);
         contentFrame.addView(mScreenStack);

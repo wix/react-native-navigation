@@ -28,4 +28,8 @@ public class JsonObject {
     protected Integer getColor(ReadableMap map, String key) {
         return map.hasKey(key) ? Color.parseColor(map.getString(key)) : null;
     }
+    
+    protected Boolean getBoolean(ReadableMap map, String key) {
+        return map.hasKey(key) ? map.getBoolean(key) : null;
+    }
 }

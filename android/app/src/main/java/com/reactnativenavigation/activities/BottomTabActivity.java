@@ -46,14 +46,13 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     protected void handleOnCreate() {
         mReactInstanceManager = RctManager.getInstance().getReactInstanceManager();
 
-        setContentView(R.layout.bottom_tab_activity);
-        mToolbar = (RnnToolBar) findViewById(R.id.toolbar);
+        ArrayList<Screen> screens = (ArrayList<Screen>) getIntent().getSerializableExtra(EXTRA_SCREENS);
+        showHideToolbar(screens);
+        
         mBottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_tab_bar);
         mContentFrame = (FrameLayout) findViewById(R.id.contentFrame);
 
-        ArrayList<Screen> screens = (ArrayList<Screen>) getIntent().getSerializableExtra(EXTRA_SCREENS);
         mBottomNavigation.setForceTint(true);
-        setupToolbar(screens);
         setupTabs(getIntent().getExtras());
         setupPages(screens);
     }
@@ -70,10 +69,23 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         setSupportActionBar(mToolbar);
     }
 
+    private void showHideToolbar(ArrayList<Screen> screens) {
+        Screen initialScreen = screens.get(0);
+        if (initialScreen.toolBarHidden != null && initialScreen.toolBarHidden) {
+            setContentView(R.layout.bottom_tab_activity_without_toolbar);
+        } else {
+            setContentView(R.layout.bottom_tab_activity);
+            mToolbar = (RnnToolBar) findViewById(R.id.toolbar);
+            setupToolbar(screens);
+        }
+    }
+
     @Override
     public void setNavigationStyle(Screen screen) {
         super.setNavigationStyle(screen);
-        mToolbar.setTitle(screen.title);
+        if (mToolbar != null) {
+            mToolbar.setTitle(screen.title);
+        }
     }
 
     private void setupTabs(Bundle style) {
