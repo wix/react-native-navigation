@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.view.animation.LinearInterpolator;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -31,6 +32,8 @@ import java.util.Map;
  * Created by guyc on 09/04/16.
  */
 public class RnnToolBar extends Toolbar {
+
+    private static final int ANIMATE_DURATION = 180;
 
     private List<Screen> mScreens;
     private AsyncTask mSetupToolbarTask;
@@ -71,7 +74,7 @@ public class RnnToolBar extends Toolbar {
         } else {
             resetTitleTextColor();
         }
-        
+
         if (screen.toolBarHidden != null && screen.toolBarHidden) {
             hideToolbar();
         } else {
@@ -102,18 +105,28 @@ public class RnnToolBar extends Toolbar {
         }
     }
 
-    private void showToolbar() {
+    public void showToolbar(boolean animated) {
         ActionBar actionBar = ContextProvider.getActivityContext().getSupportActionBar();
         if (actionBar != null) {
+            actionBar.setShowHideAnimationEnabled(animated);
             actionBar.show();
         }
     }
 
-    private void hideToolbar() {
+    public void hideToolbar(boolean animated) {
         ActionBar actionBar = ContextProvider.getActivityContext().getSupportActionBar();
         if (actionBar != null) {
+            actionBar.setShowHideAnimationEnabled(animated);
             actionBar.hide();
         }
+    }
+
+    private void showToolbar() {
+        showToolbar(false);
+    }
+
+    private void hideToolbar() {
+        hideToolbar(false);
     }
 
     @SuppressWarnings({"ConstantConditions"})

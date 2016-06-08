@@ -134,6 +134,20 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void toggleNavigationBar(final ReadableMap params) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                context.toggleNavigationBar(params);
+            }
+        });
+    }
+
+    @ReactMethod
     public void toggleNavigatorTabs(final ReadableMap params) {
         final BaseReactActivity context = ContextProvider.getActivityContext();
         if (context == null || context.isFinishing()) {

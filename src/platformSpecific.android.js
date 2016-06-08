@@ -86,9 +86,16 @@ function navigatorSwitchToTab(navigator, params) {
   });
 }
 
+function navigatorToggleNavBar(navigator, params) {
+  RctActivity.toggleNavigationBar({
+    hidden: params.to === 'hidden',
+    animated: !(params.animated === false)
+  });
+}
+
 function navigatorToggleTabs(navigator, params) {
   RctActivity.toggleNavigatorTabs({
-    hidden: params.to == 'hidden',
+    hidden: params.to === 'hidden',
     animated: !(params.animated === false)
   });
 }
@@ -148,5 +155,6 @@ export default {
   navigatorSetTabBadge,
   navigatorSetTitle,
   navigatorSwitchToTab,
-  navigatorToggleTabs
+  navigatorToggleTabs,
+  navigatorToggleNavBar
 }
