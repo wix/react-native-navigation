@@ -76,18 +76,16 @@ export default class FirstTabScreen extends Component {
     });
   }
   onPushStyledPress() {
-    console.warn('navigator.push not implemented yet');
-    // this.props.navigator.push({
-    //   title: "Styled",
-    //   screen: "example.StyledScreen"
-    // });
+    this.props.navigator.push({
+      title: "Styled",
+      screen: "example.StyledScreen"
+    });
   }
   onModalPress() {
-    console.warn('navigator.showModal not implemented yet');
-    // this.props.navigator.showModal({
-    //   title: "Modal",
-    //   screen: "example.ModalScreen"
-    // });
+    this.props.navigator.showModal({
+      title: "Modal",
+      screen: "example.ModalScreen"
+    });
   }
   onLightBoxPress() {
     console.warn('navigator.showLightBox not implemented yet');
