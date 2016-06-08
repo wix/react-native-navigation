@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.core.RctManager;
 import com.reactnativenavigation.core.objects.Screen;
@@ -137,6 +138,23 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         mCurrentStackPosition = position;
         mToolbar.setupToolbarButtonsAsync(getCurrentScreen());
         setNavigationStyle(getCurrentScreen());
+    }
+
+    @Override
+    public void switchToTab(ReadableMap params) {
+        int tabIndex = params.getInt(KEY_TAB_INDEX);
+        mBottomNavigation.setCurrentItem(tabIndex);
+    }
+
+    @Override
+    public void toggleTabs(ReadableMap params) {
+        boolean hide = params.getBoolean(KEY_HIDDEN);
+        boolean animated = params.getBoolean(KEY_ANIMATED);
+        if (hide) {
+            mBottomNavigation.hideBottomNavigation(animated);
+        } else {
+            mBottomNavigation.restoreBottomNavigation(animated);
+        }
     }
 
     private static class SetupTabsTask extends AsyncTask<Void, Void, Map<Screen, Drawable>> {

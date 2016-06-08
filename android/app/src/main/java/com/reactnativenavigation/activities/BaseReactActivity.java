@@ -43,6 +43,9 @@ import javax.annotation.Nullable;
  */
 public abstract class BaseReactActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
 
+    protected static final String KEY_ANIMATED = "animated";
+    protected static final String KEY_HIDDEN = "hidden";
+    protected static final String KEY_TAB_INDEX = "tabIndex";
     protected static final String KEY_TITLE = "title";
     private static final String TAG = "BaseReactActivity";
     private static final String REDBOX_PERMISSION_MESSAGE =
@@ -337,5 +340,13 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
         }
 
         mToolbar.setTitle(title.getString(KEY_TITLE));
+    }
+
+    public void switchToTab(ReadableMap params) {
+        return;
+    }
+
+    public void toggleTabs(ReadableMap params) {
+        return;
     }
 }

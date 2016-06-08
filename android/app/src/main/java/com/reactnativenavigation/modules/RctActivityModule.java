@@ -106,6 +106,34 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void switchToTab(final ReadableMap params) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                context.switchToTab(params);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void toggleNavigatorTabs(final ReadableMap params) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                context.toggleTabs(params);
+            }
+        });
+    }
+
+    @ReactMethod
     public void navigatorPush(final ReadableMap skreen) {
         final Screen screen = new Screen(skreen);
         final BaseReactActivity context = ContextProvider.getActivityContext();
