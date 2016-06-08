@@ -69,6 +69,10 @@ function navigatorPop(navigator, params) {
   RctActivity.navigatorPop(navigator);
 }
 
+function navigatorSetTitle(navigator, params) {
+  RctActivity.setNavigatorTitle(params);
+}
+
 function showModal(params) {
   addNavigatorParams(params);
   addNavigatorButtons(params);
@@ -120,5 +124,6 @@ export default {
   showModal,
   dismissModal,
   dismissAllModals,
-  navigatorSetButtons
+  navigatorSetButtons,
+  navigatorSetTitle
 }

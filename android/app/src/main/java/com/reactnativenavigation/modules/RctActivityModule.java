@@ -49,7 +49,7 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
                 BridgeUtils.addMapToBundle(((ReadableNativeMap) style).toHashMap(), extras);
             }
             intent.putExtras(extras);
-            
+
             context.startActivity(intent);
         }
     }
@@ -87,6 +87,20 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 context.setNavigationButtons(buttons);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setNavigatorTitle(final ReadableMap title) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                context.setNavigationTitle(title);
             }
         });
     }
