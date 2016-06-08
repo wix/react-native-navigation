@@ -106,6 +106,20 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setTabBadge(final ReadableMap params) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                context.setTabBadge(params);
+            }
+        });
+    }
+
+    @ReactMethod
     public void switchToTab(final ReadableMap params) {
         final BaseReactActivity context = ContextProvider.getActivityContext();
         if (context == null || context.isFinishing()) {

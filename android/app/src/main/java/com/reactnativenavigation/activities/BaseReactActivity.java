@@ -44,6 +44,7 @@ import javax.annotation.Nullable;
 public abstract class BaseReactActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
 
     protected static final String KEY_ANIMATED = "animated";
+    protected static final String KEY_BADGE = "badge";
     protected static final String KEY_HIDDEN = "hidden";
     protected static final String KEY_TAB_INDEX = "tabIndex";
     protected static final String KEY_TITLE = "title";
@@ -340,6 +341,10 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
         }
 
         mToolbar.setTitle(title.getString(KEY_TITLE));
+    }
+
+    public void setTabBadge(ReadableMap params) {
+        return;
     }
 
     public void switchToTab(ReadableMap params) {
