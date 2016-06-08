@@ -77,12 +77,12 @@ public class RnnModal extends Dialog implements DialogInterface.OnDismissListene
 
     @Override
     public void onBackPressed() {
-        if (mScreenStack.isEmpty()) {
-            ModalController.getInstance().remove();
-            super.onBackPressed();
-        } else {
+        if (!mScreenStack.isEmpty()) {
             mScreenStack.pop();
         }
+
+        ModalController.getInstance().remove();
+        super.onBackPressed();
     }
 
     @Override
