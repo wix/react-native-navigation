@@ -107,9 +107,6 @@ public class ViewPagerAdapter extends PagerAdapter implements TabLayout.OnTabSel
         Screen newScreen = mScreenStacks.get(position).peek();
         mToolbar.setupToolbarButtonsAsync(prevScreen, newScreen);
 
-        // Set title
-        mToolbar.setTitle(newScreen.title == null ? "" : newScreen.title);
-
         // Set navigation color
         ContextProvider.getActivityContext().setNavigationStyle(newScreen);
 
