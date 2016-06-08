@@ -1,9 +1,9 @@
 package com.example;
 
 
-import com.reactnativenavigation.activities.RctActivity;
+import com.reactnativenavigation.activities.RootActivity;
 
-public class MainActivity extends RctActivity {
+public class MainActivity extends RootActivity {
 
     @Override
     protected String getMainComponentName() {
