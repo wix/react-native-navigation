@@ -72,7 +72,7 @@ function navigatorPop(navigator, params) {
 function navigatorPopToRoot(navigator, params) {
   RctActivity.navigatorPopToRoot({
     navigatorID: navigator.navigatorID,
-    animated: !(params.animated !== false)
+    animated: !(params.animated === false)
   });
 }
 
