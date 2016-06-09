@@ -66,6 +66,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     private void setupToolbar(ArrayList<Screen> screens) {
         mToolbar.setScreens(screens);
         Screen initialScreen = screens.get(0);
+        mToolbar.update(initialScreen);
         setNavigationStyle(initialScreen);
     }
 
