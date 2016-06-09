@@ -174,6 +174,15 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     }
 
     @Override
+    public void setNavigationTitle(ReadableMap title) {
+        super.setNavigationTitle(title);
+
+        AHBottomNavigationItem currentItem = mBottomNavigation.getItem(mBottomNavigation.getCurrentItem());
+        currentItem.setTitle(title.getString(KEY_TITLE));
+        mBottomNavigation.refresh();
+    }
+
+    @Override
     public void setTabBadge(ReadableMap params) {
         // Badge comes across as int, but if it's 0 clear the notification
         int badgeCount = params.getInt(KEY_BADGE);

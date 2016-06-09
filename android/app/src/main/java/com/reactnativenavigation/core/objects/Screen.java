@@ -43,7 +43,7 @@ public class Screen extends JsonObject implements Serializable {
     private static final String KEY_TAB_INDICATOR_COLOR = "tabIndicatorColor";
     private static final String KEY_PROPS = "passProps";
 
-    public final String title;
+    public String title;
     public final String label;
     public final String screenId;
     public final String screenInstanceId;
@@ -82,6 +82,10 @@ public class Screen extends JsonObject implements Serializable {
         }
         buttons = getButtons(screen);
         setToolbarStyle(screen);
+    }
+
+    public void setTitle(ReadableMap params) {
+        this.title = getString(params, KEY_TITLE);
     }
 
     public void setButtons(ReadableMap params) {

@@ -373,6 +373,7 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
             return;
         }
 
+        getCurrentScreen().setTitle(title);
         mToolbar.setTitle(title.getString(KEY_TITLE));
     }
 
