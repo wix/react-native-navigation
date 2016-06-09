@@ -66,7 +66,7 @@ function navigatorSetButtons(navigator, navigatorEventID, params) {
 }
 
 function navigatorPop(navigator, params) {
-  RctActivity.navigatorPop(navigator);
+  RctActivity.navigatorPop(utils.stripRefs(navigator));
 }
 
 function navigatorSetTabBadge(navigator, params) {
