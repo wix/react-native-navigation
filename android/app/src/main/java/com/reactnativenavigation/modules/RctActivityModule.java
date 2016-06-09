@@ -27,6 +27,7 @@ import java.util.ArrayList;
  */
 public class RctActivityModule extends ReactContextBaseJavaModule {
     public static final String REACT_CLASS = "RctActivity";
+    private static final String KEY_ANIMATED = "animated";
     private static final String KEY_NAVIGATOR_ID = "navigatorID";
 
     public RctActivityModule(ReactApplicationContext reactContext) {
@@ -241,6 +242,7 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
         }
 
         final String navigatorID = params.getString(KEY_NAVIGATOR_ID);
+        final boolean animated = params.getBoolean(KEY_ANIMATED);
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {

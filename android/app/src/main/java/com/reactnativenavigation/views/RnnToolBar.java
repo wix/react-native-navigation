@@ -12,7 +12,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
-import android.view.animation.LinearInterpolator;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -32,8 +31,6 @@ import java.util.Map;
  * Created by guyc on 09/04/16.
  */
 public class RnnToolBar extends Toolbar {
-
-    private static final int ANIMATE_DURATION = 180;
 
     private List<Screen> mScreens;
     private AsyncTask mSetupToolbarTask;

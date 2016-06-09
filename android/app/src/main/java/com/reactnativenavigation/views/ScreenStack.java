@@ -74,14 +74,13 @@ public class ScreenStack extends FrameLayout {
 
         ScreenView popped = mStack.pop();
         addView(mStack.peek().view, 0);
-
         ReflectionUtils.setBooleanField(popped.view.getReactRootView(), "mAttachScheduled", false);
         removeView(popped.view);
         return popped.screen;
     }
 
     public Screen popToRoot() {
-        if (mStack.isEmpty() || getStackSize() <= 1) {
+        if (mStack.isEmpty() || getStackSize() == 1) {
             return null;
         }
 
@@ -94,11 +93,7 @@ public class ScreenStack extends FrameLayout {
                 oldScreenView = popped;
             }
         }
-
-        if (!mStack.isEmpty()) {
-            addView(mStack.peek().view, 0);
-        }
-
+        addView(mStack.peek().view, 0);
         return oldScreenView.screen;
     }
 
@@ -128,7 +123,6 @@ public class ScreenStack extends FrameLayout {
         if (oldScreenView == null) {
             return null;
         }
-
         return oldScreenView.screen;
     }
 
