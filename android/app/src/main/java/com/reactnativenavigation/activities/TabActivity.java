@@ -77,8 +77,7 @@ public class TabActivity extends BaseReactActivity {
     public Screen pop(String navigatorId) {
         super.pop(navigatorId);
         Screen popped = mAdapter.pop(navigatorId);
-        Screen screen = getCurrentScreen();
-        setNavigationStyle(screen);
+        setNavigationStyle(getCurrentScreen());
         return popped;
     }
 

@@ -76,6 +76,13 @@ function navigatorPopToRoot(navigator, params) {
   });
 }
 
+function navigatorResetTo(navigator, params) {
+  addNavigatorParams(params, navigator);
+  addNavigatorButtons(params);
+  addNavigationStyleParams(params);
+  RctActivity.navigatorResetTo(params);
+}
+
 function navigatorSetTabBadge(navigator, params) {
   RctActivity.setTabBadge({
     tabIndex: params.tabIndex,
@@ -156,6 +163,7 @@ export default {
   navigatorPush,
   navigatorPop,
   navigatorPopToRoot,
+  navigatorResetTo,
   showModal,
   dismissModal,
   dismissAllModals,

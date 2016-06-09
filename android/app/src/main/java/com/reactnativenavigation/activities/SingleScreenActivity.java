@@ -62,6 +62,13 @@ public class SingleScreenActivity extends BaseReactActivity {
     }
 
     @Override
+    public Screen resetTo(Screen screen) {
+        super.resetTo(screen);
+        Screen popped = mScreenStack.resetTo(screen);
+        return popped;
+    }
+
+    @Override
     public String getCurrentNavigatorId() {
         return mNavigatorId;
     }

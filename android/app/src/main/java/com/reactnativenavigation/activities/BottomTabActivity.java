@@ -127,6 +127,13 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     }
 
     @Override
+    public Screen resetTo(Screen screen) {
+        super.resetTo(screen);
+        Screen popped = mScreenStacks.get(mCurrentStackPosition).resetTo(screen);
+        return popped;
+    }
+
+    @Override
     protected Screen getCurrentScreen() {
         return mScreenStacks.get(mCurrentStackPosition).peek();
     }

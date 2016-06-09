@@ -239,7 +239,22 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
                 context.popToRoot(navigatorID);
             }
         });
+    }
 
+    @ReactMethod
+    public void navigatorResetTo(final ReadableMap skreen) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+
+        final Screen screen = new Screen(skreen);
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                context.resetTo(screen);
+            }
+        });
     }
 
     @ReactMethod

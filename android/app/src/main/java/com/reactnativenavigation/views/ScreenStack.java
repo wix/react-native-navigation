@@ -68,13 +68,12 @@ public class ScreenStack extends FrameLayout {
     }
 
     public Screen pop() {
-        if (mStack.isEmpty()) {
+        if (mStack.isEmpty() || getStackSize() == 1) {
             return null;
         }
+
         ScreenView popped = mStack.pop();
-        if (!mStack.isEmpty()) {
-            addView(mStack.peek().view, 0);
-        }
+        addView(mStack.peek().view, 0);
 
         ReflectionUtils.setBooleanField(popped.view.getReactRootView(), "mAttachScheduled", false);
         removeView(popped.view);
@@ -82,22 +81,17 @@ public class ScreenStack extends FrameLayout {
     }
 
     public Screen popToRoot() {
-        if (mStack.isEmpty()) {
+        if (mStack.isEmpty() || getStackSize() <= 1) {
             return null;
         }
 
-        int stackSize = getStackSize();
-        if (stackSize < 2) {
-            return null;
-        }
-
-        ScreenView lastView = null;
-        while (getStackSize() >= 2) {
+        ScreenView oldScreenView = null;
+        while (getStackSize() > 1) {
             ScreenView popped = mStack.pop();
             ReflectionUtils.setBooleanField(popped.view.getReactRootView(), "mAttachScheduled", false);
             removeView(popped.view);
-            if (lastView == null) {
-                lastView = popped;
+            if (oldScreenView == null) {
+                oldScreenView = popped;
             }
         }
 
@@ -105,7 +99,37 @@ public class ScreenStack extends FrameLayout {
             addView(mStack.peek().view, 0);
         }
 
-        return lastView.screen;
+        return oldScreenView.screen;
+    }
+
+    public Screen resetTo(Screen screen) {
+        return resetTo(screen, null);
+    }
+
+    public Screen resetTo(Screen screen, RctView.OnDisplayedListener onDisplayed) {
+        RctView view = new RctView(mReactActivity, mReactInstanceManager, screen, onDisplayed);
+        addView(view, MATCH_PARENT, MATCH_PARENT);
+
+        ScreenView oldScreenView = null;
+        if (!mStack.isEmpty()) {
+            while (getStackSize() > 0) {
+                ScreenView screenView = mStack.pop();
+                ReflectionUtils.setBooleanField(screenView.view.getReactRootView(), "mAttachScheduled", false);
+                removeView(screenView.view);
+                if (oldScreenView == null) {
+                    oldScreenView = screenView;
+                }
+            }
+        }
+
+        // Add screen to stack after it's clear
+        mStack.push(new ScreenView(screen, view));
+
+        if (oldScreenView == null) {
+            return null;
+        }
+
+        return oldScreenView.screen;
     }
 
     public boolean isEmpty() {
