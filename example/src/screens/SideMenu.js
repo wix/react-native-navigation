@@ -4,8 +4,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  StyleSheet,
-  AlertIOS
+  StyleSheet
 } from 'react-native';
 
 export default class SideMenu extends Component {
