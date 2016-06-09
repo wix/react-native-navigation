@@ -196,6 +196,16 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
         }
     }
 
+    public void updateStyles() {
+        try {
+            mToolbar.update(getCurrentScreen());
+            setNavigationStyle(getCurrentScreen());
+            mToolbar.setupToolbarButtonsAsync(getCurrentScreen());
+        } catch (Exception e) {
+            Log.w("RNNavigation", "Tried to update styles with no screen!");
+        }
+    }
+
     @Override
     protected void onPause() {
         super.onPause();

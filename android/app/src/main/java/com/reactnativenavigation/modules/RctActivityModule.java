@@ -12,6 +12,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableNativeMap;
 import com.reactnativenavigation.activities.BaseReactActivity;
 import com.reactnativenavigation.activities.BottomTabActivity;
+import com.reactnativenavigation.activities.RootActivity;
 import com.reactnativenavigation.activities.SingleScreenActivity;
 import com.reactnativenavigation.controllers.ModalController;
 import com.reactnativenavigation.core.objects.Screen;
@@ -52,6 +53,10 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
             intent.putExtras(extras);
 
             context.startActivity(intent);
+            //TODO add abstract isRoot() instead of instanceof?
+            if(ContextProvider.getActivityContext() instanceof RootActivity) {
+                context.overridePendingTransition(0, 0);
+            }
         }
     }
 
@@ -75,6 +80,9 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
             intent.putExtras(extras);
 
             context.startActivity(intent);
+            if(ContextProvider.getActivityContext() instanceof RootActivity) {
+                context.overridePendingTransition(0, 0);
+            }
         }
     }
 

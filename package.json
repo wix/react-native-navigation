@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/wix/react-native-navigation.git"
   },
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "nativePackage": true,
   "bugs": {

@@ -69,8 +69,15 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         setNavigationStyle(initialScreen);
     }
 
-    private void setupTabs(Bundle style) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mScreenStacks != null) {
+            updateStyles();
+        }
+    }
 
+    private void setupTabs(Bundle style) {
         mBottomNavigation.setForceTitlesDisplay(style.getBoolean(TAB_STYLE_INACTIVE_TITLES, DEFAULT_TAB_INACTIVE_TITLES));
         mBottomNavigation.setForceTint(true);
         mBottomNavigation.setDefaultBackgroundColor(getColor(style, TAB_STYLE_BAR_BG_COLOR, DEFAULT_TAB_BAR_BG_COLOR));
@@ -97,7 +104,12 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     @Override
     public void push(Screen screen) {
         super.push(screen);
-        mScreenStacks.get(mCurrentStackPosition).push(screen);
+        for (ScreenStack stack : mScreenStacks) {
+            if (stack.peek().navigatorId.equals(screen.navigatorId)) {
+                stack.push(screen);
+            }
+        }
+        updateStyles();
     }
 
     @Override
@@ -106,7 +118,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         for (ScreenStack stack: mScreenStacks) {
             if (stack.peek().navigatorId.equals(navigatorId)) {
                 Screen popped = stack.pop();
-                setNavigationStyle(getCurrentScreen());
+                updateStyles();
                 return popped;
             }
         }
@@ -156,8 +168,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         mContentFrame.removeAllViews();
         mContentFrame.addView(mScreenStacks.get(position), new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         mCurrentStackPosition = position;
-        mToolbar.setupToolbarButtonsAsync(getCurrentScreen());
-        setNavigationStyle(getCurrentScreen());
+        updateStyles();
     }
 
     @Override
@@ -215,6 +226,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         @Override
         protected void onPostExecute(Map<Screen, Drawable> icons) {
             mActivity.setTabsWithIcons(mScreens, icons);
+            mActivity.updateStyles();
         }
     }
 

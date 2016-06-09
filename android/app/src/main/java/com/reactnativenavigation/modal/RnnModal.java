@@ -15,6 +15,7 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.activities.BaseReactActivity;
 import com.reactnativenavigation.controllers.ModalController;
 import com.reactnativenavigation.core.objects.Screen;
+import com.reactnativenavigation.utils.ContextProvider;
 import com.reactnativenavigation.utils.SdkSupports;
 import com.reactnativenavigation.utils.StyleHelper;
 import com.reactnativenavigation.views.RctView;
@@ -59,6 +60,7 @@ public class RnnModal extends Dialog implements DialogInterface.OnDismissListene
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             StyleHelper.setWindowStyle(window, context.getApplicationContext(), screen);
         }
+        setOnDismissListener(this);
     }
 
     public void push(Screen screen) {
@@ -69,7 +71,6 @@ public class RnnModal extends Dialog implements DialogInterface.OnDismissListene
     public Screen pop() {
         Screen popped = mScreenStack.pop();
         if (mScreenStack.isEmpty()) {
-            ModalController.getInstance().remove();
             dismiss();
         }
         return popped;
@@ -77,16 +78,12 @@ public class RnnModal extends Dialog implements DialogInterface.OnDismissListene
 
     @Override
     public void onBackPressed() {
-        if (!mScreenStack.isEmpty()) {
-            mScreenStack.pop();
-        }
-
-        ModalController.getInstance().remove();
-        super.onBackPressed();
+        pop();
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
         ModalController.getInstance().remove();
+        ContextProvider.getActivityContext().updateStyles();
     }
 }
