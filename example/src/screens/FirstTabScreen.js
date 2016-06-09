@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet
 } from 'react-native';
+import Alert from '../util/Alert';
 
 export default class FirstTabScreen extends Component {
   static navigatorButtons = {
@@ -25,12 +26,12 @@ export default class FirstTabScreen extends Component {
     ]
   };
   static navigatorStyle = {
-    drawUnderTabBar: true
+    drawUnderTabBar: false
   };
   constructor(props) {
     super(props);
     // if you want to listen on navigator events, set this up
-    // this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   onNavigatorEvent(event) {
     if (event.id == 'menu') {
@@ -40,10 +41,10 @@ export default class FirstTabScreen extends Component {
       });
     }
     if (event.id == 'edit') {
-      // AlertIOS.alert('NavBar', 'Edit button pressed');
+      Alert.show('NavBar', 'Edit button pressed');
     }
     if (event.id == 'add') {
-      // AlertIOS.alert('NavBar', 'Add button pressed');
+      Alert.show('NavBar', 'Add button pressed');
     }
   }
   render() {
@@ -88,13 +89,12 @@ export default class FirstTabScreen extends Component {
     });
   }
   onLightBoxPress() {
-    console.warn('navigator.showLightBox not implemented yet');
-    // this.props.navigator.showLightBox({
-    //   screen: "example.LightBoxScreen",
-    //   style: {
-    //     backgroundBlur: "dark"
-    //   }
-    // });
+    this.props.navigator.showLightBox({
+      screen: "example.LightBoxScreen",
+      style: {
+        backgroundBlur: "dark"
+      }
+    });
   }
 }
 
