@@ -243,6 +243,15 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
         return null;
     }
 
+    @CallSuper
+    public Screen popToRoot(String navigatorId) {
+        if (mToolbar != null) {
+            mToolbar.hideBackButton();
+        }
+
+        return null;
+    }
+
     protected abstract String getCurrentNavigatorId();
 
     protected abstract Screen getCurrentScreen();

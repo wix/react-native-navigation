@@ -26,6 +26,7 @@ import java.util.ArrayList;
  */
 public class RctActivityModule extends ReactContextBaseJavaModule {
     public static final String REACT_CLASS = "RctActivity";
+    private static final String KEY_NAVIGATOR_ID = "navigatorID";
 
     public RctActivityModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -195,7 +196,7 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void navigatorPop(final ReadableMap navigator) {
-        final String navigatorId = navigator.getString("navigatorID");
+        final String navigatorId = navigator.getString(KEY_NAVIGATOR_ID);
         final BaseReactActivity context = ContextProvider.getActivityContext();
         if (context == null || context.isFinishing()) {
             return;
@@ -222,6 +223,22 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
                 }
             });
         }
+    }
+
+    @ReactMethod
+    public void navigatorPopToRoot(final ReadableMap params) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+
+        final String navigatorID = params.getString(KEY_NAVIGATOR_ID);
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                context.popToRoot(navigatorID);
+            }
+        });
 
     }
 

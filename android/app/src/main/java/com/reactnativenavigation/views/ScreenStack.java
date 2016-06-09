@@ -81,6 +81,33 @@ public class ScreenStack extends FrameLayout {
         return popped.screen;
     }
 
+    public Screen popToRoot() {
+        if (mStack.isEmpty()) {
+            return null;
+        }
+
+        int stackSize = getStackSize();
+        if (stackSize < 2) {
+            return null;
+        }
+
+        ScreenView lastView = null;
+        while (getStackSize() >= 2) {
+            ScreenView popped = mStack.pop();
+            ReflectionUtils.setBooleanField(popped.view.getReactRootView(), "mAttachScheduled", false);
+            removeView(popped.view);
+            if (lastView == null) {
+                lastView = popped;
+            }
+        }
+
+        if (!mStack.isEmpty()) {
+            addView(mStack.peek().view, 0);
+        }
+
+        return lastView.screen;
+    }
+
     public boolean isEmpty() {
         return mStack.isEmpty();
     }

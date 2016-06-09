@@ -54,6 +54,14 @@ public class SingleScreenActivity extends BaseReactActivity {
     }
 
     @Override
+    public Screen popToRoot(String navigatorId) {
+        super.popToRoot(navigatorId);
+        Screen screen = mScreenStack.popToRoot();
+        setNavigationStyle(getCurrentScreen());
+        return screen;
+    }
+
+    @Override
     public String getCurrentNavigatorId() {
         return mNavigatorId;
     }

@@ -114,6 +114,19 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     }
 
     @Override
+    public Screen popToRoot(String navigatorId) {
+        super.popToRoot(navigatorId);
+        for (ScreenStack stack: mScreenStacks) {
+            if (stack.peek().navigatorId.equals(navigatorId)) {
+                Screen popped = stack.popToRoot();
+                setNavigationStyle(getCurrentScreen());
+                return popped;
+            }
+        }
+        return null;
+    }
+
+    @Override
     protected Screen getCurrentScreen() {
         return mScreenStacks.get(mCurrentStackPosition).peek();
     }

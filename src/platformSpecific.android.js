@@ -69,6 +69,13 @@ function navigatorPop(navigator, params) {
   RctActivity.navigatorPop(utils.stripRefs(navigator));
 }
 
+function navigatorPopToRoot(navigator, params) {
+  RctActivity.navigatorPopToRoot({
+    navigatorID: navigator.navigatorID,
+    animated: !(params.animated !== false)
+  });
+}
+
 function navigatorSetTabBadge(navigator, params) {
   RctActivity.setTabBadge({
     tabIndex: params.tabIndex,
@@ -148,6 +155,7 @@ export default {
   startSingleScreenApp,
   navigatorPush,
   navigatorPop,
+  navigatorPopToRoot,
   showModal,
   dismissModal,
   dismissAllModals,
