@@ -131,7 +131,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         for (ScreenStack stack: mScreenStacks) {
             if (stack.peek().navigatorId.equals(navigatorId)) {
                 Screen popped = stack.popToRoot();
-                setNavigationStyle(getCurrentScreen());
+                updateStyles();
                 return popped;
             }
         }
@@ -142,6 +142,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     public Screen resetTo(Screen screen) {
         super.resetTo(screen);
         Screen popped = mScreenStacks.get(mCurrentStackPosition).resetTo(screen);
+        updateStyles();
         return popped;
     }
 

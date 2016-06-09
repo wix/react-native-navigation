@@ -69,7 +69,7 @@ public class TabActivity extends BaseReactActivity {
     @Override
     public void push(Screen screen) {
         super.push(screen);
-        setNavigationStyle(screen);
+        updateStyles(screen);
         mAdapter.push(screen);
     }
 
@@ -77,7 +77,7 @@ public class TabActivity extends BaseReactActivity {
     public Screen pop(String navigatorId) {
         super.pop(navigatorId);
         Screen popped = mAdapter.pop(navigatorId);
-        setNavigationStyle(getCurrentScreen());
+        updateStyles();
         return popped;
     }
 

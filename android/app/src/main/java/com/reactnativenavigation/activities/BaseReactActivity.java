@@ -180,7 +180,6 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
     public void setNavigationStyle(Screen screen) {
         if (mToolbar != null) {
             mToolbar.setStyle(screen);
-            mToolbar.update(screen);
         }
 
         StyleHelper.setWindowStyle(getWindow(), this, screen);
@@ -197,10 +196,17 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
     }
 
     public void updateStyles() {
+        updateStyles(null);
+    }
+
+    public void updateStyles(Screen otherScreen) {
+        Screen screen = (otherScreen == null) ? getCurrentScreen() : otherScreen;
         try {
-            mToolbar.update(getCurrentScreen());
-            setNavigationStyle(getCurrentScreen());
-            mToolbar.setupToolbarButtonsAsync(getCurrentScreen());
+            setNavigationStyle(screen);
+            if (mToolbar != null) {
+                mToolbar.update(screen);
+                mToolbar.setupToolbarButtonsAsync(screen);
+            }
         } catch (Exception e) {
             Log.w("RNNavigation", "Tried to update styles with no screen!");
         }
