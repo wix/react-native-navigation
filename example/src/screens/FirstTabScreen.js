@@ -26,7 +26,7 @@ export default class FirstTabScreen extends Component {
     ]
   };
   static navigatorStyle = {
-    drawUnderTabBar: false
+    drawUnderTabBar: true
   };
   constructor(props) {
     super(props);
