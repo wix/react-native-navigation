@@ -240,7 +240,6 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
 
     @CallSuper
     public void push(Screen screen) {
-        setNavigationStyle(screen);
         if (mToolbar != null &&
             getCurrentNavigatorId().equals(screen.navigatorId) &&
             getScreenStackSize() >= 1) {
@@ -270,7 +269,6 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
 
     @CallSuper
     public Screen resetTo(Screen screen) {
-        setNavigationStyle(screen);
         if (mToolbar != null) {
             mToolbar.hideBackButton();
         }
