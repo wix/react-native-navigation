@@ -78,6 +78,7 @@ public class RnnModal extends Dialog implements DialogInterface.OnDismissListene
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         pop();
     }
 
