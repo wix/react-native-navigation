@@ -154,7 +154,7 @@ function addNavigatorButtons(screen) {
 
 function addNavigationStyleParams(screen) {
   const Screen = Navigation.getRegisteredScreen(screen.screen);
-  screen.navigatorStyle = Screen.navigatorStyle;
+  Object.assign(screen.navigatorStyle, Screen.navigatorStyle);
 }
 
 export default {
