@@ -36,6 +36,7 @@ public class SingleScreenActivity extends BaseReactActivity {
     }
 
     protected void setupToolbar(Screen screen) {
+        mToolbar.update(screen);
         setNavigationStyle(screen);
     }
 
