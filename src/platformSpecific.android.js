@@ -167,16 +167,20 @@ function addNavigationStyleParams(screen) {
   screen.navigatorStyle = Object.assign({}, screen.navigatorStyle, Screen.navigatorStyle);
 }
 
-function setupDrawer(drawer) {
-  if (drawer && drawer.left) {
-    const icon = resolveAssetSource(drawer.left.icon);
-    if (icon) {
-      drawer.left.icon = icon.uri;
+function setupDrawer(drawerParams) {
+  const drawer = Object.assign({}, drawerParams);
+  [drawer.left, drawer.right].forEach(side => {
+    if (!side) {
+      return;
     }
-    if (drawer.disableOpenGesture === undefined) {
-      drawer.disableOpenGesture = false;
-    };
-  }
+    const icon = resolveAssetSource(side.icon);
+    if (icon) {
+      side.icon = icon;
+    }
+  });
+  if (drawer.disableOpenGesture === undefined) {
+    drawer.disableOpenGesture = false;
+  };
 
   return drawer;
 }
