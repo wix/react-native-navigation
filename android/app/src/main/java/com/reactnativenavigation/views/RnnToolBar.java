@@ -8,10 +8,13 @@ import android.os.AsyncTask;
 import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -20,6 +23,7 @@ import com.reactnativenavigation.activities.BaseReactActivity;
 import com.reactnativenavigation.core.objects.Button;
 import com.reactnativenavigation.core.objects.Screen;
 import com.reactnativenavigation.utils.ContextProvider;
+import com.reactnativenavigation.utils.IconUtils;
 import com.reactnativenavigation.utils.ImageUtils;
 
 import java.lang.ref.WeakReference;
@@ -33,8 +37,13 @@ import java.util.Map;
 public class RnnToolBar extends Toolbar {
 
     private List<Screen> mScreens;
+    private AsyncTask mDrawerIconTask;
     private AsyncTask mSetupToolbarTask;
     private Drawable mBackground;
+    private Drawable mDrawerIcon;
+    private Screen mDrawerScreen;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     public RnnToolBar(Context context) {
         super(context);
@@ -91,10 +100,69 @@ public class RnnToolBar extends Toolbar {
         setupToolbarButtonsAsync(null, mScreens.get(0));
     }
 
+    public ActionBarDrawerToggle setupDrawer(DrawerLayout drawerLayout, Screen drawerScreen, Screen screen) {
+        if (drawerLayout == null || drawerScreen == null) {
+            return null;
+        }
+
+        mDrawerLayout = drawerLayout;
+        mDrawerScreen = drawerScreen;
+        mDrawerToggle = new ActionBarDrawerToggle(
+            ContextProvider.getActivityContext(),
+            mDrawerLayout,
+            this,
+            R.string.drawer_open,
+            R.string.drawer_close
+        );
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        setupDrawerIconAsync(drawerScreen.icon, screen);
+
+        return mDrawerToggle;
+    }
+
+    public void setDrawerIcon(Drawable drawerIcon) {
+        mDrawerIcon = drawerIcon;
+        setNavUpButton();
+    }
+
+    public void showDrawer(boolean animated) {
+        if (mDrawerLayout == null) {
+            return;
+        }
+
+        mDrawerLayout.openDrawer(Gravity.LEFT);
+    }
+
+    public void hideDrawer(boolean animated) {
+        if (mDrawerLayout == null) {
+            return;
+        }
+
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    public void toggleDrawer(boolean animated) {
+        if (mDrawerLayout == null) {
+            return;
+        }
+
+        boolean visible = mDrawerLayout.isDrawerOpen(Gravity.LEFT);
+        if (visible) {
+            hideDrawer(animated);
+        } else {
+            showDrawer(animated);
+        }
+    }
+
+    public void setupDrawerIconAsync(String drawerIconSource, Screen screen) {
+        if (mDrawerIconTask == null) {
+            mDrawerIconTask = new SetupDrawerIconTask(this, drawerIconSource, screen).execute();
+        }
+    }
+
     public void setupToolbarButtonsAsync(Screen newScreen) {
         this.setupToolbarButtonsAsync(null, newScreen);
     }
-
 
     public void setupToolbarButtonsAsync(Screen oldScreen, Screen newScreen) {
         if (mSetupToolbarTask == null) {
@@ -126,12 +194,28 @@ public class RnnToolBar extends Toolbar {
         hideToolbar(false);
     }
 
+    public void setNavUpButton() {
+        setNavUpButton(null);
+    }
+
     @SuppressWarnings({"ConstantConditions"})
-    public void showBackButton(Screen screen) {
+    public void setNavUpButton(Screen screen) {
         ActionBar actionBar = ContextProvider.getActivityContext().getSupportActionBar();
-        Drawable backButton = setupBackButton(screen);
-        actionBar.setHomeAsUpIndicator(backButton);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        Drawable button = null;
+        boolean isBack = screen != null;
+        if (isBack) {
+            button = setupBackButton(screen);
+        } else if (mDrawerIcon != null) {
+            button = mDrawerIcon;
+        }
+
+        actionBar.setHomeAsUpIndicator(button);
+        actionBar.setDisplayHomeAsUpEnabled(button != null || mDrawerToggle != null);
+
+        // This will get us back the default theme icon for the drawer
+        if (!isBack && mDrawerToggle != null && mDrawerIcon == null) {
+            mDrawerToggle.syncState();
+        }
     }
 
     @SuppressLint("PrivateResource")
@@ -152,11 +236,6 @@ public class RnnToolBar extends Toolbar {
         return backButton;
     }
 
-    @SuppressWarnings({"ConstantConditions"})
-    public void hideBackButton() {
-        ContextProvider.getActivityContext().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-    }
-
     /**
      * Update the ToolBar from screen. This function sets any properties that are defined
      * in the screen.
@@ -168,6 +247,42 @@ public class RnnToolBar extends Toolbar {
         setTitle(screen.title);
         setStyle(screen);
         setupToolbarButtonsAsync(screen);
+    }
+
+    private static class SetupDrawerIconTask extends AsyncTask<Void, Void, Drawable> {
+        private final WeakReference<RnnToolBar> mToolbarWR;
+        private final String mDrawerIconSource;
+        private final Integer mTintColor;
+
+        public SetupDrawerIconTask(RnnToolBar toolBar, String drawerIconSource, Screen screen) {
+            mToolbarWR = new WeakReference<>(toolBar);
+            mDrawerIconSource = drawerIconSource;
+            mTintColor = screen.buttonsTintColor;
+        }
+
+        @Override
+        protected Drawable doInBackground(Void... params) {
+            Context context = ContextProvider.getActivityContext();
+            if (context == null) {
+                return null;
+            }
+
+            return IconUtils.getIcon(context, mDrawerIconSource);
+        }
+
+        @Override
+        protected void onPostExecute(Drawable drawerIcon) {
+            if (drawerIcon == null) {
+                return;
+            }
+
+            if (mTintColor != null) {
+                ImageUtils.tint(drawerIcon, mTintColor);
+            }
+            RnnToolBar toolBar = mToolbarWR.get();
+            toolBar.setDrawerIcon(drawerIcon);
+            mToolbarWR.clear();
+        }
     }
 
     private static class SetupToolbarButtonsTask extends AsyncTask<Void, Void, Map<String, Drawable>> {

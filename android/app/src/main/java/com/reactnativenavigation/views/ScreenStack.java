@@ -110,12 +110,12 @@ public class ScreenStack extends FrameLayout {
         ScreenView oldScreenView = null;
         while (getStackSize() > 0) {
             ScreenView popped = mStack.pop();
-            ReflectionUtils.setBooleanField(popped.view.getReactRootView(), "mAttachScheduled", false);
             if (oldScreenView == null) {
                 oldScreenView = popped;
             }
         }
 
+        ReflectionUtils.setBooleanField(oldScreenView.view.getReactRootView(), "mAttachScheduled", false);
         RctView view = new RctView(mReactActivity, mReactInstanceManager, screen, onDisplayed);
         addView(view, MATCH_PARENT, MATCH_PARENT);
         removeView(oldScreenView.view);

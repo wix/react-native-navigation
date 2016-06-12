@@ -19,7 +19,8 @@ function startSingleScreenApp(params) {
   addNavigatorButtons(screen);
   addNavigationStyleParams(screen);
   screen.passProps = params.passProps;
-  RctActivity.startSingleScreenApp(screen);
+  const drawer = setupDrawer(params.drawer);
+  RctActivity.startSingleScreenApp(screen, drawer);
 }
 
 function startTabBasedApp(params) {
@@ -41,7 +42,8 @@ function startTabBasedApp(params) {
     tab.passProps = params.passProps;
   });
 
-  RctActivity.startTabBasedApp(params.tabs, params.tabsStyle);
+  const drawer = setupDrawer(params.drawer);
+  RctActivity.startTabBasedApp(params.tabs, params.tabsStyle, drawer);
 }
 
 function navigatorPush(navigator, params) {
@@ -100,6 +102,14 @@ function navigatorSwitchToTab(navigator, params) {
   });
 }
 
+function navigatorToggleDrawer(navigator, params) {
+  RctActivity.toggleDrawer({
+    side: params.side,
+    animated: !(params.animated === false),
+    to: params.to || ''
+  });
+}
+
 function navigatorToggleNavBar(navigator, params) {
   RctActivity.toggleNavigationBar({
     hidden: params.to === 'hidden',
@@ -154,7 +164,21 @@ function addNavigatorButtons(screen) {
 
 function addNavigationStyleParams(screen) {
   const Screen = Navigation.getRegisteredScreen(screen.screen);
-  Object.assign(screen.navigatorStyle, Screen.navigatorStyle);
+  screen.navigatorStyle = Object.assign({}, screen.navigatorStyle, Screen.navigatorStyle);
+}
+
+function setupDrawer(drawer) {
+  if (drawer && drawer.left) {
+    const icon = resolveAssetSource(drawer.left.icon);
+    if (icon) {
+      drawer.left.icon = icon.uri;
+    }
+    if (drawer.disableOpenGesture === undefined) {
+      drawer.disableOpenGesture = false;
+    };
+  }
+
+  return drawer;
 }
 
 export default {
@@ -171,6 +195,7 @@ export default {
   navigatorSetTabBadge,
   navigatorSetTitle,
   navigatorSwitchToTab,
+  navigatorToggleDrawer,
   navigatorToggleTabs,
   navigatorToggleNavBar
 }

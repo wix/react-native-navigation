@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.widget.FrameLayout;
 
@@ -12,6 +13,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.core.RctManager;
+import com.reactnativenavigation.core.objects.Drawer;
 import com.reactnativenavigation.core.objects.Screen;
 import com.reactnativenavigation.views.RnnToolBar;
 import com.reactnativenavigation.views.ScreenStack;
@@ -26,6 +28,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
  * Created by guyc on 02/04/16.
  */
 public class BottomTabActivity extends BaseReactActivity implements AHBottomNavigation.OnTabSelectedListener {
+    public static final String DRAWER_PARAMS = "drawerParams";
     public static final String EXTRA_SCREENS = "extraScreens";
 
     private static final String TAB_STYLE_BUTTON_COLOR = "tabBarButtonColor";
@@ -41,6 +44,8 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     private AHBottomNavigation mBottomNavigation;
     private FrameLayout mContentFrame;
     private ArrayList<ScreenStack> mScreenStacks;
+    private ScreenStack mDrawerStack;
+    private DrawerLayout mDrawerLayout;
     private int mCurrentStackPosition = 0;
 
     @Override
@@ -53,10 +58,26 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         mContentFrame = (FrameLayout) findViewById(R.id.contentFrame);
 
         ArrayList<Screen> screens = (ArrayList<Screen>) getIntent().getSerializableExtra(EXTRA_SCREENS);
+        Drawer drawer = (Drawer) getIntent().getSerializableExtra(DRAWER_PARAMS);
         mBottomNavigation.setForceTint(true);
+        setupDrawer(drawer, screens.get(0));
         setupToolbar(screens);
         setupTabs(getIntent().getExtras());
         setupPages(screens);
+    }
+
+    protected void setupDrawer(Drawer drawer, Screen screen) {
+        if (drawer == null || drawer.left == null) {
+            return;
+        }
+
+        mDrawerStack = new ScreenStack(this);
+        FrameLayout drawerFrame = (FrameLayout) findViewById(R.id.drawerFrame);
+        drawerFrame.addView(mDrawerStack);
+        mDrawerStack.push(drawer.left);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mDrawerToggle = mToolbar.setupDrawer(mDrawerLayout, drawer.left, screen);
     }
 
     private void setupPages(ArrayList<Screen> screens) {
