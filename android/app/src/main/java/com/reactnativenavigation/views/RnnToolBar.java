@@ -213,12 +213,12 @@ public class RnnToolBar extends Toolbar {
 
         Drawable navIcon = null;
         DrawerArrowDrawable navArrow = null;
-        if (hasDrawer) {
+        if (hasDrawer && mDrawerIcon == null) {
             navArrow = (DrawerArrowDrawable) this.getNavigationIcon();
         } else {
             if (isBack) {
                 navArrow = new DrawerArrowDrawable(ContextProvider.getActivityContext());
-            } else {
+            } else if (hasDrawer) {
                 navIcon = mDrawerIcon;
             }
         }
