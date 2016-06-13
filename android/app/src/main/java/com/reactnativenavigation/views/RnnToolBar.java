@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -42,6 +43,7 @@ public class RnnToolBar extends Toolbar {
     private Drawable mBackground;
     private Drawable mDrawerIcon;
     private Screen mDrawerScreen;
+    private Integer mButtonsTintColor;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -69,6 +71,8 @@ public class RnnToolBar extends Toolbar {
     }
 
     public void setStyle(Screen screen) {
+        mButtonsTintColor = screen.buttonsTintColor;
+
         if (screen.toolBarColor != null) {
             setBackgroundColor(screen.toolBarColor);
         } else {
@@ -120,9 +124,8 @@ public class RnnToolBar extends Toolbar {
         return mDrawerToggle;
     }
 
-    public void setDrawerIcon(Drawable drawerIcon) {
-        mDrawerIcon = drawerIcon;
-        setNavUpButton();
+    public void setDrawerIcon(Drawable icon) {
+        mDrawerIcon = icon;
     }
 
     public void showDrawer(boolean animated) {
@@ -201,39 +204,35 @@ public class RnnToolBar extends Toolbar {
     @SuppressWarnings({"ConstantConditions"})
     public void setNavUpButton(Screen screen) {
         ActionBar actionBar = ContextProvider.getActivityContext().getSupportActionBar();
-        Drawable button = null;
+        if (actionBar == null) {
+            return;
+        }
+
         boolean isBack = screen != null;
-        if (isBack) {
-            button = setupBackButton(screen);
-        } else if (mDrawerIcon != null) {
-            button = mDrawerIcon;
-        }
+        boolean hasDrawer = mDrawerToggle != null;
 
-        actionBar.setHomeAsUpIndicator(button);
-        actionBar.setDisplayHomeAsUpEnabled(button != null || mDrawerToggle != null);
-
-        // This will get us back the default theme icon for the drawer
-        if (!isBack && mDrawerToggle != null && mDrawerIcon == null) {
-            mDrawerToggle.syncState();
-        }
-    }
-
-    @SuppressLint("PrivateResource")
-    @SuppressWarnings({"ConstantConditions"})
-    private Drawable setupBackButton(Screen screen) {
-        Resources resources = getResources();
-        final Drawable backButton;
-        if (screen.buttonsTintColor != null) {
-            backButton = ResourcesCompat.getDrawable(resources,
-                    R.drawable.abc_ic_ab_back_mtrl_am_alpha,
-                    null);
-            ImageUtils.tint(backButton, screen.buttonsTintColor);
+        Drawable navIcon = null;
+        DrawerArrowDrawable navArrow = null;
+        if (hasDrawer) {
+            navArrow = (DrawerArrowDrawable) this.getNavigationIcon();
         } else {
-            backButton = ResourcesCompat.getDrawable(resources,
-                    R.drawable.abc_ic_ab_back_mtrl_am_alpha,
-                    ContextProvider.getActivityContext().getTheme());
+            if (isBack) {
+                navArrow = new DrawerArrowDrawable(ContextProvider.getActivityContext());
+            } else {
+                navIcon = mDrawerIcon;
+            }
         }
-        return backButton;
+
+        if (navArrow != null) {
+            navArrow.setProgress(isBack ? 1.0f : 0.0f);
+            if (mButtonsTintColor != null) {
+                navArrow.setColor(mButtonsTintColor);
+            }
+            navIcon = navArrow;
+        }
+
+        actionBar.setHomeAsUpIndicator(navIcon);
+        actionBar.setDisplayHomeAsUpEnabled(navIcon != null);
     }
 
     /**
@@ -263,7 +262,7 @@ public class RnnToolBar extends Toolbar {
         @Override
         protected Drawable doInBackground(Void... params) {
             Context context = ContextProvider.getActivityContext();
-            if (context == null) {
+            if (context == null || mDrawerIconSource == null) {
                 return null;
             }
 
@@ -272,15 +271,15 @@ public class RnnToolBar extends Toolbar {
 
         @Override
         protected void onPostExecute(Drawable drawerIcon) {
-            if (drawerIcon == null) {
-                return;
+            RnnToolBar toolBar = mToolbarWR.get();
+            if (drawerIcon != null) {
+                if (mTintColor != null) {
+                    ImageUtils.tint(drawerIcon, mTintColor);
+                }
+                toolBar.setDrawerIcon(drawerIcon);
             }
 
-            if (mTintColor != null) {
-                ImageUtils.tint(drawerIcon, mTintColor);
-            }
-            RnnToolBar toolBar = mToolbarWR.get();
-            toolBar.setDrawerIcon(drawerIcon);
+            toolBar.setNavUpButton();
             mToolbarWR.clear();
         }
     }

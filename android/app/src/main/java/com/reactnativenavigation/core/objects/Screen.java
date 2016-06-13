@@ -36,7 +36,7 @@ public class Screen extends JsonObject implements Serializable {
     private static final String KEY_TOOL_BAR_COLOR = "navBarBackgroundColor";
     private static final String KEY_TOOL_BAR_HIDDEN = "navBarHidden";
     private static final String KEY_NAVIGATION_BAR_COLOR = "navigationBarColor";
-    private static final String KEY_BUTTONS_TINT_COLOR = "buttonsTint";
+    private static final String KEY_BUTTONS_TINT_COLOR = "navBarButtonColor";
     private static final String KEY_TITLE_COLOR = "navBarTextColor";
     private static final String KEY_TAB_NORMAL_TEXT_COLOR = "tabNormalTextColor";
     private static final String KEY_TAB_SELECTED_TEXT_COLOR = "tabSelectedTextColor";

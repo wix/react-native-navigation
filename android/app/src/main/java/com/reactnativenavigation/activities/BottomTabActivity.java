@@ -60,8 +60,8 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         ArrayList<Screen> screens = (ArrayList<Screen>) getIntent().getSerializableExtra(EXTRA_SCREENS);
         Drawer drawer = (Drawer) getIntent().getSerializableExtra(DRAWER_PARAMS);
         mBottomNavigation.setForceTint(true);
-        setupDrawer(drawer, screens.get(0));
         setupToolbar(screens);
+        setupDrawer(drawer, screens.get(0));
         setupTabs(getIntent().getExtras());
         setupPages(screens);
     }

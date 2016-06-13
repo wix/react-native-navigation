@@ -175,7 +175,7 @@ function setupDrawer(drawerParams) {
     }
     const icon = resolveAssetSource(side.icon);
     if (icon) {
-      side.icon = icon;
+      side.icon = icon.uri;
     }
   });
   if (drawer.disableOpenGesture === undefined) {

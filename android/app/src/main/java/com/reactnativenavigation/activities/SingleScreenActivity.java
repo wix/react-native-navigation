@@ -33,8 +33,8 @@ public class SingleScreenActivity extends BaseReactActivity {
         Drawer drawer = (Drawer) getIntent().getSerializableExtra(DRAWER_PARAMS);
 
         mNavigatorId = screen.navigatorId;
-        setupDrawer(drawer, screen);
         setupToolbar(screen);
+        setupDrawer(drawer, screen);
 
         mScreenStack = new ScreenStack(this);
         FrameLayout contentFrame = (FrameLayout) findViewById(R.id.contentFrame);
