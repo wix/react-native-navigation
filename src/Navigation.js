@@ -10,7 +10,7 @@ function registerScreen(screenID, generator) {
   AppRegistry.registerComponent(screenID, generator);
 }
 
-function registerComponent(screenID, generator, store = undefined, Provider = undefined, client= undefined) {
+function registerComponent(screenID, generator, store = undefined, Provider = undefined, client = undefined) {
   if (store && Provider) {
     return _registerComponentRedux(screenID, generator, store, Provider, client);
   } else {
