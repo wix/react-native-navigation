@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.annotation.ColorInt;
@@ -38,6 +39,8 @@ import java.util.Map;
  * Created by guyc on 09/04/16.
  */
 public class RnnToolBar extends Toolbar {
+
+    private static final int ANIMATE_DURATION = 180;
 
     private List<Screen> mScreens;
     private AsyncTask mSetupToolbarTask;
@@ -80,7 +83,7 @@ public class RnnToolBar extends Toolbar {
         } else {
             resetTitleTextColor();
         }
-        
+
         if (screen.toolBarHidden != null && screen.toolBarHidden) {
             hideToolbar();
         } else {
@@ -111,18 +114,30 @@ public class RnnToolBar extends Toolbar {
         }
     }
 
-    private void showToolbar() {
+    public void showToolbar(boolean animated) {
         ActionBar actionBar = ((AppCompatActivity) getContext()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.show();
+            actionBar.setShowHideAnimationEnabled(animated);
+            // We hide the ToolBar's parent (AppBarLayout) since this animates the shadow added by AppBar as well
+            ((View) getParent()).setVisibility(VISIBLE);
         }
     }
 
-    private void hideToolbar() {
+    public void hideToolbar(boolean animated) {
         ActionBar actionBar = ((AppCompatActivity) getContext()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.hide();
+            actionBar.setShowHideAnimationEnabled(animated);
+            // We hide the ToolBar's parent (AppBarLayout) since this animates the shadow added by AppBar as well
+            ((View) getParent()).setVisibility(GONE);
         }
+    }
+
+    private void showToolbar() {
+        showToolbar(false);
+    }
+
+    private void hideToolbar() {
+        hideToolbar(false);
     }
 
     @SuppressWarnings({"ConstantConditions"})
@@ -137,17 +152,11 @@ public class RnnToolBar extends Toolbar {
     @SuppressWarnings({"ConstantConditions"})
     private Drawable setupBackButton(Screen screen) {
         Resources resources = getResources();
-        final Drawable backButton;
-        if (screen.navBarButtonColor != null) {
-            backButton = ResourcesCompat.getDrawable(resources,
-                    R.drawable.abc_ic_ab_back_mtrl_am_alpha,
-                    null);
-            ImageUtils.tint(backButton, screen.navBarButtonColor);
-        } else {
-            backButton = ResourcesCompat.getDrawable(resources,
-                    R.drawable.abc_ic_ab_back_mtrl_am_alpha,
-                    ContextProvider.getActivityContext().getTheme());
-        }
+        final Drawable backButton = ResourcesCompat.getDrawable(resources,
+                R.drawable.abc_ic_ab_back_mtrl_am_alpha,
+                ContextProvider.getActivityContext().getTheme());
+        int tintColor = screen.navBarButtonColor != null ? screen.navBarButtonColor : Color.BLACK;
+        ImageUtils.tint(backButton, tintColor);
         return backButton;
     }
 

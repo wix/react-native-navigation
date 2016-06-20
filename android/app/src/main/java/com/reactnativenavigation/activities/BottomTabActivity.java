@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.core.RctManager;
 import com.reactnativenavigation.core.objects.Screen;
@@ -186,6 +187,35 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
             mToolbar.showBackButton(getCurrentScreen());
         } else {
             mToolbar.hideBackButton();
+        }
+    }
+
+    public void setTabBadge(ReadableMap params) {
+        // Badge comes across as int, but if it's 0 clear the notification
+        int badgeCount = params.getInt(KEY_BADGE);
+        String badge = (badgeCount > 0) ? Integer.toString(badgeCount) : "";
+
+        // Tab index is optional, so default to current tab
+        int tabIndex = mBottomNavigation.getCurrentItem();
+        if (params.hasKey(KEY_TAB_INDEX)) {
+            tabIndex = params.getInt(KEY_TAB_INDEX);
+        }
+
+        mBottomNavigation.setNotification(badge, tabIndex);
+    }
+
+    public void switchToTab(ReadableMap params) {
+        int tabIndex = params.getInt(KEY_TAB_INDEX);
+        mBottomNavigation.setCurrentItem(tabIndex);
+    }
+
+    public void toggleTabs(ReadableMap params) {
+        boolean hide = params.getBoolean(KEY_HIDDEN);
+        boolean animated = params.getBoolean(KEY_ANIMATED);
+        if (hide) {
+            mBottomNavigation.hideBottomNavigation(animated);
+        } else {
+            mBottomNavigation.restoreBottomNavigation(animated);
         }
     }
 

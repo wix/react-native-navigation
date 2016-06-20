@@ -26,7 +26,7 @@ public class SingleScreenActivity extends BaseReactActivity {
         setContentView(R.layout.single_screen_activity);
         mToolbar = (RnnToolBar) findViewById(R.id.toolbar);
 
-        Screen screen = (Screen) getIntent().getSerializableExtra(EXTRA_SCREEN);
+        final Screen screen = (Screen) getIntent().getSerializableExtra(EXTRA_SCREEN);
         mNavigatorId = screen.navigatorId;
 
         mScreenStack = new ScreenStack(this);
@@ -39,7 +39,7 @@ public class SingleScreenActivity extends BaseReactActivity {
         contentFrame.post(new Runnable() {
             @Override
             public void run() {
-                setupToolbar(getCurrentScreen());
+                setupToolbar(screen);
             }
         });
     }

@@ -30,6 +30,7 @@ public class Screen extends JsonObject implements Serializable {
     public static final String KEY_NAVIGATOR_ID = "navigatorID";
     public static final String KEY_NAVIGATOR_EVENT_ID = "navigatorEventID";
     private static final String KEY_ICON = "icon";
+    private static final String KEY_NAVIGATOR_BUTTONS = "navigatorButtons";
     private static final String KEY_RIGHT_BUTTONS = "rightButtons";
     private static final String KEY_TOOL_BAR_STYLE = "navigatorStyle";
     private static final String KEY_STATUS_BAR_COLOR = "statusBarColor";
@@ -90,13 +91,22 @@ public class Screen extends JsonObject implements Serializable {
 
     private ArrayList<Button> getButtons(ReadableMap screen) {
         ArrayList<Button> ret = new ArrayList<>();
-        if (screen.hasKey(KEY_RIGHT_BUTTONS)) {
-            ReadableArray rightButtons = screen.getArray(KEY_RIGHT_BUTTONS);
+        if (hasButtons(screen)) {
+            ReadableArray rightButtons = getRightButtons(screen);
             for (int i = 0; i < rightButtons.size(); i++) {
                 ret.add(new Button(rightButtons.getMap(i)));
             }
         }
         return ret;
+    }
+
+    private boolean hasButtons(ReadableMap screen) {
+        return screen.hasKey(KEY_RIGHT_BUTTONS) || screen.hasKey(KEY_NAVIGATOR_BUTTONS);
+    }
+
+    private ReadableArray getRightButtons(ReadableMap screen) {
+        return screen.hasKey(KEY_RIGHT_BUTTONS) ? screen.getArray(KEY_RIGHT_BUTTONS) :
+                screen.getMap(KEY_NAVIGATOR_BUTTONS).getArray(KEY_RIGHT_BUTTONS);
     }
 
     public Drawable getIcon(Context ctx) {

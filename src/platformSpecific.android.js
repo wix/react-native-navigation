@@ -84,6 +84,37 @@ function navigatorResetTo(navigator, params) {
   RctActivity.navigatorResetTo(params);
 }
 
+function navigatorSetTabBadge(navigator, params) {
+  RctActivity.setTabBadge({
+    tabIndex: params.tabIndex,
+    badge: params.badge
+  });
+}
+
+function navigatorSetTitle(navigator, params) {
+  RctActivity.setNavigatorTitle(params);
+}
+
+function navigatorSwitchToTab(navigator, params) {
+  RctActivity.switchToTab({
+    tabIndex: params.tabIndex
+  });
+}
+
+function navigatorToggleNavBar(navigator, params) {
+  RctActivity.toggleNavigationBar({
+    hidden: params.to === 'hidden',
+    animated: !(params.animated === false)
+  });
+}
+
+function navigatorToggleTabs(navigator, params) {
+  RctActivity.toggleNavigatorTabs({
+    hidden: params.to === 'hidden',
+    animated: !(params.animated === false)
+  });
+}
+
 function showModal(params) {
   addNavigatorParams(params);
   addNavigatorButtons(params);
@@ -110,8 +141,10 @@ function addNavigatorButtons(screen) {
   Object.assign(screen, Screen.navigatorButtons);
 
   // Get image uri from image id
-  if (screen.rightButtons) {
-    screen.rightButtons.forEach(function(button) {
+  const rightButtons = screen.rightButtons ? screen.rightButtons : screen.navigatorButtons ?
+    screen.navigatorButtons.rightButtons : null;
+  if (rightButtons) {
+    rightButtons.forEach(function(button) {
       if (button.icon) {
         const icon = resolveAssetSource(button.icon);
         if (icon) {
@@ -137,5 +170,10 @@ export default {
   showModal,
   dismissModal,
   dismissAllModals,
-  navigatorSetButtons
+  navigatorSetButtons,
+  navigatorSetTabBadge,
+  navigatorSetTitle,
+  navigatorSwitchToTab,
+  navigatorToggleTabs,
+  navigatorToggleNavBar
 }

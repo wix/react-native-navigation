@@ -51,12 +51,15 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
                 BridgeUtils.addMapToBundle(((ReadableNativeMap) style).toHashMap(), extras);
             }
             intent.putExtras(extras);
-            
+
             context.startActivity(intent);
             //TODO add abstract isRoot() instead of instanceof?
             if(ContextProvider.getActivityContext() instanceof RootActivity) {
                 context.overridePendingTransition(0, 0);
             }
+
+            // Dismiss modals associated with previous activity
+            ModalController.getInstance().dismissAllModals();
         }
     }
 
@@ -83,6 +86,9 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
             if(ContextProvider.getActivityContext() instanceof RootActivity) {
                 context.overridePendingTransition(0, 0);
             }
+
+            // Dismiss modals associated with previous activity
+            ModalController.getInstance().dismissAllModals();
         }
     }
 
@@ -96,6 +102,76 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 context.setNavigationButtons(buttons);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setNavigatorTitle(final ReadableMap title) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                context.setNavigationTitle(title);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setTabBadge(final ReadableMap params) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((BottomTabActivity) context).setTabBadge(params);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void switchToTab(final ReadableMap params) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((BottomTabActivity) context).switchToTab(params);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void toggleNavigationBar(final ReadableMap params) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                context.toggleNavigationBar(params);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void toggleNavigatorTabs(final ReadableMap params) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((BottomTabActivity) context).toggleTabs(params);
             }
         });
     }

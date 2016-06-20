@@ -45,6 +45,11 @@ import javax.annotation.Nullable;
  */
 public abstract class BaseReactActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
 
+    protected static final String KEY_ANIMATED = "animated";
+    protected static final String KEY_BADGE = "badge";
+    protected static final String KEY_HIDDEN = "hidden";
+    protected static final String KEY_TAB_INDEX = "tabIndex";
+    protected static final String KEY_TITLE = "title";
     private static final String TAG = "BaseReactActivity";
     private static final String REDBOX_PERMISSION_MESSAGE =
             "Overlay permissions needs to be granted in order for react native apps to run in dev mode";
@@ -356,5 +361,27 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
         }
         getCurrentScreen().setButtons(buttons);
         mToolbar.setupToolbarButtonsAsync(getCurrentScreen());
+    }
+
+    public void setNavigationTitle(ReadableMap title) {
+        if (mToolbar == null) {
+            return;
+        }
+
+        mToolbar.setTitle(title.getString(KEY_TITLE));
+    }
+
+    public void toggleNavigationBar(ReadableMap params) {
+        if (mToolbar == null) {
+            return;
+        }
+
+        boolean hide = params.getBoolean(KEY_HIDDEN);
+        boolean animated = params.getBoolean(KEY_ANIMATED);
+        if (hide) {
+            mToolbar.hideToolbar(animated);
+        } else {
+            mToolbar.showToolbar(animated);
+        }
     }
 }
