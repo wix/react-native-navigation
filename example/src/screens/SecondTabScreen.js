@@ -4,7 +4,8 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Alert
 } from 'react-native';
 
 export default class SecondTabScreen extends Component {
@@ -15,7 +16,7 @@ export default class SecondTabScreen extends Component {
     super(props);
     this.buttonsCounter = 0;
     // if you want to listen on navigator events, set this up
-    // this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   render() {
     return (
@@ -106,19 +107,18 @@ export default class SecondTabScreen extends Component {
         });
         this.props.navigator.switchToTab();
       }
+    } else {
+      // handle a button press
+      if (event.id == 'edit') {
+        Alert.alert('NavBar', 'Dynamic Edit button pressed');
+      }
+      if (event.id == 'add') {
+        Alert.alert('NavBar', 'Dynamic Add button pressed');
+      }
+      if (event.id == 'save') {
+        Alert.alert('NavBar', 'Dynamic Save button pressed');
+      }
     }
-    // handle a button press
-    // if (event.type == 'NavBarButtonPress') {
-    //   if (event.id == 'edit') {
-    //     AlertIOS.alert('NavBar', 'Dynamic Edit button pressed');
-    //   }
-    //   if (event.id == 'add') {
-    //     AlertIOS.alert('NavBar', 'Dynamic Add button pressed');
-    //   }
-    //   if (event.id == 'save') {
-    //     AlertIOS.alert('NavBar', 'Dynamic Save button pressed');
-    //   }
-    // }
   }
 }
 
