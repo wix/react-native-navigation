@@ -62,6 +62,9 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
             if(ContextProvider.getActivityContext() instanceof RootActivity) {
                 context.overridePendingTransition(0, 0);
             }
+
+            // Dismiss modals associated with previous activity
+            ModalController.getInstance().dismissAllModals();
         }
     }
 
@@ -91,6 +94,9 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
             if(ContextProvider.getActivityContext() instanceof RootActivity) {
                 context.overridePendingTransition(0, 0);
             }
+
+            // Dismiss modals associated with previous activity
+            ModalController.getInstance().dismissAllModals();
         }
     }
 
@@ -131,7 +137,7 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                context.setTabBadge(params);
+                ((BottomTabActivity) context).setTabBadge(params);
             }
         });
     }
@@ -145,7 +151,7 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                context.switchToTab(params);
+                ((BottomTabActivity) context).switchToTab(params);
             }
         });
     }
@@ -187,7 +193,7 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                context.toggleTabs(params);
+                ((BottomTabActivity) context).toggleTabs(params);
             }
         });
     }

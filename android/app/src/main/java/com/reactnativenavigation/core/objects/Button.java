@@ -1,20 +1,13 @@
 package com.reactnativenavigation.core.objects;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.view.MenuItem;
 
 import com.facebook.react.bridge.ReadableMap;
-import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.utils.IconUtils;
-import com.reactnativenavigation.utils.ResourceDrawableIdHelper;
 
 import java.io.Serializable;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,10 +21,12 @@ public class Button extends JsonObject implements Serializable {
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
     private static final String KEY_ICON = "icon";
+    private static final String KEY_DISABLED = "disabled";
 
     public String id;
     public String title;
     private String mIconSource;
+    public boolean disabled;
 
     private static final AtomicInteger sAtomicIdGenerator = new AtomicInteger();
     private static final Map<String, Integer> sStringToNumericId = new HashMap<>();
@@ -40,14 +35,18 @@ public class Button extends JsonObject implements Serializable {
         id = getString(button, KEY_ID);
         title = getString(button, KEY_TITLE, "");
         mIconSource = getString(button, KEY_ICON);
+        disabled = getBoolean(button, KEY_DISABLED);
     }
 
     public boolean hasIcon() {
         return mIconSource != null;
     }
 
-    public Drawable getIcon(Context ctx) {
-       return IconUtils.getIcon(ctx, mIconSource);
+    /**
+     * @param dimensions The requested icon dimensions
+     */
+    public Drawable getIcon(Context ctx, int dimensions) {
+       return IconUtils.getIcon(ctx, mIconSource, dimensions);
     }
 
     public int getItemId() {

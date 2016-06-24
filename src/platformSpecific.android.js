@@ -68,7 +68,8 @@ function navigatorSetButtons(navigator, navigatorEventID, params) {
 }
 
 function navigatorPop(navigator, params) {
-  RctActivity.navigatorPop(utils.stripRefs(navigator));
+  addNavigatorParams(params, navigator);
+  RctActivity.navigatorPop(params);
 }
 
 function navigatorPopToRoot(navigator, params) {
@@ -142,7 +143,7 @@ function dismissAllModals(params) {
 function addNavigatorParams(screen, navigator = null, idx = '') {
   screen.navigatorID = navigator ? navigator.navigatorID : utils.getRandomId() + '_nav' + idx;
   screen.screenInstanceID = utils.getRandomId();
-  screen.navigatorEventID = navigator ? navigator.navigatorEventID : screen.screenInstanceID + '_events';
+  screen.navigatorEventID = screen.screenInstanceID + '_events';
 }
 
 function addNavigatorButtons(screen) {
@@ -150,8 +151,10 @@ function addNavigatorButtons(screen) {
   Object.assign(screen, Screen.navigatorButtons);
 
   // Get image uri from image id
-  if (screen.rightButtons) {
-    screen.rightButtons.forEach(function(button) {
+  const rightButtons = screen.rightButtons ? screen.rightButtons : screen.navigatorButtons ?
+    screen.navigatorButtons.rightButtons : null;
+  if (rightButtons) {
+    rightButtons.forEach(function(button) {
       if (button.icon) {
         const icon = resolveAssetSource(button.icon);
         if (icon) {

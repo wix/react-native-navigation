@@ -15,14 +15,13 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.core.RctManager;
 import com.reactnativenavigation.core.objects.Drawer;
 import com.reactnativenavigation.core.objects.Screen;
+import com.reactnativenavigation.utils.StyleHelper;
 import com.reactnativenavigation.views.RnnToolBar;
 import com.reactnativenavigation.views.ScreenStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 /**
  * Created by guyc on 02/04/16.
@@ -46,7 +45,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     private ArrayList<ScreenStack> mScreenStacks;
     private ScreenStack mDrawerStack;
     private DrawerLayout mDrawerLayout;
-    private int mCurrentStackPosition = 0;
+    private int mCurrentStackPosition = -1;
 
     @Override
     protected void handleOnCreate() {
@@ -57,13 +56,20 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         mBottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_tab_bar);
         mContentFrame = (FrameLayout) findViewById(R.id.contentFrame);
 
-        ArrayList<Screen> screens = (ArrayList<Screen>) getIntent().getSerializableExtra(EXTRA_SCREENS);
+        final ArrayList<Screen> screens = (ArrayList<Screen>) getIntent().getSerializableExtra(EXTRA_SCREENS);
         Drawer drawer = (Drawer) getIntent().getSerializableExtra(DRAWER_PARAMS);
         mBottomNavigation.setForceTint(true);
-        setupToolbar(screens);
         setupDrawer(drawer, screens.get(0));
         setupTabs(getIntent().getExtras());
         setupPages(screens);
+
+        // Setup Toolbar after it's measured since icon height is dependent on Toolbar height
+        mContentFrame.post(new Runnable() {
+            @Override
+            public void run() {
+                setupToolbar(screens);
+            }
+        });
     }
 
     protected void setupDrawer(Drawer drawer, Screen screen) {
@@ -81,21 +87,21 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     }
 
     private void setupPages(ArrayList<Screen> screens) {
-        new SetupTabsTask(this, screens).execute();
+        new SetupTabsTask(this, mToolbar, screens).execute();
     }
 
     private void setupToolbar(ArrayList<Screen> screens) {
         mToolbar.setScreens(screens);
         Screen initialScreen = screens.get(0);
         mToolbar.update(initialScreen);
-        setNavigationStyle(initialScreen);
+        StyleHelper.updateStyles(mToolbar, initialScreen);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if(mScreenStacks != null) {
-            updateStyles();
+            StyleHelper.updateStyles(mToolbar, getCurrentScreen());
         }
     }
 
@@ -131,7 +137,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
                 stack.push(screen);
             }
         }
-        updateStyles();
+        StyleHelper.updateStyles(mToolbar, getCurrentScreen());
     }
 
     @Override
@@ -140,7 +146,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         for (ScreenStack stack: mScreenStacks) {
             if (stack.peek().navigatorId.equals(navigatorId)) {
                 Screen popped = stack.pop();
-                updateStyles();
+                StyleHelper.updateStyles(mToolbar, getCurrentScreen());
                 return popped;
             }
         }
@@ -153,7 +159,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         for (ScreenStack stack: mScreenStacks) {
             if (stack.peek().navigatorId.equals(navigatorId)) {
                 Screen popped = stack.popToRoot();
-                updateStyles();
+                StyleHelper.updateStyles(mToolbar, getCurrentScreen());
                 return popped;
             }
         }
@@ -161,16 +167,19 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     }
 
     @Override
-    public Screen resetTo(Screen screen) {
-        super.resetTo(screen);
-        Screen popped = mScreenStacks.get(mCurrentStackPosition).resetTo(screen);
-        updateStyles();
-        return popped;
+    public Screen getCurrentScreen() {
+        Screen currentScreen = super.getCurrentScreen();
+        if (currentScreen != null) {
+            return currentScreen;
+        }
+
+        return mScreenStacks != null ? mScreenStacks.get(mCurrentStackPosition).peek() : null;
     }
 
-    @Override
-    protected Screen getCurrentScreen() {
-        return mScreenStacks.get(mCurrentStackPosition).peek();
+    public Screen resetTo(Screen screen) {
+        super.resetTo(screen);
+        StyleHelper.updateStyles(mToolbar, screen);
+        return mScreenStacks.get(mCurrentStackPosition).resetTo(screen);
     }
 
     @Override
@@ -188,10 +197,24 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         if (wasSelected) {
             return;
         }
-        mContentFrame.removeAllViews();
-        mContentFrame.addView(mScreenStacks.get(position), new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+
+        // Remove current ScreenStack
+        if (mCurrentStackPosition >= 0) {
+            mScreenStacks.get(mCurrentStackPosition).removeFromScreen(mContentFrame);
+        }
+
+        // Add new ScreenStack
+        mScreenStacks.get(position).addToScreen(mContentFrame);
+
         mCurrentStackPosition = position;
-        updateStyles();
+        StyleHelper.updateStyles(mToolbar, getCurrentScreen());
+
+        // Hide or show back button if needed
+        if (getScreenStackSize() > 1) {
+            mToolbar.setNavUpButton(getCurrentScreen());
+        } else {
+            mToolbar.setNavUpButton();
+        }
     }
 
     @Override
@@ -202,9 +225,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         currentItem.setTitle(title.getString(KEY_TITLE));
         mBottomNavigation.refresh();
     }
-
-    @Override
-    public void setTabBadge(ReadableMap params) {
+	public void setTabBadge(ReadableMap params) {
         // Badge comes across as int, but if it's 0 clear the notification
         int badgeCount = params.getInt(KEY_BADGE);
         String badge = (badgeCount > 0) ? Integer.toString(badgeCount) : "";
@@ -218,13 +239,11 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         mBottomNavigation.setNotification(badge, tabIndex);
     }
 
-    @Override
     public void switchToTab(ReadableMap params) {
         int tabIndex = params.getInt(KEY_TAB_INDEX);
         mBottomNavigation.setCurrentItem(tabIndex);
     }
 
-    @Override
     public void toggleTabs(ReadableMap params) {
         boolean hide = params.getBoolean(KEY_HIDDEN);
         boolean animated = params.getBoolean(KEY_ANIMATED);
@@ -237,10 +256,12 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
 
     private static class SetupTabsTask extends AsyncTask<Void, Void, Map<Screen, Drawable>> {
         private BottomTabActivity mActivity;
+        private RnnToolBar mToolBar;
         private ArrayList<Screen> mScreens;
 
-        public SetupTabsTask(BottomTabActivity context, ArrayList<Screen> screens) {
+        public SetupTabsTask(BottomTabActivity context, RnnToolBar toolBar, ArrayList<Screen> screens) {
             mActivity = context;
+            mToolBar = toolBar;
             mScreens = screens;
         }
 
@@ -258,7 +279,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         @Override
         protected void onPostExecute(Map<Screen, Drawable> icons) {
             mActivity.setTabsWithIcons(mScreens, icons);
-            mActivity.updateStyles();
+            StyleHelper.updateStyles(mToolBar, mActivity.getCurrentScreen());
         }
     }
 

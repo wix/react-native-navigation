@@ -10,14 +10,14 @@ import {
 import { connect } from 'react-redux';
 import * as counterActions from '../reducers/counter/actions';
 
+let navBarVisiable = true;
+
 // this is a traditional React component connected to the redux store
 class FirstTabScreen extends Component {
   static navigatorStyle = {
     statusBarColor: '#303F9F',
     toolBarColor: '#3F51B5',
     navigationBarColor: '#303F9F',
-    buttonsTint: '#FFFFFF',
-    titleColor: '#FFFFFF',
     tabSelectedTextColor: '#FFA000',
     tabNormalTextColor: '#FFC107',
     tabIndicatorColor: '#FFA000'
@@ -79,6 +79,10 @@ class FirstTabScreen extends Component {
           <Text style={styles.button}>Modal Screen</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity onPress={ this.onToggleNavBarPress.bind(this) }>
+          <Text style={styles.button}>Toggle NavBar</Text>
+        </TouchableOpacity>
+
         <Text style={{fontWeight: '500'}}>String prop: {this.props.str}</Text>
         <Text style={{fontWeight: '500'}}>Number prop: {this.props.num}</Text>
         <Text style={{fontWeight: '500'}}>Object prop: {this.props.obj.str}</Text>
@@ -126,6 +130,14 @@ class FirstTabScreen extends Component {
         },
         num: 1234
       }
+    });
+  }
+
+  onToggleNavBarPress() {
+    navBarVisiable = !navBarVisiable;
+    this.props.navigator.toggleNavBar({
+      to: navBarVisiable ? 'shown' : 'hidden',
+      animated: true
     });
   }
 }

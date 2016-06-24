@@ -7,6 +7,7 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.core.RctManager;
 import com.reactnativenavigation.core.objects.Drawer;
 import com.reactnativenavigation.core.objects.Screen;
+import com.reactnativenavigation.utils.StyleHelper;
 import com.reactnativenavigation.views.RnnToolBar;
 import com.reactnativenavigation.views.ScreenStack;
 
@@ -29,8 +30,8 @@ public class SingleScreenActivity extends BaseReactActivity {
         setContentView(R.layout.single_screen_activity);
         mToolbar = (RnnToolBar) findViewById(R.id.toolbar);
 
-        Screen screen = (Screen) getIntent().getSerializableExtra(EXTRA_SCREEN);
-        Drawer drawer = (Drawer) getIntent().getSerializableExtra(DRAWER_PARAMS);
+        final Screen screen = (Screen) getIntent().getSerializableExtra(EXTRA_SCREEN);
+        final Drawer drawer = (Drawer) getIntent().getSerializableExtra(DRAWER_PARAMS);
 
         mNavigatorId = screen.navigatorId;
         setupToolbar(screen);
@@ -38,8 +39,17 @@ public class SingleScreenActivity extends BaseReactActivity {
 
         mScreenStack = new ScreenStack(this);
         FrameLayout contentFrame = (FrameLayout) findViewById(R.id.contentFrame);
+        assert contentFrame != null;
         contentFrame.addView(mScreenStack);
         mScreenStack.push(screen);
+
+        // Setup Toolbar after it's measured since icon height is dependent on Toolbar height
+        contentFrame.post(new Runnable() {
+            @Override
+            public void run() {
+                setupToolbar(screen);
+            }
+        });
     }
 
     protected void setupDrawer(Drawer drawer, Screen screen) {
@@ -58,29 +68,29 @@ public class SingleScreenActivity extends BaseReactActivity {
 
     protected void setupToolbar(Screen screen) {
         mToolbar.update(screen);
-        setNavigationStyle(screen);
+        StyleHelper.updateStyles(mToolbar, screen);
     }
 
     @Override
     public void push(Screen screen) {
         super.push(screen);
         mScreenStack.push(screen);
-        updateStyles();
+        StyleHelper.updateStyles(mToolbar, screen);
     }
 
     @Override
     public Screen pop(String navigatorId) {
         super.pop(navigatorId);
-        Screen screen = mScreenStack.pop();
-        updateStyles();
-        return screen;
+        Screen popped = mScreenStack.pop();
+        StyleHelper.updateStyles(mToolbar, getCurrentScreen());
+        return popped;
     }
 
     @Override
     public Screen popToRoot(String navigatorId) {
         super.popToRoot(navigatorId);
         Screen screen = mScreenStack.popToRoot();
-        updateStyles();
+        StyleHelper.updateStyles(mToolbar, getCurrentScreen());
         return screen;
     }
 
@@ -88,7 +98,7 @@ public class SingleScreenActivity extends BaseReactActivity {
     public Screen resetTo(Screen screen) {
         super.resetTo(screen);
         Screen popped = mScreenStack.resetTo(screen);
-        updateStyles();
+        StyleHelper.updateStyles(mToolbar, screen);
         return popped;
     }
 
@@ -98,7 +108,12 @@ public class SingleScreenActivity extends BaseReactActivity {
     }
 
     @Override
-    protected Screen getCurrentScreen() {
+    public Screen getCurrentScreen() {
+        Screen currentScreen = super.getCurrentScreen();
+        if (currentScreen != null) {
+            return currentScreen;
+        }
+
         return mScreenStack.peek();
     }
 

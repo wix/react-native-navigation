@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -73,18 +74,35 @@ public class RnnModal extends Dialog implements DialogInterface.OnDismissListene
         if (mScreenStack.isEmpty()) {
             dismiss();
         }
+        Screen currentScreen = getCurrentScreen();
+        if (currentScreen != null) {
+            mToolBar.update(currentScreen);
+        }
         return popped;
+    }
+
+    @Nullable
+    public Screen getCurrentScreen() {
+        return mScreenStack.isEmpty() ? null : mScreenStack.peek();
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        pop();
+        if (mScreenStack.getStackSize() == 1) {
+            super.onBackPressed();
+        } else {
+            pop();
+        }
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
         ModalController.getInstance().remove();
-        ContextProvider.getActivityContext().updateStyles();
+        // After modal is dismissed, update Toolbar with screen from parent activity or previously displayed modal
+        BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context != null) {
+            Screen currentScreen = context.getCurrentScreen();
+            StyleHelper.updateStyles(mToolBar, currentScreen);
+        }
     }
 }

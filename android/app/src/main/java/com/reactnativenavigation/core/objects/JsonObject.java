@@ -30,6 +30,6 @@ public class JsonObject {
     }
     
     protected Boolean getBoolean(ReadableMap map, String key) {
-        return map.hasKey(key) ? map.getBoolean(key) : null;
+        return map.hasKey(key) && map.getBoolean(key);
     }
 }

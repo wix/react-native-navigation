@@ -16,8 +16,6 @@ class PushedScreen extends Component {
     statusBarColor: '#303F9F',
     toolBarColor: '#3F51B5',
     navigationBarColor: '#303F9F',
-    buttonsTint: '#FFFFFF',
-    titleColor: '#FFFFFF',
     tabSelectedTextColor: '#FFA000',
     tabNormalTextColor: '#FFC107',
     tabIndicatorColor: '#FF4081'
@@ -74,6 +72,10 @@ class PushedScreen extends Component {
 
         <TouchableOpacity onPress={ this.onDismissAllModalsPress.bind(this) }>
           <Text style={styles.button}>Dismiss all modals</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={ this.onPopToRootPress.bind(this) }>
+          <Text style={styles.button}>Pop to root</Text>
         </TouchableOpacity>
 
         <TextInput style={{height: 40, borderColor: 'gray', borderWidth: 1}}/>
@@ -139,6 +141,10 @@ class PushedScreen extends Component {
 
   onDismissModal() {
     this.props.navigator.dismissModal();
+  }
+
+  onPopToRootPress() {
+    this.props.navigator.popToRoot();
   }
 }
 

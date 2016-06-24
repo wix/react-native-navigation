@@ -30,14 +30,15 @@ public class Screen extends JsonObject implements Serializable {
     public static final String KEY_NAVIGATOR_ID = "navigatorID";
     public static final String KEY_NAVIGATOR_EVENT_ID = "navigatorEventID";
     private static final String KEY_ICON = "icon";
+    private static final String KEY_NAVIGATOR_BUTTONS = "navigatorButtons";
     private static final String KEY_RIGHT_BUTTONS = "rightButtons";
     private static final String KEY_TOOL_BAR_STYLE = "navigatorStyle";
     private static final String KEY_STATUS_BAR_COLOR = "statusBarColor";
     private static final String KEY_TOOL_BAR_COLOR = "navBarBackgroundColor";
     private static final String KEY_TOOL_BAR_HIDDEN = "navBarHidden";
     private static final String KEY_NAVIGATION_BAR_COLOR = "navigationBarColor";
-    private static final String KEY_BUTTONS_TINT_COLOR = "navBarButtonColor";
-    private static final String KEY_TITLE_COLOR = "navBarTextColor";
+    private static final String KEY_NAV_BAR_BUTTON_COLOR = "navBarButtonColor";
+    private static final String KEY_NAV_BAR_TEXT_COLOR = "navBarTextColor";
     private static final String KEY_TAB_NORMAL_TEXT_COLOR = "tabNormalTextColor";
     private static final String KEY_TAB_SELECTED_TEXT_COLOR = "tabSelectedTextColor";
     private static final String KEY_TAB_INDICATOR_COLOR = "tabIndicatorColor";
@@ -58,8 +59,8 @@ public class Screen extends JsonObject implements Serializable {
     @Nullable public Boolean toolBarHidden;
     @Nullable @ColorInt public Integer statusBarColor;
     @Nullable @ColorInt public Integer navigationBarColor;
-    @Nullable @ColorInt public Integer buttonsTintColor;
-    @Nullable @ColorInt public Integer titleColor;
+    @Nullable @ColorInt public Integer navBarButtonColor;
+    @Nullable @ColorInt public Integer navBarTextColor;
     @Nullable @ColorInt public Integer tabNormalTextColor;
     @Nullable @ColorInt public Integer tabSelectedTextColor;
     @Nullable @ColorInt public Integer tabIndicatorColor;
@@ -94,13 +95,22 @@ public class Screen extends JsonObject implements Serializable {
 
     private ArrayList<Button> getButtons(ReadableMap screen) {
         ArrayList<Button> ret = new ArrayList<>();
-        if (screen.hasKey(KEY_RIGHT_BUTTONS)) {
-            ReadableArray rightButtons = screen.getArray(KEY_RIGHT_BUTTONS);
+        if (hasButtons(screen)) {
+            ReadableArray rightButtons = getRightButtons(screen);
             for (int i = 0; i < rightButtons.size(); i++) {
                 ret.add(new Button(rightButtons.getMap(i)));
             }
         }
         return ret;
+    }
+
+    private boolean hasButtons(ReadableMap screen) {
+        return screen.hasKey(KEY_RIGHT_BUTTONS) || screen.hasKey(KEY_NAVIGATOR_BUTTONS);
+    }
+
+    private ReadableArray getRightButtons(ReadableMap screen) {
+        return screen.hasKey(KEY_RIGHT_BUTTONS) ? screen.getArray(KEY_RIGHT_BUTTONS) :
+                screen.getMap(KEY_NAVIGATOR_BUTTONS).getArray(KEY_RIGHT_BUTTONS);
     }
 
     public Drawable getIcon(Context ctx) {
@@ -114,8 +124,8 @@ public class Screen extends JsonObject implements Serializable {
             toolBarHidden = getBoolean(style, KEY_TOOL_BAR_HIDDEN);
             statusBarColor = getColor(style, KEY_STATUS_BAR_COLOR);
             navigationBarColor = getColor(style, KEY_NAVIGATION_BAR_COLOR);
-            buttonsTintColor = getColor(style, KEY_BUTTONS_TINT_COLOR);
-            titleColor = getColor(style, KEY_TITLE_COLOR);
+            navBarButtonColor = getColor(style, KEY_NAV_BAR_BUTTON_COLOR);
+            navBarTextColor = getColor(style, KEY_NAV_BAR_TEXT_COLOR);
             tabNormalTextColor = getColor(style, KEY_TAB_NORMAL_TEXT_COLOR);
             tabSelectedTextColor = getColor(style, KEY_TAB_SELECTED_TEXT_COLOR);
             tabIndicatorColor = getColor(style, KEY_TAB_INDICATOR_COLOR);

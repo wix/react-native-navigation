@@ -3,8 +3,10 @@
 
     <application>
         <activity android:name="com.reactnativenavigation.activities.TabActivity" />
-        <activity android:name="com.reactnativenavigation.activities.BottomTabActivity" />
-        <activity android:name="com.reactnativenavigation.activities.SingleScreenActivity" />
+        <activity android:name="com.reactnativenavigation.activities.BottomTabActivity"
+                  android:label=""/>
+        <activity android:name="com.reactnativenavigation.activities.SingleScreenActivity"
+                  android:label=""/>
     </application>
 
 </manifest>

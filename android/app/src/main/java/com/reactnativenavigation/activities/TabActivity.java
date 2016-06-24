@@ -7,6 +7,7 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.adapters.ViewPagerAdapter;
 import com.reactnativenavigation.core.RctManager;
 import com.reactnativenavigation.core.objects.Screen;
+import com.reactnativenavigation.utils.StyleHelper;
 import com.reactnativenavigation.views.RnnTabLayout;
 import com.reactnativenavigation.views.RnnToolBar;
 
@@ -46,9 +47,7 @@ public class TabActivity extends BaseReactActivity {
         setNavigationStyle(initialScreen);
     }
 
-    @Override
     public void setNavigationStyle(Screen screen) {
-        super.setNavigationStyle(screen);
         mTabLayout.setStyle(screen);
     }
 
@@ -70,7 +69,7 @@ public class TabActivity extends BaseReactActivity {
     @Override
     public void push(Screen screen) {
         super.push(screen);
-        updateStyles(screen);
+        StyleHelper.updateStyles(mToolbar, screen);
         mAdapter.push(screen);
     }
 
@@ -78,12 +77,12 @@ public class TabActivity extends BaseReactActivity {
     public Screen pop(String navigatorId) {
         super.pop(navigatorId);
         Screen popped = mAdapter.pop(navigatorId);
-        updateStyles();
+        setNavigationStyle(getCurrentScreen());
         return popped;
     }
 
     @Override
-    protected Screen getCurrentScreen() {
+    public Screen getCurrentScreen() {
         return mAdapter.peek(getCurrentNavigatorId());
     }
 

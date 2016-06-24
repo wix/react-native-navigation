@@ -14,6 +14,7 @@ App-wide support for 100% native navigation with an easy cross-platform interfac
 * [Adding buttons to the navigator](#adding-buttons-to-the-navigator)
 * [Styling the tab bar](#styling-the-tab-bar)
 * [Deep links](#deep-links)
+* [Third party libraries support](#third-party-libraries-support)
 * [Release Notes](RELEASES.md)
 * [License](#license)
 
@@ -44,7 +45,32 @@ For example, this package replaces the native [NavigatorIOS](https://facebook.gi
 
 ## Installation - Android
 
-Coming soon, not yet supported
+ >Note: Android adaptation is still under active development therfore the API might break from time to time. 
+ 
+1.  Add the following to your `settings.gradle` file located in the `android` folder:
+
+	```groovy
+	include ':react-native-navigation'
+	project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/android/app/')
+	```
+	
+2. Update project dependencies in `build.gradle` under `app` folder.
+
+	```groovy
+	dependencies {
+	    compile fileTree(dir: "libs", include: ["*.jar"])
+	    compile "com.android.support:appcompat-v7:23.0.1"
+	    compile "com.facebook.react:react-native:+"
+	    debugCompile project(path: ':react-native-navigation', configuration: 'libraryDebug')
+	    releaseCompile project(path: ':react-native-navigation', configuration: 'libraryRelease')
+}
+```
+
+3. Have your `MainActivity.java` extend `com.reactnativenavigation.activities.RootActivity`. 
+`RootActivity` is used as a proxy activity to start your actuall app.
+
+	The only method you might need to override is `getPackages()`, make sure you add `RnnPackage` as well.
+
 
 ## Usage
 
@@ -543,7 +569,8 @@ class FirstTabScreen extends Component {
         title: 'Edit', // for a textual button, provide the button title (label)
         id: 'edit', // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
         testID: 'e2e_rules', // optional, used to locate this view in end-to-end tests
-        disabled: true // optional, used to disable the button (appears faded and doesn't interact)
+        disabled: true, // optional, used to disable the button (appears faded and doesn't interact)
+        disableIconTint: true, // optional, by default the image colors are overridden and tinted to navBarButtonColor, set to true to keep the original image colors
       },
       {
         icon: require('../../img/navicon_add.png'), // for icon button, provide the local image asset name
@@ -582,7 +609,8 @@ class FirstTabScreen extends Component {
     icon: require('../../img/navicon_edit.png'), // if you want an image button
     id: 'compose', // id of the button which will pass to your press event handler
     testID: 'e2e_is_awesome', // if you have e2e tests, use this to find your button
-    disabled: true // optional, used to disable the button (appears faded and doesn't interact)
+    disabled: true, // optional, used to disable the button (appears faded and doesn't interact)
+    disableIconTint: true, // optional, by default the image colors are overridden and tinted to navBarButtonColor, set to true to keep the original image colors
   }],
   leftButtons: [] // buttons for the left side of the nav bar (optional)
 }
@@ -654,6 +682,12 @@ export default class SecondTabScreen extends Component {
 #### Deep link string format
 
 There is no specification for the format of deep links. Since you're implementing the parsing logic in your handlers, you can use any format you wish.
+
+## Third party libraries support
+
+### react-native-vector-icons
+
+If you would like to use [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) for your Toolbar icons, you can follow [this example](https://github.com/wix/react-native-navigation/issues/43#issuecomment-223907515) or [this](https://gist.github.com/dropfen/4a2209d7274788027f782e8655be198f) gist.
 
 ## License
 

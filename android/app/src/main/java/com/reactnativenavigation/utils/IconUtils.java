@@ -1,11 +1,13 @@
 package com.reactnativenavigation.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.DisplayMetrics;
 
 import com.reactnativenavigation.BuildConfig;
 
@@ -19,6 +21,15 @@ public class IconUtils {
     private static ResourceDrawableIdHelper sResDrawableIdHelper = new ResourceDrawableIdHelper();
 
     public static Drawable getIcon(Context ctx, String iconSource) {
+        return getIcon(ctx, iconSource, -1);
+    }
+
+    /**
+     * @param iconSource Icon source. In release builds this would be a path in assets, In debug it's
+     *                   a url and the image needs to be decoded from input stream.
+     * @param dimensions The requested icon dimensions
+     */
+    public static Drawable getIcon(Context ctx, String iconSource, int dimensions) {
         if (iconSource == null) {
             return null;
         }
@@ -32,7 +43,9 @@ public class IconUtils {
             } else {
                 URL url = new URL(iconUri.toString());
                 Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
-                icon = new BitmapDrawable(bitmap);
+                bitmap = dimensions > 0 ?
+                        Bitmap.createScaledBitmap(bitmap, dimensions, dimensions, false) : bitmap;
+                icon = new BitmapDrawable(ctx.getResources(), bitmap);
             }
             return icon;
         } catch (Exception e) {

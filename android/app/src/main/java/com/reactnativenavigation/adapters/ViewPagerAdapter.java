@@ -11,7 +11,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.activities.BaseReactActivity;
 import com.reactnativenavigation.core.RctManager;
 import com.reactnativenavigation.core.objects.Screen;
-import com.reactnativenavigation.utils.ContextProvider;
+import com.reactnativenavigation.utils.StyleHelper;
 import com.reactnativenavigation.views.RnnToolBar;
 import com.reactnativenavigation.views.ScreenStack;
 
@@ -108,7 +108,7 @@ public class ViewPagerAdapter extends PagerAdapter implements TabLayout.OnTabSel
         mToolbar.setupToolbarButtonsAsync(prevScreen, newScreen);
 
         // Set navigation color
-        ContextProvider.getActivityContext().setNavigationStyle(newScreen);
+        StyleHelper.updateStyles(mToolbar, newScreen);
 
         // Send tab selected event
         WritableMap params = Arguments.createMap();
