@@ -7,6 +7,7 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.adapters.ViewPagerAdapter;
 import com.reactnativenavigation.core.RctManager;
 import com.reactnativenavigation.core.objects.Screen;
+import com.reactnativenavigation.utils.StyleHelper;
 import com.reactnativenavigation.views.RnnTabLayout;
 import com.reactnativenavigation.views.RnnToolBar;
 
@@ -68,7 +69,7 @@ public class TabActivity extends BaseReactActivity {
     @Override
     public void push(Screen screen) {
         super.push(screen);
-        setNavigationStyle(screen);
+        StyleHelper.updateStyles(mToolbar, screen);
         mAdapter.push(screen);
     }
 

@@ -21,7 +21,7 @@ export default class ModalScreen extends Component {
   }
   render() {
     return (
-      <View style={{flex: 1, padding: 20}}>
+      <View style={{flex: 1, padding: 20, backgroundColor: 'white'}}>
 
         <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
           <Text style={styles.button}>Push Plain Screen</Text>

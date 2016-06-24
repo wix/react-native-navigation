@@ -12,10 +12,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +31,7 @@ import com.reactnativenavigation.activities.BaseReactActivity;
 import com.reactnativenavigation.core.objects.Button;
 import com.reactnativenavigation.core.objects.Screen;
 import com.reactnativenavigation.utils.ContextProvider;
+import com.reactnativenavigation.utils.IconUtils;
 import com.reactnativenavigation.utils.ImageUtils;
 
 import java.lang.ref.WeakReference;
@@ -43,8 +48,14 @@ public class RnnToolBar extends Toolbar {
     private static final int ANIMATE_DURATION = 180;
 
     private List<Screen> mScreens;
+    private AsyncTask mDrawerIconTask;
     private AsyncTask mSetupToolbarTask;
     private Drawable mBackground;
+    private Drawable mDrawerIcon;
+    private Screen mDrawerScreen;
+    private Integer mButtonsTintColor;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
     private ArrayList<View> mMenuItems;
 
     public RnnToolBar(Context context) {
@@ -72,6 +83,8 @@ public class RnnToolBar extends Toolbar {
     }
 
     public void setStyle(Screen screen) {
+        mButtonsTintColor = screen.navBarButtonColor;
+
         if (screen.toolBarColor != null) {
             setBackgroundColor(screen.toolBarColor);
         } else {
@@ -105,12 +118,70 @@ public class RnnToolBar extends Toolbar {
         }
     }
 
+    public ActionBarDrawerToggle setupDrawer(DrawerLayout drawerLayout, Screen drawerScreen, Screen screen) {
+        if (drawerLayout == null || drawerScreen == null) {
+            return null;
+        }
+
+        mDrawerLayout = drawerLayout;
+        mDrawerScreen = drawerScreen;
+        mDrawerToggle = new ActionBarDrawerToggle(
+            ContextProvider.getActivityContext(),
+            mDrawerLayout,
+            this,
+            R.string.drawer_open,
+            R.string.drawer_close
+        );
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        setupDrawerIconAsync(drawerScreen.icon, screen);
+
+        return mDrawerToggle;
+    }
+
+    public void setDrawerIcon(Drawable icon) {
+        mDrawerIcon = icon;
+    }
+
+    public void showDrawer(boolean animated) {
+        if (mDrawerLayout == null) {
+            return;
+        }
+
+        mDrawerLayout.openDrawer(Gravity.LEFT);
+    }
+
+    public void hideDrawer(boolean animated) {
+        if (mDrawerLayout == null) {
+            return;
+        }
+
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    public void toggleDrawer(boolean animated) {
+        if (mDrawerLayout == null) {
+            return;
+        }
+
+        boolean visible = mDrawerLayout.isDrawerOpen(Gravity.LEFT);
+        if (visible) {
+            hideDrawer(animated);
+        } else {
+            showDrawer(animated);
+        }
+    }
+
+    public void setupDrawerIconAsync(String drawerIconSource, Screen screen) {
+        if (mDrawerIconTask == null) {
+            mDrawerIconTask = new SetupDrawerIconTask(this, drawerIconSource, screen).execute();
+        }
+    }
+
     public void setupToolbarButtonsAsync(Screen newScreen) {
         if (newScreen != null) {
             this.setupToolbarButtonsAsync(null, newScreen);
         }
     }
-
 
     public void setupToolbarButtonsAsync(Screen oldScreen, Screen newScreen) {
         if (mSetupToolbarTask == null) {
@@ -144,29 +215,44 @@ public class RnnToolBar extends Toolbar {
         hideToolbar(false);
     }
 
+    public void setNavUpButton() {
+        setNavUpButton(null);
+    }
+
     @SuppressWarnings({"ConstantConditions"})
-    public void showBackButton(Screen screen) {
+    public void setNavUpButton(Screen screen) {
         ActionBar actionBar = ContextProvider.getActivityContext().getSupportActionBar();
-        Drawable backButton = setupBackButton(screen);
-        actionBar.setHomeAsUpIndicator(backButton);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-    }
+        if (actionBar == null) {
+            return;
+        }
 
-    @SuppressLint("PrivateResource")
-    @SuppressWarnings({"ConstantConditions"})
-    private Drawable setupBackButton(Screen screen) {
-        Resources resources = getResources();
-        final Drawable backButton = ResourcesCompat.getDrawable(resources,
-                R.drawable.abc_ic_ab_back_mtrl_am_alpha,
-                ContextProvider.getActivityContext().getTheme());
-        int tintColor = screen.navBarButtonColor != null ? screen.navBarButtonColor : Color.BLACK;
-        ImageUtils.tint(backButton, tintColor);
-        return backButton;
-    }
+        boolean isBack = screen != null;
+        boolean hasDrawer = mDrawerToggle != null;
 
-    @SuppressWarnings({"ConstantConditions"})
-    public void hideBackButton() {
-        ContextProvider.getActivityContext().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        Drawable navIcon = null;
+        DrawerArrowDrawable navArrow = null;
+        if (hasDrawer && mDrawerIcon == null) {
+            navArrow = (DrawerArrowDrawable) this.getNavigationIcon();
+        } else {
+            if (isBack) {
+                navArrow = new DrawerArrowDrawable(ContextProvider.getActivityContext());
+            } else if (hasDrawer) {
+                navIcon = mDrawerIcon;
+            }
+        }
+
+        if (navArrow != null) {
+            navArrow.setProgress(isBack ? 1.0f : 0.0f);
+            if (mButtonsTintColor != null) {
+                navArrow.setColor(mButtonsTintColor);
+            } else {
+                navArrow.setColor(Color.BLACK);
+            }
+            navIcon = navArrow;
+        }
+
+        actionBar.setHomeAsUpIndicator(navIcon);
+        actionBar.setDisplayHomeAsUpEnabled(navIcon != null);
     }
 
     /**
@@ -184,6 +270,42 @@ public class RnnToolBar extends Toolbar {
     public void updateAndSetButtons(Screen screen) {
         update(screen);
         setupToolbarButtonsAsync(screen);
+    }
+
+    private static class SetupDrawerIconTask extends AsyncTask<Void, Void, Drawable> {
+        private final WeakReference<RnnToolBar> mToolbarWR;
+        private final String mDrawerIconSource;
+        private final Integer mTintColor;
+
+        public SetupDrawerIconTask(RnnToolBar toolBar, String drawerIconSource, Screen screen) {
+            mToolbarWR = new WeakReference<>(toolBar);
+            mDrawerIconSource = drawerIconSource;
+            mTintColor = screen.navBarButtonColor;
+        }
+
+        @Override
+        protected Drawable doInBackground(Void... params) {
+            Context context = ContextProvider.getActivityContext();
+            if (context == null || mDrawerIconSource == null) {
+                return null;
+            }
+
+            return IconUtils.getIcon(context, mDrawerIconSource);
+        }
+
+        @Override
+        protected void onPostExecute(Drawable drawerIcon) {
+            RnnToolBar toolBar = mToolbarWR.get();
+            if (drawerIcon != null) {
+                if (mTintColor != null) {
+                    ImageUtils.tint(drawerIcon, mTintColor);
+                }
+                toolBar.setDrawerIcon(drawerIcon);
+            }
+
+            toolBar.setNavUpButton();
+            mToolbarWR.clear();
+        }
     }
 
     private static class SetupToolbarButtonsTask extends AsyncTask<Void, Void, Map<String, Drawable>> {

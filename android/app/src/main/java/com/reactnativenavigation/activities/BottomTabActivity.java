@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.widget.FrameLayout;
 
@@ -12,6 +13,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.core.RctManager;
+import com.reactnativenavigation.core.objects.Drawer;
 import com.reactnativenavigation.core.objects.Screen;
 import com.reactnativenavigation.utils.StyleHelper;
 import com.reactnativenavigation.views.RnnToolBar;
@@ -25,6 +27,7 @@ import java.util.Map;
  * Created by guyc on 02/04/16.
  */
 public class BottomTabActivity extends BaseReactActivity implements AHBottomNavigation.OnTabSelectedListener {
+    public static final String DRAWER_PARAMS = "drawerParams";
     public static final String EXTRA_SCREENS = "extraScreens";
 
     private static final String TAB_STYLE_BUTTON_COLOR = "tabBarButtonColor";
@@ -40,6 +43,8 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     private AHBottomNavigation mBottomNavigation;
     private FrameLayout mContentFrame;
     private ArrayList<ScreenStack> mScreenStacks;
+    private ScreenStack mDrawerStack;
+    private DrawerLayout mDrawerLayout;
     private int mCurrentStackPosition = -1;
 
     @Override
@@ -52,7 +57,9 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         mContentFrame = (FrameLayout) findViewById(R.id.contentFrame);
 
         final ArrayList<Screen> screens = (ArrayList<Screen>) getIntent().getSerializableExtra(EXTRA_SCREENS);
+        Drawer drawer = (Drawer) getIntent().getSerializableExtra(DRAWER_PARAMS);
         mBottomNavigation.setForceTint(true);
+        setupDrawer(drawer, screens.get(0));
         setupTabs(getIntent().getExtras());
         setupPages(screens);
 
@@ -63,6 +70,20 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
                 setupToolbar(screens);
             }
         });
+    }
+
+    protected void setupDrawer(Drawer drawer, Screen screen) {
+        if (drawer == null || drawer.left == null) {
+            return;
+        }
+
+        mDrawerStack = new ScreenStack(this);
+        FrameLayout drawerFrame = (FrameLayout) findViewById(R.id.drawerFrame);
+        drawerFrame.addView(mDrawerStack);
+        mDrawerStack.push(drawer.left);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mDrawerToggle = mToolbar.setupDrawer(mDrawerLayout, drawer.left, screen);
     }
 
     private void setupPages(ArrayList<Screen> screens) {
@@ -157,6 +178,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
 
     public Screen resetTo(Screen screen) {
         super.resetTo(screen);
+        StyleHelper.updateStyles(mToolbar, screen);
         return mScreenStacks.get(mCurrentStackPosition).resetTo(screen);
     }
 
@@ -189,13 +211,21 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
 
         // Hide or show back button if needed
         if (getScreenStackSize() > 1) {
-            mToolbar.showBackButton(getCurrentScreen());
+            mToolbar.setNavUpButton(getCurrentScreen());
         } else {
-            mToolbar.hideBackButton();
+            mToolbar.setNavUpButton();
         }
     }
 
-    public void setTabBadge(ReadableMap params) {
+    @Override
+    public void setNavigationTitle(ReadableMap title) {
+        super.setNavigationTitle(title);
+
+        AHBottomNavigationItem currentItem = mBottomNavigation.getItem(mBottomNavigation.getCurrentItem());
+        currentItem.setTitle(title.getString(KEY_TITLE));
+        mBottomNavigation.refresh();
+    }
+	public void setTabBadge(ReadableMap params) {
         // Badge comes across as int, but if it's 0 clear the notification
         int badgeCount = params.getInt(KEY_BADGE);
         String badge = (badgeCount > 0) ? Integer.toString(badgeCount) : "";

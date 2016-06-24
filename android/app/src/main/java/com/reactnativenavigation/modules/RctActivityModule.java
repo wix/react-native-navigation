@@ -15,6 +15,7 @@ import com.reactnativenavigation.activities.BottomTabActivity;
 import com.reactnativenavigation.activities.RootActivity;
 import com.reactnativenavigation.activities.SingleScreenActivity;
 import com.reactnativenavigation.controllers.ModalController;
+import com.reactnativenavigation.core.objects.Drawer;
 import com.reactnativenavigation.core.objects.Screen;
 import com.reactnativenavigation.modal.RnnModal;
 import com.reactnativenavigation.utils.BridgeUtils;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
  */
 public class RctActivityModule extends ReactContextBaseJavaModule {
     public static final String REACT_CLASS = "RctActivity";
+    private static final String KEY_ANIMATED = "animated";
     private static final String KEY_NAVIGATOR_ID = "navigatorID";
 
     public RctActivityModule(ReactApplicationContext reactContext) {
@@ -39,7 +41,7 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startTabBasedApp(ReadableArray screens, ReadableMap style) {
+    public void startTabBasedApp(ReadableArray screens, ReadableMap style, ReadableMap drawerParams) {
         Activity context = ContextProvider.getActivityContext();
         if (context != null && !context.isFinishing()) {
             Intent intent = new Intent(context, BottomTabActivity.class);
@@ -47,6 +49,9 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
 
             Bundle extras = new Bundle();
             extras.putSerializable(BottomTabActivity.EXTRA_SCREENS, createScreens(screens));
+            if (drawerParams != null) {
+                extras.putSerializable(BottomTabActivity.DRAWER_PARAMS, new Drawer(drawerParams));
+            }
             if (style != null) {
                 BridgeUtils.addMapToBundle(((ReadableNativeMap) style).toHashMap(), extras);
             }
@@ -72,7 +77,7 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startSingleScreenApp(ReadableMap screen) {
+    public void startSingleScreenApp(ReadableMap screen, ReadableMap drawerParams) {
         BaseReactActivity context = ContextProvider.getActivityContext();
         if (context != null && !context.isFinishing()) {
             Intent intent = new Intent(context, SingleScreenActivity.class);
@@ -80,6 +85,9 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
 
             Bundle extras = new Bundle();
             extras.putSerializable(SingleScreenActivity.EXTRA_SCREEN, new Screen(screen));
+            if (drawerParams != null) {
+                extras.putSerializable(SingleScreenActivity.DRAWER_PARAMS, new Drawer(drawerParams));
+            }
             intent.putExtras(extras);
 
             context.startActivity(intent);
@@ -144,6 +152,20 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 ((BottomTabActivity) context).switchToTab(params);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void toggleDrawer(final ReadableMap params) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                context.toggleDrawer(params);
             }
         });
     }
@@ -247,6 +269,7 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
         }
 
         final String navigatorID = params.getString(KEY_NAVIGATOR_ID);
+        final boolean animated = params.getBoolean(KEY_ANIMATED);
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {

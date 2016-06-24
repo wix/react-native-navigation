@@ -16,5 +16,7 @@ export function registerScreens() {
   Navigation.registerComponent('example.ThirdTabScreen', () => ThirdTabScreen);
   Navigation.registerComponent('example.PushedScreen', () => PushedScreen);
   Navigation.registerComponent('example.StyledScreen', () => StyledScreen);
+  Navigation.registerComponent('example.ModalScreen', () => ModalScreen);
+  Navigation.registerComponent('example.LightBoxScreen', () => LightBoxScreen);
   Navigation.registerComponent('example.SideMenu', () => SideMenu);
 }

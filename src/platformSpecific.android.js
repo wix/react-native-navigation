@@ -19,7 +19,8 @@ function startSingleScreenApp(params) {
   addNavigatorButtons(screen);
   addNavigationStyleParams(screen);
   screen.passProps = params.passProps;
-  RctActivity.startSingleScreenApp(screen);
+  const drawer = setupDrawer(params.drawer);
+  RctActivity.startSingleScreenApp(screen, drawer);
 }
 
 function startTabBasedApp(params) {
@@ -41,7 +42,8 @@ function startTabBasedApp(params) {
     tab.passProps = params.passProps;
   });
 
-  RctActivity.startTabBasedApp(params.tabs, params.tabsStyle);
+  const drawer = setupDrawer(params.drawer);
+  RctActivity.startTabBasedApp(params.tabs, params.tabsStyle, drawer);
 }
 
 function navigatorPush(navigator, params) {
@@ -73,7 +75,7 @@ function navigatorPop(navigator, params) {
 function navigatorPopToRoot(navigator, params) {
   RctActivity.navigatorPopToRoot({
     navigatorID: navigator.navigatorID,
-    animated: !(params.animated !== false)
+    animated: !(params.animated === false)
   });
 }
 
@@ -98,6 +100,14 @@ function navigatorSetTitle(navigator, params) {
 function navigatorSwitchToTab(navigator, params) {
   RctActivity.switchToTab({
     tabIndex: params.tabIndex
+  });
+}
+
+function navigatorToggleDrawer(navigator, params) {
+  RctActivity.toggleDrawer({
+    side: params.side,
+    animated: !(params.animated === false),
+    to: params.to || ''
   });
 }
 
@@ -157,7 +167,25 @@ function addNavigatorButtons(screen) {
 
 function addNavigationStyleParams(screen) {
   const Screen = Navigation.getRegisteredScreen(screen.screen);
-  screen.navigatorStyle = Screen.navigatorStyle;
+  screen.navigatorStyle = Object.assign({}, screen.navigatorStyle, Screen.navigatorStyle);
+}
+
+function setupDrawer(drawerParams) {
+  const drawer = Object.assign({}, drawerParams);
+  [drawer.left, drawer.right].forEach(side => {
+    if (!side) {
+      return;
+    }
+    const icon = resolveAssetSource(side.icon);
+    if (icon) {
+      side.icon = icon.uri;
+    }
+  });
+  if (drawer.disableOpenGesture === undefined) {
+    drawer.disableOpenGesture = false;
+  };
+
+  return drawer;
 }
 
 export default {
@@ -174,6 +202,7 @@ export default {
   navigatorSetTabBadge,
   navigatorSetTitle,
   navigatorSwitchToTab,
+  navigatorToggleDrawer,
   navigatorToggleTabs,
   navigatorToggleNavBar
 }

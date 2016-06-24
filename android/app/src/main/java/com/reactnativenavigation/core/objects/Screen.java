@@ -34,7 +34,7 @@ public class Screen extends JsonObject implements Serializable {
     private static final String KEY_RIGHT_BUTTONS = "rightButtons";
     private static final String KEY_TOOL_BAR_STYLE = "navigatorStyle";
     private static final String KEY_STATUS_BAR_COLOR = "statusBarColor";
-    private static final String KEY_TOOL_BAR_COLOR = "toolBarColor";
+    private static final String KEY_TOOL_BAR_COLOR = "navBarBackgroundColor";
     private static final String KEY_TOOL_BAR_HIDDEN = "navBarHidden";
     private static final String KEY_NAVIGATION_BAR_COLOR = "navigationBarColor";
     private static final String KEY_NAV_BAR_BUTTON_COLOR = "navBarButtonColor";
@@ -44,7 +44,7 @@ public class Screen extends JsonObject implements Serializable {
     private static final String KEY_TAB_INDICATOR_COLOR = "tabIndicatorColor";
     private static final String KEY_PROPS = "passProps";
 
-    public final String title;
+    public String title;
     public final String label;
     public final String screenId;
     public final String screenInstanceId;
@@ -83,6 +83,10 @@ public class Screen extends JsonObject implements Serializable {
         }
         buttons = getButtons(screen);
         setToolbarStyle(screen);
+    }
+
+    public void setTitle(ReadableMap params) {
+        this.title = getString(params, KEY_TITLE);
     }
 
     public void setButtons(ReadableMap params) {

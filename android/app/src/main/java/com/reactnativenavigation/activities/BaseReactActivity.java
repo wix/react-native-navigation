@@ -1,11 +1,13 @@
 package com.reactnativenavigation.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.CallSuper;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -48,8 +50,10 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
     protected static final String KEY_ANIMATED = "animated";
     protected static final String KEY_BADGE = "badge";
     protected static final String KEY_HIDDEN = "hidden";
+    protected static final String KEY_SIDE = "side";
     protected static final String KEY_TAB_INDEX = "tabIndex";
     protected static final String KEY_TITLE = "title";
+    protected static final String KEY_TO = "to";
     private static final String TAG = "BaseReactActivity";
     private static final String REDBOX_PERMISSION_MESSAGE =
             "Overlay permissions needs to be granted in order for react native apps to run in dev mode";
@@ -59,6 +63,7 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
     private boolean mDoRefresh = false;
     private Menu mMenu;
     protected RnnToolBar mToolbar;
+    protected ActionBarDrawerToggle mDrawerToggle;
 
     /**
      * Returns the name of the bundle in assets. If this is null, and no file path is specified for
@@ -223,7 +228,7 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
 
             if (getCurrentNavigatorId().equals(screen.navigatorId) &&
                 getScreenStackSize() >= 1) {
-                mToolbar.showBackButton(screen);
+                mToolbar.setNavUpButton(screen);
             }
         }
     }
@@ -233,15 +238,16 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
         if (mToolbar != null &&
             getCurrentNavigatorId().equals(navigatorId) &&
             getScreenStackSize() <= 2) {
-            mToolbar.hideBackButton();
+            mToolbar.setNavUpButton();
         }
+
         return null;
     }
 
     @CallSuper
     public Screen popToRoot(String navigatorId) {
         if (mToolbar != null) {
-            mToolbar.hideBackButton();
+            mToolbar.setNavUpButton();
         }
 
         return null;
@@ -251,7 +257,7 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
     public Screen resetTo(Screen screen) {
         StyleHelper.updateStyles(mToolbar, screen);
         if (mToolbar != null) {
-            mToolbar.hideBackButton();
+            mToolbar.setNavUpButton();
         }
 
         return null;
@@ -274,6 +280,14 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
     public abstract int getScreenStackSize();
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (mDrawerToggle != null) {
+            mDrawerToggle.onConfigurationChanged(newConfig);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         mMenu = menu;
         Screen currentScreen = getCurrentScreen();
@@ -285,6 +299,12 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle != null &&
+            getScreenStackSize() == 1 &&
+            mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         } else {
@@ -295,6 +315,14 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
             RctManager.getInstance().sendEvent(eventId, getCurrentScreen(), params);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (mDrawerToggle != null) {
+            mDrawerToggle.syncState();
+        }
     }
 
     public Menu getMenu() {
@@ -382,6 +410,27 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
             mToolbar.hideToolbar(animated);
         } else {
             mToolbar.showToolbar(animated);
+        }
+    }
+
+    public void toggleDrawer(ReadableMap params) {
+        if (mToolbar == null || mDrawerToggle == null) {
+            return;
+        }
+
+        boolean animated = params.getBoolean(KEY_ANIMATED);
+        String side = params.getString(KEY_SIDE);
+        String to = params.getString(KEY_TO);
+        switch (to) {
+            case "open":
+                mToolbar.showDrawer(animated);
+                break;
+            case "closed":
+                mToolbar.hideDrawer(animated);
+                break;
+            default:
+                mToolbar.toggleDrawer(animated);
+                break;
         }
     }
 }
