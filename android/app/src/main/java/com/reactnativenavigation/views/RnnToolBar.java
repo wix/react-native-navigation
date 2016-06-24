@@ -245,6 +245,8 @@ public class RnnToolBar extends Toolbar {
             navArrow.setProgress(isBack ? 1.0f : 0.0f);
             if (mButtonsTintColor != null) {
                 navArrow.setColor(mButtonsTintColor);
+            } else {
+                navArrow.setColor(Color.BLACK);
             }
             navIcon = navArrow;
         }
