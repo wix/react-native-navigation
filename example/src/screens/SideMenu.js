@@ -4,8 +4,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  StyleSheet,
-  AlertIOS
+  StyleSheet
 } from 'react-native';
 
 export default class SideMenu extends Component {
@@ -14,7 +13,7 @@ export default class SideMenu extends Component {
   }
   render() {
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
 
         <Text style={styles.title}>Side Menu</Text>
 
