@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
-  AlertIOS
+  Alert
 } from 'react-native';
 
 export default class StyledScreen extends Component {
@@ -54,7 +54,7 @@ export default class StyledScreen extends Component {
   }
   onNavigatorEvent(event) {
     if (event.id == 'compose') {
-      AlertIOS.alert('NavBar', 'Compose button pressed');
+      Alert.alert('NavBar', 'Compose button pressed');
     }
   }
   onPushPress() {

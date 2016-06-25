@@ -4,7 +4,8 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Alert
 } from 'react-native';
 
 export default class FirstTabScreen extends Component {
@@ -30,7 +31,7 @@ export default class FirstTabScreen extends Component {
   constructor(props) {
     super(props);
     // if you want to listen on navigator events, set this up
-    // this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   onNavigatorEvent(event) {
     if (event.id == 'menu') {
@@ -40,10 +41,10 @@ export default class FirstTabScreen extends Component {
       });
     }
     if (event.id == 'edit') {
-      // AlertIOS.alert('NavBar', 'Edit button pressed');
+      Alert.alert('NavBar', 'Edit button pressed');
     }
     if (event.id == 'add') {
-      // AlertIOS.alert('NavBar', 'Add button pressed');
+      Alert.alert('NavBar', 'Add button pressed');
     }
   }
   render() {
@@ -76,27 +77,24 @@ export default class FirstTabScreen extends Component {
     });
   }
   onPushStyledPress() {
-    console.warn('navigator.push not implemented yet');
-    // this.props.navigator.push({
-    //   title: "Styled",
-    //   screen: "example.StyledScreen"
-    // });
+    this.props.navigator.push({
+      title: "Styled",
+      screen: "example.StyledScreen"
+    });
   }
   onModalPress() {
-    console.warn('navigator.showModal not implemented yet');
-    // this.props.navigator.showModal({
-    //   title: "Modal",
-    //   screen: "example.ModalScreen"
-    // });
+    this.props.navigator.showModal({
+      title: "Modal",
+      screen: "example.ModalScreen"
+    });
   }
   onLightBoxPress() {
-    console.warn('navigator.showLightBox not implemented yet');
-    // this.props.navigator.showLightBox({
-    //   screen: "example.LightBoxScreen",
-    //   style: {
-    //     backgroundBlur: "dark"
-    //   }
-    // });
+    this.props.navigator.showLightBox({
+      screen: "example.LightBoxScreen",
+      style: {
+        backgroundBlur: "dark"
+      }
+    });
   }
 }
 
