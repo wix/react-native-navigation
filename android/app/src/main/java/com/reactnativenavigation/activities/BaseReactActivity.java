@@ -291,6 +291,11 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
         if (mDrawerToggle != null) {
             mDrawerToggle.onConfigurationChanged(newConfig);
         }
+
+        Screen currentScreen = getCurrentScreen();
+        if (mToolbar != null && currentScreen != null) {
+            mToolbar.setNavUpButton(currentScreen);
+        }
     }
 
     @Override
