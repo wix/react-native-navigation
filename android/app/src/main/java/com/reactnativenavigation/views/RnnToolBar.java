@@ -214,17 +214,16 @@ public class RnnToolBar extends Toolbar {
     }
 
     public void setNavUpButton() {
-        setNavUpButton(null);
+        setNavUpButton(null, false);
     }
 
     @SuppressWarnings({"ConstantConditions"})
-    public void setNavUpButton(Screen screen) {
+    public void setNavUpButton(Screen screen, boolean isBack) {
         ActionBar actionBar = ContextProvider.getActivityContext().getSupportActionBar();
         if (actionBar == null) {
             return;
         }
 
-        boolean isBack = screen != null;
         boolean hasDrawer = mDrawerToggle != null;
 
         Drawable navIcon = null;

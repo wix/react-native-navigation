@@ -234,7 +234,7 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
 
             if (getCurrentNavigatorId().equals(screen.navigatorId) &&
                 getScreenStackSize() >= 1) {
-                mToolbar.setNavUpButton(screen);
+                mToolbar.setNavUpButton(screen, true);
             }
         }
     }
@@ -294,7 +294,7 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
 
         Screen currentScreen = getCurrentScreen();
         if (mToolbar != null && currentScreen != null) {
-            mToolbar.setNavUpButton(currentScreen);
+            mToolbar.setNavUpButton(currentScreen, getScreenStackSize() > 1);
         }
     }
 
