@@ -188,13 +188,6 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
 
         mCurrentStackPosition = position;
         StyleHelper.updateStyles(mToolbar, getCurrentScreen());
-
-        // Hide or show back button if needed
-        if (getScreenStackSize() > 1) {
-            mToolbar.setNavUpButton(getCurrentScreen());
-        } else {
-            mToolbar.setNavUpButton();
-        }
     }
 
     public void setTabBadge(ReadableMap params) {
