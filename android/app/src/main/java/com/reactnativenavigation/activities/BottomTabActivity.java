@@ -119,7 +119,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
                 stack.push(screen);
             }
         }
-        StyleHelper.updateStyles(mToolbar, screen);
+        StyleHelper.updateStyles(mToolbar, getCurrentScreen());
     }
 
     @Override
@@ -127,7 +127,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         for (ScreenStack stack: mScreenStacks) {
             if (stack.peek().navigatorId.equals(navigatorId)) {
                 Screen popped = stack.pop();
-                StyleHelper.updateStyles(mToolbar, stack.peek());
+                StyleHelper.updateStyles(mToolbar, getCurrentScreen());
                 return popped;
             }
         }
@@ -139,7 +139,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         for (ScreenStack stack: mScreenStacks) {
             if (stack.peek().navigatorId.equals(navigatorId)) {
                 Screen popped = stack.popToRoot();
-                StyleHelper.updateStyles(mToolbar, stack.peek());
+                StyleHelper.updateStyles(mToolbar, getCurrentScreen());
                 return popped;
             }
         }
