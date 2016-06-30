@@ -16,6 +16,7 @@ public class StyleHelper {
 
     public static void updateStyles(RnnToolBar toolBar, Screen screen) {
         try {
+            toolBar.setNavUpButton(screen);
             toolBar.updateAndSetButtons(screen);
             setWindowStyle(screen);
             toolBar.setupToolbarButtonsAsync(screen);

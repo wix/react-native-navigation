@@ -194,7 +194,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
 
         // Hide or show back button if needed
         if (getScreenStackSize() > 1) {
-            mToolbar.setNavUpButton(getCurrentScreen(), true);
+            mToolbar.setNavUpButton(getCurrentScreen());
         } else {
             mToolbar.setNavUpButton();
         }
