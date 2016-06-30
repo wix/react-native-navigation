@@ -226,7 +226,6 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
         }
     }
 
-    @CallSuper
     public void push(Screen screen) {
         StyleHelper.updateStyles(mToolbar, screen);
         if (mToolbar != null) {
@@ -239,7 +238,6 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
         }
     }
 
-    @CallSuper
     public Screen pop(String navigatorId) {
         if (mToolbar != null &&
             getCurrentNavigatorId().equals(navigatorId) &&
@@ -250,7 +248,6 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
         return null;
     }
 
-    @CallSuper
     public Screen popToRoot(String navigatorId) {
         if (mToolbar != null) {
             mToolbar.setNavUpButton();
@@ -259,7 +256,6 @@ public abstract class BaseReactActivity extends AppCompatActivity implements Def
         return null;
     }
 
-    @CallSuper
     public Screen resetTo(Screen screen) {
         StyleHelper.updateStyles(mToolbar, screen);
         if (mToolbar != null) {

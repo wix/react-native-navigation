@@ -68,14 +68,12 @@ public class TabActivity extends BaseReactActivity {
 
     @Override
     public void push(Screen screen) {
-        super.push(screen);
         StyleHelper.updateStyles(mToolbar, screen);
         mAdapter.push(screen);
     }
 
     @Override
     public Screen pop(String navigatorId) {
-        super.pop(navigatorId);
         Screen popped = mAdapter.pop(navigatorId);
         setNavigationStyle(getCurrentScreen());
         return popped;

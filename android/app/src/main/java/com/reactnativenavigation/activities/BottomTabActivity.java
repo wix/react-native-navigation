@@ -114,22 +114,20 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
 
     @Override
     public void push(Screen screen) {
-        super.push(screen);
         for (ScreenStack stack : mScreenStacks) {
             if (stack.peek().navigatorId.equals(screen.navigatorId)) {
                 stack.push(screen);
             }
         }
-        StyleHelper.updateStyles(mToolbar, getCurrentScreen());
+        StyleHelper.updateStyles(mToolbar, screen);
     }
 
     @Override
     public Screen pop(String navigatorId) {
-        super.pop(navigatorId);
         for (ScreenStack stack: mScreenStacks) {
             if (stack.peek().navigatorId.equals(navigatorId)) {
                 Screen popped = stack.pop();
-                StyleHelper.updateStyles(mToolbar, getCurrentScreen());
+                StyleHelper.updateStyles(mToolbar, stack.peek());
                 return popped;
             }
         }
@@ -138,11 +136,10 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
 
     @Override
     public Screen popToRoot(String navigatorId) {
-        super.popToRoot(navigatorId);
         for (ScreenStack stack: mScreenStacks) {
             if (stack.peek().navigatorId.equals(navigatorId)) {
                 Screen popped = stack.popToRoot();
-                StyleHelper.updateStyles(mToolbar, getCurrentScreen());
+                StyleHelper.updateStyles(mToolbar, stack.peek());
                 return popped;
             }
         }
@@ -159,8 +156,8 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
         return mScreenStacks != null ? mScreenStacks.get(mCurrentStackPosition).peek() : null;
     }
 
+    @Override
     public Screen resetTo(Screen screen) {
-        super.resetTo(screen);
         StyleHelper.updateStyles(mToolbar, screen);
         return mScreenStacks.get(mCurrentStackPosition).resetTo(screen);
     }
