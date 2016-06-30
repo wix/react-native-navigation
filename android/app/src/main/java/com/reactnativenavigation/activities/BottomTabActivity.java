@@ -22,9 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by guyc on 02/04/16.
- */
 public class BottomTabActivity extends BaseReactActivity implements AHBottomNavigation.OnTabSelectedListener {
     public static final String DRAWER_PARAMS = "drawerParams";
     public static final String EXTRA_SCREENS = "extraScreens";
@@ -46,6 +43,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
 
     @Override
     protected void handleOnCreate() {
+        super.handleOnCreate();
         mReactInstanceManager = RctManager.getInstance().getReactInstanceManager();
 
         setContentView(R.layout.bottom_tab_activity);
@@ -83,7 +81,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     @Override
     protected void onResume() {
         super.onResume();
-        if(mScreenStacks != null) {
+        if (mScreenStacks != null) {
             StyleHelper.updateStyles(mToolbar, getCurrentScreen());
         }
     }
@@ -99,8 +97,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
     private static int getColor(Bundle bundle, String key, int defaultColor) {
         if (bundle.containsKey(key)) {
             return Color.parseColor(bundle.getString(key));
-        }
-        else {
+        } else {
             return defaultColor;
         }
     }
@@ -124,7 +121,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
 
     @Override
     public Screen pop(String navigatorId) {
-        for (ScreenStack stack: mScreenStacks) {
+        for (ScreenStack stack : mScreenStacks) {
             if (stack.peek().navigatorId.equals(navigatorId)) {
                 Screen popped = stack.pop();
                 StyleHelper.updateStyles(mToolbar, getCurrentScreen());
@@ -136,7 +133,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
 
     @Override
     public Screen popToRoot(String navigatorId) {
-        for (ScreenStack stack: mScreenStacks) {
+        for (ScreenStack stack : mScreenStacks) {
             if (stack.peek().navigatorId.equals(navigatorId)) {
                 Screen popped = stack.popToRoot();
                 StyleHelper.updateStyles(mToolbar, getCurrentScreen());
@@ -250,7 +247,7 @@ public class BottomTabActivity extends BaseReactActivity implements AHBottomNavi
 
     private void setTabsWithIcons(ArrayList<Screen> screens, Map<Screen, Drawable> icons) {
         mScreenStacks = new ArrayList<>();
-        for(Screen screen: screens) {
+        for (Screen screen : screens) {
             ScreenStack stack = new ScreenStack(this);
             stack.push(screen);
             mScreenStacks.add(stack);

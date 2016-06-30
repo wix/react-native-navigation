@@ -23,9 +23,6 @@ import com.reactnativenavigation.utils.ContextProvider;
 
 import java.util.ArrayList;
 
-/**
- * Created by guyc on 10/03/16.
- */
 public class RctActivityModule extends ReactContextBaseJavaModule {
     public static final String REACT_CLASS = "RctActivity";
     private static final String KEY_NAVIGATOR_ID = "navigatorID";
@@ -320,7 +317,6 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
         });
         }
     }
-
 
     /**
      * Dismisses the top modal (the last modal pushed).

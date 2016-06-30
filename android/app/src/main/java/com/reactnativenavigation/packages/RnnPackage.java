@@ -11,10 +11,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- *
- * Created by guyc on 07/03/16.
- */
 public class RnnPackage implements ReactPackage {
 
     @Override

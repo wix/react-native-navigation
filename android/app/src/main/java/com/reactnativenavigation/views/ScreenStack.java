@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.ReactRootView;
 import com.reactnativenavigation.activities.BaseReactActivity;
 import com.reactnativenavigation.core.RctManager;
 import com.reactnativenavigation.core.objects.Screen;
-import com.reactnativenavigation.utils.ReflectionUtils;
 
 import java.util.Stack;
 
@@ -60,7 +58,7 @@ public class ScreenStack extends FrameLayout {
         if (oldView != null) {
             addView(view, MATCH_PARENT, MATCH_PARENT);
 
-            ReflectionUtils.setBooleanField(oldView.getReactRootView(), "mAttachScheduled", true);
+            oldView.onTemporallyRemovedFromScreen();
             getLayoutTransition().setStartDelay(LayoutTransition.DISAPPEARING, DISAPPEAR_ANIMATION_DELAY);
             removeView(oldView);
             getLayoutTransition().setStartDelay(LayoutTransition.DISAPPEARING, 0);
@@ -76,9 +74,12 @@ public class ScreenStack extends FrameLayout {
         }
 
         ScreenView popped = mStack.pop();
-        addView(mStack.peek().view, 0);
 
-        ReflectionUtils.setBooleanField(popped.view.getReactRootView(), "mAttachScheduled", false);
+        RctView newView = mStack.peek().view;
+        addView(newView);
+        newView.onReAddToScreen();
+
+        popped.view.onRemoveFromScreen();
         removeView(popped.view);
         return popped.screen;
     }
@@ -91,7 +92,7 @@ public class ScreenStack extends FrameLayout {
         ScreenView oldScreenView = null;
         while (getStackSize() > 1) {
             ScreenView popped = mStack.pop();
-            ReflectionUtils.setBooleanField(popped.view.getReactRootView(), "mAttachScheduled", false);
+            popped.view.onRemoveFromScreen();
             removeView(popped.view);
             if (oldScreenView == null) {
                 oldScreenView = popped;
@@ -116,11 +117,11 @@ public class ScreenStack extends FrameLayout {
         ScreenView oldScreenView = null;
         if (!mStack.isEmpty()) {
             while (getStackSize() > 0) {
-                ScreenView screenView = mStack.pop();
-                ReflectionUtils.setBooleanField(screenView.view.getReactRootView(), "mAttachScheduled", false);
-                removeView(screenView.view);
+                ScreenView popped = mStack.pop();
+                popped.view.onRemoveFromScreen();
+                removeView(popped.view);
                 if (oldScreenView == null) {
-                    oldScreenView = screenView;
+                    oldScreenView = popped;
                 }
             }
         }
@@ -151,8 +152,7 @@ public class ScreenStack extends FrameLayout {
      * Remove the ScreenStack from {@code parent} while preventing all child react views from getting unmounted
      */
     public void removeFromScreen(ViewGroup parent) {
-        ReactRootView view = mStack.peek().view.getReactRootView();
-        ReflectionUtils.setBooleanField(view, "mAttachScheduled", true);
+        mStack.peek().view.onTemporallyRemovedFromScreen();
 
         parent.removeView(this);
     }
@@ -161,8 +161,7 @@ public class ScreenStack extends FrameLayout {
      * Add ScreenStack to {@code parent}
      */
     public void addToScreen(ViewGroup parent) {
-        ReactRootView view = mStack.peek().view.getReactRootView();
-        ReflectionUtils.setBooleanField(view, "mAttachScheduled", false);
+        mStack.peek().view.onReAddToScreen();
 
         parent.addView(this, new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
     }

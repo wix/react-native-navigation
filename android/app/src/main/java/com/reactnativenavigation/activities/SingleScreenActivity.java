@@ -10,9 +10,6 @@ import com.reactnativenavigation.utils.StyleHelper;
 import com.reactnativenavigation.views.RnnToolBar;
 import com.reactnativenavigation.views.ScreenStack;
 
-/**
- * Created by guyc on 05/04/16.
- */
 public class SingleScreenActivity extends BaseReactActivity {
 
     public static final String DRAWER_PARAMS = "drawerParams";
@@ -23,6 +20,7 @@ public class SingleScreenActivity extends BaseReactActivity {
 
     @Override
     protected void handleOnCreate() {
+        super.handleOnCreate();
         mReactInstanceManager = RctManager.getInstance().getReactInstanceManager();
 
         setContentView(R.layout.single_screen_activity);

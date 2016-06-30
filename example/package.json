@@ -8,6 +8,6 @@
   "dependencies": {
     "react-native": "0.25.1",
     "react": "0.14.5",
-    "react-native-navigation": "latest"
+    "react-native-navigation": "file:../"
   }
 }
