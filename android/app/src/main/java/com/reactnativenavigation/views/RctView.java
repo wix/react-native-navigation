@@ -71,11 +71,10 @@ public class RctView extends FrameLayout {
     }
 
     /**
-     * Must be called before view is removed from screen inorder to ensure onDetachedFromScreen is properly
-     * executed and componentWillUnmount is called
+     * Must be called before view is removed from screen inorder to ensure ReactRootView is unmounted.
      */
     public void onRemoveFromScreen() {
-        ReflectionUtils.setField(mReactRootView, "mAttachScheduled", false);
+        ReflectionUtils.invoke(mReactRootView, "unmountReactApplication");
     }
 
     /**
