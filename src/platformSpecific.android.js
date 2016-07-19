@@ -153,6 +153,7 @@ function addNavigatorParams(screen, navigator = null, idx = '') {
   screen.navigatorID = navigator ? navigator.navigatorID : utils.getRandomId() + '_nav' + idx;
   screen.screenInstanceID = utils.getRandomId();
   screen.navigatorEventID = screen.screenInstanceID + '_events';
+  screen.registerCallbackID && screen.registerCallbackID(screen.navigatorID);
 }
 
 function addNavigatorButtons(screen) {

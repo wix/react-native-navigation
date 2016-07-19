@@ -341,6 +341,7 @@ function showModal(params) {
   const Controller = Controllers.createClass({
     render: function() {
       const navigatorID = controllerID + '_nav';
+      params.registerCallbackID(navigatorID);
       const screenInstanceID = utils.getRandomId();
       const {
         navigatorStyle,

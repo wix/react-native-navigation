@@ -9,6 +9,8 @@ import Navigation from './Navigation';
 
 const _allNavigatorEventHandlers = {};
 
+const _callbackRegistry = {};
+
 class Navigator {
   constructor(navigatorID, navigatorEventID) {
     this.navigatorID = navigatorID;
@@ -34,6 +36,9 @@ class Navigator {
   }
 
   showModal(params = {}) {
+    params.registerCallbackID = function(navigatorID) {
+      _callbackRegistry[navigatorID] = params.callback;
+    };
     return Navigation.showModal(params);
   }
 
@@ -128,6 +133,10 @@ class Navigator {
       this.navigatorEventSubscription.remove();
       delete _allNavigatorEventHandlers[this.navigatorEventID];
     }
+  }
+
+  callback(...values) {
+    _callbackRegistry[this.navigatorID](...values);
   }
 }
 
