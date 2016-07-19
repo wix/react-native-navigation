@@ -12,14 +12,18 @@ const _allNavigatorEventHandlers = {};
 const _callbackRegistry = {};
 
 class Navigator {
-  constructor(navigatorID, navigatorEventID) {
+  constructor(navigatorID, navigatorEventID, getScreenInstanceID) {
     this.navigatorID = navigatorID;
     this.navigatorEventID = navigatorEventID;
     this.navigatorEventHandler = null;
     this.navigatorEventSubscription = null;
+    this.getScreenInstanceID = getScreenInstanceID;
   }
 
   push(params = {}) {
+    params.registerCallbackID = function(screenInstanceID) {
+      _callbackRegistry[screenInstanceID] = params.callback;
+    };
     return platformSpecific.navigatorPush(this, params);
   }
 
@@ -36,8 +40,8 @@ class Navigator {
   }
 
   showModal(params = {}) {
-    params.registerCallbackID = function(navigatorID) {
-      _callbackRegistry[navigatorID] = params.callback;
+    params.registerCallbackID = function(screenInstanceID) {
+      _callbackRegistry[screenInstanceID] = params.callback;
     };
     return Navigation.showModal(params);
   }
@@ -136,7 +140,7 @@ class Navigator {
   }
 
   callback(...values) {
-    _callbackRegistry[this.navigatorID](...values);
+    _callbackRegistry[this.getScreenInstanceID()](...values);
   }
 }
 
@@ -147,7 +151,7 @@ export default class Screen extends Component {
   constructor(props) {
     super(props);
     if (props.navigatorID) {
-      this.navigator = new Navigator(props.navigatorID, props.navigatorEventID);
+      this.navigator = new Navigator(props.navigatorID, props.navigatorEventID, () => this.props.screenInstanceID);
     }
   }
 
