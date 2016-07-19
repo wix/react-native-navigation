@@ -61,6 +61,10 @@ class Navigator {
     return Navigation.dismissInAppNotification(params);
   }
 
+  showSnackBar(params = {}) {
+    return Navigation.showSnackBar(params);
+  }
+  
   setButtons(params = {}) {
     return platformSpecific.navigatorSetButtons(this, this.navigatorEventID, params);
   }

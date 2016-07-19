@@ -15,6 +15,7 @@ import com.reactnativenavigation.activities.BottomTabActivity;
 import com.reactnativenavigation.activities.RootActivity;
 import com.reactnativenavigation.activities.SingleScreenActivity;
 import com.reactnativenavigation.controllers.ModalController;
+import com.reactnativenavigation.controllers.SnackBarController;
 import com.reactnativenavigation.core.objects.Drawer;
 import com.reactnativenavigation.core.objects.Screen;
 import com.reactnativenavigation.modal.RnnModal;
@@ -343,4 +344,17 @@ public class RctActivityModule extends ReactContextBaseJavaModule {
         });
     }
 
+    @ReactMethod
+    public void showSnackBar(final ReadableMap params) {
+        final BaseReactActivity context = ContextProvider.getActivityContext();
+        if (context == null || context.isFinishing()) {
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                SnackBarController.showSnackBar(params, context.getCurrentScreen());
+            }
+        });
+    }
 }
