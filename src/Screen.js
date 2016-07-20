@@ -9,8 +9,6 @@ import Navigation from './Navigation';
 
 const _allNavigatorEventHandlers = {};
 
-const _callbackRegistry = {};
-
 class Navigator {
   constructor(navigatorID, navigatorEventID, getScreenInstanceID) {
     this.navigatorID = navigatorID;
@@ -21,9 +19,6 @@ class Navigator {
   }
 
   push(params = {}) {
-    params.registerCallbackID = function(screenInstanceID) {
-      _callbackRegistry[screenInstanceID] = params.callback;
-    };
     return platformSpecific.navigatorPush(this, params);
   }
 
@@ -40,9 +35,6 @@ class Navigator {
   }
 
   showModal(params = {}) {
-    params.registerCallbackID = function(screenInstanceID) {
-      _callbackRegistry[screenInstanceID] = params.callback;
-    };
     return Navigation.showModal(params);
   }
 
@@ -140,7 +132,7 @@ class Navigator {
   }
 
   callback(...values) {
-    _callbackRegistry[this.getScreenInstanceID()](...values);
+    Navigation.getRegisteredCallback(this.getScreenInstanceID())(...values);
   }
 }
 

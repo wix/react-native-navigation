@@ -5,6 +5,8 @@ import Screen from './Screen';
 
 const registeredScreens = {};
 
+const registeredCallbacks = {};
+
 function registerScreen(screenID, generator) {
   registeredScreens[screenID] = generator;
   AppRegistry.registerComponent(screenID, generator);
@@ -63,6 +65,14 @@ function getRegisteredScreen(screenID) {
   return generator();
 }
 
+function registerCallback(screenInstanceID, callback) {
+  registeredCallbacks[screenInstanceID] = callback;
+}
+
+function getRegisteredCallback(screenInstanceID) {
+  return registeredCallbacks[screenInstanceID];
+}
+
 function showModal(params = {}) {
   return platformSpecific.showModal(params);
 }
@@ -95,6 +105,8 @@ export default {
   registerScreen,
   getRegisteredScreen,
   registerComponent,
+  registerCallback,
+  getRegisteredCallback,
   showModal,
   dismissModal,
   dismissAllModals,
