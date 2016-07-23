@@ -10,12 +10,12 @@ import Navigation from './Navigation';
 const _allNavigatorEventHandlers = {};
 
 class Navigator {
-  constructor(navigatorID, navigatorEventID, getScreenInstanceID) {
+  constructor(navigatorID, navigatorEventID, screenInstanceID) {
     this.navigatorID = navigatorID;
     this.navigatorEventID = navigatorEventID;
+    this.screenInstanceID = screenInstanceID;
     this.navigatorEventHandler = null;
     this.navigatorEventSubscription = null;
-    this.getScreenInstanceID = getScreenInstanceID;
   }
 
   push(params = {}) {
@@ -132,7 +132,7 @@ class Navigator {
   }
 
   callback(...values) {
-    Navigation.getRegisteredCallback(this.getScreenInstanceID())(...values);
+    Navigation.getRegisteredCallback(this.screenInstanceID)(...values);
   }
 }
 
@@ -143,7 +143,7 @@ export default class Screen extends Component {
   constructor(props) {
     super(props);
     if (props.navigatorID) {
-      this.navigator = new Navigator(props.navigatorID, props.navigatorEventID, () => this.props.screenInstanceID);
+      this.navigator = new Navigator(props.navigatorID, props.navigatorEventID, props.screenInstanceID);
     }
   }
 
