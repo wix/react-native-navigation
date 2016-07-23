@@ -132,7 +132,10 @@ class Navigator {
   }
 
   callback(...values) {
-    Navigation.getRegisteredCallback(this.screenInstanceID)(...values);
+    const callback = Navigation.getRegisteredCallback(this.screenInstanceID);
+    if (callback) {
+      return callback(...values);
+    }
   }
 }
 
