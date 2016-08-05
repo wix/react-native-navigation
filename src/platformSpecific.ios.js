@@ -14,7 +14,7 @@ function startTabBasedApp(params) {
     console.error('startTabBasedApp(params): params.tabs is required');
     return;
   }
-  const controllerID = utils.getRandomId();
+  const controllerID = params.id || utils.getRandomId();
   const Controller = Controllers.createClass({
     render: function() {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
