@@ -222,7 +222,8 @@ public class RnnToolBar extends Toolbar {
             return;
         }
 
-        boolean isBack = screen != null;
+        BaseReactActivity activity = (BaseReactActivity) getContext();
+        boolean isBack = activity.getScreenStackSize() > 1;
         boolean hasDrawer = mDrawerToggle != null;
 
         Drawable navIcon = null;

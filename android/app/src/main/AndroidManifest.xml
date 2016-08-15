@@ -2,11 +2,14 @@
     package="com.reactnativenavigation">
 
     <application>
-        <activity android:name="com.reactnativenavigation.activities.TabActivity" />
+        <activity android:name="com.reactnativenavigation.activities.TabActivity"
+                  android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name="com.reactnativenavigation.activities.BottomTabActivity"
-                  android:label=""/>
+                  android:label=""
+                  android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name="com.reactnativenavigation.activities.SingleScreenActivity"
-                  android:label=""/>
+                  android:label=""
+                  android:configChanges="keyboardHidden|orientation|screenSize"/>
     </application>
 
 </manifest>
