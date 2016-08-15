@@ -202,6 +202,10 @@ function showFAB(params) {
   RctActivity.showFAB(params);
 }
 
+function showSnackBar(params) {
+  RctActivity.showSnackBar(params);
+}
+
 export default {
   startTabBasedApp,
   startSingleScreenApp,
@@ -213,6 +217,7 @@ export default {
   dismissModal,
   dismissAllModals,
   showFAB,
+  showSnackBar,
   navigatorSetButtons,
   navigatorSetTabBadge,
   navigatorSetTitle,

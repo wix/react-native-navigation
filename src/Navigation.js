@@ -91,6 +91,10 @@ function dismissInAppNotification(params = {}) {
   return platformSpecific.dismissInAppNotification(params);
 }
 
+function showSnackBar(params = {}) {
+  return platformSpecific.showSnackBar(params);
+}
+
 export default {
   registerScreen,
   getRegisteredScreen,
@@ -102,6 +106,7 @@ export default {
   dismissLightBox,
   showInAppNotification,
   dismissInAppNotification,
+  showSnackBar,
   startTabBasedApp: platformSpecific.startTabBasedApp,
   startSingleScreenApp: platformSpecific.startSingleScreenApp
 }
