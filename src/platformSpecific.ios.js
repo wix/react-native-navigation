@@ -176,6 +176,7 @@ function navigatorPush(navigator, params) {
     return;
   }
   const screenInstanceID = utils.getRandomId();
+  Navigation.registerCallback(screenInstanceID, params.callback);
   const {
     navigatorStyle,
     navigatorButtons,
@@ -342,6 +343,7 @@ function showModal(params) {
     render: function() {
       const navigatorID = controllerID + '_nav';
       const screenInstanceID = utils.getRandomId();
+      Navigation.registerCallback(screenInstanceID, params.callback);
       const {
         navigatorStyle,
         navigatorButtons,

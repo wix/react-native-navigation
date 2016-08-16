@@ -10,9 +10,10 @@ import Navigation from './Navigation';
 const _allNavigatorEventHandlers = {};
 
 class Navigator {
-  constructor(navigatorID, navigatorEventID) {
+  constructor(navigatorID, navigatorEventID, screenInstanceID) {
     this.navigatorID = navigatorID;
     this.navigatorEventID = navigatorEventID;
+    this.screenInstanceID = screenInstanceID;
     this.navigatorEventHandler = null;
     this.navigatorEventSubscription = null;
   }
@@ -129,6 +130,13 @@ class Navigator {
       delete _allNavigatorEventHandlers[this.navigatorEventID];
     }
   }
+
+  callback(...values) {
+    const callback = Navigation.getRegisteredCallback(this.screenInstanceID);
+    if (callback) {
+      return callback(...values);
+    }
+  }
 }
 
 export default class Screen extends Component {
@@ -138,7 +146,7 @@ export default class Screen extends Component {
   constructor(props) {
     super(props);
     if (props.navigatorID) {
-      this.navigator = new Navigator(props.navigatorID, props.navigatorEventID);
+      this.navigator = new Navigator(props.navigatorID, props.navigatorEventID, props.screenInstanceID);
     }
   }
 
