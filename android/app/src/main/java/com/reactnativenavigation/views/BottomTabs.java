@@ -82,10 +82,10 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     private void setStyle() {
-        if (AppStyle.appStyle.bottomTabBadgeBackgroundColor.hasColor()) {
+        if (AppStyle.appStyle.bottomTabBadgeBackgroundColor != null && AppStyle.appStyle.bottomTabBadgeBackgroundColor.hasColor()) {
             setNotificationBackgroundColor(AppStyle.appStyle.bottomTabBadgeBackgroundColor.getColor());
         }
-        if (AppStyle.appStyle.bottomTabBadgeTextColor.hasColor()) {
+        if (AppStyle.appStyle.bottomTabBadgeTextColor != null && AppStyle.appStyle.bottomTabBadgeTextColor.hasColor()) {
             setNotificationTextColor(AppStyle.appStyle.bottomTabBadgeTextColor.getColor());
         }
     }
