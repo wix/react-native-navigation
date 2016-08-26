@@ -20,17 +20,11 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 public class SingleScreenLayout extends RelativeLayout implements Layout {
 
     private final AppCompatActivity activity;
-    private final ScreenParams screenParams;
+    protected final ScreenParams screenParams;
     private final SideMenuParams sideMenuParams;
-    private ScreenStack stack;
-    private LeftButtonOnClickListener leftButtonOnClickListener;
+    protected ScreenStack stack;
+    protected LeftButtonOnClickListener leftButtonOnClickListener;
     private @Nullable SideMenu sideMenu;
-
-    public SingleScreenLayout(AppCompatActivity activity, ScreenParams screenParams,
-                              LeftButtonOnClickListener leftButtonOnClickListener) {
-        this(activity, null, screenParams);
-        this.leftButtonOnClickListener = leftButtonOnClickListener;
-    }
 
     public SingleScreenLayout(AppCompatActivity activity, @Nullable SideMenuParams sideMenuParams, ScreenParams screenParams) {
         super(activity);
@@ -62,6 +56,10 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
         }
         stack = new ScreenStack(activity, parent, screenParams.getNavigatorId(), this);
         LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        pushInitialScreen(lp);
+    }
+
+    protected void pushInitialScreen(LayoutParams lp) {
         stack.pushInitialScreen(screenParams, lp);
         stack.show();
     }

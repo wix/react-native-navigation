@@ -8,8 +8,8 @@ import android.view.WindowManager;
 
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.layouts.Layout;
+import com.reactnativenavigation.layouts.ModalScreenLayout;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
-import com.reactnativenavigation.layouts.SingleScreenLayout;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -70,7 +70,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         setCancelable(true);
         setOnDismissListener(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        layout = new SingleScreenLayout(getActivity(), screenParams, this);
+        layout = new ModalScreenLayout(getActivity(), null, screenParams, this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(layout.asView());
     }
