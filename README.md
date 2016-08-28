@@ -28,7 +28,7 @@ For example, this package replaces the native [NavigatorIOS](https://facebook.gi
 
 ## Installation - iOS
 
- * Make sure you are using react-native version 0.25.1
+ * **Make sure you are using react-native version 0.25.1**
 
  * In your project folder run `npm install react-native-navigation --save`
 > Note: We recommend using npm ver 3+. If you insist on using npm ver 2 please notice that the location for react-native-controllers in node_modules will be under the react-native-navigation folder and you'll need to change the paths in Xcode below accordingly.
@@ -45,7 +45,7 @@ For example, this package replaces the native [NavigatorIOS](https://facebook.gi
 
 ## Installation - Android
 
-* Make sure you are using react-native version 0.25.1
+* **Make sure you are using react-native version 0.25.1**
 
  >Note: Android adaptation is still under active development therfore the API might break from time to time. 
  
@@ -68,46 +68,85 @@ For example, this package replaces the native [NavigatorIOS](https://facebook.gi
 }
 ```
 
-3. Your `MainActivity` should extend `com.reactnativenavigation.controllers.SplashActivity` instead of `ReactActivity`. If you have any `react-native` related methods in your `MainActivity` you can safely delete them.
+3. Add `android:name=".App"` to the file `android/app/src/main/AndroidManifest.xml`. 
+  
+   Full example:
 
-4. Create a custom Application class and update the `Application` element in `AndroidManifest.xml`
-	
-	```java
-	import com.reactnativenavigation.NavigationApplication;
-	
-	public class MyApplication extends NavigationApplication {
-	
-	}
-	```
-	
-	```xml
-	<application
-        android:name=".MyApplication"
-        ...
-        />
-	```
-5. Implement `isDebug` and `createAdditionalReactPackages` methods
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yourappname"
+    android:versionCode="1"
+    android:versionName="1.0">
 
-	```java
-	import com.reactnativenavigation.NavigationApplication;
-	
-	public class MyApplication extends NavigationApplication {
- 
-    	@Override
-		public boolean isDebug() {
-			// Make sure you are using BuildConfig from your own application
-			return BuildConfig.DEBUG;
-		}
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
-	    @NonNull
-	    @Override
-	    public List<ReactPackage> createAdditionalReactPackages() {
-		    // Add the packages you require here.
-			// No need to add RnnPackage and MainReactPackage
-	        return null;
-	    }
-	}
-	```
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="22" />
+
+    <application
+      android:name=".App"
+      android:allowBackup="true"
+      android:label="@string/app_name"
+      android:icon="@mipmap/ic_launcher"
+      android:theme="@style/AppTheme">
+      <activity
+        android:name=".MainActivity"
+        android:label="@string/app_name"
+        android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+      </activity>
+      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+    </application>
+</manifest>
+```
+
+
+4. Add a new file: `android/app/src/main/java/com/yourappname/App.java` and add the contents:
+
+```java
+package com.yourappname;
+
+import android.support.annotation.Nullable;
+
+import com.facebook.react.ReactPackage;
+import com.reactnativenavigation.NavigationApplication;
+
+import java.util.List;
+
+public class App extends NavigationApplication {
+  @Override
+  public boolean isDebug() {
+    return BuildConfig.DEBUG;
+  }
+
+  @Nullable
+  @Override
+  public List<ReactPackage> createAdditionalReactPackages() {
+    return null;
+  }
+}
+```
+
+
+
+
+5. Your `MainActivity` should extend `com.reactnativenavigation.controllers.SplashActivity` instead of `ReactActivity`. If you have any `react-native` related methods in your `MainActivity` you can safely delete them.
+
+	
+```java
+package com.yourappname;
+
+import com.reactnativenavigation.controllers.SplashActivity;
+
+public class MainActivity extends SplashActivity {
+}
+```
+	
 
 ## Migrating to version 2.0
 Migrating your code base to version 2.0 will require a few changes to your native Java code. The actual navigation API has not changed so there will be no changes to your JS code base.
