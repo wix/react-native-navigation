@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {AppRegistry, NativeModules} from 'react-native';
-import _ from 'lodash';
+import get from 'lodash/get';
+import forEach from 'lodash/each';
 import PropRegistry from './PropRegistry';
 
 const NativeReactModule = NativeModules.NavigationReactModule;
@@ -68,12 +69,12 @@ function savePassProps(params) {
     PropRegistry.save(params.screen.navigationParams.screenInstanceID, params.screen.passProps);
   }
 
-  if (_.get(params, 'screen.topTabs')) {
-    _.forEach(params.screen.topTabs, (tab) => savePassProps(tab));
+  if (get(params, 'screen.topTabs')) {
+    forEach(params.screen.topTabs, (tab) => savePassProps(tab));
   }
 
   if (params.tabs) {
-    _.forEach(params.tabs, (tab) => {
+    forEach(params.tabs, (tab) => {
       tab.passProps = params.passProps;
       savePassProps(tab);
     });

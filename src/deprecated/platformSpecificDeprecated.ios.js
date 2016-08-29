@@ -7,14 +7,17 @@ const {
   NavigationControllerIOS,
   DrawerControllerIOS
 } = React;
-import _ from 'lodash';
+
+import uniqueId from 'lodash/uniqueId';
+import get from 'lodash/get';
+import forEach from 'lodash/each';
 
 function startTabBasedApp(params) {
   if (!params.tabs) {
     console.error('startTabBasedApp(params): params.tabs is required');
     return;
   }
-  const controllerID = _.uniqueId('controllerID');
+  const controllerID = uniqueId('controllerID');
   const Controller = Controllers.createClass({
     render: function() {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
@@ -44,7 +47,7 @@ function startTabBasedApp(params) {
           {
             params.tabs.map(function(tab, index) {
               const navigatorID = controllerID + '_nav' + index;
-              const screenInstanceID = _.uniqueId('screenInstanceID');
+              const screenInstanceID = uniqueId('screenInstanceID');
               if (!tab.screen) {
                 console.error('startTabBasedApp(params): every tab must include a screen property, take a look at tab#' + (index + 1));
                 return;
@@ -89,7 +92,7 @@ function startSingleScreenApp(params) {
     console.error('startSingleScreenApp(params): params.screen is required');
     return;
   }
-  const controllerID = _.uniqueId('controllerID');
+  const controllerID = uniqueId('controllerID');
   const Controller = Controllers.createClass({
     render: function() {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
@@ -114,7 +117,7 @@ function startSingleScreenApp(params) {
     renderBody: function() {
       const screen = params.screen;
       const navigatorID = controllerID + '_nav';
-      const screenInstanceID = _.uniqueId('screenInstanceID');
+      const screenInstanceID = uniqueId('screenInstanceID');
       if (!screen.screen) {
         console.error('startSingleScreenApp(params): screen must include a screen property');
         return;
@@ -182,7 +185,7 @@ function navigatorPush(navigator, params) {
     console.error('Navigator.push(params): params.screen is required');
     return;
   }
-  const screenInstanceID = _.uniqueId('screenInstanceID');
+  const screenInstanceID = uniqueId('screenInstanceID');
   const {
     navigatorStyle,
     navigatorButtons,
@@ -226,7 +229,7 @@ function navigatorResetTo(navigator, params) {
     console.error('Navigator.resetTo(params): params.screen is required');
     return;
   }
-  const screenInstanceID = _.uniqueId('screenInstanceID');
+  const screenInstanceID = uniqueId('screenInstanceID');
   const {
     navigatorStyle,
     navigatorButtons,
@@ -350,11 +353,11 @@ function showModal(params) {
     console.error('showModal(params): params.screen is required');
     return;
   }
-  const controllerID = _.uniqueId('controllerID');
+  const controllerID = uniqueId('controllerID');
   const Controller = Controllers.createClass({
     render: function() {
       const navigatorID = controllerID + '_nav';
-      const screenInstanceID = _.uniqueId('screenInstanceID');
+      const screenInstanceID = uniqueId('screenInstanceID');
       const {
         navigatorStyle,
         navigatorButtons,
@@ -397,9 +400,9 @@ function showLightBox(params) {
     console.error('showLightBox(params): params.screen is required');
     return;
   }
-  const controllerID = _.uniqueId('controllerID');
+  const controllerID = uniqueId('controllerID');
   const navigatorID = controllerID + '_nav';
-  const screenInstanceID = _.uniqueId('screenInstanceID');
+  const screenInstanceID = uniqueId('screenInstanceID');
   const {
     navigatorStyle,
     navigatorButtons,
@@ -429,9 +432,9 @@ function showInAppNotification(params) {
     return;
   }
 
-  const controllerID = _.uniqueId('controllerID');
+  const controllerID = uniqueId('controllerID');
   const navigatorID = controllerID + '_nav';
-  const screenInstanceID = _.uniqueId('screenInstanceID');
+  const screenInstanceID = uniqueId('screenInstanceID');
   const {
     navigatorStyle,
     navigatorButtons,
@@ -469,12 +472,12 @@ function savePassProps(params) {
     PropRegistry.save(params.screen.navigationParams.screenInstanceID, params.screen.passProps);
   }
 
-  if (_.get(params, 'screen.topTabs')) {
-    _.forEach(params.screen.topTabs, (tab) => savePassProps(tab));
+  if (get(params, 'screen.topTabs')) {
+    forEach(params.screen.topTabs, (tab) => savePassProps(tab));
   }
 
   if (params.tabs) {
-    _.forEach(params.tabs, (tab) => {
+    forEach(params.tabs, (tab) => {
       tab.passProps = params.passProps;
       savePassProps(tab);
     });

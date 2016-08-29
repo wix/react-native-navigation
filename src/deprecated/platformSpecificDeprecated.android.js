@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {AppRegistry, NativeModules} from 'react-native';
-import _ from 'lodash';
+import uniqueId from 'lodash/uniqueId';
+import get from 'lodash/get';
+import forEach from 'lodash/each';
 
 import Navigation from './../Navigation';
 
@@ -35,7 +37,7 @@ function startSingleScreenApp(params) {
 }
 
 function adaptTopTabs(screen, navigatorID) {
-  _.forEach(_.get(screen, 'topTabs'), (tab) => {
+  forEach(get(screen, 'topTabs'), (tab) => {
     addNavigatorParams(tab);
     if (navigatorID) {
       tab.navigatorID = navigatorID;
@@ -95,14 +97,15 @@ function navigatorResetTo(navigator, params) {
 }
 
 function adaptNavigationStyleToScreenStyle(screen) {
-  const navigatorStyle = screen.navigatorStyle;
+  const { navigatorStyle, ...props } = screen;
+
   if (!navigatorStyle) {
     return screen;
   }
 
   screen.styleParams = convertStyleParams(navigatorStyle);
 
-  return _.omit(screen, ['navigatorStyle']);
+  return props;
 }
 
 function convertStyleParams(originalStyleObject) {
@@ -315,8 +318,8 @@ function dismissAllModals(params) {
 }
 
 function addNavigatorParams(screen, navigator = null, idx = '') {
-  screen.navigatorID = navigator ? navigator.navigatorID : _.uniqueId('navigatorID') + '_nav' + idx;
-  screen.screenInstanceID = _.uniqueId('screenInstanceID');
+  screen.navigatorID = navigator ? navigator.navigatorID : uniqueId('navigatorID') + '_nav' + idx;
+  screen.screenInstanceID = uniqueId('screenInstanceID');
   screen.navigatorEventID = screen.screenInstanceID + '_events';
 }
 
