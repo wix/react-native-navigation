@@ -55,6 +55,7 @@ public class ScreenStack {
             @Override
             public void onDisplay() {
                 screen.show(initialScreenParams.animateScreenTransitions);
+                screen.setStyle();
             }
         });
     }

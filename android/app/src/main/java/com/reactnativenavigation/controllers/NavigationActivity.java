@@ -35,19 +35,18 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     private ActivityParams activityParams;
     private ModalController modalController;
     private Layout layout;
-    private boolean waitingForNewJsContext = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (!NavigationApplication.instance.isReactContextInitialized()) {
-            waitingForNewJsContext = true;
-            recreate();
+            NavigationApplication.instance.startReactContext();
             return;
         }
 
         RedboxPermission.permissionToShowRedboxIfNeeded(this);
+
         activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
 
         disableActivityShowAnimationIfNeeded();
@@ -105,7 +104,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     private void destroyJsIfNeeded() {
-        if (!waitingForNewJsContext && (currentActivity == null || currentActivity.isFinishing())) {
+        if (currentActivity == null || currentActivity.isFinishing()) {
             NavigationApplication.instance.getReactGateway().onDestroyApp();
         }
     }

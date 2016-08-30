@@ -15,12 +15,7 @@ public abstract class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSplashLayout();
-
-        if (NavigationApplication.instance.isReactContextInitialized()) {
-            finish();
-        } else {
-            NavigationApplication.instance.startReactContext();
-        }
+        NavigationApplication.instance.startReactContext();
     }
 
     @Override

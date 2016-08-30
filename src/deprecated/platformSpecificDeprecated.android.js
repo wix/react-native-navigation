@@ -228,15 +228,16 @@ function navigatorSetButtons(navigator, navigatorEventID, params) {
       }
     });
   }
-  if (params.leftButton) {
-    if (params.leftButton.icon) {
-      const icon = resolveAssetSource(params.leftButton.icon);
+  const leftButton = getLeftButton(params);
+  if (leftButton) {
+    if (leftButton.icon) {
+      const icon = resolveAssetSource(leftButton.icon);
       if (icon) {
-        params.leftButton.icon = icon.uri;
+        leftButton.icon = icon.uri;
       }
     }
   }
-  newPlatformSpecific.setScreenTitleBarButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, params.leftButton);
+  newPlatformSpecific.setScreenTitleBarButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton);
 }
 
 function navigatorSetTabBadge(navigator, params) {
@@ -375,6 +376,25 @@ function addTitleBarBackButtonIfNeeded(screen) {
 }
 
 function getLeftButton(screen) {
+  const leftButton = getLeftButtonDeprecated(screen);
+  if (leftButton) {
+    console.warn('leftButton is deprecated. Instead, please use leftButtons like on iOS.');
+    return leftButton;
+  }
+
+  if (screen.navigatorButtons && screen.navigatorButtons.leftButtons) {
+    return screen.navigatorButtons.leftButtons[0];
+  }
+
+
+  if (screen.leftButtons) {
+    return screen.leftButtons[0];
+  }
+
+  return null;
+}
+
+function getLeftButtonDeprecated(screen) {
   if (screen.navigatorButtons && screen.navigatorButtons.leftButton) {
     return screen.navigatorButtons.leftButton;
   }
