@@ -49,6 +49,7 @@ public class ScreenStack {
     }
 
     public void pushInitialScreenWithAnimation(final ScreenParams initialScreenParams, RelativeLayout.LayoutParams params) {
+        isStackVisible = true;
         pushInitialScreen(initialScreenParams, params);
         final Screen screen = stack.peek();
         screen.setOnDisplayListener(new Screen.OnDisplayListener() {
