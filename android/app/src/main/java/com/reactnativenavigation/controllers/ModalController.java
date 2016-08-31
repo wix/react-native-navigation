@@ -31,9 +31,10 @@ public class ModalController implements ScreenStackContainer, Modal.OnModalDismi
     }
 
     public void dismissAllModals() {
-        while (isShowing()) {
-            dismissTopModal();
+        for (Modal modal : stack) {
+            modal.dismiss();
         }
+        stack.clear();
     }
 
     public boolean isShowing() {

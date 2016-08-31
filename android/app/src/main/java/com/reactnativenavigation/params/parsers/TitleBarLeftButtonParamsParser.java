@@ -24,7 +24,7 @@ public class TitleBarLeftButtonParamsParser extends TitleBarButtonParamsParser {
             case "sideMenu":
                 return MaterialMenuDrawable.IconState.BURGER;
             default:
-                throw new RuntimeException("Unsupported button type " + id);
+                throw new RuntimeException("Unsupported button id: " + id + ". Supported ids are: back, cancel, accept and sideMenu");
         }
     }
 }

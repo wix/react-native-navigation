@@ -9,7 +9,6 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 
-// TODO: replace with vector menu drawable
 public class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
 
     private static int getColor(TitleBarButtonParams params) {
