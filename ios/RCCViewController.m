@@ -7,6 +7,7 @@
 #import "RCCManager.h"
 #import "RCTConvert.h"
 #import "RCCExternalViewControllerProtocol.h"
+#import "RCTHelpers.h"
 
 NSString* const RCCViewControllerCancelReactTouchesNotification = @"RCCViewControllerCancelReactTouchesNotification";
 

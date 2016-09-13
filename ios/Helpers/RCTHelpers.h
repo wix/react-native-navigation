@@ -11,4 +11,6 @@
 
 @interface RCTHelpers : NSObject
 +(BOOL)removeYellowBox:(RCTRootView*)reactRootView;
++ (NSMutableDictionary *)textAttributesFromDictionary:(NSDictionary *)dictionary withPrefix:(NSString *)prefix;
++ (NSMutableDictionary *)textAttributesFromDictionary:(NSDictionary *)dictionary withPrefix:(NSString *)prefix baseFontSize:(CGFloat)size;
 @end
