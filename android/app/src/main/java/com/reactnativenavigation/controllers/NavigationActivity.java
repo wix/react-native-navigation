@@ -74,7 +74,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onResume() {
         super.onResume();
-        if (isFinishing()) {
+        if (isFinishing() || !NavigationApplication.instance.isReactContextInitialized()) {
             return;
         }
 

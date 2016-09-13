@@ -17,8 +17,14 @@ public abstract class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setSplashLayout();
 
+        if (NavigationApplication.instance.isReactContextInitialized()) {
+            finish();
+            return;
+        }
+
         if (ReactDevPermission.shouldAskPermission()) {
             ReactDevPermission.askPermission(this);
+            finish();
             return;
         }
 
