@@ -69,8 +69,8 @@ public class NavigationReactGateway implements ReactGateway {
         getReactInstanceManager().onHostResume(activity, defaultHardwareBackBtnHandler);
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        getReactInstanceManager().onActivityResult(requestCode, resultCode, data);
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        getReactInstanceManager().onActivityResult(activity, requestCode, resultCode, data);
     }
 
     public ReactNativeHost getReactNativeHost() {

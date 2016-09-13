@@ -127,7 +127,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        NavigationApplication.instance.getReactGateway().onActivityResult(requestCode, resultCode, data);
+        NavigationApplication.instance.getReactGateway().onActivityResult(this, requestCode, resultCode, data);
     }
 
     @Override
