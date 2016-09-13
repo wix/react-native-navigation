@@ -56,9 +56,6 @@ navigationController:(UINavigationController*)navigationController
     
     CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;
     
-    UILabel *titleLabel;
-    UILabel *subtitleLabel;
-    
     self.titleView = [[RCCTitleView alloc] initWithFrame:navigationBarBounds];
     self.titleView.backgroundColor = [UIColor clearColor];
     self.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -87,7 +84,7 @@ navigationController:(UINavigationController*)navigationController
         self.titleView.titleLabel = [self setupTitle:style];
     }
     
-    [self centerTitleView:navigationBarBounds titleLabel:titleLabel subtitleLabel:subtitleLabel];
+    [self centerTitleView:navigationBarBounds titleLabel:self.titleView.titleLabel subtitleLabel:self.titleView.subtitleLabel];
     
     self.viewController.navigationItem.titleView = self.titleView;
 }

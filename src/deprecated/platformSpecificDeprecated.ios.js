@@ -73,6 +73,7 @@ function startTabBasedApp(params) {
                   <NavigationControllerIOS
                     id={tab.navigationParams.navigatorID}
                     title={tab.title}
+                    subtitle={tab.subtitle}
                     titleImage={tab.titleImage}
                     component={tab.screen}
                     passProps={{
