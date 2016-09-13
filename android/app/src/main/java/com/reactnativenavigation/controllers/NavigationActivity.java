@@ -7,20 +7,25 @@ import android.view.KeyEvent;
 
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.events.Event;
+import com.reactnativenavigation.events.EventBus;
+import com.reactnativenavigation.events.JsDevReloadEvent;
+import com.reactnativenavigation.events.ModalDismissedEvent;
+import com.reactnativenavigation.events.Subscriber;
 import com.reactnativenavigation.layouts.BottomTabsLayout;
 import com.reactnativenavigation.layouts.Layout;
 import com.reactnativenavigation.layouts.LayoutFactory;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.react.JsDevReloadHandler;
-import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.react.RedboxPermission;
 
 import java.util.List;
 
-public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, ReactGateway.OnJsDevReloadListener {
+public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, Subscriber {
 
     /**
      * Although we start multiple activities, we make sure to pass Intent.CLEAR_TASK | Intent.NEW_TASK
@@ -41,7 +46,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onCreate(savedInstanceState);
 
         if (!NavigationApplication.instance.isReactContextInitialized()) {
-            NavigationApplication.instance.startReactContext();
+            NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
             return;
         }
 
@@ -77,7 +82,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
 
         currentActivity = this;
-        NavigationApplication.instance.getReactGateway().onResumeActivity(this, this, this);
+        NavigationApplication.instance.getReactGateway().onResumeActivity(this, this);
+        EventBus.instance.register(this);
     }
 
     @Override
@@ -85,6 +91,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onPause();
         currentActivity = null;
         NavigationApplication.instance.getReactGateway().onPauseActivity();
+        EventBus.instance.unregister(this);
     }
 
     @Override
@@ -107,12 +114,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (currentActivity == null || currentActivity.isFinishing()) {
             NavigationApplication.instance.getReactGateway().onDestroyApp();
         }
-    }
-
-    @Override
-    public void onJsDevReload() {
-        modalController.destroy();
-        layout.destroy();
     }
 
     @Override
@@ -198,6 +199,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.setTitleBarTitle(screenInstanceId, title);
     }
 
+    public void setTitleBarSubtitle(String screenInstanceId, String subtitle) {
+        layout.setTitleBarSubtitle(screenInstanceId, subtitle);
+        modalController.setTitleBarSubtitle(screenInstanceId, subtitle);
+    }
+
     void setTitleBarButtons(String screenInstanceId, String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {
         layout.setTitleBarRightButtons(screenInstanceId, navigatorEventId, titleBarButtons);
         modalController.setTitleBarRightButtons(screenInstanceId, navigatorEventId, titleBarButtons);
@@ -237,6 +243,20 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public void setBottomTabBadgeByNavigatorId(String navigatorId, String badge) {
         if (layout instanceof BottomTabsLayout) {
             ((BottomTabsLayout) layout).setBottomTabBadgeByNavigatorId(navigatorId, badge);
+        }
+    }
+
+    public void showSnackbar(SnackbarParams params) {
+        layout.showSnackbar(params);
+    }
+
+    @Override
+    public void onEvent(Event event) {
+        if (event.getType().equals(ModalDismissedEvent.TYPE)) {
+            layout.onModalDismissed();
+        } else if (event.getType().equals(JsDevReloadEvent.TYPE)) {
+            modalController.destroy();
+            layout.destroy();
         }
     }
 }

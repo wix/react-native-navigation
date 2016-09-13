@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React from 'react';
 import {AppRegistry} from 'react-native';
 import platformSpecific from './deprecated/platformSpecificDeprecated';
@@ -33,7 +34,7 @@ function _registerComponentNoRedux(screenID, generator) {
           internalProps: {...props, ...PropRegistry.load(props.screenInstanceID)}
         }
       }
-  
+
       componentWillReceiveProps(nextProps) {
         this.setState({
           internalProps: {...PropRegistry.load(this.props.screenInstanceID), ...nextProps}
@@ -64,7 +65,7 @@ function _registerComponentRedux(screenID, generator, store, Provider) {
           internalProps: {...props, ...PropRegistry.load(props.screenInstanceID)}
         }
       }
-      
+
       componentWillReceiveProps(nextProps) {
         this.setState({
           internalProps: {...PropRegistry.load(this.props.screenInstanceID), ...nextProps}

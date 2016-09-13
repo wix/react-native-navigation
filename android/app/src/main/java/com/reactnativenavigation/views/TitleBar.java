@@ -57,6 +57,7 @@ public class TitleBar extends Toolbar {
     public void setStyle(StyleParams params) {
         setVisibility(params.titleBarHidden ? GONE : VISIBLE);
         setTitleTextColor(params);
+        setSubtitleTextColor(params);
         colorOverflowButton(params);
     }
 
@@ -74,6 +75,12 @@ public class TitleBar extends Toolbar {
     private void setTitleTextColor(StyleParams params) {
         if (params.titleBarTitleColor.hasColor()) {
             setTitleTextColor(params.titleBarTitleColor.getColor());
+        }
+    }
+
+    private void setSubtitleTextColor(StyleParams params) {
+        if (params.titleBarSubtitleColor.hasColor()) {
+            setSubtitleTextColor(params.titleBarSubtitleColor.getColor());
         }
     }
 

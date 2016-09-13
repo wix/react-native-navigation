@@ -47,6 +47,14 @@ class ListScreen extends Component {
     console.log('ListScreen', 'Unhandled event ' + event.id);
   }
 
+  componentWillMount() {
+    console.log('ListScreen', 'componentWillMount');
+  }
+
+  componentWillUnmount() {
+    console.log('ListScreen', 'componentWillUnmount');
+  }
+
   onTabSelected() {
     console.log('ListScreen', 'onTabSelected');
     this.props.navigator.setButtons({

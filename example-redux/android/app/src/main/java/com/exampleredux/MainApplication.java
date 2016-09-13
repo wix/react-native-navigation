@@ -1,22 +1,22 @@
 package com.exampleredux;
 
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.facebook.react.ReactPackage;
 import com.reactnativenavigation.NavigationApplication;
 
-import java.util.Collections;
 import java.util.List;
 
-public class App extends NavigationApplication {
+public class MainApplication extends NavigationApplication {
+
     @Override
     public boolean isDebug() {
         return BuildConfig.DEBUG;
     }
 
-    @NonNull
+    @Nullable
     @Override
     public List<ReactPackage> createAdditionalReactPackages() {
-        return Collections.emptyList();
+        return null;
     }
 }

@@ -6,8 +6,10 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.controllers.NavigationCommandsHandler;
+import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.params.parsers.SnackbarParamsParser;
 import com.reactnativenavigation.params.parsers.TitleBarButtonParamsParser;
 import com.reactnativenavigation.params.parsers.TitleBarLeftButtonParamsParser;
 
@@ -45,6 +47,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setScreenTitleBarTitle(String screenInstanceId, String title) {
         NavigationCommandsHandler.setScreenTitleBarTitle(screenInstanceId, title);
+    }
+
+    @ReactMethod
+    public void setScreenTitleBarSubtitle(String screenInstanceId, String subtitle) {
+        NavigationCommandsHandler.setScreenTitleBarSubtitle(screenInstanceId, subtitle);
     }
 
     @ReactMethod
@@ -152,5 +159,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void dismissTopModal() {
         NavigationCommandsHandler.dismissTopModal();
+    }
+
+    @ReactMethod
+    public void showSnackbar(final ReadableMap params) {
+        SnackbarParams snackbarParams = new SnackbarParamsParser().parse(BundleConverter.toBundle(params));
+        NavigationCommandsHandler.showSnackbar(snackbarParams);
     }
 }

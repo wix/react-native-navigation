@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, {Component} from 'react';
 import {AppRegistry, NativeModules} from 'react-native';
 import _ from 'lodash';
@@ -40,6 +41,8 @@ function adaptTopTabs(screen, navigatorID) {
     if (navigatorID) {
       tab.navigatorID = navigatorID;
     }
+    tab.screen = tab.screenId;
+    addNavigatorButtons(tab);
     adaptNavigationParams(tab);
   });
 }
@@ -115,6 +118,7 @@ function convertStyleParams(originalStyleObject) {
     topBarColor: originalStyleObject.navBarBackgroundColor,
     titleBarHidden: originalStyleObject.navBarHidden,
     titleBarTitleColor: originalStyleObject.navBarTextColor,
+    titleBarSubtitleColor: originalStyleObject.navBarTextSubtitleColor,
     titleBarButtonColor: originalStyleObject.navBarButtonColor,
     titleBarDisabledButtonColor: originalStyleObject.titleBarDisabledButtonColor,
     backButtonHidden: originalStyleObject.backButtonHidden,
@@ -253,6 +257,10 @@ function navigatorSetTitle(navigator, params) {
   newPlatformSpecific.setScreenTitleBarTitle(navigator.screenInstanceID, params.title);
 }
 
+function navigatorSetSubtitle(navigator, params) {
+  newPlatformSpecific.setScreenTitleBarSubtitle(navigator.screenInstanceID, params.subtitle);
+}
+
 function navigatorSwitchToTab(navigator, params) {
   if (params.tabIndex >= 0) {
     newPlatformSpecific.selectBottomTabByTabIndex(params.tabIndex);
@@ -352,11 +360,42 @@ function addNavigatorButtons(screen, sideMenuParams) {
     }
   }
 
+  const fab = getFab(screen);
+  if (fab) {
+    screen.fab = fab;
+  }
+
   if (rightButtons) {
     screen.rightButtons = rightButtons;
   }
   if (leftButton) {
     screen.leftButton = leftButton;
+  }
+}
+
+function getFab(screen) {
+  if (screen.fab) {
+    const fab = screen.fab;
+    const collapsedIconUri = resolveAssetSource(fab.collapsedIcon);
+    if (!collapsedIconUri) {
+      return;
+    }
+    fab.collapsedIcon = collapsedIconUri.uri;
+    if (fab.expendedIcon) {
+      const expendedIconUri = resolveAssetSource(fab.expendedIcon);
+      if (expendedIconUri) {
+        fab.expendedIcon = expendedIconUri.uri;
+      }
+    }
+
+    if (fab.actions) {
+      _.forEach(fab.actions, (action) => {
+        action.icon = resolveAssetSource(action.icon).uri;
+        return action;
+      })
+    }
+
+    return fab;
   }
 }
 
@@ -386,9 +425,12 @@ function getLeftButton(screen) {
     return screen.navigatorButtons.leftButtons[0];
   }
 
-
   if (screen.leftButtons) {
-    return screen.leftButtons[0];
+    if (_.isArray(screen.leftButtons)) {
+      return screen.leftButtons[0];
+    } else {
+      return screen.leftButtons;
+    }
   }
 
   return null;
@@ -415,6 +457,10 @@ function addNavigationStyleParams(screen) {
   screen.navigatorStyle = Object.assign({}, screen.navigatorStyle, Screen.navigatorStyle);
 }
 
+function showSnackbar(navigator, params) {
+  return newPlatformSpecific.showSnackbar(params);
+}
+
 export default {
   startTabBasedApp,
   startSingleScreenApp,
@@ -428,8 +474,10 @@ export default {
   navigatorSetButtons,
   navigatorSetTabBadge,
   navigatorSetTitle,
+  navigatorSetSubtitle,
   navigatorSwitchToTab,
   navigatorToggleDrawer,
   navigatorToggleTabs,
-  navigatorToggleNavBar
+  navigatorToggleNavBar,
+  showSnackbar
 };

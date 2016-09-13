@@ -4,8 +4,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.ScreenParams;
-import com.reactnativenavigation.params.TopTabParams;
+import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 
@@ -22,6 +23,11 @@ public class ViewPagerScreen extends Screen {
 
     public ViewPagerScreen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener backButtonListener) {
         super(activity, screenParams, backButtonListener);
+    }
+
+    @Override
+    public BaseScreenParams getScreenParams() {
+        return screenParams.topTabParams.get(viewPager.getCurrentItem());
     }
 
     @Override
@@ -44,7 +50,7 @@ public class ViewPagerScreen extends Screen {
 
     private void addPages() {
         contentViews = new ArrayList<>();
-        for (TopTabParams tab : screenParams.topTabParams) {
+        for (PageParams tab : screenParams.topTabParams) {
             ContentView contentView = new ContentView(getContext(), tab.screenId, tab.navigationParams);
             addContent(contentView);
             contentViews.add(contentView);
@@ -54,6 +60,7 @@ public class ViewPagerScreen extends Screen {
     private void setupViewPager(TabLayout tabLayout) {
         ContentViewPagerAdapter adapter = new ContentViewPagerAdapter(contentViews, screenParams.topTabParams);
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }
 
@@ -63,23 +70,9 @@ public class ViewPagerScreen extends Screen {
     }
 
     @Override
-    public void ensureUnmountOnDetachedFromWindow() {
+    public void unmountReactView() {
         for (ContentView contentView : contentViews) {
-            contentView.ensureUnmountOnDetachedFromWindow();
-        }
-    }
-
-    @Override
-    public void preventUnmountOnDetachedFromWindow() {
-        for (ContentView contentView : contentViews) {
-            contentView.preventUnmountOnDetachedFromWindow();
-        }
-    }
-
-    @Override
-    public void preventMountAfterReattachedToWindow() {
-        for (ContentView contentView : contentViews) {
-            contentView.preventMountAfterReattachedToWindow();
+            contentView.unmountReactView();
         }
     }
 
@@ -91,5 +84,10 @@ public class ViewPagerScreen extends Screen {
     @Override
     public String getScreenInstanceId() {
         return screenParams.topTabParams.get(viewPager.getCurrentItem()).navigationParams.screenInstanceId;
+    }
+
+    @Override
+    public String getNavigatorEventId() {
+        return screenParams.topTabParams.get(viewPager.getCurrentItem()).navigationParams.navigatorEventId;
     }
 }

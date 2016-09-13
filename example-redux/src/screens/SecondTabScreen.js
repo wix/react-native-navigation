@@ -19,10 +19,27 @@ class SecondTabScreen extends Component {
     navBarTranslucent: true
   };
 
+  static navigatorButtons = {
+    fab: {
+      id: 'share',
+      collapsedIcon: require('../../img/ic_home.png'),
+      backgroundColor: '#607D8B'
+    }
+  };
+
   constructor(props) {
     super(props);
+    console.log('SecondTabScreen', 'constructor');
     this.buttonsCounter = 0;
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  componentWillMount() {
+    console.log('SecondTabScreen', 'componentWillMount');
+  }
+
+  componentWillUnmount() {
+    console.log('SecondTabScreen', 'componentWillUnmount');
   }
 
   render() {
@@ -132,7 +149,7 @@ class SecondTabScreen extends Component {
 
     this.props.navigator.push({
       title: "Pushed from SideMenu",
-      screen: parts[2],
+      screen: 'example.PushedScreen',
       passProps: {
         str: 'This is a prop passed in \'navigator.push()\'!',
         obj: {

@@ -29,11 +29,17 @@ class PushedScreen extends Component {
     leftButton: {
       id: 'back',
       color: '#00ff00'
+    },
+    fab: {
+      collapsedId: 'home',
+      collapsedIcon: require('../../img/ic_home.png'),
+      backgroundColor: '#607D8B'
     }
   };
 
   constructor(props) {
     super(props);
+    console.log('PushedScreen', 'constructor');
     this.bgColor = this.getRandomColor();
     console.log(`constructor ${this.bgColor}`);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -41,7 +47,11 @@ class PushedScreen extends Component {
   }
 
   componentWillUnmount() {
-    console.log(`componentWillUnmount ${this.bgColor}`);
+    console.log('PushedScreen', `componentWillUnmount ${this.bgColor}`);
+  }
+
+  componentWillMount() {
+    console.log('PushedScreen', 'componentWillMount');
   }
 
   getRandomColor() {

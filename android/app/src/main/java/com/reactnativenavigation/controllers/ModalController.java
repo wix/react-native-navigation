@@ -2,6 +2,8 @@ package com.reactnativenavigation.controllers;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.reactnativenavigation.events.EventBus;
+import com.reactnativenavigation.events.ModalDismissedEvent;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -72,6 +74,7 @@ public class ModalController implements ScreenStackContainer, Modal.OnModalDismi
     @Override
     public void onModalDismissed(Modal modal) {
         stack.remove(modal);
+        EventBus.instance.post(new ModalDismissedEvent());
     }
 
     public void setTopBarVisible(String screenInstanceId, boolean hidden, boolean animated) {
@@ -83,6 +86,12 @@ public class ModalController implements ScreenStackContainer, Modal.OnModalDismi
     public void setTitleBarTitle(String screenInstanceId, String title) {
         for (Modal modal : stack) {
             modal.setTitleBarTitle(screenInstanceId, title);
+        }
+    }
+
+    public void setTitleBarSubtitle(String screenInstanceId, String subtitle) {
+        for (Modal modal : stack) {
+            modal.setTitleBarSubtitle(screenInstanceId, subtitle);
         }
     }
 

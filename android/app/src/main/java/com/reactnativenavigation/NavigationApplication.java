@@ -4,6 +4,8 @@ import android.app.Application;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 
+import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -12,22 +14,22 @@ import com.reactnativenavigation.react.ReactGateway;
 
 import java.util.List;
 
-public abstract class NavigationApplication extends Application {
+public abstract class NavigationApplication extends Application implements ReactApplication {
 
     public static NavigationApplication instance;
 
-    private ReactGateway reactGateway;
+    private NavigationReactGateway reactGateway;
     private Handler handler;
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        reactGateway = new NavigationReactGateway();
         handler = new Handler(getMainLooper());
+        reactGateway = new NavigationReactGateway();
     }
 
-    public void startReactContext() {
+    public void startReactContextOnceInBackgroundAndExecuteJS() {
         reactGateway.startReactContextOnceInBackgroundAndExecuteJS();
     }
 
@@ -51,12 +53,33 @@ public abstract class NavigationApplication extends Application {
         // nothing
     }
 
-    public String getJsEntryFileName() {
-        return "index.android";
+    @Override
+    public ReactNativeHost getReactNativeHost() {
+        return reactGateway.getReactNativeHost();
     }
 
+    /**
+     * @see ReactNativeHost#getJSMainModuleName()
+     */
+    @Nullable
+    public String getJSMainModuleName() {
+        return null;
+    }
+
+    /**
+     * @see ReactNativeHost#getJSBundleFile()
+     */
+    @Nullable
+    public String getJSBundleFile() {
+        return null;
+    }
+
+    /**
+     * @see ReactNativeHost#getBundleAssetName()
+     */
+    @Nullable
     public String getBundleAssetName() {
-        return "index.android.bundle";
+        return null;
     }
 
     public abstract boolean isDebug();
@@ -92,5 +115,4 @@ public abstract class NavigationApplication extends Application {
         }
         reactGateway.getReactEventEmitter().sendEvent(eventId, arguments);
     }
-
 }

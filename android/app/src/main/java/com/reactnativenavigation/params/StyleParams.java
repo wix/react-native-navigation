@@ -44,6 +44,7 @@ public class StyleParams {
 
     public boolean titleBarHidden;
     public Color titleBarTitleColor;
+    public Color titleBarSubtitleColor;
     public Color titleBarButtonColor;
     public Color titleBarDisabledButtonColor;
     public boolean backButtonHidden;
@@ -54,6 +55,9 @@ public class StyleParams {
     public Color selectedTopTabIndicatorColor;
 
     public boolean drawScreenAboveBottomTabs;
+
+    public Color snackbarTextColor;
+    public Color snackbarButtonColor;
 
     public boolean bottomTabsHidden;
     public boolean bottomTabsHiddenOnScroll;

@@ -3,7 +3,6 @@ package com.reactnativenavigation.params.parsers;
 import android.os.Bundle;
 
 import com.reactnativenavigation.params.AppStyle;
-import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.react.ImageLoader;
 
@@ -31,11 +30,6 @@ public class TitleBarButtonParamsParser extends Parser {
         result.enabled = bundle.getBoolean("enabled", true);
         result.eventId = bundle.getString("id");
         return result;
-    }
-
-    private StyleParams.Color getColor(Bundle bundle, String key, StyleParams.Color defaultColor) {
-        StyleParams.Color color = StyleParams.Color.parse(bundle.getString(key));
-        return color.hasColor() || defaultColor == null ? color : defaultColor;
     }
 
     private static TitleBarButtonParams.ShowAsAction parseShowAsAction(String showAsAction) {

@@ -10,10 +10,6 @@ import com.reactnativenavigation.bridge.NavigationReactEventEmitter;
 
 public interface ReactGateway {
 
-    interface OnJsDevReloadListener {
-        void onJsDevReload();
-    }
-
     void startReactContextOnceInBackgroundAndExecuteJS();
 
     boolean isInitialized();
@@ -24,7 +20,7 @@ public interface ReactGateway {
 
     ReactInstanceManager getReactInstanceManager();
 
-    void onResumeActivity(Activity activity, DefaultHardwareBackBtnHandler defaultHardwareBackBtnHandler, OnJsDevReloadListener onJsDevReloadListener);
+    void onResumeActivity(Activity activity, DefaultHardwareBackBtnHandler defaultHardwareBackBtnHandler);
 
     void onPauseActivity();
 

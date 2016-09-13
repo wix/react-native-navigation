@@ -31,6 +31,10 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         layout.setTitleBarTitle(screenInstanceId, title);
     }
 
+    public void setTitleBarSubtitle(String screenInstanceId, String subtitle) {
+        layout.setTitleBarSubtitle(screenInstanceId, subtitle);
+    }
+
     public void setTitleBarRightButtons(String screenInstanceId, String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {
         layout.setTitleBarRightButtons(screenInstanceId, navigatorEventId, titleBarButtons);
     }

@@ -28,18 +28,8 @@ public class SingleScreen extends Screen {
     }
 
     @Override
-    public void ensureUnmountOnDetachedFromWindow() {
-        contentView.ensureUnmountOnDetachedFromWindow();
-    }
-
-    @Override
-    public void preventUnmountOnDetachedFromWindow() {
-        contentView.preventUnmountOnDetachedFromWindow();
-    }
-
-    @Override
-    public void preventMountAfterReattachedToWindow() {
-        contentView.preventMountAfterReattachedToWindow();
+    public void unmountReactView() {
+        contentView.unmountReactView();
     }
 
     @Override

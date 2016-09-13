@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.reactnativenavigation.params.NavigationParams;
-import com.reactnativenavigation.params.TopTabParams;
+import com.reactnativenavigation.params.PageParams;
 
 import java.util.List;
 
@@ -14,21 +14,24 @@ public class TopTabParamsParser extends Parser {
     private static final String NAVIGATION_PARAMS = "navigationParams";
 
     @SuppressWarnings("ConstantConditions")
-    public List<TopTabParams> parse(Bundle params) {
-        return parseBundle(params, new ParseStrategy<TopTabParams>() {
+    public List<PageParams> parse(Bundle params) {
+        return parseBundle(params, new ParseStrategy<PageParams>() {
             @Override
-            public TopTabParams parse(Bundle topTabs) {
+            public PageParams parse(Bundle topTabs) {
                 return parseItem(topTabs);
             }
         });
     }
 
     @NonNull
-    private static TopTabParams parseItem(Bundle params) {
-        TopTabParams result = new TopTabParams();
+    private static PageParams parseItem(Bundle params) {
+        PageParams result = new PageParams();
         result.screenId = params.getString(KEY_SCREEN_ID);
         result.title = params.getString(KEY_TITLE);
         result.navigationParams = new NavigationParams(params.getBundle(NAVIGATION_PARAMS));
+        result.leftButton = ButtonParser.parseLeftButton(params);
+        result.rightButtons = ButtonParser.parseRightButton(params);
+        result.fabParams = ButtonParser.parseFab(params, result.navigationParams.navigatorEventId);
         return result;
     }
 }

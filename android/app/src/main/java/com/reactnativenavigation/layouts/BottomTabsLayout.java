@@ -7,14 +7,19 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.events.EventBus;
+import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
+import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.SideMenu;
+import com.reactnativenavigation.views.SnackbarAndFabContainer;
 
 import java.util.List;
 
@@ -25,6 +30,7 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
 
     private final AppCompatActivity activity;
     private ActivityParams params;
+    private SnackbarAndFabContainer snackbarAndFabContainer;
     private BottomTabs bottomTabs;
     private ScreenStack[] screenStacks;
     private final SideMenuParams sideMenuParams;
@@ -45,6 +51,7 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
         createBottomTabs();
         addBottomTabs();
         addScreenStacks();
+        createSnackbarContainer();
         showInitialScreenStack();
     }
 
@@ -94,8 +101,16 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
         getScreenStackParent().addView(bottomTabs, lp);
     }
 
+    private void createSnackbarContainer() {
+        snackbarAndFabContainer = new SnackbarAndFabContainer(getContext());
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        lp.addRule(ABOVE, bottomTabs.getId());
+        getScreenStackParent().addView(snackbarAndFabContainer, lp);
+    }
+
     private void showInitialScreenStack() {
         showStackAndUpdateStyle(screenStacks[0]);
+        EventBus.instance.post(new ScreenChangedEvent(screenStacks[0].peek().getScreenParams()));
     }
 
     @Override
@@ -112,6 +127,7 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
         if (getCurrentScreenStack().canPop()) {
             getCurrentScreenStack().pop(true);
             setBottomTabsStyleFromCurrentScreen();
+            EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
             return true;
         } else {
             return false;
@@ -133,6 +149,13 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     public void setTitleBarTitle(String screenInstanceId, String title) {
         for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
             screenStacks[i].setScreenTitleBarTitle(screenInstanceId, title);
+        }
+    }
+
+    @Override
+    public void setTitleBarSubtitle(String screenInstanceId, String subtitle) {
+        for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
+            screenStacks[i].setScreenTitleBarSubtitle(screenInstanceId, subtitle);
         }
     }
 
@@ -164,6 +187,17 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
         }
     }
 
+    @Override
+    public void showSnackbar(SnackbarParams params) {
+        final String eventId = getCurrentScreenStack().peek().getNavigatorEventId();
+        snackbarAndFabContainer.showSnackbar(eventId, params);
+    }
+
+    @Override
+    public void onModalDismissed() {
+        EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
+    }
+
     public void selectBottomTabByTabIndex(Integer index) {
         bottomTabs.setCurrentItem(index);
     }
@@ -173,50 +207,54 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     }
 
     @Override
-    public void push(ScreenParams screenParams) {
-        ScreenStack screenStack = getScreenStack(screenParams.getNavigatorId());
-        screenStack.push(screenParams, createScreenLayoutParams(screenParams));
+    public void push(ScreenParams params) {
+        ScreenStack screenStack = getScreenStack(params.getNavigatorId());
+        screenStack.push(params, createScreenLayoutParams(params));
         if (isCurrentStack(screenStack)) {
-            bottomTabs.setStyleFromScreen(screenParams.styleParams);
+            bottomTabs.setStyleFromScreen(params.styleParams);
+            EventBus.instance.post(new ScreenChangedEvent(params));
         }
     }
 
     @Override
-    public void pop(ScreenParams screenParams) {
-        getCurrentScreenStack().pop(screenParams.animateScreenTransitions, new ScreenStack.OnScreenPop() {
+    public void pop(ScreenParams params) {
+        getCurrentScreenStack().pop(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
             @Override
             public void onScreenPopAnimationEnd() {
                 setBottomTabsStyleFromCurrentScreen();
             }
         });
+        EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
     }
 
     @Override
     public void popToRoot(ScreenParams params) {
         getCurrentScreenStack().popToRoot(params.animateScreenTransitions);
         setBottomTabsStyleFromCurrentScreen();
+        EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
     }
 
     @Override
     public void newStack(ScreenParams params) {
         ScreenStack currentScreenStack = getCurrentScreenStack();
-        currentScreenStack.destroy();
         removeView(currentScreenStack.peek());
+        currentScreenStack.destroy();
 
         ScreenStack newStack = new ScreenStack(activity, getScreenStackParent(), params.getNavigatorId(), this);
         LayoutParams lp = createScreenLayoutParams(params);
-        newStack.pushInitialScreen(params, lp);
+        newStack.pushInitialScreenWithAnimation(params, lp);
         screenStacks[currentStackIndex] = newStack;
 
         bottomTabs.setStyleFromScreen(params.styleParams);
+        EventBus.instance.post(new ScreenChangedEvent(params));
     }
 
     @Override
     public void destroy() {
+        snackbarAndFabContainer.destroy();
         for (ScreenStack screenStack : screenStacks) {
             screenStack.destroy();
         }
-
         if (sideMenu != null) {
             sideMenu.destroy();
         }
@@ -225,12 +263,14 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     @Override
     public boolean onTabSelected(int position, boolean wasSelected) {
         hideCurrentStack();
-
-        ScreenStack newStack = screenStacks[position];
-        showStackAndUpdateStyle(newStack);
-        currentStackIndex = position;
-
+        showNewStack(position);
+        EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
         return true;
+    }
+
+    private void showNewStack(int position) {
+        showStackAndUpdateStyle(screenStacks[position]);
+        currentStackIndex = position;
     }
 
     private void showStackAndUpdateStyle(ScreenStack newStack) {
@@ -290,6 +330,7 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
                 @Override
                 public void onScreenPopAnimationEnd() {
                     setBottomTabsStyleFromCurrentScreen();
+                    EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
                 }
             });
             return true;
@@ -301,6 +342,9 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     public void onSideMenuButtonClick() {
         if (sideMenu != null) {
             sideMenu.openDrawer();
+        } else {
+            final String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
+            NavigationApplication.instance.sendNavigatorEvent("sideMenu", navigatorEventId);
         }
     }
 }

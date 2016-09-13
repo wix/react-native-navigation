@@ -40,6 +40,10 @@ function setScreenTitleBarTitle(screenInstanceID, title) {
   NativeReactModule.setScreenTitleBarTitle(screenInstanceID, title);
 }
 
+function setScreenTitleBarSubtitle(screenInstanceID, subtitle) {
+  NativeReactModule.setScreenTitleBarSubtitle(screenInstanceID, subtitle);
+}
+
 function setScreenTitleBarButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton) {
   NativeReactModule.setScreenTitleBarButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton);
 }
@@ -108,6 +112,10 @@ function setBottomTabBadgeByNavigatorId(navigatorId, badge) {
   NativeReactModule.setBottomTabBadgeByNavigatorId(navigatorId, badge);
 }
 
+function showSnackbar(params) {
+  NativeReactModule.showSnackbar(params);
+}
+
 module.exports = {
   startApp,
   push,
@@ -117,6 +125,7 @@ module.exports = {
   toggleTopBarVisible,
   toggleBottomTabsVisible,
   setScreenTitleBarTitle,
+  setScreenTitleBarSubtitle,
   setScreenTitleBarButtons,
   showModal,
   dismissTopModal,
@@ -126,5 +135,6 @@ module.exports = {
   selectBottomTabByNavigatorId,
   selectBottomTabByTabIndex,
   setBottomTabBadgeByNavigatorId,
-  setBottomTabBadgeByIndex
+  setBottomTabBadgeByIndex,
+  showSnackbar
 };

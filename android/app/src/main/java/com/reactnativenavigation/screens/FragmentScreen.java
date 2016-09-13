@@ -109,17 +109,7 @@ public class FragmentScreen extends Screen {
     }
 
     @Override
-    public void ensureUnmountOnDetachedFromWindow() {
-        // nothing
-    }
-
-    @Override
-    public void preventUnmountOnDetachedFromWindow() {
-        // nothing
-    }
-
-    @Override
-    public void preventMountAfterReattachedToWindow() {
+    public void unmountReactView() {
         // nothing
     }
 

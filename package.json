@@ -1,50 +1,49 @@
 {
   "name": "react-native-navigation",
+  "version": "2.0.0-experimental.107",
+  "description": "React Native Navigation - truly native navigation for iOS and Android",
+  "license": "MIT",
+  "nativePackage": true,
+  "author": "Tal Kol <talkol@gmail.com>",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wix/react-native-navigation.git"
-  },
-  "version": "2.0.0-experimental.87",
-  "description": "React Native Navigation - truly native navigation for iOS and Android",
-  "nativePackage": true,
   "bugs": {
     "url": "https://github.com/wix/react-native-navigation/issues"
   },
   "homepage": "https://github.com/wix/react-native-navigation",
   "readme": "https://github.com/wix/react-native-navigation#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wix/react-native-navigation.git"
+  },
   "main": "src/index.js",
-  "author": "Tal Kol <talkol@gmail.com>",
-  "license": "MIT",
   "scripts": {
     "build": ":",
     "lint": "eslint src test",
     "pretest": "npm run lint",
-    "test": ":",
+    "test": "cd android && ./gradlew clean testDebugUnitTest",
     "release": "npm version prerelease && npm publish --tag next && npm view react-native-navigation dist-tags && git push"
   },
   "peerDependencies": {
-    "react-native": ">=0.25.1",
-    "react": ">=0.14.5"
+    "react-native": "*",
+    "react": "*"
   },
   "dependencies": {
     "react-native-controllers": "^2.0.0",
-    "lodash": "^4.13.0",
-    "babel-preset-react-native-stage-0": "^1.0.0"
+    "lodash": "^4.13.0"
   },
   "optionalDependencies": {
     "react-redux": "*"
   },
   "devDependencies": {
-    "react-native": "0.25.1",
-    "react": "0.14.5",
+    "react-native": "0.31.0",
+    "react": "15.2.1",
     "app-root-path": "^1.0.0",
     "babel-cli": "^6.8.0",
     "babel-core": "^6.8.0",
     "babel-polyfill": "^6.8.0",
-    "babel-preset-react-native-stage-0": "^1.0.0",
+    "babel-preset-react-native": "^1.0.0",
     "babel-register": "^6.8.0",
     "eslint": "^2.5.1",
     "eslint-plugin-babel": "^3.0.0",

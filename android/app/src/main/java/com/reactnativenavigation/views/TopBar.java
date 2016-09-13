@@ -36,6 +36,10 @@ public class TopBar extends AppBarLayout {
         titleBar.setTitle(title);
     }
 
+    public void setSubtitle(String subtitle) {
+        titleBar.setSubtitle(subtitle);
+    }
+
     public void setStyle(StyleParams styleParams) {
         if (styleParams.topBarColor.hasColor()) {
             setBackgroundColor(styleParams.topBarColor.getColor());

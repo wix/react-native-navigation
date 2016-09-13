@@ -6,7 +6,6 @@ import android.view.View;
 import com.facebook.react.ReactRootView;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.NavigationParams;
-import com.reactnativenavigation.react.ReactViewHacks;
 import com.reactnativenavigation.screens.SingleScreen;
 import com.reactnativenavigation.utils.ViewUtils;
 
@@ -29,16 +28,8 @@ public class ContentView extends ReactRootView {
         return navigationParams.navigatorEventId;
     }
 
-    public void preventUnmountOnDetachedFromWindow() {
-        ReactViewHacks.preventUnmountOnDetachedFromWindow(this);
-    }
-
-    public void ensureUnmountOnDetachedFromWindow() {
-        ReactViewHacks.ensureUnmountOnDetachedFromWindow(this);
-    }
-
-    public void preventMountAfterReattachedToWindow() {
-        ReactViewHacks.preventMountAfterReattachedToWindow(this);
+    public void unmountReactView() {
+        unmountReactApplication();
     }
 
     @Override

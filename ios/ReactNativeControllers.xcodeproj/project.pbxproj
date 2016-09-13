@@ -1,0 +1,464 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		260804DB1CE0D9D20094DBA1 /* RCCToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 260804DA1CE0D9D20094DBA1 /* RCCToolBar.m */; };
+		26AFF3F51D7EEE2400CBA211 /* RCCTitleViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 26AFF3F41D7EEE2400CBA211 /* RCCTitleViewHelper.m */; };
+		CC84A19E1C1A0C4E00B3A6A2 /* RCCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1941C1A0C4E00B3A6A2 /* RCCManager.m */; };
+		CC84A19F1C1A0C4E00B3A6A2 /* RCCManagerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1961C1A0C4E00B3A6A2 /* RCCManagerModule.m */; };
+		CC84A1A01C1A0C4E00B3A6A2 /* RCCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1981C1A0C4E00B3A6A2 /* RCCNavigationController.m */; };
+		CC84A1A11C1A0C4E00B3A6A2 /* RCCTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A19A1C1A0C4E00B3A6A2 /* RCCTabBarController.m */; };
+		CC84A1A21C1A0C4E00B3A6A2 /* RCCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A19C1C1A0C4E00B3A6A2 /* RCCViewController.m */; };
+		D83514F61D29719A00D53758 /* RCCNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = D83514F51D29719A00D53758 /* RCCNotification.m */; };
+		D84813191C8C5EB700051BAF /* RCCLightBox.m in Sources */ = {isa = PBXBuildFile; fileRef = D84813181C8C5EB700051BAF /* RCCLightBox.m */; };
+		D85082E11CBCF54200FDB961 /* RCCDrawerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082CB1CBCF54200FDB961 /* RCCDrawerHelper.m */; };
+		D85082E21CBCF54200FDB961 /* RCCTheSideBarManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082CE1CBCF54200FDB961 /* RCCTheSideBarManagerViewController.m */; };
+		D85082E31CBCF54200FDB961 /* SidebarAirbnbAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082D21CBCF54200FDB961 /* SidebarAirbnbAnimation.m */; };
+		D85082E41CBCF54200FDB961 /* SidebarAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082D41CBCF54200FDB961 /* SidebarAnimation.m */; };
+		D85082E51CBCF54200FDB961 /* SidebarFacebookAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082D61CBCF54200FDB961 /* SidebarFacebookAnimation.m */; };
+		D85082E61CBCF54200FDB961 /* SidebarFeedlyAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082D81CBCF54200FDB961 /* SidebarFeedlyAnimation.m */; };
+		D85082E71CBCF54200FDB961 /* SidebarFlipboardAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082DA1CBCF54200FDB961 /* SidebarFlipboardAnimation.m */; };
+		D85082E81CBCF54200FDB961 /* SidebarLuvocracyAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082DC1CBCF54200FDB961 /* SidebarLuvocracyAnimation.m */; };
+		D85082E91CBCF54200FDB961 /* SidebarWunderlistAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082DE1CBCF54200FDB961 /* SidebarWunderlistAnimation.m */; };
+		D85082EA1CBCF54200FDB961 /* TheSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082E01CBCF54200FDB961 /* TheSidebarController.m */; };
+		D85082FC1CBCF8A800FDB961 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082BE1CBCF42400FDB961 /* MMDrawerBarButtonItem.m */; };
+		D85082FD1CBCF8A800FDB961 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082C11CBCF42400FDB961 /* MMDrawerController.m */; };
+		D85082FE1CBCF8A800FDB961 /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082C31CBCF42400FDB961 /* MMDrawerVisualState.m */; };
+		D85082FF1CBCF8A800FDB961 /* MMExampleDrawerVisualStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082C51CBCF42400FDB961 /* MMExampleDrawerVisualStateManager.m */; };
+		D85083001CBCF8A800FDB961 /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85082C71CBCF42400FDB961 /* UIViewController+MMDrawerController.m */; };
+		D8D779981D04B7180050CFEA /* RCTHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D779971D04B7180050CFEA /* RCTHelpers.m */; };
+		D8E11C571CBD1F670018B644 /* RCCDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E11C561CBD1F670018B644 /* RCCDrawerController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D8AFADBB1BEE6F3F00A4592D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		260804D91CE0D9D20094DBA1 /* RCCToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCToolBar.h; sourceTree = "<group>"; };
+		260804DA1CE0D9D20094DBA1 /* RCCToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCToolBar.m; sourceTree = "<group>"; };
+		26AFF3F31D7EEE2400CBA211 /* RCCTitleViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCTitleViewHelper.h; sourceTree = "<group>"; };
+		26AFF3F41D7EEE2400CBA211 /* RCCTitleViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCTitleViewHelper.m; sourceTree = "<group>"; };
+		CC84A1931C1A0C4E00B3A6A2 /* RCCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCManager.h; sourceTree = "<group>"; };
+		CC84A1941C1A0C4E00B3A6A2 /* RCCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = RCCManager.m; sourceTree = "<group>"; tabWidth = 2; };
+		CC84A1951C1A0C4E00B3A6A2 /* RCCManagerModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCManagerModule.h; sourceTree = "<group>"; };
+		CC84A1961C1A0C4E00B3A6A2 /* RCCManagerModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCManagerModule.m; sourceTree = "<group>"; };
+		CC84A1971C1A0C4E00B3A6A2 /* RCCNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCNavigationController.h; sourceTree = "<group>"; };
+		CC84A1981C1A0C4E00B3A6A2 /* RCCNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = RCCNavigationController.m; sourceTree = "<group>"; tabWidth = 2; };
+		CC84A1991C1A0C4E00B3A6A2 /* RCCTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCTabBarController.h; sourceTree = "<group>"; };
+		CC84A19A1C1A0C4E00B3A6A2 /* RCCTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = RCCTabBarController.m; sourceTree = "<group>"; tabWidth = 2; };
+		CC84A19B1C1A0C4E00B3A6A2 /* RCCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCViewController.h; sourceTree = "<group>"; };
+		CC84A19C1C1A0C4E00B3A6A2 /* RCCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = RCCViewController.m; sourceTree = "<group>"; tabWidth = 2; };
+		D800E8171CFED1DB004A187F /* RCCExternalViewControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCExternalViewControllerProtocol.h; sourceTree = "<group>"; };
+		D83514F41D29719A00D53758 /* RCCNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCNotification.h; sourceTree = "<group>"; };
+		D83514F51D29719A00D53758 /* RCCNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCNotification.m; sourceTree = "<group>"; };
+		D84813171C8C5EB700051BAF /* RCCLightBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCLightBox.h; sourceTree = "<group>"; };
+		D84813181C8C5EB700051BAF /* RCCLightBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCLightBox.m; sourceTree = "<group>"; };
+		D85082BD1CBCF42400FDB961 /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
+		D85082BE1CBCF42400FDB961 /* MMDrawerBarButtonItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMDrawerBarButtonItem.m; sourceTree = "<group>"; };
+		D85082BF1CBCF42400FDB961 /* MMDrawerController+Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MMDrawerController+Subclass.h"; sourceTree = "<group>"; };
+		D85082C01CBCF42400FDB961 /* MMDrawerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMDrawerController.h; sourceTree = "<group>"; };
+		D85082C11CBCF42400FDB961 /* MMDrawerController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMDrawerController.m; sourceTree = "<group>"; };
+		D85082C21CBCF42400FDB961 /* MMDrawerVisualState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMDrawerVisualState.h; sourceTree = "<group>"; };
+		D85082C31CBCF42400FDB961 /* MMDrawerVisualState.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMDrawerVisualState.m; sourceTree = "<group>"; };
+		D85082C41CBCF42400FDB961 /* MMExampleDrawerVisualStateManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMExampleDrawerVisualStateManager.h; sourceTree = "<group>"; };
+		D85082C51CBCF42400FDB961 /* MMExampleDrawerVisualStateManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMExampleDrawerVisualStateManager.m; sourceTree = "<group>"; };
+		D85082C61CBCF42400FDB961 /* UIViewController+MMDrawerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MMDrawerController.h"; sourceTree = "<group>"; };
+		D85082C71CBCF42400FDB961 /* UIViewController+MMDrawerController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MMDrawerController.m"; sourceTree = "<group>"; };
+		D85082C81CBCF42400FDB961 /* RCCDrawerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCDrawerController.h; sourceTree = "<group>"; };
+		D85082CA1CBCF54200FDB961 /* RCCDrawerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCDrawerHelper.h; sourceTree = "<group>"; };
+		D85082CB1CBCF54200FDB961 /* RCCDrawerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCDrawerHelper.m; sourceTree = "<group>"; };
+		D85082CC1CBCF54200FDB961 /* RCCDrawerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCDrawerProtocol.h; sourceTree = "<group>"; };
+		D85082CD1CBCF54200FDB961 /* RCCTheSideBarManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCTheSideBarManagerViewController.h; sourceTree = "<group>"; };
+		D85082CE1CBCF54200FDB961 /* RCCTheSideBarManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCTheSideBarManagerViewController.m; sourceTree = "<group>"; };
+		D85082D11CBCF54200FDB961 /* SidebarAirbnbAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarAirbnbAnimation.h; sourceTree = "<group>"; };
+		D85082D21CBCF54200FDB961 /* SidebarAirbnbAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarAirbnbAnimation.m; sourceTree = "<group>"; };
+		D85082D31CBCF54200FDB961 /* SidebarAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarAnimation.h; sourceTree = "<group>"; };
+		D85082D41CBCF54200FDB961 /* SidebarAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarAnimation.m; sourceTree = "<group>"; };
+		D85082D51CBCF54200FDB961 /* SidebarFacebookAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarFacebookAnimation.h; sourceTree = "<group>"; };
+		D85082D61CBCF54200FDB961 /* SidebarFacebookAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarFacebookAnimation.m; sourceTree = "<group>"; };
+		D85082D71CBCF54200FDB961 /* SidebarFeedlyAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarFeedlyAnimation.h; sourceTree = "<group>"; };
+		D85082D81CBCF54200FDB961 /* SidebarFeedlyAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarFeedlyAnimation.m; sourceTree = "<group>"; };
+		D85082D91CBCF54200FDB961 /* SidebarFlipboardAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarFlipboardAnimation.h; sourceTree = "<group>"; };
+		D85082DA1CBCF54200FDB961 /* SidebarFlipboardAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarFlipboardAnimation.m; sourceTree = "<group>"; };
+		D85082DB1CBCF54200FDB961 /* SidebarLuvocracyAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarLuvocracyAnimation.h; sourceTree = "<group>"; };
+		D85082DC1CBCF54200FDB961 /* SidebarLuvocracyAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarLuvocracyAnimation.m; sourceTree = "<group>"; };
+		D85082DD1CBCF54200FDB961 /* SidebarWunderlistAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarWunderlistAnimation.h; sourceTree = "<group>"; };
+		D85082DE1CBCF54200FDB961 /* SidebarWunderlistAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarWunderlistAnimation.m; sourceTree = "<group>"; };
+		D85082DF1CBCF54200FDB961 /* TheSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TheSidebarController.h; sourceTree = "<group>"; };
+		D85082E01CBCF54200FDB961 /* TheSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TheSidebarController.m; sourceTree = "<group>"; };
+		D8AFADBD1BEE6F3F00A4592D /* libReactNativeControllers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeControllers.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8D779961D04B7180050CFEA /* RCTHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTHelpers.h; sourceTree = "<group>"; };
+		D8D779971D04B7180050CFEA /* RCTHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTHelpers.m; sourceTree = "<group>"; };
+		D8E11C561CBD1F670018B644 /* RCCDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCDrawerController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D8AFADBA1BEE6F3F00A4592D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		260804D51CE0D7090094DBA1 /* RCCToolBar */ = {
+			isa = PBXGroup;
+			children = (
+				260804D91CE0D9D20094DBA1 /* RCCToolBar.h */,
+				260804DA1CE0D9D20094DBA1 /* RCCToolBar.m */,
+			);
+			path = RCCToolBar;
+			sourceTree = "<group>";
+		};
+		D85082BB1CBCF42400FDB961 /* RCCDrawerController */ = {
+			isa = PBXGroup;
+			children = (
+				D85082CF1CBCF54200FDB961 /* TheSidebarController */,
+				D85082BC1CBCF42400FDB961 /* MMDrawerController */,
+				D85082CA1CBCF54200FDB961 /* RCCDrawerHelper.h */,
+				D85082CB1CBCF54200FDB961 /* RCCDrawerHelper.m */,
+				D85082CC1CBCF54200FDB961 /* RCCDrawerProtocol.h */,
+				D85082CD1CBCF54200FDB961 /* RCCTheSideBarManagerViewController.h */,
+				D85082CE1CBCF54200FDB961 /* RCCTheSideBarManagerViewController.m */,
+				D85082C81CBCF42400FDB961 /* RCCDrawerController.h */,
+				D8E11C561CBD1F670018B644 /* RCCDrawerController.m */,
+			);
+			path = RCCDrawerController;
+			sourceTree = "<group>";
+		};
+		D85082BC1CBCF42400FDB961 /* MMDrawerController */ = {
+			isa = PBXGroup;
+			children = (
+				D85082BD1CBCF42400FDB961 /* MMDrawerBarButtonItem.h */,
+				D85082BE1CBCF42400FDB961 /* MMDrawerBarButtonItem.m */,
+				D85082BF1CBCF42400FDB961 /* MMDrawerController+Subclass.h */,
+				D85082C01CBCF42400FDB961 /* MMDrawerController.h */,
+				D85082C11CBCF42400FDB961 /* MMDrawerController.m */,
+				D85082C21CBCF42400FDB961 /* MMDrawerVisualState.h */,
+				D85082C31CBCF42400FDB961 /* MMDrawerVisualState.m */,
+				D85082C41CBCF42400FDB961 /* MMExampleDrawerVisualStateManager.h */,
+				D85082C51CBCF42400FDB961 /* MMExampleDrawerVisualStateManager.m */,
+				D85082C61CBCF42400FDB961 /* UIViewController+MMDrawerController.h */,
+				D85082C71CBCF42400FDB961 /* UIViewController+MMDrawerController.m */,
+			);
+			path = MMDrawerController;
+			sourceTree = "<group>";
+		};
+		D85082CF1CBCF54200FDB961 /* TheSidebarController */ = {
+			isa = PBXGroup;
+			children = (
+				D85082D01CBCF54200FDB961 /* Animations */,
+				D85082DF1CBCF54200FDB961 /* TheSidebarController.h */,
+				D85082E01CBCF54200FDB961 /* TheSidebarController.m */,
+			);
+			path = TheSidebarController;
+			sourceTree = "<group>";
+		};
+		D85082D01CBCF54200FDB961 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				D85082D11CBCF54200FDB961 /* SidebarAirbnbAnimation.h */,
+				D85082D21CBCF54200FDB961 /* SidebarAirbnbAnimation.m */,
+				D85082D31CBCF54200FDB961 /* SidebarAnimation.h */,
+				D85082D41CBCF54200FDB961 /* SidebarAnimation.m */,
+				D85082D51CBCF54200FDB961 /* SidebarFacebookAnimation.h */,
+				D85082D61CBCF54200FDB961 /* SidebarFacebookAnimation.m */,
+				D85082D71CBCF54200FDB961 /* SidebarFeedlyAnimation.h */,
+				D85082D81CBCF54200FDB961 /* SidebarFeedlyAnimation.m */,
+				D85082D91CBCF54200FDB961 /* SidebarFlipboardAnimation.h */,
+				D85082DA1CBCF54200FDB961 /* SidebarFlipboardAnimation.m */,
+				D85082DB1CBCF54200FDB961 /* SidebarLuvocracyAnimation.h */,
+				D85082DC1CBCF54200FDB961 /* SidebarLuvocracyAnimation.m */,
+				D85082DD1CBCF54200FDB961 /* SidebarWunderlistAnimation.h */,
+				D85082DE1CBCF54200FDB961 /* SidebarWunderlistAnimation.m */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
+		D8AFADB41BEE6F3F00A4592D = {
+			isa = PBXGroup;
+			children = (
+				D8D779951D04B7180050CFEA /* Helpers */,
+				260804D51CE0D7090094DBA1 /* RCCToolBar */,
+				D85082BB1CBCF42400FDB961 /* RCCDrawerController */,
+				CC84A1931C1A0C4E00B3A6A2 /* RCCManager.h */,
+				CC84A1941C1A0C4E00B3A6A2 /* RCCManager.m */,
+				CC84A1951C1A0C4E00B3A6A2 /* RCCManagerModule.h */,
+				CC84A1961C1A0C4E00B3A6A2 /* RCCManagerModule.m */,
+				CC84A1971C1A0C4E00B3A6A2 /* RCCNavigationController.h */,
+				CC84A1981C1A0C4E00B3A6A2 /* RCCNavigationController.m */,
+				CC84A1991C1A0C4E00B3A6A2 /* RCCTabBarController.h */,
+				CC84A19A1C1A0C4E00B3A6A2 /* RCCTabBarController.m */,
+				CC84A19B1C1A0C4E00B3A6A2 /* RCCViewController.h */,
+				CC84A19C1C1A0C4E00B3A6A2 /* RCCViewController.m */,
+				D84813171C8C5EB700051BAF /* RCCLightBox.h */,
+				D84813181C8C5EB700051BAF /* RCCLightBox.m */,
+				D800E8171CFED1DB004A187F /* RCCExternalViewControllerProtocol.h */,
+				D83514F41D29719A00D53758 /* RCCNotification.h */,
+				D83514F51D29719A00D53758 /* RCCNotification.m */,
+				D8AFADBE1BEE6F3F00A4592D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D8AFADBE1BEE6F3F00A4592D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D8AFADBD1BEE6F3F00A4592D /* libReactNativeControllers.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D8D779951D04B7180050CFEA /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				D8D779961D04B7180050CFEA /* RCTHelpers.h */,
+				D8D779971D04B7180050CFEA /* RCTHelpers.m */,
+				26AFF3F31D7EEE2400CBA211 /* RCCTitleViewHelper.h */,
+				26AFF3F41D7EEE2400CBA211 /* RCCTitleViewHelper.m */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D8AFADBC1BEE6F3F00A4592D /* ReactNativeControllers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8AFADC61BEE6F3F00A4592D /* Build configuration list for PBXNativeTarget "ReactNativeControllers" */;
+			buildPhases = (
+				D8AFADB91BEE6F3F00A4592D /* Sources */,
+				D8AFADBA1BEE6F3F00A4592D /* Frameworks */,
+				D8AFADBB1BEE6F3F00A4592D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReactNativeControllers;
+			productName = libReactContacts;
+			productReference = D8AFADBD1BEE6F3F00A4592D /* libReactNativeControllers.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D8AFADB51BEE6F3F00A4592D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = artal;
+				TargetAttributes = {
+					D8AFADBC1BEE6F3F00A4592D = {
+						CreatedOnToolsVersion = 7.1;
+					};
+				};
+			};
+			buildConfigurationList = D8AFADB81BEE6F3F00A4592D /* Build configuration list for PBXProject "ReactNativeControllers" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D8AFADB41BEE6F3F00A4592D;
+			productRefGroup = D8AFADBE1BEE6F3F00A4592D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D8AFADBC1BEE6F3F00A4592D /* ReactNativeControllers */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D8AFADB91BEE6F3F00A4592D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D85082EA1CBCF54200FDB961 /* TheSidebarController.m in Sources */,
+				CC84A1A01C1A0C4E00B3A6A2 /* RCCNavigationController.m in Sources */,
+				D83514F61D29719A00D53758 /* RCCNotification.m in Sources */,
+				CC84A19F1C1A0C4E00B3A6A2 /* RCCManagerModule.m in Sources */,
+				26AFF3F51D7EEE2400CBA211 /* RCCTitleViewHelper.m in Sources */,
+				D8D779981D04B7180050CFEA /* RCTHelpers.m in Sources */,
+				D85082E81CBCF54200FDB961 /* SidebarLuvocracyAnimation.m in Sources */,
+				D85082E31CBCF54200FDB961 /* SidebarAirbnbAnimation.m in Sources */,
+				D84813191C8C5EB700051BAF /* RCCLightBox.m in Sources */,
+				CC84A19E1C1A0C4E00B3A6A2 /* RCCManager.m in Sources */,
+				D85082E21CBCF54200FDB961 /* RCCTheSideBarManagerViewController.m in Sources */,
+				D85082FC1CBCF8A800FDB961 /* MMDrawerBarButtonItem.m in Sources */,
+				D85083001CBCF8A800FDB961 /* UIViewController+MMDrawerController.m in Sources */,
+				D85082FF1CBCF8A800FDB961 /* MMExampleDrawerVisualStateManager.m in Sources */,
+				D85082E61CBCF54200FDB961 /* SidebarFeedlyAnimation.m in Sources */,
+				CC84A1A11C1A0C4E00B3A6A2 /* RCCTabBarController.m in Sources */,
+				D85082E71CBCF54200FDB961 /* SidebarFlipboardAnimation.m in Sources */,
+				D85082E51CBCF54200FDB961 /* SidebarFacebookAnimation.m in Sources */,
+				CC84A1A21C1A0C4E00B3A6A2 /* RCCViewController.m in Sources */,
+				D85082E91CBCF54200FDB961 /* SidebarWunderlistAnimation.m in Sources */,
+				D85082E11CBCF54200FDB961 /* RCCDrawerHelper.m in Sources */,
+				D85082FE1CBCF8A800FDB961 /* MMDrawerVisualState.m in Sources */,
+				D85082FD1CBCF8A800FDB961 /* MMDrawerController.m in Sources */,
+				D85082E41CBCF54200FDB961 /* SidebarAnimation.m in Sources */,
+				D8E11C571CBD1F670018B644 /* RCCDrawerController.m in Sources */,
+				260804DB1CE0D9D20094DBA1 /* RCCToolBar.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D8AFADC41BEE6F3F00A4592D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../react-native/React/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		D8AFADC51BEE6F3F00A4592D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../react-native/React/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D8AFADC71BEE6F3F00A4592D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../react-native/React/**",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		D8AFADC81BEE6F3F00A4592D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../react-native/React/**",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D8AFADB81BEE6F3F00A4592D /* Build configuration list for PBXProject "ReactNativeControllers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8AFADC41BEE6F3F00A4592D /* Debug */,
+				D8AFADC51BEE6F3F00A4592D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8AFADC61BEE6F3F00A4592D /* Build configuration list for PBXNativeTarget "ReactNativeControllers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8AFADC71BEE6F3F00A4592D /* Debug */,
+				D8AFADC81BEE6F3F00A4592D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D8AFADB51BEE6F3F00A4592D /* Project object */;
+}

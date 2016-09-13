@@ -650,7 +650,10 @@
 				);
 				INFOPLIST_FILE = exampleRedux/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+				);
 				PRODUCT_NAME = exampleRedux;
 			};
 			name = Debug;
@@ -667,7 +670,10 @@
 				);
 				INFOPLIST_FILE = exampleRedux/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+				);
 				PRODUCT_NAME = exampleRedux;
 			};
 			name = Release;

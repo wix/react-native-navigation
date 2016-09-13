@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, {Component} from 'react';
 import {
   NativeAppEventEmitter,
@@ -77,6 +78,10 @@ class Navigator {
     return platformSpecific.navigatorSetTitle(this, params);
   }
 
+  setSubTitle(params = {}) {
+    return platformSpecific.navigatorSetSubtitle(this, params);
+  }
+
   setTitleImage(params = {}) {
     return platformSpecific.navigatorSetTitleImage(this, params);
   }
@@ -99,6 +104,10 @@ class Navigator {
 
   switchToTab(params = {}) {
     return platformSpecific.navigatorSwitchToTab(this, params);
+  }
+
+  showSnackbar(params = {}) {
+    return platformSpecific.showSnackbar(this, params);
   }
 
   setOnNavigatorEvent(callback) {
