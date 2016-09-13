@@ -205,6 +205,29 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     [topViewController setNavBarVisibilityChange:animatedBool];
     
   }
+    
+    // setStyle
+    if ([performAction isEqualToString:@"setStyle"])
+    {
+        
+        NSDictionary *navigatorStyle = actionParams;
+        
+        // merge the navigatorStyle of our parent
+        if ([self.topViewController isKindOfClass:[RCCViewController class]])
+        {
+            RCCViewController *parent = (RCCViewController*)self.topViewController;
+            NSMutableDictionary *mergedStyle = [NSMutableDictionary dictionaryWithDictionary:parent.navigatorStyle];
+            
+            // there are a few styles that we don't want to remember from our parent (they should be local)
+            [mergedStyle setValuesForKeysWithDictionary:navigatorStyle];
+            navigatorStyle = mergedStyle;
+            
+            parent.navigatorStyle = navigatorStyle;
+            
+            [parent setStyleOnInit];
+            [parent updateStyle];
+        }
+    }
 }
 
 -(void)onButtonPress:(UIBarButtonItem*)barButtonItem
