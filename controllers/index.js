@@ -170,6 +170,13 @@ var Controllers = {
         }
         RCCManager.NavigationControllerIOS(id, "setTitle", params);
       },
+      setStyle(params = {}) {
+        if (Platform.OS === 'ios') {
+          RCCManager.NavigationControllerIOS(id, "setStyle", params);
+        } else {
+          console.log(`Setting style isn\'t supported on ${Platform.OS} yet`);
+        }
+      },
       resetTo: function (params) {
         var unsubscribes = [];
         if (params['style']) {
