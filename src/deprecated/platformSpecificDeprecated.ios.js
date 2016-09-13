@@ -316,6 +316,10 @@ function navigatorToggleNavBar(navigator, params) {
   });
 }
 
+function navigatorSetStyle(navigator, params) {
+  Controllers.NavigationControllerIOS(navigator.navigatorID).setStyle(params)
+}
+
 function navigatorToggleDrawer(navigator, params) {
   const controllerID = navigator.navigatorID.split('_')[0];
   if (params.to == 'open') {
@@ -571,6 +575,7 @@ export default {
   dismissInAppNotification,
   navigatorSetButtons,
   navigatorSetTitle,
+  navigatorSetStyle,
   navigatorSetTitleImage,
   navigatorToggleDrawer,
   navigatorToggleTabs,
