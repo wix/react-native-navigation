@@ -9,7 +9,7 @@
 #import "RCTHelpers.h"
 #import "RCTView.h"
 #import "RCTScrollView.h"
-#import "RCTConvert.h"
+#import "RCTFont.h"
 
 @implementation RCTHelpers
 
@@ -25,10 +25,10 @@
 }
 
 /*
-    The YellowBox is added to each RCTRootView. Regardless if there are warnings or not, if there's a warning anywhere in the app - it is added
-    Since it is always appears on the top, it blocks interactions with other components.
-    It is most noticeable in RCCLightBox and RCCNotification where button (for example) are not clickable if placed at the bottom part of the view
-*/
+ The YellowBox is added to each RCTRootView. Regardless if there are warnings or not, if there's a warning anywhere in the app - it is added
+ Since it is always appears on the top, it blocks interactions with other components.
+ It is most noticeable in RCCLightBox and RCCNotification where button (for example) are not clickable if placed at the bottom part of the view
+ */
 
 +(BOOL)removeYellowBox:(RCTRootView*)reactRootView
 {
@@ -130,7 +130,7 @@
         fontStyle = nil;
     }
     
-    UIFont *font = [RCTConvert UIFont:[UIFont systemFontOfSize:size] withFamily:fontFamily size:fontSize weight:fontWeight style:fontStyle scaleMultiplier:1];
+    UIFont *font = [RCTFont updateFont:[UIFont systemFontOfSize:size] withFamily:fontFamily size:fontSize weight:fontWeight style:fontStyle variant:nil scaleMultiplier:1];
     
     if (font && (fontStyle || fontWeight || fontSize || fontFamily)) {
         [textAttributes setObject:font forKey:NSFontAttributeName];
