@@ -75,7 +75,7 @@
     return removed;
 }
 
-+ (NSMutableDictionary *)textAttributesFromDictionary:(NSDictionary *)dictionary withPrefix:(NSString *)prefix baseFontSize:(CGFloat)size
++ (NSMutableDictionary *)textAttributesFromDictionary:(NSDictionary *)dictionary withPrefix:(NSString *)prefix baseFont:(UIFont *)baseFont
 {
     NSMutableDictionary *textAttributes = [NSMutableDictionary new];
     
@@ -130,7 +130,7 @@
         fontStyle = nil;
     }
     
-    UIFont *font = [RCTFont updateFont:[UIFont systemFontOfSize:size] withFamily:fontFamily size:fontSize weight:fontWeight style:fontStyle variant:nil scaleMultiplier:1];
+    UIFont *font = [RCTFont updateFont:baseFont withFamily:fontFamily size:fontSize weight:fontWeight style:fontStyle variant:nil scaleMultiplier:1];
     
     if (font && (fontStyle || fontWeight || fontSize || fontFamily)) {
         [textAttributes setObject:font forKey:NSFontAttributeName];
@@ -141,7 +141,7 @@
 
 + (NSMutableDictionary *)textAttributesFromDictionary:(NSDictionary *)dictionary withPrefix:(NSString *)prefix
 {
-    return [self textAttributesFromDictionary:dictionary withPrefix:prefix baseFontSize:[UIFont systemFontSize]];
+    return [self textAttributesFromDictionary:dictionary withPrefix:prefix baseFont:[UIFont systemFontOfSize:[UIFont systemFontSize]]];
 }
 
 

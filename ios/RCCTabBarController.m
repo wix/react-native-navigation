@@ -96,7 +96,7 @@
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
     viewController.tabBarItem.selectedImage = iconImageSelected;
     
-    NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFontSize:10];
+    NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
     if (!unselectedAttributes[NSForegroundColorAttributeName] && buttonColor) {
       unselectedAttributes[NSForegroundColorAttributeName] = buttonColor;
     }
@@ -104,7 +104,7 @@
     [viewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal]
     ;
     
-    NSMutableDictionary *selectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarSelectedText" baseFontSize:10];
+    NSMutableDictionary *selectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarSelectedText" baseFont:[UIFont systemFontOfSize:10]];
     if (!selectedAttributes[NSForegroundColorAttributeName] && selectedButtonColor) {
       selectedAttributes[NSForegroundColorAttributeName] = buttonColor;
     }
