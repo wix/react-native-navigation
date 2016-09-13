@@ -9,6 +9,7 @@
 #import "RCTHelpers.h"
 #import "RCTView.h"
 #import "RCTScrollView.h"
+#import "RCTFont.h"
 
 @implementation RCTHelpers
 
@@ -24,10 +25,10 @@
 }
 
 /*
-    The YellowBox is added to each RCTRootView. Regardless if there are warnings or not, if there's a warning anywhere in the app - it is added
-    Since it is always appears on the top, it blocks interactions with other components.
-    It is most noticeable in RCCLightBox and RCCNotification where button (for example) are not clickable if placed at the bottom part of the view
-*/
+ The YellowBox is added to each RCTRootView. Regardless if there are warnings or not, if there's a warning anywhere in the app - it is added
+ Since it is always appears on the top, it blocks interactions with other components.
+ It is most noticeable in RCCLightBox and RCCNotification where button (for example) are not clickable if placed at the bottom part of the view
+ */
 
 +(BOOL)removeYellowBox:(RCTRootView*)reactRootView
 {
@@ -72,6 +73,75 @@
     }
     
     return removed;
+}
+
++ (NSMutableDictionary *)textAttributesFromDictionary:(NSDictionary *)dictionary withPrefix:(NSString *)prefix baseFont:(UIFont *)baseFont
+{
+    NSMutableDictionary *textAttributes = [NSMutableDictionary new];
+    
+    NSString *colorKey = @"color";
+    NSString *familyKey = @"fontFamily";
+    NSString *weightKey = @"fontWeight";
+    NSString *sizeKey = @"fontSize";
+    NSString *styleKey = @"fontStyle";
+    
+    if (prefix) {
+        
+        colorKey = [colorKey stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[colorKey substringToIndex:1].capitalizedString];
+        colorKey = [NSString stringWithFormat:@"%@%@", prefix, colorKey];
+        
+        familyKey = [familyKey stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[familyKey substringToIndex:1].capitalizedString];
+        familyKey = [NSString stringWithFormat:@"%@%@", prefix, familyKey];
+        
+        weightKey = [weightKey stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[weightKey substringToIndex:1].capitalizedString];
+        weightKey = [NSString stringWithFormat:@"%@%@", prefix, weightKey];
+        
+        sizeKey = [sizeKey stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[sizeKey substringToIndex:1].capitalizedString];
+        sizeKey = [NSString stringWithFormat:@"%@%@", prefix, sizeKey];
+        
+        styleKey = [styleKey stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[styleKey substringToIndex:1].capitalizedString];
+        styleKey = [NSString stringWithFormat:@"%@%@", prefix, styleKey];
+    }
+    
+    NSNumber *textColor = dictionary[colorKey];
+    if (textColor && [textColor isKindOfClass:[NSNumber class]])
+    {
+        UIColor *color = [RCTConvert UIColor:textColor];
+        [textAttributes setObject:color forKey:NSForegroundColorAttributeName];
+    }
+    
+    NSString *fontFamily = dictionary[familyKey];
+    if (![fontFamily isKindOfClass:[NSString class]]) {
+        fontFamily = nil;
+    }
+    
+    NSString *fontWeight = dictionary[weightKey];
+    if (![fontWeight isKindOfClass:[NSString class]]) {
+        fontWeight = nil;
+    }
+    
+    NSNumber *fontSize = dictionary[sizeKey];
+    if (![fontSize isKindOfClass:[NSNumber class]]) {
+        fontSize = nil;
+    }
+    
+    NSNumber *fontStyle = dictionary[styleKey];
+    if (![fontStyle isKindOfClass:[NSString class]]) {
+        fontStyle = nil;
+    }
+    
+    UIFont *font = [RCTFont updateFont:baseFont withFamily:fontFamily size:fontSize weight:fontWeight style:fontStyle variant:nil scaleMultiplier:1];
+    
+    if (font && (fontStyle || fontWeight || fontSize || fontFamily)) {
+        [textAttributes setObject:font forKey:NSFontAttributeName];
+    }
+    
+    return textAttributes;
+}
+
++ (NSMutableDictionary *)textAttributesFromDictionary:(NSDictionary *)dictionary withPrefix:(NSString *)prefix
+{
+    return [self textAttributesFromDictionary:dictionary withPrefix:prefix baseFont:[UIFont systemFontOfSize:[UIFont systemFontSize]]];
 }
 
 

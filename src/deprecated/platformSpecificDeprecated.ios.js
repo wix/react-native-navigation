@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import Navigation from './../Navigation';
-import Controllers, {Modal, Notification} from 'react-native-controllers';
+import Controllers, {Modal, Notification} from '../../controllers';
 const React = Controllers.hijackReact();
 const {
   ControllerRegistry,
@@ -73,6 +73,7 @@ function startTabBasedApp(params) {
                   <NavigationControllerIOS
                     id={tab.navigationParams.navigatorID}
                     title={tab.title}
+                    subtitle={tab.subtitle}
                     titleImage={tab.titleImage}
                     component={tab.screen}
                     passProps={{
@@ -314,6 +315,10 @@ function navigatorToggleNavBar(navigator, params) {
     hidden: ((params.to === 'hidden') ? true : false),
     animated: params.animated
   });
+}
+
+function navigatorSetStyle(navigator, params) {
+  Controllers.NavigationControllerIOS(navigator.navigatorID).setStyle(params)
 }
 
 function navigatorToggleDrawer(navigator, params) {
@@ -571,6 +576,7 @@ export default {
   dismissInAppNotification,
   navigatorSetButtons,
   navigatorSetTitle,
+  navigatorSetStyle,
   navigatorSetTitleImage,
   navigatorToggleDrawer,
   navigatorToggleTabs,
