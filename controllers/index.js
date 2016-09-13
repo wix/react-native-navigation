@@ -171,8 +171,9 @@ var Controllers = {
         RCCManager.NavigationControllerIOS(id, "setTitle", params);
       },
       setStyle: function (params) {
-        _processProperties(params);
-        RCCManager.NavigationControllerIOS(id, "setStyle", params);
+        style = Object.assign({}, params);
+        _processProperties(style);
+        RCCManager.NavigationControllerIOS(id, "setStyle", style);
       },
       resetTo: function (params) {
         var unsubscribes = [];
