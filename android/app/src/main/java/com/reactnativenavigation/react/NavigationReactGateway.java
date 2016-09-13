@@ -43,9 +43,6 @@ public class NavigationReactGateway implements ReactGateway {
     }
 
     public NavigationReactEventEmitter getReactEventEmitter() {
-        if (reactEventEmitter == null && isInitialized()) {
-            reactEventEmitter = new NavigationReactEventEmitter(getReactContext());
-        }
         return reactEventEmitter;
     }
 
@@ -68,6 +65,7 @@ public class NavigationReactGateway implements ReactGateway {
     }
 
     public void onResumeActivity(Activity activity, DefaultHardwareBackBtnHandler defaultHardwareBackBtnHandler) {
+        reactEventEmitter = new NavigationReactEventEmitter(getReactContext());
         getReactInstanceManager().onHostResume(activity, defaultHardwareBackBtnHandler);
     }
 

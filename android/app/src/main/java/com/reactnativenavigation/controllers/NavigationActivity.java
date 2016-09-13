@@ -21,7 +21,6 @@ import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.react.JsDevReloadHandler;
-import com.reactnativenavigation.react.RedboxPermission;
 
 import java.util.List;
 
@@ -49,8 +48,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
             NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
             return;
         }
-
-        RedboxPermission.permissionToShowRedboxIfNeeded(this);
 
         activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
 

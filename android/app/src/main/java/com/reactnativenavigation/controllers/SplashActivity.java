@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.react.ReactDevPermission;
 
 public abstract class SplashActivity extends AppCompatActivity {
 
@@ -15,6 +16,12 @@ public abstract class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSplashLayout();
+
+        if (ReactDevPermission.shouldAskPermission()) {
+            ReactDevPermission.askPermission(this);
+            return;
+        }
+
         NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
     }
 
