@@ -14,6 +14,7 @@ extern NSString* const RCCViewControllerCancelReactTouchesNotification;
 - (instancetype)initWithComponent:(NSString *)component passProps:(NSDictionary *)passProps navigatorStyle:(NSDictionary*)navigatorStyle globalProps:(NSDictionary *)globalProps bridge:(RCTBridge *)bridge;
 - (void)setStyleOnAppear;
 - (void)setStyleOnInit;
+- (void)updateStyle;
 - (void)setNavBarVisibilityChange:(BOOL)animated;
 
 @end
