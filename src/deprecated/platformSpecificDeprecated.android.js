@@ -116,6 +116,7 @@ function convertStyleParams(originalStyleObject) {
   return {
     statusBarColor: originalStyleObject.statusBarColor,
     topBarColor: originalStyleObject.navBarBackgroundColor,
+    topBarTransparent: originalStyleObject.navBarTransparent,
     titleBarHidden: originalStyleObject.navBarHidden,
     titleBarTitleColor: originalStyleObject.navBarTextColor,
     titleBarSubtitleColor: originalStyleObject.navBarTextSubtitleColor,
@@ -183,7 +184,9 @@ function startTabBasedApp(params) {
     addNavigatorButtons(tab, params.drawer);
     addNavigationStyleParams(tab);
     addTabIcon(tab);
-    tab.passProps = params.passProps;
+    if (!tab.passProps) {
+      tab.passProps = params.passProps;
+    }
 
     adaptTopTabs(tab, tab.navigatorID);
 

@@ -57,6 +57,7 @@ public class SideMenu extends DrawerLayout {
         super(context);
         createContentContainer();
         createSideMenu(sideMenuParams);
+        setStyle(sideMenuParams);
     }
 
     private void createContentContainer() {
@@ -71,5 +72,11 @@ public class SideMenu extends DrawerLayout {
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         lp.gravity = Gravity.START;
         addView(sideMenuView, lp);
+    }
+
+    private void setStyle(SideMenuParams params) {
+        if (params.disableOpenGesture) {
+            setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
     }
 }

@@ -30,4 +30,6 @@ public interface Layout extends ScreenStackContainer {
     void showSnackbar(SnackbarParams params);
 
     void onModalDismissed();
+
+    boolean containsNavigator(String navigatorId);
 }

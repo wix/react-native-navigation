@@ -1,5 +1,5 @@
 import Navigation from './../Navigation';
-import {NavigationToolBarIOS} from 'react-native-controllers';
+import {NavigationToolBarIOS} from './controllers';
 
 module.exports = {
   Navigation,

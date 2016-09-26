@@ -19,7 +19,7 @@ export default class ThirdTabScreen extends Component {
   }
   render() {
     return (
-      <View style={{flex: 1, padding: 20}}>
+      <View style={styles.container}>
 
         <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
           <Text style={styles.button}>Push Plain Screen</Text>
@@ -86,6 +86,11 @@ export default class ThirdTabScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white'
+  },
   button: {
     textAlign: 'center',
     fontSize: 18,

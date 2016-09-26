@@ -24,7 +24,7 @@ public class SingleScreen extends Screen {
         if (screenParams.styleParams.drawScreenBelowTopBar) {
             params.addRule(BELOW, topBar.getId());
         }
-        addView(contentView, params);
+        addView(contentView, 0, params);
     }
 
     @Override

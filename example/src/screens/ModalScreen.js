@@ -21,7 +21,7 @@ export default class ModalScreen extends Component {
   }
   render() {
     return (
-      <View style={{flex: 1, padding: 20}}>
+      <View style={styles.container}>
 
         <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
           <Text style={styles.button}>Push Plain Screen</Text>
@@ -68,6 +68,11 @@ export default class ModalScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    padding: 20
+  },
   button: {
     textAlign: 'center',
     fontSize: 18,

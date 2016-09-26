@@ -21,7 +21,6 @@ import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.react.JsDevReloadHandler;
-import com.reactnativenavigation.react.RedboxPermission;
 
 import java.util.List;
 
@@ -50,8 +49,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
             return;
         }
 
-        RedboxPermission.permissionToShowRedboxIfNeeded(this);
-
         activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
 
         disableActivityShowAnimationIfNeeded();
@@ -77,7 +74,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onResume() {
         super.onResume();
-        if (isFinishing()) {
+        if (isFinishing() || !NavigationApplication.instance.isReactContextInitialized()) {
             return;
         }
 
@@ -107,6 +104,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
         if (layout != null) {
             layout.destroy();
+            layout = null;
         }
     }
 
@@ -123,7 +121,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public void onBackPressed() {
-        if (!layout.onBackPressed()) {
+        if (layout != null && !layout.onBackPressed()) {
             NavigationApplication.instance.getReactGateway().onBackPressed();
         }
     }
@@ -139,7 +137,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     void push(ScreenParams params) {
-        if (modalController.isShowing()) {
+        if (modalController.containsNavigator(params.getNavigatorId())) {
             modalController.push(params);
         } else {
             layout.push(params);
@@ -147,7 +145,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     void pop(ScreenParams params) {
-        if (modalController.isShowing()) {
+        if (modalController.containsNavigator(params.getNavigatorId())) {
             modalController.pop(params);
         } else {
             layout.pop(params);
@@ -155,7 +153,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     void popToRoot(ScreenParams params) {
-        if (modalController.isShowing()) {
+        if (modalController.containsNavigator(params.getNavigatorId())) {
             modalController.popToRoot(params);
         } else {
             layout.popToRoot(params);
@@ -163,7 +161,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     void newStack(ScreenParams params) {
-        if (modalController.isShowing()) {
+        if (modalController.containsNavigator(params.getNavigatorId())) {
             modalController.newStack(params);
         } else {
             layout.newStack(params);
@@ -253,10 +251,20 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onEvent(Event event) {
         if (event.getType().equals(ModalDismissedEvent.TYPE)) {
-            layout.onModalDismissed();
+            handleModalDismissedEvent();
         } else if (event.getType().equals(JsDevReloadEvent.TYPE)) {
-            modalController.destroy();
-            layout.destroy();
+            handleJsDevReloadEvent();
         }
+    }
+
+    private void handleModalDismissedEvent() {
+        if (!modalController.isShowing()) {
+            layout.onModalDismissed();
+        }
+    }
+
+    private void handleJsDevReloadEvent() {
+        modalController.destroy();
+        layout.destroy();
     }
 }

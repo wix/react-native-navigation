@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start"
+    "start": "watchman watch-del-all && (adb reverse tcp:8081 tcp:8081 || true) && node node_modules/react-native/local-cli/cli.js start",
+    "xcode": "open ios/example.xcodeproj",
+    "android": "cd android && ./gradlew installDebug"
   },
   "dependencies": {
     "react-native": "0.31.0",

@@ -27,8 +27,13 @@ public class NavigationCommandsHandler {
      *
      * @param params ActivityParams as bundle
      */
-    public static void startApp(Bundle params) {
-        Intent intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
+    public static void startApp(Bundle params, boolean portraitOnlyMode) {
+        Intent intent;
+        if (portraitOnlyMode) {
+            intent = new Intent(NavigationApplication.instance, PortraitNavigationActivity.class);
+        } else {
+            intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ACTIVITY_PARAMS_BUNDLE, params);
         NavigationApplication.instance.startActivity(intent);
@@ -183,8 +188,8 @@ public class NavigationCommandsHandler {
     }
 
     public static void setScreenTitleBarLeftButtons(final String screenInstanceId,
-                                                     final String navigatorEventId,
-                                                     final TitleBarLeftButtonParams titleBarButtons) {
+                                                    final String navigatorEventId,
+                                                    final TitleBarLeftButtonParams titleBarButtons) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;

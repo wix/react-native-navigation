@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D8AFADBC1BEE6F3F00A4592D"
-               BuildableName = "libReactNativeControllers.a"
-               BlueprintName = "ReactNativeControllers"
-               ReferencedContainer = "container:ReactNativeControllers.xcodeproj">
+               BuildableName = "libReactNativeNavigation.a"
+               BlueprintName = "ReactNativeNavigation"
+               ReferencedContainer = "container:ReactNativeNavigation.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,9 +46,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D8AFADBC1BEE6F3F00A4592D"
-            BuildableName = "libReactNativeControllers.a"
-            BlueprintName = "ReactNativeControllers"
-            ReferencedContainer = "container:ReactNativeControllers.xcodeproj">
+            BuildableName = "libReactNativeNavigation.a"
+            BlueprintName = "ReactNativeNavigation"
+            ReferencedContainer = "container:ReactNativeNavigation.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -64,9 +64,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D8AFADBC1BEE6F3F00A4592D"
-            BuildableName = "libReactNativeControllers.a"
-            BlueprintName = "ReactNativeControllers"
-            ReferencedContainer = "container:ReactNativeControllers.xcodeproj">
+            BuildableName = "libReactNativeNavigation.a"
+            BlueprintName = "ReactNativeNavigation"
+            ReferencedContainer = "container:ReactNativeNavigation.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

@@ -25,6 +25,7 @@ public class FragmentScreen extends Screen {
     private static final String CONTRACT_GET_FRAGMENT = "getFragment";
     private static final String CONTRACT_GET_SUPPORT_FRAGMENT = "getSupportFragment";
     private FrameLayout content;
+    private ContentView contentView;
 
     public FragmentScreen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener leftButtonOnClickListener) {
         super(activity, screenParams, leftButtonOnClickListener);
@@ -39,7 +40,7 @@ public class FragmentScreen extends Screen {
     }
 
     private void addContent() {
-        ContentView contentView = new ContentView(getContext(),
+        contentView = new ContentView(getContext(),
                 screenParams.screenId,
                 screenParams.navigationParams);
         addView(contentView, 0, 0);
@@ -110,7 +111,7 @@ public class FragmentScreen extends Screen {
 
     @Override
     public void unmountReactView() {
-        // nothing
+        contentView.unmountReactView();
     }
 
     @Override

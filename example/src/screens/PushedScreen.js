@@ -16,8 +16,7 @@ export default class PushedScreen extends Component {
   }
   render() {
     return (
-      <View style={{flex: 1, padding: 20}}>
-
+      <View style={styles.container}>
         <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
           <Text style={styles.button}>Push Plain Screen</Text>
         </TouchableOpacity>
@@ -37,7 +36,6 @@ export default class PushedScreen extends Component {
         <TouchableOpacity onPress={ this.onResetToPress.bind(this) }>
           <Text style={styles.button}>Reset To</Text>
         </TouchableOpacity>
-
       </View>
     );
   }
@@ -62,12 +60,17 @@ export default class PushedScreen extends Component {
   onResetToPress() {
     this.props.navigator.resetTo({
       title: "New Root",
-      screen: "example.PushedScreen"
+      screen: "example.ThirdTabScreen"
     });
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white'
+  },
   button: {
     textAlign: 'center',
     fontSize: 18,

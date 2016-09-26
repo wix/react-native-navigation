@@ -5,22 +5,29 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  AlertIOS
+  Alert
 } from 'react-native';
 
 export default class SecondTabScreen extends Component {
-  static navigatorStyle = {
-    drawUnderTabBar: true
+  static navigatorStyle: {
+    drawUnderTabBar: true,
+    navBarBackgroundColor: '#4dbce9',
+    navBarTextColor: '#ffff00',
+    navBarSubtitleTextColor: '#ff0000',
+    navBarButtonColor: '#ffffff',
+    statusBarTextColorScheme: 'light'
   };
+
   constructor(props) {
     super(props);
     this.buttonsCounter = 0;
     // if you want to listen on navigator events, set this up
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
+
   render() {
     return (
-      <View style={{flex: 1, padding: 20}}>
+      <View style={styles.container}>
 
         <TouchableOpacity onPress={ this.onChangeButtonsPress.bind(this) }>
           <Text style={styles.button}>Change Buttons</Text>
@@ -111,19 +118,24 @@ export default class SecondTabScreen extends Component {
     // handle a button press
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'edit') {
-        AlertIOS.alert('NavBar', 'Dynamic Edit button pressed');
+        Alert.alert('NavBar', 'Dynamic Edit button pressed');
       }
       if (event.id == 'add') {
-        AlertIOS.alert('NavBar', 'Dynamic Add button pressed');
+        Alert.alert('NavBar', 'Dynamic Add button pressed');
       }
       if (event.id == 'save') {
-        AlertIOS.alert('NavBar', 'Dynamic Save button pressed');
+        Alert.alert('NavBar', 'Dynamic Save button pressed');
       }
     }
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white'
+  },
   button: {
     textAlign: 'center',
     fontSize: 18,

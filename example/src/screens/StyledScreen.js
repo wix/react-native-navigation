@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
-  AlertIOS
+  Alert,
+  Platform
 } from 'react-native';
 
 export default class StyledScreen extends Component {
@@ -29,12 +30,10 @@ export default class StyledScreen extends Component {
   }
   render() {
     return (
-      <ScrollView style={{flex: 1}}>
-
+      <ScrollView style={styles.container}>
         <Image style={{width: undefined, height: 100}} source={require('../../img/colors.png')} />
 
         <View style={{padding: 20}}>
-
           <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
             <Text style={styles.button}>Push Plain Screen</Text>
           </TouchableOpacity>
@@ -54,7 +53,6 @@ export default class StyledScreen extends Component {
           <TouchableOpacity onPress={ this.onSetTitleImagePress.bind(this) }>
             <Text style={styles.button}>Set Title Image</Text>
           </TouchableOpacity>
-
         </View>
 
       </ScrollView>
@@ -62,7 +60,7 @@ export default class StyledScreen extends Component {
   }
   onNavigatorEvent(event) {
     if (event.id == 'compose') {
-      AlertIOS.alert('NavBar', 'Compose button pressed');
+      Alert.alert('NavBar', 'Compose button pressed');
     }
   }
   onPushPress() {
@@ -82,15 +80,21 @@ export default class StyledScreen extends Component {
   }
   
   onSetSubtitlePress() {
-    this.props.navigator.setTitle({
-      title: 'title',
-      subtitle: 'subtitle',
-      navigatorStyle: {
-        navBarSubtitleTextColor: '#ff00ff',
-        navBarTextColor: '#ffff00'
-        
-      }
-    })
+    if (Platform.OS === 'android') {
+      this.props.navigator.setSubTitle({
+        subtitle: 'Subtitle'
+      });
+    } else {
+      this.props.navigator.setTitle({
+        title: 'title',
+        subtitle: 'subtitle',
+        navigatorStyle: {
+          navBarSubtitleTextColor: '#ff00ff',
+          navBarTextColor: '#ffff00'
+
+        }
+      })
+    }
   }
   
   onSetTitleImagePress() {
@@ -103,6 +107,10 @@ export default class StyledScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
   button: {
     textAlign: 'center',
     fontSize: 18,

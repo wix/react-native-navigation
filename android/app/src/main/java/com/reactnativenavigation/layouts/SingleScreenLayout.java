@@ -137,8 +137,14 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
 
     @Override
     public void newStack(ScreenParams params) {
-        RelativeLayout parent = sideMenu == null ? this : sideMenu.getContentContainer();
-        createStack(parent);
+        removeView(stack.peek());
+        stack.destroy();
+
+        ScreenStack newStack = new ScreenStack(activity, getScreenStackParent(), params.getNavigatorId(), this);
+        LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        newStack.pushInitialScreenWithAnimation(params, lp);
+        stack = newStack;
+
         EventBus.instance.post(new ScreenChangedEvent(params));
     }
 
@@ -196,6 +202,11 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
     @Override
     public void onModalDismissed() {
         EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
+    }
+
+    @Override
+    public boolean containsNavigator(String navigatorId) {
+        return stack.getNavigatorId().equals(navigatorId);
     }
 
     @Override
