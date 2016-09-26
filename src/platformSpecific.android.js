@@ -62,8 +62,6 @@ function dismissAllModals() {
 }
 
 function savePassProps(params) {
-  //TODO this needs to be handled in a common place,
-  //TODO also, all global passProps should be handled differently
   if (params.navigationParams && params.passProps) {
     PropRegistry.save(params.navigationParams.screenInstanceID, params.passProps);
   }
@@ -76,9 +74,15 @@ function savePassProps(params) {
     _.forEach(params.screen.topTabs, (tab) => savePassProps(tab));
   }
 
+  if (params.topTabs) {
+    _.forEach(params.topTabs, (tab) => savePassProps(tab));
+  }
+
   if (params.tabs) {
     _.forEach(params.tabs, (tab) => {
-      tab.passProps = params.passProps;
+      if (!tab.passProps) {
+        tab.passProps = params.passProps;
+      }
       savePassProps(tab);
     });
   }

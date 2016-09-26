@@ -23,6 +23,7 @@ public class StyleParamsParser {
 
         result.topBarColor = getColor("topBarColor", getDefaultTopBarColor());
         result.titleBarHidden = getBoolean("titleBarHidden", getDefaultTopBarHidden());
+        result.topBarTransparent = getBoolean("topBarTransparent", getDefaultTopBarHidden());
         result.titleBarTitleColor = getColor("titleBarTitleColor", getDefaultTitleBarColor());
         result.titleBarSubtitleColor = getColor("titleBarSubtitleColor", getDefaultSubtitleBarColor());
         result.titleBarButtonColor = getColor("titleBarButtonColor", getTitleBarButtonColor());
@@ -37,7 +38,7 @@ public class StyleParamsParser {
 
         // TODO: Uncomment once we support drawBelowTopBar again
         //result.drawScreenBelowTopBar = params.getBoolean("drawBelowTopBar", isDefaultScreenBelowTopBar());
-        result.drawScreenBelowTopBar = true;
+        result.drawScreenBelowTopBar = !result.topBarTransparent;
 
         result.bottomTabsHidden = getBoolean("bottomTabsHidden", getDefaultBottomTabsHidden());
         result.drawScreenAboveBottomTabs = !result.bottomTabsHidden &&
@@ -142,7 +143,7 @@ public class StyleParamsParser {
     }
 
     private boolean getDefaultTopBarHidden() {
-        return AppStyle.appStyle != null && AppStyle.appStyle.titleBarHidden;
+        return AppStyle.appStyle != null && AppStyle.appStyle.topBarTransparent;
     }
 
     private StyleParams.Color getDefaultTopBarColor() {

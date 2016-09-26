@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "2.0.0-experimental.109",
+  "version": "2.0.0-experimental.127",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -30,7 +30,6 @@
     "react": "*"
   },
   "dependencies": {
-    "react-native-controllers": "^2.0.0",
     "lodash": "^4.13.0"
   },
   "optionalDependencies": {

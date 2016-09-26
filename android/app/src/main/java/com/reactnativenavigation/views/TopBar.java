@@ -1,6 +1,8 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 
@@ -44,9 +46,20 @@ public class TopBar extends AppBarLayout {
         if (styleParams.topBarColor.hasColor()) {
             setBackgroundColor(styleParams.topBarColor.getColor());
         }
+        if (styleParams.topBarTransparent) {
+            setTransparent();
+        }
         setVisibility(styleParams.topBarHidden ? GONE : VISIBLE);
         titleBar.setStyle(styleParams);
         setTopTabsStyle(styleParams);
+    }
+
+    private void setTransparent() {
+        setBackgroundColor(Color.TRANSPARENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setElevation(0);
+            setOutlineProvider(null);
+        }
     }
 
     public void setTitleBarRightButtons(String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {

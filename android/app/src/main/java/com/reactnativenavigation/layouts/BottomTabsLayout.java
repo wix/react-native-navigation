@@ -65,7 +65,7 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     }
 
     private void addScreenStacks() {
-        for (int i = 0; i < screenStacks.length; i++) {
+        for (int i = screenStacks.length - 1; i >= 0; i--) {
             createAndAddScreens(i);
         }
     }
@@ -198,6 +198,12 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
         EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
     }
 
+    @Override
+    public boolean containsNavigator(String navigatorId) {
+        // Unused
+        return false;
+    }
+
     public void selectBottomTabByTabIndex(Integer index) {
         bottomTabs.setCurrentItem(index);
     }
@@ -262,6 +268,10 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
 
     @Override
     public boolean onTabSelected(int position, boolean wasSelected) {
+        if (wasSelected) {
+            return false;
+        }
+        
         hideCurrentStack();
         showNewStack(position);
         EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));

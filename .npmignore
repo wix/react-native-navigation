@@ -1,5 +1,5 @@
-example/
-example-redux/
+example
+old-example-redux
 
 test/
 res/generated/

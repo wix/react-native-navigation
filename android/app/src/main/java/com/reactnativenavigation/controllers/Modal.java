@@ -99,6 +99,10 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         layout.newStack(params);
     }
 
+    public boolean containsNavigator(String navigatorId) {
+        return layout.containsNavigator(navigatorId);
+    }
+
     @Override
     public void destroy() {
         layout.destroy();
@@ -115,5 +119,9 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
     public void onDismiss(DialogInterface dialog) {
         destroy();
         onModalDismissedListener.onModalDismissed(this);
+    }
+
+    public void onModalDismissed() {
+        layout.onModalDismissed();
     }
 }

@@ -38,6 +38,11 @@ public class NavigationReactGateway implements ReactGateway {
         return host.hasInstance() && getReactInstanceManager().getCurrentReactContext() != null;
     }
 
+    @Override
+    public boolean hasStartedCreatingContext() {
+        return getReactInstanceManager().hasStartedCreatingInitialContext();
+    }
+
     public ReactContext getReactContext() {
         return getReactInstanceManager().getCurrentReactContext();
     }
@@ -65,7 +70,6 @@ public class NavigationReactGateway implements ReactGateway {
     }
 
     public void onResumeActivity(Activity activity, DefaultHardwareBackBtnHandler defaultHardwareBackBtnHandler) {
-        reactEventEmitter = new NavigationReactEventEmitter(getReactContext());
         getReactInstanceManager().onHostResume(activity, defaultHardwareBackBtnHandler);
     }
 
@@ -77,6 +81,10 @@ public class NavigationReactGateway implements ReactGateway {
         return host;
     }
 
+    //TODO temp hack
+    void onReactContextInitialized() {
+        reactEventEmitter = new NavigationReactEventEmitter(getReactContext());
+    }
 
     private static class ReactNativeHostImpl extends ReactNativeHost implements ReactInstanceManager.ReactInstanceEventListener {
 
@@ -135,6 +143,7 @@ public class NavigationReactGateway implements ReactGateway {
 
         @Override
         public void onReactContextInitialized(ReactContext context) {
+            ((NavigationReactGateway) NavigationApplication.instance.getReactGateway()).onReactContextInitialized();
             NavigationApplication.instance.onReactInitialized(context);
         }
 

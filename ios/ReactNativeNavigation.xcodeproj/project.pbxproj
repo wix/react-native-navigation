@@ -100,7 +100,7 @@
 		D85082DE1CBCF54200FDB961 /* SidebarWunderlistAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarWunderlistAnimation.m; sourceTree = "<group>"; };
 		D85082DF1CBCF54200FDB961 /* TheSidebarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TheSidebarController.h; sourceTree = "<group>"; };
 		D85082E01CBCF54200FDB961 /* TheSidebarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TheSidebarController.m; sourceTree = "<group>"; };
-		D8AFADBD1BEE6F3F00A4592D /* libReactNativeControllers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeControllers.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8AFADBD1BEE6F3F00A4592D /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeNavigation.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8D779961D04B7180050CFEA /* RCTHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTHelpers.h; sourceTree = "<group>"; };
 		D8D779971D04B7180050CFEA /* RCTHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTHelpers.m; sourceTree = "<group>"; };
 		D8E11C561CBD1F670018B644 /* RCCDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCDrawerController.m; sourceTree = "<group>"; };
@@ -219,7 +219,7 @@
 		D8AFADBE1BEE6F3F00A4592D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D8AFADBD1BEE6F3F00A4592D /* libReactNativeControllers.a */,
+				D8AFADBD1BEE6F3F00A4592D /* libReactNativeNavigation.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -238,9 +238,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D8AFADBC1BEE6F3F00A4592D /* ReactNativeControllers */ = {
+		D8AFADBC1BEE6F3F00A4592D /* ReactNativeNavigation */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D8AFADC61BEE6F3F00A4592D /* Build configuration list for PBXNativeTarget "ReactNativeControllers" */;
+			buildConfigurationList = D8AFADC61BEE6F3F00A4592D /* Build configuration list for PBXNativeTarget "ReactNativeNavigation" */;
 			buildPhases = (
 				D8AFADB91BEE6F3F00A4592D /* Sources */,
 				D8AFADBA1BEE6F3F00A4592D /* Frameworks */,
@@ -250,9 +250,9 @@
 			);
 			dependencies = (
 			);
-			name = ReactNativeControllers;
+			name = ReactNativeNavigation;
 			productName = libReactContacts;
-			productReference = D8AFADBD1BEE6F3F00A4592D /* libReactNativeControllers.a */;
+			productReference = D8AFADBD1BEE6F3F00A4592D /* libReactNativeNavigation.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -269,7 +269,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D8AFADB81BEE6F3F00A4592D /* Build configuration list for PBXProject "ReactNativeControllers" */;
+			buildConfigurationList = D8AFADB81BEE6F3F00A4592D /* Build configuration list for PBXProject "ReactNativeNavigation" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -281,7 +281,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D8AFADBC1BEE6F3F00A4592D /* ReactNativeControllers */,
+				D8AFADBC1BEE6F3F00A4592D /* ReactNativeNavigation */,
 			);
 		};
 /* End PBXProject section */
@@ -419,7 +419,7 @@
 					"$(SRCROOT)/../../react-native/React/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = ReactNativeNavigation;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -432,7 +432,7 @@
 					"$(SRCROOT)/../../react-native/React/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = ReactNativeNavigation;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -440,7 +440,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D8AFADB81BEE6F3F00A4592D /* Build configuration list for PBXProject "ReactNativeControllers" */ = {
+		D8AFADB81BEE6F3F00A4592D /* Build configuration list for PBXProject "ReactNativeNavigation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D8AFADC41BEE6F3F00A4592D /* Debug */,
@@ -449,7 +449,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D8AFADC61BEE6F3F00A4592D /* Build configuration list for PBXNativeTarget "ReactNativeControllers" */ = {
+		D8AFADC61BEE6F3F00A4592D /* Build configuration list for PBXNativeTarget "ReactNativeNavigation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D8AFADC71BEE6F3F00A4592D /* Debug */,
