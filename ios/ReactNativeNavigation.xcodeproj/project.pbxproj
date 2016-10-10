@@ -9,6 +9,35 @@
 /* Begin PBXBuildFile section */
 		260804DB1CE0D9D20094DBA1 /* RCCToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 260804DA1CE0D9D20094DBA1 /* RCCToolBar.m */; };
 		26AFF3F51D7EEE2400CBA211 /* RCCTitleViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 26AFF3F41D7EEE2400CBA211 /* RCCTitleViewHelper.m */; };
+		39F8A4411DAB8ECB005F8275 /* RCCManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CC84A1931C1A0C4E00B3A6A2 /* RCCManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		39F8A4421DAB8F4F005F8275 /* RCCExternalViewControllerProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = D800E8171CFED1DB004A187F /* RCCExternalViewControllerProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		39F8A4431DAB8FF2005F8275 /* RCTHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = D8D779961D04B7180050CFEA /* RCTHelpers.h */; };
+		39F8A4441DAB8FF2005F8275 /* RCCTitleViewHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 26AFF3F31D7EEE2400CBA211 /* RCCTitleViewHelper.h */; };
+		39F8A4451DAB8FF5005F8275 /* RCCToolBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 260804D91CE0D9D20094DBA1 /* RCCToolBar.h */; };
+		39F8A4461DAB8FFA005F8275 /* SidebarAirbnbAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082D11CBCF54200FDB961 /* SidebarAirbnbAnimation.h */; };
+		39F8A4471DAB8FFA005F8275 /* SidebarAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082D31CBCF54200FDB961 /* SidebarAnimation.h */; };
+		39F8A4481DAB8FFA005F8275 /* SidebarFacebookAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082D51CBCF54200FDB961 /* SidebarFacebookAnimation.h */; };
+		39F8A4491DAB8FFA005F8275 /* SidebarFeedlyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082D71CBCF54200FDB961 /* SidebarFeedlyAnimation.h */; };
+		39F8A44A1DAB8FFA005F8275 /* SidebarFlipboardAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082D91CBCF54200FDB961 /* SidebarFlipboardAnimation.h */; };
+		39F8A44B1DAB8FFA005F8275 /* SidebarLuvocracyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082DB1CBCF54200FDB961 /* SidebarLuvocracyAnimation.h */; };
+		39F8A44C1DAB8FFA005F8275 /* SidebarWunderlistAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082DD1CBCF54200FDB961 /* SidebarWunderlistAnimation.h */; };
+		39F8A44D1DAB8FFD005F8275 /* TheSidebarController.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082DF1CBCF54200FDB961 /* TheSidebarController.h */; };
+		39F8A44E1DAB9002005F8275 /* MMDrawerBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082BD1CBCF42400FDB961 /* MMDrawerBarButtonItem.h */; };
+		39F8A44F1DAB9002005F8275 /* MMDrawerController+Subclass.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082BF1CBCF42400FDB961 /* MMDrawerController+Subclass.h */; };
+		39F8A4501DAB9002005F8275 /* MMDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082C01CBCF42400FDB961 /* MMDrawerController.h */; };
+		39F8A4511DAB9002005F8275 /* MMDrawerVisualState.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082C21CBCF42400FDB961 /* MMDrawerVisualState.h */; };
+		39F8A4521DAB9002005F8275 /* MMExampleDrawerVisualStateManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082C41CBCF42400FDB961 /* MMExampleDrawerVisualStateManager.h */; };
+		39F8A4531DAB9002005F8275 /* UIViewController+MMDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082C61CBCF42400FDB961 /* UIViewController+MMDrawerController.h */; };
+		39F8A4541DAB9007005F8275 /* RCCDrawerHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082CA1CBCF54200FDB961 /* RCCDrawerHelper.h */; };
+		39F8A4551DAB9007005F8275 /* RCCDrawerProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082CC1CBCF54200FDB961 /* RCCDrawerProtocol.h */; };
+		39F8A4561DAB9007005F8275 /* RCCTheSideBarManagerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082CD1CBCF54200FDB961 /* RCCTheSideBarManagerViewController.h */; };
+		39F8A4571DAB9007005F8275 /* RCCDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = D85082C81CBCF42400FDB961 /* RCCDrawerController.h */; };
+		39F8A4581DAB900D005F8275 /* RCCManagerModule.h in Headers */ = {isa = PBXBuildFile; fileRef = CC84A1951C1A0C4E00B3A6A2 /* RCCManagerModule.h */; };
+		39F8A4591DAB900D005F8275 /* RCCNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = CC84A1971C1A0C4E00B3A6A2 /* RCCNavigationController.h */; };
+		39F8A45A1DAB900D005F8275 /* RCCTabBarController.h in Headers */ = {isa = PBXBuildFile; fileRef = CC84A1991C1A0C4E00B3A6A2 /* RCCTabBarController.h */; };
+		39F8A45B1DAB900D005F8275 /* RCCViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CC84A19B1C1A0C4E00B3A6A2 /* RCCViewController.h */; };
+		39F8A45C1DAB900D005F8275 /* RCCLightBox.h in Headers */ = {isa = PBXBuildFile; fileRef = D84813171C8C5EB700051BAF /* RCCLightBox.h */; };
+		39F8A45D1DAB900D005F8275 /* RCCNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = D83514F41D29719A00D53758 /* RCCNotification.h */; };
 		CC84A19E1C1A0C4E00B3A6A2 /* RCCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1941C1A0C4E00B3A6A2 /* RCCManager.m */; };
 		CC84A19F1C1A0C4E00B3A6A2 /* RCCManagerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1961C1A0C4E00B3A6A2 /* RCCManagerModule.m */; };
 		CC84A1A01C1A0C4E00B3A6A2 /* RCCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1981C1A0C4E00B3A6A2 /* RCCNavigationController.m */; };
@@ -237,6 +266,45 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		39F8A4401DAB8EC7005F8275 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39F8A4411DAB8ECB005F8275 /* RCCManager.h in Headers */,
+				39F8A4421DAB8F4F005F8275 /* RCCExternalViewControllerProtocol.h in Headers */,
+				39F8A4581DAB900D005F8275 /* RCCManagerModule.h in Headers */,
+				39F8A4591DAB900D005F8275 /* RCCNavigationController.h in Headers */,
+				39F8A45A1DAB900D005F8275 /* RCCTabBarController.h in Headers */,
+				39F8A45B1DAB900D005F8275 /* RCCViewController.h in Headers */,
+				39F8A45C1DAB900D005F8275 /* RCCLightBox.h in Headers */,
+				39F8A45D1DAB900D005F8275 /* RCCNotification.h in Headers */,
+				39F8A4461DAB8FFA005F8275 /* SidebarAirbnbAnimation.h in Headers */,
+				39F8A4471DAB8FFA005F8275 /* SidebarAnimation.h in Headers */,
+				39F8A4481DAB8FFA005F8275 /* SidebarFacebookAnimation.h in Headers */,
+				39F8A4491DAB8FFA005F8275 /* SidebarFeedlyAnimation.h in Headers */,
+				39F8A44A1DAB8FFA005F8275 /* SidebarFlipboardAnimation.h in Headers */,
+				39F8A44D1DAB8FFD005F8275 /* TheSidebarController.h in Headers */,
+				39F8A44B1DAB8FFA005F8275 /* SidebarLuvocracyAnimation.h in Headers */,
+				39F8A44C1DAB8FFA005F8275 /* SidebarWunderlistAnimation.h in Headers */,
+				39F8A4431DAB8FF2005F8275 /* RCTHelpers.h in Headers */,
+				39F8A4441DAB8FF2005F8275 /* RCCTitleViewHelper.h in Headers */,
+				39F8A4451DAB8FF5005F8275 /* RCCToolBar.h in Headers */,
+				39F8A44E1DAB9002005F8275 /* MMDrawerBarButtonItem.h in Headers */,
+				39F8A44F1DAB9002005F8275 /* MMDrawerController+Subclass.h in Headers */,
+				39F8A4501DAB9002005F8275 /* MMDrawerController.h in Headers */,
+				39F8A4511DAB9002005F8275 /* MMDrawerVisualState.h in Headers */,
+				39F8A4521DAB9002005F8275 /* MMExampleDrawerVisualStateManager.h in Headers */,
+				39F8A4531DAB9002005F8275 /* UIViewController+MMDrawerController.h in Headers */,
+				39F8A4541DAB9007005F8275 /* RCCDrawerHelper.h in Headers */,
+				39F8A4551DAB9007005F8275 /* RCCDrawerProtocol.h in Headers */,
+				39F8A4561DAB9007005F8275 /* RCCTheSideBarManagerViewController.h in Headers */,
+				39F8A4571DAB9007005F8275 /* RCCDrawerController.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		D8AFADBC1BEE6F3F00A4592D /* ReactNativeNavigation */ = {
 			isa = PBXNativeTarget;
@@ -245,6 +313,7 @@
 				D8AFADB91BEE6F3F00A4592D /* Sources */,
 				D8AFADBA1BEE6F3F00A4592D /* Frameworks */,
 				D8AFADBB1BEE6F3F00A4592D /* CopyFiles */,
+				39F8A4401DAB8EC7005F8275 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -261,7 +330,7 @@
 		D8AFADB51BEE6F3F00A4592D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = artal;
 				TargetAttributes = {
 					D8AFADBC1BEE6F3F00A4592D = {
@@ -336,8 +405,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -383,8 +454,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -420,6 +493,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ReactNativeNavigation;
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -433,6 +507,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ReactNativeNavigation;
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
