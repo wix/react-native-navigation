@@ -380,6 +380,10 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   {
     viewController.navigationController.navigationBar.translucent = NO;
   }
+    
+    NSNumber *extendedLayoutIncludesOpaqueBars = self.navigatorStyle[@"extendedLayoutIncludesOpaqueBars"];
+    BOOL extendedLayoutIncludesOpaqueBarsBool = extendedLayoutIncludesOpaqueBars ? [extendedLayoutIncludesOpaqueBars boolValue] : NO;
+    viewController.extendedLayoutIncludesOpaqueBars = extendedLayoutIncludesOpaqueBarsBool;
   
   NSNumber *drawUnderNavBar = self.navigatorStyle[@"drawUnderNavBar"];
   BOOL drawUnderNavBarBool = drawUnderNavBar ? [drawUnderNavBar boolValue] : NO;
