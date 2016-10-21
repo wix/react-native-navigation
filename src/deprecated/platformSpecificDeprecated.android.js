@@ -224,15 +224,21 @@ function convertAnimationType(animationType) {
 }
 
 function navigatorSetButtons(navigator, navigatorEventID, params) {
+  let rightButtons = null;
   if (params.rightButtons) {
-    params.rightButtons.forEach(function(button) {
-      button.enabled = !button.disabled;
+    rightButtons = params.rightButtons.map(function(button) {
+      let icon;
       if (button.icon) {
-        const icon = resolveAssetSource(button.icon);
-        if (icon) {
-          button.icon = icon.uri;
+        const iconSource = resolveAssetSource(button.icon);
+        if (iconSource) {
+          icon = iconSource.uri;
         }
       }
+      return {
+          ...button,
+        enabled: !button.disabled,
+        icon: icon
+      };
     });
   }
   const leftButton = getLeftButton(params);
@@ -244,7 +250,7 @@ function navigatorSetButtons(navigator, navigatorEventID, params) {
       }
     }
   }
-  newPlatformSpecific.setScreenTitleBarButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton);
+  newPlatformSpecific.setScreenTitleBarButtons(navigator.screenInstanceID, navigatorEventID, rightButtons, leftButton);
 }
 
 function navigatorSetTabBadge(navigator, params) {
@@ -337,16 +343,21 @@ function addNavigatorButtons(screen, sideMenuParams) {
   Object.assign(screen, Screen.navigatorButtons);
 
   // Get image uri from image id
-  const rightButtons = getRightButtons(screen);
+  let rightButtons = getRightButtons(screen);
   if (rightButtons) {
-    rightButtons.forEach(function(button) {
-      button.enabled = !button.disabled;
+    rightButtons = rightButtons.map(function(button) {
+      let icon;
       if (button.icon) {
-        const icon = resolveAssetSource(button.icon);
-        if (icon) {
-          button.icon = icon.uri;
+        const iconSource = resolveAssetSource(button.icon);
+        if (iconSource) {
+          icon = iconSource.uri;
         }
       }
+      return {
+          ...button,
+        enabled: !button.disabled,
+        icon: icon
+      };
     });
   }
 
