@@ -84,6 +84,10 @@
     NSString *weightKey = @"fontWeight";
     NSString *sizeKey = @"fontSize";
     NSString *styleKey = @"fontStyle";
+    NSString *shadowColourKey = @"shadowColor";
+    NSString *shadowOffsetKey = @"shadowOffset";
+    NSString *shadowBlurRadiusKey = @"shadowBlurRadius";
+    NSString *showShadowKey = @"showShadow";
     
     if (prefix) {
         
@@ -101,6 +105,58 @@
         
         styleKey = [styleKey stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[styleKey substringToIndex:1].capitalizedString];
         styleKey = [NSString stringWithFormat:@"%@%@", prefix, styleKey];
+        
+        shadowColourKey = [shadowColourKey stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[shadowColourKey substringToIndex:1].capitalizedString];
+        shadowColourKey = [NSString stringWithFormat:@"%@%@", prefix, shadowColourKey];
+        
+        shadowOffsetKey = [shadowOffsetKey stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[shadowOffsetKey substringToIndex:1].capitalizedString];
+        shadowOffsetKey = [NSString stringWithFormat:@"%@%@", prefix, shadowOffsetKey];
+        
+        shadowBlurRadiusKey = [shadowBlurRadiusKey stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[shadowBlurRadiusKey substringToIndex:1].capitalizedString];
+        shadowBlurRadiusKey = [NSString stringWithFormat:@"%@%@", prefix, shadowBlurRadiusKey];
+        
+        showShadowKey = [showShadowKey stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[showShadowKey substringToIndex:1].capitalizedString];
+        showShadowKey = [NSString stringWithFormat:@"%@%@", prefix, showShadowKey];
+    }
+    
+    NSShadow *shadow;
+    
+    NSNumber *shadowColor = dictionary[shadowColourKey];
+    if (shadowColor && [shadowColor isKindOfClass:[NSNumber class]]) {
+        if (!shadow) {
+            shadow = [NSShadow new];
+        }
+        shadow.shadowColor = [RCTConvert UIColor:shadowColor];
+    }
+    
+    NSDictionary *shadowOffsetDict = dictionary[shadowOffsetKey];
+    if (shadowOffsetDict && [shadowOffsetDict isKindOfClass:[NSDictionary class]]) {
+        CGSize shadowOffset = [RCTConvert CGSize:shadowOffsetDict];
+        if (!shadow) {
+            shadow = [NSShadow new];
+        }
+        shadow.shadowOffset = shadowOffset;
+    }
+    
+    NSNumber *shadowRadius = dictionary[shadowBlurRadiusKey];
+    if (shadowRadius) {
+        CGFloat radius = [RCTConvert CGFloat:shadowRadius];
+        if (!shadow) {
+            shadow = [NSShadow new];
+        }
+        shadow.shadowBlurRadius = radius;
+    }
+    
+    NSNumber *showShadow = dictionary[showShadowKey];
+    if (showShadow) {
+        BOOL show = [RCTConvert BOOL:showShadow];
+        if (!show) {
+            shadow = nil;
+        }
+    }
+    
+    if (shadow) {
+        [textAttributes setObject:shadow forKey:NSShadowAttributeName];
     }
     
     NSNumber *textColor = dictionary[colorKey];
