@@ -185,10 +185,10 @@ function _mergeScreenSpecificSettings(screenID, screenInstanceID, params) {
     Object.assign(navigatorStyle, params.navigatorStyle);
   }
 
-  const navigatorEventID = screenInstanceID + '_events';
-  const navigatorButtons = Object.assign({}, screenClass.navigatorButtons);
+  let navigatorEventID = screenInstanceID + '_events';
+  let navigatorButtons = JSON.parse(JSON.stringify(screenClass.navigatorButtons));
   if (params.navigatorButtons) {
-    Object.assign(navigatorButtons, params.navigatorButtons);
+    navigatorButtons = JSON.parse(JSON.stringify(params.navigatorButtons));
   }
   if (navigatorButtons.leftButtons) {
     for (let i = 0; i < navigatorButtons.leftButtons.length; i++) {
