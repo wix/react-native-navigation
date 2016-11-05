@@ -78,6 +78,6 @@ public class ContextualMenu extends TitleBar implements LeftButtonOnClickListene
                 ((ViewManager) getParent()).removeView(ContextualMenu.this);
             }
         });
-        NavigationApplication.instance.sendNavigatorEvent("contextualMenuDismissed", navigatorEventId);
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("contextualMenuDismissed", navigatorEventId);
     }
 }

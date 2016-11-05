@@ -67,6 +67,6 @@ class ContentViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
     private void sendTabSelectedEventToJs() {
         WritableMap data = Arguments.createMap();
         String navigatorEventId = contentViews.get(currentPosition).getNavigatorEventId();
-        NavigationApplication.instance.sendNavigatorEvent("tabSelected", navigatorEventId, data);
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("tabSelected", navigatorEventId, data);
     }
 }

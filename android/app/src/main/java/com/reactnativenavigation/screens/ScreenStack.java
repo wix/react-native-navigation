@@ -176,12 +176,8 @@ public class ScreenStack {
         stack.clear();
     }
 
-    public int getStackSize() {
-        return stack.size();
-    }
-
     public boolean canPop() {
-        return getStackSize() > 1 && !isPreviousScreenAttachedToWindow();
+        return stack.size() > 1 && !isPreviousScreenAttachedToWindow();
     }
 
     private boolean isPreviousScreenAttachedToWindow() {
@@ -263,7 +259,7 @@ public class ScreenStack {
     public boolean handleBackPressInJs() {
         ScreenParams currentScreen = stack.peek().screenParams;
         if (currentScreen.overrideBackPressInJs) {
-            NavigationApplication.instance.sendNavigatorEvent("backPress", currentScreen.getNavigatorEventId());
+            NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("backPress", currentScreen.getNavigatorEventId());
             return true;
         }
         return false;

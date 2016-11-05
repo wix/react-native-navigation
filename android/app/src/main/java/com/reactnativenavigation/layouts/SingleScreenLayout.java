@@ -236,7 +236,7 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
             sideMenu.openDrawer();
         } else {
             final String navigatorEventId = stack.peek().getNavigatorEventId();
-            NavigationApplication.instance.sendNavigatorEvent("sideMenu", navigatorEventId);
+            NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         }
     }
 }

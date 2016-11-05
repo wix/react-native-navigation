@@ -366,7 +366,7 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
             sideMenu.openDrawer();
         } else {
             final String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
-            NavigationApplication.instance.sendNavigatorEvent("sideMenu", navigatorEventId);
+            NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         }
     }
 }
