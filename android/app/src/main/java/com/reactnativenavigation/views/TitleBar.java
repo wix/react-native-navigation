@@ -62,12 +62,19 @@ public class TitleBar extends Toolbar {
         setTitleTextColor(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
+        setTranslucent(params);
     }
 
     private void colorOverflowButton(StyleParams params) {
         Drawable overflowIcon = actionMenuView.getOverflowIcon();
         if (shouldColorOverflowButton(params, overflowIcon)) {
             ViewUtils.tintDrawable(overflowIcon, params.titleBarButtonColor.getColor(), true);
+        }
+    }
+
+    private void setTranslucent(StyleParams params) {
+        if (params.topBarTranslucent) {
+            setBackground(new TranslucentTitleBarBackground());
         }
     }
 

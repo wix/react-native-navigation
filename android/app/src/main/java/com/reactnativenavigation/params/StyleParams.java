@@ -48,6 +48,7 @@ public class StyleParams {
 
     public boolean titleBarHidden;
     public boolean topBarTransparent;
+    public boolean topBarTranslucent;
     public Color titleBarTitleColor;
     public Color titleBarSubtitleColor;
     public Color titleBarButtonColor;
