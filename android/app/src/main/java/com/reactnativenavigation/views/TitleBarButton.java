@@ -15,10 +15,10 @@ import java.util.ArrayList;
 
 class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
-    private final Menu menu;
-    private final View parent;
+    protected final Menu menu;
+    protected final View parent;
     protected TitleBarButtonParams buttonParams;
-    @Nullable private String navigatorEventId;
+    @Nullable protected String navigatorEventId;
 
     TitleBarButton(Menu menu, View parent, TitleBarButtonParams buttonParams, @Nullable String navigatorEventId) {
         this.menu = menu;

@@ -5,8 +5,10 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
@@ -78,6 +80,40 @@ public class ViewUtils {
                 return result;
             }
         }
+    }
+
+    /**
+     * Returns the first instance of clazz in root
+     */
+    @Nullable public static <T> T findChildByClass(ViewGroup root, Class clazz) {
+        for (int i = 0; i < root.getChildCount(); i++) {
+            View view = root.getChildAt(i);
+            if (clazz.isAssignableFrom(view.getClass())) {
+                return (T) view;
+            }
+
+            if (view instanceof ViewGroup) {
+                view = findChildByClass((ViewGroup) view, clazz);
+                if (view != null && clazz.isAssignableFrom(view.getClass())) {
+                    return (T) view;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static void runOnChildren(ViewGroup root, RunOnViewTask task) {
+        for (int i = 0; i < root.getChildCount(); i++) {
+            View child = root.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                runOnChildren((ViewGroup) child, task);
+            }
+            task.runOnView(child);
+        }
+    }
+
+    public interface RunOnViewTask {
+        void runOnView(View view);
     }
 }
 

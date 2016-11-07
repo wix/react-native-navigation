@@ -9,27 +9,27 @@ import java.util.Collections;
 import java.util.List;
 
 public class Parser {
-    protected static boolean hasKey(Bundle bundle, String key) {
+    static boolean hasKey(Bundle bundle, String key) {
         return bundle.keySet().contains(key);
     }
 
-    protected static void assertKeyExists(Bundle bundle, String key) {
+    static void assertKeyExists(Bundle bundle, String key) {
         if (!hasKey(bundle, key)) {
             throw new KeyDoesNotExistsException(key);
         }
     }
 
-    public static class KeyDoesNotExistsException extends RuntimeException {
-        public KeyDoesNotExistsException(String key) {
+    private static class KeyDoesNotExistsException extends RuntimeException {
+        KeyDoesNotExistsException(String key) {
             super(key);
         }
     }
 
-    protected interface ParseStrategy<T> {
+    interface ParseStrategy<T> {
         T parse(Bundle params);
     }
 
-    protected <T> List<T> parseBundle(Bundle params, ParseStrategy<T> strategy) {
+    <T> List<T> parseBundle(Bundle params, ParseStrategy<T> strategy) {
         ArrayList<T> result = new ArrayList<>(Collections.nCopies(params.keySet().size(), (T) null));
         for (String key : params.keySet()) {
             result.set(Integer.parseInt(key), strategy.parse(params.getBundle(key)));
