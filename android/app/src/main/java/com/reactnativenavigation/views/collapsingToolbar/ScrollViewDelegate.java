@@ -13,7 +13,6 @@ public class ScrollViewDelegate implements View.OnTouchListener {
 
     private ScrollView scrollView;
     private OnScrollListener listener;
-    private Boolean didInterceptLastTouchEvent = null;
 
     public ScrollViewDelegate(OnScrollListener scrollListener) {
         listener = scrollListener;
@@ -34,9 +33,7 @@ public class ScrollViewDelegate implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-        if (!didInterceptLastTouchEvent) {
-            scrollView.onTouchEvent(event);
-        }
+        scrollView.onTouchEvent(event);
         return this.listener.onTouch(event);
     }
 }
