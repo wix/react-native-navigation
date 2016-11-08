@@ -22,8 +22,8 @@ class TranslucentTitleBarBackground extends PaintDrawable {
 
                 int x1 = (int) (Math.cos(angleInRadians) * width);
                 int y1 = (int) (Math.sin(angleInRadians) * height);
-                int[] colors = new int[]{Color.argb(160, 0, 0, 0), Color.argb(20, 0, 0, 0), Color.TRANSPARENT};
-                float[] positions = {0, 0.83f, 1};
+                int[] colors = new int[]{Color.argb(90, 0, 0, 0), Color.argb(15, 0, 0, 0), Color.TRANSPARENT};
+                float[] positions = {0, 0.78f, 1};
                 LinearGradient lg = new LinearGradient(0, 0, x1, y1,
                         colors,
                         positions,
