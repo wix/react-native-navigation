@@ -13,17 +13,27 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     private CollapsingTopBarBackground collapsingTopBarBackground;
     private ScrollListener scrollListener;
     private float finalCollapsedTranslation;
+    private CollapsingTopBarParams params;
 
-    public CollapsingTopBar(Context context, CollapsingTopBarParams params) {
+    public CollapsingTopBar(Context context, final CollapsingTopBarParams params) {
         super(context);
+        this.params = params;
         createCollapsingTopBar(params);
+        calculateFinalCollapsedTranslation(params);
+    }
+
+    private void calculateFinalCollapsedTranslation(final CollapsingTopBarParams params) {
         ViewUtils.runOnPreDraw(this, new Runnable() {
             @Override
             public void run() {
-                finalCollapsedTranslation = getCollapsingTopBarBackground().getCollapsedTopBarHeight() - getHeight();
+                if (params.hasBackgroundImage()) {
+                    finalCollapsedTranslation =
+                            getCollapsingTopBarBackground().getCollapsedTopBarHeight() - getHeight();
+                } else {
+                    finalCollapsedTranslation = -titleBar.getHeight();
+                }
             }
         });
-
     }
 
     public void setScrollListener(ScrollListener scrollListener) {
@@ -31,16 +41,22 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     }
 
     private void createCollapsingTopBar(CollapsingTopBarParams params) {
-        collapsingTopBarBackground = new CollapsingTopBarBackground(getContext(), params);
-        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) CollapsingTopBarBackground.MAX_HEIGHT);
-        titleBarAndContextualMenuContainer.addView(collapsingTopBarBackground, lp);
+        if (params.hasBackgroundImage()) {
+            collapsingTopBarBackground = new CollapsingTopBarBackground(getContext(), params);
+            LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) CollapsingTopBarBackground.MAX_HEIGHT);
+            titleBarAndContextualMenuContainer.addView(collapsingTopBarBackground, lp);
+        }
     }
 
     @Override
     protected TitleBar createTitleBar() {
-        return new CollapsingTitleBar(getContext(),
-                collapsingTopBarBackground.getCollapsedTopBarHeight(),
-                scrollListener);
+        if (params.hasBackgroundImage()) {
+            return new CollapsingTitleBar(getContext(),
+                    collapsingTopBarBackground.getCollapsedTopBarHeight(),
+                    scrollListener);
+        } else {
+            return super.createTitleBar();
+        }
     }
 
     public CollapsingTopBarBackground getCollapsingTopBarBackground() {
@@ -49,8 +65,12 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
 
     public void collapse(float collapse) {
         setTranslationY(collapse);
-        ((CollapsingTitleBar) titleBar).collapse(collapse);
-        collapsingTopBarBackground.collapse(collapse);
+        if (titleBar instanceof CollapsingTitleBar) {
+            ((CollapsingTitleBar) titleBar).collapse(collapse);
+        }
+        if (collapsingTopBarBackground != null) {
+            collapsingTopBarBackground.collapse(collapse);
+        }
     }
 
     public void onScrollViewAdded(ScrollView scrollView) {
@@ -63,7 +83,9 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     }
 
     public int getCollapsedHeight() {
-        return collapsingTopBarBackground.getCollapsedTopBarHeight();
+        return params.hasBackgroundImage() ?
+                collapsingTopBarBackground.getCollapsedTopBarHeight() :
+                titleBar.getHeight();
     }
 
     @Override

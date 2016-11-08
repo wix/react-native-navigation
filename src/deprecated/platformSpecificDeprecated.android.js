@@ -121,6 +121,7 @@ function convertStyleParams(originalStyleObject) {
     collapsingToolBarImage: originalStyleObject.collapsingToolBarImage,
     collapsingToolBarCollapsedColor: originalStyleObject.collapsingToolBarCollapsedColor,
     titleBarHidden: originalStyleObject.navBarHidden,
+    titleBarHideOnScroll: originalStyleObject.navBarHideOnScroll,
     titleBarTitleColor: originalStyleObject.navBarTextColor,
     titleBarSubtitleColor: originalStyleObject.navBarTextSubtitleColor,
     titleBarButtonColor: originalStyleObject.navBarButtonColor,

@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 
-class CollapseCalculator {
+public class CollapseCalculator {
     private float collapse;
     private MotionEvent previousTouchEvent;
     private float touchDownY = -1;
@@ -17,7 +17,7 @@ class CollapseCalculator {
     private CollapsingView view;
     protected ScrollView scrollView;
 
-    CollapseCalculator(final CollapsingView collapsingView) {
+    public CollapseCalculator(final CollapsingView collapsingView) {
         this.view = collapsingView;
     }
 

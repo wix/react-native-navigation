@@ -78,7 +78,6 @@ public class TopBar extends AppBarLayout {
     private void setTransparent() {
         setBackgroundColor(Color.TRANSPARENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setElevation(0);
             setOutlineProvider(null);
         }
     }

@@ -19,6 +19,10 @@ public class ScrollViewDelegate implements View.OnTouchListener {
         listener = scrollListener;
     }
 
+    public boolean hasScrollView() {
+        return scrollView != null;
+    }
+
     public void onScrollViewAdded(ScrollView scrollView) {
         this.scrollView = scrollView;
         listener.onScrollViewAdded(this.scrollView);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import com.facebook.react.ReactRootView;
@@ -85,13 +86,22 @@ public class ContentView extends ReactRootView {
     public void onViewAdded(final View child) {
         super.onViewAdded(child);
         detectContentViewVisible(child);
+        detectScrollViewAdded(child);
+    }
+
+    private void detectScrollViewAdded(View child) {
         if (child instanceof ScrollView) {
             onScrollViewAdded((ScrollView) child);
+        } else if (child instanceof ViewGroup) {
+            Object maybeScrollView = ViewUtils.findChildByClass((ViewGroup) child, ScrollView.class);
+            if (maybeScrollView instanceof ScrollView) {
+                onScrollViewAdded((ScrollView) maybeScrollView);
+            }
         }
     }
 
     private void onScrollViewAdded(ScrollView scrollView) {
-        if (scrollViewDelegate != null) {
+        if (scrollViewDelegate != null && !scrollViewDelegate.hasScrollView()) {
             scrollViewDelegate.onScrollViewAdded(scrollView);
             scrollViewAddedListener.onScrollViewAdded(scrollView);
         }
