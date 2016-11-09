@@ -94,6 +94,12 @@
     viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
     viewController.tabBarItem.selectedImage = iconImageSelected;
+    //if there is no title, then the image will be centered
+    if(!title){
+      int offset = 7;
+      UIEdgeInsets imageInset = UIEdgeInsetsMake(offset, 0, -offset, 0);
+      viewController.tabBarItem.imageInsets = imageInset;
+    }
     
     if (buttonColor)
     {
