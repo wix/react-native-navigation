@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ScrollView;
 
 import com.facebook.react.ReactRootView;
 import com.reactnativenavigation.NavigationApplication;
@@ -15,6 +13,7 @@ import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.collapsingToolbar.OnScrollViewAddedListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
+import com.reactnativenavigation.views.utils.ScrollViewDetector;
 import com.reactnativenavigation.views.utils.ViewMeasurer;
 
 public class ContentView extends ReactRootView {
@@ -26,6 +25,7 @@ public class ContentView extends ReactRootView {
     @Nullable private ScrollViewDelegate scrollViewDelegate;
     private ViewMeasurer viewMeasurer;
     private OnScrollViewAddedListener scrollViewAddedListener;
+    private ScrollViewDetector scrollViewDetector;
 
     public void setOnDisplayListener(SingleScreen.OnDisplayListener onDisplayListener) {
         this.onDisplayListener = onDisplayListener;
@@ -43,8 +43,9 @@ public class ContentView extends ReactRootView {
         viewMeasurer = new ViewMeasurer();
     }
 
-    public void setupCollapseDetection(ScrollListener scrollListener) {
+    public void setupCollapseDetection(ScrollListener scrollListener, OnScrollViewAddedListener onScrollViewAddedListener) {
         scrollViewDelegate = new ScrollViewDelegate(scrollListener);
+        scrollViewDetector = new ScrollViewDetector(this, onScrollViewAddedListener, scrollViewDelegate);
     }
 
     public void setViewMeasurer(ViewMeasurer viewMeasurer) {
@@ -86,24 +87,8 @@ public class ContentView extends ReactRootView {
     public void onViewAdded(final View child) {
         super.onViewAdded(child);
         detectContentViewVisible(child);
-        detectScrollViewAdded(child);
-    }
-
-    private void detectScrollViewAdded(View child) {
-        if (child instanceof ScrollView) {
-            onScrollViewAdded((ScrollView) child);
-        } else if (child instanceof ViewGroup) {
-            Object maybeScrollView = ViewUtils.findChildByClass((ViewGroup) child, ScrollView.class);
-            if (maybeScrollView instanceof ScrollView) {
-                onScrollViewAdded((ScrollView) maybeScrollView);
-            }
-        }
-    }
-
-    private void onScrollViewAdded(ScrollView scrollView) {
-        if (scrollViewDelegate != null && !scrollViewDelegate.hasScrollView()) {
-            scrollViewDelegate.onScrollViewAdded(scrollView);
-            scrollViewAddedListener.onScrollViewAdded(scrollView);
+        if (scrollViewDetector != null) {
+            scrollViewDetector.detectScrollViewAdded(child);
         }
     }
 

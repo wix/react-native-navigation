@@ -3,6 +3,7 @@ package com.reactnativenavigation.screens;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ScrollView;
 
+import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
@@ -36,8 +37,7 @@ public class CollapsingSingleScreen extends SingleScreen {
     }
 
     private void setupCollapseDetection(final CollapsingTopBar topBar) {
-        contentView.setupCollapseDetection(getScrollListener(topBar));
-        contentView.setOnScrollViewAddedListener(new OnScrollViewAddedListener() {
+        contentView.setupCollapseDetection(getScrollListener(topBar), new OnScrollViewAddedListener() {
             @Override
             public void onScrollViewAdded(ScrollView scrollView) {
                 topBar.onScrollViewAdded(scrollView);
@@ -46,7 +46,7 @@ public class CollapsingSingleScreen extends SingleScreen {
     }
 
     private ScrollListener getScrollListener(final CollapsingTopBar topBar) {
-        return new ScrollListener(new CollapseCalculator(topBar),
+        return new ScrollListener(new CollapseCalculator(topBar, getCollapseBehaviour()),
                 new ScrollListener.OnScrollListener() {
                     @Override
                     public void onScroll(float amount) {
@@ -56,7 +56,11 @@ public class CollapsingSingleScreen extends SingleScreen {
                         topBar.collapse(amount);
                     }
                 },
-                screenParams.styleParams.collapsingTopBarParams.collapseBehaviour
+                getCollapseBehaviour()
         );
+    }
+
+    private CollapsingTopBarParams.CollapseBehaviour getCollapseBehaviour() {
+        return screenParams.styleParams.collapsingTopBarParams.collapseBehaviour;
     }
 }

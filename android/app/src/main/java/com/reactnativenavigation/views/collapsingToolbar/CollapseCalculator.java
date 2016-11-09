@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 
+import com.reactnativenavigation.params.CollapsingTopBarParams.CollapseBehaviour;
+
 public class CollapseCalculator {
     private float collapse;
     private MotionEvent previousTouchEvent;
@@ -15,10 +17,13 @@ public class CollapseCalculator {
     private boolean canCollapse = true;
     private boolean canExpend = false;
     private CollapsingView view;
+    private CollapseBehaviour collapseBehaviour;
     protected ScrollView scrollView;
+    private int scrollY = -1;
 
-    public CollapseCalculator(final CollapsingView collapsingView) {
+    public CollapseCalculator(final CollapsingView collapsingView, CollapseBehaviour collapseBehaviour) {
         this.view = collapsingView;
+        this.collapseBehaviour = collapseBehaviour;
     }
 
     void setScrollView(ScrollView scrollView) {
@@ -44,9 +49,17 @@ public class CollapseCalculator {
     private boolean shouldCollapse(MotionEvent event) {
         checkCollapseLimits();
         ScrollDirection.Direction direction = getScrollDirection(event.getRawY());
-        return isNotCollapsedOrExpended() ||
+        return (collapseBehaviour == CollapseBehaviour.CollapseTopBarFirst || isScrolling()) &&
+               (isNotCollapsedOrExpended() ||
                 (canCollapse && isExpendedAndScrollingUp(direction)) ||
-                (canExpend && isCollapsedAndScrollingDown(direction));
+                (canExpend && isCollapsedAndScrollingDown(direction)));
+    }
+
+    private boolean isScrolling() {
+        final int currentScrollY = scrollView.getScrollY();
+        final boolean isScrolling = currentScrollY != scrollY;
+        scrollY = currentScrollY;
+        return isScrolling;
     }
 
     private ScrollDirection.Direction getScrollDirection(float y) {
@@ -78,7 +91,7 @@ public class CollapseCalculator {
     private boolean calculateCanExpend(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation >= finalCollapsedTranslation &&
                currentTopBarTranslation < finalExpendedTranslation &&
-               scrollView.getScrollY() == 0;
+               (scrollView.getScrollY() == 0 || collapseBehaviour == CollapseBehaviour.CollapseTogether);
     }
 
     private boolean isCollapsedAndScrollingDown(ScrollDirection.Direction direction) {
@@ -89,7 +102,7 @@ public class CollapseCalculator {
         return isExpended && direction == ScrollDirection.Direction.Up;
     }
 
-    private  boolean isNotCollapsedOrExpended() {
+    private boolean isNotCollapsedOrExpended() {
         return canExpend && canCollapse;
     }
 
