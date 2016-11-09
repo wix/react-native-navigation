@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import platformSpecific from './deprecated/platformSpecificDeprecated';
 import Navigation from './Navigation';
+import _ from 'lodash';
+
 
 const _allNavigatorEventHandlers = {};
 
@@ -24,9 +26,24 @@ class Navigator {
     this.navigatorEventID = navigatorEventID;
     this.navigatorEventHandler = null;
     this.navigatorEventSubscription = null;
+    this._lastAction = {params: undefined, timestamp: 0};
   }
-
+  
+  _checkLastAction(params) {
+    if (Date.now() - this._lastAction.timestamp < 1000
+        && _.isEqual(params, this._lastAction.params)
+        && !params.force) {
+      return false;
+    } else {
+      this._lastAction = {params, timestamp: Date.now()};
+      return true;
+    }
+  }
+  
   push(params = {}) {
+    if(!this._checkLastAction({method: 'push', passProps: params.passProps, screen: params.screen})) {
+      return;
+    }
     return NavigationSpecific.push(this, params);
   }
 
@@ -43,6 +60,9 @@ class Navigator {
   }
 
   showModal(params = {}) {
+    if(!this._checkLastAction({method: 'showModal', passProps: params.passProps, screen: params.screen})) {
+      return;
+    }
     return Navigation.showModal(params);
   }
 
