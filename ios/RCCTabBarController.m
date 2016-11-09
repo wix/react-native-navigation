@@ -95,6 +95,12 @@
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
     viewController.tabBarItem.selectedImage = iconImageSelected;
     
+    if(!title){
+      int offset = 7;
+      UIEdgeInsets imageInset = UIEdgeInsetsMake(offset, 0, -offset, 0);
+      viewController.tabBarItem.imageInsets = imageInset;
+    }
+    
     if (buttonColor)
     {
       [viewController.tabBarItem setTitleTextAttributes:
