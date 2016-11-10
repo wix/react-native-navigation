@@ -10,7 +10,9 @@ import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseCalculator;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingContentViewMeasurer;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingTopBar;
+import com.reactnativenavigation.views.collapsingToolbar.OnScrollListener;
 import com.reactnativenavigation.views.collapsingToolbar.OnScrollViewAddedListener;
+import com.reactnativenavigation.views.collapsingToolbar.ScrollDirection;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
 
 public class CollapsingSingleScreen extends SingleScreen {
@@ -47,13 +49,18 @@ public class CollapsingSingleScreen extends SingleScreen {
 
     private ScrollListener getScrollListener(final CollapsingTopBar topBar) {
         return new ScrollListener(new CollapseCalculator(topBar, getCollapseBehaviour()),
-                new ScrollListener.OnScrollListener() {
+                new OnScrollListener() {
                     @Override
                     public void onScroll(float amount) {
                         if (!screenParams.styleParams.titleBarHideOnScroll) {
                             contentView.collapse(amount);
                         }
                         topBar.collapse(amount);
+                    }
+
+                    @Override
+                    public void onFling(ScrollDirection.Direction direction) {
+                        topBar.collapseImmediate(direction);
                     }
                 },
                 getCollapseBehaviour()

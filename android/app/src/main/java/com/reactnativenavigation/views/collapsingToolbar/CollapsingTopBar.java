@@ -73,6 +73,14 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         }
     }
 
+    public void collapseImmediate(ScrollDirection.Direction direction) {
+        if (direction == ScrollDirection.Direction.Up) {
+            setTranslationY(getFinalCollapseValue());
+        } else {
+            setTranslationY(0);
+        }
+    }
+
     public void onScrollViewAdded(ScrollView scrollView) {
         scrollListener.onScrollViewAdded(scrollView);
     }

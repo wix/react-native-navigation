@@ -24,15 +24,10 @@ public class ContentView extends ReactRootView {
     private SingleScreen.OnDisplayListener onDisplayListener;
     @Nullable private ScrollViewDelegate scrollViewDelegate;
     private ViewMeasurer viewMeasurer;
-    private OnScrollViewAddedListener scrollViewAddedListener;
     private ScrollViewDetector scrollViewDetector;
 
     public void setOnDisplayListener(SingleScreen.OnDisplayListener onDisplayListener) {
         this.onDisplayListener = onDisplayListener;
-    }
-
-    public void setOnScrollViewAddedListener(OnScrollViewAddedListener scrollViewAddedListener) {
-        this.scrollViewAddedListener = scrollViewAddedListener;
     }
 
     public ContentView(Context context, String screenId, NavigationParams navigationParams) {

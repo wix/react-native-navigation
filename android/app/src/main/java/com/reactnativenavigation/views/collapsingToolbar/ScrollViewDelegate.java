@@ -5,16 +5,10 @@ import android.view.View;
 import android.widget.ScrollView;
 
 public class ScrollViewDelegate implements View.OnTouchListener {
-    interface OnScrollListener {
-        boolean onTouch(MotionEvent event);
-
-        void onScrollViewAdded(ScrollView scrollView);
-    }
-
     private ScrollView scrollView;
-    private OnScrollListener listener;
+    private ScrollListener listener;
 
-    public ScrollViewDelegate(OnScrollListener scrollListener) {
+    public ScrollViewDelegate(ScrollListener scrollListener) {
         listener = scrollListener;
     }
 
