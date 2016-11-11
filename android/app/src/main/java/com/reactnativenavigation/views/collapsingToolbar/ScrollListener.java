@@ -4,9 +4,8 @@ import android.view.MotionEvent;
 import android.widget.ScrollView;
 
 import com.reactnativenavigation.params.CollapsingTopBarParams.CollapseBehaviour;
-import com.reactnativenavigation.views.collapsingToolbar.ScrollDirection.Direction;
 
-public class ScrollListener implements OnFlingListener {
+public class ScrollListener {
     private CollapseCalculator collapseCalculator;
     private OnScrollListener scrollListener;
     private CollapseBehaviour collapseBehaviour;
@@ -16,7 +15,6 @@ public class ScrollListener implements OnFlingListener {
         this.collapseCalculator = collapseCalculator;
         this.scrollListener = scrollListener;
         this.collapseBehaviour = collapseBehaviour;
-        collapseCalculator.setFlingListener(this);
     }
 
     void onScrollViewAdded(ScrollView scrollView) {
@@ -26,14 +24,9 @@ public class ScrollListener implements OnFlingListener {
     boolean onTouch(MotionEvent event) {
         CollapseAmount amount = collapseCalculator.calculate(event);
         if (amount.canCollapse()) {
-            scrollListener.onScroll(amount.get());
+            scrollListener.onScroll(amount);
             return CollapseBehaviour.CollapseTopBarFirst.equals(collapseBehaviour);
         }
         return false;
-    }
-
-    @Override
-    public void onFling(Direction direction) {
-        scrollListener.onFling(direction);
     }
 }

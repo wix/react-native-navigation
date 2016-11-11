@@ -1,19 +1,33 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
 public class CollapseAmount {
-    public final static CollapseAmount None = new CollapseAmount();
-    private Float amount;
-
-    public CollapseAmount(float amount) {
-        this.amount = amount;
-    }
+    final static CollapseAmount None = new CollapseAmount();
 
     private CollapseAmount() {
 
     }
 
-    public boolean canCollapse() {
-        return amount != null;
+    private Float amount;
+    private CollapseCalculator.Direction direction;
+
+    CollapseAmount(float amount) {
+        this.amount = amount;
+    }
+
+    CollapseAmount(CollapseCalculator.Direction direction) {
+        this.direction = direction;
+    }
+
+    boolean canCollapse() {
+        return amount != null || this != None;
+    }
+
+    public boolean collapseToTop() {
+        return direction == CollapseCalculator.Direction.Up;
+    }
+
+    public boolean collapseToBottom() {
+        return direction == CollapseCalculator.Direction.Down;
     }
 
     public float get() {

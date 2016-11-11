@@ -63,21 +63,13 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         return collapsingTopBarBackground;
     }
 
-    public void collapse(float collapse) {
-        setTranslationY(collapse);
-        if (titleBar instanceof CollapsingTitleBar) {
-            ((CollapsingTitleBar) titleBar).collapse(collapse);
+    public void collapse(CollapseAmount amount) {
+        ViewCollapser.collapse((CollapsingView) this, amount);
+        if (titleBar instanceof CollapsingView) {
+            ViewCollapser.collapse((CollapsingView) titleBar, amount);
         }
         if (collapsingTopBarBackground != null) {
-            collapsingTopBarBackground.collapse(collapse);
-        }
-    }
-
-    public void collapseImmediate(ScrollDirection.Direction direction) {
-        if (direction == ScrollDirection.Direction.Up) {
-            setTranslationY(getFinalCollapseValue());
-        } else {
-            setTranslationY(0);
+            ViewCollapser.collapse(collapsingTopBarBackground, amount);
         }
     }
 

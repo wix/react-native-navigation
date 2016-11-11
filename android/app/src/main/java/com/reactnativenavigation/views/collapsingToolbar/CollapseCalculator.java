@@ -2,18 +2,19 @@ package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 
-import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.CollapsingTopBarParams.CollapseBehaviour;
-import com.reactnativenavigation.views.collapsingToolbar.ScrollDirection.Direction;
 
 import static com.reactnativenavigation.params.CollapsingTopBarParams.CollapseBehaviour.CollapseTogether;
 import static com.reactnativenavigation.params.CollapsingTopBarParams.CollapseBehaviour.CollapseTopBarFirst;
 
 public class CollapseCalculator {
+    enum Direction {
+        Up, Down, None
+    }
+
     private float collapse;
     private MotionEvent previousTouchEvent;
     private float touchDownY = -1;
@@ -25,58 +26,33 @@ public class CollapseCalculator {
     private CollapsingView view;
     private CollapseBehaviour collapseBehaviour;
     protected ScrollView scrollView;
-    private int scrollY = -1;
-    private GestureDetector flingDetector;
-    private ScrollListener flingListener;
+    private int scrollY = 0;
+    private int totalCollapse = 0;
 
     public CollapseCalculator(final CollapsingView collapsingView, CollapseBehaviour collapseBehaviour) {
         this.view = collapsingView;
         this.collapseBehaviour = collapseBehaviour;
-        setFlingDetector(collapseBehaviour);
-    }
-
-    private void setFlingDetector(CollapseBehaviour collapseBehaviour) {
-        if (collapseBehaviour == CollapseTogether) {
-            flingDetector =
-                    new GestureDetector(NavigationApplication.instance, new GestureDetector.SimpleOnGestureListener() {
-                        @Override
-                        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                            final Direction direction = getScrollDirection(e1, e2);
-                            if (canCollapse(direction)) {
-                                flingListener.onFling(direction);
-                            }
-                            return false;
-                        }
-
-                        private Direction getScrollDirection(MotionEvent e1, MotionEvent e2) {
-                            if (e1.getRawY() == e2.getRawY()) {
-                                return Direction.None;
-                            }
-                            return e1.getRawY() - e2.getRawY() > 0 ? Direction.Up : Direction.Down;
-                        }
-                    });
-        }
     }
 
     void setScrollView(ScrollView scrollView) {
         this.scrollView = scrollView;
     }
 
-    void setFlingListener(ScrollListener flingListener) {
-        this.flingListener = flingListener;
-    }
-
     @NonNull
     CollapseAmount calculate(MotionEvent event) {
         updateInitialTouchY(event);
-        if (collapseBehaviour == CollapseTogether) {
-            flingDetector.onTouchEvent(event);
+        CollapseAmount touchUpCollapse = collapseOnTouchUp(event);
+        if (touchUpCollapse != CollapseAmount.None) {
+            return touchUpCollapse;
         }
+
         if (!isMoveEvent(event)) {
+            previousTouchEvent = MotionEvent.obtain(event);
             return CollapseAmount.None;
         }
 
-        if (shouldCollapse(event)) {
+        final Direction direction = calculateScrollDirection(event.getRawY());
+        if (shouldCollapse(direction)) {
             return calculateCollapse(event);
         } else {
             previousCollapseY = -1;
@@ -85,16 +61,25 @@ public class CollapseCalculator {
         }
     }
 
-    private boolean shouldCollapse(MotionEvent event) {
-        return canCollapse(getScrollDirection(event.getRawY()));
+    private CollapseAmount collapseOnTouchUp(MotionEvent event) {
+        if (collapseBehaviour == CollapseTogether && isTouchUp(event)) {
+            Direction direction = calculateScrollDirection(touchDownY, event.getRawY());
+            if (canCollapse(direction) && direction != Direction.None && totalCollapse != 0) {
+                return new CollapseAmount(direction);
+            }
+        }
+        return CollapseAmount.None;
+    }
+
+    private boolean shouldCollapse(Direction direction) {
+        return ((collapseBehaviour == CollapseTopBarFirst) || isScrolling()) && canCollapse(direction);
     }
 
     private boolean canCollapse(Direction direction) {
         checkCollapseLimits();
-        return ((collapseBehaviour == CollapseTopBarFirst) || isScrolling()) &&
-               isNotCollapsedOrExpended() ||
+        return (isNotCollapsedOrExpended() ||
                (canCollapse && isExpendedAndScrollingUp(direction)) ||
-               (canExpend && isCollapsedAndScrollingDown(direction));
+               (canExpend && isCollapsedAndScrollingDown(direction)));
     }
 
     private boolean isScrolling() {
@@ -104,7 +89,7 @@ public class CollapseCalculator {
         return isScrolling;
     }
 
-    private Direction getScrollDirection(float y) {
+    private Direction calculateScrollDirection(float y) {
         if (y == (previousCollapseY == -1 ? touchDownY : previousCollapseY)) {
             return Direction.None;
         }
@@ -116,12 +101,20 @@ public class CollapseCalculator {
                 Direction.Down;
     }
 
+    private Direction calculateScrollDirection(float downY, float upY) {
+        if (downY == upY) {
+            return Direction.None;
+        }
+        return downY - upY > 0 ? Direction.Up : Direction.Down;
+    }
+
     private void checkCollapseLimits() {
         float currentCollapse = view.getCurrentCollapseValue();
         float finalExpendedTranslation = 0;
         isExpended = isExpended(currentCollapse, finalExpendedTranslation);
         isCollapsed = isCollapsed(currentCollapse, view.getFinalCollapseValue());
-        canCollapse = calculateCanCollapse(currentCollapse, finalExpendedTranslation, view.getFinalCollapseValue());
+        canCollapse =
+                calculateCanCollapse(currentCollapse, finalExpendedTranslation, view.getFinalCollapseValue());
         canExpend = calculateCanExpend(currentCollapse, finalExpendedTranslation, view.getFinalCollapseValue());
     }
 
@@ -162,6 +155,7 @@ public class CollapseCalculator {
             previousCollapseY = y;
         }
         collapse = calculateCollapse(y);
+        totalCollapse += collapse;
         previousCollapseY = y;
         previousTouchEvent = MotionEvent.obtain(event);
         return new CollapseAmount(collapse);
@@ -201,12 +195,12 @@ public class CollapseCalculator {
     }
 
     private void saveInitialTouchY(MotionEvent event) {
+        totalCollapse = 0;
         touchDownY = event.getRawY();
         previousCollapseY = touchDownY;
     }
 
     private void clearInitialTouchY() {
-        touchDownY = -1;
         previousCollapseY = -1;
         collapse = 0;
     }

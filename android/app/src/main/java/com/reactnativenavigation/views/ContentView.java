@@ -10,9 +10,11 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.screens.SingleScreen;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.collapsingToolbar.CollapseAmount;
 import com.reactnativenavigation.views.collapsingToolbar.OnScrollViewAddedListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
+import com.reactnativenavigation.views.collapsingToolbar.ViewCollapser;
 import com.reactnativenavigation.views.utils.ScrollViewDetector;
 import com.reactnativenavigation.views.utils.ViewMeasurer;
 
@@ -102,7 +104,7 @@ public class ContentView extends ReactRootView {
         }
     }
 
-    public void collapse(float collapse) {
-        setTranslationY(collapse);
+    public void collapse(CollapseAmount amount) {
+        ViewCollapser.collapse(this, amount);
     }
 }

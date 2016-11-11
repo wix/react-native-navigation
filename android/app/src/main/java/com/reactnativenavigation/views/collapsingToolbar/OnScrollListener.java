@@ -1,5 +1,5 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
-public interface  OnScrollListener extends OnFlingListener {
-    void onScroll(float amount);
+public interface  OnScrollListener {
+    void onScroll(CollapseAmount amount);
 }

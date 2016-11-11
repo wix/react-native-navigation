@@ -2,7 +2,7 @@ package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.view.View;
 
-public interface CollapsingView {
+interface CollapsingView {
     float getFinalCollapseValue();
 
     float getCurrentCollapseValue();
