@@ -65,11 +65,11 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
 
     public void collapse(CollapseAmount amount) {
         ViewCollapser.collapse((CollapsingView) this, amount);
-        if (titleBar instanceof CollapsingView) {
-            ViewCollapser.collapse((CollapsingView) titleBar, amount);
+        if (titleBar instanceof CollapsingTitleBar) {
+            ((CollapsingTitleBar) titleBar).collapse(amount.get());
         }
         if (collapsingTopBarBackground != null) {
-            ViewCollapser.collapse(collapsingTopBarBackground, amount);
+            collapsingTopBarBackground.collapse(amount.get());
         }
     }
 
