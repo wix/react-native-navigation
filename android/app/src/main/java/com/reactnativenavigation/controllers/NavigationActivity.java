@@ -95,8 +95,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     private void setDeepLinkData() {
-        if (DeepLinkHandler.hasDeepLinkData()) {
-            DeepLinkHandler.setDeepLinkData(getIntent());
+        if (IntentDataHandler.hasIntentData()) {
+            IntentDataHandler.setIntentData(getIntent());
         }
     }
 

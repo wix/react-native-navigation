@@ -16,7 +16,7 @@ public abstract class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSplashLayout();
-        DeepLinkHandler.saveDeepLinkData(getIntent().getData());
+        IntentDataHandler.saveIntentData(getIntent());
     }
 
     @Override
