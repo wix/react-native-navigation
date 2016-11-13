@@ -1,36 +1,57 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
-import android.view.View;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 
 public class ViewCollapser {
-    private static final int DURATION = 100;
+    private static final int DURATION = 160;
+    private CollapsingView view;
+    private boolean animating;
 
-    public static void collapse(CollapsingView view, CollapseAmount amount) {
+    public ViewCollapser(CollapsingView view) {
+        this.view = view;
+    }
+
+    public void collapse(CollapseAmount amount) {
         if (amount.collapseToTop()) {
-            collapseView(view, true, view.getFinalCollapseValue());
+            collapseView(true, view.getFinalCollapseValue());
         } else if (amount.collapseToBottom()) {
-            collapseView(view, true, 0);
+            collapseView(true, 0);
         } else {
-            collapse(view.asView(), amount);
+            collapse(amount.get());
         }
     }
 
-    public static void collapse(View view, CollapseAmount amount) {
-        view.setTranslationY(amount.get());
+    public void collapse(float amount) {
+        view.asView().setTranslationY(amount);
     }
 
-    private static void collapseView(CollapsingView view, boolean animate, float translation) {
+    private void collapseView(boolean animate, float translation) {
         if (animate) {
-            animate(view, translation);
+            animate(translation);
         } else {
             view.asView().setTranslationY(translation);
         }
     }
 
-    private static void animate(CollapsingView view, float translation) {
+    private void animate(final float translation) {
+        if (animating) {
+            return;
+        }
         view.asView().animate()
                 .translationY(translation)
                 .setDuration(DURATION)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        animating = true;
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        animating = false;
+                    }
+                })
                 .start();
     }
 }

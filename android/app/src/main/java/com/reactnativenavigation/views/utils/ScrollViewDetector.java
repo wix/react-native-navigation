@@ -10,16 +10,33 @@ import com.reactnativenavigation.views.collapsingToolbar.OnScrollViewAddedListen
 import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
 
 public class ScrollViewDetector {
-    private ContentView contentView;
     private OnScrollViewAddedListener scrollViewAddedListener;
     private ScrollViewDelegate scrollViewDelegate;
+    private View.OnAttachStateChangeListener stateChangeListener;
 
-    public ScrollViewDetector(ContentView contentView,
+    public ScrollViewDetector(final ContentView contentView,
                               OnScrollViewAddedListener onScrollViewAddedListener,
                               final ScrollViewDelegate scrollViewDelegate) {
-        this.contentView = contentView;
         this.scrollViewAddedListener = onScrollViewAddedListener;
         this.scrollViewDelegate = scrollViewDelegate;
+        stateChangeListener = new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                scrollViewDelegate.getScrollView().removeOnAttachStateChangeListener(this);
+                scrollViewDelegate.onScrollViewRemoved();
+                contentView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        detectScrollViewAdded(contentView);
+                    }
+                });
+            }
+        };
     }
 
     public void detectScrollViewAdded(View child) {
@@ -37,29 +54,11 @@ public class ScrollViewDetector {
         if (scrollViewDelegate != null && !scrollViewDelegate.hasScrollView()) {
             scrollViewDelegate.onScrollViewAdded(scrollView);
             scrollViewAddedListener.onScrollViewAdded(scrollView);
-            attachStateChangeListener(scrollView);
+            scrollView.addOnAttachStateChangeListener(stateChangeListener);
         }
     }
 
-    private void attachStateChangeListener(final ScrollView scrollView) {
-        scrollView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View v) {
-
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View v) {
-                scrollView.removeOnAttachStateChangeListener(this);
-                scrollViewDelegate.onScrollViewRemoved();
-                contentView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        detectScrollViewAdded(contentView);
-                    }
-                });
-            }
-        });
+    public void destroy() {
+        scrollViewDelegate.getScrollView().removeOnAttachStateChangeListener(stateChangeListener);
     }
-
 }

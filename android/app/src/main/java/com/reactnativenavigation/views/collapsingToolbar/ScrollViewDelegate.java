@@ -16,6 +16,10 @@ public class ScrollViewDelegate implements View.OnTouchListener {
         return scrollView != null;
     }
 
+    public ScrollView getScrollView() {
+        return scrollView;
+    }
+
     public void onScrollViewAdded(ScrollView scrollView) {
         this.scrollView = scrollView;
         listener.onScrollViewAdded(this.scrollView);
@@ -33,5 +37,9 @@ public class ScrollViewDelegate implements View.OnTouchListener {
     public boolean onTouch(View view, MotionEvent event) {
         scrollView.onTouchEvent(event);
         return this.listener.onTouch(event);
+    }
+
+    public void destroy() {
+        scrollView = null;
     }
 }

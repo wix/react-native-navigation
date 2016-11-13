@@ -15,6 +15,7 @@ public class ScrollListener {
         this.collapseCalculator = collapseCalculator;
         this.scrollListener = scrollListener;
         this.collapseBehaviour = collapseBehaviour;
+        collapseCalculator.setFlingListener(scrollListener);
     }
 
     void onScrollViewAdded(ScrollView scrollView) {
@@ -25,7 +26,7 @@ public class ScrollListener {
         CollapseAmount amount = collapseCalculator.calculate(event);
         if (amount.canCollapse()) {
             scrollListener.onScroll(amount);
-            return CollapseBehaviour.CollapseTopBarFirst.equals(collapseBehaviour);
+            return CollapseBehaviour.CollapseTopBar.equals(collapseBehaviour);
         }
         return false;
     }

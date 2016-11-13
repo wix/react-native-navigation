@@ -14,12 +14,14 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     private ScrollListener scrollListener;
     private float finalCollapsedTranslation;
     private CollapsingTopBarParams params;
+    private final ViewCollapser viewCollapser;
 
     public CollapsingTopBar(Context context, final CollapsingTopBarParams params) {
         super(context);
         this.params = params;
         createCollapsingTopBar(params);
         calculateFinalCollapsedTranslation(params);
+        viewCollapser = new ViewCollapser(this);
     }
 
     private void calculateFinalCollapsedTranslation(final CollapsingTopBarParams params) {
@@ -64,7 +66,7 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     }
 
     public void collapse(CollapseAmount amount) {
-        ViewCollapser.collapse((CollapsingView) this, amount);
+        viewCollapser.collapse(amount);
         if (titleBar instanceof CollapsingTitleBar) {
             ((CollapsingTitleBar) titleBar).collapse(amount.get());
         }

@@ -15,7 +15,7 @@ class CollapsingTopBarParamsParser extends Parser {
     }
 
     public CollapsingTopBarParams parse() {
-        if (!hasBackgroundImage() && !shouldHideOnScroll()) {
+        if (!hasBackgroundImage() && !shouldHideTitleBarOnScroll()) {
             return null;
         }
 
@@ -29,14 +29,14 @@ class CollapsingTopBarParamsParser extends Parser {
     }
 
     private CollapseBehaviour getCollapseBehaviour() {
-        return hasBackgroundImage() ? CollapseBehaviour.CollapseTopBarFirst : CollapseBehaviour.CollapseTogether;
+        return shouldHideTitleBarOnScroll() ? CollapseBehaviour.TitleBarHideOnScroll : CollapseBehaviour.CollapseTopBar;
     }
 
     private boolean hasBackgroundImage() {
         return params.containsKey("collapsingToolBarImage");
     }
 
-    private boolean shouldHideOnScroll() {
+    private boolean shouldHideTitleBarOnScroll() {
         return params.getBoolean("titleBarHideOnScroll", false);
     }
 }

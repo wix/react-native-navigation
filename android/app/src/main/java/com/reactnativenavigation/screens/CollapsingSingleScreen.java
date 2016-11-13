@@ -5,7 +5,7 @@ import android.widget.ScrollView;
 
 import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.params.ScreenParams;
-import com.reactnativenavigation.views.ContentView;
+import com.reactnativenavigation.views.CollapsingContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseAmount;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseCalculator;
@@ -22,6 +22,12 @@ public class CollapsingSingleScreen extends SingleScreen {
     }
 
     @Override
+    public void destroy() {
+        super.destroy();
+        ((CollapsingContentView) contentView).destroy();
+    }
+
+    @Override
     protected void createTopBar() {
         final CollapsingTopBar topBar = new CollapsingTopBar(getContext(), styleParams.collapsingTopBarParams);
         topBar.setScrollListener(getScrollListener(topBar));
@@ -30,7 +36,7 @@ public class CollapsingSingleScreen extends SingleScreen {
 
     @Override
     protected void createContent() {
-        contentView = new ContentView(getContext(), screenParams.screenId, screenParams.navigationParams);
+        contentView = new CollapsingContentView(getContext(), screenParams.screenId, screenParams.navigationParams);
         if (screenParams.styleParams.drawScreenBelowTopBar) {
             contentView.setViewMeasurer(new CollapsingContentViewMeasurer((CollapsingTopBar) topBar, this));
         }
@@ -39,7 +45,7 @@ public class CollapsingSingleScreen extends SingleScreen {
     }
 
     private void setupCollapseDetection(final CollapsingTopBar topBar) {
-        contentView.setupCollapseDetection(getScrollListener(topBar), new OnScrollViewAddedListener() {
+        ((CollapsingContentView) contentView).setupCollapseDetection(getScrollListener(topBar), new OnScrollViewAddedListener() {
             @Override
             public void onScrollViewAdded(ScrollView scrollView) {
                 topBar.onScrollViewAdded(scrollView);
@@ -53,8 +59,13 @@ public class CollapsingSingleScreen extends SingleScreen {
                     @Override
                     public void onScroll(CollapseAmount amount) {
                         if (!screenParams.styleParams.titleBarHideOnScroll) {
-                            contentView.collapse(amount);
+                            ((CollapsingContentView) contentView).collapse(amount);
                         }
+                        topBar.collapse(amount);
+                    }
+
+                    @Override
+                    public void onFling(CollapseAmount amount) {
                         topBar.collapse(amount);
                     }
                 },

@@ -102,17 +102,17 @@ public class ViewUtils {
         return null;
     }
 
-    public static void runOnChildren(ViewGroup root, RunOnViewTask task) {
+    public static void performOnChildren(ViewGroup root, PerformOnViewTask task) {
         for (int i = 0; i < root.getChildCount(); i++) {
             View child = root.getChildAt(i);
             if (child instanceof ViewGroup) {
-                runOnChildren((ViewGroup) child, task);
+                performOnChildren((ViewGroup) child, task);
             }
             task.runOnView(child);
         }
     }
 
-    public interface RunOnViewTask {
+    public interface PerformOnViewTask {
         void runOnView(View view);
     }
 }

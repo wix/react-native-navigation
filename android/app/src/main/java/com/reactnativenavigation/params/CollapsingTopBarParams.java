@@ -3,7 +3,7 @@ package com.reactnativenavigation.params;
 import android.support.annotation.Nullable;
 
 public class CollapsingTopBarParams {
-    public enum CollapseBehaviour {CollapseTogether, CollapseTopBarFirst}
+    public enum CollapseBehaviour {TitleBarHideOnScroll, CollapseTopBar}
 
     public @Nullable String imageUri;
     public StyleParams.Color scrimColor;

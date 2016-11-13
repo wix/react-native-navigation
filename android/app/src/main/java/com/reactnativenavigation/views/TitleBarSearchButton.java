@@ -59,7 +59,7 @@ class TitleBarSearchButton extends TitleBarButton implements SearchView.OnQueryT
     }
 
     private void colorCloseButton(EditText searchEditText) {
-        ViewUtils.runOnChildren((ViewGroup) searchEditText.getParent(), new ViewUtils.RunOnViewTask() {
+        ViewUtils.performOnChildren((ViewGroup) searchEditText.getParent(), new ViewUtils.PerformOnViewTask() {
             @Override
             public void runOnView(View view) {
                 if (view instanceof ImageView) {
