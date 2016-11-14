@@ -24,7 +24,7 @@ public class TopBar extends AppBarLayout {
     protected TitleBar titleBar;
     private ContextualMenu contextualMenu;
     protected FrameLayout titleBarAndContextualMenuContainer;
-    private TopTabs topTabs;
+    protected TopTabs topTabs;
 
     public TopBar(Context context) {
         super(context);

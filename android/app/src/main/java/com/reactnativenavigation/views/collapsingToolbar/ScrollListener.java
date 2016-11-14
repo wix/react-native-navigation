@@ -3,7 +3,9 @@ package com.reactnativenavigation.views.collapsingToolbar;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 
-import com.reactnativenavigation.params.CollapsingTopBarParams.CollapseBehaviour;
+import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseBehaviour;
+import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseTopBarBehaviour;
+
 
 public class ScrollListener {
     private CollapseCalculator collapseCalculator;
@@ -26,7 +28,7 @@ public class ScrollListener {
         CollapseAmount amount = collapseCalculator.calculate(event);
         if (amount.canCollapse()) {
             scrollListener.onScroll(amount);
-            return CollapseBehaviour.CollapseTopBar.equals(collapseBehaviour);
+            return collapseBehaviour instanceof CollapseTopBarBehaviour;
         }
         return false;
     }
