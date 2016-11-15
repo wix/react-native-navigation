@@ -1,7 +1,6 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
@@ -12,7 +11,6 @@ public class CollapsingViewPager extends ViewPager implements CollapsingView {
     public CollapsingViewPager(Context context) {
         super(context);
         viewCollapser = new ViewCollapser(this);
-        setBackgroundColor(Color.GREEN);
     }
 
     public void setViewMeasurer(CollapsingViewMeasurer viewMeasurer) {

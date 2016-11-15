@@ -12,7 +12,7 @@ import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseTitl
 import com.reactnativenavigation.views.collapsingToolbar.behaviours.TitleBarHideOnScrollBehaviour;
 
 public class CollapseCalculator {
-    enum Direction {
+    public enum Direction {
         Up, Down, None
     }
 
@@ -39,7 +39,7 @@ public class CollapseCalculator {
     }
 
     private void setFlingDetector() {
-        if (collapseBehaviour instanceof TitleBarHideOnScrollBehaviour || collapseBehaviour instanceof CollapseTitleBarBehaviour) {
+        if (collapseBehaviour.shouldCollapseOnFling()) {
             flingDetector =
                     new GestureDetector(NavigationApplication.instance, new GestureDetector.SimpleOnGestureListener() {
                         @Override
@@ -95,7 +95,7 @@ public class CollapseCalculator {
     }
 
     private CollapseAmount shouldCollapseOnTouchUp(MotionEvent event) {
-        if ((collapseBehaviour instanceof TitleBarHideOnScrollBehaviour || collapseBehaviour instanceof CollapseTitleBarBehaviour)
+        if ((collapseBehaviour.shouldCollapseOnTouchUp())
             && !flingDetector.onTouchEvent(event) && isTouchUp(event)) {
             final float visibilityPercentage = view.getCurrentCollapseValue() / view.getFinalCollapseValue();
             Direction direction = visibilityPercentage >= 0.5f ? Direction.Up : Direction.Down;

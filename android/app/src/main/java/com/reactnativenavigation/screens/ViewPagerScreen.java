@@ -1,7 +1,6 @@
 package com.reactnativenavigation.screens;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -35,7 +34,6 @@ public class ViewPagerScreen extends Screen {
     @Override
     protected void createContent() {
         TabLayout tabLayout = topBar.initTabs();
-        tabLayout.setBackgroundColor(Color.RED);
         createViewPager();
         addPages();
         setupViewPager(tabLayout);

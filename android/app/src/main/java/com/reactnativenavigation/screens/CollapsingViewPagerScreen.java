@@ -5,6 +5,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ScrollView;
 
+import com.reactnativenavigation.events.Event;
+import com.reactnativenavigation.events.ViewPagerScreenScrollStartEvent;
 import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.views.CollapsingContentView;
@@ -12,9 +14,9 @@ import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseAmount;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseCalculator;
-import com.reactnativenavigation.views.collapsingToolbar.CollapsingViewMeasurer;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingTopBar;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingView;
+import com.reactnativenavigation.views.collapsingToolbar.CollapsingViewMeasurer;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingViewPager;
 import com.reactnativenavigation.views.collapsingToolbar.OnScrollListener;
 import com.reactnativenavigation.views.collapsingToolbar.OnScrollViewAddedListener;
@@ -44,10 +46,14 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
     }
 
     protected ContentView createContentView(PageParams tab) {
-        CollapsingContentView contentView = new CollapsingContentView(getContext(), tab.screenId, tab.navigationParams);
-        contentView.setViewMeasurer(new CollapsingViewMeasurer((CollapsingTopBar) topBar, this));
-        setupCollapseDetection(contentView);
-        return contentView;
+        if (tab.hasCollapsingTopBar()) {
+            CollapsingContentView contentView = new CollapsingContentView(getContext(), tab.screenId, tab.navigationParams);
+            contentView.setViewMeasurer(new CollapsingViewMeasurer((CollapsingTopBar) topBar, this));
+            setupCollapseDetection(contentView);
+            return contentView;
+        } else {
+            return new ContentView(getContext(), tab.screenId, tab.navigationParams);
+        }
     }
 
     private void setupCollapseDetection(CollapsingContentView contentView) {
@@ -71,6 +77,7 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
                     @Override
                     public void onFling(CollapseAmount amount) {
                         ((CollapsingView) topBar).collapse(amount);
+                        ((CollapsingView) viewPager).collapse(amount);
                     }
                 },
                 getCollapseBehaviour()
@@ -79,6 +86,15 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
 
     private CollapseBehaviour getCollapseBehaviour() {
         return screenParams.styleParams.collapsingTopBarParams.collapseBehaviour;
+    }
+
+    @Override
+    public void onEvent(Event event) {
+        super.onEvent(event);
+        if (ViewPagerScreenScrollStartEvent.TYPE.equals(event.getType())) {
+            ((CollapsingView) topBar).collapse(new CollapseAmount(CollapseCalculator.Direction.Down));
+            ((CollapsingView) viewPager).collapse(new CollapseAmount(CollapseCalculator.Direction.Down));
+        }
     }
 
     @Override

@@ -1,4 +1,7 @@
 package com.reactnativenavigation.views.collapsingToolbar.behaviours;
 
-public abstract class CollapseBehaviour {
+public interface CollapseBehaviour {
+    boolean shouldCollapseOnFling();
+
+    boolean shouldCollapseOnTouchUp();
 }

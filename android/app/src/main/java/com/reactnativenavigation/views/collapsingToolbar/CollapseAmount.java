@@ -12,7 +12,7 @@ public class CollapseAmount {
         this.amount = amount;
     }
 
-    CollapseAmount(CollapseCalculator.Direction direction) {
+    public CollapseAmount(CollapseCalculator.Direction direction) {
         this.direction = direction;
     }
 
