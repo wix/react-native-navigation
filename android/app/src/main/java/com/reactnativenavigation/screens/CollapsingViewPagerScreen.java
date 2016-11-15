@@ -64,8 +64,8 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
                 new OnScrollListener() {
                     @Override
                     public void onScroll(CollapseAmount amount) {
-                        ((CollapsingView) viewPager).collapse(amount);
                         ((CollapsingView) topBar).collapse(amount);
+                        ((CollapsingView) viewPager).collapse(amount);
                     }
 
                     @Override

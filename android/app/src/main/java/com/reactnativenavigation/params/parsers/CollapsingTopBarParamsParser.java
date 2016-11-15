@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseBehaviour;
+import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseTitleBarBehaviour;
 import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseTopBarBehaviour;
 import com.reactnativenavigation.views.collapsingToolbar.behaviours.TitleBarHideOnScrollBehaviour;
 
@@ -35,7 +36,7 @@ class CollapsingTopBarParamsParser extends Parser {
             return new CollapseTopBarBehaviour();
         }
         if (shouldHideTitleBarOnScroll() && params.getBoolean("drawBelowTopBar", false)) {
-            return new CollapseTopBarBehaviour();
+            return new CollapseTitleBarBehaviour();
         }
         return new TitleBarHideOnScrollBehaviour();
     }

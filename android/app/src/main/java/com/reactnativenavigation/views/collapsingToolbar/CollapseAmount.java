@@ -20,11 +20,11 @@ public class CollapseAmount {
         return amount != null || this != None;
     }
 
-    boolean collapseToTop() {
+    public boolean collapseToTop() {
         return direction == CollapseCalculator.Direction.Up;
     }
 
-    boolean collapseToBottom() {
+    public boolean collapseToBottom() {
         return direction == CollapseCalculator.Direction.Down;
     }
 

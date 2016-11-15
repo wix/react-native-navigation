@@ -5,10 +5,8 @@ import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.reactnativenavigation.views.utils.ViewMeasurer;
-
 public class CollapsingViewPager extends ViewPager implements CollapsingView {
-    ViewMeasurer viewMeasurer;
+    CollapsingViewMeasurer viewMeasurer;
     ViewCollapser viewCollapser;
 
     public CollapsingViewPager(Context context) {
@@ -17,7 +15,7 @@ public class CollapsingViewPager extends ViewPager implements CollapsingView {
         setBackgroundColor(Color.GREEN);
     }
 
-    public void setViewMeasurer(ViewMeasurer viewMeasurer) {
+    public void setViewMeasurer(CollapsingViewMeasurer viewMeasurer) {
         this.viewMeasurer = viewMeasurer;
     }
 
@@ -30,8 +28,7 @@ public class CollapsingViewPager extends ViewPager implements CollapsingView {
 
     @Override
     public float getFinalCollapseValue() {
-        // Unused
-        return 0;
+        return viewMeasurer.getFinalCollapseValue();
     }
 
     @Override
