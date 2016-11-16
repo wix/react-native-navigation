@@ -193,7 +193,7 @@ function startTabBasedApp(params) {
     tab.screenId = tab.screen;
 
     let newtab = adaptNavigationStyleToScreenStyle(tab);
-    newtab = adaptNavigationParams(tab);
+    newtab = adaptNavigationParams(newtab);
     newtab.overrideBackPress = tab.overrideBackPress;
     newTabs.push(newtab);
   });
