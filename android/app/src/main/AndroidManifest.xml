@@ -2,9 +2,11 @@
     package="com.reactnativenavigation">
 
     <application>
-        <activity android:name=".controllers.NavigationActivity" />
+        <activity android:name=".controllers.NavigationActivity"
+            android:windowSoftInputMode="stateUnspecified|adjustPan" />
         <activity
             android:name=".controllers.PortraitNavigationActivity"
+            android:windowSoftInputMode="stateUnspecified|adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
