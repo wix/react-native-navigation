@@ -266,9 +266,13 @@ public class ScreenStack {
         isStackVisible = true;
         stack.peek().setStyle();
         stack.peek().setVisibility(View.VISIBLE);
+        NavigationApplication.instance.sendNavigatorEvent("willAppear", stack.peek().getNavigatorEventId());
+        NavigationApplication.instance.sendNavigatorEvent("didAppear", stack.peek().getNavigatorEventId());
     }
 
     public void hide() {
+        NavigationApplication.instance.sendNavigatorEvent("willDisappear", stack.peek().getNavigatorEventId());
+        NavigationApplication.instance.sendNavigatorEvent("didDisappear", stack.peek().getNavigatorEventId());
         isStackVisible = false;
         stack.peek().setVisibility(View.INVISIBLE);
     }

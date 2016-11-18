@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
+import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.ScreenParams;
@@ -179,19 +180,27 @@ public abstract class Screen extends RelativeLayout {
     public abstract void setOnDisplayListener(OnDisplayListener onContentViewDisplayedListener);
 
     public void show() {
+        NavigationApplication.instance.sendNavigatorEvent("willAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
         screenAnimator.show(screenParams.animateScreenTransitions);
     }
 
     public void show(boolean animated) {
+        NavigationApplication.instance.sendNavigatorEvent("willAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
         screenAnimator.show(animated);
     }
 
     public void show(boolean animated, Runnable onAnimationEnd) {
+        NavigationApplication.instance.sendNavigatorEvent("willAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
         setStyle();
         screenAnimator.show(animated, onAnimationEnd);
     }
 
     public void hide(boolean animated, Runnable onAnimatedEnd) {
+        NavigationApplication.instance.sendNavigatorEvent("willDisappear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.sendNavigatorEvent("didDisappear", screenParams.getNavigatorEventId());
         screenAnimator.hide(animated, onAnimatedEnd);
     }
 }
