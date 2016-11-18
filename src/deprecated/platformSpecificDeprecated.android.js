@@ -398,8 +398,8 @@ function addNavigatorButtons(screen, sideMenuParams) {
 }
 
 function getFab(screen) {
-  if (screen.fab) {
-    const fab = screen.fab;
+  if (screen.navigatorButtons && screen.navigatorButtons.fab) {
+    const fab = screen.navigatorButtons.fab;
     const collapsedIconUri = resolveAssetSource(fab.collapsedIcon);
     if (!collapsedIconUri) {
       return;
