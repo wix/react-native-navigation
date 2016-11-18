@@ -101,7 +101,9 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
     public void destroy() {
         super.destroy();
         for (ContentView contentView : contentViews) {
-            ((CollapsingContentView) contentView).destroy();
+            if (contentView instanceof CollapsingContentView) {
+                ((CollapsingContentView) contentView).destroy();
+            }
         }
     }
 }
