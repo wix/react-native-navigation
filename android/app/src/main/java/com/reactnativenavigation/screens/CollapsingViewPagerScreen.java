@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ScrollView;
 
 import com.reactnativenavigation.events.Event;
+import com.reactnativenavigation.events.ViewPagerScreenChangedEvent;
 import com.reactnativenavigation.events.ViewPagerScreenScrollStartEvent;
 import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.params.ScreenParams;
@@ -91,7 +92,7 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
     @Override
     public void onEvent(Event event) {
         super.onEvent(event);
-        if (ViewPagerScreenScrollStartEvent.TYPE.equals(event.getType())) {
+        if (ViewPagerScreenScrollStartEvent.TYPE.equals(event.getType()) || ViewPagerScreenChangedEvent.TYPE.equals(event.getType())) {
             ((CollapsingView) topBar).collapse(new CollapseAmount(CollapseCalculator.Direction.Down));
             ((CollapsingView) viewPager).collapse(new CollapseAmount(CollapseCalculator.Direction.Down));
         }
