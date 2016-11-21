@@ -21,8 +21,11 @@
   "scripts": {
     "build": ":",
     "lint": "eslint src test",
+    "test:js": "jest",
+    "test:android": "cd android && ./gradlew clean testDebugUnitTest",
+    "test:ios": ":",
     "pretest": "npm run lint",
-    "test": "cd android && ./gradlew clean testDebugUnitTest",
+    "test": "npm run test:js && npm run test:android && npm run test:ios",
     "release": "npm version prerelease && npm publish --tag next && npm view react-native-navigation dist-tags && git push"
   },
   "peerDependencies": {
@@ -38,7 +41,6 @@
   "devDependencies": {
     "react-native": "0.37.0",
     "react": "15.3.2",
-    "app-root-path": "^1.0.0",
     "babel-cli": "^6.8.0",
     "babel-core": "^6.8.0",
     "babel-polyfill": "^6.8.0",
@@ -49,10 +51,7 @@
     "eslint-plugin-react": "^4.2.3",
     "eslint-plugin-react-native": "^1.0.0",
     "babel-eslint": "^6.0.4",
-    "jasmine": "^2.4.1",
-    "jasmine-reporters": "^2.1.1",
-    "jasmine-spec-reporter": "^2.4.0",
-    "jasmine-expect": "^2.0.2",
-    "proxyquire": "1.7.4"
+    "jest": "^17.0.0",
+    "jest-cli": "^17.0.0"
   }
 }

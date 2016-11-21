@@ -59,6 +59,8 @@ public class ScrollViewDetector {
     }
 
     public void destroy() {
-        scrollViewDelegate.getScrollView().removeOnAttachStateChangeListener(stateChangeListener);
+        if (scrollViewDelegate.getScrollView() != null) {
+            scrollViewDelegate.getScrollView().removeOnAttachStateChangeListener(stateChangeListener);
+        }
     }
 }

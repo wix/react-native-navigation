@@ -2,11 +2,12 @@ package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.view.ViewPropertyAnimator;
 
 public class ViewCollapser {
     private static final int DURATION = 160;
     private CollapsingView view;
-    private boolean animating;
+    private ViewPropertyAnimator animator;
 
     public ViewCollapser(CollapsingView view) {
         this.view = view;
@@ -22,36 +23,36 @@ public class ViewCollapser {
         }
     }
 
-    public void collapse(float amount) {
-        view.asView().setTranslationY(amount);
-    }
-
     private void collapseView(boolean animate, float translation) {
         if (animate) {
             animate(translation);
         } else {
-            view.asView().setTranslationY(translation);
+            collapse(translation);
         }
     }
 
-    private void animate(final float translation) {
-        if (animating) {
-            return;
+    public void collapse(float amount) {
+        if (animator != null) {
+            animator.cancel();
         }
-        view.asView().animate()
+        view.asView().setTranslationY(amount);
+    }
+
+    private void animate(final float translation) {
+        animator = view.asView().animate()
                 .translationY(translation)
                 .setDuration(DURATION)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
-                    public void onAnimationStart(Animator animation) {
-                        animating = true;
+                    public void onAnimationCancel(Animator animation) {
+                        animator = null;
                     }
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        animating = false;
+                        animator = null;
                     }
-                })
-                .start();
+                });
+        animator.start();
     }
 }

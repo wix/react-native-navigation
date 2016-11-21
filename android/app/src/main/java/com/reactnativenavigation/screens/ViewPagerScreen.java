@@ -1,12 +1,13 @@
 package com.reactnativenavigation.screens;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.reactnativenavigation.params.BaseScreenParams;
-import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.PageParams;
+import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 
@@ -18,8 +19,8 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 public class ViewPagerScreen extends Screen {
 
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
-    private List<ContentView> contentViews;
-    private ViewPager viewPager;
+    protected List<ContentView> contentViews;
+    protected ViewPager viewPager;
 
     public ViewPagerScreen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener backButtonListener) {
         super(activity, screenParams, backButtonListener);
@@ -39,7 +40,7 @@ public class ViewPagerScreen extends Screen {
     }
 
     private void createViewPager() {
-        viewPager = new ViewPager(getContext());
+        viewPager = createViewPager(getContext());
         viewPager.setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
         LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         if (screenParams.styleParams.drawScreenBelowTopBar) {
@@ -48,13 +49,25 @@ public class ViewPagerScreen extends Screen {
         addView(viewPager, lp);
     }
 
+    protected ViewPager createViewPager(Context context) {
+        return new ViewPager(context);
+    }
+
     private void addPages() {
         contentViews = new ArrayList<>();
         for (PageParams tab : screenParams.topTabParams) {
-            ContentView contentView = new ContentView(getContext(), tab.screenId, tab.navigationParams);
-            addContent(contentView);
-            contentViews.add(contentView);
+            addPage(tab);
         }
+    }
+
+    private void addPage(PageParams tab) {
+        ContentView contentView = createContentView(tab);
+        addContent(contentView);
+        contentViews.add(contentView);
+    }
+
+    protected ContentView createContentView(PageParams tab) {
+        return new ContentView(getContext(), tab.screenId, tab.navigationParams);
     }
 
     private void setupViewPager(TabLayout tabLayout) {

@@ -49,6 +49,7 @@ public class CollapsingContentView extends ContentView implements CollapsingView
         }
     }
 
+    @Override
     public void collapse(CollapseAmount amount) {
         viewCollapser.collapse(amount);
     }

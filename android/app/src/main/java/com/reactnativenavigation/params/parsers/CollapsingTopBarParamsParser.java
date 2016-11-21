@@ -4,8 +4,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.reactnativenavigation.params.CollapsingTopBarParams;
-import com.reactnativenavigation.params.CollapsingTopBarParams.CollapseBehaviour;
 import com.reactnativenavigation.params.StyleParams;
+import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseBehaviour;
+import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseTitleBarBehaviour;
+import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseTopBarBehaviour;
+import com.reactnativenavigation.views.collapsingToolbar.behaviours.TitleBarHideOnScrollBehaviour;
 
 class CollapsingTopBarParamsParser extends Parser {
     private Bundle params;
@@ -29,7 +32,13 @@ class CollapsingTopBarParamsParser extends Parser {
     }
 
     private CollapseBehaviour getCollapseBehaviour() {
-        return shouldHideTitleBarOnScroll() ? CollapseBehaviour.TitleBarHideOnScroll : CollapseBehaviour.CollapseTopBar;
+        if (hasBackgroundImage()) {
+            return new CollapseTopBarBehaviour();
+        }
+        if (shouldHideTitleBarOnScroll() && params.getBoolean("drawBelowTopBar", false)) {
+            return new CollapseTitleBarBehaviour();
+        }
+        return new TitleBarHideOnScrollBehaviour();
     }
 
     private boolean hasBackgroundImage() {

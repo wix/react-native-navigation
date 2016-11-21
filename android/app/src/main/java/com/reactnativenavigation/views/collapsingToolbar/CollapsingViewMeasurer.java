@@ -4,15 +4,17 @@ import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.utils.ViewMeasurer;
 
-public class CollapsingContentViewMeasurer extends ViewMeasurer {
-    private int titleBarHeight;
+public class CollapsingViewMeasurer extends ViewMeasurer {
+    private int collapsedTopBarHeight;
+    private float getFinalCollapseValue;
     private int screenHeight;
 
-    public CollapsingContentViewMeasurer(final CollapsingTopBar topBar, final Screen collapsingSingleScreen) {
+    public CollapsingViewMeasurer(final CollapsingTopBar topBar, final Screen collapsingSingleScreen) {
         ViewUtils.runOnPreDraw(topBar, new Runnable() {
             @Override
             public void run() {
-                titleBarHeight = topBar.getCollapsedHeight();
+                collapsedTopBarHeight = topBar.getCollapsedHeight();
+                getFinalCollapseValue = topBar.getFinalCollapseValue();
             }
         });
 
@@ -24,8 +26,12 @@ public class CollapsingContentViewMeasurer extends ViewMeasurer {
         });
     }
 
+    public float getFinalCollapseValue() {
+        return getFinalCollapseValue;
+    }
+
     @Override
     public int getMeasuredHeight(int heightMeasureSpec) {
-        return screenHeight - titleBarHeight;
+        return screenHeight - collapsedTopBarHeight;
     }
 }

@@ -1,0 +1,31 @@
+language: node_js
+node_js:
+  - "node"
+
+git:
+  depth: 3
+
+branches:
+  only:
+  - master
+
+cache:
+  directories:
+  - $HOME/.yarn-cache
+
+before_install:
+  - set -e
+  - ./scripts/clean.sh
+
+install:
+  - npm i -g yarn
+  - yarn
+
+script:
+  - yarn run lint
+  - yarn run test:js
+  - source ./scripts/installAndroidSDK.sh
+  - yarn run test:android
+
+after_script:
+  - echo "BUILD FINISHED"
