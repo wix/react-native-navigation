@@ -61,6 +61,8 @@ public class StyleParams {
     public int selectedTopTabIndicatorHeight;
     public Color selectedTopTabIndicatorColor;
 
+    public Color screenBackgroundColor;
+
     public boolean drawScreenAboveBottomTabs;
 
     public Color snackbarButtonColor;

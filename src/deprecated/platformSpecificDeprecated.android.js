@@ -141,6 +141,8 @@ function convertStyleParams(originalStyleObject) {
     selectedTopTabIndicatorHeight: originalStyleObject.selectedTopTabIndicatorHeight,
     selectedTopTabIndicatorColor: originalStyleObject.selectedTopTabIndicatorColor,
 
+    screenBackgroundColor: originalStyleObject.screenBackgroundColor,
+
     drawScreenAboveBottomTabs: !originalStyleObject.drawUnderTabBar,
 
     bottomTabsColor: originalStyleObject.tabBarBackgroundColor,

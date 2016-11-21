@@ -48,6 +48,8 @@ public class StyleParamsParser {
             result.drawScreenBelowTopBar = false;
         }
 
+        result.screenBackgroundColor = getColor("screenBackgroundColor", getDefaultScreenBackgroundColor());
+
         result.bottomTabsHidden = getBoolean("bottomTabsHidden", getDefaultBottomTabsHidden());
         result.drawScreenAboveBottomTabs = !result.bottomTabsHidden &&
                                            params.getBoolean("drawScreenAboveBottomTabs", getDefaultDrawScreenAboveBottomTabs());
@@ -132,6 +134,10 @@ public class StyleParamsParser {
 
     private boolean getDefaultScreenBelowTopBar() {
         return AppStyle.appStyle != null && AppStyle.appStyle.drawScreenBelowTopBar;
+    }
+
+    private StyleParams.Color getDefaultScreenBackgroundColor() {
+        return AppStyle.appStyle != null ? AppStyle.appStyle.screenBackgroundColor : getColor("screenBackgroundColor", new StyleParams.Color());
     }
 
     private boolean getDefaultTopTabsHidden() {

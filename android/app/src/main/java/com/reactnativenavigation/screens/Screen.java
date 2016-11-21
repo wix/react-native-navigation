@@ -71,6 +71,9 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         setStatusBarColor(styleParams.statusBarColor);
         setNavigationBarColor(styleParams.navigationBarColor);
         topBar.setStyle(styleParams);
+        if (styleParams.screenBackgroundColor.hasColor()) {
+            setBackgroundColor(styleParams.screenBackgroundColor.getColor());
+        }
     }
 
     private void createViews() {
