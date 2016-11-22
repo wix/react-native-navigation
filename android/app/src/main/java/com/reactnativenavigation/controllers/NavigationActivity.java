@@ -17,6 +17,7 @@ import com.reactnativenavigation.layouts.BottomTabsLayout;
 import com.reactnativenavigation.layouts.Layout;
 import com.reactnativenavigation.layouts.LayoutFactory;
 import com.reactnativenavigation.params.ActivityParams;
+import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SnackbarParams;
@@ -71,6 +72,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     private void createLayout() {
         layout = LayoutFactory.create(this, activityParams);
+        if (AppStyle.appStyle.screenBackgroundColor.hasColor()) {
+            layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
+        }
         setContentView(layout.asView());
     }
 
