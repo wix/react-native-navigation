@@ -2,9 +2,6 @@
 
 curl --location http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz | tar -x -z -C $HOME
 
-export ANDROID_HOME=$HOME/android-sdk-linux
-export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
-
 ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui -a \
 --filter \
 tools,\
