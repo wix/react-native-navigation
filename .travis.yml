@@ -17,8 +17,8 @@ branches:
   - master
 
 cache:
-  yarn: true
   directories:
+    - $HOME/.yarn-cache
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
     - $HOME/.m2
