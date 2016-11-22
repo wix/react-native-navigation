@@ -15,6 +15,7 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
     - $HOME/.m2
+    - $ANDROID_HOME/licenses
 
 before_cache:
   - rm -rf $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -22,12 +23,14 @@ before_cache:
 
 before_install:
   - set -e
+  - export ANDROID_HOME=$HOME/android-sdk-linux
+  - export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
   - ./scripts/clean.sh
 
 script:
   - yarn run lint
   - yarn run test:js
-  - source ./scripts/installAndroidSDK.sh
+  - ./scripts/installAndroidSDK.sh
   - yarn run test:android
 
 after_script:
