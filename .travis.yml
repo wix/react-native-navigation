@@ -10,16 +10,13 @@ branches:
   - master
 
 cache:
+  yarn: true
   directories:
-  - $HOME/.yarn-cache
+    - node_modules
 
 before_install:
   - set -e
   - ./scripts/clean.sh
-
-install:
-  - npm i -g yarn
-  - yarn
 
 script:
   - yarn run lint
