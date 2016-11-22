@@ -9,10 +9,16 @@ branches:
   only:
   - master
 
+before_cache:
+  - rm -rf $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+
 cache:
   yarn: true
   directories:
     - node_modules
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 
 before_install:
   - set -e
