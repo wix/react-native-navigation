@@ -32,7 +32,7 @@ public class CollapsingContentView extends ContentView implements CollapsingView
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (scrollViewDelegate != null) {
+        if (scrollViewDelegate != null && scrollViewDelegate.hasScrollView()) {
             boolean consumed = scrollViewDelegate.didInterceptTouchEvent(ev);
             if (consumed) {
                 return true;
