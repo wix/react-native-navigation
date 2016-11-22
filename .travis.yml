@@ -15,7 +15,7 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
     - $HOME/.m2
-    - $ANDROID_HOME/licenses
+    - $HOME/android-sdk-linux/licenses
 
 before_cache:
   - rm -rf $HOME/.gradle/caches/modules-2/modules-2.lock
