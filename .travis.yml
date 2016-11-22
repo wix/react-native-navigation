@@ -12,7 +12,6 @@ branches:
 cache:
   yarn: true
   directories:
-    - node_modules
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
     - $HOME/.m2
