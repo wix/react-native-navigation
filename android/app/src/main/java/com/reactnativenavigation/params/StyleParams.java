@@ -1,5 +1,6 @@
 package com.reactnativenavigation.params;
 
+import android.os.Bundle;
 import android.support.annotation.ColorInt;
 
 public class StyleParams {
@@ -27,11 +28,8 @@ public class StyleParams {
             return color;
         }
 
-        public static Color parse(String str) {
-            if (str == null) {
-                return new Color();
-            }
-            return new Color(android.graphics.Color.parseColor(str));
+        public static Color parse(Bundle bundle, String key) {
+            return bundle.containsKey(key) ? new Color(bundle.getInt(key)) : new Color();
         }
     }
 
