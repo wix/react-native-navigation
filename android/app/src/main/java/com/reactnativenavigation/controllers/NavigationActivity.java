@@ -72,10 +72,15 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     private void createLayout() {
         layout = LayoutFactory.create(this, activityParams);
-        if (AppStyle.appStyle.screenBackgroundColor.hasColor()) {
+        if (hasBackgroundColor()) {
             layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
         }
         setContentView(layout.asView());
+    }
+
+    private boolean hasBackgroundColor() {
+        return AppStyle.appStyle.screenBackgroundColor != null &&
+               AppStyle.appStyle.screenBackgroundColor.hasColor();
     }
 
     @Override
