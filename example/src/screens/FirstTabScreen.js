@@ -137,6 +137,11 @@ export default class FirstTabScreen extends Component {
     Navigation.startSingleScreenApp({
       screen: {
         screen: 'example.FirstTabScreen'
+      },
+      drawer: {
+        left: {
+          screen: 'example.SideMenu'
+        }
       }
     });
   }
