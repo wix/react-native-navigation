@@ -38,7 +38,7 @@ public class Parser {
     }
 
     protected StyleParams.Color getColor(Bundle bundle, String key, StyleParams.Color defaultColor) {
-        StyleParams.Color color = StyleParams.Color.parse(bundle.getString(key));
+        StyleParams.Color color = StyleParams.Color.parse(bundle, key);
         return color.hasColor() || defaultColor == null ? color : defaultColor;
     }
 }

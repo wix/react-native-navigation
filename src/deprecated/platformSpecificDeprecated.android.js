@@ -116,45 +116,45 @@ function convertStyleParams(originalStyleObject) {
   }
 
   let ret = {
-    statusBarColor: originalStyleObject.statusBarColor,
-    topBarColor: originalStyleObject.navBarBackgroundColor,
+    statusBarColor: processColor(originalStyleObject.statusBarColor),
+    topBarColor: processColor(originalStyleObject.navBarBackgroundColor),
     topBarTransparent: originalStyleObject.navBarTransparent,
     topBarTranslucent: originalStyleObject.navBarTranslucent,
     collapsingToolBarImage: originalStyleObject.collapsingToolBarImage,
-    collapsingToolBarCollapsedColor: originalStyleObject.collapsingToolBarCollapsedColor,
+    collapsingToolBarCollapsedColor: processColor(originalStyleObject.collapsingToolBarCollapsedColor),
     titleBarHidden: originalStyleObject.navBarHidden,
     titleBarHideOnScroll: originalStyleObject.navBarHideOnScroll,
-    titleBarTitleColor: originalStyleObject.navBarTextColor,
-    titleBarSubtitleColor: originalStyleObject.navBarTextSubtitleColor,
-    titleBarButtonColor: originalStyleObject.navBarButtonColor,
-    titleBarDisabledButtonColor: originalStyleObject.titleBarDisabledButtonColor,
+    titleBarTitleColor: processColor(originalStyleObject.navBarTextColor),
+    titleBarSubtitleColor: processColor(originalStyleObject.navBarTextSubtitleColor),
+    titleBarButtonColor: processColor(originalStyleObject.navBarButtonColor),
+    titleBarDisabledButtonColor: processColor(originalStyleObject.titleBarDisabledButtonColor),
     backButtonHidden: originalStyleObject.backButtonHidden,
     topTabsHidden: originalStyleObject.topTabsHidden,
-    contextualMenuStatusBarColor: originalStyleObject.contextualMenuStatusBarColor,
-    contextualMenuBackgroundColor: originalStyleObject.contextualMenuBackgroundColor,
-    contextualMenuButtonsColor: originalStyleObject.contextualMenuButtonsColor,
+    contextualMenuStatusBarColor: processColor(originalStyleObject.contextualMenuStatusBarColor),
+    contextualMenuBackgroundColor: processColor(originalStyleObject.contextualMenuBackgroundColor),
+    contextualMenuButtonsColor: processColor(originalStyleObject.contextualMenuButtonsColor),
 
     drawBelowTopBar: !originalStyleObject.drawUnderNavBar,
 
-    topTabTextColor: originalStyleObject.topTabTextColor,
-    selectedTopTabTextColor: originalStyleObject.selectedTopTabTextColor,
+    topTabTextColor: processColor(originalStyleObject.topTabTextColor),
+    selectedTopTabTextColor: processColor(originalStyleObject.selectedTopTabTextColor),
     selectedTopTabIndicatorHeight: originalStyleObject.selectedTopTabIndicatorHeight,
-    selectedTopTabIndicatorColor: originalStyleObject.selectedTopTabIndicatorColor,
+    selectedTopTabIndicatorColor: processColor(originalStyleObject.selectedTopTabIndicatorColor),
 
-    screenBackgroundColor: originalStyleObject.screenBackgroundColor,
+    screenBackgroundColor: processColor(originalStyleObject.screenBackgroundColor),
 
     drawScreenAboveBottomTabs: !originalStyleObject.drawUnderTabBar,
 
-    bottomTabsColor: originalStyleObject.tabBarBackgroundColor,
-    bottomTabsButtonColor: originalStyleObject.tabBarButtonColor,
-    bottomTabsSelectedButtonColor: originalStyleObject.tabBarSelectedButtonColor,
+    bottomTabsColor: processColor(originalStyleObject.tabBarBackgroundColor),
+    bottomTabsButtonColor: processColor(originalStyleObject.tabBarButtonColor),
+    bottomTabsSelectedButtonColor: processColor(originalStyleObject.tabBarSelectedButtonColor),
     bottomTabsHidden: originalStyleObject.tabBarHidden,
     bottomTabsHiddenOnScroll: originalStyleObject.bottomTabsHiddenOnScroll,
     forceTitlesDisplay: originalStyleObject.forceTitlesDisplay,
-    bottomTabBadgeTextColor: originalStyleObject.bottomTabBadgeTextColor,
-    bottomTabBadgeBackgroundColor: originalStyleObject.bottomTabBadgeBackgroundColor,
+    bottomTabBadgeTextColor: processColor(originalStyleObject.bottomTabBadgeTextColor),
+    bottomTabBadgeBackgroundColor: processColor(originalStyleObject.bottomTabBadgeBackgroundColor),
 
-    navigationBarColor: originalStyleObject.navigationBarColor
+    navigationBarColor: processColor(originalStyleObject.navigationBarColor)
   }
 
   if (originalStyleObject.collapsingToolBarImage) {

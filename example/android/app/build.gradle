@@ -20,7 +20,7 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         applicationId "com.example"

@@ -1,7 +1,6 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.facebook.react.ReactRootView;
@@ -52,7 +51,6 @@ public class ContentView extends ReactRootView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int measuredHeight = viewMeasurer.getMeasuredHeight(heightMeasureSpec);
-        Log.i("Guy", "measuredHeight: " + measuredHeight + " " + getClass().getSimpleName());
         setMeasuredDimension(viewMeasurer.getMeasuredWidth(widthMeasureSpec),
                 measuredHeight);
     }

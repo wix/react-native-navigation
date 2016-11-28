@@ -193,7 +193,7 @@ public class StyleParamsParser {
     }
 
     private StyleParams.Color getColor(String key, StyleParams.Color defaultColor) {
-        StyleParams.Color color = StyleParams.Color.parse(params.getString(key));
+        StyleParams.Color color = StyleParams.Color.parse(params, key);
         if (color.hasColor()) {
             return color;
         } else {

@@ -10,4 +10,5 @@ curl --location http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz | tar
 # copy licenses
 echo "Copying Android licenses"
 scriptdir=`dirname $0`
-cp "${scriptdir}"/android-licenses/* "${ANDROID_HOME}"/licenses
+mkdir -p "${ANDROID_HOME}"/licenses
+cp "${scriptdir}"/android-sdk-licenses/* "${ANDROID_HOME}"/licenses
