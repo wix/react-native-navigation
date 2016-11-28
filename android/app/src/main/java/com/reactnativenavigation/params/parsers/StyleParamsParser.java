@@ -16,6 +16,7 @@ public class StyleParamsParser {
     public StyleParams parse() {
         StyleParams result = new StyleParams();
         if (params == null) {
+            result.titleBarDisabledButtonColor = getTitleBarDisabledButtonColor();
             return result;
         }
 
