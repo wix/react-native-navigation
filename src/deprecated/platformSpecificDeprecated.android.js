@@ -413,6 +413,9 @@ function getFab(screen) {
         fab.expendedIcon = expendedIconUri.uri;
       }
     }
+    if (fab.backgroundColor) {
+      fab.backgroundColor = processColor(fab.backgroundColor);
+    }
 
     if (fab.actions) {
       _.forEach(fab.actions, (action) => {
