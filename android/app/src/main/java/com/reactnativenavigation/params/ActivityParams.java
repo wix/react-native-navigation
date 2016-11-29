@@ -1,6 +1,5 @@
 package com.reactnativenavigation.params;
 
-import android.view.WindowManager;
 import java.util.List;
 
 public class ActivityParams {

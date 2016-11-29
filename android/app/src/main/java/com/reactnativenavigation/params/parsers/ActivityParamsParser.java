@@ -1,7 +1,6 @@
 package com.reactnativenavigation.params.parsers;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.AppStyle;
