@@ -1,6 +1,7 @@
 package com.reactnativenavigation.params.parsers;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.AppStyle;
@@ -26,6 +27,10 @@ public class ActivityParamsParser extends Parser {
         }
 
         result.animateShow = params.getBoolean("animateShow", true);
+
+        if (hasKey(params, "softInputMode")) {
+            result.softInputMode = Integer.parseInt(params.getString("softInputMode"));
+        }
 
         return result;
     }

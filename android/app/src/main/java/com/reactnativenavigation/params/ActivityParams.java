@@ -1,5 +1,6 @@
 package com.reactnativenavigation.params;
 
+import android.view.WindowManager;
 import java.util.List;
 
 public class ActivityParams {
@@ -12,4 +13,5 @@ public class ActivityParams {
     public List<ScreenParams> tabParams;
     public SideMenuParams sideMenuParams;
     public boolean animateShow;
+    public int softInputMode;
 }
