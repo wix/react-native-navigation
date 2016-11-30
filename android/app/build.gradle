@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply from: '../prepare-robolectric.gradle'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 25
     buildToolsVersion "25.0.1"
 
     defaultConfig {
@@ -47,8 +47,8 @@ android {
 dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
 
-    compile "com.android.support:appcompat-v7:23.3.0"
-    compile 'com.android.support:design:23.3.0'
+    compile "com.android.support:appcompat-v7:25.0.1"
+    compile 'com.android.support:design:25.0.1'
 
     // node_modules
     compile "com.facebook.react:react-native:+"
