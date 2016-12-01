@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
@@ -30,8 +31,6 @@ import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.react.JsDevReloadHandler;
 
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, Subscriber, PermissionAwareActivity {
 
@@ -323,20 +322,13 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    public void requestPermissions(
-            String[] permissions,
-            int requestCode,
-            PermissionListener listener) {
+    public void requestPermissions(String[] permissions, int requestCode, PermissionListener listener) {
         mPermissionListener = listener;
         requestPermissions(permissions, requestCode);
     }
 
-    public void onRequestPermissionsResult(
-            int requestCode,
-            String[] permissions,
-            int[] grantResults) {
-        if (mPermissionListener != null &&
-                mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             mPermissionListener = null;
         }
     }
