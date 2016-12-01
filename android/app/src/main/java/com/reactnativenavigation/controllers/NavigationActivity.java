@@ -47,8 +47,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     private ActivityParams activityParams;
     private ModalController modalController;
     private Layout layout;
-    private @Nullable
-    PermissionListener mPermissionListener;
+    @Nullable private PermissionListener mPermissionListener;
 
 
     @Override
