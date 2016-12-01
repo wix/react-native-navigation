@@ -49,7 +49,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     private Layout layout;
     @Nullable private PermissionListener mPermissionListener;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
