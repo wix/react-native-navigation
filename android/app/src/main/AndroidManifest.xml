@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.reactnativenavigation">
 
-    <application>
+    <application
+        android:theme="@style/AppTheme">
         <activity android:name=".controllers.NavigationActivity" />
         <activity
             android:name=".controllers.PortraitNavigationActivity"
