@@ -7,7 +7,7 @@ const NativeReactModule = NativeModules.NavigationReactModule;
 
 function startApp(activityParams) {
   savePassProps(activityParams);
-  NativeReactModule.startApp(activityParams);
+  NativeReactModule.startApp(activityParams, activityParams.portraitOnlyMode);
 }
 
 function push(screenParams) {
