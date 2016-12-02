@@ -202,6 +202,8 @@ function startTabBasedApp(params) {
 
   const newTabs = [];
 
+  params.tabs = _.cloneDeep(params.tabs);
+
   params.tabs.forEach(function(tab, idx) {
     addNavigatorParams(tab, null, idx);
     addNavigatorButtons(tab, params.drawer);
@@ -412,6 +414,9 @@ function getFab(screen) {
       if (expendedIconUri) {
         fab.expendedIcon = expendedIconUri.uri;
       }
+    }
+    if (fab.backgroundColor) {
+      fab.backgroundColor = processColor(fab.backgroundColor);
     }
 
     if (fab.actions) {

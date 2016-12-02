@@ -16,6 +16,7 @@ public class StyleParamsParser {
     public StyleParams parse() {
         StyleParams result = new StyleParams();
         if (params == null) {
+            result.titleBarDisabledButtonColor = getTitleBarDisabledButtonColor();
             return result;
         }
 
@@ -201,9 +202,7 @@ public class StyleParamsParser {
         }
     }
 
-    private int getInt(String selectedTopTabIndicatorHeight, int defaultSelectedTopTabIndicatorHeight) {
-        return params.containsKey(selectedTopTabIndicatorHeight) ?
-                (int) params.getDouble(selectedTopTabIndicatorHeight) :
-                defaultSelectedTopTabIndicatorHeight;
+    private int getInt(String key, int defaultValue) {
+        return params.containsKey(key) ? params.getInt(key) : defaultValue;
     }
 }
