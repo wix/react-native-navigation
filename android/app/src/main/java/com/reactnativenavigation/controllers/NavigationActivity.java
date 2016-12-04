@@ -1,12 +1,17 @@
 package com.reactnativenavigation.controllers;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
+import com.facebook.react.modules.core.PermissionAwareActivity;
+import com.facebook.react.modules.core.PermissionListener;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.Event;
 import com.reactnativenavigation.events.EventBus;
@@ -27,7 +32,7 @@ import com.reactnativenavigation.react.JsDevReloadHandler;
 
 import java.util.List;
 
-public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, Subscriber {
+public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, Subscriber, PermissionAwareActivity {
 
     /**
      * Although we start multiple activities, we make sure to pass Intent.CLEAR_TASK | Intent.NEW_TASK
@@ -42,6 +47,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     private ActivityParams activityParams;
     private ModalController modalController;
     private Layout layout;
+    @Nullable private PermissionListener mPermissionListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -311,5 +317,17 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     private void handleJsDevReloadEvent() {
         modalController.destroy();
         layout.destroy();
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public void requestPermissions(String[] permissions, int requestCode, PermissionListener listener) {
+        mPermissionListener = listener;
+        requestPermissions(permissions, requestCode);
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+            mPermissionListener = null;
+        }
     }
 }
