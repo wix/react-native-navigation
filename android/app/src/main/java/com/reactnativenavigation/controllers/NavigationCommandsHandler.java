@@ -36,6 +36,7 @@ public class NavigationCommandsHandler {
         } else {
             intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
         }
+        IntentDataHandler.setIntentData(intent);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ACTIVITY_PARAMS_BUNDLE, params);
         NavigationApplication.instance.startActivity(intent);
@@ -331,7 +332,7 @@ public class NavigationCommandsHandler {
         });
     }
 
-    public static void showContextualMenu(final ContextualMenuParams params, final Callback onButtonClicked) {
+    public static void showContextualMenu(final String screenInstanceId, final ContextualMenuParams params, final Callback onButtonClicked) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
@@ -340,12 +341,12 @@ public class NavigationCommandsHandler {
         NavigationApplication.instance.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                currentActivity.showContextualMenu(params, onButtonClicked);
+                currentActivity.showContextualMenu(screenInstanceId, params, onButtonClicked);
             }
         });
     }
 
-    public static void dismissContextualMenu() {
+    public static void dismissContextualMenu(final String screenInstanceId) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
@@ -354,7 +355,7 @@ public class NavigationCommandsHandler {
         NavigationApplication.instance.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                currentActivity.dismissContextualMenu();
+                currentActivity.dismissContextualMenu(screenInstanceId);
             }
         });
     }

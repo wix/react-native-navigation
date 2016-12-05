@@ -207,12 +207,12 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     }
 
     @Override
-    public void showContextualMenu(ContextualMenuParams params, Callback onButtonClicked) {
+    public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
         getCurrentScreenStack().peek().showContextualMenu(params, onButtonClicked);
     }
 
     @Override
-    public void dismissContextualMenu() {
+    public void dismissContextualMenu(String screenInstanceId) {
         getCurrentScreenStack().peek().dismissContextualMenu();
     }
 
@@ -332,7 +332,7 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     }
 
     private class ScreenStackNotFoundException extends RuntimeException {
-        public ScreenStackNotFoundException(String navigatorId) {
+        ScreenStackNotFoundException(String navigatorId) {
             super(navigatorId);
         }
     }
@@ -366,7 +366,7 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
             sideMenu.openDrawer();
         } else {
             final String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
-            NavigationApplication.instance.sendNavigatorEvent("sideMenu", navigatorEventId);
+            NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         }
     }
 }

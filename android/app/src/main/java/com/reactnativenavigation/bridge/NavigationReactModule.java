@@ -175,14 +175,14 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void showContextualMenu(final ReadableMap params, final Callback onButtonClicked) {
+    public void showContextualMenu(final String screenInstanceId, final ReadableMap params, final Callback onButtonClicked) {
         ContextualMenuParams contextualMenuParams =
                 new ContextualMenuParamsParser().parse(BundleConverter.toBundle(params));
-        NavigationCommandsHandler.showContextualMenu(contextualMenuParams, onButtonClicked);
+        NavigationCommandsHandler.showContextualMenu(screenInstanceId, contextualMenuParams, onButtonClicked);
     }
 
     @ReactMethod
-    public void dismissContextualMenu() {
-        NavigationCommandsHandler.dismissContextualMenu();
+    public void dismissContextualMenu(String screenInstanceId) {
+        NavigationCommandsHandler.dismissContextualMenu(screenInstanceId);
     }
 }

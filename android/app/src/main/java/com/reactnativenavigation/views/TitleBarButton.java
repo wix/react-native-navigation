@@ -15,10 +15,10 @@ import java.util.ArrayList;
 
 class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
-    private final Menu menu;
-    private final View parent;
-    protected TitleBarButtonParams buttonParams;
-    @Nullable private String navigatorEventId;
+    protected final Menu menu;
+    protected final View parent;
+    TitleBarButtonParams buttonParams;
+    @Nullable protected String navigatorEventId;
 
     TitleBarButton(Menu menu, View parent, TitleBarButtonParams buttonParams, @Nullable String navigatorEventId) {
         this.menu = menu;
@@ -36,7 +36,6 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         item.setOnMenuItemClickListener(this);
         return item;
     }
-
 
     private void setIcon(MenuItem item) {
         if (hasIcon()) {
@@ -79,7 +78,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
     private void setTextColorForFoundButtonViews(ArrayList<View> outViews) {
         for (View button : outViews) {
-            ((TextView) button).setTextColor(buttonParams.color.getColor());
+            ((TextView) button).setTextColor(buttonParams.getColor().getColor());
         }
     }
 
@@ -93,7 +92,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        NavigationApplication.instance.sendNavigatorEvent(buttonParams.eventId, navigatorEventId);
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent(buttonParams.eventId, navigatorEventId);
         return true;
     }
 }

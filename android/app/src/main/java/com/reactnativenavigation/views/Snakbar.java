@@ -6,13 +6,13 @@ import android.view.View;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.SnackbarParams;
 
-public class Snakbar {
+class Snakbar {
     private final OnDismissListener parent;
     private final String navigatorEventId;
     private final SnackbarParams params;
     private Snackbar snackbar;
 
-    public interface OnDismissListener {
+    interface OnDismissListener {
         void onDismiss(Snakbar snakbar);
     }
 
@@ -20,7 +20,7 @@ public class Snakbar {
         snackbar.show();
     }
 
-    public void dismiss() {
+    void dismiss() {
         snackbar.dismiss();
     }
 
@@ -28,7 +28,7 @@ public class Snakbar {
         return snackbar.getView();
     }
 
-    public Snakbar(OnDismissListener parent, String navigatorEventId, SnackbarParams params) {
+    Snakbar(OnDismissListener parent, String navigatorEventId, SnackbarParams params) {
         this.parent = parent;
         this.navigatorEventId = navigatorEventId;
         this.params = params;
@@ -47,7 +47,7 @@ public class Snakbar {
             snackbar.setAction(params.buttonText, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NavigationApplication.instance.sendNavigatorEvent(params.eventId, navigatorEventId);
+                    NavigationApplication.instance.getEventEmitter().sendNavigatorEvent(params.eventId, navigatorEventId);
                 }
             });
         }

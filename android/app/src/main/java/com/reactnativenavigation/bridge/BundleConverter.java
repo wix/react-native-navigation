@@ -19,7 +19,7 @@ public class BundleConverter {
                     bundle.putBoolean(key, map.getBoolean(key));
                     break;
                 case Number:
-                    bundle.putDouble(key, map.getDouble(key));
+                    putNumber(bundle, map, key);
                     break;
                 case String:
                     bundle.putString(key, map.getString(key));
@@ -35,6 +35,14 @@ public class BundleConverter {
             }
         }
         return bundle;
+    }
+
+    private static void putNumber(Bundle bundle, ReadableMap map, String key) {
+        try {
+            bundle.putInt(key, map.getInt(key));
+        } catch (Exception e) {
+            bundle.putDouble(key, map.getDouble(key));
+        }
     }
 
     public static Bundle toBundle(ReadableArray array) {

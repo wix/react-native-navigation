@@ -1,5 +1,6 @@
 package com.reactnativenavigation.params;
 
+import android.os.Bundle;
 import android.support.annotation.ColorInt;
 
 public class StyleParams {
@@ -27,11 +28,8 @@ public class StyleParams {
             return color;
         }
 
-        public static Color parse(String str) {
-            if (str == null) {
-                return new Color();
-            }
-            return new Color(android.graphics.Color.parseColor(str));
+        public static Color parse(Bundle bundle, String key) {
+            return bundle.containsKey(key) ? new Color(bundle.getInt(key)) : new Color();
         }
     }
 
@@ -41,12 +39,15 @@ public class StyleParams {
     public Color contextualMenuBackgroundColor;
 
     public Color topBarColor;
+    public CollapsingTopBarParams collapsingTopBarParams;
     public boolean topBarHidden;
     public boolean topTabsHidden;
     public boolean drawScreenBelowTopBar;
 
     public boolean titleBarHidden;
+    public boolean titleBarHideOnScroll;
     public boolean topBarTransparent;
+    public boolean topBarTranslucent;
     public Color titleBarTitleColor;
     public Color titleBarSubtitleColor;
     public Color titleBarButtonColor;
@@ -58,9 +59,10 @@ public class StyleParams {
     public int selectedTopTabIndicatorHeight;
     public Color selectedTopTabIndicatorColor;
 
+    public Color screenBackgroundColor;
+
     public boolean drawScreenAboveBottomTabs;
 
-    public Color snackbarTextColor;
     public Color snackbarButtonColor;
 
     public boolean bottomTabsHidden;

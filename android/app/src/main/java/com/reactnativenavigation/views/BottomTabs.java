@@ -45,8 +45,8 @@ public class BottomTabs extends AHBottomNavigation {
             setAccentColor(params.selectedBottomTabsButtonColor.getColor());
         }
 
-        setForceTitlesDisplay(params.forceTitlesDisplay);
-
+        //setForceTitlesDisplay(params.forceTitlesDisplay);
+        setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
         setVisibility(params.bottomTabsHidden, true);
     }
 
