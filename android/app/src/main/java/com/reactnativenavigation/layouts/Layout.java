@@ -35,7 +35,7 @@ public interface Layout extends ScreenStackContainer {
 
     boolean containsNavigator(String navigatorId);
 
-    void showContextualMenu(ContextualMenuParams params, Callback onButtonClicked);
+    void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked);
 
-    void dismissContextualMenu();
+    void dismissContextualMenu(String screenInstanceId);
 }

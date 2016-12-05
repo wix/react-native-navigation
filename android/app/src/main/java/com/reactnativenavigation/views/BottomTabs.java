@@ -35,12 +35,12 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     public void setStyleFromScreen(StyleParams params) {
-        setBackgroundColor(params.bottomTabsColor);
-
+        if (params.bottomTabsColor.hasColor()) {
+            setBackgroundColor(params.bottomTabsColor);
+        }
         if (params.bottomTabsButtonColor.hasColor()) {
             setInactiveColor(params.bottomTabsButtonColor.getColor());
         }
-
         if (params.selectedBottomTabsButtonColor.hasColor()) {
             setAccentColor(params.selectedBottomTabsButtonColor.getColor());
         }

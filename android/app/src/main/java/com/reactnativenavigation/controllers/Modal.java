@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.layouts.Layout;
 import com.reactnativenavigation.layouts.ModalScreenLayout;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
+import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -41,6 +43,14 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
 
     public void setTitleBarLeftButton(String screenInstanceId, String navigatorEventId, TitleBarLeftButtonParams titleBarLeftButton) {
         layout.setTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButton);
+    }
+
+    public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
+        layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
+    }
+
+    public void dismissContextualMenu(String screenInstanceId) {
+        layout.dismissContextualMenu(screenInstanceId);
     }
 
     @Override

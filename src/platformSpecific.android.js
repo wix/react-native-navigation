@@ -120,12 +120,12 @@ function showSnackbar(params) {
   NativeReactModule.showSnackbar(params);
 }
 
-function showContextualMenu(params, onButtonPressed) {
-  NativeReactModule.showContextualMenu(params, onButtonPressed);
+function showContextualMenu(screenInstanceID, params, onButtonPressed) {
+  NativeReactModule.showContextualMenu(screenInstanceID, params, onButtonPressed);
 }
 
-function dismissContextualMenu() {
-  NativeReactModule.dismissContextualMenu();
+function dismissContextualMenu(screenInstanceID) {
+  NativeReactModule.dismissContextualMenu(screenInstanceID);
 }
 
 module.exports = {

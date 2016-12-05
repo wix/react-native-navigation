@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 
-import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -23,8 +22,6 @@ import java.util.List;
 
 public class TitleBar extends Toolbar {
 
-    private boolean hideOnScroll = false;
-    private VisibilityAnimator visibilityAnimator;
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
 
@@ -43,11 +40,9 @@ public class TitleBar extends Toolbar {
     public void setRightButtons(List<TitleBarButtonParams> rightButtons, String navigatorEventId) {
         Menu menu = getMenu();
         menu.clear();
-
         if (rightButtons == null) {
             return;
         }
-
         addButtonsToTitleBar(rightButtons, navigatorEventId, menu);
     }
 
@@ -67,6 +62,7 @@ public class TitleBar extends Toolbar {
         setTitleTextColor(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
+        setTranslucent(params);
     }
 
     private void colorOverflowButton(StyleParams params) {
@@ -76,17 +72,23 @@ public class TitleBar extends Toolbar {
         }
     }
 
+    private void setTranslucent(StyleParams params) {
+        if (params.topBarTranslucent) {
+            setBackground(new TranslucentTitleBarBackground());
+        }
+    }
+
     private boolean shouldColorOverflowButton(StyleParams params, Drawable overflowIcon) {
         return overflowIcon != null && params.titleBarButtonColor.hasColor();
     }
 
-    private void setTitleTextColor(StyleParams params) {
+    protected void setTitleTextColor(StyleParams params) {
         if (params.titleBarTitleColor.hasColor()) {
             setTitleTextColor(params.titleBarTitleColor.getColor());
         }
     }
 
-    private void setSubtitleTextColor(StyleParams params) {
+    protected void setSubtitleTextColor(StyleParams params) {
         if (params.titleBarSubtitleColor.hasColor()) {
             setSubtitleTextColor(params.titleBarSubtitleColor.getColor());
         }
@@ -94,7 +96,7 @@ public class TitleBar extends Toolbar {
 
     private void addButtonsToTitleBar(List<TitleBarButtonParams> rightButtons, String navigatorEventId, Menu menu) {
         for (int i = 0; i < rightButtons.size(); i++) {
-            final TitleBarButton button = new TitleBarButton(menu, this, rightButtons.get(i), navigatorEventId);
+            final TitleBarButton button = ButtonFactory.create(menu, this, rightButtons.get(i), navigatorEventId);
             addButtonInReverseOrder(rightButtons, i, button);
         }
     }
@@ -126,23 +128,6 @@ public class TitleBar extends Toolbar {
         setNavigationIcon(leftButton);
     }
 
-    public void setHideOnScroll(boolean hideOnScroll) {
-        this.hideOnScroll = hideOnScroll;
-    }
-
-    public void onScrollChanged(ScrollDirectionListener.Direction direction) {
-        if (hideOnScroll) {
-            if (visibilityAnimator == null) {
-                createScrollAnimator();
-            }
-            visibilityAnimator.onScrollChanged(direction);
-        }
-    }
-
-    private void createScrollAnimator() {
-        visibilityAnimator = new VisibilityAnimator(this, VisibilityAnimator.HideDirection.Up, getHeight());
-    }
-
     public void hide() {
         hide(null);
     }
@@ -163,10 +148,22 @@ public class TitleBar extends Toolbar {
     }
 
     public void show() {
+        this.show(null);
+    }
+
+    public void show(final @Nullable Runnable onDisplayed) {
         setAlpha(0);
         animate()
                 .alpha(1)
                 .setDuration(200)
-                .setInterpolator(new AccelerateDecelerateInterpolator());
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (onDisplayed != null) {
+                            onDisplayed.run();
+                        }
+                    }
+                });
     }
 }

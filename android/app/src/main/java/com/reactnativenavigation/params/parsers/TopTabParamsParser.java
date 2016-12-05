@@ -32,6 +32,7 @@ public class TopTabParamsParser extends Parser {
         result.leftButton = ButtonParser.parseLeftButton(params);
         result.rightButtons = ButtonParser.parseRightButton(params);
         result.fabParams = ButtonParser.parseFab(params, result.navigationParams.navigatorEventId);
+        result.styleParams = new StyleParamsParser(params.getBundle("styleParams")).parse();
         return result;
     }
 }
