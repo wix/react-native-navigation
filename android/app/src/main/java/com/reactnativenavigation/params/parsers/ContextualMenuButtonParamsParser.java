@@ -24,7 +24,7 @@ public class ContextualMenuButtonParamsParser extends TitleBarButtonParamsParser
         result.showAsAction = parseShowAsAction(button.getString("showAsAction"));
         result.color = StyleParams.Color.parse(button, "color");
         result.label = button.getString("label");
-        result.index = (int) button.getDouble("index");
+        result.index = button.getInt("index");
         return result;
     }
 }
