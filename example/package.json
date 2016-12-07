@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "postinstall": "rm -rf node_modules/react-native-navigation/node_modules && rm -rf node_modules/react-native-navigation/example && rm -rf yarn.lock",
     "start": "watchman watch-del-all && (adb reverse tcp:8081 tcp:8081 || true) && node node_modules/react-native/local-cli/cli.js start",
     "xcode": "open ios/example.xcodeproj",
     "android": "cd android && ./gradlew installDebug"
