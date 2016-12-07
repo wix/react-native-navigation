@@ -29,18 +29,6 @@ public class NavigationCommandsHandler {
      *
      * @param params ActivityParams as bundle
      */
-    public static void startApp(Bundle params, boolean portraitOnlyMode) {
-        Intent intent;
-        if (portraitOnlyMode) {
-            intent = new Intent(NavigationApplication.instance, PortraitNavigationActivity.class);
-        } else {
-            intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
-        }
-        IntentDataHandler.setIntentData(intent);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(ACTIVITY_PARAMS_BUNDLE, params);
-        NavigationApplication.instance.startActivity(intent);
-    }
 
     public static void startApp(Bundle params, boolean portraitOnlyMode, boolean landscapeOnlyMode) {
         Intent intent;
