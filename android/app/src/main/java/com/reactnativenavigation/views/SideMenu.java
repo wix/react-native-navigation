@@ -4,9 +4,11 @@ import android.content.Context;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.params.SideMenuParams;
+import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 
 public class SideMenu extends DrawerLayout {
@@ -71,7 +73,19 @@ public class SideMenu extends DrawerLayout {
         sideMenuView = new ContentView(getContext(), sideMenuParams.screenId, sideMenuParams.navigationParams);
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         lp.gravity = Gravity.START;
+        setSideMenuWidth();
         addView(sideMenuView, lp);
+    }
+
+    private void setSideMenuWidth() {
+        sideMenuView.setOnDisplayListener(new Screen.OnDisplayListener() {
+            @Override
+            public void onDisplay() {
+                ViewGroup.LayoutParams lp = sideMenuView.getLayoutParams();
+                lp.width = sideMenuView.getChildAt(0).getWidth();
+                sideMenuView.setLayoutParams(lp);
+            }
+        });
     }
 
     private void setStyle(SideMenuParams params) {
