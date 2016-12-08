@@ -176,12 +176,21 @@ function convertDrawerParamsToSideMenuParams(drawerParams) {
     return null;
   }
 
-  let result = {};
+  let result = {
+    left: {},
+    right: {}
+  };
   result.disableOpenGesture = drawer.disableOpenGesture !== undefined;
-  result.screenId = drawer.left.screen;
-  addNavigatorParams(result);
-  result = adaptNavigationParams(result);
-  result.passProps = drawer.passProps;
+  result.left.screenId = drawer.left.screen;
+  addNavigatorParams(result.left);
+  result.left = adaptNavigationParams(result.left);
+  result.left.passProps = drawer.left.passProps;
+
+  result.right.screenId = drawer.right.screen;
+  addNavigatorParams(result.right);
+  result.right = adaptNavigationParams(result.right);
+  result.right.passProps = drawer.right.passProps;
+
   return result;
 }
 

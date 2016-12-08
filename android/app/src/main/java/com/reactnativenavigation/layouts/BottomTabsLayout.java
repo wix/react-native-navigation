@@ -35,7 +35,8 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     private SnackbarAndFabContainer snackbarAndFabContainer;
     private BottomTabs bottomTabs;
     private ScreenStack[] screenStacks;
-    private final SideMenuParams sideMenuParams;
+    private final SideMenuParams leftSideMenuParams;
+    private final SideMenuParams rightSideMenuParams;
     private @Nullable SideMenu sideMenu;
     private int currentStackIndex = 0;
 
@@ -43,7 +44,8 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
         super(activity);
         this.activity = activity;
         this.params = params;
-        this.sideMenuParams = params.sideMenuParams;
+        leftSideMenuParams = params.leftSideMenuParams;
+        rightSideMenuParams = params.rightSideMenuParams;
         screenStacks = new ScreenStack[params.tabParams.size()];
         createLayout();
     }
@@ -58,10 +60,10 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     }
 
     private void createSideMenu() {
-        if (sideMenuParams == null) {
+        if (leftSideMenuParams == null && rightSideMenuParams == null) {
             return;
         }
-        sideMenu = new SideMenu(getContext(), sideMenuParams);
+        sideMenu = new SideMenu(getContext(), leftSideMenuParams, rightSideMenuParams);
         RelativeLayout.LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         addView(sideMenu, lp);
     }

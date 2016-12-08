@@ -29,15 +29,15 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         layout.setTopBarVisible(screenInstanceId, hidden, animated);
     }
 
-    public void setTitleBarTitle(String screenInstanceId, String title) {
+    void setTitleBarTitle(String screenInstanceId, String title) {
         layout.setTitleBarTitle(screenInstanceId, title);
     }
 
-    public void setTitleBarSubtitle(String screenInstanceId, String subtitle) {
+    void setTitleBarSubtitle(String screenInstanceId, String subtitle) {
         layout.setTitleBarSubtitle(screenInstanceId, subtitle);
     }
 
-    public void setTitleBarRightButtons(String screenInstanceId, String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {
+    void setTitleBarRightButtons(String screenInstanceId, String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {
         layout.setTitleBarRightButtons(screenInstanceId, navigatorEventId, titleBarButtons);
     }
 
@@ -64,7 +64,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
     public void onSideMenuButtonClick() {
     }
 
-    public interface OnModalDismissedListener {
+    interface OnModalDismissedListener {
         void onModalDismissed(Modal modal);
     }
 
@@ -84,7 +84,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         setCancelable(true);
         setOnDismissListener(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        layout = new ModalScreenLayout(getActivity(), null, screenParams, this);
+        layout = new ModalScreenLayout(getActivity(), screenParams, this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(layout.asView());
     }
@@ -131,7 +131,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         onModalDismissedListener.onModalDismissed(this);
     }
 
-    public void onModalDismissed() {
+    void onModalDismissed() {
         layout.onModalDismissed();
     }
 }

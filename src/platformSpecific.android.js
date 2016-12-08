@@ -87,8 +87,11 @@ function savePassProps(params) {
     });
   }
 
-  if (params.sideMenu) {
-    PropRegistry.save(params.sideMenu.navigationParams.screenInstanceID, params.sideMenu.passProps);
+  if (params.sideMenu && params.sideMenu.left) {
+    PropRegistry.save(params.sideMenu.left.navigationParams.screenInstanceID, params.sideMenu.left.passProps);
+  }
+  if (params.sideMenu && params.sideMenu.right) {
+    PropRegistry.save(params.sideMenu.right.navigationParams.screenInstanceID, params.sideMenu.right.passProps);
   }
 }
 

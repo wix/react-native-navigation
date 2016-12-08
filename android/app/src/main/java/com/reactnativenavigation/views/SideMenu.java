@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
@@ -12,8 +13,10 @@ import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 
 public class SideMenu extends DrawerLayout {
+    public enum Side {Left, Right}
 
-    private ContentView sideMenuView;
+    private ContentView leftSideMenuView;
+    private ContentView rightSideMenuView;
     private RelativeLayout contentContainer;
 
     public RelativeLayout getContentContainer() {
@@ -21,6 +24,14 @@ public class SideMenu extends DrawerLayout {
     }
 
     public void destroy() {
+        destroySideMenu(leftSideMenuView);
+        destroySideMenu(rightSideMenuView);
+    }
+
+    private void destroySideMenu(ContentView sideMenuView) {
+        if (sideMenuView == null) {
+            return;
+        }
         sideMenuView.unmountReactView();
         removeView(sideMenuView);
     }
@@ -48,18 +59,19 @@ public class SideMenu extends DrawerLayout {
     }
 
     public void toggleVisible(boolean animated) {
-        if (isDrawerOpen(GravityCompat.START)) {
+        if (isDrawerOpen(Gravity.LEFT)) {
             closeDrawer(animated);
         } else {
             openDrawer(animated);
         }
     }
 
-    public SideMenu(Context context, SideMenuParams sideMenuParams) {
+    public SideMenu(Context context, SideMenuParams leftMenuParams, SideMenuParams rightMenuParams) {
         super(context);
         createContentContainer();
-        createSideMenu(sideMenuParams);
-        setStyle(sideMenuParams);
+        leftSideMenuView = createSideMenu(leftMenuParams);
+        rightSideMenuView = createSideMenu(rightMenuParams);
+        setStyle(leftMenuParams);
     }
 
     private void createContentContainer() {
@@ -69,15 +81,19 @@ public class SideMenu extends DrawerLayout {
         addView(contentContainer, lp);
     }
 
-    private void createSideMenu(SideMenuParams sideMenuParams) {
-        sideMenuView = new ContentView(getContext(), sideMenuParams.screenId, sideMenuParams.navigationParams);
+    private ContentView createSideMenu(@Nullable SideMenuParams params) {
+        if (params == null) {
+            return null;
+        }
+        ContentView sideMenuView = new ContentView(getContext(), params.screenId, params.navigationParams);
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        lp.gravity = Gravity.START;
-        setSideMenuWidth();
+        lp.gravity = params.side == Side.Left ? Gravity.LEFT : Gravity.RIGHT;
+        setSideMenuWidth(sideMenuView);
         addView(sideMenuView, lp);
+        return sideMenuView;
     }
 
-    private void setSideMenuWidth() {
+    private void setSideMenuWidth(final ContentView sideMenuView) {
         sideMenuView.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
