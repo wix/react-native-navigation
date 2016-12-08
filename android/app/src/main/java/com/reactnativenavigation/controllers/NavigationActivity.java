@@ -29,6 +29,7 @@ import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.react.JsDevReloadHandler;
+import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
 
@@ -253,12 +254,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.setTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButton);
     }
 
-    public void toggleSideMenuVisible(boolean animated) {
-        layout.toggleSideMenuVisible(animated);
+    public void toggleSideMenuVisible(boolean animated, Side side) {
+        layout.toggleSideMenuVisible(animated, side);
     }
 
-    public void setSideMenuVisible(boolean animated, boolean visible) {
-        layout.setSideMenuVisible(animated, visible);
+    public void setSideMenuVisible(boolean animated, boolean visible, Side side) {
+        layout.setSideMenuVisible(animated, visible, side);
     }
 
     public void selectBottomTabByTabIndex(Integer index) {

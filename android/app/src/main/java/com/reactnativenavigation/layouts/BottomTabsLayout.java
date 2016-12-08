@@ -21,6 +21,7 @@ import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.SideMenu;
+import com.reactnativenavigation.views.SideMenu.Side;
 import com.reactnativenavigation.views.SnackbarAndFabContainer;
 
 import java.util.List;
@@ -178,16 +179,16 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     }
 
     @Override
-    public void toggleSideMenuVisible(boolean animated) {
+    public void toggleSideMenuVisible(boolean animated, Side side) {
         if (sideMenu != null) {
-            sideMenu.toggleVisible(animated);
+            sideMenu.toggleVisible(animated, side);
         }
     }
 
     @Override
-    public void setSideMenuVisible(boolean animated, boolean visible) {
+    public void setSideMenuVisible(boolean animated, boolean visible, Side side) {
         if (sideMenu != null) {
-            sideMenu.setVisible(visible, animated);
+            sideMenu.setVisible(visible, animated, side);
         }
     }
 
@@ -365,7 +366,7 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     @Override
     public void onSideMenuButtonClick() {
         if (sideMenu != null) {
-            sideMenu.openDrawer();
+            sideMenu.openDrawer(Side.Left);
         } else {
             final String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
             NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);

@@ -15,6 +15,7 @@ import com.reactnativenavigation.params.parsers.ContextualMenuParamsParser;
 import com.reactnativenavigation.params.parsers.SnackbarParamsParser;
 import com.reactnativenavigation.params.parsers.TitleBarButtonParamsParser;
 import com.reactnativenavigation.params.parsers.TitleBarLeftButtonParamsParser;
+import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
 
@@ -113,13 +114,13 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void toggleSideMenuVisible(boolean animated) {
-        NavigationCommandsHandler.toggleSideMenuVisible(animated);
+    public void toggleSideMenuVisible(boolean animated, String side) {
+        NavigationCommandsHandler.toggleSideMenuVisible(animated, Side.fromString(side));
     }
 
     @ReactMethod
-    public void setSideMenuVisible(boolean animated, boolean visible) {
-        NavigationCommandsHandler.setSideMenuVisible(animated, visible);
+    public void setSideMenuVisible(boolean animated, boolean visible, String side) {
+        NavigationCommandsHandler.setSideMenuVisible(animated, visible, Side.fromString(side));
     }
 
     @ReactMethod

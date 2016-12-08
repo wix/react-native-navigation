@@ -95,12 +95,12 @@ function savePassProps(params) {
   }
 }
 
-function toggleSideMenuVisible(animated) {
-  NativeReactModule.toggleSideMenuVisible(animated);
+function toggleSideMenuVisible(animated, side) {
+  NativeReactModule.toggleSideMenuVisible(animated, side);
 }
 
-function setSideMenuVisible(animated, visible) {
-  NativeReactModule.setSideMenuVisible(animated, visible);
+function setSideMenuVisible(animated, visible, side) {
+  NativeReactModule.setSideMenuVisible(animated, visible, side);
 }
 
 function selectBottomTabByNavigatorId(navigatorId) {

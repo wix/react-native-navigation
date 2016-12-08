@@ -7,6 +7,7 @@ import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
 
@@ -25,9 +26,9 @@ public interface Layout extends ScreenStackContainer {
 
     void setTitleBarLeftButton(String screenInstanceId, String navigatorEventId, TitleBarLeftButtonParams titleBarLeftButtonParams);
 
-    void toggleSideMenuVisible(boolean animated);
+    void toggleSideMenuVisible(boolean animated, Side side);
 
-    void setSideMenuVisible(boolean animated, boolean visible);
+    void setSideMenuVisible(boolean animated, boolean visible, Side side);
 
     void showSnackbar(SnackbarParams params);
 

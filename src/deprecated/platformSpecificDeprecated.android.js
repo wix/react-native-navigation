@@ -310,9 +310,9 @@ function navigatorToggleDrawer(navigator, params) {
   const animated = !(params.animated === false);
   if (params.to) {
     const visible = params.to === 'open';
-    newPlatformSpecific.setSideMenuVisible(animated, visible);
+    newPlatformSpecific.setSideMenuVisible(animated, visible, params.side);
   } else {
-    newPlatformSpecific.toggleSideMenuVisible(animated);
+    newPlatformSpecific.toggleSideMenuVisible(animated, params.side);
   }
 }
 

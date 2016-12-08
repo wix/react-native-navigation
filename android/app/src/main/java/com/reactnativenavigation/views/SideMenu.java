@@ -2,7 +2,6 @@ package com.reactnativenavigation.views;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -13,7 +12,19 @@ import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 
 public class SideMenu extends DrawerLayout {
-    public enum Side {Left, Right}
+    public enum Side {
+        Left(Gravity.LEFT), Right(Gravity.RIGHT);
+
+        int gravity;
+
+        Side(int gravity) {
+            this.gravity = gravity;
+        }
+
+        public static Side fromString(String side) {
+            return "left".equals(side.toLowerCase()) ? Left : Right;
+        }
+    }
 
     private ContentView leftSideMenuView;
     private ContentView rightSideMenuView;
@@ -36,34 +47,34 @@ public class SideMenu extends DrawerLayout {
         removeView(sideMenuView);
     }
 
-    public void setVisible(boolean visible, boolean animated) {
+    public void setVisible(boolean visible, boolean animated, Side side) {
         if (!isShown() && visible) {
-            openDrawer(animated);
+            openDrawer(animated, side);
         }
 
         if (isShown() && !visible) {
-            closeDrawer(animated);
+            closeDrawer(animated, side);
         }
     }
 
-    public void openDrawer() {
-        openDrawer(Gravity.LEFT);
+    public void openDrawer(Side side) {
+        openDrawer(side.gravity);
     }
 
-    public void openDrawer(boolean animated) {
-        openDrawer(Gravity.LEFT, animated);
+    public void openDrawer(boolean animated, Side side) {
+        openDrawer(side.gravity, animated);
     }
 
-    public void closeDrawer(boolean animated) {
-        closeDrawer(Gravity.LEFT, animated);
-    }
-
-    public void toggleVisible(boolean animated) {
-        if (isDrawerOpen(Gravity.LEFT)) {
-            closeDrawer(animated);
+    public void toggleVisible(boolean animated, Side side) {
+        if (isDrawerOpen(side.gravity)) {
+            closeDrawer(animated, side);
         } else {
-            openDrawer(animated);
+            openDrawer(animated, side);
         }
+    }
+
+    public void closeDrawer(boolean animated, Side side) {
+        closeDrawer(side.gravity, animated);
     }
 
     public SideMenu(Context context, SideMenuParams leftMenuParams, SideMenuParams rightMenuParams) {
@@ -87,7 +98,7 @@ public class SideMenu extends DrawerLayout {
         }
         ContentView sideMenuView = new ContentView(getContext(), params.screenId, params.navigationParams);
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        lp.gravity = params.side == Side.Left ? Gravity.LEFT : Gravity.RIGHT;
+        lp.gravity = params.side.gravity;
         setSideMenuWidth(sideMenuView);
         addView(sideMenuView, lp);
         return sideMenuView;
