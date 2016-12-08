@@ -3,29 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "postinstall": "node ./scripts/postinstall.js",
-    "start": "watchman watch-del-all && (adb reverse tcp:8081 tcp:8081 || true) && node node_modules/react-native/local-cli/cli.js start --reset-cache",
+    "postinstall": "rm -rf node_modules/react-native-navigation/node_modules && rm -rf node_modules/react-native-navigation/example && rm -rf yarn.lock",
+    "start": "watchman watch-del-all && (adb reverse tcp:8081 tcp:8081 || true) && node node_modules/react-native/local-cli/cli.js start",
     "xcode": "open ios/example.xcodeproj",
-    "android": "cd android && ./gradlew installDebug",
-    "e2e": "node ./scripts/e2e.ios.js"
+    "android": "cd android && ./gradlew installDebug"
   },
   "dependencies": {
     "react-native": "0.38.0",
     "react": "15.4.1",
     "react-native-navigation": "file:../"
-  },
-  "devDependencies": {
-    "detox": "4.x.x",
-    "detox-server": "1.x.x"
-  },
-  "detox": {
-    "session": {
-      "server": "ws://localhost:8099",
-      "sessionId": "example"
-    },
-    "ios-simulator": {
-      "app": "ios/DerivedData/example/Build/Products/Debug_Detox-iphonesimulator/example.app",
-      "device": "iPhone 7, iOS 10.1"
-    }
   }
 }
