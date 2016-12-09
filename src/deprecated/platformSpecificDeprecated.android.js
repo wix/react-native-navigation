@@ -172,24 +172,23 @@ function convertStyleParams(originalStyleObject) {
 
 function convertDrawerParamsToSideMenuParams(drawerParams) {
   const drawer = Object.assign({}, drawerParams);
-  if (!drawer.left || !drawer.left.screen) {
-    return null;
-  }
 
   let result = {
     left: {},
     right: {}
   };
-  result.disableOpenGesture = drawer.disableOpenGesture !== undefined;
-  result.left.screenId = drawer.left.screen;
-  addNavigatorParams(result.left);
-  result.left = adaptNavigationParams(result.left);
-  result.left.passProps = drawer.left.passProps;
 
-  result.right.screenId = drawer.right.screen;
-  addNavigatorParams(result.right);
-  result.right = adaptNavigationParams(result.right);
-  result.right.passProps = drawer.right.passProps;
+  Object.keys(result).forEach((key) => {
+    if (drawer[key] && drawer[key].screen) {
+      result[key].screenId = drawer[key].screen;
+      addNavigatorParams(result[key]);
+      result[key] = adaptNavigationParams(result[key]);
+      result[key].passProps = drawer[key].passProps;
+      result[key].disableOpenGesture = drawer[key].disableOpenGesture !== undefined;
+    } else {
+      result[key] = null;
+    }
+  })
 
   return result;
 }
