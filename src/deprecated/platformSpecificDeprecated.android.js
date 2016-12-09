@@ -180,7 +180,6 @@ function convertDrawerParamsToSideMenuParams(drawerParams) {
 
   Object.keys(result).forEach((key) => {
     if (drawer[key] && drawer[key].screen) {
-      result[key][key] = true;
       result[key].screenId = drawer[key].screen;
       addNavigatorParams(result[key]);
       result[key] = adaptNavigationParams(result[key]);
