@@ -83,6 +83,7 @@ public class SideMenu extends DrawerLayout {
         leftSideMenuView = createSideMenu(leftMenuParams);
         rightSideMenuView = createSideMenu(rightMenuParams);
         setStyle(leftMenuParams);
+        setStyle(rightMenuParams);
     }
 
     private void createContentContainer() {
