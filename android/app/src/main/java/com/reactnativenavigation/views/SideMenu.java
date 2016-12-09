@@ -3,6 +3,7 @@ package com.reactnativenavigation.views;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -116,8 +117,11 @@ public class SideMenu extends DrawerLayout {
     }
 
     private void setStyle(SideMenuParams params) {
-        if (params.disableOpenGesture) {
-            setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        if (params.disableOpenGesture && params.side.toString().equals("Left")) {
+            setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
+        }
+        if (params.disableOpenGesture && params.side.toString().equals("Right")) {
+            setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         }
     }
 }
