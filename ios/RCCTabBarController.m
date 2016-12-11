@@ -123,6 +123,12 @@
 
   // replace the tabs
   self.viewControllers = viewControllers;
+  
+  // set selected tab index
+  NSUInteger *selectedIndex = [props[@"selectedIndex"] unsignedIntegerValue];
+  if (selectedIndex && selectedIndex < viewControllers.count) {
+    [self setSelectedIndex:selectedIndex];
+  }
 
   return self;
 }

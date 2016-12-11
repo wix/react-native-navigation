@@ -65,7 +65,8 @@ function startTabBasedApp(params) {
       return (
         <TabBarControllerIOS
           id={controllerID + '_tabs'}
-          style={params.tabsStyle}>
+          style={params.tabsStyle}
+          selectedIndex={params.selectedIndex}>
           {
             params.tabs.map(function(tab, index) {
               return (
