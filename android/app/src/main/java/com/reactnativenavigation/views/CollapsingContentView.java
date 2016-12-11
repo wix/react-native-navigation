@@ -8,6 +8,7 @@ import android.view.View;
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseAmount;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingView;
+import com.reactnativenavigation.views.collapsingToolbar.CollapsingViewMeasurer;
 import com.reactnativenavigation.views.collapsingToolbar.OnScrollViewAddedListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
@@ -65,12 +66,12 @@ public class CollapsingContentView extends ContentView implements CollapsingView
 
     @Override
     public float getFinalCollapseValue() {
-        return 0;
+        return ((CollapsingViewMeasurer) viewMeasurer).getFinalCollapseValue();
     }
 
     @Override
     public float getCurrentCollapseValue() {
-        return 0;
+        return getTranslationY();
     }
 
     @Override
