@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.graphics.Typeface;
+import android.widget.TextView;
 
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
@@ -24,9 +26,11 @@ public class TitleBar extends Toolbar {
 
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
-
+    private Context context;
+    
     public TitleBar(Context context) {
         super(context);
+        this.context = context;
     }
 
     @Override
