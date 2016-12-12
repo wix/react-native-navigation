@@ -60,6 +60,7 @@ public class TitleBar extends Toolbar {
     public void setStyle(StyleParams params) {
         setVisibility(params.titleBarHidden ? GONE : VISIBLE);
         setTitleTextColor(params);
+        setTitleTextFont(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
         setTranslucent(params);
@@ -85,6 +86,34 @@ public class TitleBar extends Toolbar {
     protected void setTitleTextColor(StyleParams params) {
         if (params.titleBarTitleColor.hasColor()) {
             setTitleTextColor(params.titleBarTitleColor.getColor());
+        }
+    }
+
+    protected void setTitleTextFont(StyleParams params) {
+        if (params.titleBarTitleFont != null && !params.titleBarTitleFont.isEmpty()) {
+            Typeface titleFont = null;
+
+            try {
+                titleFont = Typeface.createFromAsset(this.context.getAssets(), "fonts/"+ params.titleBarTitleFont +".ttf");
+            } catch(RuntimeException e)
+            {}
+
+            if (titleFont == null) {
+                try {
+                    titleFont = Typeface.createFromAsset(this.context.getAssets(), "fonts/"+ params.titleBarTitleFont +".otf");
+                } catch(RuntimeException e)
+                {}
+            }
+
+            if (titleFont != null) {
+                for (int i = 0; i < this.getChildCount(); i++){
+                    View view = this.getChildAt(i);
+                    if (view instanceof TextView){
+                        TextView tv = (TextView) view;
+                        tv.setTypeface(titleFont);
+                    }
+                }
+            }
         }
     }
 
