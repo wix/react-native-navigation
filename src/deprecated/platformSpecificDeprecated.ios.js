@@ -479,13 +479,18 @@ function showLightBox(params) {
 
   Modal.showLightBox({
     component: params.screen,
+    componentAnimated: params.componentAnimated,
+    overlayAnimated: params.overlayAnimated,
     passProps: passProps,
     style: params.style
   });
 }
 
 function dismissLightBox(params) {
-  Modal.dismissLightBox();
+  Modal.dismissLightBox({
+    componentAnimated: params.componentAnimated,
+    overlayAnimated: params.overlayAnimated,
+  });
 }
 
 function showInAppNotification(params) {

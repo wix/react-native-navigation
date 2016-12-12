@@ -33,12 +33,27 @@ const NSInteger kLightBoxTag = 0x101010;
         NSDictionary *style = self.params[@"style"];
         if (self.params != nil && style != nil)
         {
+            // set marginTop and marginBottom
+            CGFloat overlayY = 0;
+            CGFloat overlayHeight = frame.size.height;
             
+            if (style[@"overlayMarginTop"] && [style[@"overlayMarginTop"] floatValue] > 0) {
+                CGFloat marginTop = (CGFloat) [style[@"overlayMarginTop"] floatValue];
+                overlayY += marginTop;
+                overlayHeight -= marginTop;
+            }
+            
+            if (style[@"overlayMarginBottom"] && [style[@"overlayMarginBottom"] floatValue] > 0) {
+                CGFloat marginBottom = (CGFloat) [style[@"overlayMarginBottom"] floatValue];
+                overlayHeight -= marginBottom;
+            }
+            
+            // set background
             if (style[@"backgroundBlur"] != nil && ![style[@"backgroundBlur"] isEqualToString:@"none"])
             {
                 self.visualEffectView = [[UIVisualEffectView alloc] init];
                 self.visualEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                self.visualEffectView.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
+                self.visualEffectView.frame = CGRectMake(0, overlayY, frame.size.width, overlayHeight);
                 [self addSubview:self.visualEffectView];
             }
             
@@ -47,7 +62,7 @@ const NSInteger kLightBoxTag = 0x101010;
                 UIColor *backgroundColor = [RCTConvert UIColor:style[@"backgroundColor"]];
                 if (backgroundColor != nil)
                 {
-                    self.overlayColorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+                    self.overlayColorView = [[UIView alloc] initWithFrame:CGRectMake(0, overlayY, frame.size.width, overlayHeight)];
                     self.overlayColorView.backgroundColor = backgroundColor;
                     self.overlayColorView.alpha = 0;
                     [self addSubview:self.overlayColorView];
@@ -132,52 +147,80 @@ const NSInteger kLightBoxTag = 0x101010;
     return [UIBlurEffect effectWithStyle:blurEffectStyle];
 }
 
--(void)showAnimated
+-(void)showAnimated:(Boolean)componentAnimated andOverlayAnimated:(Boolean)overlayAnimated
 {
     if (self.visualEffectView != nil || self.overlayColorView != nil)
     {
-        [UIView animateWithDuration:0.3 animations:^()
-         {
-             if (self.visualEffectView != nil)
+        if (overlayAnimated) {
+            
+            [UIView animateWithDuration:0.3 animations:^()
              {
-                 self.visualEffectView.effect = [self blurEfectForCurrentStyle];
-             }
-             
-             if (self.overlayColorView != nil)
-             {
-                 self.overlayColorView.alpha = 1;
-             }
-         }];
+                 if (self.visualEffectView != nil)
+                 {
+                     self.visualEffectView.effect = [self blurEfectForCurrentStyle];
+                 }
+                 
+                 if (self.overlayColorView != nil)
+                 {
+                     self.overlayColorView.alpha = 1;
+                 }
+             }];
+            
+        } else {
+            
+            if (self.visualEffectView != nil)
+            {
+                self.visualEffectView.effect = [self blurEfectForCurrentStyle];
+            }
+            
+            if (self.overlayColorView != nil)
+            {
+                self.overlayColorView.alpha = 1;
+            }
+            
+        }
     }
     
-    self.reactView.transform = CGAffineTransformMakeTranslation(0, 100);
-    self.reactView.alpha = 0;
-    [UIView animateWithDuration:0.6 delay:0.2 usingSpringWithDamping:0.65 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^()
-    {
-        self.reactView.transform = CGAffineTransformIdentity;
-        self.reactView.alpha = 1;
-    } completion:nil];
+    if (componentAnimated) {
+        
+        self.reactView.transform = CGAffineTransformMakeTranslation(0, 100);
+        self.reactView.alpha = 0;
+        [UIView animateWithDuration:0.6 delay:0.2 usingSpringWithDamping:0.65 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^()
+         {
+             self.reactView.transform = CGAffineTransformIdentity;
+             self.reactView.alpha = 1;
+         } completion:nil];
+        
+    }
 }
 
--(void)dismissAnimated
+-(void)dismissAnimated:(Boolean)componentAnimated andOverlayAnimated:(Boolean)overlayAnimated
 {
     BOOL hasOverlayViews = (self.visualEffectView != nil || self.overlayColorView != nil);
     
-    [UIView animateWithDuration:0.2 animations:^()
-    {
-        self.reactView.transform = CGAffineTransformMakeTranslation(0, 80);
-        self.reactView.alpha = 0;
+    if (componentAnimated) {
+        
+        [UIView animateWithDuration:0.2 animations:^()
+         {
+             self.reactView.transform = CGAffineTransformMakeTranslation(0, 80);
+             self.reactView.alpha = 0;
+         }
+                         completion:^(BOOL finished)
+         {
+             if (!hasOverlayViews)
+             {
+                 [self removeFromSuperview];
+             }
+         }];
+        
+    } else if (!hasOverlayViews) {
+        
+        [self removeFromSuperview];
+        
     }
-                     completion:^(BOOL finished)
-    {
-        if (!hasOverlayViews)
-        {
-            [self removeFromSuperview];
-        }
-    }];
     
-    if (hasOverlayViews)
-    {
+    if (hasOverlayViews && overlayAnimated) {
+        
         [UIView animateWithDuration:0.25 delay:0.15 options:UIViewAnimationOptionCurveEaseOut animations:^()
          {
              if (self.visualEffectView != nil)
@@ -194,6 +237,11 @@ const NSInteger kLightBoxTag = 0x101010;
          {
              [self removeFromSuperview];
          }];
+        
+    } else if (hasOverlayViews) {
+        
+        [self removeFromSuperview];
+        
     }
 }
 
@@ -218,17 +266,39 @@ const NSInteger kLightBoxTag = 0x101010;
     
     RCCLightBoxView *lightBox = [[RCCLightBoxView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) params:params];
     lightBox.tag = kLightBoxTag;
+    
+    // get animated attributes
+    Boolean componentAnimated = true;
+    Boolean overlayAnimated = true;
+    if (params[@"componentAnimated"]) {
+        componentAnimated = [params[@"componentAnimated"] boolValue];
+    }
+    if (params[@"overlayAnimated"]) {
+        overlayAnimated = [params[@"overlayAnimated"] boolValue];
+    }
+    
     [window addSubview:lightBox];
-    [lightBox showAnimated];
+    [lightBox showAnimated:componentAnimated andOverlayAnimated:overlayAnimated];
 }
 
-+(void)dismiss
++(void)dismissWithParams:(NSDictionary*)params
 {
     UIWindow *window = [RCCLightBox getWindow];
     RCCLightBoxView *lightBox = [window viewWithTag:kLightBoxTag];
+    
+    // get animated attributes
+    Boolean componentAnimated = true;
+    Boolean overlayAnimated = true;
+    if (params[@"componentAnimated"]) {
+        componentAnimated = [params[@"componentAnimated"] boolValue];
+    }
+    if (params[@"overlayAnimated"]) {
+        overlayAnimated = [params[@"overlayAnimated"] boolValue];
+    }
+    
     if (lightBox != nil)
     {
-        [lightBox dismissAnimated];
+        [lightBox dismissAnimated:componentAnimated andOverlayAnimated:overlayAnimated];
     }
 }
 

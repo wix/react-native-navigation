@@ -248,8 +248,8 @@ var Controllers = {
       _processProperties(params['style']);
       RCCManager.modalShowLightBox(params);
     },
-    dismissLightBox: function() {
-      RCCManager.modalDismissLightBox();
+    dismissLightBox: function(params) {
+      RCCManager.modalDismissLightBox(params);
     },
     showController: function(appKey, animationType = 'slide-up', passProps = {}) {
       var controller = _controllerRegistry[appKey];
