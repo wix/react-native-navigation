@@ -6,6 +6,8 @@ import Screen from './Screen';
 
 import PropRegistry from './PropRegistry';
 
+import ContextContainer from './ContextContainer';
+
 const registeredScreens = {};
 
 function registerScreen(screenID, generator) {
@@ -43,7 +45,9 @@ function _registerComponentNoRedux(screenID, generator) {
 
       render() {
         return (
-          <InternalComponent navigator={this.navigator} {...this.state.internalProps} />
+            <ContextContainer>
+              <InternalComponent navigator={this.navigator} {...this.state.internalProps} />
+            </ContextContainer>
         );
       }
     };
@@ -75,7 +79,9 @@ function _registerComponentRedux(screenID, generator, store, Provider) {
       render() {
         return (
           <Provider store={store}>
-            <InternalComponent navigator={this.navigator} {...this.state.internalProps} />
+            <ContextContainer>
+               <InternalComponent navigator={this.navigator} {...this.state.internalProps} />
+            </ContextContainer>
           </Provider>
         );
       }
