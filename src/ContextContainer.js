@@ -27,11 +27,17 @@ export default class ContextContainer extends Component {
     }
 
     render() {
+        let contextMenuDisplay=true;
+        let contextMenuView;
+        if(contextMenuDisplay){
+            contextMenuView=<ContextMenu ref={component => this._contextMenu = component}/>;
+        }
+
         return (
             <ActionSheet style={[styles.container, this.props.style]}
                          ref={component => this._actionSheetRef = component}>
                 {this.props.children}
-                <ContextMenu ref={component => this._contextMenu = component}/>
+                {contextMenuDisplay}
             </ActionSheet>
         );
     }
