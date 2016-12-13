@@ -238,6 +238,9 @@ var Controllers = {
       },
       switchTo: function (params) {
         return RCCManager.TabBarControllerIOS(id, "switchTo", params);
+      },
+      setIcons: function (params) {
+        return RCCManager.TabBarControllerIOS(id, "setIcons", params);
       }
     };
   },

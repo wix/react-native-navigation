@@ -2,8 +2,13 @@
 #import "RCCViewController.h"
 #import "RCTConvert.h"
 #import "RCCManager.h"
+#import "RCCImageHelper.h"
+#import "RCTImageLoader.h"
 
 @implementation RCCTabBarController
+
+CGFloat const DEFAULT_ICON_WIDTH = 50.0f;
+CGFloat const DEFAULT_ICON_HEIGHT = 50.0f;
 
 - (UIImage *)image:(UIImage*)image withColor:(UIColor *)color1
 {
@@ -82,6 +87,7 @@
     if (icon)
     {
       iconImage = [RCTConvert UIImage:icon];
+      
       if (buttonColor)
       {
         iconImage = [[self image:iconImage withColor:buttonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -117,7 +123,21 @@
     {
       viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
     }
-
+    
+    // download and set remote icons
+    id remoteIcon = tabItemLayout[@"props"][@"remoteIcon"];
+    id remoteSelectedIcon = tabItemLayout[@"props"][@"remoteSelectedIcon"];
+    Boolean hasSelectedIcon = remoteSelectedIcon && ![remoteSelectedIcon isKindOfClass:[NSNull class]];
+    
+    if (remoteIcon) {
+      [self setTabBarItemImageFromRemoteServer:remoteIcon isSelectedImage:false hasSelectedIcon:hasSelectedIcon toViewController:viewController orTabIndex:0 bridge:bridge];
+    }
+    
+    if (remoteSelectedIcon) {
+      [self setTabBarItemImageFromRemoteServer:remoteSelectedIcon isSelectedImage:true hasSelectedIcon:hasSelectedIcon toViewController:viewController orTabIndex:0 bridge:bridge];
+    }
+    
+    // add the viewController
     [viewControllers addObject:viewController];
   }
 
@@ -221,6 +241,92 @@
     {
       completion();
     }
+  
+    // set icons
+    if ([performAction isEqualToString:@"setIcons"])
+    {
+      NSNumber *tabIndex = actionParams[@"tabIndex"];
+      
+      if (!tabIndex) {
+        return;
+      }
+      
+      int iTabIndex = [tabIndex integerValue];
+      
+      // TODO: set local icons
+      
+      // download and set remote icons
+      id remoteIcon = actionParams[@"remoteIcon"];
+      id remoteSelectedIcon = actionParams[@"remoteSelectedIcon"];
+      Boolean hasSelectedIcon = remoteSelectedIcon && ![remoteSelectedIcon isKindOfClass:[NSNull class]];
+      
+      if (remoteIcon) {
+        [self setTabBarItemImageFromRemoteServer:remoteIcon isSelectedImage:false hasSelectedIcon:hasSelectedIcon toViewController:nil orTabIndex:iTabIndex bridge:bridge];
+      }
+      
+      if (remoteSelectedIcon) {
+        [self setTabBarItemImageFromRemoteServer:remoteSelectedIcon isSelectedImage:true hasSelectedIcon:hasSelectedIcon toViewController:nil orTabIndex:iTabIndex bridge:bridge];
+      }
+    }
+}
+
+- (void)setTabBarItemImageFromRemoteServer:(NSDictionary*)remoteIcon isSelectedImage:(Boolean)isSelected hasSelectedIcon:(Boolean)hasSelectedIcon toViewController:(UIViewController *)currentViewController orTabIndex:(NSInteger)tabIndex bridge:(RCTBridge *)bridge
+{
+  UIViewController *viewController = nil;
+  if (currentViewController) {
+    viewController = currentViewController;
+  } else if ([self.viewControllers count] > tabIndex) {
+    viewController = [self.viewControllers objectAtIndex:tabIndex];
+  }
+  
+  if (viewController == nil) {
+    return;
+  }
+  
+  if (remoteIcon && [remoteIcon isKindOfClass:[NSDictionary class]] && remoteIcon[@"uri"]) {
+    
+    NSURL *imageUrl = [NSURL URLWithString:remoteIcon[@"uri"]];
+    NSURLRequest *imageUrlRequest = [[NSURLRequest alloc] initWithURL:imageUrl];
+    CGFloat imageWidth = remoteIcon[@"width"] ? (CGFloat)[remoteIcon[@"width"] floatValue] : DEFAULT_ICON_WIDTH;
+    CGFloat imageHeight = remoteIcon[@"height"] ? (CGFloat)[remoteIcon[@"height"] floatValue] : DEFAULT_ICON_HEIGHT;
+    CGFloat imageScale = remoteIcon[@"scale"] ? (CGFloat)[remoteIcon[@"scale"] floatValue] : [UIScreen mainScreen].scale;
+    CGFloat imageRadius = remoteIcon[@"radius"] ? (CGFloat)[remoteIcon[@"radius"] floatValue] : 0;
+    CGSize imageSize = CGSizeMake(imageWidth, imageHeight);
+    
+    void (^iconLoaderCompletionBlock) (NSError*, UIImage*) = ^(NSError *error, UIImage *loadedImage) {
+      
+      if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          NSLog(@"remoteIcon %@ download failed: %@", remoteIcon[@"uri"], [error localizedDescription]);
+          [viewController.view setNeedsDisplay];
+        });
+        return;
+      }
+      
+      if (imageRadius) {
+        loadedImage = [RCCImageHelper roundedImageWithRadius:imageRadius usingImage:loadedImage];
+      }
+      
+      loadedImage = [UIImage imageWithCGImage:loadedImage.CGImage scale:imageScale orientation:loadedImage.imageOrientation];
+      loadedImage = [loadedImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+      
+      dispatch_async(dispatch_get_main_queue(), ^{
+        if (isSelected) {
+          [viewController.tabBarItem setSelectedImage:loadedImage];
+        } else {
+          [viewController.tabBarItem setImage:loadedImage];
+          if (!hasSelectedIcon) {
+            [viewController.tabBarItem setSelectedImage:loadedImage];
+          }
+        }
+        [viewController.view setNeedsDisplay];
+      });
+      
+    };
+    
+    [bridge.imageLoader loadImageWithURLRequest:imageUrlRequest size:imageSize scale:1.0f clipped:false resizeMode:RCTResizeModeCenter progressBlock:nil partialLoadBlock:nil completionBlock:iconLoaderCompletionBlock];
+    
+  }
 }
 
 @end

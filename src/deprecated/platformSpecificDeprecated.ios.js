@@ -375,6 +375,19 @@ function navigatorSwitchToTab(navigator, params) {
   }
 }
 
+function navigatorSetTabIcons(navigator, params) {
+  const controllerID = navigator.navigatorID.split('_')[0];
+  if (params.tabIndex || params.tabIndex === 0) {
+    Controllers.TabBarControllerIOS(controllerID + '_tabs').setIcons({
+      tabIndex: params.tabIndex,
+      icon: params.icon,
+      selectedIcon: params.selectedIcon,
+      remoteIcon: params.remoteIcon,
+      remoteSelectedIcon: params.remoteSelectedIcon
+    });
+  }
+}
+
 function navigatorSetButtons(navigator, navigatorEventID, params) {
   if (params.leftButtons) {
     const buttons = params.leftButtons.slice(); // clone
@@ -590,6 +603,7 @@ export default {
   navigatorToggleTabs,
   navigatorSetTabBadge,
   navigatorSwitchToTab,
+  navigatorSetTabIcons,
   navigatorToggleNavBar,
   showContextualMenu,
   dismissContextualMenu

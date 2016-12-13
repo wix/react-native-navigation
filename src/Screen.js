@@ -106,6 +106,10 @@ class Navigator {
     return platformSpecific.navigatorSwitchToTab(this, params);
   }
 
+  setTabIcons(params = {}) {
+    return platformSpecific.navigatorSetTabIcons(this, params);
+  }
+
   showSnackbar(params = {}) {
     return platformSpecific.showSnackbar(this, params);
   }
