@@ -40,6 +40,7 @@
     "lodash": "4.x.x"
   },
   "devDependencies": {
+    "@exponent/react-native-action-sheet": "^0.3.0",
     "react-native": "0.38.0",
     "react": "15.4.1",
     "babel-cli": "6.x.x",
