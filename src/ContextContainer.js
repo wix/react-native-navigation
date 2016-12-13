@@ -4,41 +4,53 @@
 import React, {Component, PropTypes,} from 'react';
 import {
     StyleSheet,
+    View
 } from 'react-native';
 import ActionSheet from '@exponent/react-native-action-sheet';
 import ContextMenu from './ContextMenu';
 export default class ContextContainer extends Component {
     static childContextTypes = {
         actionSheet: PropTypes.func,
-        contextMenu: PropTypes.func,
+        contextContainer: PropTypes.func,
     };
 
     constructor(props) {
         super(props);
         this._actionSheetRef = null;
         this._contextMenu = null;
+        this.getChildContext = this.getChildContext.bind(this)
     }
 
     getChildContext() {
         return {
             actionSheet: () => this._actionSheetRef,
-            contextMenu: () => this._contextMenu,
+            contextContainer: () => this,
         };
     }
+    showContextMenu(){
+        this._contextMenu.show();
+    }
+    toggleContextMenu(){
+        this._contextMenu.toggle();
+    }
+
 
     render() {
-        let contextMenuDisplay=true;
+        let contextMenuDisplay = true;
         let contextMenuView;
-        if(contextMenuDisplay){
-            contextMenuView=<ContextMenu ref={component => this._contextMenu = component}/>;
+        if (contextMenuDisplay) {
+            contextMenuView = <ContextMenu ref={component => this._contextMenu = component}/>;
         }
 
         return (
-            <ActionSheet style={[styles.container, this.props.style]}
-                         ref={component => this._actionSheetRef = component}>
-                {this.props.children}
+            <View style={[styles.container, this.props.style]}>
+                <ActionSheet style={styles.container}
+                             ref={component => this._actionSheetRef = component}>
+                    {this.props.children}
+
+                </ActionSheet>
                 {contextMenuView}
-            </ActionSheet>
+            </View>
         );
     }
 
