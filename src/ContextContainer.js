@@ -6,19 +6,23 @@ import {
     StyleSheet,
 } from 'react-native';
 import ActionSheet from '@exponent/react-native-action-sheet';
+import ContextMenu from './ContextMenu';
 export default class ContextContainer extends Component {
     static childContextTypes = {
         actionSheet: PropTypes.func,
+        contextMenu: PropTypes.func,
     };
 
     constructor(props) {
         super(props);
         this._actionSheetRef = null;
+        this._contextMenu = null;
     }
 
     getChildContext() {
         return {
             actionSheet: () => this._actionSheetRef,
+            contextMenu: () => this._contextMenu,
         };
     }
 
@@ -27,6 +31,7 @@ export default class ContextContainer extends Component {
             <ActionSheet style={[styles.container, this.props.style]}
                          ref={component => this._actionSheetRef = component}>
                 {this.props.children}
+                <ContextMenu ref={component => this._contextMenu = component}/>
             </ActionSheet>
         );
     }
