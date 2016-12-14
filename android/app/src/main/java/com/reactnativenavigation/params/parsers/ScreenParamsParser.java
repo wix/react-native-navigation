@@ -12,6 +12,7 @@ import java.util.List;
 
 public class ScreenParamsParser extends Parser {
     private static final String KEY_TITLE = "title";
+    private static final String KEY_SUBTITLE = "subtitle";
     private static final String KEY_SCREEN_ID = "screenId";
     private static final String KEY_NAVIGATION_PARAMS = "navigationParams";
     private static final String STYLE_PARAMS = "styleParams";
@@ -30,6 +31,7 @@ public class ScreenParamsParser extends Parser {
         result.styleParams = new StyleParamsParser(params.getBundle(STYLE_PARAMS)).parse();
 
         result.title = params.getString(KEY_TITLE);
+        result.subtitle = params.getString(KEY_SUBTITLE);
         result.rightButtons = ButtonParser.parseRightButton(params);
         result.overrideBackPressInJs = params.getBoolean(OVERRIDE_BACK_PRESS, false);
         result.leftButton = ButtonParser.parseLeftButton(params);
