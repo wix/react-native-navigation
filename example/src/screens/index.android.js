@@ -9,6 +9,7 @@ import ModalScreen from './ModalScreen';
 import CollapsingTopBarScreen from './CollapsingTopBarScreen';
 import InAppNotification from './InAppNotification';
 import LightBoxScreen from './LightBoxScreen';
+import ListScreen from './listScreen/ListScreen';
 
 // register all screens of the app (including internal ones)
 export function registerScreens() {
@@ -21,4 +22,5 @@ export function registerScreens() {
   Navigation.registerComponent('example.CollapsingTopBarScreen', () => CollapsingTopBarScreen);
   Navigation.registerComponent('example.InAppNotification', () => InAppNotification);
   Navigation.registerComponent('example.LightBoxScreen', () => LightBoxScreen);
+  Navigation.registerComponent('example.ListScreen', () => ListScreen);
 }

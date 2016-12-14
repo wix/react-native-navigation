@@ -10,6 +10,12 @@ registerScreens();
 const createTabs = () => {
   let tabs = [
     {
+      label: 'SET',
+      screen: 'example.ListScreen',
+      icon: require('../img/list.png'),
+      title: 'Shared Element Transition'
+    },
+    {
       label: 'One',
       screen: 'example.FirstTabScreen',
       icon: require('../img/one.png'),
