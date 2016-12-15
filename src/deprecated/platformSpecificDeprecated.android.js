@@ -289,6 +289,10 @@ function navigatorSetTabBadge(navigator, params) {
   }
 }
 
+function navigatorSetTitleBarButtonBadge(navigator, params) {
+  newPlatformSpecific.setScreenTitleBarButtonBadgeByIndex(navigator.screenInstanceID, params.buttonIndex, params.badge);
+}
+
 function navigatorSetTitle(navigator, params) {
   newPlatformSpecific.setScreenTitleBarTitle(navigator.screenInstanceID, params.title);
 }
@@ -537,6 +541,7 @@ export default {
   navigatorSetTabBadge,
   navigatorSetTitle,
   navigatorSetSubtitle,
+  navigatorSetTitleBarButtonBadge,
   navigatorSwitchToTab,
   navigatorToggleDrawer,
   navigatorToggleTabs,

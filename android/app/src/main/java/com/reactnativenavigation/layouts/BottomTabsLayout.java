@@ -179,6 +179,13 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     }
 
     @Override
+    public void setTitleBarButtonBadgeByIndex(String screenInstanceId, Integer index, Integer badge) {
+        for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
+            screenStacks[i].setScreenTitleBarButtonBadgeByIndex(screenInstanceId, index, badge);
+        }
+    }
+
+    @Override
     public void toggleSideMenuVisible(boolean animated, Side side) {
         if (sideMenu != null) {
             sideMenu.toggleVisible(animated, side);

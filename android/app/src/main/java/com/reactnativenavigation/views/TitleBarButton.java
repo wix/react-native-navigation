@@ -1,12 +1,20 @@
 package com.reactnativenavigation.views;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.ActionProvider;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.TextView;
 
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
+import com.mikepenz.actionitembadge.library.ActionItemBadgeAdder;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
@@ -27,14 +35,16 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         this.navigatorEventId = navigatorEventId;
     }
 
-    MenuItem addToMenu(int index) {
-        MenuItem item = menu.add(Menu.NONE, Menu.NONE, index, buttonParams.label);
-        item.setShowAsAction(buttonParams.showAsAction.action);
-        item.setEnabled(buttonParams.enabled);
-        setIcon(item);
+    boolean addToMenu(int index) {
+        // MenuItem item = menu.add(Menu.NONE, Menu.NONE, index, buttonParams.label);
+        // item.setShowAsAction(buttonParams.showAsAction.action);
+        // item.setEnabled(buttonParams.enabled);
+        // setIcon(item);
+        // setColor();
+        // item.setOnMenuItemClickListener(this);
         setColor();
-        item.setOnMenuItemClickListener(this);
-        return item;
+        new ActionItemBadgeAdder().act((Activity) parent.getContext()).menu(menu).title(buttonParams.label).showAsAction(buttonParams.showAsAction.action).add(buttonParams.icon, ActionItemBadge.BadgeStyles.DARK_GREY, 1);
+        return true;
     }
 
     private void setIcon(MenuItem item) {

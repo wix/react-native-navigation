@@ -234,6 +234,15 @@ public class ScreenStack {
         });
     }
 
+    public void setScreenTitleBarButtonBadgeByIndex(String screenInstanceId, final Integer index, final Integer badge) {
+        performOnScreen(screenInstanceId, new Task<Screen>() {
+            @Override
+            public void run (Screen screen) {
+                screen.setTitleBarButtonBadgeByIndex(index, badge);
+            }
+        });
+    }
+
     public void showContextualMenu(String screenInstanceId, final ContextualMenuParams params, final Callback onButtonClicked) {
         performOnScreen(screenInstanceId, new Task<Screen>() {
             @Override

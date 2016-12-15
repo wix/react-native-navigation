@@ -254,6 +254,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.setTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButton);
     }
 
+    public void setTitleBarButtonBadgeByIndex(String screenInstanceId, Integer index, Integer badge) {
+        layout.setTitleBarButtonBadgeByIndex(screenInstanceId, index, badge);
+    }
+
     public void toggleSideMenuVisible(boolean animated, Side side) {
         layout.toggleSideMenuVisible(animated, side);
     }

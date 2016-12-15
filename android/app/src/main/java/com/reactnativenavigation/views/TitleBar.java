@@ -8,10 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -44,6 +46,12 @@ public class TitleBar extends Toolbar {
             return;
         }
         addButtonsToTitleBar(rightButtons, navigatorEventId, menu);
+    }
+
+    public void setTitleBarButtonBadgeByIndex(Integer index, Integer badge) {
+        Menu menu = getMenu();
+        MenuItem button = menu.getItem(index);
+        ActionItemBadge.update(null, button, (Drawable) null, ActionItemBadge.BadgeStyles.BLUE, badge);
     }
 
     public void setLeftButton(TitleBarLeftButtonParams leftButtonParams,

@@ -48,6 +48,10 @@ function setScreenTitleBarButtons(screenInstanceID, navigatorEventID, rightButto
   NativeReactModule.setScreenTitleBarButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton);
 }
 
+function setScreenTitleBarButtonBadgeByIndex(screenInstanceID, index, badge) {
+  NativeReactModule.setTitleBarButtonBadgeByIndex(screenInstanceID, index, badge);
+}
+
 function showModal(screenParams) {
   savePassProps(screenParams);
   NativeReactModule.showModal(screenParams);
@@ -142,6 +146,7 @@ module.exports = {
   setScreenTitleBarTitle,
   setScreenTitleBarSubtitle,
   setScreenTitleBarButtons,
+  setScreenTitleBarButtonBadgeByIndex,
   showModal,
   dismissTopModal,
   dismissAllModals,

@@ -86,6 +86,10 @@ class Navigator {
     return platformSpecific.navigatorSetTitleImage(this, params);
   }
 
+  setButtonBadge(params = {}) {
+    return platformSpecific.navigatorSetTitleBarButtonBadge(this, params);
+  }
+
   toggleDrawer(params = {}) {
     return platformSpecific.navigatorToggleDrawer(this, params);
   }

@@ -185,6 +185,10 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
         stack.setScreenTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButtonParams);
     }
 
+    public void setTitleBarButtonBadgeByIndex(String screenInstanceId, Integer index, Integer badge) {
+        stack.setScreenTitleBarButtonBadgeByIndex(screenInstanceId, index, badge);
+    }
+
     @Override
     public void toggleSideMenuVisible(boolean animated, Side side) {
         if (sideMenu != null) {
