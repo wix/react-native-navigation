@@ -47,7 +47,7 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
     }
 
     private void createLayout() {
-        if (leftSideMenuParams == null) {
+        if (leftSideMenuParams == null && rightSideMenuParams == null) {
             createStack(getScreenStackParent());
         } else {
             sideMenu = createSideMenu();
