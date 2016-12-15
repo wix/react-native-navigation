@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "2.0.0-experimental.153",
+  "version": "2.0.0-experimental.154",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -61,7 +61,8 @@
   "jest": {
     "preset": "jest-react-native",
     "testPathDirs": [
-      "node_modules", "src2"
+      "node_modules",
+      "src2"
     ],
     "resetMocks": true,
     "resetModules": true
