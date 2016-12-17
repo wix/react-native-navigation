@@ -11,6 +11,7 @@ import android.view.animation.LinearInterpolator;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.sharedElementTransition.SharedElementsAnimator;
 
 import javax.annotation.Nullable;
 
@@ -95,5 +96,10 @@ public class ScreenAnimator {
             }
         });
         return set;
+    }
+
+    void showWithSharedElementsTransitions(Runnable onAnimationEnd) {
+        screen.setVisibility(View.VISIBLE);
+        new SharedElementsAnimator(screen.sharedElements, onAnimationEnd).animate();
     }
 }

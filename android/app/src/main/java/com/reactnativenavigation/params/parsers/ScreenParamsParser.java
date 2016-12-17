@@ -1,12 +1,16 @@
 package com.reactnativenavigation.params.parsers;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.react.ImageLoader;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ScreenParamsParser extends Parser {
     private static final String KEY_TITLE = "title";
@@ -47,8 +51,31 @@ public class ScreenParamsParser extends Parser {
         result.tabIcon = new TabIconParser(params).parse();
 
         result.animateScreenTransitions = new AnimationParser(params).parse();
+        result.sharedElementsTransitions = getSharedElementsTransitions(params);
 
         return result;
+    }
+
+    private static Map<String, SharedElementTransitionParams> getSharedElementsTransitions(Bundle params) {
+        Bundle sharedElements = params.getBundle("sharedElements");
+        if (sharedElements == null) {
+            return new HashMap<>();
+        }
+        Map<String, SharedElementTransitionParams> result = new HashMap<>();
+        for (String key : sharedElements.keySet()) {
+            SharedElementTransitionParams sharedElement =
+                    new SharedElementTransitionParamsParser(sharedElements.getBundle(key)).parse();
+            result.put(sharedElement.key, sharedElement);
+        }
+        return result;
+    }
+
+    private static Drawable getTabIcon(Bundle params) {
+        Drawable tabIcon = null;
+        if (hasKey(params, "icon")) {
+            tabIcon = ImageLoader.loadImage(params.getString("icon"));
+        }
+        return tabIcon;
     }
 
     private static String getTabLabel(Bundle params) {

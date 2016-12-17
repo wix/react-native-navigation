@@ -100,7 +100,12 @@ public class ScreenStack {
         Screen nextScreen = ScreenFactory.create(activity, params, leftButtonOnClickListener);
         final Screen previousScreen = stack.peek();
         if (isStackVisible) {
-            pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen);
+            if (nextScreen.screenParams.sharedElementsTransitions.isEmpty()) {
+                pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen);
+            } else {
+//                pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen);
+                pushScreenToVisibleStackWithSharedElementTransition(layoutParams, nextScreen, previousScreen);
+            }
         } else {
             pushScreenToInvisibleStack(layoutParams, nextScreen, previousScreen);
         }
@@ -131,6 +136,23 @@ public class ScreenStack {
                 });
             }
         });
+    }
+
+    private void pushScreenToVisibleStackWithSharedElementTransition(LayoutParams layoutParams, final Screen nextScreen, final Screen previousScreen) {
+        nextScreen.setVisibility(View.INVISIBLE);
+        addScreen(nextScreen, layoutParams);
+        nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
+            @Override
+            public void onDisplay() {
+                nextScreen.showWithSharedElementsTransitions(new Runnable() {
+                    @Override
+                    public void run() {
+                        parent.removeView(previousScreen);
+                    }
+                });
+            }
+        });
+
     }
 
     private void pushScreenToInvisibleStack(LayoutParams layoutParams, Screen nextScreen, Screen previousScreen) {

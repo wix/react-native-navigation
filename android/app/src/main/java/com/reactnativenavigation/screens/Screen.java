@@ -27,6 +27,8 @@ import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.views.sharedElementTransition.SharedElementTransition;
+import com.reactnativenavigation.views.sharedElementTransition.SharedElements;
 
 import java.util.List;
 
@@ -46,6 +48,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     private VisibilityAnimator topBarVisibilityAnimator;
     private ScreenAnimator screenAnimator;
     protected final StyleParams styleParams;
+    public final SharedElements sharedElements;
 
     public Screen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener leftButtonOnClickListener) {
         super(activity);
@@ -56,6 +59,11 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         screenAnimator = new ScreenAnimator(this);
         createViews();
         EventBus.instance.register(this);
+        sharedElements = new SharedElements(screenParams.sharedElementsTransitions);
+    }
+
+    public void registerSharedView(SharedElementTransition toView, String key) {
+        sharedElements.addToElement(toView, key);
     }
 
     @Override
@@ -236,6 +244,16 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
         setStyle();
         screenAnimator.show(animated, onAnimationEnd);
+    }
+
+    public void showWithSharedElementsTransitions(final Runnable onAnimationEnd) {
+        setStyle();
+        sharedElements.resolveSharedElements(new Runnable() {
+            @Override
+            public void run() {
+                screenAnimator.showWithSharedElementsTransitions(onAnimationEnd);
+            }
+        });
     }
 
     public void hide(boolean animated, Runnable onAnimatedEnd) {
