@@ -57,6 +57,5 @@ class Router{
 
 }
 
-let router=new Router();
 
-export default router;
+export default new Router();
