@@ -1,10 +1,7 @@
 /**
  * Created by luolishu on 12/5/16.
  */
-/**
- * @providesModule zowork-router
- * @flow
- */
+
 'use strict';
 
 
