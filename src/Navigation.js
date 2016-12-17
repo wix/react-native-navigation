@@ -47,7 +47,7 @@ function _registerComponentNoRedux(screenID, generator) {
         Router.setNavigator(this.navigator);
         return (
             <ContextContainer>
-              <InternalComponent navigator={this.navigator} {...this.state.internalProps} Router={Router} />
+              <InternalComponent navigator={this.navigator} {...this.state.internalProps}  />
             </ContextContainer>
         );
       }
@@ -82,7 +82,7 @@ function _registerComponentRedux(screenID, generator, store, Provider) {
         return (
           <Provider store={store}>
             <ContextContainer>
-               <InternalComponent navigator={this.navigator} {...this.state.internalProps} Router={Router} />
+               <InternalComponent navigator={this.navigator} {...this.state.internalProps} />
             </ContextContainer>
           </Provider>
         );
