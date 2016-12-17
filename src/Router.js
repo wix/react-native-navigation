@@ -6,9 +6,9 @@
 
 
 class Router{
-    constructor(component){
-        this.component=component
-        this.navigator=component.props.navigator;
+    constructor(props){
+        super(props)
+        this.navigator=null;
     }
     setNavigator(navigator){
         this.navigator=navigator;
