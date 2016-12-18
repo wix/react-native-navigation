@@ -6,39 +6,37 @@
 
 
 class Router{
-    constructor(props){
-        this.navigator=null;
+
+    pop(navigator,params= {}){
+        navigator.pop(params);
     }
-    setNavigator(navigator){
-        this.navigator=navigator;
+    popToRoot(navigator,params= {}){
+        navigator.popToRoot(params);
+    }
+    push(navigator,params= {}){
+        navigator.push(params);
+    }
+    resetTo(navigator,params= {}){
+        navigator.resetTo(params);
+    }
+    showModal(navigator,params= {}){
+        navigator.showModal(params);
+    }
+    dismissModal(navigator,params= {}){
+        navigator.dismissModal(params);
+    }
+    dismissAllModals(navigator,params= {}){
+        navigator.dismissAllModals(params);
+    }
+    showLightBox(navigator,params = {}){
+        navigator.showLightBox(params);
+    }
+    dismissLightBox(navigator,params = {}){
+        navigator.dismissLightBox(params);
     }
 
-    pop(params= {}){
-        this.navigator.pop(params);
-    }
-    popToRoot(params= {}){
-        this.navigator.popToRoot(params);
-    }
-    push(params= {}){
-        this.navigator.push(params);
-    }
-    resetTo(params= {}){
-        this.navigator.resetTo(params);
-    }
-    showModal(params= {}){
-        this.navigator.showModal(params);
-    }
-    dismissModal(params= {}){
-        this.navigator.dismissModal(params);
-    }
-    dismissAllModals(params= {}){
-        this.navigator.dismissAllModals(params);
-    }
-    showLightBox(params = {}){
-        this.navigator.showLightBox(params);
-    }
-    dismissLightBox(params = {}){
-        this.navigator.dismissLightBox(params);
+    navigateTo(navigator,params){
+        this.push(navigator,params);
     }
 
     register(params= {}){
@@ -47,8 +45,8 @@ class Router{
             console.log(`Key ${key} is already defined!`);
             throw new Error(`Key ${key} is already defined!`);
         }
-        this[key]=(props = {})=>{
-            alert("")
+        this[key]=(navigator,props = {})=>{
+            this.navigateTo(navigator,{screen:key,...props});
         }
     }
 
