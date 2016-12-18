@@ -7,7 +7,6 @@
 
 class Router{
     constructor(props){
-        super(props)
         this.navigator=null;
     }
     setNavigator(navigator){
