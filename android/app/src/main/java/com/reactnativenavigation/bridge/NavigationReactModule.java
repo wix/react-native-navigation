@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.controllers.NavigationCommandsHandler;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.SnackbarParams;
@@ -44,6 +45,9 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startApp(final ReadableMap params) {
+        if (NavigationApplication.instance.state != NavigationApplication.AppState.StartingReactContext) {
+            return;
+        }
         boolean portraitOnlyMode = false;
         if (params.hasKey("portraitOnlyMode")) {
             portraitOnlyMode = params.getBoolean("portraitOnlyMode");
