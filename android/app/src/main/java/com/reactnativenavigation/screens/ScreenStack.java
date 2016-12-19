@@ -144,7 +144,7 @@ public class ScreenStack {
         nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
-                nextScreen.showWithSharedElementsTransitions(new Runnable() {
+                nextScreen.showWithSharedElementsTransitions(previousScreen.sharedElements.getToElements(), new Runnable() {
                     @Override
                     public void run() {
                         parent.removeView(previousScreen);

@@ -22,24 +22,33 @@ public class SharedElementAnimatorCreator {
         List<Animator> result = new ArrayList<>();
         createXAnimator(result);
         createYAnimator(result);
-        createScaleXAnimator(result);
-        createScaleYAnimator(result);
+//        createScaleXAnimator(result);
+//        createScaleYAnimator(result);
         return result;
     }
 
     private void createXAnimator(List<Animator> result) {
-        final float fromX = from.getX();
-        final float toX = to.getX();
+        int[] fromXY = new int[2];
+        int[] toXY = new int[2];
+        from.getLocationOnScreen(fromXY);
+        to.getLocationOnScreen(toXY);
+
+        final float fromX = fromXY[0];
+        final float toX = toXY[0];
         if (fromX != toX) {
-            result.add(ObjectAnimator.ofFloat(to, View.X, fromX, toX));
+            result.add(ObjectAnimator.ofFloat(to, View.TRANSLATION_X, fromX - toX, 0));
         }
     }
 
     private void createYAnimator(List<Animator> result) {
-        final float fromY = from.getY();
-        final float toY = to.getY();
+        int[] fromXY = new int[2];
+        int[] toXY = new int[2];
+        from.getLocationOnScreen(fromXY);
+        to.getLocationOnScreen(toXY);
+        final float fromY = fromXY[1];
+        final float toY = toXY[1];
         if (fromY != toY) {
-            result.add(ObjectAnimator.ofFloat(to, View.Y, fromY, toY));
+            result.add(ObjectAnimator.ofFloat(to, View.TRANSLATION_Y, fromY - toY, 0));
         }
     }
 
@@ -47,7 +56,7 @@ public class SharedElementAnimatorCreator {
         final int fromWidth = from.getWidth();
         final int toWidth = to.getWidth();
         if (fromWidth != toWidth) {
-            to.setPivotX(from.getX());
+//            to.setPivotX(from.getX());
             result.add(ObjectAnimator.ofFloat(to, View.SCALE_X, (float) (fromWidth / toWidth), 1));
         }
     }
@@ -56,7 +65,7 @@ public class SharedElementAnimatorCreator {
         final int fromHeight = from.getWidth();
         final int toHeight = to.getWidth();
         if (fromHeight != toHeight) {
-            to.setPivotY(from.getY());
+//            to.setPivotY(from.getY());
             result.add(ObjectAnimator.ofFloat(to, View.SCALE_Y, (float) (fromHeight / toHeight), 1));
         }
     }

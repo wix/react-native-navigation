@@ -31,6 +31,7 @@ import com.reactnativenavigation.views.sharedElementTransition.SharedElementTran
 import com.reactnativenavigation.views.sharedElementTransition.SharedElements;
 
 import java.util.List;
+import java.util.Map;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -59,7 +60,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         screenAnimator = new ScreenAnimator(this);
         createViews();
         EventBus.instance.register(this);
-        sharedElements = new SharedElements(screenParams.sharedElementsTransitions);
+        sharedElements = new SharedElements();
     }
 
     public void registerSharedView(SharedElementTransition toView, String key) {
@@ -246,14 +247,10 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         screenAnimator.show(animated, onAnimationEnd);
     }
 
-    public void showWithSharedElementsTransitions(final Runnable onAnimationEnd) {
+    public void showWithSharedElementsTransitions(Map<String, SharedElementTransition> fromElements, final Runnable onAnimationEnd) {
         setStyle();
-        sharedElements.resolveSharedElements(new Runnable() {
-            @Override
-            public void run() {
-                screenAnimator.showWithSharedElementsTransitions(onAnimationEnd);
-            }
-        });
+        sharedElements.setFromElements(fromElements);
+        screenAnimator.showWithSharedElementsTransitions(onAnimationEnd);
     }
 
     public void hide(boolean animated, Runnable onAnimatedEnd) {
