@@ -16,6 +16,7 @@ import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.utils.KeyboardVisibilityDetector;
 import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 
 import java.util.List;
@@ -94,6 +95,18 @@ public class ScreenStack {
                 });
             }
         });
+        if(nextScreen instanceof SingleScreen){
+            ContentView contentView= ((SingleScreen)nextScreen).getContentView();
+            if(contentView!=null&&contentView.getChildCount()==0){
+                nextScreen.show(nextScreen.screenParams.animateScreenTransitions, new Runnable() {
+                    @Override
+                    public void run() {
+                        parent.removeView(previousScreen);
+                    }
+                });
+            }
+        }
+
     }
 
     private void pushScreenToInvisibleStack(LayoutParams layoutParams, Screen nextScreen, Screen previousScreen) {
