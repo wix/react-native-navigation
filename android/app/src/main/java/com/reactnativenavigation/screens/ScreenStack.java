@@ -84,9 +84,14 @@ public class ScreenStack {
     private void pushScreenToVisibleStack(LayoutParams layoutParams, final Screen nextScreen, final Screen previousScreen) {
         nextScreen.setVisibility(View.INVISIBLE);
         addScreen(nextScreen, layoutParams);
+        final ShowCallback callback=new ShowCallback();
         nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
+                if(callback.isCall()){
+                    return;
+                }
+                callback.setCall(true);
                 nextScreen.show(nextScreen.screenParams.animateScreenTransitions, new Runnable() {
                     @Override
                     public void run() {
@@ -98,12 +103,15 @@ public class ScreenStack {
         if(nextScreen instanceof SingleScreen){
             ContentView contentView= ((SingleScreen)nextScreen).getContentView();
             if(contentView!=null&&contentView.getChildCount()==0){
-                nextScreen.show(nextScreen.screenParams.animateScreenTransitions, new Runnable() {
-                    @Override
-                    public void run() {
-                        parent.removeView(previousScreen);
-                    }
-                });
+                if(!callback.isCall()) {
+                    callback.setCall(true);
+                    nextScreen.show(nextScreen.screenParams.animateScreenTransitions, new Runnable() {
+                        @Override
+                        public void run() {
+                            parent.removeView(previousScreen);
+                        }
+                    });
+                }
             }
         }
 
@@ -300,5 +308,17 @@ public class ScreenStack {
     public void hide() {
         isStackVisible = false;
         stack.peek().setVisibility(View.INVISIBLE);
+    }
+
+    private class ShowCallback{
+        private boolean call;
+
+        public boolean isCall() {
+            return call;
+        }
+
+        public void setCall(boolean call) {
+            this.call = call;
+        }
     }
 }
