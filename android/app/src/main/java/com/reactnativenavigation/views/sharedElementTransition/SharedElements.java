@@ -1,5 +1,7 @@
 package com.reactnativenavigation.views.sharedElementTransition;
 
+import android.view.View;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +15,11 @@ public class SharedElements {
     }
 
     public void setFromElements(Map<String, SharedElementTransition> fromElements) {
-        this.fromElements = fromElements;
+        for (String fromElementKey : fromElements.keySet()) {
+            if (toElements.containsKey(fromElementKey)) {
+                this.fromElements.put(fromElementKey, fromElements.get(fromElementKey));
+            }
+        }
     }
 
     public Map<String, SharedElementTransition> getToElements() {
@@ -28,12 +34,23 @@ public class SharedElements {
         return toElements.get(key);
     }
 
+    public void addToElement(SharedElementTransition sharedElement, String key) {
+        toElements.put(key, sharedElement);
+    }
+
     public SharedElements() {
         toElements = new HashMap<>();
         this.fromElements = new HashMap<>();
     }
 
-    public void addToElement(SharedElementTransition sharedElement, String key) {
-        toElements.put(key, sharedElement);
+    void hideFromElements() {
+        for (final SharedElementTransition fromElement : getFromElements()) {
+            fromElement.post(new Runnable() {
+                @Override
+                public void run() {
+                    fromElement.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
     }
 }

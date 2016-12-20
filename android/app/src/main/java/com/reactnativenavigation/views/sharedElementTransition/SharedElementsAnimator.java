@@ -3,7 +3,6 @@ package com.reactnativenavigation.views.sharedElementTransition;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
-import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import java.util.ArrayList;
@@ -34,9 +33,7 @@ public class SharedElementsAnimator {
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                for (SharedElementTransition fromElement : sharedElements.getFromElements()) {
-                    fromElement.setVisibility(View.INVISIBLE);
-                }
+                sharedElements.hideFromElements();
             }
 
             @Override
