@@ -28,7 +28,7 @@ public interface ReactGateway {
 
     void onBackPressed();
 
+    void onActivityResult(int requestCode, int resultCode, Intent data);
 
     boolean hasStartedCreatingContext();
-    void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data);
 }
