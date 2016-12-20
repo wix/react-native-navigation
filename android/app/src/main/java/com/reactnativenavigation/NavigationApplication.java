@@ -8,7 +8,8 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.WritableMap;
+import com.reactnativenavigation.bridge.EventEmitter;
+import com.reactnativenavigation.controllers.ActivityCallbacks;
 import com.reactnativenavigation.react.NavigationReactGateway;
 import com.reactnativenavigation.react.ReactGateway;
 
@@ -19,7 +20,9 @@ public abstract class NavigationApplication extends Application implements React
     public static NavigationApplication instance;
 
     private NavigationReactGateway reactGateway;
+    private EventEmitter eventEmitter;
     private Handler handler;
+    private ActivityCallbacks activityCallbacks;
 
     @Override
     public void onCreate() {
@@ -27,6 +30,8 @@ public abstract class NavigationApplication extends Application implements React
         instance = this;
         handler = new Handler(getMainLooper());
         reactGateway = new NavigationReactGateway();
+        eventEmitter = new EventEmitter(reactGateway);
+        activityCallbacks = new ActivityCallbacks();
     }
 
     public void startReactContextOnceInBackgroundAndExecuteJS() {
@@ -45,6 +50,14 @@ public abstract class NavigationApplication extends Application implements React
         return reactGateway;
     }
 
+    public ActivityCallbacks getActivityCallbacks() {
+        return activityCallbacks;
+    }
+
+    protected void setActivityCallbacks(ActivityCallbacks activityLifecycleCallbacks) {
+        this.activityCallbacks = activityLifecycleCallbacks;
+    }
+
     public boolean isReactContextInitialized() {
         return reactGateway.isInitialized();
     }
@@ -56,6 +69,10 @@ public abstract class NavigationApplication extends Application implements React
     @Override
     public ReactNativeHost getReactNativeHost() {
         return reactGateway.getReactNativeHost();
+    }
+
+    public EventEmitter getEventEmitter() {
+        return eventEmitter;
     }
 
     /**
@@ -86,33 +103,4 @@ public abstract class NavigationApplication extends Application implements React
 
     @Nullable
     public abstract List<ReactPackage> createAdditionalReactPackages();
-
-    //TODO move all these navigator junk elsewhere
-    public void sendNavigatorEvent(String eventId, String navigatorEventId) {
-        if (!isReactContextInitialized()) {
-            return;
-        }
-        reactGateway.getReactEventEmitter().sendNavigatorEvent(eventId, navigatorEventId);
-    }
-
-    public void sendNavigatorEvent(String eventId, String navigatorEventId, WritableMap data) {
-        if (!isReactContextInitialized()) {
-            return;
-        }
-        reactGateway.getReactEventEmitter().sendNavigatorEvent(eventId, navigatorEventId, data);
-    }
-
-    public void sendEvent(String eventId, String navigatorEventId) {
-        if (!isReactContextInitialized()) {
-            return;
-        }
-        reactGateway.getReactEventEmitter().sendEvent(eventId, navigatorEventId);
-    }
-
-    public void sendNavigatorEvent(String eventId, WritableMap arguments) {
-        if (!isReactContextInitialized()) {
-            return;
-        }
-        reactGateway.getReactEventEmitter().sendEvent(eventId, arguments);
-    }
 }

@@ -1,17 +1,21 @@
 package com.reactnativenavigation.bridge;
 
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.controllers.NavigationCommandsHandler;
+import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.params.parsers.ContextualMenuParamsParser;
 import com.reactnativenavigation.params.parsers.SnackbarParamsParser;
 import com.reactnativenavigation.params.parsers.TitleBarButtonParamsParser;
 import com.reactnativenavigation.params.parsers.TitleBarLeftButtonParamsParser;
+import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
 
@@ -42,10 +46,17 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void startApp(final ReadableMap params) {
         boolean portraitOnlyMode = false;
+        boolean landscapeOnlyMode = false;
+
         if (params.hasKey("portraitOnlyMode")) {
             portraitOnlyMode = params.getBoolean("portraitOnlyMode");
         }
-        NavigationCommandsHandler.startApp(BundleConverter.toBundle(params), portraitOnlyMode);
+
+        if (params.hasKey(("landscapeOnlyMode"))) {
+            landscapeOnlyMode = params.getBoolean("landscapeOnlyMode");
+        }
+
+        NavigationCommandsHandler.startApp(BundleConverter.toBundle(params), portraitOnlyMode, landscapeOnlyMode);
     }
 
     @ReactMethod
@@ -103,13 +114,13 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void toggleSideMenuVisible(boolean animated) {
-        NavigationCommandsHandler.toggleSideMenuVisible(animated);
+    public void toggleSideMenuVisible(boolean animated, String side) {
+        NavigationCommandsHandler.toggleSideMenuVisible(animated, Side.fromString(side));
     }
 
     @ReactMethod
-    public void setSideMenuVisible(boolean animated, boolean visible) {
-        NavigationCommandsHandler.setSideMenuVisible(animated, visible);
+    public void setSideMenuVisible(boolean animated, boolean visible, String side) {
+        NavigationCommandsHandler.setSideMenuVisible(animated, visible, Side.fromString(side));
     }
 
     @ReactMethod
@@ -169,5 +180,17 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     public void showSnackbar(final ReadableMap params) {
         SnackbarParams snackbarParams = new SnackbarParamsParser().parse(BundleConverter.toBundle(params));
         NavigationCommandsHandler.showSnackbar(snackbarParams);
+    }
+
+    @ReactMethod
+    public void showContextualMenu(final String screenInstanceId, final ReadableMap params, final Callback onButtonClicked) {
+        ContextualMenuParams contextualMenuParams =
+                new ContextualMenuParamsParser().parse(BundleConverter.toBundle(params));
+        NavigationCommandsHandler.showContextualMenu(screenInstanceId, contextualMenuParams, onButtonClicked);
+    }
+
+    @ReactMethod
+    public void dismissContextualMenu(String screenInstanceId) {
+        NavigationCommandsHandler.dismissContextualMenu(screenInstanceId);
     }
 }

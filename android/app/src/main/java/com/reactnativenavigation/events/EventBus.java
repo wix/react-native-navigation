@@ -27,7 +27,9 @@ public enum EventBus {
     }
 
     public void post(Event event) {
-        for (WeakReference<Subscriber> ref : subscribers) {
+        ListIterator<WeakReference<Subscriber>> iterator = subscribers.listIterator();
+        while (iterator.hasNext()) {
+            WeakReference<Subscriber> ref = iterator.next();
             Subscriber registered = ref.get();
             if (registered != null) {
                 registered.onEvent(event);

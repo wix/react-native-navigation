@@ -404,14 +404,8 @@
     ],
     "react/no-danger": "error",
     "react/no-deprecated": "error",
-    "react/no-did-mount-set-state": [
-      "error",
-      "allow-in-func"
-    ],
-    "react/no-did-update-set-state": [
-      "error",
-      "allow-in-func"
-    ],
+    "react/no-did-mount-set-state": "error",
+    "react/no-did-update-set-state": "error",
     "react/no-direct-mutation-state": "error",
     "react/no-is-mounted": "error",
     "react/no-multi-comp": "error",

@@ -18,7 +18,7 @@ public class ScreenParamsParser extends Parser {
     private static final String TOP_TABS = "topTabs";
     private static final String FRAGMENT_CREATOR_CLASS_NAME = "fragmentCreatorClassName";
     private static final String FRAGMENT_CREATOR_PASS_PROPS = "fragmentCreatorPassProps";
-    public static final String OVERRIDE_BACK_PRESS = "overrideBackPress";
+    private static final String OVERRIDE_BACK_PRESS = "overrideBackPress";
 
     @SuppressWarnings("ConstantConditions")
     public static ScreenParams parse(Bundle params) {
@@ -75,7 +75,7 @@ public class ScreenParamsParser extends Parser {
         return topTabParams;
     }
 
-    public List<ScreenParams> parseTabs(Bundle params) {
+    List<ScreenParams> parseTabs(Bundle params) {
         return parseBundle(params, new ParseStrategy<ScreenParams>() {
             @Override
             public ScreenParams parse(Bundle screen) {

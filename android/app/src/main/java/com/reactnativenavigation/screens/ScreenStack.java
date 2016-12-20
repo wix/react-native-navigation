@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
+import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -168,18 +170,14 @@ public class ScreenStack {
 
     public void destroy() {
         for (Screen screen : stack) {
-            screen.unmountReactView();
+            screen.destroy();
             parent.removeView(screen);
         }
         stack.clear();
     }
 
-    public int getStackSize() {
-        return stack.size();
-    }
-
     public boolean canPop() {
-        return getStackSize() > 1 && !isPreviousScreenAttachedToWindow();
+        return stack.size() > 1 && !isPreviousScreenAttachedToWindow();
     }
 
     private boolean isPreviousScreenAttachedToWindow() {
@@ -236,6 +234,24 @@ public class ScreenStack {
         });
     }
 
+    public void showContextualMenu(String screenInstanceId, final ContextualMenuParams params, final Callback onButtonClicked) {
+        performOnScreen(screenInstanceId, new Task<Screen>() {
+            @Override
+            public void run(Screen screen) {
+                screen.showContextualMenu(params, onButtonClicked);
+            }
+        });
+    }
+
+    public void dismissContextualMenu(String screenInstanceId) {
+        performOnScreen(screenInstanceId, new Task<Screen>() {
+            @Override
+            public void run(Screen screen) {
+                screen.dismissContextualMenu();
+            }
+        });
+    }
+
     public StyleParams getCurrentScreenStyleParams() {
         return stack.peek().getStyleParams();
     }
@@ -243,7 +259,7 @@ public class ScreenStack {
     public boolean handleBackPressInJs() {
         ScreenParams currentScreen = stack.peek().screenParams;
         if (currentScreen.overrideBackPressInJs) {
-            NavigationApplication.instance.sendNavigatorEvent("backPress", currentScreen.getNavigatorEventId());
+            NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("backPress", currentScreen.getNavigatorEventId());
             return true;
         }
         return false;

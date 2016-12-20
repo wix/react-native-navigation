@@ -33,4 +33,8 @@ public class BaseScreenParams {
     public String getNavigatorEventId() {
         return navigationParams.navigatorEventId;
     }
+
+    public boolean hasCollapsingTopBar() {
+        return styleParams.collapsingTopBarParams != null;
+    }
 }

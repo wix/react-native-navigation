@@ -185,10 +185,10 @@ function _mergeScreenSpecificSettings(screenID, screenInstanceID, params) {
     Object.assign(navigatorStyle, params.navigatorStyle);
   }
 
-  const navigatorEventID = screenInstanceID + '_events';
-  const navigatorButtons = Object.assign({}, screenClass.navigatorButtons);
+  let navigatorEventID = screenInstanceID + '_events';
+  let navigatorButtons = _.cloneDeep(screenClass.navigatorButtons);
   if (params.navigatorButtons) {
-    Object.assign(navigatorButtons, params.navigatorButtons);
+    navigatorButtons = _.cloneDeep(params.navigatorButtons);
   }
   if (navigatorButtons.leftButtons) {
     for (let i = 0; i < navigatorButtons.leftButtons.length; i++) {
@@ -231,7 +231,7 @@ function navigatorPush(navigator, params) {
 
   Controllers.NavigationControllerIOS(navigator.navigatorID).push({
     title: params.title,
-    subtitle:params.subtitle,
+    subtitle: params.subtitle,
     titleImage: params.titleImage,
     component: params.screen,
     animated: params.animated,
@@ -560,6 +560,14 @@ function savePassProps(params) {
   }
 }
 
+function showContextualMenu() {
+  // Android only
+}
+
+function dismissContextualMenu() {
+  // Android only
+}
+
 export default {
   startTabBasedApp,
   startSingleScreenApp,
@@ -582,5 +590,7 @@ export default {
   navigatorToggleTabs,
   navigatorSetTabBadge,
   navigatorSwitchToTab,
-  navigatorToggleNavBar
+  navigatorToggleNavBar,
+  showContextualMenu,
+  dismissContextualMenu
 };

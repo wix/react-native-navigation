@@ -1,11 +1,6 @@
 example
 old-example-redux
 
-test/
-res/generated/
-
-.npmignore
-
 #################
 # from .gitignore:
 ################
