@@ -1,13 +1,24 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
+import com.reactnativenavigation.params.StyleParams;
+import com.reactnativenavigation.screens.CollapsingSingleScreen;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.utils.ViewMeasurer;
 
 public class CollapsingViewMeasurer extends ViewMeasurer {
+
     private int collapsedTopBarHeight;
     private float getFinalCollapseValue;
     private int screenHeight;
+    private int bottomTabsHeight = 0;
+
+    public CollapsingViewMeasurer(CollapsingTopBar topBar, CollapsingSingleScreen screen, StyleParams styleParams) {
+        this(topBar, screen);
+        if (styleParams.bottomTabsHidden) {
+            bottomTabsHeight = (int) ViewUtils.convertDpToPixel(56);
+        }
+    }
 
     public CollapsingViewMeasurer(final CollapsingTopBar topBar, final Screen collapsingSingleScreen) {
         ViewUtils.runOnPreDraw(topBar, new Runnable() {
@@ -32,6 +43,6 @@ public class CollapsingViewMeasurer extends ViewMeasurer {
 
     @Override
     public int getMeasuredHeight(int heightMeasureSpec) {
-        return screenHeight - collapsedTopBarHeight;
+        return screenHeight - collapsedTopBarHeight + bottomTabsHeight;
     }
 }

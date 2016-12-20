@@ -12,13 +12,17 @@ import com.reactnativenavigation.views.collapsingToolbar.behaviours.TitleBarHide
 
 class CollapsingTopBarParamsParser extends Parser {
     private Bundle params;
+    private boolean titleBarHideOnScroll;
+    private boolean drawBelowTopBar;
 
-    CollapsingTopBarParamsParser(Bundle params) {
+    CollapsingTopBarParamsParser(Bundle params, boolean titleBarHideOnScroll, boolean drawBelowTopBar) {
         this.params = params;
+        this.titleBarHideOnScroll = titleBarHideOnScroll;
+        this.drawBelowTopBar = drawBelowTopBar;
     }
 
     public CollapsingTopBarParams parse() {
-        if (!hasBackgroundImage() && !shouldHideTitleBarOnScroll()) {
+        if (!hasBackgroundImage() && !titleBarHideOnScroll) {
             return null;
         }
 
@@ -35,7 +39,7 @@ class CollapsingTopBarParamsParser extends Parser {
         if (hasBackgroundImage()) {
             return new CollapseTopBarBehaviour();
         }
-        if (shouldHideTitleBarOnScroll() && params.getBoolean("drawBelowTopBar", false)) {
+        if (titleBarHideOnScroll && drawBelowTopBar) {
             return new CollapseTitleBarBehaviour();
         }
         return new TitleBarHideOnScrollBehaviour();
@@ -43,9 +47,5 @@ class CollapsingTopBarParamsParser extends Parser {
 
     private boolean hasBackgroundImage() {
         return params.containsKey("collapsingToolBarImage");
-    }
-
-    private boolean shouldHideTitleBarOnScroll() {
-        return params.getBoolean("titleBarHideOnScroll", false);
     }
 }
