@@ -3,7 +3,7 @@
  */
 
 'use strict';
-
+import * as DisplayMode from './DisplayMode';
 
 class Router{
 
@@ -36,17 +36,39 @@ class Router{
     }
 
     navigateTo(navigator,params){
-        this.push(navigator,params);
+
+        let displayMode=params.displayMode;
+        if(!displayMode){
+            displayMode="push"
+        }
+        displayMode=displayMode.toLowerCase();
+        switch(displayMode){
+            case DisplayMode.push:
+                this.push(navigator,params);
+                break;
+            case DisplayMode.modal:
+                this.showModal(navigator,params);
+                break;
+            case DisplayMode.lightbox:
+                this.showLightBox(navigator,params);
+                break;
+            case DisplayMode.reset:
+                this.resetTo(navigator,params);
+                break;
+        }
+
     }
 
     register(params= {}){
-        let key=params.key;
-        if (this[key]) {
-            console.log(`Key ${key} is already defined!`);
-            throw new Error(`Key ${key} is already defined!`);
+        let name=params.name;
+        if (this[name]) {
+            console.log(`name ${name} is already defined!`);
+            throw new Error(`name ${name} is already defined!`);
         }
-        this[key]=(navigator,props = {})=>{
-            this.navigateTo(navigator,{screen:key,...props});
+        let passProps={...params};
+        this[name]=(navigator,props = {})=>{
+            let navProps={...passProps,...props};
+            this.navigateTo(navigator,{screen:name,...navProps});
         }
     }
 
