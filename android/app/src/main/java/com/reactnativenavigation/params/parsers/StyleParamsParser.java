@@ -17,6 +17,7 @@ public class StyleParamsParser {
         StyleParams result = new StyleParams();
         if (params == null) {
             result.titleBarDisabledButtonColor = getTitleBarDisabledButtonColor();
+            result.topBarElevationShadowEnabled = true;
             return result;
         }
 
@@ -29,6 +30,7 @@ public class StyleParamsParser {
         result.collapsingTopBarParams = new CollapsingTopBarParamsParser(params).parse();
         result.titleBarHidden = getBoolean("titleBarHidden", getDefaultTopBarHidden());
         result.topBarTransparent = getBoolean("topBarTransparent", getDefaultTopBarHidden());
+        result.topBarElevationShadowEnabled = getBoolean("topBarElevationShadowEnabled", getDefaultTopBarElevationShadowEnabled());
         result.titleBarTitleColor = getColor("titleBarTitleColor", getDefaultTitleBarColor());
         result.topBarTranslucent = getBoolean("topBarTranslucent", getDefaultTopBarTranslucent());
         result.titleBarHideOnScroll = getBoolean("titleBarHideOnScroll", getDefaultTitleBarHideOnScroll());
@@ -171,6 +173,10 @@ public class StyleParamsParser {
 
     private boolean getDefaultTopBarHidden() {
         return AppStyle.appStyle != null && AppStyle.appStyle.topBarTransparent;
+    }
+
+    private boolean getDefaultTopBarElevationShadowEnabled() {
+        return AppStyle.appStyle == null || AppStyle.appStyle.topBarElevationShadowEnabled;
     }
 
     private boolean getDefaultTopBarTranslucent() {
