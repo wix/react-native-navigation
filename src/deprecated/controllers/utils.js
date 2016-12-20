@@ -1,3 +1,4 @@
+/*eslint-disable*/
 var INFINITY = 1 / 0;
 var MAX_SAFE_INTEGER = 9007199254740991;
 

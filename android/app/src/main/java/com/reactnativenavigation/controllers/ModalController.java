@@ -2,9 +2,11 @@ package com.reactnativenavigation.controllers;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ModalDismissedEvent;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
+import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -116,6 +118,18 @@ public class ModalController implements ScreenStackContainer, Modal.OnModalDismi
     public void setTitleBarLeftButton(String screenInstanceId, String navigatorEventId, TitleBarLeftButtonParams titleBarLeftButton) {
         for (Modal modal : stack) {
             modal.setTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButton);
+        }
+    }
+
+    public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
+        for (Modal modal : stack) {
+            modal.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        }
+    }
+
+    public void dismissContextualMenu(String screenInstanceId) {
+        for (Modal modal : stack) {
+            modal.dismissContextualMenu(screenInstanceId);
         }
     }
 

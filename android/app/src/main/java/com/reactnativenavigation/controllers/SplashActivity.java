@@ -16,6 +16,7 @@ public abstract class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSplashLayout();
+        IntentDataHandler.saveIntentData(getIntent());
     }
 
     @Override
@@ -23,7 +24,7 @@ public abstract class SplashActivity extends AppCompatActivity {
         super.onResume();
 
         if (NavigationApplication.instance.getReactGateway().hasStartedCreatingContext()) {
-            return;
+            finish();
         }
 
         if (ReactDevPermission.shouldAskPermission()) {

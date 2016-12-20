@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.layouts.Layout;
 import com.reactnativenavigation.layouts.ModalScreenLayout;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
+import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -27,20 +29,28 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         layout.setTopBarVisible(screenInstanceId, hidden, animated);
     }
 
-    public void setTitleBarTitle(String screenInstanceId, String title) {
+    void setTitleBarTitle(String screenInstanceId, String title) {
         layout.setTitleBarTitle(screenInstanceId, title);
     }
 
-    public void setTitleBarSubtitle(String screenInstanceId, String subtitle) {
+    void setTitleBarSubtitle(String screenInstanceId, String subtitle) {
         layout.setTitleBarSubtitle(screenInstanceId, subtitle);
     }
 
-    public void setTitleBarRightButtons(String screenInstanceId, String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {
+    void setTitleBarRightButtons(String screenInstanceId, String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {
         layout.setTitleBarRightButtons(screenInstanceId, navigatorEventId, titleBarButtons);
     }
 
     public void setTitleBarLeftButton(String screenInstanceId, String navigatorEventId, TitleBarLeftButtonParams titleBarLeftButton) {
         layout.setTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButton);
+    }
+
+    public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
+        layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
+    }
+
+    public void dismissContextualMenu(String screenInstanceId) {
+        layout.dismissContextualMenu(screenInstanceId);
     }
 
     @Override
@@ -54,7 +64,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
     public void onSideMenuButtonClick() {
     }
 
-    public interface OnModalDismissedListener {
+    interface OnModalDismissedListener {
         void onModalDismissed(Modal modal);
     }
 
@@ -74,7 +84,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         setCancelable(true);
         setOnDismissListener(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        layout = new ModalScreenLayout(getActivity(), null, screenParams, this);
+        layout = new ModalScreenLayout(getActivity(), screenParams, this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(layout.asView());
     }
@@ -121,7 +131,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         onModalDismissedListener.onModalDismissed(this);
     }
 
-    public void onModalDismissed() {
+    void onModalDismissed() {
         layout.onModalDismissed();
     }
 }

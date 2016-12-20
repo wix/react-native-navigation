@@ -87,17 +87,20 @@ function savePassProps(params) {
     });
   }
 
-  if (params.sideMenu) {
-    PropRegistry.save(params.sideMenu.navigationParams.screenInstanceID, params.sideMenu.passProps);
+  if (params.sideMenu && params.sideMenu.left) {
+    PropRegistry.save(params.sideMenu.left.navigationParams.screenInstanceID, params.sideMenu.left.passProps);
+  }
+  if (params.sideMenu && params.sideMenu.right) {
+    PropRegistry.save(params.sideMenu.right.navigationParams.screenInstanceID, params.sideMenu.right.passProps);
   }
 }
 
-function toggleSideMenuVisible(animated) {
-  NativeReactModule.toggleSideMenuVisible(animated);
+function toggleSideMenuVisible(animated, side) {
+  NativeReactModule.toggleSideMenuVisible(animated, side);
 }
 
-function setSideMenuVisible(animated, visible) {
-  NativeReactModule.setSideMenuVisible(animated, visible);
+function setSideMenuVisible(animated, visible, side) {
+  NativeReactModule.setSideMenuVisible(animated, visible, side);
 }
 
 function selectBottomTabByNavigatorId(navigatorId) {
@@ -120,6 +123,14 @@ function showSnackbar(params) {
   NativeReactModule.showSnackbar(params);
 }
 
+function showContextualMenu(screenInstanceID, params, onButtonPressed) {
+  NativeReactModule.showContextualMenu(screenInstanceID, params, onButtonPressed);
+}
+
+function dismissContextualMenu(screenInstanceID) {
+  NativeReactModule.dismissContextualMenu(screenInstanceID);
+}
+
 module.exports = {
   startApp,
   push,
@@ -140,5 +151,7 @@ module.exports = {
   selectBottomTabByTabIndex,
   setBottomTabBadgeByNavigatorId,
   setBottomTabBadgeByIndex,
-  showSnackbar
+  showSnackbar,
+  showContextualMenu,
+  dismissContextualMenu
 };

@@ -9,6 +9,9 @@
             android:windowSoftInputMode="stateUnspecified|adjustPan"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".controllers.LandscapeNavigationActivity"
+            android:screenOrientation="landscape" />
+        <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
             android:exported="false" />
     </application>

@@ -1,13 +1,18 @@
 package com.reactnativenavigation.views;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 
-import com.reactnativenavigation.animation.VisibilityAnimator;
+import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -17,8 +22,6 @@ import java.util.List;
 
 public class TitleBar extends Toolbar {
 
-    private boolean hideOnScroll = false;
-    private VisibilityAnimator visibilityAnimator;
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
 
@@ -37,16 +40,16 @@ public class TitleBar extends Toolbar {
     public void setRightButtons(List<TitleBarButtonParams> rightButtons, String navigatorEventId) {
         Menu menu = getMenu();
         menu.clear();
-
         if (rightButtons == null) {
             return;
         }
-
         addButtonsToTitleBar(rightButtons, navigatorEventId, menu);
     }
 
     public void setLeftButton(TitleBarLeftButtonParams leftButtonParams,
-                              LeftButtonOnClickListener leftButtonOnClickListener, String navigatorEventId, boolean overrideBackPressInJs) {
+                              LeftButtonOnClickListener leftButtonOnClickListener,
+                              String navigatorEventId,
+                              boolean overrideBackPressInJs) {
         if (shouldSetLeftButton(leftButtonParams)) {
             createAndSetLeftButton(leftButtonParams, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
         } else if (hasLeftButton()) {
@@ -59,6 +62,7 @@ public class TitleBar extends Toolbar {
         setTitleTextColor(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
+        setTranslucent(params);
     }
 
     private void colorOverflowButton(StyleParams params) {
@@ -68,17 +72,23 @@ public class TitleBar extends Toolbar {
         }
     }
 
+    private void setTranslucent(StyleParams params) {
+        if (params.topBarTranslucent) {
+            setBackground(new TranslucentTitleBarBackground());
+        }
+    }
+
     private boolean shouldColorOverflowButton(StyleParams params, Drawable overflowIcon) {
         return overflowIcon != null && params.titleBarButtonColor.hasColor();
     }
 
-    private void setTitleTextColor(StyleParams params) {
+    protected void setTitleTextColor(StyleParams params) {
         if (params.titleBarTitleColor.hasColor()) {
             setTitleTextColor(params.titleBarTitleColor.getColor());
         }
     }
 
-    private void setSubtitleTextColor(StyleParams params) {
+    protected void setSubtitleTextColor(StyleParams params) {
         if (params.titleBarSubtitleColor.hasColor()) {
             setSubtitleTextColor(params.titleBarSubtitleColor.getColor());
         }
@@ -86,13 +96,13 @@ public class TitleBar extends Toolbar {
 
     private void addButtonsToTitleBar(List<TitleBarButtonParams> rightButtons, String navigatorEventId, Menu menu) {
         for (int i = 0; i < rightButtons.size(); i++) {
-            final TitleBarButton button = new TitleBarButton(menu, this, rightButtons.get(i), navigatorEventId);
+            final TitleBarButton button = ButtonFactory.create(menu, this, rightButtons.get(i), navigatorEventId);
             addButtonInReverseOrder(rightButtons, i, button);
         }
     }
 
-    private void addButtonInReverseOrder(List<TitleBarButtonParams> rightButtons, int i, TitleBarButton button) {
-        final int index = rightButtons.size() - i - 1;
+    protected void addButtonInReverseOrder(List<? extends BaseTitleBarButtonParams> buttons, int i, TitleBarButton button) {
+        final int index = buttons.size() - i - 1;
         button.addToMenu(index);
     }
 
@@ -118,20 +128,42 @@ public class TitleBar extends Toolbar {
         setNavigationIcon(leftButton);
     }
 
-    public void setHideOnScroll(boolean hideOnScroll) {
-        this.hideOnScroll = hideOnScroll;
+    public void hide() {
+        hide(null);
     }
 
-    public void onScrollChanged(ScrollDirectionListener.Direction direction) {
-        if (hideOnScroll) {
-            if (visibilityAnimator == null) {
-                createScrollAnimator();
-            }
-            visibilityAnimator.onScrollChanged(direction);
-        }
+    public void hide(@Nullable final Runnable onHidden) {
+        animate()
+                .alpha(0)
+                .setDuration(200)
+                .setInterpolator(new AccelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (onHidden != null) {
+                            onHidden.run();
+                        }
+                    }
+                });
     }
 
-    private void createScrollAnimator() {
-        visibilityAnimator = new VisibilityAnimator(this, VisibilityAnimator.HideDirection.Up, getHeight());
+    public void show() {
+        this.show(null);
+    }
+
+    public void show(final @Nullable Runnable onDisplayed) {
+        setAlpha(0);
+        animate()
+                .alpha(1)
+                .setDuration(200)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (onDisplayed != null) {
+                            onDisplayed.run();
+                        }
+                    }
+                });
     }
 }

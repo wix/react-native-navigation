@@ -9,8 +9,15 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.NavigationApplication;
+import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.animation.VisibilityAnimator;
+import com.reactnativenavigation.events.ContextualMenuHiddenEvent;
+import com.reactnativenavigation.events.Event;
+import com.reactnativenavigation.events.EventBus;
+import com.reactnativenavigation.events.Subscriber;
+import com.reactnativenavigation.events.ViewPagerScreenChangedEvent;
 import com.reactnativenavigation.params.BaseScreenParams;
+import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -24,7 +31,7 @@ import java.util.List;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-public abstract class Screen extends RelativeLayout {
+public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public interface OnDisplayListener {
         void onDisplay();
@@ -36,7 +43,7 @@ public abstract class Screen extends RelativeLayout {
     private final LeftButtonOnClickListener leftButtonOnClickListener;
     private VisibilityAnimator topBarVisibilityAnimator;
     private ScreenAnimator screenAnimator;
-    private final StyleParams styleParams;
+    protected final StyleParams styleParams;
 
     public Screen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener leftButtonOnClickListener) {
         super(activity);
@@ -46,16 +53,32 @@ public abstract class Screen extends RelativeLayout {
         this.leftButtonOnClickListener = leftButtonOnClickListener;
         screenAnimator = new ScreenAnimator(this);
         createViews();
+        EventBus.instance.register(this);
+    }
+
+    @Override
+    public void onEvent(Event event) {
+        if (ContextualMenuHiddenEvent.TYPE.equals(event.getType()) && isShown()) {
+            setStyle();
+            topBar.onContextualMenuHidden();
+        }
+        if (ViewPagerScreenChangedEvent.TYPE.equals(event.getType()) && isShown() ) {
+            setStyle();
+            topBar.dismissContextualMenu();
+        }
     }
 
     public void setStyle() {
         setStatusBarColor(styleParams.statusBarColor);
         setNavigationBarColor(styleParams.navigationBarColor);
         topBar.setStyle(styleParams);
+        if (styleParams.screenBackgroundColor.hasColor()) {
+            setBackgroundColor(styleParams.screenBackgroundColor.getColor());
+        }
     }
 
     private void createViews() {
-        createTopBar();
+        createAndAddTopBar();
         createTitleBar();
         createContent();
     }
@@ -65,6 +88,7 @@ public abstract class Screen extends RelativeLayout {
     private void createTitleBar() {
         addTitleBarButtons();
         topBar.setTitle(screenParams.title);
+        topBar.setSubtitle(screenParams.subtitle);
     }
 
     private void addTitleBarButtons() {
@@ -79,8 +103,16 @@ public abstract class Screen extends RelativeLayout {
                 screenParams.overrideBackPressInJs);
     }
 
-    private void createTopBar() {
+    private void createAndAddTopBar() {
+        createTopBar();
+        addTopBar();
+    }
+
+    protected void createTopBar() {
         topBar = new TopBar(getContext());
+    }
+
+    private void addTopBar() {
         createTopBarVisibilityAnimator();
         addView(topBar, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
     }
@@ -130,9 +162,7 @@ public abstract class Screen extends RelativeLayout {
         return screenParams.getScreenInstanceId();
     }
 
-    public String getNavigatorEventId() {
-        return screenParams.getNavigatorEventId();
-    }
+    public abstract String getNavigatorEventId();
 
     public BaseScreenParams getScreenParams() {
         return screenParams;
@@ -202,5 +232,19 @@ public abstract class Screen extends RelativeLayout {
         NavigationApplication.instance.sendNavigatorEvent("willDisappear", screenParams.getNavigatorEventId());
         NavigationApplication.instance.sendNavigatorEvent("didDisappear", screenParams.getNavigatorEventId());
         screenAnimator.hide(animated, onAnimatedEnd);
+    }
+
+    public void showContextualMenu(ContextualMenuParams params, Callback onButtonClicked) {
+        topBar.showContextualMenu(params, styleParams, onButtonClicked);
+        setStatusBarColor(styleParams.contextualMenuStatusBarColor);
+    }
+
+    public void dismissContextualMenu() {
+        topBar.dismissContextualMenu();
+    }
+
+    public void destroy() {
+        unmountReactView();
+        EventBus.instance.unregister(this);
     }
 }

@@ -7,7 +7,7 @@ import com.reactnativenavigation.NavigationApplication;
 
 import java.util.List;
 
-public class MyApplication extends NavigationApplication {
+public class MainApplication extends NavigationApplication {
     @Override
     public boolean isDebug() {
         return BuildConfig.DEBUG;

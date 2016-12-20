@@ -3,9 +3,9 @@ package com.reactnativenavigation.params;
 import android.os.Bundle;
 
 public class NavigationParams {
-    public static final String SCREEN_INSTANCE_ID = "screenInstanceID";
-    public static final String NAVIGATOR_ID = "navigatorID";
-    public static final String NAVIGATOR_EVENT_ID = "navigatorEventID";
+    private static final String SCREEN_INSTANCE_ID = "screenInstanceID";
+    private static final String NAVIGATOR_ID = "navigatorID";
+    private static final String NAVIGATOR_EVENT_ID = "navigatorEventID";
 
     public String screenInstanceId;
     public String navigatorId;

@@ -8,20 +8,35 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.screens.SingleScreen;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.utils.ViewMeasurer;
 
 public class ContentView extends ReactRootView {
-
     private final String screenId;
     private final NavigationParams navigationParams;
 
     boolean isContentVisible = false;
     private SingleScreen.OnDisplayListener onDisplayListener;
+    protected ViewMeasurer viewMeasurer;
+
+    public void setOnDisplayListener(SingleScreen.OnDisplayListener onDisplayListener) {
+        this.onDisplayListener = onDisplayListener;
+    }
 
     public ContentView(Context context, String screenId, NavigationParams navigationParams) {
         super(context);
         this.screenId = screenId;
         this.navigationParams = navigationParams;
         attachToJS();
+        viewMeasurer = new ViewMeasurer();
+    }
+
+    public void setViewMeasurer(ViewMeasurer viewMeasurer) {
+        this.viewMeasurer = viewMeasurer;
+    }
+
+    private void attachToJS() {
+        startReactApplication(NavigationApplication.instance.getReactGateway().getReactInstanceManager(), screenId,
+                navigationParams.toBundle());
     }
 
     public String getNavigatorEventId() {
@@ -30,6 +45,14 @@ public class ContentView extends ReactRootView {
 
     public void unmountReactView() {
         unmountReactApplication();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int measuredHeight = viewMeasurer.getMeasuredHeight(heightMeasureSpec);
+        setMeasuredDimension(viewMeasurer.getMeasuredWidth(widthMeasureSpec),
+                measuredHeight);
     }
 
     @Override
@@ -51,14 +74,5 @@ public class ContentView extends ReactRootView {
                 }
             });
         }
-    }
-
-    private void attachToJS() {
-        startReactApplication(NavigationApplication.instance.getReactGateway().getReactInstanceManager(), screenId,
-                navigationParams.toBundle());
-    }
-
-    public void setOnDisplayListener(SingleScreen.OnDisplayListener onDisplayListener) {
-        this.onDisplayListener = onDisplayListener;
     }
 }

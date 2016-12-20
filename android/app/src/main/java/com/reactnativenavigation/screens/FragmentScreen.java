@@ -115,6 +115,11 @@ public class FragmentScreen extends Screen {
     }
 
     @Override
+    public String getNavigatorEventId() {
+        return screenParams.getNavigatorEventId();
+    }
+
+    @Override
     public void setOnDisplayListener(final OnDisplayListener onContentViewDisplayedListener) {
         ViewUtils.runOnPreDraw(content, new Runnable() {
             @Override
