@@ -17,6 +17,7 @@ public class StyleParamsParser {
         StyleParams result = new StyleParams();
         if (params == null) {
             result.titleBarDisabledButtonColor = getTitleBarDisabledButtonColor();
+            result.topBarElevationShadowEnabled = true;
             return result;
         }
 
