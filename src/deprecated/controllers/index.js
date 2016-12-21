@@ -109,7 +109,11 @@ var Controllers = {
       },
 
       ControllerRegistry: Controllers.ControllerRegistry,
-      TabBarControllerIOS: {name: 'TabBarControllerIOS', Item: {name: 'TabBarControllerIOS.Item'}},
+      TabBarControllerIOS: {
+        name: 'TabBarControllerIOS',
+        Item: {name: 'TabBarControllerIOS.Item'},
+        MiddleButton: {name: 'TabBarControllerIOS.MiddleButton'}
+      },
       NavigationControllerIOS: {name: 'NavigationControllerIOS'},
       ViewControllerIOS: {name: 'ViewControllerIOS'},
       DrawerControllerIOS: {name: 'DrawerControllerIOS'},
@@ -307,4 +311,3 @@ var Controllers = {
 };
 
 module.exports = Controllers;
-

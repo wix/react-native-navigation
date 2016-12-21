@@ -31,9 +31,9 @@
   UIColor *buttonColor = nil;
   UIColor *selectedButtonColor = nil;
   NSDictionary *tabsStyle = props[@"style"];
-  NSDictionary *middleButtonProps = props[@"middleButton"];
 
-  bool displayMiddleButton = middleButtonProps && children.count % 2 == 0;
+  NSDictionary *middleButtonProps = nil;
+  bool displayMiddleButton = false;
 
   if (tabsStyle)
   {
@@ -67,6 +67,13 @@
   // go over all the tab bar items
   for (NSDictionary *tabItemLayout in children)
   {
+    // check for middle button
+    if([tabItemLayout[@"type"] isEqualToString:@"TabBarControllerIOS.MiddleButton"]) {
+      middleButtonProps = tabItemLayout[@"props"];
+      displayMiddleButton = children.count % 2 == 1;
+      continue;
+    }
+
     // make sure the layout is valid
     if (![tabItemLayout[@"type"] isEqualToString:@"TabBarControllerIOS.Item"]) continue;
     if (!tabItemLayout[@"props"]) continue;

@@ -62,6 +62,14 @@ function startTabBasedApp(params) {
         );
       }
     },
+    renderMiddleButton: function(middleButtonProps) {
+      if(middleButtonProps) {
+        return <TabBarControllerIOS.MiddleButton {...middleButtonProps} />
+      }
+      else {
+        return null
+      }
+    },
     renderBody: function() {
       return (
         <TabBarControllerIOS
@@ -69,6 +77,7 @@ function startTabBasedApp(params) {
           style={params.tabsStyle}
           middleButton={params.middleButton}
         >
+          {this.renderMiddleButton(params.middleButton)}
           {
             params.tabs.map(function(tab, index) {
               return (
