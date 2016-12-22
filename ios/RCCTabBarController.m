@@ -2,8 +2,15 @@
 #import "RCCViewController.h"
 #import "RCTConvert.h"
 #import "RCCManager.h"
+#import "RCCEventEmitter.h"
+
+@interface RCCTabBarController()
+@property (nonatomic, strong) RCCEventEmitter* eventEmitter;
+@end
 
 @implementation RCCTabBarController
+
+
 
 - (UIImage *)image:(UIImage*)image withColor:(UIColor *)color1
 {
@@ -26,12 +33,15 @@
   self = [super init];
   if (!self) return nil;
 
+  self.eventEmitter = [[RCCEventEmitter alloc] init];
+  [self.eventEmitter setBridge:bridge];
+  
   self.tabBar.translucent = YES; // default
 
   UIColor *buttonColor = nil;
   UIColor *selectedButtonColor = nil;
   NSDictionary *tabsStyle = props[@"style"];
-
+  
   NSDictionary *middleButtonProps = nil;
   bool displayMiddleButton = false;
 
@@ -73,7 +83,7 @@
       displayMiddleButton = children.count % 2 == 1;
       continue;
     }
-
+    
     // make sure the layout is valid
     if (![tabItemLayout[@"type"] isEqualToString:@"TabBarControllerIOS.Item"]) continue;
     if (!tabItemLayout[@"props"]) continue;
@@ -159,12 +169,12 @@
       iconImageSelected = [RCTConvert UIImage:selectedIcon];
       [middleView setImage:iconImageSelected forState:UIControlStateHighlighted];
     }
+    
+    [middleView addTarget:self action:@selector(middleButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 
-    [middleView setBackgroundColor:[UIColor redColor]];
     [self.view addSubview:middleView];
 
   }
-
 
   // replace the tabs
   self.viewControllers = viewControllers;
@@ -260,6 +270,10 @@
     {
       completion();
     }
+}
+
+-(void)middleButtonClicked:(id)sender {
+  [RCCEventEmitter tabBarMiddleButtonClicked:sender];
 }
 
 @end

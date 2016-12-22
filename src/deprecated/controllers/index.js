@@ -2,6 +2,7 @@
 var OriginalReactNative = require('react-native');
 var RCCManager = OriginalReactNative.NativeModules.RCCManager;
 var NativeAppEventEmitter = OriginalReactNative.NativeAppEventEmitter;
+var RCCEventEmitter = new OriginalReactNative.NativeEventEmitter(OriginalReactNative.NativeModules.RCCEventEmitter);
 var utils = require('./utils');
 var Constants = require('./Constants');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
@@ -307,7 +308,10 @@ var Controllers = {
 
   NavigationToolBarIOS: OriginalReactNative.requireNativeComponent('RCCToolBar', null),
 
+  RCCEventEmitter: RCCEventEmitter,
+
   Constants: Constants
 };
 
 module.exports = Controllers;
+

@@ -40,6 +40,13 @@ function startTabBasedApp(params) {
     };
   });
 
+  if(params.middleButton) {
+    Controllers.RCCEventEmitter.removeAllListeners('TabBarMiddleButtonClicked')
+    Controllers.RCCEventEmitter.addListener('TabBarMiddleButtonClicked', () => {
+      params.middleButton.onclicked();
+    });
+  }
+
   const Controller = Controllers.createClass({
     render: function() {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
@@ -67,7 +74,7 @@ function startTabBasedApp(params) {
         return <TabBarControllerIOS.MiddleButton {...middleButtonProps} />
       }
       else {
-        return null
+        return null;
       }
     },
     renderBody: function() {
