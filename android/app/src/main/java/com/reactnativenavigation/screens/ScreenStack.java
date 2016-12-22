@@ -152,7 +152,6 @@ public class ScreenStack {
                 });
             }
         });
-
     }
 
     private void pushScreenToInvisibleStack(LayoutParams layoutParams, Screen nextScreen, Screen previousScreen) {
@@ -201,13 +200,23 @@ public class ScreenStack {
     private void swapScreens(boolean animated, final Screen toRemove, Screen previous, OnScreenPop onScreenPop) {
         readdPrevious(previous);
         previous.setStyle();
-        toRemove.hide(animated, new Runnable() {
-            @Override
-            public void run() {
-                toRemove.destroy();
-                parent.removeView(toRemove);
-            }
-        });
+        if (toRemove.screenParams.sharedElementsTransitions.isEmpty()) {
+            toRemove.hide(animated, new Runnable() {
+                @Override
+                public void run() {
+                    toRemove.destroy();
+                    parent.removeView(toRemove);
+                }
+            });
+        } else {
+            toRemove.hideWithSharedElementTransitions(previous.sharedElements.getToElements(), new Runnable() {
+                @Override
+                public void run() {
+                    toRemove.destroy();
+                    parent.removeView(toRemove);
+                }
+            });
+        }
 
         if (onScreenPop != null) {
             onScreenPop.onScreenPopAnimationEnd();

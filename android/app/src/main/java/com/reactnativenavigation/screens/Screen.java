@@ -253,6 +253,12 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         screenAnimator.showWithSharedElementsTransitions(onAnimationEnd);
     }
 
+    public void hideWithSharedElementTransitions(Map<String, SharedElementTransition> toElements, final Runnable onAnimationEnd) {
+        sharedElements.setFromElements(sharedElements.getToElements());
+        sharedElements.setToElements(toElements);
+        screenAnimator.hideWithSharedElementsTransition(onAnimationEnd);
+    }
+
     public void hide(boolean animated, Runnable onAnimatedEnd) {
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willDisappear", screenParams.getNavigatorEventId());
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didDisappear", screenParams.getNavigatorEventId());

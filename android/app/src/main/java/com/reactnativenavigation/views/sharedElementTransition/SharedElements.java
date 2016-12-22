@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SharedElements {
+    // These need to be weak references or better yet - clear them in `onViewRemoved`
     Map<String, SharedElementTransition> toElements;
     private Map<String, SharedElementTransition> fromElements;
 
@@ -15,9 +16,19 @@ public class SharedElements {
     }
 
     public void setFromElements(Map<String, SharedElementTransition> fromElements) {
+        this.fromElements.clear();
         for (String fromElementKey : fromElements.keySet()) {
             if (toElements.containsKey(fromElementKey)) {
                 this.fromElements.put(fromElementKey, fromElements.get(fromElementKey));
+            }
+        }
+    }
+
+    public void setToElements(Map<String, SharedElementTransition> toElements) {
+        this.toElements.clear();
+        for (String toElementKey : toElements.keySet()) {
+            if (fromElements.containsKey(toElementKey)) {
+                this.toElements.put(toElementKey, toElements.get(toElementKey));
             }
         }
     }
@@ -52,5 +63,17 @@ public class SharedElements {
                 }
             });
         }
+    }
+
+    void showToElements() {
+        for (SharedElementTransition toElement : toElements.values()) {
+            toElement.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void swap() {
+        fromElements.clear();
+        fromElements.putAll(this.toElements);
+        toElements.clear();
     }
 }

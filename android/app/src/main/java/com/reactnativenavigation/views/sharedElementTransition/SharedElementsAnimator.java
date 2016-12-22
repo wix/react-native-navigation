@@ -10,25 +10,31 @@ import java.util.List;
 
 public class SharedElementsAnimator {
     private final SharedElements sharedElements;
-    private final Runnable onAnimationEnd;
-    private List<Animator> animators = new ArrayList<>();
 
-    public SharedElementsAnimator(SharedElements sharedElements, Runnable onAnimationEnd) {
+    public SharedElementsAnimator(SharedElements sharedElements) {
         this.sharedElements = sharedElements;
-        this.onAnimationEnd = onAnimationEnd;
-        createTransitionAnimators();
     }
 
-    private void createTransitionAnimators() {
+    private List<Animator> createTransitionAnimators() {
+        List<Animator> result = new ArrayList<>();
         for (String key : sharedElements.toElements.keySet()) {
-            animators.addAll(new SharedElementAnimatorCreator(sharedElements.getFromElement(key), sharedElements.getToElement(key)).create());
+            result.addAll(new SharedElementAnimatorCreator(sharedElements.getFromElement(key), sharedElements.getToElement(key)).create());
         }
+        return result;
     }
 
-    public void animate() {
+    private List<Animator> createReversedTransitionAnimators() {
+        List<Animator> result = new ArrayList<>();
+        for (String key : sharedElements.toElements.keySet()) {
+            result.addAll(new SharedElementAnimatorCreator(sharedElements.getToElement(key), sharedElements.getFromElement(key)).createReverse());
+        }
+        return result;
+    }
+
+    public void show(final Runnable onAnimationEnd) {
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(3000);
-        animatorSet.playTogether(animators);
+        animatorSet.setDuration(500);
+        animatorSet.playTogether(createTransitionAnimators());
         animatorSet.setInterpolator(new LinearInterpolator());
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -38,6 +44,21 @@ public class SharedElementsAnimator {
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                onAnimationEnd.run();
+            }
+        });
+        animatorSet.start();
+    }
+
+    public void hide(final Runnable onAnimationEnd) {
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(500);
+        animatorSet.playTogether(createReversedTransitionAnimators());
+        animatorSet.setInterpolator(new LinearInterpolator());
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                sharedElements.showToElements();
                 onAnimationEnd.run();
             }
         });
