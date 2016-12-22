@@ -42,6 +42,11 @@ class Router{
             displayMode="push"
         }
         displayMode=displayMode.toLowerCase();
+        let passProps={...params};
+        delete passProps.displayMode;
+        delete passProps.screen;
+        params.passProps=passProps;
+
         switch(displayMode){
             case DisplayMode.push:
                 this.push(navigator,params);
