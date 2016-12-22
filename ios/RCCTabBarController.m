@@ -4,10 +4,6 @@
 #import "RCCManager.h"
 #import "RCCEventEmitter.h"
 
-@interface RCCTabBarController()
-@property (nonatomic, strong) RCCEventEmitter* eventEmitter;
-@end
-
 @implementation RCCTabBarController
 
 
@@ -32,9 +28,6 @@
 {
   self = [super init];
   if (!self) return nil;
-
-  self.eventEmitter = [[RCCEventEmitter alloc] init];
-  [self.eventEmitter setBridge:bridge];
   
   self.tabBar.translucent = YES; // default
 
