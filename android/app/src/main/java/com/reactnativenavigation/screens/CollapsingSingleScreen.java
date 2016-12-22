@@ -38,11 +38,15 @@ public class CollapsingSingleScreen extends SingleScreen {
     @Override
     protected void createContent() {
         contentView = new CollapsingContentView(getContext(), screenParams.screenId, screenParams.navigationParams);
-        if (screenParams.styleParams.drawScreenBelowTopBar) {
-            contentView.setViewMeasurer(new CollapsingViewMeasurer((CollapsingTopBar) topBar, this));
-        }
+        setViewMeasurer();
         setupCollapseDetection((CollapsingTopBar) topBar);
         addView(contentView, createLayoutParams());
+    }
+
+    private void setViewMeasurer() {
+        if (screenParams.styleParams.drawScreenBelowTopBar || screenParams.styleParams.drawScreenAboveBottomTabs) {
+            contentView.setViewMeasurer(new CollapsingViewMeasurer((CollapsingTopBar) topBar, this, screenParams.styleParams));
+        }
     }
 
     private void setupCollapseDetection(final CollapsingTopBar topBar) {
