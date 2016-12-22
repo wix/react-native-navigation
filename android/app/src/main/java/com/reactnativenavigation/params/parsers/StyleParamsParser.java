@@ -14,13 +14,11 @@ public class StyleParamsParser {
     }
 
     public StyleParams parse() {
-        StyleParams result = new StyleParams();
         if (params == null) {
-            result.titleBarDisabledButtonColor = getTitleBarDisabledButtonColor();
-            result.topBarElevationShadowEnabled = true;
-            return result;
+            return createDefaultStyleParams();
         }
 
+        StyleParams result = new StyleParams();
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
         result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
@@ -55,8 +53,8 @@ public class StyleParamsParser {
         result.bottomTabsHidden = getBoolean("bottomTabsHidden", getDefaultBottomTabsHidden());
         result.drawScreenAboveBottomTabs = !result.bottomTabsHidden &&
                                            params.getBoolean("drawScreenAboveBottomTabs", getDefaultDrawScreenAboveBottomTabs());
-        result.bottomTabsHiddenOnScroll =
-                getBoolean("bottomTabsHiddenOnScroll", getDefaultBottomTabsHiddenOnScroll());
+        result.drawScreenAboveBottomTabs = drawScreenUnderBottomTabsIfTitleBarIsHiddenOnScroll(result);
+        result.bottomTabsHiddenOnScroll = getBoolean("bottomTabsHiddenOnScroll", getDefaultBottomTabsHiddenOnScroll());
         result.bottomTabsColor = getColor("bottomTabsColor", getDefaultBottomTabsColor());
         result.bottomTabsButtonColor = getColor("bottomTabsButtonColor", getDefaultBottomTabsButtonColor());
         result.selectedBottomTabsButtonColor =
@@ -68,6 +66,18 @@ public class StyleParamsParser {
         result.forceTitlesDisplay = getBoolean("forceTitlesDisplay", getDefaultForceTitlesDisplay());
 
         return result;
+    }
+
+    private StyleParams createDefaultStyleParams() {
+        StyleParams result = new StyleParams();
+        result.titleBarDisabledButtonColor = getTitleBarDisabledButtonColor();
+        result.topBarElevationShadowEnabled = true;
+        result.titleBarHideOnScroll = false;
+        return result;
+    }
+
+    private boolean drawScreenUnderBottomTabsIfTitleBarIsHiddenOnScroll(StyleParams result) {
+        return !result.titleBarHideOnScroll;
     }
 
     private StyleParams.Color getDefaultContextualMenuStatusBarColor() {

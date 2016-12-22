@@ -1,5 +1,6 @@
 package com.reactnativenavigation.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
@@ -15,6 +16,7 @@ import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
 import com.reactnativenavigation.views.collapsingToolbar.ViewCollapser;
 import com.reactnativenavigation.views.utils.ScrollViewDetector;
 
+@SuppressLint("ViewConstructor")
 public class CollapsingContentView extends ContentView implements CollapsingView {
 
     private @Nullable ScrollViewDelegate scrollViewDelegate;
@@ -46,7 +48,7 @@ public class CollapsingContentView extends ContentView implements CollapsingView
     public void onViewAdded(final View child) {
         super.onViewAdded(child);
         if (scrollViewDetector != null) {
-            scrollViewDetector.detectScrollViewAdded(child);
+            scrollViewDetector.findScrollView(child);
         }
     }
 
