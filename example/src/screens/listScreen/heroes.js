@@ -1,10 +1,28 @@
 export default heroes = [
   {
-    title: 'Earthshaker',
-    icon: require('../../../img/heroes/earthshaker_full.png')
+    title: 'Bounty Hunter',
+    icon: require('../../../img/heroes/bouny_hunter.png'),
+    header: require('../../../img/heroes/earthshaker_header.png')
   },
   {
-    title: 'Sven',
-    icon: require('../../../img/heroes/sven_full.png')
+    title: 'Templar Assasin',
+    icon: require('../../../img/heroes/templar_assasin.png'),
+    header: require('../../../img/heroes/sven_header.jpg')
+  },
+  {
+    title: 'Oracle',
+    icon: require('../../../img/heroes/oracle.png'),
+    header: require('../../../img/heroes/sven_header.jpg')
+  },
+  {
+    title: 'Earthspirit',
+    icon: require('../../../img/heroes/earthspirit.png'),
+    header: require('../../../img/heroes/sven_header.jpg')
+  },
+  {
+    title: 'Skywrath Mage',
+    icon: require('../../../img/heroes/skywrath_mage.png'),
+    header: require('../../../img/heroes/sven_header.jpg')
   }
+
 ];
