@@ -1,11 +1,11 @@
 package com.reactnativenavigation.params.parsers;
 
-import com.reactnativenavigation.params.Interpolation;
+import com.reactnativenavigation.params.InterpolationParams;
 import com.reactnativenavigation.views.sharedElementTransition.SharedElementTransition;
 
 public class SharedElementTransitionParams {
     public int fromViewTag;
-    public Interpolation interpolation;
+    public InterpolationParams interpolation;
     public SharedElementTransition view;
     public String key;
 

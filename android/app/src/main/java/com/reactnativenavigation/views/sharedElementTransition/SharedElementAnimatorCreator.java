@@ -5,33 +5,15 @@ import android.animation.ObjectAnimator;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.reactnativenavigation.views.utils.AnimatorPath;
+import com.reactnativenavigation.views.utils.PathEvaluator;
+
 import java.util.ArrayList;
 import java.util.List;
 
 class SharedElementAnimatorCreator {
-    private interface OrderedAnimationValues {
-        float[] get(float... values);
-    }
-
     private final SharedElementTransition from;
     private final SharedElementTransition to;
-    private OrderedAnimationValues values = new OrderedAnimationValues() {
-        @Override
-        public float[] get(float... values) {
-            return values;
-        }
-    };
-    private OrderedAnimationValues reversedValues = new OrderedAnimationValues() {
-        @Override
-        public float[] get(float... values) {
-            for(int i = 0; i < values.length / 2; i++) {
-                float temp = values[i];
-                values[i] = values[values.length - i - 1];
-                values[values.length - i - 1] = temp;
-            }
-            return values;
-        }
-    };
 
     SharedElementAnimatorCreator(SharedElementTransition from, SharedElementTransition to) {
         this.from = from;
@@ -39,24 +21,42 @@ class SharedElementAnimatorCreator {
     }
 
     List<Animator> createReverse() {
-        return create(reversedValues);
+        return create(new ReversedAnimatorValuesResolver(to, from));
     }
 
     public List<Animator> create() {
-        return create(values);
+        return create(new AnimatorValuesResolver(from, to));
     }
 
     @NonNull
-    private List<Animator> create(OrderedAnimationValues orderedAnimationValues) {
+    private List<Animator> create(AnimatorValuesResolver resolver) {
         List<Animator> result = new ArrayList<>();
-        createXAnimator(result, orderedAnimationValues);
-        createYAnimator(result, orderedAnimationValues);
+//        createXAnimator(result, orderedAnimationValues);
+//        createYAnimator(result, orderedAnimationValues);
+
+        createCurvedMotionAnimator(result, resolver);
+
 //        createScaleXAnimator(result);
 //        createScaleYAnimator(result);
         return result;
     }
 
-    private void createXAnimator(List<Animator> result, OrderedAnimationValues values) {
+    private void createCurvedMotionAnimator(List<Animator> result, AnimatorValuesResolver resolver) {
+        if (resolver.dx != 0 || resolver.dy > 0) {
+            AnimatorPath path = new AnimatorPath();
+            path.moveTo(resolver.startX, resolver.startY);
+            path.curveTo(resolver.control0X, resolver.control0Y, resolver.control1X, resolver.control1Y, resolver.endX, resolver.endY);
+            ObjectAnimator a = ObjectAnimator.ofObject(
+                    to,
+                    "curvedMotion",
+                    new PathEvaluator(),
+                    path.getPoints().toArray());
+//            a.setInterpolator(to.interpolation.get());
+            result.add(a);
+        }
+    }
+
+    private void createXAnimator(List<Animator> result, AnimatorValuesResolver values) {
         int[] fromXY = new int[2];
         int[] toXY = new int[2];
         from.getLocationOnScreen(fromXY);
@@ -65,11 +65,13 @@ class SharedElementAnimatorCreator {
         final float fromX = fromXY[0];
         final float toX = toXY[0];
         if (fromX != toX) {
-            result.add(ObjectAnimator.ofFloat(to, View.TRANSLATION_X, values.get(fromX - toX, 0)));
+            ObjectAnimator a = ObjectAnimator.ofFloat(to, View.TRANSLATION_X, values.withOrder(fromX - toX, 0));
+            a.setInterpolator(to.interpolation.get());
+            result.add(a);
         }
     }
 
-    private void createYAnimator(List<Animator> result, OrderedAnimationValues orderedAnimationValues) {
+    private void createYAnimator(List<Animator> result, AnimatorValuesResolver values) {
         int[] fromXY = new int[2];
         int[] toXY = new int[2];
         from.getLocationOnScreen(fromXY);
@@ -77,7 +79,9 @@ class SharedElementAnimatorCreator {
         final int fromY = fromXY[1];
         final int toY = toXY[1];
         if (fromY != toY) {
-            result.add(ObjectAnimator.ofFloat(to, View.TRANSLATION_Y, orderedAnimationValues.get(fromY - toY, 0)));
+            ObjectAnimator a = ObjectAnimator.ofFloat(to, View.TRANSLATION_Y, values.withOrder(fromY - toY, 0));
+            a.setInterpolator(to.interpolation.get());
+            result.add(a);
         }
     }
 
@@ -98,4 +102,10 @@ class SharedElementAnimatorCreator {
             result.add(ObjectAnimator.ofFloat(to, View.SCALE_Y, (float) (fromHeight / toHeight), 1));
         }
     }
+
+//    private Point getLocationOnScreen(View view) {
+//        int[] xy = new int[2];
+//        view.getLocationOnScreen(xy);
+//        return new Point(xy[0], xy[1]);
+//    }
 }
