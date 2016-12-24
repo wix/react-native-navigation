@@ -8,9 +8,8 @@ import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.react.ImageLoader;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ScreenParamsParser extends Parser {
     private static final String KEY_TITLE = "title";
@@ -56,16 +55,14 @@ public class ScreenParamsParser extends Parser {
         return result;
     }
 
-    private static Map<String, SharedElementTransitionParams> getSharedElementsTransitions(Bundle params) {
+    private static List<String> getSharedElementsTransitions(Bundle params) {
         Bundle sharedElements = params.getBundle("sharedElements");
         if (sharedElements == null) {
-            return new HashMap<>();
+            return new ArrayList<>();
         }
-        Map<String, SharedElementTransitionParams> result = new HashMap<>();
+        List<String> result = new ArrayList<>();
         for (String key : sharedElements.keySet()) {
-            SharedElementTransitionParams sharedElement =
-                    new SharedElementTransitionParamsParser(sharedElements.getBundle(key)).parse();
-            result.put(sharedElement.key, sharedElement);
+            result.add(sharedElements.getString(key));
         }
         return result;
     }

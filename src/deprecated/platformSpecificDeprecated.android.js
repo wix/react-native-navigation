@@ -73,7 +73,7 @@ function navigatorPush(navigator, params) {
   addNavigationStyleParams(params);
 
   adaptTopTabs(params, params.navigatorID);
-  findSharedElementsNodeHandles(params);
+  // findSharedElementsNodeHandles(params);
 
   params.screenId = params.screen;
   let adapted = adaptNavigationStyleToScreenStyle(params);
@@ -81,18 +81,6 @@ function navigatorPush(navigator, params) {
   adapted.overrideBackPress = params.overrideBackPress;
 
   newPlatformSpecific.push(adapted);
-}
-
-function findSharedElementsNodeHandles(params) {
-  if (params.sharedElements) {
-    let sharedElements = [];
-    params.sharedElements.forEach((sharedElement, idx) => {
-      params.sharedElements[idx] = {
-        ...sharedElement,
-        ref: ReactNative.findNodeHandle(sharedElement.ref)
-      };
-    });
-  }
 }
 
 function navigatorPop(navigator, params) {
