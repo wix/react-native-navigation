@@ -42,7 +42,7 @@ class SharedElementAnimatorCreator {
     }
 
     private void createCurvedMotionAnimator(List<Animator> result, AnimatorValuesResolver resolver) {
-        if (resolver.dx != 0 || resolver.dy > 0) {
+        if (resolver.dx != 0 || resolver.dy != 0) {
             AnimatorPath path = new AnimatorPath();
             path.moveTo(resolver.startX, resolver.startY);
             path.curveTo(resolver.control0X, resolver.control0Y, resolver.control1X, resolver.control1Y, resolver.endX, resolver.endY);
@@ -95,17 +95,11 @@ class SharedElementAnimatorCreator {
     }
 
     private void createScaleYAnimator(List<Animator> result) {
-        final int fromHeight = from.getWidth();
-        final int toHeight = to.getWidth();
+        final int fromHeight = from.getHeight();
+        final int toHeight = to.getHeight();
         if (fromHeight != toHeight) {
 //            to.setPivotY(from.getY());
             result.add(ObjectAnimator.ofFloat(to, View.SCALE_Y, (float) (fromHeight / toHeight), 1));
         }
     }
-
-//    private Point getLocationOnScreen(View view) {
-//        int[] xy = new int[2];
-//        view.getLocationOnScreen(xy);
-//        return new Point(xy[0], xy[1]);
-//    }
 }

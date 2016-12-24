@@ -13,15 +13,11 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
-import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.uimanager.NativeViewHierarchyManager;
-import com.facebook.react.uimanager.UIBlock;
-import com.facebook.react.uimanager.UIManagerModule;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.screens.Screen;
+import com.reactnativenavigation.views.utils.Point;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ViewUtils {
@@ -153,18 +149,9 @@ public class ViewUtils {
         return findParentScreen(parent.getParent());
     }
 
-    public static void resolveViewsByTag(final List<Integer> _tags, final Task<View[]> onResolved) {
-        ReactContext context = NavigationApplication.instance.getReactGateway().getReactContext();
-        UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
-        uiManager.addUIBlock(new UIBlock() {
-            @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
-                final View[] result = new View[_tags.size()];
-                for (int i = 0; i < _tags.size(); i++) {
-                    result[i] = nativeViewHierarchyManager.resolveView(_tags.get(i));
-                }
-                onResolved.run(result);
-            }
-        });
+    public static Point getLocationOnScreen(View view) {
+        int[] xy = new int[2];
+        view.getLocationOnScreen(xy);
+        return new Point(xy[0], xy[1]);
     }
 }
