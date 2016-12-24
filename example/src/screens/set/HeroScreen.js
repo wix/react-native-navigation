@@ -8,10 +8,11 @@ import {
   Image
 } from 'react-native';
 import {SharedElementTransition} from 'react-native-navigation';
+import * as setStyles from './styles';
 
 export default class HeroScreen extends Component {
   static navigatorStyle = {
-    drawUnderNavBar: false,
+    ...setStyles.navigatorStyle
   };
 
   constructor(props) {
@@ -32,6 +33,15 @@ export default class HeroScreen extends Component {
           key={this.props.sharedIconId}
           sharedElementId={this.props.sharedIconId}
           style={styles.iconContainer}
+          interpolation={
+            {
+              type: 'path',
+              controlX1: '0.4',
+              controlY1: '0',
+              controlX2: '0.5',
+              controlY2: '0.5'
+            }
+          }
         >
           <Image
             source={this.props.icon}
@@ -56,7 +66,7 @@ const styles = StyleSheet.create({
   iconContainer: {
     position: 'absolute',
     top: 90,
-    left: 16
+    left: 100
   },
   header: {
     height: 120,

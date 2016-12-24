@@ -4,13 +4,14 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  TouchableWithoutFeedback ,
+  TouchableWithoutFeedback,
   StyleSheet,
   ListView,
   Image
 } from 'react-native';
 import heroes from './heroes';
 import {SharedElementTransition} from 'react-native-navigation';
+import * as setStyles from './styles';
 
 const LOREM_IPSUM = 'Lorem ipsum dolor sit amet, ius ad pertinax oportere accommodare, an vix civibus corrumpit referrentur. Te nam case ludus inciderint, te mea facilisi adipiscing. Sea id integre luptatum. In tota sale consequuntur nec. Erat ocurreret mei ei. Eu paulo sapientem vulputate est, vel an accusam intellegam interesset. Nam eu stet pericula reprimique, ea vim illud modus, putant invidunt reprehendunt ne qui.';
 const hashCode = function(str) {
@@ -22,11 +23,8 @@ const hashCode = function(str) {
 };
 
 export default class ListScreen extends Component {
-
   static navigatorStyle = {
-    navBarHideOnScroll: true,
-    screenBackgroundColor: '#90CAF9',
-    drawUnderTabBar: true
+    ...setStyles.navigatorStyle
   };
 
   static navigatorButtons = {
@@ -61,7 +59,7 @@ export default class ListScreen extends Component {
     fab: {
       collapsedId: 'share',
       collapsedIcon: require('../../../img/navicon_add.png'),
-      backgroundColor: '#607D8B'
+      backgroundColor: '#31363c'
     }
   };
 
@@ -102,7 +100,7 @@ export default class ListScreen extends Component {
           sharedElementId
         })}
       >
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', backgroundColor: '#1f2222'}}>
           <View>
             <SharedElementTransition
               key={sharedElementId}
@@ -174,7 +172,8 @@ const styles = StyleSheet.create({
     height: 110,
     flexDirection: 'row',
     justifyContent: 'center',
-    borderWidth: 1
+    borderWidth: 1,
+    color: '#1f2222'
   },
   imageContainer: {
     justifyContent: 'center'
@@ -186,7 +185,8 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
-    marginLeft: 5
+    marginLeft: 5,
+    color: '#cacaca'
   }
 });
 

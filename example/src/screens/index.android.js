@@ -9,8 +9,8 @@ import ModalScreen from './ModalScreen';
 import CollapsingTopBarScreen from './CollapsingTopBarScreen';
 import InAppNotification from './InAppNotification';
 import LightBoxScreen from './LightBoxScreen';
-import ListScreen from './listScreen/ListScreen';
-import HeroScreen from './HeroScreen';
+import ListScreen from './set/ListScreen';
+import HeroScreen from './set/HeroScreen';
 
 // register all screens of the app (including internal ones)
 export function registerScreens() {
