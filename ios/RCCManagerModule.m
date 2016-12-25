@@ -285,9 +285,9 @@ modalShowLightBox:(NSDictionary*)params)
 }
 
 RCT_EXPORT_METHOD(
-modalDismissLightBox)
+modalDismissLightBox:(NSDictionary*)params)
 {
-    [RCCLightBox dismiss];
+    [RCCLightBox dismissWithParams:params];
 }
 
 RCT_EXPORT_METHOD(

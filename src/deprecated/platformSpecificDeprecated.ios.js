@@ -66,7 +66,8 @@ function startTabBasedApp(params) {
       return (
         <TabBarControllerIOS
           id={controllerID + '_tabs'}
-          style={params.tabsStyle}>
+          style={params.tabsStyle}
+          selectedIndex={params.selectedIndex}>
           {
             params.tabs.map(function(tab, index) {
               return (
@@ -376,6 +377,19 @@ function navigatorSwitchToTab(navigator, params) {
   }
 }
 
+function navigatorSetTabIcons(navigator, params) {
+  const controllerID = navigator.navigatorID.split('_')[0];
+  if (params.tabIndex || params.tabIndex === 0) {
+    Controllers.TabBarControllerIOS(controllerID + '_tabs').setIcons({
+      tabIndex: params.tabIndex,
+      icon: params.icon,
+      selectedIcon: params.selectedIcon,
+      remoteIcon: params.remoteIcon,
+      remoteSelectedIcon: params.remoteSelectedIcon
+    });
+  }
+}
+
 function navigatorSetButtons(navigator, navigatorEventID, params) {
   if (params.leftButtons) {
     const buttons = params.leftButtons.slice(); // clone
@@ -480,13 +494,18 @@ function showLightBox(params) {
 
   Modal.showLightBox({
     component: params.screen,
+    componentAnimated: params.componentAnimated,
+    overlayAnimated: params.overlayAnimated,
     passProps: passProps,
     style: params.style
   });
 }
 
 function dismissLightBox(params) {
-  Modal.dismissLightBox();
+  Modal.dismissLightBox({
+    componentAnimated: params.componentAnimated,
+    overlayAnimated: params.overlayAnimated,
+  });
 }
 
 function showInAppNotification(params) {
@@ -586,6 +605,7 @@ export default {
   navigatorToggleTabs,
   navigatorSetTabBadge,
   navigatorSwitchToTab,
+  navigatorSetTabIcons,
   navigatorToggleNavBar,
   showContextualMenu,
   dismissContextualMenu
