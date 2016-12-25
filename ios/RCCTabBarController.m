@@ -2,8 +2,26 @@
 #import "RCCViewController.h"
 #import "RCTConvert.h"
 #import "RCCManager.h"
+#import "RCTUIManager.h"
+
+@interface RCTUIManager ()
+
+- (void)configureNextLayoutAnimation:(NSDictionary *)config
+                        withCallback:(RCTResponseSenderBlock)callback
+                       errorCallback:(__unused RCTResponseSenderBlock)errorCallback;
+
+@end
 
 @implementation RCCTabBarController
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+  id queue = [[RCCManager sharedInstance].getBridge uiManager].methodQueue;
+  dispatch_async(queue, ^{
+    [[[RCCManager sharedInstance].getBridge uiManager] configureNextLayoutAnimation:nil withCallback:^(NSArray* arr){} errorCallback:^(NSArray* arr){}];
+  });
+  
+  return YES;
+}
 
 - (UIImage *)image:(UIImage*)image withColor:(UIColor *)color1
 {
@@ -25,6 +43,8 @@
 {
   self = [super init];
   if (!self) return nil;
+  
+  self.delegate = self;
   
   self.tabBar.translucent = YES; // default
   
