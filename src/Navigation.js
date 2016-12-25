@@ -43,7 +43,7 @@ function _registerComponentNoRedux(screenID, generator) {
 
       render() {
         return (
-          <InternalComponent testId={screenId} navigator={this.navigator} {...this.state.internalProps} />
+          <InternalComponent testID={screenId} navigator={this.navigator} {...this.state.internalProps} />
         );
       }
     };
@@ -75,7 +75,7 @@ function _registerComponentRedux(screenID, generator, store, Provider) {
       render() {
         return (
           <Provider store={store}>
-            <InternalComponent testId={screenId} navigator={this.navigator} {...this.state.internalProps} />
+            <InternalComponent testID={screenId} navigator={this.navigator} {...this.state.internalProps} />
           </Provider>
         );
       }
