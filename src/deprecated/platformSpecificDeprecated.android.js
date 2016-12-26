@@ -278,7 +278,10 @@ function navigatorSetButtons(navigator, navigatorEventID, params) {
       }
     }
   }
-  newPlatformSpecific.setScreenTitleBarButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton);
+  const fab = getFab(params);
+  console.log('params: ', JSON.stringify(params));
+  console.log('fab: ', JSON.stringify(fab));
+  newPlatformSpecific.setScreenButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton, fab);
 }
 
 function navigatorSetTabBadge(navigator, params) {
@@ -411,32 +414,40 @@ function addNavigatorButtons(screen, sideMenuParams) {
 }
 
 function getFab(screen) {
+  let fab = screen.fab;
   if (screen.navigatorButtons && screen.navigatorButtons.fab) {
-    const fab = screen.navigatorButtons.fab;
-    const collapsedIconUri = resolveAssetSource(fab.collapsedIcon);
-    if (!collapsedIconUri) {
-      return;
-    }
-    fab.collapsedIcon = collapsedIconUri.uri;
-    if (fab.expendedIcon) {
-      const expendedIconUri = resolveAssetSource(fab.expendedIcon);
-      if (expendedIconUri) {
-        fab.expendedIcon = expendedIconUri.uri;
-      }
-    }
-    if (fab.backgroundColor) {
-      fab.backgroundColor = processColor(fab.backgroundColor);
-    }
-
-    if (fab.actions) {
-      _.forEach(fab.actions, (action) => {
-        action.icon = resolveAssetSource(action.icon).uri;
-        return action;
-      });
-    }
-
-    return fab;
+    fab = screen.navigatorButtons.fab;
   }
+  if (fab === null || fab === undefined) {
+    return;
+  }
+  if (Object.keys(fab).length === 0 ) {
+    return {};
+  }
+
+  const collapsedIconUri = resolveAssetSource(fab.collapsedIcon);
+  if (!collapsedIconUri) {
+    return;
+  }
+  fab.collapsedIcon = collapsedIconUri.uri;
+  if (fab.expendedIcon) {
+    const expendedIconUri = resolveAssetSource(fab.expendedIcon);
+    if (expendedIconUri) {
+      fab.expendedIcon = expendedIconUri.uri;
+    }
+  }
+  if (fab.backgroundColor) {
+    fab.backgroundColor = processColor(fab.backgroundColor);
+  }
+
+  if (fab.actions) {
+    _.forEach(fab.actions, (action) => {
+      action.icon = resolveAssetSource(action.icon).uri;
+      return action;
+    });
+  }
+
+  return fab;
 }
 
 function createSideMenuButton() {

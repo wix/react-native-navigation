@@ -44,6 +44,9 @@ public class FloatingActionButtonCoordinator {
 
     public void add(FabParams params) {
         this.params = params;
+        if (!params.isValid()) {
+            return;
+        }
         createCollapsedFab();
         createExpendedFab();
         setStyle();

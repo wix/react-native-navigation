@@ -7,6 +7,7 @@ import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -206,6 +207,19 @@ public class NavigationCommandsHandler {
             @Override
             public void run() {
                 currentActivity.setTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarButtons);
+            }
+        });
+    }
+
+    public static void setScreenFab(final String screenInstanceId, final String navigatorEventId, final FabParams fab) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.setScreenFab(screenInstanceId, navigatorEventId, fab);
             }
         });
     }
