@@ -36,6 +36,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   
   self = [super initWithRootViewController:viewController];
   if (!self) return nil;
+  self.delegate = self;
   
   self.navigationBar.translucent = NO; // default
   
@@ -76,6 +77,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [mergedStyle removeObjectForKey:@"navBarBlur"];
       [mergedStyle removeObjectForKey:@"navBarTranslucent"];
       [mergedStyle removeObjectForKey:@"statusBarHideWithNavBar"];
+      [mergedStyle removeObjectForKey:@"statusBarTextColorSchemeSingleScreen"];
       
       [mergedStyle addEntriesFromDictionary:navigatorStyle];
       navigatorStyle = mergedStyle;
@@ -292,6 +294,18 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   
   [titleViewHelper setup:style];
   
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+  return [self.topViewController preferredStatusBarStyle];
+}
+
+
+#pragma mark - UINavigationControllerDelegate
+
+
+-(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+  [viewController setNeedsStatusBarAppearanceUpdate];
 }
 
 

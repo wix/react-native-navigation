@@ -233,19 +233,33 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     {
         viewController.navigationController.navigationBar.tintColor = nil;
     }
-    
-    NSString *statusBarTextColorScheme = self.navigatorStyle[@"statusBarTextColorScheme"];
-    if (statusBarTextColorScheme && [statusBarTextColorScheme isEqualToString:@"light"])
+  
+    NSString *statusBarTextColorSchemeSingleScreen = self.navigatorStyle[@"statusBarTextColorSchemeSingleScreen"];
+    if (statusBarTextColorSchemeSingleScreen && [statusBarTextColorSchemeSingleScreen isEqualToString:@"light"])
     {
-        viewController.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-        self._statusBarTextColorSchemeLight = YES;
+      self._statusBarTextColorSchemeLight = YES;
     }
     else
     {
-        viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
-        self._statusBarTextColorSchemeLight = NO;
+      self._statusBarTextColorSchemeLight = NO;
     }
-    
+  
+    // incase statusBarTextColorSchemeSingleScreen exists ignore the statusBarTextColorScheme which more globaly
+    if (!statusBarTextColorSchemeSingleScreen) {
+      NSString *statusBarTextColorScheme = self.navigatorStyle[@"statusBarTextColorScheme"];
+      if (statusBarTextColorScheme && [statusBarTextColorScheme isEqualToString:@"light"] && !statusBarTextColorSchemeSingleScreen)
+      {
+          viewController.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+          self._statusBarTextColorSchemeLight = YES;
+        
+      }
+      else
+      {
+          viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+          self._statusBarTextColorSchemeLight = NO;
+      }
+    }
+  
     NSNumber *navBarHidden = self.navigatorStyle[@"navBarHidden"];
     BOOL navBarHiddenBool = navBarHidden ? [navBarHidden boolValue] : NO;
     if (viewController.navigationController.navigationBarHidden != navBarHiddenBool)
