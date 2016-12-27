@@ -1,7 +1,7 @@
 package com.reactnativenavigation.views.sharedElementTransition;
 
-import android.view.View;
-
+import com.reactnativenavigation.params.InterpolationParams;
+import com.reactnativenavigation.params.PathInterpolationParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.utils.Point;
 
@@ -15,28 +15,46 @@ class AnimatorValuesResolver {
     int startY;
     int endX;
     int endY;
-    float control0X;
-    float control0Y;
-    float control1X;
-    float control1Y;
+    float controlX1;
+    float controlY1;
+    float controlX2;
+    float controlY2;
 
-    AnimatorValuesResolver(View from, View to) {
+    AnimatorValuesResolver(SharedElementTransition from, SharedElementTransition to, InterpolationParams interpolation) {
         fromXy = ViewUtils.getLocationOnScreen(from);
         toXy = ViewUtils.getLocationOnScreen(to);
-        calculate();
+        calculate(interpolation);
     }
 
-    protected void calculate() {
+    protected void calculate(InterpolationParams interpolation) {
+        calculateDeltas();
+        calculateStartPoint();
+        calculateEndPoint();
+        if (interpolation instanceof PathInterpolationParams) {
+            calculateControlPoints((PathInterpolationParams) interpolation);
+        }
+    }
+
+    private void calculateDeltas() {
         dx = fromXy.x - toXy.x;
         dy = fromXy.y - toXy.y;
-        startX = dx;
-        startY = dy;
+    }
+
+    private void calculateEndPoint() {
         endX = 0;
         endY = 0;
-        control0X = dx / 2;
-        control0Y = dy;
-        control1X = 0;
-        control1Y = dy / 2;
+    }
+
+    private void calculateStartPoint() {
+        startX = dx;
+        startY = dy;
+    }
+
+    private void calculateControlPoints(PathInterpolationParams interpolation) {
+        controlX1 = dx * interpolation.p1.x;
+        controlY1 = dy * interpolation.p1.y;
+        controlX2 = dx * interpolation.p2.x;
+        controlY2 = dy * interpolation.p2.y;
     }
 
     float[] withOrder(float... values) {

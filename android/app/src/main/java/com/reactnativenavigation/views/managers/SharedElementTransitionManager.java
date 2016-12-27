@@ -27,7 +27,8 @@ public class SharedElementTransitionManager extends ViewGroupManager<SharedEleme
     @ReactProp(name = "interpolation")
     public void setInterpolation(SharedElementTransition elementTransition, ReadableMap interpolation) {
         InterpolationParser parser = new InterpolationParser(BundleConverter.toBundle(interpolation));
-        elementTransition.setInterpolation(parser.parse());
+        elementTransition.setShowInterpolation(parser.parseShowInterpolation());
+        elementTransition.setHideInterpolation(parser.parseHideInterpolation());
     }
 
     @Override

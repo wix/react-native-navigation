@@ -18,22 +18,22 @@ public class SharedElementsAnimator {
     private List<Animator> createTransitionAnimators() {
         List<Animator> result = new ArrayList<>();
         for (String key : sharedElements.toElements.keySet()) {
-            result.addAll(new SharedElementAnimatorCreator(sharedElements.getFromElement(key), sharedElements.getToElement(key)).create());
+            result.addAll(new SharedElementAnimatorCreator(sharedElements.getFromElement(key), sharedElements.getToElement(key)).createShow());
         }
         return result;
     }
 
-    private List<Animator> createReversedTransitionAnimators() {
+    private List<Animator> createHideTransitionAnimators() {
         List<Animator> result = new ArrayList<>();
         for (String key : sharedElements.toElements.keySet()) {
-            result.addAll(new SharedElementAnimatorCreator(sharedElements.getToElement(key), sharedElements.getFromElement(key)).createReverse());
+            result.addAll(new SharedElementAnimatorCreator(sharedElements.getToElement(key), sharedElements.getFromElement(key)).createHide());
         }
         return result;
     }
 
     public void show(final Runnable onAnimationEnd) {
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(500);
+        animatorSet.setDuration(300);
         animatorSet.playTogether(createTransitionAnimators());
         animatorSet.setInterpolator(new LinearInterpolator());
         animatorSet.addListener(new AnimatorListenerAdapter() {
@@ -52,8 +52,8 @@ public class SharedElementsAnimator {
 
     public void hide(final Runnable onAnimationEnd) {
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(500);
-        animatorSet.playTogether(createReversedTransitionAnimators());
+        animatorSet.setDuration(300);
+        animatorSet.playTogether(createHideTransitionAnimators());
         animatorSet.setInterpolator(new LinearInterpolator());
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override

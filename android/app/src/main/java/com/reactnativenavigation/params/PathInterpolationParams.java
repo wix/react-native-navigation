@@ -3,22 +3,18 @@ package com.reactnativenavigation.params;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.view.animation.Interpolator;
-import android.view.animation.PathInterpolator;
+
+import com.reactnativenavigation.views.sharedElementTransition.ControlPoint;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class PathInterpolationParams extends InterpolationParams {
-    public float controlX1;
-    public float controlY1;
-    public float controlX2;
-    public float controlY2;
+
+    public ControlPoint p1;
+    public ControlPoint p2;
 
     @Override
     public Interpolator get() {
-        return  new PathInterpolator(
-                controlX1,
-                controlY1,
-                controlX2,
-                controlY2
-        );
+        // Not called
+        return null;
     }
 }

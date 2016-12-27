@@ -5,6 +5,9 @@ import android.animation.ObjectAnimator;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.reactnativenavigation.params.InterpolationParams;
+import com.reactnativenavigation.params.InterpolationParams.Easing;
+import com.reactnativenavigation.params.PathInterpolationParams;
 import com.reactnativenavigation.views.utils.AnimatorPath;
 import com.reactnativenavigation.views.utils.PathEvaluator;
 
@@ -20,67 +23,57 @@ class SharedElementAnimatorCreator {
         this.to = to;
     }
 
-    List<Animator> createReverse() {
-        return create(new ReversedAnimatorValuesResolver(to, from));
+    List<Animator> createHide() {
+        return create(new ReversedAnimatorValuesResolver(to, from, to.hideInterpolation), to.hideInterpolation);
     }
 
-    public List<Animator> create() {
-        return create(new AnimatorValuesResolver(from, to));
+    public List<Animator> createShow() {
+        return create(new AnimatorValuesResolver(from, to, to.showInterpolation), to.showInterpolation);
     }
 
     @NonNull
-    private List<Animator> create(AnimatorValuesResolver resolver) {
+    private List<Animator> create(AnimatorValuesResolver resolver, InterpolationParams interpolation) {
         List<Animator> result = new ArrayList<>();
-//        createXAnimator(result, orderedAnimationValues);
-//        createYAnimator(result, orderedAnimationValues);
 
-        createCurvedMotionAnimator(result, resolver);
+        if (interpolation instanceof PathInterpolationParams) {
+            createCurvedMotionAnimator(result, resolver, interpolation.easing);
+        } else {
+            createXAnimator(result, resolver, interpolation);
+            createYAnimator(result, resolver, interpolation);
+        }
 
 //        createScaleXAnimator(result);
 //        createScaleYAnimator(result);
         return result;
     }
 
-    private void createCurvedMotionAnimator(List<Animator> result, AnimatorValuesResolver resolver) {
+    private void createCurvedMotionAnimator(List<Animator> result, AnimatorValuesResolver resolver, Easing easing) {
         if (resolver.dx != 0 || resolver.dy != 0) {
             AnimatorPath path = new AnimatorPath();
             path.moveTo(resolver.startX, resolver.startY);
-            path.curveTo(resolver.control0X, resolver.control0Y, resolver.control1X, resolver.control1Y, resolver.endX, resolver.endY);
-            ObjectAnimator a = ObjectAnimator.ofObject(
+            path.curveTo(resolver.controlX1, resolver.controlY1, resolver.controlX2, resolver.controlY2, resolver.endX, resolver.endY);
+            ObjectAnimator animator = ObjectAnimator.ofObject(
                     to,
                     "curvedMotion",
                     new PathEvaluator(),
                     path.getPoints().toArray());
-//            a.setInterpolator(to.interpolation.get());
+            animator.setInterpolator(easing.getInterpolator());
+            result.add(animator);
+        }
+    }
+
+    private void createXAnimator(List<Animator> result, AnimatorValuesResolver resolver, InterpolationParams interpolation) {
+        if (resolver.dx != 0) {
+            ObjectAnimator a = ObjectAnimator.ofFloat(to, View.TRANSLATION_X, resolver.startX, resolver.endX);
+            a.setInterpolator(interpolation.easing.getInterpolator());
             result.add(a);
         }
     }
 
-    private void createXAnimator(List<Animator> result, AnimatorValuesResolver values) {
-        int[] fromXY = new int[2];
-        int[] toXY = new int[2];
-        from.getLocationOnScreen(fromXY);
-        to.getLocationOnScreen(toXY);
-
-        final float fromX = fromXY[0];
-        final float toX = toXY[0];
-        if (fromX != toX) {
-            ObjectAnimator a = ObjectAnimator.ofFloat(to, View.TRANSLATION_X, values.withOrder(fromX - toX, 0));
-            a.setInterpolator(to.interpolation.get());
-            result.add(a);
-        }
-    }
-
-    private void createYAnimator(List<Animator> result, AnimatorValuesResolver values) {
-        int[] fromXY = new int[2];
-        int[] toXY = new int[2];
-        from.getLocationOnScreen(fromXY);
-        to.getLocationOnScreen(toXY);
-        final int fromY = fromXY[1];
-        final int toY = toXY[1];
-        if (fromY != toY) {
-            ObjectAnimator a = ObjectAnimator.ofFloat(to, View.TRANSLATION_Y, values.withOrder(fromY - toY, 0));
-            a.setInterpolator(to.interpolation.get());
+    private void createYAnimator(List<Animator> result, AnimatorValuesResolver resolver, InterpolationParams interpolation) {
+        if (resolver.dy > 0) {
+            ObjectAnimator a = ObjectAnimator.ofFloat(to, View.TRANSLATION_Y, resolver.startY, resolver.endY);
+            a.setInterpolator(interpolation.easing.getInterpolator());
             result.add(a);
         }
     }

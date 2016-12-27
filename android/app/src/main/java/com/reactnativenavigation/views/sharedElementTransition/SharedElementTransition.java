@@ -14,10 +14,15 @@ import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.utils.PathPoint;
 
 public class SharedElementTransition extends ViewGroup {
-    public InterpolationParams interpolation;
+    public InterpolationParams showInterpolation;
+    public InterpolationParams hideInterpolation;
 
-    public void setInterpolation(InterpolationParams interpolation) {
-        this.interpolation = interpolation;
+    public void setShowInterpolation(InterpolationParams showInterpolation) {
+        this.showInterpolation = showInterpolation;
+    }
+
+    public void setHideInterpolation(InterpolationParams hideInterpolation) {
+        this.hideInterpolation = hideInterpolation;
     }
 
     public SharedElementTransition(Context context) {
