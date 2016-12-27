@@ -249,7 +249,7 @@
       
       [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:rootView.appProperties[@"navigatorEventID"] body:@
        {
-         @"id": @"tabSelected",
+         @"id": @"bottomTabSelected",
          @"navigatorID": navigatorID,
          @"screenInstanceID": screenInstanceID
        }];
