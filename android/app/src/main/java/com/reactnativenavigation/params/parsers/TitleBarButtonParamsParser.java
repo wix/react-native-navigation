@@ -2,6 +2,7 @@ package com.reactnativenavigation.params.parsers;
 
 import android.os.Bundle;
 
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -32,7 +33,34 @@ public class TitleBarButtonParamsParser extends Parser {
         result.enabled = bundle.getBoolean("enabled", true);
         result.hint = bundle.getString("hint", "");
         result.eventId = bundle.getString("id");
+        result.style = parseBadgeStyle(bundle.getString("badgeStyle"));
+        result.badgeCount = bundle.getInt("badgeCount");
         return result;
+    }
+
+    private ActionItemBadge.BadgeStyles parseBadgeStyle(String style) {
+        if (style == null) {
+            return ActionItemBadge.BadgeStyles.RED;
+        }
+
+        switch (style) {
+            case "grey":
+                return ActionItemBadge.BadgeStyles.GREY;
+            case "darkGrey":
+                return ActionItemBadge.BadgeStyles.DARK_GREY;
+            case "red":
+                return ActionItemBadge.BadgeStyles.RED;
+            case "blue":
+                return ActionItemBadge.BadgeStyles.BLUE;
+            case "green":
+                return ActionItemBadge.BadgeStyles.GREEN;
+            case "purple":
+                return ActionItemBadge.BadgeStyles.PURPLE;
+            case "yellow":
+                return ActionItemBadge.BadgeStyles.YELLOW;
+            default:
+                return ActionItemBadge.BadgeStyles.RED;
+        }
     }
 
     BaseTitleBarButtonParams.ShowAsAction parseShowAsAction(String showAsAction) {
