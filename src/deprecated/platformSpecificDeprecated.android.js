@@ -36,6 +36,7 @@ function startSingleScreenApp(params) {
 }
 
 function adaptTopTabs(screen, navigatorID) {
+  screen.topTabs = _.cloneDeep(screen.topTabs);
   _.forEach(_.get(screen, 'topTabs'), (tab) => {
     addNavigatorParams(tab);
     if (navigatorID) {
@@ -279,8 +280,6 @@ function navigatorSetButtons(navigator, navigatorEventID, params) {
     }
   }
   const fab = getFab(params);
-  console.log('params: ', JSON.stringify(params));
-  console.log('fab: ', JSON.stringify(fab));
   newPlatformSpecific.setScreenButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton, fab);
 }
 
