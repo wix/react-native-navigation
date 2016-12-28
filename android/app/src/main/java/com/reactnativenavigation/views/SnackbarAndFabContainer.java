@@ -5,6 +5,7 @@ import android.support.design.widget.CoordinatorLayout;
 
 import com.reactnativenavigation.events.Event;
 import com.reactnativenavigation.events.EventBus;
+import com.reactnativenavigation.events.FabSetEvent;
 import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.events.Subscriber;
 import com.reactnativenavigation.params.FabParams;
@@ -38,8 +39,11 @@ public class SnackbarAndFabContainer extends CoordinatorLayout implements Snakba
 
     @Override
     public void onEvent(Event event) {
-        if (event.getType() == ScreenChangedEvent.TYPE) {
+        if (ScreenChangedEvent.TYPE.equals(event.getType())) {
             onScreenChange(((ScreenChangedEvent) event).fabParams);
+        }
+        if (FabSetEvent.TYPE.equals(event.getType())) {
+            updateFab(((FabSetEvent) event).fabParams);
         }
     }
 
