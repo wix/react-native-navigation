@@ -14,6 +14,8 @@ import com.reactnativenavigation.views.utils.PathEvaluator;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.animation.ObjectAnimator.ofFloat;
+
 class SharedElementAnimatorCreator {
     private final SharedElementTransition from;
     private final SharedElementTransition to;
@@ -27,72 +29,84 @@ class SharedElementAnimatorCreator {
         return create(new ReversedAnimatorValuesResolver(to, from, to.hideInterpolation), to.hideInterpolation);
     }
 
-    public List<Animator> createShow() {
+    List<Animator> createShow() {
         return create(new AnimatorValuesResolver(from, to, to.showInterpolation), to.showInterpolation);
     }
 
     @NonNull
     private List<Animator> create(AnimatorValuesResolver resolver, InterpolationParams interpolation) {
         List<Animator> result = new ArrayList<>();
-
-        if (interpolation instanceof PathInterpolationParams) {
-            createCurvedMotionAnimator(result, resolver, interpolation.easing);
+        if (shouldAddCurvedMotionAnimator(resolver, interpolation)) {
+            result.add(createCurvedMotionAnimator(resolver, interpolation.easing));
         } else {
-            createXAnimator(result, resolver, interpolation);
-            createYAnimator(result, resolver, interpolation);
+            if (shouldAddLinearMotionXAnimator(resolver)) {
+                result.add(createXAnimator(resolver, interpolation));
+            }
+            if (shouldAddLinearMotionYAnimator(resolver)) {
+                result.add(createYAnimator(resolver, interpolation));
+            }
         }
-
-//        createScaleXAnimator(result);
-//        createScaleYAnimator(result);
+        if (shouldCreateScaleXAnimator(resolver)) {
+            result.add(createScaleXAnimator(resolver));
+        }
+        if (shouldCreateScaleYAnimator(resolver)) {
+            result.add(createScaleYAnimator(resolver));
+        }
         return result;
     }
 
-    private void createCurvedMotionAnimator(List<Animator> result, AnimatorValuesResolver resolver, Easing easing) {
-        if (resolver.dx != 0 || resolver.dy != 0) {
-            AnimatorPath path = new AnimatorPath();
-            path.moveTo(resolver.startX, resolver.startY);
-            path.curveTo(resolver.controlX1, resolver.controlY1, resolver.controlX2, resolver.controlY2, resolver.endX, resolver.endY);
-            ObjectAnimator animator = ObjectAnimator.ofObject(
-                    to,
-                    "curvedMotion",
-                    new PathEvaluator(),
-                    path.getPoints().toArray());
-            animator.setInterpolator(easing.getInterpolator());
-            result.add(animator);
-        }
+    private boolean shouldCreateScaleYAnimator(AnimatorValuesResolver resolver) {
+        return resolver.startScaleY != resolver.endScaleY;
     }
 
-    private void createXAnimator(List<Animator> result, AnimatorValuesResolver resolver, InterpolationParams interpolation) {
-        if (resolver.dx != 0) {
-            ObjectAnimator a = ObjectAnimator.ofFloat(to, View.TRANSLATION_X, resolver.startX, resolver.endX);
-            a.setInterpolator(interpolation.easing.getInterpolator());
-            result.add(a);
-        }
+    private boolean shouldCreateScaleXAnimator(AnimatorValuesResolver resolver) {
+        return resolver.startScaleX != resolver.endScaleX;
     }
 
-    private void createYAnimator(List<Animator> result, AnimatorValuesResolver resolver, InterpolationParams interpolation) {
-        if (resolver.dy > 0) {
-            ObjectAnimator a = ObjectAnimator.ofFloat(to, View.TRANSLATION_Y, resolver.startY, resolver.endY);
-            a.setInterpolator(interpolation.easing.getInterpolator());
-            result.add(a);
-        }
+    private boolean shouldAddLinearMotionXAnimator(AnimatorValuesResolver resolver) {
+        return resolver.dy != 0;
     }
 
-    private void createScaleXAnimator(List<Animator> result) {
-        final int fromWidth = from.getWidth();
-        final int toWidth = to.getWidth();
-        if (fromWidth != toWidth) {
-//            to.setPivotX(from.getX());
-            result.add(ObjectAnimator.ofFloat(to, View.SCALE_X, (float) (fromWidth / toWidth), 1));
-        }
+    private boolean shouldAddLinearMotionYAnimator(AnimatorValuesResolver resolver) {
+        return resolver.dy != 0;
     }
 
-    private void createScaleYAnimator(List<Animator> result) {
-        final int fromHeight = from.getHeight();
-        final int toHeight = to.getHeight();
-        if (fromHeight != toHeight) {
-//            to.setPivotY(from.getY());
-            result.add(ObjectAnimator.ofFloat(to, View.SCALE_Y, (float) (fromHeight / toHeight), 1));
-        }
+    private boolean shouldAddCurvedMotionAnimator(AnimatorValuesResolver resolver, InterpolationParams interpolation) {
+        return interpolation instanceof PathInterpolationParams && (resolver.dx != 0 || resolver.dy != 0);
+    }
+
+    private ObjectAnimator createCurvedMotionAnimator(AnimatorValuesResolver resolver, Easing easing) {
+        AnimatorPath path = new AnimatorPath();
+        path.moveTo(resolver.startX, resolver.startY);
+        path.curveTo(resolver.controlX1, resolver.controlY1, resolver.controlX2, resolver.controlY2, resolver.endX, resolver.endY);
+        ObjectAnimator animator = ObjectAnimator.ofObject(
+                to,
+                "curvedMotion",
+                new PathEvaluator(),
+                path.getPoints().toArray());
+        animator.setInterpolator(easing.getInterpolator());
+        return animator;
+    }
+
+    private ObjectAnimator createXAnimator(AnimatorValuesResolver resolver, InterpolationParams interpolation) {
+        ObjectAnimator animator = ofFloat(to, View.TRANSLATION_X, resolver.startX, resolver.endX);
+        animator.setInterpolator(interpolation.easing.getInterpolator());
+        return animator;
+    }
+
+    private ObjectAnimator createYAnimator(AnimatorValuesResolver resolver, InterpolationParams interpolation) {
+        ObjectAnimator animator = ofFloat(to, View.TRANSLATION_Y, resolver.startY, resolver.endY);
+        animator.setInterpolator(interpolation.easing.getInterpolator());
+        return animator;
+    }
+
+    private ObjectAnimator createScaleXAnimator(AnimatorValuesResolver resolver) {
+        to.setPivotX(0);
+        return ObjectAnimator.ofFloat(to, View.SCALE_X, resolver.startScaleX, resolver.endScaleX);
+    }
+
+    private ObjectAnimator createScaleYAnimator(AnimatorValuesResolver resolver) {
+        to.setPivotY(0);
+        return ObjectAnimator.ofFloat(to, View.SCALE_Y, resolver.startScaleY, resolver.endScaleY);
     }
 }

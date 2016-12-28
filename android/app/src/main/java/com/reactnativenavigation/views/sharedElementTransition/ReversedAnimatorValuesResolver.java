@@ -10,33 +10,47 @@ class ReversedAnimatorValuesResolver extends AnimatorValuesResolver {
     }
 
     @Override
-    protected void calculate(InterpolationParams interpolation) {
-        calculateDelta();
-        calculateStartPoint();
-        calculateEndPoint();
-        if (interpolation instanceof PathInterpolationParams) {
-            calculateControlPoints((PathInterpolationParams) interpolation);
-        }
-    }
-
-    private void calculateControlPoints(PathInterpolationParams interpolation) {
+    protected void calculateControlPoints(PathInterpolationParams interpolation) {
         controlX1 = dx * interpolation.p1.x;
         controlY1 = dy * interpolation.p1.y;
         controlX2 = dx * interpolation.p2.x;
         controlY2 = dy * interpolation.p2.y;
     }
 
-    private void calculateEndPoint() {
+    @Override
+    protected float calculateEndScaleY(SharedElementTransition from, SharedElementTransition to) {
+        return ((float) to.getHeight()) / from.getHeight();
+    }
+
+    @Override
+    protected float calculateStartScaleY(SharedElementTransition from, SharedElementTransition to) {
+        return 1;
+    }
+
+    @Override
+    protected float calculateEndScaleX(SharedElementTransition from, SharedElementTransition to) {
+        return ((float) to.getWidth()) / from.getWidth();
+    }
+
+    @Override
+    protected float calculateStartScaleX(SharedElementTransition from, SharedElementTransition to) {
+        return 1;
+    }
+
+    @Override
+    protected void calculateEndPoint() {
         endX = dx;
         endY = dy;
     }
 
-    private void calculateStartPoint() {
+    @Override
+    protected void calculateStartPoint() {
         startX = 0;
         startY = 0;
     }
 
-    private void calculateDelta() {
+    @Override
+    protected void calculateDeltas() {
         dx = toXy.x - fromXy.x;
         dy = toXy.y - fromXy.y;
     }
