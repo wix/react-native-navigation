@@ -16,4 +16,8 @@ public class FabParams {
     public boolean hasExpendedState() {
         return actions != null && actions.size() > 0;
     }
+
+    public boolean isValid() {
+        return collapsedId != null;
+    }
 }

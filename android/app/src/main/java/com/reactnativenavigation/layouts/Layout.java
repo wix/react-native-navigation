@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -27,6 +28,8 @@ public interface Layout extends ScreenStackContainer {
     void setTitleBarLeftButton(String screenInstanceId, String navigatorEventId, TitleBarLeftButtonParams titleBarLeftButtonParams);
 
     void setTitleBarButtonBadgeByIndex(String screenInstanceId, Integer index, Integer badge);
+
+    void setFab(String screenInstanceId, String navigatorEventId, FabParams fabParams);
 
     void toggleSideMenuVisible(boolean animated, Side side);
 

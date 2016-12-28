@@ -10,6 +10,7 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
 import com.reactnativenavigation.params.SnackbarParams;
@@ -187,6 +188,11 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
 
     public void setTitleBarButtonBadgeByIndex(String screenInstanceId, Integer index, Integer badge) {
         stack.setScreenTitleBarButtonBadgeByIndex(screenInstanceId, index, badge);
+    }
+
+    @Override
+    public void setFab(String screenInstanceId, String navigatorEventId, FabParams fabParams) {
+        stack.setFab(screenInstanceId, navigatorEventId, fabParams);
     }
 
     @Override

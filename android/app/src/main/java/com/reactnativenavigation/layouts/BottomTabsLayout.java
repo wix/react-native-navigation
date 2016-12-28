@@ -7,12 +7,15 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
 import com.reactnativenavigation.params.SnackbarParams;
@@ -179,9 +182,16 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     }
 
     @Override
+
     public void setTitleBarButtonBadgeByIndex(String screenInstanceId, Integer index, Integer badge) {
         for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
             screenStacks[i].setScreenTitleBarButtonBadgeByIndex(screenInstanceId, index, badge);
+        }
+    }
+
+    public void setFab(String screenInstanceId, String navigatorEventId, FabParams fabParams) {
+        for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
+            screenStacks[i].setFab(screenInstanceId, navigatorEventId, fabParams);
         }
     }
 
@@ -297,7 +307,14 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
         hideCurrentStack();
         showNewStack(position);
         EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
+        sendTabSelectedEventToJs();
         return true;
+    }
+
+    private void sendTabSelectedEventToJs() {
+        WritableMap data = Arguments.createMap();
+        String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("bottomTabSelected", navigatorEventId, data);
     }
 
     private void showNewStack(int position) {

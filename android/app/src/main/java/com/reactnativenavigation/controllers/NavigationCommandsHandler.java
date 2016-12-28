@@ -7,6 +7,7 @@ import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -211,8 +212,8 @@ public class NavigationCommandsHandler {
     }
 
     public static void setTitleBarButtonBadgeByIndex(final String screenInstanceId,
-                                                     final Integer index,
-                                                     final Integer badge) {
+                                                          final Integer index,
+                                                          final Integer badge) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
@@ -226,6 +227,20 @@ public class NavigationCommandsHandler {
         });
     }
 
+    public static void setScreenFab(final String screenInstanceId, final String navigatorEventId, final FabParams fab) {
+
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.setScreenFab(screenInstanceId, navigatorEventId, fab);
+            }
+        });
+    }
 
     public static void dismissTopModal() {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;

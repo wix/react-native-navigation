@@ -41,6 +41,7 @@ public class StyleParams {
     public Color topBarColor;
     public CollapsingTopBarParams collapsingTopBarParams;
     public boolean topBarHidden;
+    public boolean topBarElevationShadowEnabled;
     public boolean topTabsHidden;
     public boolean drawScreenBelowTopBar;
 

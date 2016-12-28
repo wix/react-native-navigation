@@ -44,8 +44,8 @@ function setScreenTitleBarSubtitle(screenInstanceID, subtitle) {
   NativeReactModule.setScreenTitleBarSubtitle(screenInstanceID, subtitle);
 }
 
-function setScreenTitleBarButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton) {
-  NativeReactModule.setScreenTitleBarButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton);
+function setScreenButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton, fab) {
+  NativeReactModule.setScreenButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton, fab);
 }
 
 function setScreenTitleBarButtonBadgeByIndex(screenInstanceID, index, badge) {
@@ -145,7 +145,7 @@ module.exports = {
   toggleBottomTabsVisible,
   setScreenTitleBarTitle,
   setScreenTitleBarSubtitle,
-  setScreenTitleBarButtons,
+	setScreenButtons,
   setScreenTitleBarButtonBadgeByIndex,
   showModal,
   dismissTopModal,
