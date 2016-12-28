@@ -24,6 +24,7 @@ public class BaseTitleBarButtonParams {
     public StyleParams.Color disabledColor;
     public ShowAsAction showAsAction;
     public boolean enabled = true;
+    public Integer badgeCount = null;
 
     public void setColorFromScreenStyle(StyleParams.Color titleBarButtonColor) {
         if (!color.hasColor() && titleBarButtonColor.hasColor()) {
