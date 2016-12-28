@@ -38,4 +38,8 @@ public class BaseScreenParams {
     public boolean hasCollapsingTopBar() {
         return styleParams.collapsingTopBarParams != null;
     }
+
+    public FabParams getFab() {
+        return fabParams;
+    }
 }

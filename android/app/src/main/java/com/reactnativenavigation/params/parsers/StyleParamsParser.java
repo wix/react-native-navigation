@@ -53,7 +53,9 @@ public class StyleParamsParser {
         result.bottomTabsHidden = getBoolean("bottomTabsHidden", getDefaultBottomTabsHidden());
         result.drawScreenAboveBottomTabs = !result.bottomTabsHidden &&
                                            params.getBoolean("drawScreenAboveBottomTabs", getDefaultDrawScreenAboveBottomTabs());
-        result.drawScreenAboveBottomTabs = drawScreenUnderBottomTabsIfTitleBarIsHiddenOnScroll(result);
+        if (result.titleBarHideOnScroll) {
+            result.drawScreenAboveBottomTabs = false;
+        }
         result.bottomTabsHiddenOnScroll = getBoolean("bottomTabsHiddenOnScroll", getDefaultBottomTabsHiddenOnScroll());
         result.bottomTabsColor = getColor("bottomTabsColor", getDefaultBottomTabsColor());
         result.bottomTabsButtonColor = getColor("bottomTabsButtonColor", getDefaultBottomTabsButtonColor());
@@ -74,10 +76,6 @@ public class StyleParamsParser {
         result.topBarElevationShadowEnabled = true;
         result.titleBarHideOnScroll = false;
         return result;
-    }
-
-    private boolean drawScreenUnderBottomTabsIfTitleBarIsHiddenOnScroll(StyleParams result) {
-        return !result.titleBarHideOnScroll;
     }
 
     private StyleParams.Color getDefaultContextualMenuStatusBarColor() {
