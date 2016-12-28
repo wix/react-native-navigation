@@ -18,11 +18,13 @@ export default class FirstTabScreen extends Component {
     rightButtons: [
       {
         title: 'Edit',
-        id: 'edit'
+        id: 'edit',
+        showAsAction: 'always'
       },
       {
         icon: require('../../img/navicon_add.png'),
-        id: 'add'
+        id: 'add',
+        badgeStyle: 'purple'
       }
     ]
   };
@@ -39,6 +41,10 @@ export default class FirstTabScreen extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      badge: 0
+    }
+
     // if you want to listen on navigator events, set this up
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -90,6 +96,10 @@ export default class FirstTabScreen extends Component {
         <TouchableOpacity onPress={ this.onStartSingleScreenApp.bind(this) }>
           <Text style={styles.button}>Show Single Screen App</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity onPress={ this.onIncrementBadge.bind(this) }>
+          <Text style={styles.button}>Increment Badge</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -113,6 +123,19 @@ export default class FirstTabScreen extends Component {
       title: "Modal",
       screen: "example.ModalScreen"
     });
+  }
+
+  onIncrementBadge() {
+    this.props.navigator.setButtonBadge({
+      buttonIndex: 0,
+      badge: this.state.badge
+    })
+
+    let newBadgeValue = this.state.badge + 1
+
+    this.setState({
+      badge: newBadgeValue
+    })
   }
 
   onLightBoxPress() {
