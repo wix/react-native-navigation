@@ -30,7 +30,7 @@ class TitleBarSearchButton extends TitleBarButton implements SearchView.OnQueryT
         super(menu, parent, buttonParams, navigatorEventId);
     }
 
-    MenuItem addToMenu(int index) {
+    boolean addToMenu(int index) {
         ((Activity) parent.getContext()).getMenuInflater().inflate(R.menu.search_item, menu);
         MenuItem item = menu.findItem(R.id.toolbar_action_search);
         item.setOnMenuItemClickListener(this);
@@ -43,7 +43,7 @@ class TitleBarSearchButton extends TitleBarButton implements SearchView.OnQueryT
         searchView.setOnQueryTextListener(this);
         searchView.setOnSearchClickListener(this);
         setColor();
-        return item;
+        return true;
     }
 
     private void setColor() {

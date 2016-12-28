@@ -51,7 +51,7 @@ public class TitleBar extends Toolbar {
     public void setTitleBarButtonBadgeByIndex(Integer index, Integer badge) {
         Menu menu = getMenu();
         MenuItem button = menu.getItem(index);
-        ActionItemBadge.update(null, button, (Drawable) null, ActionItemBadge.BadgeStyles.BLUE, badge);
+        ActionItemBadge.update(button, badge);
     }
 
     public void setLeftButton(TitleBarLeftButtonParams leftButtonParams,

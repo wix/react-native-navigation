@@ -1,15 +1,11 @@
 package com.reactnativenavigation.views;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.ActionProvider;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,7 +17,7 @@ import com.reactnativenavigation.utils.ViewUtils;
 
 import java.util.ArrayList;
 
-class TitleBarButton implements MenuItem.OnMenuItemClickListener {
+class TitleBarButton implements MenuItem.OnMenuItemClickListener, ActionItemBadge.ActionItemBadgeListener {
 
     protected final Menu menu;
     protected final View parent;
@@ -36,21 +32,25 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     }
 
     boolean addToMenu(int index) {
-        // MenuItem item = menu.add(Menu.NONE, Menu.NONE, index, buttonParams.label);
-        // item.setShowAsAction(buttonParams.showAsAction.action);
-        // item.setEnabled(buttonParams.enabled);
-        // setIcon(item);
-        // setColor();
-        // item.setOnMenuItemClickListener(this);
         setColor();
-        new ActionItemBadgeAdder().act((Activity) parent.getContext()).menu(menu).title(buttonParams.label).showAsAction(buttonParams.showAsAction.action).add(buttonParams.icon, ActionItemBadge.BadgeStyles.DARK_GREY, 1);
+        if (hasIcon()) {
+            createActionItem(index, buttonParams.label, buttonParams.showAsAction.action, buttonParams.icon, buttonParams.style, 1);
+        } else {
+            createActionItem(index, buttonParams.label, buttonParams.showAsAction.action);
+        }
+
         return true;
     }
 
-    private void setIcon(MenuItem item) {
-        if (hasIcon()) {
-            item.setIcon(buttonParams.icon);
-        }
+    private void createActionItem(Integer index, String label, Integer showAsAction) {
+        MenuItem item = menu.add(Menu.NONE, Menu.NONE, index, label);
+        item.setShowAsAction(showAsAction);
+        item.setEnabled(buttonParams.enabled);
+        item.setOnMenuItemClickListener(this);
+    }
+
+    private void createActionItem(Integer index, String label, Integer showAsAction, Drawable icon, ActionItemBadge.BadgeStyles style, Integer badge) {
+        new ActionItemBadgeAdder().act((Activity) parent.getContext()).menu(menu).itemDetails(Menu.NONE, Menu.NONE, index).title(label).showAsAction(showAsAction).add(icon, style.getStyle(), badge, this);
     }
 
     private void setColor() {
@@ -105,4 +105,10 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent(buttonParams.eventId, navigatorEventId);
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menu) {
+        return onMenuItemClick(menu);
+    }
+
 }
