@@ -382,11 +382,10 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
 
     @Override
     public void onSideMenuButtonClick() {
+        final String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         if (sideMenu != null) {
             sideMenu.openDrawer(Side.Left);
-        } else {
-            final String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
-            NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         }
     }
 }
