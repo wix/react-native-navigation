@@ -145,7 +145,7 @@ module.exports = {
   toggleBottomTabsVisible,
   setScreenTitleBarTitle,
   setScreenTitleBarSubtitle,
-	setScreenButtons,
+  setScreenButtons,
   setScreenTitleBarButtonBadgeByIndex,
   showModal,
   dismissTopModal,
