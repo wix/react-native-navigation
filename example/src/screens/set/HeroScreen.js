@@ -1,81 +1,125 @@
 import React, {Component} from 'react';
 import {
-  Text,
-  View,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  Image
+  Image,
 } from 'react-native';
 import {SharedElementTransition} from 'react-native-navigation';
-import * as setStyles from './styles';
+import { createAnimatableComponent, View, Text } from 'react-native-animatable';
+import * as heroStyles from './styles';
 
 export default class HeroScreen extends Component {
   static navigatorStyle = {
-    ...setStyles.navigatorStyle
+    ...heroStyles.navigatorStyle
   };
 
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.state = {
+      animationType: 'fadeIn'
+    };
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={{height: 120}}>
-          <Image
-            sourcee={this.props.header}
-            style={styles.header}
-          />
-        </View>
-        <SharedElementTransition
-          key={this.props.sharedIconId}
-          sharedElementId={this.props.sharedIconId}
-          style={styles.iconContainer}
-          interpolation={
-            {
-              type: 'path',
-              controlX1: '0.4',
-              controlY1: '0',
-              controlX2: '0.5',
-              controlY2: '0.5'
-            }
-          }
-        >
-          <Image
-            source={this.props.icon}
-            style={styles.heroIcon}
-          />
-        </SharedElementTransition>
+      <View style={[styles.container]}>
+        {this._renderHeader()}
+        {this._renderContent()}
+        {this._renderIcon()}
       </View>
     );
   }
 
-  onNavigatorEvent(event) {
+  _renderHeader() {
+    return (
+      <View animation={this.state.animationType} duration={300} style={[styles.header, heroStyles.primaryDark]} useNativeDriver>
+        <Text style={styles.title}>{this.props.title}</Text>
+      </View>
+    );
+  }
 
+  _renderContent() {
+    return (
+      <View animation={this.state.animationType} duration={300} style={[styles.body, heroStyles.primaryLight]} useNativeDriver/>
+    );
+  }
+
+  _renderIcon() {
+    return (
+      <SharedElementTransition
+        key={this.props.sharedIconId}
+        sharedElementId={this.props.sharedIconId}
+        style={styles.iconContainer}
+        interpolation={
+            {
+              show: {
+                type: 'path',
+                controlX1: '0.5',
+                controlY1: '1',
+                controlX2: '0',
+                controlY2: '0.5',
+                easing: 'accelerateDecelerate'
+              },
+              hide: {
+                type: 'path',
+                controlX1: '0.5',
+                controlY1: '0',
+                controlX2: '1',
+                controlY2: '0.5',
+                easing:'accelerate'
+              }
+            }
+          }
+      >
+        <Image
+          source={this.props.icon}
+          style={styles.heroIcon}
+        />
+      </SharedElementTransition>
+    );
+  }
+
+  onNavigatorEvent(event) {
+    if (event.id === 'backPress') {
+      this.setState({
+        animationType: 'fadeOut'
+      });
+      this.props.navigator.pop();
+    }
   }
 }
-//#90CAF9
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: 'transparent'
+  },
+  header: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    width: undefined
+  },
+  title: {
+    fontSize: 25,
+    left: 124,
+    marginBottom: 8,
+    ...heroStyles.textLight
   },
   iconContainer: {
     position: 'absolute',
-    top: 90,
-    left: 100
-  },
-  header: {
-    height: 120,
-    resizeMode: 'cover'
+    top: 65,
+    left: 30
   },
   heroIcon: {
-    width: 100,
-    height: 100,
+    width: 90,
+    height: 90,
     resizeMode: 'contain'
+  },
+  body: {
+    flex: 4
   },
   button: {
     textAlign: 'center',

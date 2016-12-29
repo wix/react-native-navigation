@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import heroes from './heroes';
 import {SharedElementTransition} from 'react-native-navigation';
-import * as setStyles from './styles';
+import * as heroStyles from './styles';
 
 const LOREM_IPSUM = 'Lorem ipsum dolor sit amet, ius ad pertinax oportere accommodare, an vix civibus corrumpit referrentur. Te nam case ludus inciderint, te mea facilisi adipiscing. Sea id integre luptatum. In tota sale consequuntur nec. Erat ocurreret mei ei. Eu paulo sapientem vulputate est, vel an accusam intellegam interesset. Nam eu stet pericula reprimique, ea vim illud modus, putant invidunt reprehendunt ne qui.';
 const hashCode = function(str) {
@@ -24,7 +24,7 @@ const hashCode = function(str) {
 
 export default class ListScreen extends Component {
   static navigatorStyle = {
-    ...setStyles.navigatorStyle
+    ...heroStyles.navigatorStyle
   };
 
   static navigatorButtons = {
@@ -100,12 +100,14 @@ export default class ListScreen extends Component {
           sharedElementId
         })}
       >
-        <View style={{flexDirection: 'row', backgroundColor: '#1f2222'}}>
+        <View
+          sharedElementId={sharedElementId + 'container'}
+          style={[styles.sharedRowContent, heroStyles.primaryDark]}
+        >
           <View>
             <SharedElementTransition
               key={sharedElementId}
               sharedElementId={sharedElementId}
-              ref={(r) => this.sharedElements[sharedElementId] = r}
               style={styles.imageContainer}
             >
               <Image
@@ -114,9 +116,12 @@ export default class ListScreen extends Component {
               />
             </SharedElementTransition>
           </View>
-          <Text style={styles.text}>
-            {rowData.rowTitle + ' - ' + LOREM_IPSUM.substr(0, rowHash % 301 + 10)}
-          </Text>
+          <View style={styles.itemContentContainer}>
+            <Text style={styles.itemTitle}>{rowData.title}</Text>
+            <Text style={styles.text}>
+              {rowData.rowTitle + ' - ' + LOREM_IPSUM.substr(0, rowHash % 301 + 10)}
+            </Text>
+          </View>
         </View>
       </TouchableWithoutFeedback>
     );
@@ -127,14 +132,13 @@ export default class ListScreen extends Component {
     this.props.navigator.push({
       screen: 'example.HeroScreen',
       sharedElements: [
-        {
-          sharedElementId: data.sharedElementId,
-          ref: this.sharedElements[data.sharedElementId]
-        }
+        data.sharedElementId,
+        data.sharedElementId + 'container'
       ],
       animated: false,
+      overrideBackPress: true,
       passProps: {
-        header: rowData.header,
+        title: rowData.title,
         sharedIconId: data.sharedElementId,
         icon: rowData.icon
       }
@@ -147,7 +151,8 @@ export default class ListScreen extends Component {
       dataBlob.push({
         rowTitle: 'Row ' + ii + ' ',
         icon: heroes[ii % 5].icon,
-        header: heroes[ii % 5].header
+        header: heroes[ii % 5].header,
+        title: heroes[ii % 5].title
       });
     }
     return dataBlob;
@@ -173,7 +178,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     borderWidth: 1,
-    color: '#1f2222'
+  },
+  sharedRowContent: {
+    flexDirection: 'row',
   },
   imageContainer: {
     justifyContent: 'center'
@@ -183,10 +190,18 @@ const styles = StyleSheet.create({
     height: 100,
     resizeMode: 'contain'
   },
-  text: {
+  itemContentContainer: {
     flex: 1,
+    flexDirection: 'column'
+  },
+  itemTitle: {
     marginLeft: 5,
-    color: '#cacaca'
+    fontSize: 19,
+    ...heroStyles.textLight
+  },
+  text: {
+    margin: 5,
+    ...heroStyles.textLight
   }
 });
 
