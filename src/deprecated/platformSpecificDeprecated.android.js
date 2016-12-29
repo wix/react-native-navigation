@@ -36,6 +36,7 @@ function startSingleScreenApp(params) {
 }
 
 function adaptTopTabs(screen, navigatorID) {
+  screen.topTabs = _.cloneDeep(screen.topTabs);
   _.forEach(_.get(screen, 'topTabs'), (tab) => {
     addNavigatorParams(tab);
     if (navigatorID) {
@@ -278,7 +279,8 @@ function navigatorSetButtons(navigator, navigatorEventID, params) {
       }
     }
   }
-  newPlatformSpecific.setScreenTitleBarButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton);
+  const fab = getFab(params);
+  newPlatformSpecific.setScreenButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton, fab);
 }
 
 function navigatorSetTabBadge(navigator, params) {
@@ -411,32 +413,40 @@ function addNavigatorButtons(screen, sideMenuParams) {
 }
 
 function getFab(screen) {
+  let fab = screen.fab;
   if (screen.navigatorButtons && screen.navigatorButtons.fab) {
-    const fab = screen.navigatorButtons.fab;
-    const collapsedIconUri = resolveAssetSource(fab.collapsedIcon);
-    if (!collapsedIconUri) {
-      return;
-    }
-    fab.collapsedIcon = collapsedIconUri.uri;
-    if (fab.expendedIcon) {
-      const expendedIconUri = resolveAssetSource(fab.expendedIcon);
-      if (expendedIconUri) {
-        fab.expendedIcon = expendedIconUri.uri;
-      }
-    }
-    if (fab.backgroundColor) {
-      fab.backgroundColor = processColor(fab.backgroundColor);
-    }
-
-    if (fab.actions) {
-      _.forEach(fab.actions, (action) => {
-        action.icon = resolveAssetSource(action.icon).uri;
-        return action;
-      });
-    }
-
-    return fab;
+    fab = screen.navigatorButtons.fab;
   }
+  if (fab === null || fab === undefined) {
+    return;
+  }
+  if (Object.keys(fab).length === 0 ) {
+    return {};
+  }
+
+  const collapsedIconUri = resolveAssetSource(fab.collapsedIcon);
+  if (!collapsedIconUri) {
+    return;
+  }
+  fab.collapsedIcon = collapsedIconUri.uri;
+  if (fab.expendedIcon) {
+    const expendedIconUri = resolveAssetSource(fab.expendedIcon);
+    if (expendedIconUri) {
+      fab.expendedIcon = expendedIconUri.uri;
+    }
+  }
+  if (fab.backgroundColor) {
+    fab.backgroundColor = processColor(fab.backgroundColor);
+  }
+
+  if (fab.actions) {
+    _.forEach(fab.actions, (action) => {
+      action.icon = resolveAssetSource(action.icon).uri;
+      return action;
+    });
+  }
+
+  return fab;
 }
 
 function createSideMenuButton() {
@@ -509,11 +519,15 @@ function showContextualMenu(navigator, params) {
 
   params.rightButtons.forEach((button, index) => {
     const btn = {
-      icon: resolveAssetSource(button.icon).uri,
+      icon: resolveAssetSource(button.icon),
+      showAsAction: button.showAsAction,
       color: processColor(button.color),
       label: button.title,
       index
     };
+    if (btn.icon) {
+      btn.icon = btn.icon.uri;
+    }
     contextualMenu.buttons.push(btn);
   });
 

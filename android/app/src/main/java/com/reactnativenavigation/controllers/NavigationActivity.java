@@ -24,6 +24,7 @@ import com.reactnativenavigation.layouts.LayoutFactory;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -252,6 +253,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     void setTitleBarLeftButton(String screenInstanceId, String navigatorEventId, TitleBarLeftButtonParams titleBarLeftButton) {
         layout.setTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButton);
         modalController.setTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButton);
+    }
+
+    void setScreenFab(String screenInstanceId, String navigatorEventId, FabParams fab) {
+        layout.setFab(screenInstanceId, navigatorEventId, fab);
     }
 
     public void toggleSideMenuVisible(boolean animated, Side side) {

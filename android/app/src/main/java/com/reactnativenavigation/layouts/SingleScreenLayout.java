@@ -10,6 +10,7 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
 import com.reactnativenavigation.params.SnackbarParams;
@@ -186,6 +187,11 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
     }
 
     @Override
+    public void setFab(String screenInstanceId, String navigatorEventId, FabParams fabParams) {
+        stack.setFab(screenInstanceId, navigatorEventId, fabParams);
+    }
+
+    @Override
     public void toggleSideMenuVisible(boolean animated, Side side) {
         if (sideMenu != null) {
             sideMenu.toggleVisible(animated, side);
@@ -236,11 +242,10 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
 
     @Override
     public void onSideMenuButtonClick() {
+        final String navigatorEventId = stack.peek().getNavigatorEventId();
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         if (sideMenu != null) {
             sideMenu.openDrawer(Side.Left);
-        } else {
-            final String navigatorEventId = stack.peek().getNavigatorEventId();
-            NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         }
     }
 }

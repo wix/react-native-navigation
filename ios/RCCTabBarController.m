@@ -3,10 +3,28 @@
 #import "RCTConvert.h"
 #import "RCCManager.h"
 #import "RCCEventEmitter.h"
+#import "RCTUIManager.h"
+
+@interface RCTUIManager ()
+
+- (void)configureNextLayoutAnimation:(NSDictionary *)config
+                        withCallback:(RCTResponseSenderBlock)callback
+                       errorCallback:(__unused RCTResponseSenderBlock)errorCallback;
+
+@end
 
 @implementation RCCTabBarController
 
-
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+  id queue = [[RCCManager sharedInstance].getBridge uiManager].methodQueue;
+  dispatch_async(queue, ^{
+    [[[RCCManager sharedInstance].getBridge uiManager] configureNextLayoutAnimation:nil withCallback:^(NSArray* arr){} errorCallback:^(NSArray* arr){}];
+  });
+  
+  [RCCTabBarController sendScreenTabChangedEvent:viewController];
+  
+  return YES;
+}
 
 - (UIImage *)image:(UIImage*)image withColor:(UIColor *)color1
 {
@@ -28,6 +46,8 @@
 {
   self = [super init];
   if (!self) return nil;
+  
+  self.delegate = self;
   
   self.tabBar.translucent = YES; // default
 
@@ -267,6 +287,30 @@
 
 -(void)middleButtonClicked:(id)sender {
   [RCCEventEmitter tabBarMiddleButtonClicked:sender];
+}
+
++(void)sendScreenTabChangedEvent:(UIViewController*)viewController {
+  if ([viewController.view isKindOfClass:[RCTRootView class]]){
+    RCTRootView *rootView = (RCTRootView *)viewController.view;
+    
+    if (rootView.appProperties && rootView.appProperties[@"navigatorEventID"]) {
+      NSString *navigatorID = rootView.appProperties[@"navigatorID"];
+      NSString *screenInstanceID = rootView.appProperties[@"screenInstanceID"];
+      
+      [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:rootView.appProperties[@"navigatorEventID"] body:@
+       {
+         @"id": @"bottomTabSelected",
+         @"navigatorID": navigatorID,
+         @"screenInstanceID": screenInstanceID
+       }];
+    }
+  }
+  
+  if ([viewController isKindOfClass:[UINavigationController class]]) {
+    UINavigationController *navigationController = (UINavigationController*)viewController;
+    UIViewController *topViewController = [navigationController topViewController];
+    [RCCTabBarController sendScreenTabChangedEvent:topViewController];
+  }
 }
 
 @end
