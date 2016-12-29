@@ -242,7 +242,7 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
 
     @Override
     public void onSideMenuButtonClick() {
-        final String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
+        final String navigatorEventId = stack.peek().getNavigatorEventId();
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         if (sideMenu != null) {
             sideMenu.openDrawer(Side.Left);
