@@ -24,7 +24,8 @@ export default class FirstTabScreen extends Component {
       {
         icon: require('../../img/navicon_add.png'),
         id: 'add',
-        badgeStyle: 'purple'
+        badgeStyle: 'red',
+        badgeCount: 0
       }
     ]
   };
@@ -126,15 +127,15 @@ export default class FirstTabScreen extends Component {
   }
 
   onIncrementBadge() {
-    this.props.navigator.setButtonBadge({
-      buttonIndex: 0,
-      badge: this.state.badge
-    })
-
     let newBadgeValue = this.state.badge + 1
 
     this.setState({
       badge: newBadgeValue
+    })
+
+    this.props.navigator.setButtonBadge({
+      buttonIndex: 0,
+      badge: this.state.badge
     })
   }
 
