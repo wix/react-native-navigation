@@ -108,11 +108,17 @@ public class VisibilityAnimator {
             @Override
             public void onAnimationStart(Animator animation) {
                 visibilityState = show ? VisibilityState.AnimateShow : VisibilityState.AnimateHide;
+                if (show) {
+                    view.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 visibilityState = show ? VisibilityState.Shown : VisibilityState.Hidden;
+                if (!show) {
+                    view.setVisibility(View.GONE);
+                }
             }
         });
         return animator;
