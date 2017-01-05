@@ -13,9 +13,9 @@ function registerScreen(screenID, generator) {
   AppRegistry.registerComponent(screenID, generator);
 }
 
-function registerComponent(screenID, generator, store = undefined, Provider = undefined, client = undefined) {
+function registerComponent(screenID, generator, store = undefined, Provider = undefined, options = {}) {
   if (store && Provider) {
-    return _registerComponentRedux(screenID, generator, store, Provider, client);
+    return _registerComponentRedux(screenID, generator, store, Provider, options);
   } else {
     return _registerComponentNoRedux(screenID, generator);
   }
@@ -52,7 +52,7 @@ function _registerComponentNoRedux(screenID, generator) {
   return generatorWrapper;
 }
 
-function _registerComponentRedux(screenID, generator, store, Provider, client) {
+function _registerComponentRedux(screenID, generator, store, Provider, options) {
   const generatorWrapper = function() {
     const InternalComponent = generator();
     return class extends Screen {
@@ -74,7 +74,7 @@ function _registerComponentRedux(screenID, generator, store, Provider, client) {
 
       render() {
         return (
-          <Provider store={store} client={client}>
+          <Provider store={store} {...options}>
             <InternalComponent testID={screenID} navigator={this.navigator} {...this.state.internalProps} />
           </Provider>
         );
