@@ -9,13 +9,16 @@ import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.controllers.NavigationCommandsHandler;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.ContextualMenuParamsParser;
+import com.reactnativenavigation.params.parsers.FabParamsParser;
 import com.reactnativenavigation.params.parsers.SnackbarParamsParser;
 import com.reactnativenavigation.params.parsers.TitleBarButtonParamsParser;
 import com.reactnativenavigation.params.parsers.TitleBarLeftButtonParamsParser;
+import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
 
@@ -49,10 +52,17 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
             return;
         }
         boolean portraitOnlyMode = false;
+        boolean landscapeOnlyMode = false;
+
         if (params.hasKey("portraitOnlyMode")) {
             portraitOnlyMode = params.getBoolean("portraitOnlyMode");
         }
-        NavigationCommandsHandler.startApp(BundleConverter.toBundle(params), portraitOnlyMode);
+
+        if (params.hasKey(("landscapeOnlyMode"))) {
+            landscapeOnlyMode = params.getBoolean("landscapeOnlyMode");
+        }
+
+        NavigationCommandsHandler.startApp(BundleConverter.toBundle(params), portraitOnlyMode, landscapeOnlyMode);
     }
 
     @ReactMethod
@@ -66,14 +76,16 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setScreenTitleBarButtons(String screenInstanceId, String navigatorEventId,
-                                         ReadableArray rightButtonsParams, ReadableMap leftButtonParams) {
+    public void setScreenButtons(String screenInstanceId, String navigatorEventId,
+                                 ReadableArray rightButtonsParams, ReadableMap leftButtonParams, ReadableMap fab) {
         if (rightButtonsParams != null) {
             setScreenTitleBarRightButtons(screenInstanceId, navigatorEventId, rightButtonsParams);
         }
-
         if (leftButtonParams != null) {
             setScreenTitleBarLeftButton(screenInstanceId, navigatorEventId, leftButtonParams);
+        }
+        if (fab != null) {
+            setScreenFab(screenInstanceId, navigatorEventId, fab);
         }
     }
 
@@ -87,6 +99,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
         TitleBarLeftButtonParams leftButton = new TitleBarLeftButtonParamsParser()
                 .parseSingleButton(BundleConverter.toBundle(leftButtonParams));
         NavigationCommandsHandler.setScreenTitleBarLeftButtons(screenInstanceId, navigatorEventId, leftButton);
+    }
+
+    private void setScreenFab(String screenInstanceId, String navigatorEventId, ReadableMap fab) {
+        FabParams fabParams = new FabParamsParser().parse(BundleConverter.toBundle(fab), navigatorEventId, screenInstanceId);
+        NavigationCommandsHandler.setScreenFab(screenInstanceId, navigatorEventId, fabParams);
     }
 
     @ReactMethod
@@ -110,13 +127,13 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void toggleSideMenuVisible(boolean animated) {
-        NavigationCommandsHandler.toggleSideMenuVisible(animated);
+    public void toggleSideMenuVisible(boolean animated, String side) {
+        NavigationCommandsHandler.toggleSideMenuVisible(animated, Side.fromString(side));
     }
 
     @ReactMethod
-    public void setSideMenuVisible(boolean animated, boolean visible) {
-        NavigationCommandsHandler.setSideMenuVisible(animated, visible);
+    public void setSideMenuVisible(boolean animated, boolean visible, String side) {
+        NavigationCommandsHandler.setSideMenuVisible(animated, visible, Side.fromString(side));
     }
 
     @ReactMethod

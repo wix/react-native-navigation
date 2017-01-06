@@ -55,6 +55,7 @@ function startTabBasedApp(params) {
                                disableOpenGesture={params.drawer.disableOpenGesture}
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
+                               style={params.drawer.style}
           >
             {this.renderBody()}
           </DrawerControllerIOS>
@@ -141,6 +142,7 @@ function startSingleScreenApp(params) {
                                disableOpenGesture={params.drawer.disableOpenGesture}
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
+                               style={params.drawer.style}
           >
             {this.renderBody()}
           </DrawerControllerIOS>

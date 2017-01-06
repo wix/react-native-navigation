@@ -4,9 +4,12 @@ import android.view.View;
 
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.screens.Screen;
+import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
 
@@ -25,9 +28,11 @@ public interface Layout extends ScreenStackContainer {
 
     void setTitleBarLeftButton(String screenInstanceId, String navigatorEventId, TitleBarLeftButtonParams titleBarLeftButtonParams);
 
-    void toggleSideMenuVisible(boolean animated);
+    void setFab(String screenInstanceId, String navigatorEventId, FabParams fabParams);
 
-    void setSideMenuVisible(boolean animated, boolean visible);
+    void toggleSideMenuVisible(boolean animated, Side side);
+
+    void setSideMenuVisible(boolean animated, boolean visible, Side side);
 
     void showSnackbar(SnackbarParams params);
 
@@ -38,4 +43,6 @@ public interface Layout extends ScreenStackContainer {
     void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked);
 
     void dismissContextualMenu(String screenInstanceId);
+
+    Screen getCurrentScreen();
 }

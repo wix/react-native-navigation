@@ -10,6 +10,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -230,6 +231,15 @@ public class ScreenStack {
             @Override
             public void run(Screen param) {
                 param.setTitleBarLeftButton(navigatorEventId, leftButtonOnClickListener, titleBarLeftButtonParams);
+            }
+        });
+    }
+
+    public void setFab(String screenInstanceId, final String navigatorEventId, final FabParams fabParams) {
+        performOnScreen(screenInstanceId, new Task<Screen>() {
+            @Override
+            public void run(Screen param) {
+                param.setFab(fabParams);
             }
         });
     }

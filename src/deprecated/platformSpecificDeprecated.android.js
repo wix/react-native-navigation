@@ -36,6 +36,7 @@ function startSingleScreenApp(params) {
 }
 
 function adaptTopTabs(screen, navigatorID) {
+  screen.topTabs = _.cloneDeep(screen.topTabs);
   _.forEach(_.get(screen, 'topTabs'), (tab) => {
     addNavigatorParams(tab);
     if (navigatorID) {
@@ -120,6 +121,7 @@ function convertStyleParams(originalStyleObject) {
     topBarColor: processColor(originalStyleObject.navBarBackgroundColor),
     topBarTransparent: originalStyleObject.navBarTransparent,
     topBarTranslucent: originalStyleObject.navBarTranslucent,
+    topBarElevationShadowEnabled: originalStyleObject.topBarElevationShadowEnabled,
     collapsingToolBarImage: originalStyleObject.collapsingToolBarImage,
     collapsingToolBarCollapsedColor: processColor(originalStyleObject.collapsingToolBarCollapsedColor),
     titleBarHidden: originalStyleObject.navBarHidden,
@@ -172,16 +174,24 @@ function convertStyleParams(originalStyleObject) {
 
 function convertDrawerParamsToSideMenuParams(drawerParams) {
   const drawer = Object.assign({}, drawerParams);
-  if (!drawer.left || !drawer.left.screen) {
-    return null;
-  }
 
-  let result = {};
-  result.disableOpenGesture = drawer.disableOpenGesture !== undefined;
-  result.screenId = drawer.left.screen;
-  addNavigatorParams(result);
-  result = adaptNavigationParams(result);
-  result.passProps = drawer.passProps;
+  let result = {
+    left: {},
+    right: {}
+  };
+
+  Object.keys(result).forEach((key) => {
+    if (drawer[key] && drawer[key].screen) {
+      result[key].screenId = drawer[key].screen;
+      addNavigatorParams(result[key]);
+      result[key] = adaptNavigationParams(result[key]);
+      result[key].passProps = drawer[key].passProps;
+      result[key].disableOpenGesture = drawer.disableOpenGesture;
+    } else {
+      result[key] = null;
+    }
+  })
+
   return result;
 }
 
@@ -248,7 +258,8 @@ function convertAnimationType(animationType) {
   return animationType !== 'none';
 }
 
-function navigatorSetButtons(navigator, navigatorEventID, params) {
+function navigatorSetButtons(navigator, navigatorEventID, _params) {
+  const params = _.cloneDeep(_params);
   if (params.rightButtons) {
     params.rightButtons.forEach(function(button) {
       button.enabled = !button.disabled;
@@ -269,7 +280,8 @@ function navigatorSetButtons(navigator, navigatorEventID, params) {
       }
     }
   }
-  newPlatformSpecific.setScreenTitleBarButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton);
+  const fab = getFab(params);
+  newPlatformSpecific.setScreenButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton, fab);
 }
 
 function navigatorSetTabBadge(navigator, params) {
@@ -301,9 +313,9 @@ function navigatorToggleDrawer(navigator, params) {
   const animated = !(params.animated === false);
   if (params.to) {
     const visible = params.to === 'open';
-    newPlatformSpecific.setSideMenuVisible(animated, visible);
+    newPlatformSpecific.setSideMenuVisible(animated, visible, params.side);
   } else {
-    newPlatformSpecific.toggleSideMenuVisible(animated);
+    newPlatformSpecific.toggleSideMenuVisible(animated, params.side);
   }
 }
 
@@ -402,32 +414,40 @@ function addNavigatorButtons(screen, sideMenuParams) {
 }
 
 function getFab(screen) {
+  let fab = screen.fab;
   if (screen.navigatorButtons && screen.navigatorButtons.fab) {
-    const fab = screen.navigatorButtons.fab;
-    const collapsedIconUri = resolveAssetSource(fab.collapsedIcon);
-    if (!collapsedIconUri) {
-      return;
-    }
-    fab.collapsedIcon = collapsedIconUri.uri;
-    if (fab.expendedIcon) {
-      const expendedIconUri = resolveAssetSource(fab.expendedIcon);
-      if (expendedIconUri) {
-        fab.expendedIcon = expendedIconUri.uri;
-      }
-    }
-    if (fab.backgroundColor) {
-      fab.backgroundColor = processColor(fab.backgroundColor);
-    }
-
-    if (fab.actions) {
-      _.forEach(fab.actions, (action) => {
-        action.icon = resolveAssetSource(action.icon).uri;
-        return action;
-      });
-    }
-
-    return fab;
+    fab = screen.navigatorButtons.fab;
   }
+  if (fab === null || fab === undefined) {
+    return;
+  }
+  if (Object.keys(fab).length === 0 ) {
+    return {};
+  }
+
+  const collapsedIconUri = resolveAssetSource(fab.collapsedIcon);
+  if (!collapsedIconUri) {
+    return;
+  }
+  fab.collapsedIcon = collapsedIconUri.uri;
+  if (fab.expendedIcon) {
+    const expendedIconUri = resolveAssetSource(fab.expendedIcon);
+    if (expendedIconUri) {
+      fab.expendedIcon = expendedIconUri.uri;
+    }
+  }
+  if (fab.backgroundColor) {
+    fab.backgroundColor = processColor(fab.backgroundColor);
+  }
+
+  if (fab.actions) {
+    _.forEach(fab.actions, (action) => {
+      action.icon = resolveAssetSource(action.icon).uri;
+      return action;
+    });
+  }
+
+  return fab;
 }
 
 function createSideMenuButton() {
@@ -500,11 +520,15 @@ function showContextualMenu(navigator, params) {
 
   params.rightButtons.forEach((button, index) => {
     const btn = {
-      icon: resolveAssetSource(button.icon).uri,
+      icon: resolveAssetSource(button.icon),
+      showAsAction: button.showAsAction,
       color: processColor(button.color),
       label: button.title,
       index
     };
+    if (btn.icon) {
+      btn.icon = btn.icon.uri;
+    }
     contextualMenu.buttons.push(btn);
   });
 

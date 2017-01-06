@@ -20,11 +20,13 @@ public class ContextualMenuButtonParamsParser extends TitleBarButtonParamsParser
 
     private ContextualMenuButtonParams parseSingleContextualMenuButton(Bundle button) {
         ContextualMenuButtonParams result = new ContextualMenuButtonParams();
-        result.icon = ImageLoader.loadImage(button.getString("icon"));
+        if (button.get("icon") != null) {
+            result.icon = ImageLoader.loadImage(button.getString("icon"));
+        }
         result.showAsAction = parseShowAsAction(button.getString("showAsAction"));
         result.color = StyleParams.Color.parse(button, "color");
         result.label = button.getString("label");
-        result.index = (int) button.getDouble("index");
+        result.index = button.getInt("index");
         return result;
     }
 }

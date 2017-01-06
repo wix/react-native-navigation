@@ -7,6 +7,7 @@ import java.util.List;
 public class BaseScreenParams {
     public String screenId;
     public String title;
+    public String subtitle;
     public NavigationParams navigationParams;
     public List<TitleBarButtonParams> rightButtons;
     public TitleBarLeftButtonParams leftButton;
@@ -36,5 +37,9 @@ public class BaseScreenParams {
 
     public boolean hasCollapsingTopBar() {
         return styleParams.collapsingTopBarParams != null;
+    }
+
+    public FabParams getFab() {
+        return fabParams;
     }
 }

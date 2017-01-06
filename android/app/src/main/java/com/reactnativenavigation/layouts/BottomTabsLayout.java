@@ -7,20 +7,25 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.SideMenu;
+import com.reactnativenavigation.views.SideMenu.Side;
 import com.reactnativenavigation.views.SnackbarAndFabContainer;
 
 import java.util.List;
@@ -35,7 +40,8 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     private SnackbarAndFabContainer snackbarAndFabContainer;
     private BottomTabs bottomTabs;
     private ScreenStack[] screenStacks;
-    private final SideMenuParams sideMenuParams;
+    private final SideMenuParams leftSideMenuParams;
+    private final SideMenuParams rightSideMenuParams;
     private @Nullable SideMenu sideMenu;
     private int currentStackIndex = 0;
 
@@ -43,7 +49,8 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
         super(activity);
         this.activity = activity;
         this.params = params;
-        this.sideMenuParams = params.sideMenuParams;
+        leftSideMenuParams = params.leftSideMenuParams;
+        rightSideMenuParams = params.rightSideMenuParams;
         screenStacks = new ScreenStack[params.tabParams.size()];
         createLayout();
     }
@@ -58,10 +65,10 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     }
 
     private void createSideMenu() {
-        if (sideMenuParams == null) {
+        if (leftSideMenuParams == null && rightSideMenuParams == null) {
             return;
         }
-        sideMenu = new SideMenu(getContext(), sideMenuParams);
+        sideMenu = new SideMenu(getContext(), leftSideMenuParams, rightSideMenuParams);
         RelativeLayout.LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         addView(sideMenu, lp);
     }
@@ -104,7 +111,7 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     }
 
     private void createSnackbarContainer() {
-        snackbarAndFabContainer = new SnackbarAndFabContainer(getContext());
+        snackbarAndFabContainer = new SnackbarAndFabContainer(getContext(), this);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         lp.addRule(ABOVE, bottomTabs.getId());
         getScreenStackParent().addView(snackbarAndFabContainer, lp);
@@ -176,16 +183,23 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     }
 
     @Override
-    public void toggleSideMenuVisible(boolean animated) {
-        if (sideMenu != null) {
-            sideMenu.toggleVisible(animated);
+    public void setFab(String screenInstanceId, String navigatorEventId, FabParams fabParams) {
+        for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
+            screenStacks[i].setFab(screenInstanceId, navigatorEventId, fabParams);
         }
     }
 
     @Override
-    public void setSideMenuVisible(boolean animated, boolean visible) {
+    public void toggleSideMenuVisible(boolean animated, Side side) {
         if (sideMenu != null) {
-            sideMenu.setVisible(visible, animated);
+            sideMenu.toggleVisible(animated, side);
+        }
+    }
+
+    @Override
+    public void setSideMenuVisible(boolean animated, boolean visible, Side side) {
+        if (sideMenu != null) {
+            sideMenu.setVisible(visible, animated, side);
         }
     }
 
@@ -214,6 +228,11 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
     @Override
     public void dismissContextualMenu(String screenInstanceId) {
         getCurrentScreenStack().peek().dismissContextualMenu();
+    }
+
+    @Override
+    public Screen getCurrentScreen() {
+        return getCurrentScreenStack().peek();
     }
 
     public void selectBottomTabByTabIndex(Integer index) {
@@ -287,7 +306,14 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
         hideCurrentStack();
         showNewStack(position);
         EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
+        sendTabSelectedEventToJs();
         return true;
+    }
+
+    private void sendTabSelectedEventToJs() {
+        WritableMap data = Arguments.createMap();
+        String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("bottomTabSelected", navigatorEventId, data);
     }
 
     private void showNewStack(int position) {
@@ -362,11 +388,10 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
 
     @Override
     public void onSideMenuButtonClick() {
+        final String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         if (sideMenu != null) {
-            sideMenu.openDrawer();
-        } else {
-            final String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
-            NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
+            sideMenu.openDrawer(Side.Left);
         }
     }
 }

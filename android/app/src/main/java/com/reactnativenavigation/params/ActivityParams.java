@@ -10,6 +10,7 @@ public class ActivityParams {
     public Type type;
     public ScreenParams screenParams;
     public List<ScreenParams> tabParams;
-    public SideMenuParams sideMenuParams;
+    public SideMenuParams leftSideMenuParams;
+    public SideMenuParams rightSideMenuParams;
     public boolean animateShow;
 }

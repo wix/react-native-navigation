@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "2.0.0-experimental.151",
+  "version": "2.0.0-experimental.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -27,7 +27,7 @@
     "pretest": "npm run lint",
     "test": "npm run test:js && npm run test:android && npm run test:ios",
     "test:watch": "jest --coverage --watch",
-    "release": "npm version prerelease && npm publish --tag next && npm view react-native-navigation dist-tags && git push"
+    "release": "node ./scripts/release.js"
   },
   "optionalDependencies": {
     "react-redux": "*"
@@ -47,18 +47,23 @@
     "babel-polyfill": "6.x.x",
     "babel-preset-react-native": "1.x.x",
     "babel-register": "6.x.x",
-    "babel-jest": "17.x.x",
+    "babel-jest": "18.x.x",
     "eslint": "3.x.x",
     "eslint-plugin-babel": "3.x.x",
     "eslint-plugin-react": "6.x.x",
     "eslint-plugin-react-native": "2.x.x",
-    "jest": "17.x.x",
-    "jest-cli": "17.x.x",
-    "jest-react-native": "17.x.x",
-    "react-test-renderer": "15.4.1"
+    "jest": "18.x.x",
+    "jest-cli": "18.x.x",
+    "jest-react-native": "18.x.x",
+    "react-test-renderer": "15.4.1",
+    "semver": "5.x.x"
   },
   "jest": {
     "preset": "jest-react-native",
+    "testPathDirs": [
+      "node_modules",
+      "src2"
+    ],
     "resetMocks": true,
     "resetModules": true
   }

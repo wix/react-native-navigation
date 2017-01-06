@@ -6,6 +6,7 @@ jdk:
 env:
   global:
     - NODE_VERSION=stable
+    - PATH=$PATH:$HOME/.yarn/bin
     - ANDROID_HOME=$HOME/android-sdk-linux
     - PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
@@ -17,8 +18,8 @@ branches:
   - master
 
 cache:
+  yarn: true
   directories:
-    - $HOME/.yarn-cache
     - $HOME/.gradle/
     - $HOME/.m2
     - $ANDROID_HOME/licenses/
@@ -29,18 +30,24 @@ before_cache:
 
 before_install:
   - set -e
-  - ./scripts/clean.sh
+  - nvm install $NODE_VERSION
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
 
 install:
-  - nvm install $NODE_VERSION
-  - npm i -g yarn
-  - yarn
+  - ./scripts/clean.sh
+  - yarn install
 
 script:
   - yarn run lint
   - yarn run test:js
   - ./scripts/installAndroidSDK.sh
   - yarn run test:android
+  - yarn run release
 
 after_script:
   - echo "BUILD FINISHED"
+
+notifications:
+  email: false
+  slack:
+    secure: ISBdKzsYD4eas+wxLkNTFrXreWome0YmGATqgAS1R3BcZ+ZhUgZUgC9j52Ix9JUpNN52xCZ131Wbihu8w0RpuvNogFsl64q0tBplmpNfghT1EAO85w7ZBgHpAi1fxsxUSLlO5fCKv4kX84yksyG7mBxr9tR97gVDl3chWqEUCh1Wd+dx+R0RkJpTQ+VmME5Jmywr2F1Lv1TlxGXs4yN8wlnix/V6ebYSI1qwAWjAk8nHPIGdYxNivcwkmzenkbQuHAZpI6uxWJ+Hpx+wn69sZXarXVg3M20A8dv6DiWsd7gZUQaeX+gJa1HrAxjjEl6fiJZC9Zuq1aZmMAy0EHBIN4EuRpPgDG5CzEE9/yfHEBvXbKDF2Uk2aLN3LHY+7Q8SAL6ckGJ9eSp0fu68SFYUq4YoyV1jAx7/1teWzFORSEPx/1kDYoUSqhyIojcC0FcLVvY77Ij23cN3bR+hY4mLeuyajHjl6pm5jS+iiiJgM55+H9mP+v1XhLj/Me+giDP1bBqvfL4BshwXElZ5pjEeUMnEEbfMQkHUpQ5c9/PZVrIuNal4JUYi649wVUltoan9Zm8s4AkX2p0aY5ZMy0gel2ADeyGUk+u262Jt17k31nzcpGwAXSAYNdFHJCnga8kHn2eKYPO76qpb4JlOH1kQ33oNIur9/MYvx8CeZdJBd64=

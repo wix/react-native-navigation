@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 import android.widget.ScrollView;
 
 import com.reactnativenavigation.NavigationApplication;
@@ -31,10 +32,12 @@ public class CollapseCalculator {
     private OnFlingListener flingListener;
     private int scrollY = 0;
     private int totalCollapse = 0;
+    private final int scaledTouchSlop;
 
     public CollapseCalculator(final CollapsingView collapsingView, CollapseBehaviour collapseBehaviour) {
         this.view = collapsingView;
         this.collapseBehaviour = collapseBehaviour;
+        scaledTouchSlop = ViewConfiguration.get(NavigationApplication.instance).getScaledTouchSlop();
         setFlingDetector();
     }
 
@@ -188,7 +191,7 @@ public class CollapseCalculator {
         totalCollapse += collapse;
         previousCollapseY = y;
         previousTouchEvent = MotionEvent.obtain(event);
-        return new CollapseAmount(collapse);
+        return Math.abs(totalCollapse) < scaledTouchSlop ? CollapseAmount.None : new CollapseAmount(collapse);
     }
 
     private float calculateCollapse(float y) {

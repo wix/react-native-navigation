@@ -44,8 +44,8 @@ function setScreenTitleBarSubtitle(screenInstanceID, subtitle) {
   NativeReactModule.setScreenTitleBarSubtitle(screenInstanceID, subtitle);
 }
 
-function setScreenTitleBarButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton) {
-  NativeReactModule.setScreenTitleBarButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton);
+function setScreenButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton, fab) {
+  NativeReactModule.setScreenButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton, fab);
 }
 
 function showModal(screenParams) {
@@ -87,17 +87,20 @@ function savePassProps(params) {
     });
   }
 
-  if (params.sideMenu) {
-    PropRegistry.save(params.sideMenu.navigationParams.screenInstanceID, params.sideMenu.passProps);
+  if (params.sideMenu && params.sideMenu.left) {
+    PropRegistry.save(params.sideMenu.left.navigationParams.screenInstanceID, params.sideMenu.left.passProps);
+  }
+  if (params.sideMenu && params.sideMenu.right) {
+    PropRegistry.save(params.sideMenu.right.navigationParams.screenInstanceID, params.sideMenu.right.passProps);
   }
 }
 
-function toggleSideMenuVisible(animated) {
-  NativeReactModule.toggleSideMenuVisible(animated);
+function toggleSideMenuVisible(animated, side) {
+  NativeReactModule.toggleSideMenuVisible(animated, side);
 }
 
-function setSideMenuVisible(animated, visible) {
-  NativeReactModule.setSideMenuVisible(animated, visible);
+function setSideMenuVisible(animated, visible, side) {
+  NativeReactModule.setSideMenuVisible(animated, visible, side);
 }
 
 function selectBottomTabByNavigatorId(navigatorId) {
@@ -138,7 +141,7 @@ module.exports = {
   toggleBottomTabsVisible,
   setScreenTitleBarTitle,
   setScreenTitleBarSubtitle,
-  setScreenTitleBarButtons,
+  setScreenButtons,
   showModal,
   dismissTopModal,
   dismissAllModals,
