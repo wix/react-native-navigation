@@ -25,12 +25,12 @@ class SharedElementAnimatorCreator {
         this.to = to;
     }
 
-    List<Animator> createHide() {
-        return create(new ReversedAnimatorValuesResolver(to, from, to.hideInterpolation), to.hideInterpolation);
-    }
-
     List<Animator> createShow() {
         return create(new AnimatorValuesResolver(from, to, to.showInterpolation), to.showInterpolation);
+    }
+
+    List<Animator> createHide() {
+        return create(new ReversedAnimatorValuesResolver(to, from, to.hideInterpolation), to.hideInterpolation);
     }
 
     @NonNull
@@ -40,10 +40,10 @@ class SharedElementAnimatorCreator {
             result.add(createCurvedMotionAnimator(resolver, interpolation.easing));
         } else {
             if (shouldAddLinearMotionXAnimator(resolver)) {
-                result.add(createXAnimator(resolver, interpolation));
+                result.add(createXAnimator(resolver));
             }
             if (shouldAddLinearMotionYAnimator(resolver)) {
-                result.add(createYAnimator(resolver, interpolation));
+                result.add(createYAnimator(resolver));
             }
         }
         if (shouldCreateScaleXAnimator(resolver)) {
@@ -64,7 +64,7 @@ class SharedElementAnimatorCreator {
     }
 
     private boolean shouldAddLinearMotionXAnimator(AnimatorValuesResolver resolver) {
-        return resolver.dy != 0;
+        return resolver.dx != 0;
     }
 
     private boolean shouldAddLinearMotionYAnimator(AnimatorValuesResolver resolver) {
@@ -88,25 +88,21 @@ class SharedElementAnimatorCreator {
         return animator;
     }
 
-    private ObjectAnimator createXAnimator(AnimatorValuesResolver resolver, InterpolationParams interpolation) {
-        ObjectAnimator animator = ofFloat(to, View.TRANSLATION_X, resolver.startX, resolver.endX);
-        animator.setInterpolator(interpolation.easing.getInterpolator());
-        return animator;
+    private ObjectAnimator createXAnimator(AnimatorValuesResolver resolver) {
+        return ofFloat(to.getSharedView(), View.TRANSLATION_X, resolver.startX, resolver.endX);
     }
 
-    private ObjectAnimator createYAnimator(AnimatorValuesResolver resolver, InterpolationParams interpolation) {
-        ObjectAnimator animator = ofFloat(to, View.TRANSLATION_Y, resolver.startY, resolver.endY);
-        animator.setInterpolator(interpolation.easing.getInterpolator());
-        return animator;
+    private ObjectAnimator createYAnimator(AnimatorValuesResolver resolver) {
+        return ofFloat(to.getSharedView(), View.TRANSLATION_Y, resolver.startY, resolver.endY);
     }
 
     private ObjectAnimator createScaleXAnimator(AnimatorValuesResolver resolver) {
-        to.setPivotX(0);
-        return ObjectAnimator.ofFloat(to, View.SCALE_X, resolver.startScaleX, resolver.endScaleX);
+        to.getSharedView().setPivotX(0);
+        return ObjectAnimator.ofFloat(to.getSharedView(), View.SCALE_X, resolver.startScaleX, resolver.endScaleX);
     }
 
     private ObjectAnimator createScaleYAnimator(AnimatorValuesResolver resolver) {
-        to.setPivotY(0);
-        return ObjectAnimator.ofFloat(to, View.SCALE_Y, resolver.startScaleY, resolver.endScaleY);
+        to.getSharedView().setPivotY(0);
+        return ObjectAnimator.ofFloat(to.getSharedView(), View.SCALE_Y, resolver.startScaleY, resolver.endScaleY);
     }
 }

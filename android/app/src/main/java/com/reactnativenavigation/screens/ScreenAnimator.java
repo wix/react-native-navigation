@@ -18,7 +18,6 @@ import javax.annotation.Nullable;
 public class ScreenAnimator {
     private final float translationY;
     private Screen screen;
-    private SharedElementsAnimator sharedElementsAnimator;
 
     public ScreenAnimator(Screen screen) {
         this.screen = screen;
@@ -100,13 +99,13 @@ public class ScreenAnimator {
     }
 
     void showWithSharedElementsTransitions(Runnable onAnimationEnd) {
-        screen.setVisibility(View.VISIBLE);
-        sharedElementsAnimator = new SharedElementsAnimator(screen.sharedElements);
+        this.screen.setVisibility(View.VISIBLE);
+        SharedElementsAnimator sharedElementsAnimator = new SharedElementsAnimator(this.screen.sharedElements);
         sharedElementsAnimator.show(onAnimationEnd);
     }
 
     void hideWithSharedElementsTransition(Runnable onAnimationEnd) {
-        sharedElementsAnimator = new SharedElementsAnimator(screen.sharedElements);
+        SharedElementsAnimator sharedElementsAnimator = new SharedElementsAnimator(screen.sharedElements);
         sharedElementsAnimator.hide(onAnimationEnd);
     }
 }

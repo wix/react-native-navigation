@@ -2,7 +2,6 @@ package com.reactnativenavigation.views.sharedElementTransition;
 
 import android.view.View;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,10 +9,6 @@ public class SharedElements {
     // These need to be weak references or better yet - clear them in `onViewRemoved`
     Map<String, SharedElementTransition> toElements;
     private Map<String, SharedElementTransition> fromElements;
-
-    Collection<SharedElementTransition> getFromElements() {
-        return fromElements.values();
-    }
 
     public void setFromElements(Map<String, SharedElementTransition> fromElements) {
         this.fromElements.clear();
@@ -54,8 +49,20 @@ public class SharedElements {
         this.fromElements = new HashMap<>();
     }
 
+    void onShowAnimationStart() {
+        for (SharedElementTransition toElement : toElements.values()) {
+            toElement.attachChildToScreen();
+        }
+    }
+
+    void onShowAnimationEnd() {
+        for (SharedElementTransition toElement : toElements.values()) {
+            toElement.attachChildToSelf();
+        }
+    }
+
     void hideFromElements() {
-        for (final SharedElementTransition fromElement : getFromElements()) {
+        for (final SharedElementTransition fromElement : fromElements.values()) {
             fromElement.post(new Runnable() {
                 @Override
                 public void run() {
@@ -71,9 +78,9 @@ public class SharedElements {
         }
     }
 
-    public void swap() {
-        fromElements.clear();
-        fromElements.putAll(this.toElements);
-        toElements.clear();
+    void onHideAnimationStart() {
+        for (SharedElementTransition fromElement : fromElements.values()) {
+            fromElement.attachChildToScreen();
+        }
     }
 }

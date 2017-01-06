@@ -25,8 +25,8 @@ class AnimatorValuesResolver {
     float controlY2;
 
     AnimatorValuesResolver(SharedElementTransition from, SharedElementTransition to, InterpolationParams interpolation) {
-        fromXy = ViewUtils.getLocationOnScreen(from);
-        toXy = ViewUtils.getLocationOnScreen(to);
+        fromXy = ViewUtils.getLocationOnScreen(from.getSharedView());
+        toXy = ViewUtils.getLocationOnScreen(to.getSharedView());
         startScaleX = calculateStartScaleX(from, to);
         endScaleX = calculateEndScaleX(from, to);
         startScaleY = calculateStartScaleY(from, to);

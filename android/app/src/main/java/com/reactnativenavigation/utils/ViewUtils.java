@@ -152,6 +152,7 @@ public class ViewUtils {
     public static Point getLocationOnScreen(View view) {
         int[] xy = new int[2];
         view.getLocationOnScreen(xy);
+        xy[1] -= convertDpToPixel(25);
         return new Point(xy[0], xy[1]);
     }
 }

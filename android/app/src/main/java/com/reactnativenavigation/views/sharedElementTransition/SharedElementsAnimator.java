@@ -15,14 +15,6 @@ public class SharedElementsAnimator {
         this.sharedElements = sharedElements;
     }
 
-    private List<Animator> createTransitionAnimators() {
-        List<Animator> result = new ArrayList<>();
-        for (String key : sharedElements.toElements.keySet()) {
-            result.addAll(new SharedElementAnimatorCreator(sharedElements.getFromElement(key), sharedElements.getToElement(key)).createShow());
-        }
-        return result;
-    }
-
     private List<Animator> createHideTransitionAnimators() {
         List<Animator> result = new ArrayList<>();
         for (String key : sharedElements.toElements.keySet()) {
@@ -33,7 +25,7 @@ public class SharedElementsAnimator {
 
     public void show(final Runnable onAnimationEnd) {
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(300);
+        animatorSet.setDuration(1500);
         animatorSet.playTogether(createTransitionAnimators());
         animatorSet.setInterpolator(new LinearInterpolator());
         animatorSet.addListener(new AnimatorListenerAdapter() {
@@ -44,15 +36,22 @@ public class SharedElementsAnimator {
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                sharedElements.onShowAnimationEnd();
                 onAnimationEnd.run();
             }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                sharedElements.onShowAnimationEnd();
+            }
         });
+        sharedElements.onShowAnimationStart();
         animatorSet.start();
     }
 
     public void hide(final Runnable onAnimationEnd) {
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(300);
+        animatorSet.setDuration(500);
         animatorSet.playTogether(createHideTransitionAnimators());
         animatorSet.setInterpolator(new LinearInterpolator());
         animatorSet.addListener(new AnimatorListenerAdapter() {
@@ -62,6 +61,17 @@ public class SharedElementsAnimator {
                 onAnimationEnd.run();
             }
         });
+        sharedElements.onHideAnimationStart();
         animatorSet.start();
+    }
+
+    private List<Animator> createTransitionAnimators() {
+        List<Animator> result = new ArrayList<>();
+        for (String key : sharedElements.toElements.keySet()) {
+            SharedElementTransition toElement = sharedElements.getToElement(key);
+            SharedElementTransition fromElement = sharedElements.getFromElement(key);
+            result.addAll(new SharedElementAnimatorCreator(fromElement, toElement).createShow());
+        }
+        return result;
     }
 }
