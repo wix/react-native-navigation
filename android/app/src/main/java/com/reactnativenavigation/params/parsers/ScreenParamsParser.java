@@ -43,7 +43,7 @@ public class ScreenParamsParser extends Parser {
             result.fragmentCreatorPassProps = params.getBundle(FRAGMENT_CREATOR_PASS_PROPS);
         }
 
-        result.fabParams = ButtonParser.parseFab(params, result.navigationParams.navigatorEventId);
+        result.fabParams = ButtonParser.parseFab(params, result.navigationParams.navigatorEventId, result.navigationParams.screenInstanceId);
 
         result.tabLabel = getTabLabel(params);
         result.tabIcon = getTabIcon(params);

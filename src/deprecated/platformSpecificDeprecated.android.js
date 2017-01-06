@@ -258,7 +258,8 @@ function convertAnimationType(animationType) {
   return animationType !== 'none';
 }
 
-function navigatorSetButtons(navigator, navigatorEventID, params) {
+function navigatorSetButtons(navigator, navigatorEventID, _params) {
+  const params = _.cloneDeep(_params);
   if (params.rightButtons) {
     params.rightButtons.forEach(function(button) {
       button.enabled = !button.disabled;

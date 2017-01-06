@@ -16,6 +16,7 @@ import com.reactnativenavigation.params.SideMenuParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.SideMenu;
@@ -92,7 +93,7 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
     }
 
     private void createFabAndSnackbarContainer() {
-        snackbarAndFabContainer = new SnackbarAndFabContainer(getContext());
+        snackbarAndFabContainer = new SnackbarAndFabContainer(getContext(), this);
         RelativeLayout.LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         lp.addRule(ALIGN_PARENT_BOTTOM);
         snackbarAndFabContainer.setLayoutParams(lp);
@@ -229,6 +230,11 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
     @Override
     public void dismissContextualMenu(String screenInstanceId) {
         stack.dismissContextualMenu(screenInstanceId);
+    }
+
+    @Override
+    public Screen getCurrentScreen() {
+        return stack.peek();
     }
 
     @Override

@@ -98,7 +98,7 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     private void setScreenFab(String screenInstanceId, String navigatorEventId, ReadableMap fab) {
-        FabParams fabParams = new FabParamsParser().parse(BundleConverter.toBundle(fab), navigatorEventId);
+        FabParams fabParams = new FabParamsParser().parse(BundleConverter.toBundle(fab), navigatorEventId, screenInstanceId);
         NavigationCommandsHandler.setScreenFab(screenInstanceId, navigatorEventId, fabParams);
     }
 
