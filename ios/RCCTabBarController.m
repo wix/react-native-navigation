@@ -1,8 +1,8 @@
 #import "RCCTabBarController.h"
 #import "RCCViewController.h"
-#import "RCTConvert.h"
+#import <React/RCTConvert.h>
 #import "RCCManager.h"
-#import "RCTUIManager.h"
+#import <React/RCTUIManager.h>
 
 @interface RCTUIManager ()
 

@@ -1,8 +1,8 @@
 #import "RCCNavigationController.h"
 #import "RCCViewController.h"
 #import "RCCManager.h"
-#import "RCTEventDispatcher.h"
-#import "RCTConvert.h"
+#import <React/RCTEventDispatcher.h>
+#import <React/RCTConvert.h>
 #import <objc/runtime.h>
 #import "RCCTitleViewHelper.h"
 

@@ -1,6 +1,6 @@
 
 #import "RCCNotification.h"
-#import "RCTRootView.h"
+#import <React/RCTRootView.h>
 #import "RCTHelpers.h"
 
 @interface NotificationView : UIView

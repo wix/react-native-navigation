@@ -9,7 +9,7 @@
 #import "RCCTheSideBarManagerViewController.h"
 #import "RCCViewController.h"
 #import "RCCDrawerHelper.h"
-#import "RCTConvert.h"
+#import <React/RCTConvert.h>
 
 
 @interface RCCTheSideBarManagerViewController () <TheSidebarControllerDelegate>
