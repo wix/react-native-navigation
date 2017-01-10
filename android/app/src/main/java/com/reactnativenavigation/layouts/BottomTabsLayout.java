@@ -253,6 +253,8 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
         }
     }
 
+    // Emit the ScreenChangedEvent after the screen is popped. If the keyboard is
+    // visible, then pop may finish before the screen is actually popped
     @Override
     public void pop(ScreenParams params) {
         getCurrentScreenStack().pop(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
@@ -264,6 +266,8 @@ public class BottomTabsLayout extends RelativeLayout implements Layout, AHBottom
         });
     }
 
+    // Emit the ScreenChangedEvent after the last screen is popped. If the keyboard is
+    // visible, then popToRoot may finish before all the screens are popped
     @Override
     public void popToRoot(ScreenParams params) {
         getCurrentScreenStack().popToRoot(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
