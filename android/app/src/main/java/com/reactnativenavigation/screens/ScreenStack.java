@@ -162,9 +162,29 @@ public class ScreenStack {
         parent.addView(previous, 0);
     }
 
-    public void popToRoot(boolean animated) {
+    // Make sure that the keyboard is closed before starting to pop screens
+    public void popToRoot(final boolean animated, final OnScreenPop onScreenPop) {
+        if (keyboardVisibilityDetector.isKeyboardVisible()) {
+            keyboardVisibilityDetector.setKeyboardCloseListener(new Runnable() {
+                @Override
+                public void run() {
+                    keyboardVisibilityDetector.setKeyboardCloseListener(null);
+                    popToRootCore(animated, onScreenPop);
+                }
+            });
+            keyboardVisibilityDetector.closeKeyboard();
+        } else {
+            popToRootCore(animated, onScreenPop);
+        }
+    }
+
+    public void popToRootCore(boolean animated, OnScreenPop onScreenPop) {
         while (canPop()) {
-            pop(animated);
+            if (stack.size() == 2) {
+                pop(animated, onScreenPop); // Emit ScreenChangedEvent after last screen is popped
+            } else {
+                pop(animated);
+            }
         }
     }
 
