@@ -24,7 +24,7 @@ public class TopBar extends AppBarLayout {
     protected TitleBar titleBar;
     private ContextualMenu contextualMenu;
     protected FrameLayout titleBarAndContextualMenuContainer;
-    private TopTabs topTabs;
+    protected TopTabs topTabs;
 
     public TopBar(Context context) {
         super(context);
@@ -73,10 +73,17 @@ public class TopBar extends AppBarLayout {
         setVisibility(styleParams.topBarHidden ? GONE : VISIBLE);
         titleBar.setStyle(styleParams);
         setTopTabsStyle(styleParams);
+        if (!styleParams.topBarElevationShadowEnabled) {
+            disableElevationShadow();
+        }
     }
 
     private void setTransparent() {
         setBackgroundColor(Color.TRANSPARENT);
+        disableElevationShadow();
+    }
+
+    private void disableElevationShadow() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setOutlineProvider(null);
         }

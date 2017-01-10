@@ -8,4 +8,6 @@ public interface CollapsingView {
     float getCurrentCollapseValue();
 
     View asView();
+
+    void collapse(CollapseAmount amount);
 }

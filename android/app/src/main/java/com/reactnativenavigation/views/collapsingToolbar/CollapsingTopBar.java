@@ -65,6 +65,7 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         return collapsingTopBarBackground;
     }
 
+    @Override
     public void collapse(CollapseAmount amount) {
         viewCollapser.collapse(amount);
         if (titleBar instanceof CollapsingTitleBar) {
@@ -85,9 +86,13 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     }
 
     public int getCollapsedHeight() {
-        return params.hasBackgroundImage() ?
-                collapsingTopBarBackground.getCollapsedTopBarHeight() :
-                titleBar.getHeight();
+        if (params.hasBackgroundImage()) {
+            return collapsingTopBarBackground.getCollapsedTopBarHeight();
+        } else if (topTabs != null) {
+            return topTabs.getHeight();
+        } else {
+            return titleBar.getHeight();
+        }
     }
 
     @Override

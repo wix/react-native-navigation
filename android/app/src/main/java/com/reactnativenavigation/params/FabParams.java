@@ -12,8 +12,13 @@ public class FabParams {
     public String expendedId;
     public String navigatorEventId;
     public List<FabActionParams> actions;
+    public String screenInstanceId;
 
     public boolean hasExpendedState() {
         return actions != null && actions.size() > 0;
+    }
+
+    public boolean isValid() {
+        return collapsedId != null;
     }
 }

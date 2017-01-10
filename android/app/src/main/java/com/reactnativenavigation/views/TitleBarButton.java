@@ -17,7 +17,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
     protected final Menu menu;
     protected final View parent;
-    protected TitleBarButtonParams buttonParams;
+    TitleBarButtonParams buttonParams;
     @Nullable protected String navigatorEventId;
 
     TitleBarButton(Menu menu, View parent, TitleBarButtonParams buttonParams, @Nullable String navigatorEventId) {
@@ -36,7 +36,6 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         item.setOnMenuItemClickListener(this);
         return item;
     }
-
 
     private void setIcon(MenuItem item) {
         if (hasIcon()) {
@@ -79,7 +78,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
     private void setTextColorForFoundButtonViews(ArrayList<View> outViews) {
         for (View button : outViews) {
-            ((TextView) button).setTextColor(buttonParams.color.getColor());
+            ((TextView) button).setTextColor(buttonParams.getColor().getColor());
         }
     }
 

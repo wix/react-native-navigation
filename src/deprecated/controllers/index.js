@@ -1,3 +1,4 @@
+/*eslint-disable*/
 var OriginalReactNative = require('react-native');
 var RCCManager = OriginalReactNative.NativeModules.RCCManager;
 var NativeAppEventEmitter = OriginalReactNative.NativeAppEventEmitter;

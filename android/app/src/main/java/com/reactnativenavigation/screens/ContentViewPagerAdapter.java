@@ -11,6 +11,7 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.events.ViewPagerScreenChangedEvent;
+import com.reactnativenavigation.events.ViewPagerScreenScrollStartEvent;
 import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.views.ContentView;
 
@@ -61,7 +62,9 @@ class ContentViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
+        if (state == ViewPager.SCROLL_STATE_DRAGGING) {
+            EventBus.instance.post(new ViewPagerScreenScrollStartEvent());
+        }
     }
 
     private void sendTabSelectedEventToJs() {

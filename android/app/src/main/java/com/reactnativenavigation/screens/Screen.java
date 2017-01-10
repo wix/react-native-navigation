@@ -13,10 +13,12 @@ import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.events.ContextualMenuHiddenEvent;
 import com.reactnativenavigation.events.Event;
 import com.reactnativenavigation.events.EventBus;
+import com.reactnativenavigation.events.FabSetEvent;
 import com.reactnativenavigation.events.Subscriber;
 import com.reactnativenavigation.events.ViewPagerScreenChangedEvent;
 import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -71,6 +73,9 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         setStatusBarColor(styleParams.statusBarColor);
         setNavigationBarColor(styleParams.navigationBarColor);
         topBar.setStyle(styleParams);
+        if (styleParams.screenBackgroundColor.hasColor()) {
+            setBackgroundColor(styleParams.screenBackgroundColor.getColor());
+        }
     }
 
     private void createViews() {
@@ -84,6 +89,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     private void createTitleBar() {
         addTitleBarButtons();
         topBar.setTitle(screenParams.title);
+        topBar.setSubtitle(screenParams.subtitle);
     }
 
     private void addTitleBarButtons() {
@@ -186,6 +192,13 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
                 backButtonListener,
                 titleBarLeftButtonParams,
                 screenParams.overrideBackPressInJs);
+    }
+
+    public void setFab(FabParams fabParams) {
+        screenParams.fabParams = fabParams;
+        if (isShown()) {
+            EventBus.instance.post(new FabSetEvent(fabParams));
+        }
     }
 
     public StyleParams getStyleParams() {
