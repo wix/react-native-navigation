@@ -264,10 +264,10 @@ var Controllers = {
       RCCManager.showController(layout, animationType, passProps);
     },
     dismissController: function(animationType = 'slide-down') {
-      RCCManager.dismissController(animationType);
+      return RCCManager.dismissController(animationType)
     },
     dismissAllControllers: function(animationType = 'slide-down') {
-      RCCManager.dismissAllControllers(animationType);
+      return RCCManager.dismissAllControllers(animationType);
     }
   },
 

@@ -448,11 +448,11 @@ function showModal(params) {
 }
 
 function dismissModal(params) {
-  Modal.dismissController(params.animationType);
+  return Modal.dismissController(params.animationType);
 }
 
 function dismissAllModals(params) {
-  Modal.dismissAllControllers(params.animationType);
+  return Modal.dismissAllControllers(params.animationType);
 }
 
 function showLightBox(params) {
