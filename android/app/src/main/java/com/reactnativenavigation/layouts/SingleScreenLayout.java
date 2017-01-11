@@ -131,8 +131,6 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
         EventBus.instance.post(new ScreenChangedEvent(params));
     }
 
-    // Emit the ScreenChangedEvent after the screen is popped. If the keyboard is
-    // visible, then stack.pop may finish before the screen is actually popped
     @Override
     public void pop(ScreenParams params) {
         stack.pop(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
@@ -143,8 +141,6 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
         });
     }
 
-    // Emit the ScreenChangedEvent after the screen is popped. If the keyboard is
-    // visible, then stack.popToRoot may finish before the screen is actually popped
     @Override
     public void popToRoot(ScreenParams params) {
         stack.popToRoot(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
