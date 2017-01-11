@@ -166,7 +166,7 @@ public class ScreenStack {
         parent.addView(previous, 0);
     }
 
-    public void popToRoot(final boolean animated, final OnScreenPop onScreenPop) {
+    public void popToRoot(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
         if (keyboardVisibilityDetector.isKeyboardVisible()) {
             keyboardVisibilityDetector.setKeyboardCloseListener(new Runnable() {
                 @Override
@@ -181,7 +181,7 @@ public class ScreenStack {
         }
     }
 
-    private void popToRootInternal(boolean animated, OnScreenPop onScreenPop) {
+    private void popToRootInternal(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
         while (canPop()) {
             if (stack.size() == 2) {
                 popInternal(animated, onScreenPop);
