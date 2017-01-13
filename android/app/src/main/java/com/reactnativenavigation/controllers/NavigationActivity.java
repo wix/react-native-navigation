@@ -26,6 +26,7 @@ import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -289,6 +290,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (layout instanceof BottomTabsLayout) {
             ((BottomTabsLayout) layout).setBottomTabBadgeByNavigatorId(navigatorId, badge);
         }
+    }
+
+    public void showSlidingOverlay(SlidingOverlayParams params) {
+        layout.showSlidingOverlay(params);
     }
 
     public void showSnackbar(SnackbarParams params) {
