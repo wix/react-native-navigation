@@ -2,6 +2,7 @@
 var OriginalReactNative = require('react-native');
 var RCCManager = OriginalReactNative.NativeModules.RCCManager;
 var NativeAppEventEmitter = OriginalReactNative.NativeAppEventEmitter;
+var RCCEventEmitter = new OriginalReactNative.NativeEventEmitter(OriginalReactNative.NativeModules.RCCEventEmitter);
 var utils = require('./utils');
 var Constants = require('./Constants');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
@@ -109,7 +110,11 @@ var Controllers = {
       },
 
       ControllerRegistry: Controllers.ControllerRegistry,
-      TabBarControllerIOS: {name: 'TabBarControllerIOS', Item: {name: 'TabBarControllerIOS.Item'}},
+      TabBarControllerIOS: {
+        name: 'TabBarControllerIOS',
+        Item: {name: 'TabBarControllerIOS.Item'},
+        MiddleButton: {name: 'TabBarControllerIOS.MiddleButton'}
+      },
       NavigationControllerIOS: {name: 'NavigationControllerIOS'},
       ViewControllerIOS: {name: 'ViewControllerIOS'},
       DrawerControllerIOS: {name: 'DrawerControllerIOS'},
@@ -302,6 +307,8 @@ var Controllers = {
   },
 
   NavigationToolBarIOS: OriginalReactNative.requireNativeComponent('RCCToolBar', null),
+
+  RCCEventEmitter: RCCEventEmitter,
 
   Constants: Constants
 };
