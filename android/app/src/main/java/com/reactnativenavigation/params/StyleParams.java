@@ -59,6 +59,7 @@ public class StyleParams {
     public Color selectedTopTabTextColor;
     public int selectedTopTabIndicatorHeight;
     public Color selectedTopTabIndicatorColor;
+    public boolean topTabScrollable;
 
     public Color screenBackgroundColor;
 
