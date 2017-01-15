@@ -17,6 +17,7 @@ public abstract class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setSplashLayout();
         IntentDataHandler.saveIntentData(getIntent());
+        NavigationApplication.instance.state = NavigationApplication.AppState.Startup;
     }
 
     @Override
@@ -38,6 +39,7 @@ public abstract class SplashActivity extends AppCompatActivity {
         }
 
         // TODO I'm starting to think this entire flow is incorrect and should be done in Application
+        NavigationApplication.instance.state = NavigationApplication.AppState.StartingReactContext;
         NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
     }
 

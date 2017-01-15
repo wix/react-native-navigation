@@ -16,8 +16,10 @@ import com.reactnativenavigation.react.ReactGateway;
 import java.util.List;
 
 public abstract class NavigationApplication extends Application implements ReactApplication {
-
+    public enum AppState {Stopped, Startup, StartingReactContext, Created}
     public static NavigationApplication instance;
+
+    public AppState state = AppState.Stopped;
 
     private NavigationReactGateway reactGateway;
     private EventEmitter eventEmitter;
