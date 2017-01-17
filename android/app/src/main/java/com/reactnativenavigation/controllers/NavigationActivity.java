@@ -9,8 +9,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import com.reactnativenavigation.NavigationApplication;
@@ -18,6 +22,7 @@ import com.reactnativenavigation.events.Event;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.JsDevReloadEvent;
 import com.reactnativenavigation.events.ModalDismissedEvent;
+import com.reactnativenavigation.events.OrientationChangedEvent;
 import com.reactnativenavigation.events.Subscriber;
 import com.reactnativenavigation.layouts.BottomTabsLayout;
 import com.reactnativenavigation.layouts.Layout;
@@ -192,6 +197,34 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     private ReactGateway getReactGateway() {
         return NavigationApplication.instance.getReactGateway();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        ReactContext reactContext = NavigationApplication.instance.getReactGateway().getReactContext();
+        DeviceEventManagerModule.RCTDeviceEventEmitter jsModule;
+
+        if (reactContext.hasActiveCatalystInstance()) {
+            OrientationChangedEvent event = new OrientationChangedEvent();
+            jsModule = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
+            WritableMap params = Arguments.createMap();
+
+            if (jsModule != null && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                params.putString("orientation", "LANDSCAPE");
+            }
+
+            if (jsModule != null && newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                params.putString("orientation", "PORTRAIT");
+            }
+
+            if (jsModule != null && newConfig.orientation == Configuration.ORIENTATION_UNDEFINED) {
+                params.putString("orientation", "UNDEFINED");
+            }
+
+            jsModule.emit(event.getType(), params);
+        }
+
+        super.onConfigurationChanged(newConfig);
     }
 
     void push(ScreenParams params) {

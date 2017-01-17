@@ -1,6 +1,10 @@
 package com.reactnativenavigation.bridge;
 
+import android.app.Activity;
+import android.content.res.Configuration;
+
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -220,4 +224,26 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     public void dismissContextualMenu(String screenInstanceId) {
         NavigationCommandsHandler.dismissContextualMenu(screenInstanceId);
     }
+
+    @ReactMethod
+    public void getOrientation(Promise promise) {
+        Activity activity = getCurrentActivity();
+        if (activity != null) {
+            int orientation = getCurrentActivity().getResources().getConfiguration().orientation;
+            switch (orientation) {
+                case Configuration.ORIENTATION_PORTRAIT:
+                    promise.resolve("PORTRAIT");
+                    return;
+                case Configuration.ORIENTATION_LANDSCAPE:
+                    promise.resolve("LANDSCAPE");
+                    return;
+                case Configuration.ORIENTATION_UNDEFINED:
+                    promise.resolve("UNDEFINED");
+                    return;
+            }
+        } else {
+            promise.resolve("UNDEFINED");
+        }
+    }
+
 }
