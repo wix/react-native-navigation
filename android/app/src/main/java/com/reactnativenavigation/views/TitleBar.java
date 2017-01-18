@@ -115,7 +115,7 @@ public class TitleBar extends Toolbar {
     }
 
     private boolean shouldSetLeftButton(TitleBarLeftButtonParams leftButtonParams) {
-        return leftButton == null && leftButtonParams != null;
+        return leftButton == null && leftButtonParams != null && leftButtonParams.iconState != null;
     }
 
     private void createAndSetLeftButton(TitleBarLeftButtonParams leftButtonParams,

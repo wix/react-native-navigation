@@ -1,9 +1,11 @@
 package com.reactnativenavigation.params;
 
+import android.support.annotation.Nullable;
+
 import com.balysv.materialmenu.MaterialMenuDrawable;
 
 public class TitleBarLeftButtonParams extends TitleBarButtonParams {
-    public MaterialMenuDrawable.IconState iconState;
+    @Nullable public MaterialMenuDrawable.IconState iconState;
     public boolean overrideBackPressInJs;
 
     public TitleBarLeftButtonParams(TitleBarButtonParams params) {

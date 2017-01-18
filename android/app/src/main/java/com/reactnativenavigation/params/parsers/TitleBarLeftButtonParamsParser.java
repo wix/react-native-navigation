@@ -22,8 +22,9 @@ public class TitleBarLeftButtonParamsParser extends TitleBarButtonParamsParser {
             case "accept":
                 return MaterialMenuDrawable.IconState.CHECK;
             case "sideMenu":
-            default:
                 return MaterialMenuDrawable.IconState.BURGER;
+            default:
+                return null;
         }
     }
 }
