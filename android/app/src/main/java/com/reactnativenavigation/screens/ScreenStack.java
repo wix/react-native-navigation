@@ -121,21 +121,24 @@ public class ScreenStack {
             return;
         }
 
-        final Screen toRemove = stack.pop();
-        final Screen previous = stack.peek();
-
         if (keyboardVisibilityDetector.isKeyboardVisible()) {
             keyboardVisibilityDetector.setKeyboardCloseListener(new Runnable() {
                 @Override
                 public void run() {
                     keyboardVisibilityDetector.setKeyboardCloseListener(null);
-                    swapScreens(animated, toRemove, previous, onScreenPop);
+                    popInternal(animated, onScreenPop);
                 }
             });
             keyboardVisibilityDetector.closeKeyboard();
         } else {
-            swapScreens(animated, toRemove, previous, onScreenPop);
+            popInternal(animated, onScreenPop);
         }
+    }
+
+    private void popInternal(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
+        final Screen toRemove = stack.pop();
+        final Screen previous = stack.peek();
+        swapScreens(animated, toRemove, previous, onScreenPop);
     }
 
     private void swapScreens(boolean animated, final Screen toRemove, Screen previous, OnScreenPop onScreenPop) {
@@ -163,9 +166,28 @@ public class ScreenStack {
         parent.addView(previous, 0);
     }
 
-    public void popToRoot(boolean animated) {
+    public void popToRoot(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
+        if (keyboardVisibilityDetector.isKeyboardVisible()) {
+            keyboardVisibilityDetector.setKeyboardCloseListener(new Runnable() {
+                @Override
+                public void run() {
+                    keyboardVisibilityDetector.setKeyboardCloseListener(null);
+                    popToRootInternal(animated, onScreenPop);
+                }
+            });
+            keyboardVisibilityDetector.closeKeyboard();
+        } else {
+            popToRootInternal(animated, onScreenPop);
+        }
+    }
+
+    private void popToRootInternal(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
         while (canPop()) {
-            pop(animated);
+            if (stack.size() == 2) {
+                popInternal(animated, onScreenPop);
+            } else {
+                popInternal(animated, null);
+            }
         }
     }
 

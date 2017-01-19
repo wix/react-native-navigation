@@ -258,7 +258,8 @@ function convertAnimationType(animationType) {
   return animationType !== 'none';
 }
 
-function navigatorSetButtons(navigator, navigatorEventID, params) {
+function navigatorSetButtons(navigator, navigatorEventID, _params) {
+  const params = _.cloneDeep(_params);
   if (params.rightButtons) {
     params.rightButtons.forEach(function(button) {
       button.enabled = !button.disabled;
@@ -284,7 +285,7 @@ function navigatorSetButtons(navigator, navigatorEventID, params) {
 }
 
 function navigatorSetTabBadge(navigator, params) {
-  const badge = params.badge.toString();
+  const badge = params.badge ? params.badge.toString() : '';
   if (params.tabIndex >= 0) {
     newPlatformSpecific.setBottomTabBadgeByIndex(params.tabIndex, badge);
   } else {
@@ -360,6 +361,12 @@ function dismissModal() {
 
 function dismissAllModals(params) {
   newPlatformSpecific.dismissAllModals();
+}
+
+function showInAppNotification(params) {
+  params.navigationParams = {};
+  addNavigatorParams(params.navigationParams);
+  newPlatformSpecific.showInAppNotification(params);
 }
 
 function addNavigatorParams(screen, navigator = null, idx = '') {
@@ -503,7 +510,7 @@ function getRightButtons(screen) {
 
 function addNavigationStyleParams(screen) {
   const Screen = Navigation.getRegisteredScreen(screen.screen);
-  screen.navigatorStyle = Object.assign({}, screen.navigatorStyle, Screen.navigatorStyle);
+  screen.navigatorStyle = Object.assign({}, Screen.navigatorStyle, screen.navigatorStyle);
 }
 
 function showSnackbar(navigator, params) {
@@ -548,6 +555,7 @@ export default {
   showModal,
   dismissModal,
   dismissAllModals,
+  showInAppNotification,
   navigatorSetButtons,
   navigatorSetTabBadge,
   navigatorSetTitle,
