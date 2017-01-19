@@ -19,6 +19,10 @@ public class TitleBarLeftButtonParams extends TitleBarButtonParams {
         return eventId.equals("back");
     }
 
+    public boolean hasIcon() {
+        return iconState != null;
+    }
+
     public void setOverrideBackPressInJs(boolean overrideBackPressInJs) {
         this.overrideBackPressInJs = overrideBackPressInJs;
     }

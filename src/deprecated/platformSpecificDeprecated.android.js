@@ -271,7 +271,7 @@ function navigatorSetButtons(navigator, navigatorEventID, _params) {
       }
     });
   }
-  const leftButton = getLeftButton(params);
+  let leftButton = getLeftButton(params);
   if (leftButton) {
     if (leftButton.icon) {
       const icon = resolveAssetSource(leftButton.icon);
@@ -279,9 +279,15 @@ function navigatorSetButtons(navigator, navigatorEventID, _params) {
         leftButton.icon = icon.uri;
       }
     }
+  } else if (shouldRemoveLeftButton(params)) {
+    leftButton = {};
   }
   const fab = getFab(params);
   newPlatformSpecific.setScreenButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton, fab);
+}
+
+function shouldRemoveLeftButton(params) {
+  return params.leftButtons && params.leftButtons.length === 0;
 }
 
 function navigatorSetTabBadge(navigator, params) {
