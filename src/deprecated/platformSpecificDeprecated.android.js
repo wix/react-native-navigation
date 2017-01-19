@@ -394,7 +394,7 @@ function addNavigatorButtons(screen, sideMenuParams) {
   }
 
   let leftButton = getLeftButton(screen);
-  if (sideMenuParams && !leftButton) {
+  if (sideMenuParams && !sideMenuParams.dontCreateSideMenuNavButton && !leftButton) {
     leftButton = createSideMenuButton();
   }
   if (leftButton) {
