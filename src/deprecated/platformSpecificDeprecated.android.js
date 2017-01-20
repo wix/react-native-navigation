@@ -349,6 +349,7 @@ function showModal(params) {
   addTitleBarBackButtonIfNeeded(params);
   addNavigationStyleParams(params);
 
+
   /*
    * adapt to new API
    */
@@ -383,7 +384,9 @@ function addNavigatorParams(screen, navigator = null, idx = '') {
 
 function addNavigatorButtons(screen, sideMenuParams) {
   const Screen = Navigation.getRegisteredScreen(screen.screen);
-  screen.navigatorButtons = _.cloneDeep(Screen.navigatorButtons);
+  if (screen.navigatorButtons == null) {
+    screen.navigatorButtons = _.cloneDeep(Screen.navigatorButtons);
+  }
 
   // Get image uri from image id
   const rightButtons = getRightButtons(screen);
