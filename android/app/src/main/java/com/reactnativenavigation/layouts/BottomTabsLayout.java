@@ -285,7 +285,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     @Override
     public void newStack(final ScreenParams params) {
         ScreenStack currentScreenStack = getCurrentScreenStack();
-        currentScreenStack.newStack(params, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        currentScreenStack.newStack(params, createScreenLayoutParams(params));
         bottomTabs.setStyleFromScreen(params.styleParams);
         EventBus.instance.post(new ScreenChangedEvent(params));
     }
