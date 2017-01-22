@@ -43,6 +43,7 @@ function adaptTopTabs(screen, navigatorID) {
       tab.navigatorID = navigatorID;
     }
     tab.screen = tab.screenId;
+    addTabIcon(tab);
     addNavigatorButtons(tab);
     adaptNavigationParams(tab);
     addNavigationStyleParams(tab);
@@ -139,6 +140,8 @@ function convertStyleParams(originalStyleObject) {
     drawBelowTopBar: !originalStyleObject.drawUnderNavBar,
 
     topTabTextColor: processColor(originalStyleObject.topTabTextColor),
+    topTabIconColor: processColor(originalStyleObject.topTabIconColor),
+    selectedTopTabIconColor: processColor(originalStyleObject.selectedTopTabIconColor),
     selectedTopTabTextColor: processColor(originalStyleObject.selectedTopTabTextColor),
     selectedTopTabIndicatorHeight: originalStyleObject.selectedTopTabIndicatorHeight,
     selectedTopTabIndicatorColor: processColor(originalStyleObject.selectedTopTabIndicatorColor),

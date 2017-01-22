@@ -56,7 +56,9 @@ public class StyleParams {
     public boolean backButtonHidden;
 
     public Color topTabTextColor;
+    public Color topTabIconColor;
     public Color selectedTopTabTextColor;
+    public Color selectedTopTabIconColor;
     public int selectedTopTabIndicatorHeight;
     public Color selectedTopTabIndicatorColor;
 
