@@ -43,7 +43,9 @@ function adaptTopTabs(screen, navigatorID) {
       tab.navigatorID = navigatorID;
     }
     tab.screen = tab.screenId;
-    addTabIcon(tab);
+    if (tab.icon) {
+      addTabIcon(tab);
+    }
     addNavigatorButtons(tab);
     adaptNavigationParams(tab);
     addNavigationStyleParams(tab);
