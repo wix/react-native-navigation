@@ -44,8 +44,8 @@ function setScreenTitleBarSubtitle(screenInstanceID, subtitle) {
   NativeReactModule.setScreenTitleBarSubtitle(screenInstanceID, subtitle);
 }
 
-function setScreenTitleBarButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton) {
-  NativeReactModule.setScreenTitleBarButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton);
+function setScreenButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton, fab) {
+  NativeReactModule.setScreenButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton, fab);
 }
 
 function showModal(screenParams) {
@@ -59,6 +59,10 @@ function dismissTopModal() {
 
 function dismissAllModals() {
   NativeReactModule.dismissAllModals();
+}
+
+function showInAppNotification(params) {
+  NativeReactModule.showSlidingOverlay(params);
 }
 
 function savePassProps(params) {
@@ -141,10 +145,11 @@ module.exports = {
   toggleBottomTabsVisible,
   setScreenTitleBarTitle,
   setScreenTitleBarSubtitle,
-  setScreenTitleBarButtons,
+  setScreenButtons,
   showModal,
   dismissTopModal,
   dismissAllModals,
+  showInAppNotification,
   toggleSideMenuVisible,
   setSideMenuVisible,
   selectBottomTabByNavigatorId,
