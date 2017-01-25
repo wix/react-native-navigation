@@ -219,7 +219,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 // we want to reset the style to what we expect (so we need to reset on every willAppear)
 - (void)setStyleOnAppear
 {
-    [self setStyleOnAppearForViewController:self appeared:false];
+    [self setStyleOnAppearForViewController:self];
 }
 
 -(void)setStyleOnAppearForViewController:(UIViewController*)viewController
@@ -230,7 +230,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         UIColor *color = screenBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:screenBackgroundColor] : nil;
         self.view.backgroundColor = color;
     }
- 
+    
     NSString *navBarBackgroundColor = self.navigatorStyle[@"navBarBackgroundColor"];
     if (navBarBackgroundColor)
     {
@@ -263,19 +263,33 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     {
         viewController.navigationController.navigationBar.tintColor = nil;
     }
-    
-    NSString *statusBarTextColorScheme = self.navigatorStyle[@"statusBarTextColorScheme"];
-    if (statusBarTextColorScheme && [statusBarTextColorScheme isEqualToString:@"light"])
+  
+    NSString *statusBarTextColorSchemeSingleScreen = self.navigatorStyle[@"statusBarTextColorSchemeSingleScreen"];
+    if (statusBarTextColorSchemeSingleScreen && [statusBarTextColorSchemeSingleScreen isEqualToString:@"light"])
     {
-        viewController.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-        self._statusBarTextColorSchemeLight = YES;
+      self._statusBarTextColorSchemeLight = YES;
     }
     else
     {
-        viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
-        self._statusBarTextColorSchemeLight = NO;
+      self._statusBarTextColorSchemeLight = NO;
     }
-    
+  
+    // incase statusBarTextColorSchemeSingleScreen exists ignore the statusBarTextColorScheme which more globaly
+    if (!statusBarTextColorSchemeSingleScreen) {
+      NSString *statusBarTextColorScheme = self.navigatorStyle[@"statusBarTextColorScheme"];
+      if (statusBarTextColorScheme && [statusBarTextColorScheme isEqualToString:@"light"] && !statusBarTextColorSchemeSingleScreen)
+      {
+          viewController.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+          self._statusBarTextColorSchemeLight = YES;
+        
+      }
+      else
+      {
+          viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+          self._statusBarTextColorSchemeLight = NO;
+      }
+    }
+  
     NSNumber *navBarHidden = self.navigatorStyle[@"navBarHidden"];
     BOOL navBarHiddenBool = navBarHidden ? [navBarHidden boolValue] : NO;
     if (viewController.navigationController.navigationBarHidden != navBarHiddenBool)
@@ -339,29 +353,44 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     
     NSNumber *navBarTransparent = self.navigatorStyle[@"navBarTransparent"];
     BOOL navBarTransparentBool = navBarTransparent ? [navBarTransparent boolValue] : NO;
-    if (navBarTransparentBool)
-    {
-        if (![viewController.navigationController.navigationBar viewWithTag:TRANSPARENT_NAVBAR_TAG])
+    
+    void (^action)() = ^ {
+        if (navBarTransparentBool)
         {
-            [self storeOriginalNavBarImages];
-            
-            [viewController.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-            viewController.navigationController.navigationBar.shadowImage = [UIImage new];
-            UIView *transparentView = [[UIView alloc] initWithFrame:CGRectZero];
-            transparentView.tag = TRANSPARENT_NAVBAR_TAG;
-            [viewController.navigationController.navigationBar insertSubview:transparentView atIndex:0];
+            if (![viewController.navigationController.navigationBar viewWithTag:TRANSPARENT_NAVBAR_TAG])
+            {
+                [self storeOriginalNavBarImages];
+                
+                [viewController.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+                viewController.navigationController.navigationBar.shadowImage = [UIImage new];
+                UIView *transparentView = [[UIView alloc] initWithFrame:CGRectZero];
+                transparentView.tag = TRANSPARENT_NAVBAR_TAG;
+                [viewController.navigationController.navigationBar insertSubview:transparentView atIndex:0];
+            }
         }
-    }
-    else
-    {
-        UIView *transparentView = [viewController.navigationController.navigationBar viewWithTag:TRANSPARENT_NAVBAR_TAG];
-        if (transparentView)
+        else
         {
-            [transparentView removeFromSuperview];
-            [viewController.navigationController.navigationBar setBackgroundImage:self.originalNavBarImages[@"bgImage"] forBarMetrics:UIBarMetricsDefault];
-            viewController.navigationController.navigationBar.shadowImage = self.originalNavBarImages[@"shadowImage"];
-            self.originalNavBarImages = nil;
+            UIView *transparentView = [viewController.navigationController.navigationBar viewWithTag:TRANSPARENT_NAVBAR_TAG];
+            if (transparentView)
+            {
+                [transparentView removeFromSuperview];
+                [viewController.navigationController.navigationBar setBackgroundImage:self.originalNavBarImages[@"bgImage"] forBarMetrics:UIBarMetricsDefault];
+                viewController.navigationController.navigationBar.shadowImage = self.originalNavBarImages[@"shadowImage"];
+                self.originalNavBarImages = nil;
+            }
         }
+    };
+    
+    if(self.transitionCoordinator.initiallyInteractive || !navBarTransparentBool) {
+        action();
+    } else {
+        UIView* backgroundView = [self.navigationController.navigationBar valueForKey:@"backgroundView"];
+        CGFloat originalAlpha = backgroundView.alpha;
+        backgroundView.alpha = navBarTransparentBool ? 0.0 : 1.0;
+        [self.transitionCoordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+            action();
+            backgroundView.alpha = originalAlpha;
+        }];
     }
     
     NSNumber *navBarTranslucent = self.navigatorStyle[@"navBarTranslucent"];
@@ -407,18 +436,18 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     {
         self.navBarHairlineImageView.hidden = NO;
     }
-
+    
     //Bug fix: in case there is a interactivePopGestureRecognizer, it prevents react-native from getting touch events on the left screen area that the gesture handles
     //overriding the delegate of the gesture prevents this from happening while keeping the gesture intact (another option was to disable it completely by demand)
     self.originalInteractivePopGestureDelegate = nil;
     if (self.navigationController != nil && self.navigationController.interactivePopGestureRecognizer != nil)
     {
-      id <UIGestureRecognizerDelegate> interactivePopGestureRecognizer = self.navigationController.interactivePopGestureRecognizer.delegate;
-      if (interactivePopGestureRecognizer != nil)
-      {
-        self.originalInteractivePopGestureDelegate = interactivePopGestureRecognizer;
-        self.navigationController.interactivePopGestureRecognizer.delegate = self;
-      }
+        id <UIGestureRecognizerDelegate> interactivePopGestureRecognizer = self.navigationController.interactivePopGestureRecognizer.delegate;
+        if (interactivePopGestureRecognizer != nil)
+        {
+            self.originalInteractivePopGestureDelegate = interactivePopGestureRecognizer;
+            self.navigationController.interactivePopGestureRecognizer.delegate = self;
+        }
     }
 }
 
@@ -592,5 +621,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     
     return interactionName;
 }
+
 
 @end

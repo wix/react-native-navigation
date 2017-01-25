@@ -24,7 +24,12 @@ export default class SideMenu extends Component {
         <TouchableOpacity onPress={ this.onModalPress.bind(this) }>
           <Text style={styles.button}>Show Modal Screen</Text>
         </TouchableOpacity>
-      </View>
+
+        <TouchableOpacity onPress={ this.onShowInAppNotification.bind(this) }>
+          <Text style={styles.button}>Show In-App Notification</Text>
+        </TouchableOpacity>
+
+    </View>
     );
   }
   onReplaceTab2Press() {
@@ -42,6 +47,13 @@ export default class SideMenu extends Component {
     this.props.navigator.showModal({
       title: "Modal",
       screen: "example.ModalScreen"
+    });
+  }
+
+  onShowInAppNotification() {
+    this._toggleDrawer();
+    this.props.navigator.showInAppNotification({
+      screen: "example.InAppNotification"
     });
   }
 

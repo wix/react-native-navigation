@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -73,10 +72,17 @@ public class TopBar extends AppBarLayout {
         setVisibility(styleParams.topBarHidden ? GONE : VISIBLE);
         titleBar.setStyle(styleParams);
         setTopTabsStyle(styleParams);
+        if (!styleParams.topBarElevationShadowEnabled) {
+            disableElevationShadow();
+        }
     }
 
     private void setTransparent() {
         setBackgroundColor(Color.TRANSPARENT);
+        disableElevationShadow();
+    }
+
+    private void disableElevationShadow() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setOutlineProvider(null);
         }
@@ -86,7 +92,7 @@ public class TopBar extends AppBarLayout {
         titleBar.setRightButtons(titleBarButtons, navigatorEventId);
     }
 
-    public TabLayout initTabs() {
+    public TopTabs initTabs() {
         topTabs = new TopTabs(getContext());
         addView(topTabs);
         return topTabs;

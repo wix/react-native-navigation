@@ -41,6 +41,7 @@ public class StyleParams {
     public Color topBarColor;
     public CollapsingTopBarParams collapsingTopBarParams;
     public boolean topBarHidden;
+    public boolean topBarElevationShadowEnabled;
     public boolean topTabsHidden;
     public boolean drawScreenBelowTopBar;
 
@@ -55,7 +56,9 @@ public class StyleParams {
     public boolean backButtonHidden;
 
     public Color topTabTextColor;
+    public Color topTabIconColor;
     public Color selectedTopTabTextColor;
+    public Color selectedTopTabIconColor;
     public int selectedTopTabIndicatorHeight;
     public Color selectedTopTabIndicatorColor;
 

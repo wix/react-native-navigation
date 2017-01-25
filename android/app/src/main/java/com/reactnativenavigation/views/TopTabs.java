@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.support.design.widget.TabLayout;
 
 import com.reactnativenavigation.params.StyleParams;
+import com.reactnativenavigation.views.utils.TopTabsIconColorHelper;
 
 public class TopTabs extends TabLayout {
 
@@ -36,5 +37,19 @@ public class TopTabs extends TabLayout {
         }
 
         setTabTextColors(tabTextColor, selectedTabColor);
+    }
+
+    public void setTopTabsIconColor(StyleParams style) {
+        new TopTabsIconColorHelper(this, style).colorIcons(getSelectedIconColor(), getUnselectedIconColor());
+    }
+
+    private int getSelectedIconColor() {
+        ColorStateList originalTabColors = getTabTextColors();
+        return originalTabColors != null ? originalTabColors.getColorForState(TabLayout.SELECTED_STATE_SET, -1) : -1;
+    }
+
+    private int getUnselectedIconColor() {
+        ColorStateList originalTabColors = getTabTextColors();
+        return originalTabColors != null ? originalTabColors.getColorForState(TabLayout.SELECTED_STATE_SET, -1) : -1;
     }
 }
