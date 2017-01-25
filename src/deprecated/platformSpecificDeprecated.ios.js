@@ -520,6 +520,8 @@ function showInAppNotification(params) {
     navigatorEventID,
     navigatorID
   };
+  
+  savePassProps(params);
 
   Notification.show({
     component: params.screen,
