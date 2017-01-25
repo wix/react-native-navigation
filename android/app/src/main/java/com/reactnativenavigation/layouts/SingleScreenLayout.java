@@ -220,6 +220,11 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
+    public void hideSlidingOverlay() {
+        slidingOverlaysQueue.remove();
+    }
+
+    @Override
     public void onModalDismissed() {
         EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
     }

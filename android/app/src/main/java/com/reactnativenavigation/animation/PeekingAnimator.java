@@ -1,7 +1,6 @@
 package com.reactnativenavigation.animation;
 
 import android.animation.Animator;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
@@ -12,12 +11,15 @@ public class PeekingAnimator {
 
     private static final int SLIDE_OUT_DURATION = 300;
     private static final int SLIDE_IN_DURATION = 600;
-    private static final int SUSTAIN_DURATION = 3000;
 
     private final Animator animator;
 
-    public PeekingAnimator(View view) {
-        this.animator = createAnimator(view);
+    public PeekingAnimator(View view, final boolean show) {
+        final int heightPixels = view.getLayoutParams().height;
+
+        this.animator = show ?
+                createSlideInAnimator(view, heightPixels) :
+                createSlideOutAnimator(view, heightPixels);
     }
 
     public void addListener(Animator.AnimatorListener listener) {
@@ -28,33 +30,18 @@ public class PeekingAnimator {
         animator.start();
     }
 
-    private Animator createAnimator(View view) {
-        final int heightPixels = view.getLayoutParams().height;
-
+    private ObjectAnimator createSlideInAnimator(View view, int heightPixels) {
         view.setTranslationY(-heightPixels);
 
-        ObjectAnimator slideIn = createSlideInAnimator(view);
-        ObjectAnimator slideOut = createSlideOutAnimator(view, heightPixels, slideIn);
-        AnimatorSet animatorSet = createAnimatorSet(slideIn, slideOut);
-        return animatorSet;
-    }
-
-    private ObjectAnimator createSlideInAnimator(View view) {
         ObjectAnimator slideIn = ObjectAnimator.ofFloat(view, TRANSLATION_Y, 0);
         slideIn.setDuration(SLIDE_IN_DURATION);
         slideIn.setInterpolator(new OvershootInterpolator(0.8f));
         return slideIn;
     }
 
-    private ObjectAnimator createSlideOutAnimator(View view, int heightPixels, ObjectAnimator slideIn) {
+    private ObjectAnimator createSlideOutAnimator(View view, int heightPixels) {
         ObjectAnimator slideOut = ObjectAnimator.ofFloat(view, TRANSLATION_Y, -heightPixels);
-        slideIn.setDuration(SLIDE_OUT_DURATION);
+        slideOut.setDuration(SLIDE_OUT_DURATION);
         return slideOut;
-    }
-
-    private AnimatorSet createAnimatorSet(ObjectAnimator slideIn, ObjectAnimator slideOut) {
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(slideOut).after(SUSTAIN_DURATION).after(slideIn);
-        return animatorSet;
     }
 }

@@ -217,6 +217,11 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
+    public void hideSlidingOverlay() {
+        slidingOverlaysQueue.remove();
+    }
+
+    @Override
     public void onModalDismissed() {
         EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
     }
