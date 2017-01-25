@@ -44,6 +44,8 @@ public class StyleParamsParser {
         result.topTabsHidden = getBoolean("topTabsHidden", getDefaultTopTabsHidden());
 
         result.topTabTextColor = getColor("topTabTextColor", getDefaultTopTabTextColor());
+        result.topTabIconColor = getColor("topTabIconColor", getDefaultTopTabIconColor());
+        result.selectedTopTabIconColor = getColor("selectedTopTabIconColor", getDefaultSelectedTopTabIconColor());
         result.selectedTopTabTextColor = getColor("selectedTopTabTextColor", getDefaultSelectedTopTabTextColor());
         result.selectedTopTabIndicatorHeight = getInt("selectedTopTabIndicatorHeight", getDefaultSelectedTopTabIndicatorHeight());
         result.selectedTopTabIndicatorColor = getColor("selectedTopTabIndicatorColor", getDefaultSelectedTopTabIndicatorColor());
@@ -106,6 +108,10 @@ public class StyleParamsParser {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.selectedTopTabTextColor;
     }
 
+    private StyleParams.Color getDefaultSelectedTopTabIconColor() {
+        return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.selectedTopTabIconColor;
+    }
+
     private StyleParams.Color getDefaultNavigationColor() {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.navigationBarColor;
     }
@@ -156,6 +162,10 @@ public class StyleParamsParser {
 
     private StyleParams.Color getDefaultTopTabTextColor() {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.topTabTextColor;
+    }
+
+    private StyleParams.Color getDefaultTopTabIconColor() {
+        return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.topTabIconColor;
     }
 
     private boolean getDefaultBackButtonHidden() {
