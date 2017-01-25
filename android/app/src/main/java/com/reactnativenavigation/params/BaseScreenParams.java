@@ -1,5 +1,6 @@
 package com.reactnativenavigation.params;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.List;
 public class BaseScreenParams {
     public String screenId;
     public String title;
+    public String subtitle;
+    public Drawable tabIcon;
     public NavigationParams navigationParams;
     public List<TitleBarButtonParams> rightButtons;
     public TitleBarLeftButtonParams leftButton;
@@ -36,5 +39,9 @@ public class BaseScreenParams {
 
     public boolean hasCollapsingTopBar() {
         return styleParams.collapsingTopBarParams != null;
+    }
+
+    public FabParams getFab() {
+        return fabParams;
     }
 }

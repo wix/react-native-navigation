@@ -1,20 +1,30 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
+import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.utils.ViewMeasurer;
 
 public class CollapsingViewMeasurer extends ViewMeasurer {
-    private int collapsedTopBarHeight;
-    private float getFinalCollapseValue;
-    private int screenHeight;
+
+    int collapsedTopBarHeight;
+    private float finalCollapseValue;
+    int screenHeight;
+    int bottomTabsHeight = 0;
+    boolean bottomTabsHidden;
+
+    public CollapsingViewMeasurer(CollapsingTopBar topBar, Screen screen, StyleParams styleParams) {
+        this(topBar, screen);
+        bottomTabsHidden = styleParams.bottomTabsHidden;
+        bottomTabsHeight = (int) ViewUtils.convertDpToPixel(56);
+    }
 
     public CollapsingViewMeasurer(final CollapsingTopBar topBar, final Screen collapsingSingleScreen) {
         ViewUtils.runOnPreDraw(topBar, new Runnable() {
             @Override
             public void run() {
                 collapsedTopBarHeight = topBar.getCollapsedHeight();
-                getFinalCollapseValue = topBar.getFinalCollapseValue();
+                finalCollapseValue = topBar.getFinalCollapseValue();
             }
         });
 
@@ -27,11 +37,11 @@ public class CollapsingViewMeasurer extends ViewMeasurer {
     }
 
     public float getFinalCollapseValue() {
-        return getFinalCollapseValue;
+        return finalCollapseValue;
     }
 
     @Override
     public int getMeasuredHeight(int heightMeasureSpec) {
-        return screenHeight - collapsedTopBarHeight;
+        return screenHeight - collapsedTopBarHeight + (bottomTabsHidden ? bottomTabsHeight : 0);
     }
 }

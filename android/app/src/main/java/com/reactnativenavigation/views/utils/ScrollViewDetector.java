@@ -2,6 +2,7 @@ package com.reactnativenavigation.views.utils;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ScrollView;
 
 import com.reactnativenavigation.utils.ViewUtils;
@@ -10,57 +11,70 @@ import com.reactnativenavigation.views.collapsingToolbar.OnScrollViewAddedListen
 import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
 
 public class ScrollViewDetector {
+    private static final boolean SCROLLVIEW_FOUND = true;
+    private static final boolean SCROLLVIEW_NOT_FOUND = false;
     private OnScrollViewAddedListener scrollViewAddedListener;
     private ScrollViewDelegate scrollViewDelegate;
-    private View.OnAttachStateChangeListener stateChangeListener;
+    private View.OnAttachStateChangeListener scrollViewStateChangeListener;
+    private ViewTreeObserver.OnGlobalLayoutListener scrollViewDetectorListener;
 
-    public ScrollViewDetector(final ContentView contentView,
-                              OnScrollViewAddedListener onScrollViewAddedListener,
-                              final ScrollViewDelegate scrollViewDelegate) {
+    public ScrollViewDetector(ContentView contentView, OnScrollViewAddedListener onScrollViewAddedListener,
+                              ScrollViewDelegate scrollViewDelegate) {
         this.scrollViewAddedListener = onScrollViewAddedListener;
         this.scrollViewDelegate = scrollViewDelegate;
-        stateChangeListener = new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View v) {
+        scrollViewStateChangeListener = createScrollViewStateChangeListener(contentView, scrollViewDelegate);
+    }
 
-            }
-
+    private StateChangeListenerAdapter createScrollViewStateChangeListener(final ContentView contentView, final ScrollViewDelegate scrollViewDelegate) {
+        return new StateChangeListenerAdapter() {
             @Override
-            public void onViewDetachedFromWindow(View v) {
+            public void onViewDetachedFromWindow(View scrollView) {
                 scrollViewDelegate.getScrollView().removeOnAttachStateChangeListener(this);
                 scrollViewDelegate.onScrollViewRemoved();
-                contentView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        detectScrollViewAdded(contentView);
-                    }
-                });
+                detectScrollView(scrollViewDelegate, contentView);
             }
         };
     }
 
-    public void detectScrollViewAdded(View child) {
+    private void detectScrollView(final ScrollViewDelegate scrollViewDelegate, final ContentView contentView) {
+        scrollViewDetectorListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (!scrollViewDelegate.hasScrollView()) {
+                    if (findScrollView(contentView) && contentView.getViewTreeObserver().isAlive()) {
+                        contentView.getViewTreeObserver().removeOnGlobalLayoutListener(scrollViewDetectorListener);
+                    }
+                }
+            }
+        };
+        contentView.getViewTreeObserver().addOnGlobalLayoutListener(scrollViewDetectorListener);
+    }
+
+    public boolean findScrollView(View child) {
         if (child instanceof ScrollView) {
-            onScrollViewAdded((ScrollView) child);
+            onScrollViewFound((ScrollView) child);
+            return SCROLLVIEW_FOUND;
         } else if (child instanceof ViewGroup) {
             Object maybeScrollView = ViewUtils.findChildByClass((ViewGroup) child, ScrollView.class);
             if (maybeScrollView instanceof ScrollView) {
-                onScrollViewAdded((ScrollView) maybeScrollView);
+                onScrollViewFound((ScrollView) maybeScrollView);
+                return SCROLLVIEW_FOUND;
             }
         }
+        return SCROLLVIEW_NOT_FOUND;
     }
 
-    private void onScrollViewAdded(final ScrollView scrollView) {
+    private void onScrollViewFound(final ScrollView scrollView) {
         if (scrollViewDelegate != null && !scrollViewDelegate.hasScrollView()) {
             scrollViewDelegate.onScrollViewAdded(scrollView);
             scrollViewAddedListener.onScrollViewAdded(scrollView);
-            scrollView.addOnAttachStateChangeListener(stateChangeListener);
+            scrollView.addOnAttachStateChangeListener(scrollViewStateChangeListener);
         }
     }
 
     public void destroy() {
         if (scrollViewDelegate.getScrollView() != null) {
-            scrollViewDelegate.getScrollView().removeOnAttachStateChangeListener(stateChangeListener);
+            scrollViewDelegate.getScrollView().removeOnAttachStateChangeListener(scrollViewStateChangeListener);
         }
     }
 }
