@@ -521,8 +521,8 @@ function getRightButtons(screen) {
 
   const Screen = Navigation.getRegisteredScreen(screen.screen);
 
-  if (Screen.navigatorButtons && !_.isEmpty(Screen.navigatorButtons)) {
-    return _.cloneDeep(Screen.navigatorButtons);
+  if (Screen.navigatorButtons && !_.isEmpty(Screen.navigatorButtons.rightButtons)) {
+    return _.cloneDeep(Screen.navigatorButtons.rightButtons);
   }
 
   return null;
