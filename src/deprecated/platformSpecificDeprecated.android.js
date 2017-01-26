@@ -392,6 +392,7 @@ function addNavigatorParams(screen, navigator = null, idx = '') {
 }
 
 function addNavigatorButtons(screen, sideMenuParams) {
+
   const Screen = Navigation.getRegisteredScreen(screen.screen);
   if (screen.navigatorButtons == null) {
     screen.navigatorButtons = _.cloneDeep(Screen.navigatorButtons);
@@ -518,9 +519,17 @@ function getLeftButtonDeprecated(screen) {
 function getRightButtons(screen) {
   if (screen.navigatorButtons && screen.navigatorButtons.rightButtons) {
     return screen.navigatorButtons.rightButtons;
+  } else if (screen.rightButtons) {
+    return screen.rightButtons
   }
 
-  return screen.rightButtons;
+  const Screen = Navigation.getRegisteredScreen(screen.screen);
+
+  if (Screen.navigatorButtons && !_.isEmpty(Screen.navigatorButtons.rightButtons)) {
+    return _.cloneDeep(Screen.navigatorButtons.rightButtons);
+  }
+
+  return null;
 }
 
 function addNavigationStyleParams(screen) {
