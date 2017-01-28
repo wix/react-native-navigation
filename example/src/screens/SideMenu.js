@@ -54,7 +54,9 @@ export default class SideMenu extends Component {
     this._toggleDrawer();
     this.props.navigator.showInAppNotification({
       screen: "example.InAppNotification",
-      //position: "bottom",
+      // autoDismiss: false,
+      // autoDismissTimerSec: 1,
+      // position: "bottom",
     });
   }
 
