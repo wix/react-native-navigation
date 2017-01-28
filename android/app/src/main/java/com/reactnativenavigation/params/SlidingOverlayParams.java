@@ -17,5 +17,6 @@ public class SlidingOverlayParams {
 
     public String screenInstanceId;
     public NavigationParams navigationParams;
+    public Integer autoDismissTimerSec;
     public Position position;
 }

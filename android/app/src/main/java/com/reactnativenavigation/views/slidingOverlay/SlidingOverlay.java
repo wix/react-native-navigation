@@ -40,6 +40,10 @@ public class SlidingOverlay {
         this.listener = listener;
     }
 
+    public Integer getAutoDismissTimerSec() {
+        return params.autoDismissTimerSec;
+    }
+
     public void show() {
         parent.addView(view);
 
