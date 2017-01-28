@@ -378,6 +378,7 @@ function dismissAllModals(params) {
 function showInAppNotification(params) {
   params.navigationParams = {};
   addNavigatorParams(params.navigationParams);
+  params.autoDismissTimerSec = params.autoDismissTimerSec || 5;
   newPlatformSpecific.showInAppNotification(params);
 }
 
