@@ -11,6 +11,7 @@ public class SlidingOverlayParamsParser extends Parser {
         final SlidingOverlayParams result = new SlidingOverlayParams();
         result.screenInstanceId = bundle.getString("screen");
         result.navigationParams = new NavigationParams(bundle.getBundle("navigationParams"));
+        result.position = SlidingOverlayParams.Position.fromString(bundle.getString("position", "top"));
         return result;
     }
 }

@@ -5,6 +5,8 @@ import android.animation.ObjectAnimator;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
+import com.reactnativenavigation.params.SlidingOverlayParams.Position;
+
 import static android.view.View.TRANSLATION_Y;
 
 public class PeekingAnimator {
@@ -14,12 +16,12 @@ public class PeekingAnimator {
 
     private final Animator animator;
 
-    public PeekingAnimator(View view, final boolean show) {
-        final int heightPixels = view.getLayoutParams().height;
+    public PeekingAnimator(View view, Position position, final boolean show) {
+        final int offsetPixels = view.getLayoutParams().height * (position == Position.Top ? -1 : 1);
 
         this.animator = show ?
-                createSlideInAnimator(view, heightPixels) :
-                createSlideOutAnimator(view, heightPixels);
+                createSlideInAnimator(view, offsetPixels) :
+                createSlideOutAnimator(view, offsetPixels);
     }
 
     public void addListener(Animator.AnimatorListener listener) {
@@ -30,8 +32,9 @@ public class PeekingAnimator {
         animator.start();
     }
 
-    private ObjectAnimator createSlideInAnimator(View view, int heightPixels) {
-        view.setTranslationY(-heightPixels);
+    private ObjectAnimator createSlideInAnimator(View view, int offset) {
+
+        view.setTranslationY(offset);
 
         ObjectAnimator slideIn = ObjectAnimator.ofFloat(view, TRANSLATION_Y, 0);
         slideIn.setDuration(SLIDE_IN_DURATION);
@@ -39,8 +42,8 @@ public class PeekingAnimator {
         return slideIn;
     }
 
-    private ObjectAnimator createSlideOutAnimator(View view, int heightPixels) {
-        ObjectAnimator slideOut = ObjectAnimator.ofFloat(view, TRANSLATION_Y, -heightPixels);
+    private ObjectAnimator createSlideOutAnimator(View view, int offset) {
+        ObjectAnimator slideOut = ObjectAnimator.ofFloat(view, TRANSLATION_Y, offset);
         slideOut.setDuration(SLIDE_OUT_DURATION);
         return slideOut;
     }

@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.animation.PeekingAnimator;
 import com.reactnativenavigation.params.SlidingOverlayParams;
+import com.reactnativenavigation.params.SlidingOverlayParams.Position;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ContentView;
@@ -42,7 +43,7 @@ public class SlidingOverlay {
     public void show() {
         parent.addView(view);
 
-        final PeekingAnimator animator = new PeekingAnimator(view, true);
+        final PeekingAnimator animator = new PeekingAnimator(view, params.position, true);
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationCancel(Animator animator) {
@@ -65,7 +66,7 @@ public class SlidingOverlay {
     }
 
     public void hide() {
-        final PeekingAnimator animator = new PeekingAnimator(view, false);
+        final PeekingAnimator animator = new PeekingAnimator(view, params.position, false);
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationCancel(Animator animator) {
@@ -98,7 +99,7 @@ public class SlidingOverlay {
         final float heightPixels = ViewUtils.convertDpToPixel(100);
 
         final RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int) heightPixels);
-        lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        lp.addRule(params.position == Position.Top ? RelativeLayout.ALIGN_PARENT_TOP : RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         final ContentView view = new ContentView(parent.getContext(), params.screenInstanceId, params.navigationParams);
         view.setLayoutParams(lp);
