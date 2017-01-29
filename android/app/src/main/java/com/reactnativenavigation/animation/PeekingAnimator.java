@@ -17,7 +17,7 @@ public class PeekingAnimator {
     private final Animator animator;
 
     public PeekingAnimator(View view, Position position, final boolean show) {
-        final int offsetPixels = view.getLayoutParams().height * (position == Position.Top ? -1 : 1);
+        final int offsetPixels = view.getHeight() * (position == Position.Top ? -1 : 1);
 
         this.animator = show ?
                 createSlideInAnimator(view, offsetPixels) :
