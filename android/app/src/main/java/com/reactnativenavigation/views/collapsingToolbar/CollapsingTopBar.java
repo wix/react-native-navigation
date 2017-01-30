@@ -14,12 +14,13 @@ import com.reactnativenavigation.views.TopBar;
 
 public class CollapsingTopBar extends TopBar implements CollapsingView {
     private CollapsingTopBarBackground collapsingTopBarBackground;
-    private CollapsingTopBarReactView headerView;
+    private CollapsingTopBarReactView header;
     private ScrollListener scrollListener;
     private float finalCollapsedTranslation;
     private CollapsingTopBarParams params;
     private final ViewCollapser viewCollapser;
     private final int topBarHeight;
+    private String title;
 
     public CollapsingTopBar(Context context, final CollapsingTopBarParams params) {
         super(context);
@@ -48,6 +49,15 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         this.scrollListener = scrollListener;
     }
 
+    @Override
+    public void setTitle(String title) {
+        if (params.hasReactView()) {
+            this.title = title;
+        } else {
+            super.setTitle(title);
+        }
+    }
+
     private void createBackgroundImage(CollapsingTopBarParams params) {
         if (params.hasBackgroundImage()) {
             collapsingTopBarBackground = new CollapsingTopBarBackground(getContext(), params);
@@ -58,11 +68,11 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
 
     private void createReactView(CollapsingTopBarParams params) {
         if (params.hasReactView()) {
-            headerView = new CollapsingTopBarReactView(getContext(),
+            header = new CollapsingTopBarReactView(getContext(),
                     params.reactViewId,
                     new NavigationParams(Bundle.EMPTY));
-            LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) ViewUtils.convertDpToPixel(400));
-            titleBarAndContextualMenuContainer.addView(headerView, lp);
+            LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) ViewUtils.convertDpToPixel(params.reactViewHeight));
+            titleBarAndContextualMenuContainer.addView(header, lp);
         }
     }
 

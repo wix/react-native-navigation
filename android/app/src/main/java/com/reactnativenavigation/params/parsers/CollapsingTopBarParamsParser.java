@@ -28,6 +28,7 @@ class CollapsingTopBarParamsParser extends Parser {
         CollapsingTopBarParams result = new CollapsingTopBarParams();
         result.imageUri = params.getString("collapsingToolBarImage", null);
         result.reactViewId = params.getString("collapsingToolBarComponent", null);
+        result.reactViewHeight = params.getInt("collapsingToolBarComponentHeight");
         result.scrimColor = getColor(params, "collapsingToolBarCollapsedColor", new StyleParams.Color(Color.WHITE));
         result.collapseBehaviour = getCollapseBehaviour();
         return result;
