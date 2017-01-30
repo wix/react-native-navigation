@@ -22,17 +22,23 @@ class CollapsingTopBarParamsParser extends Parser {
     }
 
     public CollapsingTopBarParams parse() {
-        if (!hasBackgroundImage() && !titleBarHideOnScroll) {
+        if (!validateParams()) {
             return null;
         }
-
         CollapsingTopBarParams result = new CollapsingTopBarParams();
-        if (hasBackgroundImage()) {
-            result.imageUri = params.getString("collapsingToolBarImage");
-        }
+        result.imageUri = params.getString("collapsingToolBarImage", null);
+        result.reactViewId = params.getString("collapsingToolBarComponent", null);
         result.scrimColor = getColor(params, "collapsingToolBarCollapsedColor", new StyleParams.Color(Color.WHITE));
         result.collapseBehaviour = getCollapseBehaviour();
         return result;
+    }
+
+    private boolean validateParams() {
+        return titleBarHideOnScroll || hasImageOrReactView();
+    }
+
+    private boolean hasImageOrReactView() {
+        return hasBackgroundImage() || hasReactView();
     }
 
     private CollapseBehaviour getCollapseBehaviour() {
@@ -47,5 +53,9 @@ class CollapsingTopBarParamsParser extends Parser {
 
     private boolean hasBackgroundImage() {
         return params.containsKey("collapsingToolBarImage");
+    }
+
+    private boolean hasReactView() {
+        return params.containsKey("collapsingToolBarComponent");
     }
 }
