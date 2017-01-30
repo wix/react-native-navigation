@@ -42,7 +42,7 @@ class CollapsingTopBarParamsParser extends Parser {
     }
 
     private CollapseBehaviour getCollapseBehaviour() {
-        if (hasBackgroundImage()) {
+        if (hasBackgroundImage() || hasReactView()) {
             return new CollapseTopBarBehaviour();
         }
         if (titleBarHideOnScroll && drawBelowTopBar) {
