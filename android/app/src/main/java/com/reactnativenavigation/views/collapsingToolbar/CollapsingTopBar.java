@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import com.reactnativenavigation.params.CollapsingTopBarParams;
@@ -11,6 +12,9 @@ import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.TitleBar;
 import com.reactnativenavigation.views.TopBar;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class CollapsingTopBar extends TopBar implements CollapsingView {
     private CollapsingTopBarBackground collapsingTopBarBackground;
@@ -27,7 +31,6 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         this.params = params;
         topBarHeight = calculateTopBarHeight();
         createBackgroundImage(params);
-        createReactView(params);
         calculateFinalCollapsedTranslation(params);
         viewCollapser = new ViewCollapser(this);
     }
@@ -36,7 +39,7 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         ViewUtils.runOnPreDraw(this, new Runnable() {
             @Override
             public void run() {
-                if (params.hasBackgroundImage()) {
+                if (params.hasBackgroundImage() || params.hasReactView()) {
                     finalCollapsedTranslation = getCollapsedHeight() - getHeight();
                 } else {
                     finalCollapsedTranslation = -titleBar.getHeight();
@@ -70,7 +73,8 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         if (params.hasReactView()) {
             header = new CollapsingTopBarReactView(getContext(),
                     params.reactViewId,
-                    new NavigationParams(Bundle.EMPTY));
+                    new NavigationParams(Bundle.EMPTY),
+                    scrollListener);
             LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) ViewUtils.convertDpToPixel(params.reactViewHeight));
             titleBarAndContextualMenuContainer.addView(header, lp);
         }
@@ -78,12 +82,23 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
 
     @Override
     protected TitleBar createTitleBar() {
-        if (params.hasBackgroundImage()) {
+        if (params.hasBackgroundImage() || params.hasReactView()) {
+            createReactView(params);
             return new CollapsingTitleBar(getContext(),
                     getCollapsedHeight(),
-                    scrollListener);
+                    scrollListener,
+                    params);
         } else {
             return super.createTitleBar();
+        }
+    }
+
+    @Override
+    protected void addTitleBar() {
+        if (params.hasReactView()) {
+            titleBarAndContextualMenuContainer.addView(titleBar, new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+        } else {
+            super.addTitleBar();
         }
     }
 
