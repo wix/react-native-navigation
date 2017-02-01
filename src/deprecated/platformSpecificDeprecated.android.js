@@ -129,6 +129,7 @@ function convertStyleParams(originalStyleObject) {
     collapsingToolBarComponent: originalStyleObject.collapsingToolBarComponent,
     collapsingToolBarComponentHeight: originalStyleObject.collapsingToolBarComponentHeight,
     collapsingToolBarCollapsedColor: processColor(originalStyleObject.collapsingToolBarCollapsedColor),
+    expendCollapsingToolBarOnTopTabChange: originalStyleObject.expendCollapsingToolBarOnTopTabChange,
     titleBarHidden: originalStyleObject.navBarHidden,
     titleBarHideOnScroll: originalStyleObject.navBarHideOnScroll,
     titleBarTitleColor: processColor(originalStyleObject.navBarTextColor),
@@ -175,6 +176,9 @@ function convertStyleParams(originalStyleObject) {
     if (collapsingToolBarImage) {
       ret.collapsingToolBarImage = collapsingToolBarImage.uri;
     }
+  }
+  if (_.isUndefined(ret.expendCollapsingToolBarOnTopTabChange)) {
+    ret.expendCollapsingToolBarOnTopTabChange = true;
   }
   return ret;
 }

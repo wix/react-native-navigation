@@ -11,6 +11,10 @@ public class CollapsingViewPagerContentViewMeasurer extends CollapsingViewMeasur
 
     @Override
     public int getMeasuredHeight(int heightMeasureSpec) {
-        return screenHeight - collapsedTopBarHeight - (bottomTabsHidden ? 0 : bottomTabsHeight);
+        int height = screenHeight - collapsedTopBarHeight;
+//        if (styleParams.bottomTabsHidden) {
+            height -= bottomTabsHeight;
+//        }
+        return height;
     }
 }

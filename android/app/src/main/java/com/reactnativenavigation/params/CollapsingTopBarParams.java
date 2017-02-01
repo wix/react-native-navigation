@@ -10,6 +10,7 @@ public class CollapsingTopBarParams {
     public int reactViewHeight;
     public StyleParams.Color scrimColor;
     public CollapseBehaviour collapseBehaviour;
+    public boolean expendOnTopTabChange;
 
     public boolean hasBackgroundImage() {
         return imageUri != null;

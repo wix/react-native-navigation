@@ -43,7 +43,7 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
     protected ViewPager createViewPager(Context context) {
         CollapsingViewPager viewPager = new CollapsingViewPager(context);
         if (screenParams.styleParams.drawScreenBelowTopBar) {
-            viewPager.setViewMeasurer(new CollapsingViewMeasurer((CollapsingTopBar) topBar, this));
+            viewPager.setViewMeasurer(new CollapsingViewMeasurer((CollapsingTopBar) topBar, this, styleParams));
         }
         return viewPager;
     }
@@ -95,8 +95,10 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
     public void onEvent(Event event) {
         super.onEvent(event);
         if (ViewPagerScreenScrollStartEvent.TYPE.equals(event.getType()) || ViewPagerScreenChangedEvent.TYPE.equals(event.getType())) {
-            ((CollapsingView) topBar).collapse(new CollapseAmount(CollapseCalculator.Direction.Down));
-            ((CollapsingView) viewPager).collapse(new CollapseAmount(CollapseCalculator.Direction.Down));
+            if (screenParams.styleParams.collapsingTopBarParams.expendOnTopTabChange) {
+                ((CollapsingView) topBar).collapse(new CollapseAmount(CollapseCalculator.Direction.Down));
+                ((CollapsingView) viewPager).collapse(new CollapseAmount(CollapseCalculator.Direction.Down));
+            }
         }
     }
 

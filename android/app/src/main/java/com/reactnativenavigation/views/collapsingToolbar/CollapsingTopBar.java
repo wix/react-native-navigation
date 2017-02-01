@@ -106,7 +106,7 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     public void collapse(CollapseAmount amount) {
         viewCollapser.collapse(amount);
         if (titleBar instanceof CollapsingTitleBar) {
-            ((CollapsingTitleBar) titleBar).collapse(amount.get());
+            ((CollapsingTitleBar) titleBar).collapse(amount);
         }
         if (collapsingTopBarBackground != null) {
             collapsingTopBarBackground.collapse(amount.get());
@@ -123,12 +123,12 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     }
 
     public int getCollapsedHeight() {
-        if (params.hasBackgroundImage()) {
+        if (topTabs != null) {
+            return topTabs.getHeight();
+        } else if (params.hasBackgroundImage()) {
             return topBarHeight;
         } else if (params.hasReactView()) {
             return topBarHeight;
-        } else if (topTabs != null) {
-            return topTabs.getHeight();
         } else {
             return titleBar.getHeight();
         }

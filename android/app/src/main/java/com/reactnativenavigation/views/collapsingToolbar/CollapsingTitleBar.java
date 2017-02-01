@@ -55,7 +55,13 @@ public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener
         }
     }
 
-    public void collapse(float collapse) {
+    public void collapse(CollapseAmount amount) {
+        if (amount.hasExactAmount()) {
+            collapse(amount.get());
+        }
+    }
+
+    private void collapse(float collapse) {
         if (params.hasBackgroundImage()) {
             title.setTranslationY(0);
             title.collapseBy(collapse);
