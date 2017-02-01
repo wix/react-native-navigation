@@ -24,6 +24,10 @@ function registerComponent(screenID, generator, store = undefined, Provider = un
 function _registerComponentNoRedux(screenID, generator) {
   const generatorWrapper = function() {
     const InternalComponent = generator();
+    if (!InternalComponent) {
+      console.error(`Navigation: ${screenID} registration result is 'undefined'`);
+    }
+    
     return class extends Screen {
       static navigatorStyle = InternalComponent.navigatorStyle || {};
       static navigatorButtons = InternalComponent.navigatorButtons || {};
