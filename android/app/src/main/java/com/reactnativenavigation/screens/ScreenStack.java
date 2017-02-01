@@ -52,6 +52,31 @@ public class ScreenStack {
         keyboardVisibilityDetector = new KeyboardVisibilityDetector(parent);
     }
 
+    public void newStack(final ScreenParams params, LayoutParams layoutParams) {
+        final Screen nextScreen = ScreenFactory.create(activity, params, leftButtonOnClickListener);
+        final Screen previousScreen = stack.peek();
+        if (isStackVisible) {
+            pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen, new Screen.OnDisplayListener() {
+                @Override
+                public void onDisplay() {
+                    removeElementsBelowTop();
+                }
+            });
+        } else {
+            pushScreenToInvisibleStack(layoutParams, nextScreen, previousScreen);
+            removeElementsBelowTop();
+        }
+    }
+
+    private void removeElementsBelowTop() {
+        while (stack.size() > 1) {
+            Screen screen = stack.get(0);
+            parent.removeView(screen);
+            screen.destroy();
+            stack.remove(0);
+        }
+    }
+
     public void pushInitialScreenWithAnimation(final ScreenParams initialScreenParams, LayoutParams params) {
         isStackVisible = true;
         pushInitialScreen(initialScreenParams, params);
@@ -81,7 +106,15 @@ public class ScreenStack {
         }
     }
 
-    private void pushScreenToVisibleStack(LayoutParams layoutParams, final Screen nextScreen, final Screen previousScreen) {
+    private void pushScreenToVisibleStack(LayoutParams layoutParams, final Screen nextScreen,
+                                          final Screen previousScreen) {
+        pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen, null);
+    }
+
+    private void pushScreenToVisibleStack(LayoutParams layoutParams,
+                                          final Screen nextScreen,
+                                          final Screen previousScreen,
+                                          @Nullable final Screen.OnDisplayListener onDisplay) {
         nextScreen.setVisibility(View.INVISIBLE);
         addScreen(nextScreen, layoutParams);
         nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
@@ -90,6 +123,7 @@ public class ScreenStack {
                 nextScreen.show(nextScreen.screenParams.animateScreenTransitions, new Runnable() {
                     @Override
                     public void run() {
+                        if (onDisplay != null) onDisplay.onDisplay();
                         parent.removeView(previousScreen);
                     }
                 });

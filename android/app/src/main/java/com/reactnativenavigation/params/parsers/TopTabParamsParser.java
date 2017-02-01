@@ -8,7 +8,7 @@ import com.reactnativenavigation.params.PageParams;
 
 import java.util.List;
 
-public class TopTabParamsParser extends Parser {
+class TopTabParamsParser extends Parser {
     private static final String KEY_SCREEN_ID = "screenId";
     private static final String KEY_TITLE = "title";
     private static final String NAVIGATION_PARAMS = "navigationParams";
@@ -28,6 +28,7 @@ public class TopTabParamsParser extends Parser {
         PageParams result = new PageParams();
         result.screenId = params.getString(KEY_SCREEN_ID);
         result.title = params.getString(KEY_TITLE);
+        result.tabIcon = new TabIconParser(params).parse();
         result.navigationParams = new NavigationParams(params.getBundle(NAVIGATION_PARAMS));
         result.leftButton = ButtonParser.parseLeftButton(params);
         result.rightButtons = ButtonParser.parseRightButton(params);

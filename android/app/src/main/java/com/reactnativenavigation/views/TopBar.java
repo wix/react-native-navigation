@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -93,7 +92,7 @@ public class TopBar extends AppBarLayout {
         titleBar.setRightButtons(titleBarButtons, navigatorEventId);
     }
 
-    public TabLayout initTabs() {
+    public TopTabs initTabs() {
         topTabs = new TopTabs(getContext());
         addView(topTabs);
         return topTabs;
