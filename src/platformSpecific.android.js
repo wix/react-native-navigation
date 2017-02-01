@@ -62,6 +62,7 @@ function dismissAllModals() {
 }
 
 function showInAppNotification(params) {
+  savePassProps(params);
   NativeReactModule.showSlidingOverlay(params);
 }
 
