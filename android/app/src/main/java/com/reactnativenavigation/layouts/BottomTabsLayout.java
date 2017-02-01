@@ -306,6 +306,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         if (sideMenu != null) {
             sideMenu.destroy();
         }
+        slidingOverlaysQueue.destroy();
     }
 
     @Override

@@ -18,7 +18,7 @@ public class SlidingOverlay {
         Hidden, AnimateHide, Shown, AnimateShow
     }
 
-    private final ContentView view;
+    private ContentView view = null;
     private final RelativeLayout parent;
     private final SlidingOverlayParams params;
 
@@ -33,7 +33,6 @@ public class SlidingOverlay {
     public SlidingOverlay(RelativeLayout parent, SlidingOverlayParams params) {
         this.parent = parent;
         this.params = params;
-        view = createSlidingOverlayView(params);
     }
 
     public void setSlidingListener(SlidingListener listener) {
@@ -45,6 +44,7 @@ public class SlidingOverlay {
     }
 
     public void show() {
+        view = createSlidingOverlayView(params);
         parent.addView(view);
 
         final PeekingAnimator animator = new PeekingAnimator(view, params.position, true);
@@ -87,6 +87,12 @@ public class SlidingOverlay {
         animator.animate();
     }
 
+    public void destroy() {
+        visibilityState = VisibilityState.Hidden;
+        view.unmountReactView();
+        parent.removeView(view);
+    }
+
     public boolean isShowing() {
         return VisibilityState.AnimateShow == visibilityState;
     }
@@ -119,9 +125,7 @@ public class SlidingOverlay {
     }
 
     protected void onSlidingOverlayEnd(ContentView view) {
-        visibilityState = VisibilityState.Hidden;
-        view.unmountReactView();
-        parent.removeView(view);
+        destroy();
 
         if (listener != null) {
             listener.onSlidingOverlayGone();

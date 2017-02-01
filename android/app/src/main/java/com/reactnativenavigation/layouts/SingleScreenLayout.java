@@ -124,6 +124,7 @@ public class SingleScreenLayout extends BaseLayout {
         if (sideMenu != null) {
             sideMenu.destroy();
         }
+        slidingOverlaysQueue.destroy();
     }
 
     @Override
