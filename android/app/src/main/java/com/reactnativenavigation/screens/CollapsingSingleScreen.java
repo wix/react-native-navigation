@@ -6,6 +6,7 @@ import android.widget.ScrollView;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.views.CollapsingContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
+import com.reactnativenavigation.views.TopBar;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseAmount;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseCalculator;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingTopBar;
@@ -29,10 +30,10 @@ public class CollapsingSingleScreen extends SingleScreen {
     }
 
     @Override
-    protected void createTopBar() {
+    protected TopBar createTopBar() {
         final CollapsingTopBar topBar = new CollapsingTopBar(getContext(), styleParams.collapsingTopBarParams);
         topBar.setScrollListener(getScrollListener(topBar));
-        this.topBar = topBar;
+        return topBar;
     }
 
     @Override

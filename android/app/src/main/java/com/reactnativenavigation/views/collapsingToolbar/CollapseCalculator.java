@@ -117,6 +117,9 @@ public class CollapseCalculator {
     }
 
     private boolean canCollapse(Direction direction) {
+        if (view == null) {
+            return false;
+        }
         checkCollapseLimits();
         return (isNotCollapsedOrExpended() ||
                (canCollapse && isExpendedAndScrollingUp(direction)) ||

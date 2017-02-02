@@ -18,7 +18,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class CollapsingTopBar extends TopBar implements CollapsingView {
     private CollapsingTopBarBackground collapsingTopBarBackground;
-    private CollapsingTopBarReactView header;
+    private CollapsingTopBarReactHeader header;
     private ScrollListener scrollListener;
     private float finalCollapsedTranslation;
     private CollapsingTopBarParams params;
@@ -71,7 +71,7 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
 
     private void createReactView(CollapsingTopBarParams params) {
         if (params.hasReactView()) {
-            header = new CollapsingTopBarReactView(getContext(),
+            header = new CollapsingTopBarReactHeader(getContext(),
                     params.reactViewId,
                     new NavigationParams(Bundle.EMPTY),
                     scrollListener);

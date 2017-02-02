@@ -13,14 +13,14 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.views.ContentView;
 
-public class CollapsingTopBarReactView extends ContentView {
+public class CollapsingTopBarReactHeader extends ContentView {
     private ScrollListener listener;
     private boolean mIsScrolling;
     private int mTouchSlop;
     private int touchDown = -1;
     private final JSTouchDispatcher mJSTouchDispatcher = new JSTouchDispatcher(this);
 
-    public CollapsingTopBarReactView(Context context, String screenId, NavigationParams navigationParams, ScrollListener scrollListener) {
+    public CollapsingTopBarReactHeader(Context context, String screenId, NavigationParams navigationParams, ScrollListener scrollListener) {
         super(context, screenId, navigationParams);
         listener = scrollListener;
         ViewConfiguration vc = ViewConfiguration.get(context);
