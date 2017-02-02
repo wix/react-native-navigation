@@ -33,7 +33,10 @@ export default class InAppNotification extends Component {
     return (
       <View style={styleSheet.container}>
           <Text style={{color: 'black', fontSize: 20}}>{message}</Text>
-          <TouchableHighlight onPress={() => Alert.alert(`You've tapped on notification #${this._counter}`, 'We hope you had fun!')}>
+          <TouchableHighlight onPress={() => {
+            this.props.navigator.dismissInAppNotification();
+            Alert.alert(`You've tapped on notification #${this._counter}`, 'We hope you had fun!');
+          }}>
             <Text>Tap Me</Text>
           </TouchableHighlight>
       </View>
