@@ -9,6 +9,7 @@ import android.widget.ScrollView;
 
 import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.params.NavigationParams;
+import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.TitleBar;
 import com.reactnativenavigation.views.TopBar;
@@ -21,26 +22,31 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     private CollapsingTopBarReactHeader header;
     private ScrollListener scrollListener;
     private float finalCollapsedTranslation;
-    private CollapsingTopBarParams params;
+    private final StyleParams styleParams;
+    private final CollapsingTopBarParams params;
     private final ViewCollapser viewCollapser;
     private final int topBarHeight;
     private String title;
 
-    public CollapsingTopBar(Context context, final CollapsingTopBarParams params) {
+    public CollapsingTopBar(Context context, final StyleParams params) {
         super(context);
-        this.params = params;
+        styleParams = params;
+        this.params = params.collapsingTopBarParams;
         topBarHeight = calculateTopBarHeight();
-        createBackgroundImage(params);
-        calculateFinalCollapsedTranslation(params);
+        createBackgroundImage();
+        calculateFinalCollapsedTranslation();
         viewCollapser = new ViewCollapser(this);
     }
 
-    private void calculateFinalCollapsedTranslation(final CollapsingTopBarParams params) {
+    private void calculateFinalCollapsedTranslation() {
         ViewUtils.runOnPreDraw(this, new Runnable() {
             @Override
             public void run() {
                 if (params.hasBackgroundImage() || params.hasReactView()) {
                     finalCollapsedTranslation = getCollapsedHeight() - getHeight();
+                    if (styleParams.topBarCollapseOnScroll) {
+                        finalCollapsedTranslation += titleBar.getHeight();
+                    }
                 } else {
                     finalCollapsedTranslation = -titleBar.getHeight();
                 }
@@ -61,7 +67,7 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         }
     }
 
-    private void createBackgroundImage(CollapsingTopBarParams params) {
+    private void createBackgroundImage() {
         if (params.hasBackgroundImage()) {
             collapsingTopBarBackground = new CollapsingTopBarBackground(getContext(), params);
             LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) CollapsingTopBarBackground.MAX_HEIGHT);

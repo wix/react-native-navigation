@@ -194,7 +194,8 @@ public class CollapseCalculator {
         totalCollapse += collapse;
         previousCollapseY = y;
         previousTouchEvent = MotionEvent.obtain(event);
-        return Math.abs(totalCollapse) < scaledTouchSlop ? CollapseAmount.None : new CollapseAmount(collapse);
+        final float delta = Math.abs(y - touchDownY);
+        return Math.abs(delta) < scaledTouchSlop ? CollapseAmount.None : new CollapseAmount(collapse);
     }
 
     private float calculateCollapse(float y) {

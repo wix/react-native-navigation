@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.widget.ScrollView;
 
+import com.facebook.react.uimanager.RootViewUtil;
 import com.reactnativenavigation.events.Event;
 import com.reactnativenavigation.events.ViewPagerScreenChangedEvent;
 import com.reactnativenavigation.events.ViewPagerScreenScrollStartEvent;
@@ -35,7 +37,7 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
 
     @Override
     protected TopBar createTopBar() {
-        final CollapsingTopBar topBar = new CollapsingTopBar(getContext(), styleParams.collapsingTopBarParams);
+        final CollapsingTopBar topBar = new CollapsingTopBar(getContext(), styleParams);
         topBar.setScrollListener(getScrollListener(topBar));
         return topBar;
     }
@@ -70,7 +72,8 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
         return new ScrollListener(new CollapseCalculator(topBar, getCollapseBehaviour()),
                 new OnScrollListener() {
                     @Override
-                    public void onScroll(CollapseAmount amount) {
+                    public void onScroll(MotionEvent event, CollapseAmount amount) {
+                        RootViewUtil.getRootView(getCurrentPage()).onChildStartedNativeGesture(event);
                         topBar.collapse(amount);
                         ((CollapsingView) viewPager).collapse(amount);
                     }

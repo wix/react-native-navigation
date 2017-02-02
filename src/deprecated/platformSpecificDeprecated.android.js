@@ -125,6 +125,7 @@ function convertStyleParams(originalStyleObject) {
     topBarTransparent: originalStyleObject.navBarTransparent,
     topBarTranslucent: originalStyleObject.navBarTranslucent,
     topBarElevationShadowEnabled: originalStyleObject.topBarElevationShadowEnabled,
+    topBarCollapseOnScroll: originalStyleObject.topBarCollapseOnScroll,
     collapsingToolBarImage: originalStyleObject.collapsingToolBarImage,
     collapsingToolBarComponent: originalStyleObject.collapsingToolBarComponent,
     collapsingToolBarComponentHeight: originalStyleObject.collapsingToolBarComponentHeight,

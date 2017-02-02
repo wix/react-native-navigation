@@ -23,7 +23,7 @@ class CollapsingTopBarParamsParser extends Parser {
 
     public CollapsingTopBarParams parse() {
         if (!validateParams()) {
-            return null;
+            return new CollapsingTopBarParams();
         }
         CollapsingTopBarParams result = new CollapsingTopBarParams();
         result.imageUri = params.getString("collapsingToolBarImage", null);
