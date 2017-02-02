@@ -47,10 +47,7 @@ public class SlidingOverlaysQueue implements SlidingOverlay.SlidingListener{
                     pendingHide = true;
                 }
                 else if (currentOverlay.isVisible()) {
-                    if (autoDismissTimer != null) {
-                        autoDismissTimer.cancel();
-                        autoDismissTimer = null;
-                    }
+                    cancelTimer();
                     currentOverlay.hide();
                 }
             }
@@ -88,6 +85,19 @@ public class SlidingOverlaysQueue implements SlidingOverlay.SlidingListener{
         dispatchNextSlidingOverlay();
     }
 
+    public void destroy() {
+        SlidingOverlay currentOverlay = queue.poll();
+        while (!queue.isEmpty()) {
+            queue.poll();
+        }
+
+        if (currentOverlay != null) {
+            cancelTimer();
+            currentOverlay.setSlidingListener(null);
+            currentOverlay.destroy();
+        }
+    }
+
     protected void dispatchNextSlidingOverlay() {
         NavigationApplication.instance.runOnMainThread(new Runnable() {
             @Override
@@ -99,5 +109,12 @@ public class SlidingOverlaysQueue implements SlidingOverlay.SlidingListener{
                 }
             }
         });
+    }
+
+    protected void cancelTimer() {
+        if (autoDismissTimer != null) {
+            autoDismissTimer.cancel();
+            autoDismissTimer = null;
+        }
     }
 }
