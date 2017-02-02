@@ -65,6 +65,10 @@ function showInAppNotification(params) {
   NativeReactModule.showSlidingOverlay(params);
 }
 
+function dismissInAppNotification(params) {
+  NativeReactModule.hideSlidingOverlay(params);
+}
+
 function savePassProps(params) {
   if (params.navigationParams && params.passProps) {
     PropRegistry.save(params.navigationParams.screenInstanceID, params.passProps);
@@ -150,6 +154,7 @@ module.exports = {
   dismissTopModal,
   dismissAllModals,
   showInAppNotification,
+  dismissInAppNotification,
   toggleSideMenuVisible,
   setSideMenuVisible,
   selectBottomTabByNavigatorId,

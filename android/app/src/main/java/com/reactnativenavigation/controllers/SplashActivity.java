@@ -26,6 +26,7 @@ public abstract class SplashActivity extends AppCompatActivity {
 
         if (NavigationApplication.instance.getReactGateway().hasStartedCreatingContext()) {
             finish();
+            return;
         }
 
         if (ReactDevPermission.shouldAskPermission()) {

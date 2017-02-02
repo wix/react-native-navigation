@@ -384,7 +384,15 @@ function dismissAllModals(params) {
 function showInAppNotification(params) {
   params.navigationParams = {};
   addNavigatorParams(params.navigationParams);
+
+  params.autoDismissTimerSec = params.autoDismissTimerSec || 5;
+  if (params.autoDismiss === false) delete params.autoDismissTimerSec;
+
   newPlatformSpecific.showInAppNotification(params);
+}
+
+function dismissInAppNotification(params) {
+  newPlatformSpecific.dismissInAppNotification(params);
 }
 
 function addNavigatorParams(screen, navigator = null, idx = '') {
@@ -532,8 +540,8 @@ function getRightButtons(screen) {
 
   const Screen = Navigation.getRegisteredScreen(screen.screen);
 
-  if (Screen.navigatorButtons && !_.isEmpty(Screen.navigatorButtons)) {
-    return _.cloneDeep(Screen.navigatorButtons);
+  if (Screen.navigatorButtons && !_.isEmpty(Screen.navigatorButtons.rightButtons)) {
+    return _.cloneDeep(Screen.navigatorButtons.rightButtons);
   }
 
   return null;
@@ -587,6 +595,7 @@ export default {
   dismissModal,
   dismissAllModals,
   showInAppNotification,
+  dismissInAppNotification,
   navigatorSetButtons,
   navigatorSetTabBadge,
   navigatorSetTitle,
