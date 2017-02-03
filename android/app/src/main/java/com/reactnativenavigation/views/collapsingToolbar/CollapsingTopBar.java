@@ -73,12 +73,15 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
             LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) CollapsingTopBarBackground.MAX_HEIGHT);
             titleBarAndContextualMenuContainer.addView(collapsingTopBarBackground, lp);
         }
+        if (params.hasReactView()) {
+
+        }
     }
 
     private void createReactView(CollapsingTopBarParams params) {
         if (params.hasReactView()) {
             header = new CollapsingTopBarReactHeader(getContext(),
-                    params.reactViewId,
+                    params,
                     new NavigationParams(Bundle.EMPTY),
                     scrollListener);
             LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) ViewUtils.convertDpToPixel(params.reactViewHeight));
@@ -116,6 +119,9 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         }
         if (collapsingTopBarBackground != null) {
             collapsingTopBarBackground.collapse(amount.get());
+        }
+        if (header != null) {
+            header.collapse(amount.get());
         }
     }
 
