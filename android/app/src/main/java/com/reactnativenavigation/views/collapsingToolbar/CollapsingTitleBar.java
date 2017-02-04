@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.params.StyleParams;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.TitleBar;
 
 public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener {
@@ -21,6 +22,18 @@ public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener
         this.params = params;
         addCollapsingTitle();
         setOnTouchListener(this);
+        hideTitle(params);
+    }
+
+    private void hideTitle(CollapsingTopBarParams params) {
+        if (params.showTitleWhenCollapsed) {
+            ViewUtils.runOnPreDraw(this, new Runnable() {
+                @Override
+                public void run() {
+                    hideTitle();
+                }
+            });
+        }
     }
 
     private void addCollapsingTitle() {

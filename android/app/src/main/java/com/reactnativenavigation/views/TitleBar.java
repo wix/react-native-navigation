@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.TextView;
 
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
@@ -21,7 +22,7 @@ import com.reactnativenavigation.utils.ViewUtils;
 import java.util.List;
 
 public class TitleBar extends Toolbar {
-
+    private static final int TITLE_VISIBILITY_ANIMATION_DURATION = 320;
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
 
@@ -174,5 +175,23 @@ public class TitleBar extends Toolbar {
                         }
                     }
                 });
+    }
+
+    public void showTitle() {
+        animateTitle(1);
+    }
+
+    public void hideTitle() {
+        animateTitle(0);
+    }
+
+    private void animateTitle(int alpha) {
+        getTitleView().animate()
+                .alpha(alpha)
+                .setDuration(TITLE_VISIBILITY_ANIMATION_DURATION);
+    }
+
+    private View getTitleView() {
+        return getChildAt(0) instanceof TextView ? getChildAt(0) : getChildAt(1);
     }
 }

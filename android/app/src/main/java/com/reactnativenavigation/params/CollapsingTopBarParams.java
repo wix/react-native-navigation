@@ -11,6 +11,7 @@ public class CollapsingTopBarParams {
     public StyleParams.Color scrimColor;
     public CollapseBehaviour collapseBehaviour;
     public boolean expendOnTopTabChange;
+    public boolean showTitleWhenCollapsed;
 
     public boolean hasBackgroundImage() {
         return imageUri != null;

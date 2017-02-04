@@ -26,7 +26,6 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     private final CollapsingTopBarParams params;
     private final ViewCollapser viewCollapser;
     private final int topBarHeight;
-    private String title;
 
     public CollapsingTopBar(Context context, final StyleParams params) {
         super(context);
@@ -58,15 +57,6 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         this.scrollListener = scrollListener;
     }
 
-    @Override
-    public void setTitle(String title) {
-        if (params.hasReactView()) {
-            this.title = title;
-        } else {
-            super.setTitle(title);
-        }
-    }
-
     private void createBackgroundImage() {
         if (params.hasBackgroundImage()) {
             collapsingTopBarBackground = new CollapsingTopBarBackground(getContext(), params);
@@ -86,13 +76,13 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
             header.setOnHiddenListener(new CollapsingTopBarReactHeaderAnimator.OnHiddenListener() {
                 @Override
                 public void onHidden() {
-                    titleBar.setTitle(title);
+                    titleBar.showTitle();
                 }
             });
             header.setOnVisibleListener(new CollapsingTopBarReactHeaderAnimator.OnVisibleListener() {
                 @Override
                 public void onVisible() {
-                    titleBar.setTitle("");
+                    titleBar.hideTitle();
                 }
             });
         }
