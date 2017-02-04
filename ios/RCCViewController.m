@@ -192,6 +192,29 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     [self setStyleOnAppearForViewController:self];
 }
 
+- (void)setNavBarStyles:(UIViewController*)viewController
+{
+  NSMutableDictionary *titleProperties = [NSMutableDictionary dictionaryWithDictionary:@{}];
+  NSString *navBarTextColor = self.navigatorStyle[@"navBarTextColor"];
+  
+  if (navBarTextColor)
+  {
+    UIColor *color = navBarTextColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarTextColor] : nil;
+    [viewController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : color}];
+    [titleProperties setObject:color forKey:NSForegroundColorAttributeName];
+  }
+  else
+  {
+    [viewController.navigationController.navigationBar setTitleTextAttributes:nil];
+  }
+  
+  NSString *fontFamily = self.navigatorStyle[@"navBarTitleFontFamily"];
+  if (fontFamily) {
+    [titleProperties setObject:[UIFont fontWithName:fontFamily size:19] forKey:NSFontAttributeName];
+    [self.navigationController.navigationBar setTitleTextAttributes: titleProperties];
+  }
+}
+
 -(void)setStyleOnAppearForViewController:(UIViewController*)viewController
 {
     NSString *screenBackgroundColor = self.navigatorStyle[@"screenBackgroundColor"];
@@ -212,16 +235,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         viewController.navigationController.navigationBar.barTintColor = nil;
     }
     
-    NSString *navBarTextColor = self.navigatorStyle[@"navBarTextColor"];
-    if (navBarTextColor)
-    {
-        UIColor *color = navBarTextColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarTextColor] : nil;
-        [viewController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : color}];
-    }
-    else
-    {
-        [viewController.navigationController.navigationBar setTitleTextAttributes:nil];
-    }
+    [self setNavBarStyles:viewController];
     
     NSString *navBarButtonColor = self.navigatorStyle[@"navBarButtonColor"];
     if (navBarButtonColor)
