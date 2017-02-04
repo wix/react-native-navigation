@@ -94,7 +94,7 @@ public class NavigationReactGateway implements ReactGateway {
         }
 
         @Override
-        protected boolean getUseDeveloperSupport() {
+        public boolean getUseDeveloperSupport() {
             return NavigationApplication.instance.isDebug();
         }
 
