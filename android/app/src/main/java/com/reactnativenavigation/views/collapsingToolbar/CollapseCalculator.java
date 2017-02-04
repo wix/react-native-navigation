@@ -31,7 +31,8 @@ public class CollapseCalculator {
     private GestureDetector flingDetector;
     private OnFlingListener flingListener;
     private int scrollY = 0;
-    private int totalCollapse = 0;
+    private float totalCollapse = 0;
+    private float totalCollapseDeltaSinceTouchDown = 0;
     private final int scaledTouchSlop;
 
     public CollapseCalculator(final CollapsingView collapsingView, CollapseBehaviour collapseBehaviour) {
@@ -156,7 +157,8 @@ public class CollapseCalculator {
 
     private boolean calculateCanCollapse(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation > finalCollapsedTranslation &&
-               currentTopBarTranslation <= finalExpendedTranslation;
+               currentTopBarTranslation <= finalExpendedTranslation &&
+               (scrollView.getScrollY() == 0 || (collapseBehaviour instanceof TitleBarHideOnScrollBehaviour || collapseBehaviour instanceof CollapseTitleBarBehaviour));
     }
 
     private boolean calculateCanExpend(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
@@ -192,10 +194,10 @@ public class CollapseCalculator {
         }
         collapse = calculateCollapse(y);
         totalCollapse += collapse;
+        totalCollapseDeltaSinceTouchDown += Math.abs(y - previousCollapseY);
         previousCollapseY = y;
         previousTouchEvent = MotionEvent.obtain(event);
-        final float delta = Math.abs(y - touchDownY);
-        return Math.abs(delta) < scaledTouchSlop ? CollapseAmount.None : new CollapseAmount(collapse);
+        return totalCollapseDeltaSinceTouchDown < scaledTouchSlop ? CollapseAmount.None : new CollapseAmount(collapse);
     }
 
     private float calculateCollapse(float y) {
@@ -233,6 +235,7 @@ public class CollapseCalculator {
 
     private void saveInitialTouchY(MotionEvent event) {
         totalCollapse = 0;
+        totalCollapseDeltaSinceTouchDown = 0;
         touchDownY = event.getRawY();
         scrollY = scrollView.getScrollY();
         previousCollapseY = touchDownY;
