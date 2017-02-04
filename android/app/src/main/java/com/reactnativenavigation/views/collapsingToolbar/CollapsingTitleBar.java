@@ -30,7 +30,10 @@ public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener
             ViewUtils.runOnPreDraw(this, new Runnable() {
                 @Override
                 public void run() {
-                    hideTitle();
+                    View titleView = getTitleView();
+                    if (titleView != null) {
+                        titleView.setAlpha(0);
+                    }
                 }
             });
         }

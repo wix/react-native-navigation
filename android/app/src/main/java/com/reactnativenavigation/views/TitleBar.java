@@ -186,12 +186,21 @@ public class TitleBar extends Toolbar {
     }
 
     private void animateTitle(int alpha) {
-        getTitleView().animate()
-                .alpha(alpha)
-                .setDuration(TITLE_VISIBILITY_ANIMATION_DURATION);
+        View titleView = getTitleView();
+        if (titleView != null) {
+            titleView.animate()
+                    .alpha(alpha)
+                    .setDuration(TITLE_VISIBILITY_ANIMATION_DURATION);
+        }
     }
 
-    private View getTitleView() {
-        return getChildAt(0) instanceof TextView ? getChildAt(0) : getChildAt(1);
+    @Nullable
+    protected View getTitleView() {
+        return ViewUtils.findChildByClass(this, TextView.class, new ViewUtils.Matcher<TextView>() {
+            @Override
+            public boolean match(TextView child) {
+                return child.getText().equals(getTitle());
+            }
+        });
     }
 }
