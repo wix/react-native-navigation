@@ -73,12 +73,9 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
             LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) CollapsingTopBarBackground.MAX_HEIGHT);
             titleBarAndContextualMenuContainer.addView(collapsingTopBarBackground, lp);
         }
-        if (params.hasReactView()) {
-
-        }
     }
 
-    private void createReactView(CollapsingTopBarParams params) {
+    private void createReactHeader(CollapsingTopBarParams params) {
         if (params.hasReactView()) {
             header = new CollapsingTopBarReactHeader(getContext(),
                     params,
@@ -86,13 +83,25 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
                     scrollListener);
             LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) ViewUtils.convertDpToPixel(params.reactViewHeight));
             titleBarAndContextualMenuContainer.addView(header, lp);
+            header.setOnHiddenListener(new CollapsingTopBarReactHeaderAnimator.OnHiddenListener() {
+                @Override
+                public void onHidden() {
+                    titleBar.setTitle(title);
+                }
+            });
+            header.setOnVisibleListener(new CollapsingTopBarReactHeaderAnimator.OnVisibleListener() {
+                @Override
+                public void onVisible() {
+                    titleBar.setTitle("");
+                }
+            });
         }
     }
 
     @Override
     protected TitleBar createTitleBar() {
         if (params.hasBackgroundImage() || params.hasReactView()) {
-            createReactView(params);
+            createReactHeader(params);
             return new CollapsingTitleBar(getContext(),
                     getCollapsedHeight(),
                     scrollListener,

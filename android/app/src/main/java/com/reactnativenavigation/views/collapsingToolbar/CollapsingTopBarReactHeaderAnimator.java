@@ -6,7 +6,13 @@ import android.view.animation.Interpolator;
 import static com.reactnativenavigation.views.collapsingToolbar.CollapsingTopBarReactHeaderAnimator.State.Invisible;
 import static com.reactnativenavigation.views.collapsingToolbar.CollapsingTopBarReactHeaderAnimator.State.Visible;
 
-public class CollapsingTopBarReactHeaderAnimator {
+class CollapsingTopBarReactHeaderAnimator {
+    interface OnVisibleListener {
+        void onVisible();
+    }
+    interface OnHiddenListener {
+        void onHidden();
+    }
     enum State {Visible, Invisible}
 
     private State state = Invisible;
@@ -15,8 +21,18 @@ public class CollapsingTopBarReactHeaderAnimator {
     private float showThreshold;
     private final static int ANIMATION_DURATION = 360;
     private final Interpolator interpolator = new DecelerateInterpolator();
+    private OnVisibleListener onVisibleListener;
+    private OnHiddenListener onHiddenListener;
 
-    public CollapsingTopBarReactHeaderAnimator(CollapsingTopBarReactHeader header, float hideThreshold, float showThreshold) {
+    void setOnVisibleListener(OnVisibleListener onVisibleListener) {
+        this.onVisibleListener = onVisibleListener;
+    }
+
+    void setOnHiddenListener(OnHiddenListener onHiddenListener) {
+        this.onHiddenListener = onHiddenListener;
+    }
+
+    CollapsingTopBarReactHeaderAnimator(CollapsingTopBarReactHeader header, float hideThreshold, float showThreshold) {
         this.header = header;
         this.hideThreshold = hideThreshold;
         this.showThreshold = showThreshold;
@@ -39,6 +55,9 @@ public class CollapsingTopBarReactHeaderAnimator {
     }
 
     private void show() {
+        if (state == Invisible && onVisibleListener != null) {
+            onVisibleListener.onVisible();
+        }
         state = State.Visible;
         header.animate()
                 .alpha(1)
@@ -47,6 +66,9 @@ public class CollapsingTopBarReactHeaderAnimator {
     }
 
     private void hide() {
+        if (state == Visible && onHiddenListener != null) {
+            onHiddenListener.onHidden();
+        }
         state = State.Invisible;
         header.animate()
                 .alpha(0)
