@@ -43,7 +43,7 @@ public class CollapsingTopBarReactHeader extends ContentView implements Collapsi
 
     private void createVisibilityAnimator(int reactViewHeight) {
         float height = ViewUtils.convertDpToPixel(reactViewHeight);
-        visibilityAnimator = new CollapsingTopBarReactHeaderAnimator(this, height / 2, height / 2);
+        visibilityAnimator = new CollapsingTopBarReactHeaderAnimator(this, height * 0.6f, height * 0.60f);
         visibilityAnimator.setOnHiddenListener(this);
         visibilityAnimator.setOnVisibleListener(this);
     }

@@ -1,5 +1,6 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
+import android.util.Log;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
@@ -47,10 +48,12 @@ class CollapsingTopBarReactHeaderAnimator {
     }
 
     private boolean shouldShow(float collapse) {
+        Log.i("shouldShow", "collapse: " + collapse + "[" + showThreshold + "]");
         return Math.abs(collapse) < showThreshold && state == Invisible;
     }
 
     private boolean shouldHide(float collapse) {
+        Log.i("shouldHide", "collapse: " + collapse + "[" + hideThreshold + "]");
         return Math.abs(collapse) >= hideThreshold && state == Visible;
     }
 
