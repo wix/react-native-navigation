@@ -13,22 +13,25 @@ import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
+import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.SideMenu;
 import com.reactnativenavigation.views.SideMenu.Side;
 import com.reactnativenavigation.views.SnackbarAndFabContainer;
+import com.reactnativenavigation.views.slidingOverlay.SlidingOverlay;
+import com.reactnativenavigation.views.slidingOverlay.SlidingOverlaysQueue;
 
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-public class SingleScreenLayout extends RelativeLayout implements Layout {
+public class SingleScreenLayout extends BaseLayout {
 
-    private final AppCompatActivity activity;
     protected final ScreenParams screenParams;
     private final SideMenuParams leftSideMenuParams;
     private final SideMenuParams rightSideMenuParams;
@@ -36,11 +39,11 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
     private SnackbarAndFabContainer snackbarAndFabContainer;
     protected LeftButtonOnClickListener leftButtonOnClickListener;
     private @Nullable SideMenu sideMenu;
+    private final SlidingOverlaysQueue slidingOverlaysQueue = new SlidingOverlaysQueue();
 
     public SingleScreenLayout(AppCompatActivity activity, SideMenuParams leftSideMenuParams,
                               SideMenuParams rightSideMenuParams, ScreenParams screenParams) {
         super(activity);
-        this.activity = activity;
         this.screenParams = screenParams;
         this.leftSideMenuParams = leftSideMenuParams;
         this.rightSideMenuParams = rightSideMenuParams;
@@ -73,7 +76,7 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
         if (stack != null) {
             stack.destroy();
         }
-        stack = new ScreenStack(activity, parent, screenParams.getNavigatorId(), this);
+        stack = new ScreenStack(getActivity(), parent, screenParams.getNavigatorId(), this);
         LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         pushInitialScreen(lp);
     }
@@ -92,7 +95,7 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
     }
 
     private void createFabAndSnackbarContainer() {
-        snackbarAndFabContainer = new SnackbarAndFabContainer(getContext());
+        snackbarAndFabContainer = new SnackbarAndFabContainer(getContext(), this);
         RelativeLayout.LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         lp.addRule(ALIGN_PARENT_BOTTOM);
         snackbarAndFabContainer.setLayoutParams(lp);
@@ -121,37 +124,38 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
         if (sideMenu != null) {
             sideMenu.destroy();
         }
+        slidingOverlaysQueue.destroy();
     }
 
     @Override
     public void push(ScreenParams params) {
-        LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
-        stack.push(params, lp);
+        stack.push(params, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
         EventBus.instance.post(new ScreenChangedEvent(params));
     }
 
     @Override
     public void pop(ScreenParams params) {
-        stack.pop(params.animateScreenTransitions);
-        EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
+        stack.pop(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
+            @Override
+            public void onScreenPopAnimationEnd() {
+                EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
+            }
+        });
     }
 
     @Override
     public void popToRoot(ScreenParams params) {
-        stack.popToRoot(params.animateScreenTransitions);
-        EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
+        stack.popToRoot(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
+            @Override
+            public void onScreenPopAnimationEnd() {
+                EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
+            }
+        });
     }
 
     @Override
-    public void newStack(ScreenParams params) {
-        removeView(stack.peek());
-        stack.destroy();
-
-        ScreenStack newStack = new ScreenStack(activity, getScreenStackParent(), params.getNavigatorId(), this);
-        LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
-        newStack.pushInitialScreenWithAnimation(params, lp);
-        stack = newStack;
-
+    public void newStack(final ScreenParams params) {
+        stack.newStack(params, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
         EventBus.instance.post(new ScreenChangedEvent(params));
     }
 
@@ -212,6 +216,16 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
     }
 
     @Override
+    public void showSlidingOverlay(final SlidingOverlayParams params) {
+        slidingOverlaysQueue.add(new SlidingOverlay(this, params));
+    }
+
+    @Override
+    public void hideSlidingOverlay() {
+        slidingOverlaysQueue.remove();
+    }
+
+    @Override
     public void onModalDismissed() {
         EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
     }
@@ -232,6 +246,11 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
     }
 
     @Override
+    public Screen getCurrentScreen() {
+        return stack.peek();
+    }
+
+    @Override
     public boolean onTitleBarBackButtonClick() {
         if (leftButtonOnClickListener != null) {
             return leftButtonOnClickListener.onTitleBarBackButtonClick();
@@ -242,11 +261,10 @@ public class SingleScreenLayout extends RelativeLayout implements Layout {
 
     @Override
     public void onSideMenuButtonClick() {
+        final String navigatorEventId = stack.peek().getNavigatorEventId();
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         if (sideMenu != null) {
             sideMenu.openDrawer(Side.Left);
-        } else {
-            final String navigatorEventId = stack.peek().getNavigatorEventId();
-            NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         }
     }
 }

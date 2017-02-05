@@ -8,11 +8,12 @@ import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.react.ImageLoader;
 
 public class FabParamsParser extends Parser {
-    public FabParams parse(Bundle params, final String navigatorEventId) {
+    public FabParams parse(Bundle params, final String navigatorEventId, String screenInstanceId) {
         FabParams fabParams = new FabParams();
         fabParams.collapsedId = params.getString("collapsedId");
         fabParams.expendedId = params.getString("expendedId");
         fabParams.navigatorEventId = navigatorEventId;
+        fabParams.screenInstanceId = screenInstanceId;
         fabParams.backgroundColor = getColor(params, "backgroundColor", new StyleParams.Color());
 
         if (hasKey(params, "collapsedIcon")) {

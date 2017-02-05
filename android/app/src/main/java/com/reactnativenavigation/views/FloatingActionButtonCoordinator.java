@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class FloatingActionButtonCoordinator {
-
+    private static final String TAG = "FloatingActionButtonCoo";
     private static final int INITIAL_EXPENDED_FAB_ROTATION = -90;
     private CoordinatorLayout parent;
     private FabParams params;
@@ -42,7 +43,18 @@ public class FloatingActionButtonCoordinator {
         actionSize = (int) ViewUtils.convertDpToPixel(40);
     }
 
-    public void add(FabParams params) {
+    public void add(final FabParams params) {
+        Log.i(TAG, "add() called with: params = [" + params + "]");
+        if (parent.getChildCount() > 0) {
+            remove(new Runnable() {
+                @Override
+                public void run() {
+                    add(params);
+                }
+            });
+            return;
+        }
+
         this.params = params;
         if (!params.isValid()) {
             return;
@@ -55,7 +67,8 @@ public class FloatingActionButtonCoordinator {
     }
 
     public void remove(@Nullable final Runnable onComplete) {
-        if (parent.getChildCount() == 0 || fabAnimator.isAnimating()) {
+        Log.w(TAG, "remove: ");
+        if (parent.getChildCount() == 0) {
             if (onComplete != null) {
                 onComplete.run();
             }

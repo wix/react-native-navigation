@@ -210,3 +210,8 @@ buck-out/
 \.buckd/
 android/app/libs
 android/keystores/debug.keystore
+
+# VSCODE
+jsconfig.json
+.vscode/launchReactNative.js
+example/yarn.lock

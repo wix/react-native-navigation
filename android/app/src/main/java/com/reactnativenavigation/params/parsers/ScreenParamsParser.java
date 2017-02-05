@@ -1,12 +1,10 @@
 package com.reactnativenavigation.params.parsers;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.reactnativenavigation.params.NavigationParams;
-import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.PageParams;
-import com.reactnativenavigation.react.ImageLoader;
+import com.reactnativenavigation.params.ScreenParams;
 
 import java.util.List;
 
@@ -43,22 +41,14 @@ public class ScreenParamsParser extends Parser {
             result.fragmentCreatorPassProps = params.getBundle(FRAGMENT_CREATOR_PASS_PROPS);
         }
 
-        result.fabParams = ButtonParser.parseFab(params, result.navigationParams.navigatorEventId);
+        result.fabParams = ButtonParser.parseFab(params, result.navigationParams.navigatorEventId, result.navigationParams.screenInstanceId);
 
         result.tabLabel = getTabLabel(params);
-        result.tabIcon = getTabIcon(params);
+        result.tabIcon = new TabIconParser(params).parse();
 
         result.animateScreenTransitions = params.getBoolean("animated", true);
 
         return result;
-    }
-
-    private static Drawable getTabIcon(Bundle params) {
-        Drawable tabIcon = null;
-        if (hasKey(params, "icon")) {
-            tabIcon = ImageLoader.loadImage(params.getString("icon"));
-        }
-        return tabIcon;
     }
 
     private static String getTabLabel(Bundle params) {
