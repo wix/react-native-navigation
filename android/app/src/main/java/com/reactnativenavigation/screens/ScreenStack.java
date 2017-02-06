@@ -154,7 +154,6 @@ public class ScreenStack {
         if (!canPop()) {
             return;
         }
-
         if (keyboardVisibilityDetector.isKeyboardVisible()) {
             keyboardVisibilityDetector.setKeyboardCloseListener(new Runnable() {
                 @Override
@@ -181,7 +180,7 @@ public class ScreenStack {
         toRemove.hide(animated, new Runnable() {
             @Override
             public void run() {
-                toRemove.unmountReactView();
+                toRemove.destroy();
                 parent.removeView(toRemove);
             }
         });
