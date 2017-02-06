@@ -27,6 +27,13 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     private final ViewCollapser viewCollapser;
     private final int topBarHeight;
 
+    @Override
+    public void destroy() {
+        if (params.hasReactView()) {
+            header.unmountReactView();
+        }
+    }
+
     public CollapsingTopBar(Context context, final StyleParams params) {
         super(context);
         styleParams = params;

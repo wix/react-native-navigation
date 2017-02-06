@@ -150,4 +150,8 @@ public class TopBar extends AppBarLayout {
             titleBar.show();
         }
     }
+
+    public void destroy() {
+
+    }
 }
