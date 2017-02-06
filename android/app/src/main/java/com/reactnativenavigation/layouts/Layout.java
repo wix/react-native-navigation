@@ -39,6 +39,8 @@ public interface Layout extends ScreenStackContainer {
 
     void showSlidingOverlay(SlidingOverlayParams params);
 
+    void hideSlidingOverlay();
+
     void onModalDismissed();
 
     boolean containsNavigator(String navigatorId);

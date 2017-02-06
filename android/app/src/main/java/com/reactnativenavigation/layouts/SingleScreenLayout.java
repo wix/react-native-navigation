@@ -124,6 +124,7 @@ public class SingleScreenLayout extends BaseLayout {
         if (sideMenu != null) {
             sideMenu.destroy();
         }
+        slidingOverlaysQueue.destroy();
     }
 
     @Override
@@ -217,6 +218,11 @@ public class SingleScreenLayout extends BaseLayout {
     @Override
     public void showSlidingOverlay(final SlidingOverlayParams params) {
         slidingOverlaysQueue.add(new SlidingOverlay(this, params));
+    }
+
+    @Override
+    public void hideSlidingOverlay() {
+        slidingOverlaysQueue.remove();
     }
 
     @Override
