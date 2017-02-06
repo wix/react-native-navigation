@@ -38,21 +38,14 @@ public class CollapsingTopBarReactHeader extends ContentView implements Collapsi
         listener = scrollListener;
         ViewConfiguration vc = ViewConfiguration.get(context);
         mTouchSlop = vc.getScaledTouchSlop();
-        setViewMeasurer(new CollapsingReactHeaderMeasurer(this));
-        createVisibilityAnimator(getHeight());
+        createVisibilityAnimator(params.reactViewHeight);
     }
 
-    private void createVisibilityAnimator(final int reactViewHeight) {
-        ViewUtils.runOnPreDraw(this, new Runnable() {
-            @Override
-            public void run() {
-                final CollapsingTopBarReactHeader header = CollapsingTopBarReactHeader.this;
-                float height = ViewUtils.convertDpToPixel(reactViewHeight);
-                visibilityAnimator = new CollapsingTopBarReactHeaderAnimator(header, height * 0.6f, height * 0.60f);
-                visibilityAnimator.setOnHiddenListener(header);
-                visibilityAnimator.setOnVisibleListener(header);
-            }
-        });
+    private void createVisibilityAnimator(int reactViewHeight) {
+        float height = ViewUtils.convertDpToPixel(reactViewHeight);
+        visibilityAnimator = new CollapsingTopBarReactHeaderAnimator(this, height * 0.6f, height * 0.60f);
+        visibilityAnimator.setOnHiddenListener(this);
+        visibilityAnimator.setOnVisibleListener(this);
     }
 
     public void collapse(float amount) {
