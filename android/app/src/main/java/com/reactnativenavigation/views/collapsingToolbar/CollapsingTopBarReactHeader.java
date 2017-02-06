@@ -12,11 +12,13 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.params.NavigationParams;
+import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ContentView;
 
-public class CollapsingTopBarReactHeader extends ContentView implements CollapsingTopBarReactHeaderAnimator.OnVisibleListener, CollapsingTopBarReactHeaderAnimator.OnHiddenListener {
+public class CollapsingTopBarReactHeader extends ContentView implements CollapsingTopBarReactHeaderAnimator.OnVisibleListener, CollapsingTopBarReactHeaderAnimator.OnHiddenListener, Screen.OnDisplayListener {
     private ScrollListener listener;
+    private Screen.OnDisplayListener onDisplayListener;
     private boolean mIsScrolling;
     private int mTouchSlop;
     private int touchDown = -1;
@@ -33,19 +35,33 @@ public class CollapsingTopBarReactHeader extends ContentView implements Collapsi
         this.onHiddenListener = onHiddenListener;
     }
 
-    public CollapsingTopBarReactHeader(Context context, CollapsingTopBarParams params, NavigationParams navigationParams, ScrollListener scrollListener) {
+    public CollapsingTopBarReactHeader(Context context, CollapsingTopBarParams params, NavigationParams navigationParams, ScrollListener scrollListener, Screen.OnDisplayListener onDisplayListener) {
         super(context, params.reactViewId, navigationParams);
         listener = scrollListener;
+        this.onDisplayListener = onDisplayListener;
         ViewConfiguration vc = ViewConfiguration.get(context);
         mTouchSlop = vc.getScaledTouchSlop();
-        createVisibilityAnimator(params.reactViewHeight);
+        setViewMeasurer(new CollapsingReactHeaderMeasurer(this));
+        setOnDisplayListener(this);
     }
 
-    private void createVisibilityAnimator(int reactViewHeight) {
-        float height = ViewUtils.convertDpToPixel(reactViewHeight);
-        visibilityAnimator = new CollapsingTopBarReactHeaderAnimator(this, height * 0.6f, height * 0.60f);
-        visibilityAnimator.setOnHiddenListener(this);
-        visibilityAnimator.setOnVisibleListener(this);
+    @Override
+    public void onDisplay() {
+        createVisibilityAnimator();
+        onDisplayListener.onDisplay();
+    }
+
+    private void createVisibilityAnimator() {
+        ViewUtils.runOnPreDraw(this, new Runnable() {
+            @Override
+            public void run() {
+                final CollapsingTopBarReactHeader header = CollapsingTopBarReactHeader.this;
+                float height = getHeight();
+                visibilityAnimator = new CollapsingTopBarReactHeaderAnimator(header, height * 0.6f, height * 0.60f);
+                visibilityAnimator.setOnHiddenListener(header);
+                visibilityAnimator.setOnVisibleListener(header);
+            }
+        });
     }
 
     public void collapse(float amount) {

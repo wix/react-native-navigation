@@ -10,6 +10,7 @@ import android.widget.ScrollView;
 import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.params.StyleParams;
+import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.TitleBar;
 import com.reactnativenavigation.views.TopBar;
@@ -77,9 +78,15 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
             header = new CollapsingTopBarReactHeader(getContext(),
                     params,
                     new NavigationParams(Bundle.EMPTY),
-                    scrollListener);
-            LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) ViewUtils.convertDpToPixel(params.reactViewHeight));
-            titleBarAndContextualMenuContainer.addView(header, lp);
+                    scrollListener,
+                    new Screen.OnDisplayListener() {
+                        @Override
+                        public void onDisplay() {
+                            calculateFinalCollapsedTranslation();
+                            header.setOnDisplayListener(null);
+                        }
+                    });
+            titleBarAndContextualMenuContainer.addView(header, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             header.setOnHiddenListener(new CollapsingTopBarReactHeaderAnimator.OnHiddenListener() {
                 @Override
                 public void onHidden() {
@@ -168,5 +175,9 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     @Override
     public View asView() {
         return this;
+    }
+
+    public int getTitleBarHeight() {
+        return titleBar.getHeight();
     }
 }

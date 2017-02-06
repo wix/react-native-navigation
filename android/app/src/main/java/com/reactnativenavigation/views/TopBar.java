@@ -98,7 +98,7 @@ public class TopBar extends AppBarLayout {
 
     public TopTabs initTabs() {
         topTabs = new TopTabs(getContext());
-        addView(topTabs);
+        addView(topTabs, new ViewGroup.LayoutParams(MATCH_PARENT, (int) ViewUtils.convertDpToPixel(48)));
         return topTabs;
     }
 
