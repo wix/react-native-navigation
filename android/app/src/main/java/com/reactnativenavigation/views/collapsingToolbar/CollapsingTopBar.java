@@ -78,8 +78,7 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
                     params,
                     new NavigationParams(Bundle.EMPTY),
                     scrollListener);
-            LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) ViewUtils.convertDpToPixel(params.reactViewHeight));
-            titleBarAndContextualMenuContainer.addView(header, lp);
+            titleBarAndContextualMenuContainer.addView(header, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             header.setOnHiddenListener(new CollapsingTopBarReactHeaderAnimator.OnHiddenListener() {
                 @Override
                 public void onHidden() {
