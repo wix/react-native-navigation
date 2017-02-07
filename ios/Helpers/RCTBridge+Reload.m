@@ -6,11 +6,18 @@
 //  Copyright © 2017 artal. All rights reserved.
 //
 
-#import <React/RCTBridge.h>
 #import "RCTBridge+Reload.h"
 #import <objc/runtime.h>
 
-NSString *const RCTReloadNotification = @"RCTReloadNotification";
+#if __has_include("RCTBridge.h")
+#import "RCTBridge.h"
+#elif __has_include(<React/RCTBridge.h>)
+#import <React/RCTBridge.h>
+#elif __has_include("React/RCTBridge.h")
+#import "React/RCTBridge.h"   // Required when used as a Pod in a Swift project
+#endif
+
+NSString *const RCCReloadNotification = @"RCCReloadNotification";
 
 @implementation RCTBridge (Reload)
 
@@ -50,7 +57,7 @@ NSString *const RCTReloadNotification = @"RCTReloadNotification";
     // Call [self _reload] because we have swizzled this with `reload` it will call the original RCTBridge's reload function
     [self _reload];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:RCTReloadNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:RCCReloadNotification object:self];
     });
 }
 
