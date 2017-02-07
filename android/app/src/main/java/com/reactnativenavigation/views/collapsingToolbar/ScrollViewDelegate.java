@@ -30,7 +30,7 @@ public class ScrollViewDelegate implements View.OnTouchListener {
     }
 
     public boolean didInterceptTouchEvent(MotionEvent ev) {
-            return listener.onTouch(ev);
+        return listener.onTouch(ev);
     }
 
     @Override

@@ -9,6 +9,9 @@ public class TitleBarLeftButtonParamsParser extends TitleBarButtonParamsParser {
 
     public TitleBarLeftButtonParams parseSingleButton(Bundle params) {
         TitleBarLeftButtonParams leftButtonParams = new TitleBarLeftButtonParams(super.parseSingleButton(params));
+        if (params.isEmpty()) {
+            return leftButtonParams;
+        }
         leftButtonParams.iconState = getIconStateFromId(leftButtonParams.eventId);
         return leftButtonParams;
     }
@@ -22,8 +25,9 @@ public class TitleBarLeftButtonParamsParser extends TitleBarButtonParamsParser {
             case "accept":
                 return MaterialMenuDrawable.IconState.CHECK;
             case "sideMenu":
-            default:
                 return MaterialMenuDrawable.IconState.BURGER;
+            default:
+                return null;
         }
     }
 }

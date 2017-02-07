@@ -105,12 +105,12 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     private void createAndAddTopBar() {
-        createTopBar();
+        topBar = createTopBar();
         addTopBar();
     }
 
-    protected void createTopBar() {
-        topBar = new TopBar(getContext());
+    protected TopBar createTopBar() {
+        return new TopBar(getContext());
     }
 
     private void addTopBar() {

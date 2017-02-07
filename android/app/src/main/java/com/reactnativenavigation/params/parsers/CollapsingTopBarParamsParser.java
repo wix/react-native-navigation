@@ -14,29 +14,38 @@ class CollapsingTopBarParamsParser extends Parser {
     private Bundle params;
     private boolean titleBarHideOnScroll;
     private boolean drawBelowTopBar;
+    private final boolean hasReactView;
+    private final boolean hasBackgroundImage;
 
     CollapsingTopBarParamsParser(Bundle params, boolean titleBarHideOnScroll, boolean drawBelowTopBar) {
         this.params = params;
         this.titleBarHideOnScroll = titleBarHideOnScroll;
         this.drawBelowTopBar = drawBelowTopBar;
+        hasReactView = params.containsKey("collapsingToolBarComponent");
+        hasBackgroundImage = params.containsKey("collapsingToolBarImage");
     }
 
     public CollapsingTopBarParams parse() {
-        if (!hasBackgroundImage() && !titleBarHideOnScroll) {
+        if (!validateParams()) {
             return null;
         }
-
         CollapsingTopBarParams result = new CollapsingTopBarParams();
-        if (hasBackgroundImage()) {
-            result.imageUri = params.getString("collapsingToolBarImage");
-        }
+        result.imageUri = params.getString("collapsingToolBarImage", null);
+        result.reactViewId = params.getString("collapsingToolBarComponent", null);
+        result.reactViewHeight = params.getInt("collapsingToolBarComponentHeight");
+        result.expendOnTopTabChange = params.getBoolean("expendCollapsingToolBarOnTopTabChange");
         result.scrimColor = getColor(params, "collapsingToolBarCollapsedColor", new StyleParams.Color(Color.WHITE));
+        result.showTitleWhenCollapsed = hasReactView;
         result.collapseBehaviour = getCollapseBehaviour();
         return result;
     }
 
+    private boolean validateParams() {
+        return titleBarHideOnScroll || hasImageOrReactView();
+    }
+
     private CollapseBehaviour getCollapseBehaviour() {
-        if (hasBackgroundImage()) {
+        if (hasImageOrReactView()) {
             return new CollapseTopBarBehaviour();
         }
         if (titleBarHideOnScroll && drawBelowTopBar) {
@@ -45,7 +54,7 @@ class CollapsingTopBarParamsParser extends Parser {
         return new TitleBarHideOnScrollBehaviour();
     }
 
-    private boolean hasBackgroundImage() {
-        return params.containsKey("collapsingToolBarImage");
+    private boolean hasImageOrReactView() {
+        return hasBackgroundImage || hasReactView;
     }
 }

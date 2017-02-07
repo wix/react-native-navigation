@@ -518,7 +518,7 @@ function showInAppNotification(params) {
   
   savePassProps(params);
 
-  Notification.show({
+  let args = {
     component: params.screen,
     passProps: passProps,
     style: params.style,
@@ -527,7 +527,9 @@ function showInAppNotification(params) {
     shadowRadius: params.shadowRadius,
     dismissWithSwipe: params.dismissWithSwipe || true,
     autoDismissTimerSec: params.autoDismissTimerSec || 5
-  });
+  };
+  if (params.autoDismiss === false) delete args.autoDismissTimerSec;
+  Notification.show(args);
 }
 
 function dismissInAppNotification(params) {

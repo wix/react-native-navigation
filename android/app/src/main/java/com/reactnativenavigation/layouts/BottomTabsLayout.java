@@ -217,6 +217,11 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
+    public void hideSlidingOverlay() {
+        slidingOverlaysQueue.remove();
+    }
+
+    @Override
     public void onModalDismissed() {
         EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
     }
@@ -283,18 +288,13 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
-    public void newStack(ScreenParams params) {
-        ScreenStack currentScreenStack = getCurrentScreenStack();
-        removeView(currentScreenStack.peek());
-        currentScreenStack.destroy();
-
-        ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), params.getNavigatorId(), this);
-        LayoutParams lp = createScreenLayoutParams(params);
-        newStack.pushInitialScreenWithAnimation(params, lp);
-        screenStacks[currentStackIndex] = newStack;
-
-        bottomTabs.setStyleFromScreen(params.styleParams);
-        EventBus.instance.post(new ScreenChangedEvent(params));
+    public void newStack(final ScreenParams params) {
+        ScreenStack screenStack = getScreenStack(params.getNavigatorId());
+        screenStack.newStack(params, createScreenLayoutParams(params));
+        if (isCurrentStack(screenStack)) {
+            bottomTabs.setStyleFromScreen(params.styleParams);
+            EventBus.instance.post(new ScreenChangedEvent(params));
+        }
     }
 
     @Override
@@ -306,6 +306,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         if (sideMenu != null) {
             sideMenu.destroy();
         }
+        slidingOverlaysQueue.destroy();
     }
 
     @Override

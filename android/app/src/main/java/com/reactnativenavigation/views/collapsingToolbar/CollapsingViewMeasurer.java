@@ -6,42 +6,33 @@ import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.utils.ViewMeasurer;
 
 public class CollapsingViewMeasurer extends ViewMeasurer {
-
-    int collapsedTopBarHeight;
-    private float finalCollapseValue;
     int screenHeight;
     int bottomTabsHeight = 0;
-    boolean bottomTabsHidden;
+    CollapsingTopBar topBar;
+    protected StyleParams styleParams;
 
-    public CollapsingViewMeasurer(CollapsingTopBar topBar, Screen screen, StyleParams styleParams) {
-        this(topBar, screen);
-        bottomTabsHidden = styleParams.bottomTabsHidden;
+    public CollapsingViewMeasurer(final CollapsingTopBar topBar, final Screen collapsingSingleScreen, StyleParams styleParams) {
+        this.topBar = topBar;
+        this.styleParams = styleParams;
         bottomTabsHeight = (int) ViewUtils.convertDpToPixel(56);
-    }
-
-    public CollapsingViewMeasurer(final CollapsingTopBar topBar, final Screen collapsingSingleScreen) {
-        ViewUtils.runOnPreDraw(topBar, new Runnable() {
-            @Override
-            public void run() {
-                collapsedTopBarHeight = topBar.getCollapsedHeight();
-                finalCollapseValue = topBar.getFinalCollapseValue();
-            }
-        });
-
         ViewUtils.runOnPreDraw(collapsingSingleScreen, new Runnable() {
             @Override
             public void run() {
-                screenHeight = collapsingSingleScreen.getMeasuredHeight();
+                screenHeight = collapsingSingleScreen.getHeight();
             }
         });
     }
 
     public float getFinalCollapseValue() {
-        return finalCollapseValue;
+        return topBar.getFinalCollapseValue();
     }
 
     @Override
     public int getMeasuredHeight(int heightMeasureSpec) {
-        return screenHeight - collapsedTopBarHeight + (bottomTabsHidden ? bottomTabsHeight : 0);
+        int height = screenHeight - topBar.getCollapsedHeight();
+        if (styleParams.bottomTabsHidden) {
+            height += bottomTabsHeight;
+        }
+        return height;
     }
 }

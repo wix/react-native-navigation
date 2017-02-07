@@ -124,12 +124,12 @@ public class SingleScreenLayout extends BaseLayout {
         if (sideMenu != null) {
             sideMenu.destroy();
         }
+        slidingOverlaysQueue.destroy();
     }
 
     @Override
     public void push(ScreenParams params) {
-        LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
-        stack.push(params, lp);
+        stack.push(params, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
         EventBus.instance.post(new ScreenChangedEvent(params));
     }
 
@@ -154,15 +154,8 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
-    public void newStack(ScreenParams params) {
-        removeView(stack.peek());
-        stack.destroy();
-
-        ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), params.getNavigatorId(), this);
-        LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
-        newStack.pushInitialScreenWithAnimation(params, lp);
-        stack = newStack;
-
+    public void newStack(final ScreenParams params) {
+        stack.newStack(params, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
         EventBus.instance.post(new ScreenChangedEvent(params));
     }
 
@@ -225,6 +218,11 @@ public class SingleScreenLayout extends BaseLayout {
     @Override
     public void showSlidingOverlay(final SlidingOverlayParams params) {
         slidingOverlaysQueue.add(new SlidingOverlay(this, params));
+    }
+
+    @Override
+    public void hideSlidingOverlay() {
+        slidingOverlaysQueue.remove();
     }
 
     @Override
