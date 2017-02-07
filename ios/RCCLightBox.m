@@ -5,6 +5,7 @@
 #import <React/RCTConvert.h>
 #import "RCTHelpers.h"
 #import <objc/runtime.h>
+#import "RCTBridge+Reload.h"
 
 const NSInteger kLightBoxTag = 0x101010;
 

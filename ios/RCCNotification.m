@@ -2,6 +2,7 @@
 #import "RCCNotification.h"
 #import <React/RCTRootView.h>
 #import "RCTHelpers.h"
+#import "RCTBridge+Reload.h"
 
 @interface NotificationView : UIView
 @property (nonatomic, strong) RCTRootView *reactView;
@@ -32,8 +33,7 @@
         [self.reactView.contentView.layer addObserver:self forKeyPath:@"frame" options:0 context:nil];
         [self.reactView.contentView.layer addObserver:self forKeyPath:@"bounds" options:0 context:NULL];
         
-        //TODO: This needs replacing!
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTReloadNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTReloadNotification object:nil];
         
         if ([params[@"dismissWithSwipe"] boolValue])
         {
