@@ -1,8 +1,22 @@
 #import "RCCTabBarController.h"
 #import "RCCViewController.h"
-#import <React/RCTConvert.h>
 #import "RCCManager.h"
+
+#if __has_include("RCTConvert.h")
+#import "RCTConvert.h"
+#elif __has_include(<React/RCTConvert.h>)
+#import <React/RCTConvert.h>
+#elif __has_include("React/RCTConvert.h")
+#import "React/RCTConvert.h"   // Required when used as a Pod in a Swift project
+#endif
+
+#if __has_include("RCTUIManager.h")
+#import "RCTUIManager.h"
+#elif __has_include(<React/RCTUIManager.h>)
 #import <React/RCTUIManager.h>
+#elif __has_include("React/RCTUIManager.h")
+#import "React/RCTUIManager.h"   // Required when used as a Pod in a Swift project
+#endif
 
 @interface RCTUIManager ()
 

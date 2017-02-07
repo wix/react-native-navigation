@@ -1,8 +1,21 @@
 #import "RCCManager.h"
-#import <React/RCTBridge.h>
-#import <React/RCTRedBox.h>
 #import <Foundation/Foundation.h>
-#import "RCTBridge+Reload.h"
+
+#if __has_include("RCTBridge.h")
+#import "RCTBridge.h"
+#elif __has_include(<React/RCTBridge.h>)
+#import <React/RCTBridge.h>
+#elif __has_include("React/RCTBridge.h")
+#import "React/RCTBridge.h"   // Required when used as a Pod in a Swift project
+#endif
+
+#if __has_include("RCTRedBox.h")
+#import "RCTRedBox.h"
+#elif __has_include(<React/RCTRedBox.h>)
+#import <React/RCTRedBox.h>
+#elif __has_include("React/RCTRedBox.h")
+#import "React/RCTRedBox.h"   // Required when used as a Pod in a Swift project
+#endif
 
 @interface RCCManager() <RCTBridgeDelegate>
 @property (nonatomic, strong) NSMutableDictionary *modulesRegistry;
