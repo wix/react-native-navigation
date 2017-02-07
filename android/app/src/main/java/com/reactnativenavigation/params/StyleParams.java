@@ -31,6 +31,10 @@ public class StyleParams {
         public static Color parse(Bundle bundle, String key) {
             return bundle.containsKey(key) ? new Color(bundle.getInt(key)) : new Color();
         }
+
+        public String getHexColor() {
+            return String.format("#%06X", (0xFFFFFF & getColor()));
+        }
     }
 
     public Color statusBarColor;
