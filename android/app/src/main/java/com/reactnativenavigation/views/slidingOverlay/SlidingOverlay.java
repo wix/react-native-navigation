@@ -11,6 +11,7 @@ import com.reactnativenavigation.params.SlidingOverlayParams.Position;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ContentView;
+import com.reactnativenavigation.views.utils.ViewMeasurer;
 
 public class SlidingOverlay {
 
@@ -47,21 +48,22 @@ public class SlidingOverlay {
         view = createSlidingOverlayView(params);
         parent.addView(view);
 
-        final PeekingAnimator animator = new PeekingAnimator(view, params.position, true);
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationCancel(Animator animator) {
-                onSlidingOverlayShown(view);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                onSlidingOverlayShown(view);
-            }
-        });
         view.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
+                final PeekingAnimator animator = new PeekingAnimator(view, params.position, true);
+                animator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+                        onSlidingOverlayShown(view);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        onSlidingOverlayShown(view);
+                    }
+                });
+
                 view.setVisibility(View.VISIBLE);
                 visibilityState = VisibilityState.AnimateShow;
                 animator.animate();
@@ -106,12 +108,11 @@ public class SlidingOverlay {
     }
 
     protected ContentView createSlidingOverlayView(SlidingOverlayParams params) {
-        final float heightPixels = ViewUtils.convertDpToPixel(100);
-
-        final RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int) heightPixels);
+        final RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(params.position == Position.Top ? RelativeLayout.ALIGN_PARENT_TOP : RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         final ContentView view = new ContentView(parent.getContext(), params.screenInstanceId, params.navigationParams);
+        view.setViewMeasurer(new OverlayViewMeasurer(view));
         view.setLayoutParams(lp);
         view.setVisibility(View.INVISIBLE);
         return view;
