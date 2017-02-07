@@ -7,8 +7,8 @@
 //
 
 #import "RCTHelpers.h"
-#import "RCTView.h"
-#import "RCTScrollView.h"
+#import <React/RCTView.h>
+#import <React/RCTScrollView.h>
 
 @implementation RCTHelpers
 
