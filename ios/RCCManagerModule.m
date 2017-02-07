@@ -325,6 +325,10 @@ dismissController:(NSString*)animationType resolver:(RCTPromiseResolveBlock)reso
         [vc dismissViewControllerAnimated:![animationType isEqualToString:@"none"]
                                completion:^(){ resolve(nil); }];
     }
+    else
+    {
+      resolve(nil);
+    }
 }
 
 RCT_EXPORT_METHOD(
