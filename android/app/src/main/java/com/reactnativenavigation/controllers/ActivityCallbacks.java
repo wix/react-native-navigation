@@ -32,4 +32,8 @@ public class ActivityCallbacks {
     public void onActivityDestroyed(Activity activity) {
 
     }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+    }
 }

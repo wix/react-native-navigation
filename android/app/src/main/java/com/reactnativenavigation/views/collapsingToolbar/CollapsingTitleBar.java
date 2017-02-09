@@ -4,45 +4,85 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.params.StyleParams;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.TitleBar;
 
 public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener {
     private CollapsingTextView title;
     private int collapsedHeight;
     private final ScrollListener scrollListener;
+    private final CollapsingTopBarParams params;
 
-    public CollapsingTitleBar(Context context, int collapsedHeight, ScrollListener scrollListener) {
+    public CollapsingTitleBar(Context context, int collapsedHeight, ScrollListener scrollListener, CollapsingTopBarParams params) {
         super(context);
         this.collapsedHeight = collapsedHeight;
         this.scrollListener = scrollListener;
+        this.params = params;
         addCollapsingTitle();
         setOnTouchListener(this);
+        hideTitle(params);
+    }
+
+    private void hideTitle(CollapsingTopBarParams params) {
+        if (params.showTitleWhenCollapsed) {
+            ViewUtils.runOnPreDraw(this, new Runnable() {
+                @Override
+                public void run() {
+                    View titleView = getTitleView();
+                    if (titleView != null) {
+                        titleView.setAlpha(0);
+                    }
+                }
+            });
+        }
     }
 
     private void addCollapsingTitle() {
-        title = new CollapsingTextView(getContext(), collapsedHeight);
-        addView(title);
+        if (params.hasBackgroundImage()) {
+            title = new CollapsingTextView(getContext(), collapsedHeight);
+            addView(title);
+        }
     }
 
     @Override
     public void setTitle(CharSequence title) {
-        this.title.setText((String) title);
+        if (params.hasBackgroundImage()) {
+            this.title.setText((String) title);
+        } else {
+            super.setTitle(title);
+        }
     }
 
     @Override
     protected void setTitleTextColor(StyleParams params) {
-        title.setTextColor(params);
+        if (this.params.hasBackgroundImage()) {
+            title.setTextColor(params);
+        } else {
+            super.setTitleTextColor(params);
+        }
     }
 
     @Override
     protected void setSubtitleTextColor(StyleParams params) {
+        if (this.params.hasReactView()) {
+            super.setSubtitleTextColor(params);
+        }
     }
 
-    public void collapse(float collapse) {
-        title.setTranslationY(0);
+    public void collapse(CollapseAmount amount) {
+        if (amount.hasExactAmount()) {
+            collapse(amount.get());
+        }
+    }
+
+    private void collapse(float collapse) {
+        if (params.hasBackgroundImage()) {
+            title.setTranslationY(0);
+            title.collapseBy(collapse);
+        }
         setTranslationY(-collapse);
-        title.collapseBy(collapse);
     }
 
     @Override

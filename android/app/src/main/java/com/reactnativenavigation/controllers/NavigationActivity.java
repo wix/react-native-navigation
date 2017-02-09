@@ -296,6 +296,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         layout.showSlidingOverlay(params);
     }
 
+    public void hideSlidingOverlay() {
+        layout.hideSlidingOverlay();
+    }
+
     public void showSnackbar(SnackbarParams params) {
         layout.showSnackbar(params);
     }
@@ -337,6 +341,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        NavigationApplication.instance.getActivityCallbacks().onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             mPermissionListener = null;
         }

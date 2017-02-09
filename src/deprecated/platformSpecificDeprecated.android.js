@@ -125,8 +125,12 @@ function convertStyleParams(originalStyleObject) {
     topBarTransparent: originalStyleObject.navBarTransparent,
     topBarTranslucent: originalStyleObject.navBarTranslucent,
     topBarElevationShadowEnabled: originalStyleObject.topBarElevationShadowEnabled,
+    topBarCollapseOnScroll: originalStyleObject.topBarCollapseOnScroll,
     collapsingToolBarImage: originalStyleObject.collapsingToolBarImage,
+    collapsingToolBarComponent: originalStyleObject.collapsingToolBarComponent,
+    collapsingToolBarComponentHeight: originalStyleObject.collapsingToolBarComponentHeight,
     collapsingToolBarCollapsedColor: processColor(originalStyleObject.collapsingToolBarCollapsedColor),
+    expendCollapsingToolBarOnTopTabChange: originalStyleObject.expendCollapsingToolBarOnTopTabChange,
     titleBarHidden: originalStyleObject.navBarHidden,
     titleBarHideOnScroll: originalStyleObject.navBarHideOnScroll,
     titleBarTitleColor: processColor(originalStyleObject.navBarTextColor),
@@ -147,7 +151,7 @@ function convertStyleParams(originalStyleObject) {
     selectedTopTabTextColor: processColor(originalStyleObject.selectedTopTabTextColor),
     selectedTopTabIndicatorHeight: originalStyleObject.selectedTopTabIndicatorHeight,
     selectedTopTabIndicatorColor: processColor(originalStyleObject.selectedTopTabIndicatorColor),
-
+    topTabScrollable: originalStyleObject.topTabScollable,
     screenBackgroundColor: processColor(originalStyleObject.screenBackgroundColor),
 
     drawScreenAboveBottomTabs: !originalStyleObject.drawUnderTabBar,
@@ -173,6 +177,9 @@ function convertStyleParams(originalStyleObject) {
     if (collapsingToolBarImage) {
       ret.collapsingToolBarImage = collapsingToolBarImage.uri;
     }
+  }
+  if (_.isUndefined(ret.expendCollapsingToolBarOnTopTabChange)) {
+    ret.expendCollapsingToolBarOnTopTabChange = true;
   }
   return ret;
 }
@@ -378,7 +385,15 @@ function dismissAllModals(params) {
 function showInAppNotification(params) {
   params.navigationParams = {};
   addNavigatorParams(params.navigationParams);
+
+  params.autoDismissTimerSec = params.autoDismissTimerSec || 5;
+  if (params.autoDismiss === false) delete params.autoDismissTimerSec;
+
   newPlatformSpecific.showInAppNotification(params);
+}
+
+function dismissInAppNotification(params) {
+  newPlatformSpecific.dismissInAppNotification(params);
 }
 
 function addNavigatorParams(screen, navigator = null, idx = '') {
@@ -388,6 +403,7 @@ function addNavigatorParams(screen, navigator = null, idx = '') {
 }
 
 function addNavigatorButtons(screen, sideMenuParams) {
+
   const Screen = Navigation.getRegisteredScreen(screen.screen);
   if (screen.navigatorButtons == null) {
     screen.navigatorButtons = _.cloneDeep(Screen.navigatorButtons);
@@ -514,9 +530,17 @@ function getLeftButtonDeprecated(screen) {
 function getRightButtons(screen) {
   if (screen.navigatorButtons && screen.navigatorButtons.rightButtons) {
     return screen.navigatorButtons.rightButtons;
+  } else if (screen.rightButtons) {
+    return screen.rightButtons
   }
 
-  return screen.rightButtons;
+  const Screen = Navigation.getRegisteredScreen(screen.screen);
+
+  if (Screen.navigatorButtons && !_.isEmpty(Screen.navigatorButtons.rightButtons)) {
+    return _.cloneDeep(Screen.navigatorButtons.rightButtons);
+  }
+
+  return null;
 }
 
 function addNavigationStyleParams(screen) {
@@ -525,7 +549,17 @@ function addNavigationStyleParams(screen) {
 }
 
 function showSnackbar(navigator, params) {
-  return newPlatformSpecific.showSnackbar(params);
+  const adapted = _.cloneDeep(params);
+  if (adapted.backgroundColor) {
+    adapted.backgroundColor = processColor(adapted.backgroundColor);
+  }
+  if (adapted.actionColor) {
+    adapted.actionColor = processColor(adapted.actionColor);
+  }
+  if (adapted.textColor) {
+    adapted.textColor = processColor(adapted.textColor);
+  }
+  return newPlatformSpecific.showSnackbar(adapted);
 }
 
 function showContextualMenu(navigator, params) {
@@ -567,6 +601,7 @@ export default {
   dismissModal,
   dismissAllModals,
   showInAppNotification,
+  dismissInAppNotification,
   navigatorSetButtons,
   navigatorSetTabBadge,
   navigatorSetTitle,
