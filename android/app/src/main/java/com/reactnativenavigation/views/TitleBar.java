@@ -29,7 +29,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class TitleBar extends Toolbar {
-
+    private static final int TITLE_VISIBILITY_ANIMATION_DURATION = 320;
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
     private TextView titleView;
@@ -232,5 +232,32 @@ public class TitleBar extends Toolbar {
                         }
                     }
                 });
+    }
+
+    public void showTitle() {
+        animateTitle(1);
+    }
+
+    public void hideTitle() {
+        animateTitle(0);
+    }
+
+    private void animateTitle(int alpha) {
+        View titleView = getTitleView();
+        if (titleView != null) {
+            titleView.animate()
+                    .alpha(alpha)
+                    .setDuration(TITLE_VISIBILITY_ANIMATION_DURATION);
+        }
+    }
+
+    @Nullable
+    protected View getTitleView() {
+        return ViewUtils.findChildByClass(this, TextView.class, new ViewUtils.Matcher<TextView>() {
+            @Override
+            public boolean match(TextView child) {
+                return child.getText().equals(getTitle());
+            }
+        });
     }
 }

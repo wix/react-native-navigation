@@ -442,8 +442,8 @@ function showModal(params) {
   Modal.showController(controllerID, params.animationType);
 }
 
-function dismissModal(params) {
-  Modal.dismissController(params.animationType);
+async function dismissModal(params) {
+  return await Modal.dismissController(params.animationType);
 }
 
 function dismissAllModals(params) {

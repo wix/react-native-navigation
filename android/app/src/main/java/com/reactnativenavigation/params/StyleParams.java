@@ -31,6 +31,10 @@ public class StyleParams {
         public static Color parse(Bundle bundle, String key) {
             return bundle.containsKey(key) ? new Color(bundle.getInt(key)) : new Color();
         }
+
+        public String getHexColor() {
+            return String.format("#%06X", (0xFFFFFF & getColor()));
+        }
     }
 
     public Color statusBarColor;
@@ -40,6 +44,7 @@ public class StyleParams {
 
     public Color topBarColor;
     public CollapsingTopBarParams collapsingTopBarParams;
+    public boolean topBarCollapseOnScroll;
     public boolean topBarHidden;
     public boolean topBarElevationShadowEnabled;
     public boolean topTabsHidden;
@@ -61,6 +66,7 @@ public class StyleParams {
     public Color selectedTopTabIconColor;
     public int selectedTopTabIndicatorHeight;
     public Color selectedTopTabIndicatorColor;
+    public boolean topTabScrollable;
 
     public Color screenBackgroundColor;
 

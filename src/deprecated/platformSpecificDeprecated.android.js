@@ -125,8 +125,12 @@ function convertStyleParams(originalStyleObject) {
     topBarTransparent: originalStyleObject.navBarTransparent,
     topBarTranslucent: originalStyleObject.navBarTranslucent,
     topBarElevationShadowEnabled: originalStyleObject.topBarElevationShadowEnabled,
+    topBarCollapseOnScroll: originalStyleObject.topBarCollapseOnScroll,
     collapsingToolBarImage: originalStyleObject.collapsingToolBarImage,
+    collapsingToolBarComponent: originalStyleObject.collapsingToolBarComponent,
+    collapsingToolBarComponentHeight: originalStyleObject.collapsingToolBarComponentHeight,
     collapsingToolBarCollapsedColor: processColor(originalStyleObject.collapsingToolBarCollapsedColor),
+    expendCollapsingToolBarOnTopTabChange: originalStyleObject.expendCollapsingToolBarOnTopTabChange,
     titleBarHidden: originalStyleObject.navBarHidden,
     titleBarHideOnScroll: originalStyleObject.navBarHideOnScroll,
     titleBarTitleColor: processColor(originalStyleObject.navBarTextColor),
@@ -147,7 +151,7 @@ function convertStyleParams(originalStyleObject) {
     selectedTopTabTextColor: processColor(originalStyleObject.selectedTopTabTextColor),
     selectedTopTabIndicatorHeight: originalStyleObject.selectedTopTabIndicatorHeight,
     selectedTopTabIndicatorColor: processColor(originalStyleObject.selectedTopTabIndicatorColor),
-
+    topTabScrollable: originalStyleObject.topTabScollable,
     screenBackgroundColor: processColor(originalStyleObject.screenBackgroundColor),
 
     drawScreenAboveBottomTabs: !originalStyleObject.drawUnderTabBar,
@@ -173,6 +177,9 @@ function convertStyleParams(originalStyleObject) {
     if (collapsingToolBarImage) {
       ret.collapsingToolBarImage = collapsingToolBarImage.uri;
     }
+  }
+  if (_.isUndefined(ret.expendCollapsingToolBarOnTopTabChange)) {
+    ret.expendCollapsingToolBarOnTopTabChange = true;
   }
   return ret;
 }
@@ -542,7 +549,17 @@ function addNavigationStyleParams(screen) {
 }
 
 function showSnackbar(navigator, params) {
-  return newPlatformSpecific.showSnackbar(params);
+  const adapted = _.cloneDeep(params);
+  if (adapted.backgroundColor) {
+    adapted.backgroundColor = processColor(adapted.backgroundColor);
+  }
+  if (adapted.actionColor) {
+    adapted.actionColor = processColor(adapted.actionColor);
+  }
+  if (adapted.textColor) {
+    adapted.textColor = processColor(adapted.textColor);
+  }
+  return newPlatformSpecific.showSnackbar(adapted);
 }
 
 function showContextualMenu(navigator, params) {

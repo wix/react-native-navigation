@@ -9,6 +9,7 @@ import PropRegistry from './PropRegistry';
 import ContextContainer from './ContextContainer';
 import Router from './Router'
 const registeredScreens = {};
+const _allNavigatorEventHandlers = {};
 
 function registerScreen(screenID, generator) {
   registeredScreens[screenID] = generator;
@@ -142,6 +143,25 @@ function startSingleScreenApp(params) {
   return platformSpecific.startSingleScreenApp(params);
 }
 
+function setEventHandler(navigatorEventID, eventHandler) {
+  _allNavigatorEventHandlers[navigatorEventID] = eventHandler;
+}
+
+function clearEventHandler(navigatorEventID) {
+  delete _allNavigatorEventHandlers[navigatorEventID];
+}
+
+function handleDeepLink(params = {}) {
+  if (!params.link) return;
+  const event = {
+    type: 'DeepLink',
+    link: params.link
+  };
+  for (let i in _allNavigatorEventHandlers) {
+    _allNavigatorEventHandlers[i](event);
+  }
+}
+
 export default {
   getRegisteredScreen,
   registerComponent,
@@ -153,5 +173,8 @@ export default {
   showInAppNotification: showInAppNotification,
   dismissInAppNotification: dismissInAppNotification,
   startTabBasedApp: startTabBasedApp,
-  startSingleScreenApp: startSingleScreenApp
+  startSingleScreenApp: startSingleScreenApp,
+  setEventHandler: setEventHandler,
+  clearEventHandler: clearEventHandler,
+  handleDeepLink: handleDeepLink
 };

@@ -341,6 +341,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        NavigationApplication.instance.getActivityCallbacks().onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             mPermissionListener = null;
         }
