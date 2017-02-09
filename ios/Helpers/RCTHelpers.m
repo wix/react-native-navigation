@@ -8,18 +8,18 @@
 
 #import "RCTHelpers.h"
 
-#if __has_include("RCTView.h")
-#import "RCTView.h"
-#elif __has_include(<React/RCTView.h>)
+#if __has_include(<React/RCTView.h>)
 #import <React/RCTView.h>
+#elif __has_include("RCTView.h")
+#import "RCTView.h"
 #elif __has_include("React/RCTView.h")
 #import "React/RCTView.h"   // Required when used as a Pod in a Swift project
 #endif
 
-#if __has_include("RCTScrollView.h")
-#import "RCTScrollView.h"
-#elif __has_include(<React/RCTScrollView.h>)
+#if __has_include(<React/RCTScrollView.h>)
 #import <React/RCTScrollView.h>
+#elif __has_include("RCTScrollView.h")
+#import "RCTScrollView.h"
 #elif __has_include("React/RCTScrollView.h")
 #import "React/RCTScrollView.h"   // Required when used as a Pod in a Swift project
 #endif

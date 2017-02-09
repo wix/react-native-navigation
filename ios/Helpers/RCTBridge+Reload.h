@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-#if __has_include("RCTDefines.h")
-#import "RCTDefines.h"
-#elif __has_include(<React/RCTDefines.h>)
+#if __has_include(<React/RCTDefines.h>)
 #import <React/RCTDefines.h>
+#elif __has_include("RCTDefines.h")
+#import "RCTDefines.h"
 #elif __has_include("React/RCTDefines.h")
 #import "React/RCTDefines.h"   // Required when used as a Pod in a Swift project
 #endif

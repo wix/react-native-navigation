@@ -4,26 +4,26 @@
 #import <objc/runtime.h>
 #import "RCTBridge+Reload.h"
 
-#if __has_include("RCTRootView.h")
-#import "RCTRootView.h"
-#elif __has_include(<React/RCTRootView.h>)
+#if __has_include(<React/RCTRootView.h>)
 #import <React/RCTRootView.h>
+#elif __has_include("RCTRootView.h")
+#import "RCTRootView.h"
 #elif __has_include("React/RCTRootView.h")
 #import "React/RCTRootView.h"   // Required when used as a Pod in a Swift project
 #endif
 
-#if __has_include("RCTRootViewDelegate.h")
-#import "RCTRootViewDelegate.h"
-#elif __has_include(<React/RCTRootViewDelegate.h>)
+#if __has_include(<React/RCTRootViewDelegate.h>)
 #import <React/RCTRootViewDelegate.h>
+#elif __has_include("RCTRootViewDelegate.h")
+#import "RCTRootViewDelegate.h"
 #elif __has_include("React/RCTRootViewDelegate.h")
 #import "React/RCTRootViewDelegate.h"   // Required when used as a Pod in a Swift project
 #endif
 
-#if __has_include("RCTConvert.h")
-#import "RCTConvert.h"
-#elif __has_include(<React/RCTConvert.h>)
+#if __has_include(<React/RCTConvert.h>)
 #import <React/RCTConvert.h>
+#elif __has_include("RCTConvert.h")
+#import "RCTConvert.h"
 #elif __has_include("React/RCTConvert.h")
 #import "React/RCTConvert.h"   // Required when used as a Pod in a Swift project
 #endif
