@@ -39,6 +39,14 @@ public class TopTabs extends TabLayout {
         setTabTextColors(tabTextColor, selectedTabColor);
     }
 
+    void setScrollable(StyleParams style) {
+        if (style.topTabScrollable) {
+            setTabMode(TabLayout.MODE_SCROLLABLE);
+        } else {
+            setTabMode(TabLayout.MODE_FIXED);
+        }
+    }
+
     public void setTopTabsIconColor(StyleParams style) {
         new TopTabsIconColorHelper(this, style).colorIcons(getSelectedIconColor(), getUnselectedIconColor());
     }

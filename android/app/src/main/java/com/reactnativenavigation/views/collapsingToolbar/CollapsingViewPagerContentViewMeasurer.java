@@ -20,15 +20,20 @@ public class CollapsingViewPagerContentViewMeasurer extends CollapsingViewMeasur
     @Override
     public int getMeasuredHeight(int heightMeasureSpec) {
         int height = screenHeight - topBar.getCollapsedHeight();
-        if (styleParams.bottomTabsHidden) {
+        if (hasBottomTabs() && drawScreenUnderBottomTabs()) {
             height -= bottomTabsHeight;
         }
         if (!styleParams.titleBarHideOnScroll) {
             height -= titleBarHeight;
         }
-        if (!styleParams.drawScreenAboveBottomTabs) {
-            height -= bottomTabsHeight;
-        }
         return height;
+    }
+
+    private boolean drawScreenUnderBottomTabs() {
+        return !styleParams.drawScreenAboveBottomTabs;
+    }
+
+    private boolean hasBottomTabs() {
+        return !styleParams.bottomTabsHidden;
     }
 }
