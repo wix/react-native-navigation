@@ -55,7 +55,7 @@ public class SnackbarAndFabContainer extends CoordinatorLayout implements Snakba
         updateFab(fabParams);
     }
 
-    private void dismissSnackbar() {
+    public void dismissSnackbar() {
         if (snakbar != null) {
             snakbar.dismiss();
             snakbar = null;
