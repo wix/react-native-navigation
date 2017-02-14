@@ -311,6 +311,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         layout.showSnackbar(params);
     }
 
+    public void dismissSnackbar() {
+        layout.dismissSnackbar();
+    }
+
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
         layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
         modalController.showContextualMenu(screenInstanceId, params, onButtonClicked);
