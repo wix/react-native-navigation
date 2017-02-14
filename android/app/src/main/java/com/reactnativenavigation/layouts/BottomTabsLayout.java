@@ -185,6 +185,13 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
+
+    public void setTitleBarButtonBadgeByIndex(String screenInstanceId, Integer index, Integer badge) {
+        for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
+            screenStacks[i].setScreenTitleBarButtonBadgeByIndex(screenInstanceId, index, badge);
+        }
+    }
+
     public void setFab(String screenInstanceId, String navigatorEventId, FabParams fabParams) {
         for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
             screenStacks[i].setFab(screenInstanceId, navigatorEventId, fabParams);

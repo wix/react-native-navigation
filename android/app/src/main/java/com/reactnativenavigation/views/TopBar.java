@@ -110,6 +110,10 @@ public class TopBar extends AppBarLayout {
                 overrideBackPressInJs);
     }
 
+    public void setTitleBarButtonBadgeByIndex(Integer index, Integer badge) {
+        titleBar.setTitleBarButtonBadgeByIndex(index, badge);
+    }
+
     private void setTopTabsStyle(StyleParams style) {
         if (topTabs == null) {
             return;

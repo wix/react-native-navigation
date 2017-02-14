@@ -194,6 +194,10 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
                 screenParams.overrideBackPressInJs);
     }
 
+    public void setTitleBarButtonBadgeByIndex(Integer index, Integer badge) {
+        topBar.setTitleBarButtonBadgeByIndex(index, badge);
+    }
+
     public void setFab(FabParams fabParams) {
         screenParams.fabParams = fabParams;
         if (isShown()) {

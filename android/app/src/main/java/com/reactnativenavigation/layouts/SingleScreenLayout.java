@@ -190,6 +190,10 @@ public class SingleScreenLayout extends BaseLayout {
         stack.setScreenTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButtonParams);
     }
 
+    public void setTitleBarButtonBadgeByIndex(String screenInstanceId, Integer index, Integer badge) {
+        stack.setScreenTitleBarButtonBadgeByIndex(screenInstanceId, index, badge);
+    }
+
     @Override
     public void setFab(String screenInstanceId, String navigatorEventId, FabParams fabParams) {
         stack.setFab(screenInstanceId, navigatorEventId, fabParams);

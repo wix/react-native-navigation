@@ -212,11 +212,29 @@ public class NavigationCommandsHandler {
         });
     }
 
-    public static void setScreenFab(final String screenInstanceId, final String navigatorEventId, final FabParams fab) {
+    public static void setTitleBarButtonBadgeByIndex(final String screenInstanceId,
+                                                          final Integer index,
+                                                          final Integer badge) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
         }
+
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.setTitleBarButtonBadgeByIndex(screenInstanceId, index, badge);
+            }
+        });
+    }
+
+    public static void setScreenFab(final String screenInstanceId, final String navigatorEventId, final FabParams fab) {
+
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
         NavigationApplication.instance.runOnMainThread(new Runnable() {
             @Override
             public void run() {

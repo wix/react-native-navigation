@@ -290,11 +290,21 @@ public class ScreenStack {
         });
     }
 
+    public void setScreenTitleBarButtonBadgeByIndex(String screenInstanceId, final Integer index, final Integer badge) {
+        performOnScreen(screenInstanceId, new Task<Screen>() {
+            @Override
+            public void run(Screen screen) {
+                screen.setTitleBarButtonBadgeByIndex(index, badge);
+            }
+        });
+    }
+
     public void setFab(String screenInstanceId, final String navigatorEventId, final FabParams fabParams) {
         performOnScreen(screenInstanceId, new Task<Screen>() {
             @Override
             public void run(Screen param) {
                 param.setFab(fabParams);
+
             }
         });
     }

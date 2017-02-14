@@ -105,6 +105,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setTitleBarButtonBadgeByIndex(String screenInstanceId, Integer index, Integer badge) {
+        NavigationCommandsHandler.setTitleBarButtonBadgeByIndex(screenInstanceId, index, badge);
+    }
+
+    @ReactMethod
     public void setBottomTabBadgeByIndex(Integer index, String badge) {
         NavigationCommandsHandler.setBottomTabBadgeByIndex(index, badge);
     }
