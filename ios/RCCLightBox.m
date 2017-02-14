@@ -1,10 +1,32 @@
 #import "RCCLightBox.h"
 #import "RCCManager.h"
-#import "RCTRootView.h"
-#import "RCTRootViewDelegate.h"
-#import "RCTConvert.h"
 #import "RCTHelpers.h"
 #import <objc/runtime.h>
+#import "RCTBridge+Reload.h"
+
+#if __has_include(<React/RCTRootView.h>)
+#import <React/RCTRootView.h>
+#elif __has_include("RCTRootView.h")
+#import "RCTRootView.h"
+#elif __has_include("React/RCTRootView.h")
+#import "React/RCTRootView.h"   // Required when used as a Pod in a Swift project
+#endif
+
+#if __has_include(<React/RCTRootViewDelegate.h>)
+#import <React/RCTRootViewDelegate.h>
+#elif __has_include("RCTRootViewDelegate.h")
+#import "RCTRootViewDelegate.h"
+#elif __has_include("React/RCTRootViewDelegate.h")
+#import "React/RCTRootViewDelegate.h"   // Required when used as a Pod in a Swift project
+#endif
+
+#if __has_include(<React/RCTConvert.h>)
+#import <React/RCTConvert.h>
+#elif __has_include("RCTConvert.h")
+#import "RCTConvert.h"
+#elif __has_include("React/RCTConvert.h")
+#import "React/RCTConvert.h"   // Required when used as a Pod in a Swift project
+#endif
 
 const NSInteger kLightBoxTag = 0x101010;
 
@@ -65,7 +87,7 @@ const NSInteger kLightBoxTag = 0x101010;
         [self.reactView.contentView.layer addObserver:self forKeyPath:@"frame" options:0 context:nil];
         [self.reactView.contentView.layer addObserver:self forKeyPath:@"bounds" options:0 context:NULL];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTReloadNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCCReloadNotification object:nil];
     }
     return self;
 }

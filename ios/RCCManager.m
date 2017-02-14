@@ -1,7 +1,22 @@
 #import "RCCManager.h"
-#import "RCTBridge.h"
-#import "RCTRedBox.h"
+#import "RCTBridge+Reload.h"
 #import <Foundation/Foundation.h>
+
+#if __has_include(<React/RCTBridge.h>)
+#import <React/RCTBridge.h>
+#elif __has_include("RCTBridge.h")
+#import "RCTBridge.h"
+#elif __has_include("React/RCTBridge.h")
+#import "React/RCTBridge.h"   // Required when used as a Pod in a Swift project
+#endif
+
+#if __has_include(<React/RCTRedBox.h>)
+#import <React/RCTRedBox.h>
+#elif __has_include("RCTRedBox.h")
+#import "RCTRedBox.h"
+#elif __has_include("React/RCTRedBox.h")
+#import "React/RCTRedBox.h"   // Required when used as a Pod in a Swift project
+#endif
 
 @interface RCCManager() <RCTBridgeDelegate>
 @property (nonatomic, strong) NSMutableDictionary *modulesRegistry;
@@ -38,7 +53,7 @@
   {
     self.modulesRegistry = [@{} mutableCopy];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTReloadNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCCReloadNotification object:nil];
   }
   return self;
 }
