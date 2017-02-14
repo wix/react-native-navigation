@@ -108,6 +108,10 @@ class Navigator {
     return platformSpecific.showSnackbar(this, params);
   }
 
+  dismissSnackbar() {
+    return platformSpecific.dismissSnackbar();
+  }
+
   showContextualMenu(params, onButtonPressed) {
     return platformSpecific.showContextualMenu(this, params, onButtonPressed);
   }
