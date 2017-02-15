@@ -287,35 +287,39 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     {
         viewController.navigationController.navigationBar.tintColor = nil;
     }
-
+  
     BOOL viewControllerBasedStatusBar = false;
 
     NSObject *viewControllerBasedStatusBarAppearance = [[NSBundle mainBundle] infoDictionary][@"UIViewControllerBasedStatusBarAppearance"];
     if (viewControllerBasedStatusBarAppearance && [viewControllerBasedStatusBarAppearance isKindOfClass:[NSNumber class]]) {
-        viewControllerBasedStatusBar = [(NSNumber *)viewControllerBasedStatusBarAppearance boolValue];
+      viewControllerBasedStatusBar = [(NSNumber *)viewControllerBasedStatusBarAppearance boolValue];
     }
-
-	NSString *statusBarTextColorSchemeSingleScreen = self.navigatorStyle[@"statusBarTextColorSchemeSingleScreen"];
+  
+    NSString *statusBarTextColorSchemeSingleScreen = self.navigatorStyle[@"statusBarTextColorSchemeSingleScreen"];
     NSString *statusBarTextColorScheme = self.navigatorStyle[@"statusBarTextColorScheme"];
-	NSString *finalColorScheme = statusBarTextColorSchemeSingleScreen ? : statusBarTextColorScheme;
+    NSString *finalColorScheme = statusBarTextColorSchemeSingleScreen ? : statusBarTextColorScheme;
 
     if (finalColorScheme && [finalColorScheme isEqualToString:@"light"]) {
         
-		if (!statusBarTextColorSchemeSingleScreen) {
-        	viewController.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-		}
+        if (!statusBarTextColorSchemeSingleScreen) {
+              viewController.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+        }
+      
         self._statusBarTextColorSchemeLight = true;
         if (!viewControllerBasedStatusBarAppearance) {
             [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
         }
+      
         [viewController setNeedsStatusBarAppearanceUpdate];
         
     } else {
         
-		if (!statusBarTextColorSchemeSingleScreen) {
-        	viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
-		}
+        if (!statusBarTextColorSchemeSingleScreen) {
+              viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+        }
+      
         self._statusBarTextColorSchemeLight = false;
+      
         if (!viewControllerBasedStatusBarAppearance) {
             [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
         }

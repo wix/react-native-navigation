@@ -62,6 +62,7 @@ function dismissAllModals() {
 }
 
 function showInAppNotification(params) {
+  savePassProps(params);
   NativeReactModule.showSlidingOverlay(params);
 }
 
@@ -131,6 +132,10 @@ function showSnackbar(params) {
   NativeReactModule.showSnackbar(params);
 }
 
+function dismissSnackbar() {
+  NativeReactModule.dismissSnackbar();
+}
+
 function showContextualMenu(screenInstanceID, params, onButtonPressed) {
   NativeReactModule.showContextualMenu(screenInstanceID, params, onButtonPressed);
 }
@@ -162,6 +167,7 @@ module.exports = {
   setBottomTabBadgeByNavigatorId,
   setBottomTabBadgeByIndex,
   showSnackbar,
+  dismissSnackbar,
   showContextualMenu,
   dismissContextualMenu
 };

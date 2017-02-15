@@ -9,14 +9,10 @@ import {
 
 const styleSheet = StyleSheet.create({
   container: {
-    flex: 1,
+    height: 120,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 18,
-    marginBottom: 18
   }
 });
 
