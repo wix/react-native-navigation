@@ -44,8 +44,8 @@ function setScreenTitleBarSubtitle(screenInstanceID, subtitle) {
   NativeReactModule.setScreenTitleBarSubtitle(screenInstanceID, subtitle);
 }
 
-function setScreenTitleBarButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton) {
-  NativeReactModule.setScreenTitleBarButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton);
+function setScreenButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton, fab) {
+  NativeReactModule.setScreenButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton, fab);
 }
 
 function showModal(screenParams) {
@@ -59,6 +59,15 @@ function dismissTopModal() {
 
 function dismissAllModals() {
   NativeReactModule.dismissAllModals();
+}
+
+function showInAppNotification(params) {
+  savePassProps(params);
+  NativeReactModule.showSlidingOverlay(params);
+}
+
+function dismissInAppNotification(params) {
+  NativeReactModule.hideSlidingOverlay(params);
 }
 
 function savePassProps(params) {
@@ -123,6 +132,10 @@ function showSnackbar(params) {
   NativeReactModule.showSnackbar(params);
 }
 
+function dismissSnackbar() {
+  NativeReactModule.dismissSnackbar();
+}
+
 function showContextualMenu(screenInstanceID, params, onButtonPressed) {
   NativeReactModule.showContextualMenu(screenInstanceID, params, onButtonPressed);
 }
@@ -141,10 +154,12 @@ module.exports = {
   toggleBottomTabsVisible,
   setScreenTitleBarTitle,
   setScreenTitleBarSubtitle,
-  setScreenTitleBarButtons,
+  setScreenButtons,
   showModal,
   dismissTopModal,
   dismissAllModals,
+  showInAppNotification,
+  dismissInAppNotification,
   toggleSideMenuVisible,
   setSideMenuVisible,
   selectBottomTabByNavigatorId,
@@ -152,6 +167,7 @@ module.exports = {
   setBottomTabBadgeByNavigatorId,
   setBottomTabBadgeByIndex,
   showSnackbar,
+  dismissSnackbar,
   showContextualMenu,
   dismissContextualMenu
 };

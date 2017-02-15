@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class FloatingActionButtonCoordinator {
-
+    private static final String TAG = "FloatingActionButtonCoo";
     private static final int INITIAL_EXPENDED_FAB_ROTATION = -90;
     private CoordinatorLayout parent;
     private FabParams params;
@@ -35,15 +36,29 @@ public class FloatingActionButtonCoordinator {
     FloatingActionButtonAnimator fabAnimator;
     private final ArrayList<FloatingActionButton> actions;
 
-    public FloatingActionButtonCoordinator(CoordinatorLayout parent) {
+    FloatingActionButtonCoordinator(CoordinatorLayout parent) {
         this.parent = parent;
         actions = new ArrayList<>();
         crossFadeAnimationDuration = parent.getResources().getInteger(android.R.integer.config_shortAnimTime);
         actionSize = (int) ViewUtils.convertDpToPixel(40);
     }
 
-    public void add(FabParams params) {
+    public void add(final FabParams params) {
+        Log.i(TAG, "add() called with: params = [" + params + "]");
+        if (hasFab()) {
+            remove(new Runnable() {
+                @Override
+                public void run() {
+                    add(params);
+                }
+            });
+            return;
+        }
+
         this.params = params;
+        if (!params.isValid()) {
+            return;
+        }
         createCollapsedFab();
         createExpendedFab();
         setStyle();
@@ -51,8 +66,8 @@ public class FloatingActionButtonCoordinator {
         fabAnimator.show();
     }
 
-    public void remove(@Nullable final Runnable onComplete) {
-        if (parent.getChildCount() == 0 || fabAnimator.isAnimating()) {
+    void remove(@Nullable final Runnable onComplete) {
+        if (!hasFab()) {
             if (onComplete != null) {
                 onComplete.run();
             }
@@ -70,6 +85,10 @@ public class FloatingActionButtonCoordinator {
         });
         fabAnimator.removeFabFromScreen(collapsedFab, null);
         fabAnimator.removeActionsFromScreen(actions);
+    }
+
+    private boolean hasFab() {
+        return collapsedFab != null || expendedFab != null;
     }
 
     private void removeAllViews() {

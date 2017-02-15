@@ -27,7 +27,7 @@ public class ScrollListener {
     boolean onTouch(MotionEvent event) {
         CollapseAmount amount = collapseCalculator.calculate(event);
         if (amount.canCollapse()) {
-            scrollListener.onScroll(amount);
+            scrollListener.onScroll(event, amount);
             return collapseBehaviour instanceof CollapseTopBarBehaviour;
         }
         return false;

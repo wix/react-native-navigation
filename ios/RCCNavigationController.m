@@ -36,6 +36,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   
   self = [super initWithRootViewController:viewController];
   if (!self) return nil;
+  self.delegate = self;
   
   self.navigationBar.translucent = NO; // default
   
@@ -76,6 +77,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [mergedStyle removeObjectForKey:@"navBarBlur"];
       [mergedStyle removeObjectForKey:@"navBarTranslucent"];
       [mergedStyle removeObjectForKey:@"statusBarHideWithNavBar"];
+      [mergedStyle removeObjectForKey:@"autoAdjustScrollViewInsets"];
+      [mergedStyle removeObjectForKey:@"statusBarTextColorSchemeSingleScreen"];
       
       [mergedStyle addEntriesFromDictionary:navigatorStyle];
       navigatorStyle = mergedStyle;
@@ -205,6 +208,29 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     [topViewController setNavBarVisibilityChange:animatedBool];
     
   }
+    
+    // setStyle
+    if ([performAction isEqualToString:@"setStyle"])
+    {
+        
+        NSDictionary *navigatorStyle = actionParams;
+        
+        // merge the navigatorStyle of our parent
+        if ([self.topViewController isKindOfClass:[RCCViewController class]])
+        {
+            RCCViewController *parent = (RCCViewController*)self.topViewController;
+            NSMutableDictionary *mergedStyle = [NSMutableDictionary dictionaryWithDictionary:parent.navigatorStyle];
+            
+            // there are a few styles that we don't want to remember from our parent (they should be local)
+            [mergedStyle setValuesForKeysWithDictionary:navigatorStyle];
+            navigatorStyle = mergedStyle;
+            
+            parent.navigatorStyle = navigatorStyle;
+            
+            [parent setStyleOnInit];
+            [parent updateStyle];
+        }
+    }
 }
 
 -(void)onButtonPress:(UIBarButtonItem*)barButtonItem
@@ -292,6 +318,18 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   
   [titleViewHelper setup:style];
   
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+  return [self.topViewController preferredStatusBarStyle];
+}
+
+
+#pragma mark - UINavigationControllerDelegate
+
+
+-(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+  [viewController setNeedsStatusBarAppearanceUpdate];
 }
 
 

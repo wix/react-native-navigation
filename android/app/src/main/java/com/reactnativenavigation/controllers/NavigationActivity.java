@@ -24,7 +24,9 @@ import com.reactnativenavigation.layouts.LayoutFactory;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -114,6 +116,13 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (IntentDataHandler.hasIntentData()) {
             IntentDataHandler.setIntentData(getIntent());
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        NavigationApplication.instance.getReactGateway().onNewIntent(intent);
+        NavigationApplication.instance.getActivityCallbacks().onNewIntent(intent);
     }
 
     @Override
@@ -254,6 +263,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.setTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButton);
     }
 
+    void setScreenFab(String screenInstanceId, String navigatorEventId, FabParams fab) {
+        layout.setFab(screenInstanceId, navigatorEventId, fab);
+    }
+
     public void toggleSideMenuVisible(boolean animated, Side side) {
         layout.toggleSideMenuVisible(animated, side);
     }
@@ -286,8 +299,20 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
     }
 
+    public void showSlidingOverlay(SlidingOverlayParams params) {
+        layout.showSlidingOverlay(params);
+    }
+
+    public void hideSlidingOverlay() {
+        layout.hideSlidingOverlay();
+    }
+
     public void showSnackbar(SnackbarParams params) {
         layout.showSnackbar(params);
+    }
+
+    public void dismissSnackbar() {
+        layout.dismissSnackbar();
     }
 
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
@@ -327,6 +352,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        NavigationApplication.instance.getActivityCallbacks().onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             mPermissionListener = null;
         }

@@ -1,17 +1,21 @@
 package com.reactnativenavigation.params.parsers;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.SnackbarParams;
+import com.reactnativenavigation.params.StyleParams;
 
 public class SnackbarParamsParser extends Parser {
     public SnackbarParams parse(Bundle params) {
         SnackbarParams result = new SnackbarParams();
         result.text = params.getString("text");
+        result.textColor = getColor(params, "textColor", new StyleParams.Color(Color.WHITE));
         result.buttonText = params.getString("actionText");
         result.buttonColor = getColor(params, "actionColor", AppStyle.appStyle.snackbarButtonColor);
+        result.backgroundColor = getColor(params, "backgroundColor");
         result.duration = getDuration(params.getString("duration", "short"));
         result.eventId = params.getString("actionId");
         return result;

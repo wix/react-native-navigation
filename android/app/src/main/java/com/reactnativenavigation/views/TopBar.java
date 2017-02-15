@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -42,12 +41,16 @@ public class TopBar extends AppBarLayout {
                                          LeftButtonOnClickListener leftButtonOnClickListener,
                                          String navigatorEventId, boolean overrideBackPressInJs) {
         titleBar = createTitleBar();
-        titleBarAndContextualMenuContainer.addView(titleBar, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        addTitleBar();
         addButtons(rightButtons, leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
     }
 
     protected TitleBar createTitleBar() {
         return new TitleBar(getContext());
+    }
+
+    protected void addTitleBar() {
+        titleBarAndContextualMenuContainer.addView(titleBar, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
     }
 
     private void addButtons(List<TitleBarButtonParams> rightButtons, TitleBarLeftButtonParams leftButton, LeftButtonOnClickListener leftButtonOnClickListener, String navigatorEventId, boolean overrideBackPressInJs) {
@@ -73,10 +76,17 @@ public class TopBar extends AppBarLayout {
         setVisibility(styleParams.topBarHidden ? GONE : VISIBLE);
         titleBar.setStyle(styleParams);
         setTopTabsStyle(styleParams);
+        if (!styleParams.topBarElevationShadowEnabled) {
+            disableElevationShadow();
+        }
     }
 
     private void setTransparent() {
         setBackgroundColor(Color.TRANSPARENT);
+        disableElevationShadow();
+    }
+
+    private void disableElevationShadow() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setOutlineProvider(null);
         }
@@ -86,9 +96,9 @@ public class TopBar extends AppBarLayout {
         titleBar.setRightButtons(titleBarButtons, navigatorEventId);
     }
 
-    public TabLayout initTabs() {
+    public TopTabs initTabs() {
         topTabs = new TopTabs(getContext());
-        addView(topTabs);
+        addView(topTabs, new ViewGroup.LayoutParams(MATCH_PARENT, (int) ViewUtils.convertDpToPixel(48)));
         return topTabs;
     }
 
@@ -106,6 +116,7 @@ public class TopBar extends AppBarLayout {
         }
         topTabs.setTopTabsTextColor(style);
         topTabs.setSelectedTabIndicatorStyle(style);
+        topTabs.setScrollable(style);
     }
 
     public void showContextualMenu(final ContextualMenuParams params, StyleParams styleParams, Callback onButtonClicked) {
@@ -139,5 +150,9 @@ public class TopBar extends AppBarLayout {
             contextualMenu = null;
             titleBar.show();
         }
+    }
+
+    public void destroy() {
+
     }
 }
