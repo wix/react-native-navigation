@@ -26,6 +26,7 @@ import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -105,22 +106,25 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
 
         currentActivity = this;
-        setDeepLinkData();
+        IntentDataHandler.onResume(getIntent());
         NavigationApplication.instance.getReactGateway().onResumeActivity(this, this);
         NavigationApplication.instance.getActivityCallbacks().onActivityResumed(this);
         EventBus.instance.register(this);
+        IntentDataHandler.onPostResume(getIntent());
     }
 
-    private void setDeepLinkData() {
-        if (IntentDataHandler.hasIntentData()) {
-            IntentDataHandler.setIntentData(getIntent());
-        }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        NavigationApplication.instance.getReactGateway().onNewIntent(intent);
+        NavigationApplication.instance.getActivityCallbacks().onNewIntent(intent);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         currentActivity = null;
+        IntentDataHandler.onPause(getIntent());
         NavigationApplication.instance.getReactGateway().onPauseActivity();
         NavigationApplication.instance.getActivityCallbacks().onActivityPaused(this);
         EventBus.instance.unregister(this);
@@ -291,8 +295,20 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
     }
 
+    public void showSlidingOverlay(SlidingOverlayParams params) {
+        layout.showSlidingOverlay(params);
+    }
+
+    public void hideSlidingOverlay() {
+        layout.hideSlidingOverlay();
+    }
+
     public void showSnackbar(SnackbarParams params) {
         layout.showSnackbar(params);
+    }
+
+    public void dismissSnackbar() {
+        layout.dismissSnackbar();
     }
 
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
@@ -332,6 +348,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        NavigationApplication.instance.getActivityCallbacks().onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             mPermissionListener = null;
         }

@@ -28,12 +28,10 @@ before_cache:
   - rm -rf $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
 
-before_install:
+install:
   - set -e
   - nvm install $NODE_VERSION
   - curl -o- -L https://yarnpkg.com/install.sh | bash
-
-install:
   - ./scripts/clean.sh
   - yarn install
 
@@ -43,6 +41,7 @@ script:
   - ./scripts/installAndroidSDK.sh
   - yarn run test:android
   - yarn run release
+  - set +e
 
 after_script:
   - echo "BUILD FINISHED"

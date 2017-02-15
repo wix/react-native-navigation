@@ -27,6 +27,7 @@ public class StyleParamsParser {
         result.topBarColor = getColor("topBarColor", getDefaultTopBarColor());
         result.titleBarHideOnScroll = getBoolean("titleBarHideOnScroll", getDefaultTitleBarHideOnScroll());
         result.topBarTransparent = getBoolean("topBarTransparent", getDefaultTopBarHidden());
+        result.topBarCollapseOnScroll = getBoolean("topBarCollapseOnScroll", false);
         result.drawScreenBelowTopBar = params.getBoolean("drawBelowTopBar", getDefaultScreenBelowTopBar());
         if (result.topBarTransparent) {
             result.drawScreenBelowTopBar = false;
@@ -44,9 +45,12 @@ public class StyleParamsParser {
         result.topTabsHidden = getBoolean("topTabsHidden", getDefaultTopTabsHidden());
 
         result.topTabTextColor = getColor("topTabTextColor", getDefaultTopTabTextColor());
+        result.topTabIconColor = getColor("topTabIconColor", getDefaultTopTabIconColor());
+        result.selectedTopTabIconColor = getColor("selectedTopTabIconColor", getDefaultSelectedTopTabIconColor());
         result.selectedTopTabTextColor = getColor("selectedTopTabTextColor", getDefaultSelectedTopTabTextColor());
         result.selectedTopTabIndicatorHeight = getInt("selectedTopTabIndicatorHeight", getDefaultSelectedTopTabIndicatorHeight());
         result.selectedTopTabIndicatorColor = getColor("selectedTopTabIndicatorColor", getDefaultSelectedTopTabIndicatorColor());
+        result.topTabScrollable = getBoolean("topTabScrollable", getDefaultTopTabScrollable());
 
         result.screenBackgroundColor = getColor("screenBackgroundColor", getDefaultScreenBackgroundColor());
 
@@ -106,6 +110,10 @@ public class StyleParamsParser {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.selectedTopTabTextColor;
     }
 
+    private StyleParams.Color getDefaultSelectedTopTabIconColor() {
+        return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.selectedTopTabIconColor;
+    }
+
     private StyleParams.Color getDefaultNavigationColor() {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.navigationBarColor;
     }
@@ -156,6 +164,14 @@ public class StyleParamsParser {
 
     private StyleParams.Color getDefaultTopTabTextColor() {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.topTabTextColor;
+    }
+
+    private boolean getDefaultTopTabScrollable() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.topTabScrollable;
+    }
+
+    private StyleParams.Color getDefaultTopTabIconColor() {
+        return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.topTabIconColor;
     }
 
     private boolean getDefaultBackButtonHidden() {

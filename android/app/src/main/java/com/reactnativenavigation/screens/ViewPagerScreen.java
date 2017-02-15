@@ -5,13 +5,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.reactnativenavigation.events.Event;
-import com.reactnativenavigation.events.ViewPagerScreenChangedEvent;
 import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
+import com.reactnativenavigation.views.TopTabs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +34,11 @@ public class ViewPagerScreen extends Screen {
 
     @Override
     protected void createContent() {
-        TabLayout tabLayout = topBar.initTabs();
+        TopTabs topTabs = topBar.initTabs();
         createViewPager();
         addPages();
-        setupViewPager(tabLayout);
+        setupViewPager(topTabs);
+        setTopTabIcons(topTabs);
     }
 
     private void createViewPager() {
@@ -77,6 +77,16 @@ public class ViewPagerScreen extends Screen {
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(adapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    private void setTopTabIcons(TopTabs topTabs) {
+        for (int i = 0; i < topTabs.getTabCount(); i++) {
+            PageParams pageParams = screenParams.topTabParams.get(i);
+            if (pageParams.tabIcon != null) {
+                topTabs.getTabAt(i).setIcon(pageParams.tabIcon);
+            }
+        }
+        topTabs.setTopTabsIconColor(screenParams.styleParams);
     }
 
     private void addContent(ContentView contentView) {
