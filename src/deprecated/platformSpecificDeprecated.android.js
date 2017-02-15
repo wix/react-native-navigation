@@ -549,7 +549,21 @@ function addNavigationStyleParams(screen) {
 }
 
 function showSnackbar(navigator, params) {
-  return newPlatformSpecific.showSnackbar(params);
+  const adapted = _.cloneDeep(params);
+  if (adapted.backgroundColor) {
+    adapted.backgroundColor = processColor(adapted.backgroundColor);
+  }
+  if (adapted.actionColor) {
+    adapted.actionColor = processColor(adapted.actionColor);
+  }
+  if (adapted.textColor) {
+    adapted.textColor = processColor(adapted.textColor);
+  }
+  return newPlatformSpecific.showSnackbar(adapted);
+}
+
+function dismissSnackbar() {
+  return newPlatformSpecific.dismissSnackbar();
 }
 
 function showContextualMenu(navigator, params) {
@@ -601,6 +615,7 @@ export default {
   navigatorToggleTabs,
   navigatorToggleNavBar,
   showSnackbar,
+  dismissSnackbar,
   showContextualMenu,
   dismissContextualMenu
 };

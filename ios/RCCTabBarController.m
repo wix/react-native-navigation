@@ -2,6 +2,7 @@
 #import "RCCViewController.h"
 #import "RCTConvert.h"
 #import "RCCManager.h"
+#import "RCTHelpers.h"
 #import "RCTUIManager.h"
 
 @interface RCTUIManager ()
@@ -118,19 +119,21 @@
     viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
     viewController.tabBarItem.selectedImage = iconImageSelected;
-
-    if (buttonColor)
-    {
-      [viewController.tabBarItem setTitleTextAttributes:
-       @{NSForegroundColorAttributeName : buttonColor} forState:UIControlStateNormal];
+    
+    NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
+    if (!unselectedAttributes[NSForegroundColorAttributeName] && buttonColor) {
+      unselectedAttributes[NSForegroundColorAttributeName] = buttonColor;
     }
-
-    if (selectedButtonColor)
-    {
-      [viewController.tabBarItem setTitleTextAttributes:
-       @{NSForegroundColorAttributeName : selectedButtonColor} forState:UIControlStateSelected];
+    
+    [viewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal]
+    ;
+    
+    NSMutableDictionary *selectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarSelectedText" baseFont:[UIFont systemFontOfSize:10]];
+    if (!selectedAttributes[NSForegroundColorAttributeName] && selectedButtonColor) {
+      selectedAttributes[NSForegroundColorAttributeName] = selectedButtonColor;
     }
-
+    
+    [viewController.tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
     // create badge
     NSObject *badge = tabItemLayout[@"props"][@"badge"];
     if (badge == nil || [badge isEqual:[NSNull null]])

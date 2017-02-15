@@ -7,6 +7,8 @@
 #import "RCCManager.h"
 #import "RCTConvert.h"
 #import "RCCExternalViewControllerProtocol.h"
+#import "RCTHelpers.h"
+#import "RCCTitleViewHelper.h"
 
 NSString* const RCCViewControllerCancelReactTouchesNotification = @"RCCViewControllerCancelReactTouchesNotification";
 
@@ -189,138 +191,164 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 // we want to reset the style to what we expect (so we need to reset on every willAppear)
 - (void)setStyleOnAppear
 {
-    [self setStyleOnAppearForViewController:self];
+    [self setStyleOnAppearForViewController:self appeared:false];
 }
 
--(void)setStyleOnAppearForViewController:(UIViewController*)viewController
+- (void)updateStyle
 {
+    [self setStyleOnAppearForViewController:self appeared:true];
+}
+
+-(void)setStyleOnAppearForViewController:(UIViewController*)viewController appeared:(BOOL)appeared
+{
+
     NSString *screenBackgroundColor = self.navigatorStyle[@"screenBackgroundColor"];
-    if (screenBackgroundColor)
-    {
+    if (screenBackgroundColor) {
+        
         UIColor *color = screenBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:screenBackgroundColor] : nil;
-        self.view.backgroundColor = color;
+        viewController.view.backgroundColor = color;
     }
     
     NSString *navBarBackgroundColor = self.navigatorStyle[@"navBarBackgroundColor"];
-    if (navBarBackgroundColor)
-    {
+    if (navBarBackgroundColor) {
+        
         UIColor *color = navBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarBackgroundColor] : nil;
         viewController.navigationController.navigationBar.barTintColor = color;
-    }
-    else
-    {
+        
+    } else {
         viewController.navigationController.navigationBar.barTintColor = nil;
     }
-    
-    NSString *navBarTextColor = self.navigatorStyle[@"navBarTextColor"];
-    if (navBarTextColor)
-    {
-        UIColor *color = navBarTextColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarTextColor] : nil;
-        [viewController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : color}];
+
+    NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
+    [self.navigationController.navigationBar setTitleTextAttributes:titleTextAttributes];
+
+    if (self.navigationItem.titleView && [self.navigationItem.titleView isKindOfClass:[RCCTitleView class]]) {
+        
+        RCCTitleView *titleView = (RCCTitleView *)self.navigationItem.titleView;
+        RCCTitleViewHelper *helper = [[RCCTitleViewHelper alloc] init:viewController navigationController:viewController.navigationController title:titleView.titleLabel.text subtitle:titleView.subtitleLabel.text titleImageData:nil];
+        [helper setup:self.navigatorStyle];
     }
-    else
-    {
-        [viewController.navigationController.navigationBar setTitleTextAttributes:nil];
+
+    NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarButton"];
+
+    if (navButtonTextAttributes.allKeys.count > 0) {
+        
+        for (UIBarButtonItem *item in viewController.navigationItem.leftBarButtonItems) {
+            [item setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
+        }
+        
+        for (UIBarButtonItem *item in viewController.navigationItem.rightBarButtonItems) {
+            [item setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
+        }
+
+        // At the moment, this seems to be the only thing that gets the back button correctly
+        [navButtonTextAttributes removeObjectForKey:NSForegroundColorAttributeName];
+        [[UIBarButtonItem appearance] setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
+        //        [viewController.navigationItem.backBarButtonItem setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
     }
-    
+
     NSString *navBarButtonColor = self.navigatorStyle[@"navBarButtonColor"];
-    if (navBarButtonColor)
-    {
+    if (navBarButtonColor) {
+    
         UIColor *color = navBarButtonColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarButtonColor] : nil;
         viewController.navigationController.navigationBar.tintColor = color;
-    }
-    else
+        
+    } else
     {
         viewController.navigationController.navigationBar.tintColor = nil;
     }
   
-    NSString *statusBarTextColorSchemeSingleScreen = self.navigatorStyle[@"statusBarTextColorSchemeSingleScreen"];
-    if (statusBarTextColorSchemeSingleScreen && [statusBarTextColorSchemeSingleScreen isEqualToString:@"light"])
-    {
-      self._statusBarTextColorSchemeLight = YES;
-    }
-    else
-    {
-      self._statusBarTextColorSchemeLight = NO;
+    BOOL viewControllerBasedStatusBar = false;
+
+    NSObject *viewControllerBasedStatusBarAppearance = [[NSBundle mainBundle] infoDictionary][@"UIViewControllerBasedStatusBarAppearance"];
+    if (viewControllerBasedStatusBarAppearance && [viewControllerBasedStatusBarAppearance isKindOfClass:[NSNumber class]]) {
+      viewControllerBasedStatusBar = [(NSNumber *)viewControllerBasedStatusBarAppearance boolValue];
     }
   
-    // incase statusBarTextColorSchemeSingleScreen exists ignore the statusBarTextColorScheme which more globaly
-    if (!statusBarTextColorSchemeSingleScreen) {
-      NSString *statusBarTextColorScheme = self.navigatorStyle[@"statusBarTextColorScheme"];
-      if (statusBarTextColorScheme && [statusBarTextColorScheme isEqualToString:@"light"] && !statusBarTextColorSchemeSingleScreen)
-      {
-          viewController.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-          self._statusBarTextColorSchemeLight = YES;
+    NSString *statusBarTextColorSchemeSingleScreen = self.navigatorStyle[@"statusBarTextColorSchemeSingleScreen"];
+    NSString *statusBarTextColorScheme = self.navigatorStyle[@"statusBarTextColorScheme"];
+    NSString *finalColorScheme = statusBarTextColorSchemeSingleScreen ? : statusBarTextColorScheme;
+
+    if (finalColorScheme && [finalColorScheme isEqualToString:@"light"]) {
         
-      }
-      else
-      {
-          viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
-          self._statusBarTextColorSchemeLight = NO;
-      }
+        if (!statusBarTextColorSchemeSingleScreen) {
+              viewController.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+        }
+      
+        self._statusBarTextColorSchemeLight = true;
+        if (!viewControllerBasedStatusBarAppearance) {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+        }
+      
+        [viewController setNeedsStatusBarAppearanceUpdate];
+        
+    } else {
+        
+        if (!statusBarTextColorSchemeSingleScreen) {
+              viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+        }
+      
+        self._statusBarTextColorSchemeLight = false;
+      
+        if (!viewControllerBasedStatusBarAppearance) {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+        }
+        [viewController setNeedsStatusBarAppearanceUpdate];
     }
   
     NSNumber *navBarHidden = self.navigatorStyle[@"navBarHidden"];
     BOOL navBarHiddenBool = navBarHidden ? [navBarHidden boolValue] : NO;
-    if (viewController.navigationController.navigationBarHidden != navBarHiddenBool)
-    {
+    if (viewController.navigationController.navigationBarHidden != navBarHiddenBool) {
         [viewController.navigationController setNavigationBarHidden:navBarHiddenBool animated:YES];
     }
-    
+
     NSNumber *navBarHideOnScroll = self.navigatorStyle[@"navBarHideOnScroll"];
     BOOL navBarHideOnScrollBool = navBarHideOnScroll ? [navBarHideOnScroll boolValue] : NO;
-    if (navBarHideOnScrollBool)
-    {
+    if (navBarHideOnScrollBool) {
         viewController.navigationController.hidesBarsOnSwipe = YES;
-    }
-    else
-    {
+    } else {
         viewController.navigationController.hidesBarsOnSwipe = NO;
     }
-    
+
     NSNumber *statusBarBlur = self.navigatorStyle[@"statusBarBlur"];
     BOOL statusBarBlurBool = statusBarBlur ? [statusBarBlur boolValue] : NO;
-    if (statusBarBlurBool)
-    {
-        if (![viewController.view viewWithTag:BLUR_STATUS_TAG])
-        {
-            UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-            blur.frame = [[UIApplication sharedApplication] statusBarFrame];
-            blur.tag = BLUR_STATUS_TAG;
-            [viewController.view addSubview:blur];
-        }
+    if (statusBarBlurBool && ![viewController.view viewWithTag:BLUR_STATUS_TAG]) {
+        
+        UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+        blur.frame = [[UIApplication sharedApplication] statusBarFrame];
+        blur.tag = BLUR_STATUS_TAG;
+        [viewController.view insertSubview:blur atIndex:0];
     }
-    
+
     NSNumber *navBarBlur = self.navigatorStyle[@"navBarBlur"];
     BOOL navBarBlurBool = navBarBlur ? [navBarBlur boolValue] : NO;
-    if (navBarBlurBool)
-    {
-        if (![viewController.navigationController.navigationBar viewWithTag:BLUR_NAVBAR_TAG])
-        {
+    if (navBarBlurBool) {
+        
+        if (![viewController.navigationController.navigationBar viewWithTag:BLUR_NAVBAR_TAG]) {
             [self storeOriginalNavBarImages];
-            
-            [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-            self.navigationController.navigationBar.shadowImage = [UIImage new];
+
+            [viewController.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+            viewController.navigationController.navigationBar.shadowImage = [UIImage new];
             UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
             CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-            blur.frame = CGRectMake(0, -1 * statusBarFrame.size.height, self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height + statusBarFrame.size.height);
+            blur.frame = CGRectMake(0, -1 * statusBarFrame.size.height, viewController.navigationController.navigationBar.frame.size.width, viewController.navigationController.navigationBar.frame.size.height + statusBarFrame.size.height);
             blur.userInteractionEnabled = NO;
             blur.tag = BLUR_NAVBAR_TAG;
-            [self.navigationController.navigationBar insertSubview:blur atIndex:0];
+            [viewController.navigationController.navigationBar insertSubview:blur atIndex:0];
+            [viewController.navigationController.navigationBar sendSubviewToBack:blur];
         }
-    }
-    else
-    {
+        
+    } else {
+        
         UIView *blur = [viewController.navigationController.navigationBar viewWithTag:BLUR_NAVBAR_TAG];
-        if (blur)
-        {
+        if (blur) {
             [blur removeFromSuperview];
             [viewController.navigationController.navigationBar setBackgroundImage:self.originalNavBarImages[@"bgImage"] forBarMetrics:UIBarMetricsDefault];
             viewController.navigationController.navigationBar.shadowImage = self.originalNavBarImages[@"shadowImage"];
             self.originalNavBarImages = nil;
         }
     }
-    
+
     NSNumber *navBarTransparent = self.navigatorStyle[@"navBarTransparent"];
     BOOL navBarTransparentBool = navBarTransparent ? [navBarTransparent boolValue] : NO;
     
@@ -362,48 +390,44 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
             backgroundView.alpha = originalAlpha;
         }];
     }
-    
+
+    NSNumber *autoAdjustsScrollViewInsets = self.navigatorStyle[@"autoAdjustScrollViewInsets"];
+    viewController.automaticallyAdjustsScrollViewInsets = autoAdjustsScrollViewInsets ? [autoAdjustsScrollViewInsets boolValue] : false;
+
     NSNumber *navBarTranslucent = self.navigatorStyle[@"navBarTranslucent"];
     BOOL navBarTranslucentBool = navBarTranslucent ? [navBarTranslucent boolValue] : NO;
-    if (navBarTranslucentBool || navBarBlurBool)
-    {
+    if (navBarTranslucentBool || navBarBlurBool) {
         viewController.navigationController.navigationBar.translucent = YES;
-    }
-    else
-    {
+    } else {
         viewController.navigationController.navigationBar.translucent = NO;
     }
-    
+
+    NSNumber *extendedLayoutIncludesOpaqueBars = self.navigatorStyle[@"extendedLayoutIncludesOpaqueBars"];
+    BOOL extendedLayoutIncludesOpaqueBarsBool = extendedLayoutIncludesOpaqueBars ? [extendedLayoutIncludesOpaqueBars boolValue] : NO;
+    viewController.extendedLayoutIncludesOpaqueBars = extendedLayoutIncludesOpaqueBarsBool;
+
     NSNumber *drawUnderNavBar = self.navigatorStyle[@"drawUnderNavBar"];
     BOOL drawUnderNavBarBool = drawUnderNavBar ? [drawUnderNavBar boolValue] : NO;
-    if (drawUnderNavBarBool)
-    {
+    if (drawUnderNavBarBool) {
         viewController.edgesForExtendedLayout |= UIRectEdgeTop;
     }
-    else
-    {
+    else {
         viewController.edgesForExtendedLayout &= ~UIRectEdgeTop;
     }
-    
+
     NSNumber *drawUnderTabBar = self.navigatorStyle[@"drawUnderTabBar"];
     BOOL drawUnderTabBarBool = drawUnderTabBar ? [drawUnderTabBar boolValue] : NO;
-    if (drawUnderTabBarBool)
-    {
+    if (drawUnderTabBarBool) {
         viewController.edgesForExtendedLayout |= UIRectEdgeBottom;
-    }
-    else
-    {
+    } else {
         viewController.edgesForExtendedLayout &= ~UIRectEdgeBottom;
     }
-    
+
     NSNumber *removeNavBarBorder = self.navigatorStyle[@"navBarNoBorder"];
     BOOL removeNavBarBorderBool = removeNavBarBorder ? [removeNavBarBorder boolValue] : NO;
-    if(removeNavBarBorderBool)
-    {
+    if (removeNavBarBorderBool) {
         self.navBarHairlineImageView.hidden = YES;
-    }
-    else
-    {
+    } else {
         self.navBarHairlineImageView.hidden = NO;
     }
     
@@ -422,15 +446,14 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 }
 
 -(void)storeOriginalNavBarImages {
+    
     NSMutableDictionary *originalNavBarImages = [@{} mutableCopy];
     UIImage *bgImage = [self.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault];
-    if (bgImage != nil)
-    {
+    if (bgImage != nil) {
         originalNavBarImages[@"bgImage"] = bgImage;
     }
     UIImage *shadowImage = self.navigationController.navigationBar.shadowImage;
-    if (shadowImage != nil)
-    {
+    if (shadowImage != nil) {
         originalNavBarImages[@"shadowImage"] = shadowImage;
     }
     self.originalNavBarImages = originalNavBarImages;
@@ -453,34 +476,25 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 {
     NSNumber *tabBarHidden = self.navigatorStyle[@"tabBarHidden"];
     BOOL tabBarHiddenBool = tabBarHidden ? [tabBarHidden boolValue] : NO;
-    if (tabBarHiddenBool)
-    {
+    if (tabBarHiddenBool) {
         self._hidesBottomBarWhenPushed = YES;
-    }
-    else
-    {
+    } else {
         self._hidesBottomBarWhenPushed = NO;
     }
     
     NSNumber *statusBarHideWithNavBar = self.navigatorStyle[@"statusBarHideWithNavBar"];
     BOOL statusBarHideWithNavBarBool = statusBarHideWithNavBar ? [statusBarHideWithNavBar boolValue] : NO;
-    if (statusBarHideWithNavBarBool)
-    {
+    if (statusBarHideWithNavBarBool) {
         self._statusBarHideWithNavBar = YES;
-    }
-    else
-    {
+    } else {
         self._statusBarHideWithNavBar = NO;
     }
     
     NSNumber *statusBarHidden = self.navigatorStyle[@"statusBarHidden"];
     BOOL statusBarHiddenBool = statusBarHidden ? [statusBarHidden boolValue] : NO;
-    if (statusBarHiddenBool)
-    {
+    if (statusBarHiddenBool) {
         self._statusBarHidden = YES;
-    }
-    else
-    {
+    } else {
         self._statusBarHidden = NO;
     }
 }
@@ -493,16 +507,13 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 - (BOOL)prefersStatusBarHidden
 {
-    if (self._statusBarHidden)
-    {
+    if (self._statusBarHidden) {
         return YES;
     }
-    if (self._statusBarHideWithNavBar)
-    {
+    
+    if (self._statusBarHideWithNavBar) {
         return self.navigationController.isNavigationBarHidden;
-    }
-    else
-    {
+    } else {
         return NO;
     }
 }
@@ -514,12 +525,9 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    if (self._statusBarTextColorSchemeLight)
-    {
+    if (self._statusBarTextColorSchemeLight){
         return UIStatusBarStyleLightContent;
-    }
-    else
-    {
+    } else {
         return UIStatusBarStyleDefault;
     }
 }

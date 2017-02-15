@@ -69,6 +69,10 @@ public class NavigationReactGateway implements ReactGateway {
         getReactInstanceManager().onHostPause();
     }
 
+    public void onNewIntent(Intent intent) {
+        getReactInstanceManager().onNewIntent(intent);
+    }
+
     public void onResumeActivity(Activity activity, DefaultHardwareBackBtnHandler defaultHardwareBackBtnHandler) {
         getReactInstanceManager().onHostResume(activity, defaultHardwareBackBtnHandler);
     }
