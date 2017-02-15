@@ -106,16 +106,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
 
         currentActivity = this;
-        setDeepLinkData();
+        IntentDataHandler.onResume(getIntent());
         NavigationApplication.instance.getReactGateway().onResumeActivity(this, this);
         NavigationApplication.instance.getActivityCallbacks().onActivityResumed(this);
         EventBus.instance.register(this);
-    }
-
-    private void setDeepLinkData() {
-        if (IntentDataHandler.hasIntentData()) {
-            IntentDataHandler.setIntentData(getIntent());
-        }
+        IntentDataHandler.onPostResume(getIntent());
     }
 
     @Override
@@ -129,6 +124,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     protected void onPause() {
         super.onPause();
         currentActivity = null;
+        IntentDataHandler.onPause(getIntent());
         NavigationApplication.instance.getReactGateway().onPauseActivity();
         NavigationApplication.instance.getActivityCallbacks().onActivityPaused(this);
         EventBus.instance.unregister(this);
