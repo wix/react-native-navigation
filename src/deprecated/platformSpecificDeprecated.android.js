@@ -562,6 +562,10 @@ function showSnackbar(navigator, params) {
   return newPlatformSpecific.showSnackbar(adapted);
 }
 
+function dismissSnackbar() {
+  return newPlatformSpecific.dismissSnackbar();
+}
+
 function showContextualMenu(navigator, params) {
   const contextualMenu = {
     buttons: [],
@@ -611,6 +615,7 @@ export default {
   navigatorToggleTabs,
   navigatorToggleNavBar,
   showSnackbar,
+  dismissSnackbar,
   showContextualMenu,
   dismissContextualMenu
 };

@@ -119,6 +119,13 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        NavigationApplication.instance.getReactGateway().onNewIntent(intent);
+        NavigationApplication.instance.getActivityCallbacks().onNewIntent(intent);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         currentActivity = null;
@@ -302,6 +309,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     public void showSnackbar(SnackbarParams params) {
         layout.showSnackbar(params);
+    }
+
+    public void dismissSnackbar() {
+        layout.dismissSnackbar();
     }
 
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
