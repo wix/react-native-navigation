@@ -42,7 +42,7 @@ public class NavigationCommandsHandler {
         } else {
             intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
         }
-        IntentDataHandler.setIntentData(intent);
+        IntentDataHandler.onStartApp(intent);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ACTIVITY_PARAMS_BUNDLE, params);
         NavigationApplication.instance.startActivity(intent);

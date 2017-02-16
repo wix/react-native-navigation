@@ -84,6 +84,14 @@ class Navigator {
     return platformSpecific.navigatorSetTitleImage(this, params);
   }
 
+  setStyle(params = {}) {
+    if (Platform.OS === 'ios') {
+      return platformSpecific.navigatorSetStyle(this, params);
+    } else {
+      console.log(`Setting style isn\'t supported on ${Platform.OS} yet`);
+    }
+  }
+
   toggleDrawer(params = {}) {
     return platformSpecific.navigatorToggleDrawer(this, params);
   }
