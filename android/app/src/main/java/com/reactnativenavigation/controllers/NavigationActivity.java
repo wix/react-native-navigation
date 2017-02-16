@@ -2,6 +2,7 @@ package com.reactnativenavigation.controllers;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -118,6 +119,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onNewIntent(intent);
         NavigationApplication.instance.getReactGateway().onNewIntent(intent);
         NavigationApplication.instance.getActivityCallbacks().onNewIntent(intent);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        NavigationApplication.instance.getActivityCallbacks().onConfigurationChanged(newConfig);
     }
 
     @Override
