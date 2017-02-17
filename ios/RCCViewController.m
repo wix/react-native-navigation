@@ -379,7 +379,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         }
     };
     
-    if(self.transitionCoordinator.initiallyInteractive || !navBarTransparentBool) {
+    if (!self.transitionCoordinator || self.transitionCoordinator.initiallyInteractive || !navBarTransparentBool || appeared) {
         action();
     } else {
         UIView* backgroundView = [self.navigationController.navigationBar valueForKey:@"backgroundView"];
