@@ -2,6 +2,7 @@ package com.reactnativenavigation.controllers;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -106,16 +107,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
 
         currentActivity = this;
-        setDeepLinkData();
+        IntentDataHandler.onResume(getIntent());
         NavigationApplication.instance.getReactGateway().onResumeActivity(this, this);
         NavigationApplication.instance.getActivityCallbacks().onActivityResumed(this);
         EventBus.instance.register(this);
-    }
-
-    private void setDeepLinkData() {
-        if (IntentDataHandler.hasIntentData()) {
-            IntentDataHandler.setIntentData(getIntent());
-        }
+        IntentDataHandler.onPostResume(getIntent());
     }
 
     @Override
@@ -126,9 +122,16 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        NavigationApplication.instance.getActivityCallbacks().onConfigurationChanged(newConfig);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         currentActivity = null;
+        IntentDataHandler.onPause(getIntent());
         NavigationApplication.instance.getReactGateway().onPauseActivity();
         NavigationApplication.instance.getActivityCallbacks().onActivityPaused(this);
         EventBus.instance.unregister(this);
