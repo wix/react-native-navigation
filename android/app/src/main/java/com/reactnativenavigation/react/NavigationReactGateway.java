@@ -2,6 +2,7 @@ package com.reactnativenavigation.react;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -20,13 +21,17 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+//import android.view.View;
+
 public class NavigationReactGateway implements ReactGateway {
 
     private final ReactNativeHost host;
     private NavigationReactEventEmitter reactEventEmitter;
+    private JsDevReloadHandler jsDevReloadHandler;
 
     public NavigationReactGateway() {
         host = new ReactNativeHostImpl();
+        jsDevReloadHandler = new JsDevReloadHandler();
     }
 
     @Override
@@ -67,14 +72,21 @@ public class NavigationReactGateway implements ReactGateway {
 
     public void onPauseActivity() {
         getReactInstanceManager().onHostPause();
+        jsDevReloadHandler.onPauseActivity();
     }
 
     public void onNewIntent(Intent intent) {
         getReactInstanceManager().onNewIntent(intent);
     }
 
+    @Override
+    public boolean onKeyUp(View currentFocus, int keyCode) {
+        return jsDevReloadHandler.onKeyUp(currentFocus, keyCode);
+    }
+
     public void onResumeActivity(Activity activity, DefaultHardwareBackBtnHandler defaultHardwareBackBtnHandler) {
         getReactInstanceManager().onHostResume(activity, defaultHardwareBackBtnHandler);
+        jsDevReloadHandler.onResumeActivity();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -87,13 +99,13 @@ public class NavigationReactGateway implements ReactGateway {
     }
 
     //TODO temp hack
-    void onReactContextInitialized() {
+    private void onReactContextInitialized() {
         reactEventEmitter = new NavigationReactEventEmitter(getReactContext());
     }
 
     private static class ReactNativeHostImpl extends ReactNativeHost implements ReactInstanceManager.ReactInstanceEventListener {
 
-        public ReactNativeHostImpl() {
+        ReactNativeHostImpl() {
             super(NavigationApplication.instance);
         }
 
