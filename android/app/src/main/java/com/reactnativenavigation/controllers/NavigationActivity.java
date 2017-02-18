@@ -2,6 +2,7 @@ package com.reactnativenavigation.controllers;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -30,7 +31,7 @@ import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
-import com.reactnativenavigation.react.JsDevReloadHandler;
+import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
@@ -107,7 +108,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
         currentActivity = this;
         IntentDataHandler.onResume(getIntent());
-        NavigationApplication.instance.getReactGateway().onResumeActivity(this, this);
+        getReactGateway().onResumeActivity(this, this);
         NavigationApplication.instance.getActivityCallbacks().onActivityResumed(this);
         EventBus.instance.register(this);
         IntentDataHandler.onPostResume(getIntent());
@@ -116,8 +117,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        NavigationApplication.instance.getReactGateway().onNewIntent(intent);
+        getReactGateway().onNewIntent(intent);
         NavigationApplication.instance.getActivityCallbacks().onNewIntent(intent);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        NavigationApplication.instance.getActivityCallbacks().onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -125,7 +132,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onPause();
         currentActivity = null;
         IntentDataHandler.onPause(getIntent());
-        NavigationApplication.instance.getReactGateway().onPauseActivity();
+        getReactGateway().onPauseActivity();
         NavigationApplication.instance.getActivityCallbacks().onActivityPaused(this);
         EventBus.instance.unregister(this);
     }
@@ -156,7 +163,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     private void destroyJsIfNeeded() {
         if (currentActivity == null || currentActivity.isFinishing()) {
-            NavigationApplication.instance.getReactGateway().onDestroyApp();
+            getReactGateway().onDestroyApp();
         }
     }
 
@@ -168,19 +175,23 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onBackPressed() {
         if (layout != null && !layout.onBackPressed()) {
-            NavigationApplication.instance.getReactGateway().onBackPressed();
+            getReactGateway().onBackPressed();
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        NavigationApplication.instance.getReactGateway().onActivityResult(requestCode, resultCode, data);
+        getReactGateway().onActivityResult(requestCode, resultCode, data);
         NavigationApplication.instance.getActivityCallbacks().onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        return JsDevReloadHandler.onKeyUp(getCurrentFocus(), keyCode) || super.onKeyUp(keyCode, event);
+        return getReactGateway().onKeyUp(getCurrentFocus(), keyCode) || super.onKeyUp(keyCode, event);
+    }
+
+    private ReactGateway getReactGateway() {
+        return NavigationApplication.instance.getReactGateway();
     }
 
     void push(ScreenParams params) {
