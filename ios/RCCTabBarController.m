@@ -1,6 +1,7 @@
 #import "RCCTabBarController.h"
 #import "RCCViewController.h"
 #import "RCCManager.h"
+#import "RCTHelpers.h"
 
 #if __has_include(<React/RCTConvert.h>)
 #import <React/RCTConvert.h>
