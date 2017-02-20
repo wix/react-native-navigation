@@ -3,10 +3,10 @@
 
     <application>
         <activity android:name=".controllers.NavigationActivity"
-            android:windowSoftInputMode="stateUnspecified|adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".controllers.PortraitNavigationActivity"
-            android:windowSoftInputMode="stateUnspecified|adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
         <activity
             android:name=".controllers.LandscapeNavigationActivity"
