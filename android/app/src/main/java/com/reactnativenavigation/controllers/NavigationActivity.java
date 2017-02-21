@@ -127,12 +127,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        NavigationApplication.instance.getActivityCallbacks().onConfigurationChanged(newConfig);
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         currentActivity = null;
@@ -223,7 +217,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
             jsModule.emit(event.getType(), params);
         }
-
+        
+        NavigationApplication.instance.getActivityCallbacks().onConfigurationChanged(newConfig);
         super.onConfigurationChanged(newConfig);
     }
 
