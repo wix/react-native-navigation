@@ -2,7 +2,9 @@
     package="com.reactnativenavigation">
 
     <application>
-        <activity android:name=".controllers.NavigationActivity" />
+        <activity
+            android:name=".controllers.NavigationActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"/>
         <activity
             android:name=".controllers.PortraitNavigationActivity"
             android:screenOrientation="portrait" />
