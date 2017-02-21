@@ -263,8 +263,8 @@ var Controllers = {
       _validateDrawerProps(layout);
       RCCManager.showController(layout, animationType, passProps);
     },
-    dismissController: function(animationType = 'slide-down') {
-      return RCCManager.dismissController(animationType)
+    dismissController: async function(animationType = 'slide-down') {
+      return await RCCManager.dismissController(animationType);
     },
     dismissAllControllers: function(animationType = 'slide-down') {
       return RCCManager.dismissAllControllers(animationType);

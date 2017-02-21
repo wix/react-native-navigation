@@ -368,6 +368,10 @@ RCT_EXPORT_METHOD(
         [vc dismissViewControllerAnimated:![animationType isEqualToString:@"none"]
                                completion:^(){ resolve(nil); }];
     }
+    else
+    {
+      resolve(nil);
+    }
 }
 
 RCT_EXPORT_METHOD(

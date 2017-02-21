@@ -31,4 +31,6 @@ public interface ReactGateway {
     void onActivityResult(int requestCode, int resultCode, Intent data);
 
     boolean hasStartedCreatingContext();
+
+    void onNewIntent(Intent intent);
 }

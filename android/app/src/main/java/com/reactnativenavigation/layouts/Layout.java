@@ -50,4 +50,6 @@ public interface Layout extends ScreenStackContainer {
     void dismissContextualMenu(String screenInstanceId);
 
     Screen getCurrentScreen();
+
+    void dismissSnackbar();
 }
