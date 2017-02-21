@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		260804DB1CE0D9D20094DBA1 /* RCCToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 260804DA1CE0D9D20094DBA1 /* RCCToolBar.m */; };
 		26AFF3F51D7EEE2400CBA211 /* RCCTitleViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 26AFF3F41D7EEE2400CBA211 /* RCCTitleViewHelper.m */; };
+		B148B17D1E49DE4C0064174B /* RCTBridge+Reload.m in Sources */ = {isa = PBXBuildFile; fileRef = B148B17C1E49DE4C0064174B /* RCTBridge+Reload.m */; };
 		CC84A19E1C1A0C4E00B3A6A2 /* RCCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1941C1A0C4E00B3A6A2 /* RCCManager.m */; };
 		CC84A19F1C1A0C4E00B3A6A2 /* RCCManagerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1961C1A0C4E00B3A6A2 /* RCCManagerModule.m */; };
 		CC84A1A01C1A0C4E00B3A6A2 /* RCCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1981C1A0C4E00B3A6A2 /* RCCNavigationController.m */; };
@@ -52,6 +53,8 @@
 		260804DA1CE0D9D20094DBA1 /* RCCToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCToolBar.m; sourceTree = "<group>"; };
 		26AFF3F31D7EEE2400CBA211 /* RCCTitleViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCTitleViewHelper.h; sourceTree = "<group>"; };
 		26AFF3F41D7EEE2400CBA211 /* RCCTitleViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCTitleViewHelper.m; sourceTree = "<group>"; };
+		B148B17B1E49DE4C0064174B /* RCTBridge+Reload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTBridge+Reload.h"; sourceTree = "<group>"; };
+		B148B17C1E49DE4C0064174B /* RCTBridge+Reload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTBridge+Reload.m"; sourceTree = "<group>"; };
 		CC84A1931C1A0C4E00B3A6A2 /* RCCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCManager.h; sourceTree = "<group>"; };
 		CC84A1941C1A0C4E00B3A6A2 /* RCCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = RCCManager.m; sourceTree = "<group>"; tabWidth = 2; };
 		CC84A1951C1A0C4E00B3A6A2 /* RCCManagerModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCManagerModule.h; sourceTree = "<group>"; };
@@ -231,6 +234,8 @@
 				D8D779971D04B7180050CFEA /* RCTHelpers.m */,
 				26AFF3F31D7EEE2400CBA211 /* RCCTitleViewHelper.h */,
 				26AFF3F41D7EEE2400CBA211 /* RCCTitleViewHelper.m */,
+				B148B17B1E49DE4C0064174B /* RCTBridge+Reload.h */,
+				B148B17C1E49DE4C0064174B /* RCTBridge+Reload.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -297,6 +302,7 @@
 				CC84A19F1C1A0C4E00B3A6A2 /* RCCManagerModule.m in Sources */,
 				26AFF3F51D7EEE2400CBA211 /* RCCTitleViewHelper.m in Sources */,
 				D8D779981D04B7180050CFEA /* RCTHelpers.m in Sources */,
+				B148B17D1E49DE4C0064174B /* RCTBridge+Reload.m in Sources */,
 				D85082E81CBCF54200FDB961 /* SidebarLuvocracyAnimation.m in Sources */,
 				D85082E31CBCF54200FDB961 /* SidebarAirbnbAnimation.m in Sources */,
 				D84813191C8C5EB700051BAF /* RCCLightBox.m in Sources */,
