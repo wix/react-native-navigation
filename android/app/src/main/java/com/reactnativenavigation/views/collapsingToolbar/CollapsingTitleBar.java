@@ -93,7 +93,7 @@ public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener
     @Override
     protected void setBackground(StyleParams params) {
         if (hasTranslucentAndSolidBackground(params)) {
-            titleBarBackground = new TranslucentAndSolidTitleBarBackground(params.collapsingTopBarParams.collapsedTitleBarBackgroundColor);
+            titleBarBackground = new TranslucentAndSolidTitleBarBackground(params.collapsingTopBarParams.scrimColor);
             setBackground(titleBarBackground);
         } else {
             setTranslucent(params);
@@ -101,7 +101,7 @@ public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener
     }
 
     private boolean hasTranslucentAndSolidBackground(StyleParams params) {
-        return params.topBarTranslucent && params.collapsingTopBarParams.collapsedTitleBarBackgroundColor.hasColor();
+        return params.topBarTranslucent && params.collapsingTopBarParams.scrimColor.hasColor();
     }
 
     public void collapse(CollapseAmount amount) {

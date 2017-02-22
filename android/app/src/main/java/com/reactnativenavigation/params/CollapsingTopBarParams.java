@@ -8,7 +8,6 @@ public class CollapsingTopBarParams {
     public @Nullable String imageUri;
     public @Nullable String reactViewId;
     public StyleParams.Color scrimColor;
-    public StyleParams.Color collapsedTitleBarBackgroundColor;
     public CollapseBehaviour collapseBehaviour;
     public boolean expendOnTopTabChange;
     public boolean showTitleWhenCollapsed;
