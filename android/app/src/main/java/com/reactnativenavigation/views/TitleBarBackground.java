@@ -6,15 +6,20 @@ import android.graphics.drawable.TransitionDrawable;
 
 import com.reactnativenavigation.params.StyleParams;
 
-public class TranslucentAndSolidTitleBarBackground extends TransitionDrawable {
+public class TitleBarBackground extends TransitionDrawable {
     private static final int DURATION = 200;
+
     private enum DrawableType {Translucent, Solid}
 
     private DrawableType displayedDrawable = DrawableType.Translucent;
 
-    public TranslucentAndSolidTitleBarBackground(StyleParams.Color color) {
+    TitleBarBackground(Drawable... drawables) {
+        super(drawables);
+    }
+
+    public TitleBarBackground(StyleParams.Color color) {
         super(new Drawable[] {
-                new TranslucentTitleBarBackground(),
+                new TranslucentDrawable(),
                 new ColorDrawable(color.getColor())
         });
     }

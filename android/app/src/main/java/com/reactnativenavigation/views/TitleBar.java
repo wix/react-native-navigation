@@ -88,7 +88,7 @@ public class TitleBar extends Toolbar {
 
     protected void setTranslucent(StyleParams params) {
         if (params.topBarTranslucent) {
-            setBackground(new TranslucentTitleBarBackground());
+            setBackground(new TranslucentDrawable());
         }
     }
 
