@@ -1,5 +1,9 @@
 package com.reactnativenavigation.react;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -7,16 +11,30 @@ import android.widget.EditText;
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.NavigationApplication;
 
-public class JsDevReloadHandler {
+class JsDevReloadHandler {
 
     private static boolean shouldRefreshOnRR = false;
+    private final BroadcastReceiver reloadReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            reload();
+        }
+    };
 
-    //TODO yuck.
-    public static boolean onKeyUp(View currentFocus, int keyCode) {
-        ReactInstanceManager reactInstanceManager = NavigationApplication
-                .instance
-                .getReactGateway()
-                .getReactInstanceManager();
+    void onResumeActivity() {
+        if (getReactInstanceManager().getDevSupportManager().getDevSupportEnabled()) {
+            NavigationApplication.instance.registerReceiver(reloadReceiver, new IntentFilter("react.native.RELOAD"));
+        }
+    }
+
+    void onPauseActivity() {
+        if (getReactInstanceManager().getDevSupportManager().getDevSupportEnabled()) {
+            NavigationApplication.instance.unregisterReceiver(reloadReceiver);
+        }
+    }
+
+    boolean onKeyUp(View currentFocus, int keyCode) {
+        ReactInstanceManager reactInstanceManager = getReactInstanceManager();
 
         if (reactInstanceManager != null &&
                 reactInstanceManager.getDevSupportManager().getDevSupportEnabled()) {
@@ -27,8 +45,7 @@ public class JsDevReloadHandler {
             if (keyCode == KeyEvent.KEYCODE_R && !(currentFocus instanceof EditText)) {
                 // Enable double-tap-R-to-reload
                 if (shouldRefreshOnRR) {
-                    reactInstanceManager.getDevSupportManager().handleReloadJS();
-                    shouldRefreshOnRR = false;
+                    reload();
                     return true;
                 } else {
                     shouldRefreshOnRR = true;
@@ -44,5 +61,17 @@ public class JsDevReloadHandler {
             }
         }
         return false;
+    }
+
+    private void reload() {
+        getReactInstanceManager().getDevSupportManager().handleReloadJS();
+        shouldRefreshOnRR = false;
+    }
+
+    private ReactInstanceManager getReactInstanceManager() {
+        return NavigationApplication
+                .instance
+                .getReactGateway()
+                .getReactInstanceManager();
     }
 }

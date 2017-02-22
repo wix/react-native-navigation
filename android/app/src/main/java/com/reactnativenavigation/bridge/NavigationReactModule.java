@@ -205,6 +205,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void dismissSnackbar() {
+        NavigationCommandsHandler.dismissSnackbar();
+    }
+
+    @ReactMethod
     public void showContextualMenu(final String screenInstanceId, final ReadableMap params, final Callback onButtonClicked) {
         ContextualMenuParams contextualMenuParams =
                 new ContextualMenuParamsParser().parse(BundleConverter.toBundle(params));

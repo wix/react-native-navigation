@@ -27,6 +27,22 @@ RCT_ENUM_CONVERTER(RCCManagerModuleErrorCode,
                       }), RCCManagerModuleCantCreateControllerErrorCode, integerValue)
 @end
 
+@implementation RCTConvert (UIModalPresentationStyle)
+
+RCT_ENUM_CONVERTER(UIModalPresentationStyle,
+                   (@{@"fullScreen": @(UIModalPresentationFullScreen),
+                      @"pageSheet": @(UIModalPresentationPageSheet),
+                      @"formSheet": @(UIModalPresentationFormSheet),
+                      @"currentContext": @(UIModalPresentationCurrentContext),
+                      @"custom": @(UIModalPresentationCustom),
+                      @"overFullScreen": @(UIModalPresentationOverFullScreen),
+                      @"overCurrentContext": @(UIModalPresentationOverCurrentContext),
+                      @"popover": @(UIModalPresentationPopover),
+                      @"none": @(UIModalPresentationNone)
+                      }), UIModalPresentationFullScreen, integerValue)
+
+@end
+
 @implementation RCCManagerModule
 
 RCT_EXPORT_MODULE(RCCManager);
@@ -39,6 +55,15 @@ RCT_EXPORT_MODULE(RCCManager);
              //Error codes
              @"RCCManagerModuleCantCreateControllerErrorCode" : @(RCCManagerModuleCantCreateControllerErrorCode),
              @"RCCManagerModuleCantFindTabControllerErrorCode" : @(RCCManagerModuleCantFindTabControllerErrorCode),
+             @"PresentFullScreen": @"fullScreen",
+             @"PresentPageSheet": @"pageSheet",
+             @"PresentFormSheet": @"formSheet",
+             @"PresentCurrentContext": @"currentContext",
+             @"PresentCustom": @"custom",
+             @"PresentOverFullScreen": @"overFullScreen",
+             @"PresentOverCurrentContext": @"overCurrentContext",
+             @"PresentPopover": @"popover",
+             @"PresentNone": @"none"
              };
 }
 
@@ -119,50 +144,50 @@ RCT_EXPORT_MODULE(RCCManager);
     if (allPresentedViewControllers.count > 0)
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^
-        {
-            __block NSUInteger counter = 0;
-            for (UIViewController *viewController in allPresentedViewControllers)
-            {
-                counter++;
-                
-                [[RCCManager sharedIntance] unregisterController:viewController];
-                if (viewController.presentedViewController != nil)
-                {
-                    dispatch_semaphore_t dismiss_sema = dispatch_semaphore_create(0);
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^
-                    {
-                        [viewController dismissViewControllerAnimated:NO completion:^()
-                         {
-                             if (counter == allPresentedViewControllers.count && allPresentedViewControllers.count > 0)
-                             {
-                                 [allPresentedViewControllers removeAllObjects];
-                                 
-                                 if (resolve != nil)
-                                 {
-                                     resolve(nil);
-                                 }
-                             }
-                             dispatch_semaphore_signal(dismiss_sema);
-                         }];
-                    });
-                    
-                    dispatch_semaphore_wait(dismiss_sema, DISPATCH_TIME_FOREVER);
-                }
-                else if (counter == allPresentedViewControllers.count && allPresentedViewControllers.count > 0)
-                {
-                    [allPresentedViewControllers removeAllObjects];
-                    
-                    if (resolve != nil)
-                    {
-                        dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            resolve(nil);
-                        });
-                    }
-                }
-            }
-        });
+                       {
+                           __block NSUInteger counter = 0;
+                           for (UIViewController *viewController in allPresentedViewControllers)
+                           {
+                               counter++;
+                               
+                               [[RCCManager sharedIntance] unregisterController:viewController];
+                               if (viewController.presentedViewController != nil)
+                               {
+                                   dispatch_semaphore_t dismiss_sema = dispatch_semaphore_create(0);
+                                   
+                                   dispatch_async(dispatch_get_main_queue(), ^
+                                                  {
+                                                      [viewController dismissViewControllerAnimated:NO completion:^()
+                                                       {
+                                                           if (counter == allPresentedViewControllers.count && allPresentedViewControllers.count > 0)
+                                                           {
+                                                               [allPresentedViewControllers removeAllObjects];
+                                                               
+                                                               if (resolve != nil)
+                                                               {
+                                                                   resolve(nil);
+                                                               }
+                                                           }
+                                                           dispatch_semaphore_signal(dismiss_sema);
+                                                       }];
+                                                  });
+                                   
+                                   dispatch_semaphore_wait(dismiss_sema, DISPATCH_TIME_FOREVER);
+                               }
+                               else if (counter == allPresentedViewControllers.count && allPresentedViewControllers.count > 0)
+                               {
+                                   [allPresentedViewControllers removeAllObjects];
+                                   
+                                   if (resolve != nil)
+                                   {
+                                       dispatch_async(dispatch_get_main_queue(), ^
+                                                      {
+                                                          resolve(nil);
+                                                      });
+                                   }
+                               }
+                           }
+                       });
     }
     else if (resolve != nil)
     {
@@ -173,7 +198,7 @@ RCT_EXPORT_MODULE(RCCManager);
 #pragma mark - RCT exported methods
 
 RCT_EXPORT_METHOD(
-setRootController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps)
+                  setRootController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps)
 {
     if ([[RCCManager sharedInstance] getBridge].loading) {
         [self deferSetRootControllerWhileBridgeLoading:layout animationType:animationType globalProps:globalProps];
@@ -182,7 +207,7 @@ setRootController:(NSDictionary*)layout animationType:(NSString*)animationType g
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self performSetRootController:layout animationType:animationType globalProps:globalProps];
-   });
+    });
 }
 
 /**
@@ -239,27 +264,27 @@ setRootController:(NSDictionary*)layout animationType:(NSString*)animationType g
 }
 
 RCT_EXPORT_METHOD(
-NavigationControllerIOS:(NSString*)controllerId performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams)
+                  NavigationControllerIOS:(NSString*)controllerId performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams)
 {
-  if (!controllerId || !performAction) return;
-  RCCNavigationController* controller = [[RCCManager sharedInstance] getControllerWithId:controllerId componentType:@"NavigationControllerIOS"];
-  if (!controller || ![controller isKindOfClass:[RCCNavigationController class]]) return;
-  return [controller performAction:performAction actionParams:actionParams bridge:[[RCCManager sharedInstance] getBridge]];
+    if (!controllerId || !performAction) return;
+    RCCNavigationController* controller = [[RCCManager sharedInstance] getControllerWithId:controllerId componentType:@"NavigationControllerIOS"];
+    if (!controller || ![controller isKindOfClass:[RCCNavigationController class]]) return;
+    return [controller performAction:performAction actionParams:actionParams bridge:[[RCCManager sharedInstance] getBridge]];
 }
 
 RCT_EXPORT_METHOD(
-DrawerControllerIOS:(NSString*)controllerId performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams)
+                  DrawerControllerIOS:(NSString*)controllerId performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams)
 {
-  if (!controllerId || !performAction) return;
-
-  id<RCCDrawerDelegate> controller = [[RCCManager sharedIntance] getControllerWithId:controllerId componentType:@"DrawerControllerIOS"];
-  if (!controller || (![controller isKindOfClass:[RCCDrawerController class]] && ![controller isKindOfClass:[RCCTheSideBarManagerViewController class]])) return;
-  return [controller performAction:performAction actionParams:actionParams bridge:[[RCCManager sharedIntance] getBridge]];
-
+    if (!controllerId || !performAction) return;
+    
+    id<RCCDrawerDelegate> controller = [[RCCManager sharedIntance] getControllerWithId:controllerId componentType:@"DrawerControllerIOS"];
+    if (!controller || (![controller isKindOfClass:[RCCDrawerController class]] && ![controller isKindOfClass:[RCCTheSideBarManagerViewController class]])) return;
+    return [controller performAction:performAction actionParams:actionParams bridge:[[RCCManager sharedIntance] getBridge]];
+    
 }
 
 RCT_EXPORT_METHOD(
-TabBarControllerIOS:(NSString*)controllerId performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+                  TabBarControllerIOS:(NSString*)controllerId performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     if (!controllerId || !performAction)
     {
@@ -279,19 +304,19 @@ TabBarControllerIOS:(NSString*)controllerId performAction:(NSString*)performActi
 }
 
 RCT_EXPORT_METHOD(
-modalShowLightBox:(NSDictionary*)params)
+                  modalShowLightBox:(NSDictionary*)params)
 {
     [RCCLightBox showWithParams:params];
 }
 
 RCT_EXPORT_METHOD(
-modalDismissLightBox)
+                  modalDismissLightBox)
 {
     [RCCLightBox dismiss];
 }
 
 RCT_EXPORT_METHOD(
-showController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+                  showController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:globalProps bridge:[[RCCManager sharedInstance] getBridge]];
     if (controller == nil)
@@ -300,22 +325,33 @@ showController:(NSDictionary*)layout animationType:(NSString*)animationType glob
                                                 error:[RCCManagerModule rccErrorWithCode:RCCManagerModuleCantCreateControllerErrorCode description:@"could not create controller"]];
         return;
     }
-
+    
+    if (layout[@"props"] && [layout[@"props"] isKindOfClass:[NSDictionary class]] && layout[@"props"][@"style"] && [layout[@"props"][@"style"] isKindOfClass: [NSDictionary class]]) {
+        
+        NSDictionary *style = layout[@"props"][@"style"];
+        if (style[@"modalPresentationStyle"] && [style[@"modalPresentationStyle"] isKindOfClass:[NSString class]]) {
+            
+            NSString *presentationStyle = style[@"modalPresentationStyle"];
+            UIModalPresentationStyle modalPresentationStyle = [RCTConvert UIModalPresentationStyle:presentationStyle];
+            controller.modalPresentationStyle = modalPresentationStyle;
+        }
+    }
+    
     [[RCCManagerModule lastModalPresenterViewController] presentViewController:controller
-                                                           animated:![animationType isEqualToString:@"none"]
-                                                         completion:^(){ resolve(nil); }];
+                                                                      animated:![animationType isEqualToString:@"none"]
+                                                                    completion:^(){ resolve(nil); }];
 }
 
 -(BOOL)viewControllerIsModal:(UIViewController*)viewController
 {
     BOOL viewControllerIsModal = (viewController.presentingViewController.presentedViewController == viewController)
-                                || ((viewController.navigationController != nil) && (viewController.navigationController.presentingViewController.presentedViewController == viewController.navigationController) && (viewController == viewController.navigationController.viewControllers[0]))
-                                || ([viewController.tabBarController.presentingViewController isKindOfClass:[UITabBarController class]]);
+    || ((viewController.navigationController != nil) && (viewController.navigationController.presentingViewController.presentedViewController == viewController.navigationController) && (viewController == viewController.navigationController.viewControllers[0]))
+    || ([viewController.tabBarController.presentingViewController isKindOfClass:[UITabBarController class]]);
     return viewControllerIsModal;
 }
 
 RCT_EXPORT_METHOD(
-dismissController:(NSString*)animationType resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+                  dismissController:(NSString*)animationType resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     UIViewController* vc = [RCCManagerModule lastModalPresenterViewController];
     if ([self viewControllerIsModal:vc])
@@ -332,7 +368,7 @@ dismissController:(NSString*)animationType resolver:(RCTPromiseResolveBlock)reso
 }
 
 RCT_EXPORT_METHOD(
-dismissAllControllers:(NSString*)animationType resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+                  dismissAllControllers:(NSString*)animationType resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     if([UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController == nil)
     {//if there are no modal - do nothing
@@ -351,9 +387,9 @@ dismissAllControllers:(NSString*)animationType resolver:(RCTPromiseResolveBlock)
         [appDelegate.window addSubview:snapshot];
         
         [self dismissAllModalPresenters:allPresentedViewControllers resolver:^(id result)
-        {
-            [self animateSnapshot:snapshot animationType:animationType resolver:resolve];
-        }];
+         {
+             [self animateSnapshot:snapshot animationType:animationType resolver:resolve];
+         }];
     }
     else
     {
@@ -362,19 +398,19 @@ dismissAllControllers:(NSString*)animationType resolver:(RCTPromiseResolveBlock)
 }
 
 RCT_EXPORT_METHOD(
-showNotification:(NSDictionary*)params resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+                  showNotification:(NSDictionary*)params resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     [RCCNotification showWithParams:params resolver:resolve rejecter:reject];
 }
 
 RCT_EXPORT_METHOD(
-dismissNotification:(NSDictionary*)params resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+                  dismissNotification:(NSDictionary*)params resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     [RCCNotification dismissWithParams:params resolver:resolve rejecter:reject];
 }
 
 RCT_EXPORT_METHOD(
-cancelAllReactTouches)
+                  cancelAllReactTouches)
 {
     [RCCManagerModule cancelAllRCCViewControllerReactTouches];
 }

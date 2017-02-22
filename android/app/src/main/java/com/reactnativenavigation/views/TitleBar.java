@@ -129,7 +129,7 @@ public class TitleBar extends Toolbar {
         setTitleTextColor(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
-        setTranslucent(params);
+        setBackground(params);
     }
 
     private void colorOverflowButton(StyleParams params) {
@@ -139,7 +139,11 @@ public class TitleBar extends Toolbar {
         }
     }
 
-    private void setTranslucent(StyleParams params) {
+    protected void setBackground(StyleParams params) {
+        setTranslucent(params);
+    }
+
+    protected void setTranslucent(StyleParams params) {
         if (params.topBarTranslucent) {
             setBackground(new TranslucentTitleBarBackground());
         }
