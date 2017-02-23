@@ -6,10 +6,40 @@
 //  Copyright © 2016 artal. All rights reserved.
 //
 
+
 #import "RCTHelpers.h"
+
+#if __has_include(<React/RCTView.h>)
+#import <React/RCTView.h>
+#elif __has_include("RCTView.h")
 #import "RCTView.h"
+#elif __has_include("React/RCTView.h")
+#import "React/RCTView.h"   // Required when used as a Pod in a Swift project
+#endif
+
+#if __has_include(<React/RCTScrollView.h>)
+#import <React/RCTScrollView.h>
+#elif __has_include("RCTScrollView.h")
 #import "RCTScrollView.h"
+#elif __has_include("React/RCTScrollView.h")
+#import "React/RCTScrollView.h"   // Required when used as a Pod in a Swift project
+#endif
+
+#if __has_include(<React/RCTConvert.h>)
+#import <React/RCTConvert.h>
+#elif __has_include("RCTConvert.h")
+#import "RCTConvert.h"
+#elif __has_include("React/RCTConvert.h")
+#import "React/RCTConvert.h"   // Required when used as a Pod in a Swift project
+#endif
+
+#if __has_include(<React/RCTFont.h>)
+#import <React/RCTFont.h>
+#elif __has_include("RCTFont.h")
 #import "RCTFont.h"
+#elif __has_include("React/RCTFont.h")
+#import "React/RCTFont.h"   // Required when used as a Pod in a Swift project
+#endif
 
 @implementation RCTHelpers
 

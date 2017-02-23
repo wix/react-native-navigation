@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "RCTBridge.h"
+#import <React/RCTBridge.h>
 
 @interface RCCNavigationController : UINavigationController <UINavigationControllerDelegate>
 
