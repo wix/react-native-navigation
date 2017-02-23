@@ -1,7 +1,6 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -9,14 +8,15 @@ import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.TitleBar;
-import com.reactnativenavigation.views.TranslucentAndSolidTitleBarBackground;
+import com.reactnativenavigation.views.TitleBarBackground;
+import com.reactnativenavigation.views.TranslucentTitleBarBackground;
 
 public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener {
     private CollapsingTextView title;
     private int collapsedHeight;
     private final ScrollListener scrollListener;
     private final CollapsingTopBarParams params;
-    private @Nullable TranslucentAndSolidTitleBarBackground titleBarBackground;
+    private TitleBarBackground titleBarBackground;
 
     public CollapsingTitleBar(Context context, int collapsedHeight, ScrollListener scrollListener, CollapsingTopBarParams params) {
         super(context);
@@ -45,17 +45,13 @@ public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener
     @Override
     public void hideTitle() {
         super.hideTitle();
-        if (titleBarBackground != null) {
-            titleBarBackground.showTranslucentBackground();
-        }
+        titleBarBackground.showTranslucentBackground();
     }
 
     @Override
     public void showTitle() {
         super.showTitle();
-        if (titleBarBackground != null) {
-            titleBarBackground.showSolidBackground();
-        }
+        titleBarBackground.showSolidBackground();
     }
 
     private void addCollapsingTitle() {
@@ -92,12 +88,14 @@ public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener
 
     @Override
     protected void setBackground(StyleParams params) {
-        if (hasTranslucentAndSolidBackground(params)) {
-            titleBarBackground = new TranslucentAndSolidTitleBarBackground(params.collapsingTopBarParams.scrimColor);
-            setBackground(titleBarBackground);
-        } else {
-            setTranslucent(params);
-        }
+        titleBarBackground = createBackground(params);
+        setBackground(titleBarBackground);
+    }
+
+    private TitleBarBackground createBackground(StyleParams params) {
+        return hasTranslucentAndSolidBackground(params) ?
+            new TitleBarBackground(params.collapsingTopBarParams.scrimColor) :
+            new TranslucentTitleBarBackground();
     }
 
     private boolean hasTranslucentAndSolidBackground(StyleParams params) {

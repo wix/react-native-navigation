@@ -3,9 +3,9 @@
 #import "RCCTabBarController.h"
 #import "RCCDrawerController.h"
 #import "RCCTheSideBarManagerViewController.h"
-#import "RCTRootView.h"
+#import <React/RCTRootView.h>
 #import "RCCManager.h"
-#import "RCTConvert.h"
+#import <React/RCTConvert.h>
 #import "RCCExternalViewControllerProtocol.h"
 #import "RCTHelpers.h"
 #import "RCCTitleViewHelper.h"
@@ -145,7 +145,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     
     [self setStyleOnInit];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTReloadNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTReloadNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCancelReactTouches) name:RCCViewControllerCancelReactTouchesNotification object:nil];
     
     // In order to support 3rd party native ViewControllers, we support passing a class name as a prop mamed `ExternalNativeScreenClass`
