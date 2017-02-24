@@ -335,7 +335,11 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-  return [self.topViewController preferredStatusBarStyle];
+  if (self.presentedViewController && self.presentedViewController.isBeingDismissed) {
+    return [self.topViewController preferredStatusBarStyle];
+  } else {
+    return [self.visibleViewController preferredStatusBarStyle];
+  }
 }
 
 
@@ -346,5 +350,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   [viewController setNeedsStatusBarAppearanceUpdate];
 }
 
-
+- (void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
+  [self setNeedsStatusBarAppearanceUpdate];
+}
 @end
