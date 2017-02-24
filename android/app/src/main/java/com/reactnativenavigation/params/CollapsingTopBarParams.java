@@ -7,11 +7,12 @@ import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseBeha
 public class CollapsingTopBarParams {
     public @Nullable String imageUri;
     public @Nullable String reactViewId;
-    public int reactViewHeight;
     public StyleParams.Color scrimColor;
     public CollapseBehaviour collapseBehaviour;
     public boolean expendOnTopTabChange;
+    public boolean showTitleWhenExpended;
     public boolean showTitleWhenCollapsed;
+    public StyleParams.Color expendedTitleBarColor;
 
     public boolean hasBackgroundImage() {
         return imageUri != null;
