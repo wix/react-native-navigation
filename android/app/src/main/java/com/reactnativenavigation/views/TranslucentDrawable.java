@@ -7,9 +7,9 @@ import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 
-class TranslucentDrawable extends PaintDrawable {
+public class TranslucentDrawable extends PaintDrawable {
 
-    TranslucentDrawable() {
+    public TranslucentDrawable() {
         setShape(new RectShape());
         createShader();
     }
