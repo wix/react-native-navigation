@@ -194,9 +194,19 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void hideSlidingOverlay(final ReadableMap params) {
+        NavigationCommandsHandler.hideSlidingOverlay();
+    }
+
+    @ReactMethod
     public void showSnackbar(final ReadableMap params) {
         SnackbarParams snackbarParams = new SnackbarParamsParser().parse(BundleConverter.toBundle(params));
         NavigationCommandsHandler.showSnackbar(snackbarParams);
+    }
+
+    @ReactMethod
+    public void dismissSnackbar() {
+        NavigationCommandsHandler.dismissSnackbar();
     }
 
     @ReactMethod

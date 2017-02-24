@@ -212,8 +212,18 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
+    public void dismissSnackbar() {
+        snackbarAndFabContainer.dismissSnackbar();
+    }
+
+    @Override
     public void showSlidingOverlay(final SlidingOverlayParams params) {
         slidingOverlaysQueue.add(new SlidingOverlay(this, params));
+    }
+
+    @Override
+    public void hideSlidingOverlay() {
+        slidingOverlaysQueue.remove();
     }
 
     @Override
@@ -301,6 +311,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         if (sideMenu != null) {
             sideMenu.destroy();
         }
+        slidingOverlaysQueue.destroy();
     }
 
     @Override

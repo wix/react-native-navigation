@@ -351,6 +351,20 @@ public class NavigationCommandsHandler {
         });
     }
 
+    public static void hideSlidingOverlay() {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.hideSlidingOverlay();
+            }
+        });
+    }
+
     public static void showSnackbar(final SnackbarParams params) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
@@ -389,6 +403,20 @@ public class NavigationCommandsHandler {
             @Override
             public void run() {
                 currentActivity.dismissContextualMenu(screenInstanceId);
+            }
+        });
+    }
+
+    public static void dismissSnackbar() {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.dismissSnackbar();
             }
         });
     }

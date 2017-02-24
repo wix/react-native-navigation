@@ -9,14 +9,10 @@ import {
 
 const styleSheet = StyleSheet.create({
   container: {
-    flex: 1,
+    height: 120,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 18,
-    marginBottom: 18
   }
 });
 
@@ -33,7 +29,10 @@ export default class InAppNotification extends Component {
     return (
       <View style={styleSheet.container}>
           <Text style={{color: 'black', fontSize: 20}}>{message}</Text>
-          <TouchableHighlight onPress={() => Alert.alert(`You've tapped on notification #${this._counter}`, 'We hope you had fun!')}>
+          <TouchableHighlight onPress={() => {
+            this.props.navigator.dismissInAppNotification();
+            Alert.alert(`You've tapped on notification #${this._counter}`, 'We hope you had fun!');
+          }}>
             <Text>Tap Me</Text>
           </TouchableHighlight>
       </View>
