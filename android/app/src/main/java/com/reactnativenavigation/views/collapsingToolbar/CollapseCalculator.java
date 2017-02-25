@@ -158,13 +158,13 @@ public class CollapseCalculator {
     private boolean calculateCanCollapse(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation > finalCollapsedTranslation &&
                currentTopBarTranslation <= finalExpendedTranslation &&
-               (scrollView.getScrollY() == 0 || (collapseBehaviour instanceof TitleBarHideOnScrollBehaviour || collapseBehaviour instanceof CollapseTitleBarBehaviour));
+               (scrollView.getScrollY() <= scaledTouchSlop || (collapseBehaviour instanceof TitleBarHideOnScrollBehaviour || collapseBehaviour instanceof CollapseTitleBarBehaviour));
     }
 
     private boolean calculateCanExpend(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation >= finalCollapsedTranslation &&
                currentTopBarTranslation < finalExpendedTranslation &&
-               (scrollView.getScrollY() == 0 || (collapseBehaviour instanceof TitleBarHideOnScrollBehaviour || collapseBehaviour instanceof CollapseTitleBarBehaviour));
+               (scrollView.getScrollY() <= scaledTouchSlop || (collapseBehaviour instanceof TitleBarHideOnScrollBehaviour || collapseBehaviour instanceof CollapseTitleBarBehaviour));
     }
 
     private boolean isCollapsedAndScrollingDown(Direction direction) {
