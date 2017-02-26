@@ -3,11 +3,13 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  Image,
+  Image
 } from 'react-native';
 import {SharedElementTransition} from 'react-native-navigation';
-import { createAnimatableComponent, View, Text } from 'react-native-animatable';
+import {View, Text} from 'react-native-animatable';
 import * as heroStyles from './styles';
+
+const ANIMATION_DURATION = 500;
 
 export default class HeroScreen extends Component {
   static navigatorStyle = {
@@ -34,22 +36,49 @@ export default class HeroScreen extends Component {
 
   _renderHeader() {
     return (
-      <View animation={this.state.animationType} duration={300} style={[styles.header, heroStyles.primaryDark]} useNativeDriver>
-        <Text style={styles.title}>{this.props.title}</Text>
+      <View animation={this.state.animationType} duration={ANIMATION_DURATION} style={[styles.header, heroStyles.primaryDark]} useNativeDriver={true}>
+        <SharedElementTransition
+          sharedElementId={this.props.sharedTitleId}
+          interpolation={
+            {
+              show: {
+                type: 'linear',
+                controlX1: '0.5',
+                controlY1: '1',
+                controlX2: '0',
+                controlY2: '0.5',
+                easing: 'linear'
+              },
+              hide: {
+                type: 'linear',
+                controlX1: '0.5',
+                controlY1: '0',
+                controlX2: '1',
+                controlY2: '0.5',
+                easing:'linear'
+              }
+            }
+          }
+        >
+          <Text style={styles.title}>{this.props.title}</Text>
+        </SharedElementTransition>
       </View>
     );
   }
 
   _renderContent() {
     return (
-      <View animation={this.state.animationType} duration={300} style={[styles.body, heroStyles.primaryLight]} useNativeDriver/>
+      <View
+        animation={this.state.animationType}
+        duration={ANIMATION_DURATION}
+        style={styles.body}
+        useNativeDriver={true}/>
     );
   }
 
   _renderIcon() {
     return (
       <SharedElementTransition
-        key={this.props.sharedIconId}
         sharedElementId={this.props.sharedIconId}
         style={styles.iconContainer}
         interpolation={
@@ -76,6 +105,7 @@ export default class HeroScreen extends Component {
         <Image
           source={this.props.icon}
           style={styles.heroIcon}
+          fadeDuration={0}
         />
       </SharedElementTransition>
     );
@@ -106,7 +136,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     left: 124,
     marginBottom: 8,
-    ...heroStyles.textLight
+    ...heroStyles.textLight,
+    color: 'red'
   },
   iconContainer: {
     position: 'absolute',
@@ -119,7 +150,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   body: {
-    flex: 4
+    flex: 4,
+    backgroundColor: 'white',
   },
   button: {
     textAlign: 'center',

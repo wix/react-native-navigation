@@ -90,45 +90,61 @@ export default class ListScreen extends Component {
 
   _renderRow(rowData, sectionID, rowID) {
     const rowHash = Math.abs(hashCode(rowData.rowTitle));
-    const sharedElementId = "image" + rowID;
+    const sharedIconId = "image" + rowID;
+    const sharedTitleId = "title" + rowID;
 
     return (
       <TouchableWithoutFeedback
         style={styles.row}
         onPress={() => this._onRowPress({
           rowData,
-          sharedElementId
+          sharedIconId,
+          sharedTitleId
         })}
       >
-        <View
-          sharedElementId={sharedElementId + 'container'}
-          style={[styles.sharedRowContent, heroStyles.primaryDark]}
-        >
-          <View>
-            <SharedElementTransition
-              key={sharedElementId}
-              sharedElementId={sharedElementId}
-              style={styles.imageContainer}
-            >
-              <Image
-                source={rowData.icon}
-                style={styles.heroIcon}
-              />
-            </SharedElementTransition>
-          </View>
-          <View style={styles.itemContentContainer}>
-            <Text style={styles.itemTitle}>{rowData.title}</Text>
-            <Text style={styles.text}>
-              {rowData.rowTitle + ' - ' + LOREM_IPSUM.substr(0, rowHash % 301 + 10)}
-            </Text>
-          </View>
+        <View style={[styles.sharedRowContent, heroStyles.primaryDark]}>
+          {this._renderRowIcon({rowData, sharedIconId})}
+          {this._renderRowContent({rowData, sharedTitleId, rowHash})}
         </View>
       </TouchableWithoutFeedback>
     );
   }
 
+  _renderRowIcon({rowData, sharedIconId}) {
+    return (
+      <View>
+        <SharedElementTransition
+          key={sharedIconId}
+          sharedElementId={sharedIconId}
+          style={styles.imageContainer}
+        >
+          <Image
+            source={rowData.icon}
+            style={styles.heroIcon}
+          />
+        </SharedElementTransition>
+      </View>
+    );
+  }
+
+  _renderRowContent({rowData, sharedTitleId, rowHash}) {
+    return (
+      <View style={styles.itemContentContainer}>
+        <SharedElementTransition
+          sharedElementId={sharedTitleId}
+          style={styles.imageContainer}
+        >
+          <Text style={styles.itemTitle}>{rowData.title}</Text>
+        </SharedElementTransition>
+        <Text style={styles.text}>
+          {rowData.rowTitle + ' - ' + LOREM_IPSUM.substr(0, rowHash % 301 + 10)}
+        </Text>
+      </View>
+    );
+  }
+
   _onRowPress(data) {
-    const {rowData} = data;
+    const {rowData, sharedIconId, sharedTitleId} = data;
     this.props.navigator.push({
       screen: 'example.HeroScreen',
       sharedElements: [
@@ -139,7 +155,8 @@ export default class ListScreen extends Component {
       overrideBackPress: true,
       passProps: {
         title: rowData.title,
-        sharedIconId: data.sharedElementId,
+        sharedIconId: sharedIconId,
+        sharedTitleId: sharedTitleId,
         icon: rowData.icon
       }
     });
@@ -197,7 +214,7 @@ const styles = StyleSheet.create({
   itemTitle: {
     marginLeft: 5,
     fontSize: 19,
-    ...heroStyles.textLight
+    color: 'green'
   },
   text: {
     margin: 5,
