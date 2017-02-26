@@ -1,13 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.reactnativenavigation">
+          package="com.reactnativenavigation">
 
     <application>
         <activity android:name=".controllers.NavigationActivity" />
         <activity
             android:name=".controllers.PortraitNavigationActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".controllers.LandscapeNavigationActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="landscape" />
         <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"

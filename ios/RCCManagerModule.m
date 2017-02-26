@@ -5,7 +5,7 @@
 #import "RCCViewController.h"
 #import "RCCDrawerController.h"
 #import "RCCLightBox.h"
-#import "RCTConvert.h"
+#import <React/RCTConvert.h>
 #import "RCCTabBarController.h"
 #import "RCCTheSideBarManagerViewController.h"
 #import "RCCNotification.h"
