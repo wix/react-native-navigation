@@ -185,7 +185,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
             [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:rootView.appProperties[@"navigatorEventID"] body:@
              {
                  @"type": @"ScreenChangedEvent",
-                 @"method": eventName
+                 @"id": eventName
              }];
         }
     }
