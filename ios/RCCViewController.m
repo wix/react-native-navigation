@@ -5,8 +5,8 @@
 #import "RCCTheSideBarManagerViewController.h"
 #import <React/RCTRootView.h>
 #import "RCCManager.h"
-#import <React/RCTConvert.h>
-#import <React/RCTEventDispatcher.h>
+#import <RCTConvert.h>
+#import <RCTEventDispatcher.h>
 #import "RCCExternalViewControllerProtocol.h"
 #import "RCTHelpers.h"
 #import "RCCTitleViewHelper.h"
