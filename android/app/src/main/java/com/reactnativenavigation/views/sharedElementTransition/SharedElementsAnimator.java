@@ -9,44 +9,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SharedElementsAnimator {
+    private static final String TAG = "SharedElementsAnimator";
     private final SharedElements sharedElements;
 
     public SharedElementsAnimator(SharedElements sharedElements) {
         this.sharedElements = sharedElements;
     }
 
-    private List<Animator> createHideTransitionAnimators() {
-        List<Animator> result = new ArrayList<>();
-        for (String key : sharedElements.toElements.keySet()) {
-            result.addAll(new SharedElementAnimatorCreator(sharedElements.getToElement(key), sharedElements.getFromElement(key)).createHide());
-        }
-        return result;
-    }
-
     public void show(final Runnable onAnimationEnd) {
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(1500);
-        animatorSet.playTogether(createTransitionAnimators());
-        animatorSet.setInterpolator(new LinearInterpolator());
-        animatorSet.addListener(new AnimatorListenerAdapter() {
+        sharedElements.performWhenChildViewsAreDrawn(new Runnable()  {
             @Override
-            public void onAnimationStart(Animator animation) {
-                sharedElements.hideFromElements();
+            public void run() {
+                final AnimatorSet animatorSet = createAnimatorSet();
+                sharedElements.onShowAnimationWillStart();
+                sharedElements.attachChildViewsToScreen();
+                animatorSet.start();
             }
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                sharedElements.onShowAnimationEnd();
-                onAnimationEnd.run();
-            }
+            private AnimatorSet createAnimatorSet() {
+                final AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.setDuration(500);
+                animatorSet.playTogether(createTransitionAnimators());
+                animatorSet.setInterpolator(new LinearInterpolator());
+                animatorSet.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        sharedElements.onShowAnimationStart();
+                        sharedElements.hideFromElements();
+                    }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                sharedElements.onShowAnimationEnd();
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        sharedElements.onShowAnimationEnd();
+                        onAnimationEnd.run();
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        sharedElements.onShowAnimationEnd();
+                    }
+                });
+                return animatorSet;
             }
         });
-        sharedElements.onShowAnimationStart();
-        animatorSet.start();
     }
 
     public void hide(final Runnable onAnimationEnd) {
@@ -63,6 +68,14 @@ public class SharedElementsAnimator {
         });
         sharedElements.onHideAnimationStart();
         animatorSet.start();
+    }
+
+    private List<Animator> createHideTransitionAnimators() {
+        List<Animator> result = new ArrayList<>();
+        for (String key : sharedElements.toElements.keySet()) {
+            result.addAll(new SharedElementAnimatorCreator(sharedElements.getToElement(key), sharedElements.getFromElement(key)).createHide());
+        }
+        return result;
     }
 
     private List<Animator> createTransitionAnimators() {

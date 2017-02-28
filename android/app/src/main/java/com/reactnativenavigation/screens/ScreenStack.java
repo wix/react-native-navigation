@@ -140,7 +140,6 @@ public class ScreenStack {
 
     private void pushScreenToVisibleStackWithSharedElementTransition(LayoutParams layoutParams, final Screen nextScreen, final Screen previousScreen) {
         nextScreen.setVisibility(View.INVISIBLE);
-        addScreen(nextScreen, layoutParams);
         nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
@@ -152,6 +151,7 @@ public class ScreenStack {
                 });
             }
         });
+        addScreen(nextScreen, layoutParams);
     }
 
     private void pushScreenToInvisibleStack(LayoutParams layoutParams, Screen nextScreen, Screen previousScreen) {

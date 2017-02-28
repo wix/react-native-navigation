@@ -15,11 +15,11 @@ import com.reactnativenavigation.views.sharedElementTransition.SharedElementsAni
 
 import javax.annotation.Nullable;
 
-public class ScreenAnimator {
+class ScreenAnimator {
     private final float translationY;
     private Screen screen;
 
-    public ScreenAnimator(Screen screen) {
+    ScreenAnimator(Screen screen) {
         this.screen = screen;
         translationY = 0.08f * ViewUtils.getScreenHeight();
     }
@@ -99,13 +99,11 @@ public class ScreenAnimator {
     }
 
     void showWithSharedElementsTransitions(Runnable onAnimationEnd) {
-        this.screen.setVisibility(View.VISIBLE);
-        SharedElementsAnimator sharedElementsAnimator = new SharedElementsAnimator(this.screen.sharedElements);
-        sharedElementsAnimator.show(onAnimationEnd);
+        screen.setVisibility(View.VISIBLE);
+        new SharedElementsAnimator(this.screen.sharedElements).show(onAnimationEnd);
     }
 
     void hideWithSharedElementsTransition(Runnable onAnimationEnd) {
-        SharedElementsAnimator sharedElementsAnimator = new SharedElementsAnimator(screen.sharedElements);
-        sharedElementsAnimator.hide(onAnimationEnd);
+        new SharedElementsAnimator(screen.sharedElements).hide(onAnimationEnd);
     }
 }

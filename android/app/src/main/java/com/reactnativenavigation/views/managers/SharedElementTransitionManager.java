@@ -35,4 +35,9 @@ public class SharedElementTransitionManager extends ViewGroupManager<SharedEleme
     public void updateExtraData(SharedElementTransition root, Object extraData) {
 
     }
+
+    @Override
+    public boolean needsCustomLayoutForChildren() {
+        return true;
+    }
 }

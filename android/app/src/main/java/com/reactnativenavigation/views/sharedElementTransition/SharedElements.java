@@ -2,8 +2,11 @@ package com.reactnativenavigation.views.sharedElementTransition;
 
 import android.view.View;
 
+import com.reactnativenavigation.utils.ViewUtils;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SharedElements {
     // These need to be weak references or better yet - clear them in `onViewRemoved`
@@ -49,9 +52,35 @@ public class SharedElements {
         this.fromElements = new HashMap<>();
     }
 
-    void onShowAnimationStart() {
+    void performWhenChildViewsAreDrawn(final Runnable onReady) {
+        final AtomicInteger latch = new AtomicInteger(toElements.size());
+        for (SharedElementTransition toElement : toElements.values()) {
+            ViewUtils.runOnPreDraw(toElement.getSharedView(), new Runnable() {
+                @Override
+                public void run() {
+                    if (latch.decrementAndGet() == 0) {
+                        onReady.run();
+                    }
+                }
+            });
+        }
+    }
+
+    void attachChildViewsToScreen() {
         for (SharedElementTransition toElement : toElements.values()) {
             toElement.attachChildToScreen();
+        }
+    }
+
+    void onShowAnimationWillStart() {
+        for (SharedElementTransition toElement : toElements.values()) {
+            toElement.hideChild();
+        }
+    }
+
+    void onShowAnimationStart() {
+        for (final SharedElementTransition toElement : toElements.values()) {
+            toElement.showChild();
         }
     }
 
