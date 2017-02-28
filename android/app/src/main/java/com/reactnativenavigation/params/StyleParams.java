@@ -35,6 +35,10 @@ public class StyleParams {
         public String getHexColor() {
             return String.format("#%06X", (0xFFFFFF & getColor()));
         }
+
+        public int getColor(int defaultColor) {
+            return hasColor() ? getColor() : defaultColor;
+        }
     }
 
     public Color statusBarColor;

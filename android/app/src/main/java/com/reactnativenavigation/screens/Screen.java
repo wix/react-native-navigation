@@ -9,6 +9,7 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 
 import com.facebook.react.bridge.Callback;
+import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.events.ContextualMenuHiddenEvent;
 import com.reactnativenavigation.events.Event;
@@ -218,19 +219,27 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     public abstract void setOnDisplayListener(OnDisplayListener onContentViewDisplayedListener);
 
     public void show() {
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
         screenAnimator.show(screenParams.animateScreenTransitions);
     }
 
     public void show(boolean animated) {
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
         screenAnimator.show(animated);
     }
 
     public void show(boolean animated, Runnable onAnimationEnd) {
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
         setStyle();
         screenAnimator.show(animated, onAnimationEnd);
     }
 
     public void hide(boolean animated, Runnable onAnimatedEnd) {
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willDisappear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didDisappear", screenParams.getNavigatorEventId());
         screenAnimator.hide(animated, onAnimatedEnd);
     }
 

@@ -130,6 +130,8 @@ function convertStyleParams(originalStyleObject) {
     collapsingToolBarComponent: originalStyleObject.collapsingToolBarComponent,
     collapsingToolBarComponentHeight: originalStyleObject.collapsingToolBarComponentHeight,
     collapsingToolBarCollapsedColor: processColor(originalStyleObject.collapsingToolBarCollapsedColor),
+    collapsingToolBarExpendedColor: processColor(originalStyleObject.collapsingToolBarExpendedColor),
+    showTitleWhenExpended: originalStyleObject.showTitleWhenExpended,
     expendCollapsingToolBarOnTopTabChange: originalStyleObject.expendCollapsingToolBarOnTopTabChange,
     titleBarHidden: originalStyleObject.navBarHidden,
     titleBarHideOnScroll: originalStyleObject.navBarHideOnScroll,

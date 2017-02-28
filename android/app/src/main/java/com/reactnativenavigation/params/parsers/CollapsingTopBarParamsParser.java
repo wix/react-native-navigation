@@ -33,7 +33,9 @@ class CollapsingTopBarParamsParser extends Parser {
         result.reactViewId = params.getString("collapsingToolBarComponent", null);
         result.expendOnTopTabChange = params.getBoolean("expendCollapsingToolBarOnTopTabChange");
         result.scrimColor = getColor(params, "collapsingToolBarCollapsedColor", new StyleParams.Color());
+        result.expendedTitleBarColor = getColor(params, "collapsingToolBarExpendedColor", new StyleParams.Color());
         result.showTitleWhenCollapsed = hasReactView;
+        result.showTitleWhenExpended = params.getBoolean("showTitleWhenExpended", result.expendedTitleBarColor.hasColor());
         result.collapseBehaviour = getCollapseBehaviour();
         return result;
     }

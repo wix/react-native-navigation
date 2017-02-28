@@ -1,6 +1,9 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -9,7 +12,7 @@ import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.TitleBar;
 import com.reactnativenavigation.views.TitleBarBackground;
-import com.reactnativenavigation.views.TranslucentTitleBarBackground;
+import com.reactnativenavigation.views.TranslucentDrawable;
 
 public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener {
     private CollapsingTextView title;
@@ -25,26 +28,32 @@ public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener
         this.params = params;
         addCollapsingTitle();
         setOnTouchListener(this);
-        hideTitle(params);
+        setInitialTitleViewVisibility();
     }
 
-    private void hideTitle(CollapsingTopBarParams params) {
-        if (params.showTitleWhenCollapsed) {
-            ViewUtils.runOnPreDraw(this, new Runnable() {
-                @Override
-                public void run() {
-                    View titleView = getTitleView();
-                    if (titleView != null) {
-                        titleView.setAlpha(0);
-                    }
+    private void setInitialTitleViewVisibility() {
+        ViewUtils.runOnPreDraw(this, new Runnable() {
+            @Override
+            public void run() {
+                View titleView = getTitleView();
+                if (titleView == null) {
+                    return;
                 }
-            });
-        }
+                if (params.showTitleWhenExpended) {
+                    titleView.setAlpha(1);
+                } else if (params.showTitleWhenCollapsed) {
+                    titleView.setAlpha(0);
+                }
+            }
+        });
+
     }
 
     @Override
     public void hideTitle() {
-        super.hideTitle();
+        if (!params.showTitleWhenExpended) {
+            super.hideTitle();
+        }
         titleBarBackground.showTranslucentBackground();
     }
 
@@ -88,18 +97,16 @@ public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener
 
     @Override
     protected void setBackground(StyleParams params) {
-        titleBarBackground = createBackground(params);
+        titleBarBackground = createBackground(params,
+                params.collapsingTopBarParams.expendedTitleBarColor,
+                params.collapsingTopBarParams.scrimColor);
         setBackground(titleBarBackground);
     }
 
-    private TitleBarBackground createBackground(StyleParams params) {
-        return hasTranslucentAndSolidBackground(params) ?
-            new TitleBarBackground(params.collapsingTopBarParams.scrimColor) :
-            new TranslucentTitleBarBackground();
-    }
-
-    private boolean hasTranslucentAndSolidBackground(StyleParams params) {
-        return params.topBarTranslucent && params.collapsingTopBarParams.scrimColor.hasColor();
+    private TitleBarBackground createBackground(StyleParams styleParams, StyleParams.Color expendedColor, StyleParams.Color collapsedColor) {
+        final Drawable expendedDrawable = styleParams.topBarTranslucent ? new TranslucentDrawable() : new ColorDrawable(expendedColor.getColor(Color.TRANSPARENT));
+        final Drawable collapsedDrawable = new ColorDrawable(collapsedColor.getColor(Color.TRANSPARENT));
+        return new TitleBarBackground(expendedDrawable, collapsedDrawable);
     }
 
     public void collapse(CollapseAmount amount) {
