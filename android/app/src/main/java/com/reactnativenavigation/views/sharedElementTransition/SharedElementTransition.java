@@ -2,7 +2,6 @@ package com.reactnativenavigation.views.sharedElementTransition;
 
 import android.content.Context;
 import android.support.annotation.Keep;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
@@ -86,8 +85,9 @@ public class SharedElementTransition extends FrameLayout {
 
     @Keep
     public void setTextColor(Integer color) {
-        Log.d(TAG, "setTextColor() called with: color = [" + color + "]");
-        ((TextView) child).setTextColor(color);
+        if (child instanceof TextView) {
+            ViewUtils.setSpannedColor((TextView) child, color);
+        }
     }
 
     public void attachChildToScreen() {

@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views.sharedElementTransition;
 
 import android.animation.Animator;
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -52,6 +53,9 @@ class SharedElementAnimatorCreator {
         if (shouldCreateScaleYAnimator(resolver)) {
             result.add(createScaleYAnimator(resolver));
         }
+        if (shouldCreateColorAnimator(resolver)) {
+            result.add(createColorAnimator(resolver));
+        }
         return result;
     }
 
@@ -73,6 +77,10 @@ class SharedElementAnimatorCreator {
 
     private boolean shouldAddCurvedMotionAnimator(AnimatorValuesResolver resolver, InterpolationParams interpolation) {
         return interpolation instanceof PathInterpolationParams && (resolver.dx != 0 || resolver.dy != 0);
+    }
+
+    private boolean shouldCreateColorAnimator(AnimatorValuesResolver resolver) {
+        return resolver.startColor != resolver.endColor;
     }
 
     private ObjectAnimator createCurvedMotionAnimator(AnimatorValuesResolver resolver, Easing easing) {
@@ -104,5 +112,15 @@ class SharedElementAnimatorCreator {
     private ObjectAnimator createScaleYAnimator(AnimatorValuesResolver resolver) {
         to.getSharedView().setPivotY(0);
         return ObjectAnimator.ofFloat(to.getSharedView(), View.SCALE_Y, resolver.startScaleY, resolver.endScaleY);
+    }
+
+    private ObjectAnimator createColorAnimator(AnimatorValuesResolver resolver) {
+        return ObjectAnimator.ofObject(
+                to,
+                "textColor",
+                new ArgbEvaluator(),
+                resolver.startColor,
+                resolver.endColor
+        );
     }
 }

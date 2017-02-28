@@ -6,12 +6,17 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.SpannedString;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.AppStyle;
@@ -154,5 +159,17 @@ public class ViewUtils {
         view.getLocationOnScreen(xy);
         xy[1] -= convertDpToPixel(25);
         return new Point(xy[0], xy[1]);
+    }
+
+    public static ForegroundColorSpan[] getForegroundColorSpans(TextView view) {
+        SpannedString text = (SpannedString) view.getText();
+        return text.getSpans(0, text.length(), ForegroundColorSpan.class);
+    }
+
+    public static void setSpannedColor(TextView view, int color) {
+        SpannedString text = (SpannedString) view.getText();
+        SpannableString spannable = new SpannableString(text);
+        spannable.setSpan(new ForegroundColorSpan(color), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        view.setText(spannable);
     }
 }
