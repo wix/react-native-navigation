@@ -1,7 +1,6 @@
 package com.reactnativenavigation.views.sharedElementTransition;
 
 import android.animation.Animator;
-import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -10,6 +9,8 @@ import com.reactnativenavigation.params.InterpolationParams;
 import com.reactnativenavigation.params.InterpolationParams.Easing;
 import com.reactnativenavigation.params.PathInterpolationParams;
 import com.reactnativenavigation.views.utils.AnimatorPath;
+import com.reactnativenavigation.views.utils.ColorUtils;
+import com.reactnativenavigation.views.utils.LabColorEvaluator;
 import com.reactnativenavigation.views.utils.PathEvaluator;
 
 import java.util.ArrayList;
@@ -118,9 +119,9 @@ class SharedElementAnimatorCreator {
         return ObjectAnimator.ofObject(
                 to,
                 "textColor",
-                new ArgbEvaluator(),
-                resolver.startColor,
-                resolver.endColor
+                new LabColorEvaluator(),
+                ColorUtils.colorToLAB(resolver.startColor),
+                ColorUtils.colorToLAB(resolver.endColor)
         );
     }
 }

@@ -17,6 +17,7 @@ import com.reactnativenavigation.react.ReactViewHacks;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.utils.ColorUtils;
 import com.reactnativenavigation.views.utils.PathPoint;
 import com.reactnativenavigation.views.utils.Point;
 
@@ -87,10 +88,10 @@ public class SharedElementTransition extends FrameLayout {
     }
 
     @Keep
-    public void setTextColor(Integer color) {
+    public void setTextColor(double[] color) {
         if (child instanceof TextView) {
             createSpannableStringOnce((TextView) child);
-            ViewUtils.setSpanColor(spannableString, color);
+            ViewUtils.setSpanColor(spannableString, ColorUtils.labToColor(color));
             ((TextView) child).setText(spannableString);
         }
     }
