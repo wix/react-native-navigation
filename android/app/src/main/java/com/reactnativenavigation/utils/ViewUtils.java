@@ -166,10 +166,7 @@ public class ViewUtils {
         return text.getSpans(0, text.length(), ForegroundColorSpan.class);
     }
 
-    public static void setSpannedColor(TextView view, int color) {
-        SpannedString text = (SpannedString) view.getText();
-        SpannableString spannable = new SpannableString(text);
-        spannable.setSpan(new ForegroundColorSpan(color), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        view.setText(spannable);
+    public static void setSpanColor(SpannableString span, int color) {
+        span.setSpan(new ForegroundColorSpan(color), 0, span.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 }

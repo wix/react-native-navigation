@@ -2,6 +2,8 @@ package com.reactnativenavigation.views.sharedElementTransition;
 
 import android.content.Context;
 import android.support.annotation.Keep;
+import android.text.SpannableString;
+import android.text.SpannedString;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
@@ -30,6 +32,7 @@ public class SharedElementTransition extends FrameLayout {
     private int childWidth = -1;
     private int childHeight = -1;
     private int index = 0;
+    private SpannableString spannableString;
 
     public void setShowInterpolation(InterpolationParams showInterpolation) {
         this.showInterpolation = showInterpolation;
@@ -86,7 +89,16 @@ public class SharedElementTransition extends FrameLayout {
     @Keep
     public void setTextColor(Integer color) {
         if (child instanceof TextView) {
-            ViewUtils.setSpannedColor((TextView) child, color);
+            createSpannableStringOnce((TextView) child);
+            ViewUtils.setSpanColor(spannableString, color);
+            ((TextView) child).setText(spannableString);
+        }
+    }
+
+    private void createSpannableStringOnce(TextView view) {
+        if (spannableString == null) {
+            SpannedString text = (SpannedString) view.getText();
+            spannableString = new SpannableString(text);
         }
     }
 
