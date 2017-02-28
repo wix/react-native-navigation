@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SharedElementsAnimator {
-    private static final String TAG = "SharedElementsAnimator";
     private final SharedElements sharedElements;
 
     public SharedElementsAnimator(SharedElements sharedElements) {
@@ -51,6 +50,16 @@ public class SharedElementsAnimator {
                 });
                 return animatorSet;
             }
+
+            private List<Animator> createTransitionAnimators() {
+                List<Animator> result = new ArrayList<>();
+                for (String key : sharedElements.toElements.keySet()) {
+                    SharedElementTransition toElement = sharedElements.getToElement(key);
+                    SharedElementTransition fromElement = sharedElements.getFromElement(key);
+                    result.addAll(new SharedElementAnimatorCreator(fromElement, toElement).createShow());
+                }
+                return result;
+            }
         });
     }
 
@@ -74,16 +83,6 @@ public class SharedElementsAnimator {
         List<Animator> result = new ArrayList<>();
         for (String key : sharedElements.toElements.keySet()) {
             result.addAll(new SharedElementAnimatorCreator(sharedElements.getToElement(key), sharedElements.getFromElement(key)).createHide());
-        }
-        return result;
-    }
-
-    private List<Animator> createTransitionAnimators() {
-        List<Animator> result = new ArrayList<>();
-        for (String key : sharedElements.toElements.keySet()) {
-            SharedElementTransition toElement = sharedElements.getToElement(key);
-            SharedElementTransition fromElement = sharedElements.getFromElement(key);
-            result.addAll(new SharedElementAnimatorCreator(fromElement, toElement).createShow());
         }
         return result;
     }
