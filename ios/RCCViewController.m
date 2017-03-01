@@ -286,11 +286,33 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     if (navButtonTextAttributes.allKeys.count > 0) {
         
         for (UIBarButtonItem *item in viewController.navigationItem.leftBarButtonItems) {
+          
+          if (item.customView && [item.customView isKindOfClass:[UIButton class]]) {
+            
+            UIButton *button = (UIButton *)item.customView;
+            NSString *title = [button titleForState:UIControlStateNormal] ? : @"";
+            [button setAttributedTitle:[[NSAttributedString alloc] initWithString:title attributes:navButtonTextAttributes] forState:UIControlStateNormal];
+            [button sizeToFit];
+            item.customView = button;
+            
+          } else {
             [item setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
+          }
         }
         
         for (UIBarButtonItem *item in viewController.navigationItem.rightBarButtonItems) {
+          
+          if (item.customView && [item.customView isKindOfClass:[UIButton class]]) {
+            
+            UIButton *button = (UIButton *)item.customView;
+            NSString *title = [button titleForState:UIControlStateNormal] ? : @"";
+            [button setAttributedTitle:[[NSAttributedString alloc] initWithString:title attributes:navButtonTextAttributes] forState:UIControlStateNormal];
+            [button sizeToFit];
+            item.customView = button;
+            
+          } else {
             [item setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
+          }
         }
 
         // At the moment, this seems to be the only thing that gets the back button correctly

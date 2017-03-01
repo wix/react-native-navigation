@@ -3,6 +3,7 @@
 #import "RCCManager.h"
 #import <objc/runtime.h>
 #import "RCCTitleViewHelper.h"
+#import "RCTHelpers.h"
 
 #if __has_include(<React/RCTEventDispatcher.h>)
 #import <React/RCTEventDispatcher.h>
@@ -269,23 +270,61 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     id icon = button[@"icon"];
     if (icon) iconImage = [RCTConvert UIImage:icon];
     
+    BOOL showTitleAndIcon = button[@"showAsAction"] && [button[@"showAsAction"] isEqualToString:@"withText"];
+    
     UIBarButtonItem *barButtonItem;
-    if (iconImage)
+    if (iconImage && !showTitleAndIcon)
     {
       barButtonItem = [[UIBarButtonItem alloc] initWithImage:iconImage style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPress:)];
+    }
+    else if (iconImage && showTitleAndIcon && title) {
+      
+      UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+      
+      button.tintColor = [viewController.navigationController.navigationBar tintColor];
+      [button setImage:[iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+      [button setTitle:title forState:UIControlStateNormal];
+      
+      if ([viewController isKindOfClass:[RCCViewController class]]) {
+        RCCViewController *rccViewController = (RCCViewController *)viewController;
+        NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:rccViewController.navigatorStyle withPrefix:@"navBarButton"];
+        
+        if (navButtonTextAttributes.allKeys.count > 0) {
+          [button setAttributedTitle:[[NSAttributedString alloc] initWithString:title attributes:navButtonTextAttributes] forState:UIControlStateNormal];
+        } else if ([[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal]) {
+          [button setAttributedTitle:[[NSAttributedString alloc] initWithString:title attributes:[[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal]] forState:UIControlStateNormal];
+        }
+      }
+      
+      
+      [button sizeToFit];
+      [button addTarget:self action:@selector(onButtonPress:) forControlEvents:UIControlEventTouchUpInside];
+    
+      barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+      barButtonItem.customView.userInteractionEnabled = true;
     }
     else if (title)
     {
       barButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPress:)];
     }
     else continue;
-    objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    if (barButtonItem.customView && [barButtonItem.customView isKindOfClass:[UIButton class]]) {
+      objc_setAssociatedObject(barButtonItem.customView, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    } else {
+      objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    
     [barButtonItems addObject:barButtonItem];
     
     NSString *buttonId = button[@"id"];
     if (buttonId)
     {
-      objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_ID, buttonId, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+      if (barButtonItem.customView && [barButtonItem.customView isKindOfClass:[UIButton class]]) {
+        objc_setAssociatedObject(barButtonItem.customView, &CALLBACK_ASSOCIATED_ID, buttonId, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+      } else {
+        objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_ID, buttonId, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+      }
     }
     
     NSNumber *disabled = button[@"disabled"];
@@ -296,7 +335,11 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     
     NSNumber *disableIconTintString = button[@"disableIconTint"];
     BOOL disableIconTint = disableIconTintString ? [disableIconTintString boolValue] : NO;
-    if (disableIconTint) {
+    if (disableIconTint && barButtonItem.customView && [barButtonItem.customView isKindOfClass:[UIButton class]]) {
+      UIButton *button = (UIButton *)barButtonItem.customView;
+      [button setImage:[[button imageForState:UIControlStateNormal] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+    }
+    else if (disableIconTint) {
       [barButtonItem setImage:[barButtonItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     }
     
