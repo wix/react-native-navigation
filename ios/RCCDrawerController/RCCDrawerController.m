@@ -2,7 +2,7 @@
 #import "RCCViewController.h"
 #import "MMExampleDrawerVisualStateManager.h"
 #import "RCCDrawerHelper.h"
-#import "RCTConvert.h"
+#import <React/RCTConvert.h>
 #import "RCCManagerModule.h"
 
 #define RCCDRAWERCONTROLLER_ANIMATION_DURATION 0.33f

@@ -3,9 +3,10 @@
 #import "RCCTabBarController.h"
 #import "RCCDrawerController.h"
 #import "RCCTheSideBarManagerViewController.h"
-#import "RCTRootView.h"
+#import <React/RCTRootView.h>
 #import "RCCManager.h"
-#import "RCTConvert.h"
+#import <React/RCTConvert.h>
+#import <React/RCTEventDispatcher.h>
 #import "RCCExternalViewControllerProtocol.h"
 #import "RCTHelpers.h"
 #import "RCCTitleViewHelper.h"
@@ -145,7 +146,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     
     [self setStyleOnInit];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTReloadNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTJavaScriptWillStartLoadingNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCancelReactTouches) name:RCCViewControllerCancelReactTouchesNotification object:nil];
     
     // In order to support 3rd party native ViewControllers, we support passing a class name as a prop mamed `ExternalNativeScreenClass`
@@ -173,17 +174,46 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     }
 }
 
+- (void)sendScreenChangedEvent:(NSString *)eventName
+{
+    if ([self.view isKindOfClass:[RCTRootView class]]){
+        
+        RCTRootView *rootView = (RCTRootView *)self.view;
+        
+        if (rootView.appProperties && rootView.appProperties[@"navigatorEventID"]) {
+            
+            [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:rootView.appProperties[@"navigatorEventID"] body:@
+             {
+                 @"type": @"ScreenChangedEvent",
+                 @"id": eventName
+             }];
+        }
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self sendScreenChangedEvent:@"didAppear"];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    [self sendScreenChangedEvent:@"willAppear"];
     [self setStyleOnAppear];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self sendScreenChangedEvent:@"didDisappear"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+    [self sendScreenChangedEvent:@"willDisappear"];
     [self setStyleOnDisappear];
 }
 
@@ -379,7 +409,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         }
     };
     
-    if(self.transitionCoordinator.initiallyInteractive || !navBarTransparentBool) {
+    if (!self.transitionCoordinator || self.transitionCoordinator.initiallyInteractive || !navBarTransparentBool || appeared) {
         action();
     } else {
         UIView* backgroundView = [self.navigationController.navigationBar valueForKey:@"backgroundView"];
