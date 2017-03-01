@@ -7,6 +7,9 @@
 //
 
 #import "RCTHelpers.h"
+#import "RCCViewController.h"
+#import "RCCNavigationController.h"
+#import <objc/runtime.h>
 
 #if __has_include(<React/RCTView.h>)
 #import <React/RCTView.h>
@@ -94,6 +97,21 @@
     }
     
     return removed;
+}
+
++ (NSArray *)textAttributeKeys
+{
+    return @[
+       @"color",
+       @"fontFamily",
+       @"fontWeight",
+       @"fontSize",
+       @"fontStyle",
+       @"shadowColor",
+       @"shadowOffset",
+       @"shadowBlurRadius",
+       @"showShadow"
+    ];
 }
 
 + (NSMutableDictionary *)textAttributesFromDictionary:(NSDictionary *)dictionary withPrefix:(NSString *)prefix baseFont:(UIFont *)baseFont
@@ -221,5 +239,88 @@
     return [self textAttributesFromDictionary:dictionary withPrefix:prefix baseFont:[UIFont systemFontOfSize:[UIFont systemFontSize]]];
 }
 
++ (void)styleNavigationItem:(UIBarButtonItem *)barButtonItem inViewController:(UIViewController *)viewController side:(NSString *)side
+{
+    if ([viewController isKindOfClass:[RCCViewController class]]) {
+        
+        RCCViewController *rccViewController = (RCCViewController *)viewController;
+        NSDictionary *navigatorStyle = rccViewController.navigatorStyle;
+        
+        NSString *capitalSide = [side capitalizedString];
+        
+        BOOL needsButton = !!navigatorStyle[@"navBarButtonBorderRadius"] || !!navigatorStyle[@"navBarButtonBorderWidth"] || !!navigatorStyle[@"navBarButtonBorderColor"] || !!navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderRadius", capitalSide]] || !!navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderWidth", capitalSide]] || !!navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderColor", capitalSide]] || !!navigatorStyle[@"navBarButtonPadding"] || !!navigatorStyle[[NSString stringWithFormat:@"navBarButton%@Padding", capitalSide]];
+        
+        UIButton *button;
+        
+        if (needsButton && !barButtonItem.customView) {
+            
+            button = [UIButton buttonWithType:UIButtonTypeCustom];
+            if (barButtonItem.image) {
+                [button setImage:[barButtonItem.image imageWithRenderingMode:barButtonItem.image.renderingMode] forState:UIControlStateNormal];
+            }
+            if (barButtonItem.title) {
+                [button setTitle:barButtonItem.title forState:UIControlStateNormal];
+            }
+            
+            [button addTarget:barButtonItem.target action:barButtonItem.action forControlEvents:UIControlEventTouchUpInside];
+            
+            NSString *callbackId = objc_getAssociatedObject(barButtonItem, &NAVIGATION_ITEM_CALLBACK_ID_ASSOCIATED_KEY);
+            NSString *buttonId = objc_getAssociatedObject(barButtonItem, &NAVIGATION_ITEM_BUTTON_ID_ASSOCIATED_KEY);
+            
+            objc_setAssociatedObject(button, &NAVIGATION_ITEM_BUTTON_ID_ASSOCIATED_KEY, buttonId, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            objc_setAssociatedObject(button, &NAVIGATION_ITEM_CALLBACK_ID_ASSOCIATED_KEY, callbackId, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+        } else if (barButtonItem.customView && [barButtonItem.customView isKindOfClass:[UIButton class]]) {
+            button = (UIButton *)barButtonItem.customView;
+        }
+        
+        NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:rccViewController.navigatorStyle withPrefix:@"navBarButton"];
+        NSMutableDictionary *navButtonSideTextAttributes = [RCTHelpers textAttributesFromDictionary:rccViewController.navigatorStyle withPrefix:[NSString stringWithFormat:@"navBarButton%@", capitalSide]];
+        if (navButtonSideTextAttributes.allKeys.count > 0) {
+            [navButtonTextAttributes setValuesForKeysWithDictionary:navButtonSideTextAttributes];
+        }
+        
+        if (button) {
+        
+            button.tintColor = [viewController.navigationController.navigationBar tintColor];
+            
+            id borderRadius = navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderRadius", capitalSide]] ? : navigatorStyle[@"navBarButtonBorderRadius"];
+            if (borderRadius) {
+                button.layer.cornerRadius = [RCTConvert CGFloat:borderRadius];
+            }
+            
+            id borderWidth = navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderWidth", capitalSide]] ? : navigatorStyle[@"navBarButtonBorderWidth"];
+            if (borderWidth) {
+                button.layer.borderWidth = [RCTConvert CGFloat:borderWidth];
+            }
+            
+            id borderColor = navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderColor", capitalSide]] ? : navigatorStyle[@"navBarButtonBorderColor"];
+            if (borderColor) {
+                button.layer.borderColor = [RCTConvert CGColor:borderColor];
+            }
+            
+            id padding = navigatorStyle[[NSString stringWithFormat:@"navBarButton%@Padding", capitalSide]] ? : navigatorStyle[@"navBarButtonPadding"];
+            if (padding) {
+                button.contentEdgeInsets = [RCTConvert UIEdgeInsets:padding];
+            }
+            
+            if (navButtonTextAttributes.allKeys.count > 0) {
+                [button setAttributedTitle:[[NSAttributedString alloc] initWithString:[button titleForState:UIControlStateNormal] ? : @"" attributes:navButtonTextAttributes] forState:UIControlStateNormal];
+            } else if ([[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal]) {
+                [button setAttributedTitle:[[NSAttributedString alloc] initWithString:[button titleForState:UIControlStateNormal] ? : @"" attributes:[[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal]] forState:UIControlStateNormal];
+            }
+            
+            if (!barButtonItem.customView) {
+                barButtonItem.customView = button;
+            }
+            
+            [button sizeToFit];
+            
+        } else if (navButtonTextAttributes.allKeys.count > 0) {
+            
+            [barButtonItem setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
+        }
+    }
+}
 
 @end

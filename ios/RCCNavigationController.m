@@ -21,10 +21,10 @@
 #import "React/RCTConvert.h"   // Required when used as a Pod in a Swift project
 #endif
 
-@implementation RCCNavigationController
+NSString *const NAVIGATION_ITEM_CALLBACK_ID_ASSOCIATED_KEY = @"RCCNavigationController.CALLBACK_ASSOCIATED_KEY";
+NSString *const NAVIGATION_ITEM_BUTTON_ID_ASSOCIATED_KEY = @"RCCNavigationController.CALLBACK_ASSOCIATED_ID";
 
-NSString const *CALLBACK_ASSOCIATED_KEY = @"RCCNavigationController.CALLBACK_ASSOCIATED_KEY";
-NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSOCIATED_ID";
+@implementation RCCNavigationController
 
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary*)globalProps bridge:(RCTBridge *)bridge
 {
@@ -83,17 +83,43 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       NSMutableDictionary *mergedStyle = [NSMutableDictionary dictionaryWithDictionary:parent.navigatorStyle];
       
       // there are a few styles that we don't want to remember from our parent (they should be local)
-      [mergedStyle removeObjectForKey:@"navBarHidden"];
-      [mergedStyle removeObjectForKey:@"statusBarHidden"];
-      [mergedStyle removeObjectForKey:@"navBarHideOnScroll"];
-      [mergedStyle removeObjectForKey:@"drawUnderNavBar"];
-      [mergedStyle removeObjectForKey:@"drawUnderTabBar"];
-      [mergedStyle removeObjectForKey:@"statusBarBlur"];
-      [mergedStyle removeObjectForKey:@"navBarBlur"];
-      [mergedStyle removeObjectForKey:@"navBarTranslucent"];
-      [mergedStyle removeObjectForKey:@"statusBarHideWithNavBar"];
-      [mergedStyle removeObjectForKey:@"autoAdjustScrollViewInsets"];
-      [mergedStyle removeObjectForKey:@"statusBarTextColorSchemeSingleScreen"];
+      
+      NSArray <NSString *> *localStyleKeys = @[
+          @"navBarHidden",
+          @"statusBarHidden",
+          @"navBarHideOnScroll",
+          @"drawUnderNavBar",
+          @"drawUnderTabBar",
+          @"statusBarBlur",
+          @"navBarBlur",
+          @"navBarTranslucent",
+          @"statusBarHideWithNavBar",
+          @"autoAdjustScrollViewInsets",
+          @"statusBarTextColorSchemeSingleScreen",
+          @"navBarButtonBorderRadius",
+          @"navBarButtonBorderWidth",
+          @"navBarButtonBorderColor",
+          @"navBarButtonPadding",
+          @"navBarButtonLeftBorderRadius",
+          @"navBarButtonLeftBorderWidth",
+          @"navBarButtonLeftBorderColor",
+          @"navBarButtonLeftPadding",
+          @"navBarButtonRightBorderRadius",
+          @"navBarButtonRightBorderWidth",
+          @"navBarButtonRightBorderColor",
+          @"navBarButtonRightPadding"
+      ];
+      
+      [localStyleKeys enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [mergedStyle removeObjectForKey:obj];
+      }];
+      
+      [[RCTHelpers textAttributeKeys] enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        NSString *key = [obj stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[obj substringToIndex:1].capitalizedString];
+        [mergedStyle removeObjectForKey:[NSString stringWithFormat:@"navBarButtonLeft%@", key]];
+        [mergedStyle removeObjectForKey:[NSString stringWithFormat:@"navBarButtonRight%@", key]];
+      }];
       
       [mergedStyle addEntriesFromDictionary:navigatorStyle];
       navigatorStyle = mergedStyle;
@@ -250,9 +276,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
 
 -(void)onButtonPress:(UIBarButtonItem*)barButtonItem
 {
-  NSString *callbackId = objc_getAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY);
+  NSString *callbackId = objc_getAssociatedObject(barButtonItem, &NAVIGATION_ITEM_CALLBACK_ID_ASSOCIATED_KEY);
   if (!callbackId) return;
-  NSString *buttonId = objc_getAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_ID);
+  NSString *buttonId = objc_getAssociatedObject(barButtonItem, &NAVIGATION_ITEM_BUTTON_ID_ASSOCIATED_KEY);
   [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:callbackId body:@
    {
      @"type": @"NavBarButtonPress",
@@ -281,27 +307,11 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       
       UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
       
-      button.tintColor = [viewController.navigationController.navigationBar tintColor];
       [button setImage:[iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
       [button setTitle:title forState:UIControlStateNormal];
-      
-      if ([viewController isKindOfClass:[RCCViewController class]]) {
-        RCCViewController *rccViewController = (RCCViewController *)viewController;
-        NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:rccViewController.navigatorStyle withPrefix:@"navBarButton"];
-        
-        if (navButtonTextAttributes.allKeys.count > 0) {
-          [button setAttributedTitle:[[NSAttributedString alloc] initWithString:title attributes:navButtonTextAttributes] forState:UIControlStateNormal];
-        } else if ([[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal]) {
-          [button setAttributedTitle:[[NSAttributedString alloc] initWithString:title attributes:[[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal]] forState:UIControlStateNormal];
-        }
-      }
-      
-      
-      [button sizeToFit];
       [button addTarget:self action:@selector(onButtonPress:) forControlEvents:UIControlEventTouchUpInside];
     
       barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-      barButtonItem.customView.userInteractionEnabled = true;
     }
     else if (title)
     {
@@ -309,10 +319,15 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     }
     else continue;
     
+    [RCTHelpers styleNavigationItem:barButtonItem inViewController:viewController side:side];
+    if (barButtonItem.customView) {
+      [barButtonItem.customView sizeToFit];
+    }
+    
     if (barButtonItem.customView && [barButtonItem.customView isKindOfClass:[UIButton class]]) {
-      objc_setAssociatedObject(barButtonItem.customView, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+      objc_setAssociatedObject(barButtonItem.customView, &NAVIGATION_ITEM_CALLBACK_ID_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     } else {
-      objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+      objc_setAssociatedObject(barButtonItem, &NAVIGATION_ITEM_CALLBACK_ID_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     
     [barButtonItems addObject:barButtonItem];
@@ -321,9 +336,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     if (buttonId)
     {
       if (barButtonItem.customView && [barButtonItem.customView isKindOfClass:[UIButton class]]) {
-        objc_setAssociatedObject(barButtonItem.customView, &CALLBACK_ASSOCIATED_ID, buttonId, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(barButtonItem.customView, &NAVIGATION_ITEM_BUTTON_ID_ASSOCIATED_KEY, buttonId, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
       } else {
-        objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_ID, buttonId, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(barButtonItem, &NAVIGATION_ITEM_BUTTON_ID_ASSOCIATED_KEY, buttonId, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
       }
     }
     

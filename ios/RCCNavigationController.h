@@ -8,6 +8,9 @@
 #import "React/RCTBridge.h"   // Required when used as a Pod in a Swift project
 #endif
 
+FOUNDATION_EXPORT NSString *const NAVIGATION_ITEM_BUTTON_ID_ASSOCIATED_KEY;
+FOUNDATION_EXPORT NSString *const NAVIGATION_ITEM_CALLBACK_ID_ASSOCIATED_KEY;
+
 @interface RCCNavigationController : UINavigationController <UINavigationControllerDelegate>
 
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary*)globalProps bridge:(RCTBridge *)bridge;
