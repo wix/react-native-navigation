@@ -1,8 +1,5 @@
 package com.reactnativenavigation.bridge;
 
-import android.app.Activity;
-import android.content.res.Configuration;
-
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -227,23 +224,6 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getOrientation(Promise promise) {
-        Activity activity = getCurrentActivity();
-        if (activity != null) {
-            int orientation = getCurrentActivity().getResources().getConfiguration().orientation;
-            switch (orientation) {
-                case Configuration.ORIENTATION_PORTRAIT:
-                    promise.resolve("PORTRAIT");
-                    return;
-                case Configuration.ORIENTATION_LANDSCAPE:
-                    promise.resolve("LANDSCAPE");
-                    return;
-                case Configuration.ORIENTATION_UNDEFINED:
-                    promise.resolve("UNDEFINED");
-                    return;
-            }
-        } else {
-            promise.resolve("UNDEFINED");
-        }
+        NavigationCommandsHandler.getOrientation(promise);
     }
-
 }
