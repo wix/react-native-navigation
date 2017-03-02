@@ -7,21 +7,27 @@ import com.reactnativenavigation.params.LinearInterpolationParams;
 import com.reactnativenavigation.params.PathInterpolationParams;
 import com.reactnativenavigation.views.sharedElementTransition.ControlPoint;
 
-public class InterpolationParser extends Parser {
+class InterpolationParser extends Parser {
     private Bundle params;
 
     private static final float[] defaultShowControlPoints = new float[]{0.5f, 1, 0, 0.5f};
     private static final float[] defaultHideControlPoints = new float[]{0.5f, 0, 1, 0.5f};
 
-    public InterpolationParser(Bundle params) {
+    InterpolationParser(Bundle params) {
         this.params = params;
     }
 
-    public InterpolationParams parseShowInterpolation() {
+    InterpolationParams parseShowInterpolation() {
+        if (params.isEmpty()) {
+            return new LinearInterpolationParams();
+        }
         return parse(params.getBundle("show"), defaultShowControlPoints);
     }
 
-    public InterpolationParams parseHideInterpolation() {
+    InterpolationParams parseHideInterpolation() {
+        if (params.isEmpty()) {
+            return new LinearInterpolationParams();
+        }
         return parse(params.getBundle("hide"), defaultHideControlPoints);
     }
 

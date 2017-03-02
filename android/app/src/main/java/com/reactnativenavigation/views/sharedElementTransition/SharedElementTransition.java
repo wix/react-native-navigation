@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.react.views.image.ReactImageView;
-import com.reactnativenavigation.params.InterpolationParams;
+import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
 import com.reactnativenavigation.react.ReactViewHacks;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.Task;
@@ -22,11 +22,10 @@ import com.reactnativenavigation.views.utils.PathPoint;
 import com.reactnativenavigation.views.utils.Point;
 
 public class SharedElementTransition extends FrameLayout {
-    private String TAG = "SharedElementTransition";
-    public InterpolationParams showInterpolation;
-    public InterpolationParams hideInterpolation;
     public ViewGroup.LayoutParams childLayoutParams;
 
+    public SharedElementTransitionParams showTransitionParams;
+    public SharedElementTransitionParams hideTransitionParams;
     private View child;
     private int childLeft;
     private int childTop;
@@ -35,14 +34,6 @@ public class SharedElementTransition extends FrameLayout {
     private int index = 0;
     private SpannableString spannableText;
     private SpannedString spannedText;
-
-    public void setShowInterpolation(InterpolationParams showInterpolation) {
-        this.showInterpolation = showInterpolation;
-    }
-
-    public void setHideInterpolation(InterpolationParams hideInterpolation) {
-        this.hideInterpolation = hideInterpolation;
-    }
 
     public View getSharedView() {
         return child;
@@ -69,7 +60,6 @@ public class SharedElementTransition extends FrameLayout {
 
     @Override
     public void onViewAdded(final View child) {
-        if (this.child == null) TAG += child.getClass().getSimpleName();
         this.child = child;
         if (child instanceof ReactImageView && index++ % 2 == 0) {
             ReactViewHacks.disableReactImageViewRemoteImageFadeInAnimation((ReactImageView) child);
