@@ -1,6 +1,7 @@
 package com.reactnativenavigation.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -27,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ViewUtils {
     private static final AtomicInteger viewId = new AtomicInteger(1);
+    private static int statusBarHeight = -1;
 
     public static void runOnPreDraw(final View view, final Runnable task) {
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -157,8 +159,20 @@ public class ViewUtils {
     public static Point getLocationOnScreen(View view) {
         int[] xy = new int[2];
         view.getLocationOnScreen(xy);
-        xy[1] -= convertDpToPixel(25);
+        xy[1] -= getStatusBarPixelHeight();
         return new Point(xy[0], xy[1]);
+    }
+
+    private static int getStatusBarPixelHeight() {
+        if (statusBarHeight > 0) {
+            return statusBarHeight;
+        }
+        final Resources resources = NavigationApplication.instance.getResources();
+        final int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        statusBarHeight = resourceId > 0 ?
+            resources.getDimensionPixelSize(resourceId) :
+            (int) convertDpToPixel(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?  24 : 25);
+        return statusBarHeight;
     }
 
     public static ForegroundColorSpan[] getForegroundColorSpans(TextView view) {
