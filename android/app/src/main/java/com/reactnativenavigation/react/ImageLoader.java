@@ -1,10 +1,14 @@
 package com.reactnativenavigation.react;
 
+import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 
 import com.reactnativenavigation.NavigationApplication;
+
+import java.lang.reflect.Constructor;
 
 public class ImageLoader {
     private static final String FILE_SCHEME = "file";
@@ -19,6 +23,18 @@ public class ImageLoader {
             } else {
                 return loadResource(iconSource);
             }
+        }
+    }
+
+    public static Drawable loadClass(String className) {
+        Class clazz;
+        try {
+            clazz = Class.forName(className);
+            Constructor<?> constructor = clazz.getConstructor(Context.class);
+            return (Drawable) constructor.newInstance(NavigationApplication.instance);
+        } catch (Exception e) {
+            Log.e("ImageLoader", "error loading Drawable class '" + className + "'. " + e.getCause().getMessage(), e);
+            return null;
         }
     }
 
