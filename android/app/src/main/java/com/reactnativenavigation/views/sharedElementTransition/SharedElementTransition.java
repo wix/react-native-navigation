@@ -153,7 +153,7 @@ public class SharedElementTransition extends FrameLayout {
     }
 
     public void showChild() {
-        child.post(new Runnable() {
+        ViewUtils.runOnPreDraw(child, new Runnable() {
             @Override
             public void run() {
                 child.setVisibility(View.VISIBLE);
