@@ -42,6 +42,7 @@ public class SharedElementTransition extends FrameLayout {
     public SharedElementTransition(Context context) {
         super(context);
         setContentDescription("SET");
+        setClickable(false);
     }
 
     public void registerSharedElementTransition(final String key) {
