@@ -33,7 +33,8 @@ public class SharedElementTransition extends FrameLayout {
     private int childWidth = -1;
     private int childHeight = -1;
     private int index = 0;
-    private SpannableString spannableString;
+    private SpannableString spannableText;
+    private SpannedString spannedText;
 
     public void setShowInterpolation(InterpolationParams showInterpolation) {
         this.showInterpolation = showInterpolation;
@@ -73,7 +74,24 @@ public class SharedElementTransition extends FrameLayout {
         if (child instanceof ReactImageView && index++ % 2 == 0) {
             ReactViewHacks.disableReactImageViewRemoteImageFadeInAnimation((ReactImageView) child);
         }
+        if (child instanceof TextView) {
+            saveTextViewSpannedText((TextView) child);
+        }
         super.onViewAdded(child);
+    }
+
+    private void saveTextViewSpannedText(final TextView view) {
+        ViewUtils.runOnPreDraw(view, new Runnable() {
+            @Override
+            public void run() {
+                if (spannableText == null) {
+                    spannedText = (SpannedString) view.getText();
+                }
+                if (spannableText == null) {
+                    spannableText = new SpannableString(spannedText);
+                }
+            }
+        });
     }
 
     @Override
@@ -90,16 +108,8 @@ public class SharedElementTransition extends FrameLayout {
     @Keep
     public void setTextColor(double[] color) {
         if (child instanceof TextView) {
-            createSpannableStringOnce((TextView) child);
-            ViewUtils.setSpanColor(spannableString, ColorUtils.labToColor(color));
-            ((TextView) child).setText(spannableString);
-        }
-    }
-
-    private void createSpannableStringOnce(TextView view) {
-        if (spannableString == null) {
-            SpannedString text = (SpannedString) view.getText();
-            spannableString = new SpannableString(text);
+            ViewUtils.setSpanColor(spannableText, ColorUtils.labToColor(color));
+            ((TextView) child).setText(spannableText);
         }
     }
 
@@ -136,7 +146,16 @@ public class SharedElementTransition extends FrameLayout {
         ((ViewManager) child.getParent()).removeView(child);
         child.setLeft(childLeft);
         child.setTop(childTop);
+        restoreTextViewSpannedText();
         addView(child, new LayoutParams(childLayoutParams));
+    }
+
+    private void restoreTextViewSpannedText() {
+        if (child instanceof TextView) {
+            ((TextView) child).setText(spannedText);
+            spannedText = null;
+            spannableText = null;
+        }
     }
 
     public void hideChild() {
