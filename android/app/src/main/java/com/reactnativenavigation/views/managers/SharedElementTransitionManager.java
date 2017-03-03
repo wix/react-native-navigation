@@ -25,11 +25,6 @@ public class SharedElementTransitionManager extends ViewGroupManager<SharedEleme
         elementTransition.registerSharedElementTransition(key);
     }
 
-    @ReactProp(name = "interpolation")
-    public void setInterpolation(SharedElementTransition elementTransition, ReadableMap interpolation) {
-        paramsParser.setInterpolation(interpolation);
-    }
-
     @ReactProp(name = "duration")
     public void setDuration(SharedElementTransition view, int duration) {
         paramsParser.setDuration(duration);
@@ -43,6 +38,16 @@ public class SharedElementTransitionManager extends ViewGroupManager<SharedEleme
     @ReactProp(name = "showDuration")
     public void setShowDuration(SharedElementTransition view, int duration) {
         paramsParser.setShowDuration(duration);
+    }
+
+    @ReactProp(name = "showInterpolation")
+    public void setShowInterpolation(SharedElementTransition view, ReadableMap interpolation) {
+        paramsParser.setShowInterpolation(interpolation);
+    }
+
+    @ReactProp(name = "hideInterpolation")
+    public void setHideInterpolation(SharedElementTransition view, ReadableMap interpolation) {
+        paramsParser.setHideInterpolation(interpolation);
     }
 
     @Override

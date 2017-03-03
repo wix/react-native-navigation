@@ -21,14 +21,14 @@ class InterpolationParser extends Parser {
         if (params.isEmpty()) {
             return new LinearInterpolationParams();
         }
-        return parse(params.getBundle("show"), defaultShowControlPoints);
+        return parse(params, defaultShowControlPoints);
     }
 
     InterpolationParams parseHideInterpolation() {
         if (params.isEmpty()) {
             return new LinearInterpolationParams();
         }
-        return parse(params.getBundle("hide"), defaultHideControlPoints);
+        return parse(params, defaultHideControlPoints);
     }
 
     private InterpolationParams parse(Bundle params, float[] defaultControlPoints) {

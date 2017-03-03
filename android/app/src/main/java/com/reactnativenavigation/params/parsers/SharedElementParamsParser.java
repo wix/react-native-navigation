@@ -10,11 +10,8 @@ public class SharedElementParamsParser {
 
     private int showDuration = DEFAULT_DURATION;
     private int hideDuration = DEFAULT_DURATION;
-    private Bundle interpolation = Bundle.EMPTY;
-
-    public void setInterpolation(ReadableMap interpolation) {
-        this.interpolation = BundleConverter.toBundle(interpolation);
-    }
+    private Bundle showInterpolation = Bundle.EMPTY;
+    private Bundle hideInterpolation = Bundle.EMPTY;
 
     public void setDuration(int duration) {
         showDuration = duration;
@@ -29,17 +26,25 @@ public class SharedElementParamsParser {
         hideDuration = duration;
     }
 
+    public void setShowInterpolation(ReadableMap showInterpolation) {
+        this.showInterpolation = BundleConverter.toBundle(showInterpolation);
+    }
+
+    public void setHideInterpolation(ReadableMap hideInterpolation) {
+        this.hideInterpolation = BundleConverter.toBundle(hideInterpolation);
+    }
+
     public SharedElementTransitionParams parseShowTransitionParams() {
         SharedElementTransitionParams result = new SharedElementTransitionParams();
         result.duration = showDuration;
-        result.interpolation = new InterpolationParser(interpolation).parseShowInterpolation();
+        result.interpolation = new InterpolationParser(showInterpolation).parseShowInterpolation();
         return result;
     }
 
     public SharedElementTransitionParams parseHideTransitionParams() {
         SharedElementTransitionParams result = new SharedElementTransitionParams();
         result.duration = hideDuration;
-        result.interpolation = new InterpolationParser(interpolation).parseHideInterpolation();
+        result.interpolation = new InterpolationParser(hideInterpolation).parseHideInterpolation();
         return result;
     }
 }
