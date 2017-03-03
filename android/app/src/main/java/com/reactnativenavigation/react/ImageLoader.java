@@ -26,6 +26,12 @@ public class ImageLoader {
         }
     }
 
+    /**
+     * Loads Drawable class, and returns new instance created with Context constructor.
+     *
+     * @param className Full qualified name of class.
+     * @return Newly created Drawable instance.
+     */
     public static Drawable loadClass(String className) {
         Class clazz;
         try {
