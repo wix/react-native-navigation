@@ -277,5 +277,6 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     public void destroy() {
         unmountReactView();
         EventBus.instance.unregister(this);
+        sharedElements.destroy();
     }
 }

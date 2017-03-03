@@ -112,4 +112,9 @@ public class SharedElements {
             fromElement.attachChildToScreen();
         }
     }
+
+    public void destroy() {
+        toElements.clear();
+        fromElements.clear();
+    }
 }
