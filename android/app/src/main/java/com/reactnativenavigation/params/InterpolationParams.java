@@ -3,6 +3,7 @@ package com.reactnativenavigation.params;
 import android.animation.TimeInterpolator;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
@@ -28,6 +29,7 @@ public abstract class InterpolationParams {
     public enum Easing {
         AccelerateDecelerate("accelerateDecelerate", new AccelerateDecelerateInterpolator()),
         Accelerate("accelerate", new AccelerateInterpolator()),
+        Decelerate("decelerate", new DecelerateInterpolator()),
         Linear("linear", new LinearInterpolator());
 
         private String name;
