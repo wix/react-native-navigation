@@ -63,8 +63,12 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         sharedElements = new SharedElements();
     }
 
-    public void registerSharedView(SharedElementTransition toView, String key) {
+    public void registerSharedElement(SharedElementTransition toView, String key) {
         sharedElements.addToElement(toView, key);
+    }
+
+    public boolean hasSharedElements() {
+        return !screenParams.sharedElementsTransitions.isEmpty();
     }
 
     @Override

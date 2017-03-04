@@ -200,7 +200,7 @@ public class ScreenStack {
     private void swapScreens(boolean animated, final Screen toRemove, Screen previous, OnScreenPop onScreenPop) {
         readdPrevious(previous);
         previous.setStyle();
-        if (toRemove.screenParams.sharedElementsTransitions.isEmpty()) {
+        if (toRemove.hasSharedElements()) {
             toRemove.hide(animated, new Runnable() {
                 @Override
                 public void run() {

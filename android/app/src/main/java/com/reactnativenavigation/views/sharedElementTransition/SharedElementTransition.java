@@ -50,7 +50,7 @@ public class SharedElementTransition extends FrameLayout {
                 ViewUtils.performOnParentScreen(SharedElementTransition.this, new Task<Screen>() {
                     @Override
                     public void run(Screen screen) {
-                        screen.registerSharedView(SharedElementTransition.this, key);
+                        screen.registerSharedElement(SharedElementTransition.this, key);
                     }
                 });
             }
