@@ -146,6 +146,7 @@ function startSingleScreenApp(params) {
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
                                style={params.drawer.style}
+                               appStyle={params.appStyle}
           >
             {this.renderBody()}
           </DrawerControllerIOS>
@@ -168,6 +169,7 @@ function startSingleScreenApp(params) {
           style={navigatorStyle}
           leftButtons={navigatorButtons.leftButtons}
           rightButtons={navigatorButtons.rightButtons}
+          appStyle={params.appStyle}
         />
       );
     }
