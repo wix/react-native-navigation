@@ -9,11 +9,11 @@
 #import "UIViewController+Rotation.h"
 #import <objc/runtime.h>
 
-#define ORIENTATION                @"orientation"
+static NSString *const ORIENTATION =            @"orientation";
 
-#define ORIENTATION_PORTRAIT       @"portrait"
-#define ORIENTATION_LANDSCAPE      @"landscape"
-#define ORIENTATION_AUTO           @"auto"         // defualt
+static NSString *const ORIENTATION_PORTRAIT =   @"portrait";
+static NSString *const ORIENTATION_LANDSCAPE =  @"landscape";
+static NSString *const ORIENTATION_AUTO =       @"auto";      // defualt
 
 
 @interface UIViewController (Rotation)
@@ -34,8 +34,8 @@
 }
 
 
-
 #pragma mark - Public API
+
 
 -(void)setRotation:(NSDictionary*)props {
     NSString *orientation = props[@"style"][ORIENTATION];
@@ -46,6 +46,8 @@
         self.orientation = orientation;
     }
 }
+
+
 -(UIInterfaceOrientationMask)supportedControllerOrientations {
     if ([self.orientation isEqualToString:ORIENTATION_PORTRAIT]) {
         return UIInterfaceOrientationMaskPortrait;
