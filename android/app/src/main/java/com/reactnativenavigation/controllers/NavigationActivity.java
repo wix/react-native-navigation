@@ -65,6 +65,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
         activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
 
+        getWindow().setSoftInputMode(activityParams.softInputMode);
+
         disableActivityShowAnimationIfNeeded();
         createLayout();
         createModalController();

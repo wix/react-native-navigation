@@ -13,4 +13,5 @@ public class ActivityParams {
     public SideMenuParams leftSideMenuParams;
     public SideMenuParams rightSideMenuParams;
     public boolean animateShow;
+    public int softInputMode;
 }

@@ -31,6 +31,10 @@ public class ActivityParamsParser extends Parser {
 
         result.animateShow = params.getBoolean("animateShow", true);
 
+        if (hasKey(params, "softInputMode")) {
+            result.softInputMode = Integer.parseInt(params.getString("softInputMode"));
+        }
+
         return result;
     }
 }
