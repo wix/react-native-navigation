@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.graphics.Typeface;
 import android.widget.TextView;
 
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
@@ -25,9 +26,11 @@ public class TitleBar extends Toolbar {
     private static final int TITLE_VISIBILITY_ANIMATION_DURATION = 320;
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
-
+    private Context context;
+    
     public TitleBar(Context context) {
         super(context);
+        this.context = context;
     }
 
     @Override
@@ -70,6 +73,7 @@ public class TitleBar extends Toolbar {
     public void setStyle(StyleParams params) {
         setVisibility(params.titleBarHidden ? GONE : VISIBLE);
         setTitleTextColor(params);
+        setTitleTextFont(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
         setBackground(params);
@@ -99,6 +103,34 @@ public class TitleBar extends Toolbar {
     protected void setTitleTextColor(StyleParams params) {
         if (params.titleBarTitleColor.hasColor()) {
             setTitleTextColor(params.titleBarTitleColor.getColor());
+        }
+    }
+
+    protected void setTitleTextFont(StyleParams params) {
+        if (params.titleBarTitleFont != null && !params.titleBarTitleFont.isEmpty()) {
+            Typeface titleFont = null;
+
+            try {
+                titleFont = Typeface.createFromAsset(this.context.getAssets(), "fonts/"+ params.titleBarTitleFont +".ttf");
+            } catch(RuntimeException e)
+            {}
+
+            if (titleFont == null) {
+                try {
+                    titleFont = Typeface.createFromAsset(this.context.getAssets(), "fonts/"+ params.titleBarTitleFont +".otf");
+                } catch(RuntimeException e)
+                {}
+            }
+
+            if (titleFont != null) {
+                for (int i = 0; i < this.getChildCount(); i++){
+                    View view = this.getChildAt(i);
+                    if (view instanceof TextView){
+                        TextView tv = (TextView) view;
+                        tv.setTypeface(titleFont);
+                    }
+                }
+            }
         }
     }
 

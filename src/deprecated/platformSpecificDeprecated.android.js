@@ -134,6 +134,7 @@ function convertStyleParams(originalStyleObject) {
     showTitleWhenExpended: originalStyleObject.showTitleWhenExpended,
     expendCollapsingToolBarOnTopTabChange: originalStyleObject.expendCollapsingToolBarOnTopTabChange,
     titleBarHidden: originalStyleObject.navBarHidden,
+    titleBarTitleFont: originalStyleObject.navBarTitleFontName,
     titleBarHideOnScroll: originalStyleObject.navBarHideOnScroll,
     titleBarTitleColor: processColor(originalStyleObject.navBarTextColor),
     titleBarSubtitleColor: processColor(originalStyleObject.navBarSubtitleColor),

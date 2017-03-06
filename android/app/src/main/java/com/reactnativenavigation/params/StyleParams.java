@@ -54,6 +54,7 @@ public class StyleParams {
     public boolean topTabsHidden;
     public boolean drawScreenBelowTopBar;
 
+    public String titleBarTitleFont;
     public boolean titleBarHidden;
     public boolean titleBarHideOnScroll;
     public boolean topBarTransparent;

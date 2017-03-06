@@ -19,6 +19,7 @@ public class StyleParamsParser {
         }
 
         StyleParams result = new StyleParams();
+        result.titleBarTitleFont = getString("titleBarTitleFont");
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
         result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
@@ -233,5 +234,9 @@ public class StyleParamsParser {
 
     private int getInt(String key, int defaultValue) {
         return params.containsKey(key) ? params.getInt(key) : defaultValue;
+    }
+
+    private String getString(String key) {
+        return params.containsKey(key) ? params.getString(key) : "";
     }
 }
