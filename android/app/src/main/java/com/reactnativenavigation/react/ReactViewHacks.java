@@ -8,5 +8,6 @@ public class ReactViewHacks {
     public static void disableReactImageViewRemoteImageFadeInAnimation(ReactImageView reactImageView) {
         reactImageView.setFadeDuration(0);
         ReflectionUtils.setField(reactImageView, "mIsDirty", true);
+        reactImageView.maybeUpdateView();
     }
 }

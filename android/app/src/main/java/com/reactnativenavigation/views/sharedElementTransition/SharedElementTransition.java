@@ -59,10 +59,10 @@ public class SharedElementTransition extends FrameLayout {
 
     @Override
     public void onViewAdded(final View child) {
-        this.child = child;
-        if (child instanceof ReactImageView && index++ % 2 == 0) {
+        if (child instanceof ReactImageView && this.child == null) {
             ReactViewHacks.disableReactImageViewRemoteImageFadeInAnimation((ReactImageView) child);
         }
+        this.child = child;
         if (child instanceof TextView) {
             saveTextViewSpannedText((TextView) child);
         }
