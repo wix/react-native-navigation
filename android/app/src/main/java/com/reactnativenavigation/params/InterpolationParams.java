@@ -1,6 +1,7 @@
 package com.reactnativenavigation.params;
 
 import android.animation.TimeInterpolator;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -30,6 +31,7 @@ public abstract class InterpolationParams {
         AccelerateDecelerate("accelerateDecelerate", new AccelerateDecelerateInterpolator()),
         Accelerate("accelerate", new AccelerateInterpolator()),
         Decelerate("decelerate", new DecelerateInterpolator()),
+        FastOutSlowIn("FastOutSlowIn", new FastOutSlowInInterpolator()),
         Linear("linear", new LinearInterpolator());
 
         private String name;
