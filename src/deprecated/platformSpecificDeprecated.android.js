@@ -28,11 +28,24 @@ function startSingleScreenApp(params) {
   params.screen = adaptNavigationStyleToScreenStyle(screen);
   params.screen = adaptNavigationParams(screen);
   params.appStyle = convertStyleParams(params.appStyle);
+  if (params.appStyle) {
+    params.appStyle.orientation = getOrientation(params);
+  }
   params.sideMenu = convertDrawerParamsToSideMenuParams(params.drawer);
   params.overrideBackPress = screen.overrideBackPress;
   params.animateShow = convertAnimationType(params.animationType);
 
   newPlatformSpecific.startApp(params);
+}
+
+function getOrientation(params) {
+  if (params.portraitOnlyMode || _.get(params, 'appStyle.orientation') === 'portrait') {
+    return 'portrait';
+  }
+  if (params.landscaptOnlyMode || _.get(params, 'appStyle.orientation') === 'landscape') {
+    return 'landscape';
+  }
+  return 'auto';
 }
 
 function adaptTopTabs(screen, navigatorID) {
@@ -120,6 +133,7 @@ function convertStyleParams(originalStyleObject) {
   }
 
   let ret = {
+    orientation: originalStyleObject.orientation,
     statusBarColor: processColor(originalStyleObject.statusBarColor),
     topBarColor: processColor(originalStyleObject.navBarBackgroundColor),
     topBarTransparent: originalStyleObject.navBarTransparent,
@@ -249,6 +263,9 @@ function startTabBasedApp(params) {
   params.tabs = newTabs;
 
   params.appStyle = convertStyleParams(params.appStyle);
+  if (params.appStyle) {
+    params.appStyle.orientation = getOrientation(params);
+  }
   params.sideMenu = convertDrawerParamsToSideMenuParams(params.drawer);
   params.animateShow = convertAnimationType(params.animationType);
 
