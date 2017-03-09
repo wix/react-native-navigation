@@ -73,18 +73,20 @@ public class FloatingActionButtonCoordinator {
             }
             return;
         }
-
-        fabAnimator.removeFabFromScreen(expendedFab, new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                removeAllViews();
-                if (onComplete != null) {
-                    onComplete.run();
+        if (fabAnimator != null) {
+            fabAnimator.removeFabFromScreen(expendedFab, new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    removeAllViews();
+                    if (onComplete != null) {
+                        onComplete.run();
+                    }
                 }
-            }
-        });
-        fabAnimator.removeFabFromScreen(collapsedFab, null);
-        fabAnimator.removeActionsFromScreen(actions);
+            });
+            fabAnimator.removeFabFromScreen(collapsedFab, null);
+            fabAnimator.removeActionsFromScreen(actions);
+        }
+
     }
 
     private boolean hasFab() {

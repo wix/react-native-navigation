@@ -32,6 +32,7 @@ import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.react.ReactGateway;
+import com.reactnativenavigation.utils.OrientationHelper;
 import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
@@ -56,18 +57,21 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (!NavigationApplication.instance.isReactContextInitialized()) {
             NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
             return;
         }
 
         activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
-
         disableActivityShowAnimationIfNeeded();
+        setOrientation();
         createLayout();
         createModalController();
         NavigationApplication.instance.getActivityCallbacks().onActivityCreated(this, savedInstanceState);
+    }
+
+    private void setOrientation() {
+        OrientationHelper.setOrientation(this, AppStyle.appStyle.orientation);
     }
 
     private void disableActivityShowAnimationIfNeeded() {
@@ -119,12 +123,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onNewIntent(intent);
         getReactGateway().onNewIntent(intent);
         NavigationApplication.instance.getActivityCallbacks().onNewIntent(intent);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        NavigationApplication.instance.getActivityCallbacks().onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -192,6 +190,13 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     private ReactGateway getReactGateway() {
         return NavigationApplication.instance.getReactGateway();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        OrientationHelper.onConfigurationChanged(newConfig);
+        NavigationApplication.instance.getActivityCallbacks().onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
     }
 
     void push(ScreenParams params) {

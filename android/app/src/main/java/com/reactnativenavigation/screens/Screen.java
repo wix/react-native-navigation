@@ -189,6 +189,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void setTitleBarLeftButton(String navigatorEventId, LeftButtonOnClickListener backButtonListener,
                                       TitleBarLeftButtonParams titleBarLeftButtonParams) {
+        titleBarLeftButtonParams.setColorFromScreenStyle(styleParams.titleBarButtonColor);
         topBar.setTitleBarLeftButton(navigatorEventId,
                 backButtonListener,
                 titleBarLeftButtonParams,
