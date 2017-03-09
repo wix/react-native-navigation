@@ -358,7 +358,7 @@ function navigatorToggleDrawer(navigator, params) {
 
 function navigatorToggleNavBar(navigator, params) {
   const screenInstanceID = navigator.screenInstanceID;
-  const visible = params.to === 'shown';
+  const visible = params.to === 'shown' || params.to === 'show';
   const animated = !(params.animated === false);
 
   newPlatformSpecific.toggleTopBarVisible(
