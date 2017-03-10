@@ -21,19 +21,15 @@ public class SharedElementsAnimator {
                 final AnimatorSet animatorSet = createAnimatorSet();
                 sharedElements.onShowAnimationWillStart();
                 sharedElements.attachChildViewsToScreen();
+                sharedElements.onShowAnimationStart();
                 animatorSet.start();
+                sharedElements.hideFromElements();
             }
 
             private AnimatorSet createAnimatorSet() {
                 final AnimatorSet animatorSet = new AnimatorSet();
                 animatorSet.playTogether(createTransitionAnimators());
                 animatorSet.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        sharedElements.onShowAnimationStart();
-                        sharedElements.hideFromElements();
-                    }
-
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         sharedElements.onShowAnimationEnd();

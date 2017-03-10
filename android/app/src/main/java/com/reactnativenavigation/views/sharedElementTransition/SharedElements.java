@@ -3,8 +3,10 @@ package com.reactnativenavigation.views.sharedElementTransition;
 import android.view.View;
 
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.utils.ViewVisibilityChecker;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -116,5 +118,16 @@ public class SharedElements {
     public void destroy() {
         toElements.clear();
         fromElements.clear();
+    }
+
+    public void removeHiddenElements() {
+        Iterator<String> iterator = toElements.keySet().iterator();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            if (!ViewVisibilityChecker.check(toElements.get(key))) {
+                iterator.remove();
+                fromElements.get(key).show();
+            }
+        }
     }
 }

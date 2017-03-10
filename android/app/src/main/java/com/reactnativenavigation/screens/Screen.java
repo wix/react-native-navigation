@@ -67,10 +67,6 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         sharedElements.addToElement(toView, key);
     }
 
-    public boolean hasSharedElements() {
-        return !screenParams.sharedElementsTransitions.isEmpty();
-    }
-
     @Override
     public void onEvent(Event event) {
         if (ContextualMenuHiddenEvent.TYPE.equals(event.getType()) && isShown()) {
@@ -263,7 +259,36 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         screenAnimator.hideWithSharedElementsTransition(onAnimationEnd);
     }
 
-    public void hide(boolean animated, Runnable onAnimatedEnd) {
+    public void hide(Map<String, SharedElementTransition> sharedElements, Runnable onAnimationEnd) {
+        removeHiddenSharedElements();
+        if (hasVisibleSharedElements()) {
+            hideWithSharedElementTransitions(sharedElements, onAnimationEnd);
+        } else {
+            hide(false, onAnimationEnd);
+        }
+    }
+
+    public void animateHide(Map<String, SharedElementTransition> sharedElements, Runnable onAnimationEnd) {
+        removeHiddenSharedElements();
+        if (hasVisibleSharedElements()) {
+            hideWithSharedElementTransitions(sharedElements, onAnimationEnd);
+        } else {
+            hide(true, onAnimationEnd);
+        }
+    }
+
+    private boolean hasVisibleSharedElements() {
+        if (screenParams.sharedElementsTransitions.isEmpty()) {
+            return false;
+        }
+        return !sharedElements.getToElements().isEmpty();
+    }
+
+    public void removeHiddenSharedElements() {
+        sharedElements.removeHiddenElements();
+    }
+
+    private void hide(boolean animated, Runnable onAnimatedEnd) {
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willDisappear", screenParams.getNavigatorEventId());
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didDisappear", screenParams.getNavigatorEventId());
         screenAnimator.hide(animated, onAnimatedEnd);

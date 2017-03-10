@@ -31,7 +31,6 @@ public class SharedElementTransition extends FrameLayout {
     private int childTop;
     private int childWidth = -1;
     private int childHeight = -1;
-    private int index = 0;
     private SpannableString spannableText;
     private SpannedString spannedText;
 
@@ -153,5 +152,10 @@ public class SharedElementTransition extends FrameLayout {
                 child.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    public void show() {
+        setVisibility(VISIBLE);
+        showChild();
     }
 }

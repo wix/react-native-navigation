@@ -200,26 +200,24 @@ public class ScreenStack {
     private void swapScreens(boolean animated, final Screen toRemove, Screen previous, OnScreenPop onScreenPop) {
         readdPrevious(previous);
         previous.setStyle();
-        if (toRemove.hasSharedElements()) {
-            toRemove.hide(animated, new Runnable() {
-                @Override
-                public void run() {
-                    toRemove.destroy();
-                    parent.removeView(toRemove);
-                }
-            });
-        } else {
-            toRemove.hideWithSharedElementTransitions(previous.sharedElements.getToElements(), new Runnable() {
-                @Override
-                public void run() {
-                    toRemove.destroy();
-                    parent.removeView(toRemove);
-                }
-            });
-        }
-
+        hideScreen(animated, toRemove, previous);
         if (onScreenPop != null) {
             onScreenPop.onScreenPopAnimationEnd();
+        }
+    }
+
+    private void hideScreen(boolean animated, final Screen toRemove, Screen previous) {
+        Runnable onAnimationEnd = new Runnable() {
+            @Override
+            public void run() {
+                toRemove.destroy();
+                parent.removeView(toRemove);
+            }
+        };
+        if (animated) {
+            toRemove.animateHide(previous.sharedElements.getToElements(), onAnimationEnd);
+        } else {
+            toRemove.hide(previous.sharedElements.getToElements(), onAnimationEnd);
         }
     }
 

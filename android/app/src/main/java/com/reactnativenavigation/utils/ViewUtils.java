@@ -57,7 +57,7 @@ public class ViewUtils {
 
     public static float convertPixelToSp(float pixels) {
         float scaledDensity = NavigationApplication.instance.getResources().getDisplayMetrics().scaledDensity;
-        return pixels/scaledDensity;
+        return pixels / scaledDensity;
     }
 
     public static float convertSpToPixel(float pixels) {
@@ -99,11 +99,13 @@ public class ViewUtils {
     /**
      * Returns the first instance of clazz in root
      */
-    @Nullable public static <T> T findChildByClass(ViewGroup root, Class clazz) {
+    @Nullable
+    public static <T> T findChildByClass(ViewGroup root, Class clazz) {
         return findChildByClass(root, clazz, null);
     }
 
-    @Nullable public static <T> T findChildByClass(ViewGroup root, Class clazz, Matcher<T> matcher) {
+    @Nullable
+    public static <T> T findChildByClass(ViewGroup root, Class clazz, Matcher<T> matcher) {
         for (int i = 0; i < root.getChildCount(); i++) {
             View view = root.getChildAt(i);
             if (clazz.isAssignableFrom(view.getClass())) {
@@ -170,8 +172,8 @@ public class ViewUtils {
         final Resources resources = NavigationApplication.instance.getResources();
         final int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
         statusBarHeight = resourceId > 0 ?
-            resources.getDimensionPixelSize(resourceId) :
-            (int) convertDpToPixel(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?  24 : 25);
+                resources.getDimensionPixelSize(resourceId) :
+                (int) convertDpToPixel(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? 24 : 25);
         return statusBarHeight;
     }
 
