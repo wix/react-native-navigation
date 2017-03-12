@@ -16,7 +16,7 @@ import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.ActivityParamsParser;
 import com.reactnativenavigation.params.parsers.ScreenParamsParser;
-import com.reactnativenavigation.utils.Orientation;
+import com.reactnativenavigation.utils.OrientationHelper;
 import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
@@ -35,15 +35,8 @@ public class NavigationCommandsHandler {
      * @param params ActivityParams as bundle
      */
 
-    public static void startApp(Bundle params, boolean portraitOnlyMode, boolean landscapeOnlyMode) {
-        Intent intent;
-        if (portraitOnlyMode) {
-            intent = new Intent(NavigationApplication.instance, PortraitNavigationActivity.class);
-        } else if (landscapeOnlyMode) {
-            intent = new Intent(NavigationApplication.instance, LandscapeNavigationActivity.class);
-        } else {
-            intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
-        }
+    public static void startApp(Bundle params) {
+        Intent intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
         IntentDataHandler.onStartApp(intent);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ACTIVITY_PARAMS_BUNDLE, params);
@@ -428,6 +421,6 @@ public class NavigationCommandsHandler {
         if (currentActivity == null) {
             return;
         }
-        promise.resolve(Orientation.get(currentActivity));
+        promise.resolve(OrientationHelper.getOrientation(currentActivity));
     }
 }

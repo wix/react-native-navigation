@@ -10,4 +10,14 @@ public class CollapseTitleBarBehaviour implements CollapseBehaviour {
     public boolean shouldCollapseOnTouchUp() {
         return true;
     }
+
+    @Override
+    public boolean canCollapse(int scrollY, int scaledTouchSlop) {
+        return true;
+    }
+
+    @Override
+    public boolean canExpend(int scrollY, int scaledTouchSlop) {
+        return true;
+    }
 }

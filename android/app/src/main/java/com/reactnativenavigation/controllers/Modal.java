@@ -11,7 +11,9 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.layouts.Layout;
 import com.reactnativenavigation.layouts.ModalScreenLayout;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
+import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.Orientation;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -86,6 +88,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         layout = new ModalScreenLayout(getActivity(), screenParams, this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        setOrientation(screenParams.styleParams.orientation);
         setContentView(layout.asView());
     }
 
@@ -109,7 +112,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         layout.newStack(params);
     }
 
-    public boolean containsNavigator(String navigatorId) {
+    boolean containsNavigator(String navigatorId) {
         return layout.containsNavigator(navigatorId);
     }
 
@@ -128,10 +131,15 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
     @Override
     public void onDismiss(DialogInterface dialog) {
         destroy();
+        setOrientation(AppStyle.appStyle.orientation);
         onModalDismissedListener.onModalDismissed(this);
     }
 
     void onModalDismissed() {
         layout.onModalDismissed();
+    }
+
+    private void setOrientation(Orientation orientation) {
+        getActivity().setRequestedOrientation(orientation.orientationCode);
     }
 }

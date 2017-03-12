@@ -171,6 +171,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setTopBarVisible(boolean visible, boolean animate) {
+        screenParams.styleParams.titleBarHidden = !visible;
         topBarVisibilityAnimator.setVisible(visible, animate);
     }
 
