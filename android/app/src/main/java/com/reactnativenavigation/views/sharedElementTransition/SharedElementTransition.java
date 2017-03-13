@@ -1,6 +1,8 @@
 package com.reactnativenavigation.views.sharedElementTransition;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.os.Build;
 import android.support.annotation.Keep;
 import android.text.SpannableString;
 import android.text.SpannedString;
@@ -12,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.react.views.image.ReactImageView;
+import com.reactnativenavigation.params.parsers.SharedElementParamsParser;
 import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
 import com.reactnativenavigation.react.ReactViewHacks;
 import com.reactnativenavigation.screens.Screen;
@@ -24,6 +27,7 @@ import com.reactnativenavigation.views.utils.Point;
 public class SharedElementTransition extends FrameLayout {
     public ViewGroup.LayoutParams childLayoutParams;
 
+    public SharedElementParamsParser paramsParser = new SharedElementParamsParser();
     public SharedElementTransitionParams showTransitionParams;
     public SharedElementTransitionParams hideTransitionParams;
     private View child;
@@ -93,6 +97,13 @@ public class SharedElementTransition extends FrameLayout {
         if (child instanceof TextView) {
             ViewUtils.setSpanColor(spannableText, ColorUtils.labToColor(color));
             ((TextView) child).setText(spannableText);
+        }
+    }
+
+    @Keep
+    public void setClipBounds(Rect clipBounds) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            child.setClipBounds(clipBounds);
         }
     }
 

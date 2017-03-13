@@ -4,11 +4,9 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.reactnativenavigation.params.parsers.SharedElementParamsParser;
 import com.reactnativenavigation.views.sharedElementTransition.SharedElementTransition;
 
 public class SharedElementTransitionManager extends ViewGroupManager<SharedElementTransition> {
-    SharedElementParamsParser paramsParser = new SharedElementParamsParser();
 
     @Override
     public String getName() {
@@ -27,33 +25,38 @@ public class SharedElementTransitionManager extends ViewGroupManager<SharedEleme
 
     @ReactProp(name = "duration")
     public void setDuration(SharedElementTransition view, int duration) {
-        paramsParser.setDuration(duration);
+        view.paramsParser.setDuration(duration);
     }
 
     @ReactProp(name = "hideDuration")
     public void setHideDuration(SharedElementTransition view, int duration) {
-        paramsParser.setHideDuration(duration);
+        view.paramsParser.setHideDuration(duration);
     }
 
     @ReactProp(name = "showDuration")
     public void setShowDuration(SharedElementTransition view, int duration) {
-        paramsParser.setShowDuration(duration);
+        view.paramsParser.setShowDuration(duration);
     }
 
     @ReactProp(name = "showInterpolation")
     public void setShowInterpolation(SharedElementTransition view, ReadableMap interpolation) {
-        paramsParser.setShowInterpolation(interpolation);
+        view.paramsParser.setShowInterpolation(interpolation);
     }
 
     @ReactProp(name = "hideInterpolation")
     public void setHideInterpolation(SharedElementTransition view, ReadableMap interpolation) {
-        paramsParser.setHideInterpolation(interpolation);
+        view.paramsParser.setHideInterpolation(interpolation);
+    }
+
+    @ReactProp(name = "animateClipBounds")
+    public void setAnimateClipBounds(SharedElementTransition view, boolean animateClipBounds) {
+        view.paramsParser.animateClipBounds = animateClipBounds;
     }
 
     @Override
     protected void onAfterUpdateTransaction(SharedElementTransition view) {
-        view.showTransitionParams = paramsParser.parseShowTransitionParams();
-        view.hideTransitionParams = paramsParser.parseHideTransitionParams();
+        view.showTransitionParams = view.paramsParser.parseShowTransitionParams();
+        view.hideTransitionParams = view.paramsParser.parseHideTransitionParams();
     }
 
     @Override

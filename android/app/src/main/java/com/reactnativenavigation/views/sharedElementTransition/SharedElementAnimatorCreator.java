@@ -10,6 +10,7 @@ import com.reactnativenavigation.params.InterpolationParams.Easing;
 import com.reactnativenavigation.params.PathInterpolationParams;
 import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
 import com.reactnativenavigation.views.utils.AnimatorPath;
+import com.reactnativenavigation.views.utils.ClipBoundsEvaluator;
 import com.reactnativenavigation.views.utils.ColorUtils;
 import com.reactnativenavigation.views.utils.LabColorEvaluator;
 import com.reactnativenavigation.views.utils.PathEvaluator;
@@ -42,39 +43,52 @@ class SharedElementAnimatorCreator {
         if (shouldAddCurvedMotionAnimator(resolver, params.interpolation)) {
             result.add(createCurvedMotionAnimator(resolver, params.interpolation.easing, params.duration));
         } else {
-            if (shouldAddLinearMotionXAnimator(resolver)) {
+            if (shouldAddLinearMotionXAnimator(resolver, params)) {
                 result.add(createXAnimator(resolver, params.duration));
             }
-            if (shouldAddLinearMotionYAnimator(resolver)) {
+            if (shouldAddLinearMotionYAnimator(resolver, params)) {
                 result.add(createYAnimator(resolver, params.duration));
             }
         }
-        if (shouldCreateScaleXAnimator(resolver)) {
+        if (shouldCreateScaleXAnimator(resolver, params)) {
             result.add(createScaleXAnimator(resolver, params.duration));
         }
-        if (shouldCreateScaleYAnimator(resolver)) {
+        if (shouldCreateScaleYAnimator(resolver, params)) {
             result.add(createScaleYAnimator(resolver, params.duration));
         }
         if (shouldCreateColorAnimator(resolver)) {
             result.add(createColorAnimator(resolver, params.duration));
         }
+        if (shouldCreateImageClipBoundsAnimator(params)) {
+            result.add(createImageClipBoundsAnimator(resolver, params.duration));
+        }
         return result;
     }
 
-    private boolean shouldCreateScaleYAnimator(AnimatorValuesResolver resolver) {
-        return resolver.startScaleY != resolver.endScaleY;
+    private boolean shouldCreateScaleYAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
+        return resolver.startScaleY != resolver.endScaleY && !params.animateClipBounds;
     }
 
-    private boolean shouldCreateScaleXAnimator(AnimatorValuesResolver resolver) {
-        return resolver.startScaleX != resolver.endScaleX;
+    private boolean shouldCreateScaleXAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
+        return resolver.startScaleX != resolver.endScaleX && !params.animateClipBounds;
     }
 
-    private boolean shouldAddLinearMotionXAnimator(AnimatorValuesResolver resolver) {
-        return resolver.dx != 0;
+    private boolean shouldAddLinearMotionXAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
+        if (params.animateClipBounds) {
+            return to.getWidth() - from.getWidth() != resolver.dx * 2;
+        } else {
+            return resolver.dx != 0;
+        }
+//        return resolver.dx != 0 && !params.animateClipBounds;
     }
 
-    private boolean shouldAddLinearMotionYAnimator(AnimatorValuesResolver resolver) {
-        return resolver.dy != 0;
+    private boolean shouldAddLinearMotionYAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
+        if (params.animateClipBounds) {
+            return to.getHeight() - from.getHeight() != resolver.dy * 2;
+        } else {
+            return resolver.dy != 0;
+        }
+//        return resolver.dy != 0 && !params.animateClipBounds;
     }
 
     private boolean shouldAddCurvedMotionAnimator(AnimatorValuesResolver resolver, InterpolationParams interpolation) {
@@ -83,6 +97,10 @@ class SharedElementAnimatorCreator {
 
     private boolean shouldCreateColorAnimator(AnimatorValuesResolver resolver) {
         return resolver.startColor != resolver.endColor;
+    }
+
+    private boolean shouldCreateImageClipBoundsAnimator(SharedElementTransitionParams params) {
+        return params.animateClipBounds;
     }
 
     private ObjectAnimator createCurvedMotionAnimator(AnimatorValuesResolver resolver, Easing easing, int duration) {
@@ -100,11 +118,13 @@ class SharedElementAnimatorCreator {
     }
 
     private ObjectAnimator createXAnimator(AnimatorValuesResolver resolver, int duration) {
+//        to.getSharedView().setTranslationX(resolver.startX);
         return ofFloat(to.getSharedView(), View.TRANSLATION_X, resolver.startX, resolver.endX)
                 .setDuration(duration);
     }
 
     private ObjectAnimator createYAnimator(AnimatorValuesResolver resolver, int duration) {
+//        to.getSharedView().setTranslationY(resolver.startY);
         return ofFloat(to.getSharedView(), View.TRANSLATION_Y, resolver.startY, resolver.endY)
                 .setDuration(duration);
     }
@@ -128,6 +148,16 @@ class SharedElementAnimatorCreator {
                 new LabColorEvaluator(),
                 ColorUtils.colorToLAB(resolver.startColor),
                 ColorUtils.colorToLAB(resolver.endColor))
+                .setDuration(duration);
+    }
+
+    private ObjectAnimator createImageClipBoundsAnimator(AnimatorValuesResolver resolver, int duration) {
+        return ObjectAnimator.ofObject(
+                to,
+                "clipBounds",
+                new ClipBoundsEvaluator(),
+                resolver.startDrawingRect,
+                resolver.endDrawingRect)
                 .setDuration(duration);
     }
 }

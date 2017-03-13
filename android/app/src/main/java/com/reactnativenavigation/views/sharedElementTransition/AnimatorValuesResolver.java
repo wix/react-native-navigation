@@ -1,5 +1,6 @@
 package com.reactnativenavigation.views.sharedElementTransition;
 
+import android.graphics.Rect;
 import android.widget.TextView;
 
 import com.reactnativenavigation.params.InterpolationParams;
@@ -27,6 +28,8 @@ class AnimatorValuesResolver {
     float controlY2;
     int startColor;
     int endColor;
+    Rect startDrawingRect = new Rect();
+    Rect endDrawingRect = new Rect();
 
     AnimatorValuesResolver(SharedElementTransition from, SharedElementTransition to, InterpolationParams interpolation) {
         fromXy = ViewUtils.getLocationOnScreen(from.getSharedView());
@@ -37,6 +40,7 @@ class AnimatorValuesResolver {
         endScaleY = calculateEndScaleY(from, to);
         calculateColor(from, to);
         calculate(interpolation);
+        calculateDrawingReacts(from, to);
     }
 
     protected float calculateEndScaleY(SharedElementTransition from, SharedElementTransition to) {
@@ -91,5 +95,10 @@ class AnimatorValuesResolver {
             startColor = ViewUtils.getForegroundColorSpans((TextView) from.getSharedView())[0].getForegroundColor();
             endColor = ViewUtils.getForegroundColorSpans((TextView) to.getSharedView())[0].getForegroundColor();
         }
+    }
+
+    private void calculateDrawingReacts(SharedElementTransition from, SharedElementTransition to) {
+        from.getDrawingRect(startDrawingRect);
+        to.getDrawingRect(endDrawingRect);
     }
 }

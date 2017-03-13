@@ -12,6 +12,7 @@ public class SharedElementParamsParser {
     private int hideDuration = DEFAULT_DURATION;
     private Bundle showInterpolation = Bundle.EMPTY;
     private Bundle hideInterpolation = Bundle.EMPTY;
+    public boolean animateClipBounds;
 
     public void setDuration(int duration) {
         showDuration = duration;
@@ -38,6 +39,7 @@ public class SharedElementParamsParser {
         SharedElementTransitionParams result = new SharedElementTransitionParams();
         result.duration = showDuration;
         result.interpolation = new InterpolationParser(showInterpolation).parseShowInterpolation();
+        result.animateClipBounds = animateClipBounds;
         return result;
     }
 
@@ -45,6 +47,7 @@ public class SharedElementParamsParser {
         SharedElementTransitionParams result = new SharedElementTransitionParams();
         result.duration = hideDuration;
         result.interpolation = new InterpolationParser(hideInterpolation).parseHideInterpolation();
+        result.animateClipBounds = animateClipBounds;
         return result;
     }
 }
