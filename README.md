@@ -11,7 +11,7 @@
 
 App-wide support for 100% native navigation with an easy cross-platform interface. For iOS, this package is a wrapper around [react-native-controllers](https://github.com/wix/react-native-controllers), but provides a simplified more abstract API over it. This abstract API will be unified with the Android solution which is currently work in progress. It also fully supports redux if you use it.
 
-<img src="https://github.com/wix/react-native/blob/master/assets/themes/bootstrap-3/images/demo.gif?raw=true" width="240">
+<img src="https://github.com/wix/react-native/blob/master/src/videos/demo.gif?raw=true" width="240">
 
 ----
 
