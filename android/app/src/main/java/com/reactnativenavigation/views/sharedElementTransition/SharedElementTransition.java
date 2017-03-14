@@ -152,21 +152,18 @@ public class SharedElementTransition extends FrameLayout {
         }
     }
 
-    public void hideChild() {
-        child.setVisibility(View.INVISIBLE);
-    }
-
-    public void showChild() {
+    public void show() {
+        setVisibility(VISIBLE);
         ViewUtils.runOnPreDraw(child, new Runnable() {
             @Override
             public void run() {
-                child.setVisibility(View.VISIBLE);
+                child.setAlpha(1);
             }
         });
     }
 
-    public void show() {
-        setVisibility(VISIBLE);
-        showChild();
+    public void hide() {
+        setVisibility(INVISIBLE);
+        child.setAlpha(0);
     }
 }

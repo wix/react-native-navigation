@@ -74,15 +74,24 @@ public class SharedElements {
         }
     }
 
-    void onShowAnimationWillStart() {
+    void hideToElements() {
         for (SharedElementTransition toElement : toElements.values()) {
-            toElement.hideChild();
+            toElement.hide();
         }
     }
 
-    void onShowAnimationStart() {
+    void showToElements(final Runnable onReady) {
+        final AtomicInteger latch = new AtomicInteger(toElements.size());
         for (final SharedElementTransition toElement : toElements.values()) {
-            toElement.showChild();
+            toElement.show();
+            ViewUtils.runOnPreDraw(toElement, new Runnable() {
+                @Override
+                public void run() {
+                    if (latch.decrementAndGet() == 0) {
+                        onReady.run();
+                    }
+                }
+            });
         }
     }
 
@@ -112,6 +121,7 @@ public class SharedElements {
     void onHideAnimationStart() {
         for (SharedElementTransition fromElement : fromElements.values()) {
             fromElement.attachChildToScreen();
+            fromElement.getSharedView().setAlpha(1);
         }
     }
 

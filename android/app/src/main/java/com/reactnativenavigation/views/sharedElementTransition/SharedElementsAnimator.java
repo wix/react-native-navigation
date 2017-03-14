@@ -15,14 +15,18 @@ public class SharedElementsAnimator {
     }
 
     public void show(final Runnable onAnimationEnd) {
+        sharedElements.hideToElements();
         sharedElements.performWhenChildViewsAreDrawn(new Runnable()  {
             @Override
             public void run() {
                 final AnimatorSet animatorSet = createAnimatorSet();
-                sharedElements.onShowAnimationWillStart();
                 sharedElements.attachChildViewsToScreen();
-                sharedElements.onShowAnimationStart();
-                animatorSet.start();
+                sharedElements.showToElements(new Runnable() {
+                    @Override
+                    public void run() {
+                        animatorSet.start();
+                    }
+                });
                 sharedElements.hideFromElements();
             }
 
