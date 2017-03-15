@@ -111,6 +111,10 @@ function dismissAllModals(params = {}) {
   return platformSpecific.dismissAllModals(params);
 }
 
+function showSnackbar(params = {}) {
+  return platformSpecific.showSnackbar(params);
+}
+
 function showLightBox(params = {}) {
   return platformSpecific.showLightBox(params);
 }
@@ -160,6 +164,7 @@ export default {
   showModal: showModal,
   dismissModal: dismissModal,
   dismissAllModals: dismissAllModals,
+  showSnackbar: showSnackbar,
   showLightBox: showLightBox,
   dismissLightBox: dismissLightBox,
   showInAppNotification: showInAppNotification,
