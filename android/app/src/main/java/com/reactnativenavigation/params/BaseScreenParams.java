@@ -44,4 +44,8 @@ public class BaseScreenParams {
     public FabParams getFab() {
         return fabParams;
     }
+
+    public void setFab(FabParams params) {
+        fabParams = params;
+    }
 }

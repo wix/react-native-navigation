@@ -277,6 +277,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     void setScreenFab(String screenInstanceId, String navigatorEventId, FabParams fab) {
         layout.setFab(screenInstanceId, navigatorEventId, fab);
+        modalController.setFab(screenInstanceId, navigatorEventId, fab);
     }
 
     public void toggleSideMenuVisible(boolean animated, Side side) {
