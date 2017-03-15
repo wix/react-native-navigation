@@ -294,11 +294,11 @@ public class ScreenStack {
         });
     }
 
-    public void setFab(String screenInstanceId, final String navigatorEventId, final FabParams fabParams) {
+    public void setFab(String screenInstanceId, final FabParams fabParams) {
         performOnScreen(screenInstanceId, new Task<Screen>() {
             @Override
-            public void run(Screen param) {
-                param.setFab(fabParams);
+            public void run(Screen screen) {
+                screen.setFab(fabParams);
             }
         });
     }

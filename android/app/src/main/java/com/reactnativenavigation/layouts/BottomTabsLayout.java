@@ -187,7 +187,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     @Override
     public void setFab(String screenInstanceId, String navigatorEventId, FabParams fabParams) {
         for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
-            screenStacks[i].setFab(screenInstanceId, navigatorEventId, fabParams);
+            screenStacks[i].setFab(screenInstanceId, fabParams);
         }
     }
 
