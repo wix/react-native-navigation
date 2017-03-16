@@ -5,11 +5,17 @@
 #import <React/RCTConvert.h>
 #import <objc/runtime.h>
 #import "RCCTitleViewHelper.h"
+#import "UIViewController+Rotation.h"
 
 @implementation RCCNavigationController
 
 NSString const *CALLBACK_ASSOCIATED_KEY = @"RCCNavigationController.CALLBACK_ASSOCIATED_KEY";
 NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSOCIATED_ID";
+
+
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations {
+  return [self supportedControllerOrientations];
+}
 
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary*)globalProps bridge:(RCTBridge *)bridge
 {
@@ -43,6 +49,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   [self processTitleView:viewController
                    props:props
                    style:navigatorStyle];
+  
+
+  [self setRotation:props];
   
   return self;
 }

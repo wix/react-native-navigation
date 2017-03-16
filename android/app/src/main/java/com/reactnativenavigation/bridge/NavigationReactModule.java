@@ -52,16 +52,7 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     public void startApp(final ReadableMap params) {
         boolean portraitOnlyMode = false;
         boolean landscapeOnlyMode = false;
-
-        if (params.hasKey("portraitOnlyMode")) {
-            portraitOnlyMode = params.getBoolean("portraitOnlyMode");
-        }
-
-        if (params.hasKey(("landscapeOnlyMode"))) {
-            landscapeOnlyMode = params.getBoolean("landscapeOnlyMode");
-        }
-
-        NavigationCommandsHandler.startApp(BundleConverter.toBundle(params), portraitOnlyMode, landscapeOnlyMode);
+        NavigationCommandsHandler.startApp(BundleConverter.toBundle(params));
     }
 
     @ReactMethod

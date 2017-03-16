@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		260804DB1CE0D9D20094DBA1 /* RCCToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 260804DA1CE0D9D20094DBA1 /* RCCToolBar.m */; };
+		261108801E6C495400BF5D98 /* UIViewController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2611087F1E6C495400BF5D98 /* UIViewController+Rotation.m */; };
 		26AFF3F51D7EEE2400CBA211 /* RCCTitleViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 26AFF3F41D7EEE2400CBA211 /* RCCTitleViewHelper.m */; };
 		CC84A19E1C1A0C4E00B3A6A2 /* RCCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1941C1A0C4E00B3A6A2 /* RCCManager.m */; };
 		CC84A19F1C1A0C4E00B3A6A2 /* RCCManagerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1961C1A0C4E00B3A6A2 /* RCCManagerModule.m */; };
@@ -50,6 +51,8 @@
 /* Begin PBXFileReference section */
 		260804D91CE0D9D20094DBA1 /* RCCToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCToolBar.h; sourceTree = "<group>"; };
 		260804DA1CE0D9D20094DBA1 /* RCCToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCToolBar.m; sourceTree = "<group>"; };
+		2611087E1E6C495400BF5D98 /* UIViewController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+Rotation.h"; path = "../UIViewController+Rotation.h"; sourceTree = "<group>"; };
+		2611087F1E6C495400BF5D98 /* UIViewController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+Rotation.m"; path = "../UIViewController+Rotation.m"; sourceTree = "<group>"; };
 		26AFF3F31D7EEE2400CBA211 /* RCCTitleViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCTitleViewHelper.h; sourceTree = "<group>"; };
 		26AFF3F41D7EEE2400CBA211 /* RCCTitleViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCTitleViewHelper.m; sourceTree = "<group>"; };
 		CC84A1931C1A0C4E00B3A6A2 /* RCCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCManager.h; sourceTree = "<group>"; };
@@ -227,6 +230,8 @@
 		D8D779951D04B7180050CFEA /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				2611087E1E6C495400BF5D98 /* UIViewController+Rotation.h */,
+				2611087F1E6C495400BF5D98 /* UIViewController+Rotation.m */,
 				D8D779961D04B7180050CFEA /* RCTHelpers.h */,
 				D8D779971D04B7180050CFEA /* RCTHelpers.m */,
 				26AFF3F31D7EEE2400CBA211 /* RCCTitleViewHelper.h */,
@@ -312,6 +317,7 @@
 				CC84A1A21C1A0C4E00B3A6A2 /* RCCViewController.m in Sources */,
 				D85082E91CBCF54200FDB961 /* SidebarWunderlistAnimation.m in Sources */,
 				D85082E11CBCF54200FDB961 /* RCCDrawerHelper.m in Sources */,
+				261108801E6C495400BF5D98 /* UIViewController+Rotation.m in Sources */,
 				D85082FE1CBCF8A800FDB961 /* MMDrawerVisualState.m in Sources */,
 				D85082FD1CBCF8A800FDB961 /* MMDrawerController.m in Sources */,
 				D85082E41CBCF54200FDB961 /* SidebarAnimation.m in Sources */,

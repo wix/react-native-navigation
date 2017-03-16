@@ -41,6 +41,7 @@ public class StyleParams {
         }
     }
 
+    public Orientation orientation;
     public Color statusBarColor;
     public Color contextualMenuStatusBarColor;
     public Color contextualMenuButtonsColor;
@@ -49,7 +50,6 @@ public class StyleParams {
     public Color topBarColor;
     public CollapsingTopBarParams collapsingTopBarParams;
     public boolean topBarCollapseOnScroll;
-    public boolean topBarHidden;
     public boolean topBarElevationShadowEnabled;
     public boolean topTabsHidden;
     public boolean drawScreenBelowTopBar;

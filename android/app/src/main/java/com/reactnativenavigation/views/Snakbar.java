@@ -58,6 +58,7 @@ class Snakbar {
             snackbar.setAction(params.buttonText, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    NavigationApplication.instance.getEventEmitter().sendEvent(params.eventId);
                     NavigationApplication.instance.getEventEmitter().sendNavigatorEvent(params.eventId, navigatorEventId);
                 }
             });

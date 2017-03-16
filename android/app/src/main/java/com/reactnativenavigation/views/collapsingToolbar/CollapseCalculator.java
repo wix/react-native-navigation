@@ -9,7 +9,6 @@ import android.widget.ScrollView;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseBehaviour;
-import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseTitleBarBehaviour;
 import com.reactnativenavigation.views.collapsingToolbar.behaviours.TitleBarHideOnScrollBehaviour;
 
 public class CollapseCalculator {
@@ -123,8 +122,9 @@ public class CollapseCalculator {
         }
         checkCollapseLimits();
         return (isNotCollapsedOrExpended() ||
-               (canCollapse && isExpendedAndScrollingUp(direction)) ||
-               (canExpend && isCollapsedAndScrollingDown(direction)));
+               (canCollapse && isExpendedAndScrollingUp(direction) && collapseBehaviour.canCollapse(scrollView.getScrollY(), scaledTouchSlop)) ||
+               (canExpend && isCollapsedAndScrollingDown(direction) && collapseBehaviour.canExpend(scrollView.getScrollY(), scaledTouchSlop))
+        );
     }
 
     private boolean isScrolling() {
@@ -157,14 +157,12 @@ public class CollapseCalculator {
 
     private boolean calculateCanCollapse(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation > finalCollapsedTranslation &&
-               currentTopBarTranslation <= finalExpendedTranslation &&
-               (scrollView.getScrollY() <= scaledTouchSlop || (collapseBehaviour instanceof TitleBarHideOnScrollBehaviour || collapseBehaviour instanceof CollapseTitleBarBehaviour));
+               currentTopBarTranslation <= finalExpendedTranslation;
     }
 
     private boolean calculateCanExpend(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation >= finalCollapsedTranslation &&
-               currentTopBarTranslation < finalExpendedTranslation &&
-               (scrollView.getScrollY() <= scaledTouchSlop || (collapseBehaviour instanceof TitleBarHideOnScrollBehaviour || collapseBehaviour instanceof CollapseTitleBarBehaviour));
+               currentTopBarTranslation < finalExpendedTranslation;
     }
 
     private boolean isCollapsedAndScrollingDown(Direction direction) {

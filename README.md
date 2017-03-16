@@ -9,9 +9,9 @@
 [![Build Status](https://travis-ci.org/wix/react-native-navigation.svg?branch=master)](https://travis-ci.org/wix/react-native-navigation)
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 
-App-wide support for 100% native navigation with an easy cross-platform interface. For iOS, this package is a wrapper around [react-native-controllers](https://github.com/wix/react-native-controllers), but provides a simplified more abstract API over it. This abstract API will be unified with the Android solution which is currently work in progress. It also fully supports redux if you use it.
+App-wide support for 100% native navigation with an easy cross-platform interface. For iOS, this package is a wrapper around [react-native-controllers](https://github.com/wix/react-native-controllers), but provides a simplified more abstract API over it. It also fully supports redux if you use it.
 
-<img src="https://github.com/wix/react-native/blob/master/assets/themes/bootstrap-3/images/demo.gif?raw=true" width="240">
+<img src="https://github.com/wix/react-native/blob/master/src/videos/demo.gif?raw=true" width="240">
 
 ----
 
@@ -31,7 +31,6 @@ App-wide support for 100% native navigation with an easy cross-platform interfac
 * [Installation - iOS](https://github.com/wix/react-native-navigation/wiki/Installation---iOS#installation---ios)
 * [Installation - Android](https://github.com/wix/react-native-navigation/wiki/Installation---Android)
 * [Usage](https://github.com/wix/react-native-navigation/wiki/Usage)
-* [Migrating to version 2.0](https://github.com/wix/react-native-navigation/wiki/Migrating-to-version-2.0)
 * [Top Level API](https://github.com/wix/react-native-navigation/wiki/Top-Level-API)
 * [Screen API](https://github.com/wix/react-native-navigation/wiki/Screen-API)
 * [Styling the navigator](https://github.com/wix/react-native-navigation/wiki/Styling-the-navigator)
@@ -39,7 +38,6 @@ App-wide support for 100% native navigation with an easy cross-platform interfac
 * [Styling the tab bar](https://github.com/wix/react-native-navigation/wiki/Styling-the-tab-bar)
 * [Deep links](https://github.com/wix/react-native-navigation/wiki/Deep-links)
 * [Third party libraries support](https://github.com/wix/react-native-navigation/wiki/Third-party-libraries-support)
-* [Release Notes](https://github.com/wix/react-native-navigation/blob/master/CHANGELOG.md)
 * [Milestones](https://github.com/wix/react-native-navigation/wiki/Milestones)
 * [Contributing](https://github.com/wix/react-native-navigation/wiki/Contributing)
 * [License](https://github.com/wix/react-native-navigation/wiki#license)
