@@ -21,8 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-//import android.view.View;
-
 public class NavigationReactGateway implements ReactGateway {
 
     private final ReactNativeHost host;
