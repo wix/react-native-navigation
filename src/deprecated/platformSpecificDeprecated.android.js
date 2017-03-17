@@ -28,11 +28,24 @@ function startSingleScreenApp(params) {
   params.screen = adaptNavigationStyleToScreenStyle(screen);
   params.screen = adaptNavigationParams(screen);
   params.appStyle = convertStyleParams(params.appStyle);
+  if (params.appStyle) {
+    params.appStyle.orientation = getOrientation(params);
+  }
   params.sideMenu = convertDrawerParamsToSideMenuParams(params.drawer);
   params.overrideBackPress = screen.overrideBackPress;
   params.animateShow = convertAnimationType(params.animationType);
 
   newPlatformSpecific.startApp(params);
+}
+
+function getOrientation(params) {
+  if (params.portraitOnlyMode || _.get(params, 'appStyle.orientation') === 'portrait') {
+    return 'portrait';
+  }
+  if (params.landscaptOnlyMode || _.get(params, 'appStyle.orientation') === 'landscape') {
+    return 'landscape';
+  }
+  return 'auto';
 }
 
 function adaptTopTabs(screen, navigatorID) {
@@ -120,6 +133,7 @@ function convertStyleParams(originalStyleObject) {
   }
 
   let ret = {
+    orientation: originalStyleObject.orientation,
     statusBarColor: processColor(originalStyleObject.statusBarColor),
     topBarColor: processColor(originalStyleObject.navBarBackgroundColor),
     topBarTransparent: originalStyleObject.navBarTransparent,
@@ -130,11 +144,13 @@ function convertStyleParams(originalStyleObject) {
     collapsingToolBarComponent: originalStyleObject.collapsingToolBarComponent,
     collapsingToolBarComponentHeight: originalStyleObject.collapsingToolBarComponentHeight,
     collapsingToolBarCollapsedColor: processColor(originalStyleObject.collapsingToolBarCollapsedColor),
+    collapsingToolBarExpendedColor: processColor(originalStyleObject.collapsingToolBarExpendedColor),
+    showTitleWhenExpended: originalStyleObject.showTitleWhenExpended,
     expendCollapsingToolBarOnTopTabChange: originalStyleObject.expendCollapsingToolBarOnTopTabChange,
     titleBarHidden: originalStyleObject.navBarHidden,
     titleBarHideOnScroll: originalStyleObject.navBarHideOnScroll,
     titleBarTitleColor: processColor(originalStyleObject.navBarTextColor),
-    titleBarSubtitleColor: processColor(originalStyleObject.navBarTextSubtitleColor),
+    titleBarSubtitleColor: processColor(originalStyleObject.navBarSubtitleColor),
     titleBarButtonColor: processColor(originalStyleObject.navBarButtonColor),
     titleBarDisabledButtonColor: processColor(originalStyleObject.titleBarDisabledButtonColor),
     backButtonHidden: originalStyleObject.backButtonHidden,
@@ -247,6 +263,9 @@ function startTabBasedApp(params) {
   params.tabs = newTabs;
 
   params.appStyle = convertStyleParams(params.appStyle);
+  if (params.appStyle) {
+    params.appStyle.orientation = getOrientation(params);
+  }
   params.sideMenu = convertDrawerParamsToSideMenuParams(params.drawer);
   params.animateShow = convertAnimationType(params.animationType);
 
@@ -339,7 +358,7 @@ function navigatorToggleDrawer(navigator, params) {
 
 function navigatorToggleNavBar(navigator, params) {
   const screenInstanceID = navigator.screenInstanceID;
-  const visible = params.to === 'shown';
+  const visible = params.to === 'shown' || params.to === 'show';
   const animated = !(params.animated === false);
 
   newPlatformSpecific.toggleTopBarVisible(
@@ -548,7 +567,7 @@ function addNavigationStyleParams(screen) {
   screen.navigatorStyle = Object.assign({}, Screen.navigatorStyle, screen.navigatorStyle);
 }
 
-function showSnackbar(navigator, params) {
+function showSnackbar(params) {
   const adapted = _.cloneDeep(params);
   if (adapted.backgroundColor) {
     adapted.backgroundColor = processColor(adapted.backgroundColor);

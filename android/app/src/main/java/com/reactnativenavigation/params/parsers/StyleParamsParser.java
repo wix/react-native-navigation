@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.reactnativenavigation.params.AppStyle;
+import com.reactnativenavigation.params.Orientation;
 import com.reactnativenavigation.params.StyleParams;
 
 public class StyleParamsParser {
@@ -19,6 +20,7 @@ public class StyleParamsParser {
         }
 
         StyleParams result = new StyleParams();
+        result.orientation = Orientation.fromString(params.getString("orientation", getDefaultOrientation()));
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
         result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
@@ -74,11 +76,16 @@ public class StyleParamsParser {
         return result;
     }
 
+    private String getDefaultOrientation() {
+        return AppStyle.appStyle == null ? null : AppStyle.appStyle.orientation.name;
+    }
+
     private StyleParams createDefaultStyleParams() {
         StyleParams result = new StyleParams();
         result.titleBarDisabledButtonColor = getTitleBarDisabledButtonColor();
         result.topBarElevationShadowEnabled = true;
         result.titleBarHideOnScroll = false;
+        result.orientation = Orientation.auto;
         return result;
     }
 

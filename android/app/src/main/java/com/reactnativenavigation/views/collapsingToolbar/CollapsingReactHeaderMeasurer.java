@@ -13,7 +13,11 @@ class CollapsingReactHeaderMeasurer extends ViewMeasurer {
 
     @Override
     public int getMeasuredHeight(int heightMeasureSpec) {
-        return hasChildren() ? header.getChildAt(0).getMeasuredHeight() : super.getMeasuredHeight(heightMeasureSpec);
+        return hasChildren() ? getFirstChildHeightAndTopMargin() : super.getMeasuredHeight(heightMeasureSpec);
+    }
+
+    private int getFirstChildHeightAndTopMargin() {
+        return header.getChildAt(0).getHeight() + header.getChildAt(0).getTop();
     }
 
     private boolean hasChildren() {

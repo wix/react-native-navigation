@@ -1,9 +1,10 @@
 #import "RCCTabBarController.h"
 #import "RCCViewController.h"
-#import "RCTConvert.h"
+#import <React/RCTConvert.h>
 #import "RCCManager.h"
 #import "RCTHelpers.h"
-#import "RCTUIManager.h"
+#import <React/RCTUIManager.h>
+#import "UIViewController+Rotation.h"
 
 @interface RCTUIManager ()
 
@@ -14,6 +15,11 @@
 @end
 
 @implementation RCCTabBarController
+
+
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations {
+  return [self supportedControllerOrientations];
+}
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
   id queue = [[RCCManager sharedInstance].getBridge uiManager].methodQueue;
@@ -150,6 +156,8 @@
 
   // replace the tabs
   self.viewControllers = viewControllers;
+  
+  [self setRotation:props];
 
   return self;
 }
