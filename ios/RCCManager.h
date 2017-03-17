@@ -17,5 +17,8 @@
 -(void)unregisterController:(UIViewController*)vc;
 
 -(void)clearModuleRegistry;
+-(void)setAppStyle:(NSDictionary*)appStyle;
+-(NSString*)getStyleForKey:(NSString*)key;
+-(NSDictionary*)getAppStyle;
 
 @end

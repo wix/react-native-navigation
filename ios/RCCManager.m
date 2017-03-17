@@ -2,11 +2,13 @@
 #import <React/RCTBridge.h>
 #import <React/RCTRedBox.h>
 #import <Foundation/Foundation.h>
+#import "RCCAppStyler.h"
 
 @interface RCCManager() <RCTBridgeDelegate>
 @property (nonatomic, strong) NSMutableDictionary *modulesRegistry;
 @property (nonatomic, strong) RCTBridge *sharedBridge;
 @property (nonatomic, strong) NSURL *bundleURL;
+@property (nonatomic, strong) RCCAppStyler *appStyler;
 @end
 
 @implementation RCCManager
@@ -15,14 +17,14 @@
 {
   static RCCManager *sharedInstance = nil;
   static dispatch_once_t onceToken = 0;
-
+  
   dispatch_once(&onceToken,^{
     if (sharedInstance == nil)
     {
       sharedInstance = [[RCCManager alloc] init];
     }
   });
-
+  
   return sharedInstance;
 }
 
@@ -37,8 +39,10 @@
   if (self)
   {
     self.modulesRegistry = [@{} mutableCopy];
+    self.appStyler = [@{} mutableCopy];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTReloadNotification object:nil];
+    
+    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTReloadNotification object:nil];
   }
   return self;
 }
@@ -46,6 +50,19 @@
 -(void)clearModuleRegistry
 {
   [self.modulesRegistry removeAllObjects];
+  self.appStyler = nil;
+}
+
+-(NSDictionary*)getAppStyle {
+  return self.appStyler.appStyle;
+}
+
+-(void)setAppStyle:(NSDictionary*)appStyle {
+  self.appStyler = [[RCCAppStyler alloc] initWithAppStyleProps:appStyle];
+}
+
+-(NSString*)getStyleForKey:(NSString*)key {
+  return [self.appStyler styleForKey:key];
 }
 
 -(void)onRNReload
@@ -61,22 +78,22 @@
   {
     return;
   }
-
+  
   NSMutableDictionary *componentsDic = self.modulesRegistry[componentType];
   if (componentsDic == nil)
   {
     componentsDic = [@{} mutableCopy];
     self.modulesRegistry[componentType] = componentsDic;
   }
-
+  
   /*
-  TODO: we really want this error, but we need to unregister controllers when they dealloc
-  if (componentsDic[componentId])
-  {
-    [self.sharedBridge.redBox showErrorMessage:[NSString stringWithFormat:@"Controllers: controller with id %@ is already registered. Make sure all of the controller id's you use are unique.", componentId]];
-  }
-  */
-   
+   TODO: we really want this error, but we need to unregister controllers when they dealloc
+   if (componentsDic[componentId])
+   {
+   [self.sharedBridge.redBox showErrorMessage:[NSString stringWithFormat:@"Controllers: controller with id %@ is already registered. Make sure all of the controller id's you use are unique.", componentId]];
+   }
+   */
+  
   componentsDic[componentId] = controller;
 }
 
@@ -104,15 +121,15 @@
   {
     return nil;
   }
-
+  
   id component = nil;
-
+  
   NSMutableDictionary *componentsDic = self.modulesRegistry[componentType];
   if (componentsDic != nil)
   {
     component = componentsDic[componentId];
   }
-
+  
   return component;
 }
 
@@ -124,7 +141,7 @@
 -(void)initBridgeWithBundleURL:(NSURL *)bundleURL launchOptions:(NSDictionary *)launchOptions
 {
   if (self.sharedBridge) return;
-
+  
   self.bundleURL = bundleURL;
   self.sharedBridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   

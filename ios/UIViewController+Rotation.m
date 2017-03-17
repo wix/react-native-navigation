@@ -8,6 +8,7 @@
 
 #import "UIViewController+Rotation.h"
 #import <objc/runtime.h>
+#import "RCCManager.h"
 
 static NSString *const ORIENTATION =            @"orientation";
 
@@ -40,7 +41,7 @@ static NSString *const ORIENTATION_AUTO =       @"auto";      // defualt
 -(void)setRotation:(NSDictionary*)props {
     NSString *orientation = props[@"style"][ORIENTATION];
     if (!orientation) {
-        orientation = props[@"appStyle"][ORIENTATION];
+        orientation = [[RCCManager sharedInstance] getStyleForKey:ORIENTATION];//props[@"appStyle"][ORIENTATION];
     }
     if (orientation) {
         self.orientation = orientation;

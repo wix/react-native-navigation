@@ -124,6 +124,7 @@ var Controllers = {
       var controller = _controllerRegistry[appKey];
       if (controller === undefined) return;
       var layout = controller.render();
+      _processProperties(layout['props']['appStyle'])
       _validateDrawerProps(layout);
       RCCManager.setRootController(layout, animationType, passProps);
     }
