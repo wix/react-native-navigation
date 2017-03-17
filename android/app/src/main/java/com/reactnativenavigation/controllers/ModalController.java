@@ -9,6 +9,7 @@ import com.reactnativenavigation.layouts.ScreenStackContainer;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 
@@ -149,5 +150,13 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
     @Override
     public void onSideMenuButtonClick() {
         // Do nothing and let the layout handle the click
+    }
+
+    void showSlidingOverlay(SlidingOverlayParams params) {
+        stack.peek().showSlidingOverlay(params);
+    }
+
+    void hideSlidingOverlay() {
+        stack.peek().hideSlidingOverlay();
     }
 }

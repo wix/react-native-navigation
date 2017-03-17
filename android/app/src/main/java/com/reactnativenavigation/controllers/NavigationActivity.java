@@ -313,11 +313,19 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     public void showSlidingOverlay(SlidingOverlayParams params) {
-        layout.showSlidingOverlay(params);
+        if (modalController.isShowing()) {
+            modalController.showSlidingOverlay(params);
+        } else {
+            layout.showSlidingOverlay(params);
+        }
     }
 
     public void hideSlidingOverlay() {
-        layout.hideSlidingOverlay();
+        if (modalController.isShowing()) {
+            modalController.hideSlidingOverlay();
+        } else {
+            layout.hideSlidingOverlay();
+        }
     }
 
     public void showSnackbar(SnackbarParams params) {
