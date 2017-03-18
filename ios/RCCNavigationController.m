@@ -88,6 +88,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [mergedStyle removeObjectForKey:@"statusBarHideWithNavBar"];
       [mergedStyle removeObjectForKey:@"autoAdjustScrollViewInsets"];
       [mergedStyle removeObjectForKey:@"statusBarTextColorSchemeSingleScreen"];
+      [mergedStyle removeObjectForKey:@"disabledBackGesture"];
       
       [mergedStyle addEntriesFromDictionary:navigatorStyle];
       navigatorStyle = mergedStyle;
