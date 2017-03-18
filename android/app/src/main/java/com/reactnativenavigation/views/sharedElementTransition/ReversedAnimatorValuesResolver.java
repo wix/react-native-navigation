@@ -1,12 +1,12 @@
 package com.reactnativenavigation.views.sharedElementTransition;
 
-import com.reactnativenavigation.params.InterpolationParams;
 import com.reactnativenavigation.params.PathInterpolationParams;
+import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
 
 class ReversedAnimatorValuesResolver extends AnimatorValuesResolver {
 
-    ReversedAnimatorValuesResolver(SharedElementTransition from, SharedElementTransition to, InterpolationParams interpolation) {
-        super(from, to, interpolation);
+    ReversedAnimatorValuesResolver(SharedElementTransition from, SharedElementTransition to, SharedElementTransitionParams params) {
+        super(from, to, params);
     }
 
     @Override

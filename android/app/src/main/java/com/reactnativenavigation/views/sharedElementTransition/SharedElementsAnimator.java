@@ -24,10 +24,10 @@ public class SharedElementsAnimator {
                 sharedElements.showToElements(new Runnable() {
                     @Override
                     public void run() {
+                        sharedElements.hideFromElements();
                         animatorSet.start();
                     }
                 });
-                sharedElements.hideFromElements();
             }
 
             private AnimatorSet createAnimatorSet() {

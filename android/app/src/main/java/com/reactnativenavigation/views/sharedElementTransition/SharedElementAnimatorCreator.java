@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.params.InterpolationParams;
-import com.reactnativenavigation.params.InterpolationParams.Easing;
 import com.reactnativenavigation.params.PathInterpolationParams;
 import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
 import com.reactnativenavigation.views.utils.AnimatorPath;
@@ -30,31 +29,31 @@ class SharedElementAnimatorCreator {
     }
 
     List<Animator> createShow() {
-        return create(new AnimatorValuesResolver(from, to, to.showTransitionParams.interpolation), to.showTransitionParams);
+        return create(new AnimatorValuesResolver(from, to, to.showTransitionParams), to.showTransitionParams);
     }
 
     List<Animator> createHide() {
-        return create(new ReversedAnimatorValuesResolver(to, from, to.hideTransitionParams.interpolation), to.hideTransitionParams);
+        return create(new ReversedAnimatorValuesResolver(to, from, to.hideTransitionParams), to.hideTransitionParams);
     }
 
     @NonNull
     private List<Animator> create(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
         List<Animator> result = new ArrayList<>();
         if (shouldAddCurvedMotionAnimator(resolver, params.interpolation)) {
-            result.add(createCurvedMotionAnimator(resolver, params.interpolation.easing, params.duration));
+            result.add(createCurvedMotionAnimator(resolver, params));
         } else {
             if (shouldAddLinearMotionXAnimator(resolver, params)) {
-                result.add(createXAnimator(resolver, params.duration));
+                result.add(createXAnimator(resolver, params));
             }
             if (shouldAddLinearMotionYAnimator(resolver, params)) {
-                result.add(createYAnimator(resolver, params.duration));
+                result.add(createYAnimator(resolver, params));
             }
         }
         if (shouldCreateScaleXAnimator(resolver, params)) {
-            result.add(createScaleXAnimator(resolver, params.duration));
+            result.add(createScaleXAnimator(resolver, params));
         }
         if (shouldCreateScaleYAnimator(resolver, params)) {
-            result.add(createScaleYAnimator(resolver, params.duration));
+            result.add(createScaleYAnimator(resolver, params));
         }
         if (shouldCreateColorAnimator(resolver)) {
             result.add(createColorAnimator(resolver, params.duration));
@@ -79,7 +78,6 @@ class SharedElementAnimatorCreator {
         } else {
             return resolver.dx != 0;
         }
-//        return resolver.dx != 0 && !params.animateClipBounds;
     }
 
     private boolean shouldAddLinearMotionYAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
@@ -88,7 +86,6 @@ class SharedElementAnimatorCreator {
         } else {
             return resolver.dy != 0;
         }
-//        return resolver.dy != 0 && !params.animateClipBounds;
     }
 
     private boolean shouldAddCurvedMotionAnimator(AnimatorValuesResolver resolver, InterpolationParams interpolation) {
@@ -103,7 +100,7 @@ class SharedElementAnimatorCreator {
         return params.animateClipBounds;
     }
 
-    private ObjectAnimator createCurvedMotionAnimator(AnimatorValuesResolver resolver, Easing easing, int duration) {
+    private ObjectAnimator createCurvedMotionAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
         AnimatorPath path = new AnimatorPath();
         path.moveTo(resolver.startX, resolver.startY);
         path.curveTo(resolver.controlX1, resolver.controlY1, resolver.controlX2, resolver.controlY2, resolver.endX, resolver.endY);
@@ -112,33 +109,39 @@ class SharedElementAnimatorCreator {
                 "curvedMotion",
                 new PathEvaluator(),
                 path.getPoints().toArray());
-        animator.setInterpolator(easing.getInterpolator());
-        animator.setDuration(duration);
+        animator.setInterpolator(params.interpolation.easing.getInterpolator());
+        animator.setDuration(params.duration);
         return animator;
     }
 
-    private ObjectAnimator createXAnimator(AnimatorValuesResolver resolver, int duration) {
-//        to.getSharedView().setTranslationX(resolver.startX);
-        return ofFloat(to.getSharedView(), View.TRANSLATION_X, resolver.startX, resolver.endX)
-                .setDuration(duration);
+    private ObjectAnimator createXAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
+        ObjectAnimator animator = ofFloat(to.getSharedView(), View.TRANSLATION_X, resolver.startX, resolver.endX)
+                .setDuration(params.duration);
+        animator.setInterpolator(params.interpolation.easing.getInterpolator());
+        return animator;
     }
 
-    private ObjectAnimator createYAnimator(AnimatorValuesResolver resolver, int duration) {
-//        to.getSharedView().setTranslationY(resolver.startY);
-        return ofFloat(to.getSharedView(), View.TRANSLATION_Y, resolver.startY, resolver.endY)
-                .setDuration(duration);
+    private ObjectAnimator createYAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
+        ObjectAnimator animator = ofFloat(to.getSharedView(), View.TRANSLATION_Y, resolver.startY, resolver.endY)
+                .setDuration(params.duration);
+        animator.setInterpolator(params.interpolation.easing.getInterpolator());
+        return animator;
     }
 
-    private ObjectAnimator createScaleXAnimator(AnimatorValuesResolver resolver, int duration) {
+    private ObjectAnimator createScaleXAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
         to.getSharedView().setPivotX(0);
-        return ObjectAnimator.ofFloat(to.getSharedView(), View.SCALE_X, resolver.startScaleX, resolver.endScaleX)
-                .setDuration(duration);
+        ObjectAnimator animator = ofFloat(to.getSharedView(), View.SCALE_X, resolver.startScaleX, resolver.endScaleX)
+                .setDuration(params.duration);
+        animator.setInterpolator(params.interpolation.easing.getInterpolator());
+        return animator;
     }
 
-    private ObjectAnimator createScaleYAnimator(AnimatorValuesResolver resolver, int duration) {
+    private ObjectAnimator createScaleYAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
         to.getSharedView().setPivotY(0);
-        return ObjectAnimator.ofFloat(to.getSharedView(), View.SCALE_Y, resolver.startScaleY, resolver.endScaleY)
-                .setDuration(duration);
+        ObjectAnimator animator = ofFloat(to.getSharedView(), View.SCALE_Y, resolver.startScaleY, resolver.endScaleY)
+                .setDuration(params.duration);
+        animator.setInterpolator(params.interpolation.easing.getInterpolator());
+        return animator;
     }
 
     private ObjectAnimator createColorAnimator(AnimatorValuesResolver resolver, int duration) {

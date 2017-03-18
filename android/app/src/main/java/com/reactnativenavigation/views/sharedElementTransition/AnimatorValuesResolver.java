@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.reactnativenavigation.params.InterpolationParams;
 import com.reactnativenavigation.params.PathInterpolationParams;
+import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.utils.Point;
 
@@ -31,17 +32,42 @@ class AnimatorValuesResolver {
     Rect startDrawingRect = new Rect();
     Rect endDrawingRect = new Rect();
 
-    AnimatorValuesResolver(SharedElementTransition from, SharedElementTransition to, InterpolationParams interpolation) {
-        fromXy = ViewUtils.getLocationOnScreen(from.getSharedView());
-        toXy = ViewUtils.getLocationOnScreen(to.getSharedView());
+    AnimatorValuesResolver(SharedElementTransition from, SharedElementTransition to, SharedElementTransitionParams params) {
+        fromXy = calculateFromXY(from, to, params);
+        toXy = calculateToXY(to, from, params);
         startScaleX = calculateStartScaleX(from, to);
         endScaleX = calculateEndScaleX(from, to);
         startScaleY = calculateStartScaleY(from, to);
         endScaleY = calculateEndScaleY(from, to);
         calculateColor(from, to);
-        calculate(interpolation);
+        calculate(params.interpolation);
         calculateDrawingReacts(from, to);
     }
+
+    private Point calculateFromXY(SharedElementTransition from, SharedElementTransition to, SharedElementTransitionParams params) {
+        Point loc = ViewUtils.getLocationOnScreen(from.getSharedView());
+        if (params.animateClipBounds) {
+            if (from.getHeight() != to.getHeight()) {
+                if (from.getHeight() < to.getHeight()) {
+                    loc.y -= (to.getHeight() - from.getHeight()) / 2;
+                }
+            }
+        }
+        return loc;
+    }
+
+    private Point calculateToXY(SharedElementTransition to, SharedElementTransition from, SharedElementTransitionParams params) {
+        Point loc = ViewUtils.getLocationOnScreen(to.getSharedView());
+        if (params.animateClipBounds) {
+            if (from.getHeight() != to.getHeight()) {
+                if (from.getHeight() > to.getHeight()) {
+                    loc.y -= (from.getHeight() - to.getHeight()) / 2;
+                }
+            }
+        }
+        return loc;
+    }
+
 
     protected float calculateEndScaleY(SharedElementTransition from, SharedElementTransition to) {
         return 1;
