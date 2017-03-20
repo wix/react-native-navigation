@@ -13,8 +13,10 @@ import com.reactnativenavigation.layouts.ModalScreenLayout;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.Orientation;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 
@@ -47,12 +49,24 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         layout.setTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButton);
     }
 
+    void setFab(String screenInstanceId, String navigatorEventId, FabParams fab) {
+        layout.setFab(screenInstanceId, navigatorEventId, fab);
+    }
+
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
         layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
     }
 
     public void dismissContextualMenu(String screenInstanceId) {
         layout.dismissContextualMenu(screenInstanceId);
+    }
+
+    void showSlidingOverlay(SlidingOverlayParams params) {
+        layout.showSlidingOverlay(params);
+    }
+
+    void hideSlidingOverlay() {
+        layout.hideSlidingOverlay();
     }
 
     @Override

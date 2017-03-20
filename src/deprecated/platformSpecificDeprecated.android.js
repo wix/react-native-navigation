@@ -358,7 +358,7 @@ function navigatorToggleDrawer(navigator, params) {
 
 function navigatorToggleNavBar(navigator, params) {
   const screenInstanceID = navigator.screenInstanceID;
-  const visible = params.to === 'shown';
+  const visible = params.to === 'shown' || params.to === 'show';
   const animated = !(params.animated === false);
 
   newPlatformSpecific.toggleTopBarVisible(
@@ -567,7 +567,7 @@ function addNavigationStyleParams(screen) {
   screen.navigatorStyle = Object.assign({}, Screen.navigatorStyle, screen.navigatorStyle);
 }
 
-function showSnackbar(navigator, params) {
+function showSnackbar(params) {
   const adapted = _.cloneDeep(params);
   if (adapted.backgroundColor) {
     adapted.backgroundColor = processColor(adapted.backgroundColor);

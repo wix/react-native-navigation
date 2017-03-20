@@ -277,6 +277,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     void setScreenFab(String screenInstanceId, String navigatorEventId, FabParams fab) {
         layout.setFab(screenInstanceId, navigatorEventId, fab);
+        modalController.setFab(screenInstanceId, navigatorEventId, fab);
     }
 
     public void toggleSideMenuVisible(boolean animated, Side side) {
@@ -312,11 +313,19 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     public void showSlidingOverlay(SlidingOverlayParams params) {
-        layout.showSlidingOverlay(params);
+        if (modalController.isShowing()) {
+            modalController.showSlidingOverlay(params);
+        } else {
+            layout.showSlidingOverlay(params);
+        }
     }
 
     public void hideSlidingOverlay() {
-        layout.hideSlidingOverlay();
+        if (modalController.isShowing()) {
+            modalController.hideSlidingOverlay();
+        } else {
+            layout.hideSlidingOverlay();
+        }
     }
 
     public void showSnackbar(SnackbarParams params) {

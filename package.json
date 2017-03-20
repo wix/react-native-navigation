@@ -29,9 +29,6 @@
     "test:watch": "jest --coverage --watch",
     "release": "node ./scripts/release.js"
   },
-  "optionalDependencies": {
-    "react-redux": "*"
-  },
   "peerDependencies": {
     "react-native": "*",
     "react": "*"
