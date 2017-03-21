@@ -437,6 +437,13 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   BOOL navBarTranslucentBool = navBarTranslucent ? [navBarTranslucent boolValue] : NO;
   if (navBarTranslucentBool || navBarBlurBool) {
     viewController.navigationController.navigationBar.translucent = YES;
+
+    // Set background opacity from the background color
+    // Ref: http://stackoverflow.com/questions/28875932/ios-navigation-bar-loses-transparency-when-i-set-bartintcolor
+    CGFloat alpha;
+    [viewController.navigationController.navigationBar.barTintColor getRed:NULL green:NULL blue:NULL alpha:&alpha];
+    [(UIView*)[viewController.navigationController.navigationBar.subviews objectAtIndex:0] setAlpha:alpha];
+
   } else {
     viewController.navigationController.navigationBar.translucent = NO;
   }
