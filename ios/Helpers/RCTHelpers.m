@@ -248,7 +248,16 @@
         
         NSString *capitalSide = [side capitalizedString];
         
-        BOOL needsButton = !!navigatorStyle[@"navBarButtonBorderRadius"] || !!navigatorStyle[@"navBarButtonBorderWidth"] || !!navigatorStyle[@"navBarButtonBorderColor"] || !!navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderRadius", capitalSide]] || !!navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderWidth", capitalSide]] || !!navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderColor", capitalSide]] || !!navigatorStyle[@"navBarButtonPadding"] || !!navigatorStyle[[NSString stringWithFormat:@"navBarButton%@Padding", capitalSide]];
+        BOOL needsButton = navigatorStyle[@"navBarButtonBorderRadius"] ||
+        navigatorStyle[@"navBarButtonBorderWidth"] ||
+        navigatorStyle[@"navBarButtonBorderColor"] ||
+        navigatorStyle[@"navBarButtonBackgroundColor"] ||
+        navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderRadius", capitalSide]] ||
+        navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderWidth", capitalSide]] ||
+        navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderColor", capitalSide]] ||
+        navigatorStyle[@"navBarButtonPadding"] ||
+        navigatorStyle[[NSString stringWithFormat:@"navBarButton%@Padding", capitalSide]] ||
+        navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BackgroundColor", capitalSide]];
         
         UIButton *button;
         
@@ -297,6 +306,11 @@
             id borderColor = navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BorderColor", capitalSide]] ? : navigatorStyle[@"navBarButtonBorderColor"];
             if (borderColor) {
                 button.layer.borderColor = [RCTConvert CGColor:borderColor];
+            }
+            
+            id backgroundColor = navigatorStyle[[NSString stringWithFormat:@"navBarButton%@BackgroundColor", capitalSide]] ? : navigatorStyle[@"navBarButtonBackgroundColor"];
+            if (backgroundColor) {
+                button.layer.backgroundColor = [RCTConvert CGColor:backgroundColor];
             }
             
             id padding = navigatorStyle[[NSString stringWithFormat:@"navBarButton%@Padding", capitalSide]] ? : navigatorStyle[@"navBarButtonPadding"];
