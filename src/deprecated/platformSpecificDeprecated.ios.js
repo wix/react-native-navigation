@@ -56,6 +56,7 @@ function startTabBasedApp(params) {
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
                                style={params.drawer.style}
+                               appStyle={params.appStyle}
           >
             {this.renderBody()}
           </DrawerControllerIOS>
@@ -66,7 +67,8 @@ function startTabBasedApp(params) {
       return (
         <TabBarControllerIOS
           id={controllerID + '_tabs'}
-          style={params.tabsStyle}>
+          style={params.tabsStyle}
+          appStyle={params.appStyle}>
           {
             params.tabs.map(function(tab, index) {
               return (
@@ -144,6 +146,7 @@ function startSingleScreenApp(params) {
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
                                style={params.drawer.style}
+                               appStyle={params.appStyle}
           >
             {this.renderBody()}
           </DrawerControllerIOS>
@@ -166,6 +169,7 @@ function startSingleScreenApp(params) {
           style={navigatorStyle}
           leftButtons={navigatorButtons.leftButtons}
           rightButtons={navigatorButtons.rightButtons}
+          appStyle={params.appStyle}
         />
       );
     }

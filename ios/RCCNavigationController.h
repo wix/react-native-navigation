@@ -1,12 +1,5 @@
 #import <UIKit/UIKit.h>
-
-#if __has_include(<React/RCTBridge.h>)
 #import <React/RCTBridge.h>
-#elif __has_include("RCTBridge.h")
-#import "RCTBridge.h"
-#elif __has_include("React/RCTBridge.h")
-#import "React/RCTBridge.h"   // Required when used as a Pod in a Swift project
-#endif
 
 FOUNDATION_EXPORT NSString *const NAVIGATION_ITEM_BUTTON_ID_ASSOCIATED_KEY;
 FOUNDATION_EXPORT NSString *const NAVIGATION_ITEM_CALLBACK_ID_ASSOCIATED_KEY;

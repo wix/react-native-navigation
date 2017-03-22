@@ -6,8 +6,6 @@ import android.animation.ObjectAnimator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.View;
 
-import com.reactnativenavigation.views.ScrollDirectionListener;
-
 public class VisibilityAnimator {
 
     public enum HideDirection {
@@ -22,22 +20,12 @@ public class VisibilityAnimator {
     private static final int DURATION = 300;
 
     private final View view;
-    private final HideDirection hideDirection;
     private final int hiddenEndValue;
     private VisibilityState visibilityState = VisibilityState.Shown;
 
     public VisibilityAnimator(View view, HideDirection hideDirection, int height) {
         this.view = view;
-        this.hideDirection = hideDirection;
         this.hiddenEndValue = hideDirection == HideDirection.Up ? -height : height;
-    }
-
-    public void onScrollChanged(ScrollDirectionListener.Direction scrollDirection) {
-        if (hideDirection == HideDirection.Down) {
-            handleDownHidingViews(scrollDirection);
-        } else {
-            handleUpHidingViews(scrollDirection);
-        }
     }
 
     public void setVisible(boolean visible, boolean animate) {
@@ -45,22 +33,6 @@ public class VisibilityAnimator {
             show(animate);
         } else if (!visible && isShowing()) {
             hide(animate);
-        }
-    }
-
-    private void handleUpHidingViews(ScrollDirectionListener.Direction scrollDirection) {
-        if (scrollUp(scrollDirection) && !isShowing()) {
-            show(true);
-        } else if (scrollDown(scrollDirection) && !isHiding()) {
-            hide(true);
-        }
-    }
-
-    private void handleDownHidingViews(ScrollDirectionListener.Direction scrollDirection) {
-        if (scrollDown(scrollDirection) && !isHiding()) {
-            hide(true);
-        } else if (scrollUp(scrollDirection) && !isShowing()) {
-            show(true);
         }
     }
 
@@ -82,14 +54,6 @@ public class VisibilityAnimator {
             visibilityState = VisibilityState.Hidden;
             view.setVisibility(View.GONE);
         }
-    }
-
-    private boolean scrollUp(ScrollDirectionListener.Direction scrollDirection) {
-        return scrollDirection == ScrollDirectionListener.Direction.Up;
-    }
-
-    private boolean scrollDown(ScrollDirectionListener.Direction scrollDirection) {
-        return scrollDirection == ScrollDirectionListener.Direction.Down;
     }
 
     private boolean isShowing() {

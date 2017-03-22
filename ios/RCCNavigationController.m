@@ -1,30 +1,22 @@
 #import "RCCNavigationController.h"
 #import "RCCViewController.h"
 #import "RCCManager.h"
+#import <React/RCTEventDispatcher.h>
+#import <React/RCTConvert.h>
 #import <objc/runtime.h>
 #import "RCCTitleViewHelper.h"
+#import "UIViewController+Rotation.h"
 #import "RCTHelpers.h"
 
-#if __has_include(<React/RCTEventDispatcher.h>)
-#import <React/RCTEventDispatcher.h>
-#elif __has_include("RCTEventDispatcher.h")
-#import "RCTEventDispatcher.h"
-#elif __has_include("React/RCTEventDispatcher.h")
-#import "React/RCTEventDispatcher.h"   // Required when used as a Pod in a Swift project
-#endif
-
-#if __has_include(<React/RCTConvert.h>)
-#import <React/RCTConvert.h>
-#elif __has_include("RCTConvert.h")
-#import "RCTConvert.h"
-#elif __has_include("React/RCTConvert.h")
-#import "React/RCTConvert.h"   // Required when used as a Pod in a Swift project
-#endif
+@implementation RCCNavigationController
 
 NSString *const NAVIGATION_ITEM_CALLBACK_ID_ASSOCIATED_KEY = @"RCCNavigationController.CALLBACK_ASSOCIATED_KEY";
 NSString *const NAVIGATION_ITEM_BUTTON_ID_ASSOCIATED_KEY = @"RCCNavigationController.CALLBACK_ASSOCIATED_ID";
 
-@implementation RCCNavigationController
+
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations {
+  return [self supportedControllerOrientations];
+}
 
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary*)globalProps bridge:(RCTBridge *)bridge
 {
@@ -58,6 +50,9 @@ NSString *const NAVIGATION_ITEM_BUTTON_ID_ASSOCIATED_KEY = @"RCCNavigationContro
   [self processTitleView:viewController
                    props:props
                    style:navigatorStyle];
+  
+
+  [self setRotation:props];
   
   return self;
 }
@@ -96,6 +91,7 @@ NSString *const NAVIGATION_ITEM_BUTTON_ID_ASSOCIATED_KEY = @"RCCNavigationContro
           @"statusBarHideWithNavBar",
           @"autoAdjustScrollViewInsets",
           @"statusBarTextColorSchemeSingleScreen",
+		  @"disabledBackGesture",
           @"navBarButtonBorderRadius",
           @"navBarButtonBorderWidth",
           @"navBarButtonBorderColor",

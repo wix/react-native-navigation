@@ -1,23 +1,10 @@
 #import "RCCTabBarController.h"
 #import "RCCViewController.h"
-#import "RCTHelpers.h"
-#import "RCCManager.h"
-
-#if __has_include(<React/RCTConvert.h>)
 #import <React/RCTConvert.h>
-#elif __has_include("RCTConvert.h")
-#import "RCTConvert.h"
-#elif __has_include("React/RCTConvert.h")
-#import "React/RCTConvert.h"   // Required when used as a Pod in a Swift project
-#endif
-
-#if __has_include(<React/RCTUIManager.h>)
+#import "RCCManager.h"
+#import "RCTHelpers.h"
 #import <React/RCTUIManager.h>
-#elif __has_include("RCTUIManager.h")
-#import "RCTUIManager.h"
-#elif __has_include("React/RCTUIManager.h")
-#import "React/RCTUIManager.h"   // Required when used as a Pod in a Swift project
-#endif
+#import "UIViewController+Rotation.h"
 
 @interface RCTUIManager ()
 
@@ -28,6 +15,11 @@
 @end
 
 @implementation RCCTabBarController
+
+
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations {
+  return [self supportedControllerOrientations];
+}
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
   id queue = [[RCCManager sharedInstance].getBridge uiManager].methodQueue;
@@ -128,7 +120,11 @@
     }
     UIImage *iconImageSelected = nil;
     id selectedIcon = tabItemLayout[@"props"][@"selectedIcon"];
-    if (selectedIcon) iconImageSelected = [RCTConvert UIImage:selectedIcon];
+    if (selectedIcon) {
+      iconImageSelected = [RCTConvert UIImage:selectedIcon];
+    } else {
+      iconImageSelected = [RCTConvert UIImage:icon];
+    }
 
     viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
@@ -164,6 +160,8 @@
 
   // replace the tabs
   self.viewControllers = viewControllers;
+  
+  [self setRotation:props];
 
   return self;
 }

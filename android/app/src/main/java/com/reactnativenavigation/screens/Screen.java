@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.facebook.react.bridge.Callback;
+import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.events.ContextualMenuHiddenEvent;
 import com.reactnativenavigation.events.Event;
@@ -171,6 +172,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setTopBarVisible(boolean visible, boolean animate) {
+        screenParams.styleParams.titleBarHidden = !visible;
         topBarVisibilityAnimator.setVisible(visible, animate);
     }
 
@@ -189,6 +191,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void setTitleBarLeftButton(String navigatorEventId, LeftButtonOnClickListener backButtonListener,
                                       TitleBarLeftButtonParams titleBarLeftButtonParams) {
+        titleBarLeftButtonParams.setColorFromScreenStyle(styleParams.titleBarButtonColor);
         topBar.setTitleBarLeftButton(navigatorEventId,
                 backButtonListener,
                 titleBarLeftButtonParams,

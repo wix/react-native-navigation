@@ -73,7 +73,6 @@ public class TopBar extends AppBarLayout {
         if (styleParams.topBarTransparent) {
             setTransparent();
         }
-        setVisibility(styleParams.topBarHidden ? GONE : VISIBLE);
         titleBar.setStyle(styleParams);
         setTopTabsStyle(styleParams);
         if (!styleParams.topBarElevationShadowEnabled) {

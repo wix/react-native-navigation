@@ -9,8 +9,8 @@
 #import "RCCTheSideBarManagerViewController.h"
 #import "RCCViewController.h"
 #import "RCCDrawerHelper.h"
-#import "RCTConvert.h"
-
+#import <React/RCTConvert.h>
+#import "UIViewController+Rotation.h"
 
 @interface RCCTheSideBarManagerViewController () <TheSidebarControllerDelegate>
 
@@ -38,6 +38,12 @@
     }
     return _overlayButton;
 }
+
+
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self supportedControllerOrientations];
+}
+
 
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary*)globalProps bridge:(RCTBridge *)bridge {
     
@@ -72,6 +78,8 @@
     self.isOpen = NO;
     [self setAnimationType:props[@"animationType"]];
     [self setStyle];
+    
+    [self setRotation:props];
     
     return self;
 }
