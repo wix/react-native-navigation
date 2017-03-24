@@ -27,7 +27,6 @@ The following instructions are for the `next` version `2.0.0-experimental.x`, wh
 	    compile "com.facebook.react:react-native:+"
 	    compile project(':react-native-navigation')
 }
-```
 
 3. Your `MainActivity` should extend `com.reactnativenavigation.controllers.SplashActivity` instead of `ReactActivity`. If you have any `react-native` related methods in your `MainActivity` you can safely delete them.
 
