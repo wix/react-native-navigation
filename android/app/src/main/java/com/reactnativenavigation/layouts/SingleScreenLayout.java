@@ -124,6 +124,7 @@ public class SingleScreenLayout extends BaseLayout {
         if (sideMenu != null) {
             sideMenu.destroy();
         }
+        slidingOverlaysQueue.destroy();
     }
 
     @Override
@@ -191,7 +192,7 @@ public class SingleScreenLayout extends BaseLayout {
 
     @Override
     public void setFab(String screenInstanceId, String navigatorEventId, FabParams fabParams) {
-        stack.setFab(screenInstanceId, navigatorEventId, fabParams);
+        stack.setFab(screenInstanceId, fabParams);
     }
 
     @Override
@@ -212,6 +213,11 @@ public class SingleScreenLayout extends BaseLayout {
     public void showSnackbar(SnackbarParams params) {
         final String navigatorEventId = stack.peek().getNavigatorEventId();
         snackbarAndFabContainer.showSnackbar(navigatorEventId, params);
+    }
+
+    @Override
+    public void dismissSnackbar() {
+        snackbarAndFabContainer.dismissSnackbar();
     }
 
     @Override

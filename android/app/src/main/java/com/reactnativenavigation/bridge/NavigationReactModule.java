@@ -1,6 +1,7 @@
 package com.reactnativenavigation.bridge;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -51,16 +52,7 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     public void startApp(final ReadableMap params) {
         boolean portraitOnlyMode = false;
         boolean landscapeOnlyMode = false;
-
-        if (params.hasKey("portraitOnlyMode")) {
-            portraitOnlyMode = params.getBoolean("portraitOnlyMode");
-        }
-
-        if (params.hasKey(("landscapeOnlyMode"))) {
-            landscapeOnlyMode = params.getBoolean("landscapeOnlyMode");
-        }
-
-        NavigationCommandsHandler.startApp(BundleConverter.toBundle(params), portraitOnlyMode, landscapeOnlyMode);
+        NavigationCommandsHandler.startApp(BundleConverter.toBundle(params));
     }
 
     @ReactMethod
@@ -205,6 +197,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void dismissSnackbar() {
+        NavigationCommandsHandler.dismissSnackbar();
+    }
+
+    @ReactMethod
     public void showContextualMenu(final String screenInstanceId, final ReadableMap params, final Callback onButtonClicked) {
         ContextualMenuParams contextualMenuParams =
                 new ContextualMenuParamsParser().parse(BundleConverter.toBundle(params));
@@ -214,5 +211,10 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void dismissContextualMenu(String screenInstanceId) {
         NavigationCommandsHandler.dismissContextualMenu(screenInstanceId);
+    }
+
+    @ReactMethod
+    public void getOrientation(Promise promise) {
+        NavigationCommandsHandler.getOrientation(promise);
     }
 }

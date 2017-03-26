@@ -1,5 +1,6 @@
 package com.reactnativenavigation.bridge;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.ReactGateway;
@@ -37,5 +38,12 @@ public class EventEmitter {
             return;
         }
         reactGateway.getReactEventEmitter().sendEvent(eventId, arguments);
+    }
+
+    public void sendEvent(String eventId) {
+        if (!NavigationApplication.instance.isReactContextInitialized()) {
+            return;
+        }
+        reactGateway.getReactEventEmitter().sendEvent(eventId, Arguments.createMap());
     }
 }

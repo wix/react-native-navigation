@@ -84,10 +84,18 @@ public class ViewUtils {
         }
     }
 
+    public interface Matcher<T> {
+        boolean match(T child);
+    }
+
     /**
      * Returns the first instance of clazz in root
      */
     @Nullable public static <T> T findChildByClass(ViewGroup root, Class clazz) {
+        return findChildByClass(root, clazz, null);
+    }
+
+    @Nullable public static <T> T findChildByClass(ViewGroup root, Class clazz, Matcher<T> matcher) {
         for (int i = 0; i < root.getChildCount(); i++) {
             View view = root.getChildAt(i);
             if (clazz.isAssignableFrom(view.getClass())) {
@@ -95,9 +103,14 @@ public class ViewUtils {
             }
 
             if (view instanceof ViewGroup) {
-                view = findChildByClass((ViewGroup) view, clazz);
+                view = (View) findChildByClass((ViewGroup) view, clazz, matcher);
                 if (view != null && clazz.isAssignableFrom(view.getClass())) {
-                    return (T) view;
+                    if (matcher == null) {
+                        return (T) view;
+                    }
+                    if (matcher.match((T) view)) {
+                        return (T) view;
+                    }
                 }
             }
         }

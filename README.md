@@ -1,21 +1,24 @@
-# React Native Navigation
+
+<h1 align="center">
+  <img src="./logo.png"/><br>
+  React Native Navigation
+</h1>
 
 [![NPM Version](https://img.shields.io/npm/v/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
 [![NPM Downloads](https://img.shields.io/npm/dm/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
 [![Build Status](https://travis-ci.org/wix/react-native-navigation.svg?branch=master)](https://travis-ci.org/wix/react-native-navigation)
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 
+App-wide support for 100% native navigation with an easy cross-platform interface. For iOS, this package is a wrapper around [react-native-controllers](https://github.com/wix/react-native-controllers), but provides a simplified more abstract API over it. It also fully supports redux if you use it.
 
-App-wide support for 100% native navigation with an easy cross-platform interface. For iOS, this package is a wrapper around [react-native-controllers](https://github.com/wix/react-native-controllers), but provides a simplified more abstract API over it. This abstract API will be unified with the Android solution which is currently work in progress. It also fully supports redux if you use it.
-
-<img src="https://github.com/wix/react-native/blob/master/assets/themes/bootstrap-3/images/demo.gif?raw=true" width="240">
+<img src="https://github.com/wix/react-native/blob/master/src/videos/demo.gif?raw=true" width="240">
 
 ----
 
 > ### Important
 > We are currently working hard on redesigning and refactoring this project with high quality and robustness in mind. As a result, issues and pull requests will take more time to process.
 
-> To avoid any confusion and breaking existing projects, all continuous development is published under the npm tag `next`, with version `2.0.0-experimental.x`. Once stable, we will publish it as `2.0.0`. **This version supports react-native `0.37.0`**.
+> To avoid any confusion and breaking existing projects, all continuous development is published under the npm tag `next`, with version `2.0.0-experimental.x`. Once stable, we will publish it as `2.0.0`. **This version supports react-native `0.40.0 and above`**.
 
 > The last stable version is `1.30.x` with npm tag `latest`. **This version supports react-native `0.25.1`**. It's installation instructions are [here](https://github.com/wix/react-native-navigation/blob/v1.x.x/README.md#installation---ios).
 
@@ -28,7 +31,6 @@ App-wide support for 100% native navigation with an easy cross-platform interfac
 * [Installation - iOS](https://github.com/wix/react-native-navigation/wiki/Installation---iOS#installation---ios)
 * [Installation - Android](https://github.com/wix/react-native-navigation/wiki/Installation---Android)
 * [Usage](https://github.com/wix/react-native-navigation/wiki/Usage)
-* [Migrating to version 2.0](https://github.com/wix/react-native-navigation/wiki/Migrating-to-version-2.0)
 * [Top Level API](https://github.com/wix/react-native-navigation/wiki/Top-Level-API)
 * [Screen API](https://github.com/wix/react-native-navigation/wiki/Screen-API)
 * [Styling the navigator](https://github.com/wix/react-native-navigation/wiki/Styling-the-navigator)
@@ -36,7 +38,6 @@ App-wide support for 100% native navigation with an easy cross-platform interfac
 * [Styling the tab bar](https://github.com/wix/react-native-navigation/wiki/Styling-the-tab-bar)
 * [Deep links](https://github.com/wix/react-native-navigation/wiki/Deep-links)
 * [Third party libraries support](https://github.com/wix/react-native-navigation/wiki/Third-party-libraries-support)
-* [Release Notes](https://github.com/wix/react-native-navigation/blob/master/CHANGELOG.md)
 * [Milestones](https://github.com/wix/react-native-navigation/wiki/Milestones)
 * [Contributing](https://github.com/wix/react-native-navigation/wiki/Contributing)
 * [License](https://github.com/wix/react-native-navigation/wiki#license)

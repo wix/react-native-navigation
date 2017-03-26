@@ -11,6 +11,7 @@ import com.reactnativenavigation.params.SlidingOverlayParams.Position;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ContentView;
+import com.reactnativenavigation.views.utils.ViewMeasurer;
 
 public class SlidingOverlay {
 
@@ -18,7 +19,7 @@ public class SlidingOverlay {
         Hidden, AnimateHide, Shown, AnimateShow
     }
 
-    private final ContentView view;
+    private ContentView view = null;
     private final RelativeLayout parent;
     private final SlidingOverlayParams params;
 
@@ -33,7 +34,6 @@ public class SlidingOverlay {
     public SlidingOverlay(RelativeLayout parent, SlidingOverlayParams params) {
         this.parent = parent;
         this.params = params;
-        view = createSlidingOverlayView(params);
     }
 
     public void setSlidingListener(SlidingListener listener) {
@@ -45,23 +45,25 @@ public class SlidingOverlay {
     }
 
     public void show() {
+        view = createSlidingOverlayView(params);
         parent.addView(view);
 
-        final PeekingAnimator animator = new PeekingAnimator(view, params.position, true);
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationCancel(Animator animator) {
-                onSlidingOverlayShown(view);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                onSlidingOverlayShown(view);
-            }
-        });
         view.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
+                final PeekingAnimator animator = new PeekingAnimator(view, params.position, true);
+                animator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+                        onSlidingOverlayShown(view);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        onSlidingOverlayShown(view);
+                    }
+                });
+
                 view.setVisibility(View.VISIBLE);
                 visibilityState = VisibilityState.AnimateShow;
                 animator.animate();
@@ -87,6 +89,12 @@ public class SlidingOverlay {
         animator.animate();
     }
 
+    public void destroy() {
+        visibilityState = VisibilityState.Hidden;
+        view.unmountReactView();
+        parent.removeView(view);
+    }
+
     public boolean isShowing() {
         return VisibilityState.AnimateShow == visibilityState;
     }
@@ -100,12 +108,11 @@ public class SlidingOverlay {
     }
 
     protected ContentView createSlidingOverlayView(SlidingOverlayParams params) {
-        final float heightPixels = ViewUtils.convertDpToPixel(100);
-
-        final RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int) heightPixels);
+        final RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(params.position == Position.Top ? RelativeLayout.ALIGN_PARENT_TOP : RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         final ContentView view = new ContentView(parent.getContext(), params.screenInstanceId, params.navigationParams);
+        view.setViewMeasurer(new OverlayViewMeasurer(view));
         view.setLayoutParams(lp);
         view.setVisibility(View.INVISIBLE);
         return view;
@@ -119,9 +126,7 @@ public class SlidingOverlay {
     }
 
     protected void onSlidingOverlayEnd(ContentView view) {
-        visibilityState = VisibilityState.Hidden;
-        view.unmountReactView();
-        parent.removeView(view);
+        destroy();
 
         if (listener != null) {
             listener.onSlidingOverlayGone();

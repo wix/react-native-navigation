@@ -9,7 +9,6 @@ import android.widget.ScrollView;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseBehaviour;
-import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseTitleBarBehaviour;
 import com.reactnativenavigation.views.collapsingToolbar.behaviours.TitleBarHideOnScrollBehaviour;
 
 public class CollapseCalculator {
@@ -31,7 +30,8 @@ public class CollapseCalculator {
     private GestureDetector flingDetector;
     private OnFlingListener flingListener;
     private int scrollY = 0;
-    private int totalCollapse = 0;
+    private float totalCollapse = 0;
+    private float totalCollapseDeltaSinceTouchDown = 0;
     private final int scaledTouchSlop;
 
     public CollapseCalculator(final CollapsingView collapsingView, CollapseBehaviour collapseBehaviour) {
@@ -117,10 +117,14 @@ public class CollapseCalculator {
     }
 
     private boolean canCollapse(Direction direction) {
+        if (view == null) {
+            return false;
+        }
         checkCollapseLimits();
         return (isNotCollapsedOrExpended() ||
-               (canCollapse && isExpendedAndScrollingUp(direction)) ||
-               (canExpend && isCollapsedAndScrollingDown(direction)));
+               (canCollapse && isExpendedAndScrollingUp(direction) && collapseBehaviour.canCollapse(scrollView.getScrollY(), scaledTouchSlop)) ||
+               (canExpend && isCollapsedAndScrollingDown(direction) && collapseBehaviour.canExpend(scrollView.getScrollY(), scaledTouchSlop))
+        );
     }
 
     private boolean isScrolling() {
@@ -158,8 +162,7 @@ public class CollapseCalculator {
 
     private boolean calculateCanExpend(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation >= finalCollapsedTranslation &&
-               currentTopBarTranslation < finalExpendedTranslation &&
-               (scrollView.getScrollY() == 0 || (collapseBehaviour instanceof TitleBarHideOnScrollBehaviour || collapseBehaviour instanceof CollapseTitleBarBehaviour));
+               currentTopBarTranslation < finalExpendedTranslation;
     }
 
     private boolean isCollapsedAndScrollingDown(Direction direction) {
@@ -189,9 +192,10 @@ public class CollapseCalculator {
         }
         collapse = calculateCollapse(y);
         totalCollapse += collapse;
+        totalCollapseDeltaSinceTouchDown += Math.abs(y - previousCollapseY);
         previousCollapseY = y;
         previousTouchEvent = MotionEvent.obtain(event);
-        return Math.abs(totalCollapse) < scaledTouchSlop ? CollapseAmount.None : new CollapseAmount(collapse);
+        return totalCollapseDeltaSinceTouchDown < scaledTouchSlop ? CollapseAmount.None : new CollapseAmount(collapse);
     }
 
     private float calculateCollapse(float y) {
@@ -229,6 +233,7 @@ public class CollapseCalculator {
 
     private void saveInitialTouchY(MotionEvent event) {
         totalCollapse = 0;
+        totalCollapseDeltaSinceTouchDown = 0;
         touchDownY = event.getRawY();
         scrollY = scrollView.getScrollY();
         previousCollapseY = touchDownY;

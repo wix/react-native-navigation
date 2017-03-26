@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
@@ -15,6 +16,7 @@ import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.ActivityParamsParser;
 import com.reactnativenavigation.params.parsers.ScreenParamsParser;
+import com.reactnativenavigation.utils.OrientationHelper;
 import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
@@ -33,16 +35,9 @@ public class NavigationCommandsHandler {
      * @param params ActivityParams as bundle
      */
 
-    public static void startApp(Bundle params, boolean portraitOnlyMode, boolean landscapeOnlyMode) {
-        Intent intent;
-        if (portraitOnlyMode) {
-            intent = new Intent(NavigationApplication.instance, PortraitNavigationActivity.class);
-        } else if (landscapeOnlyMode) {
-            intent = new Intent(NavigationApplication.instance, LandscapeNavigationActivity.class);
-        } else {
-            intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
-        }
-        IntentDataHandler.setIntentData(intent);
+    public static void startApp(Bundle params) {
+        Intent intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
+        IntentDataHandler.onStartApp(intent);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ACTIVITY_PARAMS_BUNDLE, params);
         NavigationApplication.instance.startActivity(intent);
@@ -405,5 +400,27 @@ public class NavigationCommandsHandler {
                 currentActivity.dismissContextualMenu(screenInstanceId);
             }
         });
+    }
+
+    public static void dismissSnackbar() {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.dismissSnackbar();
+            }
+        });
+    }
+
+    public static void getOrientation(Promise promise) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+        promise.resolve(OrientationHelper.getOrientation(currentActivity));
     }
 }

@@ -36,7 +36,7 @@ public class FloatingActionButtonCoordinator {
     FloatingActionButtonAnimator fabAnimator;
     private final ArrayList<FloatingActionButton> actions;
 
-    public FloatingActionButtonCoordinator(CoordinatorLayout parent) {
+    FloatingActionButtonCoordinator(CoordinatorLayout parent) {
         this.parent = parent;
         actions = new ArrayList<>();
         crossFadeAnimationDuration = parent.getResources().getInteger(android.R.integer.config_shortAnimTime);
@@ -45,7 +45,7 @@ public class FloatingActionButtonCoordinator {
 
     public void add(final FabParams params) {
         Log.i(TAG, "add() called with: params = [" + params + "]");
-        if (parent.getChildCount() > 0) {
+        if (hasFab()) {
             remove(new Runnable() {
                 @Override
                 public void run() {
@@ -66,26 +66,31 @@ public class FloatingActionButtonCoordinator {
         fabAnimator.show();
     }
 
-    public void remove(@Nullable final Runnable onComplete) {
-        Log.w(TAG, "remove: ");
-        if (parent.getChildCount() == 0) {
+    void remove(@Nullable final Runnable onComplete) {
+        if (!hasFab()) {
             if (onComplete != null) {
                 onComplete.run();
             }
             return;
         }
-
-        fabAnimator.removeFabFromScreen(expendedFab, new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                removeAllViews();
-                if (onComplete != null) {
-                    onComplete.run();
+        if (fabAnimator != null) {
+            fabAnimator.removeFabFromScreen(expendedFab, new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    removeAllViews();
+                    if (onComplete != null) {
+                        onComplete.run();
+                    }
                 }
-            }
-        });
-        fabAnimator.removeFabFromScreen(collapsedFab, null);
-        fabAnimator.removeActionsFromScreen(actions);
+            });
+            fabAnimator.removeFabFromScreen(collapsedFab, null);
+            fabAnimator.removeActionsFromScreen(actions);
+        }
+
+    }
+
+    private boolean hasFab() {
+        return collapsedFab != null || expendedFab != null;
     }
 
     private void removeAllViews() {

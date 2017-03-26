@@ -1,8 +1,10 @@
 #import "RCCTabBarController.h"
 #import "RCCViewController.h"
-#import "RCTConvert.h"
+#import <React/RCTConvert.h>
 #import "RCCManager.h"
-#import "RCTUIManager.h"
+#import "RCTHelpers.h"
+#import <React/RCTUIManager.h>
+#import "UIViewController+Rotation.h"
 
 @interface RCTUIManager ()
 
@@ -13,6 +15,11 @@
 @end
 
 @implementation RCCTabBarController
+
+
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations {
+  return [self supportedControllerOrientations];
+}
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
   id queue = [[RCCManager sharedInstance].getBridge uiManager].methodQueue;
@@ -113,24 +120,30 @@
     }
     UIImage *iconImageSelected = nil;
     id selectedIcon = tabItemLayout[@"props"][@"selectedIcon"];
-    if (selectedIcon) iconImageSelected = [RCTConvert UIImage:selectedIcon];
+    if (selectedIcon) {
+      iconImageSelected = [RCTConvert UIImage:selectedIcon];
+    } else {
+      iconImageSelected = [RCTConvert UIImage:icon];
+    }
 
     viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
     viewController.tabBarItem.selectedImage = iconImageSelected;
-
-    if (buttonColor)
-    {
-      [viewController.tabBarItem setTitleTextAttributes:
-       @{NSForegroundColorAttributeName : buttonColor} forState:UIControlStateNormal];
+    
+    NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
+    if (!unselectedAttributes[NSForegroundColorAttributeName] && buttonColor) {
+      unselectedAttributes[NSForegroundColorAttributeName] = buttonColor;
     }
-
-    if (selectedButtonColor)
-    {
-      [viewController.tabBarItem setTitleTextAttributes:
-       @{NSForegroundColorAttributeName : selectedButtonColor} forState:UIControlStateSelected];
+    
+    [viewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal]
+    ;
+    
+    NSMutableDictionary *selectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarSelectedText" baseFont:[UIFont systemFontOfSize:10]];
+    if (!selectedAttributes[NSForegroundColorAttributeName] && selectedButtonColor) {
+      selectedAttributes[NSForegroundColorAttributeName] = selectedButtonColor;
     }
-
+    
+    [viewController.tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
     // create badge
     NSObject *badge = tabItemLayout[@"props"][@"badge"];
     if (badge == nil || [badge isEqual:[NSNull null]])
@@ -147,6 +160,8 @@
 
   // replace the tabs
   self.viewControllers = viewControllers;
+  
+  [self setRotation:props];
 
   return self;
 }
