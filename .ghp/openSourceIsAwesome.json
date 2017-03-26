@@ -1,4 +1,5 @@
 {
+    "name": "react-native-navigation",
     "description": "App-wide support for 100% native navigation with an easy cross-platform interface.",
     "title": "React Native Navigation",
     "github": "https://github.com/wix/react-native-navigation",
