@@ -90,6 +90,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         this.onModalDismissedListener = onModalDismissedListener;
         this.screenParams = screenParams;
         createContent();
+        setAnimation();
     }
 
     public AppCompatActivity getActivity() {
@@ -104,6 +105,14 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setOrientation(screenParams.styleParams.orientation);
         setContentView(layout.asView());
+    }
+
+    private void setAnimation() {
+        if (!screenParams.animateScreenTransitions) {
+            if (getWindow() != null) {
+                getWindow().setWindowAnimations(android.R.style.Animation);
+            }
+        }
     }
 
     @Override

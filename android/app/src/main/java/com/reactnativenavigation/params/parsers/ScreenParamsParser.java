@@ -46,7 +46,7 @@ public class ScreenParamsParser extends Parser {
         result.tabLabel = getTabLabel(params);
         result.tabIcon = new TabIconParser(params).parse();
 
-        result.animateScreenTransitions = params.getBoolean("animated", true);
+        result.animateScreenTransitions = new AnimationParser(params).parse();
 
         return result;
     }
