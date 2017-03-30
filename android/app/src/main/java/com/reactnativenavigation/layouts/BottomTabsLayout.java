@@ -317,6 +317,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     @Override
     public boolean onTabSelected(int position, boolean wasSelected) {
         if (wasSelected) {
+            sendTabPressedEventToJs();
             return false;
         }
         
@@ -331,6 +332,12 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         WritableMap data = Arguments.createMap();
         String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("bottomTabSelected", navigatorEventId, data);
+    }
+
+    private void sendTabPressedEventToJs() {
+        WritableMap data = Arguments.createMap();
+        String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("bottomTabPressed", navigatorEventId, data);
     }
 
     private void showNewStack(int position) {
