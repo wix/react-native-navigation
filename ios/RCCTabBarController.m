@@ -263,7 +263,7 @@
 }
 
 +(void)sendScreenTabPressedEvent:(UIViewController*)viewController {
-  [RCCTabBarController sendTabEvent:@"bottomTabPressed" controller:viewController];
+  [RCCTabBarController sendTabEvent:@"bottomTabReselected" controller:viewController];
 }
 
 +(void)sendTabEvent:(NSString *)event controller:(UIViewController*)viewController {
