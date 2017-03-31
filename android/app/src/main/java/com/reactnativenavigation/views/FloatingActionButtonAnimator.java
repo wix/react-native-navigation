@@ -2,21 +2,21 @@ package com.reactnativenavigation.views;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import java.util.List;
 
 public class FloatingActionButtonAnimator {
 
-    private final FloatingActionButton collapsedFab;
-    private final FloatingActionButton expendedFab;
+    private final FloatingActionButtonWrapper collapsedFab;
+    private final FloatingActionButtonWrapper expendedFab;
     private int crossFadeAnimationDuration;
 
     private enum State{Showing, Idle, Removing}
     private State state = State.Idle;
 
-    public FloatingActionButtonAnimator(FloatingActionButton collapsedFab, FloatingActionButton expendedFab, int crossFadeAnimationDuration) {
+    public FloatingActionButtonAnimator(FloatingActionButtonWrapper collapsedFab,
+                                        FloatingActionButtonWrapper expendedFab, int crossFadeAnimationDuration) {
         this.collapsedFab = collapsedFab;
         this.expendedFab = expendedFab;
         this.crossFadeAnimationDuration = crossFadeAnimationDuration;
@@ -65,7 +65,7 @@ public class FloatingActionButtonAnimator {
         animateFab(expendedFab, 0, -90);
     }
 
-    private void animateFab(final FloatingActionButton fab, final int alpha, int rotation) {
+    private void animateFab(final FloatingActionButtonWrapper fab, final int alpha, int rotation) {
         fab.animate()
                 .alpha(alpha)
                 .setDuration(crossFadeAnimationDuration)
@@ -86,7 +86,7 @@ public class FloatingActionButtonAnimator {
                 .start();
     }
 
-    void removeFabFromScreen(FloatingActionButton fab, final AnimatorListenerAdapter animationListener) {
+    void removeFabFromScreen(FloatingActionButtonWrapper fab, final AnimatorListenerAdapter animationListener) {
         if (fab == null) {
             return;
         }
@@ -107,8 +107,8 @@ public class FloatingActionButtonAnimator {
                 .start();
     }
 
-    void removeActionsFromScreen(List<FloatingActionButton> actions) {
-        for (FloatingActionButton action : actions) {
+    void removeActionsFromScreen(List<FloatingActionButtonWrapper> actions) {
+        for (FloatingActionButtonWrapper action : actions) {
             action.animate()
                     .alpha(0)
                     .scaleX(0)
