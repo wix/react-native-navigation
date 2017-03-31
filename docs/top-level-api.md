@@ -47,6 +47,9 @@ Navigation.startTabBasedApp({
     tabBarSelectedButtonColor: '#ff9900', // optional, change the color of the selected tab icon and text (only selected)
     tabBarBackgroundColor: '#551A8B' // optional, change the background color of the tab bar
   },
+  appStyle: {
+    orientation: 'portrait' // Sets a specific orientation to the entire app. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
+  },
   drawer: { // optional, add this if you want a side menu drawer in your app
     left: { // optional, define if you want a drawer from the left
       screen: 'example.FirstSideMenu' // unique ID registered with Navigation.registerScreen
