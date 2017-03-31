@@ -29,6 +29,8 @@
   
   if (tabBarController.selectedIndex != [tabBarController.viewControllers indexOfObject:viewController]) {
     [RCCTabBarController sendScreenTabChangedEvent:viewController];
+  } else {
+    [RCCTabBarController sendScreenTabPressedEvent:viewController];
   }
 
   return YES;
@@ -257,6 +259,14 @@
 }
 
 +(void)sendScreenTabChangedEvent:(UIViewController*)viewController {
+  [RCCTabBarController sendTabEvent:@"bottomTabSelected" controller:viewController];
+}
+
++(void)sendScreenTabPressedEvent:(UIViewController*)viewController {
+  [RCCTabBarController sendTabEvent:@"bottomTabReselected" controller:viewController];
+}
+
++(void)sendTabEvent:(NSString *)event controller:(UIViewController*)viewController {
   if ([viewController.view isKindOfClass:[RCTRootView class]]){
     RCTRootView *rootView = (RCTRootView *)viewController.view;
     
@@ -266,7 +276,7 @@
       
       [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:rootView.appProperties[@"navigatorEventID"] body:@
        {
-         @"id": @"bottomTabSelected",
+         @"id": event,
          @"navigatorID": navigatorID,
          @"screenInstanceID": screenInstanceID
        }];
@@ -276,9 +286,8 @@
   if ([viewController isKindOfClass:[UINavigationController class]]) {
     UINavigationController *navigationController = (UINavigationController*)viewController;
     UIViewController *topViewController = [navigationController topViewController];
-    [RCCTabBarController sendScreenTabChangedEvent:topViewController];
+    [RCCTabBarController sendTabEvent:event controller:topViewController];
   }
 }
-
 
 @end

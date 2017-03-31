@@ -12,12 +12,7 @@ public class CollapseTopBarBehaviour implements CollapseBehaviour {
     }
 
     @Override
-    public boolean canCollapse(int scrollY, int scaledTouchSlop) {
-        return scrollY <= scaledTouchSlop;
-    }
-
-    @Override
-    public boolean canExpend(int scrollY, int scaledTouchSlop) {
-        return scrollY <= scaledTouchSlop;
+    public boolean canExpend(int scrollY) {
+        return scrollY == 0;
     }
 }
