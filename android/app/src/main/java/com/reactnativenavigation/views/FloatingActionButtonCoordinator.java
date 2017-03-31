@@ -9,12 +9,12 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
 import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.R;
 import com.reactnativenavigation.params.FabActionParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.utils.ViewUtils;
@@ -28,17 +28,19 @@ public class FloatingActionButtonCoordinator {
     private static final int INITIAL_EXPENDED_FAB_ROTATION = -90;
     private CoordinatorLayout parent;
     private FabParams params;
-    private FloatingActionButton collapsedFab;
-    private FloatingActionButton expendedFab;
+    private FloatingActionButtonWrapper collapsedFab;
+    private FloatingActionButtonWrapper expendedFab;
     private final int crossFadeAnimationDuration;
     private final int actionSize;
     final int margin = (int) ViewUtils.convertDpToPixel(16);
     FloatingActionButtonAnimator fabAnimator;
-    private final ArrayList<FloatingActionButton> actions;
+    private final ArrayList<FloatingActionButtonWrapper> actions;
+    private final ArrayList<FloatingActionButtonLabel> labels;
 
     FloatingActionButtonCoordinator(CoordinatorLayout parent) {
         this.parent = parent;
         actions = new ArrayList<>();
+        labels = new ArrayList<>();
         crossFadeAnimationDuration = parent.getResources().getInteger(android.R.integer.config_shortAnimTime);
         actionSize = (int) ViewUtils.convertDpToPixel(40);
     }
@@ -98,10 +100,14 @@ public class FloatingActionButtonCoordinator {
         parent.removeView(expendedFab);
         collapsedFab = null;
         expendedFab = null;
-        for (FloatingActionButton action : actions) {
+        for (FloatingActionButtonWrapper action : actions) {
             parent.removeView(action);
         }
+        for (FloatingActionButtonLabel label: labels) {
+            parent.removeView(label);
+        }
         actions.clear();
+        labels.clear();
     }
 
     private void createCollapsedFab() {
@@ -134,8 +140,8 @@ public class FloatingActionButtonCoordinator {
         });
     }
 
-    private FloatingActionButton createFab(Drawable icon) {
-        FloatingActionButton fab = new FloatingActionButton(parent.getContext());
+    private FloatingActionButtonWrapper createFab(Drawable icon) {
+        FloatingActionButtonWrapper fab = new FloatingActionButtonWrapper(parent.getContext());
         fab.setId(ViewUtils.generateViewId());
         fab.setImageDrawable(icon);
         return fab;
@@ -161,15 +167,27 @@ public class FloatingActionButtonCoordinator {
         }
 
         for (int i = 0; i < params.actions.size(); i++) {
-            FloatingActionButton action = createAction(i);
+            FloatingActionButtonWrapper action = createAction(i);
             actions.add(action);
+
+            FloatingActionButtonLabel label = action.getLabelView();
+            labels.add(label);
+
+            if(label != null) {
+                parent.addView(label, createLabelLayoutParams(i));
+            }
+
             parent.addView(action);
         }
     }
 
-    private FloatingActionButton createAction(int index) {
+    private FloatingActionButtonWrapper createAction(int index) {
         final FabActionParams actionParams = params.actions.get(index);
-        FloatingActionButton action = createFab(actionParams.icon);
+        FloatingActionButtonWrapper action = createFab(actionParams.icon);
+        FloatingActionButtonLabel buttonLabel =  new FloatingActionButtonLabel(parent.getContext());
+        action.setTag(R.id.fab_label, buttonLabel);
+        action.setTitle("Button label " + index);
+
         action.setLayoutParams(createActionLayoutParams(index));
         action.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,7 +199,8 @@ public class FloatingActionButtonCoordinator {
         if (actionParams.backgroundColor.hasColor()) {
             action.setBackgroundTintList(ColorStateList.valueOf(actionParams.backgroundColor.getColor()));
         }
-        action.setSize(FloatingActionButton.SIZE_MINI);
+
+        action.setSize(FloatingActionButtonWrapper.SIZE_MINI);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             action.setCompatElevation(0);
         }
@@ -193,11 +212,21 @@ public class FloatingActionButtonCoordinator {
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         lp.setAnchorId(expendedFab.getId());
         lp.anchorGravity = Gravity.CENTER_HORIZONTAL;
-        lp.setBehavior(new ActionBehaviour(expendedFab, (actionIndex + 1) * (actionSize + margin / 2)));
+        lp.setBehavior(new ActionBehaviour(expendedFab, (actionIndex + 1) * (actionSize + margin)));
+
         return lp;
     }
 
-    public static class ActionBehaviour extends CoordinatorLayout.Behavior<FloatingActionButton> {
+    private  CoordinatorLayout.LayoutParams createLabelLayoutParams(int actionIndex) {
+        CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        lp.gravity = Gravity.RIGHT | Gravity.BOTTOM;
+        lp.bottomMargin = (int) ViewUtils.convertDpToPixel(56)*(actionIndex+1) + (actionSize);
+        lp.rightMargin = margin + actionSize * 2;
+
+        return lp;
+    }
+
+    public static class ActionBehaviour extends CoordinatorLayout.Behavior<FloatingActionButtonWrapper> {
         private final int MAX_VALUE = 90;
         private int dependencyId;
         private float yStep;
@@ -208,12 +237,12 @@ public class FloatingActionButtonCoordinator {
         }
 
         @Override
-        public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
+        public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionButtonWrapper child, View dependency) {
             return dependency.getId() == dependencyId;
         }
 
         @Override
-        public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
+        public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingActionButtonWrapper child, View dependency) {
             final float dependentValue = dependency.getRotation();
             float fraction = calculateTransitionFraction(dependentValue);
             child.setY(calculateY(parent, fraction));
@@ -222,7 +251,7 @@ public class FloatingActionButtonCoordinator {
             return true;
         }
 
-        private void setVisibility(FloatingActionButton child) {
+        private void setVisibility(FloatingActionButtonWrapper child) {
             child.setVisibility(child.getAlpha() == 0 ? View.GONE : View.VISIBLE);
         }
 
@@ -231,7 +260,12 @@ public class FloatingActionButtonCoordinator {
         }
 
         private float calculateY(CoordinatorLayout parent, float fraction) {
-            return parent.findViewById(dependencyId).getY() - yStep * fraction;
+            View v = parent.findViewById(dependencyId);
+            if(v != null) {
+                return parent.findViewById(dependencyId).getY() - yStep * fraction;
+            }
+
+            return 0;
         }
 
         @FloatRange(from=0.0, to=1.0)
