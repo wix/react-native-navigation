@@ -236,7 +236,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   
   NSString *screenBackgroundColor = self.navigatorStyle[@"screenBackgroundColor"];
   if (screenBackgroundColor) {
-        
+    
     UIColor *color = screenBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:screenBackgroundColor] : nil;
     viewController.view.backgroundColor = color;
   }
@@ -469,6 +469,26 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   } else {
     self.navBarHairlineImageView.hidden = NO;
   }
+  
+  NSString *navBarCustomView = self.navigatorStyle[@"navBarCustomView"];
+  if (navBarCustomView) {
+    NSLog(@"navBarCustomView:%@", navBarCustomView);
+    if ([self.view isKindOfClass:[RCTRootView class]]) {
+      RCTBridge *bridge = ((RCTRootView*)self.view).bridge;
+      RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:navBarCustomView initialProperties:nil];
+
+      reactView.frame = self.navigationController.navigationBar.bounds;
+      
+      self.navigationItem.titleView = reactView;
+      
+      self.navigationItem.titleView.backgroundColor = [UIColor clearColor];
+      self.navigationItem.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+      self.navigationItem.titleView.clipsToBounds = YES;
+      
+    }
+    
+  }
+  
 }
 
 -(void)storeOriginalNavBarImages {
