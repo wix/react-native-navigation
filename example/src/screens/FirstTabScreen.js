@@ -34,7 +34,8 @@ export default class FirstTabScreen extends Component {
     statusBarTextColorScheme: 'light',
     tabBarBackgroundColor: '#4dbce9',
     tabBarButtonColor: '#ffffff',
-    tabBarSelectedButtonColor: '#ffff00'
+    tabBarSelectedButtonColor: '#ffff00',
+    navBarCustomView: 'example.CustomNavBar'
   };
 
   constructor(props) {
