@@ -23,6 +23,7 @@ public class BottomTabs extends AHBottomNavigation {
         setId(ViewUtils.generateViewId());
         createVisibilityAnimator();
         setStyle();
+        setFontFamily(context);
     }
 
     public void addTabs(List<ScreenParams> params, OnTabSelectedListener onTabSelectedListener) {
@@ -96,5 +97,32 @@ public class BottomTabs extends AHBottomNavigation {
 
     private boolean hasBadgeBackgroundColor() {
         return AppStyle.appStyle.bottomTabBadgeBackgroundColor != null && AppStyle.appStyle.bottomTabBadgeBackgroundColor.hasColor();
+    }
+
+    private boolean hasBottomTabFontFamily() {
+        return AppStyle.appStyle.bottomTabFontFamily != null;
+    }
+
+    private void setFontFamily(Context context) {
+        if(hasBottomTabFontFamily()) {
+
+            AssetManager assetManager = context.getAssets();
+            String fontFamilyName = AppStyle.appStyle.bottomTabFontFamily;
+
+            Typeface typeFace = null;
+            try {
+                boolean hasAsset = Arrays.asList(assetManager.list("fonts")).contains(fontFamilyName);
+                typeFace = hasAsset ?
+                        Typeface.createFromAsset(assetManager, "fonts/".concat(fontFamilyName))
+                        :
+                        Typeface.create(fontFamilyName, Typeface.NORMAL);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if(typeFace != null) {
+                setTitleTypeface(typeFace);
+            }
+        }
     }
 }
