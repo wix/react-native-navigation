@@ -3,13 +3,21 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  Image
+  Image,
+  Text,
+  View,
+  ScrolView
 } from 'react-native';
 import {SharedElementTransition} from 'react-native-navigation';
-import {View, Text} from 'react-native-animatable';
+import * as Animatable from 'react-native-animatable';
 import * as heroStyles from './styles';
 
-const ANIMATION_DURATION = 500;
+const FADE_DURATION = 500;
+const SHOW_DURATION = 500;
+const HIDE_DURATION = 500;
+
+const HEADER_HEIGHT = 120;
+const ICON_MARGIN = 24;
 
 export default class HeroScreen extends Component {
   static navigatorStyle = {
@@ -21,46 +29,76 @@ export default class HeroScreen extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this.state = {
       animationType: 'fadeIn'
-    };
+    }
+  }
+
+  componentDidMount() {
+    if (__STRESS_TEST__) {
+      setTimeout(() => {
+        this.setState({
+          animationType: 'fadeOut'
+        });
+        this.props.navigator.pop();
+      }, 650);
+    }
   }
 
   render() {
     return (
-      <View style={[styles.container]}>
+      <ScrollView style={[styles.container]}>
         {this._renderHeader()}
         {this._renderContent()}
-        {this._renderIcon()}
-      </View>
+      </ScrollView>
     );
   }
 
   _renderHeader() {
     return (
-      <View animation={this.state.animationType} duration={ANIMATION_DURATION} style={[styles.header, heroStyles.primaryDark]} useNativeDriver={true}>
-        <SharedElementTransition
-          sharedElementId={this.props.sharedTitleId}
-          interpolation={
-            {
-              show: {
-                type: 'linear',
-                controlX1: '0.5',
-                controlY1: '1',
-                controlX2: '0',
-                controlY2: '0.5',
-                easing: 'linear'
-              },
-              hide: {
-                type: 'linear',
-                controlX1: '0.5',
-                controlY1: '0',
-                controlX2: '1',
-                controlY2: '0.5',
-                easing:'linear'
-              }
-            }
-          }
+        <Animatable.View
+          animation={this.state.animationType}
+          duration={FADE_DURATION}
+          style={[styles.header, {backgroundColor: this.props.primaryColor}]}
+          useNativeDriver={true}
         >
-          <Text style={styles.title}>{this.props.title}</Text>
+          <View style={{height: ICON_MARGIN, flexDirection: 'row', backgroundColor: 'white'}}/>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            {this._renderIcon()}
+            {this._renderTitle()}
+          </View>
+      </Animatable.View>
+    );
+  }
+
+  _renderTitle() {
+    return (
+      <View style={{alignSelf: 'flex-end'}}>
+        <SharedElementTransition
+          style={styles.titleContainer}
+          sharedElementId={this.props.sharedTitleId}
+          showDuration={SHOW_DURATION}
+          hideDuration={HIDE_DURATION}
+          showInterpolation={
+                {
+                  type: 'path',
+                  controlX1: '0.5',
+                  controlY1: '1',
+                  controlX2: '0',
+                  controlY2: '0.5',
+                  easing: 'FastOutSlowIn'
+                }
+              }
+          hideInterpolation={
+                {
+                  type: 'path',
+                  controlX1: '0.5',
+                  controlY1: '0',
+                  controlX2: '1',
+                  controlY2: '0.5',
+                  easing:'FastOutSlowIn'
+                }
+              }
+        >
+          <Text style={[styles.title, {color: this.props.titleColor}]}>{this.props.title}</Text>
         </SharedElementTransition>
       </View>
     );
@@ -68,12 +106,28 @@ export default class HeroScreen extends Component {
 
   _renderContent() {
     return (
-      <View
+      <Animatable.View
         animation={this.state.animationType}
-        duration={ANIMATION_DURATION}
+        duration={FADE_DURATION}
         style={styles.body}
-        useNativeDriver={true}/>
+        useNativeDriver={true}>
+        <View
+          style={styles.list}
+          initialListSize={20}>
+          {this._genRows()}
+        </View>
+      </Animatable.View>
     );
+  }
+
+  _genRows() {
+    const children = [];
+    for (let ii = 0; ii < 30; ii++) {
+      children.push(
+        <Text>{'row ' + ii}</Text>
+      );
+    }
+    return children;
   }
 
   _renderIcon() {
@@ -81,26 +135,28 @@ export default class HeroScreen extends Component {
       <SharedElementTransition
         sharedElementId={this.props.sharedIconId}
         style={styles.iconContainer}
-        interpolation={
-            {
-              show: {
-                type: 'path',
-                controlX1: '0.5',
-                controlY1: '1',
-                controlX2: '0',
-                controlY2: '0.5',
-                easing: 'accelerateDecelerate'
-              },
-              hide: {
-                type: 'path',
-                controlX1: '0.5',
-                controlY1: '0',
-                controlX2: '1',
-                controlY2: '0.5',
-                easing:'accelerate'
-              }
-            }
+        showDuration={SHOW_DURATION}
+        hideDuration={HIDE_DURATION}
+        showInterpolation={
+          {
+            type: 'path',
+            controlX1: '0.5',
+            controlY1: '1',
+            controlX2: '0',
+            controlY2: '0.5',
+            easing: 'FastOutSlowIn'
           }
+        }
+        hideInterpolation={
+          {
+            type: 'path',
+            controlX1: '0.5',
+            controlY1: '0',
+            controlX2: '1',
+            controlY2: '0.5',
+            easing:'FastOutSlowIn'
+          }
+        }
       >
         <Image
           source={this.props.icon}
@@ -128,21 +184,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   header: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    width: undefined
+    height: 110,
+    flexDirection: 'column-reverse'
+  },
+  titleContainer: {
+    marginLeft: ICON_MARGIN + 90 +  + 16,
+    marginBottom: 8
   },
   title: {
-    fontSize: 25,
-    left: 124,
-    marginBottom: 8,
-    ...heroStyles.textLight,
-    color: 'red'
+    fontSize: 23,
+    ...heroStyles.textLight
   },
   iconContainer: {
     position: 'absolute',
-    top: 65,
-    left: 30
+    bottom: -ICON_MARGIN,
+    left: ICON_MARGIN
   },
   heroIcon: {
     width: 90,
@@ -153,11 +209,8 @@ const styles = StyleSheet.create({
     flex: 4,
     backgroundColor: 'white',
   },
-  button: {
-    textAlign: 'center',
-    fontSize: 18,
-    marginBottom: 10,
-    marginTop: 10,
-    color: 'blue'
+  list: {
+    marginTop: 16,
+    marginHorizontal: 8
   }
 });

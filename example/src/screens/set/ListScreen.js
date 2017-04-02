@@ -68,7 +68,8 @@ export default class ListScreen extends Component {
     this._onRowPress = this._onRowPress.bind(this);
     this._renderRow = this._renderRow.bind(this);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-    this.sharedElements = {};
+    this.onPress = [];
+    this.counter = 0;
 
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
@@ -77,7 +78,13 @@ export default class ListScreen extends Component {
   }
 
   onNavigatorEvent(event) {
-
+    console.log('ListScreen', 'onNavigatorEvent ', event.id);
+    if (event.id === 'didAppear' && __STRESS_TEST__) {
+      setTimeout(() => {
+        this.onPress[Math.floor((Math.random() * 4))]();
+        console.log('count', this.counter++);
+      }, 750);
+    }
   }
 
   render() {
@@ -89,20 +96,25 @@ export default class ListScreen extends Component {
   }
 
   _renderRow(rowData, sectionID, rowID) {
+    console.log('ListScreen', '_renderRow ', rowID);
     const rowHash = Math.abs(hashCode(rowData.rowTitle));
     const sharedIconId = "image" + rowID;
     const sharedTitleId = "title" + rowID;
 
+    const onPress = () => this._onRowPress({
+      rowData,
+      sharedIconId,
+      sharedTitleId
+    });
+    if (['0', '1', '2', '3'].includes(rowID)) {
+      this.onPress.push(onPress);
+    }
     return (
       <TouchableWithoutFeedback
         style={styles.row}
-        onPress={() => this._onRowPress({
-          rowData,
-          sharedIconId,
-          sharedTitleId
-        })}
+        onPress={onPress}
       >
-        <View style={[styles.sharedRowContent, heroStyles.primaryDark]}>
+        <View style={[styles.sharedRowContent, heroStyles.primaryLight]}>
           {this._renderRowIcon({rowData, sharedIconId})}
           {this._renderRowContent({rowData, sharedTitleId, rowHash})}
         </View>
@@ -121,6 +133,7 @@ export default class ListScreen extends Component {
           <Image
             source={rowData.icon}
             style={styles.heroIcon}
+            fadeDuration={0}
           />
         </SharedElementTransition>
       </View>
@@ -130,10 +143,7 @@ export default class ListScreen extends Component {
   _renderRowContent({rowData, sharedTitleId, rowHash}) {
     return (
       <View style={styles.itemContentContainer}>
-        <SharedElementTransition
-          sharedElementId={sharedTitleId}
-          style={styles.imageContainer}
-        >
+        <SharedElementTransition sharedElementId={sharedTitleId}>
           <Text style={styles.itemTitle}>{rowData.title}</Text>
         </SharedElementTransition>
         <Text style={styles.text}>
@@ -154,10 +164,9 @@ export default class ListScreen extends Component {
       animated: false,
       overrideBackPress: true,
       passProps: {
-        title: rowData.title,
         sharedIconId: sharedIconId,
         sharedTitleId: sharedTitleId,
-        icon: rowData.icon
+        ...rowData
       }
     });
   }
@@ -168,8 +177,9 @@ export default class ListScreen extends Component {
       dataBlob.push({
         rowTitle: 'Row ' + ii + ' ',
         icon: heroes[ii % 5].icon,
-        header: heroes[ii % 5].header,
-        title: heroes[ii % 5].title
+        title: heroes[ii % 5].title,
+        primaryColor: heroes[ii % 5].primaryColor,
+        titleColor: heroes[ii % 5].titleColor
       });
     }
     return dataBlob;
@@ -209,16 +219,16 @@ const styles = StyleSheet.create({
   },
   itemContentContainer: {
     flex: 1,
-    flexDirection: 'column'
+    paddingLeft: 5,
+    flexDirection: 'column',
+    alignItems: 'flex-start'
   },
   itemTitle: {
-    marginLeft: 5,
     fontSize: 19,
-    color: 'green'
+    ...heroStyles.textDark
   },
   text: {
-    margin: 5,
-    ...heroStyles.textLight
+    ...heroStyles.textDark
   }
 });
 
