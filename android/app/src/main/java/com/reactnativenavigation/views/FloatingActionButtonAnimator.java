@@ -109,7 +109,7 @@ public class FloatingActionButtonAnimator {
 
     void removeActionsFromScreen(List<FloatingActionButtonWrapper> actions) {
         for (FloatingActionButtonWrapper action : actions) {
-            action.animate()
+            action.animate(0, 0, 0, crossFadeAnimationDuration)
                     .alpha(0)
                     .scaleX(0)
                     .scaleY(0)
