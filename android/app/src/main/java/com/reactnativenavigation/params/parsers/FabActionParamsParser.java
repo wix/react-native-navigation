@@ -12,7 +12,9 @@ public class FabActionParamsParser extends Parser {
         fabActionParams.id = params.getString("id");
         fabActionParams.navigatorEventId = navigatorEventId;
         fabActionParams.icon = ImageLoader.loadImage(params.getString("icon"));
-        fabActionParams.backgroundColor = StyleParams.Color.parse(params, "backgroundColor");
+        fabActionParams.backgroundColor = getColor(params, "backgroundColor", new StyleParams.Color());
+        fabActionParams.title = params.getString("title");
+
         return fabActionParams;
     }
 }
