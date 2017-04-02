@@ -9,13 +9,14 @@ import android.os.Build.VERSION_CODES;
 import android.support.design.widget.FloatingActionButton;
 
 
+import android.view.ViewPropertyAnimator;
 import android.widget.TextView;
 
 import com.reactnativenavigation.R;
 
 
 public class FloatingActionButtonWrapper extends FloatingActionButton {
-    String mTitle;
+    private String mTitle;
 
     public FloatingActionButtonWrapper(Context context) {
         super(context);
@@ -23,9 +24,9 @@ public class FloatingActionButtonWrapper extends FloatingActionButton {
 
     public void setTitle(String title) {
         mTitle = title;
-        TextView label = getLabelView();
-        if (label != null) {
-            label.setText(title);
+
+        if (hasLabel()) {
+            getLabelView().setText(title);
         }
     }
 
@@ -49,11 +50,48 @@ public class FloatingActionButtonWrapper extends FloatingActionButton {
 
     @Override
     public void setVisibility(int visibility) {
-        TextView label = getLabelView();
-        if (label != null) {
-            label.setVisibility(visibility);
+        if (hasLabel()) {
+            getLabelView().setVisibility(visibility);
         }
 
         super.setVisibility(visibility);
+    }
+
+    @Override
+    public void setAlpha(float alpha) {
+        super.setAlpha(alpha);
+
+        if(hasLabel()) {
+            getLabelView().setAlpha(alpha);
+        }
+    }
+
+    @Override
+    public void setY(float y) {
+        super.setY(y);
+
+        if(hasLabel()) {
+            TextView label = getLabelView();
+            label.setY(y + ((getHeight()/2) - (label.getHeight())/2)); // Center label about fab Y position
+        }
+    }
+
+
+    public ViewPropertyAnimator animate(int alpha, int scaleX, int scaleY, int duration) {
+        if(hasLabel()) {
+            getLabelView()
+                    .animate()
+                    .alpha(alpha)
+                    .scaleX(scaleX)
+                    .scaleY(scaleY)
+                    .setDuration(duration)
+                    .start();
+        }
+
+        return super.animate();
+    }
+
+    private boolean hasLabel(){
+        return getTag(R.id.fab_label) != null;
     }
 }
