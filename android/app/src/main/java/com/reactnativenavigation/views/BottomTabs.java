@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
