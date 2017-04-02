@@ -2,8 +2,14 @@ package com.reactnativenavigation.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.ViewCompat;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -17,8 +23,6 @@ import com.reactnativenavigation.utils.ViewUtils;
  */
 
 public class FloatingActionButtonLabel extends TextView {
-    private int mLabelsStyle;
-    private Context mContext = null;
     private int mVerticalPadding = (int) ViewUtils.convertDpToPixel(4);
     private int mHorizontalPadding = (int) ViewUtils.convertDpToPixel(8);
 
@@ -28,18 +32,19 @@ public class FloatingActionButtonLabel extends TextView {
     }
 
     private void init(Context context) {
-        mContext = new ContextThemeWrapper(context, mLabelsStyle);
-        TypedArray attr = context.obtainStyledAttributes(null, R.styleable.FloatingActionsMenu, 0, 0);
-        mLabelsStyle = attr.getResourceId(R.styleable.FloatingActionsMenu_fab_labelStyle, 0);
-
-        setDefaultStyles(context);
+        setDefaultStyles();
     }
 
-    private void setDefaultStyles(Context context) {
-        setTextAppearance(context, mLabelsStyle);
+    private void setDefaultStyles() {
+        setMinHeight((int) ViewUtils.convertDpToPixel(24));
+        ViewCompat.setElevation(this, (int) ViewUtils.convertDpToPixel(1));
 
-        setHeight((int) ViewUtils.convertDpToPixel(24));
-        setBackgroundColor(Color.WHITE);
+        setBackgroundResource(R.drawable.label_corners);
+        GradientDrawable drawable = (GradientDrawable) getBackground();
+        drawable.setColor(Color.parseColor("#CC000000"));
+        setTextColor(Color.WHITE);
+
+        setGravity(Gravity.CENTER);
         setPadding(mHorizontalPadding, mVerticalPadding, mHorizontalPadding, mVerticalPadding);
     }
 }
