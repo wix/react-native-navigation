@@ -32,7 +32,9 @@ public class FloatingActionButtonCoordinator {
     private FloatingActionButtonWrapper expendedFab;
     private final int crossFadeAnimationDuration;
     private final int actionSize;
+    private final int fabSize;
     final int margin = (int) ViewUtils.convertDpToPixel(16);
+    final int labelRightSpacing = (int) ViewUtils.convertDpToPixel(20);
     FloatingActionButtonAnimator fabAnimator;
     private final ArrayList<FloatingActionButtonWrapper> actions;
     private final ArrayList<FloatingActionButtonLabel> labels;
@@ -43,6 +45,7 @@ public class FloatingActionButtonCoordinator {
         labels = new ArrayList<>();
         crossFadeAnimationDuration = parent.getResources().getInteger(android.R.integer.config_shortAnimTime);
         actionSize = (int) ViewUtils.convertDpToPixel(40);
+        fabSize = (int) ViewUtils.convertDpToPixel(56);
     }
 
     public void add(final FabParams params) {
@@ -184,18 +187,26 @@ public class FloatingActionButtonCoordinator {
     private FloatingActionButtonWrapper createAction(int index) {
         final FabActionParams actionParams = params.actions.get(index);
         FloatingActionButtonWrapper action = createFab(actionParams.icon);
-        FloatingActionButtonLabel buttonLabel =  new FloatingActionButtonLabel(parent.getContext());
-        action.setTag(R.id.fab_label, buttonLabel);
-        action.setTitle("Button label " + index);
 
-        action.setLayoutParams(createActionLayoutParams(index));
-        action.setOnClickListener(new View.OnClickListener() {
+        final View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 NavigationApplication.instance.getEventEmitter().sendNavigatorEvent(actionParams.id, actionParams.navigatorEventId);
                 fabAnimator.collapse();
             }
-        });
+        };
+
+        if(actionParams.title != null) {
+            FloatingActionButtonLabel buttonLabel =  new FloatingActionButtonLabel(parent.getContext());
+            buttonLabel.setOnClickListener(onClickListener);
+
+            action.setTag(R.id.fab_label, buttonLabel);
+            action.setTitle(actionParams.title);
+        }
+
+        action.setLayoutParams(createActionLayoutParams(index));
+        action.setOnClickListener(onClickListener);
+
         if (actionParams.backgroundColor.hasColor()) {
             action.setBackgroundTintList(ColorStateList.valueOf(actionParams.backgroundColor.getColor()));
         }
@@ -220,8 +231,7 @@ public class FloatingActionButtonCoordinator {
     private  CoordinatorLayout.LayoutParams createLabelLayoutParams(int actionIndex) {
         CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         lp.gravity = Gravity.RIGHT | Gravity.BOTTOM;
-        lp.bottomMargin = (int) ViewUtils.convertDpToPixel(56)*(actionIndex+1) + (actionSize);
-        lp.rightMargin = margin + actionSize * 2;
+        lp.rightMargin = margin + fabSize + labelRightSpacing;
 
         return lp;
     }
