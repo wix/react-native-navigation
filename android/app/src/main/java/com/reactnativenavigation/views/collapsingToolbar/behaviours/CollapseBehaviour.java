@@ -5,7 +5,5 @@ public interface CollapseBehaviour {
 
     boolean shouldCollapseOnTouchUp();
 
-    boolean canCollapse(int scrollY, int scaledTouchSlop);
-
-    boolean canExpend(int scrollY, int scaledTouchSlop);
+    boolean canExpend(int scrollY);
 }

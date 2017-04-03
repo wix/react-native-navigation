@@ -1,13 +1,11 @@
 # iOS Installation
 
 ### Important
-The `latest` (stable) version of this framework is `1.x.x` which supports react-native `0.25.1`. It's installation instructions are [here](https://github.com/wix/react-native-navigation/blob/v1.x.x/README.md#installation---ios). To use it specify `"react-native-navigation": "latest"` in your package.json dependencies.
-
-The following instructions are for the `next` version `2.0.0-experimental.x`, which supports react-native `0.37.0`. To use it specify `"react-native-navigation": "next"` in your package.json dependencies. Bear in mind, as the name of the version suggests - this version is experimental and under heavy development, and will break from time to time - thus when using it you should check out these instructions from time to time to avoid breaking your project. 
+The following instructions are for the `next` version `2.0.0-experimental.x`, which supports react-native `0.40.0` or higher. To use it specify `"react-native-navigation": "next"` in your package.json dependencies. Bear in mind, as the name of the version suggests - this version is experimental and under heavy development.
 
 ----
 
- * Make sure you are using react-native version 0.37.0
+ * Make sure you are using react-native version 0.40.0 or higher
 
  * In your project folder run `npm install react-native-navigation@next --save`
 > Note: We recommend using npm ver 3+. If you insist on using npm ver 2 please notice that the location for react-native-controllers in node_modules will be under the react-native-navigation folder and you'll need to change the paths in Xcode below accordingly.
@@ -20,4 +18,4 @@ The following instructions are for the `next` version `2.0.0-experimental.x`, wh
 
 * In Xcode, under your project files, modify `AppDelegate.m` according to this [example](https://github.com/wix/react-native-navigation/blob/master/example/ios/example/AppDelegate.m)
 
-* Run react-native start
+* Run `react-native start`

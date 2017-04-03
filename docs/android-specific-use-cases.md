@@ -2,12 +2,12 @@
 
 TOC
 * [Activity Lifecycle and onActivityResult](https://github.com/wix/react-native-navigation/wiki/Android#activity-lifecycle-and-onactivityresult)
-* [Adjusting soft input mode](https://github.com/wix/react-native-navigation/wiki/Android/_edit#adjusting-soft-input-mode)
-* [Splash screen](https://github.com/wix/react-native-navigation/wiki/Android/_edit#splash-screen)
-* [Collapsing React header](https://github.com/wix/react-native-navigation/wiki/Android/_edit#collapsing-react-header---android-only)
-  * [Collapsing react view](https://github.com/wix/react-native-navigation/wiki/Android/_edit#collapsing-react-view)
+* [Adjusting soft input mode](https://github.com/wix/react-native-navigation/wiki/Android/#adjusting-soft-input-mode)
+* [Splash screen](https://github.com/wix/react-native-navigation/wiki/Android/#splash-screen)
+* [Collapsing React header](https://github.com/wix/react-native-navigation/wiki/Android/#collapsing-react-header---android-only)
+  * [Collapsing react view](https://github.com/wix/react-native-navigation/wiki/Android/#collapsing-react-view)
   * [Collapsing react view with top tabs](https://github.com/wix/react-native-navigation/wiki/Android/_edit#collapsing-react-view-with-top-tabs)
-* [Reloading from terminal](https://github.com/wix/react-native-navigation/wiki/Android/_edit#reloading-from-terminal)
+* [Reloading from terminal](https://github.com/wix/react-native-navigation/wiki/Android/#reloading-from-terminal)
 
 # Activity Lifecycle and onActivityResult
 In order to listen to activity lifecycle callbacks, set `ActivityCallback` in `MainApplication.onCreate` as follows:
@@ -90,7 +90,10 @@ static navigatorStyle = {
     navBarHideOnScroll: false,
     navBarBackgroundColor: '#4dbce9', // This will be the TitleBars color when the react view is hidden and collapsed
     collapsingToolBarComponent: 'example.header',
-    navBarTranslucent: true // Optional, sets a translucent dark background to the TitleBar. Useful when displaying bright colored header to emphasize the title and buttons in the TitleBar
+    navBarTranslucent: true, // Optional, sets a translucent dark background to the TitleBar. Useful when displaying bright colored header to emphasize the title and buttons in the TitleBar
+    showTitleWhenExpended: false, // default: true. Show the screens title only when the toolbar is collapsed
+    collapsingToolBarCollapsedColor: 'green', // optional. The TitleBar (navBar) color in collapsed state
+    collapsingToolBarExpendedColor: 'red' // optional. The TitleBar (navBar) color in expended state
   };
 }
 ```

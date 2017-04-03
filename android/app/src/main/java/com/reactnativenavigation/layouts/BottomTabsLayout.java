@@ -114,7 +114,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     private void createSnackbarContainer() {
         snackbarAndFabContainer = new SnackbarAndFabContainer(getContext(), this);
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
         lp.addRule(ABOVE, bottomTabs.getId());
         getScreenStackParent().addView(snackbarAndFabContainer, lp);
     }
@@ -317,6 +317,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     @Override
     public boolean onTabSelected(int position, boolean wasSelected) {
         if (wasSelected) {
+            sendTabReselectedEventToJs();
             return false;
         }
         
@@ -331,6 +332,12 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         WritableMap data = Arguments.createMap();
         String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("bottomTabSelected", navigatorEventId, data);
+    }
+
+    private void sendTabReselectedEventToJs() {
+        WritableMap data = Arguments.createMap();
+        String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
+        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("bottomTabReselected", navigatorEventId, data);
     }
 
     private void showNewStack(int position) {
