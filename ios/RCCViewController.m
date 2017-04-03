@@ -476,8 +476,8 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     if ([self.view isKindOfClass:[RCTRootView class]]) {
       RCTBridge *bridge = ((RCTRootView*)self.view).bridge;
       RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:navBarCustomView initialProperties:nil];
-
-      reactView.frame = self.navigationController.navigationBar.bounds;
+      
+      reactView.frame = [self getCustomNavBarFrame];
       
       self.navigationItem.titleView = reactView;
       
@@ -489,6 +489,34 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     
   }
   
+}
+
+
+-(CGRect)getCustomNavBarFrame {
+  CGFloat sumLeft = [self getNavBarButtonsWidth:self.navigationItem.leftBarButtonItems];
+  CGFloat sumRight = [self getNavBarButtonsWidth:self.navigationItem.rightBarButtonItems];
+  CGFloat extraWidth = (sumRight >= sumLeft) ? sumRight : sumLeft;
+  
+  CGFloat customViewWidth = self.navigationController.navigationBar.bounds.size.width;
+  customViewWidth = customViewWidth - (extraWidth * 2);
+  
+  CGRect navigationBarFrame = self.navigationController.navigationBar.bounds;
+  navigationBarFrame.size.width = customViewWidth;
+  
+  
+  return navigationBarFrame;
+}
+
+-(CGFloat)getNavBarButtonsWidth:(NSArray*)buttons {
+  CGFloat sum = 0;
+  for (UIBarButtonItem *item in buttons) {
+    UIView *view = [item valueForKey:@"view"];
+    view.backgroundColor = [UIColor greenColor];
+    CGFloat width = view ? view.frame.size.width : 0.0f;
+    width += 16;
+    sum += width;
+  }
+  return sum;
 }
 
 -(void)storeOriginalNavBarImages {
