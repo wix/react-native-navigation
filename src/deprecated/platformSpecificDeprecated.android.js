@@ -180,6 +180,7 @@ function convertStyleParams(originalStyleObject) {
     forceTitlesDisplay: originalStyleObject.forceTitlesDisplay,
     bottomTabBadgeTextColor: processColor(originalStyleObject.bottomTabBadgeTextColor),
     bottomTabBadgeBackgroundColor: processColor(originalStyleObject.bottomTabBadgeBackgroundColor),
+    bottomTabFontFamily: originalStyleObject.tabFontFamily,
 
     navigationBarColor: processColor(originalStyleObject.navigationBarColor)
   }
