@@ -5,9 +5,11 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.view.ContextThemeWrapper;
@@ -40,11 +42,15 @@ public class FloatingActionButtonLabel extends TextView {
         ViewCompat.setElevation(this, (int) ViewUtils.convertDpToPixel(1));
 
         setBackgroundResource(R.drawable.label_corners);
-        GradientDrawable drawable = (GradientDrawable) getBackground();
-        drawable.setColor(Color.parseColor("#CC000000"));
-        setTextColor(Color.WHITE);
+        setTextSize(14);
+        setTypeface(getTypeface(), Typeface.BOLD);
 
         setGravity(Gravity.CENTER);
         setPadding(mHorizontalPadding, mVerticalPadding, mHorizontalPadding, mVerticalPadding);
+    }
+
+    public void setBackgroundColor(@ColorInt int color) {
+        GradientDrawable drawable = (GradientDrawable) getBackground();
+        drawable.setColor(color);
     }
 }
