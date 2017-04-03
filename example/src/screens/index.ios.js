@@ -8,7 +8,7 @@ import SideMenu from './SideMenu';
 import ModalScreen from './ModalScreen';
 import NotificationScreen from './NotificationScreen';
 import LightBoxScreen from './LightBoxScreen';
-import CustomNavBar from './CustomNavBar';
+//import CustomNavBar from './CustomNavBar';
 
 
 // register all screens of the app (including internal ones)
@@ -22,5 +22,5 @@ export function registerScreens() {
   Navigation.registerComponent('example.SideMenu', () => SideMenu);
   Navigation.registerComponent('example.LightBoxScreen', () => LightBoxScreen);
 
-  Navigation.registerComponent('example.CustomNavBar', () => CustomNavBar);
+  //Navigation.registerComponent('example.CustomNavBar', () => CustomNavBar);
 }
