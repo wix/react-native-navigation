@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-#import "RCTBundleURLProvider.h"
+#import <React/RCTBundleURLProvider.h>
 
 // **********************************************
 // *** DON'T MISS: THE NEXT LINE IS IMPORTANT ***

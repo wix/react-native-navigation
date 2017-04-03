@@ -73,6 +73,8 @@ public class StyleParamsParser {
         result.navigationBarColor = getColor("navigationBarColor", getDefaultNavigationColor());
         result.forceTitlesDisplay = getBoolean("forceTitlesDisplay", getDefaultForceTitlesDisplay());
 
+        result.bottomTabFontFamily = params.getString("bottomTabFontFamily", getDefaultBottomTabFontFamily());
+
         return result;
     }
 
@@ -223,6 +225,10 @@ public class StyleParamsParser {
 
     private StyleParams.Color getDefaultStatusBarColor() {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.statusBarColor;
+    }
+
+    private String getDefaultBottomTabFontFamily() {
+        return AppStyle.appStyle == null ? "sans-serif" : AppStyle.appStyle.bottomTabFontFamily;
     }
 
     private boolean getBoolean(String key, boolean defaultValue) {

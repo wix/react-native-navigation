@@ -97,10 +97,12 @@ public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener
 
     @Override
     protected void setBackground(StyleParams params) {
-        titleBarBackground = createBackground(params,
-                params.collapsingTopBarParams.expendedTitleBarColor,
-                params.collapsingTopBarParams.scrimColor);
-        setBackground(titleBarBackground);
+        if (titleBarBackground == null) {
+            titleBarBackground = createBackground(params,
+                    params.collapsingTopBarParams.expendedTitleBarColor,
+                    params.collapsingTopBarParams.scrimColor);
+            setBackground(titleBarBackground);
+        }
     }
 
     private TitleBarBackground createBackground(StyleParams styleParams, StyleParams.Color expendedColor, StyleParams.Color collapsedColor) {
