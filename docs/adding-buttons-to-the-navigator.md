@@ -106,7 +106,7 @@ Each screen can contain a single Fab which is displayed at the bottom right corn
     }
 ```
 
-* Fab with label actions
+* Fab with expanded state and labels
 ```js
     fab: {
       collapsedId: 'share',
