@@ -199,6 +199,8 @@ public class FloatingActionButtonCoordinator {
         if(actionParams.title != null) {
             FloatingActionButtonLabel buttonLabel =  new FloatingActionButtonLabel(parent.getContext());
             buttonLabel.setOnClickListener(onClickListener);
+            buttonLabel.setBackgroundColor(actionParams.titleBackgroundColor.getColor());
+            buttonLabel.setTextColor(actionParams.titleColor.getColor());
 
             action.setTag(R.id.fab_label, buttonLabel);
             action.setTitle(actionParams.title);
