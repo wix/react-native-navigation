@@ -511,7 +511,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   CGFloat sum = 0;
   for (UIBarButtonItem *item in buttons) {
     UIView *view = [item valueForKey:@"view"];
-    view.backgroundColor = [UIColor greenColor];
+    view.backgroundColor = [UIColor clearColor];
     CGFloat width = view ? view.frame.size.width : 0.0f;
     width += 16;
     sum += width;
