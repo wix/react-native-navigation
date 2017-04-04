@@ -28,7 +28,7 @@ If you don't want your code to break on a daily basis and don't need the new fea
 
 ## Documentation
 
-The documentation website can be found [here]([Documentation](wix.github.io/react-native-navigation)).
+The documentation website can be found [here](http://wix.github.io/react-native-navigation).
 
 If you prefer to learn more about the library and the APIs through code, head over to [the bootstrap example app](https://github.com/wix/react-native-navigation-bootstrap) or the more feature rich [JuneDomingo/movieapp](https://github.com/JuneDomingo/movieapp)
 
