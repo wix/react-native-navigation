@@ -40,11 +40,19 @@ navigationController:(UINavigationController*)navigationController
     if (self) {
         self.viewController = viewController;
         self.navigationController = navigationController;
-        self.title = title;
-        self.subtitle = subtitle;
+        self.title = [RCCTitleViewHelper validateString:title];
+        self.subtitle = [RCCTitleViewHelper validateString:subtitle];
         self.titleImageData = titleImageData;
     }
     return self;
+}
+
++(NSString*)validateString:(NSString*)string {
+    if ([string isEqual:[NSNull null]]) {
+        return nil;
+    }
+    
+    return string;
 }
 
 -(void)setup:(NSDictionary*)style

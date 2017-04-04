@@ -46,7 +46,10 @@ export default class StyledScreen extends Component {
   collapsingToolBarImage: require('../../img/topbar.jpg'), // Collapsing Toolbar image. Either use a url or require a local image. Android only
   collapsingToolBarCollapsedColor: '#0f2362', // Collapsing Toolbar scrim color. Android only
   navBarSubtitleColor: 'red', // subtitle color
-  screenBackgroundColor: 'white' // Default screen color, visible before the actual react view is rendered
+  screenBackgroundColor: 'white', // Default screen color, visible before the actual react view is rendered
+  orientation: 'portrait' // Sets a specific orientation to a modal and all screens pushed to it. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
+  disabledBackGesture: false, // disable the back gesture (swipe gesture) in order to pop the top screen. Default is false. iOS Only
+  screenBackgroundImageName: '<name of image in Images.xcassets>', // Optional. default screen background image. iOS only
 }
 ```
 

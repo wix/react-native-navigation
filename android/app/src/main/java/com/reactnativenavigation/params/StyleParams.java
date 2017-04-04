@@ -86,6 +86,7 @@ public class StyleParams {
     public boolean forceTitlesDisplay;
     public Color bottomTabBadgeTextColor;
     public Color bottomTabBadgeBackgroundColor;
+    public String bottomTabFontFamily;
 
     public Color navigationBarColor;
 }
