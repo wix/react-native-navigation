@@ -62,6 +62,8 @@ public class StyleParams {
     public Color titleBarSubtitleColor;
     public Color titleBarButtonColor;
     public Color titleBarDisabledButtonColor;
+    public String titleBarTitleFont;
+    public boolean titleBarTitleTextCentered;
     public boolean backButtonHidden;
 
     public Color topTabTextColor;

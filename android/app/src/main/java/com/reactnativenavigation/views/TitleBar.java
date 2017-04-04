@@ -3,12 +3,16 @@ package com.reactnativenavigation.views;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.graphics.Point;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
@@ -25,9 +29,26 @@ public class TitleBar extends Toolbar {
     private static final int TITLE_VISIBILITY_ANIMATION_DURATION = 320;
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
+    private boolean titleBarTitleTextCentered;
 
     public TitleBar(Context context) {
         super(context);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+
+        if (titleBarTitleTextCentered) {
+            WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+            Display display = windowManager.getDefaultDisplay();
+            Point screenSize = new Point();
+            display.getSize(screenSize);
+
+            int[] location = new int[2];
+            getTitleView().getLocationOnScreen(location);
+            getTitleView().setTranslationX(getTitleView().getTranslationX() + (-location[0] + screenSize.x / 2 - getTitleView().getWidth() / 2));
+        }
     }
 
     @Override
@@ -68,8 +89,10 @@ public class TitleBar extends Toolbar {
     }
 
     public void setStyle(StyleParams params) {
+        titleBarTitleTextCentered = params.titleBarTitleTextCentered;
         setVisibility(params.titleBarHidden ? GONE : VISIBLE);
         setTitleTextColor(params);
+        setTitleTextFont(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
         setBackground(params);
@@ -100,6 +123,31 @@ public class TitleBar extends Toolbar {
         if (params.titleBarTitleColor.hasColor()) {
             setTitleTextColor(params.titleBarTitleColor.getColor());
         }
+    }
+
+    protected void setTitleTextFont(StyleParams params) {
+        if (params.titleBarTitleFont == null || params.titleBarTitleFont.isEmpty()) {
+            return;
+        }
+
+        View titleView = getTitleView();
+
+        if (titleView == null || !(titleView instanceof TextView)) {
+            return;
+        }
+
+        Typeface typeface = null;
+
+        try {
+            typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/" + params.titleBarTitleFont + ".ttf");
+        } catch (RuntimeException re) {
+            try {
+                typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/" + params.titleBarTitleFont + ".otf");
+            } catch (RuntimeException re2) {
+                return;
+            }
+        }
+        ((TextView) titleView).setTypeface(typeface);
     }
 
     protected void setSubtitleTextColor(StyleParams params) {
