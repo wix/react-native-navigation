@@ -1,0 +1,13 @@
+{
+    "name": "react-native-navigation",
+    "description": "App-wide support for 100% native navigation with an easy cross-platform interface.",
+    "title": "React Native Navigation",
+    "github": "https://github.com/wix/react-native-navigation",
+    "AndroidVideoUrl": "https://github.com/wix/react-native/blob/master/src/videos/react-navigation-android.mp4?raw=true",
+    "IOSVideoUrl": "https://github.com/wix/react-native/blob/master/src/videos/react-navigation-iphone.mp4?raw=true",
+    "IOSDemoAppLink": "",
+    "image": "",
+    "poster": "https://github.com/wix/react-native/blob/master/src/img/react-native-navigation-poster.jpg?raw=true",
+    "size" : "normal",
+    "AndroidDemoAppLink": ""
+}

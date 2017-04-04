@@ -53,6 +53,15 @@ function showModal(screenParams) {
   NativeReactModule.showModal(screenParams);
 }
 
+function showLightBox(params) {
+  savePassProps(params);
+  NativeReactModule.showLightBox(params);
+}
+
+function dismissLightBox() {
+  NativeReactModule.dismissLightBox();
+}
+
 function dismissTopModal() {
   NativeReactModule.dismissTopModal();
 }
@@ -62,7 +71,12 @@ function dismissAllModals() {
 }
 
 function showInAppNotification(params) {
+  savePassProps(params);
   NativeReactModule.showSlidingOverlay(params);
+}
+
+function dismissInAppNotification(params) {
+  NativeReactModule.hideSlidingOverlay(params);
 }
 
 function savePassProps(params) {
@@ -127,6 +141,10 @@ function showSnackbar(params) {
   NativeReactModule.showSnackbar(params);
 }
 
+function dismissSnackbar() {
+  NativeReactModule.dismissSnackbar();
+}
+
 function showContextualMenu(screenInstanceID, params, onButtonPressed) {
   NativeReactModule.showContextualMenu(screenInstanceID, params, onButtonPressed);
 }
@@ -149,7 +167,10 @@ module.exports = {
   showModal,
   dismissTopModal,
   dismissAllModals,
+  showLightBox,
+  dismissLightBox,
   showInAppNotification,
+  dismissInAppNotification,
   toggleSideMenuVisible,
   setSideMenuVisible,
   selectBottomTabByNavigatorId,
@@ -157,6 +178,7 @@ module.exports = {
   setBottomTabBadgeByNavigatorId,
   setBottomTabBadgeByIndex,
   showSnackbar,
+  dismissSnackbar,
   showContextualMenu,
   dismissContextualMenu
 };

@@ -11,6 +11,7 @@ import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
+import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
 import com.reactnativenavigation.params.SlidingOverlayParams;
@@ -20,6 +21,7 @@ import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
+import com.reactnativenavigation.views.LightBox;
 import com.reactnativenavigation.views.SideMenu;
 import com.reactnativenavigation.views.SideMenu.Side;
 import com.reactnativenavigation.views.SnackbarAndFabContainer;
@@ -40,6 +42,7 @@ public class SingleScreenLayout extends BaseLayout {
     protected LeftButtonOnClickListener leftButtonOnClickListener;
     private @Nullable SideMenu sideMenu;
     private final SlidingOverlaysQueue slidingOverlaysQueue = new SlidingOverlaysQueue();
+    private LightBox lightBox;
 
     public SingleScreenLayout(AppCompatActivity activity, SideMenuParams leftSideMenuParams,
                               SideMenuParams rightSideMenuParams, ScreenParams screenParams) {
@@ -124,6 +127,13 @@ public class SingleScreenLayout extends BaseLayout {
         if (sideMenu != null) {
             sideMenu.destroy();
         }
+        if (sideMenu != null) {
+            sideMenu.destroy();
+        }
+        if (lightBox != null) {
+            lightBox.destroy();
+        }
+        slidingOverlaysQueue.destroy();
     }
 
     @Override
@@ -191,7 +201,7 @@ public class SingleScreenLayout extends BaseLayout {
 
     @Override
     public void setFab(String screenInstanceId, String navigatorEventId, FabParams fabParams) {
-        stack.setFab(screenInstanceId, navigatorEventId, fabParams);
+        stack.setFab(screenInstanceId, fabParams);
     }
 
     @Override
@@ -215,8 +225,39 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
+    public void dismissSnackbar() {
+        snackbarAndFabContainer.dismissSnackbar();
+    }
+
+    @Override
+    public void showLightBox(LightBoxParams params) {
+        if (lightBox == null) {
+            lightBox = new LightBox(getActivity(), new Runnable() {
+                @Override
+                public void run() {
+                    lightBox = null;
+                }
+            }, params);
+            lightBox.show();
+        }
+    }
+
+    @Override
+    public void dismissLightBox() {
+        if (lightBox != null) {
+            lightBox.hide();
+            lightBox = null;
+        }
+    }
+
+    @Override
     public void showSlidingOverlay(final SlidingOverlayParams params) {
         slidingOverlaysQueue.add(new SlidingOverlay(this, params));
+    }
+
+    @Override
+    public void hideSlidingOverlay() {
+        slidingOverlaysQueue.remove();
     }
 
     @Override

@@ -2,7 +2,9 @@
 #import "RCCViewController.h"
 #import <React/RCTConvert.h>
 #import "RCCManager.h"
+#import "RCTHelpers.h"
 #import <React/RCTUIManager.h>
+#import "UIViewController+Rotation.h"
 
 @interface RCTUIManager ()
 
@@ -14,6 +16,11 @@
 
 @implementation RCCTabBarController
 
+
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations {
+  return [self supportedControllerOrientations];
+}
+
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
   id queue = [[RCCManager sharedInstance].getBridge uiManager].methodQueue;
   dispatch_async(queue, ^{
@@ -22,6 +29,8 @@
   
   if (tabBarController.selectedIndex != [tabBarController.viewControllers indexOfObject:viewController]) {
     [RCCTabBarController sendScreenTabChangedEvent:viewController];
+  } else {
+    [RCCTabBarController sendScreenTabPressedEvent:viewController];
   }
 
   return YES;
@@ -113,24 +122,30 @@
     }
     UIImage *iconImageSelected = nil;
     id selectedIcon = tabItemLayout[@"props"][@"selectedIcon"];
-    if (selectedIcon) iconImageSelected = [RCTConvert UIImage:selectedIcon];
+    if (selectedIcon) {
+      iconImageSelected = [RCTConvert UIImage:selectedIcon];
+    } else {
+      iconImageSelected = [RCTConvert UIImage:icon];
+    }
 
     viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
     viewController.tabBarItem.selectedImage = iconImageSelected;
-
-    if (buttonColor)
-    {
-      [viewController.tabBarItem setTitleTextAttributes:
-       @{NSForegroundColorAttributeName : buttonColor} forState:UIControlStateNormal];
+    
+    NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
+    if (!unselectedAttributes[NSForegroundColorAttributeName] && buttonColor) {
+      unselectedAttributes[NSForegroundColorAttributeName] = buttonColor;
     }
-
-    if (selectedButtonColor)
-    {
-      [viewController.tabBarItem setTitleTextAttributes:
-       @{NSForegroundColorAttributeName : selectedButtonColor} forState:UIControlStateSelected];
+    
+    [viewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal]
+    ;
+    
+    NSMutableDictionary *selectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarSelectedText" baseFont:[UIFont systemFontOfSize:10]];
+    if (!selectedAttributes[NSForegroundColorAttributeName] && selectedButtonColor) {
+      selectedAttributes[NSForegroundColorAttributeName] = selectedButtonColor;
     }
-
+    
+    [viewController.tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
     // create badge
     NSObject *badge = tabItemLayout[@"props"][@"badge"];
     if (badge == nil || [badge isEqual:[NSNull null]])
@@ -147,6 +162,8 @@
 
   // replace the tabs
   self.viewControllers = viewControllers;
+  
+  [self setRotation:props];
 
   return self;
 }
@@ -242,6 +259,14 @@
 }
 
 +(void)sendScreenTabChangedEvent:(UIViewController*)viewController {
+  [RCCTabBarController sendTabEvent:@"bottomTabSelected" controller:viewController];
+}
+
++(void)sendScreenTabPressedEvent:(UIViewController*)viewController {
+  [RCCTabBarController sendTabEvent:@"bottomTabReselected" controller:viewController];
+}
+
++(void)sendTabEvent:(NSString *)event controller:(UIViewController*)viewController {
   if ([viewController.view isKindOfClass:[RCTRootView class]]){
     RCTRootView *rootView = (RCTRootView *)viewController.view;
     
@@ -251,7 +276,7 @@
       
       [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:rootView.appProperties[@"navigatorEventID"] body:@
        {
-         @"id": @"bottomTabSelected",
+         @"id": event,
          @"navigatorID": navigatorID,
          @"screenInstanceID": screenInstanceID
        }];
@@ -261,9 +286,8 @@
   if ([viewController isKindOfClass:[UINavigationController class]]) {
     UINavigationController *navigationController = (UINavigationController*)viewController;
     UIViewController *topViewController = [navigationController topViewController];
-    [RCCTabBarController sendScreenTabChangedEvent:topViewController];
+    [RCCTabBarController sendTabEvent:event controller:topViewController];
   }
 }
-
 
 @end

@@ -5,11 +5,17 @@
 #import <React/RCTConvert.h>
 #import <objc/runtime.h>
 #import "RCCTitleViewHelper.h"
+#import "UIViewController+Rotation.h"
 
 @implementation RCCNavigationController
 
 NSString const *CALLBACK_ASSOCIATED_KEY = @"RCCNavigationController.CALLBACK_ASSOCIATED_KEY";
 NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSOCIATED_ID";
+
+
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations {
+  return [self supportedControllerOrientations];
+}
 
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary*)globalProps bridge:(RCTBridge *)bridge
 {
@@ -44,6 +50,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
                    props:props
                    style:navigatorStyle];
   
+
+  [self setRotation:props];
+  
   return self;
 }
 
@@ -77,7 +86,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [mergedStyle removeObjectForKey:@"navBarBlur"];
       [mergedStyle removeObjectForKey:@"navBarTranslucent"];
       [mergedStyle removeObjectForKey:@"statusBarHideWithNavBar"];
+      [mergedStyle removeObjectForKey:@"autoAdjustScrollViewInsets"];
       [mergedStyle removeObjectForKey:@"statusBarTextColorSchemeSingleScreen"];
+      [mergedStyle removeObjectForKey:@"disabledBackGesture"];
       
       [mergedStyle addEntriesFromDictionary:navigatorStyle];
       navigatorStyle = mergedStyle;
@@ -207,6 +218,29 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     [topViewController setNavBarVisibilityChange:animatedBool];
     
   }
+    
+    // setStyle
+    if ([performAction isEqualToString:@"setStyle"])
+    {
+        
+        NSDictionary *navigatorStyle = actionParams;
+        
+        // merge the navigatorStyle of our parent
+        if ([self.topViewController isKindOfClass:[RCCViewController class]])
+        {
+            RCCViewController *parent = (RCCViewController*)self.topViewController;
+            NSMutableDictionary *mergedStyle = [NSMutableDictionary dictionaryWithDictionary:parent.navigatorStyle];
+            
+            // there are a few styles that we don't want to remember from our parent (they should be local)
+            [mergedStyle setValuesForKeysWithDictionary:navigatorStyle];
+            navigatorStyle = mergedStyle;
+            
+            parent.navigatorStyle = navigatorStyle;
+            
+            [parent setStyleOnInit];
+            [parent updateStyle];
+        }
+    }
 }
 
 -(void)onButtonPress:(UIBarButtonItem*)barButtonItem

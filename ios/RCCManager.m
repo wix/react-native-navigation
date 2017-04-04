@@ -38,7 +38,7 @@
   {
     self.modulesRegistry = [@{} mutableCopy];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTJavaScriptWillStartLoadingNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTReloadNotification object:nil];
   }
   return self;
 }

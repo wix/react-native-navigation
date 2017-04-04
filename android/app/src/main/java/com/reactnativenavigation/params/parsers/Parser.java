@@ -37,6 +37,10 @@ public class Parser {
         return result;
     }
 
+    protected StyleParams.Color getColor(Bundle params, String backgroundColor) {
+        return getColor(params, backgroundColor, null);
+    }
+
     protected StyleParams.Color getColor(Bundle bundle, String key, StyleParams.Color defaultColor) {
         StyleParams.Color color = StyleParams.Color.parse(bundle, key);
         return color.hasColor() || defaultColor == null ? color : defaultColor;

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.TextView;
 
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
@@ -21,7 +22,7 @@ import com.reactnativenavigation.utils.ViewUtils;
 import java.util.List;
 
 public class TitleBar extends Toolbar {
-
+    private static final int TITLE_VISIBILITY_ANIMATION_DURATION = 320;
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
 
@@ -71,7 +72,7 @@ public class TitleBar extends Toolbar {
         setTitleTextColor(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
-        setTranslucent(params);
+        setBackground(params);
     }
 
     private void colorOverflowButton(StyleParams params) {
@@ -81,9 +82,13 @@ public class TitleBar extends Toolbar {
         }
     }
 
-    private void setTranslucent(StyleParams params) {
+    protected void setBackground(StyleParams params) {
+        setTranslucent(params);
+    }
+
+    protected void setTranslucent(StyleParams params) {
         if (params.topBarTranslucent) {
-            setBackground(new TranslucentTitleBarBackground());
+            setBackground(new TranslucentDrawable());
         }
     }
 
@@ -174,5 +179,32 @@ public class TitleBar extends Toolbar {
                         }
                     }
                 });
+    }
+
+    public void showTitle() {
+        animateTitle(1);
+    }
+
+    public void hideTitle() {
+        animateTitle(0);
+    }
+
+    private void animateTitle(int alpha) {
+        View titleView = getTitleView();
+        if (titleView != null) {
+            titleView.animate()
+                    .alpha(alpha)
+                    .setDuration(TITLE_VISIBILITY_ANIMATION_DURATION);
+        }
+    }
+
+    @Nullable
+    protected View getTitleView() {
+        return ViewUtils.findChildByClass(this, TextView.class, new ViewUtils.Matcher<TextView>() {
+            @Override
+            public boolean match(TextView child) {
+                return child.getText().equals(getTitle());
+            }
+        });
     }
 }

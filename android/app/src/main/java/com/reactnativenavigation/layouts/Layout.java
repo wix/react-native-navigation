@@ -5,6 +5,7 @@ import android.view.View;
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
+import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -39,6 +40,8 @@ public interface Layout extends ScreenStackContainer {
 
     void showSlidingOverlay(SlidingOverlayParams params);
 
+    void hideSlidingOverlay();
+
     void onModalDismissed();
 
     boolean containsNavigator(String navigatorId);
@@ -48,4 +51,10 @@ public interface Layout extends ScreenStackContainer {
     void dismissContextualMenu(String screenInstanceId);
 
     Screen getCurrentScreen();
+
+    void dismissSnackbar();
+
+    void showLightBox(LightBoxParams params);
+
+    void dismissLightBox();
 }
