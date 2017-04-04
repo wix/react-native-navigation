@@ -44,7 +44,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     }
 
     private void setColor() {
-        if (!hasColor()) {
+        if (!hasColor() || disableIconTint()) {
             return;
         }
 
@@ -88,6 +88,10 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
     private boolean hasColor() {
         return buttonParams.color.hasColor();
+    }
+
+    private boolean disableIconTint() {
+        return buttonParams.disableIconTint;
     }
 
     @Override
