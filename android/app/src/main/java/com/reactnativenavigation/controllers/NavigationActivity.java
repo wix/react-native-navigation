@@ -26,6 +26,7 @@ import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
+import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
@@ -241,6 +242,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     void dismissAllModals() {
         modalController.dismissAllModals();
+    }
+
+    public void showLightBox(LightBoxParams params) {
+        layout.showLightBox(params);
+    }
+
+    public void dismissLightBox() {
+        layout.dismissLightBox();
     }
 
     //TODO all these setters should be combined to something like setStyle
