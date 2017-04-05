@@ -257,7 +257,7 @@ function startTabBasedApp(params) {
     tab.screenId = tab.screen;
 
     let newtab = adaptNavigationStyleToScreenStyle(tab);
-    newtab = adaptNavigationParams(tab);
+    newtab = adaptNavigationParams(newtab);
     newtab.overrideBackPress = tab.overrideBackPress;
     newTabs.push(newtab);
   });
@@ -292,15 +292,21 @@ function convertAnimationType(animationType) {
 
 function navigatorSetButtons(navigator, navigatorEventID, _params) {
   const params = _.cloneDeep(_params);
+  let rightButtons = null;
   if (params.rightButtons) {
-    params.rightButtons.forEach(function(button) {
-      button.enabled = !button.disabled;
+    rightButtons = params.rightButtons.map(function(button) {
+      let icon;
       if (button.icon) {
-        const icon = resolveAssetSource(button.icon);
-        if (icon) {
-          button.icon = icon.uri;
+        const iconSource = resolveAssetSource(button.icon);
+        if (iconSource) {
+          icon = iconSource.uri;
         }
       }
+      return {
+          ...button,
+        enabled: !button.disabled,
+        icon: icon
+      };
     });
   }
   let leftButton = getLeftButton(params);
@@ -315,7 +321,7 @@ function navigatorSetButtons(navigator, navigatorEventID, _params) {
     leftButton = {};
   }
   const fab = getFab(params);
-  newPlatformSpecific.setScreenButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton, fab);
+  newPlatformSpecific.setScreenButtons(navigator.screenInstanceID, navigatorEventID, rightButtons, leftButton, fab);
 }
 
 function shouldRemoveLeftButton(params) {
@@ -452,16 +458,21 @@ function addNavigatorButtons(screen, sideMenuParams) {
   }
 
   // Get image uri from image id
-  const rightButtons = getRightButtons(screen);
+  let rightButtons = getRightButtons(screen);
   if (rightButtons) {
-    rightButtons.forEach(function(button) {
-      button.enabled = !button.disabled;
+    rightButtons = rightButtons.map(function(button) {
+      let icon;
       if (button.icon) {
-        const icon = resolveAssetSource(button.icon);
-        if (icon) {
-          button.icon = icon.uri;
+        const iconSource = resolveAssetSource(button.icon);
+        if (iconSource) {
+          icon = iconSource.uri;
         }
       }
+      return {
+          ...button,
+        enabled: !button.disabled,
+        icon: icon
+      };
     });
   }
 

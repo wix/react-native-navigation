@@ -147,6 +147,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         destroyLayouts();
         destroyJsIfNeeded();
         NavigationApplication.instance.getActivityCallbacks().onActivityDestroyed(this);
+        NavigationApplication.instance.state = NavigationApplication.AppState.Stopped;
         super.onDestroy();
     }
 

@@ -456,7 +456,7 @@ async function dismissModal(params) {
 }
 
 function dismissAllModals(params) {
-  Modal.dismissAllControllers(params.animationType);
+  return Modal.dismissAllControllers(params.animationType);
 }
 
 function showLightBox(params) {

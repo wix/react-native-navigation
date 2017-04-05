@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
+import com.reactnativenavigation.NavigationApplication;
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.animation.VisibilityAnimator;

@@ -8,6 +8,7 @@
 #import <React/RCTConvert.h>
 #import <React/RCTEventDispatcher.h>
 #import "RCCExternalViewControllerProtocol.h"
+#import "RCTBridge+Reload.h"
 #import "RCTHelpers.h"
 #import "RCCTitleViewHelper.h"
 
@@ -199,6 +200,29 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   [self sendScreenChangedEvent:@"didAppear"];
 }
 
+- (void)sendScreenChangedEvent:(NSString *)eventName
+{
+    if ([self.view isKindOfClass:[RCTRootView class]]){
+        
+        RCTRootView *rootView = (RCTRootView *)self.view;
+        
+        if (rootView.appProperties && rootView.appProperties[@"navigatorEventID"]) {
+            
+            [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:rootView.appProperties[@"navigatorEventID"] body:@
+             {
+                 @"type": @"ScreenChangedEvent",
+                 @"method": eventName
+             }];
+        }
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self sendScreenChangedEvent:@"didAppear"];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
@@ -250,42 +274,42 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   
   NSString *navBarBackgroundColor = self.navigatorStyle[@"navBarBackgroundColor"];
   if (navBarBackgroundColor) {
-    
-    UIColor *color = navBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarBackgroundColor] : nil;
-    viewController.navigationController.navigationBar.barTintColor = color;
-    
+      
+      UIColor *color = navBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarBackgroundColor] : nil;
+      viewController.navigationController.navigationBar.barTintColor = color;
+      
   } else {
-    viewController.navigationController.navigationBar.barTintColor = nil;
+      viewController.navigationController.navigationBar.barTintColor = nil;
   }
-  
+
   NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
   [self.navigationController.navigationBar setTitleTextAttributes:titleTextAttributes];
-  
+
   if (self.navigationItem.titleView && [self.navigationItem.titleView isKindOfClass:[RCCTitleView class]]) {
-    
-    RCCTitleView *titleView = (RCCTitleView *)self.navigationItem.titleView;
-    RCCTitleViewHelper *helper = [[RCCTitleViewHelper alloc] init:viewController navigationController:viewController.navigationController title:titleView.titleLabel.text subtitle:titleView.subtitleLabel.text titleImageData:nil];
-    [helper setup:self.navigatorStyle];
+      
+      RCCTitleView *titleView = (RCCTitleView *)self.navigationItem.titleView;
+      RCCTitleViewHelper *helper = [[RCCTitleViewHelper alloc] init:viewController navigationController:viewController.navigationController title:titleView.titleLabel.text subtitle:titleView.subtitleLabel.text titleImageData:nil];
+      [helper setup:self.navigatorStyle];
+  }
+
+  NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarButton"];
+
+  for (UIBarButtonItem *item in viewController.navigationItem.leftBarButtonItems) {
+    [RCTHelpers styleNavigationItem:item inViewController:viewController side:@"left"];
   }
   
-  NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarButton"];
-  
+  for (UIBarButtonItem *item in viewController.navigationItem.rightBarButtonItems) {
+    [RCTHelpers styleNavigationItem:item inViewController:viewController side:@"right"];
+  }
+
   if (navButtonTextAttributes.allKeys.count > 0) {
-    
-    for (UIBarButtonItem *item in viewController.navigationItem.leftBarButtonItems) {
-      [item setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
-    }
-    
-    for (UIBarButtonItem *item in viewController.navigationItem.rightBarButtonItems) {
-      [item setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
-    }
-    
-    // At the moment, this seems to be the only thing that gets the back button correctly
+
+      // At the moment, this seems to be the only thing that gets the back button correctly
     [navButtonTextAttributes removeObjectForKey:NSForegroundColorAttributeName];
     [[UIBarButtonItem appearance] setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
-    //        [viewController.navigationItem.backBarButtonItem setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
+      //        [viewController.navigationItem.backBarButtonItem setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
   }
-  
+
   NSString *navBarButtonColor = self.navigatorStyle[@"navBarButtonColor"];
   if (navBarButtonColor) {
     

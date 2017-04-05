@@ -13,4 +13,6 @@
 +(BOOL)removeYellowBox:(RCTRootView*)reactRootView;
 + (NSMutableDictionary *)textAttributesFromDictionary:(NSDictionary *)dictionary withPrefix:(NSString *)prefix;
 + (NSMutableDictionary *)textAttributesFromDictionary:(NSDictionary *)dictionary withPrefix:(NSString *)prefix baseFont:(UIFont *)font;
++ (void)styleNavigationItem:(UIBarButtonItem *)barButtonItem inViewController:(UIViewController *)viewController side:(NSString *)side;
++ (NSArray <NSString *> *)textAttributeKeys;
 @end
