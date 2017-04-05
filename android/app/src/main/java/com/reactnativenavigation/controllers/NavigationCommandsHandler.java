@@ -9,6 +9,7 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
+import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
@@ -159,18 +160,44 @@ public class NavigationCommandsHandler {
         });
     }
 
-    public static void showModal(Bundle params) {
+    public static void showModal(final Bundle params) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
         }
 
-        final ScreenParams screenParams = ScreenParamsParser.parse(params);
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.showModal(ScreenParamsParser.parse(params));
+            }
+        });
+    }
+
+    public static void showLightBox(final LightBoxParams params) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
 
         NavigationApplication.instance.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                currentActivity.showModal(screenParams);
+                currentActivity.showLightBox(params);
+            }
+        });
+    }
+
+    public static void dismissLightBox() {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.dismissLightBox();
             }
         });
     }

@@ -16,6 +16,7 @@ import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
+import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
 import com.reactnativenavigation.params.SlidingOverlayParams;
@@ -25,6 +26,7 @@ import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.LightBox;
 import com.reactnativenavigation.views.SideMenu;
 import com.reactnativenavigation.views.SideMenu.Side;
 import com.reactnativenavigation.views.SnackbarAndFabContainer;
@@ -47,6 +49,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     private final SlidingOverlaysQueue slidingOverlaysQueue = new SlidingOverlaysQueue();
     private @Nullable SideMenu sideMenu;
     private int currentStackIndex = 0;
+    private LightBox lightBox;
 
     public BottomTabsLayout(AppCompatActivity activity, ActivityParams params) {
         super(activity);
@@ -217,6 +220,27 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
+    public void showLightBox(LightBoxParams params) {
+        if (lightBox == null) {
+            lightBox = new LightBox(getActivity(), new Runnable() {
+                @Override
+                public void run() {
+                    lightBox = null;
+                }
+            }, params);
+            lightBox.show();
+        }
+    }
+
+    @Override
+    public void dismissLightBox() {
+        if (lightBox != null) {
+            lightBox.hide();
+            lightBox = null;
+        }
+    }
+
+    @Override
     public void showSlidingOverlay(final SlidingOverlayParams params) {
         slidingOverlaysQueue.add(new SlidingOverlay(this, params));
     }
@@ -310,6 +334,10 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         }
         if (sideMenu != null) {
             sideMenu.destroy();
+        }
+        if (lightBox != null) {
+            lightBox.destroy();
+            lightBox = null;
         }
         slidingOverlaysQueue.destroy();
     }
