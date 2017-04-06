@@ -111,7 +111,9 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: 'absolute',
-    top: 0
+    top: 0,
+    left: 0,
+    right: 0,
   },
   image: {
     height: 190
