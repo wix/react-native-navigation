@@ -18,6 +18,7 @@ Navigation.startTabBasedApp({
   tabBarButtonColor: '#ffff00', // change the color of the tab icons and text (also unselected)
   tabBarSelectedButtonColor: '#ff9900', // change the color of the selected tab icon and text (only selected)
   tabBarBackgroundColor: '#551A8B' // change the background color of the tab bar
+  tabBarTextFontFamily: 'Avenir-Medium' //change the tab font family
 }
 ```
 
@@ -29,6 +30,7 @@ Navigation.startTabBasedApp({
     tabBarBackgroundColor: '#0f2362',
     tabBarButtonColor: '#ffffff',
     tabBarSelectedButtonColor: '#63d7cc'
+    tabFontFamily: 'Avenir-Medium.ttf'  // for asset file or use existing font family name
   },
 ...
 }
