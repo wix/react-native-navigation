@@ -285,7 +285,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       Class customViewClass = NSClassFromString(button[@"iosUIViewClass"]);
       UIView *customView = nil;
       if(customViewClass != nil) {
-        customView = [(UIView *)[customViewClass alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+        customView = [(UIView *)[customViewClass alloc] init];
         [customView setUserInteractionEnabled:NO];
       }
 
