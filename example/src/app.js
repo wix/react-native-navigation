@@ -7,8 +7,10 @@ import {Navigation} from 'react-native-navigation';
 import {registerScreens} from './screens';
 registerScreens();
 
+const SHOW_SHARED_ELEMENT_SCREENS = false;
+
 const createTabs = () => {
-  let tabs = [
+  const sharedElementScreens = [
     {
       label: 'Card',
       screen: 'example.CardScreen',
@@ -20,7 +22,10 @@ const createTabs = () => {
       screen: 'example.ListScreen',
       icon: require('../img/list.png'),
       title: 'Shared Element Transition'
-    },
+    }
+  ];
+
+  let tabs = [
     {
       label: 'One',
       screen: 'example.FirstTabScreen',
@@ -46,6 +51,9 @@ const createTabs = () => {
       icon: require('../img/one.png'),
       title: 'Collapsing',
     });
+    if (SHOW_SHARED_ELEMENT_SCREENS) {
+      tabs = [...sharedElementScreens, ...tabs];
+    }
   }
   return tabs;
 };
