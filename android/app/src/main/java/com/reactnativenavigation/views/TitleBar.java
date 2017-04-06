@@ -39,7 +39,7 @@ public class TitleBar extends Toolbar {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
 
-        if (titleBarTitleTextCentered) {
+        if (getTitleView() != null && titleBarTitleTextCentered) {
             WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
             Display display = windowManager.getDefaultDisplay();
             Point screenSize = new Point();
