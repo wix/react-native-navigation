@@ -1,7 +1,9 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -11,6 +13,8 @@ import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.utils.ViewUtils;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class BottomTabs extends AHBottomNavigation {
@@ -23,6 +27,7 @@ public class BottomTabs extends AHBottomNavigation {
         setId(ViewUtils.generateViewId());
         createVisibilityAnimator();
         setStyle();
+        setFontFamily(context);
     }
 
     public void addTabs(List<ScreenParams> params, OnTabSelectedListener onTabSelectedListener) {
@@ -96,5 +101,32 @@ public class BottomTabs extends AHBottomNavigation {
 
     private boolean hasBadgeBackgroundColor() {
         return AppStyle.appStyle.bottomTabBadgeBackgroundColor != null && AppStyle.appStyle.bottomTabBadgeBackgroundColor.hasColor();
+    }
+
+    private boolean hasBottomTabFontFamily() {
+        return AppStyle.appStyle.bottomTabFontFamily != null;
+    }
+
+    private void setFontFamily(Context context) {
+        if(hasBottomTabFontFamily()) {
+
+            AssetManager assetManager = context.getAssets();
+            String fontFamilyName = AppStyle.appStyle.bottomTabFontFamily;
+
+            Typeface typeFace = null;
+            try {
+                boolean hasAsset = Arrays.asList(assetManager.list("fonts")).contains(fontFamilyName);
+                typeFace = hasAsset ?
+                        Typeface.createFromAsset(assetManager, "fonts/".concat(fontFamilyName))
+                        :
+                        Typeface.create(fontFamilyName, Typeface.NORMAL);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if(typeFace != null) {
+                setTitleTypeface(typeFace);
+            }
+        }
     }
 }

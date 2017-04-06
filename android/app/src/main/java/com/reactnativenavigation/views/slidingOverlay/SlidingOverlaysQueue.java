@@ -43,6 +43,10 @@ public class SlidingOverlaysQueue implements SlidingOverlay.SlidingListener{
             public void run() {
                 SlidingOverlay currentOverlay = queue.peek();
 
+                if(currentOverlay == null) {
+                    return;
+                }
+                
                 if (currentOverlay.isShowing()) {
                     pendingHide = true;
                 }
