@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -28,6 +29,7 @@ public class BottomTabs extends AHBottomNavigation {
         createVisibilityAnimator();
         setStyle();
         setFontFamily(context);
+        setTitlesDisplayState();
     }
 
     public void addTabs(List<ScreenParams> params, OnTabSelectedListener onTabSelectedListener) {
@@ -50,9 +52,25 @@ public class BottomTabs extends AHBottomNavigation {
             setAccentColor(params.selectedBottomTabsButtonColor.getColor());
         }
 
-        setForceTitlesDisplay(params.forceTitlesDisplay);
-
         setVisibility(params.bottomTabsHidden, true);
+    }
+
+    private void setTitlesDisplayState() {
+        if (AppStyle.appStyle.forceTitlesDisplay) {
+            setTitleState(TitleState.ALWAYS_SHOW);
+        } else {
+            centerIconsIfNeeded();
+        }
+    }
+
+    private void centerIconsIfNeeded() {
+        for (int i = 0; i < getItemsCount(); i++) {
+            String title = getItem(0).getTitle(getContext());
+            if (!TextUtils.isEmpty(title)) {
+                return;
+            }
+        }
+        setTitleState(TitleState.ALWAYS_HIDE);
     }
 
     public void setVisibility(boolean hidden, boolean animated) {
