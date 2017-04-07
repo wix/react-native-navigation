@@ -34,9 +34,8 @@ export default class LightBoxScreen extends Component {
   }
 }
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: Dimensions.get('window').width * 0.8,
     justifyContent: 'center',
     alignItems: 'center',
