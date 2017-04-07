@@ -24,6 +24,7 @@ export default class StyledScreen extends Component {
 
 ```js
 {
+  navigationBarColor: '#000000', // change the background color of the bottom native navigation bar. Android only
   navBarTextColor: '#000000', // change the text color of the title (remembered across pushes)
   navBarBackgroundColor: '#f7f7f7', // change the background color of the nav bar (remembered across pushes)
   navBarButtonColor: '#007aff', // change the button colors of the nav bar (eg. the back button) (remembered across pushes)
