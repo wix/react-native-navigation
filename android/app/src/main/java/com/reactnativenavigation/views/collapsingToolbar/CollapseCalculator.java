@@ -122,8 +122,8 @@ public class CollapseCalculator {
         }
         checkCollapseLimits();
         return (isNotCollapsedOrExpended() ||
-               (canCollapse && isExpendedAndScrollingUp(direction) && collapseBehaviour.canCollapse(scrollView.getScrollY(), scaledTouchSlop)) ||
-               (canExpend && isCollapsedAndScrollingDown(direction) && collapseBehaviour.canExpend(scrollView.getScrollY(), scaledTouchSlop))
+               (canCollapse && isExpendedAndScrollingUp(direction)) ||
+               (canExpend && isCollapsedAndScrollingDown(direction) && collapseBehaviour.canExpend(scrollView.getScrollY()))
         );
     }
 

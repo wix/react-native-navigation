@@ -73,12 +73,9 @@ export default class FirstTabScreen extends Component {
           <Text style={styles.button}>Show Modal Screen</Text>
         </TouchableOpacity>
 
-        {
-          Platform.OS === 'ios' ?
-            <TouchableOpacity onPress={ this.onLightBoxPress.bind(this) }>
-              <Text style={styles.button}>Show LightBox</Text>
-            </TouchableOpacity> : false
-        }
+        <TouchableOpacity onPress={ this.onLightBoxPress.bind(this) }>
+          <Text style={styles.button}>Show LightBox</Text>
+        </TouchableOpacity>
 
         {
           Platform.OS === 'ios' ?

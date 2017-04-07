@@ -11,7 +11,7 @@ this.props.navigator.push({
   screen: 'example.ScreenThree', // unique ID registered with Navigation.registerScreen
   title: undefined, // navigation bar title of the pushed screen (optional)
   titleImage: require('../../img/my_image.png'), //navigation bar title image instead of the title text of the pushed screen (optional)
-  passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
+  passProps: {}, // Object that will be passed as props to the pushed screen (optional)
   animated: true, // does the push have transition animation or does it happen immediately (optional)
   backButtonTitle: undefined, // override the back button title (optional)
   backButtonHidden: false, // hide the back button altogether (optional)
@@ -226,7 +226,7 @@ export default class ExampleScreen extends Component {
   onNavigatorEvent(event) {
     switch(event.id) {
       case 'willAppear':
-	     break;
+       break;
       case 'didAppear':
         break;
       case 'willDisappear':
