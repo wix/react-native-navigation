@@ -289,7 +289,12 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
         [customView setUserInteractionEnabled:NO];
       }
 
-      UIButton *buttonItem  = [[UIButton alloc] initWithFrame:customView.frame];
+      UIButton *buttonItem;
+      if(customView != nil){
+        buttonItem = [[UIButton alloc] initWithFrame:customView.frame];
+      } else {
+        buttonItem = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 44, 44)];
+      }
       [buttonItem addTarget:self action:@selector(onButtonPress:) forControlEvents:UIControlEventTouchUpInside];
       objc_setAssociatedObject(buttonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
       if(customView != nil) {
