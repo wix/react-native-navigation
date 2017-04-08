@@ -1,8 +1,3 @@
-/**
- * @providesModule zowork-boot
- * @flow
- */
-
 export Navbar from './navbar';
 export Tabbar from './tabbar';
 export Screen from './screen';
