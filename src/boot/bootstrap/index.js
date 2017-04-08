@@ -9,8 +9,6 @@ class Bootstrap {
         this.setAppStyle = this.setAppStyle.bind(this);
         this.setTabsStyle = this.setTabsStyle.bind(this);
         this.setDrawer = this.setDrawer.bind(this);
-        this.initSetttings=this.initSetttings.bind(this);
-        this.settingWatchId=null;
         this.appStyle = {};
         this.tabs = [];
         this.tabsStyle = {};
