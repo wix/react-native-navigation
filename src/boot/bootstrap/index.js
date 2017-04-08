@@ -4,7 +4,7 @@ import {Navigation} from 'react-native-navigation';
 class Bootstrap {
     constructor() {
         this.start = this.start.bind(this);
-        this.parse = this.parse.bind(this);
+        this.parseScreens = this.parseScreens.bind(this);
         this.setTabs = this.setTabs.bind(this);
         this.setAppStyle = this.setAppStyle.bind(this);
         this.setTabsStyle = this.setTabsStyle.bind(this);
@@ -34,7 +34,7 @@ class Bootstrap {
     }
 
 
-    parse(component) {
+    parseScreens(component) {
         let children = component.props.children;
         let parentProps = {...component.props};
         delete parentProps.children;
@@ -47,7 +47,7 @@ class Bootstrap {
                 let itemObj = new item.type(props);
                 itemObj.render();
                 if (itemObj.props.children) {
-                    this.parse(itemObj);
+                    this.parseScreens(itemObj);
                 }
             });
         } else {
@@ -56,7 +56,36 @@ class Bootstrap {
                 children = new children.type(props);
             }
             if(children.props.children){
-                this.parse(children);
+                this.parseScreens(children);
+            }else {
+                children.render();
+            }
+        }
+    }
+    parseApis(component) {
+        let children = component.props.children;
+        let parentProps = {...component.props};
+        delete parentProps.children;
+        if (!children) {
+            return;
+        }
+        if (children.length) {
+            children.map((item, i)=> {
+                let props = {...parentProps, ...item.props,parentProps:parentProps}
+                let itemObj = new item.type(props);
+                itemObj.render();
+                if (itemObj.props.children) {
+                    this.parseApis(itemObj);
+                }
+            });
+        } else {
+            if (!children.render) {
+                let props = {...parentProps,...children.props, parentProps:parentProps}
+                children = new children.type(props);
+            }
+
+            if(children.props.children){
+                this.parseApis(children);
             }else {
                 children.render();
             }
@@ -81,32 +110,40 @@ class Bootstrap {
     }
 
 
-    start(props) {
-        if (!props) {
-            throw new Error("start method argument must not null or undefined,props={componenent:Object}")
+    initScreens(props){
+        if (!props.screens) {
+            throw new Error("screens must not null,props={screens:Object}")
         }
-        if (!props.component) {
-            throw new Error("component must not null,props={componenent:Object}")
-        }
-        if(props.init){
-            props.init();
-        }
-        let Component = props.component;
-        delete props.component;
+        let Screens = props.screens;
+        delete props.screens;
 
-        let root = new Component(props).render();
-
-
-
-        this.parse(root);
+        let root = new Screens(props).render();
+        this.parseScreens(root);
 
         this.appStyle=root.props.appStyle;
         this.tabsStyle=root.props.tabsStyle;
         this.rootProps=root.props;
         delete this.rootProps.children;
         this.startTabBasedApp();
-
-
+    }
+    initApis(props){
+        if (!props.apis) {
+            throw new Error("apis must not null,props={apis:Object}")
+        }
+        let ApiComponent = props.apis;
+        delete props.apis;
+        let root = new ApiComponent(props).render();
+        this.parseApis(root);
+    }
+    start(props,callback) {
+        if (!props) {
+            throw new Error("start method argument must not null or undefined,props={componenent:Object}")
+        }
+        this.initApis(props);//初始化api配置
+        if(callback){
+            callback();
+        }
+        this.initScreens(props);
     }
 }
 

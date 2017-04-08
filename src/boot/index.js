@@ -9,6 +9,9 @@ export Login from './login';
 export Logout from './logout';
 export Share from './share';
 
+export Api from './api';
+export ApiRegistry from './registry';
+
 export Bootstrap from './bootstrap';
 
 

@@ -34,7 +34,8 @@
     "react": "*"
   },
   "dependencies": {
-    "lodash": "4.x.x"
+    "lodash": "4.x.x",
+    "qs": "https://github.com/ljharb/qs"
   },
   "devDependencies": {
     "react-native": "0.41.2",

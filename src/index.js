@@ -1,6 +1,7 @@
 import {Navigation,NavigationToolBarIOS} from './deprecated/indexDeprecated';
 import Router from './Router';
-import BootComponents from  './boot';
+export BootComponents from  './boot';
+
 module.exports = {
     Router,
     Navigation,
