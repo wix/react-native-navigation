@@ -40,6 +40,11 @@ public class ViewPagerScreen extends Screen {
     }
 
     @Override
+    public ContentView getContentView() {
+        return contentViews.get(viewPager.getCurrentItem());
+    }
+
+    @Override
     protected void createContent() {
         TopTabs topTabs = topBar.initTabs();
         createViewPager();
