@@ -1,7 +1,6 @@
 import {Settings} from 'react-native';
 import {reaction} from 'mobx';
 import {Navigation} from 'react-native-navigation';
-import HttpRequest from 'zowork-http-request';
 class Bootstrap {
     constructor() {
         this.start = this.start.bind(this);
@@ -83,20 +82,7 @@ class Bootstrap {
 
     }
 
-    initSetttings(){
-        HttpRequest.setAccessToken(Settings.get("access_token"));
-        HttpRequest.setAuthrization(Settings.get("authorization"));
-        Settings.watchKeys("authorization",(item,item2)=>{
-            console.log("Settings watch===============",item,item2)
-        });
-        Settings.watchKeys("access_token",(item,item2)=>{
-            console.log("Settings watch===============",item,item2)
-        });
-    }
 
-    initConfig(props){
-
-    }
     start(props) {
         if (!props) {
             throw new Error("start method argument must not null or undefined,props={componenent:Object}")
@@ -104,7 +90,9 @@ class Bootstrap {
         if (!props.component) {
             throw new Error("component must not null,props={componenent:Object}")
         }
-        this.initSetttings();
+        if(props.init){
+            props.init();
+        }
         let Component = props.component;
         delete props.component;
 
