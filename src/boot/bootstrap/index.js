@@ -1,5 +1,7 @@
+import {Settings} from 'react-native';
 import {reaction} from 'mobx';
 import {Navigation} from 'react-native-navigation';
+import HttpRequest from 'zowork-http-request';
 class Bootstrap {
     constructor() {
         this.start = this.start.bind(this);
@@ -8,6 +10,8 @@ class Bootstrap {
         this.setAppStyle = this.setAppStyle.bind(this);
         this.setTabsStyle = this.setTabsStyle.bind(this);
         this.setDrawer = this.setDrawer.bind(this);
+        this.initSetttings=this.initSetttings.bind(this);
+        this.settingWatchId=null;
         this.appStyle = {};
         this.tabs = [];
         this.tabsStyle = {};
@@ -42,7 +46,7 @@ class Bootstrap {
         }
         if (children.length) {
             children.map((item, i)=> {
-                let props = {...parentProps, ...item.props}
+                let props = {...parentProps, ...item.props,parentProps:parentProps}
                 let itemObj = new item.type(props);
                 itemObj.render();
                 if (itemObj.props.children) {
@@ -51,9 +55,14 @@ class Bootstrap {
             });
         } else {
             if (!children.render) {
-                children = new children.type(children.props);
+                let props = {...parentProps, ...children.props,parentProps:parentProps}
+                children = new children.type(props);
             }
-            children.render();
+            if(children.props.children){
+                this.parse(children);
+            }else {
+                children.render();
+            }
         }
     }
 
@@ -74,6 +83,20 @@ class Bootstrap {
 
     }
 
+    initSetttings(){
+        HttpRequest.setAccessToken(Settings.get("access_token"));
+        HttpRequest.setAuthrization(Settings.get("authorization"));
+        Settings.watchKeys("authorization",(item,item2)=>{
+            console.log("Settings watch===============",item,item2)
+        });
+        Settings.watchKeys("access_token",(item,item2)=>{
+            console.log("Settings watch===============",item,item2)
+        });
+    }
+
+    initConfig(props){
+
+    }
     start(props) {
         if (!props) {
             throw new Error("start method argument must not null or undefined,props={componenent:Object}")
@@ -81,6 +104,7 @@ class Bootstrap {
         if (!props.component) {
             throw new Error("component must not null,props={componenent:Object}")
         }
+        this.initSetttings();
         let Component = props.component;
         delete props.component;
 
