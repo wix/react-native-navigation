@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import React, {Component} from 'react';
-import {AppRegistry, NativeModules, processColor} from 'react-native';
+import ReactNative, {AppRegistry, NativeModules, processColor} from 'react-native';
 import _ from 'lodash';
 
 import Navigation from './../Navigation';
@@ -73,6 +73,7 @@ function navigatorPush(navigator, params) {
   addNavigationStyleParams(params);
 
   adaptTopTabs(params, params.navigatorID);
+  // findSharedElementsNodeHandles(params);
 
   params.screenId = params.screen;
   let adapted = adaptNavigationStyleToScreenStyle(params);
@@ -167,7 +168,7 @@ function convertStyleParams(originalStyleObject) {
     selectedTopTabTextColor: processColor(originalStyleObject.selectedTopTabTextColor),
     selectedTopTabIndicatorHeight: originalStyleObject.selectedTopTabIndicatorHeight,
     selectedTopTabIndicatorColor: processColor(originalStyleObject.selectedTopTabIndicatorColor),
-    topTabScrollable: originalStyleObject.topTabScollable,
+    topTabsScrollable: originalStyleObject.topTabsScrollable,
     screenBackgroundColor: processColor(originalStyleObject.screenBackgroundColor),
 
     drawScreenAboveBottomTabs: !originalStyleObject.drawUnderTabBar,
@@ -392,6 +393,28 @@ function showModal(params) {
   adapted.overrideBackPress = params.overrideBackPress;
 
   newPlatformSpecific.showModal(adapted);
+}
+
+function showLightBox(params) {
+  params.navigationParams = {};
+  addNavigatorParams(params.navigationParams);
+  params.screenId = params.screen;
+  const backgroundBlur = _.get(params, 'style.backgroundBlur');
+  const backgroundColor = _.get(params, 'style.backgroundColor');
+  if (backgroundColor) {
+    params.backgroundColor = processColor(backgroundColor);
+  } else {
+    if (backgroundBlur === 'dark') {
+      params.backgroundColor = processColor('rgba(0, 0, 0, 0.5)');
+    } else {
+      params.backgroundColor = processColor('transparent');
+    }
+  }
+  newPlatformSpecific.showLightBox(params);
+}
+
+function dismissLightBox() {
+  newPlatformSpecific.dismissLightBox();
 }
 
 function dismissModal() {
@@ -625,6 +648,8 @@ export default {
   dismissModal,
   dismissAllModals,
   showInAppNotification,
+  showLightBox,
+  dismissLightBox,
   dismissInAppNotification,
   navigatorSetButtons,
   navigatorSetTabBadge,

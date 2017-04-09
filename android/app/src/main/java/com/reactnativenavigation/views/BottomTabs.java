@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -37,6 +38,7 @@ public class BottomTabs extends AHBottomNavigation {
             addItem(item);
             setOnTabSelectedListener(onTabSelectedListener);
         }
+        setTitlesDisplayState();
     }
 
     public void setStyleFromScreen(StyleParams params) {
@@ -50,9 +52,27 @@ public class BottomTabs extends AHBottomNavigation {
             setAccentColor(params.selectedBottomTabsButtonColor.getColor());
         }
 
-        setForceTitlesDisplay(params.forceTitlesDisplay);
-
         setVisibility(params.bottomTabsHidden, true);
+    }
+
+    private void setTitlesDisplayState() {
+        if (AppStyle.appStyle.forceTitlesDisplay) {
+            setTitleState(TitleState.ALWAYS_SHOW);
+        } else if (hasTabsWithLabels()) {
+            setTitleState(TitleState.SHOW_WHEN_ACTIVE);
+        } else {
+            setTitleState(TitleState.ALWAYS_HIDE);
+        }
+    }
+
+    private boolean hasTabsWithLabels() {
+        for (int i = 0; i < getItemsCount(); i++) {
+            String title = getItem(0).getTitle(getContext());
+            if (!TextUtils.isEmpty(title)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setVisibility(boolean hidden, boolean animated) {
@@ -96,11 +116,13 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     private boolean hasBadgeTextColor() {
-        return AppStyle.appStyle.bottomTabBadgeTextColor != null && AppStyle.appStyle.bottomTabBadgeTextColor.hasColor();
+        return AppStyle.appStyle.bottomTabBadgeTextColor != null &&
+               AppStyle.appStyle.bottomTabBadgeTextColor.hasColor();
     }
 
     private boolean hasBadgeBackgroundColor() {
-        return AppStyle.appStyle.bottomTabBadgeBackgroundColor != null && AppStyle.appStyle.bottomTabBadgeBackgroundColor.hasColor();
+        return AppStyle.appStyle.bottomTabBadgeBackgroundColor != null &&
+               AppStyle.appStyle.bottomTabBadgeBackgroundColor.hasColor();
     }
 
     private boolean hasBottomTabFontFamily() {
@@ -108,7 +130,7 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     private void setFontFamily(Context context) {
-        if(hasBottomTabFontFamily()) {
+        if (hasBottomTabFontFamily()) {
 
             AssetManager assetManager = context.getAssets();
             String fontFamilyName = AppStyle.appStyle.bottomTabFontFamily;
@@ -124,7 +146,7 @@ public class BottomTabs extends AHBottomNavigation {
                 e.printStackTrace();
             }
 
-            if(typeFace != null) {
+            if (typeFace != null) {
                 setTitleTypeface(typeFace);
             }
         }

@@ -27,8 +27,11 @@ import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.views.sharedElementTransition.SharedElementTransition;
+import com.reactnativenavigation.views.sharedElementTransition.SharedElements;
 
 import java.util.List;
+import java.util.Map;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -46,6 +49,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     private VisibilityAnimator topBarVisibilityAnimator;
     private ScreenAnimator screenAnimator;
     protected final StyleParams styleParams;
+    public final SharedElements sharedElements;
 
     public Screen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener leftButtonOnClickListener) {
         super(activity);
@@ -56,6 +60,11 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         screenAnimator = new ScreenAnimator(this);
         createViews();
         EventBus.instance.register(this);
+        sharedElements = new SharedElements();
+    }
+
+    public void registerSharedElement(SharedElementTransition toView, String key) {
+        sharedElements.addToElement(toView, key);
     }
 
     @Override
@@ -65,7 +74,6 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             topBar.onContextualMenuHidden();
         }
         if (ViewPagerScreenChangedEvent.TYPE.equals(event.getType()) && isShown() ) {
-            setStyle();
             topBar.dismissContextualMenu();
         }
     }
@@ -239,7 +247,48 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         screenAnimator.show(animated, onAnimationEnd);
     }
 
-    public void hide(boolean animated, Runnable onAnimatedEnd) {
+    public void showWithSharedElementsTransitions(Map<String, SharedElementTransition> fromElements, final Runnable onAnimationEnd) {
+        setStyle();
+        sharedElements.setFromElements(fromElements);
+        screenAnimator.showWithSharedElementsTransitions(onAnimationEnd);
+    }
+
+    public void hideWithSharedElementTransitions(Map<String, SharedElementTransition> toElements, final Runnable onAnimationEnd) {
+        sharedElements.setFromElements(sharedElements.getToElements());
+        sharedElements.setToElements(toElements);
+        screenAnimator.hideWithSharedElementsTransition(onAnimationEnd);
+    }
+
+    public void hide(Map<String, SharedElementTransition> sharedElements, Runnable onAnimationEnd) {
+        removeHiddenSharedElements();
+        if (hasVisibleSharedElements()) {
+            hideWithSharedElementTransitions(sharedElements, onAnimationEnd);
+        } else {
+            hide(false, onAnimationEnd);
+        }
+    }
+
+    public void animateHide(Map<String, SharedElementTransition> sharedElements, Runnable onAnimationEnd) {
+        removeHiddenSharedElements();
+        if (hasVisibleSharedElements()) {
+            hideWithSharedElementTransitions(sharedElements, onAnimationEnd);
+        } else {
+            hide(true, onAnimationEnd);
+        }
+    }
+
+    private boolean hasVisibleSharedElements() {
+        if (screenParams.sharedElementsTransitions.isEmpty()) {
+            return false;
+        }
+        return !sharedElements.getToElements().isEmpty();
+    }
+
+    public void removeHiddenSharedElements() {
+        sharedElements.removeHiddenElements();
+    }
+
+    private void hide(boolean animated, Runnable onAnimatedEnd) {
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willDisappear", screenParams.getNavigatorEventId());
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didDisappear", screenParams.getNavigatorEventId());
         screenAnimator.hide(animated, onAnimatedEnd);
@@ -257,5 +306,6 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     public void destroy() {
         unmountReactView();
         EventBus.instance.unregister(this);
+        sharedElements.destroy();
     }
 }

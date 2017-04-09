@@ -11,14 +11,15 @@ import android.view.animation.LinearInterpolator;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.sharedElementTransition.SharedElementsAnimator;
 
 import javax.annotation.Nullable;
 
-public class ScreenAnimator {
+class ScreenAnimator {
     private final float translationY;
     private Screen screen;
 
-    public ScreenAnimator(Screen screen) {
+    ScreenAnimator(Screen screen) {
         this.screen = screen;
         translationY = 0.08f * ViewUtils.getScreenHeight();
     }
@@ -95,5 +96,14 @@ public class ScreenAnimator {
             }
         });
         return set;
+    }
+
+    void showWithSharedElementsTransitions(Runnable onAnimationEnd) {
+        screen.setVisibility(View.VISIBLE);
+        new SharedElementsAnimator(this.screen.sharedElements).show(onAnimationEnd);
+    }
+
+    void hideWithSharedElementsTransition(Runnable onAnimationEnd) {
+        new SharedElementsAnimator(screen.sharedElements).hide(onAnimationEnd);
     }
 }

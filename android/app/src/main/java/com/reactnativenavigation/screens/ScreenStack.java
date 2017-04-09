@@ -100,7 +100,12 @@ public class ScreenStack {
         Screen nextScreen = ScreenFactory.create(activity, params, leftButtonOnClickListener);
         final Screen previousScreen = stack.peek();
         if (isStackVisible) {
-            pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen);
+            if (nextScreen.screenParams.sharedElementsTransitions.isEmpty()) {
+                pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen);
+            } else {
+//                pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen);
+                pushScreenToVisibleStackWithSharedElementTransition(layoutParams, nextScreen, previousScreen);
+            }
         } else {
             pushScreenToInvisibleStack(layoutParams, nextScreen, previousScreen);
         }
@@ -131,6 +136,22 @@ public class ScreenStack {
                 });
             }
         });
+    }
+
+    private void pushScreenToVisibleStackWithSharedElementTransition(LayoutParams layoutParams, final Screen nextScreen, final Screen previousScreen) {
+        nextScreen.setVisibility(View.INVISIBLE);
+        nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
+            @Override
+            public void onDisplay() {
+                nextScreen.showWithSharedElementsTransitions(previousScreen.sharedElements.getToElements(), new Runnable() {
+                    @Override
+                    public void run() {
+                        parent.removeView(previousScreen);
+                    }
+                });
+            }
+        });
+        addScreen(nextScreen, layoutParams);
     }
 
     private void pushScreenToInvisibleStack(LayoutParams layoutParams, Screen nextScreen, Screen previousScreen) {
@@ -179,16 +200,24 @@ public class ScreenStack {
     private void swapScreens(boolean animated, final Screen toRemove, Screen previous, OnScreenPop onScreenPop) {
         readdPrevious(previous);
         previous.setStyle();
-        toRemove.hide(animated, new Runnable() {
+        hideScreen(animated, toRemove, previous);
+        if (onScreenPop != null) {
+            onScreenPop.onScreenPopAnimationEnd();
+        }
+    }
+
+    private void hideScreen(boolean animated, final Screen toRemove, Screen previous) {
+        Runnable onAnimationEnd = new Runnable() {
             @Override
             public void run() {
                 toRemove.destroy();
                 parent.removeView(toRemove);
             }
-        });
-
-        if (onScreenPop != null) {
-            onScreenPop.onScreenPopAnimationEnd();
+        };
+        if (animated) {
+            toRemove.animateHide(previous.sharedElements.getToElements(), onAnimationEnd);
+        } else {
+            toRemove.hide(previous.sharedElements.getToElements(), onAnimationEnd);
         }
     }
 
