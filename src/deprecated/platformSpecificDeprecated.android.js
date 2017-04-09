@@ -154,7 +154,7 @@ function convertStyleParams(originalStyleObject) {
     titleBarSubtitleColor: processColor(originalStyleObject.navBarSubtitleColor),
     titleBarButtonColor: processColor(originalStyleObject.navBarButtonColor),
     titleBarDisabledButtonColor: processColor(originalStyleObject.titleBarDisabledButtonColor),
-    titleBarTitleFont: originalStyleObject.navBarTitleFont,
+    titleBarTitleFontFamily: originalStyleObject.navBarTextFontFamily,
     titleBarTitleTextCentered: originalStyleObject.navBarTitleTextCentered,
     backButtonHidden: originalStyleObject.backButtonHidden,
     topTabsHidden: originalStyleObject.topTabsHidden,

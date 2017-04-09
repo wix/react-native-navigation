@@ -1,7 +1,10 @@
 package com.reactnativenavigation.params;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+
+import com.reactnativenavigation.utils.TypefaceLoader;
 
 public class StyleParams {
     public static class Color {
@@ -41,6 +44,28 @@ public class StyleParams {
         }
     }
 
+    public static class Font {
+        private Typeface typeface;
+
+        public Font(String font) {
+            typeface = new TypefaceLoader(font).getTypeFace();
+        }
+
+        public Font() {
+        }
+
+        public boolean hasFont() {
+            return typeface != null;
+        }
+
+        public Typeface get() {
+            if (typeface == null) {
+                throw new RuntimeException("Font undefined");
+            }
+            return typeface;
+        }
+    }
+
     public Orientation orientation;
     public Color statusBarColor;
     public Color contextualMenuStatusBarColor;
@@ -62,7 +87,7 @@ public class StyleParams {
     public Color titleBarSubtitleColor;
     public Color titleBarButtonColor;
     public Color titleBarDisabledButtonColor;
-    public String titleBarTitleFont;
+    public Font titleBarTitleFont;
     public boolean titleBarTitleTextCentered;
     public boolean backButtonHidden;
 
@@ -88,7 +113,7 @@ public class StyleParams {
     public boolean forceTitlesDisplay;
     public Color bottomTabBadgeTextColor;
     public Color bottomTabBadgeBackgroundColor;
-    public String bottomTabFontFamily;
+    public Font bottomTabFontFamily;
 
     public Color navigationBarColor;
 }

@@ -33,6 +33,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         item.setEnabled(buttonParams.enabled);
         setIcon(item);
         setColor();
+        setFont();
         item.setOnMenuItemClickListener(this);
         return item;
     }
@@ -69,6 +70,14 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         });
     }
 
+    private void setFont() {
+        if (buttonParams.font == null) {
+            return;
+        }
+        ArrayList<View> buttons = findActualTextViewInMenuByLabel();
+        setTextFontForFoundButtonViews(buttons);
+    }
+
     @NonNull
     private ArrayList<View> findActualTextViewInMenuByLabel() {
         ArrayList<View> outViews = new ArrayList<>();
@@ -76,9 +85,17 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         return outViews;
     }
 
-    private void setTextColorForFoundButtonViews(ArrayList<View> outViews) {
-        for (View button : outViews) {
+    private void setTextColorForFoundButtonViews(ArrayList<View> buttons) {
+        for (View button : buttons) {
             ((TextView) button).setTextColor(buttonParams.getColor().getColor());
+        }
+    }
+
+    private void setTextFontForFoundButtonViews(ArrayList<View> buttons) {
+        for (View button : buttons) {
+            if (buttonParams.font.hasFont()) {
+                ((TextView) button).setTypeface(buttonParams.font.get());
+            }
         }
     }
 
