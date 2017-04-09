@@ -80,6 +80,13 @@ public class ViewUtils {
         return metrics.heightPixels;
     }
 
+    public static float getScreenWidth() {
+        WindowManager wm = (WindowManager) NavigationApplication.instance.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        return metrics.widthPixels;
+    }
+
     private static int compatGenerateViewId() {
         for (; ; ) {
             final int result = viewId.get();

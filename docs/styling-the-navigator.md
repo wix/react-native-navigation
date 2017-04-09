@@ -24,6 +24,7 @@ export default class StyledScreen extends Component {
 
 ```js
 {
+  navigationBarColor: '#000000', // change the background color of the bottom native navigation bar. Android only
   navBarTextColor: '#000000', // change the text color of the title (remembered across pushes)
   navBarBackgroundColor: '#f7f7f7', // change the background color of the nav bar (remembered across pushes)
   navBarButtonColor: '#007aff', // change the button colors of the nav bar (eg. the back button) (remembered across pushes)
@@ -38,6 +39,7 @@ export default class StyledScreen extends Component {
   statusBarBlur: false, // blur the area under the status bar, works best with navBarHidden:true
   navBarBlur: false, // blur the entire nav bar, works best with drawUnderNavBar:true
   tabBarHidden: false, // make the screen content hide the tab bar (remembered across pushes)
+  statusBarColor: '#000000', // change the color of the status bar. Android only
   statusBarHideWithNavBar: false // hide the status bar if the nav bar is also hidden, useful for navBarHidden:true
   statusBarHidden: false, // make the status bar hidden regardless of nav bar state
   statusBarTextColorScheme: 'dark', // text color of status bar, 'dark' / 'light' (remembered across pushes)

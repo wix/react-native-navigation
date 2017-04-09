@@ -10,7 +10,7 @@ registerScreens();
 const SHOW_SHARED_ELEMENT_SCREENS = false;
 
 const createTabs = () => {
-  const sharedElementScreens = [
+  const sharedElementScreens = Platform.OS === 'android' ? [
     {
       label: 'Card',
       screen: 'example.CardScreen',
@@ -23,7 +23,7 @@ const createTabs = () => {
       icon: require('../img/list.png'),
       title: 'Shared Element Transition'
     }
-  ];
+  ] : null;
 
   let tabs = [
     {
@@ -63,7 +63,9 @@ Navigation.startTabBasedApp({
   appStyle: {
     tabBarBackgroundColor: '#0f2362',
     tabBarButtonColor: '#ffffff',
-    tabBarSelectedButtonColor: '#63d7cc'
+    tabBarSelectedButtonColor: '#63d7cc',
+    tabFontFamily: 'BioRhyme-Bold',
+    forceTitlesDisplay: true
   },
   drawer: {
     left: {
