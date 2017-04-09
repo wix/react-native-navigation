@@ -139,7 +139,12 @@ public class TitleBar extends Toolbar {
         leftButton = new LeftButton(getContext(), leftButtonParams, leftButtonOnClickListener, navigatorEventId,
                 overrideBackPressInJs);
         setNavigationOnClickListener(leftButton);
-        setNavigationIcon(leftButton);
+
+        if (leftButtonParams.icon != null) {
+            setNavigationIcon(leftButtonParams.icon);
+        } else {
+            setNavigationIcon(leftButton);
+        }
     }
 
     public void hide() {
