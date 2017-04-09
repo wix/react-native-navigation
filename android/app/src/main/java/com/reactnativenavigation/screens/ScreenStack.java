@@ -103,7 +103,6 @@ public class ScreenStack {
             if (nextScreen.screenParams.sharedElementsTransitions.isEmpty()) {
                 pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen);
             } else {
-//                pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen);
                 pushScreenToVisibleStackWithSharedElementTransition(layoutParams, nextScreen, previousScreen);
             }
         } else {
