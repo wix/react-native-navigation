@@ -16,6 +16,7 @@ export default class Screen extends BaseConfigComponent{
     render(){
         let component=this.props.component;
         let name=this.props.name;
+        delete this.props.parentProps;
         Navigation.registerComponent(name,()=>component);
         Router.register(this.props);
         return null;

@@ -10,8 +10,10 @@ class Bootstrap {
         this.setAppStyle = this.setAppStyle.bind(this);
         this.setTabsStyle = this.setTabsStyle.bind(this);
         this.setDrawer = this.setDrawer.bind(this);
+        this.setLaunchScreen=this.setLaunchScreen.bind(this);
         this.appStyle = {};
         this.tabs = [];
+        this.launchScreen={};
         this.tabsStyle = {};
         this.drawer = null;
         this.rootProps={};
@@ -32,6 +34,9 @@ class Bootstrap {
 
     setTabs(items) {
         this.tabs = items;
+    }
+    setLaunchScreen(items) {
+        this.launchScreen = items;
     }
 
 
@@ -108,6 +113,18 @@ class Bootstrap {
         Navigation.startTabBasedApp(luanchParams);
 
     }
+    startSingleScreenApp(){
+        let params={
+            ...this.rootProps,
+            screen:this.launchScreen,
+            drawer: this.drawer
+        };
+        if(this.appStyle){
+            params.appStyle=this.appStyle;
+        }
+        Navigation.startSingleScreenApp(params);
+    }
+
 
 
     initScreens(props){
@@ -124,7 +141,7 @@ class Bootstrap {
         this.tabsStyle=root.props.tabsStyle;
         this.rootProps=root.props;
         delete this.rootProps.children;
-        this.startTabBasedApp();
+
     }
     initApis(props){
         if (!props.apis) {
@@ -135,8 +152,7 @@ class Bootstrap {
         let root = new ApiComponent(props).render();
         this.parseApis(root);
     }
-    start(props,callback){
-        console.log("bootstrap============props============",props)
+    config(props,callback){
         if (!props) {
             throw new Error("start method argument must not null or undefined,props={componenent:Object}")
         }
@@ -147,6 +163,11 @@ class Bootstrap {
         }
         props.children=children;
         this.initScreens(props);
+    }
+    start(props,callback){
+        console.log("bootstrap============props============",props)
+        this.config(props,callback);
+        this.startTabBasedApp();
     }
 }
 

@@ -8,6 +8,7 @@ import Drawer from './drawer';
 import Login from './login';
 import Logout from './logout';
 import Share from './share';
+import Launch from './launch';
 
 import Api from './api';
 import ApiRegistry from './registry';
@@ -16,6 +17,18 @@ import Bootstrap from './bootstrap';
 
 
 module.exports = {
-    Navbar,Tabbar,Screen,AuthScreen,Group,Root,Drawer,Login,Logout,Api,ApiRegistry,Bootstrap
+    Navbar,
+    Tabbar,
+    Screen,
+    AuthScreen,
+    Group,
+    Root,
+    Drawer,
+    Login,
+    Logout,
+    Api,
+    ApiRegistry,
+    Bootstrap,
+    Launch
 
 }

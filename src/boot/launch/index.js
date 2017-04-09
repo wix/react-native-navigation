@@ -2,9 +2,9 @@ import React,{Component} from 'react';
 import { View, Text } from 'react-native';
 import Navigation from '../../Navigation';
 import Router from '../../Router';
-
+import Bootstrap from '../bootstrap';
 import BaseConfigComponent from '../BaseConfigComponent'
-export default class AuthScreen extends BaseConfigComponent{
+export default class LaunchScreen extends BaseConfigComponent{
 
 
     constructor(props){
@@ -19,6 +19,7 @@ export default class AuthScreen extends BaseConfigComponent{
         delete this.props.parentProps;
         Navigation.registerComponent(name,()=>component);
         Router.register(this.props);
+        Bootstrap.setLaunchScreen({screen:name,})
         return null;
     }
 
