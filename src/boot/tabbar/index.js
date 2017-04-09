@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 import { View, Text } from 'react-native';
 import BaseConfigComponent from '../BaseConfigComponent'
-import {Navigation,Router} from 'react-native-navigation';
+import Navigation from '../../Navigation';
+import Router from '../../Router';
 import Bootstrap from '../bootstrap';
 export default class Tabbar extends BaseConfigComponent{
 
@@ -16,13 +17,14 @@ export default class Tabbar extends BaseConfigComponent{
             throw new Error("Tabbar must has more than one child,Please check your configuration!");
         }
         let tabs=[];
-        let parentProps=this.props;
+        let parentProps={...this.props};
         delete parentProps.children;
         children.map((item,i)=>{
             let name=item.props.name;
+
             let component=item.props.component;
-            Navigation.registerComponent(name,()=>component);
-            Router.register(item.props);
+            //Navigation.registerComponent(name,()=>component);
+            //Router.register(item.props);
 
             let tabProps={...parentProps,...item.props,screen:name,label:item.props.title};
 

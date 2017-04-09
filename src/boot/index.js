@@ -1,17 +1,21 @@
-export Navbar from './navbar';
-export Tabbar from './tabbar';
-export Screen from './screen';
-export AuthScreen from './screen';
-export Group from './group';
-export Root from './root';
-export Drawer from './drawer';
-export Login from './login';
-export Logout from './logout';
-export Share from './share';
+import Navbar from './navbar';
+import Tabbar from './tabbar';
+import Screen from './screen';
+import AuthScreen from './screen';
+import Group from './group';
+import Root from './root';
+import Drawer from './drawer';
+import Login from './login';
+import Logout from './logout';
+import Share from './share';
 
-export Api from './api';
-export ApiRegistry from './registry';
+import Api from './api';
+import ApiRegistry from './registry';
 
-export Bootstrap from './bootstrap';
+import Bootstrap from './bootstrap';
 
 
+module.exports = {
+    Navbar,Tabbar,Screen,AuthScreen,Group,Root,Drawer,Login,Logout,Api,ApiRegistry,Bootstrap
+
+}

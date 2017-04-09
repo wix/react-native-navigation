@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { View, Text } from 'react-native';
-import {Navigation,Router} from 'react-native-navigation';
+import Navigation from '../../Navigation';
+import Router from '../../Router';
 
 import BaseConfigComponent from '../BaseConfigComponent'
 export default class Login extends BaseConfigComponent{

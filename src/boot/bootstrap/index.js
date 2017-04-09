@@ -1,6 +1,7 @@
 import {Settings} from 'react-native';
 import {reaction} from 'mobx';
-import {Navigation} from 'react-native-navigation';
+import Navigation from '../../Navigation';
+import Router from '../../Router';
 class Bootstrap {
     constructor() {
         this.start = this.start.bind(this);
@@ -52,13 +53,12 @@ class Bootstrap {
             });
         } else {
             if (!children.render) {
-                let props = {...parentProps, ...children.props,parentProps:parentProps}
+                let props = {...parentProps, ...children.props,parentProps:parentProps} 
                 children = new children.type(props);
             }
+            children.render();
             if(children.props.children){
                 this.parseScreens(children);
-            }else {
-                children.render();
             }
         }
     }
@@ -135,14 +135,17 @@ class Bootstrap {
         let root = new ApiComponent(props).render();
         this.parseApis(root);
     }
-    start(props,callback) {
+    start(props,callback){
+        console.log("bootstrap============props============",props)
         if (!props) {
             throw new Error("start method argument must not null or undefined,props={componenent:Object}")
         }
+        let children=props.children;
         this.initApis(props);//初始化api配置
         if(callback){
             callback();
         }
+        props.children=children;
         this.initScreens(props);
     }
 }

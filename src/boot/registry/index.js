@@ -1,5 +1,5 @@
 
-import {get,post} from 'zowork-http-request';
+import {get,post} from '../../utils/request';
 
 class ApiRegistry{
 

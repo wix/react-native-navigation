@@ -1,10 +1,11 @@
 import {Navigation,NavigationToolBarIOS} from './deprecated/indexDeprecated';
 import Router from './Router';
-export BootComponents from  './boot';
+
+export  * from './boot';
+export HttpRequest from './utils/request';
 
 module.exports = {
     Router,
     Navigation,
-    NavigationToolBarIOS,
-    ...BootComponents
+    NavigationToolBarIOS
 }
