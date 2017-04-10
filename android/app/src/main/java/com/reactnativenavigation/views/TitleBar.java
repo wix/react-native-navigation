@@ -84,16 +84,16 @@ public class TitleBar extends Toolbar {
 
     private void centerTitle(final StyleParams params) {
         final View titleView = getTitleView();
+        if (titleView == null) {
+            return;
+        }
         ViewUtils.runOnPreDraw(titleView, new Runnable() {
             @Override
             public void run() {
                 if (params.titleBarTitleTextCentered) {
-                    if (titleView != null) {
-                        int[] location = new int[2];
-                        titleView.getLocationOnScreen(location);
-                        titleView.setTranslationX(titleView.getTranslationX() + (-location[0] + ViewUtils.getScreenWidth() / 2 - titleView.getWidth() / 2));
-                    }
-
+                    int[] location = new int[2];
+                    titleView.getLocationOnScreen(location);
+                    titleView.setTranslationX(titleView.getTranslationX() + (-location[0] + ViewUtils.getScreenWidth() / 2 - titleView.getWidth() / 2));
                 }
 
             }
