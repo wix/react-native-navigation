@@ -44,8 +44,9 @@ class Router{
         displayMode=displayMode.toLowerCase();
         delete params.component;
         delete params.displayMode;
-        delete passProps.screen;
+
         let passProps={...params};
+        delete passProps.screen;
         params.passProps=passProps;
 
 
