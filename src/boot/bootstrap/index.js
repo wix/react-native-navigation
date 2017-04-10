@@ -13,7 +13,7 @@ class Bootstrap {
         this.setLaunchScreen=this.setLaunchScreen.bind(this);
         this.appStyle = {};
         this.tabs = [];
-        this.launchScreen={};
+        this.launchScreen=null;
         this.tabsStyle = {};
         this.drawer = null;
         this.rootProps={};
@@ -113,7 +113,7 @@ class Bootstrap {
         Navigation.startTabBasedApp(luanchParams);
 
     }
-    startSingleScreenApp(){
+    startLaunchScreenApp(){
         let params={
             ...this.rootProps,
             screen:this.launchScreen,
@@ -164,10 +164,19 @@ class Bootstrap {
         props.children=children;
         this.initScreens(props);
     }
+    isStartLaunchScreen(){
+        return this.launchScreen!=null;
+
+    }
     start(props,callback){
         console.log("bootstrap============props============",props)
         this.config(props,callback);
-        this.startTabBasedApp();
+        if(this.isStartLaunchScreen()){
+            this.startLaunchScreenApp(); 
+        }else{
+            this.startTabBasedApp();
+        }
+
     }
 }
 
