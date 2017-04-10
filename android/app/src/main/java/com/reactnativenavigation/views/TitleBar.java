@@ -128,7 +128,7 @@ public class TitleBar extends Toolbar {
     }
 
     protected void setTitleTextFont(StyleParams params) {
-        if (params.titleBarTitleFont.hasFont()) {
+        if (!params.titleBarTitleFont.hasFont()) {
             return;
         }
         View titleView = getTitleView();
