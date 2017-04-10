@@ -172,7 +172,7 @@ class Bootstrap {
         console.log("bootstrap============props============",props)
         this.config(props,callback);
         if(this.isStartLaunchScreen()){
-            this.startLaunchScreenApp(); 
+            this.startLaunchScreenApp();
         }else{
             this.startTabBasedApp();
         }
