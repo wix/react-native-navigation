@@ -6,7 +6,7 @@ import {
     StyleSheet,
     View
 } from 'react-native';
-import ActionSheet from '@exponent/react-native-action-sheet';
+import ActionSheet from '@expo/react-native-action-sheet';
 import ContextMenu from './ContextMenu';
 export default class ContextContainer extends Component {
     static childContextTypes = {
