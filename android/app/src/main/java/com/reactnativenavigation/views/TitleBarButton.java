@@ -2,6 +2,7 @@ package com.reactnativenavigation.views;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.SpannableStringBuilder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.TitleBarButtonParams;
+import com.reactnativenavigation.utils.TypefaceSpan;
 import com.reactnativenavigation.utils.ViewUtils;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     }
 
     MenuItem addToMenu(int index) {
-        MenuItem item = menu.add(Menu.NONE, Menu.NONE, index, buttonParams.label);
+        MenuItem item = createMenuItem(index);
         item.setShowAsAction(buttonParams.showAsAction.action);
         item.setEnabled(buttonParams.enabled);
         setIcon(item);
@@ -36,6 +38,16 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         setFont();
         item.setOnMenuItemClickListener(this);
         return item;
+    }
+
+    private MenuItem createMenuItem(int index) {
+        if (buttonParams.font == null) {
+            return menu.add(Menu.NONE, Menu.NONE, index, buttonParams.label);
+        }
+        TypefaceSpan span = new TypefaceSpan(buttonParams.font.get());
+        SpannableStringBuilder title = new SpannableStringBuilder(buttonParams.label);
+        title.setSpan(span, 0, title.length(), 0);
+        return menu.add(Menu.NONE, Menu.NONE, index, title);
     }
 
     private void setIcon(MenuItem item) {
