@@ -59,14 +59,12 @@ class FirstTabScreen extends Component {
 ```
 
 ##### Android left button
-On Android, only four button types are supported. You can use them by specifying one of the following ids in your left button definition:
+On Android, four button types are supported by default without the need to provide an icon. You can use them by specifying one of the following ids in your left button definition:
 
 * back
 * cancel
 * accept
 * sideMenu
-
-> Note: It's currently not possibly to change left button icon on Android.
 
 #### Floating Action Button (FAB) - Android only
 Each screen can contain a single Fab which is displayed at the bottom right corner of the screen.

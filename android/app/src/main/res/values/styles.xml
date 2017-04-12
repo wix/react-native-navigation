@@ -4,6 +4,10 @@
         <item name="android:windowAnimationStyle">@style/modalAnimations</item>
     </style>
 
+    <style name="LightBox" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowAnimationStyle">@style/modalAnimations</item>
+    </style>
+
     <style name="modalAnimations">
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
