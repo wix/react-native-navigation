@@ -41,7 +41,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     }
 
     private MenuItem createMenuItem(int index) {
-        if (buttonParams.font == null) {
+        if (!buttonParams.font.hasFont()) {
             return menu.add(Menu.NONE, Menu.NONE, index, buttonParams.label);
         }
         TypefaceSpan span = new TypefaceSpan(buttonParams.font.get());
@@ -83,7 +83,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     }
 
     private void setFont() {
-        if (buttonParams.font == null) {
+        if (!buttonParams.font.hasFont()) {
             return;
         }
         ArrayList<View> buttons = findActualTextViewInMenuByLabel();
