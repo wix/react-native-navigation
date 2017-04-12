@@ -3,6 +3,7 @@ package com.reactnativenavigation.views;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +42,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     }
 
     private MenuItem createMenuItem(int index) {
-        if (!buttonParams.font.hasFont()) {
+        if (!buttonParams.font.hasFont() || TextUtils.isEmpty(buttonParams.label)) {
             return menu.add(Menu.NONE, Menu.NONE, index, buttonParams.label);
         }
         TypefaceSpan span = new TypefaceSpan(buttonParams.font.get());
