@@ -2,7 +2,6 @@ package com.reactnativenavigation.react;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.JavaJSExecutor;
-import com.facebook.react.devsupport.DevSupportManager;
 import com.facebook.react.devsupport.ReactInstanceDevCommandsHandler;
 import com.reactnativenavigation.utils.ReflectionUtils;
 
@@ -27,8 +26,7 @@ public class JsDevReloadListenerReplacer {
     }
 
     private void replaceInDevSupportManager(DevCommandsHandlerProxy proxy) {
-        DevSupportManager devSupportManager = (DevSupportManager)
-                ReflectionUtils.getDeclaredField(reactInstanceManager, "mDevSupportManager");
+        Object devSupportManager = ReflectionUtils.getDeclaredField(reactInstanceManager, "mDevSupportManager");
         ReflectionUtils.setField(devSupportManager, "mReactInstanceCommandsHandler", proxy);
     }
 
