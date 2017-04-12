@@ -37,8 +37,8 @@
     "lodash": "4.x.x"
   },
   "devDependencies": {
-    "react-native": "0.41.2",
-    "react": "15.4.2",
+    "react-native": "0.43.0",
+    "react": "16.0.0-alpha.6",
     "babel-cli": "6.x.x",
     "babel-core": "6.x.x",
     "babel-polyfill": "6.x.x",
