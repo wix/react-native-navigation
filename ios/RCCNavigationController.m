@@ -140,7 +140,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [self setButtons:rightButtons viewController:viewController side:@"right" animated:NO];
     }
     
-    [self pushViewController:viewController animated:animated];
+    [NSTimer scheduledTimerWithTimeInterval:0.200 repeats:NO block:^(NSTimer * _Nonnull timer) {
+      [self pushViewController:viewController animated:animated];
+    }];
     return;
   }
   
