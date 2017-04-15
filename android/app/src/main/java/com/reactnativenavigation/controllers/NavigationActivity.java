@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.Window;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
@@ -66,8 +67,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
         disableActivityShowAnimationIfNeeded();
         setOrientation();
-        createLayout();
         createModalController();
+        createLayout();
         NavigationApplication.instance.getActivityCallbacks().onActivityCreated(this, savedInstanceState);
     }
 
@@ -368,6 +369,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (!modalController.isShowing()) {
             layout.onModalDismissed();
         }
+    }
+
+    public Window getScreenWindow() {
+        return modalController.isShowing() ? modalController.getWindow() : getWindow();
     }
 
     private void handleJsDevReloadEvent() {

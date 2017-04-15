@@ -32,6 +32,11 @@ public class FragmentScreen extends Screen {
     }
 
     @Override
+    public ContentView getContentView() {
+        return contentView;
+    }
+
+    @Override
     protected void createContent() {
         content = new FrameLayout(getContext());
         content.setId(R.id.fragment_screen_content);

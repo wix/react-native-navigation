@@ -97,6 +97,12 @@
       UIColor *color = tabBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarBackgroundColor] : nil;
       self.tabBar.barTintColor = color;
     }
+
+    NSString *tabBarTranslucent = tabsStyle[@"tabBarTranslucent"];
+    if (tabBarTranslucent)
+    {
+      self.tabBar.translucent = [tabBarTranslucent boolValue] ? YES : NO;
+    }
   }
   
   NSMutableArray *viewControllers = [NSMutableArray array];

@@ -154,6 +154,8 @@ function convertStyleParams(originalStyleObject) {
     titleBarSubtitleColor: processColor(originalStyleObject.navBarSubtitleColor),
     titleBarButtonColor: processColor(originalStyleObject.navBarButtonColor),
     titleBarDisabledButtonColor: processColor(originalStyleObject.titleBarDisabledButtonColor),
+    titleBarTitleFontFamily: originalStyleObject.navBarTextFontFamily,
+    titleBarTitleTextCentered: originalStyleObject.navBarTitleTextCentered,
     backButtonHidden: originalStyleObject.backButtonHidden,
     topTabsHidden: originalStyleObject.topTabsHidden,
     contextualMenuStatusBarColor: processColor(originalStyleObject.contextualMenuStatusBarColor),
@@ -402,7 +404,7 @@ function showLightBox(params) {
   const backgroundBlur = _.get(params, 'style.backgroundBlur');
   const backgroundColor = _.get(params, 'style.backgroundColor');
   if (backgroundColor) {
-    params.backgroundColor = processColor(params.backgroundColor);
+    params.backgroundColor = processColor(backgroundColor);
   } else {
     if (backgroundBlur === 'dark') {
       params.backgroundColor = processColor('rgba(0, 0, 0, 0.5)');

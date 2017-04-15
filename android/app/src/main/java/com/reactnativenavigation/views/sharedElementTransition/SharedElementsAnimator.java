@@ -14,12 +14,12 @@ public class SharedElementsAnimator {
         this.sharedElements = sharedElements;
     }
 
-    public void show(final Runnable onAnimationEnd) {
+    public void show(final Runnable onAnimationStart, final Runnable onAnimationEnd) {
         sharedElements.hideToElements();
         sharedElements.performWhenChildViewsAreDrawn(new Runnable()  {
             @Override
             public void run() {
-                final AnimatorSet animatorSet = createAnimatorSet();
+                final AnimatorSet animatorSet = createShowAnimators();
                 sharedElements.attachChildViewsToScreen();
                 sharedElements.showToElements(new Runnable() {
                     @Override
@@ -30,10 +30,15 @@ public class SharedElementsAnimator {
                 });
             }
 
-            private AnimatorSet createAnimatorSet() {
+            private AnimatorSet createShowAnimators() {
                 final AnimatorSet animatorSet = new AnimatorSet();
                 animatorSet.playTogether(createTransitionAnimators());
                 animatorSet.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        onAnimationStart.run();
+                    }
+
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         sharedElements.onShowAnimationEnd();
@@ -60,10 +65,15 @@ public class SharedElementsAnimator {
         });
     }
 
-    public void hide(final Runnable onAnimationEnd) {
+    public void hide(final Runnable onAnimationStart, final Runnable onAnimationEnd) {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createHideTransitionAnimators());
         animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                onAnimationStart.run();
+            }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 sharedElements.showToElements();

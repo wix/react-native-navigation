@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.animation.VisibilityAnimator;
+import com.reactnativenavigation.controllers.NavigationActivity;
 import com.reactnativenavigation.events.ContextualMenuHiddenEvent;
 import com.reactnativenavigation.events.Event;
 import com.reactnativenavigation.events.EventBus;
@@ -25,6 +26,7 @@ import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
 import com.reactnativenavigation.views.sharedElementTransition.SharedElementTransition;
@@ -95,6 +97,12 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     protected abstract void createContent();
 
+    public abstract ContentView getContentView();
+
+    public TopBar getTopBar() {
+        return topBar;
+    }
+
     private void createTitleBar() {
         addTitleBarButtons();
         topBar.setTitle(screenParams.title);
@@ -104,7 +112,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     private void addTitleBarButtons() {
         setButtonColorFromScreen(screenParams.rightButtons);
         if (screenParams.leftButton != null) {
-            screenParams.leftButton.setColorFromScreenStyle(screenParams.styleParams.titleBarButtonColor);
+            screenParams.leftButton.setStyleFromScreen(screenParams.styleParams);
         }
         topBar.addTitleBarAndSetButtons(screenParams.rightButtons,
                 screenParams.leftButton,
@@ -144,8 +152,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     private void setStatusBarColor(StyleParams.Color statusBarColor) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
 
-        final Activity context = (Activity) getContext();
-        final Window window = context.getWindow();
+        final Window window = ((NavigationActivity) activity).getScreenWindow();
         if (statusBarColor.hasColor()) {
             window.setStatusBarColor(statusBarColor.getColor());
         } else {
@@ -198,7 +205,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void setTitleBarLeftButton(String navigatorEventId, LeftButtonOnClickListener backButtonListener,
                                       TitleBarLeftButtonParams titleBarLeftButtonParams) {
-        titleBarLeftButtonParams.setColorFromScreenStyle(styleParams.titleBarButtonColor);
+        titleBarLeftButtonParams.setStyleFromScreen(styleParams);
         topBar.setTitleBarLeftButton(navigatorEventId,
                 backButtonListener,
                 titleBarLeftButtonParams,
@@ -222,7 +229,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         }
 
         for (TitleBarButtonParams titleBarButtonParam : titleBarButtonParams) {
-            titleBarButtonParam.setColorFromScreenStyle(screenParams.styleParams.titleBarButtonColor);
+            titleBarButtonParam.setStyleFromScreen(screenParams.styleParams);
         }
     }
 

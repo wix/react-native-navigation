@@ -25,6 +25,11 @@ public class SingleScreen extends Screen {
         return contentView;
     }
 
+    @Override
+    public ContentView getContentView() {
+        return contentView;
+    }
+
     protected LayoutParams createLayoutParams() {
         LayoutParams params = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         if (screenParams.styleParams.drawScreenBelowTopBar) {
