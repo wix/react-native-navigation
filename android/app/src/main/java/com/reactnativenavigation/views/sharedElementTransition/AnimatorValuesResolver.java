@@ -9,10 +9,18 @@ import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.utils.Point;
 
-class AnimatorValuesResolver {
+public class AnimatorValuesResolver {
 
     final Point fromXy;
     final Point toXy;
+    final int fromLeft;
+    final int toLeft;
+    final int fromTop;
+    final int toTop;
+    final int fromBottom;
+    final int toBottom;
+    final int toWidth;
+    final int toHeight;
     final float startScaleX;
     final float endScaleX;
     final float startScaleY;
@@ -35,6 +43,14 @@ class AnimatorValuesResolver {
     AnimatorValuesResolver(SharedElementTransition from, SharedElementTransition to, SharedElementTransitionParams params) {
         fromXy = calculateFromXY(from, to, params);
         toXy = calculateToXY(to, from, params);
+        fromLeft = from.getLeft();
+        toLeft = to.getLeft();
+        fromTop = from.getTop();
+        toTop = to.getTop();
+        fromBottom = from.getBottom();
+        toBottom = to.getBottom();
+        toWidth = to.getWidth();
+        toHeight = to.getHeight();
         startScaleX = calculateStartScaleX(from, to);
         endScaleX = calculateEndScaleX(from, to);
         startScaleY = calculateStartScaleY(from, to);
