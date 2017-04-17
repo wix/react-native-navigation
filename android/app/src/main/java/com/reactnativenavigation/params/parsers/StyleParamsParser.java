@@ -90,6 +90,7 @@ public class StyleParamsParser {
         result.topBarElevationShadowEnabled = true;
         result.titleBarHideOnScroll = false;
         result.orientation = Orientation.auto;
+        result.bottomTabFontFamily = new StyleParams.Font();
         return result;
     }
 
