@@ -1,11 +1,14 @@
 package com.reactnativenavigation.params.parsers;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.react.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScreenParamsParser extends Parser {
@@ -47,8 +50,29 @@ public class ScreenParamsParser extends Parser {
         result.tabIcon = new TabIconParser(params).parse();
 
         result.animateScreenTransitions = new AnimationParser(params).parse();
+        result.sharedElementsTransitions = getSharedElementsTransitions(params);
 
         return result;
+    }
+
+    private static List<String> getSharedElementsTransitions(Bundle params) {
+        Bundle sharedElements = params.getBundle("sharedElements");
+        if (sharedElements == null) {
+            return new ArrayList<>();
+        }
+        List<String> result = new ArrayList<>();
+        for (String key : sharedElements.keySet()) {
+            result.add(sharedElements.getString(key));
+        }
+        return result;
+    }
+
+    private static Drawable getTabIcon(Bundle params) {
+        Drawable tabIcon = null;
+        if (hasKey(params, "icon")) {
+            tabIcon = ImageLoader.loadImage(params.getString("icon"));
+        }
+        return tabIcon;
     }
 
     private static String getTabLabel(Bundle params) {

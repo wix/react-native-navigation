@@ -40,7 +40,7 @@ public class TopTabs extends TabLayout {
     }
 
     void setScrollable(StyleParams style) {
-        if (style.topTabScrollable) {
+        if (style.topTabsScrollable) {
             setTabMode(TabLayout.MODE_SCROLLABLE);
         } else {
             setTabMode(TabLayout.MODE_FIXED);

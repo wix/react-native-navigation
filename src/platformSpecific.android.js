@@ -53,6 +53,15 @@ function showModal(screenParams) {
   NativeReactModule.showModal(screenParams);
 }
 
+function showLightBox(params) {
+  savePassProps(params);
+  NativeReactModule.showLightBox(params);
+}
+
+function dismissLightBox() {
+  NativeReactModule.dismissLightBox();
+}
+
 function dismissTopModal() {
   NativeReactModule.dismissTopModal();
 }
@@ -158,6 +167,8 @@ module.exports = {
   showModal,
   dismissTopModal,
   dismissAllModals,
+  showLightBox,
+  dismissLightBox,
   showInAppNotification,
   dismissInAppNotification,
   toggleSideMenuVisible,

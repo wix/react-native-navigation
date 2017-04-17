@@ -24,7 +24,10 @@ export default class StyledScreen extends Component {
 
 ```js
 {
+  navigationBarColor: '#000000', // change the background color of the bottom native navigation bar. Android only
   navBarTextColor: '#000000', // change the text color of the title (remembered across pushes)
+  navBarTextFontFamily: 'font-name', // Changes the title font
+  navBarTitleTextCentered: true, // Android only. centers the title, default false.
   navBarBackgroundColor: '#f7f7f7', // change the background color of the nav bar (remembered across pushes)
   navBarButtonColor: '#007aff', // change the button colors of the nav bar (eg. the back button) (remembered across pushes)
   navBarHidden: false, // make the nav bar hidden
@@ -38,6 +41,7 @@ export default class StyledScreen extends Component {
   statusBarBlur: false, // blur the area under the status bar, works best with navBarHidden:true
   navBarBlur: false, // blur the entire nav bar, works best with drawUnderNavBar:true
   tabBarHidden: false, // make the screen content hide the tab bar (remembered across pushes)
+  statusBarColor: '#000000', // change the color of the status bar. Android only
   statusBarHideWithNavBar: false // hide the status bar if the nav bar is also hidden, useful for navBarHidden:true
   statusBarHidden: false, // make the status bar hidden regardless of nav bar state
   statusBarTextColorScheme: 'dark', // text color of status bar, 'dark' / 'light' (remembered across pushes)
@@ -53,6 +57,14 @@ export default class StyledScreen extends Component {
 }
 ```
 
-> Note: If you set any styles related to the Status Bar, make sure that in Xcode > project > Info.plist, the property `View controller-based status bar appearance` is set to `YES`.
+## Styling the StatusBar
+If you set any styles related to the Status Bar, make sure that in Xcode > project > Info.plist, the property `View controller-based status bar appearance` is set to `YES`.
+
+## Custom fonts
+If you'd like to use a custom font, you'll first have to your project.
+
+* Android - add the `.ttf` or `.otf` files to `src/main/assets/fonts/`
+
+* iOS - follow this [guide](https://medium.com/@dabit3/adding-custom-fonts-to-react-native-b266b41bff7f)
 
 All supported styles are defined [here](https://github.com/wix/react-native-controllers#styling-navigation). There's also an example project there showcasing all the different styles.
