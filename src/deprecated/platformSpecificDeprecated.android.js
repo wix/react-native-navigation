@@ -262,6 +262,12 @@ function startTabBasedApp(params) {
     let newtab = adaptNavigationStyleToScreenStyle(tab);
     newtab = adaptNavigationParams(tab);
     newtab.overrideBackPress = tab.overrideBackPress;
+    if (_.get(newtab, 'secondaryBadgeStyle.backgroundColor')) {
+      newtab.secondaryBadgeStyle.backgroundColor = processColor(tab.secondaryBadgeStyle.backgroundColor);
+    }
+    if (_.get(newtab, 'secondaryBadgeStyle.textColor')) {
+      newtab.secondaryBadgeStyle.textColor = processColor(tab.secondaryBadgeStyle.textColor);
+    }
     newTabs.push(newtab);
   });
   params.tabs = newTabs;

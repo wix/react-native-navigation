@@ -106,6 +106,7 @@
   }
   
   NSMutableArray *viewControllers = [NSMutableArray array];
+  NSMutableArray *secondaryBadges = [NSMutableArray array];
   
   // go over all the tab bar items
   for (NSDictionary *tabItemLayout in children)
@@ -170,9 +171,56 @@
     {
       viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
     }
+    // create secondary badge
+    id secondaryBadgeStyle = tabItemLayout[@"props"][@"secondaryBadgeStyle"];
+    NSObject *secondaryBadge = tabItemLayout[@"props"][@"secondaryBadge"];
+    NSNumber *secondaryBadgeSize = secondaryBadgeStyle[@"size"];
+
+    CGFloat size = secondaryBadgeSize != (id)[NSNull null] ? [RCTConvert CGFloat:secondaryBadgeSize] : 18;
+    int idx = [children indexOfObjectIdenticalTo:tabItemLayout];
+    CGFloat width = self.tabBar.bounds.size.width / children.count;
+    CGFloat xPosition = ((2 * idx + 1) * width) / 2 - size * 1.5;
+
+    UILabel *secondaryBadgeLabel = [[UILabel alloc] initWithFrame:CGRectMake(xPosition, 3, size, size)];
+    [secondaryBadgeLabel.layer setZPosition:5];
+    [secondaryBadgeLabel.layer setCornerRadius:size / 2];
+    [secondaryBadgeLabel setClipsToBounds:YES];
+    [secondaryBadgeLabel setTextAlignment:NSTextAlignmentCenter];
+    secondaryBadgeLabel.font = [secondaryBadgeLabel.font fontWithSize:13];
+
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:secondaryBadgeLabel.font, NSFontAttributeName, nil];
+    CGFloat contentWidth =  [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", secondaryBadge] attributes:attributes] size].width;
+    if (contentWidth > size)
+    {
+      [secondaryBadgeLabel setFrame:CGRectMake(xPosition, 3, contentWidth + 5, size)];
+    }
+    if (secondaryBadge)
+    {
+      [secondaryBadgeLabel setHidden:NO];
+      [secondaryBadgeLabel setText:[NSString stringWithFormat:@"%@", secondaryBadge]];
+    }
+    else
+    {
+      [secondaryBadgeLabel setHidden:YES];
+    }
+    NSString *secondaryBadgeBackgroundColor = secondaryBadgeStyle[@"backgroundColor"];
+    if (secondaryBadgeBackgroundColor)
+    {
+      UIColor *color = secondaryBadgeBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:secondaryBadgeBackgroundColor] : nil;
+      [secondaryBadgeLabel setBackgroundColor:color];
+    }
+    NSString *secondaryBadgeTextColor = secondaryBadgeStyle[@"textColor"];
+    if (secondaryBadgeTextColor)
+    {
+      UIColor *color = secondaryBadgeBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:secondaryBadgeTextColor] : nil;
+      [secondaryBadgeLabel setTextColor:color];
+    }
+    [secondaryBadges addObject:secondaryBadgeLabel];
+    [self.tabBar addSubview:secondaryBadgeLabel];
     
     [viewControllers addObject:viewController];
   }
+  self.secondaryBadgeLabels = [NSArray arrayWithArray:secondaryBadges];
   
   // replace the tabs
   self.viewControllers = viewControllers;
@@ -188,6 +236,7 @@
   {
     UIViewController *viewController = nil;
     NSNumber *tabIndex = actionParams[@"tabIndex"];
+    UILabel *secondaryLabel = nil;
     if (tabIndex)
     {
       int i = (int)[tabIndex integerValue];
@@ -195,6 +244,7 @@
       if ([self.viewControllers count] > i)
       {
         viewController = [self.viewControllers objectAtIndex:i];
+        secondaryLabel = [self.secondaryBadgeLabels objectAtIndex:i];
       }
     }
     NSString *contentId = actionParams[@"contentId"];
@@ -215,6 +265,31 @@
       else
       {
         viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
+      }
+    }
+    if (secondaryLabel)
+    {
+      NSObject *secondaryBadge = actionParams[@"secondaryBadge"];
+      
+      if (secondaryBadge == nil || [secondaryBadge isEqual:[NSNull null]])
+      {
+        [secondaryLabel setHidden:YES];
+      }
+      else
+      {
+        NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:secondaryLabel.font, NSFontAttributeName, nil];
+        CGFloat contentWidth =  [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", secondaryBadge] attributes:attributes] size].width;
+        CGRect frame = secondaryLabel.frame;
+        if (contentWidth > frame.size.height)
+        {
+          [secondaryLabel setFrame:CGRectMake(frame.origin.x, frame.origin.y, contentWidth + 5, frame.size.height)];
+        }
+        else
+        {
+          [secondaryLabel setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.height, frame.size.height)];
+        }
+        [secondaryLabel setHidden:NO];
+        [secondaryLabel setText:[NSString stringWithFormat:@"%@", secondaryBadge]];
       }
     }
   }
