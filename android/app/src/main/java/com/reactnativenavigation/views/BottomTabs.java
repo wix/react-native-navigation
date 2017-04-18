@@ -129,31 +129,4 @@ public class BottomTabs extends AHBottomNavigation {
             setTitleTypeface(AppStyle.appStyle.bottomTabFontFamily.get());
         }
     }
-
-    private boolean hasBottomTabFontFamily() {
-        return AppStyle.appStyle.bottomTabFontFamily != null;
-    }
-
-    private void setFontFamily(Context context) {
-        if(hasBottomTabFontFamily()) {
-
-            AssetManager assetManager = context.getAssets();
-            String fontFamilyName = AppStyle.appStyle.bottomTabFontFamily;
-
-            Typeface typeFace = null;
-            try {
-                boolean hasAsset = Arrays.asList(assetManager.list("fonts")).contains(fontFamilyName);
-                typeFace = hasAsset ?
-                        Typeface.createFromAsset(assetManager, "fonts/".concat(fontFamilyName))
-                        :
-                        Typeface.create(fontFamilyName, Typeface.NORMAL);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if(typeFace != null) {
-                setTitleTypeface(typeFace);
-            }
-        }
-    }
 }
