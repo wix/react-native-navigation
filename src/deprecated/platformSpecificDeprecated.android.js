@@ -154,7 +154,7 @@ function convertStyleParams(originalStyleObject) {
     titleBarSubtitleColor: processColor(originalStyleObject.navBarSubtitleColor),
     titleBarButtonColor: processColor(originalStyleObject.navBarButtonColor),
     titleBarDisabledButtonColor: processColor(originalStyleObject.titleBarDisabledButtonColor),
-    titleBarTitleFont: originalStyleObject.navBarTitleFont,
+    titleBarTitleFontFamily: originalStyleObject.navBarTextFontFamily,
     titleBarTitleTextCentered: originalStyleObject.navBarTitleTextCentered,
     backButtonHidden: originalStyleObject.backButtonHidden,
     topTabsHidden: originalStyleObject.topTabsHidden,
@@ -170,7 +170,7 @@ function convertStyleParams(originalStyleObject) {
     selectedTopTabTextColor: processColor(originalStyleObject.selectedTopTabTextColor),
     selectedTopTabIndicatorHeight: originalStyleObject.selectedTopTabIndicatorHeight,
     selectedTopTabIndicatorColor: processColor(originalStyleObject.selectedTopTabIndicatorColor),
-    topTabScrollable: originalStyleObject.topTabScollable,
+    topTabsScrollable: originalStyleObject.topTabsScrollable,
     screenBackgroundColor: processColor(originalStyleObject.screenBackgroundColor),
 
     drawScreenAboveBottomTabs: !originalStyleObject.drawUnderTabBar,
@@ -404,7 +404,7 @@ function showLightBox(params) {
   const backgroundBlur = _.get(params, 'style.backgroundBlur');
   const backgroundColor = _.get(params, 'style.backgroundColor');
   if (backgroundColor) {
-    params.backgroundColor = processColor(params.backgroundColor);
+    params.backgroundColor = processColor(backgroundColor);
   } else {
     if (backgroundBlur === 'dark') {
       params.backgroundColor = processColor('rgba(0, 0, 0, 0.5)');

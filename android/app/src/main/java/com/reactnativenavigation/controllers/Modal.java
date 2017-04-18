@@ -2,6 +2,7 @@ package com.reactnativenavigation.controllers;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -102,9 +103,16 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         setOnDismissListener(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         layout = new ModalScreenLayout(getActivity(), screenParams, this);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        setWindowFlags();
         setOrientation(screenParams.styleParams.orientation);
         setContentView(layout.asView());
+    }
+
+    private void setWindowFlags() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        }
     }
 
     private void setAnimation() {

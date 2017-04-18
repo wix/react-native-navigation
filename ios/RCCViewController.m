@@ -245,7 +245,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   if (screenBackgroundImageName) {
     
     UIImage *image = [UIImage imageNamed: screenBackgroundImageName];
-    [viewController.view setBackgroundColor: [UIColor colorWithPatternImage: image]];
+    viewController.view.layer.contents = (__bridge id _Nullable)(image.CGImage);
   }
   
   NSString *navBarBackgroundColor = self.navigatorStyle[@"navBarBackgroundColor"];
