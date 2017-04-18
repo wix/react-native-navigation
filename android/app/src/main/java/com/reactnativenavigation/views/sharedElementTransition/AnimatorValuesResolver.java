@@ -1,12 +1,18 @@
 package com.reactnativenavigation.views.sharedElementTransition;
 
+import android.annotation.TargetApi;
+import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.os.Build;
 import android.widget.TextView;
 
+import com.facebook.react.views.image.ReactImageView;
 import com.reactnativenavigation.params.InterpolationParams;
 import com.reactnativenavigation.params.PathInterpolationParams;
 import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.utils.ImageUtils;
 import com.reactnativenavigation.views.utils.Point;
 
 public class AnimatorValuesResolver {
@@ -21,6 +27,8 @@ public class AnimatorValuesResolver {
     final int toBottom;
     final int toWidth;
     final int toHeight;
+    final Matrix fromMatrix;
+    final Matrix toMatrix;
     final float startScaleX;
     final float endScaleX;
     final float startScaleY;
@@ -58,6 +66,8 @@ public class AnimatorValuesResolver {
         calculateColor(from, to);
         calculate(params.interpolation);
         calculateDrawingReacts(from, to);
+        fromMatrix = calculateMatrix(from);
+        toMatrix = calculateMatrix(to);
     }
 
     private Point calculateFromXY(SharedElementTransition from, SharedElementTransition to, SharedElementTransitionParams params) {
@@ -142,5 +152,24 @@ public class AnimatorValuesResolver {
     private void calculateDrawingReacts(SharedElementTransition from, SharedElementTransition to) {
         from.getDrawingRect(startDrawingRect);
         to.getDrawingRect(endDrawingRect);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    private Matrix calculateMatrix(SharedElementTransition view) {
+        if (!(view.getSharedView() instanceof ReactImageView)) {
+            return new Matrix();
+        }
+
+        ReactImageView imageView = (ReactImageView) view.getSharedView();
+        RectF r = new RectF();
+        imageView.getHierarchy().getActualImageBounds(r);
+
+        return ImageUtils.getScaleType(imageView).getTransform(
+                new Matrix(),
+                new Rect(0, 0, view.getWidth(), view.getHeight()),
+                1002,
+                499,
+                0 ,0
+                );
     }
 }
