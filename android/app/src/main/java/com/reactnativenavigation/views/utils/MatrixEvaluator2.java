@@ -9,11 +9,11 @@ import android.widget.ImageView;
 
 import com.reactnativenavigation.views.sharedElementTransition.AnimatorValuesResolver;
 
-public class MatrixEvaluator implements TypeEvaluator<Matrix> {
+public class MatrixEvaluator2 implements TypeEvaluator<Matrix> {
     private static final String TAG = "MatrixEvaluator";
     private AnimatorValuesResolver resolver;
 
-    public MatrixEvaluator(AnimatorValuesResolver resolver) {
+    public MatrixEvaluator2(AnimatorValuesResolver resolver) {
         this.resolver = resolver;
     }
 

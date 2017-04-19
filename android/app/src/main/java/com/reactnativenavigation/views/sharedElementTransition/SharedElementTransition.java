@@ -120,6 +120,13 @@ public class SharedElementTransition extends FrameLayout {
         }
     }
 
+    private static final String TAG = "SharedElementTransition";
+    @Keep
+    public void setImageMatrix(Matrix matrix) {
+        Log.i(TAG, "setImageMatrix");
+        ((ReactImageView) child).setImageMatrix(matrix);
+    }
+
     public void attachChildToScreen() {
         ViewUtils.performOnParentScreen(this, new Task<Screen>() {
             @Override

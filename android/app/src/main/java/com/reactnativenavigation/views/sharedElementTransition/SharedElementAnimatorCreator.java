@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.reactnativenavigation.params.InterpolationParams;
 import com.reactnativenavigation.params.PathInterpolationParams;
@@ -13,7 +12,7 @@ import com.reactnativenavigation.views.utils.AnimatorPath;
 import com.reactnativenavigation.views.utils.ClipBoundsEvaluator;
 import com.reactnativenavigation.views.utils.ColorUtils;
 import com.reactnativenavigation.views.utils.LabColorEvaluator;
-import com.reactnativenavigation.views.utils.MatrixEvaluator;
+import com.reactnativenavigation.views.utils.MatrixEvaluator2;
 import com.reactnativenavigation.views.utils.PathEvaluator;
 
 import java.util.ArrayList;
@@ -181,12 +180,12 @@ class SharedElementAnimatorCreator {
     }
 
     private Animator createImageTransformAnimator(AnimatorValuesResolver resolver, int duration) {
-        ((ImageView) to.getSharedView()).setScaleType(ImageView.ScaleType.MATRIX);
+//        ((ImageView) to.getSharedView()).setScaleType(ImageView.ScaleType.MATRIX);
 
         return ObjectAnimator.ofObject(
-                ((ImageView) to.getSharedView()),
-                MatrixEvaluator.ANIMATED_TRANSFORM_PROPERTY,
-                new MatrixEvaluator(resolver),
+                to,
+                "imageMatrix",
+                new MatrixEvaluator2(resolver),
                 resolver.fromMatrix,
                 resolver.toMatrix)
                 .setDuration(duration);

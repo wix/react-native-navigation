@@ -68,8 +68,8 @@ public class AnimatorValuesResolver {
         calculateColor(from, to);
         calculate(params.interpolation);
         calculateDrawingReacts(from, to);
-        fromMatrix = calculateMatrix(from, true);
-        toMatrix = calculateMatrix(to, false);
+        fromMatrix = calculateMatrix(from);
+        toMatrix = calculateMatrix(to);
     }
 
     private Point calculateFromXY(SharedElementTransition from, SharedElementTransition to, SharedElementTransitionParams params) {
@@ -157,7 +157,7 @@ public class AnimatorValuesResolver {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private Matrix calculateMatrix(SharedElementTransition view, boolean from) {
+    private Matrix calculateMatrix(SharedElementTransition view) {
         if (!(view.getSharedView() instanceof ReactImageView)) {
             return MATRIX;
         }
