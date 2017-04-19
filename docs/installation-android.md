@@ -1,11 +1,9 @@
 # Android Installation
-
-### Important
-The following instructions are for the `next` version `2.0.0-experimental.x`, which supports react-native `0.40.0` or higher. To use it specify `"react-native-navigation": "next"` in your package.json dependencies. Bear in mind, as the name of the version suggests - this version is experimental and under heavy development.
+First add `react-native-navigation` as an npm dependency: `yarn add react-native-navigation`
 
 ----
 
-* Make sure you are using react-native version 0.40.0 or above
+* Make sure you are using react-native version 0.43 or above
  
 1.  Add the following to your `settings.gradle` file located in the `android` folder:
 
