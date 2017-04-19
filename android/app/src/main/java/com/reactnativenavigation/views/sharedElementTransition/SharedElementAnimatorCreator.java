@@ -2,7 +2,6 @@ package com.reactnativenavigation.views.sharedElementTransition;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.graphics.Matrix;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,7 +12,6 @@ import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
 import com.reactnativenavigation.views.utils.AnimatorPath;
 import com.reactnativenavigation.views.utils.ClipBoundsEvaluator;
 import com.reactnativenavigation.views.utils.ColorUtils;
-import com.reactnativenavigation.views.utils.ImageUtils;
 import com.reactnativenavigation.views.utils.LabColorEvaluator;
 import com.reactnativenavigation.views.utils.MatrixEvaluator;
 import com.reactnativenavigation.views.utils.PathEvaluator;
@@ -183,16 +181,14 @@ class SharedElementAnimatorCreator {
     }
 
     private Animator createImageTransformAnimator(AnimatorValuesResolver resolver, int duration) {
-        Matrix fromMatrix = ImageUtils.getImageMatrix((ImageView) from.getSharedView());
-        Matrix toMatrix = ImageUtils.getImageMatrix((ImageView) to.getSharedView());
         ((ImageView) to.getSharedView()).setScaleType(ImageView.ScaleType.MATRIX);
 
         return ObjectAnimator.ofObject(
                 ((ImageView) to.getSharedView()),
                 MatrixEvaluator.ANIMATED_TRANSFORM_PROPERTY,
                 new MatrixEvaluator(resolver),
-                fromMatrix,
-                toMatrix)
+                resolver.fromMatrix,
+                resolver.toMatrix)
                 .setDuration(duration);
     }
 }

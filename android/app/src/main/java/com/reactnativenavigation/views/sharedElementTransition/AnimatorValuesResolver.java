@@ -17,6 +17,8 @@ import com.reactnativenavigation.views.utils.Point;
 
 public class AnimatorValuesResolver {
 
+    private static final Matrix MATRIX = new Matrix();
+
     final Point fromXy;
     final Point toXy;
     final int fromLeft;
@@ -66,8 +68,8 @@ public class AnimatorValuesResolver {
         calculateColor(from, to);
         calculate(params.interpolation);
         calculateDrawingReacts(from, to);
-        fromMatrix = calculateMatrix(from);
-        toMatrix = calculateMatrix(to);
+        fromMatrix = calculateMatrix(from, true);
+        toMatrix = calculateMatrix(to, false);
     }
 
     private Point calculateFromXY(SharedElementTransition from, SharedElementTransition to, SharedElementTransitionParams params) {
@@ -155,9 +157,9 @@ public class AnimatorValuesResolver {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private Matrix calculateMatrix(SharedElementTransition view) {
+    private Matrix calculateMatrix(SharedElementTransition view, boolean from) {
         if (!(view.getSharedView() instanceof ReactImageView)) {
-            return new Matrix();
+            return MATRIX;
         }
 
         ReactImageView imageView = (ReactImageView) view.getSharedView();
