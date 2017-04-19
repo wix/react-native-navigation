@@ -31,6 +31,11 @@ public class TitleBar extends Toolbar {
     }
 
     @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+    }
+
+    @Override
     public void onViewAdded(View child) {
         super.onViewAdded(child);
         if (child instanceof ActionMenuView) {
@@ -70,9 +75,29 @@ public class TitleBar extends Toolbar {
     public void setStyle(StyleParams params) {
         setVisibility(params.titleBarHidden ? GONE : VISIBLE);
         setTitleTextColor(params);
+        setTitleTextFont(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
         setBackground(params);
+        centerTitle(params);
+    }
+
+    private void centerTitle(final StyleParams params) {
+        final View titleView = getTitleView();
+        if (titleView == null) {
+            return;
+        }
+        ViewUtils.runOnPreDraw(titleView, new Runnable() {
+            @Override
+            public void run() {
+                if (params.titleBarTitleTextCentered) {
+                    int[] location = new int[2];
+                    titleView.getLocationOnScreen(location);
+                    titleView.setTranslationX(titleView.getTranslationX() + (-location[0] + ViewUtils.getScreenWidth() / 2 - titleView.getWidth() / 2));
+                }
+
+            }
+        });
     }
 
     private void colorOverflowButton(StyleParams params) {
@@ -99,6 +124,16 @@ public class TitleBar extends Toolbar {
     protected void setTitleTextColor(StyleParams params) {
         if (params.titleBarTitleColor.hasColor()) {
             setTitleTextColor(params.titleBarTitleColor.getColor());
+        }
+    }
+
+    protected void setTitleTextFont(StyleParams params) {
+        if (!params.titleBarTitleFont.hasFont()) {
+            return;
+        }
+        View titleView = getTitleView();
+        if (titleView instanceof TextView) {
+            ((TextView) titleView).setTypeface(params.titleBarTitleFont.get());
         }
     }
 
@@ -139,7 +174,12 @@ public class TitleBar extends Toolbar {
         leftButton = new LeftButton(getContext(), leftButtonParams, leftButtonOnClickListener, navigatorEventId,
                 overrideBackPressInJs);
         setNavigationOnClickListener(leftButton);
-        setNavigationIcon(leftButton);
+
+        if (leftButtonParams.icon != null) {
+            setNavigationIcon(leftButtonParams.icon);
+        } else {
+            setNavigationIcon(leftButton);
+        }
     }
 
     public void hide() {

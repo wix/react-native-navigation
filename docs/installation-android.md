@@ -16,6 +16,12 @@ The following instructions are for the `next` version `2.0.0-experimental.x`, wh
 	
 2. Update project dependencies in `build.gradle` under `app` folder.
 	```groovy
+	android {
+	    compileSdkVersion 25
+	    buildToolsVersion "25.0.1"
+	    ...
+	}
+
 	dependencies {
 	    compile fileTree(dir: "libs", include: ["*.jar"])
 	    compile "com.android.support:appcompat-v7:23.0.1"

@@ -1,6 +1,7 @@
 package com.reactnativenavigation.controllers;
 
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
 
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.events.EventBus;
@@ -158,5 +159,9 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
 
     void hideSlidingOverlay() {
         stack.peek().hideSlidingOverlay();
+    }
+
+    Window getWindow() {
+        return stack.peek().getWindow();
     }
 }
