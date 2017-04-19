@@ -553,7 +553,7 @@ function savePassProps(params) {
   }
 
   if (params.screen && params.screen.passProps) {
-    PropRegistry.save(params.screen.navigationParams.screenInstanceID, params.screen.passProps);
+    PropRegistry.save(params.navigationParams.screenInstanceID, params.screen.passProps);
   }
 
   if (_.get(params, 'screen.topTabs')) {
