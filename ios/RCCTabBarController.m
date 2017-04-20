@@ -176,7 +176,7 @@
     NSObject *secondaryBadge = tabItemLayout[@"props"][@"secondaryBadge"];
     NSNumber *secondaryBadgeSize = secondaryBadgeStyle[@"size"];
 
-    CGFloat size = secondaryBadgeSize != (id)[NSNull null] ? [RCTConvert CGFloat:secondaryBadgeSize] : 18;
+    CGFloat size = (secondaryBadgeSize == (id)[NSNull null] || secondaryBadgeSize == nil) ? 18 :[RCTConvert CGFloat:secondaryBadgeSize];
     int idx = [children indexOfObjectIdenticalTo:tabItemLayout];
     CGFloat width = self.tabBar.bounds.size.width / children.count;
     CGFloat xPosition = ((2 * idx + 1) * width) / 2 - size * 1.5;
