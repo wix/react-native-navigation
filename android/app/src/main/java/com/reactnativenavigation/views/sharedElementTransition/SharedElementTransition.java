@@ -13,6 +13,9 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.view.DraweeView;
 import com.facebook.react.views.image.ReactImageView;
 import com.reactnativenavigation.params.parsers.SharedElementParamsParser;
 import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
@@ -105,6 +108,13 @@ public class SharedElementTransition extends FrameLayout {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             child.setClipBounds(clipBounds);
         }
+    }
+
+    @Keep
+    public void setMatrixTransform(float value) {
+        GenericDraweeHierarchy hierarchy = ((DraweeView<GenericDraweeHierarchy>) child).getHierarchy();
+        ((ScalingUtils.InterpolatingScaleType) hierarchy.getActualImageScaleType()).setValue(value);
+        child.invalidate();
     }
 
     public void attachChildToScreen() {

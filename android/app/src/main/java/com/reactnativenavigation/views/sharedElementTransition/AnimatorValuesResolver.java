@@ -3,13 +3,17 @@ package com.reactnativenavigation.views.sharedElementTransition;
 import android.graphics.Rect;
 import android.widget.TextView;
 
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.view.DraweeView;
+import com.facebook.react.views.image.ReactImageView;
 import com.reactnativenavigation.params.InterpolationParams;
 import com.reactnativenavigation.params.PathInterpolationParams;
 import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.utils.Point;
 
-class AnimatorValuesResolver {
+public class AnimatorValuesResolver {
 
     final Point fromXy;
     final Point toXy;
@@ -31,43 +35,40 @@ class AnimatorValuesResolver {
     int endColor;
     Rect startDrawingRect = new Rect();
     Rect endDrawingRect = new Rect();
+    final Rect fromBounds;
+    final Rect toBounds;
+    final ScalingUtils.ScaleType fromScaleType;
+    final ScalingUtils.ScaleType toScaleType;
 
     AnimatorValuesResolver(SharedElementTransition from, SharedElementTransition to, SharedElementTransitionParams params) {
-        fromXy = calculateFromXY(from, to, params);
-        toXy = calculateToXY(to, from, params);
+        fromXy = ViewUtils.getLocationOnScreen(from.getSharedView());
+        toXy = ViewUtils.getLocationOnScreen(to.getSharedView());
         startScaleX = calculateStartScaleX(from, to);
         endScaleX = calculateEndScaleX(from, to);
         startScaleY = calculateStartScaleY(from, to);
         endScaleY = calculateEndScaleY(from, to);
         calculateColor(from, to);
         calculate(params.interpolation);
+        fromBounds = calculateBounds(from);
+        toBounds = calculateBounds(to);
+        fromScaleType = getScaleType(from);
+        toScaleType = getScaleType(to);
         calculateDrawingReacts(from, to);
     }
 
-    private Point calculateFromXY(SharedElementTransition from, SharedElementTransition to, SharedElementTransitionParams params) {
-        Point loc = ViewUtils.getLocationOnScreen(from.getSharedView());
-        if (params.animateClipBounds) {
-            if (from.getHeight() != to.getHeight()) {
-                if (from.getHeight() < to.getHeight()) {
-                    loc.y -= (to.getHeight() - from.getHeight()) / 2;
-                }
-            }
+    private ScalingUtils.ScaleType getScaleType(SharedElementTransition view) {
+        if (view.getSharedView() instanceof ReactImageView) {
+            return ((DraweeView<GenericDraweeHierarchy>) view.getSharedView()).getHierarchy().getActualImageScaleType();
         }
-        return loc;
+        return null;
     }
 
-    private Point calculateToXY(SharedElementTransition to, SharedElementTransition from, SharedElementTransitionParams params) {
-        Point loc = ViewUtils.getLocationOnScreen(to.getSharedView());
-        if (params.animateClipBounds) {
-            if (from.getHeight() != to.getHeight()) {
-                if (from.getHeight() > to.getHeight()) {
-                    loc.y -= (from.getHeight() - to.getHeight()) / 2;
-                }
-            }
+    private Rect calculateBounds(SharedElementTransition view) {
+        if (view.getSharedView() instanceof ReactImageView) {
+            return new Rect(0, 0, view.getSharedView().getWidth(), view.getSharedView().getHeight());
         }
-        return loc;
+        return null;
     }
-
 
     protected float calculateEndScaleY(SharedElementTransition from, SharedElementTransition to) {
         return 1;
@@ -122,7 +123,6 @@ class AnimatorValuesResolver {
             endColor = ViewUtils.getForegroundColorSpans((TextView) to.getSharedView())[0].getForegroundColor();
         }
     }
-
     private void calculateDrawingReacts(SharedElementTransition from, SharedElementTransition to) {
         from.getDrawingRect(startDrawingRect);
         to.getDrawingRect(endDrawingRect);
