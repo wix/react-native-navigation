@@ -7,7 +7,24 @@ import {Navigation} from 'react-native-navigation';
 import {registerScreens} from './screens';
 registerScreens();
 
+const SHOW_SHARED_ELEMENT_SCREENS = false;
+
 const createTabs = () => {
+  const sharedElementScreens = Platform.OS === 'android' ? [
+    {
+      label: 'Card',
+      screen: 'example.CardScreen',
+      icon: require('../img/list.png'),
+      title: 'Shared Element Transition'
+    },
+    {
+      label: 'SET',
+      screen: 'example.ListScreen',
+      icon: require('../img/list.png'),
+      title: 'Shared Element Transition'
+    }
+  ] : null;
+
   let tabs = [
     {
       label: 'One',
@@ -34,6 +51,9 @@ const createTabs = () => {
       icon: require('../img/one.png'),
       title: 'Collapsing',
     });
+    if (SHOW_SHARED_ELEMENT_SCREENS) {
+      tabs = [...sharedElementScreens, ...tabs];
+    }
   }
   return tabs;
 };
@@ -43,7 +63,9 @@ Navigation.startTabBasedApp({
   appStyle: {
     tabBarBackgroundColor: '#0f2362',
     tabBarButtonColor: '#ffffff',
-    tabBarSelectedButtonColor: '#63d7cc'
+    tabBarSelectedButtonColor: '#63d7cc',
+    tabFontFamily: 'BioRhyme-Bold',
+    forceTitlesDisplay: true
   },
   drawer: {
     left: {

@@ -1,11 +1,9 @@
 # iOS Installation
-
-### Important
-The following instructions are for the `next` version `2.0.0-experimental.x`, which supports react-native `0.40.0` or higher. To use it specify `"react-native-navigation": "next"` in your package.json dependencies. Bear in mind, as the name of the version suggests - this version is experimental and under heavy development.
+First add `react-native-navigation` as an npm dependency: `yarn add react-native-navigation`
 
 ----
 
- * Make sure you are using react-native version 0.40.0 or higher
+ * Make sure you are using react-native version 0.43.0 or higher
 
  * In your project folder run `npm install react-native-navigation@next --save`
 > Note: We recommend using npm ver 3+. If you insist on using npm ver 2 please notice that the location for react-native-controllers in node_modules will be under the react-native-navigation folder and you'll need to change the paths in Xcode below accordingly.
