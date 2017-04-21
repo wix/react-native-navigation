@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.widget.RelativeLayout;
@@ -236,22 +237,26 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     public abstract void setOnDisplayListener(OnDisplayListener onContentViewDisplayedListener);
 
     public void show() {
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willAppear", screenParams.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
-        screenAnimator.show(screenParams.animateScreenTransitions);
+        show(screenParams.animateScreenTransitions, screenParams.showScreenAnimation, null);
     }
 
     public void show(boolean animated) {
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willAppear", screenParams.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
-        screenAnimator.show(animated);
+        show(animated, screenParams.showScreenAnimation, null);
+    }
+
+    public void show(boolean animated, Bundle showScreenAnimation) {
+        show(animated, showScreenAnimation, null);
     }
 
     public void show(boolean animated, Runnable onAnimationEnd) {
+        show(animated, screenParams.showScreenAnimation, onAnimationEnd);
+    }
+
+    public void show(boolean animated, Bundle showScreenAnimation, Runnable onAnimationEnd) {
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willAppear", screenParams.getNavigatorEventId());
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
         setStyle();
-        screenAnimator.show(animated, onAnimationEnd);
+        screenAnimator.show(animated, showScreenAnimation, onAnimationEnd);
     }
 
     public void showWithSharedElementsTransitions(Map<String, SharedElementTransition> fromElements, final Runnable onAnimationEnd) {
@@ -298,7 +303,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     private void hide(boolean animated, Runnable onAnimatedEnd) {
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willDisappear", screenParams.getNavigatorEventId());
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didDisappear", screenParams.getNavigatorEventId());
-        screenAnimator.hide(animated, onAnimatedEnd);
+        screenAnimator.hide(animated, screenParams.hideScreenAnimation, onAnimatedEnd);
     }
 
     public void showContextualMenu(ContextualMenuParams params, Callback onButtonClicked) {
