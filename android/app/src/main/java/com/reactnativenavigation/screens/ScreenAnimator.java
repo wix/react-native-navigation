@@ -11,14 +11,18 @@ import android.view.animation.LinearInterpolator;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.sharedElementTransition.SharedElementsAnimator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class ScreenAnimator {
+class ScreenAnimator {
     private final float translationY;
     private Screen screen;
 
-    public ScreenAnimator(Screen screen) {
+    ScreenAnimator(Screen screen) {
         this.screen = screen;
         translationY = 0.08f * ViewUtils.getScreenHeight();
     }
@@ -95,5 +99,44 @@ public class ScreenAnimator {
             }
         });
         return set;
+    }
+
+    void showWithSharedElementsTransitions(Runnable onAnimationEnd) {
+        hideContentViewAndTopBar();
+        screen.setVisibility(View.VISIBLE);
+        new SharedElementsAnimator(this.screen.sharedElements).show(new Runnable() {
+            @Override
+            public void run() {
+                animateContentViewAndTopBar(1, 280);
+            }
+        }, onAnimationEnd);
+    }
+
+    private void hideContentViewAndTopBar() {
+        if (screen.screenParams.animateScreenTransitions) {
+            screen.getContentView().setAlpha(0);
+        }
+        screen.getTopBar().setAlpha(0);
+    }
+
+    void hideWithSharedElementsTransition(Runnable onAnimationEnd) {
+        new SharedElementsAnimator(screen.sharedElements).hide(new Runnable() {
+            @Override
+            public void run() {
+                animateContentViewAndTopBar(0, 200);
+            }
+        }, onAnimationEnd);
+    }
+
+    private void animateContentViewAndTopBar(int alpha, int duration) {
+        List<Animator> animators = new ArrayList<>();
+        if (screen.screenParams.animateScreenTransitions) {
+            animators.add(ObjectAnimator.ofFloat(screen.getContentView(), View.ALPHA, alpha));
+        }
+        animators.add(ObjectAnimator.ofFloat(screen.getTopBar(), View.ALPHA, alpha));
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(animators);
+        set.setDuration(duration);
+        set.start();
     }
 }

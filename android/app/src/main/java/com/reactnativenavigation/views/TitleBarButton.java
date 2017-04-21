@@ -2,6 +2,8 @@ package com.reactnativenavigation.views;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.TitleBarButtonParams;
+import com.reactnativenavigation.utils.TypefaceSpan;
 import com.reactnativenavigation.utils.ViewUtils;
 
 import java.util.ArrayList;
@@ -28,13 +31,24 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     }
 
     MenuItem addToMenu(int index) {
-        MenuItem item = menu.add(Menu.NONE, Menu.NONE, index, buttonParams.label);
+        MenuItem item = createMenuItem(index);
         item.setShowAsAction(buttonParams.showAsAction.action);
         item.setEnabled(buttonParams.enabled);
         setIcon(item);
         setColor();
+        setFont();
         item.setOnMenuItemClickListener(this);
         return item;
+    }
+
+    private MenuItem createMenuItem(int index) {
+        if (!buttonParams.font.hasFont() || TextUtils.isEmpty(buttonParams.label)) {
+            return menu.add(Menu.NONE, Menu.NONE, index, buttonParams.label);
+        }
+        TypefaceSpan span = new TypefaceSpan(buttonParams.font.get());
+        SpannableStringBuilder title = new SpannableStringBuilder(buttonParams.label);
+        title.setSpan(span, 0, title.length(), 0);
+        return menu.add(Menu.NONE, Menu.NONE, index, title);
     }
 
     private void setIcon(MenuItem item) {
@@ -69,6 +83,14 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         });
     }
 
+    private void setFont() {
+        if (!buttonParams.font.hasFont()) {
+            return;
+        }
+        ArrayList<View> buttons = findActualTextViewInMenuByLabel();
+        setTextFontForFoundButtonViews(buttons);
+    }
+
     @NonNull
     private ArrayList<View> findActualTextViewInMenuByLabel() {
         ArrayList<View> outViews = new ArrayList<>();
@@ -76,9 +98,17 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         return outViews;
     }
 
-    private void setTextColorForFoundButtonViews(ArrayList<View> outViews) {
-        for (View button : outViews) {
+    private void setTextColorForFoundButtonViews(ArrayList<View> buttons) {
+        for (View button : buttons) {
             ((TextView) button).setTextColor(buttonParams.getColor().getColor());
+        }
+    }
+
+    private void setTextFontForFoundButtonViews(ArrayList<View> buttons) {
+        for (View button : buttons) {
+            if (buttonParams.font.hasFont()) {
+                ((TextView) button).setTypeface(buttonParams.font.get());
+            }
         }
     }
 
