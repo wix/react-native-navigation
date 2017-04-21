@@ -6,7 +6,6 @@ import android.os.Build;
 import android.support.annotation.Keep;
 import android.text.SpannableString;
 import android.text.SpannedString;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
@@ -68,12 +67,6 @@ public class SharedElementTransition extends FrameLayout {
     public void onViewAdded(final View child) {
         if (child instanceof ReactImageView && this.child == null) {
             ReactViewHacks.disableReactImageViewRemoteImageFadeInAnimation((ReactImageView) child);
-            ViewUtils.runOnPreDraw(child, new Runnable() {
-                @Override
-                public void run() {
-                    Log.d("GUYCA", "width: " + child.getWidth() + " height: " + child.getHeight());
-                }
-            });
         }
         this.child = child;
         if (child instanceof TextView) {
