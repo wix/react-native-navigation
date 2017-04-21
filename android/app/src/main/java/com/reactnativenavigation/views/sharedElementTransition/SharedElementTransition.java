@@ -1,7 +1,6 @@
 package com.reactnativenavigation.views.sharedElementTransition;
 
 import android.content.Context;
-import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.Keep;
@@ -12,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.view.DraweeView;
 import com.facebook.react.views.image.ReactImageView;
 import com.reactnativenavigation.params.parsers.SharedElementParamsParser;
 import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
@@ -113,18 +114,14 @@ public class SharedElementTransition extends FrameLayout {
     public void setClipBounds(Rect clipBounds) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             child.setClipBounds(clipBounds);
-            ImageView image = (ImageView) this.child;
-            Matrix matrix = image.getMatrix();
-            matrix.postRotate(10.1f);
-            image.setImageMatrix(matrix);
         }
     }
 
-    private static final String TAG = "SharedElementTransition";
     @Keep
-    public void setImageMatrix(Matrix matrix) {
-        Log.i(TAG, "setImageMatrix");
-        ((ReactImageView) child).setImageMatrix(matrix);
+    public void setMatrixTransform(float value) {
+        GenericDraweeHierarchy hierarchy = ((DraweeView<GenericDraweeHierarchy>) child).getHierarchy();
+        ((ScalingUtils.InterpolatingScaleType) hierarchy.getActualImageScaleType()).setValue(value);
+        child.invalidate();
     }
 
     public void attachChildToScreen() {

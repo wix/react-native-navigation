@@ -5,6 +5,9 @@ import android.animation.ObjectAnimator;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.view.DraweeView;
 import com.reactnativenavigation.params.InterpolationParams;
 import com.reactnativenavigation.params.PathInterpolationParams;
 import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
@@ -12,7 +15,6 @@ import com.reactnativenavigation.views.utils.AnimatorPath;
 import com.reactnativenavigation.views.utils.ClipBoundsEvaluator;
 import com.reactnativenavigation.views.utils.ColorUtils;
 import com.reactnativenavigation.views.utils.LabColorEvaluator;
-import com.reactnativenavigation.views.utils.MatrixEvaluator2;
 import com.reactnativenavigation.views.utils.PathEvaluator;
 
 import java.util.ArrayList;
@@ -50,18 +52,18 @@ class SharedElementAnimatorCreator {
                 result.add(createYAnimator(resolver, params));
             }
         }
-//        if (shouldAddScaleXAnimator(resolver, params)) {
-//            result.add(createScaleXAnimator(resolver, params));
-//        }
-//        if (shouldAddScaleYAnimator(resolver, params)) {
-//            result.add(createScaleYAnimator(resolver, params));
-//        }
+        if (shouldAddScaleXAnimator(resolver, params)) {
+            result.add(createScaleXAnimator(resolver, params));
+        }
+        if (shouldAddScaleYAnimator(resolver, params)) {
+            result.add(createScaleYAnimator(resolver, params));
+        }
         if (shouldAddColorAnimator(resolver)) {
             result.add(createColorAnimator(resolver, params.duration));
         }
         if (shouldAddImageClipBoundsAnimator(params)) {
-//            result.add(createImageClipBoundsAnimator(resolver, params.duration));
-            result.add(createImageTransformAnimator(resolver, params.duration));
+            result.add(createImageClipBoundsAnimator(resolver, params.duration));
+            result.add(createImageTransformAnimator(resolver, params));
         }
         return result;
     }
@@ -75,21 +77,11 @@ class SharedElementAnimatorCreator {
     }
 
     private boolean shouldAddLinearMotionXAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
-        if (params.animateClipBounds) {
-//                        return to.getWidth() - from.getWidth() != resolver.dx * 2;
-            return false;
-        } else {
-            return resolver.dx != 0;
-        }
+        return params.animateClipBounds || resolver.dx != 0;
     }
 
     private boolean shouldAddLinearMotionYAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
-        if (params.animateClipBounds) {
-//                        return to.getHeight() - from.getHeight() != resolver.dy * 2;
-            return false;
-        } else {
-            return resolver.dy != 0;
-        }
+        return params.animateClipBounds || resolver.dy != 0;
     }
 
     private boolean shouldAddCurvedMotionAnimator(AnimatorValuesResolver resolver, InterpolationParams interpolation) {
@@ -161,15 +153,6 @@ class SharedElementAnimatorCreator {
     }
 
     private ObjectAnimator createImageClipBoundsAnimator(AnimatorValuesResolver resolver, int duration) {
-        //        PropertyValuesHolder propertyLeft = PropertyValuesHolder.ofInt("left", resolver.fromXy.x, resolver.toXy.x);
-        //        PropertyValuesHolder propertyTop = PropertyValuesHolder.ofInt("top", resolver.fromXy.y + ViewUtils.getStatusBarHeight(), resolver.toXy.y);
-        //
-        //        PropertyValuesHolder propertyRight = PropertyValuesHolder.ofInt("right", resolver.fromXy.x, resolver.toXy.x + resolver.toWidth);
-        ////        PropertyValuesHolder propertyBottom = PropertyValuesHolder.ofInt("bottom", resolver.fromBottom, resolver.toTop + resolver.toHeight - ViewUtils.getStatusBarHeight());
-        //
-        //        return ObjectAnimator.ofPropertyValuesHolder(to.getSharedView(), propertyLeft, propertyTop, propertyRight)
-        //                .setDuration(duration);
-
         return ObjectAnimator.ofObject(
                 to,
                 "clipBounds",
@@ -178,16 +161,16 @@ class SharedElementAnimatorCreator {
                 resolver.endDrawingRect)
                 .setDuration(duration);
     }
-
-    private Animator createImageTransformAnimator(AnimatorValuesResolver resolver, int duration) {
-//        ((ImageView) to.getSharedView()).setScaleType(ImageView.ScaleType.MATRIX);
-
-        return ObjectAnimator.ofObject(
-                to,
-                "imageMatrix",
-                new MatrixEvaluator2(resolver),
-                resolver.fromMatrix,
-                resolver.toMatrix)
-                .setDuration(duration);
+    private Animator createImageTransformAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
+        ScalingUtils.InterpolatingScaleType ist = new ScalingUtils.InterpolatingScaleType(
+                resolver.fromScaleType,
+                resolver.toScaleType,
+                resolver.fromBounds,
+                resolver.toBounds
+        );
+        ((DraweeView<GenericDraweeHierarchy>) to.getSharedView()).getHierarchy().setActualImageScaleType(ist);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(to, "matrixTransform", 0, 1).setDuration(params.duration);
+        animator.setInterpolator(params.interpolation.easing.getInterpolator());
+        return animator;
     }
 }
