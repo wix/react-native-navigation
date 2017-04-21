@@ -347,13 +347,20 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
-        layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
-        modalController.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        if (modalController.isShowing()) {
+            modalController.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        } else
+        {
+            layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        }
     }
 
     public void dismissContextualMenu(String screenInstanceId) {
-        layout.dismissContextualMenu(screenInstanceId);
-        modalController.dismissContextualMenu(screenInstanceId);
+        if (modalController.isShowing()) {
+            modalController.dismissContextualMenu(screenInstanceId);
+        } else {
+            layout.dismissContextualMenu(screenInstanceId);
+        }
     }
 
     @Override
