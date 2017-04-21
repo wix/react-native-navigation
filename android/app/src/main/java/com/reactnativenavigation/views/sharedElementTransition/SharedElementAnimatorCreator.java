@@ -45,10 +45,10 @@ class SharedElementAnimatorCreator {
         if (shouldAddCurvedMotionAnimator(resolver, params.interpolation)) {
             result.add(createCurvedMotionAnimator(resolver, params));
         } else {
-            if (shouldAddLinearMotionXAnimator(resolver, params)) {
+            if (shouldAddLinearMotionXAnimator(resolver)) {
                 result.add(createXAnimator(resolver, params));
             }
-            if (shouldAddLinearMotionYAnimator(resolver, params)) {
+            if (shouldAddLinearMotionYAnimator(resolver)) {
                 result.add(createYAnimator(resolver, params));
             }
         }
@@ -76,12 +76,12 @@ class SharedElementAnimatorCreator {
         return resolver.startScaleX != resolver.endScaleX && !params.animateClipBounds;
     }
 
-    private boolean shouldAddLinearMotionXAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
-        return params.animateClipBounds || resolver.dx != 0;
+    private boolean shouldAddLinearMotionXAnimator(AnimatorValuesResolver resolver) {
+        return resolver.dx != 0;
     }
 
-    private boolean shouldAddLinearMotionYAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
-        return params.animateClipBounds || resolver.dy != 0;
+    private boolean shouldAddLinearMotionYAnimator(AnimatorValuesResolver resolver) {
+        return resolver.dy != 0;
     }
 
     private boolean shouldAddCurvedMotionAnimator(AnimatorValuesResolver resolver, InterpolationParams interpolation) {
