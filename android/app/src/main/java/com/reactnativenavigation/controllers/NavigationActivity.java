@@ -361,7 +361,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (event.getType().equals(ModalDismissedEvent.TYPE)) {
             handleModalDismissedEvent();
         } else if (event.getType().equals(JsDevReloadEvent.TYPE)) {
-            handleJsDevReloadEvent();
+            postHandleJsDevReloadEvent();
         }
     }
 
@@ -375,9 +375,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         return modalController.isShowing() ? modalController.getWindow() : getWindow();
     }
 
-    private void handleJsDevReloadEvent() {
-        modalController.destroy();
-        layout.destroy();
+    private void postHandleJsDevReloadEvent() {
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                layout.destroy();
+                modalController.destroy();
+            }
+        });
     }
 
     @TargetApi(Build.VERSION_CODES.M)
