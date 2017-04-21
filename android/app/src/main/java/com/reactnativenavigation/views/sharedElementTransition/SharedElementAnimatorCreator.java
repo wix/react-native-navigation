@@ -62,7 +62,7 @@ class SharedElementAnimatorCreator {
             result.add(createColorAnimator(resolver, params.duration));
         }
         if (shouldAddImageClipBoundsAnimator(params)) {
-            result.add(createImageClipBoundsAnimator(resolver, params.duration));
+            result.add(createImageClipBoundsAnimator(resolver, params));
             result.add(createImageTransformAnimator(resolver, params));
         }
         return result;
@@ -152,14 +152,16 @@ class SharedElementAnimatorCreator {
                 .setDuration(duration);
     }
 
-    private ObjectAnimator createImageClipBoundsAnimator(AnimatorValuesResolver resolver, int duration) {
-        return ObjectAnimator.ofObject(
+    private ObjectAnimator createImageClipBoundsAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
+        ObjectAnimator animator = ObjectAnimator.ofObject(
                 to,
                 "clipBounds",
                 new ClipBoundsEvaluator(),
                 resolver.startDrawingRect,
                 resolver.endDrawingRect)
-                .setDuration(duration);
+                .setDuration(params.duration);
+        animator.setInterpolator(params.interpolation.easing.getInterpolator());
+        return animator;
     }
     private Animator createImageTransformAnimator(AnimatorValuesResolver resolver, SharedElementTransitionParams params) {
         ScalingUtils.InterpolatingScaleType ist = new ScalingUtils.InterpolatingScaleType(
