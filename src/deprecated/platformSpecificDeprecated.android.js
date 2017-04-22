@@ -521,6 +521,9 @@ function getFab(screen) {
   if (fab.actions) {
     _.forEach(fab.actions, (action) => {
       action.icon = resolveAssetSource(action.icon).uri;
+      if (action.backgroundColor) {
+        action.backgroundColor = processColor(action.backgroundColor)
+      }
       return action;
     });
   }

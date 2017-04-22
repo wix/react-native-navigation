@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-public class FloatingActionButtonCoordinator {
+class FloatingActionButtonCoordinator {
     private static final String TAG = "FloatingActionButtonCoo";
     private static final int INITIAL_EXPENDED_FAB_ROTATION = -90;
     private CoordinatorLayout parent;
@@ -32,8 +32,8 @@ public class FloatingActionButtonCoordinator {
     private FloatingActionButton expendedFab;
     private final int crossFadeAnimationDuration;
     private final int actionSize;
-    final int margin = (int) ViewUtils.convertDpToPixel(16);
-    FloatingActionButtonAnimator fabAnimator;
+    private final int margin = (int) ViewUtils.convertDpToPixel(16);
+    private FloatingActionButtonAnimator fabAnimator;
     private final ArrayList<FloatingActionButton> actions;
 
     FloatingActionButtonCoordinator(CoordinatorLayout parent) {
@@ -197,12 +197,12 @@ public class FloatingActionButtonCoordinator {
         return lp;
     }
 
-    public static class ActionBehaviour extends CoordinatorLayout.Behavior<FloatingActionButton> {
+    private static class ActionBehaviour extends CoordinatorLayout.Behavior<FloatingActionButton> {
         private final int MAX_VALUE = 90;
         private int dependencyId;
         private float yStep;
 
-        public ActionBehaviour(View anchor, float yStep) {
+        ActionBehaviour(View anchor, float yStep) {
             this.yStep = yStep;
             this.dependencyId = anchor.getId();
         }
