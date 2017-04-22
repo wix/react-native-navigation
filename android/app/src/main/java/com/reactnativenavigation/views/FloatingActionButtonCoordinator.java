@@ -99,6 +99,7 @@ class FloatingActionButtonCoordinator {
         collapsedFab = null;
         expendedFab = null;
         for (FloatingActionButton action : actions) {
+            ((CoordinatorLayout.LayoutParams) action.getLayoutParams()).setBehavior(null);
             parent.removeView(action);
         }
         actions.clear();
@@ -214,9 +215,13 @@ class FloatingActionButtonCoordinator {
 
         @Override
         public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
+            final View dependentView = parent.findViewById(dependencyId);
+            if (dependentView == null) {
+                return false;
+            }
             final float dependentValue = dependency.getRotation();
             float fraction = calculateTransitionFraction(dependentValue);
-            child.setY(calculateY(parent, fraction));
+            child.setY(calculateY(dependentView, fraction));
             child.setAlpha(calculateAlpha(fraction));
             setVisibility(child);
             return true;
@@ -230,8 +235,8 @@ class FloatingActionButtonCoordinator {
             return 1 * fraction;
         }
 
-        private float calculateY(CoordinatorLayout parent, float fraction) {
-            return parent.findViewById(dependencyId).getY() - yStep * fraction;
+        private float calculateY(View dependentView, float fraction) {
+            return dependentView.getY() - yStep * fraction;
         }
 
         @FloatRange(from=0.0, to=1.0)
