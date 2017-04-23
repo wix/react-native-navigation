@@ -29,6 +29,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
     private final OnModalDismissedListener onModalDismissedListener;
     private final ScreenParams screenParams;
     private Layout layout;
+    private boolean isDestroyed;
 
     public void setTopBarVisible(String screenInstanceId, boolean hidden, boolean animated) {
         layout.setTopBarVisible(screenInstanceId, hidden, animated);
@@ -149,6 +150,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
 
     @Override
     public void destroy() {
+        isDestroyed = true;
         layout.destroy();
     }
 
@@ -161,6 +163,9 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        if (isDestroyed) {
+            return;
+        }
         destroy();
         setOrientation(AppStyle.appStyle.orientation);
         onModalDismissedListener.onModalDismissed(this);

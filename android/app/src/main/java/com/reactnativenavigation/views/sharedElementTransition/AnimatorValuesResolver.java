@@ -13,7 +13,7 @@ import com.reactnativenavigation.params.parsers.SharedElementTransitionParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.utils.Point;
 
-public class AnimatorValuesResolver {
+class AnimatorValuesResolver {
 
     final Point fromXy;
     final Point toXy;
