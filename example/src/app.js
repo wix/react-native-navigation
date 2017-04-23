@@ -1,77 +1,45 @@
-import {
-  Platform
-} from 'react-native';
-import {Navigation} from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
+import registerScreens from './screens';
 
 // screen related book keeping
-import {registerScreens} from './screens';
 registerScreens();
 
-const SHOW_SHARED_ELEMENT_SCREENS = false;
+const tabs = [{
+    label: 'Navigation',
+    screen: 'example.Types',
+    icon: require('../img/list.png'),
+    title: 'Navigation Types',
+}, {
+    label: 'Actions',
+    screen: 'example.Actions',
+    icon: require('../img/list.png'),
+    title: 'Navigation Actions',
+}, {
+    label: 'Transitions',
+    screen: 'example.Transitions',
+    icon: require('../img/list.png'),
+    title: 'Navigation Transitions',
+}];
 
-const createTabs = () => {
-  const sharedElementScreens = Platform.OS === 'android' ? [
-    {
-      label: 'Card',
-      screen: 'example.CardScreen',
-      icon: require('../img/list.png'),
-      title: 'Shared Element Transition'
-    },
-    {
-      label: 'SET',
-      screen: 'example.ListScreen',
-      icon: require('../img/list.png'),
-      title: 'Shared Element Transition'
-    }
-  ] : null;
-
-  let tabs = [
-    {
-      label: 'One',
-      screen: 'example.FirstTabScreen',
-      icon: require('../img/one.png'),
-      selectedIcon: require('../img/one_selected.png'),
-      title: 'Screen One'
-    },
-    {
-      label: 'Two',
-      screen: 'example.SecondTabScreen',
-      icon: require('../img/two.png'),
-      selectedIcon: require('../img/two_selected.png'),
-      title: 'Screen Two',
-      navigatorStyle: {
-        tabBarBackgroundColor: '#4dbce9',
-      }
-    }
-  ];
-  if (Platform.OS === 'android') {
-    tabs.push({
-      label: 'Collapsing',
-      screen: 'example.CollapsingTopBarScreen',
-      icon: require('../img/one.png'),
-      title: 'Collapsing',
-    });
-    if (SHOW_SHARED_ELEMENT_SCREENS) {
-      tabs = [...sharedElementScreens, ...tabs];
-    }
-  }
-  return tabs;
-};
 // this will start our app
 Navigation.startTabBasedApp({
-  tabs: createTabs(),
-  appStyle: {
-    tabBarBackgroundColor: '#0f2362',
-    tabBarButtonColor: '#ffffff',
-    tabBarSelectedButtonColor: '#63d7cc',
-    tabFontFamily: 'BioRhyme-Bold',
-    forceTitlesDisplay: true
-  },
-  drawer: {
-    left: {
-      screen: 'example.SideMenu'
+    tabs,
+    appStyle: {
+        tabBarBackgroundColor: '#003a66',
+        navBarButtonColor: '#ffffff',
+        tabBarButtonColor: '#ffffff',
+        navBarTextColor: '#ffffff',
+        tabBarSelectedButtonColor: '#ff505c',
+        navigationBarColor: '#003a66',
+        navBarBackgroundColor: '#003a66',
+        statusBarColor: '#002b4c',
+        tabFontFamily: 'BioRhyme-Bold',
+    },
+    drawer: {
+        left: {
+            screen: 'example.Types.Drawer'
+        }
     }
-  }
 });
 //Navigation.startSingleScreenApp({
 //  screen: {
