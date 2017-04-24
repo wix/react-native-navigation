@@ -2,24 +2,23 @@ package com.reactnativenavigation.react;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.JavaJSExecutor;
-import com.facebook.react.devsupport.DevSupportManager;
 import com.facebook.react.devsupport.ReactInstanceDevCommandsHandler;
 import com.reactnativenavigation.utils.ReflectionUtils;
 
-public class JsDevReloadListenerReplacer {
+class JsDevReloadListenerReplacer {
     private final ReactInstanceManager reactInstanceManager;
     private final Listener listener;
 
-    public interface Listener {
+    interface Listener {
         void onJsDevReload();
     }
 
-    public JsDevReloadListenerReplacer(ReactInstanceManager reactInstanceManager, Listener listener) {
+    JsDevReloadListenerReplacer(ReactInstanceManager reactInstanceManager, Listener listener) {
         this.reactInstanceManager = reactInstanceManager;
         this.listener = listener;
     }
 
-    public void replace() {
+    void replace() {
         ReactInstanceDevCommandsHandler originalHandler = getOriginalHandler();
         DevCommandsHandlerProxy proxy = new DevCommandsHandlerProxy(originalHandler, listener);
         replaceInReactInstanceManager(proxy);
@@ -27,8 +26,7 @@ public class JsDevReloadListenerReplacer {
     }
 
     private void replaceInDevSupportManager(DevCommandsHandlerProxy proxy) {
-        DevSupportManager devSupportManager = (DevSupportManager)
-                ReflectionUtils.getDeclaredField(reactInstanceManager, "mDevSupportManager");
+        Object devSupportManager = ReflectionUtils.getDeclaredField(reactInstanceManager, "mDevSupportManager");
         ReflectionUtils.setField(devSupportManager, "mReactInstanceCommandsHandler", proxy);
     }
 
@@ -44,7 +42,7 @@ public class JsDevReloadListenerReplacer {
         private ReactInstanceDevCommandsHandler originalReactHandler;
         private final Listener listener;
 
-        public DevCommandsHandlerProxy(ReactInstanceDevCommandsHandler originalReactHandler, Listener listener) {
+        DevCommandsHandlerProxy(ReactInstanceDevCommandsHandler originalReactHandler, Listener listener) {
             this.originalReactHandler = originalReactHandler;
             this.listener = listener;
         }

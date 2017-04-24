@@ -59,6 +59,7 @@ public class FloatingActionButtonAnimator {
 
     void showCollapsed() {
         animateFab(collapsedFab, 1, 0);
+        collapsedFab.bringToFront();
     }
 
     void hideExpended() {

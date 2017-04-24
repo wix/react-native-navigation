@@ -10,12 +10,14 @@ import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.controllers.NavigationCommandsHandler;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
+import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.ContextualMenuParamsParser;
 import com.reactnativenavigation.params.parsers.FabParamsParser;
+import com.reactnativenavigation.params.parsers.LightBoxParamsParser;
 import com.reactnativenavigation.params.parsers.SlidingOverlayParamsParser;
 import com.reactnativenavigation.params.parsers.SnackbarParamsParser;
 import com.reactnativenavigation.params.parsers.TitleBarButtonParamsParser;
@@ -167,6 +169,17 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void showModal(final ReadableMap params) {
         NavigationCommandsHandler.showModal(BundleConverter.toBundle(params));
+    }
+
+    @ReactMethod
+    public void showLightBox(final ReadableMap params) {
+        LightBoxParams lbp = new LightBoxParamsParser(BundleConverter.toBundle(params)).parse();
+        NavigationCommandsHandler.showLightBox(lbp);
+    }
+
+    @ReactMethod
+    public void dismissLightBox() {
+        NavigationCommandsHandler.dismissLightBox();
     }
 
     @ReactMethod

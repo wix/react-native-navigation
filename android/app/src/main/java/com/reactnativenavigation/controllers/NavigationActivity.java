@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.Window;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
@@ -26,6 +27,7 @@ import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
+import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
@@ -65,8 +67,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
         disableActivityShowAnimationIfNeeded();
         setOrientation();
-        createLayout();
         createModalController();
+        createLayout();
         NavigationApplication.instance.getActivityCallbacks().onActivityCreated(this, savedInstanceState);
     }
 
@@ -243,6 +245,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.dismissAllModals();
     }
 
+    public void showLightBox(LightBoxParams params) {
+        layout.showLightBox(params);
+    }
+
+    public void dismissLightBox() {
+        layout.dismissLightBox();
+    }
+
     //TODO all these setters should be combined to something like setStyle
     void setTopBarVisible(String screenInstanceId, boolean hidden, boolean animated) {
         layout.setTopBarVisible(screenInstanceId, hidden, animated);
@@ -337,13 +347,20 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
-        layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
-        modalController.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        if (modalController.isShowing()) {
+            modalController.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        } else
+        {
+            layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        }
     }
 
     public void dismissContextualMenu(String screenInstanceId) {
-        layout.dismissContextualMenu(screenInstanceId);
-        modalController.dismissContextualMenu(screenInstanceId);
+        if (modalController.isShowing()) {
+            modalController.dismissContextualMenu(screenInstanceId);
+        } else {
+            layout.dismissContextualMenu(screenInstanceId);
+        }
     }
 
     @Override
@@ -351,7 +368,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (event.getType().equals(ModalDismissedEvent.TYPE)) {
             handleModalDismissedEvent();
         } else if (event.getType().equals(JsDevReloadEvent.TYPE)) {
-            handleJsDevReloadEvent();
+            postHandleJsDevReloadEvent();
         }
     }
 
@@ -361,9 +378,18 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
     }
 
-    private void handleJsDevReloadEvent() {
-        modalController.destroy();
-        layout.destroy();
+    public Window getScreenWindow() {
+        return modalController.isShowing() ? modalController.getWindow() : getWindow();
+    }
+
+    private void postHandleJsDevReloadEvent() {
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                layout.destroy();
+                modalController.destroy();
+            }
+        });
     }
 
     @TargetApi(Build.VERSION_CODES.M)
