@@ -18,8 +18,8 @@ Latest stable version is `1.1.x` and is published to npm under tag `latest`. It 
 
 React Native Navigation provides 100% native platform navigation on both iOS and Android for React Native apps. The JavaScript API is simple and cross-platform - just install it in your app and give your users the native feel they deserve. Using redux? No problem: React Native Navigation comes with optional redux support out of the box. Ready to get started? Check out the [docs](https://wix.github.io/react-native-navigation/).
 
-<img src="https://github.com/wix/react-native/blob/master/src/videos/demo.gif?raw=true" width="240">
-
+<img src="https://github.com/wix/react-native/blob/master/src/videos/demo.gif?raw=true" width="240">&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/wix/mobile/blob/master/src/videos/final_element_Transition.mp4.gif?raw=true" width="240">
 ----
 
 One of the major things missing from React Native core is fully featured native navigation. Navigation includes the entire skeleton of your app with critical components like nav bars, tab bars and side menu drawers.
