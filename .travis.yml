@@ -45,8 +45,3 @@ script:
 
 after_script:
   - echo "BUILD FINISHED"
-
-notifications:
-  email: false
-  slack:
-    secure: rn-navigation:ziXYK4a0y09Dxl7n3KbrrIYG
