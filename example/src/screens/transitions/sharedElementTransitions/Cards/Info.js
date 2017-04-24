@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     ScrollView,
     TouchableOpacity,
@@ -9,13 +9,13 @@ import {
     Platform,
     ScrolView
 } from 'react-native';
-import {SharedElementTransition} from 'react-native-navigation';
+import { SharedElementTransition } from 'react-native-navigation';
 import * as Animatable from 'react-native-animatable';
 
 const SHOW_DURATION = 400;
 const HIDE_DURATION = 300;
 
-export default class InfoScreen extends Component {
+class InfoScreen extends Component {
 
     constructor(props) {
         super(props);
@@ -62,7 +62,7 @@ export default class InfoScreen extends Component {
                 hideInterpolation={
                     {
                         type: 'linear',
-                        easing:'FastOutSlowIn'
+                        easing: 'FastOutSlowIn'
                     }
                 }
             >
@@ -119,3 +119,5 @@ const styles = StyleSheet.create({
         paddingLeft: 8
     }
 });
+
+export default InfoScreen;

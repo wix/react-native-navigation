@@ -80,7 +80,7 @@ class Actions extends React.Component {
     };
 
     setButtons = () => {
-        let title = null;
+        let title = '';
 
         if (!this._rightButton) {
             title = 'Hello';
@@ -111,7 +111,7 @@ class Actions extends React.Component {
                     collapsedIcon: require('../../img/list@1x.png'),
                     expendedId: 'clear',
                     expendedIcon: require('../../img/list@1x.png'),
-                    backgroundColor: '#3F51B5',
+                    backgroundColor: '#ff505c',
                     actions: [
                         {
                             id: 'mail',
@@ -139,10 +139,10 @@ class Actions extends React.Component {
                 <Row title={'Set Tab Badge'} onPress={this.setTabBadge} />
                 <Row title={'Switch To Tab 0'} onPress={this.switchToTab} />
                 <Row title={'Toggle Nav Bar'} onPress={this.toggleNavBar} />
-                <Row title={'Show Snackbar'} onPress={this.showSnackbar} />
-                <Row title={'Toggle Contextual Menu'} onPress={this.toggleContextualMenu} />
+                <Row title={'Show Snackbar'} onPress={this.showSnackbar} platform={'android'} />
+                <Row title={'Toggle Contextual Menu'} onPress={this.toggleContextualMenu} platform={'android'} />
                 <Row title={'Set Right Buttons'} onPress={this.setButtons} />
-                <Row title={'Toggle FAB'} onPress={this.toggleFAB} />
+                <Row title={'Toggle FAB'} onPress={this.toggleFAB} platform={'android'} />
             </ScrollView>
         );
     }

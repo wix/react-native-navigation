@@ -69,7 +69,7 @@ class Types extends React.Component {
             <ScrollView style={styles.container}>
                 <Row title={'Toggle Drawer'} onPress={this.toggleDrawer} />
                 <Row title={'Push Screen'} onPress={this.pushScreen} />
-                <Row title={'Top Tabs Screen'} onPress={this.pushTopTabsScreen} />
+                <Row title={'Top Tabs Screen'} onPress={this.pushTopTabsScreen} platform={'android'} />
                 <Row title={'Show Modal'} onPress={this.showModal} />
                 <Row title={'Show Lightbox'} onPress={this.showLightBox} />
                 <Row title={'Show In-App Notification'} onPress={this.showInAppNotification} />

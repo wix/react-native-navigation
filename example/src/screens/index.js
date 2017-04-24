@@ -40,6 +40,11 @@ import SharedElementTransitions from './transitions/SharedElementTransitions';
 import Cards from './transitions/sharedElementTransitions/Cards/Cards';
 import CardsInfo from './transitions/sharedElementTransitions/Cards/Info';
 
+// import Profiles from './transitions/sharedElementTransitions/Profiles/Profiles';
+
+import Masonry from './transitions/sharedElementTransitions/Masonry/Masonry';
+import MasonryItem from './transitions/sharedElementTransitions/Masonry/Item';
+
 export default function () {
     Navigation.registerComponent('example.Types', () => Types);
     Navigation.registerComponent('example.Actions', () => Actions);
@@ -59,4 +64,7 @@ export default function () {
     Navigation.registerComponent('example.Transitions.SharedElementTransitions', () => SharedElementTransitions);
     Navigation.registerComponent('example.Transitions.SharedElementTransitions.Cards', () => Cards);
     Navigation.registerComponent('example.Transitions.SharedElementTransitions.Cards.Info', () => CardsInfo);
+    // Navigation.registerComponent('example.Transitions.SharedElementTransitions.Profiles', () => Profiles);
+    Navigation.registerComponent('example.Transitions.SharedElementTransitions.Masonry', () => Masonry);
+    Navigation.registerComponent('example.Transitions.SharedElementTransitions.Masonry.Item', () => MasonryItem);
 }

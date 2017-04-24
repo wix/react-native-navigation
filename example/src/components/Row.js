@@ -1,7 +1,11 @@
 import React, { PropTypes } from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight, Platform } from 'react-native';
 
-function Row({ title, onPress }) {
+function Row({ title, onPress, platform }) {
+    if (platform && platform !== Platform.OS) {
+        return <View />;
+    }
+
     return (
         <TouchableHighlight
             onPress={onPress}

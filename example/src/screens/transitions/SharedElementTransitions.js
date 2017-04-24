@@ -12,11 +12,17 @@ class Transitions extends React.Component {
     };
 
     showProfileExample = () => {
-
+        this.props.navigator.showModal({
+            title: 'Profiles',
+            screen: 'example.Transitions.SharedElementTransitions.Profiles',
+        });
     };
 
     showMasonryExample = () => {
-
+        this.props.navigator.showModal({
+            title: 'Masonry',
+            screen: 'example.Transitions.SharedElementTransitions.Masonry',
+        });
     };
 
     render() {
