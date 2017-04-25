@@ -137,6 +137,14 @@ function setBottomTabBadgeByNavigatorId(navigatorId, badge) {
   NativeReactModule.setBottomTabBadgeByNavigatorId(navigatorId, badge);
 }
 
+function setBottomTabButtonByIndex(index, params) {
+  NativeReactModule.setBottomTabButtonByIndex(index, params);
+}
+
+function setBottomTabButtonByNavigatorId(navigatorId, params) {
+  NativeReactModule.setBottomTabButtonByNavigatorId(navigatorId, params);
+}
+
 function showSnackbar(params) {
   NativeReactModule.showSnackbar(params);
 }
@@ -177,6 +185,8 @@ module.exports = {
   selectBottomTabByTabIndex,
   setBottomTabBadgeByNavigatorId,
   setBottomTabBadgeByIndex,
+  setBottomTabButtonByNavigatorId,
+  setBottomTabButtonByIndex,
   showSnackbar,
   dismissSnackbar,
   showContextualMenu,

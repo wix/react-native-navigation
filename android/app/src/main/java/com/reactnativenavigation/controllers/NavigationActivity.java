@@ -322,6 +322,18 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
     }
 
+    public void setBottomTabButtonByIndex(Integer index, ScreenParams params) {
+        if (layout instanceof BottomTabsLayout) {
+            ((BottomTabsLayout) layout).setBottomTabButtonByIndex(index, params);
+        }
+    }
+
+    public void setBottomTabButtonByNavigatorId(String navigatorId, ScreenParams params) {
+        if (layout instanceof BottomTabsLayout) {
+            ((BottomTabsLayout) layout).setBottomTabButtonByNavigatorId(navigatorId, params);
+        }
+    }
+
     public void showSlidingOverlay(SlidingOverlayParams params) {
         if (modalController.isShowing()) {
             modalController.showSlidingOverlay(params);
