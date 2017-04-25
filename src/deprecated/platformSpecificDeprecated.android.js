@@ -679,6 +679,7 @@ export default {
   dismissInAppNotification,
   navigatorSetButtons,
   navigatorSetTabBadge,
+  navigatorSetTabButton,
   navigatorSetTitle,
   navigatorSetSubtitle,
   navigatorSwitchToTab,
