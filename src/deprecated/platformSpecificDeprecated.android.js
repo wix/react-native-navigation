@@ -521,6 +521,9 @@ function getFab(screen) {
   if (fab.actions) {
     _.forEach(fab.actions, (action) => {
       action.icon = resolveAssetSource(action.icon).uri;
+      if (action.backgroundColor) {
+        action.backgroundColor = processColor(action.backgroundColor)
+      }
       return action;
     });
   }
@@ -593,7 +596,7 @@ function addNavigationStyleParams(screen) {
   screen.navigatorStyle = Object.assign({}, Screen.navigatorStyle, screen.navigatorStyle);
 }
 
-function showSnackbar(params) {
+function showSnackbar(navigator, params) {
   const adapted = _.cloneDeep(params);
   if (adapted.backgroundColor) {
     adapted.backgroundColor = processColor(adapted.backgroundColor);

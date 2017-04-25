@@ -42,7 +42,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     }
 
     private MenuItem createMenuItem(int index) {
-        if (!buttonParams.font.hasFont() || TextUtils.isEmpty(buttonParams.label)) {
+        if (!buttonParams.hasFont() || TextUtils.isEmpty(buttonParams.label)) {
             return menu.add(Menu.NONE, Menu.NONE, index, buttonParams.label);
         }
         TypefaceSpan span = new TypefaceSpan(buttonParams.font.get());
@@ -58,7 +58,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     }
 
     private void setColor() {
-        if (!hasColor()) {
+        if (!hasColor() || disableIconTint()) {
             return;
         }
 
@@ -84,7 +84,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     }
 
     private void setFont() {
-        if (!buttonParams.font.hasFont()) {
+        if (!buttonParams.hasFont()) {
             return;
         }
         ArrayList<View> buttons = findActualTextViewInMenuByLabel();
@@ -106,7 +106,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
     private void setTextFontForFoundButtonViews(ArrayList<View> buttons) {
         for (View button : buttons) {
-            if (buttonParams.font.hasFont()) {
+            if (buttonParams.hasFont()) {
                 ((TextView) button).setTypeface(buttonParams.font.get());
             }
         }
@@ -118,6 +118,10 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
     private boolean hasColor() {
         return buttonParams.color.hasColor();
+    }
+
+    private boolean disableIconTint() {
+        return buttonParams.disableIconTint;
     }
 
     @Override
