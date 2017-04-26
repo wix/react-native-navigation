@@ -34,7 +34,7 @@ export default class FirstTabScreen extends Component {
     statusBarTextColorScheme: 'light',
     tabBarBackgroundColor: '#4dbce9',
     tabBarButtonColor: '#ffffff',
-    tabBarSelectedButtonColor: '#ffff00'
+    tabBarSelectedButtonColor: '#ffff00',
   };
 
   constructor(props) {
@@ -67,6 +67,10 @@ export default class FirstTabScreen extends Component {
 
         <TouchableOpacity onPress={ this.onPushStyledPress.bind(this) }>
           <Text style={styles.button}>Push Styled Screen</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={ this.onPushCustomNavBarScreen.bind(this) }>
+          <Text style={styles.button}>Push Custom Navigation Bar Screen</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={ this.onModalPress.bind(this) }>
@@ -140,6 +144,13 @@ export default class FirstTabScreen extends Component {
           screen: 'example.SideMenu'
         }
       }
+    });
+  }
+
+  onPushCustomNavBarScreen() {
+    this.props.navigator.push({
+      title: "Custom Nav Bar",
+      screen: "example.CustomNavBarScreen"
     });
   }
 }
