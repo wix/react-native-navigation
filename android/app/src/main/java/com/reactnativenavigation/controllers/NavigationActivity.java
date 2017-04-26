@@ -347,13 +347,20 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
-        layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
-        modalController.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        if (modalController.isShowing()) {
+            modalController.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        } else
+        {
+            layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        }
     }
 
     public void dismissContextualMenu(String screenInstanceId) {
-        layout.dismissContextualMenu(screenInstanceId);
-        modalController.dismissContextualMenu(screenInstanceId);
+        if (modalController.isShowing()) {
+            modalController.dismissContextualMenu(screenInstanceId);
+        } else {
+            layout.dismissContextualMenu(screenInstanceId);
+        }
     }
 
     @Override
@@ -361,7 +368,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (event.getType().equals(ModalDismissedEvent.TYPE)) {
             handleModalDismissedEvent();
         } else if (event.getType().equals(JsDevReloadEvent.TYPE)) {
-            handleJsDevReloadEvent();
+            postHandleJsDevReloadEvent();
         }
     }
 
@@ -375,9 +382,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         return modalController.isShowing() ? modalController.getWindow() : getWindow();
     }
 
-    private void handleJsDevReloadEvent() {
-        modalController.destroy();
-        layout.destroy();
+    private void postHandleJsDevReloadEvent() {
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                layout.destroy();
+                modalController.destroy();
+            }
+        });
     }
 
     @TargetApi(Build.VERSION_CODES.M)
