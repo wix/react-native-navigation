@@ -371,6 +371,14 @@ function navigatorSwitchToTab(navigator, params) {
   }
 }
 
+function navigatorSwitchToTopTab(navigator, params) {
+  if (params.tabIndex >= 0) {
+    newPlatformSpecific.selectTopTabByTabIndex(navigator.screenInstanceID, params.tabIndex);
+  } else {
+    newPlatformSpecific.selectTopTabByScreen(navigator.screenInstanceID);
+  }
+}
+
 function navigatorToggleDrawer(navigator, params) {
   const animated = !(params.animated === false);
   if (params.to) {
@@ -683,6 +691,7 @@ export default {
   navigatorSetTitle,
   navigatorSetSubtitle,
   navigatorSwitchToTab,
+  navigatorSwitchToTopTab,
   navigatorToggleDrawer,
   navigatorToggleTabs,
   navigatorToggleNavBar,
