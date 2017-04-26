@@ -57,4 +57,8 @@ public interface Layout extends ScreenStackContainer {
     void showLightBox(LightBoxParams params);
 
     void dismissLightBox();
+
+    void selectTopTabByTabIndex(String screenInstanceId, int index);
+
+    void selectTopTabByScreen(String screenInstanceId);
 }
