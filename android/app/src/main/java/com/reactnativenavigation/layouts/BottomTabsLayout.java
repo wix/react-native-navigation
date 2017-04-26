@@ -196,6 +196,20 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
+    public void selectTopTabByTabIndex(String screenInstanceId, int index) {
+        for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
+            screenStacks[i].selectTopTabByTabIndex(screenInstanceId, index);
+        }
+    }
+
+    @Override
+    public void selectTopTabByScreen(String screenInstanceId) {
+        for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
+            screenStacks[i].selectTopTabByScreen(screenInstanceId);
+        }
+    }
+
+    @Override
     public void toggleSideMenuVisible(boolean animated, Side side) {
         if (sideMenu != null) {
             sideMenu.toggleVisible(animated, side);

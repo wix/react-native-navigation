@@ -80,7 +80,7 @@ public class SharedElementTransition extends FrameLayout {
             @Override
             public void run() {
                 if (spannableText == null) {
-                    spannedText = (SpannedString) view.getText();
+                    spannedText = new SpannedString(view.getText());
                 }
                 if (spannableText == null) {
                     spannableText = new SpannableString(spannedText);
