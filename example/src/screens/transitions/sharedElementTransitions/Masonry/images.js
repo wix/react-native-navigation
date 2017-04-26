@@ -1,4 +1,4 @@
-export default [
+const images = [
     require('../../../../../img/masonry/Cfw87359UT.jpeg'),
     require('../../../../../img/masonry/a848dHxA4e.jpeg'),
     require('../../../../../img/masonry/AdGXmD1CH6.jpeg'),
@@ -15,4 +15,86 @@ export default [
     require('../../../../../img/masonry/A4g0lZ33Z8.jpeg'),
     require('../../../../../img/masonry/j51Pva1P8L.jpeg'),
     require('../../../../../img/masonry/158xD4xbeh.jpeg'),
+];
+
+function randomImage() {
+    return images[Math.floor(Math.random() * images.length)];
+}
+
+export default [
+    {
+        key: 1,
+        images: [[{
+            weight: 2,
+            source: randomImage(),
+        }, {
+            weight: 1,
+            source: randomImage(),
+        }, {
+            weight: 3,
+            source: randomImage(),
+        }], [{
+            weight: 1,
+            source: randomImage(),
+        } ,{
+            weight: 3,
+            source: randomImage(),
+        }, {
+            weight: 1,
+            source: randomImage(),
+        }, {
+            weight: 1,
+            source: randomImage(),
+        }]],
+    },
+    {
+        key: 2,
+        images: [[{
+            weight: 1,
+            source: randomImage(),
+        }, {
+            weight: 1,
+            source: randomImage(),
+        }, {
+            weight: 1,
+            source: randomImage(),
+        }, {
+            weight: 3,
+            source: randomImage(),
+        }], [{
+            weight: 3,
+            source: randomImage(),
+        } ,{
+            weight: 3,
+            source: randomImage(),
+        }]],
+    },
+    {
+        key: 3,
+        images: [[{
+            weight: 1,
+            source: randomImage(),
+        }, {
+            weight: 2,
+            source: randomImage(),
+        }, {
+            weight: 1,
+            source: randomImage(),
+        }, {
+            weight: 2,
+            source: randomImage(),
+        }], [{
+            weight: 2,
+            source: randomImage(),
+        } ,{
+            weight: 1,
+            source: randomImage(),
+        }, {
+            weight: 2,
+            source: randomImage(),
+        }, {
+            weight: 1,
+            source: randomImage(),
+        }]],
+    }
 ];

@@ -7,21 +7,6 @@ import images from './images';
 const ROW_HEIGHT = 650;
 const COLS = 2;
 
-const data = [
-    {
-        key: 1,
-        images: [[2, 1, 3], [1, 3, 1, 1]],
-    },
-    {
-        key: 2,
-        images: [[1, 1, 1, 3], [3, 3]],
-    },
-    {
-        key: 3,
-        images: [[1, 2, 1, 2], [2, 1, 2, 1]],
-    }
-];
-
 class Masonry extends React.Component {
 
     onAssetPress = (image, key) => {
@@ -37,15 +22,14 @@ class Masonry extends React.Component {
 
     renderAsset = (asset, row, column, index) => {
         const key = `row_${row}_column_${column}_asset_${index}`;
-        const image = images[Math.floor(Math.random() * images.length)];
 
         return (
             <TouchableHighlight
                 key={key}
                 onPress={() => {
-                    this.onAssetPress(image, key);
+                    this.onAssetPress(asset.source, key);
                 }}
-                style={[styles.assetContainer, { flex: asset }]}
+                style={[styles.assetContainer, { flex: asset.weight }]}
             >
                 <View style={{ flex: 1 }}>
                     <SharedElementTransition
@@ -53,7 +37,7 @@ class Masonry extends React.Component {
                         sharedElementId={key}
                     >
                         <Image
-                            source={image}
+                            source={asset.source}
                             resizeMode={'cover'}
                             style={styles.asset}
                         />
@@ -82,7 +66,7 @@ class Masonry extends React.Component {
         return (
             <View style={styles.container}>
                 <FlatList
-                    data={data}
+                    data={images}
                     renderItem={this.renderItem}
                     getItemLayout={(layout, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index })}
                 />

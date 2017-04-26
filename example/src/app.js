@@ -13,7 +13,7 @@ const tabs = [{
 }, {
     label: 'Actions',
     screen: 'example.Actions',
-    icon: require('../img/list.png'),
+    icon: require('../img/swap.png'),
     title: 'Navigation Actions',
 }];
 
@@ -21,7 +21,7 @@ if (Platform.OS === 'android') {
     tabs.push({
         label: 'Transitions',
         screen: 'example.Transitions',
-        icon: require('../img/list.png'),
+        icon: require('../img/transform.png'),
         title: 'Navigation Transitions',
     });
 }

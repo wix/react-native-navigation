@@ -29,7 +29,7 @@ class Transitions extends React.Component {
         return (
             <ScrollView style={styles.container}>
                 <Row title={'Cards'} onPress={this.showCardsExample} />
-                <Row title={'Profiles'} onPress={this.showProfileExample} />
+                {/*<Row title={'Profiles'} onPress={this.showProfileExample} />*/}
                 <Row title={'Masonry'} onPress={this.showMasonryExample} />
             </ScrollView>
         );
