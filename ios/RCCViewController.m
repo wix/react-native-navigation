@@ -488,7 +488,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   }
   
   NSString *navBarCustomView = self.navigatorStyle[@"navBarCustomView"];
-  if (navBarCustomView) {
+  if (navBarCustomView && !self.navigationItem.titleView) {
     if ([self.view isKindOfClass:[RCTRootView class]]) {
       RCTBridge *bridge = ((RCTRootView*)self.view).bridge;
       RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:navBarCustomView initialProperties:nil];
@@ -505,11 +505,8 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
       self.navigationItem.titleView.backgroundColor = [UIColor clearColor];
       self.navigationItem.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
       self.navigationItem.titleView.clipsToBounds = YES;
-      
     }
-    
-  }
-  
+  }  
 }
 
 
