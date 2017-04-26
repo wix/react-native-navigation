@@ -341,12 +341,6 @@ function navigatorSetTabButton(navigator, params) {
       params.icon = icon.uri;
     }
   }
-  if (params.selectedIcon) {
-    const selectedIcon = resolveAssetSource(params.selectedIcon);
-    if (selectedIcon) {
-      params.selectedIcon = selectedIcon.uri;
-    }
-  }
   params.navigationParams = {};
   if (params.tabIndex >= 0) {
     newPlatformSpecific.setBottomTabButtonByIndex(params.tabIndex, params);
