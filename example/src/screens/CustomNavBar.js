@@ -19,8 +19,9 @@ export default class CustomNavBar extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={ () => alert('pressed') }>
-          <Image source={require('./../../img/colors.png')} />
+        <TouchableOpacity stye={styles.button} onPress={ () => alert('Thanks for that :)') }>
+          <Text style={{color: 'red', textAlign: 'center'}}>Hi Custom</Text>
+          <Text style={{textAlign: 'center'}}>Press Me</Text>
         </TouchableOpacity>
 
       </View>
@@ -33,11 +34,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent'
+    backgroundColor: '#ffffffaa'
   },
   button: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 22,
     marginBottom: 10,
     marginTop: 10,
     color: 'blue'
