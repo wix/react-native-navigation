@@ -63,11 +63,11 @@ class Actions extends React.Component {
         if (!this._contextualMenu) {
             this.props.navigator.showContextualMenu({
                 rightButtons: [{
-                    title: 'Add',
-                    icon: require('../../img/list@1x.png'),
+                    title: 'Edit',
+                    icon: require('../../img/edit.png'),
                 }, {
                     title: 'Delete',
-                    icon: require('../../img/list@1x.png'),
+                    icon: require('../../img/delete.png'),
                 }],
                 onButtonPressed: (index) => console.log(`Button ${index} tapped`)
             });
