@@ -10,6 +10,8 @@
 #import "RCCExternalViewControllerProtocol.h"
 #import "RCTHelpers.h"
 #import "RCCTitleViewHelper.h"
+#import "RCCCustomTitleView.h"
+
 
 NSString* const RCCViewControllerCancelReactTouchesNotification = @"RCCViewControllerCancelReactTouchesNotification";
 
@@ -236,7 +238,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   
   NSString *screenBackgroundColor = self.navigatorStyle[@"screenBackgroundColor"];
   if (screenBackgroundColor) {
-        
+    
     UIColor *color = screenBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:screenBackgroundColor] : nil;
     viewController.view.backgroundColor = color;
   }
@@ -273,10 +275,10 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   NSMutableDictionary *rightNavButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarRightButton"];
   
   if (
-    navButtonTextAttributes.allKeys.count > 0 ||
-    leftNavButtonTextAttributes.allKeys.count > 0 ||
-    rightNavButtonTextAttributes.allKeys.count > 0
-  ) {
+      navButtonTextAttributes.allKeys.count > 0 ||
+      leftNavButtonTextAttributes.allKeys.count > 0 ||
+      rightNavButtonTextAttributes.allKeys.count > 0
+      ) {
     
     for (UIBarButtonItem *item in viewController.navigationItem.leftBarButtonItems) {
       [item setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
@@ -482,7 +484,27 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   } else {
     self.navBarHairlineImageView.hidden = NO;
   }
+  
+  NSString *navBarCustomView = self.navigatorStyle[@"navBarCustomView"];
+  if (navBarCustomView && !self.navigationItem.titleView) {
+    if ([self.view isKindOfClass:[RCTRootView class]]) {
+      
+      RCTBridge *bridge = ((RCTRootView*)self.view).bridge;
+      RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:navBarCustomView initialProperties:nil];
+      
+      RCCCustomTitleView *titleView = [[RCCCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.navigatorStyle[@"navBarComponentAlignment"]];
+      titleView.backgroundColor = [UIColor clearColor];
+      reactView.backgroundColor = [UIColor clearColor];
+    
+      self.navigationItem.titleView = titleView;
+      
+      self.navigationItem.titleView.backgroundColor = [UIColor clearColor];
+      self.navigationItem.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+      self.navigationItem.titleView.clipsToBounds = YES;
+    }
+  }  
 }
+
 
 -(void)storeOriginalNavBarImages {
   
