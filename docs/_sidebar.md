@@ -7,7 +7,7 @@
  - [Top Level API](/top-level-api)
  - [Screen API](/screen-api)
  - [Deep links](/deep-links)
- - [Android Scpecific Use Cases](/android-specific-use-cases)
+ - [Android Specific Use Cases](/android-specific-use-cases)
  - [Third Party Libraries Support](/third-party-libraries-support)
 
 - Customization
