@@ -34,14 +34,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffffaa'
+    backgroundColor: 'transparent'
   },
   button: {
     textAlign: 'center',
     fontSize: 22,
     marginBottom: 10,
     marginTop: 10,
-    color: 'blue'
+    color: 'blue',
+
   }
 });
 
