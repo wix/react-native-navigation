@@ -20,6 +20,8 @@ public class BaseScreenParams {
     public String fragmentCreatorClassName;
     public Bundle fragmentCreatorPassProps;
     public boolean animateScreenTransitions;
+    public Bundle showScreenAnimation;
+    public Bundle hideScreenAnimation;
 
     public boolean isFragmentScreen() {
         return fragmentCreatorClassName != null;

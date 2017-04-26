@@ -263,4 +263,9 @@ public class StyleParamsParser {
     private int getInt(String key, int defaultValue) {
         return params.containsKey(key) ? params.getInt(key) : defaultValue;
     }
+
+    private String getString(String key, String defaultValue) {
+        return params.containsKey(key) ? params.getString(key) : defaultValue;
+    }
+
 }

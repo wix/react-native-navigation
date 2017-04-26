@@ -3,12 +3,16 @@ package com.reactnativenavigation.views;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.graphics.Point;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
@@ -25,6 +29,7 @@ public class TitleBar extends Toolbar {
     private static final int TITLE_VISIBILITY_ANIMATION_DURATION = 320;
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
+    private boolean titleBarTitleTextCentered;
 
     public TitleBar(Context context) {
         super(context);
@@ -73,6 +78,7 @@ public class TitleBar extends Toolbar {
     }
 
     public void setStyle(StyleParams params) {
+        titleBarTitleTextCentered = params.titleBarTitleTextCentered;
         setVisibility(params.titleBarHidden ? GONE : VISIBLE);
         setTitleTextColor(params);
         setTitleTextFont(params);

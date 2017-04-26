@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.text.TextUtils;
 
@@ -12,6 +13,8 @@ import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.utils.ViewUtils;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class BottomTabs extends AHBottomNavigation {

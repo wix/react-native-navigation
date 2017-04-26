@@ -21,6 +21,8 @@ public class ScreenParamsParser extends Parser {
     private static final String FRAGMENT_CREATOR_CLASS_NAME = "fragmentCreatorClassName";
     private static final String FRAGMENT_CREATOR_PASS_PROPS = "fragmentCreatorPassProps";
     private static final String OVERRIDE_BACK_PRESS = "overrideBackPress";
+    private static final String SHOW_SCREEN_ANIMATION = "showScreenAnimation";
+    private static final String HIDE_SCREEN_ANIMATION = "hideScreenAnimation";
 
     @SuppressWarnings("ConstantConditions")
     public static ScreenParams parse(Bundle params) {
@@ -51,6 +53,14 @@ public class ScreenParamsParser extends Parser {
 
         result.animateScreenTransitions = new AnimationParser(params).parse();
         result.sharedElementsTransitions = getSharedElementsTransitions(params);
+
+        if (hasKey(params, SHOW_SCREEN_ANIMATION)) {
+            result.showScreenAnimation = params.getBundle(SHOW_SCREEN_ANIMATION);
+        }
+ 
+        if (hasKey(params, HIDE_SCREEN_ANIMATION)) {
+            result.hideScreenAnimation = params.getBundle(HIDE_SCREEN_ANIMATION);
+        }
 
         return result;
     }
