@@ -179,6 +179,10 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         return screenParams.getScreenInstanceId();
     }
 
+    public boolean hasScreenInstance(String screenInstanceId) {
+        return screenParams.getScreenInstanceId().equals(screenInstanceId);
+    }
+
     public abstract String getNavigatorEventId();
 
     public BaseScreenParams getScreenParams() {

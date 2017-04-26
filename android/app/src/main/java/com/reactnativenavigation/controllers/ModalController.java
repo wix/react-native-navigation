@@ -164,4 +164,16 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
     Window getWindow() {
         return stack.peek().getWindow();
     }
+
+    void selectTopTabByTabIndex(String screenInstanceId, int index) {
+        for (Modal modal : stack) {
+            modal.selectTopTabByTabIndex(screenInstanceId, index);
+        }
+    }
+
+    void selectTopTabByScreen(String screenInstanceId) {
+        for (Modal modal : stack) {
+            modal.selectTopTabByScreen(screenInstanceId);
+        }
+    }
 }
