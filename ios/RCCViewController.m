@@ -10,9 +10,7 @@
 #import "RCCExternalViewControllerProtocol.h"
 #import "RCTHelpers.h"
 #import "RCCTitleViewHelper.h"
-
-#define NAV_BAR_BACK_INDICATOR_WIDTH    22
-#define NAV_BAR_BACK_MARGIN             8
+#import "RCCCustomTitleView.h"
 
 
 NSString* const RCCViewControllerCancelReactTouchesNotification = @"RCCViewControllerCancelReactTouchesNotification";
@@ -490,17 +488,15 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   NSString *navBarCustomView = self.navigatorStyle[@"navBarCustomView"];
   if (navBarCustomView && !self.navigationItem.titleView) {
     if ([self.view isKindOfClass:[RCTRootView class]]) {
+      
       RCTBridge *bridge = ((RCTRootView*)self.view).bridge;
       RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:navBarCustomView initialProperties:nil];
       
-      if ([self.navigatorStyle[@"navBarComponentAlignment"] isEqualToString:@"fill"]) {
-        reactView.frame = self.navigationController.navigationBar.bounds;
-      }
-      else {
-        reactView.frame = [self getCustomNavBarFrame];
-      }
-      
-      self.navigationItem.titleView = reactView;
+      RCCCustomTitleView *titleView = [[RCCCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.navigatorStyle[@"navBarComponentAlignment"]];
+      titleView.backgroundColor = [UIColor clearColor];
+      reactView.backgroundColor = [UIColor clearColor];
+    
+      self.navigationItem.titleView = titleView;
       
       self.navigationItem.titleView.backgroundColor = [UIColor clearColor];
       self.navigationItem.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -509,63 +505,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   }  
 }
 
-
-+(CGFloat)getBackButtonWidth:(UINavigationBar*)navigationBar {
-  CGFloat paddings = NAV_BAR_BACK_MARGIN + NAV_BAR_BACK_INDICATOR_WIDTH + NAV_BAR_BACK_MARGIN + NAV_BAR_BACK_MARGIN;
-  
-  UIView *backButton = [RCCViewController getBackButton:navigationBar];
-  if (backButton) {
-    return backButton.frame.size.width + paddings;
-  }
-  
-  return paddings + NAV_BAR_BACK_INDICATOR_WIDTH;
-}
-
-+(UIView*)getBackButton:(UIView*)view {
-  UIView *ans = nil;
-  for (UIView *innerView in [view subviews]) {
-    if ([innerView isKindOfClass:[UILabel class]] && innerView.frame.origin.x == 0) {
-      return innerView;
-    }
-    else {
-      ans = [RCCViewController getBackButton:innerView];
-      if (ans) {
-        return ans;
-      }
-    }
-    
-  }
-  return ans;
-}
-
-
--(CGRect)getCustomNavBarFrame {
-  CGFloat sumLeft = [self getNavBarButtonsWidth:self.navigationItem.leftBarButtonItems];
-  CGFloat backButtonWidth = [RCCViewController getBackButtonWidth:self.navigationController.navigationBar];
-  sumLeft += backButtonWidth;
-  CGFloat sumRight = [self getNavBarButtonsWidth:self.navigationItem.rightBarButtonItems];
-  CGFloat extraWidth = (sumRight >= sumLeft) ? sumRight : sumLeft;
-  
-  CGFloat customViewWidth = self.navigationController.navigationBar.bounds.size.width;
-  customViewWidth = customViewWidth - (extraWidth * 2);
-  
-  CGRect navigationBarFrame = self.navigationController.navigationBar.bounds;
-  navigationBarFrame.size.width = customViewWidth;
-  
-  return navigationBarFrame;
-}
-
--(CGFloat)getNavBarButtonsWidth:(NSArray*)buttons {
-  CGFloat sum = 0;
-  for (UIBarButtonItem *item in buttons) {
-    UIView *view = [item valueForKey:@"view"];
-    view.backgroundColor = [UIColor clearColor];
-    CGFloat width = view ? view.frame.size.width : 0.0f;
-    width += 16;
-    sum += width;
-  }
-  return sum;
-}
 
 -(void)storeOriginalNavBarImages {
   
