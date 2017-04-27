@@ -1,6 +1,7 @@
-import React, {Component, View} from 'react';
+import React, {Component} from 'react';
 import {
-  requireNativeComponent
+  requireNativeComponent,
+  View
 } from 'react-native';
 
 export default class SharedElementTransition extends Component {
