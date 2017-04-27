@@ -27,7 +27,7 @@
   "scripts": {
     "build": ":",
     "xcode": "open playground/ios/playground.xcodeproj",
-    "install-android": "cd playground/android && ./gradlew installDebug",
+    "install-android": "node ./scripts/install-android.js",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
     "clean": "node ./scripts/clean.js",
     "start": "node ./scripts/start.js",

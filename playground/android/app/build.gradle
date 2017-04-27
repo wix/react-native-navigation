@@ -1,4 +1,10 @@
 apply plugin: "com.android.application"
+
+project.ext.react = [
+        root     : "../../../",
+        entryFile: "playground/index.android.js"
+]
+
 apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
@@ -11,6 +17,19 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+    }
+    signingConfigs {
+        release {
+            storeFile file('../playground.jks')
+            storePassword "playground"
+            keyAlias "playground"
+            keyPassword "playground"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
     }
 }
 
