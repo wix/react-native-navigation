@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views.sharedElementTransition;
 
 import android.graphics.Rect;
+import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
 
 import com.facebook.drawee.drawable.ScalingUtils;
@@ -119,10 +120,17 @@ class AnimatorValuesResolver {
 
     private void calculateColor(SharedElementTransition from, SharedElementTransition to) {
         if (from.getSharedView() instanceof TextView && to.getSharedView() instanceof TextView) {
-            startColor = ViewUtils.getForegroundColorSpans((TextView) from.getSharedView())[0].getForegroundColor();
-            endColor = ViewUtils.getForegroundColorSpans((TextView) to.getSharedView())[0].getForegroundColor();
+            ForegroundColorSpan[] startColorForegroundColorSpans = ViewUtils.getForegroundColorSpans((TextView) from.getSharedView());
+            if (startColorForegroundColorSpans.length > 0) {
+                startColor = startColorForegroundColorSpans[0].getForegroundColor();
+            }
+            ForegroundColorSpan[] endColorForegroundColorSpans = ViewUtils.getForegroundColorSpans((TextView) to.getSharedView());
+            if (endColorForegroundColorSpans.length > 0) {
+                endColor = endColorForegroundColorSpans[0].getForegroundColor();
+            }
         }
     }
+
     private void calculateDrawingReacts(SharedElementTransition from, SharedElementTransition to) {
         from.getDrawingRect(startDrawingRect);
         to.getDrawingRect(endDrawingRect);

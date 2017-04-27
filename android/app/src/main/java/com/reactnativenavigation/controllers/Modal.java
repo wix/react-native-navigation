@@ -82,6 +82,14 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
     public void onSideMenuButtonClick() {
     }
 
+    void selectTopTabByScreen(String screenInstanceId) {
+        layout.selectTopTabByScreen(screenInstanceId);
+    }
+
+    public void selectTopTabByTabIndex(String screenInstanceId, int index) {
+        layout.selectTopTabByTabIndex(screenInstanceId, index);
+    }
+
     interface OnModalDismissedListener {
         void onModalDismissed(Modal modal);
     }

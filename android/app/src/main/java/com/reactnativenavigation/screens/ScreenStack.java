@@ -358,6 +358,26 @@ public class ScreenStack {
         });
     }
 
+    public void selectTopTabByTabIndex(String screenInstanceId, final int index) {
+        performOnScreen(screenInstanceId, new Task<Screen>() {
+            @Override
+            public void run(Screen screen) {
+                if (screen.screenParams.hasTopTabs()) {
+                    ((ViewPagerScreen) screen).selectTopTabByTabIndex(index);
+                }
+            }
+        });
+    }
+
+    public void selectTopTabByScreen(final String screenInstanceId) {
+        performOnScreen(screenInstanceId, new Task<Screen>() {
+            @Override
+            public void run(Screen screen) {
+                ((ViewPagerScreen) screen).selectTopTabByTabByScreen(screenInstanceId);
+            }
+        });
+    }
+
     public StyleParams getCurrentScreenStyleParams() {
         return stack.peek().getStyleParams();
     }
@@ -375,9 +395,8 @@ public class ScreenStack {
         if (stack.isEmpty()) {
             return;
         }
-
         for (Screen screen : stack) {
-            if (screen.getScreenInstanceId().equals(screenInstanceId)) {
+            if (screen.hasScreenInstance(screenInstanceId)) {
                 task.run(screen);
                 return;
             }
