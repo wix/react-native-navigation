@@ -185,7 +185,7 @@ public class ViewUtils {
     }
 
     public static ForegroundColorSpan[] getForegroundColorSpans(TextView view) {
-        SpannedString text = (SpannedString) view.getText();
+        SpannedString text = new SpannedString(view.getText());
         return text.getSpans(0, text.length(), ForegroundColorSpan.class);
     }
 
