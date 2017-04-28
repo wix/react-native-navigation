@@ -172,8 +172,10 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
 
     @Override
     public void dismiss() {
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", layout.getCurrentScreen().getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", layout.getCurrentScreen().getNavigatorEventId());
+        if (!isDestroyed) {
+            NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", layout.getCurrentScreen().getNavigatorEventId());
+            NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", layout.getCurrentScreen().getNavigatorEventId());
+        }
         super.dismiss();
     }
 
