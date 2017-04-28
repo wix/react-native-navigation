@@ -8,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.facebook.react.bridge.Callback;
+import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.layouts.Layout;
 import com.reactnativenavigation.layouts.ModalScreenLayout;
@@ -80,6 +81,14 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
     }
 
     public void onSideMenuButtonClick() {
+    }
+
+    void selectTopTabByScreen(String screenInstanceId) {
+        layout.selectTopTabByScreen(screenInstanceId);
+    }
+
+    public void selectTopTabByTabIndex(String screenInstanceId, int index) {
+        layout.selectTopTabByTabIndex(screenInstanceId, index);
     }
 
     interface OnModalDismissedListener {
@@ -159,6 +168,13 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         if (!layout.onBackPressed()) {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void dismiss() {
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", layout.getCurrentScreen().getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", layout.getCurrentScreen().getNavigatorEventId());
+        super.dismiss();
     }
 
     @Override

@@ -7,7 +7,8 @@ Another use-case for deep links is when one screen wants to control what happens
 ```js
 onContactSelected(contactID) {
   this.props.navigator.handleDeepLink({
-    link: 'chats/' + contactID
+    link: 'chats/' + contactID,
+    payload: '' // (optional) Extra payload with deep link
   });
 }
 ```
@@ -28,7 +29,10 @@ export default class SecondTabScreen extends Component {
   onNavigatorEvent(event) {
     // handle a deep link
     if (event.type == 'DeepLink') {
-      const parts = event.link.split('/');
+
+      const parts = event.link.split('/'); // Link parts
+      const payload = event.payload;       // (optional) The payload
+
       if (parts[0] == 'tab2') {
         // handle the link somehow, usually run a this.props.navigator command
       }
