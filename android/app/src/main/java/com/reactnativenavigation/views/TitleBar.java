@@ -91,11 +91,9 @@ public class TitleBar extends Toolbar {
             @Override
             public void run() {
                 if (params.titleBarTitleTextCentered) {
-                    int[] location = new int[2];
-                    titleView.getLocationOnScreen(location);
-                    titleView.setTranslationX(titleView.getTranslationX() + (-location[0] + ViewUtils.getScreenWidth() / 2 - titleView.getWidth() / 2));
+                    titleView.setX(ViewUtils.getScreenWidth() / 2 - titleView.getWidth() / 2);
                 }
-
+                
             }
         });
     }
