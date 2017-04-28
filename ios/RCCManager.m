@@ -147,16 +147,16 @@
 
 + (void)showSplashScreen
 {
-  CGRect screenBounds = [UIScreen mainScreen].bounds;
 
   UIViewController* viewControllerFromLaunchStoryboard;
-  viewControllerFromLaunchStoryboard = [self viewControllerFromLaunchStoryboardForScreenBounds:screenBounds];
+  viewControllerFromLaunchStoryboard = [self viewControllerFromLaunchStoryboard];
   if (viewControllerFromLaunchStoryboard)
   {
     [self showSplashScreenViewController:viewControllerFromLaunchStoryboard];
     return;
   }
 
+  CGRect screenBounds = [UIScreen mainScreen].bounds;
   UIViewController* viewControllerFromLaunchNib = [self viewControllerFromLaunchNibForScreenBounds:screenBounds];
   if (viewControllerFromLaunchNib)
   {
@@ -178,7 +178,7 @@
   [self showSplashScreenViewController:viewController];
 }
 
-+ (UIViewController *)viewControllerFromLaunchStoryboardForScreenBounds:(CGRect)screenBounds
++ (UIViewController *)viewControllerFromLaunchStoryboard
 {
   NSString* launchStoryboardName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UILaunchStoryboardName"];
   if (launchStoryboardName == nil)
