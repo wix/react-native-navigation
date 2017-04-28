@@ -30,6 +30,12 @@ Navigation.startTabBasedApp({
       screen: 'example.FirstTabScreen', // unique ID registered with Navigation.registerScreen
       icon: require('../img/one.png'), // local image asset for the tab icon unselected state (optional on iOS)
       selectedIcon: require('../img/one_selected.png'), // local image asset for the tab icon selected state (optional, iOS only. On Android, Use `tabBarSelectedButtonColor` instead)
+      iconInsets: { // add this to change icon position (optional, iOS only).
+        top: 6, // optional, default is 0.
+        left: 0, // optional, default is 0.
+        bottom: -6, // optional, default is 0.
+        right: 0 // optional, default is 0.
+      },
       title: 'Screen One', // title of the screen as appears in the nav bar (optional)
       navigatorStyle: {}, // override the navigator style for the tab screen, see "Styling the navigator" below (optional),
       navigatorButtons: {} // override the nav buttons for the tab screen, see "Adding buttons to the navigator" below (optional)
