@@ -251,6 +251,16 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
+    public void selectTopTabByTabIndex(String screenInstanceId, int index) {
+        stack.selectTopTabByTabIndex(screenInstanceId, index);
+    }
+
+    @Override
+    public void selectTopTabByScreen(String screenInstanceId) {
+        stack.selectTopTabByScreen(screenInstanceId);
+    }
+
+    @Override
     public void showSlidingOverlay(final SlidingOverlayParams params) {
         slidingOverlaysQueue.add(new SlidingOverlay(this, params));
     }

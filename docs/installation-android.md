@@ -51,7 +51,7 @@ First add `react-native-navigation` as an npm dependency: `yarn add react-native
 	```java
 	import com.reactnativenavigation.NavigationApplication;
 	
-	public class MyApplication extends NavigationApplication {
+	public class MainApplication extends NavigationApplication {
  
     	@Override
 		public boolean isDebug() {
@@ -61,9 +61,13 @@ First add `react-native-navigation` as an npm dependency: `yarn add react-native
 
 	    @Override
 	    public List<ReactPackage> createAdditionalReactPackages() {
-		    // Add the packages you require here.
-			// No need to add RnnPackage and MainReactPackage
-	        return null;
+		// Add additional packages you require here
+		return Arrays.<ReactPackage>asList(
+           	    new InsertPackageName() // For example: new VectorIconsPackage()
+       		);
+		// No need to add RnnPackage and MainReactPackage
+		// Simply return null if you do not have additional packages:
+		// return null;
 	    }
 	}
 	```

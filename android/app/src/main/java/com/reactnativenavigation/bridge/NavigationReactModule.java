@@ -52,8 +52,6 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startApp(final ReadableMap params) {
-        boolean portraitOnlyMode = false;
-        boolean landscapeOnlyMode = false;
         NavigationCommandsHandler.startApp(BundleConverter.toBundle(params));
     }
 
@@ -116,6 +114,16 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void selectBottomTabByNavigatorId(String navigatorId) {
         NavigationCommandsHandler.selectBottomTabByNavigatorId(navigatorId);
+    }
+
+    @ReactMethod
+    public void selectTopTabByTabIndex(String screenInstanceId, int index) {
+        NavigationCommandsHandler.selectTopTabByTabIndex(screenInstanceId, index);
+    }
+
+    @ReactMethod
+    public void selectTopTabByScreen(String screenInstanceId) {
+        NavigationCommandsHandler.selectTopTabByScreen(screenInstanceId);
     }
 
     @ReactMethod
