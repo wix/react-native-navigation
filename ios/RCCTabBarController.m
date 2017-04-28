@@ -146,7 +146,7 @@
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
     viewController.tabBarItem.selectedImage = iconImageSelected;
     
-    id imageInsets = tabItemLayout[@"props"][@"imageInsets"];
+    id imageInsets = tabItemLayout[@"props"][@"iconInsets"];
     if (imageInsets && imageInsets != (id)[NSNull null])
     {
       id topInset = imageInsets[@"top"];
