@@ -9,9 +9,10 @@ export default class SharedElementTransition extends Component {
   };
 
   render() {
+    const {children, ...restProps} = this.props;
     return (
-      <View {...this.props}>
-        {this.props.children}
+      <View {...restProps}>
+        {children}
       </View>
     );
   }
