@@ -6,6 +6,7 @@ jdk:
 env:
   global:
     - NODE_VERSION=stable
+    - PATH=$PATH:$HOME/.yarn/bin
     - ANDROID_HOME=$HOME/android-sdk-linux
     - PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
@@ -17,8 +18,8 @@ branches:
   - master
 
 cache:
+  yarn: true
   directories:
-    - $HOME/.yarn-cache
     - $HOME/.gradle/
     - $HOME/.m2
     - $ANDROID_HOME/licenses/
@@ -27,20 +28,20 @@ before_cache:
   - rm -rf $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
 
-before_install:
-  - set -e
-  - ./scripts/clean.sh
-
 install:
+  - set -e
   - nvm install $NODE_VERSION
-  - npm i -g yarn
-  - yarn
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - ./scripts/clean.sh
+  - yarn install
 
 script:
   - yarn run lint
   - yarn run test:js
   - ./scripts/installAndroidSDK.sh
   - yarn run test:android
+  - yarn run release
+  - set +e
 
 after_script:
   - echo "BUILD FINISHED"

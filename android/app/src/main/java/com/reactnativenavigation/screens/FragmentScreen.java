@@ -32,6 +32,11 @@ public class FragmentScreen extends Screen {
     }
 
     @Override
+    public ContentView getContentView() {
+        return contentView;
+    }
+
+    @Override
     protected void createContent() {
         content = new FrameLayout(getContext());
         content.setId(R.id.fragment_screen_content);
@@ -75,14 +80,14 @@ public class FragmentScreen extends Screen {
         FragmentManager fm = activity.getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(R.id.fragment_screen_content, fragment);
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     private void addSupportFragment(android.support.v4.app.Fragment supportFragment) {
         android.support.v4.app.FragmentManager fm = activity.getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(R.id.fragment_screen_content, supportFragment);
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     @Nullable

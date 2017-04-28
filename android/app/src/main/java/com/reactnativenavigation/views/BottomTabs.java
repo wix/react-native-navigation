@@ -2,6 +2,7 @@ package com.reactnativenavigation.views;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -23,6 +24,7 @@ public class BottomTabs extends AHBottomNavigation {
         setId(ViewUtils.generateViewId());
         createVisibilityAnimator();
         setStyle();
+        setFontFamily();
     }
 
     public void addTabs(List<ScreenParams> params, OnTabSelectedListener onTabSelectedListener) {
@@ -32,6 +34,7 @@ public class BottomTabs extends AHBottomNavigation {
             addItem(item);
             setOnTabSelectedListener(onTabSelectedListener);
         }
+        setTitlesDisplayState();
     }
 
     public void setStyleFromScreen(StyleParams params) {
@@ -45,9 +48,27 @@ public class BottomTabs extends AHBottomNavigation {
             setAccentColor(params.selectedBottomTabsButtonColor.getColor());
         }
 
-        setForceTitlesDisplay(params.forceTitlesDisplay);
-
         setVisibility(params.bottomTabsHidden, true);
+    }
+
+    private void setTitlesDisplayState() {
+        if (AppStyle.appStyle.forceTitlesDisplay) {
+            setTitleState(TitleState.ALWAYS_SHOW);
+        } else if (hasTabsWithLabels()) {
+            setTitleState(TitleState.SHOW_WHEN_ACTIVE);
+        } else {
+            setTitleState(TitleState.ALWAYS_HIDE);
+        }
+    }
+
+    private boolean hasTabsWithLabels() {
+        for (int i = 0; i < getItemsCount(); i++) {
+            String title = getItem(0).getTitle(getContext());
+            if (!TextUtils.isEmpty(title)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setVisibility(boolean hidden, boolean animated) {
@@ -91,10 +112,18 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     private boolean hasBadgeTextColor() {
-        return AppStyle.appStyle.bottomTabBadgeTextColor != null && AppStyle.appStyle.bottomTabBadgeTextColor.hasColor();
+        return AppStyle.appStyle.bottomTabBadgeTextColor != null &&
+               AppStyle.appStyle.bottomTabBadgeTextColor.hasColor();
     }
 
     private boolean hasBadgeBackgroundColor() {
-        return AppStyle.appStyle.bottomTabBadgeBackgroundColor != null && AppStyle.appStyle.bottomTabBadgeBackgroundColor.hasColor();
+        return AppStyle.appStyle.bottomTabBadgeBackgroundColor != null &&
+               AppStyle.appStyle.bottomTabBadgeBackgroundColor.hasColor();
+    }
+
+    private void setFontFamily() {
+        if (AppStyle.appStyle.bottomTabFontFamily.hasFont()) {
+            setTitleTypeface(AppStyle.appStyle.bottomTabFontFamily.get());
+        }
     }
 }

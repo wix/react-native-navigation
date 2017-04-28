@@ -1,6 +1,8 @@
 package com.reactnativenavigation.views;
 
 import android.support.design.widget.Snackbar;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 
 import com.reactnativenavigation.NavigationApplication;
@@ -36,10 +38,19 @@ class Snakbar {
     }
 
     private void create() {
-        snackbar = Snackbar.make((View) parent, params.text, params.duration);
+        snackbar = Snackbar.make((View) parent, getStyledText(), params.duration);
         setAction(navigatorEventId, params, snackbar);
         setStyle(snackbar, params);
         setOnDismissListener();
+    }
+
+    private Spanned getStyledText() {
+        String styledText = "<font color=\"" +
+                            params.textColor.getHexColor() +
+                            "\">" +
+                            params.text +
+                            "</font>";
+        return Html.fromHtml(styledText);
     }
 
     private void setAction(final String navigatorEventId, final SnackbarParams params, Snackbar snackbar) {
@@ -47,6 +58,7 @@ class Snakbar {
             snackbar.setAction(params.buttonText, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    NavigationApplication.instance.getEventEmitter().sendEvent(params.eventId);
                     NavigationApplication.instance.getEventEmitter().sendNavigatorEvent(params.eventId, navigatorEventId);
                 }
             });
@@ -56,6 +68,9 @@ class Snakbar {
     private void setStyle(Snackbar snackbar, SnackbarParams params) {
         if (params.buttonColor.hasColor()) {
             snackbar.setActionTextColor(params.buttonColor.getColor());
+        }
+        if (params.backgroundColor.hasColor()) {
+            snackbar.getView().setBackgroundColor(params.backgroundColor.getColor());
         }
     }
 

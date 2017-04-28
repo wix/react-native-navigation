@@ -1,0 +1,74 @@
+# Android Installation
+First add `react-native-navigation` as an npm dependency: `yarn add react-native-navigation`
+
+----
+
+* Make sure you are using react-native version 0.43 or above
+ 
+1.  Add the following to your `settings.gradle` file located in the `android` folder:
+
+	```groovy
+	include ':react-native-navigation'
+	project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/android/app/')
+	```
+	
+2. Update project dependencies in `build.gradle` under `app` folder.
+	```groovy
+	android {
+	    compileSdkVersion 25
+	    buildToolsVersion "25.0.1"
+	    ...
+	}
+
+	dependencies {
+	    compile fileTree(dir: "libs", include: ["*.jar"])
+	    compile "com.android.support:appcompat-v7:23.0.1"
+	    compile "com.facebook.react:react-native:+"
+	    compile project(':react-native-navigation')
+	}
+	```
+
+3. Your `MainActivity` should extend `com.reactnativenavigation.controllers.SplashActivity` instead of `ReactActivity`. If you have any `react-native` related methods in your `MainActivity` you can safely delete them.
+
+4. Update the MainApplication file and update the `Application` element in `AndroidManifest.xml`
+	
+	```java
+	import com.reactnativenavigation.NavigationApplication;
+	
+	public class MainApplication extends NavigationApplication {
+	
+	}
+	```
+	
+	```xml
+	<application
+        android:name=".MainApplication"
+        ...
+        />
+	```
+5. Implement `isDebug` and `createAdditionalReactPackages` methods
+
+	```java
+	import com.reactnativenavigation.NavigationApplication;
+	
+	public class MainApplication extends NavigationApplication {
+ 
+    	@Override
+		public boolean isDebug() {
+			// Make sure you are using BuildConfig from your own application
+			return BuildConfig.DEBUG;
+		}
+
+	    @Override
+	    public List<ReactPackage> createAdditionalReactPackages() {
+		// Add additional packages you require here
+		return Arrays.<ReactPackage>asList(
+           	    new InsertPackageName() // For example: new VectorIconsPackage()
+       		);
+		// No need to add RnnPackage and MainReactPackage
+		// Simply return null if you do not have additional packages:
+		// return null;
+	    }
+	}
+	```
+6. Run `react-native start`

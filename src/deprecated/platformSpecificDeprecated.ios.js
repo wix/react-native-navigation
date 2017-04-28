@@ -55,6 +55,8 @@ function startTabBasedApp(params) {
                                disableOpenGesture={params.drawer.disableOpenGesture}
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
+                               style={params.drawer.style}
+                               appStyle={params.appStyle}
           >
             {this.renderBody()}
           </DrawerControllerIOS>
@@ -65,7 +67,8 @@ function startTabBasedApp(params) {
       return (
         <TabBarControllerIOS
           id={controllerID + '_tabs'}
-          style={params.tabsStyle}>
+          style={params.tabsStyle}
+          appStyle={params.appStyle}>
           {
             params.tabs.map(function(tab, index) {
               return (
@@ -73,6 +76,7 @@ function startTabBasedApp(params) {
                   <NavigationControllerIOS
                     id={tab.navigationParams.navigatorID}
                     title={tab.title}
+                    subtitle={tab.subtitle}
                     titleImage={tab.titleImage}
                     component={tab.screen}
                     passProps={{
@@ -141,6 +145,8 @@ function startSingleScreenApp(params) {
                                disableOpenGesture={params.drawer.disableOpenGesture}
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
+                               style={params.drawer.style}
+                               appStyle={params.appStyle}
           >
             {this.renderBody()}
           </DrawerControllerIOS>
@@ -163,6 +169,7 @@ function startSingleScreenApp(params) {
           style={navigatorStyle}
           leftButtons={navigatorButtons.leftButtons}
           rightButtons={navigatorButtons.rightButtons}
+          appStyle={params.appStyle}
         />
       );
     }
@@ -316,6 +323,10 @@ function navigatorToggleNavBar(navigator, params) {
   });
 }
 
+function navigatorSetStyle(navigator, params) {
+  Controllers.NavigationControllerIOS(navigator.navigatorID).setStyle(params)
+}
+
 function navigatorToggleDrawer(navigator, params) {
   const controllerID = navigator.navigatorID.split('_')[0];
   if (params.to == 'open') {
@@ -440,8 +451,8 @@ function showModal(params) {
   Modal.showController(controllerID, params.animationType);
 }
 
-function dismissModal(params) {
-  Modal.dismissController(params.animationType);
+async function dismissModal(params) {
+  return await Modal.dismissController(params.animationType);
 }
 
 function dismissAllModals(params) {
@@ -513,8 +524,10 @@ function showInAppNotification(params) {
     navigatorEventID,
     navigatorID
   };
+  
+  savePassProps(params);
 
-  Notification.show({
+  let args = {
     component: params.screen,
     passProps: passProps,
     style: params.style,
@@ -523,7 +536,9 @@ function showInAppNotification(params) {
     shadowRadius: params.shadowRadius,
     dismissWithSwipe: params.dismissWithSwipe || true,
     autoDismissTimerSec: params.autoDismissTimerSec || 5
-  });
+  };
+  if (params.autoDismiss === false) delete args.autoDismissTimerSec;
+  Notification.show(args);
 }
 
 function dismissInAppNotification(params) {
@@ -579,6 +594,7 @@ export default {
   dismissInAppNotification,
   navigatorSetButtons,
   navigatorSetTitle,
+  navigatorSetStyle,
   navigatorSetTitleImage,
   navigatorToggleDrawer,
   navigatorToggleTabs,

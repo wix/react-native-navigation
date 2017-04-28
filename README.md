@@ -1,41 +1,33 @@
-# React Native Navigation
 
-App-wide support for 100% native navigation with an easy cross-platform interface. For iOS, this package is a wrapper around [react-native-controllers](https://github.com/wix/react-native-controllers), but provides a simplified more abstract API over it. This abstract API will be unified with the Android solution which is currently work in progress. It also fully supports redux if you use it.
+<h1 align="center">
+  <img src="./logo.png"/><br>
+  React Native Navigation
+</h1>
 
-<img src="https://github.com/wix/react-native/blob/master/assets/themes/bootstrap-3/images/demo.gif?raw=true" width="240">
+[![NPM Version](https://img.shields.io/npm/v/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
+[![NPM Downloads](https://img.shields.io/npm/dm/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
+[![Build Status](https://travis-ci.org/wix/react-native-navigation.svg?branch=master)](https://travis-ci.org/wix/react-native-navigation)
+[![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
+
+## Important
+Latest stable version is `1.1.x` and is published to npm under tag `latest`. It supports react-native 0.43 and above.
+<br><br>We are currently redesigning and rewriting this project under branch `v2`.
+<br>As a result, new features and pull requests on the current stable version will take more time to process.
+
+### tldr;
+
+React Native Navigation provides 100% native platform navigation on both iOS and Android for React Native apps. The JavaScript API is simple and cross-platform - just install it in your app and give your users the native feel they deserve. Using redux? No problem: React Native Navigation comes with optional redux support out of the box. Ready to get started? Check out the [docs](https://wix.github.io/react-native-navigation/).
+
+<img src="https://github.com/wix/react-native/blob/master/src/videos/demo.gif?raw=true" width="240">&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/wix/mobile/blob/master/src/videos/final_element_Transition.mp4.gif?raw=true" width="240">
+
+## Quick Links
+* [Documentation](https://wix.github.io/react-native-navigation/#/)
+* [Stack Overflow](http://stackoverflow.com/questions/tagged/react-native-navigation)
+* [Chat with us](https://discord.gg/DhkZjq2)
+* Bootstrap - If you prefer to learn more about the library and the APIs through code, head over to [the bootstrap example app](https://github.com/wix/react-native-navigation-bootstrap) or the more feature rich [JuneDomingo/movieapp](https://github.com/JuneDomingo/movieapp)
 
 ----
-
-> ### Important
-> We are currently working hard on redesigning and refactoring this project with high quality and robustness in mind. As a result, issues and pull requests will take more time to process. 
-
-> To avoid any confusion and breaking existing projects, all continuous development is published under the npm tag `next`, with version `2.0.0-experimental.x`. Once stable, we will publish it as `2.0.0`. **This version supports react-native `0.37.0`**.
-
-> The last stable version is `1.30.x` with npm tag `latest`. **This version supports react-native `0.25.1`**. It's installation instructions are [here](https://github.com/wix/react-native-navigation/blob/v1.x.x/README.md#installation---ios). 
-
->If you don't want your code to break on a daily basis and don't need the new features ASAP please use the `latest` version or just specify a specific version number.
-
-## Wiki
-
-* [Overview](https://github.com/wix/react-native-navigation/wiki)
-* [Why use this package](https://github.com/wix/react-native-navigation/wiki#why-use-this-package)
-* [Installation - iOS](https://github.com/wix/react-native-navigation/wiki/Installation---iOS#installation---ios)
-* [Installation - Android](https://github.com/wix/react-native-navigation/wiki/Installation---Android)
-* [Usage](https://github.com/wix/react-native-navigation/wiki/Usage)
-* [Migrating to version 2.0](https://github.com/wix/react-native-navigation/wiki/Migrating-to-version-2.0)
-* [Top Level API](https://github.com/wix/react-native-navigation/wiki/Top-Level-API)
-* [Screen API](https://github.com/wix/react-native-navigation/wiki/Screen-API)
-* [Styling the navigator](https://github.com/wix/react-native-navigation/wiki/Styling-the-navigator)
-* [Adding buttons to the navigator](https://github.com/wix/react-native-navigation/wiki/Adding-buttons-to-the-navigator)
-* [Styling the tab bar](https://github.com/wix/react-native-navigation/wiki/Styling-the-tab-bar)
-* [Deep links](https://github.com/wix/react-native-navigation/wiki/Deep-links)
-* [Third party libraries support](https://github.com/wix/react-native-navigation/wiki/Third-party-libraries-support)
-* [Release Notes](https://github.com/wix/react-native-navigation/blob/master/CHANGELOG.md)
-* [Milestones](https://github.com/wix/react-native-navigation/wiki/Milestones)
-* [Contributing](https://github.com/wix/react-native-navigation/wiki/Contributing)
-* [License](https://github.com/wix/react-native-navigation/wiki#license)
-
-## Why use this package
 
 One of the major things missing from React Native core is fully featured native navigation. Navigation includes the entire skeleton of your app with critical components like nav bars, tab bars and side menu drawers.
 

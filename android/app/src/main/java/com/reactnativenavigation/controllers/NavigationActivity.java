@@ -1,12 +1,20 @@
 package com.reactnativenavigation.controllers;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.Window;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
+import com.facebook.react.modules.core.PermissionAwareActivity;
+import com.facebook.react.modules.core.PermissionListener;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.Event;
 import com.reactnativenavigation.events.EventBus;
@@ -19,15 +27,20 @@ import com.reactnativenavigation.layouts.LayoutFactory;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
+import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
-import com.reactnativenavigation.react.JsDevReloadHandler;
+import com.reactnativenavigation.react.ReactGateway;
+import com.reactnativenavigation.utils.OrientationHelper;
+import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
 
-public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, Subscriber {
+public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, Subscriber, PermissionAwareActivity {
 
     /**
      * Although we start multiple activities, we make sure to pass Intent.CLEAR_TASK | Intent.NEW_TASK
@@ -42,22 +55,26 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     private ActivityParams activityParams;
     private ModalController modalController;
     private Layout layout;
+    @Nullable private PermissionListener mPermissionListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (!NavigationApplication.instance.isReactContextInitialized()) {
             NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
             return;
         }
 
         activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
-
         disableActivityShowAnimationIfNeeded();
-        createLayout();
+        setOrientation();
         createModalController();
+        createLayout();
         NavigationApplication.instance.getActivityCallbacks().onActivityCreated(this, savedInstanceState);
+    }
+
+    private void setOrientation() {
+        OrientationHelper.setOrientation(this, AppStyle.appStyle.orientation);
     }
 
     private void disableActivityShowAnimationIfNeeded() {
@@ -97,23 +114,26 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
 
         currentActivity = this;
-        setDeepLinkData();
-        NavigationApplication.instance.getReactGateway().onResumeActivity(this, this);
+        IntentDataHandler.onResume(getIntent());
+        getReactGateway().onResumeActivity(this, this);
         NavigationApplication.instance.getActivityCallbacks().onActivityResumed(this);
         EventBus.instance.register(this);
+        IntentDataHandler.onPostResume(getIntent());
     }
 
-    private void setDeepLinkData() {
-        if (IntentDataHandler.hasIntentData()) {
-            IntentDataHandler.setIntentData(getIntent());
-        }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        getReactGateway().onNewIntent(intent);
+        NavigationApplication.instance.getActivityCallbacks().onNewIntent(intent);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         currentActivity = null;
-        NavigationApplication.instance.getReactGateway().onPauseActivity();
+        IntentDataHandler.onPause(getIntent());
+        getReactGateway().onPauseActivity();
         NavigationApplication.instance.getActivityCallbacks().onActivityPaused(this);
         EventBus.instance.unregister(this);
     }
@@ -144,7 +164,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     private void destroyJsIfNeeded() {
         if (currentActivity == null || currentActivity.isFinishing()) {
-            NavigationApplication.instance.getReactGateway().onDestroyApp();
+            getReactGateway().onDestroyApp();
         }
     }
 
@@ -156,19 +176,30 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onBackPressed() {
         if (layout != null && !layout.onBackPressed()) {
-            NavigationApplication.instance.getReactGateway().onBackPressed();
+            getReactGateway().onBackPressed();
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        NavigationApplication.instance.getReactGateway().onActivityResult(requestCode, resultCode, data);
+        getReactGateway().onActivityResult(requestCode, resultCode, data);
         NavigationApplication.instance.getActivityCallbacks().onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        return JsDevReloadHandler.onKeyUp(getCurrentFocus(), keyCode) || super.onKeyUp(keyCode, event);
+        return getReactGateway().onKeyUp(getCurrentFocus(), keyCode) || super.onKeyUp(keyCode, event);
+    }
+
+    private ReactGateway getReactGateway() {
+        return NavigationApplication.instance.getReactGateway();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        OrientationHelper.onConfigurationChanged(newConfig);
+        NavigationApplication.instance.getActivityCallbacks().onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
     }
 
     void push(ScreenParams params) {
@@ -215,6 +246,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.dismissAllModals();
     }
 
+    public void showLightBox(LightBoxParams params) {
+        layout.showLightBox(params);
+    }
+
+    public void dismissLightBox() {
+        layout.dismissLightBox();
+    }
+
     //TODO all these setters should be combined to something like setStyle
     void setTopBarVisible(String screenInstanceId, boolean hidden, boolean animated) {
         layout.setTopBarVisible(screenInstanceId, hidden, animated);
@@ -247,12 +286,27 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.setTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButton);
     }
 
-    public void toggleSideMenuVisible(boolean animated) {
-        layout.toggleSideMenuVisible(animated);
+    void setScreenFab(String screenInstanceId, String navigatorEventId, FabParams fab) {
+        layout.setFab(screenInstanceId, navigatorEventId, fab);
+        modalController.setFab(screenInstanceId, navigatorEventId, fab);
     }
 
-    public void setSideMenuVisible(boolean animated, boolean visible) {
-        layout.setSideMenuVisible(animated, visible);
+    public void toggleSideMenuVisible(boolean animated, Side side) {
+        layout.toggleSideMenuVisible(animated, side);
+    }
+
+    public void setSideMenuVisible(boolean animated, boolean visible, Side side) {
+        layout.setSideMenuVisible(animated, visible, side);
+    }
+
+    public void selectTopTabByTabIndex(String screenInstanceId, int index) {
+        layout.selectTopTabByTabIndex(screenInstanceId, index);
+        modalController.selectTopTabByTabIndex(screenInstanceId, index);
+    }
+
+    public void selectTopTabByScreen(String screenInstanceId) {
+        layout.selectTopTabByScreen(screenInstanceId);
+        modalController.selectTopTabByScreen(screenInstanceId);
     }
 
     public void selectBottomTabByTabIndex(Integer index) {
@@ -279,18 +333,45 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
     }
 
+    public void showSlidingOverlay(SlidingOverlayParams params) {
+        if (modalController.isShowing()) {
+            modalController.showSlidingOverlay(params);
+        } else {
+            layout.showSlidingOverlay(params);
+        }
+    }
+
+    public void hideSlidingOverlay() {
+        if (modalController.isShowing()) {
+            modalController.hideSlidingOverlay();
+        } else {
+            layout.hideSlidingOverlay();
+        }
+    }
+
     public void showSnackbar(SnackbarParams params) {
         layout.showSnackbar(params);
     }
 
+    public void dismissSnackbar() {
+        layout.dismissSnackbar();
+    }
+
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
-        layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
-        modalController.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        if (modalController.isShowing()) {
+            modalController.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        } else
+        {
+            layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
+        }
     }
 
     public void dismissContextualMenu(String screenInstanceId) {
-        layout.dismissContextualMenu(screenInstanceId);
-        modalController.dismissContextualMenu(screenInstanceId);
+        if (modalController.isShowing()) {
+            modalController.dismissContextualMenu(screenInstanceId);
+        } else {
+            layout.dismissContextualMenu(screenInstanceId);
+        }
     }
 
     @Override
@@ -298,7 +379,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (event.getType().equals(ModalDismissedEvent.TYPE)) {
             handleModalDismissedEvent();
         } else if (event.getType().equals(JsDevReloadEvent.TYPE)) {
-            handleJsDevReloadEvent();
+            postHandleJsDevReloadEvent();
         }
     }
 
@@ -308,8 +389,31 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
     }
 
-    private void handleJsDevReloadEvent() {
-        modalController.destroy();
-        layout.destroy();
+    public Window getScreenWindow() {
+        return modalController.isShowing() ? modalController.getWindow() : getWindow();
+    }
+
+    private void postHandleJsDevReloadEvent() {
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                layout.destroy();
+                modalController.destroy();
+            }
+        });
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public void requestPermissions(String[] permissions, int requestCode, PermissionListener listener) {
+        mPermissionListener = listener;
+        requestPermissions(permissions, requestCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        NavigationApplication.instance.getActivityCallbacks().onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+            mPermissionListener = null;
+        }
     }
 }

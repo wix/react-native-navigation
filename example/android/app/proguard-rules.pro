@@ -35,7 +35,7 @@
 
 -keepclassmembers @com.facebook.proguard.annotations.KeepGettersAndSetters class * {
   void set*(***);
-  *** get*();
+  *** withOrder*();
 }
 
 -keep class * extends com.facebook.react.bridge.JavaScriptModule { *; }

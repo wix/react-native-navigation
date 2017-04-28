@@ -10,4 +10,9 @@ public class TitleBarHideOnScrollBehaviour implements CollapseBehaviour {
     public boolean shouldCollapseOnTouchUp() {
         return true;
     }
+
+    @Override
+    public boolean canExpend(int scrollY) {
+        return true;
+    }
 }

@@ -1,5 +1,6 @@
 package com.reactnativenavigation.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
@@ -8,12 +9,14 @@ import android.view.View;
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseAmount;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingView;
+import com.reactnativenavigation.views.collapsingToolbar.CollapsingViewMeasurer;
 import com.reactnativenavigation.views.collapsingToolbar.OnScrollViewAddedListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
 import com.reactnativenavigation.views.collapsingToolbar.ViewCollapser;
 import com.reactnativenavigation.views.utils.ScrollViewDetector;
 
+@SuppressLint("ViewConstructor")
 public class CollapsingContentView extends ContentView implements CollapsingView {
 
     private @Nullable ScrollViewDelegate scrollViewDelegate;
@@ -45,7 +48,7 @@ public class CollapsingContentView extends ContentView implements CollapsingView
     public void onViewAdded(final View child) {
         super.onViewAdded(child);
         if (scrollViewDetector != null) {
-            scrollViewDetector.detectScrollViewAdded(child);
+            scrollViewDetector.findScrollView(child);
         }
     }
 
@@ -65,12 +68,12 @@ public class CollapsingContentView extends ContentView implements CollapsingView
 
     @Override
     public float getFinalCollapseValue() {
-        return 0;
+        return ((CollapsingViewMeasurer) viewMeasurer).getFinalCollapseValue();
     }
 
     @Override
     public float getCurrentCollapseValue() {
-        return 0;
+        return getTranslationY();
     }
 
     @Override

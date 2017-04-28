@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "2.0.0-experimental.144",
+  "version": "1.1.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -21,37 +21,48 @@
   "scripts": {
     "build": ":",
     "lint": "eslint src test",
-    "test:js": "jest",
+    "test:js": "jest --coverage",
     "test:android": "cd android && ./gradlew clean testDebugUnitTest",
     "test:ios": ":",
     "pretest": "npm run lint",
     "test": "npm run test:js && npm run test:android && npm run test:ios",
-    "release": "npm version prerelease && npm publish --tag next && npm view react-native-navigation dist-tags && git push"
+    "test:watch": "jest --coverage --watch",
+    "release": "node ./scripts/release.js"
   },
   "peerDependencies": {
-    "react-native": "*",
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "dependencies": {
-    "lodash": "^4.16.0"
-  },
-  "optionalDependencies": {
-    "react-redux": "*"
+    "lodash": "4.x.x"
   },
   "devDependencies": {
-    "react-native": "0.37.0",
-    "react": "15.3.2",
-    "babel-cli": "^6.8.0",
-    "babel-core": "^6.8.0",
-    "babel-polyfill": "^6.8.0",
-    "babel-preset-react-native": "^1.0.0",
-    "babel-register": "^6.8.0",
-    "eslint": "^2.5.1",
-    "eslint-plugin-babel": "^3.0.0",
-    "eslint-plugin-react": "^4.2.3",
-    "eslint-plugin-react-native": "^1.0.0",
-    "babel-eslint": "^6.0.4",
-    "jest": "^17.0.0",
-    "jest-cli": "^17.0.0"
+    "babel-cli": "6.x.x",
+    "babel-core": "6.x.x",
+    "babel-eslint": "7.x.x",
+    "babel-jest": "18.x.x",
+    "babel-polyfill": "6.x.x",
+    "babel-preset-react-native": "1.x.x",
+    "babel-register": "6.x.x",
+    "eslint": "3.x.x",
+    "eslint-plugin-babel": "3.x.x",
+    "eslint-plugin-react": "6.x.x",
+    "eslint-plugin-react-native": "2.x.x",
+    "jest": "18.x.x",
+    "jest-cli": "18.x.x",
+    "jest-react-native": "18.x.x",
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.0",
+    "react-test-renderer": "15.4.2",
+    "semver": "5.x.x"
+  },
+  "jest": {
+    "preset": "jest-react-native",
+    "testPathDirs": [
+      "node_modules",
+      "src2"
+    ],
+    "resetMocks": true,
+    "resetModules": true
   }
 }

@@ -1,6 +1,5 @@
 package com.reactnativenavigation.params.parsers;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import com.reactnativenavigation.params.CollapsingTopBarParams;
@@ -12,40 +11,50 @@ import com.reactnativenavigation.views.collapsingToolbar.behaviours.TitleBarHide
 
 class CollapsingTopBarParamsParser extends Parser {
     private Bundle params;
+    private boolean titleBarHideOnScroll;
+    private boolean drawBelowTopBar;
+    private final boolean hasReactView;
+    private final boolean hasBackgroundImage;
 
-    CollapsingTopBarParamsParser(Bundle params) {
+    CollapsingTopBarParamsParser(Bundle params, boolean titleBarHideOnScroll, boolean drawBelowTopBar) {
         this.params = params;
+        this.titleBarHideOnScroll = titleBarHideOnScroll;
+        this.drawBelowTopBar = drawBelowTopBar;
+        hasReactView = params.containsKey("collapsingToolBarComponent");
+        hasBackgroundImage = params.containsKey("collapsingToolBarImage");
     }
 
     public CollapsingTopBarParams parse() {
-        if (!hasBackgroundImage() && !shouldHideTitleBarOnScroll()) {
+        if (!validateParams()) {
             return null;
         }
-
         CollapsingTopBarParams result = new CollapsingTopBarParams();
-        if (hasBackgroundImage()) {
-            result.imageUri = params.getString("collapsingToolBarImage");
-        }
-        result.scrimColor = getColor(params, "collapsingToolBarCollapsedColor", new StyleParams.Color(Color.WHITE));
+        result.imageUri = params.getString("collapsingToolBarImage", null);
+        result.reactViewId = params.getString("collapsingToolBarComponent", null);
+        result.expendOnTopTabChange = params.getBoolean("expendCollapsingToolBarOnTopTabChange");
+        result.scrimColor = getColor(params, "collapsingToolBarCollapsedColor", new StyleParams.Color());
+        result.expendedTitleBarColor = getColor(params, "collapsingToolBarExpendedColor", new StyleParams.Color());
+        result.showTitleWhenCollapsed = hasReactView;
+        result.showTitleWhenExpended = params.getBoolean("showTitleWhenExpended", result.expendedTitleBarColor.hasColor());
         result.collapseBehaviour = getCollapseBehaviour();
         return result;
     }
 
+    private boolean validateParams() {
+        return titleBarHideOnScroll || hasImageOrReactView();
+    }
+
     private CollapseBehaviour getCollapseBehaviour() {
-        if (hasBackgroundImage()) {
+        if (hasImageOrReactView()) {
             return new CollapseTopBarBehaviour();
         }
-        if (shouldHideTitleBarOnScroll() && params.getBoolean("drawBelowTopBar", false)) {
+        if (titleBarHideOnScroll && drawBelowTopBar) {
             return new CollapseTitleBarBehaviour();
         }
         return new TitleBarHideOnScrollBehaviour();
     }
 
-    private boolean hasBackgroundImage() {
-        return params.containsKey("collapsingToolBarImage");
-    }
-
-    private boolean shouldHideTitleBarOnScroll() {
-        return params.getBoolean("titleBarHideOnScroll", false);
+    private boolean hasImageOrReactView() {
+        return hasBackgroundImage || hasReactView;
     }
 }

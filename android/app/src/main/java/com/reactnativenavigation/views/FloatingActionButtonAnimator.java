@@ -59,6 +59,7 @@ public class FloatingActionButtonAnimator {
 
     void showCollapsed() {
         animateFab(collapsedFab, 1, 0);
+        collapsedFab.bringToFront();
     }
 
     void hideExpended() {
@@ -87,6 +88,9 @@ public class FloatingActionButtonAnimator {
     }
 
     void removeFabFromScreen(FloatingActionButton fab, final AnimatorListenerAdapter animationListener) {
+        if (fab == null) {
+            return;
+        }
         state = State.Removing;
         fab.animate()
                 .alpha(0)
