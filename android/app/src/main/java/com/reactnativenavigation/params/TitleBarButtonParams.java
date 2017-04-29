@@ -10,8 +10,7 @@ public class TitleBarButtonParams extends BaseTitleBarButtonParams {
         font = styleParams.titleBarTitleFont;
     }
 
-    public boolean hasFont()
-    {
+    public boolean hasFont() {
         return font != null && font.hasFont();
     }
 }

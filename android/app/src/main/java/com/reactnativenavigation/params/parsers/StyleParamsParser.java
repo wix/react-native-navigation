@@ -14,12 +14,17 @@ public class StyleParamsParser {
         this.params = params;
     }
 
+    public StyleParamsParser merge(Bundle b) {
+        params.putAll(b);
+        return this;
+    }
+
     public StyleParams parse() {
         if (params == null) {
             return createDefaultStyleParams();
         }
 
-        StyleParams result = new StyleParams();
+        StyleParams result = new StyleParams(params);
         result.orientation = Orientation.fromString(params.getString("orientation", getDefaultOrientation()));
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
@@ -85,7 +90,7 @@ public class StyleParamsParser {
     }
 
     private StyleParams createDefaultStyleParams() {
-        StyleParams result = new StyleParams();
+        StyleParams result = new StyleParams(Bundle.EMPTY);
         result.titleBarDisabledButtonColor = getTitleBarDisabledButtonColor();
         result.topBarElevationShadowEnabled = true;
         result.titleBarHideOnScroll = false;
