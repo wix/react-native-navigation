@@ -66,6 +66,10 @@ public class TopBar extends AppBarLayout {
         titleBar.setSubtitle(subtitle);
     }
 
+    public void setButtonColor(StyleParams styleParams) {
+        titleBar.setButtonColor(styleParams.titleBarButtonColor);
+    }
+
     public void setStyle(StyleParams styleParams) {
         if (styleParams.topBarColor.hasColor()) {
             setBackgroundColor(styleParams.topBarColor.getColor());
