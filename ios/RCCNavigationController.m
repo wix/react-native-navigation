@@ -6,6 +6,7 @@
 #import <objc/runtime.h>
 #import "RCCTitleViewHelper.h"
 #import "UIViewController+Rotation.h"
+#import "RCTHelpers.h"
 
 @implementation RCCNavigationController
 {
@@ -95,7 +96,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [mergedStyle removeObjectForKey:@"autoAdjustScrollViewInsets"];
       [mergedStyle removeObjectForKey:@"statusBarTextColorSchemeSingleScreen"];
       [mergedStyle removeObjectForKey:@"disabledBackGesture"];
-      
+      [mergedStyle removeObjectForKey:@"navBarCustomView"];
+      [mergedStyle removeObjectForKey:@"navBarComponentAlignment"];
+       
       [mergedStyle addEntriesFromDictionary:navigatorStyle];
       navigatorStyle = mergedStyle;
     }
@@ -279,6 +282,11 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     else if (title)
     {
       barButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPress:)];
+
+      NSMutableDictionary *buttonTextAttributes = [RCTHelpers textAttributesFromDictionary:button withPrefix:@"button"];
+      if (buttonTextAttributes.allKeys.count > 0) {
+        [barButtonItem setTitleTextAttributes:buttonTextAttributes forState:UIControlStateNormal];
+      }
     }
     else continue;
     objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);

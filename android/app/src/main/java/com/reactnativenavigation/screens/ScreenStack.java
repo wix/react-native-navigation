@@ -1,5 +1,6 @@
 package com.reactnativenavigation.screens;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -97,8 +98,8 @@ public class ScreenStack {
             @Override
             public void onDisplay() {
                 if (isStackVisible) {
-                    NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willAppear", stack.peek().getNavigatorEventId());
-                    NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", stack.peek().getNavigatorEventId());
+                    NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", stack.peek().getNavigatorEventId());
+                    NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", stack.peek().getNavigatorEventId());
                 }
             }
         });
@@ -130,7 +131,7 @@ public class ScreenStack {
                                           @Nullable final Screen.OnDisplayListener onDisplay) {
         nextScreen.setVisibility(View.INVISIBLE);
         addScreen(nextScreen, layoutParams);
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willDisappear", previousScreen.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", previousScreen.getNavigatorEventId());
         nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
@@ -138,7 +139,7 @@ public class ScreenStack {
                     @Override
                     public void run() {
                         if (onDisplay != null) onDisplay.onDisplay();
-                        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didDisappear", previousScreen.getNavigatorEventId());
+                        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", previousScreen.getNavigatorEventId());
                         parent.removeView(previousScreen);
                     }
                 });
@@ -235,8 +236,8 @@ public class ScreenStack {
 
     private void readdPrevious(Screen previous) {
         previous.setVisibility(View.VISIBLE);
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willAppear", previous.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", previous.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", previous.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", previous.getNavigatorEventId());
         parent.addView(previous, 0);
     }
 
@@ -340,6 +341,23 @@ public class ScreenStack {
         });
     }
 
+    public void updateScreenStyle(String screenInstanceId, final Bundle styleParams) {
+        performOnScreen(screenInstanceId, new Task<Screen>() {
+            @Override
+            public void run(Screen screen) {
+                if (isScreenVisible(screen)) {
+                    screen.updateVisibleScreenStyle(styleParams);
+                } else {
+                    screen.updateInvisibleScreenStyle(styleParams);
+                }
+            }
+        });
+    }
+
+    private boolean isScreenVisible(Screen screen) {
+        return isStackVisible && peek() == screen;
+    }
+
     public void showContextualMenu(String screenInstanceId, final ContextualMenuParams params, final Callback onButtonClicked) {
         performOnScreen(screenInstanceId, new Task<Screen>() {
             @Override
@@ -354,6 +372,26 @@ public class ScreenStack {
             @Override
             public void run(Screen screen) {
                 screen.dismissContextualMenu();
+            }
+        });
+    }
+
+    public void selectTopTabByTabIndex(String screenInstanceId, final int index) {
+        performOnScreen(screenInstanceId, new Task<Screen>() {
+            @Override
+            public void run(Screen screen) {
+                if (screen.screenParams.hasTopTabs()) {
+                    ((ViewPagerScreen) screen).selectTopTabByTabIndex(index);
+                }
+            }
+        });
+    }
+
+    public void selectTopTabByScreen(final String screenInstanceId) {
+        performOnScreen(screenInstanceId, new Task<Screen>() {
+            @Override
+            public void run(Screen screen) {
+                ((ViewPagerScreen) screen).selectTopTabByTabByScreen(screenInstanceId);
             }
         });
     }
@@ -375,9 +413,8 @@ public class ScreenStack {
         if (stack.isEmpty()) {
             return;
         }
-
         for (Screen screen : stack) {
-            if (screen.getScreenInstanceId().equals(screenInstanceId)) {
+            if (screen.hasScreenInstance(screenInstanceId)) {
                 task.run(screen);
                 return;
             }
@@ -388,13 +425,13 @@ public class ScreenStack {
         isStackVisible = true;
         stack.peek().setStyle();
         stack.peek().setVisibility(View.VISIBLE);
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willAppear", stack.peek().getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", stack.peek().getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", stack.peek().getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", stack.peek().getNavigatorEventId());
     }
 
     public void hide() {
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willDisappear", stack.peek().getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didDisappear", stack.peek().getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", stack.peek().getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", stack.peek().getNavigatorEventId());
         isStackVisible = false;
         stack.peek().setVisibility(View.INVISIBLE);
     }
