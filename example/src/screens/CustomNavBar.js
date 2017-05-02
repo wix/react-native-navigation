@@ -20,7 +20,7 @@ export default class CustomNavBar extends Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity stye={styles.button} onPress={ () => alert('Thanks for that :)') }>
-          <Text style={{color: 'red', textAlign: 'center'}}>Hi Custom</Text>
+          <Text style={{color: 'red', textAlign: 'center'}}>{this.props.name}</Text>
           <Text style={{textAlign: 'center'}}>Press Me</Text>
         </TouchableOpacity>
 
