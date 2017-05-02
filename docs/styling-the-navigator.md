@@ -20,7 +20,16 @@ export default class StyledScreen extends Component {
   }
 ```
 
-#### Style object format
+## Setting styles dynamically
+Use the `setStyle` method to change a screen's style dynamically.
+
+```js
+this.props.navigator.setStyle({
+  navBarBackgroundColor: 'blue'
+});
+```
+
+## Style object format
 
 ```js
 {

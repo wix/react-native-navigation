@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.widget.RelativeLayout;
@@ -25,6 +26,7 @@ import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.params.parsers.StyleParamsParser;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
@@ -50,7 +52,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     private final LeftButtonOnClickListener leftButtonOnClickListener;
     private VisibilityAnimator topBarVisibilityAnimator;
     private ScreenAnimator screenAnimator;
-    protected final StyleParams styleParams;
+    protected StyleParams styleParams;
     public final SharedElements sharedElements;
 
     public Screen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener leftButtonOnClickListener) {
@@ -78,6 +80,21 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         if (ViewPagerScreenChangedEvent.TYPE.equals(event.getType()) && isShown() ) {
             topBar.dismissContextualMenu();
         }
+    }
+
+    public void updateVisibleScreenStyle(Bundle styleParams) {
+        updateStyle(styleParams);
+        setStyle();
+    }
+
+    public void updateInvisibleScreenStyle(Bundle styleParams) {
+        updateStyle(styleParams);
+    }
+
+    private void updateStyle(Bundle styleParams) {
+        screenParams.styleParams = new StyleParamsParser(screenParams.styleParams.params).merge(styleParams).parse();
+        this.styleParams = screenParams.styleParams;
+        topBar.setButtonColor(this.styleParams);
     }
 
     public void setStyle() {
@@ -179,6 +196,10 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         return screenParams.getScreenInstanceId();
     }
 
+    public boolean hasScreenInstance(String screenInstanceId) {
+        return screenParams.getScreenInstanceId().equals(screenInstanceId);
+    }
+
     public abstract String getNavigatorEventId();
 
     public BaseScreenParams getScreenParams() {
@@ -229,27 +250,27 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         }
 
         for (TitleBarButtonParams titleBarButtonParam : titleBarButtonParams) {
-            titleBarButtonParam.setStyleFromScreen(screenParams.styleParams);
+            titleBarButtonParam.setStyleFromScreen(styleParams);
         }
     }
 
     public abstract void setOnDisplayListener(OnDisplayListener onContentViewDisplayedListener);
 
     public void show() {
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willAppear", screenParams.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", screenParams.getNavigatorEventId());
         screenAnimator.show(screenParams.animateScreenTransitions);
     }
 
     public void show(boolean animated) {
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willAppear", screenParams.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", screenParams.getNavigatorEventId());
         screenAnimator.show(animated);
     }
 
     public void show(boolean animated, Runnable onAnimationEnd) {
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willAppear", screenParams.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", screenParams.getNavigatorEventId());
         setStyle();
         screenAnimator.show(animated, onAnimationEnd);
     }
@@ -296,8 +317,8 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     private void hide(boolean animated, Runnable onAnimatedEnd) {
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("willDisappear", screenParams.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("didDisappear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", screenParams.getNavigatorEventId());
         screenAnimator.hide(animated, onAnimatedEnd);
     }
 

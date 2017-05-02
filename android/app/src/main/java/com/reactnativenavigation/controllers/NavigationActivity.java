@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -290,12 +291,27 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.setFab(screenInstanceId, navigatorEventId, fab);
     }
 
+    public void setScreenStyle(String screenInstanceId, Bundle styleParams) {
+        layout.updateScreenStyle(screenInstanceId, styleParams);
+        modalController.updateScreenStyle(screenInstanceId, styleParams);
+    }
+
     public void toggleSideMenuVisible(boolean animated, Side side) {
         layout.toggleSideMenuVisible(animated, side);
     }
 
     public void setSideMenuVisible(boolean animated, boolean visible, Side side) {
         layout.setSideMenuVisible(animated, visible, side);
+    }
+
+    public void selectTopTabByTabIndex(String screenInstanceId, int index) {
+        layout.selectTopTabByTabIndex(screenInstanceId, index);
+        modalController.selectTopTabByTabIndex(screenInstanceId, index);
+    }
+
+    public void selectTopTabByScreen(String screenInstanceId) {
+        layout.selectTopTabByScreen(screenInstanceId);
+        modalController.selectTopTabByScreen(screenInstanceId);
     }
 
     public void selectBottomTabByTabIndex(Integer index) {
@@ -398,7 +414,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         requestPermissions(permissions, requestCode);
     }
 
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         NavigationApplication.instance.getActivityCallbacks().onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             mPermissionListener = null;

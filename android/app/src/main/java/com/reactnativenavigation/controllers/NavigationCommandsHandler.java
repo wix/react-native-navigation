@@ -247,6 +247,19 @@ public class NavigationCommandsHandler {
         });
     }
 
+    public static void setScreenStyle(final String screenInstanceId, final Bundle styleParams) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.setScreenStyle(screenInstanceId, styleParams);
+            }
+        });
+    }
+
     public static void dismissTopModal() {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
@@ -299,6 +312,33 @@ public class NavigationCommandsHandler {
             @Override
             public void run() {
                 currentActivity.setSideMenuVisible(animated, visible, side);
+            }
+        });
+    }
+
+    public static void selectTopTabByTabIndex(final String screenInstanceId, final int index) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.selectTopTabByTabIndex(screenInstanceId, index);
+            }
+        });
+    }
+
+    public static void selectTopTabByScreen(final String screenInstanceId) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.selectTopTabByScreen(screenInstanceId);
             }
         });
     }
