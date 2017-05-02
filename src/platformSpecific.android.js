@@ -169,6 +169,10 @@ function dismissContextualMenu(screenInstanceID) {
   NativeReactModule.dismissContextualMenu(screenInstanceID);
 }
 
+function setScreenStyle(screenInstanceId, style) {
+  NativeReactModule.setScreenStyle(screenInstanceId, style);
+}
+
 module.exports = {
   startApp,
   push,
@@ -200,5 +204,6 @@ module.exports = {
   showSnackbar,
   dismissSnackbar,
   showContextualMenu,
-  dismissContextualMenu
+  dismissContextualMenu,
+  setScreenStyle
 };

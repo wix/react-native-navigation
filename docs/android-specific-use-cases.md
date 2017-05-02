@@ -70,6 +70,21 @@ public class MyApplication extends NavigationApplication {
 ## Splash screen
 Override `getSplashLayout` or `createSplashLayout` in `MainActivity` to provide a splash layout which will be displayed while Js context initialises.
 
+## Snackbar
+Snackbars provide lightweight feedback about an operation. They show a brief message at the bottom of the screen. Snackbars appear above all other elements on screen and only one can be displayed at a time.
+
+```js
+this.props.navigator.showSnackbar({
+  text: 'Hello from Snackbar',
+  actionText: 'done', // optional
+  actionId: 'fabClicked', // Mandatory if you've set actionText
+  actionColor: 'green', // optional
+  textColor: 'red', // optional
+  backgroundColor: 'blue', // optional
+  duration: 'indefinite' // default is `short`. Available options: short, long, indefinite
+});
+```
+
 ## Collapsing React header
 A screen can have a header, either an image or a react component, that collapses as the screen is scrolled.
 

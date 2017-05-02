@@ -1,5 +1,6 @@
 package com.reactnativenavigation.screens;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -338,6 +339,23 @@ public class ScreenStack {
                 screen.setFab(fabParams);
             }
         });
+    }
+
+    public void updateScreenStyle(String screenInstanceId, final Bundle styleParams) {
+        performOnScreen(screenInstanceId, new Task<Screen>() {
+            @Override
+            public void run(Screen screen) {
+                if (isScreenVisible(screen)) {
+                    screen.updateVisibleScreenStyle(styleParams);
+                } else {
+                    screen.updateInvisibleScreenStyle(styleParams);
+                }
+            }
+        });
+    }
+
+    private boolean isScreenVisible(Screen screen) {
+        return isStackVisible && peek() == screen;
     }
 
     public void showContextualMenu(String screenInstanceId, final ContextualMenuParams params, final Callback onButtonClicked) {

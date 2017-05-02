@@ -89,11 +89,7 @@ class Navigator {
   }
 
   setStyle(params = {}) {
-    if (Platform.OS === 'ios') {
-      return platformSpecific.navigatorSetStyle(this, params);
-    } else {
-      console.log(`Setting style isn\'t supported on ${Platform.OS} yet`);
-    }
+    return platformSpecific.navigatorSetStyle(this, params);
   }
 
   toggleDrawer(params = {}) {
