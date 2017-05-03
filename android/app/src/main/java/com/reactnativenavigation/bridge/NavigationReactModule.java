@@ -97,6 +97,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setScreenStyle(String screenInstanceId, ReadableMap style) {
+        NavigationCommandsHandler.setScreenStyle(screenInstanceId, BundleConverter.toBundle(style));
+    }
+
+    @ReactMethod
     public void setBottomTabBadgeByIndex(Integer index, String badge) {
         NavigationCommandsHandler.setBottomTabBadgeByIndex(index, badge);
     }

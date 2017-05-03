@@ -1,5 +1,6 @@
 package com.reactnativenavigation.layouts;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -258,6 +259,11 @@ public class SingleScreenLayout extends BaseLayout {
     @Override
     public void selectTopTabByScreen(String screenInstanceId) {
         stack.selectTopTabByScreen(screenInstanceId);
+    }
+
+    @Override
+    public void updateScreenStyle(String screenInstanceId, Bundle styleParams) {
+        stack.updateScreenStyle(screenInstanceId, styleParams);
     }
 
     @Override

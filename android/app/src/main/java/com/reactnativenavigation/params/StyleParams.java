@@ -7,6 +7,11 @@ import android.support.annotation.ColorInt;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 public class StyleParams {
+    public Bundle params;
+
+    public StyleParams(Bundle params) {
+        this.params = params;
+    }
     public static class Color {
         @ColorInt
         private Integer color = null;
