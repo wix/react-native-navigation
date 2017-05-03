@@ -253,13 +253,22 @@ public class TitleBar extends Toolbar {
             return;
         }
         updateButtonColor(titleBarButtonColor);
+        setLeftButtonColor(titleBarButtonColor);
         setButtonsIconColor();
         setButtonTextColor();
     }
 
+    private void setLeftButtonColor(StyleParams.Color titleBarButtonColor) {
+        if (leftButton != null) {
+            leftButton.setColor(titleBarButtonColor.getColor());
+        }
+    }
+
     private void updateButtonColor(StyleParams.Color titleBarButtonColor) {
-        for (TitleBarButtonParams rightButton : rightButtons) {
-            rightButton.color = titleBarButtonColor;
+        if (rightButtons != null) {
+            for (TitleBarButtonParams rightButton : rightButtons) {
+                rightButton.color = titleBarButtonColor;
+            }
         }
     }
 
