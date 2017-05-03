@@ -1,5 +1,6 @@
 package com.reactnativenavigation.controllers;
 
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
@@ -127,6 +128,12 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
     void setFab(String screenInstanceId, String navigatorEventId, FabParams fab) {
         for (Modal modal : stack) {
             modal.setFab(screenInstanceId, navigatorEventId, fab);
+        }
+    }
+
+    void updateScreenStyle(String screenInstanceId, Bundle styleParams) {
+        for (Modal modal : stack) {
+            modal.updateScreenStyle(screenInstanceId, styleParams);
         }
     }
 

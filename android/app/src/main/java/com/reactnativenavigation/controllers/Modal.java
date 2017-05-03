@@ -3,11 +3,13 @@ package com.reactnativenavigation.controllers;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.facebook.react.bridge.Callback;
+import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.layouts.Layout;
 import com.reactnativenavigation.layouts.ModalScreenLayout;
@@ -53,6 +55,10 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
 
     void setFab(String screenInstanceId, String navigatorEventId, FabParams fab) {
         layout.setFab(screenInstanceId, navigatorEventId, fab);
+    }
+
+    void updateScreenStyle(String screenInstanceId, Bundle styleParams) {
+        layout.updateScreenStyle(screenInstanceId, styleParams);
     }
 
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
@@ -167,6 +173,15 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         if (!layout.onBackPressed()) {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void dismiss() {
+        if (!isDestroyed) {
+            NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", layout.getCurrentScreen().getNavigatorEventId());
+            NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", layout.getCurrentScreen().getNavigatorEventId());
+        }
+        super.dismiss();
     }
 
     @Override

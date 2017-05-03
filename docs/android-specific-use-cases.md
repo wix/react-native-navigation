@@ -68,7 +68,52 @@ public class MyApplication extends NavigationApplication {
 `MainActivity` extends `SplashActiviy` which is used to start the react context. Once react is up and running `MainActivity` is **stopped** and another activity takes over to run our app: `NavigationActivity`. Due to this design, there's usually no point in overriding lifecycle callbacks in `MainActivity`.
 
 ## Splash screen
-Override `getSplashLayout` or `createSplashLayout` in `MainActivity` to provide a splash layout which will be displayed while Js context initialises.
+Override `getSplashLayout` or `createSplashLayout` in `MainActivity` to provide a splash layout which will be displayed while Js context initialises, for example:
+
+```java
+import android.widget.LinearLayout;
+import android.graphics.Color;
+import android.widget.TextView;
+import android.view.Gravity;
+import android.util.TypedValue;
+
+import com.reactnativenavigation.controllers.SplashActivity;
+
+public class MainActivity extends SplashActivity {
+
+    @Override
+    public LinearLayout createSplashLayout() {
+        LinearLayout view = new LinearLayout(this);
+        TextView textView = new TextView(this);
+
+        view.setBackgroundColor(Color.parseColor("#607D8B"));
+        view.setGravity(Gravity.CENTER);
+
+        textView.setTextColor(Color.parseColor("#FFFFFF"));
+        textView.setText("React Native Navigation");
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 40);
+
+        view.addView(textView);
+        return view;
+    }
+}
+```
+
+## Snackbar
+Snackbars provide lightweight feedback about an operation. They show a brief message at the bottom of the screen. Snackbars appear above all other elements on screen and only one can be displayed at a time.
+
+```js
+this.props.navigator.showSnackbar({
+  text: 'Hello from Snackbar',
+  actionText: 'done', // optional
+  actionId: 'fabClicked', // Mandatory if you've set actionText
+  actionColor: 'green', // optional
+  textColor: 'red', // optional
+  backgroundColor: 'blue', // optional
+  duration: 'indefinite' // default is `short`. Available options: short, long, indefinite
+});
+```
 
 ## Collapsing React header
 A screen can have a header, either an image or a react component, that collapses as the screen is scrolled.
