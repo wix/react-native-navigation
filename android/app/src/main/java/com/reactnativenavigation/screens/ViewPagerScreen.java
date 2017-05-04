@@ -40,6 +40,11 @@ public class ViewPagerScreen extends Screen {
     }
 
     @Override
+    public ContentView getContentView() {
+        return contentViews.get(viewPager.getCurrentItem());
+    }
+
+    @Override
     protected void createContent() {
         TopTabs topTabs = topBar.initTabs();
         createViewPager();
@@ -121,5 +126,27 @@ public class ViewPagerScreen extends Screen {
     @Override
     public String getNavigatorEventId() {
         return screenParams.topTabParams.get(viewPager.getCurrentItem()).navigationParams.navigatorEventId;
+    }
+
+    public void selectTopTabByTabIndex(int index) {
+        viewPager.setCurrentItem(index);
+    }
+
+    @Override
+    public boolean hasScreenInstance(String screenInstanceId) {
+        for (PageParams topTabParam : screenParams.topTabParams) {
+            if(screenInstanceId.equals(topTabParam.getScreenInstanceId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void selectTopTabByTabByScreen(String screenInstanceId) {
+        for (int i = 0; i < screenParams.topTabParams.size(); i++) {
+            if (screenParams.topTabParams.get(i).getScreenInstanceId().equals(screenInstanceId)) {
+                viewPager.setCurrentItem(i);
+            }
+        }
     }
 }

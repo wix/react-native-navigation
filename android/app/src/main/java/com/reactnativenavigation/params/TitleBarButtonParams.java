@@ -1,22 +1,16 @@
 package com.reactnativenavigation.params;
 
 public class TitleBarButtonParams extends BaseTitleBarButtonParams {
-    public String eventId;
-    public StyleParams.Color color;
-    public StyleParams.Color disabledColor;
-    public boolean enabled = true;
+    public StyleParams.Font font;
     public String hint;
 
-    public void setColorFromScreenStyle(StyleParams.Color titleBarButtonColor) {
-        if (!color.hasColor() && titleBarButtonColor.hasColor()) {
-            color = titleBarButtonColor;
-        }
+    @Override
+    public void setStyleFromScreen(StyleParams styleParams) {
+        super.setStyleFromScreen(styleParams);
+        font = styleParams.titleBarTitleFont;
     }
 
-    public StyleParams.Color getColor() {
-        if (enabled) {
-            return color;
-        }
-        return disabledColor.hasColor() ? disabledColor : AppStyle.appStyle.titleBarDisabledButtonColor;
+    public boolean hasFont() {
+        return font != null && font.hasFont();
     }
 }

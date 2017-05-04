@@ -1,11 +1,9 @@
 # Android Installation
-
-### Important
-The following instructions are for the `next` version `2.0.0-experimental.x`, which supports react-native `0.40.0` or higher. To use it specify `"react-native-navigation": "next"` in your package.json dependencies. Bear in mind, as the name of the version suggests - this version is experimental and under heavy development.
+First add `react-native-navigation` as an npm dependency: `yarn add react-native-navigation`
 
 ----
 
-* Make sure you are using react-native version 0.40.0 or above
+* Make sure you are using react-native version 0.43 or above
  
 1.  Add the following to your `settings.gradle` file located in the `android` folder:
 
@@ -16,6 +14,12 @@ The following instructions are for the `next` version `2.0.0-experimental.x`, wh
 	
 2. Update project dependencies in `build.gradle` under `app` folder.
 	```groovy
+	android {
+	    compileSdkVersion 25
+	    buildToolsVersion "25.0.1"
+	    ...
+	}
+
 	dependencies {
 	    compile fileTree(dir: "libs", include: ["*.jar"])
 	    compile "com.android.support:appcompat-v7:23.0.1"
@@ -47,7 +51,7 @@ The following instructions are for the `next` version `2.0.0-experimental.x`, wh
 	```java
 	import com.reactnativenavigation.NavigationApplication;
 	
-	public class MyApplication extends NavigationApplication {
+	public class MainApplication extends NavigationApplication {
  
     	@Override
 		public boolean isDebug() {
@@ -57,9 +61,13 @@ The following instructions are for the `next` version `2.0.0-experimental.x`, wh
 
 	    @Override
 	    public List<ReactPackage> createAdditionalReactPackages() {
-		    // Add the packages you require here.
-			// No need to add RnnPackage and MainReactPackage
-	        return null;
+		// Add additional packages you require here
+		return Arrays.<ReactPackage>asList(
+           	    new InsertPackageName() // For example: new VectorIconsPackage()
+       		);
+		// No need to add RnnPackage and MainReactPackage
+		// Simply return null if you do not have additional packages:
+		// return null;
 	    }
 	}
 	```

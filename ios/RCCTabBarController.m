@@ -97,6 +97,12 @@
       UIColor *color = tabBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarBackgroundColor] : nil;
       self.tabBar.barTintColor = color;
     }
+
+    NSString *tabBarTranslucent = tabsStyle[@"tabBarTranslucent"];
+    if (tabBarTranslucent)
+    {
+      self.tabBar.translucent = [tabBarTranslucent boolValue] ? YES : NO;
+    }
   }
   
   NSMutableArray *viewControllers = [NSMutableArray array];
@@ -139,6 +145,22 @@
     viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
     viewController.tabBarItem.selectedImage = iconImageSelected;
+    
+    id imageInsets = tabItemLayout[@"props"][@"iconInsets"];
+    if (imageInsets && imageInsets != (id)[NSNull null])
+    {
+      id topInset = imageInsets[@"top"];
+      id leftInset = imageInsets[@"left"];
+      id bottomInset = imageInsets[@"bottom"];
+      id rightInset = imageInsets[@"right"];
+      
+      CGFloat top = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:topInset] : 0;
+      CGFloat left = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:leftInset] : 0;
+      CGFloat bottom = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:bottomInset] : 0;
+      CGFloat right = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:rightInset] : 0;
+      
+      viewController.tabBarItem.imageInsets = UIEdgeInsetsMake(top, left, bottom, right);
+    }
     
     NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
     if (!unselectedAttributes[NSForegroundColorAttributeName] && buttonColor) {

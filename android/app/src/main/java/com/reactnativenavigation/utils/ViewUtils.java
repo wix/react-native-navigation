@@ -80,6 +80,13 @@ public class ViewUtils {
         return metrics.heightPixels;
     }
 
+    public static float getScreenWidth() {
+        WindowManager wm = (WindowManager) NavigationApplication.instance.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        return metrics.widthPixels;
+    }
+
     private static int compatGenerateViewId() {
         for (; ; ) {
             final int result = viewId.get();
@@ -161,11 +168,11 @@ public class ViewUtils {
     public static Point getLocationOnScreen(View view) {
         int[] xy = new int[2];
         view.getLocationOnScreen(xy);
-        xy[1] -= getStatusBarPixelHeight();
+        xy[1] -= getStatusBarHeight();
         return new Point(xy[0], xy[1]);
     }
 
-    private static int getStatusBarPixelHeight() {
+    private static int getStatusBarHeight() {
         if (statusBarHeight > 0) {
             return statusBarHeight;
         }
@@ -178,7 +185,7 @@ public class ViewUtils {
     }
 
     public static ForegroundColorSpan[] getForegroundColorSpans(TextView view) {
-        SpannedString text = (SpannedString) view.getText();
+        SpannedString text = new SpannedString(view.getText());
         return text.getSpans(0, text.length(), ForegroundColorSpan.class);
     }
 

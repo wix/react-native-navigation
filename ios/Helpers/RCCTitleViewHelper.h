@@ -23,7 +23,8 @@
 - (instancetype)init:(UIViewController*)viewController
 navigationController:(UINavigationController*)navigationController
                title:(NSString*)title subtitle:(NSString*)subtitle
-      titleImageData:(id)titleImageData;
+      titleImageData:(id)titleImageData
+       isSetSubtitle:(BOOL)isSetSubtitle;
 
 -(void)setup:(NSDictionary*)style;
 

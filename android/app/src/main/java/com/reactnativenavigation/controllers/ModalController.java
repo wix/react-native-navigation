@@ -1,6 +1,8 @@
 package com.reactnativenavigation.controllers;
 
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
 
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.events.EventBus;
@@ -129,6 +131,12 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
         }
     }
 
+    void updateScreenStyle(String screenInstanceId, Bundle styleParams) {
+        for (Modal modal : stack) {
+            modal.updateScreenStyle(screenInstanceId, styleParams);
+        }
+    }
+
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
         for (Modal modal : stack) {
             modal.showContextualMenu(screenInstanceId, params, onButtonClicked);
@@ -158,5 +166,21 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
 
     void hideSlidingOverlay() {
         stack.peek().hideSlidingOverlay();
+    }
+
+    Window getWindow() {
+        return stack.peek().getWindow();
+    }
+
+    void selectTopTabByTabIndex(String screenInstanceId, int index) {
+        for (Modal modal : stack) {
+            modal.selectTopTabByTabIndex(screenInstanceId, index);
+        }
+    }
+
+    void selectTopTabByScreen(String screenInstanceId) {
+        for (Modal modal : stack) {
+            modal.selectTopTabByScreen(screenInstanceId);
+        }
     }
 }

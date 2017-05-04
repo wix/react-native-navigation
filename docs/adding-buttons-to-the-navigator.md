@@ -12,7 +12,10 @@ class FirstTabScreen extends Component {
         testID: 'e2e_rules', // optional, used to locate this view in end-to-end tests
         disabled: true, // optional, used to disable the button (appears faded and doesn't interact)
         disableIconTint: true, // optional, by default the image colors are overridden and tinted to navBarButtonColor, set to true to keep the original image colors
-        showAsAction: 'ifRoom' // optional, Android only. Control how the button is displayed in the Toolbar. Accepted valued: 'ifRoom' (default) - Show this item as a button in an Action Bar if the system decides there is room for it. 'always' - Always show this item as a button in an Action Bar. 'withText' - When this item is in the action bar, always show it with a text label even if it also has an icon specified. 'never' - Never show this item as a button in an Action Bar.
+        showAsAction: 'ifRoom', // optional, Android only. Control how the button is displayed in the Toolbar. Accepted valued: 'ifRoom' (default) - Show this item as a button in an Action Bar if the system decides there is room for it. 'always' - Always show this item as a button in an Action Bar. 'withText' - When this item is in the action bar, always show it with a text label even if it also has an icon specified. 'never' - Never show this item as a button in an Action Bar.
+        buttonColor: 'blue', // Set color for the button (can also be used in setButtons function to set different button style programatically)
+        buttonFontSize: 14, // Set font size for the button (can also be used in setButtons function to set different button style programatically)
+        buttonFontWeight: '600', // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
       },
       {
         icon: require('../../img/navicon_add.png'), // for icon button, provide the local image asset name
@@ -53,20 +56,21 @@ class FirstTabScreen extends Component {
     testID: 'e2e_is_awesome', // if you have e2e tests, use this to find your button
     disabled: true, // optional, used to disable the button (appears faded and doesn't interact)
     disableIconTint: true, // optional, by default the image colors are overridden and tinted to navBarButtonColor, set to true to keep the original image colors
+    buttonColor: 'blue', // Set color for the button (can also be used in setButtons function to set different button style programatically)
+    buttonFontSize: 14, // Set font size for the button (can also be used in setButtons function to set different button style programatically)
+    buttonFontWeight: '600', // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
   }],
   leftButtons: [] // buttons for the left side of the nav bar (optional)
 }
 ```
 
 ##### Android left button
-On Android, only four button types are supported. You can use them by specifying one of the following ids in your left button definition:
+On Android, four button types are supported by default without the need to provide an icon. You can use them by specifying one of the following ids in your left button definition:
 
 * back
 * cancel
 * accept
 * sideMenu
-
-> Note: It's currently not possibly to change left button icon on Android.
 
 #### Floating Action Button (FAB) - Android only
 Each screen can contain a single Fab which is displayed at the bottom right corner of the screen.

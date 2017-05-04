@@ -114,7 +114,7 @@ this.props.navigator.dismissLightBox();
 
 ## handleDeepLink(params = {})
 
-Trigger a deep link within the app. See [deep links](#deep-links) for more details about how screens can listen for deep link events.
+Trigger a deep link within the app. See [deep links](https://wix.github.io/react-native-navigation/#/deep-links) for more details about how screens can listen for deep link events.
 
 ```js
 this.props.navigator.handleDeepLink({
@@ -156,6 +156,17 @@ Set the nav bar title dynamically. If your title doesn't change during runtime, 
 ```js
 this.props.navigator.setTitle({
   title: "Dynamic Title" // the new title of the screen as appears in the nav bar
+});
+```
+
+
+## setSubTitle(params = {})
+
+Set the nav bar subtitle dynamically. If your subtitle doesn't change during runtime, set it when the screen is defined / pushed.
+
+```js
+this.props.navigator.setSubTitle({
+  subtitle: "Connecting..." 
 });
 ```
 
