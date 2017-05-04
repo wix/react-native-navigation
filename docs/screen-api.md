@@ -159,6 +159,17 @@ this.props.navigator.setTitle({
 });
 ```
 
+
+## setSubTitle(params = {})
+
+Set the nav bar subtitle dynamically. If your subtitle doesn't change during runtime, set it when the screen is defined / pushed.
+
+```js
+this.props.navigator.setSubTitle({
+  subtitle: "Connecting..." 
+});
+```
+
 ## toggleDrawer(params = {})
 
 Toggle the side menu drawer assuming you have one in your app.
