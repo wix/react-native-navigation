@@ -114,7 +114,7 @@ this.props.navigator.dismissLightBox();
 
 ## handleDeepLink(params = {})
 
-Trigger a deep link within the app. See [deep links](#deep-links) for more details about how screens can listen for deep link events.
+Trigger a deep link within the app. See [deep links](https://wix.github.io/react-native-navigation/#/deep-links) for more details about how screens can listen for deep link events.
 
 ```js
 this.props.navigator.handleDeepLink({
