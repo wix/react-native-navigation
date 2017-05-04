@@ -121,7 +121,7 @@ class Navigator {
   }
 
   showSnackbar(params = {}) {
-    return platformSpecific.showSnackbar(this, params);
+    return platformSpecific.showSnackbar(params);
   }
 
   dismissSnackbar() {
