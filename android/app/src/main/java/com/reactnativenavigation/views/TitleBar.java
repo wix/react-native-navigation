@@ -161,6 +161,9 @@ public class TitleBar extends Toolbar {
 
     private void updateLeftButton(TitleBarLeftButtonParams leftButtonParams) {
         leftButton.setIconState(leftButtonParams);
+        if (leftButtonParams.icon != null) {
+            setNavigationIcon(leftButtonParams.icon);
+        }
     }
 
     private boolean shouldSetLeftButton(TitleBarLeftButtonParams leftButtonParams) {
