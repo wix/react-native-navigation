@@ -61,7 +61,7 @@ public class TitleBar extends Toolbar {
         if (shouldSetLeftButton(leftButtonParams)) {
             createAndSetLeftButton(leftButtonParams, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
         } else if (hasLeftButton()) {
-            if (leftButtonParams.hasIcon()) {
+            if (leftButtonParams.hasDefaultIcon()) {
                 updateLeftButton(leftButtonParams);
             } else {
                 removeLeftButton();
@@ -164,7 +164,7 @@ public class TitleBar extends Toolbar {
     }
 
     private boolean shouldSetLeftButton(TitleBarLeftButtonParams leftButtonParams) {
-        return leftButton == null && leftButtonParams != null && leftButtonParams.iconState != null;
+        return leftButton == null && leftButtonParams != null && (leftButtonParams.hasDefaultIcon() || leftButtonParams.hasCustomIcon());
     }
 
     private void createAndSetLeftButton(TitleBarLeftButtonParams leftButtonParams,

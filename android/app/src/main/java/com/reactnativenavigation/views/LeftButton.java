@@ -8,6 +8,7 @@ import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.utils.ViewUtils;
 
 class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
 
@@ -64,18 +65,29 @@ class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
 
     private void setInitialState() {
         if (params != null) {
-            setIconState(params.iconState);
+            if (params.iconState != null) {
+                setIconState(params.iconState);
+            }
         } else {
             setVisible(false);
         }
     }
 
+    @Override
+    public void setColor(int color) {
+        if (params.hasDefaultIcon()) {
+            super.setColor(color);
+        } else {
+            ViewUtils.tintDrawable(params.icon, color, true );
+        }
+    }
+
     private boolean isBackButton() {
-        return getIconState() == IconState.ARROW;
+        return params.hasDefaultIcon() && getIconState() == IconState.ARROW;
     }
 
     private boolean isSideMenuButton() {
-        return getIconState() == IconState.BURGER;
+        return params.hasDefaultIcon() && getIconState() == IconState.BURGER;
     }
 
     private void sendClickEvent() {
