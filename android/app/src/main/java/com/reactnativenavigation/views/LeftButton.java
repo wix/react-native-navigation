@@ -34,14 +34,18 @@ class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
         this.navigatorEventId = navigatorEventId;
         this.overrideBackPressInJs = overrideBackPressInJs;
         setInitialState();
+        setColor();
     }
 
     void setIconState(TitleBarLeftButtonParams params) {
         this.params = params;
-        if (params.color.hasColor()) {
-            setColor(params.color.getColor());
-        }
+        setColor();
         animateIconState(params.iconState);
+    }
+
+    void setCustomIcon(TitleBarLeftButtonParams params) {
+        this.params = params;
+        setColor();
     }
 
     @Override
@@ -70,6 +74,17 @@ class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
             }
         } else {
             setVisible(false);
+        }
+    }
+
+    private void setColor() {
+        if (!params.color.hasColor()) {
+            return;
+        }
+        if (params.hasDefaultIcon()) {
+            setColor(params.color.getColor());
+        } else if (params.hasCustomIcon()) {
+            ViewUtils.tintDrawable(params.icon, params.color.getColor(), true);
         }
     }
 
