@@ -128,15 +128,6 @@ this.props.navigator.handleDeepLink({
   Navigation.handleDeepLink(...);
 ```
 
-## setOnNavigatorEvent(callback)
-
-Set a handler for navigator events (like nav button press). This would normally go in your component constructor.
-
-```js
-// this.onNavigatorEvent will be our handler
-this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-```
-
 ## setButtons(params = {})
 
 Set buttons dynamically on the navigator. If your buttons don't change during runtime, see "Adding buttons to the navigator" below to add them using `static navigatorButtons = {...};`.
@@ -166,7 +157,7 @@ Set the nav bar subtitle dynamically. If your subtitle doesn't change during run
 
 ```js
 this.props.navigator.setSubTitle({
-  subtitle: "Connecting..." 
+  subtitle: "Connecting..."
 });
 ```
 
@@ -236,6 +227,15 @@ this.props.navigator.toggleNavBar({
 });
 ```
 
+## setOnNavigatorEvent(callback)
+
+Set a handler for navigator events (like nav button press). This would normally go in your component constructor.
+
+```js
+// this.onNavigatorEvent will be our handler
+this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+```
+
 # Screen Visibility
 Listen to screen visibility events in onNavigatorEvent handler:
 
@@ -256,6 +256,24 @@ export default class ExampleScreen extends Component {
       case 'didDisappear':
         break;
     }
+  }
+}
+```
+
+# Listening to tab selected events
+In order to listen to `bottomTabSelected` event, set an `onNavigatorEventListener` on screens that are pushed to BottomTab. The event is dispatched to the top most screen pushed to the selected tab's stack.
+
+```js
+export default class ExampleScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  onNavigatorEvent(event) {
+	if (event.id === 'bottomTabSelected') {
+	  console.log('Tab selected!');
+	}
   }
 }
 ```
