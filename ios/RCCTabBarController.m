@@ -261,6 +261,47 @@
     }
   }
   
+  if ([performAction isEqualToString:@"setTabButton"])
+  {
+    UIViewController *viewController = nil;
+    NSNumber *tabIndex = actionParams[@"tabIndex"];
+    if (tabIndex)
+    {
+      int i = (int)[tabIndex integerValue];
+      
+      if ([self.viewControllers count] > i)
+      {
+        viewController = [self.viewControllers objectAtIndex:i];
+      }
+    }
+    NSString *contentId = actionParams[@"contentId"];
+    NSString *contentType = actionParams[@"contentType"];
+    if (contentId && contentType)
+    {
+      viewController = [[RCCManager sharedInstance] getControllerWithId:contentId componentType:contentType];
+    }
+    
+    if (viewController)
+    {
+      UIImage *iconImage = nil;
+      id icon = actionParams[@"icon"];
+      if (icon && icon != (id)[NSNull null])
+      {
+        iconImage = [RCTConvert UIImage:icon];
+        iconImage = [[self image:iconImage withColor:self.tabBar.tintColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        viewController.tabBarItem.image = iconImage;
+      
+      }
+      UIImage *iconImageSelected = nil;
+      id selectedIcon = actionParams[@"selectedIcon"];
+      if (selectedIcon && selectedIcon != (id)[NSNull null])
+      {
+        iconImageSelected = [RCTConvert UIImage:selectedIcon];
+        viewController.tabBarItem.selectedImage = iconImageSelected;
+      }
+    }
+  }
+  
   if ([performAction isEqualToString:@"setTabBarHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];

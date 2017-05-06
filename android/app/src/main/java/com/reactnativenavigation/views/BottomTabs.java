@@ -51,6 +51,14 @@ public class BottomTabs extends AHBottomNavigation {
         setVisibility(params.bottomTabsHidden, true);
     }
 
+    public void setTabButton(ScreenParams params, Integer index) {
+        if (params.tabIcon != null) {
+            AHBottomNavigationItem item = this.getItem(index);
+            item.setDrawable(params.tabIcon);
+            refresh();
+        }
+    }
+
     private void setTitlesDisplayState() {
         if (AppStyle.appStyle.forceTitlesDisplay) {
             setTitleState(TitleState.ALWAYS_SHOW);

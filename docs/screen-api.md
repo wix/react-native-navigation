@@ -159,6 +159,17 @@ this.props.navigator.setTitle({
 });
 ```
 
+
+## setSubTitle(params = {})
+
+Set the nav bar subtitle dynamically. If your subtitle doesn't change during runtime, set it when the screen is defined / pushed.
+
+```js
+this.props.navigator.setSubTitle({
+  subtitle: "Connecting..." 
+});
+```
+
 ## toggleDrawer(params = {})
 
 Toggle the side menu drawer assuming you have one in your app.
@@ -190,6 +201,17 @@ Set the badge on a tab (any string or numeric value).
 this.props.navigator.setTabBadge({
   tabIndex: 0, // (optional) if missing, the badge will be added to this screen's tab
   badge: 17 // badge value, null to remove badge
+});
+```
+## setTabButton(params = {})
+
+Change the tab icon on a bottom tab.
+
+```js
+this.props.navigator.setTabButton({
+  tabIndex: 0, // (optional) if missing, the icon will be added to this screen's tab
+  icon: require('../img/one.png'), // local image asset for the tab icon unselected state (optional)
+  selectedIcon: require('../img/one_selected.png'), // local image asset for the tab icon selected state (optional, iOS only)
 });
 ```
 
