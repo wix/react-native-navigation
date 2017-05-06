@@ -8,6 +8,7 @@ import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.utils.ViewUtils;
 
 class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
 
@@ -33,14 +34,18 @@ class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
         this.navigatorEventId = navigatorEventId;
         this.overrideBackPressInJs = overrideBackPressInJs;
         setInitialState();
+        setColor();
     }
 
     void setIconState(TitleBarLeftButtonParams params) {
         this.params = params;
-        if (params.color.hasColor()) {
-            setColor(params.color.getColor());
-        }
+        setColor();
         animateIconState(params.iconState);
+    }
+
+    void setCustomIcon(TitleBarLeftButtonParams params) {
+        this.params = params;
+        setColor();
     }
 
     @Override
@@ -64,18 +69,40 @@ class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
 
     private void setInitialState() {
         if (params != null) {
-            setIconState(params.iconState);
+            if (params.iconState != null) {
+                setIconState(params.iconState);
+            }
         } else {
             setVisible(false);
         }
     }
 
+    private void setColor() {
+        if (!params.color.hasColor()) {
+            return;
+        }
+        if (params.hasDefaultIcon()) {
+            setColor(params.color.getColor());
+        } else if (params.hasCustomIcon()) {
+            ViewUtils.tintDrawable(params.icon, params.color.getColor(), true);
+        }
+    }
+
+    @Override
+    public void setColor(int color) {
+        if (params.hasDefaultIcon()) {
+            super.setColor(color);
+        } else {
+            ViewUtils.tintDrawable(params.icon, color, true );
+        }
+    }
+
     private boolean isBackButton() {
-        return getIconState() == IconState.ARROW;
+        return params.hasDefaultIcon() && getIconState() == IconState.ARROW;
     }
 
     private boolean isSideMenuButton() {
-        return getIconState() == IconState.BURGER;
+        return params.hasDefaultIcon() && getIconState() == IconState.BURGER;
     }
 
     private void sendClickEvent() {
