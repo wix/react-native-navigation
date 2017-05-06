@@ -45,7 +45,6 @@
 
 	If you have any **react-native** related methods, you can safely delete them.
 
-
 5. In `MainApplication.java`, add the following
 	```java
 	import com.reactnativenavigation.NavigationApplication;
