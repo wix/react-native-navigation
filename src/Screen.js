@@ -108,6 +108,10 @@ class Navigator {
     return platformSpecific.navigatorSetTabBadge(this, params);
   }
 
+  setTabButton(params = {}) {
+    return platformSpecific.navigatorSetTabButton(this, params);
+  }
+
   switchToTab(params = {}) {
     return platformSpecific.navigatorSwitchToTab(this, params);
   }
@@ -117,7 +121,7 @@ class Navigator {
   }
 
   showSnackbar(params = {}) {
-    return platformSpecific.showSnackbar(this, params);
+    return platformSpecific.showSnackbar(params);
   }
 
   dismissSnackbar() {

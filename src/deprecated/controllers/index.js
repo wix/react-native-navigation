@@ -243,6 +243,10 @@ var Controllers = {
       },
       switchTo: function (params) {
         return RCCManager.TabBarControllerIOS(id, "switchTo", params);
+      },
+      setTabButton: function (params) {
+        _processProperties(params);
+        return RCCManager.TabBarControllerIOS(id, "setTabButton", params);
       }
     };
   },

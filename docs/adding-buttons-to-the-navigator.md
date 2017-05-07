@@ -23,11 +23,13 @@ class FirstTabScreen extends Component {
       }
     ]
   };
+
   constructor(props) {
     super(props);
     // if you want to listen on navigator events, set this up
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
+
   onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
     if (event.type == 'NavBarButtonPress') { // this is the event type for button presses
       if (event.id == 'edit') { // this is the same id field from the static navigatorButtons definition
@@ -38,6 +40,7 @@ class FirstTabScreen extends Component {
       }
     }
   }
+
   render() {
     return (
       <View style={{flex: 1}}>...</View>

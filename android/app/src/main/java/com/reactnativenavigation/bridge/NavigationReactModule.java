@@ -112,6 +112,16 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setBottomTabButtonByIndex(Integer index, final ReadableMap params) {
+        NavigationCommandsHandler.setBottomTabButtonByIndex(index, BundleConverter.toBundle(params));
+    }
+
+    @ReactMethod
+    public void setBottomTabButtonByNavigatorId(String navigatorId, final ReadableMap params) {
+        NavigationCommandsHandler.setBottomTabButtonByNavigatorId(navigatorId, BundleConverter.toBundle(params));
+    }
+
+    @ReactMethod
     public void selectBottomTabByTabIndex(Integer index) {
         NavigationCommandsHandler.selectBottomTabByTabIndex(index);
     }
