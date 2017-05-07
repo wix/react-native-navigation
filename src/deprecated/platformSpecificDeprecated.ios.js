@@ -313,7 +313,18 @@ function navigatorSetTitle(navigator, params) {
     title: params.title,
     subtitle: params.subtitle,
     titleImage: params.titleImage,
-    style: params.navigatorStyle
+    style: params.navigatorStyle,
+    isSetSubtitle: false
+  });
+}
+
+function navigatorSetSubtitle(navigator, params) {
+  Controllers.NavigationControllerIOS(navigator.navigatorID).setTitle({
+    title: params.title,
+    subtitle: params.subtitle,
+    titleImage: params.titleImage,
+    style: params.navigatorStyle,
+    isSetSubtitle: true
   });
 }
 
@@ -374,6 +385,24 @@ function navigatorSetTabBadge(navigator, params) {
       contentId: navigator.navigatorID,
       contentType: 'NavigationControllerIOS',
       badge: params.badge
+    });
+  }
+}
+
+function navigatorSetTabButton(navigator, params) {
+  const controllerID = navigator.navigatorID.split('_')[0];
+  if (params.tabIndex || params.tabIndex === 0) {
+    Controllers.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
+      tabIndex: params.tabIndex,
+      icon: params.icon,
+      selectedIcon: params.selectedIcon
+    });
+  } else {
+    Controllers.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
+      contentId: navigator.navigatorID,
+      contentType: 'NavigationControllerIOS',
+      icon: params.icon,
+      selectedIcon: params.selectedIcon
     });
   }
 }
@@ -601,11 +630,13 @@ export default {
   dismissInAppNotification,
   navigatorSetButtons,
   navigatorSetTitle,
+  navigatorSetSubtitle,
   navigatorSetStyle,
   navigatorSetTitleImage,
   navigatorToggleDrawer,
   navigatorToggleTabs,
   navigatorSetTabBadge,
+  navigatorSetTabButton,
   navigatorSwitchToTab,
   navigatorToggleNavBar,
   showContextualMenu,

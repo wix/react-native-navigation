@@ -340,6 +340,21 @@ function navigatorSetTabBadge(navigator, params) {
   }
 }
 
+function navigatorSetTabButton(navigator, params) {
+  if (params.icon) {
+    const icon = resolveAssetSource(params.icon);
+    if (icon) {
+      params.icon = icon.uri;
+    }
+  }
+  params.navigationParams = {};
+  if (params.tabIndex >= 0) {
+    newPlatformSpecific.setBottomTabButtonByIndex(params.tabIndex, params);
+  } else {
+    newPlatformSpecific.setBottomTabButtonByNavigatorId(navigator.navigatorID, params);
+  }
+}
+
 function navigatorSetTitle(navigator, params) {
   newPlatformSpecific.setScreenTitleBarTitle(navigator.screenInstanceID, params.title);
 }
@@ -348,11 +363,24 @@ function navigatorSetSubtitle(navigator, params) {
   newPlatformSpecific.setScreenTitleBarSubtitle(navigator.screenInstanceID, params.subtitle);
 }
 
+function navigatorSetStyle(navigator, params) {
+  const style = convertStyleParams(params);
+  newPlatformSpecific.setScreenStyle(navigator.screenInstanceID, style);
+}
+
 function navigatorSwitchToTab(navigator, params) {
   if (params.tabIndex >= 0) {
     newPlatformSpecific.selectBottomTabByTabIndex(params.tabIndex);
   } else {
     newPlatformSpecific.selectBottomTabByNavigatorId(navigator.navigatorID);
+  }
+}
+
+function navigatorSwitchToTopTab(navigator, params) {
+  if (params.tabIndex >= 0) {
+    newPlatformSpecific.selectTopTabByTabIndex(navigator.screenInstanceID, params.tabIndex);
+  } else {
+    newPlatformSpecific.selectTopTabByScreen(navigator.screenInstanceID);
   }
 }
 
@@ -602,7 +630,7 @@ function addNavigationStyleParams(screen) {
   screen.navigatorStyle = Object.assign({}, Screen.navigatorStyle, screen.navigatorStyle);
 }
 
-function showSnackbar(navigator, params) {
+function showSnackbar(params) {
   const adapted = _.cloneDeep(params);
   if (adapted.backgroundColor) {
     adapted.backgroundColor = processColor(adapted.backgroundColor);
@@ -664,9 +692,12 @@ export default {
   dismissInAppNotification,
   navigatorSetButtons,
   navigatorSetTabBadge,
+  navigatorSetTabButton,
   navigatorSetTitle,
   navigatorSetSubtitle,
+  navigatorSetStyle,
   navigatorSwitchToTab,
+  navigatorSwitchToTopTab,
   navigatorToggleDrawer,
   navigatorToggleTabs,
   navigatorToggleNavBar,
