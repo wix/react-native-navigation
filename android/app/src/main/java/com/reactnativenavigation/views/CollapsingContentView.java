@@ -57,11 +57,6 @@ public class CollapsingContentView extends ContentView implements CollapsingView
         viewCollapser.collapse(amount);
     }
 
-    @Override
-    public void fling(CollapseAmount amount) {
-        viewCollapser.fling(amount);
-    }
-
     public void destroy() {
         if (scrollViewDetector != null) {
             scrollViewDetector.destroy();

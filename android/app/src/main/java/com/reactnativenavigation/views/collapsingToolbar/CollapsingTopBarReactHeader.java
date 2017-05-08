@@ -115,7 +115,6 @@ public class CollapsingTopBarReactHeader extends ContentView implements Collapsi
     }
 
     private void onTouchDown(MotionEvent ev) {
-        listener.onTouch(ev);
         if (touchDown == -1) {
             touchDown = (int) ev.getRawY();
         }

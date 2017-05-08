@@ -3,7 +3,7 @@ package com.reactnativenavigation.views.collapsingToolbar.behaviours;
 public class CollapseTopBarBehaviour implements CollapseBehaviour {
     @Override
     public boolean shouldCollapseOnFling() {
-        return true;
+        return false;
     }
 
     @Override

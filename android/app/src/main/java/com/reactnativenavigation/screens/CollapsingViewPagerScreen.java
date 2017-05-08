@@ -80,8 +80,8 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
 
                     @Override
                     public void onFling(CollapseAmount amount) {
-                        topBar.fling(amount);
-                        ((CollapsingView) viewPager).fling(amount);
+                        topBar.collapse(amount);
+                        ((CollapsingView) viewPager).collapse(amount);
                     }
                 },
                 getCollapseBehaviour()

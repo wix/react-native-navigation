@@ -10,6 +10,4 @@ public interface CollapsingView {
     View asView();
 
     void collapse(CollapseAmount amount);
-
-    void fling(CollapseAmount amount);
 }

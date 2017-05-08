@@ -2,7 +2,6 @@ package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
@@ -13,9 +12,6 @@ import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseBeha
 import com.reactnativenavigation.views.collapsingToolbar.behaviours.TitleBarHideOnScrollBehaviour;
 
 public class CollapseCalculator {
-    private static final int FLING_DISTANCE_PIXELS_THRESHOLD = 100;
-    private static final int FLING_VELOCITY = 7000;
-
     public enum Direction {
         Up, Down, None
     }
@@ -36,12 +32,12 @@ public class CollapseCalculator {
     private int scrollY = 0;
     private float totalCollapse = 0;
     private float totalCollapseDeltaSinceTouchDown = 0;
-    private final ViewConfiguration viewConfiguration;
+    private final int scaledTouchSlop;
 
     public CollapseCalculator(final CollapsingView collapsingView, CollapseBehaviour collapseBehaviour) {
         this.view = collapsingView;
         this.collapseBehaviour = collapseBehaviour;
-        viewConfiguration = ViewConfiguration.get(NavigationApplication.instance);
+        scaledTouchSlop = ViewConfiguration.get(NavigationApplication.instance).getScaledTouchSlop();
         setFlingDetector();
     }
 
@@ -50,27 +46,10 @@ public class CollapseCalculator {
             flingDetector =
                     new GestureDetector(NavigationApplication.instance, new GestureDetector.SimpleOnGestureListener() {
                         @Override
-                        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, final float velocityY) {
+                        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                             final Direction direction = getScrollDirection(e1, e2);
-                            final float diff = Math.abs(e2.getRawY() - e1.getRawY());
-                            if (Math.abs(velocityY) < viewConfiguration.getScaledMinimumFlingVelocity() ||
-                                diff < FLING_DISTANCE_PIXELS_THRESHOLD) {
-                                Log.w("FLING", "Consuming fling v: [" + velocityY + "] dy: [" + diff + "]");
-                                return false;
-                            }
-
                             if (canCollapse(direction) && totalCollapse != 0) {
                                 flingListener.onFling(new CollapseAmount(direction));
-                                if (direction == Direction.Up) {
-                                    scrollView.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            int max = (int) Math.max(Math.abs(velocityY), FLING_VELOCITY);
-                                            scrollView.fling(max);
-                                        }
-                                    }, ViewCollapser.FLING_DURATION);
-                                }
-
                                 return true;
                             }
                             return false;
@@ -97,8 +76,7 @@ public class CollapseCalculator {
     @NonNull
     CollapseAmount calculate(MotionEvent event) {
         updateInitialTouchY(event);
-        final boolean isFling = flingDetector.onTouchEvent(event);
-        CollapseAmount touchUpCollapse = shouldCollapseOnTouchUp(event, isFling);
+        CollapseAmount touchUpCollapse = shouldCollapseOnTouchUp(event);
         if (touchUpCollapse != CollapseAmount.None) {
             previousTouchEvent = MotionEvent.obtain(event);
             return touchUpCollapse;
@@ -119,8 +97,9 @@ public class CollapseCalculator {
         }
     }
 
-    private CollapseAmount shouldCollapseOnTouchUp(MotionEvent event, boolean isFling) {
-        if (isTouchUp(event) && collapseBehaviour.shouldCollapseOnTouchUp() && !isFling) {
+    private CollapseAmount shouldCollapseOnTouchUp(MotionEvent event) {
+        if ((collapseBehaviour.shouldCollapseOnTouchUp())
+            && !flingDetector.onTouchEvent(event) && isTouchUp(event)) {
             final float visibilityPercentage = view.getCurrentCollapseValue() / view.getFinalCollapseValue();
             Direction direction = visibilityPercentage >= 0.5f ? Direction.Up : Direction.Down;
             if (canCollapse(direction) && totalCollapse != 0) {
@@ -216,7 +195,7 @@ public class CollapseCalculator {
         totalCollapseDeltaSinceTouchDown += Math.abs(y - previousCollapseY);
         previousCollapseY = y;
         previousTouchEvent = MotionEvent.obtain(event);
-        return totalCollapseDeltaSinceTouchDown < viewConfiguration.getScaledTouchSlop() ? CollapseAmount.None : new CollapseAmount(collapse);
+        return totalCollapseDeltaSinceTouchDown < scaledTouchSlop ? CollapseAmount.None : new CollapseAmount(collapse);
     }
 
     private float calculateCollapse(float y) {

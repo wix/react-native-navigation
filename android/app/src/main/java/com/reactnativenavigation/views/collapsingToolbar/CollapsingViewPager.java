@@ -43,9 +43,4 @@ public class CollapsingViewPager extends ViewPager implements CollapsingView {
     public void collapse(CollapseAmount amount) {
         viewCollapser.collapse(amount);
     }
-
-    @Override
-    public void fling(CollapseAmount amount) {
-        viewCollapser.fling(amount);
-    }
 }

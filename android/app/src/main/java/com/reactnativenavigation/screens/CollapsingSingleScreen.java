@@ -81,9 +81,9 @@ public class CollapsingSingleScreen extends SingleScreen {
                     @Override
                     public void onFling(CollapseAmount amount) {
                         if (screenParams.styleParams.drawScreenBelowTopBar) {
-                            ((CollapsingView) contentView).fling(amount);
+                            ((CollapsingView) contentView).collapse(amount);
                         }
-                        topBar.fling(amount);
+                        topBar.collapse(amount);
                     }
                 },
                 getCollapseBehaviour()
