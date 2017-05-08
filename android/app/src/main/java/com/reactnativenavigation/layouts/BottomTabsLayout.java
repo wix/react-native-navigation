@@ -1,5 +1,6 @@
 package com.reactnativenavigation.layouts;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -192,6 +193,27 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     public void setFab(String screenInstanceId, String navigatorEventId, FabParams fabParams) {
         for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
             screenStacks[i].setFab(screenInstanceId, fabParams);
+        }
+    }
+
+    @Override
+    public void updateScreenStyle(String screenInstanceId, Bundle styleParams) {
+        for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
+            screenStacks[i].updateScreenStyle(screenInstanceId, styleParams);
+        }
+    }
+
+    @Override
+    public void selectTopTabByTabIndex(String screenInstanceId, int index) {
+        for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
+            screenStacks[i].selectTopTabByTabIndex(screenInstanceId, index);
+        }
+    }
+
+    @Override
+    public void selectTopTabByScreen(String screenInstanceId) {
+        for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
+            screenStacks[i].selectTopTabByScreen(screenInstanceId);
         }
     }
 
@@ -410,6 +432,14 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     public void setBottomTabBadgeByNavigatorId(String navigatorId, String badge) {
         bottomTabs.setNotification(badge, getScreenStackIndex(navigatorId));
+    }
+
+    public void setBottomTabButtonByIndex(Integer index, ScreenParams params) {
+        bottomTabs.setTabButton(params, index);
+    }
+
+    public void setBottomTabButtonByNavigatorId(String navigatorId, ScreenParams params) {
+        bottomTabs.setTabButton(params, getScreenStackIndex(navigatorId));
     }
 
     private int getScreenStackIndex(String navigatorId) throws ScreenStackNotFoundException {

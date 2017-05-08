@@ -20,6 +20,13 @@ React Native Navigation provides 100% native platform navigation on both iOS and
 
 <img src="https://github.com/wix/react-native/blob/master/src/videos/demo.gif?raw=true" width="240">&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="https://github.com/wix/mobile/blob/master/src/videos/final_element_Transition.mp4.gif?raw=true" width="240">
+
+## Quick Links
+* [Documentation](https://wix.github.io/react-native-navigation/#/)
+* [Stack Overflow](http://stackoverflow.com/questions/tagged/react-native-navigation)
+* [Chat with us](https://discord.gg/DhkZjq2)
+* Bootstrap - If you prefer to learn more about the library and the APIs through code, head over to [the bootstrap example app](https://github.com/wix/react-native-navigation-bootstrap) or the more feature rich [JuneDomingo/movieapp](https://github.com/JuneDomingo/movieapp)
+
 ----
 
 One of the major things missing from React Native core is fully featured native navigation. Navigation includes the entire skeleton of your app with critical components like nav bars, tab bars and side menu drawers.
@@ -27,12 +34,6 @@ One of the major things missing from React Native core is fully featured native 
 If you're trying to deliver a user experience that's on par with the best native apps out there, you simply can't compromise on JS-based components trying to fake the real thing.
 
 For example, this package replaces the native [NavigatorIOS](https://facebook.github.io/react-native/docs/navigatorios.html) that has been [abandoned](https://facebook.github.io/react-native/docs/navigator-comparison.html) in favor of JS-based solutions that are easier to maintain. For more details see in-depth discussion [here](https://github.com/wix/react-native-controllers#why-do-we-need-this-package).
-
-## Documentation
-
-The documentation website can be found [here](http://wix.github.io/react-native-navigation).
-
-If you prefer to learn more about the library and the APIs through code, head over to [the bootstrap example app](https://github.com/wix/react-native-navigation-bootstrap) or the more feature rich [JuneDomingo/movieapp](https://github.com/JuneDomingo/movieapp)
 
 
 ## License

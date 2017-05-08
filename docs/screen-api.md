@@ -114,7 +114,7 @@ this.props.navigator.dismissLightBox();
 
 ## handleDeepLink(params = {})
 
-Trigger a deep link within the app. See [deep links](#deep-links) for more details about how screens can listen for deep link events.
+Trigger a deep link within the app. See [deep links](https://wix.github.io/react-native-navigation/#/deep-links) for more details about how screens can listen for deep link events.
 
 ```js
 this.props.navigator.handleDeepLink({
@@ -126,15 +126,6 @@ this.props.navigator.handleDeepLink({
 ```js
   import {Navigation} from 'react-native-navigation';
   Navigation.handleDeepLink(...);
-```
-
-## setOnNavigatorEvent(callback)
-
-Set a handler for navigator events (like nav button press). This would normally go in your component constructor.
-
-```js
-// this.onNavigatorEvent will be our handler
-this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 ```
 
 ## setButtons(params = {})
@@ -156,6 +147,17 @@ Set the nav bar title dynamically. If your title doesn't change during runtime, 
 ```js
 this.props.navigator.setTitle({
   title: "Dynamic Title" // the new title of the screen as appears in the nav bar
+});
+```
+
+
+## setSubTitle(params = {})
+
+Set the nav bar subtitle dynamically. If your subtitle doesn't change during runtime, set it when the screen is defined / pushed.
+
+```js
+this.props.navigator.setSubTitle({
+  subtitle: "Connecting..."
 });
 ```
 
@@ -192,6 +194,17 @@ this.props.navigator.setTabBadge({
   badge: 17 // badge value, null to remove badge
 });
 ```
+## setTabButton(params = {})
+
+Change the tab icon on a bottom tab.
+
+```js
+this.props.navigator.setTabButton({
+  tabIndex: 0, // (optional) if missing, the icon will be added to this screen's tab
+  icon: require('../img/one.png'), // local image asset for the tab icon unselected state (optional)
+  selectedIcon: require('../img/one_selected.png'), // local image asset for the tab icon selected state (optional, iOS only)
+});
+```
 
 ## switchToTab(params = {})
 
@@ -214,6 +227,15 @@ this.props.navigator.toggleNavBar({
 });
 ```
 
+## setOnNavigatorEvent(callback)
+
+Set a handler for navigator events (like nav button press). This would normally go in your component constructor.
+
+```js
+// this.onNavigatorEvent will be our handler
+this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+```
+
 # Screen Visibility
 Listen to screen visibility events in onNavigatorEvent handler:
 
@@ -234,6 +256,24 @@ export default class ExampleScreen extends Component {
       case 'didDisappear':
         break;
     }
+  }
+}
+```
+
+# Listening to tab selected events
+In order to listen to `bottomTabSelected` event, set an `onNavigatorEventListener` on screens that are pushed to BottomTab. The event is dispatched to the top most screen pushed to the selected tab's stack.
+
+```js
+export default class ExampleScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  onNavigatorEvent(event) {
+	if (event.id === 'bottomTabSelected') {
+	  console.log('Tab selected!');
+	}
   }
 }
 ```

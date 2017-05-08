@@ -20,7 +20,16 @@ export default class StyledScreen extends Component {
   }
 ```
 
-#### Style object format
+## Setting styles dynamically
+Use the `setStyle` method to change a screen's style dynamically.
+
+```js
+this.props.navigator.setStyle({
+  navBarBackgroundColor: 'blue'
+});
+```
+
+## Style object format
 
 ```js
 {
@@ -30,16 +39,6 @@ export default class StyledScreen extends Component {
   navBarBackgroundColor: '#f7f7f7', // change the background color of the nav bar (remembered across pushes)
 
   navBarButtonColor: '#007aff', // Change color of nav bar buttons (eg. the back button) (remembered across pushes)
-  navBarButtonFontSize: 20, // Change font size nav bar buttons (eg. the back button) (remembered across pushes)
-  navBarButtonFontWeight: '500', // Change font weight nav bar buttons (eg. the back button) (remembered across pushes)
-
-  navBarLeftButtonFontSize: 17, // Change font size of left nav bar button
-  navBarLeftButtonColor: 'red', // Change color of left nav bar button
-  navBarLeftButtonFontWeight: '400', // Change font weight of left nav bar button
-
-  navBarRightButtonFontSize: 17, // Change font size of right nav bar button
-  navBarRightButtonColor: 'blue', // Change color of right nav bar button
-  navBarRightButtonFontWeight: '600', // Change font weight of right nav bar button
 
   navBarHidden: false, // make the nav bar hidden
   navBarHideOnScroll: false, // make the nav bar hidden only after the user starts to scroll
@@ -62,6 +61,17 @@ export default class StyledScreen extends Component {
   // iOS only
   disabledBackGesture: false, // default: false. Disable the back gesture (swipe gesture) in order to pop the top screen. 
   screenBackgroundImageName: '<name of image in Images.xcassets>', // Optional. default screen background image.
+  
+  navBarButtonFontSize: 20, // Change font size nav bar buttons (eg. the back button) (remembered across pushes)
+  navBarButtonFontWeight: '500', // Change font weight nav bar buttons (eg. the back button) (remembered across pushes)
+
+  navBarLeftButtonFontSize: 17, // Change font size of left nav bar button
+  navBarLeftButtonColor: 'red', // Change color of left nav bar button
+  navBarLeftButtonFontWeight: '400', // Change font weight of left nav bar button
+
+  navBarRightButtonFontSize: 17, // Change font size of right nav bar button
+  navBarRightButtonColor: 'blue', // Change color of right nav bar button
+  navBarRightButtonFontWeight: '600', // Change font weight of right nav bar button
   
   // Android only
   navigationBarColor: '#000000', // change the background color of the bottom native navigation bar.
