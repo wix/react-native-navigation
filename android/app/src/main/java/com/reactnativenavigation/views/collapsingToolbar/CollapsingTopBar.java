@@ -138,6 +138,11 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         }
     }
 
+    @Override
+    public void fling(CollapseAmount amount) {
+        viewCollapser.fling(amount, (CollapsingTitleBar) titleBar, header);
+    }
+
     public void onScrollViewAdded(ScrollView scrollView) {
         scrollListener.onScrollViewAdded(scrollView);
     }
