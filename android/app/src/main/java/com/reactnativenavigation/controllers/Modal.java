@@ -76,6 +76,10 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         layout.hideSlidingOverlay();
     }
 
+    Layout getLayout() {
+        return layout;
+    }
+
     @Override
     public boolean onTitleBarBackButtonClick() {
         if (!layout.onBackPressed()) {
@@ -180,6 +184,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
             NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", layout.getCurrentScreen().getNavigatorEventId());
             NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", layout.getCurrentScreen().getNavigatorEventId());
         }
+        onDismiss(this);
         super.dismiss();
     }
 

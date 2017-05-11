@@ -1,5 +1,6 @@
 package com.reactnativenavigation.controllers;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
@@ -35,8 +36,9 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
         return false;
     }
 
-    void showModal(ScreenParams screenParams) {
+    void showModal(ScreenParams screenParams, DialogInterface.OnDismissListener dismissListener) {
         Modal modal = new Modal(activity, this, screenParams);
+        modal.setOnDismissListener(dismissListener);
         modal.show();
         stack.add(modal);
     }
@@ -52,6 +54,14 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
             modal.dismiss();
         }
         stack.clear();
+    }
+
+    int getStackSize() {
+        return stack.size();
+    }
+
+    Modal getTopModal() {
+        return stack.peek();
     }
 
     boolean isShowing() {
