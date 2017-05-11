@@ -1,19 +1,17 @@
 # Folder Structure
-* `lib`: The project itself composed of:</br>
-`lib/android`: android sources and unit tests</br>
-`lib/ios`: iOS sources and unit tests</br>
-`lib/src`: javascript sources and unit tests</br>
-`lib/src/index.js`: the entry point for `import Navigation from 'react-native-navigation'`
 
-* `e2e`: [detox](https://github.com/wix/detox) iOS e2e tests (in the future, once detox supports it, we will have android e2e here as well)
-
-* `AndroidE2E`: Android e2e tests using native uiautomator
-
-* `playground`: The end-user project all e2e tests run against. Contains its own `src`, `android` and `ios`. Does not have its own package.json, depends on the local `<root>/lib` in order not to go through npm.
-
-* `integration`: misc javascript integration tests
-* `scripts`: all scripts
-
+| Folder | Description |
+| ------ | ----------- |
+| `lib` | The project itself composed of: |
+| `.../android` | android sources and unit tests |
+| `.../ios` | iOS sources and unit tests |
+| `.../src` | javascript sources and unit tests |
+| `.../src/index.js` | the entry point for `import Navigation from 'react-native-navigation'` |
+| `e2e` | [detox](https://github.com/wix/detox) iOS e2e tests (in the future, once detox supports it, we will have android e2e here as well) |
+| `AndroidE2E` | Android e2e tests using native uiautomator |
+| `playground` | The end-user project all e2e tests run against. Contains its own `src`, `android` and `ios`. Does not have its own package.json, depends on the local `<root>/lib` in order not to go through npm. |
+| `integration` | misc javascript integration tests |
+| `scripts` | all scripts |
 
 # Running locally
 
@@ -60,28 +58,18 @@ brew tap facebook/fb && brew install fbsimctl
 
 ### Scripts
 
-`yarn install`: installs dependencies
-
-`yarn run clean`: cleans all build directories, stops packager, fixes flakiness by removing watchman cache, etc.
-
-`yarn run start`: starts the react-native packager for local debugging
-
-`yarn run xcode`: for convenience, opens xcode in this project
-
-`yarn run install-android [-- release]`: builds playground debug/release version and installs on running android devices/emulators
-
-`yarn run uninstall-android`: uninstalls playground from running android devices/simulators
-
-`yarn run test-js`: runs javascript tests and coverage report
-
-`yarn run test-watch`: runs javascript tests in watch mode (can also use the provided wallaby config)
-
-`yarn run test-unit-ios [-- release]`: runs ios unit tests in debug/release
-
-`yarn run test-unit-android [-- release]`: runs android unit tests in debug/release
-
-`yarn run test-e2e-ios [-- release]`: runs the ios e2e suite (with detox) in debug/release
-
-`yarn run test-e2e-android [-- release]`: runs the android e2e suite (with uiautomator) in debug/release on running devices/emulators
-
-`yarn run test-all`: runs all tests in parallel
+| Command | Description |
+| ------- | ----------- |
+| `yarn install` | installs dependencies |
+| `yarn clean` | cleans all build directories, stops packager, fixes flakiness by removing watchman cache, etc. |
+| `yarn start` | starts the react-native packager for local debugging |
+| `yarn xcode` | for convenience, opens xcode in this project |
+| `yarn install-android`  |  builds playground debug/release version and installs on running android devices/emulators. <br> **Options:** `-- release` `-- debug` |
+| `yarn uninstall-android` | uninstalls playground from running android devices/simulators |
+| `yarn test-js` | runs javascript tests and coverage report |
+| `yarn test-watch` | runs javascript tests in watch mode (can also use the provided wallaby config) |
+| `yarn test-unit-ios` | runs ios unit tests in debug/release <br> **Options:** `-- release` `-- debug` |
+| `yarn test-unit-android` | runs android unit tests in debug/release <br> **Options:** `-- release` `-- debug` |
+| `yarn test-e2e-ios` | runs the ios e2e suite (with detox) in debug/release |
+| `yarn test-e2e-android` | runs the android e2e suite (with uiautomator) in debug/release on running devices/emulators <br> **Options:** `-- release` `-- debug` |
+| `yarn test-all` | runs all tests in parallel |
