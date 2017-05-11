@@ -1,8 +1,11 @@
 package com.reactnativenavigation;
 
 import android.app.Application;
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -32,6 +35,20 @@ public abstract class NavigationApplication extends Application implements React
         reactGateway = new NavigationReactGateway();
         eventEmitter = new EventEmitter(reactGateway);
         activityCallbacks = new ActivityCallbacks();
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        String animationType = intent.getStringExtra("animationType");
+        if (animationType != null && animationType.equals("fade")) {
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getApplicationContext(),
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out
+            ).toBundle();
+            super.startActivity(intent, bundle);
+        } else {
+            super.startActivity(intent);
+        }
     }
 
     public void startReactContextOnceInBackgroundAndExecuteJS() {
