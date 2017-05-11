@@ -41,6 +41,7 @@ public class NavigationCommandsHandler {
         IntentDataHandler.onStartApp(intent);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ACTIVITY_PARAMS_BUNDLE, params);
+        intent.putExtra("animationType", params.getString("animationType"));
         NavigationApplication.instance.startActivity(intent);
     }
 

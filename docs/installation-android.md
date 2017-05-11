@@ -36,9 +36,9 @@
 	This file can be located in `android/app/src/main/java/com/yourproject/`.
 
 	```java
-	import com.reactnativenavigation.NavigationApplication;
+	import com.reactnativenavigation.controllers.SplashActivity;
 
-	public class MainApplication extends NavigationApplication {
+	public class MainActivity extends SplashActivity {
 
 	}
 	```

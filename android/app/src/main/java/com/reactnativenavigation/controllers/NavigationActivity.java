@@ -413,6 +413,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     private void handleModalDismissedEvent() {
         if (!modalController.isShowing()) {
             layout.onModalDismissed();
+            OrientationHelper.setOrientation(this, AppStyle.appStyle.orientation);
         }
     }
 

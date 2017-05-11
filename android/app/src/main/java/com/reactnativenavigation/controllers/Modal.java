@@ -14,7 +14,6 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.layouts.Layout;
 import com.reactnativenavigation.layouts.ModalScreenLayout;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
-import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.Orientation;
@@ -190,11 +189,11 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
             return;
         }
         destroy();
-        setOrientation(AppStyle.appStyle.orientation);
         onModalDismissedListener.onModalDismissed(this);
     }
 
     void onModalDismissed() {
+        setOrientation(screenParams.styleParams.orientation);
         layout.onModalDismissed();
     }
 
