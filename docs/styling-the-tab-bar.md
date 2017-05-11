@@ -24,7 +24,8 @@ Navigation.startTabBasedApp({
 }
 ```
 
-> *Note:* On Android, add BottomTabs styles to `AppStyle`:
+?> On Android, add BottomTabs styles to `AppStyle`:
+
 ```js
 Navigation.startTabBasedApp({
   tabs: [...],
