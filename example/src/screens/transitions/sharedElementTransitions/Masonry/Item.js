@@ -2,13 +2,14 @@ import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { SharedElementTransition } from 'react-native-navigation';
 
-const SHOW_DURATION = 200;
-const HIDE_DURATION = 300;
+const SHOW_DURATION = 240;
+const HIDE_DURATION = 200;
 
 class Item extends React.Component {
 
     static navigatorStyle = {
         navBarHidden: true,
+        drawUnderNavBar: true
     };
 
     render() {
