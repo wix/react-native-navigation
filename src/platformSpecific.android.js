@@ -4,15 +4,17 @@ import _ from 'lodash';
 import PropRegistry from './PropRegistry';
 
 const NativeReactModule = NativeModules.NavigationReactModule;
+let navigatorDefaultStyles = {};
 
 function startApp(activityParams) {
+  navigatorDefaultStyles = activityParams.navigatorStyle || {}
   savePassProps(activityParams);
   NativeReactModule.startApp(activityParams);
 }
 
 function push(screenParams) {
   savePassProps(screenParams);
-  NativeReactModule.push(screenParams);
+  NativeReactModule.push({...navigatorDefaultStyles, ...screenParams});
 }
 
 function pop(screenParams) {
