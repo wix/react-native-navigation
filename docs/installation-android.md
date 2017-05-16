@@ -57,17 +57,17 @@
 			return BuildConfig.DEBUG;
 		}
 
+		protected List<ReactPackage> getPackages() {
+			// Add additional packages you require here
+			// No need to add RnnPackage and MainReactPackage
+			return Arrays.<ReactPackage>asList(
+				// eg. new VectorIconsPackage()
+			);
+		}
+
 		@Override
 		public List<ReactPackage> createAdditionalReactPackages() {
-
-		// Add additional packages you require here
-		return Arrays.<ReactPackage>asList(
-			// eg. new VectorIconsPackage()
-		);
-
-		// No need to add RnnPackage and MainReactPackage
-		// Simply return null if you do not have additional packages:
-		// return null;
+			return getPackages();
 		}
 	}
 	```
