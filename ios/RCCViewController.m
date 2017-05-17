@@ -260,6 +260,16 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     viewController.navigationController.navigationBar.barTintColor = nil;
   }
   
+  NSString *statusBarColor = self.navigatorStyle[@"statusBarColor"];
+  if (statusBarColor) {
+    
+    UIColor *color = statusBarColor != (id)[NSNull null] ? [RCTConvert UIColor:statusBarColor] : nil;
+    UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, [UIScreen mainScreen].bounds.size.width, 20)];
+    statusBarView.backgroundColor = color;
+    [viewController.navigationController.navigationBar addSubview:statusBarView];
+    
+  }
+  
   NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
   [self.navigationController.navigationBar setTitleTextAttributes:titleTextAttributes];
   
