@@ -52,6 +52,7 @@ this.props.navigator.setStyle({
   tabBarHidden: false, // make the screen content hide the tab bar (remembered across pushes)
   statusBarHideWithNavBar: false // hide the status bar if the nav bar is also hidden, useful for navBarHidden:true
   statusBarHidden: false, // make the status bar hidden regardless of nav bar state
+  statusBarColor: '#000000', // change the color of the status bar.
   statusBarTextColorScheme: 'dark', // text color of status bar, 'dark' / 'light' (remembered across pushes)
   statusBarTextColorSchemeSingleScreen: 'light' // same as statusBarTextColorScheme but does NOT remember across pushes
   navBarSubtitleColor: 'red', // subtitle color
@@ -77,7 +78,6 @@ this.props.navigator.setStyle({
   navigationBarColor: '#000000', // change the background color of the bottom native navigation bar.
   navBarTitleTextCentered: true, // default: false. centers the title.
   topBarElevationShadowEnabled: false, // default: true. Disables TopBar elevation shadow on Lolipop and above
-  statusBarColor: '#000000', // change the color of the status bar.
   collapsingToolBarImage: "http://lorempixel.com/400/200/", // Collapsing Toolbar image.
   collapsingToolBarImage: require('../../img/topbar.jpg'), // Collapsing Toolbar image. Either use a url or require a local image.
   collapsingToolBarCollapsedColor: '#0f2362', // Collapsing Toolbar scrim color.
