@@ -17,7 +17,6 @@ class Actions extends React.Component {
 
     onNavigatorEvent(event) {
         if (event.id === 'contextualMenuDismissed') {
-            console.log('guyca', 'contextualMenuDismissed');
             this._contextualMenu = false;
         }
         if (event.id === 'customButton') {

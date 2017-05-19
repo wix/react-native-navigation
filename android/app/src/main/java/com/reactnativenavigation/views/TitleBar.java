@@ -13,6 +13,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 
+import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -302,5 +303,11 @@ public class TitleBar extends Toolbar {
 
     BaseTitleBarButtonParams getButton(int index) {
         return rightButtons.get(rightButtons.size() - index - 1);
+    }
+
+    public void onViewPagerScreenChanged(BaseScreenParams screenParams) {
+        if (hasLeftButton()) {
+            leftButton.updateNavigatorEventId(screenParams.getNavigatorEventId());
+        }
     }
 }

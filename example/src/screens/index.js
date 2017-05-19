@@ -1,26 +1,5 @@
 import { Navigation } from 'react-native-navigation';
 
-// import FirstTabScreen from './FirstTabScreen';
-// import SecondTabScreen from './SecondTabScreen';
-// import PushedScreen from './PushedScreen';
-// import StyledScreen from './StyledScreen';
-// import SideMenu from './SideMenu';
-// import ModalScreen from './ModalScreen';
-// import NotificationScreen from './NotificationScreen';
-// import LightBoxScreen from './LightBoxScreen';
-
-// register all screens of the app (including internal ones)
-// export function registerScreens() {
-//   Navigation.registerComponent('example.FirstTabScreen', () => FirstTabScreen);
-//   Navigation.registerComponent('example.SecondTabScreen', () => SecondTabScreen);
-//   Navigation.registerComponent('example.PushedScreen', () => PushedScreen);
-//   Navigation.registerComponent('example.StyledScreen', () => StyledScreen);
-//   Navigation.registerComponent('example.ModalScreen', () => ModalScreen);
-//   Navigation.registerComponent('example.NotificationScreen', () => NotificationScreen);
-//   Navigation.registerComponent('example.SideMenu', () => SideMenu);
-//   Navigation.registerComponent('example.LightBoxScreen', () => LightBoxScreen);
-// }
-
 import Types from './Types';
 import Actions from './Actions';
 import Transitions from './Transitions';
@@ -41,8 +20,6 @@ import SharedElementTransitions from './transitions/SharedElementTransitions';
 
 import Cards from './transitions/sharedElementTransitions/Cards/Cards';
 import CardsInfo from './transitions/sharedElementTransitions/Cards/Info';
-
-// import Profiles from './transitions/sharedElementTransitions/Profiles/Profiles';
 
 import Masonry from './transitions/sharedElementTransitions/Masonry/Masonry';
 import MasonryItem from './transitions/sharedElementTransitions/Masonry/Item';
@@ -68,7 +45,6 @@ export default function () {
     Navigation.registerComponent('example.Transitions.SharedElementTransitions', () => SharedElementTransitions);
     Navigation.registerComponent('example.Transitions.SharedElementTransitions.Cards', () => Cards);
     Navigation.registerComponent('example.Transitions.SharedElementTransitions.Cards.Info', () => CardsInfo);
-    // Navigation.registerComponent('example.Transitions.SharedElementTransitions.Profiles', () => Profiles);
     Navigation.registerComponent('example.Transitions.SharedElementTransitions.Masonry', () => Masonry);
     Navigation.registerComponent('example.Transitions.SharedElementTransitions.Masonry.Item', () => MasonryItem);
 }

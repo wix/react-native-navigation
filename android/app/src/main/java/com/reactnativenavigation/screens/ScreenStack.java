@@ -326,8 +326,8 @@ public class ScreenStack {
     public void setScreenTitleBarLeftButton(String screenInstanceId, final String navigatorEventId, final TitleBarLeftButtonParams titleBarLeftButtonParams) {
         performOnScreen(screenInstanceId, new Task<Screen>() {
             @Override
-            public void run(Screen param) {
-                param.setTitleBarLeftButton(navigatorEventId, leftButtonOnClickListener, titleBarLeftButtonParams);
+            public void run(Screen screen) {
+                screen.setTitleBarLeftButton(navigatorEventId, leftButtonOnClickListener, titleBarLeftButtonParams);
             }
         });
     }
