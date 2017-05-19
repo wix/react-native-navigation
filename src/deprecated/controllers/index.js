@@ -210,6 +210,9 @@ var Controllers = {
         RCCManager.NavigationControllerIOS(id, "setButtons", {buttons: buttons, side: "right", animated: animated});
         return unsubscribe;
       },
+      customButtonPress: function(callbackID, buttonID) {
+        RCCManager.NavigationBarCustomButtonPressWithCallbackId(callbackID, buttonID)
+      },
       setHidden: function(params = {}) {
         RCCManager.NavigationControllerIOS(id, "setHidden", params);
       }

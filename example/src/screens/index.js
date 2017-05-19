@@ -34,6 +34,8 @@ import TopTabs from './types/TopTabs';
 import TabOne from './types/tabs/TabOne';
 import TabTwo from './types/tabs/TabTwo';
 
+import CustomButton from "../components/CustomNavButton";
+
 import CollapsingHeader from './transitions/CollapsingHeader';
 import SharedElementTransitions from './transitions/SharedElementTransitions';
 
@@ -59,6 +61,8 @@ export default function () {
     Navigation.registerComponent('example.Types.TopTabs', () => TopTabs);
     Navigation.registerComponent('example.Types.TopTabs.TabOne', () => TabOne);
     Navigation.registerComponent('example.Types.TopTabs.TabTwo', () => TabTwo);
+
+    Navigation.registerComponent('example.NavBar.CustomButton', () => CustomButton);
 
     Navigation.registerComponent('example.Transitions.CollapsingHeader', () => CollapsingHeader);
     Navigation.registerComponent('example.Transitions.SharedElementTransitions', () => SharedElementTransitions);

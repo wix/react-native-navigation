@@ -321,6 +321,10 @@ function navigatorSetButtons(navigator, navigatorEventID, _params) {
   newPlatformSpecific.setScreenButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton, fab);
 }
 
+function navigatorCustomButtonPress() {
+  // iOS only
+}
+
 function shouldRemoveLeftButton(params) {
   return params.leftButtons && params.leftButtons.length === 0;
 }
@@ -685,6 +689,7 @@ export default {
   dismissLightBox,
   dismissInAppNotification,
   navigatorSetButtons,
+  navigatorCustomButtonPress,
   navigatorSetTabBadge,
   navigatorSetTabButton,
   navigatorSetTitle,

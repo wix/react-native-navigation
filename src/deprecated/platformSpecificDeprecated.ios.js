@@ -431,6 +431,10 @@ function navigatorSetButtons(navigator, navigatorEventID, params) {
   }
 }
 
+function navigatorCustomButtonPress(callbackID, buttonID) {
+  Controllers.NavigationControllerIOS().customButtonPress(callbackID, buttonID);
+}
+
 function showModal(params) {
   if (!params.screen) {
     console.error('showModal(params): params.screen is required');
@@ -622,6 +626,7 @@ export default {
   showInAppNotification,
   dismissInAppNotification,
   navigatorSetButtons,
+  navigatorCustomButtonPress,
   navigatorSetTitle,
   navigatorSetSubtitle,
   navigatorSetStyle,

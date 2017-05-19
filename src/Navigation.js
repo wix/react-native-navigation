@@ -48,7 +48,7 @@ function _registerComponentNoRedux(screenID, generator) {
 
       render() {
         return (
-          <InternalComponent testID={screenID} navigator={this.navigator} {...this.state.internalProps} />
+          <InternalComponent testID={screenID} onPress={this.button ? this.button.onPress.bind(this.button) : null} navigator={this.navigator} {...this.state.internalProps} />
         );
       }
     };
@@ -80,7 +80,7 @@ function _registerComponentRedux(screenID, generator, store, Provider, options) 
       render() {
         return (
           <Provider store={store} {...options}>
-            <InternalComponent testID={screenID} navigator={this.navigator} {...this.state.internalProps} />
+            <InternalComponent testID={screenID} onPress={this.button ? this.button.onPress.bind(this.button) : null} navigator={this.navigator} {...this.state.internalProps} />
           </Provider>
         );
       }

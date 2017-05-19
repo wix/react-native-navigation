@@ -163,6 +163,16 @@ class Navigator {
   }
 }
 
+class Button {
+  constructor(callbackID, buttonID) {
+    this.callbackID = callbackID;
+    this.buttonID = buttonID;
+  }
+  onPress() {
+    return platformSpecific.navigatorCustomButtonPress(this.callbackID, this.buttonID);
+  }
+}
+
 export default class Screen extends Component {
   static navigatorStyle = {};
   static navigatorButtons = {};
@@ -171,6 +181,9 @@ export default class Screen extends Component {
     super(props);
     if (props.navigatorID) {
       this.navigator = new Navigator(props.navigatorID, props.navigatorEventID, props.screenInstanceID);
+    }
+    if (props.buttonID) {
+      this.button = new Button(props.callbackID, props.buttonID)
     }
   }
 
