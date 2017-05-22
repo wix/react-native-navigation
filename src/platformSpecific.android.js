@@ -121,6 +121,10 @@ function setSideMenuVisible(animated, visible, side) {
   NativeReactModule.setSideMenuVisible(animated, visible, side);
 }
 
+function disableOpenGesture(disableOpenGesture) {
+    NativeReactModule.disableOpenGesture(disableOpenGesture);
+}
+
 function selectTopTabByTabIndex(screenInstanceId, index) {
   NativeReactModule.selectTopTabByTabIndex(screenInstanceId, index);
 }
@@ -195,6 +199,7 @@ module.exports = {
   dismissInAppNotification,
   toggleSideMenuVisible,
   setSideMenuVisible,
+  disableOpenGesture,
   selectBottomTabByNavigatorId,
   selectBottomTabByTabIndex,
   setBottomTabBadgeByNavigatorId,

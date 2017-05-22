@@ -77,6 +77,11 @@ public class SideMenu extends DrawerLayout {
         closeDrawer(side.gravity, animated);
     }
 
+    public void disableOpenGesture(boolean disableOpenGesture) {
+        int lockMode = disableOpenGesture ? DrawerLayout.LOCK_MODE_LOCKED_CLOSED : DrawerLayout.LOCK_MODE_UNLOCKED;
+        setDrawerLockMode(lockMode);
+    }
+
     public SideMenu(Context context, SideMenuParams leftMenuParams, SideMenuParams rightMenuParams) {
         super(context);
         createContentContainer();

@@ -152,6 +152,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void disableOpenGesture(boolean disableOpenGesture) {
+        NavigationCommandsHandler.disableOpenGesture(disableOpenGesture);
+    }
+
+    @ReactMethod
     public void toggleTopBarVisible(final ReadableMap params) {
     }
 

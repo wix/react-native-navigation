@@ -317,6 +317,22 @@ public class NavigationCommandsHandler {
         });
     }
 
+    public static void disableOpenGesture(final boolean disableOpenGesture) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        NavigationApplication.instance.runOnMainThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                currentActivity.disableOpenGesture(disableOpenGesture);
+            }
+        });
+    }
+
     public static void selectTopTabByTabIndex(final String screenInstanceId, final int index) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {

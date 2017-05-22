@@ -232,6 +232,14 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
+    public void disableOpenGesture(boolean disableOpenGesture)
+    {
+        if (sideMenu != null) {
+            sideMenu.disableOpenGesture(disableOpenGesture);
+        }
+    }
+
+    @Override
     public void showSnackbar(SnackbarParams params) {
         final String eventId = getCurrentScreenStack().peek().getNavigatorEventId();
         snackbarAndFabContainer.showSnackbar(eventId, params);

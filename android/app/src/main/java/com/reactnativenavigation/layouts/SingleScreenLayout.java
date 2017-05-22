@@ -220,6 +220,14 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
+    public void disableOpenGesture(boolean disableOpenGesture)
+    {
+        if (sideMenu != null) {
+            sideMenu.disableOpenGesture(disableOpenGesture);
+        }
+    }
+
+    @Override
     public void showSnackbar(SnackbarParams params) {
         final String navigatorEventId = stack.peek().getNavigatorEventId();
         snackbarAndFabContainer.showSnackbar(navigatorEventId, params);

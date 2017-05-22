@@ -314,6 +314,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         layout.setSideMenuVisible(animated, visible, side);
     }
 
+    public void disableOpenGesture(boolean disableOpenGesture) {
+        layout.disableOpenGesture(disableOpenGesture);
+    }
+
     public void selectTopTabByTabIndex(String screenInstanceId, int index) {
         layout.selectTopTabByTabIndex(screenInstanceId, index);
         modalController.selectTopTabByTabIndex(screenInstanceId, index);
