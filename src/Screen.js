@@ -37,7 +37,7 @@ class Navigator {
   }
 
   resetTo(params = {}) {
-    return NavigationSpecific.resetTo(this, params);
+    return NavigationSpecific.resetTo(this.navigatorID, params);
   }
 
   showModal(params = {}) {

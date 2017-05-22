@@ -36,6 +36,22 @@ function startSingleScreenApp(params) {
   params.animateShow = convertAnimationType(params.animationType);
 
   newPlatformSpecific.startApp(params);
+
+  return screen.navigatorID;
+}
+
+function updateSingleScreenApp(params) {
+	if (!params.screen) {
+		console.error('updateSingleScreenApp(params): params.screen is required');
+		return;
+	}
+
+	if (!params.navigatorID) {
+		console.error('updateSingleScreenApp(params): params.navigatorID is required');
+		return;
+	}
+
+	this.navigatorResetTo(params.navigatorID, params);
 }
 
 function getOrientation(params) {
@@ -103,8 +119,8 @@ function navigatorPopToRoot(navigator, params) {
   newPlatformSpecific.popToRoot(adapted);
 }
 
-function navigatorResetTo(navigator, params) {
-  addNavigatorParams(params, navigator);
+function navigatorResetTo(navigatorID, params) {
+  addNavigatorParams(params, {navigatorID});
   addNavigatorButtons(params);
   addNavigationStyleParams(params);
 
@@ -678,6 +694,7 @@ function dismissContextualMenu() {
 export default {
   startTabBasedApp,
   startSingleScreenApp,
+  updateSingleScreenApp,
   navigatorPush,
   navigatorPop,
   navigatorPopToRoot,

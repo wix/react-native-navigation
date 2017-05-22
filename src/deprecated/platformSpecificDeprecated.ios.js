@@ -178,6 +178,22 @@ function startSingleScreenApp(params) {
 
   ControllerRegistry.registerController(controllerID, () => Controller);
   ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {});
+
+  return navigatorID;
+}
+
+function updateSingleScreenApp(params) {
+	if (!params.screen) {
+		console.error('updateSingleScreenApp(params): params.screen is required');
+		return;
+	}
+
+	if (!params.navigatorID) {
+		console.error('updateSingleScreenApp(params): params.navigatorID is required');
+		return;
+	}
+
+	this.navigatorResetTo(params.navigatorID, params);
 }
 
 function _mergeScreenSpecificSettings(screenID, screenInstanceID, params) {
@@ -262,7 +278,7 @@ function navigatorPopToRoot(navigator, params) {
   });
 }
 
-function navigatorResetTo(navigator, params) {
+function navigatorResetTo(navigatorID, params) {
   if (!params.screen) {
     console.error('Navigator.resetTo(params): params.screen is required');
     return;
@@ -274,7 +290,7 @@ function navigatorResetTo(navigator, params) {
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
   const passProps = Object.assign({}, params.passProps);
-  passProps.navigatorID = navigator.navigatorID;
+  passProps.navigatorID = navigatorID;
   passProps.screenInstanceID = screenInstanceID;
   passProps.navigatorEventID = navigatorEventID;
 
@@ -283,12 +299,12 @@ function navigatorResetTo(navigator, params) {
     navigatorStyle,
     navigatorButtons,
     navigatorEventID,
-    navigatorID: navigator.navigatorID
+    navigatorID: navigatorID
   };
 
   savePassProps(params);
 
-  Controllers.NavigationControllerIOS(navigator.navigatorID).resetTo({
+  Controllers.NavigationControllerIOS(navigatorID).resetTo({
     title: params.title,
     subtitle: params.subtitle,
     titleImage: params.titleImage,
@@ -617,6 +633,7 @@ function dismissContextualMenu() {
 export default {
   startTabBasedApp,
   startSingleScreenApp,
+  updateSingleScreenApp,
   navigatorPush,
   navigatorPop,
   navigatorPopToRoot,

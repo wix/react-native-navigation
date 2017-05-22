@@ -139,6 +139,10 @@ function startSingleScreenApp(params) {
   return platformSpecific.startSingleScreenApp(params);
 }
 
+function updateSingleScreenApp(params) {
+  return platformSpecific.updateSingleScreenApp(params);
+}
+
 function setEventHandler(navigatorEventID, eventHandler) {
   _allNavigatorEventHandlers[navigatorEventID] = eventHandler;
 }
@@ -175,6 +179,7 @@ export default {
   dismissInAppNotification: dismissInAppNotification,
   startTabBasedApp: startTabBasedApp,
   startSingleScreenApp: startSingleScreenApp,
+  updateSingleScreenApp: updateSingleScreenApp,
   setEventHandler: setEventHandler,
   clearEventHandler: clearEventHandler,
   handleDeepLink: handleDeepLink
