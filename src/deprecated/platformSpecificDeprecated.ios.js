@@ -358,6 +358,13 @@ function navigatorToggleDrawer(navigator, params) {
   }
 }
 
+function navigatorDisableOpenGesture(navigator, params) {
+  const controllerID = navigator.navigatorID.split('_')[0];
+  Controllers.DrawerControllerIOS(controllerID + '_drawer').disableOpenGesture({
+	  disableOpenGesture: params.disableOpenGesture,
+  });
+}
+
 function navigatorToggleTabs(navigator, params) {
   const controllerID = navigator.navigatorID.split('_')[0];
   Controllers.TabBarControllerIOS(controllerID + '_tabs').setHidden({
@@ -627,6 +634,7 @@ export default {
   navigatorSetStyle,
   navigatorSetTitleImage,
   navigatorToggleDrawer,
+  navigatorDisableOpenGesture,
   navigatorToggleTabs,
   navigatorSetTabBadge,
   navigatorSetTabButton,

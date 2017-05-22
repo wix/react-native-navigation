@@ -131,7 +131,14 @@
         [super toggleDrawerSide:side animated:animated completion:nil];
         return;
     }
-    
+
+    if ([performAction isEqualToString:@"disableOpenGesture"])
+    {
+        BOOL disableOpenGesture = [actionParams[@"disableOpenGesture"] boolValue];
+        self.openDrawerGestureModeMask = disableOpenGesture ?
+                MMOpenDrawerGestureModeNone : MMOpenDrawerGestureModeAll;
+    }
+
     // setStyle
     if ([performAction isEqualToString:@"setStyle"])
     {

@@ -227,6 +227,9 @@ var Controllers = {
       toggle: function (params) {
         return RCCManager.DrawerControllerIOS(id, "toggle", params);
       },
+      disableOpenGesture: function (params) {
+        return RCCManager.DrawerControllerIOS(id, "disableOpenGesture", params);
+      },
       setStyle: function (params) {
         return RCCManager.DrawerControllerIOS(id, "setStyle", params);
       }
