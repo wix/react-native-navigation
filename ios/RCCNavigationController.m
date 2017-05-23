@@ -254,14 +254,22 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
 
 -(void)onButtonPress:(UIBarButtonItem*)barButtonItem
 {
-  NSString *callbackId = objc_getAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY);
-  if (!callbackId) return;
   NSString *buttonId = objc_getAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_ID);
-  [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:callbackId body:@
-   {
-     @"type": @"NavBarButtonPress",
-     @"id": buttonId ? buttonId : [NSNull null]
-   }];
+
+  if ([buttonId isEqualToString:@"sideMenu"])
+  {
+    [[[RCCManager sharedInstance] getDrawerController] performAction:@"toggle" actionParams:nil bridge:[[RCCManager sharedInstance] getBridge]];
+  }
+  else
+  {
+    NSString *callbackId = objc_getAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY);
+    if (!callbackId) return;
+    [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:callbackId body:@
+    {
+            @"type" : @"NavBarButtonPress",
+            @"id" : buttonId ? buttonId : [NSNull null]
+    }];
+  }
 }
 
 -(void)setButtons:(NSArray*)buttons viewController:(UIViewController*)viewController side:(NSString*)side animated:(BOOL)animated

@@ -116,6 +116,12 @@
   return component;
 }
 
+-(id)getDrawerController
+{
+  NSDictionary *drawers = self.modulesRegistry[@"DrawerControllerIOS"];
+  return drawers.allValues.firstObject;
+}
+
 -(void)initBridgeWithBundleURL:(NSURL *)bundleURL
 {
   [self initBridgeWithBundleURL :bundleURL launchOptions:nil];
