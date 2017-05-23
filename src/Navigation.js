@@ -32,6 +32,7 @@ function _registerComponentNoRedux(screenID, generator) {
     return class extends Screen {
       static navigatorStyle = InternalComponent.navigatorStyle || {};
       static navigatorButtons = InternalComponent.navigatorButtons || {};
+      static navigatorOptions = InternalComponent.navigatorOptions || {};
 
       constructor(props) {
         super(props);
@@ -63,6 +64,7 @@ function _registerComponentRedux(screenID, generator, store, Provider, options) 
     return class extends Screen {
       static navigatorStyle = InternalComponent.navigatorStyle || {};
       static navigatorButtons = InternalComponent.navigatorButtons || {};
+      static navigatorOptions = InternalComponent.navigatorOptions || {};
 
       constructor(props) {
         super(props);

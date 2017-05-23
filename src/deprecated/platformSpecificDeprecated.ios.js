@@ -29,6 +29,7 @@ function startTabBasedApp(params) {
     const {
       navigatorStyle,
       navigatorButtons,
+      navigatorOptions,
       navigatorEventID
     } = _mergeScreenSpecificSettings(tab.screen, screenInstanceID, tab);
     tab.navigationParams = {
@@ -38,6 +39,8 @@ function startTabBasedApp(params) {
       navigatorEventID,
       navigatorID
     };
+
+    _injectOptionsInParams(params, navigatorOptions);
   });
 
   const Controller = Controllers.createClass({
@@ -120,6 +123,7 @@ function startSingleScreenApp(params) {
   const {
     navigatorStyle,
     navigatorButtons,
+    navigatorOptions,
     navigatorEventID
   } = _mergeScreenSpecificSettings(screen.screen, screenInstanceID, screen);
   params.navigationParams = {
@@ -129,6 +133,8 @@ function startSingleScreenApp(params) {
     navigatorEventID,
     navigatorID
   };
+
+  _injectOptionsInParams(screen, navigatorOptions);
 
   const Controller = Controllers.createClass({
     render: function() {
@@ -207,6 +213,11 @@ function _mergeScreenSpecificSettings(screenID, screenInstanceID, params) {
     Object.assign(navigatorStyle, params.navigatorStyle);
   }
 
+  let navigatorOptions = {};
+  if (screenClass.navigatorOptions) {
+    navigatorOptions = screenClass.navigatorOptions;
+  }
+
   let navigatorEventID = screenInstanceID + '_events';
   let navigatorButtons = _.cloneDeep(screenClass.navigatorButtons);
   if (params.navigatorButtons) {
@@ -222,7 +233,15 @@ function _mergeScreenSpecificSettings(screenID, screenInstanceID, params) {
       navigatorButtons.rightButtons[i].onPress = navigatorEventID;
     }
   }
-  return {navigatorStyle, navigatorButtons, navigatorEventID};
+  return {navigatorStyle, navigatorOptions, navigatorButtons, navigatorEventID};
+}
+
+function _injectOptionsInParams(params, navigatorOptions) {
+  Object.keys(navigatorOptions).forEach(key => {
+    if (!params[key]) {
+      params[key] = navigatorOptions[key];
+    }
+  });
 }
 
 function navigatorPush(navigator, params) {
@@ -234,6 +253,7 @@ function navigatorPush(navigator, params) {
   const {
     navigatorStyle,
     navigatorButtons,
+    navigatorOptions,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
   const passProps = Object.assign({}, params.passProps);
@@ -249,6 +269,7 @@ function navigatorPush(navigator, params) {
     navigatorID: navigator.navigatorID
   };
 
+  _injectOptionsInParams(params, navigatorOptions);
   savePassProps(params);
 
   Controllers.NavigationControllerIOS(navigator.navigatorID).push({
@@ -287,6 +308,7 @@ function navigatorResetTo(navigatorID, params) {
   const {
     navigatorStyle,
     navigatorButtons,
+    navigatorOptions,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
   const passProps = Object.assign({}, params.passProps);
@@ -302,6 +324,7 @@ function navigatorResetTo(navigatorID, params) {
     navigatorID: navigatorID
   };
 
+  _injectOptionsInParams(params, navigatorOptions);
   savePassProps(params);
 
   Controllers.NavigationControllerIOS(navigatorID).resetTo({
@@ -465,6 +488,7 @@ function showModal(params) {
   const {
     navigatorStyle,
     navigatorButtons,
+    navigatorOptions,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
   const passProps = Object.assign({}, params.passProps);
@@ -479,6 +503,8 @@ function showModal(params) {
     navigatorEventID,
     navigatorID: navigator.navigatorID
   };
+
+  _injectOptionsInParams(params, navigatorOptions);
 
   const Controller = Controllers.createClass({
     render: function() {
@@ -522,6 +548,7 @@ function showLightBox(params) {
   const {
     navigatorStyle,
     navigatorButtons,
+    navigatorOptions,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
   const passProps = Object.assign({}, params.passProps);
@@ -537,6 +564,7 @@ function showLightBox(params) {
     navigatorID
   };
 
+  _injectOptionsInParams(params, navigatorOptions);
   savePassProps(params);
 
   Modal.showLightBox({
@@ -562,6 +590,7 @@ function showInAppNotification(params) {
   const {
     navigatorStyle,
     navigatorButtons,
+    navigatorOptions,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
   const passProps = Object.assign({}, params.passProps);
@@ -577,6 +606,7 @@ function showInAppNotification(params) {
     navigatorID
   };
   
+  _injectOptionsInParams(params, navigatorOptions);
   savePassProps(params);
 
   let args = {

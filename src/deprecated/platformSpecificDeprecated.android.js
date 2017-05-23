@@ -17,6 +17,7 @@ function startSingleScreenApp(params) {
   }
   addNavigatorParams(screen);
   addNavigatorButtons(screen, params.drawer);
+  addNavigatorOptions(screen);
   addNavigationStyleParams(screen);
   screen.passProps = params.passProps;
 
@@ -76,6 +77,7 @@ function adaptTopTabs(screen, navigatorID) {
       addTabIcon(tab);
     }
     addNavigatorButtons(tab);
+    addNavigatorOptions(tab);
     adaptNavigationParams(tab);
     addNavigationStyleParams(tab);
     tab = adaptNavigationStyleToScreenStyle(tab);
@@ -84,6 +86,7 @@ function adaptTopTabs(screen, navigatorID) {
 
 function navigatorPush(navigator, params) {
   addNavigatorParams(params, navigator);
+  addNavigatorOptions(params);
   addNavigatorButtons(params);
   addTitleBarBackButtonIfNeeded(params);
   addNavigationStyleParams(params);
@@ -122,6 +125,7 @@ function navigatorPopToRoot(navigator, params) {
 function navigatorResetTo(navigatorID, params) {
   addNavigatorParams(params, {navigatorID});
   addNavigatorButtons(params);
+  addNavigatorOptions(params);
   addNavigationStyleParams(params);
 
   adaptTopTabs(params, params.navigatorID);
@@ -265,6 +269,7 @@ function startTabBasedApp(params) {
   params.tabs.forEach(function(tab, idx) {
     addNavigatorParams(tab, null, idx);
     addNavigatorButtons(tab, params.drawer);
+    addNavigatorOptions(tab);
     addNavigationStyleParams(tab);
     addTabIcon(tab);
     if (!tab.passProps) {
@@ -430,6 +435,7 @@ function navigatorToggleTabs(navigator, params) {
 function showModal(params) {
   addNavigatorParams(params);
   addNavigatorButtons(params);
+  addNavigatorOptions(params);
   addTitleBarBackButtonIfNeeded(params);
   addNavigationStyleParams(params);
 
@@ -537,6 +543,18 @@ function addNavigatorButtons(screen, sideMenuParams) {
   }
   if (leftButton) {
     screen.leftButton = leftButton;
+  }
+}
+
+function addNavigatorOptions(params) {
+  const Screen = Navigation.getRegisteredScreen(params.screen);
+  if (Screen.navigatorOptions) {
+    const navigatorOptions = Screen.navigatorOptions;
+    Object.keys(navigatorOptions).forEach(key => {
+        if (!params[key]) {
+	        params[key] = navigatorOptions[key];
+        }
+    });
   }
 }
 
