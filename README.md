@@ -10,8 +10,8 @@ You can use the folowing functionality from any screen to disable/enable
 the opening of the drawer menu:
 ```js
 this.props.navigator.disableOpenGesture({
-						disableOpenGesture: false,
-					});
+  disableOpenGesture: false,
+});
 ```
 
 ## Switch pages
@@ -26,20 +26,19 @@ on every drawer page.
 Example:
 ```js
 const navigatorID = Navigation.startSingleScreenApp({
-			screen: {
-				screen,
-				navigatorButtons,
-			},
-		});
+  screen: {
+    screen,
+  },
+});
 Navigation.setEventHandler('root', (event) => {
-			if (event.type === 'DeepLink') {
-				Navigation.updateSingleScreenApp({
-					navigatorID,
-					screen: event.link,
-					animated: false,
-				});
-			}
-		});
+  if (event.type === 'DeepLink') {
+    Navigation.updateSingleScreenApp({
+      navigatorID,
+      screen: event.link,
+      animated: false,
+    });
+  }
+});
 ```
 ## Add sideMenu button behavior for iOS
 In this library for android, the navigation buttons have the behavior
