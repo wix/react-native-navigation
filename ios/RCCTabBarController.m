@@ -497,8 +497,6 @@
 
   if (!self.reverseTransition)
   {
-    self.centerButton.imageView.transform = CGAffineTransformRotate(self.centerButton.imageView.transform, -M_PI * 0.25);
-
     [[transitionContext containerView] addSubview:toViewController.view];
 
     toViewController.view.alpha = 0.25;
@@ -512,6 +510,7 @@
     toViewController.view.frame = toRect;
 
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
+      self.centerButton.imageView.transform = CGAffineTransformRotate(self.centerButton.imageView.transform, -M_PI * 0.75);
       toViewController.view.frame = [transitionContext containerView].bounds;
       toViewController.view.alpha = 1;
     } completion:^(BOOL finished) {
