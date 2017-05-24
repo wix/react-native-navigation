@@ -502,15 +502,15 @@
     toViewController.view.alpha = 0.25;
 
     CGRect containerRect = [transitionContext containerView].frame;
-    containerRect.size.height -= self.tabBar.bounds.size.height+1;
+    containerRect.size.height -= self.tabBar.bounds.size.height;
     [transitionContext containerView].frame = containerRect;
 
     CGRect toRect = self.view.frame;
-    toRect.origin.y += toRect.size.height+1;
+    toRect.origin.y += toRect.size.height;
     toViewController.view.frame = toRect;
 
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
-      self.centerButton.imageView.transform = CGAffineTransformRotate(self.centerButton.imageView.transform, -M_PI * 0.75);
+      self.centerButton.imageView.transform = CGAffineTransformRotate(self.centerButton.imageView.transform, -M_PI * 0.25);
       toViewController.view.frame = [transitionContext containerView].bounds;
       toViewController.view.alpha = 1;
     } completion:^(BOOL finished) {
