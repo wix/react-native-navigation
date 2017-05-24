@@ -1,12 +1,10 @@
 
 <h1 align="center">
   <img src="./logo.png"/> <img src="./mm.png"/><br>
-  React Native Navigation
+  React Native Navigation / MediaMonksMobile
 </h1>
 
-## MediaMonksMobile
-
-# Disable open gesture
+## Disable open gesture
 
 You can use the folowing functionality from any screen to disable/enable 
 the opening of the drawer menu:
@@ -16,7 +14,7 @@ this.props.navigator.disableOpenGesture({
 					});
 ```
 
-# Switch pages
+## Switch pages
 The method startSingleScreenApp will now return the freshly created
 navigatorID. Using that together with updateSingleScreen app you can now
 reset the navigation from outside a screen.
@@ -43,7 +41,7 @@ Navigation.setEventHandler('root', (event) => {
 			}
 		});
 ```
-#Add sideMenu button behavior for iOS
+## Add sideMenu button behavior for iOS
 In this library for android, the navigation buttons have the behavior
 that when the id of the button is 'sideMenu', a standard menu button
 will be shown and the menu is automatically opened/closed onPress.
