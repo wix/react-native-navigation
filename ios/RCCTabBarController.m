@@ -194,14 +194,6 @@
     UIViewController *viewController = [RCCViewController controllerWithLayout:childLayout globalProps:globalProps bridge:bridge];
     if (!viewController) continue;
 
-    NSString *tabBarButtonColor = tabItemLayout[@"props"][@"tabBarButtonColor"];
-    if (tabBarButtonColor)
-    {
-      UIColor *color = tabBarButtonColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarButtonColor] : nil;
-      buttonColor = color;
-      selectedButtonColor = color;
-    }
-
     // create the tab icon and title
     NSString *title = tabItemLayout[@"props"][@"title"];
     UIImage *iconImage = nil;
@@ -271,9 +263,10 @@
   }
 
   if (self.centerTabController == nil) {
-    self.centerTabController = viewControllers[2];
+    NSInteger centerIndex = floor(viewControllers.count/2);
+    self.centerTabController = viewControllers[centerIndex];
     UIViewController *dummyViewController = [[UIViewController alloc] init];
-    [viewControllers replaceObjectAtIndex:2 withObject:dummyViewController];
+    [viewControllers replaceObjectAtIndex:centerIndex withObject:dummyViewController];
   }
 
   // replace the tabs
@@ -494,43 +487,39 @@
   UIViewController* toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
   UIViewController* fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
 
-  [transitionContext containerView].clipsToBounds = YES;
+  UIView *containerView = [transitionContext containerView];
 
   if (!self.reverseTransition)
   {
-    [[transitionContext containerView] addSubview:toViewController.view];
+    CGRect containerRect = containerView.frame;
+    containerRect.size.height -= self.tabBar.bounds.size.height;
+    containerView.frame = containerRect;
+    containerView.clipsToBounds = YES;
+    [containerView addSubview:toViewController.view];
 
+    toViewController.view.frame = CGRectOffset(self.view.frame, 0, self.view.frame.size.height);
     toViewController.view.alpha = 0.25;
-
-    CGRect containerRect = [transitionContext containerView].frame;
-    containerRect.size.height -= self.tabBar.bounds.size.height+1;
-    [transitionContext containerView].frame = containerRect;
-
-    CGRect toRect = self.view.frame;
-    toRect.origin.y += toRect.size.height+1;
-    toViewController.view.frame = toRect;
 
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
       self.centerButton.imageView.transform = CGAffineTransformRotate(self.centerButton.imageView.transform, -M_PI * 0.25);
-      toViewController.view.frame = [transitionContext containerView].bounds;
+      toViewController.view.frame = containerView.bounds;
       toViewController.view.alpha = 1;
     } completion:^(BOOL finished) {
       [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
       self.reverseTransition = !self.reverseTransition;
     }];
-  } else {
+  }
+  else
+  {
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
       self.centerButton.imageView.transform = CGAffineTransformIdentity;
       fromViewController.view.alpha = 0.25;
 
       if (!self.tabBarWasTapped) {
-        CGRect fromRect = fromViewController.view.frame;
-        fromRect.origin.y += fromRect.size.height;
-        fromViewController.view.frame = fromRect;
+        fromViewController.view.frame = CGRectOffset(fromViewController.view.frame, 0, fromViewController.view.frame.size.height);
       } else {
         self.tabBarWasTapped = NO;
       }
-
     } completion:^(BOOL finished) {
       [fromViewController.view removeFromSuperview];
       [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
