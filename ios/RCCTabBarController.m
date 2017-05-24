@@ -485,11 +485,8 @@
 // MARK: UIViewControllerAnimatedTransitioning
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
-  return 0.35;
+  return 0.2;
 }
-
-static CGFloat const kDamping = 0.75f;
-static CGFloat const kInitialSpringVelocity = 0.5f;
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
@@ -514,7 +511,7 @@ static CGFloat const kInitialSpringVelocity = 0.5f;
     toRect.origin.y += toRect.size.height+1;
     toViewController.view.frame = toRect;
 
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:kDamping initialSpringVelocity:kInitialSpringVelocity options:0x00 animations:^{
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
       toViewController.view.frame = [transitionContext containerView].bounds;
       toViewController.view.alpha = 1;
     } completion:^(BOOL finished) {
@@ -522,7 +519,7 @@ static CGFloat const kInitialSpringVelocity = 0.5f;
       self.reverseTransition = !self.reverseTransition;
     }];
   } else {
-    [UIView animateWithDuration:0.10 animations:^{
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
       self.centerButton.imageView.transform = CGAffineTransformIdentity;
       fromViewController.view.alpha = 0;
     } completion:^(BOOL finished) {
