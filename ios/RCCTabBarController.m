@@ -35,6 +35,7 @@
 @property (nonatomic, strong) UIViewController *centerTabController;
 @property (nonatomic, strong) UIButton *centerButton;
 @property (nonatomic, assign) BOOL reverseTransition;
+@property (nonatomic, assign) BOOL tabBarWasTapped;
 
 @end
 
@@ -46,6 +47,8 @@
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+  self.tabBarWasTapped = YES;
+
   if (self.presentedViewController != nil) {
     [self dismissViewControllerAnimated:YES completion:nil];
   }
@@ -500,11 +503,11 @@
     toViewController.view.alpha = 0.25;
 
     CGRect containerRect = [transitionContext containerView].frame;
-    containerRect.size.height -= self.tabBar.bounds.size.height;
+    containerRect.size.height -= self.tabBar.bounds.size.height+1;
     [transitionContext containerView].frame = containerRect;
 
     CGRect toRect = self.view.frame;
-    toRect.origin.y += toRect.size.height;
+    toRect.origin.y += toRect.size.height+1;
     toViewController.view.frame = toRect;
 
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
@@ -518,7 +521,16 @@
   } else {
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
       self.centerButton.imageView.transform = CGAffineTransformIdentity;
-      fromViewController.view.alpha = 0;
+      fromViewController.view.alpha = 0.25;
+
+      if (!self.tabBarWasTapped) {
+        CGRect fromRect = fromViewController.view.frame;
+        fromRect.origin.y += fromRect.size.height;
+        fromViewController.view.frame = fromRect;
+      } else {
+        self.tabBarWasTapped = NO;
+      }
+
     } completion:^(BOOL finished) {
       [fromViewController.view removeFromSuperview];
       [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
