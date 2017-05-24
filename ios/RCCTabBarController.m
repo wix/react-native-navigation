@@ -142,8 +142,6 @@
       self.centerButton = [RotatableImageButton buttonWithType:UIButtonTypeCustom];
       self.centerButton.clipsToBounds = YES;
       self.centerButton.imageView.contentMode = UIViewContentModeCenter;
-      UIColor *tabBarColor = tabBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarBackgroundColor] : nil;
-      self.centerButton.backgroundColor = tabBarColor;
       self.centerButton.frame = CGRectMake(0, 0, self.tabBar.bounds.size.width/children.count, self.tabBar.bounds.size.height);
       [self.centerButton setImage:centerIcon forState:UIControlStateNormal];
 
@@ -162,12 +160,12 @@
 
       CGFloat heightDifference = centerIcon.size.height - self.tabBar.frame.size.height;
       if (heightDifference < 0)
-         self.centerButton.center = self.tabBar.center;
+        self.centerButton.center = self.tabBar.center;
       else
       {
-       CGPoint center = self.tabBar.center;
-       center.y = center.y - heightDifference/2.0;
-       self.centerButton.center = center;
+        CGPoint center = self.tabBar.center;
+        center.y = center.y - heightDifference/2.0;
+        self.centerButton.center = center;
       }
 
       [self.centerButton addTarget:self action:@selector(touchUpInsideCenterButton:) forControlEvents:UIControlEventTouchUpInside];
