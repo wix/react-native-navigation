@@ -14,6 +14,31 @@
 
 @end
 
+@interface RotatableImageButton : UIButton
+
+@end
+
+@implementation RotatableImageButton
+
+- (void)layoutSubviews {
+  CGAffineTransform originalTransform = self.imageView.transform;
+  self.imageView.transform = CGAffineTransformIdentity;
+
+  [super layoutSubviews];
+  self.imageView.transform = originalTransform;
+}
+
+@end
+
+@interface RCCTabBarController() <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning>
+
+@property (nonatomic, strong) UIViewController *centerTabController;
+@property (nonatomic, strong) UIButton *centerButton;
+@property (nonatomic, assign) BOOL reverseTransition;
+@property (nonatomic, assign) BOOL tabBarWasTapped;
+
+@end
+
 @implementation RCCTabBarController
 
 
@@ -22,25 +47,31 @@
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+  self.tabBarWasTapped = YES;
+
+  if (self.presentedViewController != nil) {
+    [self dismissViewControllerAnimated:YES completion:nil];
+  }
+
   id queue = [[RCCManager sharedInstance].getBridge uiManager].methodQueue;
   dispatch_async(queue, ^{
     [[[RCCManager sharedInstance].getBridge uiManager] configureNextLayoutAnimation:nil withCallback:^(NSArray* arr){} errorCallback:^(NSArray* arr){}];
   });
-  
+
   if (tabBarController.selectedIndex != [tabBarController.viewControllers indexOfObject:viewController]) {
     NSDictionary *body = @{
                            @"selectedTabIndex": @([tabBarController.viewControllers indexOfObject:viewController]),
                            @"unselectedTabIndex": @(tabBarController.selectedIndex)
                            };
     [RCCTabBarController sendScreenTabChangedEvent:viewController body:body];
-    
+
     [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:@"bottomTabSelected" body:body];
   } else {
     [RCCTabBarController sendScreenTabPressedEvent:viewController body:nil];
   }
-  
-  
-  
+
+
+
   return YES;
 }
 
@@ -64,11 +95,11 @@
 {
   self = [super init];
   if (!self) return nil;
-  
+
   self.delegate = self;
-  
+
   self.tabBar.translucent = YES; // default
-  
+
   UIColor *buttonColor = nil;
   UIColor *selectedButtonColor = nil;
   NSDictionary *tabsStyle = props[@"style"];
@@ -82,7 +113,7 @@
       buttonColor = color;
       selectedButtonColor = color;
     }
-    
+
     NSString *tabBarSelectedButtonColor = tabsStyle[@"tabBarSelectedButtonColor"];
     if (tabBarSelectedButtonColor)
     {
@@ -90,7 +121,7 @@
       self.tabBar.tintColor = color;
       selectedButtonColor = color;
     }
-    
+
     NSString *tabBarBackgroundColor = tabsStyle[@"tabBarBackgroundColor"];
     if (tabBarBackgroundColor)
     {
@@ -103,17 +134,58 @@
     {
       self.tabBar.translucent = [tabBarTranslucent boolValue] ? YES : NO;
     }
+
+    // Insert special center tab
+    id tabBarCenterIcon = tabsStyle[@"tabBarCenterIcon"];
+    if (tabBarCenterIcon)
+    {
+      UIImage *centerIcon = [RCTConvert UIImage:tabBarCenterIcon];
+      centerIcon = [[self image:centerIcon withColor:selectedButtonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+
+      self.centerButton = [RotatableImageButton buttonWithType:UIButtonTypeCustom];
+      self.centerButton.clipsToBounds = YES;
+      self.centerButton.imageView.contentMode = UIViewContentModeCenter;
+      self.centerButton.frame = CGRectMake(0, 0, self.tabBar.bounds.size.width/children.count, self.tabBar.bounds.size.height);
+      [self.centerButton setImage:centerIcon forState:UIControlStateNormal];
+
+      id tabBarSelectedCenterIcon = tabsStyle[@"tabBarSelectedCenterIcon"];
+      if (tabBarSelectedCenterIcon)
+      {
+        UIImage *selectedCenterIcon = [RCTConvert UIImage:tabBarSelectedCenterIcon];
+        selectedCenterIcon = [[self image:selectedCenterIcon withColor:selectedButtonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        [self.centerButton setImage:selectedCenterIcon forState:UIControlStateHighlighted];
+      }
+      else
+      {
+        UIImage *selectedCenterIcon = [[self image:centerIcon withColor:selectedButtonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        [self.centerButton setImage:selectedCenterIcon forState:UIControlStateHighlighted];
+      }
+
+      CGFloat heightDifference = centerIcon.size.height - self.tabBar.frame.size.height;
+      if (heightDifference < 0)
+        self.centerButton.center = self.tabBar.center;
+      else
+      {
+        CGPoint center = self.tabBar.center;
+        center.y = center.y - heightDifference/2.0;
+        self.centerButton.center = center;
+      }
+
+      [self.centerButton addTarget:self action:@selector(touchUpInsideCenterButton:) forControlEvents:UIControlEventTouchUpInside];
+
+      [self.view addSubview:self.centerButton];
+    }
   }
-  
+
   NSMutableArray *viewControllers = [NSMutableArray array];
-  
+
   // go over all the tab bar items
   for (NSDictionary *tabItemLayout in children)
   {
     // make sure the layout is valid
     if (![tabItemLayout[@"type"] isEqualToString:@"TabBarControllerIOS.Item"]) continue;
     if (!tabItemLayout[@"props"]) continue;
-    
+
     // get the view controller inside
     if (!tabItemLayout[@"children"]) continue;
     if (![tabItemLayout[@"children"] isKindOfClass:[NSArray class]]) continue;
@@ -121,7 +193,7 @@
     NSDictionary *childLayout = tabItemLayout[@"children"][0];
     UIViewController *viewController = [RCCViewController controllerWithLayout:childLayout globalProps:globalProps bridge:bridge];
     if (!viewController) continue;
-    
+
     // create the tab icon and title
     NSString *title = tabItemLayout[@"props"][@"title"];
     UIImage *iconImage = nil;
@@ -141,11 +213,11 @@
     } else {
       iconImageSelected = [RCTConvert UIImage:icon];
     }
-    
+
     viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
     viewController.tabBarItem.selectedImage = iconImageSelected;
-    
+
     id imageInsets = tabItemLayout[@"props"][@"iconInsets"];
     if (imageInsets && imageInsets != (id)[NSNull null])
     {
@@ -153,28 +225,28 @@
       id leftInset = imageInsets[@"left"];
       id bottomInset = imageInsets[@"bottom"];
       id rightInset = imageInsets[@"right"];
-      
+
       CGFloat top = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:topInset] : 0;
       CGFloat left = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:leftInset] : 0;
       CGFloat bottom = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:bottomInset] : 0;
       CGFloat right = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:rightInset] : 0;
-      
+
       viewController.tabBarItem.imageInsets = UIEdgeInsetsMake(top, left, bottom, right);
     }
-    
+
     NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
     if (!unselectedAttributes[NSForegroundColorAttributeName] && buttonColor) {
       unselectedAttributes[NSForegroundColorAttributeName] = buttonColor;
     }
-    
+
     [viewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal]
     ;
-    
+
     NSMutableDictionary *selectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarSelectedText" baseFont:[UIFont systemFontOfSize:10]];
     if (!selectedAttributes[NSForegroundColorAttributeName] && selectedButtonColor) {
       selectedAttributes[NSForegroundColorAttributeName] = selectedButtonColor;
     }
-    
+
     [viewController.tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
     // create badge
     NSObject *badge = tabItemLayout[@"props"][@"badge"];
@@ -186,16 +258,35 @@
     {
       viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
     }
-    
+
     [viewControllers addObject:viewController];
   }
-  
+
+  if (self.centerTabController == nil) {
+    NSInteger centerIndex = floor(viewControllers.count/2);
+    self.centerTabController = viewControllers[centerIndex];
+    UIViewController *dummyViewController = [[UIViewController alloc] init];
+    [viewControllers replaceObjectAtIndex:centerIndex withObject:dummyViewController];
+  }
+
   // replace the tabs
   self.viewControllers = viewControllers;
-  
+
   [self setRotation:props];
-  
+
   return self;
+}
+
+-(void)touchUpInsideCenterButton:(UIButton *)sender
+{
+  self.centerTabController.modalPresentationStyle = UIModalPresentationCustom;
+  self.centerTabController.transitioningDelegate = self;
+
+  if (!self.reverseTransition) {
+    [self presentViewController:self.centerTabController animated:YES completion:nil];
+  } else {
+    [self dismissViewControllerAnimated:YES completion:nil];
+  }
 }
 
 - (void)performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams bridge:(RCTBridge *)bridge completion:(void (^)(void))completion
@@ -207,7 +298,7 @@
     if (tabIndex)
     {
       int i = (int)[tabIndex integerValue];
-      
+
       if ([self.viewControllers count] > i)
       {
         viewController = [self.viewControllers objectAtIndex:i];
@@ -219,11 +310,11 @@
     {
       viewController = [[RCCManager sharedInstance] getControllerWithId:contentId componentType:contentType];
     }
-    
+
     if (viewController)
     {
       NSObject *badge = actionParams[@"badge"];
-      
+
       if (badge == nil || [badge isEqual:[NSNull null]])
       {
         viewController.tabBarItem.badgeValue = nil;
@@ -234,7 +325,7 @@
       }
     }
   }
-  
+
   if ([performAction isEqualToString:@"switchTo"])
   {
     UIViewController *viewController = nil;
@@ -242,7 +333,7 @@
     if (tabIndex)
     {
       int i = (int)[tabIndex integerValue];
-      
+
       if ([self.viewControllers count] > i)
       {
         viewController = [self.viewControllers objectAtIndex:i];
@@ -254,13 +345,13 @@
     {
       viewController = [[RCCManager sharedInstance] getControllerWithId:contentId componentType:contentType];
     }
-    
+
     if (viewController)
     {
       [self setSelectedViewController:viewController];
     }
   }
-  
+
   if ([performAction isEqualToString:@"setTabButton"])
   {
     UIViewController *viewController = nil;
@@ -268,7 +359,7 @@
     if (tabIndex)
     {
       int i = (int)[tabIndex integerValue];
-      
+
       if ([self.viewControllers count] > i)
       {
         viewController = [self.viewControllers objectAtIndex:i];
@@ -280,7 +371,7 @@
     {
       viewController = [[RCCManager sharedInstance] getControllerWithId:contentId componentType:contentType];
     }
-    
+
     if (viewController)
     {
       UIImage *iconImage = nil;
@@ -290,7 +381,7 @@
         iconImage = [RCTConvert UIImage:icon];
         iconImage = [[self image:iconImage withColor:self.tabBar.tintColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         viewController.tabBarItem.image = iconImage;
-      
+
       }
       UIImage *iconImageSelected = nil;
       id selectedIcon = actionParams[@"selectedIcon"];
@@ -301,7 +392,7 @@
       }
     }
   }
-  
+
   if ([performAction isEqualToString:@"setTabBarHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
@@ -340,28 +431,28 @@
 +(void)sendTabEvent:(NSString *)event controller:(UIViewController*)viewController body:(NSDictionary*)body{
   if ([viewController.view isKindOfClass:[RCTRootView class]]){
     RCTRootView *rootView = (RCTRootView *)viewController.view;
-    
+
     if (rootView.appProperties && rootView.appProperties[@"navigatorEventID"]) {
       NSString *navigatorID = rootView.appProperties[@"navigatorID"];
       NSString *screenInstanceID = rootView.appProperties[@"screenInstanceID"];
-      
-      
+
+
       NSMutableDictionary *screenDict = [NSMutableDictionary dictionaryWithDictionary:@
                                          {
                                            @"id": event,
                                            @"navigatorID": navigatorID,
                                            @"screenInstanceID": screenInstanceID
                                          }];
-      
-      
+
+
       if (body) {
         [screenDict addEntriesFromDictionary:body];
       }
-      
+
       [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:rootView.appProperties[@"navigatorEventID"] body:screenDict];
     }
   }
-  
+
   if ([viewController isKindOfClass:[UINavigationController class]]) {
     UINavigationController *navigationController = (UINavigationController*)viewController;
     UIViewController *topViewController = [navigationController topViewController];
@@ -369,6 +460,72 @@
   }
 }
 
+// MARK: UIViewControllerTransitioningDelegate
 
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+  if (presented == self.centerTabController) {
+    return self;
+  }
+  return nil;
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+  if (dismissed == self.centerTabController) {
+    return self;
+  }
+  return nil;
+}
+
+// MARK: UIViewControllerAnimatedTransitioning
+
+- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
+  return 0.2;
+}
+
+- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
+{
+  UIViewController* toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+  UIViewController* fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+
+  UIView *containerView = [transitionContext containerView];
+
+  if (!self.reverseTransition)
+  {
+    CGRect containerRect = containerView.frame;
+    containerRect.size.height -= self.tabBar.bounds.size.height;
+    containerView.frame = containerRect;
+    containerView.clipsToBounds = YES;
+    [containerView addSubview:toViewController.view];
+
+    toViewController.view.frame = CGRectOffset(self.view.frame, 0, self.view.frame.size.height);
+    toViewController.view.alpha = 0.25;
+
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
+      self.centerButton.imageView.transform = CGAffineTransformRotate(self.centerButton.imageView.transform, -M_PI * 0.25);
+      toViewController.view.frame = containerView.bounds;
+      toViewController.view.alpha = 1;
+    } completion:^(BOOL finished) {
+      [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+      self.reverseTransition = !self.reverseTransition;
+    }];
+  }
+  else
+  {
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
+      self.centerButton.imageView.transform = CGAffineTransformIdentity;
+      fromViewController.view.alpha = 0.25;
+
+      if (!self.tabBarWasTapped) {
+        fromViewController.view.frame = CGRectOffset(fromViewController.view.frame, 0, fromViewController.view.frame.size.height);
+      } else {
+        self.tabBarWasTapped = NO;
+      }
+    } completion:^(BOOL finished) {
+      [fromViewController.view removeFromSuperview];
+      [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+      self.reverseTransition = !self.reverseTransition;
+    }];
+  }
+}
 
 @end
