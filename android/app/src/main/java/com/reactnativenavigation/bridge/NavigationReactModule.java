@@ -157,6 +157,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+	public void disableBackNavigation(boolean disableBackNavigation) {
+		NavigationCommandsHandler.disableBackNavigation(disableBackNavigation);
+	}
+
+    @ReactMethod
     public void toggleTopBarVisible(final ReadableMap params) {
     }
 

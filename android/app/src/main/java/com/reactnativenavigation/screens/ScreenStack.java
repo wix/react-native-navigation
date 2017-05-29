@@ -34,6 +34,7 @@ public class ScreenStack {
     private RelativeLayout parent;
     private LeftButtonOnClickListener leftButtonOnClickListener;
     private Stack<Screen> stack = new Stack<>();
+	private boolean disableBackNavigation = false;
     private final KeyboardVisibilityDetector keyboardVisibilityDetector;
     private boolean isStackVisible = false;
     private final String navigatorId;
@@ -275,7 +276,7 @@ public class ScreenStack {
     }
 
     public boolean canPop() {
-        return stack.size() > 1 && !isPreviousScreenAttachedToWindow();
+        return stack.size() > 1 && !isPreviousScreenAttachedToWindow() && !disableBackNavigation;
     }
 
     private boolean isPreviousScreenAttachedToWindow() {
@@ -341,7 +342,12 @@ public class ScreenStack {
         });
     }
 
-    public void updateScreenStyle(String screenInstanceId, final Bundle styleParams) {
+	public void setDisableBackNavigation(boolean disableBackNavigation)
+	{
+		this.disableBackNavigation = disableBackNavigation;
+	}
+
+	public void updateScreenStyle(String screenInstanceId, final Bundle styleParams) {
         performOnScreen(screenInstanceId, new Task<Screen>() {
             @Override
             public void run(Screen screen) {

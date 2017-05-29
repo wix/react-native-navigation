@@ -213,6 +213,14 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
                      style:navigatorStyle];
     return;
   }
+
+  // disableBackNavigation
+  if ([performAction isEqualToString:@"disableBackNavigation"]) {
+	  NSNumber *disableBackNavigationNumber = actionParams[@"disableBackNavigation"];
+	  BOOL disableBackNavigation = [disableBackNavigationNumber boolValue];
+	  self.navigationItem.backBarButtonItem.enabled = !disableBackNavigation;
+	  self.interactivePopGestureRecognizer.enabled = !disableBackNavigation;
+  }
   
   // toggleNavBar
   if ([performAction isEqualToString:@"setHidden"]) {

@@ -239,7 +239,13 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         }
     }
 
-    @Override
+	@Override
+	public void disableBackNavigation(boolean disableBackNavigation)
+	{
+		getCurrentScreenStack().setDisableBackNavigation(disableBackNavigation);
+	}
+
+	@Override
     public void showSnackbar(SnackbarParams params) {
         final String eventId = getCurrentScreenStack().peek().getNavigatorEventId();
         snackbarAndFabContainer.showSnackbar(eventId, params);

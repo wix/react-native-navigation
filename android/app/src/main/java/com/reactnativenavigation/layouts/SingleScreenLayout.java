@@ -227,7 +227,13 @@ public class SingleScreenLayout extends BaseLayout {
         }
     }
 
-    @Override
+	@Override
+	public void disableBackNavigation(boolean disableBackNavigation)
+	{
+		stack.setDisableBackNavigation(disableBackNavigation);
+	}
+
+	@Override
     public void showSnackbar(SnackbarParams params) {
         final String navigatorEventId = stack.peek().getNavigatorEventId();
         snackbarAndFabContainer.showSnackbar(navigatorEventId, params);

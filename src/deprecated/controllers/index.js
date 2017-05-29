@@ -210,6 +210,9 @@ var Controllers = {
         RCCManager.NavigationControllerIOS(id, "setButtons", {buttons: buttons, side: "right", animated: animated});
         return unsubscribe;
       },
+      disableBackNavigation: function (params) {
+        return RCCManager.NavigationControllerIOS(id, "disableBackNavigation", params);
+      },
       setHidden: function(params = {}) {
         RCCManager.NavigationControllerIOS(id, "setHidden", params);
       }
