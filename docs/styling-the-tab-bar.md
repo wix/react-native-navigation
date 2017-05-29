@@ -20,6 +20,7 @@ Navigation.startTabBasedApp({
   tabBarBackgroundColor: '#551A8B' // change the background color of the tab bar
   tabBarTranslucent: false // change the translucent of the tab bar to false
   tabBarTextFontFamily: 'Avenir-Medium' //change the tab font family
+  tabBarHideShadow: true // iOS only. Remove default tab bar top shadow (hairline)
   forceTitlesDisplay: true // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
 }
 ```
