@@ -125,8 +125,8 @@ function disableOpenGesture(disableOpenGesture) {
     NativeReactModule.disableOpenGesture(disableOpenGesture);
 }
 
-function disableBackNavigation(disableBackNavigation) {
-    NativeReactModule.disableBackNavigation(disableBackNavigation);
+function disableBackNavigation(disableBackNavigation, animated) {
+    NativeReactModule.disableBackNavigation(disableBackNavigation, animated);
 }
 
 function selectTopTabByTabIndex(screenInstanceId, index) {

@@ -407,6 +407,7 @@ function navigatorDisableOpenGesture(navigator, params) {
 function navigatorDisableBackNavigation(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).disableBackNavigation({
 	  disableBackNavigation: params.disableBackNavigation,
+      animated: !(params.animated === false)
   });
 }
 

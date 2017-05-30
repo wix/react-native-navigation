@@ -39,7 +39,7 @@ public interface Layout extends ScreenStackContainer {
 
     void disableOpenGesture(boolean disableOpenGesture);
 
-	void disableBackNavigation(boolean disableBackNavigation);
+	void disableBackNavigation(boolean disableBackNavigation, boolean animated);
 
     void showSnackbar(SnackbarParams params);
 

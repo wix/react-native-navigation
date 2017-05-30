@@ -240,9 +240,9 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
 	@Override
-	public void disableBackNavigation(boolean disableBackNavigation)
+	public void disableBackNavigation(boolean disableBackNavigation, boolean animated)
 	{
-		getCurrentScreenStack().setDisableBackNavigation(disableBackNavigation);
+		getCurrentScreenStack().setDisableBackNavigation(disableBackNavigation, animated);
 	}
 
 	@Override

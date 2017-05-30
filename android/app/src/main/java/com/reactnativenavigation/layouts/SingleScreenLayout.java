@@ -228,9 +228,9 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
 	@Override
-	public void disableBackNavigation(boolean disableBackNavigation)
+	public void disableBackNavigation(boolean disableBackNavigation, boolean animated)
 	{
-		stack.setDisableBackNavigation(disableBackNavigation);
+		stack.setDisableBackNavigation(disableBackNavigation, animated);
 	}
 
 	@Override
