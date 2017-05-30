@@ -47,7 +47,7 @@ will be shown and the menu is automatically opened/closed onPress.
 Now iOS will look for this id as well, you will still have to provide
 the look and feel yourself.
 
-#Add ability to implement screen specific navigator options
+# Add ability to implement screen specific navigator options
 When you add a static navigatorOptions to your screen component, the
 navigator will check and inject these into the params for every action.
 Take this call for example:
@@ -62,3 +62,21 @@ The navigator will inject 'title' into the 'push' params, so you don't
 have to add the title param to every push you do.
 Adding a title to the 'push' params will always override the static
 navigatorOptions.
+
+## Disable back navigation
+You can now disable back navigation. This is not advised as standard
+behavior, and should be used only in rare cases.
+For example: When doing a backend call that can not be canceled.
+It is very important to enable it after success or error.
+For iOS this will hide the back button, you can specify if this 
+should happen animated or not (fade). It will also disable the 
+edge-swipe.
+For Android this will hide the back button and ignore any 'physical'
+back button taps.
+Example usage:
+```js
+this.props.navigator.disableBackNavigation({
+  disableBackNavigation: false,
+  animated: true,
+});
+```
