@@ -125,6 +125,10 @@ function disableOpenGesture(disableOpenGesture) {
     NativeReactModule.disableOpenGesture(disableOpenGesture);
 }
 
+function disableBackNavigation(disableBackNavigation) {
+    NativeReactModule.disableBackNavigation(disableBackNavigation);
+}
+
 function selectTopTabByTabIndex(screenInstanceId, index) {
   NativeReactModule.selectTopTabByTabIndex(screenInstanceId, index);
 }
@@ -200,6 +204,7 @@ module.exports = {
   toggleSideMenuVisible,
   setSideMenuVisible,
   disableOpenGesture,
+  disableBackNavigation,
   selectBottomTabByNavigatorId,
   selectBottomTabByTabIndex,
   setBottomTabBadgeByNavigatorId,

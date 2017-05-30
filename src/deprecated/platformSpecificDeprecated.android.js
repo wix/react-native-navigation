@@ -414,6 +414,11 @@ function navigatorDisableOpenGesture(navigator, params) {
     newPlatformSpecific.disableOpenGesture(disableOpenGesture);
 }
 
+function navigatorDisableBackNavigation(navigator, params) {
+    const disableBackNavigation = !(params.disableBackNavigation === false);
+    newPlatformSpecific.disableBackNavigation(disableBackNavigation);
+}
+
 function navigatorToggleNavBar(navigator, params) {
   const screenInstanceID = navigator.screenInstanceID;
   const visible = params.to === 'shown' || params.to === 'show';
@@ -734,6 +739,7 @@ export default {
   navigatorSwitchToTopTab,
   navigatorToggleDrawer,
   navigatorDisableOpenGesture,
+  navigatorDisableBackNavigation,
   navigatorToggleTabs,
   navigatorToggleNavBar,
   showSnackbar,

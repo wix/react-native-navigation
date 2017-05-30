@@ -404,6 +404,13 @@ function navigatorDisableOpenGesture(navigator, params) {
   });
 }
 
+function navigatorDisableBackNavigation(navigator, params) {
+  Controllers.NavigationControllerIOS(navigator.navigatorID).disableBackNavigation({
+	  disableBackNavigation: params.disableBackNavigation,
+      animated: !(params.animated === false)
+  });
+}
+
 function navigatorToggleTabs(navigator, params) {
   const controllerID = navigator.navigatorID.split('_')[0];
   Controllers.TabBarControllerIOS(controllerID + '_tabs').setHidden({
@@ -682,6 +689,7 @@ export default {
   navigatorSetTitleImage,
   navigatorToggleDrawer,
   navigatorDisableOpenGesture,
+  navigatorDisableBackNavigation,
   navigatorToggleTabs,
   navigatorSetTabBadge,
   navigatorSetTabButton,
