@@ -1,21 +1,22 @@
 {
   "name": "react-native-navigation",
-  "version": "1.1.0.1",
-  "description": "React Native Navigation - truly native navigation for iOS and Android",
+  "version": "1.0.0",
+  "description": "React Native Navigation ft. MediaMonksMobile. This is a fork of WIX, they are not responsible for this fork.",
   "license": "MIT",
   "nativePackage": true,
-  "author": "Tal Kol <talkol@gmail.com>",
+  "author": "Erik Poort <erik@mediamonks.com>",
+  "contributors": ["Tal Kol <talkol@gmail.com>"],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "bugs": {
-    "url": "https://github.com/wix/react-native-navigation/issues"
+    "url": "https://github.com/MediaMonksMobile/react-native-navigation/issues"
   },
-  "homepage": "https://github.com/wix/react-native-navigation",
-  "readme": "https://github.com/wix/react-native-navigation#readme",
+  "homepage": "https://github.com/MediaMonksMobile/react-native-navigation",
+  "readme": "https://github.com/MediaMonksMobile/react-native-navigation#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wix/react-native-navigation.git"
+    "url": "https://github.com/MediaMonksMobile/react-native-navigation.git"
   },
   "main": "src/index.js",
   "scripts": {
