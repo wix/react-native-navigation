@@ -345,6 +345,11 @@ public class ScreenStack {
 	public void setDisableBackNavigation(boolean disableBackNavigation)
 	{
 		this.disableBackNavigation = disableBackNavigation;
+		
+		Bundle bundle = new Bundle();
+		bundle.putBoolean("backButtonHidden", disableBackNavigation);
+		StyleParams params = new StyleParams(bundle);
+		stack.peek().getTopBar().setStyle(params);
 	}
 
 	public boolean getDisableBackNavigation()
