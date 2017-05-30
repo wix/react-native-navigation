@@ -157,8 +157,8 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-	public void disableBackNavigation(boolean disableBackNavigation, boolean animated) {
-		NavigationCommandsHandler.disableBackNavigation(disableBackNavigation, animated);
+	public void disableBackNavigation(boolean disableBackNavigation) {
+		NavigationCommandsHandler.disableBackNavigation(disableBackNavigation);
 	}
 
     @ReactMethod

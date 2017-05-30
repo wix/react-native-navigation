@@ -416,8 +416,7 @@ function navigatorDisableOpenGesture(navigator, params) {
 
 function navigatorDisableBackNavigation(navigator, params) {
     const disableBackNavigation = !(params.disableBackNavigation === false);
-    const animated = !(params.animated === false);
-    newPlatformSpecific.disableBackNavigation(disableBackNavigation, animated);
+    newPlatformSpecific.disableBackNavigation(disableBackNavigation);
 }
 
 function navigatorToggleNavBar(navigator, params) {

@@ -117,7 +117,7 @@ public class SingleScreenLayout extends BaseLayout {
             EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
             return true;
         } else {
-            return false;
+            return stack.getDisableBackNavigation();
         }
     }
 
@@ -228,9 +228,9 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
 	@Override
-	public void disableBackNavigation(boolean disableBackNavigation, boolean animated)
+	public void disableBackNavigation(boolean disableBackNavigation)
 	{
-		stack.setDisableBackNavigation(disableBackNavigation, animated);
+		stack.setDisableBackNavigation(disableBackNavigation);
 	}
 
 	@Override

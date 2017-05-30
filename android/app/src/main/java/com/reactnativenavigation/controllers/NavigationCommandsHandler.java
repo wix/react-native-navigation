@@ -333,7 +333,7 @@ public class NavigationCommandsHandler {
         });
     }
 
-    public static void disableBackNavigation(final boolean disableBackNavigation, final boolean animated) {
+    public static void disableBackNavigation(final boolean disableBackNavigation) {
 		final NavigationActivity currentActivity = NavigationActivity.currentActivity;
 		if (currentActivity == null) {
 			return;
@@ -344,7 +344,7 @@ public class NavigationCommandsHandler {
 			@Override
 			public void run()
 			{
-				currentActivity.disableBackNavigation(disableBackNavigation, animated);
+				currentActivity.disableBackNavigation(disableBackNavigation);
 			}
 		});
 	}

@@ -347,6 +347,11 @@ public class ScreenStack {
 		this.disableBackNavigation = disableBackNavigation;
 	}
 
+	public boolean getDisableBackNavigation()
+	{
+		return this.disableBackNavigation;
+	}
+
 	public void updateScreenStyle(String screenInstanceId, final Bundle styleParams) {
         performOnScreen(screenInstanceId, new Task<Screen>() {
             @Override

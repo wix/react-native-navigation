@@ -146,7 +146,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
             EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
             return true;
         } else {
-            return false;
+            return getCurrentScreenStack().getDisableBackNavigation();
         }
     }
 
@@ -240,9 +240,9 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
 	@Override
-	public void disableBackNavigation(boolean disableBackNavigation, boolean animated)
+	public void disableBackNavigation(boolean disableBackNavigation)
 	{
-		getCurrentScreenStack().setDisableBackNavigation(disableBackNavigation, animated);
+		getCurrentScreenStack().setDisableBackNavigation(disableBackNavigation);
 	}
 
 	@Override
