@@ -318,6 +318,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         layout.disableOpenGesture(disableOpenGesture);
     }
 
+    public void disableBackNavigation(boolean disableBackNavigation) {
+		layout.disableBackNavigation(disableBackNavigation);
+	}
+
     public void selectTopTabByTabIndex(String screenInstanceId, int index) {
         layout.selectTopTabByTabIndex(screenInstanceId, index);
         modalController.selectTopTabByTabIndex(screenInstanceId, index);

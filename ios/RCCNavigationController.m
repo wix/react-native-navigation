@@ -213,6 +213,15 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
                      style:navigatorStyle];
     return;
   }
+
+  // disableBackNavigation
+  if ([performAction isEqualToString:@"disableBackNavigation"]) {
+	  NSNumber *disableBackNavigationNumber = actionParams[@"disableBackNavigation"];
+	  BOOL disableBackNavigation = [disableBackNavigationNumber boolValue];
+	  BOOL animated = actionParams[@"animated"] ? [actionParams[@"animated"] boolValue] : YES;
+	  [self.topViewController.navigationItem setHidesBackButton:disableBackNavigation animated:animated];
+	  self.interactivePopGestureRecognizer.enabled = !disableBackNavigation;
+  }
   
   // toggleNavBar
   if ([performAction isEqualToString:@"setHidden"]) {
@@ -225,7 +234,6 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     RCCViewController *topViewController = ((RCCViewController*)self.topViewController);
     topViewController.navigatorStyle[@"navBarHidden"] = setHidden;
     [topViewController setNavBarVisibilityChange:animatedBool];
-    
   }
   
   // setStyle

@@ -39,6 +39,8 @@ public interface Layout extends ScreenStackContainer {
 
     void disableOpenGesture(boolean disableOpenGesture);
 
+	void disableBackNavigation(boolean disableBackNavigation);
+
     void showSnackbar(SnackbarParams params);
 
     void showSlidingOverlay(SlidingOverlayParams params);

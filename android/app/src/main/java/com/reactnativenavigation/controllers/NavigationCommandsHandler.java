@@ -333,6 +333,22 @@ public class NavigationCommandsHandler {
         });
     }
 
+    public static void disableBackNavigation(final boolean disableBackNavigation) {
+		final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+		if (currentActivity == null) {
+			return;
+		}
+
+		NavigationApplication.instance.runOnMainThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				currentActivity.disableBackNavigation(disableBackNavigation);
+			}
+		});
+	}
+
     public static void selectTopTabByTabIndex(final String screenInstanceId, final int index) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
