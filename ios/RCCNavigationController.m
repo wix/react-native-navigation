@@ -219,7 +219,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
 	  NSNumber *disableBackNavigationNumber = actionParams[@"disableBackNavigation"];
 	  BOOL disableBackNavigation = [disableBackNavigationNumber boolValue];
 	  BOOL animated = actionParams[@"animated"] ? [actionParams[@"animated"] boolValue] : YES;
-	  [self.navigationItem setHidesBackButton:disableBackNavigation animated:animated];
+	  [self.topViewController.navigationItem setHidesBackButton:disableBackNavigation animated:animated];
 	  self.interactivePopGestureRecognizer.enabled = !disableBackNavigation;
   }
   
