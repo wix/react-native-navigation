@@ -19,6 +19,9 @@ class Actions extends React.Component {
         if (event.id === 'contextualMenuDismissed') {
             this._contextualMenu = false;
         }
+        if (event.id === 'customButton') {
+            alert('custom button');
+        }
     }
 
     setTitle = () => {
@@ -105,6 +108,16 @@ class Actions extends React.Component {
         this._rightButton = title;
     };
 
+    setCustomButton = () => {
+        this._rightButton = '';
+        this.props.navigator.setButtons({
+            rightButtons: [{
+                customView: 'example.NavBar.CustomButton',
+                id: 'customButton'
+            }]
+        })
+    };
+
     toggleFAB = () => {
         if (this._fab) {
             this.props.navigator.setButtons({
@@ -149,6 +162,7 @@ class Actions extends React.Component {
                 <Row title={'Show Snackbar'} onPress={this.showSnackbar} platform={'android'}/>
                 <Row title={'Toggle Contextual Menu'} onPress={this.toggleContextualMenu} platform={'android'}/>
                 <Row title={'Set Right Buttons'} onPress={this.setButtons}/>
+                <Row title={'Set Custom Right Button'} onPress={this.setCustomButton}/>
                 <Row title={'Toggle FAB'} onPress={this.toggleFAB} platform={'android'}/>
             </ScrollView>
         );

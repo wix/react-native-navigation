@@ -6,6 +6,7 @@
 #import "RCCDrawerController.h"
 #import "RCCLightBox.h"
 #import <React/RCTConvert.h>
+#import <React/RCTEventDispatcher.h>
 #import "RCCTabBarController.h"
 #import "RCCTheSideBarManagerViewController.h"
 #import "RCCNotification.h"
@@ -270,6 +271,17 @@ RCT_EXPORT_METHOD(
     RCCNavigationController* controller = [[RCCManager sharedInstance] getControllerWithId:controllerId componentType:@"NavigationControllerIOS"];
     if (!controller || ![controller isKindOfClass:[RCCNavigationController class]]) return;
     return [controller performAction:performAction actionParams:actionParams bridge:[[RCCManager sharedInstance] getBridge]];
+}
+
+RCT_EXPORT_METHOD(
+                  NavigationBarCustomButtonPressWithCallbackId:(NSString *)callbackId buttonId:(NSString *)buttonId)
+{
+    if (!callbackId) return;
+    [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:callbackId body:@
+    {
+            @"type": @"NavBarButtonPress",
+            @"id": buttonId ? buttonId : [NSNull null]
+    }];
 }
 
 RCT_EXPORT_METHOD(

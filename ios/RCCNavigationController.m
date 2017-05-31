@@ -3,10 +3,12 @@
 #import "RCCManager.h"
 #import <React/RCTEventDispatcher.h>
 #import <React/RCTConvert.h>
+#import <React/RCTRootView.h>
 #import <objc/runtime.h>
 #import "RCCTitleViewHelper.h"
 #import "UIViewController+Rotation.h"
 #import "RCTHelpers.h"
+#import "RCCCustomButtonView.h"
 
 @implementation RCCNavigationController
 {
@@ -272,10 +274,27 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     NSString *title = button[@"title"];
     UIImage *iconImage = nil;
     id icon = button[@"icon"];
+    NSString *customView = button[@"customView"];
     if (icon) iconImage = [RCTConvert UIImage:icon];
-    
+    NSString *buttonId = button[@"id"];
+    NSString *callbackId = button[@"onPress"];
+
     UIBarButtonItem *barButtonItem;
-    if (iconImage)
+    if (customView) {
+      RCTBridge *bridge = ((RCTRootView*)viewController.view).bridge;
+
+      NSNumber *viewWidth = button[@"customViewWidth"] ?: @60;
+      NSMutableDictionary *initialProps = [NSMutableDictionary dictionaryWithDictionary:button[@"customViewInitialProps"]];
+      initialProps[@"buttonID"] = buttonId;
+      initialProps[@"callbackID"] = callbackId;
+      RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:customView initialProperties:initialProps];
+      CGRect buttonFrame = CGRectMake(0, 0, viewWidth.floatValue, self.navigationBar.bounds.size.height);
+      RCCCustomButtonView *buttonView = [[RCCCustomButtonView alloc] initWithFrame:buttonFrame subView:reactView];
+      reactView.backgroundColor = [UIColor clearColor];
+
+      barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:buttonView];
+    }
+    else if (iconImage)
     {
       barButtonItem = [[UIBarButtonItem alloc] initWithImage:iconImage style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPress:)];
     }
@@ -289,10 +308,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       }
     }
     else continue;
-    objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, callbackId, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [barButtonItems addObject:barButtonItem];
-    
-    NSString *buttonId = button[@"id"];
+
     if (buttonId)
     {
       objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_ID, buttonId, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
