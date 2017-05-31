@@ -68,7 +68,37 @@ public class MyApplication extends NavigationApplication {
 `MainActivity` extends `SplashActiviy` which is used to start the react context. Once react is up and running `MainActivity` is **stopped** and another activity takes over to run our app: `NavigationActivity`. Due to this design, there's usually no point in overriding lifecycle callbacks in `MainActivity`.
 
 ## Splash screen
-Override `getSplashLayout` or `createSplashLayout` in `MainActivity` to provide a splash layout which will be displayed while Js context initialises.
+Override `getSplashLayout` or `createSplashLayout` in `MainActivity` to provide a splash layout which will be displayed while Js context initialises, for example:
+
+```java
+import android.widget.LinearLayout;
+import android.graphics.Color;
+import android.widget.TextView;
+import android.view.Gravity;
+import android.util.TypedValue;
+
+import com.reactnativenavigation.controllers.SplashActivity;
+
+public class MainActivity extends SplashActivity {
+
+    @Override
+    public LinearLayout createSplashLayout() {
+        LinearLayout view = new LinearLayout(this);
+        TextView textView = new TextView(this);
+
+        view.setBackgroundColor(Color.parseColor("#607D8B"));
+        view.setGravity(Gravity.CENTER);
+
+        textView.setTextColor(Color.parseColor("#FFFFFF"));
+        textView.setText("React Native Navigation");
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 40);
+
+        view.addView(textView);
+        return view;
+    }
+}
+```
 
 ## Snackbar
 Snackbars provide lightweight feedback about an operation. They show a brief message at the bottom of the screen. Snackbars appear above all other elements on screen and only one can be displayed at a time.
@@ -272,7 +302,7 @@ specify the rate of change of a parameter over time
 ### Screen animation
 When Shared Element Transition is used, a cross-fade transition is used between the entering and exiting screens. Make sure the root `View` has a background color in order for the cross-fade animation to be visible.
 
-To disable the corss-fade animation, set `animated: false` when pushing the second screen. Disabling this animation is useful if you'd like to animate the reset of the elements on screen your self.
+To disable the cross-fade animation, set `animated: false` when pushing the second screen. Disabling this animation is useful if you'd like to animate the reset of the elements on screen your self.
 
 ## Reloading from terminal
 You can easily reload your app from terminal using `adb shell am broadcast -a react.native.RELOAD`. This is particularly useful when debugging on device.

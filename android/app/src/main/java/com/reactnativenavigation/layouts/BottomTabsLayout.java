@@ -434,6 +434,14 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         bottomTabs.setNotification(badge, getScreenStackIndex(navigatorId));
     }
 
+    public void setBottomTabButtonByIndex(Integer index, ScreenParams params) {
+        bottomTabs.setTabButton(params, index);
+    }
+
+    public void setBottomTabButtonByNavigatorId(String navigatorId, ScreenParams params) {
+        bottomTabs.setTabButton(params, getScreenStackIndex(navigatorId));
+    }
+
     private int getScreenStackIndex(String navigatorId) throws ScreenStackNotFoundException {
         for (int i = 0; i < screenStacks.length; i++) {
             if (screenStacks[i].getNavigatorId().equals(navigatorId)) {

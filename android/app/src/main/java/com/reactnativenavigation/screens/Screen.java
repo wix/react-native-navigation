@@ -74,11 +74,12 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     @Override
     public void onEvent(Event event) {
         if (ContextualMenuHiddenEvent.TYPE.equals(event.getType()) && isShown()) {
-            setStyle();
             topBar.onContextualMenuHidden();
+            setStyle();
         }
         if (ViewPagerScreenChangedEvent.TYPE.equals(event.getType()) && isShown() ) {
             topBar.dismissContextualMenu();
+            topBar.onViewPagerScreenChanged(getScreenParams());
         }
     }
 
@@ -134,7 +135,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         topBar.addTitleBarAndSetButtons(screenParams.rightButtons,
                 screenParams.leftButton,
                 leftButtonOnClickListener,
-                screenParams.getNavigatorEventId(),
+                getNavigatorEventId(),
                 screenParams.overrideBackPressInJs);
     }
 

@@ -29,9 +29,8 @@ export default class SecondTabScreen extends Component {
   onNavigatorEvent(event) {
     // handle a deep link
     if (event.type == 'DeepLink') {
-
       const parts = event.link.split('/'); // Link parts
-      const payload = event.payload;       // (optional) The payload
+      const payload = event.payload; // (optional) The payload
 
       if (parts[0] == 'tab2') {
         // handle the link somehow, usually run a this.props.navigator command

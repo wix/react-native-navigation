@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Callback;
+import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -157,5 +158,9 @@ public class TopBar extends AppBarLayout {
 
     public void destroy() {
 
+    }
+
+    public void onViewPagerScreenChanged(BaseScreenParams screenParams) {
+        titleBar.onViewPagerScreenChanged(screenParams);
     }
 }

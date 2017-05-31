@@ -17,6 +17,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 
+import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -114,7 +115,7 @@ public class TitleBar extends Toolbar {
         if (shouldSetLeftButton(leftButtonParams)) {
             createAndSetLeftButton(leftButtonParams, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
         } else if (hasLeftButton()) {
-            if (leftButtonParams.hasIcon()) {
+            if (leftButtonParams.hasDefaultIcon() || leftButtonParams.hasCustomIcon()) {
                 updateLeftButton(leftButtonParams);
             } else {
                 removeLeftButton();
@@ -213,11 +214,17 @@ public class TitleBar extends Toolbar {
     }
 
     private void updateLeftButton(TitleBarLeftButtonParams leftButtonParams) {
-        leftButton.setIconState(leftButtonParams);
+        if (leftButtonParams.hasDefaultIcon()) {
+            leftButton.setIconState(leftButtonParams);
+            setNavigationIcon(leftButton);
+        } else if (leftButtonParams.hasCustomIcon()) {
+            leftButton.setCustomIcon(leftButtonParams);
+            setNavigationIcon(leftButtonParams.icon);
+        }
     }
 
     private boolean shouldSetLeftButton(TitleBarLeftButtonParams leftButtonParams) {
-        return leftButton == null && leftButtonParams != null && leftButtonParams.iconState != null;
+        return leftButton == null && leftButtonParams != null && (leftButtonParams.hasDefaultIcon() || leftButtonParams.hasCustomIcon());
     }
 
     private void createAndSetLeftButton(TitleBarLeftButtonParams leftButtonParams,
@@ -228,7 +235,7 @@ public class TitleBar extends Toolbar {
                 overrideBackPressInJs);
         setNavigationOnClickListener(leftButton);
 
-        if (leftButtonParams.icon != null) {
+        if (leftButtonParams.hasCustomIcon()) {
             setNavigationIcon(leftButtonParams.icon);
         } else {
             setNavigationIcon(leftButton);
@@ -306,13 +313,22 @@ public class TitleBar extends Toolbar {
             return;
         }
         updateButtonColor(titleBarButtonColor);
+        setLeftButtonColor(titleBarButtonColor);
         setButtonsIconColor();
         setButtonTextColor();
     }
 
+    private void setLeftButtonColor(StyleParams.Color titleBarButtonColor) {
+        if (leftButton != null) {
+            leftButton.setColor(titleBarButtonColor.getColor());
+        }
+    }
+
     private void updateButtonColor(StyleParams.Color titleBarButtonColor) {
-        for (TitleBarButtonParams rightButton : rightButtons) {
-            rightButton.color = titleBarButtonColor;
+        if (rightButtons != null) {
+            for (TitleBarButtonParams rightButton : rightButtons) {
+                rightButton.color = titleBarButtonColor;
+            }
         }
     }
 
@@ -340,5 +356,11 @@ public class TitleBar extends Toolbar {
 
     BaseTitleBarButtonParams getButton(int index) {
         return rightButtons.get(rightButtons.size() - index - 1);
+    }
+
+    public void onViewPagerScreenChanged(BaseScreenParams screenParams) {
+        if (hasLeftButton()) {
+            leftButton.updateNavigatorEventId(screenParams.getNavigatorEventId());
+        }
     }
 }

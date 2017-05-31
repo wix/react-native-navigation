@@ -41,6 +41,7 @@ public class NavigationCommandsHandler {
         IntentDataHandler.onStartApp(intent);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ACTIVITY_PARAMS_BUNDLE, params);
+        intent.putExtra("animationType", params.getString("animationType"));
         NavigationApplication.instance.startActivity(intent);
     }
 
@@ -395,6 +396,36 @@ public class NavigationCommandsHandler {
             @Override
             public void run() {
                 currentActivity.setBottomTabBadgeByNavigatorId(navigatorId, badge);
+            }
+        });
+    }
+
+    public static void setBottomTabButtonByIndex(final Integer index, final Bundle screenParams) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        final ScreenParams params = ScreenParamsParser.parse(screenParams);
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.setBottomTabButtonByIndex(index, params);
+            }
+        });
+    }
+
+    public static void setBottomTabButtonByNavigatorId(final String navigatorId, final Bundle screenParams) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        final ScreenParams params = ScreenParamsParser.parse(screenParams);
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.setBottomTabButtonByNavigatorId(navigatorId, params);
             }
         });
     }
