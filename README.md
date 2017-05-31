@@ -1,8 +1,12 @@
 
 <h1 align="center">
   <img src="./logo.png"/> <img src="./mm.png"/><br>
-  React Native Navigation / MediaMonksMobile
+  React Native Navigation ft. MediaMonksMobile
 </h1>
+
+- Forked from https://github.com/wix/react-native-navigation
+- Based on 1.1.0 (c4f109e5532fa1017414768e1b4094ef0735d760)
+- Documentation https://wix.github.io/react-native-navigation/
 
 ## Disable open gesture
 
