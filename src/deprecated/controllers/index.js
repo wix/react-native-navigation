@@ -126,6 +126,12 @@ var Controllers = {
       var layout = controller.render();
       _validateDrawerProps(layout);
       RCCManager.setRootController(layout, animationType, passProps);
+    },
+    addSplashScreen: function () {
+        RCCManager.addSplashScreen();
+    }
+    removeSplashScreen: function () {
+        RCCManager.removeSplashScreen();
     }
   },
 

@@ -17,6 +17,9 @@
 -(id)getDrawerController;
 -(void)unregisterController:(UIViewController*)vc;
 
+-(void)addSplashScreen;
+-(void)removeSplashScreen;
+
 -(void)clearModuleRegistry;
 
 @end

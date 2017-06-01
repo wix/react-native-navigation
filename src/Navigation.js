@@ -145,6 +145,14 @@ function updateSingleScreenApp(params) {
   return platformSpecific.updateSingleScreenApp(params);
 }
 
+function addSplashScreen() {
+  return platformSpecific.addSplashScreen();
+}
+
+function removeSplashScreen() {
+  return platformSpecific.removeSplashScreen();
+}
+
 function setEventHandler(navigatorEventID, eventHandler) {
   _allNavigatorEventHandlers[navigatorEventID] = eventHandler;
 }
@@ -182,6 +190,8 @@ export default {
   startTabBasedApp: startTabBasedApp,
   startSingleScreenApp: startSingleScreenApp,
   updateSingleScreenApp: updateSingleScreenApp,
+  addSplashScreen: addSplashScreen,
+  removeSplashScreen: removeSplashScreen,
   setEventHandler: setEventHandler,
   clearEventHandler: clearEventHandler,
   handleDeepLink: handleDeepLink
