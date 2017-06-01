@@ -5,13 +5,13 @@
 </h1>
 
 - Forked from https://github.com/wix/react-native-navigation
-- Based on 1.1.0 (c4f109e5532fa1017414768e1b4094ef0735d760)
+- Based on 1.1.85 (828c0616b7ae97be588e46a84478c83dbfecb832)
 - Documentation https://wix.github.io/react-native-navigation/
 
 ## Disable open gesture
 
-You can use the folowing functionality from any screen to disable/enable 
-the opening of the drawer menu:
+You can use the folowing functionality from any screen to
+disable/enable the opening of the drawer menu:
 ```js
 this.props.navigator.disableOpenGesture({
   disableOpenGesture: false,
@@ -20,8 +20,8 @@ this.props.navigator.disableOpenGesture({
 
 ## Switch pages
 The method startSingleScreenApp will now return the freshly created
-navigatorID. Using that together with updateSingleScreen app you can now
-reset the navigation from outside a screen.
+navigatorID. Using that together with updateSingleScreen app you can
+now reset the navigation from outside a screen.
 
 This was implemented to be able to listen to navigation deeplinks sent
 from a drawer, and flip the page without reimplementing the same logic
@@ -51,7 +51,7 @@ will be shown and the menu is automatically opened/closed onPress.
 Now iOS will look for this id as well, you will still have to provide
 the look and feel yourself.
 
-# Add ability to implement screen specific navigator options
+## Add ability to implement screen specific navigator options
 When you add a static navigatorOptions to your screen component, the
 navigator will check and inject these into the params for every action.
 Take this call for example:
@@ -83,4 +83,13 @@ this.props.navigator.disableBackNavigation({
   disableBackNavigation: false,
   animated: true,
 });
+```
+
+## Add and remove splash screen (iOS)
+Add and remove the splash screen. This will not replace, but overlay
+the app with the splash screen. Only one instance will be kept.
+Example usage:
+```js
+Navigation.showSplashScreen();
+Navigation.hideSplashScreen();
 ```
