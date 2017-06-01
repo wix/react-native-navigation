@@ -1,5 +1,7 @@
 package com.reactnativenavigation.e2e.androide2e;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.BySelector;
@@ -12,6 +14,8 @@ import android.support.test.uiautomator.Until;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+
+import java.io.File;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -79,6 +83,14 @@ public abstract class BaseTest {
 		assertThat(device().wait(Until.hasObject(selector), TIMEOUT)).withFailMessage("expected %1$s to be visible", selector).isTrue();
 		assertThat(device().findObject(selector).getVisibleCenter().x).isPositive().isLessThan(device().getDisplayWidth());
 		assertThat(device().findObject(selector).getVisibleCenter().y).isPositive().isLessThan(device().getDisplayHeight());
+	}
+
+	public Bitmap captureScreenshot() throws Exception {
+		File file = File.createTempFile("tmpE2E", "png");
+		device().takeScreenshot(file);
+		Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+		file.delete();
+		return bitmap;
 	}
 
 	public void swipeOpenLeftSideMenu() {
