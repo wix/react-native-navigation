@@ -30,7 +30,7 @@ class WelcomeScreen extends Component {
 
   onClickSwitchToTabs() {
     Navigation.setRoot({
-      tabs: [
+      bottomTabs: [
         {
           container: {
             name: 'navigation.playground.TextScreen',
@@ -54,7 +54,7 @@ class WelcomeScreen extends Component {
 
   onClickSwitchToSideMenus() {
     Navigation.setRoot({
-      tabs: [
+      bottomTabs: [
         {
           container: {
             name: 'navigation.playground.TextScreen',
