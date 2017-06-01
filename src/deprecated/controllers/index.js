@@ -129,7 +129,7 @@ var Controllers = {
     },
     addSplashScreen: function () {
         RCCManager.addSplashScreen();
-    }
+    },
     removeSplashScreen: function () {
         RCCManager.removeSplashScreen();
     }
