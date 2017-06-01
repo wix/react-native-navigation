@@ -1,4 +1,4 @@
-# Usage 
+# Usage
 
 If you don't like reading, just jump into the fully working example projects:
 
@@ -15,6 +15,7 @@ This would normally go in your `index.ios.js`
 import { Navigation } from 'react-native-navigation';
 
 import { registerScreens } from './screens';
+
 registerScreens(); // this is where you register all of your app's screens
 
 // start the app
@@ -40,7 +41,7 @@ Navigation.startTabBasedApp({
 
 #### Step 2 - Register all of your screen components
 
-Every screen that you want to be able to place in a tab, push to the navigation stack or present modally needs to be registered. We recommend doing this in a central place, like [`screens/index.js`](example/src/screens/index.js).
+Every screen that you want to be able to place in a tab, push to the navigation stack or present modally needs to be registered. We recommend doing this in a central place, like [screens/index.js](https://github.com/wix/react-native-navigation/blob/master/example/src/screens/index.ios.js).
 
 > Note: Since your screens will potentially be bundled with other packages, your registered name must be **unique**! Follow a namespacing convention like `packageName.ScreenName`.
 

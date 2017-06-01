@@ -13,6 +13,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 
+import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -25,6 +26,7 @@ public class TitleBar extends Toolbar {
     private static final int TITLE_VISIBILITY_ANIMATION_DURATION = 320;
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
+    private List<TitleBarButtonParams> rightButtons;
 
     public TitleBar(Context context) {
         super(context);
@@ -44,12 +46,13 @@ public class TitleBar extends Toolbar {
     }
 
     public void setRightButtons(List<TitleBarButtonParams> rightButtons, String navigatorEventId) {
+        this.rightButtons = rightButtons;
         Menu menu = getMenu();
         menu.clear();
         if (rightButtons == null) {
             return;
         }
-        addButtonsToTitleBar(rightButtons, navigatorEventId, menu);
+        addButtonsToTitleBar(navigatorEventId, menu);
     }
 
     public void setLeftButton(TitleBarLeftButtonParams leftButtonParams,
@@ -59,7 +62,7 @@ public class TitleBar extends Toolbar {
         if (shouldSetLeftButton(leftButtonParams)) {
             createAndSetLeftButton(leftButtonParams, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
         } else if (hasLeftButton()) {
-            if (leftButtonParams.hasIcon()) {
+            if (leftButtonParams.hasDefaultIcon() || leftButtonParams.hasCustomIcon()) {
                 updateLeftButton(leftButtonParams);
             } else {
                 removeLeftButton();
@@ -91,11 +94,9 @@ public class TitleBar extends Toolbar {
             @Override
             public void run() {
                 if (params.titleBarTitleTextCentered) {
-                    int[] location = new int[2];
-                    titleView.getLocationOnScreen(location);
-                    titleView.setTranslationX(titleView.getTranslationX() + (-location[0] + ViewUtils.getScreenWidth() / 2 - titleView.getWidth() / 2));
+                    titleView.setX(ViewUtils.getScreenWidth() / 2 - titleView.getWidth() / 2);
                 }
-
+                
             }
         });
     }
@@ -143,7 +144,7 @@ public class TitleBar extends Toolbar {
         }
     }
 
-    private void addButtonsToTitleBar(List<TitleBarButtonParams> rightButtons, String navigatorEventId, Menu menu) {
+    private void addButtonsToTitleBar(String navigatorEventId, Menu menu) {
         for (int i = 0; i < rightButtons.size(); i++) {
             final TitleBarButton button = ButtonFactory.create(menu, this, rightButtons.get(i), navigatorEventId);
             addButtonInReverseOrder(rightButtons, i, button);
@@ -160,11 +161,17 @@ public class TitleBar extends Toolbar {
     }
 
     private void updateLeftButton(TitleBarLeftButtonParams leftButtonParams) {
-        leftButton.setIconState(leftButtonParams);
+        if (leftButtonParams.hasDefaultIcon()) {
+            leftButton.setIconState(leftButtonParams);
+            setNavigationIcon(leftButton);
+        } else if (leftButtonParams.hasCustomIcon()) {
+            leftButton.setCustomIcon(leftButtonParams);
+            setNavigationIcon(leftButtonParams.icon);
+        }
     }
 
     private boolean shouldSetLeftButton(TitleBarLeftButtonParams leftButtonParams) {
-        return leftButton == null && leftButtonParams != null && leftButtonParams.iconState != null;
+        return leftButton == null && leftButtonParams != null && (leftButtonParams.hasDefaultIcon() || leftButtonParams.hasCustomIcon());
     }
 
     private void createAndSetLeftButton(TitleBarLeftButtonParams leftButtonParams,
@@ -175,7 +182,7 @@ public class TitleBar extends Toolbar {
                 overrideBackPressInJs);
         setNavigationOnClickListener(leftButton);
 
-        if (leftButtonParams.icon != null) {
+        if (leftButtonParams.hasCustomIcon()) {
             setNavigationIcon(leftButtonParams.icon);
         } else {
             setNavigationIcon(leftButton);
@@ -246,5 +253,61 @@ public class TitleBar extends Toolbar {
                 return child.getText().equals(getTitle());
             }
         });
+    }
+
+    public void setButtonColor(StyleParams.Color titleBarButtonColor) {
+        if (!titleBarButtonColor.hasColor()) {
+            return;
+        }
+        updateButtonColor(titleBarButtonColor);
+        setLeftButtonColor(titleBarButtonColor);
+        setButtonsIconColor();
+        setButtonTextColor();
+    }
+
+    private void setLeftButtonColor(StyleParams.Color titleBarButtonColor) {
+        if (leftButton != null) {
+            leftButton.setColor(titleBarButtonColor.getColor());
+        }
+    }
+
+    private void updateButtonColor(StyleParams.Color titleBarButtonColor) {
+        if (rightButtons != null) {
+            for (TitleBarButtonParams rightButton : rightButtons) {
+                rightButton.color = titleBarButtonColor;
+            }
+        }
+    }
+
+    private void setButtonTextColor() {
+        final ActionMenuView buttonsContainer = ViewUtils.findChildByClass(this, ActionMenuView.class);
+        if (buttonsContainer != null) {
+            for (int i = 0; i < buttonsContainer.getChildCount(); i++) {
+                if (buttonsContainer.getChildAt(i) instanceof TextView) {
+                    ((TextView) buttonsContainer.getChildAt(i)).setTextColor(getButton(i).getColor().getColor());
+                }
+            }
+        }
+    }
+
+    private void setButtonsIconColor() {
+        final Menu menu = getMenu();
+        for (int i = 0; i < menu.size(); i++) {
+            if (menu.getItem(i).getIcon() != null) {
+                ViewUtils.tintDrawable(menu.getItem(i).getIcon(),
+                        getButton(i).getColor().getColor(),
+                        getButton(i).enabled);
+            }
+        }
+    }
+
+    BaseTitleBarButtonParams getButton(int index) {
+        return rightButtons.get(rightButtons.size() - index - 1);
+    }
+
+    public void onViewPagerScreenChanged(BaseScreenParams screenParams) {
+        if (hasLeftButton()) {
+            leftButton.updateNavigatorEventId(screenParams.getNavigatorEventId());
+        }
     }
 }

@@ -18,11 +18,9 @@ public class ClipBoundsEvaluator implements TypeEvaluator<Rect> {
             result.bottom = toHeight;
         } else {
             if (toHeight > fromHeight) {
-                result.top = (int) (Math.abs(toHeight - fromHeight) / 2 * (1 - ratio));
-                result.bottom = toHeight- result.top;
+                result.bottom = (int) (toHeight - (toHeight - fromHeight) * (1 - ratio));
             } else {
-                result.top = (int) (Math.abs(toHeight - fromHeight) / 2 * ratio);
-                result.bottom = fromHeight - result.top;
+                result.bottom = (int) (toHeight + (fromHeight - toHeight) * (1 - ratio));
             }
         }
 
@@ -30,11 +28,9 @@ public class ClipBoundsEvaluator implements TypeEvaluator<Rect> {
             result.right = toWidth;
         } else {
             if (toWidth > fromWidth) {
-                result.left = (int) (Math.abs(toWidth - fromWidth) / 2 * (1 - ratio));
-                result.right = toWidth - result.left;
+                result.right = (int) (toWidth - (toWidth - fromWidth) * (1 - ratio));
             } else {
-                result.left = (int) (Math.abs(toWidth - fromWidth) / 2 * ratio);
-                result.right = fromWidth - result.left;
+                result.right = (int) (toWidth + (fromWidth - toWidth) * (1 - ratio));
             }
         }
         return result;

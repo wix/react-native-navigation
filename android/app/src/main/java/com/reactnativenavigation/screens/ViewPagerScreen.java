@@ -9,6 +9,7 @@ import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopTabs;
@@ -30,7 +31,12 @@ public class ViewPagerScreen extends Screen {
 
     @Override
     public BaseScreenParams getScreenParams() {
-        return screenParams.topTabParams.get(viewPager.getCurrentItem());
+        return screenParams.topTabParams.get(getCurrentItem());
+    }
+
+    @Override
+    public void setTitleBarLeftButton(String navigatorEventId, LeftButtonOnClickListener backButtonListener, TitleBarLeftButtonParams titleBarLeftButtonParams) {
+        super.setTitleBarLeftButton(getNavigatorEventId(), backButtonListener, titleBarLeftButtonParams);
     }
 
     @Override
@@ -41,7 +47,7 @@ public class ViewPagerScreen extends Screen {
 
     @Override
     public ContentView getContentView() {
-        return contentViews.get(viewPager.getCurrentItem());
+        return contentViews.get(getCurrentItem());
     }
 
     @Override
@@ -120,11 +126,37 @@ public class ViewPagerScreen extends Screen {
 
     @Override
     public String getScreenInstanceId() {
-        return screenParams.topTabParams.get(viewPager.getCurrentItem()).navigationParams.screenInstanceId;
+        return screenParams.topTabParams.get(getCurrentItem()).navigationParams.screenInstanceId;
     }
 
     @Override
     public String getNavigatorEventId() {
-        return screenParams.topTabParams.get(viewPager.getCurrentItem()).navigationParams.navigatorEventId;
+        return screenParams.topTabParams.get(getCurrentItem()).navigationParams.navigatorEventId;
+    }
+
+    private int getCurrentItem() {
+        return viewPager == null ? 0 : viewPager.getCurrentItem();
+    }
+
+    public void selectTopTabByTabIndex(int index) {
+        viewPager.setCurrentItem(index);
+    }
+
+    @Override
+    public boolean hasScreenInstance(String screenInstanceId) {
+        for (PageParams topTabParam : screenParams.topTabParams) {
+            if(screenInstanceId.equals(topTabParam.getScreenInstanceId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void selectTopTabByTabByScreen(String screenInstanceId) {
+        for (int i = 0; i < screenParams.topTabParams.size(); i++) {
+            if (screenParams.topTabParams.get(i).getScreenInstanceId().equals(screenInstanceId)) {
+                viewPager.setCurrentItem(i);
+            }
+        }
     }
 }

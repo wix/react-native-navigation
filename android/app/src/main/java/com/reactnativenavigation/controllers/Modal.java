@@ -3,16 +3,17 @@ package com.reactnativenavigation.controllers;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.facebook.react.bridge.Callback;
+import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.layouts.Layout;
 import com.reactnativenavigation.layouts.ModalScreenLayout;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
-import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.Orientation;
@@ -29,6 +30,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
     private final OnModalDismissedListener onModalDismissedListener;
     private final ScreenParams screenParams;
     private Layout layout;
+    private boolean isDestroyed;
 
     public void setTopBarVisible(String screenInstanceId, boolean hidden, boolean animated) {
         layout.setTopBarVisible(screenInstanceId, hidden, animated);
@@ -52,6 +54,10 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
 
     void setFab(String screenInstanceId, String navigatorEventId, FabParams fab) {
         layout.setFab(screenInstanceId, navigatorEventId, fab);
+    }
+
+    void updateScreenStyle(String screenInstanceId, Bundle styleParams) {
+        layout.updateScreenStyle(screenInstanceId, styleParams);
     }
 
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
@@ -79,6 +85,14 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
     }
 
     public void onSideMenuButtonClick() {
+    }
+
+    void selectTopTabByScreen(String screenInstanceId) {
+        layout.selectTopTabByScreen(screenInstanceId);
+    }
+
+    public void selectTopTabByTabIndex(String screenInstanceId, int index) {
+        layout.selectTopTabByTabIndex(screenInstanceId, index);
     }
 
     interface OnModalDismissedListener {
@@ -149,6 +163,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
 
     @Override
     public void destroy() {
+        isDestroyed = true;
         layout.destroy();
     }
 
@@ -160,13 +175,25 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
     }
 
     @Override
+    public void dismiss() {
+        if (!isDestroyed) {
+            NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", layout.getCurrentScreen().getNavigatorEventId());
+            NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", layout.getCurrentScreen().getNavigatorEventId());
+        }
+        super.dismiss();
+    }
+
+    @Override
     public void onDismiss(DialogInterface dialog) {
+        if (isDestroyed) {
+            return;
+        }
         destroy();
-        setOrientation(AppStyle.appStyle.orientation);
         onModalDismissedListener.onModalDismissed(this);
     }
 
     void onModalDismissed() {
+        setOrientation(screenParams.styleParams.orientation);
         layout.onModalDismissed();
     }
 

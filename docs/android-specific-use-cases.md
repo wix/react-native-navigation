@@ -1,15 +1,6 @@
 # Android Specific Use Cases
 
-TOC
-* [Activity Lifecycle and onActivityResult](https://github.com/wix/react-native-navigation/wiki/Android#activity-lifecycle-and-onactivityresult)
-* [Adjusting soft input mode](https://github.com/wix/react-native-navigation/wiki/Android/#adjusting-soft-input-mode)
-* [Splash screen](https://github.com/wix/react-native-navigation/wiki/Android/#splash-screen)
-* [Collapsing React header](https://github.com/wix/react-native-navigation/wiki/Android/#collapsing-react-header---android-only)
-  * [Collapsing react view](https://github.com/wix/react-native-navigation/wiki/Android/#collapsing-react-view)
-  * [Collapsing react view with top tabs](https://github.com/wix/react-native-navigation/wiki/Android/_edit#collapsing-react-view-with-top-tabs)
-* [Reloading from terminal](https://github.com/wix/react-native-navigation/wiki/Android/#reloading-from-terminal)
-
-# Activity Lifecycle and onActivityResult
+## Activity Lifecycle and onActivityResult
 In order to listen to activity lifecycle callbacks, set `ActivityCallback` in `MainApplication.onCreate` as follows:
 
 ```java
@@ -73,16 +64,61 @@ public class MyApplication extends NavigationApplication {
 }
 ```
 
-## Why overriding these methods in `MainActivity` won't work
+### Why overriding these methods in `MainActivity` won't work
 `MainActivity` extends `SplashActiviy` which is used to start the react context. Once react is up and running `MainActivity` is **stopped** and another activity takes over to run our app: `NavigationActivity`. Due to this design, there's usually no point in overriding lifecycle callbacks in `MainActivity`.
 
-# Splash screen
-Override `getSplashLayout` or `createSplashLayout` in `MainActivity` to provide a splash layout which will be displayed while Js context initialises.
+## Splash screen
+Override `getSplashLayout` or `createSplashLayout` in `MainActivity` to provide a splash layout which will be displayed while Js context initialises, for example:
 
-# Collapsing React header - Android only
+```java
+import android.widget.LinearLayout;
+import android.graphics.Color;
+import android.widget.TextView;
+import android.view.Gravity;
+import android.util.TypedValue;
+
+import com.reactnativenavigation.controllers.SplashActivity;
+
+public class MainActivity extends SplashActivity {
+
+    @Override
+    public LinearLayout createSplashLayout() {
+        LinearLayout view = new LinearLayout(this);
+        TextView textView = new TextView(this);
+
+        view.setBackgroundColor(Color.parseColor("#607D8B"));
+        view.setGravity(Gravity.CENTER);
+
+        textView.setTextColor(Color.parseColor("#FFFFFF"));
+        textView.setText("React Native Navigation");
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 40);
+
+        view.addView(textView);
+        return view;
+    }
+}
+```
+
+## Snackbar
+Snackbars provide lightweight feedback about an operation. They show a brief message at the bottom of the screen. Snackbars appear above all other elements on screen and only one can be displayed at a time.
+
+```js
+this.props.navigator.showSnackbar({
+  text: 'Hello from Snackbar',
+  actionText: 'done', // optional
+  actionId: 'fabClicked', // Mandatory if you've set actionText
+  actionColor: 'green', // optional
+  textColor: 'red', // optional
+  backgroundColor: 'blue', // optional
+  duration: 'indefinite' // default is `short`. Available options: short, long, indefinite
+});
+```
+
+## Collapsing React header
 A screen can have a header, either an image or a react component, that collapses as the screen is scrolled.
 
-## Collapsing react view
+### Collapsing react view
 
 ```js
 export default class CollapsingReactViewScreen extends Component {
@@ -98,7 +134,7 @@ static navigatorStyle = {
 }
 ```
 
-## Collapsing react view with top tabs
+### Collapsing react view with top tabs
 
 **Note:** `example.header` represents a component that's registered as a screen:
 ```js
@@ -138,6 +174,135 @@ Navigation.startSingleScreenApp({
     ]
 });
 ```
+## Shared Element Transition
+Screen transitions provide visual connections between different states through motion and transformations between common elements. You can specify custom animations for transitions of shared elements between screens.
 
-# Reloading from terminal
+The `<SharedElementTransition>` component determines how views that are shared between two screens transition between these screens. For example, if two screens have the same image in different positions and sizes, the `<SharedElementTransition>` will translate and scale the image smoothly between these screens.
+
+### Supported transitions
+* Scale
+* Text color
+* Linear translation
+* Curved motion translation
+* Image bounds and scale transformation - Unlike the basic scale transformation, this transformation will change the actual image scale and bounds, instead of simply scaling it up or down.
+
+### Specifying shared elements
+First, wrap the view you would like to transition in a `<SharedElementTransition/>` and give it a unique id. This is how our `<Text/>` element is defined in the first screen:
+
+```js
+<SharedElementTransition sharedElementId={'SharedTextId'}>
+    <Text style={{color: 'blue'}}>React Native Navigation</Text>
+</SharedElementTransition>
+```
+<br>In the second screen, we also wrap the corresponding `<Text/>` element but this time, we also specify the transition props:
+
+```js
+<SharedElementTransition
+    sharedElementId={'SharedTextId'}
+    showDuration={600}
+    hideDuration={400}
+    showInterpolation={
+          {
+            type: 'linear',
+            easing: 'FastOutSlowIn'
+          }
+        }
+    hideInterpolation={
+          {
+            type: 'linear',
+            easing:'FastOutSlowIn'
+          }
+        }
+  >
+    <Text style={{color: 'green'}}>React Native Navigation</Text>
+  </SharedElementTransition>
+</View>
+```
+<br>Finally, specify the elements you'd like to transition when pushing the second screen:
+
+```js
+this.props.navigator.push({
+    screen: 'SharedElementScreen',
+    sharedElements: ['SharedTextId']
+  }
+});
+```
+### Animating image bounds and scale
+By default, when animating images, a basic scale transition is used. This is good enough for basic use cases where both images have the same aspect ratio. If the images have different size and scale, you can animate their bounds and scale by setting `animateClipBounds={true}` on the final `<SharedElementTransition/>` element.
+
+### Curved motion
+The `path` interpolator transitions elements along a curved path based on Bézier curves. This interpolator specifies a motion curve in a 1x1 square, with anchor points at (0,0) and (1,1) and control points specified using the `showInterpolation` and `hideInterpolation` props.
+
+#### Using curved motion
+First, wrap the view you would like to transition in a `<SharedElementTransition/>` and give it a unique id. In this example we are going to transition an `<Image/>'.
+
+```js
+<SharedElementTransition sharedElementId={'sharedImageId'}>
+    <Image
+        style={{height: 50, width: 50}}
+        source={this.props.image}/>
+</SharedElementTransition>
+```
+
+<br>In the `<SharedElementTransition/>` wrapping the Image in the second screen, define control points in `showInterpolation` and `hideInterpolation` props:
+
+```js
+<SharedElementTransition
+  sharedElementId={'sharedImageId'}
+  showDuration={600}
+  hideDuration={400}
+  showInterpolation={
+    {
+      type: 'path',
+      controlX1: '0.5',
+      controlY1: '1',
+      controlX2: '0',
+      controlY2: '0.5',
+      easing: 'FastOutSlowIn'
+    }
+  }
+  hideInterpolation={
+    {
+      type: 'path',
+      controlX1: '0.5',
+      controlY1: '0',
+      controlX2: '1',
+      controlY2: '0.5',
+      easing:'FastOutSlowIn'
+    }
+  }
+>
+  <Image
+    style={{height: 100, width: 100}}
+    source={this.props.image}
+    fadeDuration={0} // Disable react-native's default 300 ms fade-in animation
+  />
+</SharedElementTransition>
+```
+
+<br>As in the previous example, specify the elements you'd like to transition when pushing the second screen:
+
+```js
+this.props.navigator.push({
+    screen: 'SharedElementScreen',
+    sharedElements: ['sharedImageId']
+  }
+});
+```
+
+### Easing
+specify the rate of change of a parameter over time
+
+* `accelerateDecelerate` - the rate of change starts and ends slowly but accelerates through the middle.
+* `accelerate` - the rate of change starts out slowly and and then accelerates.
+* `decelerate` - the rate of change starts out quickly and and then decelerates.
+* `fastOutSlowIn` - the rate of change starts fast but decelerates slowly.
+* `linear` - the rate of change is constant (default)
+
+### Screen animation
+When Shared Element Transition is used, a cross-fade transition is used between the entering and exiting screens. Make sure the root `View` has a background color in order for the cross-fade animation to be visible.
+
+To disable the cross-fade animation, set `animated: false` when pushing the second screen. Disabling this animation is useful if you'd like to animate the reset of the elements on screen your self.
+
+## Reloading from terminal
 You can easily reload your app from terminal using `adb shell am broadcast -a react.native.RELOAD`. This is particularly useful when debugging on device.

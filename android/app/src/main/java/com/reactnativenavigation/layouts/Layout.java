@@ -1,5 +1,6 @@
 package com.reactnativenavigation.layouts;
 
+import android.os.Bundle;
 import android.view.View;
 
 import com.facebook.react.bridge.Callback;
@@ -57,4 +58,10 @@ public interface Layout extends ScreenStackContainer {
     void showLightBox(LightBoxParams params);
 
     void dismissLightBox();
+
+    void selectTopTabByTabIndex(String screenInstanceId, int index);
+
+    void selectTopTabByScreen(String screenInstanceId);
+
+    void updateScreenStyle(String screenInstanceId, Bundle styleParams);
 }
