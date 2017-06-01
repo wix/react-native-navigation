@@ -202,6 +202,14 @@ function updateSingleScreenApp(params) {
 	this.navigatorResetTo(params.navigatorID, params);
 }
 
+function addSplashScreen() {
+	ControllerRegistry.addSplashScreen();
+}
+
+function removeSplashScreen() {
+	ControllerRegistry.removeSplashScreen();
+}
+
 function _mergeScreenSpecificSettings(screenID, screenInstanceID, params) {
   const screenClass = Navigation.getRegisteredScreen(screenID);
   if (!screenClass) {
@@ -671,6 +679,8 @@ export default {
   startTabBasedApp,
   startSingleScreenApp,
   updateSingleScreenApp,
+  addSplashScreen,
+  removeSplashScreen,
   navigatorPush,
   navigatorPop,
   navigatorPopToRoot,
