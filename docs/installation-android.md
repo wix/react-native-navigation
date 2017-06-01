@@ -12,7 +12,7 @@
 
 	```groovy
 	include ':react-native-navigation'
-	project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/android/app/')
+	project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/lib/android/app/')
 	```
 
 3. Update project dependencies in `android/app/build.gradle`.
