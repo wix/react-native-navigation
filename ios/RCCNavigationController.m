@@ -264,20 +264,62 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
    }];
 }
 
+-(void)onBackButtonPress:(UIButton*)backButton
+{
+  NSString *callbackId = objc_getAssociatedObject(backButton, &CALLBACK_ASSOCIATED_KEY);
+  if (!callbackId) return;
+  [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:callbackId body:@
+   {
+     @"type": @"NavBarButtonPress",
+     @"id": @"back"
+   }];
+}
+
 -(void)setButtons:(NSArray*)buttons viewController:(UIViewController*)viewController side:(NSString*)side animated:(BOOL)animated
 {
   NSMutableArray *barButtonItems = [NSMutableArray new];
   for (NSDictionary *button in buttons)
   {
+    NSString *buttonId = button[@"id"];
+    
     NSString *title = button[@"title"];
     UIImage *iconImage = nil;
     id icon = button[@"icon"];
     if (icon) iconImage = [RCTConvert UIImage:icon];
     
     UIBarButtonItem *barButtonItem;
-    if (iconImage)
+    if ([buttonId isEqualToString:@"back"]) {
+      UIButton* backButton = [UIButton buttonWithType:UIButtonTypeSystem];
+
+      // Image stored as base64 to use it in a static library (todo?: Add @1x, @3x)
+      NSString *backButtonBase64 = @"iVBORw0KGgoAAAANSUhEUgAAABoAAAAqCAYAAACtMEtjAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QUeDCg1ax5etgAAAK1JREFUWMPl2MsNwkAMRdEnlpTAr0lgzyckUCIEaOWyQkhIkIVjjwmvgaOR7JFtqecAJ2AtzwBHXllFID7YB+SZZV9Iw/ecgbE3cgEmVqTOgkytyKEDaX8GqTIgV2BmRfZ/g9yAuRXZDQbZZkDuwMKKbIaBSBpJQlGJelVcMYSWd2jDlsL8f+5SWJUJa/vE/CegUlidCbPP3aWwJhNmX8RCV8vQZfntxuCLdB00HmYMiaAWLgSlAAAAAElFTkSuQmCC";
+      NSData *backButtonData = [[NSData alloc] initWithBase64EncodedString:backButtonBase64 options:0];
+      [backButton setImage:[UIImage imageWithData:backButtonData scale:2.0] forState:UIControlStateNormal];
+      
+      [backButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 12.0, 0.0, 0.0)];
+      [backButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 2.0, 0.0, 0.0)];
+      if (title) {
+        [backButton setTitle:title forState:UIControlStateNormal];
+        [backButton.titleLabel setFont:[UIFont systemFontOfSize:17]];
+      }
+      [backButton addTarget:self action:@selector(onBackButtonPress:) forControlEvents:UIControlEventTouchUpInside];
+      [backButton setContentEdgeInsets:UIEdgeInsetsMake(0.5, 0, 0, 0)];
+      [backButton sizeToFit];
+      [backButton setFrame:CGRectMake(backButton.frame.origin.x, backButton.frame.origin.y, backButton.frame.size.width+12.0, backButton.frame.size.height)];
+      barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+
+      // Icon positioning based on https://stackoverflow.com/questions/31807997/back-button-image-what-is-it-called-in-swift
+      UIBarButtonItem* spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+      [spacer setWidth:-15];
+      [barButtonItems addObject:spacer];
+
+      objc_setAssociatedObject(backButton, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    else if (iconImage)
     {
       barButtonItem = [[UIBarButtonItem alloc] initWithImage:iconImage style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPress:)];
+
+      objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     else if (title)
     {
@@ -287,12 +329,12 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       if (buttonTextAttributes.allKeys.count > 0) {
         [barButtonItem setTitleTextAttributes:buttonTextAttributes forState:UIControlStateNormal];
       }
+
+      objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     else continue;
-    objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [barButtonItems addObject:barButtonItem];
     
-    NSString *buttonId = button[@"id"];
     if (buttonId)
     {
       objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_ID, buttonId, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -386,3 +428,4 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
 
 
 @end
+
