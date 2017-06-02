@@ -213,6 +213,8 @@ module.exports = {
   setSideMenuVisible,
   disableOpenGesture,
   disableBackNavigation,
+  addSplashScreen,
+  removeSplashScreen,
   selectBottomTabByNavigatorId,
   selectBottomTabByTabIndex,
   setBottomTabBadgeByNavigatorId,
