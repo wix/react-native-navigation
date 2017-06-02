@@ -36,7 +36,7 @@ function setupGit() {
 }
 
 function calcNewVersion() {
-  const currentVersion = exec.execSyncRead(`npm view ${process.env.npm_package_name}@${VERSION_TAG} version`);
+  const currentVersion = exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.${VERSION_TAG}`);
   console.log(`${VERSION_TAG} version: ${currentVersion}`);
   const packageVersion = process.env.npm_package_version;
   console.log(`package version: ${packageVersion}`);
@@ -54,9 +54,9 @@ email=\${NPM_EMAIL}
 
 function tagAndPublish(newVersion) {
   console.log(`new version is: ${newVersion}`);
-  exec.execSync(`npm version ${newVersion} -m "v${newVersion} [ci skip]"`);
-  exec.execSyncSilent(`git push deploy --tags`);
+  exec.execSync(`npm version ${newVersion} -f -m "v${newVersion} [ci skip]"`);
   exec.execSync(`npm publish --tag ${VERSION_TAG}`);
+  exec.execSyncSilent(`git push deploy --tags || true`);
 }
 
 function run() {

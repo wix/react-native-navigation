@@ -10,6 +10,7 @@ public class TopBar extends AppBarLayout {
 	public TopBar(final Activity context) {
 		super(context);
 		titleBar = new Toolbar(context);
+		addView(titleBar);
 	}
 
 	public void setTitle(String title) {

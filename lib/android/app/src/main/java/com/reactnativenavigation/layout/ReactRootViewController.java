@@ -18,7 +18,7 @@ public class ReactRootViewController extends ViewController {
 	private boolean attachedToReactInstance = false;
 	private ReactRootView reactRootView;
 
-	public ReactRootViewController(final Activity activity, final String id, final String name, String title, final ReactInstanceManager reactInstanceManager) {
+	public ReactRootViewController(final Activity activity, final String id, final String name, final String title, final ReactInstanceManager reactInstanceManager) {
 		super(activity, id);
 		this.name = name;
 		this.title = title;
