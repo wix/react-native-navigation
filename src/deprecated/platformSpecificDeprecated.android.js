@@ -42,17 +42,24 @@ function startSingleScreenApp(params) {
 }
 
 function updateSingleScreenApp(params) {
-	if (!params.screen) {
-		console.error('updateSingleScreenApp(params): params.screen is required');
-		return;
-	}
+  if (!params.screen) {
+    console.error('updateSingleScreenApp(params): params.screen is required');
+    return;
+  }
 
-	if (!params.navigatorID) {
-		console.error('updateSingleScreenApp(params): params.navigatorID is required');
-		return;
-	}
+  if (!params.navigatorID) {
+    console.error('updateSingleScreenApp(params): params.navigatorID is required');
+    return;
+  }
 
-	this.navigatorResetTo(params.navigatorID, params);
+  this.navigatorResetTo(params.navigatorID, params);
+}
+
+function addSplashScreen() {
+  newPlatformSpecific.addSplashScreen();
+}
+function removeSplashScreen() {
+  newPlatformSpecific.removeSplashScreen();
 }
 
 function getOrientation(params) {
@@ -718,6 +725,8 @@ export default {
   startTabBasedApp,
   startSingleScreenApp,
   updateSingleScreenApp,
+  addSplashScreen,
+  removeSplashScreen,
   navigatorPush,
   navigatorPop,
   navigatorPopToRoot,

@@ -56,6 +56,16 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+	public void addSplashScreen() {
+
+	}
+
+    @ReactMethod
+	public void removeSplashScreen() {
+
+	}
+
+    @ReactMethod
     public void setScreenTitleBarTitle(String screenInstanceId, String title) {
         NavigationCommandsHandler.setScreenTitleBarTitle(screenInstanceId, title);
     }

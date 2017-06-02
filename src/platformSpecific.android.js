@@ -10,6 +10,14 @@ function startApp(activityParams) {
   NativeReactModule.startApp(activityParams);
 }
 
+function addSplashScreen() {
+  NativeReactModule.addSplashScreen();
+}
+
+function removeSplashScreen() {
+  NativeReactModule.removeSplashScreen();
+}
+
 function push(screenParams) {
   savePassProps(screenParams);
   NativeReactModule.push(screenParams);
@@ -205,6 +213,8 @@ module.exports = {
   setSideMenuVisible,
   disableOpenGesture,
   disableBackNavigation,
+  addSplashScreen,
+  removeSplashScreen,
   selectBottomTabByNavigatorId,
   selectBottomTabByTabIndex,
   setBottomTabBadgeByNavigatorId,
