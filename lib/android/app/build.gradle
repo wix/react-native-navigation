@@ -45,6 +45,7 @@ android {
 }
 
 dependencies {
+<<<<<<< HEAD:lib/android/app/build.gradle
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -53,6 +54,19 @@ dependencies {
     // node_modules
     //noinspection GradleDynamicVersion
     compile 'com.facebook.react:react-native:+'
+=======
+    compile fileTree(dir: "libs", include: ["*.jar"])
+
+	compile 'com.android.support:design:25.3.1'
+    compile "com.android.support:appcompat-v7:25.3.1"
+
+    // node_modules
+    compile "com.facebook.react:react-native:+"
+
+    // third party
+    compile "com.aurelhubert:ahbottomnavigation:+"
+    compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.4'
+>>>>>>> c0eea75e26b272f67f317dcff69ec33c0a671fe7:android/app/build.gradle
 
     // tests
     testCompile 'junit:junit:4.12'

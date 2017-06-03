@@ -1,6 +1,10 @@
 MIT License
 
+<<<<<<< HEAD
 Copyright (c) 2016 Wix.com
+=======
+Copyright (c) Wix.com
+>>>>>>> c0eea75e26b272f67f317dcff69ec33c0a671fe7
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

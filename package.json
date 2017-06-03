@@ -1,6 +1,10 @@
 {
   "name": "react-native-navigation",
+<<<<<<< HEAD
   "version": "2.0.0",
+=======
+  "version": "2.0.0-experimental.496",
+>>>>>>> c0eea75e26b272f67f317dcff69ec33c0a671fe7
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -45,21 +49,30 @@
     "react-native": "*"
   },
   "dependencies": {
-    "lodash": "4.x.x"
+    "lodash": "4.x.x",
+    "qs": "https://github.com/ljharb/qs"
   },
   "devDependencies": {
     "babel-cli": "6.x.x",
     "babel-core": "6.x.x",
     "babel-eslint": "7.x.x",
+<<<<<<< HEAD
     "babel-jest": "20.x.x",
     "babel-polyfill": "6.x.x",
     "babel-preset-react-native": "1.x.x",
     "babel-register": "6.x.x",
     "detox": "5.x.x",
+=======
+    "babel-jest": "18.x.x",
+    "babel-polyfill": "6.x.x",
+    "babel-preset-react-native": "1.x.x",
+    "babel-register": "6.x.x",
+>>>>>>> c0eea75e26b272f67f317dcff69ec33c0a671fe7
     "eslint": "3.x.x",
     "eslint-plugin-babel": "4.x.x",
     "eslint-plugin-react": "7.x.x",
     "eslint-plugin-react-native": "2.x.x",
+<<<<<<< HEAD
     "jest": "20.x.x",
     "jest-cli": "20.x.x",
     "mocha": "3.x.x",
@@ -79,6 +92,15 @@
         "retainLines": true
       }
     }
+=======
+    "jest": "18.x.x",
+    "jest-cli": "18.x.x",
+    "jest-react-native": "18.x.x",
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.0",
+    "react-test-renderer": "15.4.2",
+    "semver": "5.x.x"
+>>>>>>> c0eea75e26b272f67f317dcff69ec33c0a671fe7
   },
   "jest": {
     "preset": "react-native",

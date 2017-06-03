@@ -14,10 +14,17 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+<<<<<<< HEAD:playground/ios/playground.xcodeproj/xcshareddata/xcschemes/playground_release.xcscheme
                BlueprintIdentifier = "3D3C04B91DE3340900C268FA"
                BuildableName = "libyoga.a"
                BlueprintName = "yoga"
                ReferencedContainer = "container:../../node_modules/react-native/React/React.xcodeproj">
+=======
+               BlueprintIdentifier = "83CBBA2D1A601D0E00E9B192"
+               BuildableName = "libReact.a"
+               BlueprintName = "React"
+               ReferencedContainer = "container:../node_modules/react-native/React/React.xcodeproj">
+>>>>>>> c0eea75e26b272f67f317dcff69ec33c0a671fe7:example/ios/example.xcodeproj/xcshareddata/xcschemes/example_Detox.xcscheme
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -28,10 +35,17 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+<<<<<<< HEAD:playground/ios/playground.xcodeproj/xcshareddata/xcschemes/playground_release.xcscheme
                BlueprintIdentifier = "83CBBA2D1A601D0E00E9B192"
                BuildableName = "libReact.a"
                BlueprintName = "React"
                ReferencedContainer = "container:../../node_modules/react-native/React/React.xcodeproj">
+=======
+               BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
+               BuildableName = "example.app"
+               BlueprintName = "example"
+               ReferencedContainer = "container:example.xcodeproj">
+>>>>>>> c0eea75e26b272f67f317dcff69ec33c0a671fe7:example/ios/example.xcodeproj/xcshareddata/xcschemes/example_Detox.xcscheme
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
