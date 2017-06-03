@@ -21,6 +21,9 @@ public class SingleScreen extends Screen {
         contentView = new ContentView(getContext(), screenParams.screenId, screenParams.navigationParams);
         addView(contentView, 0, createLayoutParams());
     }
+    ContentView getContentView(){
+        return contentView;
+    }
 
     @Override
     public ContentView getContentView() {

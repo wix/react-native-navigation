@@ -1,0 +1,42 @@
+apply plugin: "com.android.application"
+
+project.ext.react = [
+        root     : "../../../",
+        entryFile: "playground/index.android.js"
+]
+
+apply from: "../../../node_modules/react-native/react.gradle"
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+
+    defaultConfig {
+        applicationId "com.reactnativenavigation.playground"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+    signingConfigs {
+        release {
+            storeFile file('../playground.jks')
+            storePassword "playground"
+            keyAlias "playground"
+            keyPassword "playground"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.facebook.react:react-native:+'
+    compile 'com.android.support:design:25.1.1'
+    compile "com.android.support:appcompat-v7:25.1.1"
+    compile project(':react-native-navigation')
+}

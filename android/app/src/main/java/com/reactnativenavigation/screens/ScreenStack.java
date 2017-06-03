@@ -18,6 +18,7 @@ import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.utils.KeyboardVisibilityDetector;
 import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 
 import java.util.List;
@@ -131,10 +132,15 @@ public class ScreenStack {
                                           @Nullable final Screen.OnDisplayListener onDisplay) {
         nextScreen.setVisibility(View.INVISIBLE);
         addScreen(nextScreen, layoutParams);
+        final ShowCallback callback=new ShowCallback();
         NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", previousScreen.getNavigatorEventId());
         nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
+                if(callback.isCall()){
+                    return;
+                }
+                callback.setCall(true);
                 nextScreen.show(nextScreen.screenParams.animateScreenTransitions, new Runnable() {
                     @Override
                     public void run() {
@@ -145,6 +151,21 @@ public class ScreenStack {
                 });
             }
         });
+        if(nextScreen instanceof SingleScreen){
+            ContentView contentView= ((SingleScreen)nextScreen).getContentView();
+            if(contentView!=null&&contentView.getChildCount()==0){
+                if(!callback.isCall()) {
+                    callback.setCall(true);
+                    nextScreen.show(nextScreen.screenParams.animateScreenTransitions, new Runnable() {
+                        @Override
+                        public void run() {
+                            parent.removeView(previousScreen);
+                        }
+                    });
+                }
+            }
+        }
+
     }
 
     private void pushScreenToVisibleStackWithSharedElementTransition(LayoutParams layoutParams, final Screen nextScreen, final Screen previousScreen) {
@@ -434,5 +455,17 @@ public class ScreenStack {
         NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", stack.peek().getNavigatorEventId());
         isStackVisible = false;
         stack.peek().setVisibility(View.INVISIBLE);
+    }
+
+    private class ShowCallback{
+        private boolean call;
+
+        public boolean isCall() {
+            return call;
+        }
+
+        public void setCall(boolean call) {
+            this.call = call;
+        }
     }
 }

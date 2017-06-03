@@ -1,0 +1,42 @@
+def robolectricDependenciesFolder = new File(rootProject.buildDir, "robolectric-3.3-dependencies")
+
+configurations.create('robolectricRuntime')
+
+dependencies {
+    testCompile "org.khronos:opengl-api:gl1.1-android-2.1_r1"
+
+    robolectricRuntime "org.robolectric:android-all:7.1.0_r7-robolectric-0"
+    robolectricRuntime "org.robolectric:shadows-core:3.3"
+    robolectricRuntime "org.robolectric:robolectric-utils:3.3"
+    robolectricRuntime "org.robolectric:robolectric-resources:3.3"
+    robolectricRuntime "org.robolectric:robolectric-processor:3.3"
+    robolectricRuntime "org.robolectric:robolectric-sandbox:3.3"
+    robolectricRuntime "org.robolectric:shadows-support-v4:3.3"
+    robolectricRuntime "org.robolectric:shadows-multidex:3.3"
+    robolectricRuntime "org.robolectric:shadows-play-services:3.3"
+    robolectricRuntime "org.robolectric:shadows-maps:3.3"
+}
+
+rootProject.task(type: Copy, overwrite: true, "downloadRobolectricDependencies") {
+    println "downloadRobolectricDependencies into " + robolectricDependenciesFolder
+    from configurations.robolectricRuntime
+    into robolectricDependenciesFolder
+}
+
+project.afterEvaluate {
+    tasks.all {
+        if (it.name.startsWith("test")) {
+            it.dependsOn(rootProject.tasks.findByName("downloadRobolectricDependencies"))
+        }
+    }
+}
+
+android {
+    testOptions {
+        unitTests.all {
+            systemProperty 'robolectric.offline', 'true'
+            systemProperty 'robolectric.dependency.dir', robolectricDependenciesFolder
+        }
+    }
+}
+

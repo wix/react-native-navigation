@@ -1,4 +1,6 @@
 - Getting started
+<<<<<<< HEAD
+=======
  - [Installation - iOS](/installation-ios)
  - [Installation - Android](/installation-android)
  - [Usage](/usage)
@@ -15,3 +17,4 @@
   - [Adding Buttons to the Navigator](/adding-buttons-to-the-navigator)
   - [Styling the Tab Bar](/styling-the-tab-bar)
   
+>>>>>>> c0eea75e26b272f67f317dcff69ec33c0a671fe7

@@ -1,27 +1,45 @@
-language: java
-
-jdk:
-  - oraclejdk8
+os: osx
+osx_image: xcode8.3
+language: generic
 
 env:
   global:
-    - NODE_VERSION=stable
-    - PATH=$PATH:$HOME/.yarn/bin
-    - ANDROID_HOME=$HOME/android-sdk-linux
-    - PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
-
-git:
-  depth: 3
+    - YARN_CACHE=$HOME/.yarn-cache
+    - CODE_SIGNING_REQUIRED=NO
+    - RCT_NO_LAUNCH_PACKAGER=true
 
 branches:
   only:
   - master
+  - v2
 
 cache:
-  yarn: true
   directories:
-    - $HOME/.gradle/
+    - $YARN_CACHE
     - $HOME/.m2
+<<<<<<< HEAD
+
+install:
+  - sysctl hw.ncpu
+  - sysctl hw.memsize
+        # node:
+  - source ./scripts/env/installNode.sh
+        # yarn:
+  - source ./scripts/env/installYarn.sh
+  - yarn config set cache-folder $YARN_CACHE
+        # android sdk:
+  - source ./scripts/env/installAndroidSDK.sh
+        # android emulator:
+  #- echo yes | android update sdk --no-ui --all --filter "sys-img-armeabi-v7a-google_apis-25"
+  #- echo no | android create avd --name AVD -t android-25 --abi google_apis/armeabi-v7a
+  #- android list avd
+        # fbsimctl:
+  - source ./scripts/env/installFbSimCtl.sh
+
+script:
+  - set -e
+  - ./scripts/travis.sh
+=======
     - $ANDROID_HOME/licenses/
 
 before_cache:
@@ -41,7 +59,16 @@ script:
   - ./scripts/installAndroidSDK.sh
   - yarn run test:android
   - yarn run release
+>>>>>>> c0eea75e26b272f67f317dcff69ec33c0a671fe7
   - set +e
 
 after_script:
   - echo "BUILD FINISHED"
+<<<<<<< HEAD
+
+notifications:
+  slack:
+    secure: tZRC5hbi7iWy4hgWC0ET67kOKjn77945UZJEm8XeOnahVjfBL7gSpBTtyjD6D7Ah7qJTZNtK2lfItciT4gJfH4HYDVUBlLYKzVvw/9usYpEvsdAaAnpT2gMwXHEIupUYh0tv5ccvHt/SqHmK0HVTFdzGR/IztmHIcFlDcbNdTUtUg+9RUTBkO2n946UHk/I8xKhW4GefEuv4bRbm44H27G/VWcOABsMNvYA+kF7VDTjSlyJmACgG1BMbMDwn6lM6c7HLhVbQi52Oyt9E3dz0o1/puWldq60jiESsay99CrAr4pi4LAeMu+TdQnc8QzsCd+CZBFNIk1t56ElM2aQ8w43W+IYfu1/0+w12ySOasamqyOdLJng0MXmqzVoBcfisefVuBNmx4n+yQO+qu4a3Qze/PgPeqWHF9Jy5EbVezg+lb/4m/0NK/3o2za3dJjTKJGxuCLvdCGLVEeDLw50FQxbV+k+tgeB/1jmIWymhdUteWBjBdPUqL+ntaqWuSbMjC0euOdGkR1ibfYaUy5UmBtTRkcb/AwSti9lCNdBN8Ez1qmIO4U92gN93B10fEObLjv76T7NLJQUPks/u4nCClsYRclJPDTDe/kv9HL6R6eHJGWd045r0tKtYj1WVFUlv8EvB5rIzVKCn6cjM636+enavuTzg66aRZvu8DgNqLNo=
+
+=======
+>>>>>>> c0eea75e26b272f67f317dcff69ec33c0a671fe7

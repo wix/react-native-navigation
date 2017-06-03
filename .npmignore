@@ -1,9 +1,17 @@
-example
-old-example-redux
+AndroidE2E/
+coverage/
+e2e/
+integration/
+playground/
+scripts/
+.travis.yml
+wallaby.js
+
 
 #################
 # from .gitignore:
 ################
+
 
 
 ############
@@ -150,7 +158,6 @@ fastlane/screenshots
 android/bin/
 android/gen/
 android/out/
-android/app/build/
 
 # Gradle files
 android/.gradle/
@@ -220,4 +227,3 @@ buck-out/
 \.buckd/
 android/app/libs
 android/keystores/debug.keystore
-
