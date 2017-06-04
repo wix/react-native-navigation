@@ -1,6 +1,10 @@
 #  React Native Navigation v2 (WIP)
 We are rebuilding react-native-navigation
 
+- [Why?](#why-rebuild-react-native-navigation)
+- [Where is it standing now?](#where-is-it-standing-now)
+- [Getting Started](#getting-started-with-v2)
+
 ## Why Rebuild react-native-navigation? 
 
 ### A New Improved Core Architecture
@@ -69,12 +73,100 @@ If v2 supports everything you need for your app we encourage you to use it.
 ### Installation 
 1. Download react-native-navigation v2
 ```bash
-yarn add react-native-navigation@2.x
+yarn add react-native-navigation@alpha
 ```
 ##### iOS 
-Follow steps 2 - 5 [here](https://wix.github.io/react-native-navigation/#/installation-ios)
+2. In Xcode, in Project Navigator (left pane), right-click on the `Libraries` > `Add files to [project name]`. Add `./node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-1))
+
+3. In Xcode, in Project Navigator (left pane), click on your project (top) and select the `Build Phases` tab (right pane). In the `Link Binary With Libraries` section add `libReactNativeNavigation.a` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-2))
+
+4. In Xcode, in Project Navigator (left pane), click on your project (top) and select the `Build Settings` tab (right pane). In the `Header Search Paths` section add `$(SRCROOT)/../node_modules/react-native-navigation/lib/ios`. Make sure on the right to mark this new path `recursive` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-3))
+
+5. In Xcode, under your project files, modify `AppDelegate.m`. add:
+
+`#import <ReactNativeNavigation/ReactNativeNavigation.h>`
+
+remove everything in the method didFinishLaunchingWithOptions and add:
+
+```
+NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
+```
+
 ##### Android
-Follow steps 2 - 6 [here](https://wix.github.io/react-native-navigation/#/installation-android)
+2. Add the following in `android/settings.gradle`.
+
+	```groovy
+	include ':react-native-navigation'
+project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/lib/android/app/')
+	```
+
+3. Update project dependencies in `android/app/build.gradle`.
+	```groovy
+	android {
+		compileSdkVersion 25
+		buildToolsVersion "25.0.1"
+		...
+	}
+
+	dependencies {
+		compile fileTree(dir: "libs", include: ["*.jar"])
+		compile "com.android.support:appcompat-v7:23.0.1"
+		compile "com.facebook.react:react-native:+"
+		compile project(':react-native-navigation')
+	}
+	```
+
+4. In `MainActivity.java` it should extend `com.reactnativenavigation.controllers.SplashActivity` instead of `ReactActivity`.
+
+	This file can be located in `android/app/src/main/java/com/yourproject/`.
+
+	```java
+	import com.reactnativenavigation.controllers.SplashActivity;
+
+	public class MainActivity extends SplashActivity {
+
+	}
+	```
+
+	If you have any **react-native** related methods, you can safely delete them.
+
+5. In `MainApplication.java`, add the following
+	```java
+	import com.reactnativenavigation.NavigationApplication;
+
+	public class MainApplication extends NavigationApplication {
+
+		@Override
+		public boolean isDebug() {
+			// Make sure you are using BuildConfig from your own application
+			return BuildConfig.DEBUG;
+		}
+
+		protected List<ReactPackage> getPackages() {
+			// Add additional packages you require here
+			// No need to add RnnPackage and MainReactPackage
+			return Arrays.<ReactPackage>asList(
+				// eg. new VectorIconsPackage()
+			);
+		}
+
+		@Override
+		public List<ReactPackage> createAdditionalReactPackages() {
+			return getPackages();
+		}
+	}
+	```
+
+	Make sure that `isDebug` and `createAdditionalReactPackages` methods are implemented.
+
+6. Update `AndroidManifest.xml` and set **android:name** value to `.MainApplication`
+	```xml
+	<application
+		android:name=".MainApplication"
+		...
+	/>
+	```
 ### Top Screen API
 
 #### Navigation
