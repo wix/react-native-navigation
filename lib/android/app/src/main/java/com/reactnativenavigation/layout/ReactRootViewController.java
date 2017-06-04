@@ -55,7 +55,7 @@ public class ReactRootViewController extends ViewController {
 	protected View createView() {
 		reactRootView = new ReactRootView(getActivity());
 		Bundle opts = new Bundle();
-		opts.putString("id", getId());
+		opts.putString("containerId", getId());
 		reactRootView.startReactApplication(this.reactInstanceManager, this.name, opts);
 		reactRootView.setEventListener(new ReactRootView.ReactRootViewEventListener() {
 			@Override

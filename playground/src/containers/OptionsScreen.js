@@ -24,7 +24,7 @@ class OptionsScreen extends Component {
       <View style={styles.root}>
         <Text style={styles.h1}>{`Options Screen`}</Text>
         <Button title="Dynamic Options" onPress={this.onClickDynamicOptions} />
-        <Text style={styles.footer}>{`this.props.id = ${this.props.id}`}</Text>
+        <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
   }

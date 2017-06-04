@@ -11,7 +11,7 @@ class TextScreen extends Component {
       <View style={styles.root}>
         <Text style={styles.h1}>{this.props.text || 'Text Screen'}</Text>
         {this.renderTextFromFunctionInProps()}
-        <Text style={styles.footer}>{`this.props.id = ${this.props.id}`}</Text>
+        <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
   }

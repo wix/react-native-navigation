@@ -23,7 +23,7 @@ class WelcomeScreen extends Component {
         <Button title="Push Options Screen" onPress={this.onClickPushOptionsScreen} />
         <Button title="Show Modal" onPress={this.onClickShowModal} />
         <Button title="Show Redbox" onPress={this.onClickShowRedbox} />
-        <Text style={styles.footer}>{`this.props.id = ${this.props.id}`}</Text>
+        <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
   }
@@ -102,13 +102,13 @@ class WelcomeScreen extends Component {
   }
 
   onClickPush() {
-    Navigation.push(this.props.id, {
+    Navigation.push(this.props.containerId, {
       name: 'navigation.playground.PushedScreen'
     });
   }
 
   onClickLifecycleScreen() {
-    Navigation.push(this.props.id, {
+    Navigation.push(this.props.containerId, {
       name: 'navigation.playground.LifecycleScreen'
     });
   }
@@ -126,7 +126,7 @@ class WelcomeScreen extends Component {
   }
 
   onClickPushOptionsScreen() {
-    Navigation.push(this.props.id, {
+    Navigation.push(this.props.containerId, {
       name: 'navigation.playground.OptionsScreen'
     });
   }
