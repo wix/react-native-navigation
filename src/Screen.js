@@ -96,6 +96,10 @@ class Navigator {
     return platformSpecific.navigatorToggleDrawer(this, params);
   }
 
+  setDrawerEnabled(params = {}) {
+    return platformSpecific.navigatorSetDrawerEnabled(this, params);
+  }
+
   toggleTabs(params = {}) {
     return platformSpecific.navigatorToggleTabs(this, params);
   }

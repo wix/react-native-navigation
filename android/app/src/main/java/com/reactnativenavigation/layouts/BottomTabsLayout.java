@@ -3,6 +3,7 @@ package com.reactnativenavigation.layouts;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -228,6 +229,13 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     public void setSideMenuVisible(boolean animated, boolean visible, Side side) {
         if (sideMenu != null) {
             sideMenu.setVisible(visible, animated, side);
+        }
+    }
+
+    @Override
+    public void setSideMenuEnabled(boolean enabled, Side side) {
+        if (sideMenu != null) {
+            sideMenu.setDrawerLockMode(enabled ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }
 

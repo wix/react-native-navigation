@@ -61,6 +61,14 @@ public class SideMenu extends DrawerLayout {
         }
     }
 
+    public void setEnabled(boolean enabled, Side side) {
+        if (enabled) {
+            setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, side.gravity);
+        } else {
+            setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, side.gravity);
+        }
+    }
+
     public void openDrawer(Side side) {
         openDrawer(side.gravity);
     }
