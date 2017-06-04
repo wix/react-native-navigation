@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.collapsingToolbar;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
@@ -20,7 +21,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class CollapsingTopBar extends TopBar implements CollapsingView {
     private CollapsingTopBarBackground collapsingTopBarBackground;
-    private CollapsingTopBarReactHeader header;
+    private @Nullable CollapsingTopBarReactHeader header;
     private ScrollListener scrollListener;
     private float finalCollapsedTranslation;
     private final StyleParams styleParams;
@@ -31,6 +32,7 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     @Override
     public void destroy() {
         if (params.hasReactView()) {
+            assert header != null;
             header.unmountReactView();
         }
     }
@@ -83,6 +85,7 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
                         @Override
                         public void onDisplay() {
                             calculateFinalCollapsedTranslation();
+                            assert header != null;
                             header.setOnDisplayListener(null);
                         }
                     });
@@ -141,7 +144,11 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     @Override
     public void fling(CollapseAmount amount) {
         if (titleBar instanceof CollapsingTitleBar) {
-            viewCollapser.fling(amount, (CollapsingTitleBar) titleBar, header);
+            if (header != null) {
+                viewCollapser.fling(amount, (CollapsingTitleBar) titleBar, header);
+            } else {
+                viewCollapser.fling(amount, (CollapsingTitleBar) titleBar);
+            }
         } else {
             viewCollapser.collapse(amount);
         }
