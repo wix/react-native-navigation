@@ -67,8 +67,6 @@ Element tranisitions, adding buttons and styles are not supported yet.
 
 ## Getting started with v2
 If v2 supports everything you need for your app we encourage you to use it.
-## Docs
-
 
 ### Installation 
 1. Download react-native-navigation v2
@@ -98,7 +96,7 @@ NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBun
 
 	```groovy
 	include ':react-native-navigation'
-project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/lib/android/app/')
+	project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-	navigation/lib/android/app/')
 	```
 
 3. Update project dependencies in `android/app/build.gradle`.
@@ -166,7 +164,7 @@ project(':react-native-navigation').projectDir = new File(rootProject.projectDir
 		android:name=".MainApplication"
 		...
 	/>
-	```
+### Usage
 ### Top Screen API
 
 #### Navigation
