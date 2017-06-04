@@ -4,6 +4,7 @@ We are rebuilding react-native-navigation
 - [Why?](#why-rebuild-react-native-navigation)
 - [Where is it standing now?](#where-is-it-standing-now)
 - [Getting Started](#getting-started-with-v2)
+- [Usage](#usage)
 
 ## Why Rebuild react-native-navigation? 
 
@@ -164,7 +165,7 @@ NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBun
 		android:name=".MainApplication"
 		...
 	/>
-### Usage
+## Usage
 ### Top Screen API
 
 #### Navigation
@@ -172,7 +173,7 @@ NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBun
 import Navigation from 'react-native-navigation';
 ```
 #### Events - On App Launched
-How to initiate your app. More about Navigation.setRoot() below.
+How to initiate your app.
 
 ```js
 Navigation.events().onAppLaunched(() => {
@@ -191,7 +192,7 @@ Navigation.registerContainer(`navigation.playground.WelcomeScreen`, () => Welcom
 ```
 
 #### setRoot({params})
-Start a Single page app with two side menu: 
+Start a Single page app with two side menus: 
 ```js
 Navigation.setRoot({
       container: {
@@ -289,31 +290,38 @@ Navigation.dismissAllModals();
 ```
 #### Screen Lifecycle - onStop() and onStart()
 
+the onStop() and onStart() function are lifecycle functions that are added to the screen and run when a screen apears and disappears from the screen. to use them simply add them to your component like any other react lifecycle function: 
 
-
-# old notes 
-## Major Changes
-Behind being written in TDD, v2 has a significantly better design which in turn changes the API. <br>
-Here are the major changes: 
-
-
-1) One of the major weaknesses in v1 was the inability to define on which screen you want an action to be performed.
-  V2 makes it possible by changing `this.props.navigator.push()` to `Navigation.on(this.props.navigatorId).push()`.
-  This removes bugs which couldn't be solved before. 
- ```js
- // v1
- this.props.navigator.pop()
- // v2
- Navigation.from(this.props.screenId).pop();
-```
-
-2) You now need to import Navigation to every screen where you wish to use it, instead of it being automatically passed by props
 ```js
- import Navigation from 'react-native-navigation';
- 
- ...
- 
- Navigation.from(this.props.screenId).pop();
+class LifecycleScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: 'nothing yet'
+    };
+  }
+
+  onStart() {
+    this.setState({ text: 'onStart' });
+  }
+
+  onStop() {
+    alert('onStop'); //eslint-disable-line
+  }
+
+  componentWillUnmount() {
+    alert('componentWillUnmount'); //eslint-disable-line
+  }
+
+  render() {
+    return (
+      <View style={styles.root}>
+        <Text style={styles.h1}>{`Lifecycle Screen`}</Text>
+	<Text style={styles.h1}>{this.state.text}</Text>
+      </View>
+    );
+  }
+}
 ```
 
 
