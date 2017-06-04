@@ -76,7 +76,10 @@ public class LayoutFactory {
 	}
 
 	private ViewController createContainer(LayoutNode node) {
-		return new ReactRootViewController(activity, node.id, node.data.optString("name"), node.data.optJSONObject("navigationOptions").optString("title"), reactInstanceManager);
+		String id = node.id;
+		String name = node.data.optString("name");
+		NavigationOptions navigationOptions = NavigationOptions.parse(node.data.optJSONObject("navigationOptions"));
+		return new ReactRootViewController(activity, id, name, navigationOptions, reactInstanceManager);
 	}
 
 	private ViewController createContainerStack(LayoutNode node) {

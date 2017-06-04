@@ -13,15 +13,19 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 public class ReactRootViewController extends ViewController {
 
 	private final String name;
-	private final String title;
+	private final NavigationOptions navigationOptions;
 	private final ReactInstanceManager reactInstanceManager;
 	private boolean attachedToReactInstance = false;
 	private ReactRootView reactRootView;
 
-	public ReactRootViewController(final Activity activity, final String id, final String name, final String title, final ReactInstanceManager reactInstanceManager) {
+	public ReactRootViewController(final Activity activity,
+	                               final String id,
+	                               final String name,
+	                               final NavigationOptions navigationOptions,
+	                               final ReactInstanceManager reactInstanceManager) {
 		super(activity, id);
 		this.name = name;
-		this.title = title;
+		this.navigationOptions = navigationOptions;
 		this.reactInstanceManager = reactInstanceManager;
 	}
 
@@ -35,7 +39,8 @@ public class ReactRootViewController extends ViewController {
 	@Override
 	public void onViewAppeared() {
 		super.onViewAppeared();
-		if (getParentStackController() != null) getParentStackController().setTitle(title);
+		if (getParentStackController() != null)
+			getParentStackController().setTitle(navigationOptions.title);
 		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).containerStart(getId());
 	}
 
