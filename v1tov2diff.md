@@ -12,9 +12,9 @@ These issue originate from the same problem: you cannot specify on which screen 
 There are ways to solve some of these problems in v1 but they are not straightforward. We want to change that. 
 
 #### New API
-To solve this problem in v2, every screen receives as a prop it’s screenId. Whenever you want to perform an action from that screen you use the from method: 
+To solve this problem in v2, every screen receives as a prop it’s containerId. Whenever you want to perform an action from that screen you use pass the containerId to the method: 
 ```js
-Navigator.from(this.props.screenId).pop()
+Navigator.pop(this.props.containerId)
 ```   
 ### Built for Contributors 
 Currently, it requires a lot of work to accept pull requests. We need to manually make sure that everything works before we approve them because v1 is not thoroughly tested. <br>
@@ -82,6 +82,8 @@ Follow steps 2 - 6 [here](https://wix.github.io/react-native-navigation/#/instal
 import Navigation from 'react-native-navigation';
 ```
 #### Events - On App Launched
+How to initiate your app. More about Navigation.setRoot() below.
+
 ```js
 Navigation.events().onAppLaunched(() => {
     Navigation.setRoot({
@@ -154,24 +156,24 @@ Navigation.setRoot({
 #### push(params)
 Push a new screen into this screen's navigation stack.
 ```js
-Navigation.from(this.props.screenId).push({
+Navigation.push(this.props.containerId, {
       name: 'navigation.playground.PushedScreen',
       passProps: {}
     });
 ```
-#### pop(screenId)
+#### pop(containerId)
 Pop the top screen from this screen's navigation stack.
 ```js
-Navigation.from(this.props.screenId).pop();
+Navigation.pop(this.props.containerId);
 ```
 #### popTo(params)
 ```js
-Navigation.from(this.props.screenId).popTo(this.props.previousScreenIds[0]);
+Navigation.popTo(this.props.containerId, this.props.previousScreenIds[0]);
 ```
 #### popToRoot()
 Pop all the screens until the root from this screen's navigation stack
 ```js
-Navigation.from(this.props.screenId).popToRoot();
+Navigation.popToRoot(this.props.containerId);
 ```
 #### showModal(params = {})
 Show a screen as a modal.
@@ -185,10 +187,10 @@ Navigation.showModal({
       }
     });
 ```
-#### dismissModal(screenId)
+#### dismissModal(containerId)
 Dismiss modal.
 ```js
-Navigation.dismissModal(this.props.screenId);
+Navigation.dismissModal(this.props.containerId);
 ```
 #### dismissAllModals()
 Dismiss all the current modals at the same time.
