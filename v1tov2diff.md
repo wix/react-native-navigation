@@ -40,12 +40,12 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 |  API              | v1     | v2         |
 |---------------------|--------|------------|
 | push                |  ✅     |   ✅       |
-| pop                 |  ✅     |  ✅         |
+| pop                 |  ✅     |  ✅ Only iOS        |
 | showModal           |  ✅     |  ✅   |
 | popToRoot           |   ✅     |   ✅         |
 | resetTo             |   ✅     |    [Contribute](CONTRIBUTING.md)      |
-| dismissModal        |   ✅     |     ✅       |
-| dismissAllModals    |   ✅     |      ✅      |
+| dismissModal        |   ✅     |     ✅  Only iOS     |
+| dismissAllModals    |   ✅     |      ✅   Only iOS   |
 | showLightBox        |   ✅     |      [Contribute](CONTRIBUTING.md)      |
 | dismissLightBox     |   ✅     |       [Contribute](CONTRIBUTING.md)       |
 | handleDeepLink      |   ✅     |       [Contribute](CONTRIBUTING.md)       |
@@ -62,7 +62,7 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 Element tranisitions, adding buttons and styles are not supported yet.  
 
 ## Getting started with v2
-If v2 supports everything you need for your app we encourage you to use it. Here are the docs
+If v2 supports everything you need for your app we encourage you to use it.
 ## Docs
 
 
