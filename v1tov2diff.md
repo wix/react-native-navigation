@@ -12,7 +12,7 @@ These issue originate from the same problem: you cannot specify on which screen 
 There are ways to solve some of these problems in v1 but they are not straightforward. We want to change that. 
 
 #### New API
-To solve this problem in v2, every screen receives as a prop it’s containerId. Whenever you want to perform an action from that screen you use pass the containerId to the method: 
+To solve this problem in v2, every screen receives as a prop it’s containerId. Whenever you want to perform an action from that screen you need to pass the containerId to the function: 
 ```js
 Navigator.pop(this.props.containerId)
 ```   
