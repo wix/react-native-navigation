@@ -24,7 +24,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 @property (nonatomic) BOOL _statusBarHideWithNavBar;
 @property (nonatomic) BOOL _statusBarHidden;
 @property (nonatomic) BOOL _statusBarTextColorSchemeLight;
-@property (nonatomic) BOOL _disableBackGesture;
 @property (nonatomic, strong) NSDictionary *originalNavBarImages;
 @property (nonatomic, strong) UIImageView *navBarHairlineImageView;
 @end
@@ -658,7 +657,9 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 #pragma mark - UIGestureRecognizerDelegate
 -(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-  return self._disableBackGesture ? self._disableBackGesture : YES;
+  NSNumber *disabledBackGesture = self.navigatorStyle[@"disabledBackGesture"];
+  BOOL disabledBackGestureBool = disabledBackGesture ? [disabledBackGesture boolValue] : NO;
+  return !disabledBackGestureBool;
 }
 
 

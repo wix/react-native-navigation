@@ -303,6 +303,22 @@ public class NavigationCommandsHandler {
         });
     }
 
+	public static void disableOpenGesture(final boolean disableOpenGesture) {
+		final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+		if (currentActivity == null) {
+			return;
+		}
+
+		NavigationApplication.instance.runOnMainThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				currentActivity.disableOpenGesture(disableOpenGesture);
+			}
+		});
+	}
+
     public static void setSideMenuVisible(final boolean animated, final boolean visible, final Side side) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
@@ -317,23 +333,7 @@ public class NavigationCommandsHandler {
         });
     }
 
-    public static void disableOpenGesture(final boolean disableOpenGesture) {
-        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
-        if (currentActivity == null) {
-            return;
-        }
-
-        NavigationApplication.instance.runOnMainThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                currentActivity.disableOpenGesture(disableOpenGesture);
-            }
-        });
-    }
-
-    public static void disableBackNavigation(final boolean disableBackNavigation) {
+	public static void disableBackNavigation(final boolean disableBackNavigation) {
 		final NavigationActivity currentActivity = NavigationActivity.currentActivity;
 		if (currentActivity == null) {
 			return;
@@ -348,6 +348,7 @@ public class NavigationCommandsHandler {
 			}
 		});
 	}
+
 
     public static void selectTopTabByTabIndex(final String screenInstanceId, final int index) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
