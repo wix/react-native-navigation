@@ -100,7 +100,7 @@ class Navigator {
     return platformSpecific.navigatorDisableOpenGesture(this, params);
   }
 
-	disableBackNavigation(params = {}) {
+  disableBackNavigation(params = {}) {
     return platformSpecific.navigatorDisableBackNavigation(this, params);
   }
 
