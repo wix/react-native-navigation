@@ -1,0 +1,47 @@
+language: java
+
+jdk:
+  - oraclejdk8
+
+env:
+  global:
+    - NODE_VERSION=stable
+    - PATH=$PATH:$HOME/.yarn/bin
+    - ANDROID_HOME=$HOME/android-sdk-linux
+    - PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+
+git:
+  depth: 3
+
+branches:
+  only:
+  - master
+
+cache:
+  yarn: true
+  directories:
+    - $HOME/.gradle/
+    - $HOME/.m2
+    - $ANDROID_HOME/licenses/
+
+before_cache:
+  - rm -rf $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+
+install:
+  - set -e
+  - nvm install $NODE_VERSION
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - ./scripts/clean.sh
+  - yarn install
+
+script:
+  - yarn run lint
+  - yarn run test:js
+  - ./scripts/installAndroidSDK.sh
+  - yarn run test:android
+  - yarn run release
+  - set +e
+
+after_script:
+  - echo "BUILD FINISHED"

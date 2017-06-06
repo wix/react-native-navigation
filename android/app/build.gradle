@@ -1,0 +1,64 @@
+apply plugin: 'com.android.library'
+apply from: '../prepare-robolectric.gradle'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+    testOptions {
+        unitTests.all { t ->
+            reports {
+                html.enabled true
+            }
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+            }
+            afterSuite { desc, result ->
+                if (!desc.parent) { // will match the outermost suite
+                    def output = "      ${result.resultType} (${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)     "
+                    def repeatLength = output.length()
+                    println '\n' + ('-' * repeatLength) + '\n' + output + '\n' + ('-' * repeatLength) + '\n'
+
+                    println "see report at file://${t.reports.html.destination}/index.html"
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: "libs", include: ["*.jar"])
+
+	compile 'com.android.support:design:25.3.1'
+    compile "com.android.support:appcompat-v7:25.3.1"
+
+    // node_modules
+    compile "com.facebook.react:react-native:+"
+
+    // third party
+    compile "com.aurelhubert:ahbottomnavigation:2.0.6"
+    compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.4'
+
+    // tests
+    testCompile "junit:junit:4.12"
+    testCompile "org.robolectric:robolectric:3.1.4"
+    testCompile 'org.assertj:assertj-core:2.5.0'
+}

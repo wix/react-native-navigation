@@ -1,0 +1,15 @@
+{
+  "ignore_dirs": [
+    ".git",
+    "node_modules",
+    ".gradle",
+    ".idea",
+    "gradle",
+    "build",
+    "example",
+    "example-redux",
+    "android/.gradle",
+    "android/gradle",
+    "android/app/build"
+  ]
+}
