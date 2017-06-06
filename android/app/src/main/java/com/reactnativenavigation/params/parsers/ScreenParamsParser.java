@@ -21,6 +21,7 @@ public class ScreenParamsParser extends Parser {
     private static final String FRAGMENT_CREATOR_CLASS_NAME = "fragmentCreatorClassName";
     private static final String FRAGMENT_CREATOR_PASS_PROPS = "fragmentCreatorPassProps";
     private static final String OVERRIDE_BACK_PRESS = "overrideBackPress";
+    private static final String VIEW_PAGER_ENABLE_SCROLL = "viewPagerEnableScroll";
 
     @SuppressWarnings("ConstantConditions")
     public static ScreenParams parse(Bundle params) {
@@ -30,6 +31,8 @@ public class ScreenParamsParser extends Parser {
         result.navigationParams = new NavigationParams(params.getBundle(KEY_NAVIGATION_PARAMS));
 
         result.styleParams = new StyleParamsParser(params.getBundle(STYLE_PARAMS)).parse();
+        
+        result.viewPagerEnableScroll = params.getBoolean(VIEW_PAGER_ENABLE_SCROLL);
 
         result.title = params.getString(KEY_TITLE);
         result.subtitle = params.getString(KEY_SUBTITLE);
