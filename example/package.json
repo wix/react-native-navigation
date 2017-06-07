@@ -7,26 +7,32 @@
     "start": "watchman watch-del-all && (adb reverse tcp:8081 tcp:8081 || true) && node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "xcode": "open ios/example.xcodeproj",
     "android": "cd android && ./gradlew installDebug",
-    "e2e": "node ./scripts/e2e.ios.js"
+    "e2e": "detox test --configuration ios.sim.debug",
+    "e2e-release": "detox test --configuration ios.sim.release"
   },
   "dependencies": {
     "react": "16.0.0-alpha.6",
-    "react-native": "0.43.3",
+    "react-native": "0.44.2",
     "react-native-animatable": "^1.1.0",
     "react-native-navigation": "latest"
   },
   "devDependencies": {
-    "detox": "4.x.x",
-    "detox-server": "1.x.x"
+    "detox": "^5.0.0",
+    "mocha": "^3.4.2"
   },
   "detox": {
-    "session": {
-      "server": "ws://localhost:8099",
-      "sessionId": "example"
-    },
-    "ios-simulator": {
-      "app": "ios/DerivedData/example/Build/Products/Debug_Detox-iphonesimulator/example.app",
-      "device": "iPhone 7, iOS 10.1"
+    "specs": "test/e2e",
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "ios/DerivedData/example/Build/Products/Debug-iphonesimulator/example.app",
+        "type": "ios.simulator",
+        "name": "iPhone 6s"
+      },
+      "ios.sim.release": {
+        "binaryPath": "ios/DerivedData/example/Build/Products/Release-iphonesimulator/example.app",
+        "type": "ios.simulator",
+        "name": "iPhone 6s"
+      }
     }
   }
 }
