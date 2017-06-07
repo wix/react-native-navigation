@@ -95,7 +95,7 @@ public class ViewPagerScreen extends Screen {
         ContentViewPagerAdapter adapter = new ContentViewPagerAdapter(contentViews, screenParams.topTabParams);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(adapter);
-        viewPager.setPagingEnabled(screenParams.viewPagerEnableScroll);
+        viewPager.setPagingEnabled(screenParams.styleParams.topTabsScrollEnabled);
         tabLayout.setupWithViewPager(viewPager);
     }
 

@@ -49,7 +49,7 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
         if (screenParams.styleParams.drawScreenBelowTopBar) {
             viewPager.setViewMeasurer(new CollapsingViewMeasurer((CollapsingTopBar) topBar, this, styleParams));
         }
-        viewPager.setPagingEnabled(screenParams.viewPagerEnableScroll);
+        viewPager.setPagingEnabled(screenParams.styleParams.topTabsScrollEnabled);
         return viewPager;
     }
 

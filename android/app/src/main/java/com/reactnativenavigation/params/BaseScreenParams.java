@@ -14,7 +14,6 @@ public class BaseScreenParams {
     public List<TitleBarButtonParams> rightButtons;
     public TitleBarLeftButtonParams leftButton;
     public FabParams fabParams;
-    public boolean viewPagerEnableScroll;
 
     public boolean overrideBackPressInJs;
     public StyleParams styleParams;
