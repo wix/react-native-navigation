@@ -8,6 +8,7 @@ const {
   NavigationControllerIOS,
   DrawerControllerIOS
 } = React;
+import { processColor} from 'react-native';
 import _ from 'lodash';
 
 import PropRegistry from '../PropRegistry';
@@ -38,6 +39,12 @@ function startTabBasedApp(params) {
       navigatorEventID,
       navigatorID
     };
+    if (_.get(tab, 'secondaryBadgeStyle.backgroundColor')) {
+      tab.secondaryBadgeStyle.backgroundColor = processColor(tab.secondaryBadgeStyle.backgroundColor);
+    }
+    if (_.get(tab, 'secondaryBadgeStyle.textColor')) {
+      tab.secondaryBadgeStyle.textColor = processColor(tab.secondaryBadgeStyle.textColor);
+    }
   });
 
   const Controller = Controllers.createClass({
