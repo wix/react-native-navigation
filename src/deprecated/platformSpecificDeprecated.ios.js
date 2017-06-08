@@ -43,6 +43,8 @@ function startTabBasedApp(params) {
     _injectOptionsInParams(params, navigatorOptions);
   });
 
+  const tabsNavigatorID = controllerID + '_tabs';
+
   const Controller = Controllers.createClass({
     render: function() {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
@@ -69,7 +71,7 @@ function startTabBasedApp(params) {
     renderBody: function() {
       return (
         <TabBarControllerIOS
-          id={controllerID + '_tabs'}
+          id={tabsNavigatorID}
           style={params.tabsStyle}
           appStyle={params.appStyle}>
           {
@@ -103,6 +105,22 @@ function startTabBasedApp(params) {
 
   ControllerRegistry.registerController(controllerID, () => Controller);
   ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {});
+
+  return tabsNavigatorID;
+}
+
+function updateTabBasedApp(params) {
+	if (!params.screen) {
+		console.error('updateTabBasedApp(params): params.screen is required');
+		return;
+	}
+
+	if (!params.navigatorID) {
+		console.error('updateTabBasedApp(params): params.navigatorID is required');
+		return;
+	}
+
+	this.navigatorSwitchToTab(params.navigatorID, params)
 }
 
 function startSingleScreenApp(params) {
@@ -461,15 +479,15 @@ function navigatorSetTabButton(navigator, params) {
   }
 }
 
-function navigatorSwitchToTab(navigator, params) {
-  const controllerID = navigator.navigatorID.split('_')[0];
+function navigatorSwitchToTab(navigatorID, params) {
+  const controllerID = navigatorID.split('_')[0];
   if (params.tabIndex || params.tabIndex === 0) {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').switchTo({
       tabIndex: params.tabIndex
     });
   } else {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').switchTo({
-      contentId: navigator.navigatorID,
+      contentId: navigatorID,
       contentType: 'NavigationControllerIOS'
     });
   }
@@ -677,6 +695,7 @@ function dismissContextualMenu() {
 
 export default {
   startTabBasedApp,
+  updateTabBasedApp,
   startSingleScreenApp,
   updateSingleScreenApp,
   addSplashScreen,

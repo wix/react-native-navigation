@@ -121,7 +121,7 @@ class Navigator {
   }
 
   switchToTab(params = {}) {
-    return platformSpecific.navigatorSwitchToTab(this, params);
+    return platformSpecific.navigatorSwitchToTab(this.navigatorID, params);
   }
 
   switchToTopTab(params = {}) {

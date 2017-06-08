@@ -304,6 +304,20 @@ function startTabBasedApp(params) {
   newPlatformSpecific.startApp(params);
 }
 
+function updateTabBasedApp(params) {
+  if (!params.screen) {
+      console.error('updateTabBasedApp(params): params.screen is required');
+      return;
+  }
+
+  if (!params.navigatorID) {
+      console.error('updateTabBasedApp(params): params.navigatorID is required');
+      return;
+  }
+
+  this.navigatorSwitchToTab(params.navigatorID, params);
+}
+
 function addTabIcon(tab) {
   if (tab.icon) {
     const icon = resolveAssetSource(tab.icon);
@@ -390,11 +404,11 @@ function navigatorSetStyle(navigator, params) {
   newPlatformSpecific.setScreenStyle(navigator.screenInstanceID, style);
 }
 
-function navigatorSwitchToTab(navigator, params) {
+function navigatorSwitchToTab(navigatorID, params) {
   if (params.tabIndex >= 0) {
     newPlatformSpecific.selectBottomTabByTabIndex(params.tabIndex);
   } else {
-    newPlatformSpecific.selectBottomTabByNavigatorId(navigator.navigatorID);
+    newPlatformSpecific.selectBottomTabByNavigatorId(navigatorID);
   }
 }
 
@@ -723,6 +737,7 @@ function dismissContextualMenu() {
 
 export default {
   startTabBasedApp,
+  updateTabBasedApp,
   startSingleScreenApp,
   updateSingleScreenApp,
   addSplashScreen,

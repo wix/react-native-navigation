@@ -137,6 +137,10 @@ function startTabBasedApp(params) {
   return platformSpecific.startTabBasedApp(params);
 }
 
+function updateTabBasedApp(params) {
+  return platformSpecific.updateTabBasedApp(params);
+}
+
 function startSingleScreenApp(params) {
   return platformSpecific.startSingleScreenApp(params);
 }
@@ -188,6 +192,7 @@ export default {
   showInAppNotification: showInAppNotification,
   dismissInAppNotification: dismissInAppNotification,
   startTabBasedApp: startTabBasedApp,
+  updateTabBasedApp: updateTabBasedApp,
   startSingleScreenApp: startSingleScreenApp,
   updateSingleScreenApp: updateSingleScreenApp,
   addSplashScreen: addSplashScreen,
