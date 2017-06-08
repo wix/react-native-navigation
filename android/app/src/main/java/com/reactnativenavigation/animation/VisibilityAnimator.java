@@ -47,6 +47,7 @@ public class VisibilityAnimator {
         } else {
             view.setTranslationY(SHOW_END_VALUE);
             view.setY(SHOW_END_VALUE);
+            view.setVisibility(View.VISIBLE);
         }
     }
 
@@ -57,10 +58,12 @@ public class VisibilityAnimator {
         } else {
             view.setTranslationY(hiddenEndValue);
             view.setY(hiddenEndValue);
+            view.setVisibility(View.GONE);
         }
     }
 
     private ObjectAnimator createAnimator(final boolean show) {
+        view.setVisibility(View.VISIBLE);
         final ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, show ? SHOW_END_VALUE : hiddenEndValue);
         animator.setDuration(DURATION);
         animator.setInterpolator(interpolator);
