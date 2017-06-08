@@ -108,7 +108,15 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     [self processTitleView:viewController
                      props:actionParams
                      style:navigatorStyle];
-    
+
+    NSString *backButtonImage = actionParams[@"backButtonImage"];
+    if (backButtonImage)
+    {
+      UIImage *backImg = [RCTConvert UIImage:backButtonImage];
+      self.topViewController.navigationController.navigationBar.backIndicatorImage = backImg;
+      self.topViewController.navigationController.navigationBar.backIndicatorTransitionMaskImage = backImg;
+    }
+
     NSString *backButtonTitle = actionParams[@"backButtonTitle"];
     if (backButtonTitle)
     {

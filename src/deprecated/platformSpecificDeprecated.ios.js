@@ -245,6 +245,7 @@ function navigatorPush(navigator, params) {
     style: navigatorStyle,
     backButtonTitle: params.backButtonTitle,
     backButtonHidden: params.backButtonHidden,
+    backButtonImage: params.backButtonImage,
     leftButtons: navigatorButtons.leftButtons,
     rightButtons: navigatorButtons.rightButtons
   });
