@@ -8,6 +8,7 @@ import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ModalDismissedEvent;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
+import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
@@ -45,6 +46,12 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
         if (isShowing()) {
             stack.pop().dismiss();
         }
+        if (stack.empty()) {
+            activity.setRequestedOrientation(AppStyle.appStyle.orientation.orientationCode);
+        } else {
+            Modal newTopModal = stack.peek();
+            activity.setRequestedOrientation(newTopModal.getScreenParams().styleParams.orientation.orientationCode);
+        }
     }
 
     void dismissAllModals() {
@@ -52,6 +59,7 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
             modal.dismiss();
         }
         stack.clear();
+        activity.setRequestedOrientation(AppStyle.appStyle.orientation.orientationCode);
     }
 
     boolean isShowing() {

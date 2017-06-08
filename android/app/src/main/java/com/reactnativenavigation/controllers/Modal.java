@@ -31,6 +31,10 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
     private final ScreenParams screenParams;
     private Layout layout;
     private boolean isDestroyed;
+    
+    public ScreenParams getScreenParams() {
+        return screenParams;
+    }
 
     public void setTopBarVisible(String screenInstanceId, boolean hidden, boolean animated) {
         layout.setTopBarVisible(screenInstanceId, hidden, animated);
