@@ -119,7 +119,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     private void createSnackbarContainer() {
         snackbarAndFabContainer = new SnackbarAndFabContainer(getContext(), this);
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
         lp.addRule(ABOVE, bottomTabs.getId());
         snackbarAndFabContainer.setClickable(false);
         getScreenStackParent().addView(snackbarAndFabContainer, lp);
