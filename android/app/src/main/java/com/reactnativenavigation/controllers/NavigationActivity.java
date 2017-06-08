@@ -1,6 +1,7 @@
 package com.reactnativenavigation.controllers;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -236,24 +237,38 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     void showModal(ScreenParams screenParams) {
-        Screen previousScreen = layout.getCurrentScreen();
+        Screen previousScreen;
+        if (modalController.getStackSize() > 0) {
+            previousScreen = modalController.getTopModal().getLayout().getCurrentScreen();
+        } else {
+            previousScreen = layout.getCurrentScreen();
+        }
+
         NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", previousScreen.getNavigatorEventId());
         NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", previousScreen.getNavigatorEventId());
-        modalController.showModal(screenParams);
+
+        modalController.showModal(screenParams, new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                Screen previousScreen;
+                if (modalController.getStackSize() > 0) {
+                    previousScreen = modalController.getTopModal().getLayout().getCurrentScreen();
+                } else {
+                    previousScreen = layout.getCurrentScreen();
+                }
+
+                NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", previousScreen.getNavigatorEventId());
+                NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", previousScreen.getNavigatorEventId());
+            }
+        });
     }
 
     void dismissTopModal() {
         modalController.dismissTopModal();
-        Screen previousScreen = layout.getCurrentScreen();
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", previousScreen.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", previousScreen.getNavigatorEventId());
     }
 
     void dismissAllModals() {
         modalController.dismissAllModals();
-        Screen previousScreen = layout.getCurrentScreen();
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", previousScreen.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", previousScreen.getNavigatorEventId());
     }
 
     public void showLightBox(LightBoxParams params) {
