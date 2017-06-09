@@ -10,9 +10,9 @@ function startApp(activityParams) {
   NativeReactModule.startApp(activityParams);
 }
 
-function updateDrawerScreen(drawerID, screenParams) {
+function updateDrawerScreen(screenParams) {
   savePassProps(screenParams);
-  NativeReactModule.updateDrawerScreen(drawerID, screenParams);
+  NativeReactModule.updateDrawerScreen(screenParams);
 }
 
 function addSplashScreen() {

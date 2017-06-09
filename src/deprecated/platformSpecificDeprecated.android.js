@@ -41,6 +41,7 @@ function startSingleScreenApp(params) {
   const ret = { navigatorID: screen.navigatorID };
   if (params.sideMenu.left) ret.drawerIDLeft = params.sideMenu.left.navigatorID;
   if (params.sideMenu.right) ret.drawerIDRight = params.sideMenu.right.navigatorID;
+  ret.drawerID = ret.drawerIDLeft ? ret.drawerIDLeft : (ret.drawerIDRight ? ret.drawerIDRight : null);
   return ret;
 }
 
@@ -75,13 +76,6 @@ function updateDrawerScreen(params) {
     return;
   }
 
-  if (!params.drawerID) {
-    console.error('updateDrawerScreen(params): params.drawerID is required');
-    return;
-  }
-
-  const drawerID = params.drawerID;
-
   addNavigatorParams(params);
   addNavigatorButtons(params);
   addNavigatorOptions(params);
@@ -97,7 +91,7 @@ function updateDrawerScreen(params) {
   adapted = adaptNavigationParams(adapted);
   adapted.overrideBackPress = params.overrideBackPress;
 
-  newPlatformSpecific.updateDrawerScreen(drawerID, adapted)
+  newPlatformSpecific.updateDrawerScreen(adapted)
 }
 
 function addSplashScreen() {
@@ -351,6 +345,7 @@ function startTabBasedApp(params) {
   const ret = {};
   if (params.sideMenu.left) ret.drawerIDLeft = params.sideMenu.left.navigatorID;
   if (params.sideMenu.right) ret.drawerIDRight = params.sideMenu.right.navigatorID;
+	ret.drawerID = ret.drawerIDLeft ? ret.drawerIDLeft : (ret.drawerIDRight ? ret.drawerIDRight : null);
   return ret;
 }
 

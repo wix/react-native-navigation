@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
@@ -46,7 +45,7 @@ public class NavigationCommandsHandler {
         NavigationApplication.instance.startActivity(intent);
     }
 
-    public static void updateDrawerScreen(final String drawerID, final Bundle params) {
+    public static void updateDrawerScreen(final Bundle params) {
 		final NavigationActivity currentActivity = NavigationActivity.currentActivity;
 		if (currentActivity == null) {
 			return;
@@ -57,7 +56,7 @@ public class NavigationCommandsHandler {
 			@Override
 			public void run()
 			{
-				currentActivity.updateDrawerScreen(drawerID, ScreenParamsParser.parse(params));
+				currentActivity.updateDrawerScreen(ScreenParamsParser.parse(params));
 			}
 		});
 	}

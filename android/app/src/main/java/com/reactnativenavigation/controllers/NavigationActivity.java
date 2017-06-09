@@ -208,7 +208,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onConfigurationChanged(newConfig);
     }
 
-    void updateDrawerScreen(String drawerID, ScreenParams params) {
+    void updateDrawerScreen(ScreenParams params) {
 		if (layout instanceof SingleScreenLayout)
 		{
 			layout.newStack(params);
