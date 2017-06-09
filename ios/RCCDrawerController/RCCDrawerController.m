@@ -5,6 +5,7 @@
 #import <React/RCTConvert.h>
 #import "RCCManagerModule.h"
 #import "UIViewController+Rotation.h"
+#import "RCCManager.h"
 
 #define RCCDRAWERCONTROLLER_ANIMATION_DURATION 0.33f
 
@@ -137,6 +138,7 @@
         BOOL disableOpenGesture = [actionParams[@"disableOpenGesture"] boolValue];
         self.openDrawerGestureModeMask = disableOpenGesture ?
                 MMOpenDrawerGestureModeNone : MMOpenDrawerGestureModeAll;
+        return;
     }
 
     // setStyle
@@ -146,6 +148,22 @@
             NSString *animationTypeString = actionParams[@"animationType"];
             [self setAnimationTypeWithName:animationTypeString];
         }
+        return;
+    }
+
+    if ([performAction isEqualToString:@"updateScreen"])
+    {
+        NSDictionary *layout = actionParams[@"layout"];
+        NSDictionary *passProps = actionParams[@"passProps"];
+
+        UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:passProps bridge:[[RCCManager sharedInstance] getBridge]];
+        if (controller == nil)
+        {
+            return;
+        }
+
+        self.centerViewController = controller;
+
         return;
     }
     

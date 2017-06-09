@@ -145,6 +145,10 @@ function updateRootScreen(params) {
   return platformSpecific.updateRootScreen(params);
 }
 
+function updateDrawerScreen(params) {
+  return platformSpecific.updateDrawerScreen(params);
+}
+
 function addSplashScreen() {
   return platformSpecific.addSplashScreen();
 }
@@ -179,20 +183,21 @@ function handleDeepLink(params = {}) {
 export default {
   getRegisteredScreen,
   registerComponent,
-  showModal: showModal,
-  dismissModal: dismissModal,
-  dismissAllModals: dismissAllModals,
-  showSnackbar: showSnackbar,
-  showLightBox: showLightBox,
-  dismissLightBox: dismissLightBox,
-  showInAppNotification: showInAppNotification,
-  dismissInAppNotification: dismissInAppNotification,
-  startTabBasedApp: startTabBasedApp,
-  startSingleScreenApp: startSingleScreenApp,
-  updateRootScreen: updateRootScreen,
-  addSplashScreen: addSplashScreen,
-  removeSplashScreen: removeSplashScreen,
-  setEventHandler: setEventHandler,
-  clearEventHandler: clearEventHandler,
-  handleDeepLink: handleDeepLink
+  showModal,
+  dismissModal,
+  dismissAllModals,
+  showSnackbar,
+  showLightBox,
+  dismissLightBox,
+  showInAppNotification,
+  dismissInAppNotification,
+  startTabBasedApp,
+  startSingleScreenApp,
+  updateRootScreen,
+  updateDrawerScreen,
+  addSplashScreen,
+  removeSplashScreen,
+  setEventHandler,
+  clearEventHandler,
+  handleDeepLink
 };

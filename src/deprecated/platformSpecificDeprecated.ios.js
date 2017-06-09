@@ -19,6 +19,10 @@ function startTabBasedApp(params) {
   }
 
   const controllerID = _.uniqueId('controllerID');
+  const drawerID = controllerID + '_drawer';
+  const drawerIDLeft = drawerID + '_left';
+  const drawerIDRight = drawerID + '_right';
+
   params.tabs.map(function(tab, index) {
     const navigatorID = controllerID + '_nav' + index;
     const screenInstanceID = _.uniqueId('screenInstanceID');
@@ -50,13 +54,12 @@ function startTabBasedApp(params) {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
         return this.renderBody();
       } else {
-        const navigatorID = controllerID + '_drawer';
         return (
-          <DrawerControllerIOS id={navigatorID}
+          <DrawerControllerIOS id={drawerID}
                                componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
-                               passPropsLeft={{navigatorID: navigatorID}}
+                               passPropsLeft={{navigatorID: drawerIDLeft}}
                                componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
-                               passPropsRight={{navigatorID: navigatorID}}
+                               passPropsRight={{navigatorID: drawerIDRight}}
                                disableOpenGesture={params.drawer.disableOpenGesture}
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
@@ -106,7 +109,7 @@ function startTabBasedApp(params) {
   ControllerRegistry.registerController(controllerID, () => Controller);
   ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {});
 
-  return tabsNavigatorID;
+  return { drawerID, drawerIDLeft, drawerIDRight };
 }
 
 function startSingleScreenApp(params) {
@@ -115,13 +118,16 @@ function startSingleScreenApp(params) {
     return;
   }
 
-  const controllerID = _.uniqueId('controllerID');
   const screen = params.screen;
   if (!screen.screen) {
     console.error('startSingleScreenApp(params): screen must include a screen property');
     return;
   }
 
+  const controllerID = _.uniqueId('controllerID');
+  const drawerID = controllerID + '_drawer';
+  const drawerIDLeft = drawerID + '_left';
+  const drawerIDRight = drawerID + '_right';
   const navigatorID = controllerID + '_nav';
   const screenInstanceID = _.uniqueId('screenInstanceID');
   const {
@@ -145,13 +151,12 @@ function startSingleScreenApp(params) {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
         return this.renderBody();
       } else {
-        const navigatorID = controllerID + '_drawer';
         return (
-          <DrawerControllerIOS id={navigatorID}
+          <DrawerControllerIOS id={drawerID}
                                componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
-                               passPropsLeft={{navigatorID: navigatorID}}
+                               passPropsLeft={{navigatorID: drawerIDLeft}}
                                componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
-                               passPropsRight={{navigatorID: navigatorID}}
+                               passPropsRight={{navigatorID: drawerIDRight}}
                                disableOpenGesture={params.drawer.disableOpenGesture}
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
@@ -188,6 +193,8 @@ function startSingleScreenApp(params) {
 
   ControllerRegistry.registerController(controllerID, () => Controller);
   ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {});
+
+  return { drawerID, drawerIDLeft, drawerIDRight, navigatorID };
 }
 
 function updateRootScreen(params) {
@@ -241,6 +248,66 @@ function updateRootScreen(params) {
 
   ControllerRegistry.registerController(controllerID, () => Controller);
 	ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {});
+}
+
+function updateDrawerScreen(params) {
+  if (!params.screen) {
+    console.error('updateDrawerScreen(params): params.screen is required');
+    return;
+  }
+
+  if (!params.drawerID) {
+    console.error('updateDrawerScreen(params): params.drawerID is required');
+    return;
+  }
+
+  const drawerID = params.drawerID;
+
+  const controllerID = _.uniqueId('controllerID');
+  const navigatorID = controllerID + '_nav';
+  const screenInstanceID = _.uniqueId('screenInstanceID');
+  const {
+    navigatorStyle,
+    navigatorButtons,
+    navigatorOptions,
+    navigatorEventID
+  } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
+  const passProps = Object.assign({}, params.passProps);
+  passProps.navigatorID = navigatorID;
+  passProps.screenInstanceID = screenInstanceID;
+  passProps.navigatorEventID = navigatorEventID;
+
+  params.navigationParams = {
+    screenInstanceID,
+    navigatorStyle,
+    navigatorButtons,
+    navigatorEventID,
+    navigatorID: navigator.navigatorID
+  };
+
+  _injectOptionsInParams(params, navigatorOptions);
+
+  const Controller = Controllers.createClass({
+    render: function() {
+      return (
+        <NavigationControllerIOS
+          id={navigatorID}
+          title={params.title}
+          subtitle={params.subtitle}
+          titleImage={params.titleImage}
+          component={params.screen}
+          passProps={passProps}
+          style={navigatorStyle}
+          leftButtons={navigatorButtons.leftButtons}
+          rightButtons={navigatorButtons.rightButtons}/>
+      );
+    }
+  });
+
+  savePassProps(params);
+
+  ControllerRegistry.registerController(controllerID, () => Controller);
+  Controllers.DrawerControllerIOS(drawerID).updateScreen(controllerID);
 }
 
 function addSplashScreen() {
@@ -720,6 +787,7 @@ export default {
   startTabBasedApp,
   startSingleScreenApp,
   updateRootScreen,
+  updateDrawerScreen,
   addSplashScreen,
   removeSplashScreen,
   navigatorPush,

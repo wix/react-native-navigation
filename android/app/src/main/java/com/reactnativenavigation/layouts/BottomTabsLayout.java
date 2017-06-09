@@ -92,7 +92,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         screenStacks[position] = newStack;
     }
 
-    private RelativeLayout getScreenStackParent() {
+    public RelativeLayout getScreenStackParent() {
         return sideMenu == null ? this : sideMenu.getContentContainer();
     }
 

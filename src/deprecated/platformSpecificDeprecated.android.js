@@ -37,6 +37,11 @@ function startSingleScreenApp(params) {
   params.animateShow = convertAnimationType(params.animationType);
 
   newPlatformSpecific.startApp(params);
+
+  const ret = { navigatorID: screen.navigatorID };
+  if (params.sideMenu.left) ret.drawerIDLeft = params.sideMenu.left.navigatorID;
+  if (params.sideMenu.right) ret.drawerIDRight = params.sideMenu.right.navigatorID;
+  return ret;
 }
 
 function updateRootScreen(params) {
@@ -62,6 +67,37 @@ function updateRootScreen(params) {
   singleScreen.screen = adapted;
 
   newPlatformSpecific.startApp(singleScreen);
+}
+
+function updateDrawerScreen(params) {
+  if (!params.screen) {
+    console.error('updateDrawerScreen(params): params.screen is required');
+    return;
+  }
+
+  if (!params.drawerID) {
+    console.error('updateDrawerScreen(params): params.drawerID is required');
+    return;
+  }
+
+  const drawerID = params.drawerID;
+
+  addNavigatorParams(params);
+  addNavigatorButtons(params);
+  addNavigatorOptions(params);
+  addTitleBarBackButtonIfNeeded(params);
+  addNavigationStyleParams(params);
+
+  /*
+   * adapt to new API
+   */
+  adaptTopTabs(params, params.navigatorID);
+  params.screenId = params.screen;
+  let adapted = adaptNavigationStyleToScreenStyle(params);
+  adapted = adaptNavigationParams(adapted);
+  adapted.overrideBackPress = params.overrideBackPress;
+
+  newPlatformSpecific.updateDrawerScreen(drawerID, adapted)
 }
 
 function addSplashScreen() {
@@ -311,6 +347,11 @@ function startTabBasedApp(params) {
   params.animateShow = convertAnimationType(params.animationType);
 
   newPlatformSpecific.startApp(params);
+
+  const ret = {};
+  if (params.sideMenu.left) ret.drawerIDLeft = params.sideMenu.left.navigatorID;
+  if (params.sideMenu.right) ret.drawerIDRight = params.sideMenu.right.navigatorID;
+  return ret;
 }
 
 function addTabIcon(tab) {
@@ -734,6 +775,7 @@ export default {
   startTabBasedApp,
   startSingleScreenApp,
   updateRootScreen,
+  updateDrawerScreen,
   addSplashScreen,
   removeSplashScreen,
   navigatorPush,

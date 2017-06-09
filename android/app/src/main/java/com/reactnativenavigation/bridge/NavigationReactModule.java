@@ -56,6 +56,12 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+	public void updateDrawerScreen(String drawerID, ReadableMap params)
+	{
+		NavigationCommandsHandler.updateDrawerScreen(drawerID, BundleConverter.toBundle(params));
+	}
+
+    @ReactMethod
 	public void addSplashScreen() {
 
 	}

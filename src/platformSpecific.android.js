@@ -10,6 +10,11 @@ function startApp(activityParams) {
   NativeReactModule.startApp(activityParams);
 }
 
+function updateDrawerScreen(drawerID, screenParams) {
+  savePassProps(screenParams);
+  NativeReactModule.updateDrawerScreen(drawerID, screenParams);
+}
+
 function addSplashScreen() {
   NativeReactModule.addSplashScreen();
 }
@@ -213,6 +218,7 @@ module.exports = {
   setSideMenuVisible,
   disableOpenGesture,
   disableBackNavigation,
+  updateDrawerScreen,
   addSplashScreen,
   removeSplashScreen,
   selectBottomTabByNavigatorId,

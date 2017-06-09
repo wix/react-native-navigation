@@ -241,6 +241,14 @@ var Controllers = {
       },
       setStyle: function (params) {
         return RCCManager.DrawerControllerIOS(id, "setStyle", params);
+      },
+      updateScreen: function (appKey, passProps = {}) {
+        var controller = _controllerRegistry[appKey];
+        if (controller === undefined) return;
+        var layout = controller.render();
+        _validateDrawerProps(layout);
+        const params = { layout, passProps };
+        return RCCManager.DrawerControllerIOS(id, "updateScreen", params);
       }
     };
   },
