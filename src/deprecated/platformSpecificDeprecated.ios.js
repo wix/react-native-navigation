@@ -109,20 +109,6 @@ function startTabBasedApp(params) {
   return tabsNavigatorID;
 }
 
-function updateTabBasedApp(params) {
-	if (!params.screen) {
-		console.error('updateTabBasedApp(params): params.screen is required');
-		return;
-	}
-
-	if (!params.navigatorID) {
-		console.error('updateTabBasedApp(params): params.navigatorID is required');
-		return;
-	}
-
-	this.navigatorSwitchToTab(params.navigatorID, params)
-}
-
 function startSingleScreenApp(params) {
   if (!params.screen) {
     console.error('startSingleScreenApp(params): params.screen is required');
@@ -202,22 +188,59 @@ function startSingleScreenApp(params) {
 
   ControllerRegistry.registerController(controllerID, () => Controller);
   ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {});
-
-  return navigatorID;
 }
 
-function updateSingleScreenApp(params) {
+function updateRootScreen(params) {
 	if (!params.screen) {
-		console.error('updateSingleScreenApp(params): params.screen is required');
+		console.error('updateRootScreen(params): params.screen is required');
 		return;
 	}
 
-	if (!params.navigatorID) {
-		console.error('updateSingleScreenApp(params): params.navigatorID is required');
-		return;
-	}
+  const controllerID = _.uniqueId('controllerID');
+	const navigatorID = controllerID + '_nav';
+	const screenInstanceID = _.uniqueId('screenInstanceID');
+  const {
+    navigatorStyle,
+    navigatorButtons,
+    navigatorOptions,
+    navigatorEventID
+  } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
+  const passProps = Object.assign({}, params.passProps);
+  passProps.navigatorID = navigatorID;
+  passProps.screenInstanceID = screenInstanceID;
+  passProps.navigatorEventID = navigatorEventID;
 
-	this.navigatorResetTo(params.navigatorID, params);
+  params.navigationParams = {
+    screenInstanceID,
+    navigatorStyle,
+    navigatorButtons,
+    navigatorEventID,
+    navigatorID: navigator.navigatorID
+  };
+
+  _injectOptionsInParams(params, navigatorOptions);
+
+  const Controller = Controllers.createClass({
+    render: function() {
+      return (
+        <NavigationControllerIOS
+          id={navigatorID}
+          title={params.title}
+          subtitle={params.subtitle}
+          titleImage={params.titleImage}
+          component={params.screen}
+          passProps={passProps}
+          style={navigatorStyle}
+          leftButtons={navigatorButtons.leftButtons}
+          rightButtons={navigatorButtons.rightButtons}/>
+      );
+    }
+  });
+
+  savePassProps(params);
+
+  ControllerRegistry.registerController(controllerID, () => Controller);
+	ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {});
 }
 
 function addSplashScreen() {
@@ -695,9 +718,8 @@ function dismissContextualMenu() {
 
 export default {
   startTabBasedApp,
-  updateTabBasedApp,
   startSingleScreenApp,
-  updateSingleScreenApp,
+  updateRootScreen,
   addSplashScreen,
   removeSplashScreen,
   navigatorPush,

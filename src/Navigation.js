@@ -137,16 +137,12 @@ function startTabBasedApp(params) {
   return platformSpecific.startTabBasedApp(params);
 }
 
-function updateTabBasedApp(params) {
-  return platformSpecific.updateTabBasedApp(params);
-}
-
 function startSingleScreenApp(params) {
   return platformSpecific.startSingleScreenApp(params);
 }
 
-function updateSingleScreenApp(params) {
-  return platformSpecific.updateSingleScreenApp(params);
+function updateRootScreen(params) {
+  return platformSpecific.updateRootScreen(params);
 }
 
 function addSplashScreen() {
@@ -192,9 +188,8 @@ export default {
   showInAppNotification: showInAppNotification,
   dismissInAppNotification: dismissInAppNotification,
   startTabBasedApp: startTabBasedApp,
-  updateTabBasedApp: updateTabBasedApp,
   startSingleScreenApp: startSingleScreenApp,
-  updateSingleScreenApp: updateSingleScreenApp,
+  updateRootScreen: updateRootScreen,
   addSplashScreen: addSplashScreen,
   removeSplashScreen: removeSplashScreen,
   setEventHandler: setEventHandler,
