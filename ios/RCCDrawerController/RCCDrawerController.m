@@ -13,25 +13,28 @@
 
 @synthesize drawerStyle = _drawerStyle;
 
+UIViewController *leftViewController = nil;
+UIViewController *rightViewController = nil;
+
 -(UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return [self supportedControllerOrientations];
 }
 
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary*)globalProps bridge:(RCTBridge *)bridge
 {
-    
+
     self.drawerStyle = props[@"style"];
-    
+
     // center
     if ([children count] < 1) return nil;
     UIViewController *centerViewController = [RCCViewController controllerWithLayout:children[0] globalProps:globalProps bridge:bridge];
-    
+
     // left
     UIViewController *leftViewController = nil;
     NSString *componentLeft = props[@"componentLeft"];
     NSDictionary *passPropsLeft = props[@"passPropsLeft"];
     if (componentLeft) leftViewController = [[RCCViewController alloc] initWithComponent:componentLeft passProps:passPropsLeft navigatorStyle:nil globalProps:globalProps bridge:bridge];
-    
+
     // right
     UIViewController *rightViewController = nil;
     NSString *componentRight = props[@"componentRight"];

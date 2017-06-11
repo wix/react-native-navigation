@@ -173,7 +173,7 @@ this.props.navigator.toggleDrawer({
 });
 ```
 
-## setDrawerEnabled(params = {}) (Android only)
+## setDrawerEnabled(params = {})
 
 Enables or disables the side menu drawer assuming you have one in your app. Both drawers are enabled by default.
 
