@@ -11,6 +11,7 @@ import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.views.ContentView;
+import com.reactnativenavigation.views.CustomViewPager;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopTabs;
 
@@ -23,7 +24,7 @@ public class ViewPagerScreen extends Screen {
 
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
     protected List<ContentView> contentViews;
-    protected ViewPager viewPager;
+    protected CustomViewPager viewPager;
 
     public ViewPagerScreen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener backButtonListener) {
         super(activity, screenParams, backButtonListener);
@@ -69,8 +70,8 @@ public class ViewPagerScreen extends Screen {
         addView(viewPager, lp);
     }
 
-    protected ViewPager createViewPager(Context context) {
-        return new ViewPager(context);
+    protected CustomViewPager createViewPager(Context context) {
+        return new CustomViewPager(context);
     }
 
     private void addPages() {
@@ -94,6 +95,7 @@ public class ViewPagerScreen extends Screen {
         ContentViewPagerAdapter adapter = new ContentViewPagerAdapter(contentViews, screenParams.topTabParams);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(adapter);
+        viewPager.setPagingEnabled(screenParams.styleParams.topTabsScrollEnabled);
         tabLayout.setupWithViewPager(viewPager);
     }
 

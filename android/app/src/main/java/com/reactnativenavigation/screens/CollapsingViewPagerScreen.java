@@ -15,6 +15,7 @@ import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.views.CollapsingContentView;
 import com.reactnativenavigation.views.ContentView;
+import com.reactnativenavigation.views.CustomViewPager;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseAmount;
@@ -43,11 +44,12 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
     }
 
     @Override
-    protected ViewPager createViewPager(Context context) {
+    protected CustomViewPager createViewPager(Context context) {
         CollapsingViewPager viewPager = new CollapsingViewPager(context);
         if (screenParams.styleParams.drawScreenBelowTopBar) {
             viewPager.setViewMeasurer(new CollapsingViewMeasurer((CollapsingTopBar) topBar, this, styleParams));
         }
+        viewPager.setPagingEnabled(screenParams.styleParams.topTabsScrollEnabled);
         return viewPager;
     }
 

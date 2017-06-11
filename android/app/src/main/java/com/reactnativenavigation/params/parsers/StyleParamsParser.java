@@ -60,6 +60,7 @@ public class StyleParamsParser {
         result.selectedTopTabIndicatorHeight = getInt("selectedTopTabIndicatorHeight", getDefaultSelectedTopTabIndicatorHeight());
         result.selectedTopTabIndicatorColor = getColor("selectedTopTabIndicatorColor", getDefaultSelectedTopTabIndicatorColor());
         result.topTabsScrollable = getBoolean("topTabsScrollable", getDefaultTopTabsScrollable());
+        result.topTabsScrollEnabled = getBoolean("topTabsScrollEnabled", getDefaultTopTabsScrollEnabled());
 
         result.screenBackgroundColor = getColor("screenBackgroundColor", getDefaultScreenBackgroundColor());
 
@@ -185,6 +186,10 @@ public class StyleParamsParser {
 
     private boolean getDefaultTopTabsScrollable() {
         return AppStyle.appStyle != null && AppStyle.appStyle.topTabsScrollable;
+    }
+
+    private boolean getDefaultTopTabsScrollEnabled() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.topTabsScrollEnabled;
     }
 
     private StyleParams.Color getDefaultTopTabIconColor() {
