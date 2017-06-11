@@ -22,7 +22,7 @@ UIViewController *rightViewController = nil;
 
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary*)globalProps bridge:(RCTBridge *)bridge
 {
-
+    
     self.drawerStyle = props[@"style"];
     
     // center
