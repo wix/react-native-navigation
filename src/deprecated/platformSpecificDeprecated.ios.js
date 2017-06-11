@@ -301,6 +301,11 @@ function navigatorResetTo(navigator, params) {
   });
 }
 
+function navigatorSetDrawerEnabled(navigator, params) {
+    const controllerID = navigator.navigatorID.split('_')[0];
+    Controllers.NavigationControllerIOS(controllerID + '_drawer').setDrawerEnabled(params)
+}
+
 function navigatorSetTitle(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).setTitle({
     title: params.title,
@@ -622,6 +627,7 @@ export default {
   showInAppNotification,
   dismissInAppNotification,
   navigatorSetButtons,
+  navigatorSetDrawerEnabled,
   navigatorSetTitle,
   navigatorSetSubtitle,
   navigatorSetStyle,
