@@ -11,6 +11,7 @@ import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.utils.Constants;
 
 import java.util.List;
 
@@ -100,14 +101,9 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     private void createVisibilityAnimator() {
-        ViewUtils.runOnPreDraw(this, new Runnable() {
-            @Override
-            public void run() {
-                visibilityAnimator = new VisibilityAnimator(BottomTabs.this,
-                        VisibilityAnimator.HideDirection.Down,
-                        getHeight());
-            }
-        });
+        visibilityAnimator = new VisibilityAnimator(BottomTabs.this,
+                VisibilityAnimator.HideDirection.Down,
+                (int) ViewUtils.convertDpToPixel(Constants.BOTTOM_TABS_HEIGHT));
     }
 
     private void setStyle() {
