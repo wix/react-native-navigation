@@ -70,9 +70,9 @@ function updateRootScreen(params) {
   newPlatformSpecific.startApp(singleScreen);
 }
 
-function updateDrawerScreen(params) {
+function updateDrawerToScreen(params) {
   if (!params.screen) {
-    console.error('updateDrawerScreen(params): params.screen is required');
+    console.error('updateDrawerToScreen(params): params.screen is required');
     return;
   }
 
@@ -91,7 +91,53 @@ function updateDrawerScreen(params) {
   adapted = adaptNavigationParams(adapted);
   adapted.overrideBackPress = params.overrideBackPress;
 
-  newPlatformSpecific.updateDrawerScreen(adapted)
+  newPlatformSpecific.updateDrawerToScreen(adapted)
+}
+
+function updateDrawerToTabs(params) {
+  if (!params.tabs) {
+    console.error('updateDrawerToTabs(params): params.tabs is required');
+    return;
+  }
+
+  const newTabs = [];
+
+  params.tabs = _.cloneDeep(params.tabs);
+
+  params.tabs.forEach(function(tab, idx) {
+    addNavigatorParams(tab, null, idx);
+    addNavigatorButtons(tab, params.drawer);
+    addNavigatorOptions(tab);
+    addNavigationStyleParams(tab);
+    addTabIcon(tab);
+    if (!tab.passProps) {
+      tab.passProps = params.passProps;
+    }
+
+    adaptTopTabs(tab, tab.navigatorID);
+
+    tab.screenId = tab.screen;
+
+    let newtab = adaptNavigationStyleToScreenStyle(tab);
+    newtab = adaptNavigationParams(tab);
+    newtab.overrideBackPress = tab.overrideBackPress;
+    newTabs.push(newtab);
+  });
+  params.tabs = newTabs;
+
+  params.appStyle = convertStyleParams(params.appStyle);
+  if (params.appStyle) {
+    params.appStyle.orientation = getOrientation(params);
+  }
+  params.sideMenu = convertDrawerParamsToSideMenuParams(params.drawer);
+  params.animateShow = convertAnimationType(params.animationType);
+  params.screenId = params.screen;
+
+  let adapted = adaptNavigationStyleToScreenStyle(params);
+  adapted = adaptNavigationParams(adapted);
+  adapted.overrideBackPress = params.overrideBackPress;
+
+  newPlatformSpecific.updateDrawerToTabs(adapted)
 }
 
 function addSplashScreen() {
@@ -770,7 +816,8 @@ export default {
   startTabBasedApp,
   startSingleScreenApp,
   updateRootScreen,
-  updateDrawerScreen,
+  updateDrawerToScreen,
+  updateDrawerToTabs,
   addSplashScreen,
   removeSplashScreen,
   navigatorPush,

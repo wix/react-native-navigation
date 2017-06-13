@@ -363,12 +363,16 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         }
     }
 
+    public void destroyStacks() {
+		for (ScreenStack screenStack : screenStacks) {
+			screenStack.destroy();
+		}
+	}
+
     @Override
     public void destroy() {
-        snackbarAndFabContainer.destroy();
-        for (ScreenStack screenStack : screenStacks) {
-            screenStack.destroy();
-        }
+		snackbarAndFabContainer.destroy();
+		destroyStacks();
         if (sideMenu != null) {
             sideMenu.destroy();
         }

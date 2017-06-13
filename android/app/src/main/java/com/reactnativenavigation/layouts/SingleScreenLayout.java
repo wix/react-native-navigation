@@ -65,7 +65,7 @@ public class SingleScreenLayout extends BaseLayout {
         sendScreenChangedEventAfterInitialPush();
     }
 
-    private RelativeLayout getScreenStackParent() {
+    public RelativeLayout getScreenStackParent() {
         return sideMenu == null ? this : sideMenu.getContentContainer();
     }
 

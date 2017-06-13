@@ -2,6 +2,7 @@ package com.reactnativenavigation.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -45,7 +46,7 @@ public class NavigationCommandsHandler {
         NavigationApplication.instance.startActivity(intent);
     }
 
-    public static void updateDrawerScreen(final Bundle params) {
+    public static void updateDrawerToScreen(final Bundle params) {
 		final NavigationActivity currentActivity = NavigationActivity.currentActivity;
 		if (currentActivity == null) {
 			return;
@@ -56,7 +57,23 @@ public class NavigationCommandsHandler {
 			@Override
 			public void run()
 			{
-				currentActivity.updateDrawerScreen(ScreenParamsParser.parse(params));
+				currentActivity.updateDrawerToScreen(ScreenParamsParser.parse(params));
+			}
+		});
+	}
+
+    public static void updateDrawerToTabs(final Bundle params) {
+		final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+		if (currentActivity == null) {
+			return;
+		}
+
+		NavigationApplication.instance.runOnMainThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				currentActivity.updateDrawerToTabs(ActivityParamsParser.parse(params));
 			}
 		});
 	}

@@ -250,14 +250,14 @@ function updateRootScreen(params) {
 	ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {});
 }
 
-function updateDrawerScreen(params) {
+function updateDrawerToScreen(params) {
   if (!params.screen) {
-    console.error('updateDrawerScreen(params): params.screen is required');
+    console.error('updateDrawerToScreen(params): params.screen is required');
     return;
   }
 
   if (!params.drawerID) {
-    console.error('updateDrawerScreen(params): params.drawerID is required');
+    console.error('updateDrawerToScreen(params): params.drawerID is required');
     return;
   }
 
@@ -300,6 +300,87 @@ function updateDrawerScreen(params) {
           style={navigatorStyle}
           leftButtons={navigatorButtons.leftButtons}
           rightButtons={navigatorButtons.rightButtons}/>
+      );
+    }
+  });
+
+  savePassProps(params);
+
+  ControllerRegistry.registerController(controllerID, () => Controller);
+  Controllers.DrawerControllerIOS(drawerID).updateScreen(controllerID);
+}
+
+function updateDrawerToTabs(params) {
+  if (!params.tabs) {
+    console.error('updateDrawerToTabs(params): params.tabs is required');
+    return;
+  }
+
+  if (!params.drawerID) {
+    console.error('updateDrawerToTabs(params): params.drawerID is required');
+    return;
+  }
+
+  const drawerID = params.drawerID;
+
+  const controllerID = _.uniqueId('controllerID');
+	const tabsNavigatorID = controllerID + '_tabs';
+
+	params.tabs.map(function(tab, index) {
+		const navigatorID = controllerID + '_nav' + index;
+		const screenInstanceID = _.uniqueId('screenInstanceID');
+		if (!tab.screen) {
+			console.error('updateDrawerToTabs(params): every tab must include a screen property, take a look at tab#' + (index + 1));
+			return;
+		}
+		const {
+			navigatorStyle,
+			navigatorButtons,
+			navigatorOptions,
+			navigatorEventID
+		} = _mergeScreenSpecificSettings(tab.screen, screenInstanceID, tab);
+		tab.navigationParams = {
+			screenInstanceID,
+			navigatorStyle,
+			navigatorButtons,
+			navigatorEventID,
+			navigatorID
+		};
+
+		_injectOptionsInParams(params, navigatorOptions);
+	});
+
+  const Controller = Controllers.createClass({
+    render: function() {
+      return (
+          <TabBarControllerIOS
+              id={tabsNavigatorID}
+              style={params.tabsStyle}
+              appStyle={params.appStyle}>
+		      {
+			      params.tabs.map(function(tab, index) {
+				      return (
+                <TabBarControllerIOS.Item {...tab} title={tab.label}>
+                  <NavigationControllerIOS
+                      id={tab.navigationParams.navigatorID}
+                      title={tab.title}
+                      subtitle={tab.subtitle}
+                      titleImage={tab.titleImage}
+                      component={tab.screen}
+                      passProps={{
+                        navigatorID: tab.navigationParams.navigatorID,
+                        screenInstanceID: tab.navigationParams.screenInstanceID,
+                        navigatorEventID: tab.navigationParams.navigatorEventID
+                      }}
+                      style={tab.navigationParams.navigatorStyle}
+                      leftButtons={tab.navigationParams.navigatorButtons.leftButtons}
+                      rightButtons={tab.navigationParams.navigatorButtons.rightButtons}
+                  />
+                </TabBarControllerIOS.Item>
+				      );
+			      })
+		      }
+          </TabBarControllerIOS>
       );
     }
   });
@@ -787,7 +868,8 @@ export default {
   startTabBasedApp,
   startSingleScreenApp,
   updateRootScreen,
-  updateDrawerScreen,
+  updateDrawerToScreen,
+  updateDrawerToTabs,
   addSplashScreen,
   removeSplashScreen,
   navigatorPush,

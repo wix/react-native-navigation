@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
@@ -40,6 +42,7 @@ import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.utils.OrientationHelper;
+import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
@@ -208,28 +211,62 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onConfigurationChanged(newConfig);
     }
 
-    void updateDrawerScreen(ScreenParams params) {
+    void updateDrawerToScreen(ScreenParams params) {
+		RelativeLayout screenStackParent;
+
 		if (layout instanceof SingleScreenLayout)
 		{
-			layout.newStack(params);
-		} else {
+			SingleScreenLayout screenLayout = (SingleScreenLayout) layout;
+			screenStackParent = screenLayout.getScreenStackParent();
+		} else
+		{
 			BottomTabsLayout tabsLayout = (BottomTabsLayout) layout;
-
-			ActivityParams newParams = activityParams;
-			newParams.type = ActivityParams.Type.SingleScreen;
-			newParams.screenParams = params;
-			layout = LayoutFactory.create(this, newParams);
-
-			if (hasBackgroundColor()) {
-				layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
-			}
-
-			ScreenStack newStack = new ScreenStack(this, tabsLayout.getScreenStackParent(), params.getNavigatorId(), layout);
-			newStack.pushInitialScreen(params, new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-			tabsLayout.getScreenStackParent().removeAllViews();
-			tabsLayout.getScreenStackParent().addView(layout.asView());
-			tabsLayout.setSideMenuVisible(true, false, Side.Left);
+			screenStackParent = tabsLayout.getScreenStackParent();
 		}
+
+		ActivityParams newParams = activityParams;
+		newParams.type = ActivityParams.Type.SingleScreen;
+		newParams.screenParams = params;
+
+		if (hasBackgroundColor()) {
+			layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
+		}
+
+		screenStackParent.removeAllViews();
+		screenStackParent.addView(LayoutFactory.create(this, newParams).asView());
+		layout.setSideMenuVisible(true, false, Side.Left);
+	}
+
+    void updateDrawerToTabs(ActivityParams params) {
+		RelativeLayout screenStackParent;
+
+		Layout originalLayout = layout;
+
+		if (originalLayout instanceof SingleScreenLayout)
+		{
+			SingleScreenLayout screenLayout = (SingleScreenLayout) originalLayout;
+			screenStackParent = screenLayout.getScreenStackParent();
+		} else
+		{
+			BottomTabsLayout tabsLayout = (BottomTabsLayout) originalLayout;
+			screenStackParent = tabsLayout.getScreenStackParent();
+		}
+
+		ActivityParams newParams = new ActivityParams();
+		newParams.type = params.type;
+		newParams.tabParams = params.tabParams;
+
+		if (hasBackgroundColor()) {
+			layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
+		}
+
+		Screen screen = (Screen) screenStackParent.getChildAt(0);
+		ContentView contentView = screen.getContentView();
+		contentView.unmountReactView();
+
+		screenStackParent.removeAllViews();
+		screenStackParent.addView(LayoutFactory.create(this, newParams).asView());
+		originalLayout.setSideMenuVisible(true, false, Side.Left);
 	}
 
     void push(ScreenParams params) {
