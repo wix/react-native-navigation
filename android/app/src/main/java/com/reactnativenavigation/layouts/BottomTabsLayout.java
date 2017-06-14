@@ -367,6 +367,8 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 		for (ScreenStack screenStack : screenStacks) {
 			screenStack.destroy();
 		}
+
+		screenStacks = null;
 	}
 
     @Override

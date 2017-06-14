@@ -240,19 +240,17 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     void updateDrawerToTabs(ActivityParams params) {
 		RelativeLayout screenStackParent;
 
-		Layout originalLayout = layout;
-
-		if (originalLayout instanceof SingleScreenLayout)
+		if (layout instanceof SingleScreenLayout)
 		{
-			SingleScreenLayout screenLayout = (SingleScreenLayout) originalLayout;
+			SingleScreenLayout screenLayout = (SingleScreenLayout) layout;
 			screenStackParent = screenLayout.getScreenStackParent();
 		} else
 		{
-			BottomTabsLayout tabsLayout = (BottomTabsLayout) originalLayout;
+			BottomTabsLayout tabsLayout = (BottomTabsLayout) layout;
 			screenStackParent = tabsLayout.getScreenStackParent();
 		}
 
-		ActivityParams newParams = new ActivityParams();
+		ActivityParams newParams = activityParams;
 		newParams.type = params.type;
 		newParams.tabParams = params.tabParams;
 
@@ -260,13 +258,16 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 			layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
 		}
 
-		Screen screen = (Screen) screenStackParent.getChildAt(0);
-		ContentView contentView = screen.getContentView();
-		contentView.unmountReactView();
+		int leni = screenStackParent.getChildCount();
+		for (int i = 0; i < leni; ++i) {
+			if (screenStackParent.getChildAt(i) instanceof BottomTabsLayout) {
+				((BottomTabsLayout) screenStackParent.getChildAt(i)).destroyStacks();
+			}
+		}
 
 		screenStackParent.removeAllViews();
 		screenStackParent.addView(LayoutFactory.create(this, newParams).asView());
-		originalLayout.setSideMenuVisible(true, false, Side.Left);
+		layout.setSideMenuVisible(true, false, Side.Left);
 	}
 
     void push(ScreenParams params) {
