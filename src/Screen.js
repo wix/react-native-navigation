@@ -144,6 +144,10 @@ class Navigator {
     return platformSpecific.dismissContextualMenu();
   }
 
+  handleDeepLink(params = {}) {
+    Navigation.handleDeepLink(params);
+  }
+
   setOnNavigatorEvent(callback) {
     this.navigatorEventHandler = callback;
     if (!this.navigatorEventSubscription) {
@@ -151,10 +155,6 @@ class Navigator {
       this.navigatorEventSubscription = Emitter.addListener(this.navigatorEventID, (event) => this.onNavigatorEvent(event));
       Navigation.setEventHandler(this.navigatorEventID, (event) => this.onNavigatorEvent(event));
     }
-  }
-
-  handleDeepLink(params = {}) {
-    Navigation.handleDeepLink(params);
   }
 
   onNavigatorEvent(event) {

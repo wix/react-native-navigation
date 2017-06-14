@@ -47,6 +47,6 @@ public class SingleScreen extends Screen {
 
     @Override
     public void setOnDisplayListener(OnDisplayListener onContentViewDisplayedListener) {
-//        contentView.setOnDisplayListener(onContentViewDisplayedListener);
+        contentView.setOnDisplayListener(onContentViewDisplayedListener);
     }
 }

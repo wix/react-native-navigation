@@ -224,7 +224,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 			screenStackParent = tabsLayout.getScreenStackParent();
 		}
 
-		ActivityParams newParams = activityParams;
+		ActivityParams newParams = new ActivityParams();
 		newParams.type = ActivityParams.Type.SingleScreen;
 		newParams.screenParams = params;
 
@@ -232,8 +232,19 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 			layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
 		}
 
+		// Destroy any tabs
+		int leni = screenStackParent.getChildCount();
+		for (int i = 0; i < leni; ++i) {
+			if (screenStackParent.getChildAt(i) instanceof BottomTabsLayout) {
+				((BottomTabsLayout) screenStackParent.getChildAt(i)).destroyStacks();
+				screenStackParent.removeView(screenStackParent.getChildAt(i));
+			}
+		}
+
 		screenStackParent.removeAllViews();
-		screenStackParent.addView(LayoutFactory.create(this, newParams).asView());
+		Layout newLayout = LayoutFactory.create(this, newParams);
+		newLayout.setSideMenu(layout.getSideMenu());
+		screenStackParent.addView(newLayout.asView());
 		layout.setSideMenuVisible(true, false, Side.Left);
 	}
 
@@ -250,24 +261,38 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 			screenStackParent = tabsLayout.getScreenStackParent();
 		}
 
-		ActivityParams newParams = activityParams;
-		newParams.type = params.type;
-		newParams.tabParams = params.tabParams;
-		newParams.selectedPath = params.selectedPath;
-
-		if (hasBackgroundColor()) {
-			layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
-		}
-
+		// Find and try to switch to tab
 		int leni = screenStackParent.getChildCount();
+
+		BottomTabsLayout bottomTabsLayout = null;
+
 		for (int i = 0; i < leni; ++i) {
 			if (screenStackParent.getChildAt(i) instanceof BottomTabsLayout) {
-				((BottomTabsLayout) screenStackParent.getChildAt(i)).destroyStacks();
+				bottomTabsLayout = (BottomTabsLayout) screenStackParent.getChildAt(i);
 			}
 		}
 
-		screenStackParent.removeAllViews();
-		screenStackParent.addView(LayoutFactory.create(this, newParams).asView());
+		if (bottomTabsLayout == null)
+		{
+			ActivityParams newParams = new ActivityParams();
+			newParams.type = params.type;
+			newParams.tabParams = params.tabParams;
+			newParams.selectedPath = params.selectedPath;
+
+			if (hasBackgroundColor())
+			{
+				layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
+			}
+
+			screenStackParent.removeAllViews();
+			Layout newLayout = LayoutFactory.create(this, newParams);
+			newLayout.setSideMenu(layout.getSideMenu());
+			screenStackParent.addView(newLayout.asView());
+		}
+		else {
+			bottomTabsLayout.selectBottomTabByScreenId(params.selectedPath);
+		}
+
 		layout.setSideMenuVisible(true, false, Side.Left);
 	}
 

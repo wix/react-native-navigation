@@ -332,4 +332,16 @@ public class SingleScreenLayout extends BaseLayout {
             sideMenu.openDrawer(Side.Left);
         }
     }
+
+	@Override
+	public void setSideMenu(SideMenu sideMenu)
+	{
+		this.sideMenu = sideMenu;
+	}
+
+	@Override
+	public SideMenu getSideMenu()
+	{
+		return sideMenu;
+	}
 }
