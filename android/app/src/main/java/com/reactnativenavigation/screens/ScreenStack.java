@@ -450,4 +450,8 @@ public class ScreenStack {
         isStackVisible = false;
         stack.peek().setVisibility(View.INVISIBLE);
     }
+
+    public String rootScreenId() {
+		return stack.get(0).screenParams.screenId;
+	}
 }

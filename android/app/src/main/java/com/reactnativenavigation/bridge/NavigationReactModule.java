@@ -56,6 +56,18 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+	public void updateDrawerToScreen(ReadableMap params)
+	{
+		NavigationCommandsHandler.updateDrawerToScreen(BundleConverter.toBundle(params));
+	}
+
+    @ReactMethod
+	public void updateDrawerToTabs(ReadableMap params)
+	{
+		NavigationCommandsHandler.updateDrawerToTabs(BundleConverter.toBundle(params));
+	}
+
+    @ReactMethod
 	public void addSplashScreen() {
 
 	}

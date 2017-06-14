@@ -19,6 +19,10 @@ function startTabBasedApp(params) {
   }
 
   const controllerID = _.uniqueId('controllerID');
+  const drawerID = controllerID + '_drawer';
+  const drawerIDLeft = drawerID + '_left';
+  const drawerIDRight = drawerID + '_right';
+
   params.tabs.map(function(tab, index) {
     const navigatorID = controllerID + '_nav' + index;
     const screenInstanceID = _.uniqueId('screenInstanceID');
@@ -43,18 +47,19 @@ function startTabBasedApp(params) {
     _injectOptionsInParams(params, navigatorOptions);
   });
 
+  const tabsNavigatorID = controllerID + '_tabs';
+
   const Controller = Controllers.createClass({
     render: function() {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
         return this.renderBody();
       } else {
-        const navigatorID = controllerID + '_drawer';
         return (
-          <DrawerControllerIOS id={navigatorID}
+          <DrawerControllerIOS id={drawerID}
                                componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
-                               passPropsLeft={{navigatorID: navigatorID}}
+                               passPropsLeft={{navigatorID: drawerIDLeft}}
                                componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
-                               passPropsRight={{navigatorID: navigatorID}}
+                               passPropsRight={{navigatorID: drawerIDRight}}
                                disableOpenGesture={params.drawer.disableOpenGesture}
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
@@ -69,7 +74,7 @@ function startTabBasedApp(params) {
     renderBody: function() {
       return (
         <TabBarControllerIOS
-          id={controllerID + '_tabs'}
+          id={tabsNavigatorID}
           style={params.tabsStyle}
           appStyle={params.appStyle}>
           {
@@ -103,6 +108,8 @@ function startTabBasedApp(params) {
 
   ControllerRegistry.registerController(controllerID, () => Controller);
   ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {});
+
+  return { drawerID, drawerIDLeft, drawerIDRight };
 }
 
 function startSingleScreenApp(params) {
@@ -111,13 +118,16 @@ function startSingleScreenApp(params) {
     return;
   }
 
-  const controllerID = _.uniqueId('controllerID');
   const screen = params.screen;
   if (!screen.screen) {
     console.error('startSingleScreenApp(params): screen must include a screen property');
     return;
   }
 
+  const controllerID = _.uniqueId('controllerID');
+  const drawerID = controllerID + '_drawer';
+  const drawerIDLeft = drawerID + '_left';
+  const drawerIDRight = drawerID + '_right';
   const navigatorID = controllerID + '_nav';
   const screenInstanceID = _.uniqueId('screenInstanceID');
   const {
@@ -141,13 +151,12 @@ function startSingleScreenApp(params) {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
         return this.renderBody();
       } else {
-        const navigatorID = controllerID + '_drawer';
         return (
-          <DrawerControllerIOS id={navigatorID}
+          <DrawerControllerIOS id={drawerID}
                                componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
-                               passPropsLeft={{navigatorID: navigatorID}}
+                               passPropsLeft={{navigatorID: drawerIDLeft}}
                                componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
-                               passPropsRight={{navigatorID: navigatorID}}
+                               passPropsRight={{navigatorID: drawerIDRight}}
                                disableOpenGesture={params.drawer.disableOpenGesture}
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
@@ -185,21 +194,203 @@ function startSingleScreenApp(params) {
   ControllerRegistry.registerController(controllerID, () => Controller);
   ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {});
 
-  return navigatorID;
+  return { drawerID, drawerIDLeft, drawerIDRight, navigatorID };
 }
 
-function updateSingleScreenApp(params) {
+function updateRootScreen(params) {
 	if (!params.screen) {
-		console.error('updateSingleScreenApp(params): params.screen is required');
+		console.error('updateRootScreen(params): params.screen is required');
 		return;
 	}
 
-	if (!params.navigatorID) {
-		console.error('updateSingleScreenApp(params): params.navigatorID is required');
-		return;
-	}
+  const controllerID = _.uniqueId('controllerID');
+	const navigatorID = controllerID + '_nav';
+	const screenInstanceID = _.uniqueId('screenInstanceID');
+  const {
+    navigatorStyle,
+    navigatorButtons,
+    navigatorOptions,
+    navigatorEventID
+  } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
+  const passProps = Object.assign({}, params.passProps);
+  passProps.navigatorID = navigatorID;
+  passProps.screenInstanceID = screenInstanceID;
+  passProps.navigatorEventID = navigatorEventID;
 
-	this.navigatorResetTo(params.navigatorID, params);
+  params.navigationParams = {
+    screenInstanceID,
+    navigatorStyle,
+    navigatorButtons,
+    navigatorEventID,
+    navigatorID: navigator.navigatorID
+  };
+
+  _injectOptionsInParams(params, navigatorOptions);
+
+  const Controller = Controllers.createClass({
+    render: function() {
+      return (
+        <NavigationControllerIOS
+          id={navigatorID}
+          title={params.title}
+          subtitle={params.subtitle}
+          titleImage={params.titleImage}
+          component={params.screen}
+          passProps={passProps}
+          style={navigatorStyle}
+          leftButtons={navigatorButtons.leftButtons}
+          rightButtons={navigatorButtons.rightButtons}/>
+      );
+    }
+  });
+
+  savePassProps(params);
+
+  ControllerRegistry.registerController(controllerID, () => Controller);
+	ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {});
+}
+
+function updateDrawerToScreen(params) {
+  if (!params.screen) {
+    console.error('updateDrawerToScreen(params): params.screen is required');
+    return;
+  }
+
+  if (!params.drawerID) {
+    console.error('updateDrawerToScreen(params): params.drawerID is required');
+    return;
+  }
+
+  const drawerID = params.drawerID;
+
+  const controllerID = _.uniqueId('controllerID');
+  const navigatorID = controllerID + '_nav';
+  const screenInstanceID = _.uniqueId('screenInstanceID');
+  const {
+    navigatorStyle,
+    navigatorButtons,
+    navigatorOptions,
+    navigatorEventID
+  } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
+  const passProps = Object.assign({}, params.passProps);
+  passProps.navigatorID = navigatorID;
+  passProps.screenInstanceID = screenInstanceID;
+  passProps.navigatorEventID = navigatorEventID;
+
+  params.navigationParams = {
+    screenInstanceID,
+    navigatorStyle,
+    navigatorButtons,
+    navigatorEventID,
+    navigatorID: navigator.navigatorID
+  };
+
+  _injectOptionsInParams(params, navigatorOptions);
+
+  const Controller = Controllers.createClass({
+    render: function() {
+      return (
+        <NavigationControllerIOS
+          id={navigatorID}
+          title={params.title}
+          subtitle={params.subtitle}
+          titleImage={params.titleImage}
+          component={params.screen}
+          passProps={passProps}
+          style={navigatorStyle}
+          leftButtons={navigatorButtons.leftButtons}
+          rightButtons={navigatorButtons.rightButtons}/>
+      );
+    }
+  });
+
+  savePassProps(params);
+
+  ControllerRegistry.registerController(controllerID, () => Controller);
+  Controllers.DrawerControllerIOS(drawerID).updateScreen(controllerID);
+}
+
+function updateDrawerToTabs(params) {
+  if (!params.tabs) {
+    console.error('updateDrawerToTabs(params): params.tabs is required');
+    return;
+  }
+
+  if (!params.drawerID) {
+    console.error('updateDrawerToTabs(params): params.drawerID is required');
+    return;
+  }
+
+  const drawerID = params.drawerID;
+
+  const controllerID = _.uniqueId('controllerID');
+	const tabsNavigatorID = controllerID + '_tabs';
+
+	params.tabs.map(function(tab, index) {
+		const navigatorID = controllerID + '_nav' + index;
+		const screenInstanceID = _.uniqueId('screenInstanceID');
+		if (!tab.screen) {
+			console.error('updateDrawerToTabs(params): every tab must include a screen property, take a look at tab#' + (index + 1));
+			return;
+		}
+		const {
+			navigatorStyle,
+			navigatorButtons,
+			navigatorOptions,
+			navigatorEventID
+		} = _mergeScreenSpecificSettings(tab.screen, screenInstanceID, tab);
+		tab.navigationParams = {
+			screenInstanceID,
+			navigatorStyle,
+			navigatorButtons,
+			navigatorEventID,
+			navigatorID
+		};
+
+		_injectOptionsInParams(params, navigatorOptions);
+	});
+
+	const tab = params.tabs.find((element, index, array) => array[index].screen === params.selectedTab);
+	const tabIndex = params.tabs.indexOf(tab);
+
+  const Controller = Controllers.createClass({
+    render: function() {
+      return (
+          <TabBarControllerIOS
+              id={tabsNavigatorID}
+              style={params.tabsStyle}
+              appStyle={params.appStyle}>
+		      {
+			      params.tabs.map(function(tab, index) {
+				      return (
+                <TabBarControllerIOS.Item {...tab} title={tab.label} selected={index === tabIndex}>
+                  <NavigationControllerIOS
+                      id={tab.navigationParams.navigatorID}
+                      title={tab.title}
+                      subtitle={tab.subtitle}
+                      titleImage={tab.titleImage}
+                      component={tab.screen}
+                      passProps={{
+                        navigatorID: tab.navigationParams.navigatorID,
+                        screenInstanceID: tab.navigationParams.screenInstanceID,
+                        navigatorEventID: tab.navigationParams.navigatorEventID
+                      }}
+                      style={tab.navigationParams.navigatorStyle}
+                      leftButtons={tab.navigationParams.navigatorButtons.leftButtons}
+                      rightButtons={tab.navigationParams.navigatorButtons.rightButtons}
+                  />
+                </TabBarControllerIOS.Item>
+				      );
+			      })
+		      }
+          </TabBarControllerIOS>
+      );
+    }
+  });
+	savePassProps(params);
+
+  ControllerRegistry.registerController(controllerID, () => Controller);
+  Controllers.DrawerControllerIOS(drawerID).updateScreen(controllerID);
 }
 
 function addSplashScreen() {
@@ -461,15 +652,15 @@ function navigatorSetTabButton(navigator, params) {
   }
 }
 
-function navigatorSwitchToTab(navigator, params) {
-  const controllerID = navigator.navigatorID.split('_')[0];
+function navigatorSwitchToTab(navigatorID, params) {
+  const controllerID = navigatorID.split('_')[0];
   if (params.tabIndex || params.tabIndex === 0) {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').switchTo({
       tabIndex: params.tabIndex
     });
   } else {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').switchTo({
-      contentId: navigator.navigatorID,
+      contentId: navigatorID,
       contentType: 'NavigationControllerIOS'
     });
   }
@@ -620,7 +811,7 @@ function showInAppNotification(params) {
     navigatorEventID,
     navigatorID
   };
-  
+
   _injectOptionsInParams(params, navigatorOptions);
   savePassProps(params);
 
@@ -678,7 +869,9 @@ function dismissContextualMenu() {
 export default {
   startTabBasedApp,
   startSingleScreenApp,
-  updateSingleScreenApp,
+  updateRootScreen,
+  updateDrawerToScreen,
+  updateDrawerToTabs,
   addSplashScreen,
   removeSplashScreen,
   navigatorPush,

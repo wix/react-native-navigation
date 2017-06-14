@@ -12,6 +12,7 @@ import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.screens.Screen;
+import com.reactnativenavigation.views.SideMenu;
 import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
@@ -36,6 +37,10 @@ public interface Layout extends ScreenStackContainer {
     void toggleSideMenuVisible(boolean animated, Side side);
 
     void setSideMenuVisible(boolean animated, boolean visible, Side side);
+
+	void setSideMenu(SideMenu sideMenu);
+
+    SideMenu getSideMenu();
 
     void disableOpenGesture(boolean disableOpenGesture);
 
