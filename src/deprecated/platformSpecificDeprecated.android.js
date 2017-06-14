@@ -38,21 +38,106 @@ function startSingleScreenApp(params) {
 
   newPlatformSpecific.startApp(params);
 
-  return screen.navigatorID;
+  const ret = { navigatorID: screen.navigatorID };
+  if (params.sideMenu.left) ret.drawerIDLeft = params.sideMenu.left.navigatorID;
+  if (params.sideMenu.right) ret.drawerIDRight = params.sideMenu.right.navigatorID;
+  ret.drawerID = ret.drawerIDLeft ? ret.drawerIDLeft : (ret.drawerIDRight ? ret.drawerIDRight : null);
+  return ret;
 }
 
-function updateSingleScreenApp(params) {
+function updateRootScreen(params) {
   if (!params.screen) {
-    console.error('updateSingleScreenApp(params): params.screen is required');
+    console.error('updateRootScreen(params): params.screen is required');
     return;
   }
 
-  if (!params.navigatorID) {
-    console.error('updateSingleScreenApp(params): params.navigatorID is required');
+  addNavigatorParams(params);
+  addNavigatorButtons(params);
+  addNavigatorOptions(params);
+  addNavigationStyleParams(params);
+
+  /*
+   * adapt to new API
+   */
+  adaptTopTabs(params, params.navigatorID);
+  params.screenId = params.screen;
+  let adapted = adaptNavigationStyleToScreenStyle(params);
+  adapted = adaptNavigationParams(adapted);
+  adapted.overrideBackPress = params.overrideBackPress;
+  let singleScreen = {};
+  singleScreen.screen = adapted;
+
+  newPlatformSpecific.startApp(singleScreen);
+}
+
+function updateDrawerToScreen(params) {
+  if (!params.screen) {
+    console.error('updateDrawerToScreen(params): params.screen is required');
     return;
   }
 
-  this.navigatorResetTo(params.navigatorID, params);
+  addNavigatorParams(params);
+  addNavigatorButtons(params);
+  addNavigatorOptions(params);
+  addTitleBarBackButtonIfNeeded(params);
+  addNavigationStyleParams(params);
+
+  /*
+   * adapt to new API
+   */
+  adaptTopTabs(params, params.navigatorID);
+  params.screenId = params.screen;
+  let adapted = adaptNavigationStyleToScreenStyle(params);
+  adapted = adaptNavigationParams(adapted);
+  adapted.overrideBackPress = params.overrideBackPress;
+
+  newPlatformSpecific.updateDrawerToScreen(adapted)
+}
+
+function updateDrawerToTabs(params) {
+  if (!params.tabs) {
+    console.error('updateDrawerToTabs(params): params.tabs is required');
+    return;
+  }
+
+  const newTabs = [];
+
+  params.tabs = _.cloneDeep(params.tabs);
+
+  params.tabs.forEach(function(tab, idx) {
+    addNavigatorParams(tab, null, idx);
+    addNavigatorButtons(tab, params.drawer);
+    addNavigatorOptions(tab);
+    addNavigationStyleParams(tab);
+    addTabIcon(tab);
+    if (!tab.passProps) {
+      tab.passProps = params.passProps;
+    }
+
+    adaptTopTabs(tab, tab.navigatorID);
+
+    tab.screenId = tab.screen;
+
+    let newtab = adaptNavigationStyleToScreenStyle(tab);
+    newtab = adaptNavigationParams(tab);
+    newtab.overrideBackPress = tab.overrideBackPress;
+    newTabs.push(newtab);
+  });
+  params.tabs = newTabs;
+
+  params.appStyle = convertStyleParams(params.appStyle);
+  if (params.appStyle) {
+    params.appStyle.orientation = getOrientation(params);
+  }
+  params.sideMenu = convertDrawerParamsToSideMenuParams(params.drawer);
+  params.animateShow = convertAnimationType(params.animationType);
+  params.screenId = params.screen;
+
+  let adapted = adaptNavigationStyleToScreenStyle(params);
+  adapted = adaptNavigationParams(adapted);
+  adapted.overrideBackPress = params.overrideBackPress;
+
+  newPlatformSpecific.updateDrawerToTabs(adapted)
 }
 
 function addSplashScreen() {
@@ -302,6 +387,12 @@ function startTabBasedApp(params) {
   params.animateShow = convertAnimationType(params.animationType);
 
   newPlatformSpecific.startApp(params);
+
+  const ret = {};
+  if (params.sideMenu.left) ret.drawerIDLeft = params.sideMenu.left.navigatorID;
+  if (params.sideMenu.right) ret.drawerIDRight = params.sideMenu.right.navigatorID;
+	ret.drawerID = ret.drawerIDLeft ? ret.drawerIDLeft : (ret.drawerIDRight ? ret.drawerIDRight : null);
+  return ret;
 }
 
 function addTabIcon(tab) {
@@ -390,11 +481,11 @@ function navigatorSetStyle(navigator, params) {
   newPlatformSpecific.setScreenStyle(navigator.screenInstanceID, style);
 }
 
-function navigatorSwitchToTab(navigator, params) {
+function navigatorSwitchToTab(navigatorID, params) {
   if (params.tabIndex >= 0) {
     newPlatformSpecific.selectBottomTabByTabIndex(params.tabIndex);
   } else {
-    newPlatformSpecific.selectBottomTabByNavigatorId(navigator.navigatorID);
+    newPlatformSpecific.selectBottomTabByNavigatorId(navigatorID);
   }
 }
 
@@ -724,7 +815,9 @@ function dismissContextualMenu() {
 export default {
   startTabBasedApp,
   startSingleScreenApp,
-  updateSingleScreenApp,
+  updateRootScreen,
+  updateDrawerToScreen,
+  updateDrawerToTabs,
   addSplashScreen,
   removeSplashScreen,
   navigatorPush,

@@ -19,9 +19,10 @@ this.props.navigator.disableOpenGesture({
 ```
 
 ## Switch pages
-The method startSingleScreenApp will now return the freshly created
-navigatorID. Using that together with updateSingleScreen app you can
-now reset the navigation from outside a screen.
+The methods startSingleScreenApp and startTabBasedApp will now return
+a drawerID and a navigatorID. Using drawerId together with 
+updateDrawerToScreen or updateDrawerToTabs you can now reset the 
+drawer from outside a screen.
 
 This was implemented to be able to listen to navigation deeplinks sent
 from a drawer, and flip the page without reimplementing the same logic
@@ -29,21 +30,52 @@ on every drawer page.
 
 Example:
 ```js
-const navigatorID = Navigation.startSingleScreenApp({
+const drawerID = Navigation.startSingleScreenApp({
   screen: {
     screen,
   },
 });
 Navigation.setEventHandler('root', (event) => {
   if (event.type === 'DeepLink') {
-    Navigation.updateSingleScreenApp({
-      navigatorID,
-      screen: event.link,
-      animated: false,
-    });
+  	if (showScreen) {	
+	    Navigation.updateDrawerToScreen({
+	      drawerID,
+	      screen: event.link,
+	    });
+    } elseif (showTabs) {
+  		Navigation.updateDrawerToTabs({
+          drawerID,
+          tabs: [
+            {
+              screen: 'screenOne',
+              label: '1',
+              icon: require('@static/image/1.png'),
+            },
+		    {
+		      screen: 'screenTwo',
+		      label: '2',
+		      icon: require('@static/image/2.png'),
+		    },
+		    {
+		      screen: 'screenThree',
+		      label: '3',
+		      icon: require('@static/image/3.png'),
+		    },
+          ],
+  		});
+    }
   }
 });
 ```
+You can also choose to use updateRootScreen, which will change the
+entire screen. This will also remove the drawer etc.
+
+```js
+Navigation.updateRootScreen({
+  screen: screen,
+});
+```
+
 ## Add sideMenu button behavior for iOS
 In this library for android, the navigation buttons have the behavior
 that when the id of the button is 'sideMenu', a standard menu button
