@@ -45,6 +45,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     private SnackbarAndFabContainer snackbarAndFabContainer;
     private BottomTabs bottomTabs;
     private ScreenStack[] screenStacks;
+    private String selectedPath;
     private final SideMenuParams leftSideMenuParams;
     private final SideMenuParams rightSideMenuParams;
     private final SlidingOverlaysQueue slidingOverlaysQueue = new SlidingOverlaysQueue();
@@ -55,6 +56,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     public BottomTabsLayout(AppCompatActivity activity, ActivityParams params) {
         super(activity);
         this.params = params;
+		selectedPath = params.selectedPath;
         leftSideMenuParams = params.leftSideMenuParams;
         rightSideMenuParams = params.rightSideMenuParams;
         screenStacks = new ScreenStack[params.tabParams.size()];
@@ -125,8 +127,25 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     private void showInitialScreenStack() {
-        showStackAndUpdateStyle(screenStacks[0]);
+		int initialScreen = 0;
+
+		if (this.selectedPath != null) {
+			int leni = screenStacks.length;
+			for (int i = 0; i < leni; ++i)
+			{
+				ScreenStack stack = screenStacks[i];
+
+				if (stack.rootScreenId().equals(this.selectedPath)) {
+					initialScreen = i;
+					break;
+				}
+			}
+		}
+
+        showStackAndUpdateStyle(screenStacks[initialScreen]);
         EventBus.instance.post(new ScreenChangedEvent(screenStacks[0].peek().getScreenParams()));
+
+		bottomTabs.setCurrentItem(initialScreen);
     }
 
     @Override

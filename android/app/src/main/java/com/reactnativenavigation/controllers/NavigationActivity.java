@@ -253,6 +253,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 		ActivityParams newParams = activityParams;
 		newParams.type = params.type;
 		newParams.tabParams = params.tabParams;
+		newParams.selectedPath = params.selectedPath;
 
 		if (hasBackgroundColor()) {
 			layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
