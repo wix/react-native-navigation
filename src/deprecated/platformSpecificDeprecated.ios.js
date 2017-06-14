@@ -350,6 +350,9 @@ function updateDrawerToTabs(params) {
 		_injectOptionsInParams(params, navigatorOptions);
 	});
 
+	const tab = params.tabs.find((element, index, array) => array[index].screen === params.selectedTab);
+	const tabIndex = params.tabs.indexOf(tab);
+
   const Controller = Controllers.createClass({
     render: function() {
       return (
@@ -360,7 +363,7 @@ function updateDrawerToTabs(params) {
 		      {
 			      params.tabs.map(function(tab, index) {
 				      return (
-                <TabBarControllerIOS.Item {...tab} title={tab.label}>
+                <TabBarControllerIOS.Item {...tab} title={tab.label} selected={index === tabIndex}>
                   <NavigationControllerIOS
                       id={tab.navigationParams.navigatorID}
                       title={tab.title}
@@ -384,8 +387,7 @@ function updateDrawerToTabs(params) {
       );
     }
   });
-
-  savePassProps(params);
+	savePassProps(params);
 
   ControllerRegistry.registerController(controllerID, () => Controller);
   Controllers.DrawerControllerIOS(drawerID).updateScreen(controllerID);
@@ -809,7 +811,7 @@ function showInAppNotification(params) {
     navigatorEventID,
     navigatorID
   };
-  
+
   _injectOptionsInParams(params, navigatorOptions);
   savePassProps(params);
 
