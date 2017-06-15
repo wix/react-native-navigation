@@ -125,3 +125,22 @@ Example usage:
 Navigation.showSplashScreen();
 Navigation.hideSplashScreen();
 ```
+
+## Set drawer width per drawer
+Functionality was added for Android and syntax is changed for iOS, to
+behave the same way for both platforms.
+
+Example:
+```js
+Navigation.startSingleScreenApp({
+  screen: {
+    screen: screen,
+  },
+  drawer: {
+    left: {
+      screen: menu,
+      drawerWidth: Dimensions.get('window').width,
+    },
+  },
+});
+```
