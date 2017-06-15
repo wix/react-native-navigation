@@ -118,7 +118,7 @@ public class SideMenu extends DrawerLayout {
         ContentView sideMenuView = new ContentView(getContext(), params.screenId, params.navigationParams);
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         lp.gravity = params.side.gravity;
-        setSideMenuWidth(sideMenuView);
+        setSideMenuWidth(sideMenuView, params.drawerWidth);
         addView(sideMenuView, lp);
         return sideMenuView;
     }
@@ -127,9 +127,15 @@ public class SideMenu extends DrawerLayout {
         sideMenuView.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
-                ViewGroup.LayoutParams lp = sideMenuView.getLayoutParams();
-                lp.width = sideMenuView.getChildAt(0).getWidth();
-                sideMenuView.setLayoutParams(lp);
+				ViewGroup.LayoutParams layoutParams = sideMenuView.getLayoutParams();
+
+				if (width >= 0) {
+					layoutParams.width = (int) (width * getResources().getDisplayMetrics().density);
+				} else {
+                	layoutParams.width = sideMenuView.getChildAt(0).getWidth();
+				}
+
+				sideMenuView.setLayoutParams(layoutParams);
             }
         });
     }
