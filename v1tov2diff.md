@@ -10,7 +10,7 @@ We are rebuilding react-native-navigation
 
 ### A New Improved Core Architecture
 react-native-navigation has a few issues which are unsolvable in it’s current architecture. <br>
-These issue originate from the same problem: you cannot specify on which screen you wish to make an action. Whenever you want to push, show modal or any other action, the action defaults to originate from your current screen. This covers most use cases but there are some edge cases: <br>
+These issues originate from the same problem: you cannot specify on which screen you wish to make an action. Whenever you want to push a screen, show a modal or any other action, the action defaults to originate from your current screen. This covers most use cases but there are some edge cases: <br>
 * What if you want to update your navbar icons and the user pops the screen? Your icons might update on the wrong screen.
 * What if you want to push a screen as a result of a redux action?
 
@@ -290,7 +290,7 @@ Navigation.dismissAllModals();
 ```
 #### Screen Lifecycle - onStop() and onStart()
 
-the onStop() and onStart() function are lifecycle functions that are added to the screen and run when a screen apears and disappears from the screen. to use them simply add them to your component like any other react lifecycle function:
+The onStop() and onStart() functions are lifecycle functions that are added to the screen and run when a screen apears and disappears from the screen. To use them simply add them to your component like any other react lifecycle function:
 
 ```js
 class LifecycleScreen extends Component {
