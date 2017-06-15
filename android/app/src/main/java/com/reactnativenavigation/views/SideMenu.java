@@ -123,7 +123,7 @@ public class SideMenu extends DrawerLayout {
         return sideMenuView;
     }
 
-    private void setSideMenuWidth(final ContentView sideMenuView) {
+    private void setSideMenuWidth(final ContentView sideMenuView, final int width) {
         sideMenuView.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
