@@ -143,21 +143,60 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [self setButtons:rightButtons viewController:viewController side:@"right" animated:NO];
     }
     
-    [self pushViewController:viewController animated:animated];
+    NSString *animationType = actionParams[@"animationType"];
+    if ([animationType isEqualToString:@"fade"])
+    {
+      CATransition *transition = [CATransition animation];
+      transition.duration = 0.25;
+      transition.type = kCATransitionFade;
+      
+      [self.view.layer addAnimation:transition forKey:kCATransition];
+      [self pushViewController:viewController animated:NO];
+    }
+    else
+    {
+      [self pushViewController:viewController animated:animated];
+    }
     return;
   }
   
   // pop
   if ([performAction isEqualToString:@"pop"])
   {
-    [self popViewControllerAnimated:animated];
+    NSString *animationType = actionParams[@"animationType"];
+    if ([animationType isEqualToString:@"fade"])
+    {
+      CATransition *transition = [CATransition animation];
+      transition.duration = 0.25;
+      transition.type = kCATransitionFade;
+      
+      [self.view.layer addAnimation:transition forKey:kCATransition];
+      [self popViewControllerAnimated:NO];
+    }
+    else
+    {
+      [self popViewControllerAnimated:animated];
+    }
     return;
   }
   
   // popToRoot
   if ([performAction isEqualToString:@"popToRoot"])
   {
-    [self popToRootViewControllerAnimated:animated];
+    NSString *animationType = actionParams[@"animationType"];
+    if ([animationType isEqualToString:@"fade"])
+    {
+      CATransition *transition = [CATransition animation];
+      transition.duration = 0.25;
+      transition.type = kCATransitionFade;
+      
+      [self.view.layer addAnimation:transition forKey:kCATransition];
+      [self popToRootViewControllerAnimated:NO];
+    }
+    else
+    {
+      [self popToRootViewControllerAnimated:animated];
+    }
     return;
   }
   
@@ -189,7 +228,20 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     
     BOOL animated = actionParams[@"animated"] ? [actionParams[@"animated"] boolValue] : YES;
     
-    [self setViewControllers:@[viewController] animated:animated];
+    NSString *animationType = actionParams[@"animationType"];
+    if ([animationType isEqualToString:@"fade"])
+    {
+      CATransition *transition = [CATransition animation];
+      transition.duration = 0.25;
+      transition.type = kCATransitionFade;
+      
+      [self.view.layer addAnimation:transition forKey:kCATransition];
+      [self setViewControllers:@[viewController] animated:NO];
+    }
+    else
+    {
+      [self setViewControllers:@[viewController] animated:animated];
+    }
     return;
   }
   
