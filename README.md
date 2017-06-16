@@ -5,7 +5,7 @@
 </h1>
 
 - Forked from https://github.com/wix/react-native-navigation
-- Based on 1.1.85 (3176aeb4485d5282f453f2f61066ff2730ea2407)
+- Based on 1.1.85 (394e0960f8824b9206da75de2bb013fbd64554bd)
 - Documentation https://wix.github.io/react-native-navigation/
 
 ## Disable open gesture

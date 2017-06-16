@@ -15,6 +15,7 @@ Navigation.startTabBasedApp({
 
 ```js
 {
+  tabBarHidden: false, // make the tab bar hidden
   tabBarButtonColor: '#ffff00', // change the color of the tab icons and text (also unselected)
   tabBarSelectedButtonColor: '#ff9900', // change the color of the selected tab icon and text (only selected)
   tabBarBackgroundColor: '#551A8B' // change the background color of the tab bar
