@@ -9,8 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
@@ -40,14 +38,10 @@ import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.screens.Screen;
-import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.utils.OrientationHelper;
-import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, Subscriber, PermissionAwareActivity {
 
@@ -278,6 +272,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 			newParams.type = params.type;
 			newParams.tabParams = params.tabParams;
 			newParams.selectedPath = params.selectedPath;
+			newParams.screenParams = params.screenParams;
 
 			if (hasBackgroundColor())
 			{
@@ -290,7 +285,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 			screenStackParent.addView(newLayout.asView());
 		}
 		else {
-			bottomTabsLayout.selectBottomTabByScreenId(params.selectedPath);
+			bottomTabsLayout.showScreen(params.selectedPath, params.screenParams);
 		}
 
 		layout.setSideMenuVisible(true, false, Side.Left);

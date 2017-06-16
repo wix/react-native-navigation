@@ -360,7 +360,7 @@ function updateDrawerToTabs(params) {
 		_injectOptionsInParams(params, navigatorOptions);
 	});
 
-	const tab = params.tabs.find((element, index, array) => array[index].screen === params.selectedTab);
+	const tab = params.tabs.find((element, index, array) => array[index].screen === params.screen);
 	const tabIndex = params.tabs.indexOf(tab);
 
   const Controller = Controllers.createClass({
