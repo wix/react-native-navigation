@@ -33,11 +33,6 @@ public class TitleBar extends Toolbar {
     }
 
     @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
-    }
-
-    @Override
     public void onViewAdded(View child) {
         super.onViewAdded(child);
         if (child instanceof ActionMenuView) {
@@ -76,7 +71,7 @@ public class TitleBar extends Toolbar {
     }
 
     public void setStyle(StyleParams params) {
-        setVisibility(params.titleBarHidden ? GONE : VISIBLE);
+        setVisibility(params.titleBarHidden);
         setTitleTextColor(params);
         setTitleTextFont(params);
         setSubtitleTextColor(params);
@@ -87,6 +82,10 @@ public class TitleBar extends Toolbar {
 		if (leftButton != null) {
 			leftButton.setVisible(!params.backButtonHidden);
 		}
+    }
+
+    public void setVisibility(boolean titleBarHidden) {
+        setVisibility(titleBarHidden ? GONE : VISIBLE);
     }
 
     private void centerTitle(final StyleParams params) {

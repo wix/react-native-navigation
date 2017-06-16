@@ -6,7 +6,7 @@ class Push extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Push Screen</Text>
+                <Text>Pushed Screen</Text>
             </View>
         );
     }

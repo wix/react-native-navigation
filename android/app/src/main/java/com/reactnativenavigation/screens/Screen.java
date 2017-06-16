@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.controllers.NavigationActivity;
 import com.reactnativenavigation.events.ContextualMenuHiddenEvent;
 import com.reactnativenavigation.events.Event;
@@ -27,7 +26,6 @@ import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.StyleParamsParser;
-import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
@@ -50,7 +48,6 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     protected final ScreenParams screenParams;
     protected TopBar topBar;
     private final LeftButtonOnClickListener leftButtonOnClickListener;
-    private VisibilityAnimator topBarVisibilityAnimator;
     private ScreenAnimator screenAnimator;
     protected StyleParams styleParams;
     public final SharedElements sharedElements;
@@ -149,21 +146,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     private void addTopBar() {
-        createTopBarVisibilityAnimator();
         addView(topBar, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-    }
-
-    private void createTopBarVisibilityAnimator() {
-        ViewUtils.runOnPreDraw(topBar, new Runnable() {
-            @Override
-            public void run() {
-                if (topBarVisibilityAnimator == null) {
-                    topBarVisibilityAnimator = new VisibilityAnimator(topBar,
-                            VisibilityAnimator.HideDirection.Up,
-                            topBar.getHeight());
-                }
-            }
-        });
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -209,7 +192,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void setTopBarVisible(boolean visible, boolean animate) {
         screenParams.styleParams.titleBarHidden = !visible;
-        topBarVisibilityAnimator.setVisible(visible, animate);
+        topBar.setVisible(visible, animate);
     }
 
     public void setTitleBarTitle(String title) {

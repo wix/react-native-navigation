@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { StyleSheet, View, Text, TouchableHighlight, Platform } from 'react-native';
 
-function Row({ title, onPress, platform }) {
+function Row({ title, onPress, platform, testID }) {
     if (platform && platform !== Platform.OS) {
         return <View />;
     }
@@ -9,6 +9,7 @@ function Row({ title, onPress, platform }) {
     return (
         <TouchableHighlight
             onPress={onPress}
+            testID={testID}
             underlayColor={'rgba(0, 0, 0, 0.054)'}
         >
             <View style={styles.row}>
