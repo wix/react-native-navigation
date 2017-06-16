@@ -241,6 +241,7 @@ function navigatorPush(navigator, params) {
     titleImage: params.titleImage,
     component: params.screen,
     animated: params.animated,
+    animationType: params.animationType,
     passProps: passProps,
     style: navigatorStyle,
     backButtonTitle: params.backButtonTitle,
@@ -252,13 +253,15 @@ function navigatorPush(navigator, params) {
 
 function navigatorPop(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).pop({
-    animated: params.animated
+    animated: params.animated,
+    animationType: params.animationType
   });
 }
 
 function navigatorPopToRoot(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).popToRoot({
-    animated: params.animated
+    animated: params.animated,
+    animationType: params.animationType
   });
 }
 
@@ -294,6 +297,7 @@ function navigatorResetTo(navigator, params) {
     titleImage: params.titleImage,
     component: params.screen,
     animated: params.animated,
+    animationType: params.animationType,
     passProps: passProps,
     style: navigatorStyle,
     leftButtons: navigatorButtons.leftButtons,
