@@ -14,7 +14,11 @@
 
 -(void)registerController:(UIViewController*)controller componentId:(NSString*)componentId componentType:(NSString*)componentType;
 -(id)getControllerWithId:(NSString*)componentId componentType:(NSString*)componentType;
+-(id)getDrawerController;
 -(void)unregisterController:(UIViewController*)vc;
+
+-(void)addSplashScreen;
+-(void)removeSplashScreen;
 
 -(void)clearModuleRegistry;
 

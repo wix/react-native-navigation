@@ -9,7 +9,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.RelativeLayout;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
@@ -24,6 +27,7 @@ import com.reactnativenavigation.events.Subscriber;
 import com.reactnativenavigation.layouts.BottomTabsLayout;
 import com.reactnativenavigation.layouts.Layout;
 import com.reactnativenavigation.layouts.LayoutFactory;
+import com.reactnativenavigation.layouts.SingleScreenLayout;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
@@ -36,10 +40,14 @@ import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.screens.Screen;
+import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.utils.OrientationHelper;
+import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, Subscriber, PermissionAwareActivity {
 
@@ -203,6 +211,91 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onConfigurationChanged(newConfig);
     }
 
+    void updateDrawerToScreen(ScreenParams params) {
+		RelativeLayout screenStackParent;
+
+		if (layout instanceof SingleScreenLayout)
+		{
+			SingleScreenLayout screenLayout = (SingleScreenLayout) layout;
+			screenStackParent = screenLayout.getScreenStackParent();
+		} else
+		{
+			BottomTabsLayout tabsLayout = (BottomTabsLayout) layout;
+			screenStackParent = tabsLayout.getScreenStackParent();
+		}
+
+		ActivityParams newParams = new ActivityParams();
+		newParams.type = ActivityParams.Type.SingleScreen;
+		newParams.screenParams = params;
+
+		if (hasBackgroundColor()) {
+			layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
+		}
+
+		// Destroy any tabs
+		int leni = screenStackParent.getChildCount();
+		for (int i = 0; i < leni; ++i) {
+			if (screenStackParent.getChildAt(i) instanceof BottomTabsLayout) {
+				((BottomTabsLayout) screenStackParent.getChildAt(i)).destroyStacks();
+				screenStackParent.removeView(screenStackParent.getChildAt(i));
+			}
+		}
+
+		screenStackParent.removeAllViews();
+		Layout newLayout = LayoutFactory.create(this, newParams);
+		newLayout.setSideMenu(layout.getSideMenu());
+		screenStackParent.addView(newLayout.asView());
+		layout.setSideMenuVisible(true, false, Side.Left);
+	}
+
+    void updateDrawerToTabs(ActivityParams params) {
+		RelativeLayout screenStackParent;
+
+		if (layout instanceof SingleScreenLayout)
+		{
+			SingleScreenLayout screenLayout = (SingleScreenLayout) layout;
+			screenStackParent = screenLayout.getScreenStackParent();
+		} else
+		{
+			BottomTabsLayout tabsLayout = (BottomTabsLayout) layout;
+			screenStackParent = tabsLayout.getScreenStackParent();
+		}
+
+		// Find and try to switch to tab
+		int leni = screenStackParent.getChildCount();
+
+		BottomTabsLayout bottomTabsLayout = null;
+
+		for (int i = 0; i < leni; ++i) {
+			if (screenStackParent.getChildAt(i) instanceof BottomTabsLayout) {
+				bottomTabsLayout = (BottomTabsLayout) screenStackParent.getChildAt(i);
+			}
+		}
+
+		if (bottomTabsLayout == null)
+		{
+			ActivityParams newParams = new ActivityParams();
+			newParams.type = params.type;
+			newParams.tabParams = params.tabParams;
+			newParams.selectedPath = params.selectedPath;
+
+			if (hasBackgroundColor())
+			{
+				layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
+			}
+
+			screenStackParent.removeAllViews();
+			Layout newLayout = LayoutFactory.create(this, newParams);
+			newLayout.setSideMenu(layout.getSideMenu());
+			screenStackParent.addView(newLayout.asView());
+		}
+		else {
+			bottomTabsLayout.selectBottomTabByScreenId(params.selectedPath);
+		}
+
+		layout.setSideMenuVisible(true, false, Side.Left);
+	}
+
     void push(ScreenParams params) {
         if (modalController.containsNavigator(params.getNavigatorId())) {
             modalController.push(params);
@@ -314,9 +407,13 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         layout.setSideMenuVisible(animated, visible, side);
     }
 
-    public void setSideMenuEnabled(boolean enabled, Side side) {
-        layout.setSideMenuEnabled(enabled, side);
+    public void disableOpenGesture(boolean disableOpenGesture) {
+        layout.disableOpenGesture(disableOpenGesture);
     }
+
+    public void disableBackNavigation(boolean disableBackNavigation) {
+		layout.disableBackNavigation(disableBackNavigation);
+	}
 
     public void selectTopTabByTabIndex(String screenInstanceId, int index) {
         layout.selectTopTabByTabIndex(screenInstanceId, index);

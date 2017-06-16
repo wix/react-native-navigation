@@ -265,6 +265,15 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
                      style:navigatorStyle];
     return;
   }
+
+  // disableBackNavigation
+  if ([performAction isEqualToString:@"disableBackNavigation"]) {
+	  NSNumber *disableBackNavigationNumber = actionParams[@"disableBackNavigation"];
+	  BOOL disableBackNavigation = [disableBackNavigationNumber boolValue];
+	  BOOL animated = actionParams[@"animated"] ? [actionParams[@"animated"] boolValue] : YES;
+	  [self.topViewController.navigationItem setHidesBackButton:disableBackNavigation animated:animated];
+	  self.interactivePopGestureRecognizer.enabled = !disableBackNavigation;
+  }
   
   // toggleNavBar
   if ([performAction isEqualToString:@"setHidden"]) {
@@ -277,7 +286,6 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     RCCViewController *topViewController = ((RCCViewController*)self.topViewController);
     topViewController.navigatorStyle[@"navBarHidden"] = setHidden;
     [topViewController setNavBarVisibilityChange:animatedBool];
-    
   }
   
   // setStyle
@@ -306,14 +314,22 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
 
 -(void)onButtonPress:(UIBarButtonItem*)barButtonItem
 {
-  NSString *callbackId = objc_getAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY);
-  if (!callbackId) return;
   NSString *buttonId = objc_getAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_ID);
-  [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:callbackId body:@
-   {
-     @"type": @"NavBarButtonPress",
-     @"id": buttonId ? buttonId : [NSNull null]
-   }];
+
+  if ([buttonId isEqualToString:@"sideMenu"])
+  {
+    [[[RCCManager sharedInstance] getDrawerController] performAction:@"toggle" actionParams:nil bridge:[[RCCManager sharedInstance] getBridge]];
+  }
+  else
+  {
+    NSString *callbackId = objc_getAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY);
+    if (!callbackId) return;
+    [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:callbackId body:@
+    {
+            @"type" : @"NavBarButtonPress",
+            @"id" : buttonId ? buttonId : [NSNull null]
+    }];
+  }
 }
 
 -(void)setButtons:(NSArray*)buttons viewController:(UIViewController*)viewController side:(NSString*)side animated:(BOOL)animated

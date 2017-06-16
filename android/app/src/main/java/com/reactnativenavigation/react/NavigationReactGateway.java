@@ -2,6 +2,7 @@ package com.reactnativenavigation.react;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
@@ -88,8 +89,12 @@ public class NavigationReactGateway implements ReactGateway {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Activity currentActivity = getReactInstanceManager().getCurrentReactContext().getCurrentActivity();
-        getReactInstanceManager().onActivityResult(currentActivity, requestCode, resultCode, data);
+		try {
+			Activity currentActivity = getReactInstanceManager().getCurrentReactContext().getCurrentActivity();
+			getReactInstanceManager().onActivityResult(currentActivity, requestCode, resultCode, data);
+		} catch (NullPointerException exception) {
+			Log.e("NavigationReactGateway", exception.getLocalizedMessage());
+		}
     }
 
     public ReactNativeHost getReactNativeHost() {

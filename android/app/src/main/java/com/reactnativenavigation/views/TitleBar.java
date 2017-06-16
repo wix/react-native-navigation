@@ -78,6 +78,10 @@ public class TitleBar extends Toolbar {
         colorOverflowButton(params);
         setBackground(params);
         centerTitle(params);
+
+		if (leftButton != null) {
+			leftButton.setVisible(!params.backButtonHidden);
+		}
     }
 
     public void setVisibility(boolean titleBarHidden) {

@@ -415,4 +415,16 @@ RCT_EXPORT_METHOD(
     [RCCManagerModule cancelAllRCCViewControllerReactTouches];
 }
 
+RCT_EXPORT_METHOD(
+addSplashScreen)
+{
+	[[RCCManager sharedInstance] addSplashScreen];
+}
+
+RCT_EXPORT_METHOD(
+removeSplashScreen)
+{
+	[[RCCManager sharedInstance] removeSplashScreen];
+}
+
 @end

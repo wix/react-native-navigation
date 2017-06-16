@@ -3,7 +3,6 @@ package com.reactnativenavigation.layouts;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -46,6 +45,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     private SnackbarAndFabContainer snackbarAndFabContainer;
     private BottomTabs bottomTabs;
     private ScreenStack[] screenStacks;
+    private String selectedPath;
     private final SideMenuParams leftSideMenuParams;
     private final SideMenuParams rightSideMenuParams;
     private final SlidingOverlaysQueue slidingOverlaysQueue = new SlidingOverlaysQueue();
@@ -56,6 +56,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     public BottomTabsLayout(AppCompatActivity activity, ActivityParams params) {
         super(activity);
         this.params = params;
+		selectedPath = params.selectedPath;
         leftSideMenuParams = params.leftSideMenuParams;
         rightSideMenuParams = params.rightSideMenuParams;
         screenStacks = new ScreenStack[params.tabParams.size()];
@@ -93,7 +94,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         screenStacks[position] = newStack;
     }
 
-    private RelativeLayout getScreenStackParent() {
+    public RelativeLayout getScreenStackParent() {
         return sideMenu == null ? this : sideMenu.getContentContainer();
     }
 
@@ -126,11 +127,35 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     private void showInitialScreenStack() {
-        showStackAndUpdateStyle(screenStacks[0]);
+		int initialScreen = 0;
+
+		if (this.selectedPath != null) {
+			initialScreen = getTabIndexForScreenId(this.selectedPath);
+		}
+
+        showStackAndUpdateStyle(screenStacks[initialScreen]);
         EventBus.instance.post(new ScreenChangedEvent(screenStacks[0].peek().getScreenParams()));
+
+		bottomTabs.setCurrentItem(initialScreen);
     }
 
-    @Override
+	private int getTabIndexForScreenId(String path)
+	{
+		int leni = screenStacks.length;
+
+		for (int i = 0; i < leni; ++i)
+		{
+			ScreenStack stack = screenStacks[i];
+
+			if (stack.rootScreenId().equals(path)) {
+				return i;
+			}
+		}
+
+		return 0;
+	}
+
+	@Override
     public View asView() {
         return this;
     }
@@ -147,7 +172,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
             EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
             return true;
         } else {
-            return false;
+            return getCurrentScreenStack().getDisableBackNavigation();
         }
     }
 
@@ -233,13 +258,20 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
-    public void setSideMenuEnabled(boolean enabled, Side side) {
+    public void disableOpenGesture(boolean disableOpenGesture)
+    {
         if (sideMenu != null) {
-            sideMenu.setDrawerLockMode(enabled ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            sideMenu.disableOpenGesture(disableOpenGesture);
         }
     }
 
-    @Override
+	@Override
+	public void disableBackNavigation(boolean disableBackNavigation)
+	{
+		getCurrentScreenStack().setDisableBackNavigation(disableBackNavigation);
+	}
+
+	@Override
     public void showSnackbar(SnackbarParams params) {
         final String eventId = getCurrentScreenStack().peek().getNavigatorEventId();
         snackbarAndFabContainer.showSnackbar(eventId, params);
@@ -357,12 +389,18 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         }
     }
 
+    public void destroyStacks() {
+		for (ScreenStack screenStack : screenStacks) {
+			screenStack.destroy();
+		}
+
+		screenStacks = null;
+	}
+
     @Override
     public void destroy() {
-        snackbarAndFabContainer.destroy();
-        for (ScreenStack screenStack : screenStacks) {
-            screenStack.destroy();
-        }
+		snackbarAndFabContainer.destroy();
+		destroyStacks();
         if (sideMenu != null) {
             sideMenu.destroy();
         }
@@ -459,7 +497,12 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         throw new ScreenStackNotFoundException("Stack " + navigatorId + " not found");
     }
 
-    private class ScreenStackNotFoundException extends RuntimeException {
+	public void selectBottomTabByScreenId(String screenId)
+	{
+		this.selectBottomTabByTabIndex(this.getTabIndexForScreenId(screenId));
+	}
+
+	private class ScreenStackNotFoundException extends RuntimeException {
         ScreenStackNotFoundException(String navigatorId) {
             super(navigatorId);
         }
@@ -496,4 +539,16 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
             sideMenu.openDrawer(Side.Left);
         }
     }
+
+	@Override
+	public void setSideMenu(SideMenu sideMenu)
+	{
+		this.sideMenu = sideMenu;
+	}
+
+	@Override
+	public SideMenu getSideMenu()
+	{
+		return sideMenu;
+	}
 }

@@ -1,43 +1,146 @@
 
 <h1 align="center">
-  <img src="./logo.png"/><br>
-  React Native Navigation
+  <img src="./logo.png"/> <img src="./mm.png"/><br>
+  React Native Navigation ft. MediaMonksMobile
 </h1>
 
-[![NPM Version](https://img.shields.io/npm/v/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
-[![NPM Downloads](https://img.shields.io/npm/dm/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
-[![Build Status](https://travis-ci.org/wix/react-native-navigation.svg?branch=master)](https://travis-ci.org/wix/react-native-navigation)
-[![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
+- Forked from https://github.com/wix/react-native-navigation
+- Based on 1.1.85 (394e0960f8824b9206da75de2bb013fbd64554bd)
+- Documentation https://wix.github.io/react-native-navigation/
 
-## Important
-Latest stable version is `1.1.x` and is published to npm under tag `latest`. It supports react-native 0.43 and above.
-<br><br>We are currently redesigning and rewriting this project under branch `v2`.
-<br>As a result, new features and pull requests on the current stable version will take more time to process.
+## Disable open gesture
 
-### tldr;
+You can use the folowing functionality from any screen to
+disable/enable the opening of the drawer menu:
+```js
+this.props.navigator.disableOpenGesture({
+  disableOpenGesture: false,
+});
+```
 
-React Native Navigation provides 100% native platform navigation on both iOS and Android for React Native apps. The JavaScript API is simple and cross-platform - just install it in your app and give your users the native feel they deserve. Using redux? No problem: React Native Navigation comes with optional redux support out of the box. Ready to get started? Check out the [docs](https://wix.github.io/react-native-navigation/).
+## Switch pages
+The methods startSingleScreenApp and startTabBasedApp will now return
+a drawerID and a navigatorID. Using drawerId together with 
+updateDrawerToScreen or updateDrawerToTabs you can now reset the 
+drawer from outside a screen.
 
-<img src="https://github.com/wix/react-native/blob/master/src/videos/demo.gif?raw=true" width="240">&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/wix/mobile/blob/master/src/videos/final_element_Transition.mp4.gif?raw=true" width="240">
+This was implemented to be able to listen to navigation deeplinks sent
+from a drawer, and flip the page without reimplementing the same logic
+on every drawer page.
 
-## Quick Links
-* [Documentation](https://wix.github.io/react-native-navigation/#/)
-* [Stack Overflow](http://stackoverflow.com/questions/tagged/react-native-navigation)
-* [Chat with us](https://discord.gg/DhkZjq2)
-* Bootstrap - If you prefer to learn more about the library and the APIs through code, head over to [the bootstrap example app](https://github.com/wix/react-native-navigation-bootstrap) or the more feature rich [JuneDomingo/movieapp](https://github.com/JuneDomingo/movieapp)
+Example:
+```js
+const drawerID = Navigation.startSingleScreenApp({
+  screen: {
+    screen,
+  },
+});
+Navigation.setEventHandler('root', (event) => {
+  if (event.type === 'DeepLink') {
+  	if (showScreen) {	
+	    Navigation.updateDrawerToScreen({
+	      drawerID,
+	      screen: event.link,
+	    });
+    } elseif (showTabs) {
+  		Navigation.updateDrawerToTabs({
+          drawerID,
+          tabs: [
+            {
+              screen: 'screenOne',
+              label: '1',
+              icon: require('@static/image/1.png'),
+            },
+		    {
+		      screen: 'screenTwo',
+		      label: '2',
+		      icon: require('@static/image/2.png'),
+		    },
+		    {
+		      screen: 'screenThree',
+		      label: '3',
+		      icon: require('@static/image/3.png'),
+		    },
+          ],
+  		});
+    }
+  }
+});
+```
+You can also choose to use updateRootScreen, which will change the
+entire screen. This will also remove the drawer etc.
 
-----
+```js
+Navigation.updateRootScreen({
+  screen: screen,
+});
+```
 
-One of the major things missing from React Native core is fully featured native navigation. Navigation includes the entire skeleton of your app with critical components like nav bars, tab bars and side menu drawers.
+## Add sideMenu button behavior for iOS
+In this library for android, the navigation buttons have the behavior
+that when the id of the button is 'sideMenu', a standard menu button
+will be shown and the menu is automatically opened/closed onPress.
+Now iOS will look for this id as well, you will still have to provide
+the look and feel yourself.
 
-If you're trying to deliver a user experience that's on par with the best native apps out there, you simply can't compromise on JS-based components trying to fake the real thing.
+## Add ability to implement screen specific navigator options
+When you add a static navigatorOptions to your screen component, the
+navigator will check and inject these into the params for every action.
+Take this call for example:
+```js
+this.props.navigator.push({ screen: 'example' });
+```
+If this screen has:
+```js
+static navigatorOptions = { title: 'Example' };
+```
+The navigator will inject 'title' into the 'push' params, so you don't
+have to add the title param to every push you do.
+Adding a title to the 'push' params will always override the static
+navigatorOptions.
 
-For example, this package replaces the native [NavigatorIOS](https://facebook.github.io/react-native/docs/navigatorios.html) that has been [abandoned](https://facebook.github.io/react-native/docs/navigator-comparison.html) in favor of JS-based solutions that are easier to maintain. For more details see in-depth discussion [here](https://github.com/wix/react-native-controllers#why-do-we-need-this-package).
+## Disable back navigation
+You can now disable back navigation. This is not advised as standard
+behavior, and should be used only in rare cases.
+For example: When doing a backend call that can not be canceled.
+It is very important to enable it after success or error.
+For iOS this will hide the back button, you can specify if this 
+should happen animated or not (fade). It will also disable the 
+edge-swipe.
+For Android this will hide the back button and ignore any 'physical'
+back button taps.
+Example usage:
+```js
+this.props.navigator.disableBackNavigation({
+  disableBackNavigation: false,
+  animated: true,
+});
+```
 
+## Add and remove splash screen (iOS)
+Add and remove the splash screen. This will not replace, but overlay
+the app with the splash screen. Only one instance will be kept.
+Example usage:
+```js
+Navigation.showSplashScreen();
+Navigation.hideSplashScreen();
+```
 
-## License
+## Set drawer width per drawer
+Functionality was added for Android and syntax is changed for iOS, to
+behave the same way for both platforms.
 
-The MIT License.
-
-See [LICENSE](LICENSE)
+Example:
+```js
+Navigation.startSingleScreenApp({
+  screen: {
+    screen: screen,
+  },
+  drawer: {
+    left: {
+      screen: menu,
+      drawerWidth: Dimensions.get('window').width,
+    },
+  },
+});
+```

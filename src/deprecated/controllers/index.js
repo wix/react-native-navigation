@@ -126,6 +126,12 @@ var Controllers = {
       var layout = controller.render();
       _validateDrawerProps(layout);
       RCCManager.setRootController(layout, animationType, passProps);
+    },
+    addSplashScreen: function () {
+        RCCManager.addSplashScreen();
+    },
+    removeSplashScreen: function () {
+        RCCManager.removeSplashScreen();
     }
   },
 
@@ -213,6 +219,9 @@ var Controllers = {
         RCCManager.NavigationControllerIOS(id, "setButtons", {buttons: buttons, side: "right", animated: animated});
         return unsubscribe;
       },
+      disableBackNavigation: function (params) {
+        return RCCManager.NavigationControllerIOS(id, "disableBackNavigation", params);
+      },
       setHidden: function(params = {}) {
         RCCManager.NavigationControllerIOS(id, "setHidden", params);
       }
@@ -230,8 +239,19 @@ var Controllers = {
       toggle: function (params) {
         return RCCManager.DrawerControllerIOS(id, "toggle", params);
       },
+      disableOpenGesture: function (params) {
+        return RCCManager.DrawerControllerIOS(id, "disableOpenGesture", params);
+      },
       setStyle: function (params) {
         return RCCManager.DrawerControllerIOS(id, "setStyle", params);
+      },
+      updateScreen: function (appKey, passProps = {}) {
+        var controller = _controllerRegistry[appKey];
+        if (controller === undefined) return;
+        var layout = controller.render();
+        _validateDrawerProps(layout);
+        const params = { layout, passProps };
+        return RCCManager.DrawerControllerIOS(id, "updateScreen", params);
       }
     };
   },

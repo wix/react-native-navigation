@@ -5,6 +5,8 @@
 #import <React/RCTConvert.h>
 #import "RCCManagerModule.h"
 #import "UIViewController+Rotation.h"
+#import "RCCManager.h"
+#import "RCCTabBarController.h"
 
 #define RCCDRAWERCONTROLLER_ANIMATION_DURATION 0.33f
 
@@ -143,7 +145,15 @@ UIViewController *rightViewController = nil;
         [super toggleDrawerSide:side animated:animated completion:nil];
         return;
     }
-    
+
+    if ([performAction isEqualToString:@"disableOpenGesture"])
+    {
+        BOOL disableOpenGesture = [actionParams[@"disableOpenGesture"] boolValue];
+        self.openDrawerGestureModeMask = disableOpenGesture ?
+                MMOpenDrawerGestureModeNone : MMOpenDrawerGestureModeAll;
+        return;
+    }
+
     // setStyle
     if ([performAction isEqualToString:@"setStyle"])
     {
@@ -151,6 +161,55 @@ UIViewController *rightViewController = nil;
             NSString *animationTypeString = actionParams[@"animationType"];
             [self setAnimationTypeWithName:animationTypeString];
         }
+        return;
+    }
+
+    if ([performAction isEqualToString:@"updateScreen"])
+    {
+        NSDictionary *layout = actionParams[@"layout"];
+        NSDictionary *passProps = actionParams[@"passProps"];
+
+		NSArray *children = layout[@"children"];
+
+		__block NSInteger selectedIndex = -1;
+
+		[children enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+		{
+			if ([obj[@"props"][@"selected"] boolValue]) {
+				selectedIndex = idx;
+				*stop = YES;
+			}
+		}];
+
+		NSString *type = layout[@"type"];
+
+		if ([self.centerViewController isKindOfClass:[RCCTabBarController class]] && [type isEqualToString:@"TabBarControllerIOS"]) {
+			RCCTabBarController *tabBarController = (RCCTabBarController *)self.centerViewController;
+
+			if (selectedIndex > -1)
+			{
+				tabBarController.selectedIndex = (NSUInteger)selectedIndex;
+			}
+		} else {
+			UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:passProps bridge:[[RCCManager sharedInstance] getBridge]];
+			if (controller == nil)
+			{
+				return;
+			}
+
+			if ([controller isKindOfClass:[RCCTabBarController class]])
+			{
+				RCCTabBarController *tabBarController = (RCCTabBarController *)controller;
+
+				if (selectedIndex > -1)
+				{
+					tabBarController.selectedIndex = (NSUInteger)selectedIndex;
+				}
+			}
+
+        	self.centerViewController = controller;
+		}
+
         return;
     }
     

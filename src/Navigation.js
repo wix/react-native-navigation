@@ -32,6 +32,7 @@ function _registerComponentNoRedux(screenID, generator) {
     return class extends Screen {
       static navigatorStyle = InternalComponent.navigatorStyle || {};
       static navigatorButtons = InternalComponent.navigatorButtons || {};
+      static navigatorOptions = InternalComponent.navigatorOptions || {};
 
       constructor(props) {
         super(props);
@@ -63,6 +64,7 @@ function _registerComponentRedux(screenID, generator, store, Provider, options) 
     return class extends Screen {
       static navigatorStyle = InternalComponent.navigatorStyle || {};
       static navigatorButtons = InternalComponent.navigatorButtons || {};
+      static navigatorOptions = InternalComponent.navigatorOptions || {};
 
       constructor(props) {
         super(props);
@@ -139,6 +141,26 @@ function startSingleScreenApp(params) {
   return platformSpecific.startSingleScreenApp(params);
 }
 
+function updateRootScreen(params) {
+  return platformSpecific.updateRootScreen(params);
+}
+
+function updateDrawerToScreen(params) {
+  return platformSpecific.updateDrawerToScreen(params);
+}
+
+function updateDrawerToTabs(params) {
+  return platformSpecific.updateDrawerToTabs(params);
+}
+
+function addSplashScreen() {
+  return platformSpecific.addSplashScreen();
+}
+
+function removeSplashScreen() {
+  return platformSpecific.removeSplashScreen();
+}
+
 function setEventHandler(navigatorEventID, eventHandler) {
   _allNavigatorEventHandlers[navigatorEventID] = eventHandler;
 }
@@ -165,17 +187,22 @@ function handleDeepLink(params = {}) {
 export default {
   getRegisteredScreen,
   registerComponent,
-  showModal: showModal,
-  dismissModal: dismissModal,
-  dismissAllModals: dismissAllModals,
-  showSnackbar: showSnackbar,
-  showLightBox: showLightBox,
-  dismissLightBox: dismissLightBox,
-  showInAppNotification: showInAppNotification,
-  dismissInAppNotification: dismissInAppNotification,
-  startTabBasedApp: startTabBasedApp,
-  startSingleScreenApp: startSingleScreenApp,
-  setEventHandler: setEventHandler,
-  clearEventHandler: clearEventHandler,
-  handleDeepLink: handleDeepLink
+  showModal,
+  dismissModal,
+  dismissAllModals,
+  showSnackbar,
+  showLightBox,
+  dismissLightBox,
+  showInAppNotification,
+  dismissInAppNotification,
+  startTabBasedApp,
+  startSingleScreenApp,
+  updateRootScreen,
+  updateDrawerToScreen,
+  updateDrawerToTabs,
+  addSplashScreen,
+  removeSplashScreen,
+  setEventHandler,
+  clearEventHandler,
+  handleDeepLink
 };

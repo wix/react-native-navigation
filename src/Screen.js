@@ -37,7 +37,7 @@ class Navigator {
   }
 
   resetTo(params = {}) {
-    return NavigationSpecific.resetTo(this, params);
+    return NavigationSpecific.resetTo(this.navigatorID, params);
   }
 
   showModal(params = {}) {
@@ -96,8 +96,12 @@ class Navigator {
     return platformSpecific.navigatorToggleDrawer(this, params);
   }
 
-  setDrawerEnabled(params = {}) {
-    return platformSpecific.navigatorSetDrawerEnabled(this, params);
+  disableOpenGesture(params = {}) {
+    return platformSpecific.navigatorDisableOpenGesture(this, params);
+  }
+
+  disableBackNavigation(params = {}) {
+    return platformSpecific.navigatorDisableBackNavigation(this, params);
   }
 
   toggleTabs(params = {}) {
@@ -117,7 +121,7 @@ class Navigator {
   }
 
   switchToTab(params = {}) {
-    return platformSpecific.navigatorSwitchToTab(this, params);
+    return platformSpecific.navigatorSwitchToTab(this.navigatorID, params);
   }
 
   switchToTopTab(params = {}) {
@@ -140,6 +144,10 @@ class Navigator {
     return platformSpecific.dismissContextualMenu();
   }
 
+  handleDeepLink(params = {}) {
+    Navigation.handleDeepLink(params);
+  }
+
   setOnNavigatorEvent(callback) {
     this.navigatorEventHandler = callback;
     if (!this.navigatorEventSubscription) {
@@ -147,10 +155,6 @@ class Navigator {
       this.navigatorEventSubscription = Emitter.addListener(this.navigatorEventID, (event) => this.onNavigatorEvent(event));
       Navigation.setEventHandler(this.navigatorEventID, (event) => this.onNavigatorEvent(event));
     }
-  }
-
-  handleDeepLink(params = {}) {
-    Navigation.handleDeepLink(params);
   }
 
   onNavigatorEvent(event) {

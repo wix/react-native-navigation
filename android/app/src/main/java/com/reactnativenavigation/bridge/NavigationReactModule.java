@@ -56,6 +56,28 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+	public void updateDrawerToScreen(ReadableMap params)
+	{
+		NavigationCommandsHandler.updateDrawerToScreen(BundleConverter.toBundle(params));
+	}
+
+    @ReactMethod
+	public void updateDrawerToTabs(ReadableMap params)
+	{
+		NavigationCommandsHandler.updateDrawerToTabs(BundleConverter.toBundle(params));
+	}
+
+    @ReactMethod
+	public void addSplashScreen() {
+
+	}
+
+    @ReactMethod
+	public void removeSplashScreen() {
+
+	}
+
+    @ReactMethod
     public void setScreenTitleBarTitle(String screenInstanceId, String title) {
         NavigationCommandsHandler.setScreenTitleBarTitle(screenInstanceId, title);
     }
@@ -152,9 +174,14 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setSideMenuEnabled(boolean enabled, String side) {
-        NavigationCommandsHandler.setSideMenuEnabled(enabled, Side.fromString(side));
+    public void disableOpenGesture(boolean disableOpenGesture) {
+        NavigationCommandsHandler.disableOpenGesture(disableOpenGesture);
     }
+
+    @ReactMethod
+	public void disableBackNavigation(boolean disableBackNavigation) {
+		NavigationCommandsHandler.disableBackNavigation(disableBackNavigation);
+	}
 
     @ReactMethod
     public void toggleTopBarVisible(final ReadableMap params) {

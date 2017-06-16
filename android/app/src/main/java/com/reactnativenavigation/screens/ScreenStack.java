@@ -34,6 +34,7 @@ public class ScreenStack {
     private RelativeLayout parent;
     private LeftButtonOnClickListener leftButtonOnClickListener;
     private Stack<Screen> stack = new Stack<>();
+	private boolean disableBackNavigation = false;
     private final KeyboardVisibilityDetector keyboardVisibilityDetector;
     private boolean isStackVisible = false;
     private final String navigatorId;
@@ -170,12 +171,8 @@ public class ScreenStack {
     }
 
     private void addScreen(Screen screen, LayoutParams layoutParams) {
-        addScreenBeforeSnackbarAndFabLayout(screen, layoutParams);
+        parent.addView(screen, layoutParams);
         stack.push(screen);
-    }
-
-    private void addScreenBeforeSnackbarAndFabLayout(Screen screen, LayoutParams layoutParams) {
-        parent.addView(screen, parent.getChildCount() - 1, layoutParams);
     }
 
     public void pop(boolean animated) {
@@ -275,7 +272,7 @@ public class ScreenStack {
     }
 
     public boolean canPop() {
-        return stack.size() > 1 && !isPreviousScreenAttachedToWindow();
+        return stack.size() > 1 && !isPreviousScreenAttachedToWindow() && !disableBackNavigation;
     }
 
     private boolean isPreviousScreenAttachedToWindow() {
@@ -341,7 +338,21 @@ public class ScreenStack {
         });
     }
 
-    public void updateScreenStyle(String screenInstanceId, final Bundle styleParams) {
+	public void setDisableBackNavigation(boolean disableBackNavigation)
+	{
+		this.disableBackNavigation = disableBackNavigation;
+
+		StyleParams params = stack.peek().getStyleParams();
+		params.backButtonHidden = disableBackNavigation;
+		stack.peek().getTopBar().setStyle(params);
+	}
+
+	public boolean getDisableBackNavigation()
+	{
+		return this.disableBackNavigation;
+	}
+
+	public void updateScreenStyle(String screenInstanceId, final Bundle styleParams) {
         performOnScreen(screenInstanceId, new Task<Screen>() {
             @Override
             public void run(Screen screen) {
@@ -435,4 +446,8 @@ public class ScreenStack {
         isStackVisible = false;
         stack.peek().setVisibility(View.INVISIBLE);
     }
+
+    public String rootScreenId() {
+		return stack.get(0).screenParams.screenId;
+	}
 }

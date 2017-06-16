@@ -21,6 +21,10 @@ public class ActivityParamsParser extends Parser {
         if (hasKey(params, "tabs")) {
             result.type = ActivityParams.Type.TabBased;
             result.tabParams = new ScreenParamsParser().parseTabs(params.getBundle("tabs"));
+
+			if (hasKey(params, "selectedTab")) {
+				result.selectedPath = params.getString("selectedTab");
+			}
         }
 
         if (hasKey(params, "sideMenu")) {

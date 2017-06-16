@@ -65,7 +65,7 @@ public class SingleScreenLayout extends BaseLayout {
         sendScreenChangedEventAfterInitialPush();
     }
 
-    private RelativeLayout getScreenStackParent() {
+    public RelativeLayout getScreenStackParent() {
         return sideMenu == null ? this : sideMenu.getContentContainer();
     }
 
@@ -117,7 +117,7 @@ public class SingleScreenLayout extends BaseLayout {
             EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
             return true;
         } else {
-            return false;
+            return stack.getDisableBackNavigation();
         }
     }
 
@@ -220,13 +220,20 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
-    public void setSideMenuEnabled(boolean enabled, Side side) {
+    public void disableOpenGesture(boolean disableOpenGesture)
+    {
         if (sideMenu != null) {
-            sideMenu.setEnabled(enabled, side);
+            sideMenu.disableOpenGesture(disableOpenGesture);
         }
     }
 
-    @Override
+	@Override
+	public void disableBackNavigation(boolean disableBackNavigation)
+	{
+		stack.setDisableBackNavigation(disableBackNavigation);
+	}
+
+	@Override
     public void showSnackbar(SnackbarParams params) {
         final String navigatorEventId = stack.peek().getNavigatorEventId();
         snackbarAndFabContainer.showSnackbar(navigatorEventId, params);
@@ -325,4 +332,16 @@ public class SingleScreenLayout extends BaseLayout {
             sideMenu.openDrawer(Side.Left);
         }
     }
+
+	@Override
+	public void setSideMenu(SideMenu sideMenu)
+	{
+		this.sideMenu = sideMenu;
+	}
+
+	@Override
+	public SideMenu getSideMenu()
+	{
+		return sideMenu;
+	}
 }

@@ -3,6 +3,8 @@
 #import <React/RCTRedBox.h>
 #import <Foundation/Foundation.h>
 
+static const int SPLASH_TAG = 54379;
+
 @interface RCCManager() <RCTBridgeDelegate>
 @property (nonatomic, strong) NSMutableDictionary *modulesRegistry;
 @property (nonatomic, strong) RCTBridge *sharedBridge;
@@ -116,6 +118,12 @@
   return component;
 }
 
+-(id)getDrawerController
+{
+  NSDictionary *drawers = self.modulesRegistry[@"DrawerControllerIOS"];
+  return drawers.allValues.firstObject;
+}
+
 -(void)initBridgeWithBundleURL:(NSURL *)bundleURL
 {
   [self initBridgeWithBundleURL :bundleURL launchOptions:nil];
@@ -128,10 +136,46 @@
   self.bundleURL = bundleURL;
   self.sharedBridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   
-  [self showSplashScreen];
+  [self rootSplashScreen];
 }
 
--(void)showSplashScreen
+-(void)rootSplashScreen
+{
+  UIView *splashView = [self generateSplashScreen];
+
+  if (splashView != nil)
+  {
+    UIViewController *splashVC = [[UIViewController alloc] init];
+    splashVC.view = splashView;
+
+    id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
+    appDelegate.window.rootViewController = splashVC;
+    [appDelegate.window makeKeyAndVisible];
+  }
+}
+
+-(void)addSplashScreen
+{
+  UIView *splashView = [self generateSplashScreen];
+
+  if (splashView != nil)
+  {
+    id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
+    UIWindow *window = appDelegate.window;
+  	[self removeSplashScreen];
+    splashView.tag = SPLASH_TAG;
+ 	[window addSubview:splashView];
+  }
+}
+
+-(void)removeSplashScreen
+{
+  id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
+  UIWindow *window = appDelegate.window;
+  [[window viewWithTag:SPLASH_TAG] removeFromSuperview];
+}
+
+-(UIView *)generateSplashScreen
 {
   CGRect screenBounds = [UIScreen mainScreen].bounds;
   UIView *splashView = nil;
@@ -187,16 +231,8 @@
       splashView = [[UIImageView alloc] initWithImage:image];
     }
   }
-  
-  if (splashView != nil)
-  {
-    UIViewController *splashVC = [[UIViewController alloc] init];
-    splashVC.view = splashView;
-    
-    id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
-    appDelegate.window.rootViewController = splashVC;
-    [appDelegate.window makeKeyAndVisible];
-  }
+
+  return splashView;
 }
 
 -(RCTBridge*)getBridge
