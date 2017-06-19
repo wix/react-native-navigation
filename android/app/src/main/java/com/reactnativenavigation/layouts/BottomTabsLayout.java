@@ -45,6 +45,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     private SnackbarAndFabContainer snackbarAndFabContainer;
     private BottomTabs bottomTabs;
     private ScreenStack[] screenStacks;
+    private ScreenStack extraScreenStack;
     private String selectedPath;
     private final SideMenuParams leftSideMenuParams;
     private final SideMenuParams rightSideMenuParams;
@@ -85,6 +86,13 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         for (int i = screenStacks.length - 1; i >= 0; i--) {
             createAndAddScreens(i);
         }
+
+		ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenStacks[0].getNavigatorId(), this);
+        if (this.selectedPath != null && this.getTabIndexForScreenId(this.selectedPath) < 0) {
+			ScreenParams screenParams = params.screenParams;
+			newStack.pushInitialScreen(screenParams, createScreenLayoutParams(screenParams));
+		}
+		extraScreenStack = newStack;
     }
 
     private void createAndAddScreens(int position) {
@@ -133,8 +141,12 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 			initialScreen = getTabIndexForScreenId(this.selectedPath);
 		}
 
-        showStackAndUpdateStyle(screenStacks[initialScreen]);
-        EventBus.instance.post(new ScreenChangedEvent(screenStacks[0].peek().getScreenParams()));
+		if (initialScreen > -1) {
+			showStackAndUpdateStyle(screenStacks[initialScreen]);
+			EventBus.instance.post(new ScreenChangedEvent(screenStacks[initialScreen].peek().getScreenParams()));
+		} else if (this.selectedPath != null && initialScreen < 0) {
+			showStackAndUpdateStyle(extraScreenStack);
+		}
 
 		bottomTabs.setCurrentItem(initialScreen);
     }
@@ -152,7 +164,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 			}
 		}
 
-		return 0;
+		return -1;
 	}
 
 	@Override
@@ -390,8 +402,10 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     public void destroyStacks() {
-		for (ScreenStack screenStack : screenStacks) {
-			screenStack.destroy();
+		if (screenStacks != null) {
+			for (ScreenStack screenStack : screenStacks) {
+				screenStack.destroy();
+			}
 		}
 
 		screenStacks = null;
@@ -449,8 +463,13 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     private void showNewStack(int position) {
-        showStackAndUpdateStyle(screenStacks[position]);
-        currentStackIndex = position;
+		if (position > -1) {
+			showStackAndUpdateStyle(screenStacks[position]);
+			currentStackIndex = position;
+		} else {
+			showStackAndUpdateStyle(extraScreenStack);
+			currentStackIndex = -1;
+		}
     }
 
     private void showStackAndUpdateStyle(ScreenStack newStack) {
@@ -464,7 +483,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     private ScreenStack getCurrentScreenStack() {
-        return screenStacks[currentStackIndex];
+        return currentStackIndex > -1 ? screenStacks[currentStackIndex] : extraScreenStack;
     }
 
     private @NonNull ScreenStack getScreenStack(String navigatorId) {
@@ -497,9 +516,16 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         throw new ScreenStackNotFoundException("Stack " + navigatorId + " not found");
     }
 
-	public void selectBottomTabByScreenId(String screenId)
+	public void showScreen(String screenId, ScreenParams screenParams)
 	{
-		this.selectBottomTabByTabIndex(this.getTabIndexForScreenId(screenId));
+		if (!extraScreenStack.peek().getScreenParams().screenId.equals(screenId))
+		{
+			ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenStacks[0].getNavigatorId(), this);
+			newStack.pushInitialScreen(screenParams, createScreenLayoutParams(screenParams));
+		}
+
+		int tabIndex = this.getTabIndexForScreenId(screenId);
+		this.selectBottomTabByTabIndex(tabIndex);
 	}
 
 	private class ScreenStackNotFoundException extends RuntimeException {

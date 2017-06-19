@@ -125,6 +125,25 @@ function updateDrawerToTabs(params) {
   });
   params.tabs = newTabs;
 
+  if (params.screen) {
+    const screen = {};
+    screen.screen = params.screen;
+    screen.navigatorButtons = params.navigatorButtons;
+
+    addNavigatorParams(screen);
+    addNavigatorButtons(screen, params.drawer);
+    addNavigatorOptions(screen);
+    addNavigationStyleParams(screen);
+    screen.passProps = params.passProps;
+
+    adaptTopTabs(screen, screen.navigatorID);
+    let adapted = adaptNavigationStyleToScreenStyle(screen);
+    adapted = adaptNavigationParams(adapted);
+    adapted.overrideBackPress = params.overrideBackPress;
+    adapted.screenId = params.screen;
+    params.screen = adapted;
+  }
+
   params.appStyle = convertStyleParams(params.appStyle);
   if (params.appStyle) {
     params.appStyle.orientation = getOrientation(params);
@@ -379,6 +398,24 @@ function startTabBasedApp(params) {
     newTabs.push(newtab);
   });
   params.tabs = newTabs;
+
+  if (params.screen) {
+    const screen = params.screen;
+
+    addNavigatorParams(screen);
+    addNavigatorButtons(screen, params.drawer);
+    addNavigatorOptions(screen);
+    addNavigationStyleParams(screen);
+    screen.passProps = params.passProps;
+
+    /*
+     * adapt to new API
+     */
+    adaptTopTabs(screen, screen.navigatorID);
+    screen.screenId = screen.screen;
+    params.screen = adaptNavigationStyleToScreenStyle(screen);
+    params.screen = adaptNavigationParams(screen);
+  }
 
   params.appStyle = convertStyleParams(params.appStyle);
   if (params.appStyle) {
