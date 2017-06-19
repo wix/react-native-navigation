@@ -425,20 +425,23 @@
 
   _selectedViewController = selectedViewController;
 
-  [self shouldSelectViewController:selectedViewController];
+  if (![oldController isEqual:selectedViewController])
+  {
+    [self shouldSelectViewController:selectedViewController];
 
-  selectedViewController.view.frame = oldController.view.bounds;
-  [self addChildViewController:selectedViewController];
-  [oldController willMoveToParentViewController:nil];
-  selectedViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-  [self.holder addSubview:selectedViewController.view];
-  [selectedViewController didMoveToParentViewController:self];
-  [oldController removeFromParentViewController];
-  [oldController.view removeFromSuperview];
+    selectedViewController.view.frame = oldController.view.bounds;
+    [self addChildViewController:selectedViewController];
+    [oldController willMoveToParentViewController:nil];
+    selectedViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.holder addSubview:selectedViewController.view];
+    [selectedViewController didMoveToParentViewController:self];
+    [oldController removeFromParentViewController];
+    [oldController.view removeFromSuperview];
 
-  NSDictionary *views = @{ @"view": selectedViewController.view };
-  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|" options:nil metrics:nil views:views]];
-  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|" options:nil metrics:nil views:views]];
+    NSDictionary *views = @{@"view" : selectedViewController.view};
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|" options:nil metrics:nil views:views]];
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|" options:nil metrics:nil views:views]];
+  }
 }
 
 +(void)sendScreenTabChangedEvent:(UIViewController*)viewController body:(NSDictionary*)body{
