@@ -67,6 +67,12 @@ Navigation.setEventHandler('root', (event) => {
   }
 });
 ```
+
+When you add a screen as a sibling to tabs, it will show this screen.
+This screen doesn't have to be in the list of tabs. If it is not, it 
+will deselect all tabs. The screen should be the registered name of
+the page you want to show. 
+
 You can also choose to use updateRootScreen, which will change the
 entire screen. This will also remove the drawer etc.
 
@@ -144,3 +150,11 @@ Navigation.startSingleScreenApp({
   },
 });
 ```
+
+## Extended TabBar behavior
+You can now add a screen object when starting a tab-based app. Just
+like how you start a single-screen app.
+
+## Known issues
+When using a tab-bar in combination with a screen that's not inside
+the tabs. You are not able to update this screen.
