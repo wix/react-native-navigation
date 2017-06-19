@@ -18,12 +18,14 @@ function startTabBasedApp(params) {
     return;
   }
 
+  let tabs = [...params.tabs];
+
   const controllerID = _.uniqueId('controllerID');
   const drawerID = controllerID + '_drawer';
   const drawerIDLeft = drawerID + '_left';
   const drawerIDRight = drawerID + '_right';
 
-  params.tabs.map(function(tab, index) {
+  tabs.map(function(tab, index) {
     const navigatorID = controllerID + '_nav' + index;
     const screenInstanceID = _.uniqueId('screenInstanceID');
     if (!tab.screen) {
@@ -44,8 +46,31 @@ function startTabBasedApp(params) {
       navigatorID
     };
 
-    _injectOptionsInParams(params, navigatorOptions);
+    _injectOptionsInParams(tab, navigatorOptions);
   });
+
+  if (params.screen) {
+    let screen = params.screen;
+    screen.noTab = true;
+    const navigatorID = controllerID + '_nav' + tabs.count;
+    const screenInstanceID = _.uniqueId('screenInstanceID');
+    const {
+      navigatorStyle,
+      navigatorButtons,
+      navigatorOptions,
+      navigatorEventID,
+    } = _mergeScreenSpecificSettings(screen.screen, screenInstanceID, screen);
+    screen.navigationParams = {
+      screenInstanceID,
+      navigatorStyle,
+      navigatorButtons,
+      navigatorEventID,
+      navigatorID,
+    };
+    _injectOptionsInParams(screen, navigatorOptions);
+
+    tabs.push(screen);
+  }
 
   const tabsNavigatorID = controllerID + '_tabs';
 
@@ -78,9 +103,9 @@ function startTabBasedApp(params) {
           style={params.tabsStyle}
           appStyle={params.appStyle}>
           {
-            params.tabs.map(function(tab, index) {
-              return (
-                <TabBarControllerIOS.Item {...tab} title={tab.label}>
+            tabs.map(function(tab, index) {
+              if (tab.noTab) {
+                return (
                   <NavigationControllerIOS
                     id={tab.navigationParams.navigatorID}
                     title={tab.title}
@@ -88,16 +113,36 @@ function startTabBasedApp(params) {
                     titleImage={tab.titleImage}
                     component={tab.screen}
                     passProps={{
-                    navigatorID: tab.navigationParams.navigatorID,
-                    screenInstanceID: tab.navigationParams.screenInstanceID,
-                    navigatorEventID: tab.navigationParams.navigatorEventID
-                  }}
+                      navigatorID: tab.navigationParams.navigatorID,
+                      screenInstanceID: tab.navigationParams.screenInstanceID,
+                      navigatorEventID: tab.navigationParams.navigatorEventID
+                    }}
                     style={tab.navigationParams.navigatorStyle}
                     leftButtons={tab.navigationParams.navigatorButtons.leftButtons}
                     rightButtons={tab.navigationParams.navigatorButtons.rightButtons}
                   />
-                </TabBarControllerIOS.Item>
-              );
+                );
+              } else {
+                return (
+                  <TabBarControllerIOS.Item {...tab} title={tab.label}>
+                    <NavigationControllerIOS
+                      id={tab.navigationParams.navigatorID}
+                      title={tab.title}
+                      subtitle={tab.subtitle}
+                      titleImage={tab.titleImage}
+                      component={tab.screen}
+                      passProps={{
+                        navigatorID: tab.navigationParams.navigatorID,
+                        screenInstanceID: tab.navigationParams.screenInstanceID,
+                        navigatorEventID: tab.navigationParams.navigatorEventID
+                      }}
+                      style={tab.navigationParams.navigatorStyle}
+                      leftButtons={tab.navigationParams.navigatorButtons.leftButtons}
+                      rightButtons={tab.navigationParams.navigatorButtons.rightButtons}
+                    />
+                  </TabBarControllerIOS.Item>
+                );
+              }
             })
           }
         </TabBarControllerIOS>
@@ -336,7 +381,9 @@ function updateDrawerToTabs(params) {
   const controllerID = _.uniqueId('controllerID');
 	const tabsNavigatorID = controllerID + '_tabs';
 
-	params.tabs.map(function(tab, index) {
+	let tabs = [...params.tabs];
+
+	tabs.map(function(tab, index) {
 		const navigatorID = controllerID + '_nav' + index;
 		const screenInstanceID = _.uniqueId('screenInstanceID');
 		if (!tab.screen) {
@@ -360,21 +407,64 @@ function updateDrawerToTabs(params) {
 		_injectOptionsInParams(params, navigatorOptions);
 	});
 
-	const tab = params.tabs.find((element, index, array) => array[index].screen === params.screen);
-	const tabIndex = params.tabs.indexOf(tab);
+  if (params.screen) {
+    let screen = {};
+    screen.screen = params.screen;
+    screen.noTab = true;
+    const navigatorID = controllerID + '_nav' + params.tabs.count;
+    const screenInstanceID = _.uniqueId('screenInstanceID');
+    const {
+      navigatorStyle,
+      navigatorButtons,
+      navigatorOptions,
+      navigatorEventID,
+    } = _mergeScreenSpecificSettings(screen.screen, screenInstanceID, params);
+    screen.navigationParams = {
+      screenInstanceID,
+      navigatorStyle,
+      navigatorButtons,
+      navigatorEventID,
+      navigatorID,
+    };
+    _injectOptionsInParams(screen, navigatorOptions);
+
+    tabs.push(screen);
+  }
+  const tab = tabs.find((element, index, array) => array[index].screen === params.screen);
+	const tabIndex = tabs.indexOf(tab);
 
   const Controller = Controllers.createClass({
     render: function() {
       return (
-          <TabBarControllerIOS
-              id={tabsNavigatorID}
-              style={params.tabsStyle}
-              appStyle={params.appStyle}>
-		      {
-			      params.tabs.map(function(tab, index) {
-				      return (
-                <TabBarControllerIOS.Item {...tab} title={tab.label} selected={index === tabIndex}>
+        <TabBarControllerIOS
+          id={tabsNavigatorID}
+          style={params.tabsStyle}
+          appStyle={params.appStyle}>
+          {
+            tabs.map(function(tab, index) {
+              if (tab.noTab) {
+                return (
                   <NavigationControllerIOS
+                    id={tab.navigationParams.navigatorID}
+                    title={tab.title}
+                    subtitle={tab.subtitle}
+                    titleImage={tab.titleImage}
+                    component={tab.screen}
+                    passProps={{
+                      navigatorID: tab.navigationParams.navigatorID,
+                      screenInstanceID: tab.navigationParams.screenInstanceID,
+                      navigatorEventID: tab.navigationParams.navigatorEventID
+                    }}
+                    style={tab.navigationParams.navigatorStyle}
+                    leftButtons={tab.navigationParams.navigatorButtons.leftButtons}
+                    rightButtons={tab.navigationParams.navigatorButtons.rightButtons}
+                    selected={tabIndex == index}
+                  />
+                );
+              } else {
+                return (
+                  <TabBarControllerIOS.Item {...tab} title={tab.label} selected={tabIndex == index}>
+                    <NavigationControllerIOS
                       id={tab.navigationParams.navigatorID}
                       title={tab.title}
                       subtitle={tab.subtitle}
@@ -388,12 +478,13 @@ function updateDrawerToTabs(params) {
                       style={tab.navigationParams.navigatorStyle}
                       leftButtons={tab.navigationParams.navigatorButtons.leftButtons}
                       rightButtons={tab.navigationParams.navigatorButtons.rightButtons}
-                  />
-                </TabBarControllerIOS.Item>
-				      );
-			      })
-		      }
-          </TabBarControllerIOS>
+                    />
+                  </TabBarControllerIOS.Item>
+                );
+              }
+            })
+          }
+        </TabBarControllerIOS>
       );
     }
   });
