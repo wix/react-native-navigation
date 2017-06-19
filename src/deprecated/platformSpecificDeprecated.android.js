@@ -126,19 +126,21 @@ function updateDrawerToTabs(params) {
   params.tabs = newTabs;
 
   if (params.screen) {
-    let screen = {};
+    const screen = {};
     screen.screen = params.screen;
-    screen.navigationOptions = params.navigationOptions;
-    screen.screenId = params.screen;
+    screen.navigatorButtons = params.navigatorButtons;
+
     addNavigatorParams(screen);
     addNavigatorButtons(screen, params.drawer);
     addNavigatorOptions(screen);
     addNavigationStyleParams(screen);
-    addTitleBarBackButtonIfNeeded(screen);
+    screen.passProps = params.passProps;
+
     adaptTopTabs(screen, screen.navigatorID);
     let adapted = adaptNavigationStyleToScreenStyle(screen);
     adapted = adaptNavigationParams(adapted);
     adapted.overrideBackPress = params.overrideBackPress;
+    adapted.screenId = params.screen;
     params.screen = adapted;
   }
 
