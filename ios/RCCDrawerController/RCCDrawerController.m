@@ -24,7 +24,6 @@ UIViewController *rightViewController = nil;
 
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary*)globalProps bridge:(RCTBridge *)bridge
 {
-    
     self.drawerStyle = props[@"style"];
     
     // center
@@ -73,7 +72,6 @@ UIViewController *rightViewController = nil;
     self.view.backgroundColor = [UIColor clearColor];
     
     [self setRotation:props];
-    
     
     if (!self) return nil;
     return self;
