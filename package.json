@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "2.0.0-experimental.0",
+  "version": "1.1.85",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -29,25 +29,21 @@
     "test:watch": "jest --coverage --watch",
     "release": "node ./scripts/release.js"
   },
-  "optionalDependencies": {
-    "react-redux": "*"
-  },
   "peerDependencies": {
-    "react-native": "*",
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "dependencies": {
     "lodash": "4.x.x"
   },
   "devDependencies": {
-    "react-native": "0.38.0",
-    "react": "15.4.1",
     "babel-cli": "6.x.x",
     "babel-core": "6.x.x",
+    "babel-eslint": "7.x.x",
+    "babel-jest": "18.x.x",
     "babel-polyfill": "6.x.x",
     "babel-preset-react-native": "1.x.x",
     "babel-register": "6.x.x",
-    "babel-jest": "18.x.x",
     "eslint": "3.x.x",
     "eslint-plugin-babel": "3.x.x",
     "eslint-plugin-react": "6.x.x",
@@ -55,7 +51,10 @@
     "jest": "18.x.x",
     "jest-cli": "18.x.x",
     "jest-react-native": "18.x.x",
-    "react-test-renderer": "15.4.1",
+    "prop-types": "^15.5.10",
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.0",
+    "react-test-renderer": "15.4.2",
     "semver": "5.x.x"
   },
   "jest": {

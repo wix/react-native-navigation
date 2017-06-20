@@ -9,8 +9,6 @@ import platformSpecific from './deprecated/platformSpecificDeprecated';
 import Navigation from './Navigation';
 import _ from 'lodash';
 
-const _allNavigatorEventHandlers = {};
-
 const NavigationSpecific = {
   push: platformSpecific.navigatorPush,
   pop: platformSpecific.navigatorPop,
@@ -69,6 +67,10 @@ class Navigator {
     return Navigation.showModal(params);
   }
 
+  showLightBox(params = {}) {
+    return Navigation.showLightBox(params);
+  }
+
   dismissModal(params = {}) {
     return Navigation.dismissModal(params);
   }
@@ -109,8 +111,16 @@ class Navigator {
     return platformSpecific.navigatorSetTitleImage(this, params);
   }
 
+  setStyle(params = {}) {
+    return platformSpecific.navigatorSetStyle(this, params);
+  }
+
   toggleDrawer(params = {}) {
     return platformSpecific.navigatorToggleDrawer(this, params);
+  }
+
+  setDrawerEnabled(params = {}) {
+    return platformSpecific.navigatorSetDrawerEnabled(this, params);
   }
 
   toggleTabs(params = {}) {
@@ -125,12 +135,24 @@ class Navigator {
     return platformSpecific.navigatorSetTabBadge(this, params);
   }
 
+  setTabButton(params = {}) {
+    return platformSpecific.navigatorSetTabButton(this, params);
+  }
+
   switchToTab(params = {}) {
     return platformSpecific.navigatorSwitchToTab(this, params);
   }
 
+  switchToTopTab(params = {}) {
+    return platformSpecific.navigatorSwitchToTopTab(this, params);
+  }
+
   showSnackbar(params = {}) {
-    return platformSpecific.showSnackbar(this, params);
+    return platformSpecific.showSnackbar(params);
+  }
+
+  dismissSnackbar() {
+    return platformSpecific.dismissSnackbar();
   }
 
   showContextualMenu(params, onButtonPressed) {
@@ -146,19 +168,12 @@ class Navigator {
     if (!this.navigatorEventSubscription) {
       let Emitter = Platform.OS === 'android' ? DeviceEventEmitter : NativeAppEventEmitter;
       this.navigatorEventSubscription = Emitter.addListener(this.navigatorEventID, (event) => this.onNavigatorEvent(event));
-      _allNavigatorEventHandlers[this.navigatorEventID] = (event) => this.onNavigatorEvent(event);
+      Navigation.setEventHandler(this.navigatorEventID, (event) => this.onNavigatorEvent(event));
     }
   }
 
   handleDeepLink(params = {}) {
-    if (!params.link) return;
-    const event = {
-      type: 'DeepLink',
-      link: params.link
-    };
-    for (let i in _allNavigatorEventHandlers) {
-      _allNavigatorEventHandlers[i](event);
-    }
+    Navigation.handleDeepLink(params);
   }
 
   onNavigatorEvent(event) {
@@ -170,7 +185,7 @@ class Navigator {
   cleanup() {
     if (this.navigatorEventSubscription) {
       this.navigatorEventSubscription.remove();
-      delete _allNavigatorEventHandlers[this.navigatorEventID];
+      Navigation.clearEventHandler(this.navigatorEventID);
     }
   }
 }

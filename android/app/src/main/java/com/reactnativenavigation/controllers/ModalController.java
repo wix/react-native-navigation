@@ -1,28 +1,32 @@
 package com.reactnativenavigation.controllers;
 
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
 
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ModalDismissedEvent;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 
 import java.util.List;
 import java.util.Stack;
 
-public class ModalController implements ScreenStackContainer, Modal.OnModalDismissedListener {
+class ModalController implements ScreenStackContainer, Modal.OnModalDismissedListener {
     private final AppCompatActivity activity;
     private Stack<Modal> stack = new Stack<>();
 
-    public ModalController(AppCompatActivity activity) {
+    ModalController(AppCompatActivity activity) {
         this.activity = activity;
     }
 
-    public boolean containsNavigator(String navigatorId) {
+    boolean containsNavigator(String navigatorId) {
         for (Modal modal : stack) {
             if (modal.containsNavigator(navigatorId)) {
                 return true;
@@ -31,26 +35,26 @@ public class ModalController implements ScreenStackContainer, Modal.OnModalDismi
         return false;
     }
 
-    public void showModal(ScreenParams screenParams) {
+    void showModal(ScreenParams screenParams) {
         Modal modal = new Modal(activity, this, screenParams);
         modal.show();
         stack.add(modal);
     }
 
-    public void dismissTopModal() {
+    void dismissTopModal() {
         if (isShowing()) {
             stack.pop().dismiss();
         }
     }
 
-    public void dismissAllModals() {
+    void dismissAllModals() {
         for (Modal modal : stack) {
             modal.dismiss();
         }
         stack.clear();
     }
 
-    public boolean isShowing() {
+    boolean isShowing() {
         return !stack.empty();
     }
 
@@ -97,27 +101,39 @@ public class ModalController implements ScreenStackContainer, Modal.OnModalDismi
         }
     }
 
-    public void setTitleBarTitle(String screenInstanceId, String title) {
+    void setTitleBarTitle(String screenInstanceId, String title) {
         for (Modal modal : stack) {
             modal.setTitleBarTitle(screenInstanceId, title);
         }
     }
 
-    public void setTitleBarSubtitle(String screenInstanceId, String subtitle) {
+    void setTitleBarSubtitle(String screenInstanceId, String subtitle) {
         for (Modal modal : stack) {
             modal.setTitleBarSubtitle(screenInstanceId, subtitle);
         }
     }
 
-    public void setTitleBarRightButtons(String screenInstanceId, String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {
+    void setTitleBarRightButtons(String screenInstanceId, String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {
         for (Modal modal : stack) {
             modal.setTitleBarRightButtons(screenInstanceId, navigatorEventId, titleBarButtons);
         }
     }
 
-    public void setTitleBarLeftButton(String screenInstanceId, String navigatorEventId, TitleBarLeftButtonParams titleBarLeftButton) {
+    void setTitleBarLeftButton(String screenInstanceId, String navigatorEventId, TitleBarLeftButtonParams titleBarLeftButton) {
         for (Modal modal : stack) {
             modal.setTitleBarLeftButton(screenInstanceId, navigatorEventId, titleBarLeftButton);
+        }
+    }
+
+    void setFab(String screenInstanceId, String navigatorEventId, FabParams fab) {
+        for (Modal modal : stack) {
+            modal.setFab(screenInstanceId, navigatorEventId, fab);
+        }
+    }
+
+    void updateScreenStyle(String screenInstanceId, Bundle styleParams) {
+        for (Modal modal : stack) {
+            modal.updateScreenStyle(screenInstanceId, styleParams);
         }
     }
 
@@ -142,5 +158,29 @@ public class ModalController implements ScreenStackContainer, Modal.OnModalDismi
     @Override
     public void onSideMenuButtonClick() {
         // Do nothing and let the layout handle the click
+    }
+
+    void showSlidingOverlay(SlidingOverlayParams params) {
+        stack.peek().showSlidingOverlay(params);
+    }
+
+    void hideSlidingOverlay() {
+        stack.peek().hideSlidingOverlay();
+    }
+
+    Window getWindow() {
+        return stack.peek().getWindow();
+    }
+
+    void selectTopTabByTabIndex(String screenInstanceId, int index) {
+        for (Modal modal : stack) {
+            modal.selectTopTabByTabIndex(screenInstanceId, index);
+        }
+    }
+
+    void selectTopTabByScreen(String screenInstanceId) {
+        for (Modal modal : stack) {
+            modal.selectTopTabByScreen(screenInstanceId);
+        }
     }
 }

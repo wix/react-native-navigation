@@ -4,11 +4,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Callback;
+import com.reactnativenavigation.animation.VisibilityAnimator;
+import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -25,11 +26,24 @@ public class TopBar extends AppBarLayout {
     private ContextualMenu contextualMenu;
     protected FrameLayout titleBarAndContextualMenuContainer;
     protected TopTabs topTabs;
+    private VisibilityAnimator visibilityAnimator;
 
     public TopBar(Context context) {
         super(context);
         setId(ViewUtils.generateViewId());
+        createTopBarVisibilityAnimator();
         createLayout();
+    }
+
+    private void createTopBarVisibilityAnimator() {
+        ViewUtils.runOnPreDraw(this, new Runnable() {
+            @Override
+            public void run() {
+                visibilityAnimator = new VisibilityAnimator(TopBar.this,
+                        VisibilityAnimator.HideDirection.Up,
+                        getHeight());
+            }
+        });
     }
 
     protected void createLayout() {
@@ -42,12 +56,16 @@ public class TopBar extends AppBarLayout {
                                          LeftButtonOnClickListener leftButtonOnClickListener,
                                          String navigatorEventId, boolean overrideBackPressInJs) {
         titleBar = createTitleBar();
-        titleBarAndContextualMenuContainer.addView(titleBar, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        addTitleBar();
         addButtons(rightButtons, leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
     }
 
     protected TitleBar createTitleBar() {
         return new TitleBar(getContext());
+    }
+
+    protected void addTitleBar() {
+        titleBarAndContextualMenuContainer.addView(titleBar, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
     }
 
     private void addButtons(List<TitleBarButtonParams> rightButtons, TitleBarLeftButtonParams leftButton, LeftButtonOnClickListener leftButtonOnClickListener, String navigatorEventId, boolean overrideBackPressInJs) {
@@ -63,6 +81,10 @@ public class TopBar extends AppBarLayout {
         titleBar.setSubtitle(subtitle);
     }
 
+    public void setButtonColor(StyleParams styleParams) {
+        titleBar.setButtonColor(styleParams.titleBarButtonColor);
+    }
+
     public void setStyle(StyleParams styleParams) {
         if (styleParams.topBarColor.hasColor()) {
             setBackgroundColor(styleParams.topBarColor.getColor());
@@ -70,7 +92,6 @@ public class TopBar extends AppBarLayout {
         if (styleParams.topBarTransparent) {
             setTransparent();
         }
-        setVisibility(styleParams.topBarHidden ? GONE : VISIBLE);
         titleBar.setStyle(styleParams);
         setTopTabsStyle(styleParams);
         if (!styleParams.topBarElevationShadowEnabled) {
@@ -93,9 +114,9 @@ public class TopBar extends AppBarLayout {
         titleBar.setRightButtons(titleBarButtons, navigatorEventId);
     }
 
-    public TabLayout initTabs() {
+    public TopTabs initTabs() {
         topTabs = new TopTabs(getContext());
-        addView(topTabs);
+        addView(topTabs, new ViewGroup.LayoutParams(MATCH_PARENT, (int) ViewUtils.convertDpToPixel(48)));
         return topTabs;
     }
 
@@ -113,6 +134,7 @@ public class TopBar extends AppBarLayout {
         }
         topTabs.setTopTabsTextColor(style);
         topTabs.setSelectedTabIndicatorStyle(style);
+        topTabs.setScrollable(style);
     }
 
     public void showContextualMenu(final ContextualMenuParams params, StyleParams styleParams, Callback onButtonClicked) {
@@ -146,5 +168,18 @@ public class TopBar extends AppBarLayout {
             contextualMenu = null;
             titleBar.show();
         }
+    }
+
+    public void destroy() {
+
+    }
+
+    public void onViewPagerScreenChanged(BaseScreenParams screenParams) {
+        titleBar.onViewPagerScreenChanged(screenParams);
+    }
+
+    public void setVisible(boolean visible, boolean animate) {
+        titleBar.setVisibility(!visible);
+        visibilityAnimator.setVisible(visible, animate);
     }
 }

@@ -63,6 +63,7 @@ function startTabBasedApp(params) {
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
                                style={params.drawer.style}
+                               appStyle={params.appStyle}
           >
             {this.renderBody()}
           </DrawerControllerIOS>
@@ -83,8 +84,8 @@ function startTabBasedApp(params) {
           id={controllerID + '_tabs'}
           style={params.tabsStyle}
           middleButton={params.middleButton}
-        >
           {this.renderMiddleButton(params.middleButton)}
+          appStyle={params.appStyle}>
           {
             params.tabs.map(function(tab, index) {
               return (
@@ -92,6 +93,7 @@ function startTabBasedApp(params) {
                   <NavigationControllerIOS
                     id={tab.navigationParams.navigatorID}
                     title={tab.title}
+                    subtitle={tab.subtitle}
                     titleImage={tab.titleImage}
                     component={tab.screen}
                     passProps={{
@@ -161,6 +163,7 @@ function startSingleScreenApp(params) {
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
                                style={params.drawer.style}
+                               appStyle={params.appStyle}
           >
             {this.renderBody()}
           </DrawerControllerIOS>
@@ -183,6 +186,7 @@ function startSingleScreenApp(params) {
           style={navigatorStyle}
           leftButtons={navigatorButtons.leftButtons}
           rightButtons={navigatorButtons.rightButtons}
+          appStyle={params.appStyle}
         />
       );
     }
@@ -254,6 +258,7 @@ function navigatorPush(navigator, params) {
     titleImage: params.titleImage,
     component: params.screen,
     animated: params.animated,
+    animationType: params.animationType,
     passProps: passProps,
     style: navigatorStyle,
     backButtonTitle: params.backButtonTitle,
@@ -265,13 +270,15 @@ function navigatorPush(navigator, params) {
 
 function navigatorPop(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).pop({
-    animated: params.animated
+    animated: params.animated,
+    animationType: params.animationType
   });
 }
 
 function navigatorPopToRoot(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).popToRoot({
-    animated: params.animated
+    animated: params.animated,
+    animationType: params.animationType
   });
 }
 
@@ -307,6 +314,7 @@ function navigatorResetTo(navigator, params) {
     titleImage: params.titleImage,
     component: params.screen,
     animated: params.animated,
+    animationType: params.animationType,
     passProps: passProps,
     style: navigatorStyle,
     leftButtons: navigatorButtons.leftButtons,
@@ -314,12 +322,28 @@ function navigatorResetTo(navigator, params) {
   });
 }
 
+function navigatorSetDrawerEnabled(navigator, params) {
+    const controllerID = navigator.navigatorID.split('_')[0];
+    Controllers.NavigationControllerIOS(controllerID + '_drawer').setDrawerEnabled(params)
+}
+
 function navigatorSetTitle(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).setTitle({
     title: params.title,
     subtitle: params.subtitle,
     titleImage: params.titleImage,
-    style: params.navigatorStyle
+    style: params.navigatorStyle,
+    isSetSubtitle: false
+  });
+}
+
+function navigatorSetSubtitle(navigator, params) {
+  Controllers.NavigationControllerIOS(navigator.navigatorID).setTitle({
+    title: params.title,
+    subtitle: params.subtitle,
+    titleImage: params.titleImage,
+    style: params.navigatorStyle,
+    isSetSubtitle: true
   });
 }
 
@@ -334,6 +358,10 @@ function navigatorToggleNavBar(navigator, params) {
     hidden: ((params.to === 'hidden') ? true : false),
     animated: params.animated
   });
+}
+
+function navigatorSetStyle(navigator, params) {
+  Controllers.NavigationControllerIOS(navigator.navigatorID).setStyle(params)
 }
 
 function navigatorToggleDrawer(navigator, params) {
@@ -376,6 +404,24 @@ function navigatorSetTabBadge(navigator, params) {
       contentId: navigator.navigatorID,
       contentType: 'NavigationControllerIOS',
       badge: params.badge
+    });
+  }
+}
+
+function navigatorSetTabButton(navigator, params) {
+  const controllerID = navigator.navigatorID.split('_')[0];
+  if (params.tabIndex || params.tabIndex === 0) {
+    Controllers.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
+      tabIndex: params.tabIndex,
+      icon: params.icon,
+      selectedIcon: params.selectedIcon
+    });
+  } else {
+    Controllers.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
+      contentId: navigator.navigatorID,
+      contentType: 'NavigationControllerIOS',
+      icon: params.icon,
+      selectedIcon: params.selectedIcon
     });
   }
 }
@@ -460,8 +506,8 @@ function showModal(params) {
   Modal.showController(controllerID, params.animationType);
 }
 
-function dismissModal(params) {
-  Modal.dismissController(params.animationType);
+async function dismissModal(params) {
+  return await Modal.dismissController(params.animationType);
 }
 
 function dismissAllModals(params) {
@@ -533,8 +579,10 @@ function showInAppNotification(params) {
     navigatorEventID,
     navigatorID
   };
+  
+  savePassProps(params);
 
-  Notification.show({
+  let args = {
     component: params.screen,
     passProps: passProps,
     style: params.style,
@@ -543,7 +591,9 @@ function showInAppNotification(params) {
     shadowRadius: params.shadowRadius,
     dismissWithSwipe: params.dismissWithSwipe || true,
     autoDismissTimerSec: params.autoDismissTimerSec || 5
-  });
+  };
+  if (params.autoDismiss === false) delete args.autoDismissTimerSec;
+  Notification.show(args);
 }
 
 function dismissInAppNotification(params) {
@@ -598,11 +648,15 @@ export default {
   showInAppNotification,
   dismissInAppNotification,
   navigatorSetButtons,
+  navigatorSetDrawerEnabled,
   navigatorSetTitle,
+  navigatorSetSubtitle,
+  navigatorSetStyle,
   navigatorSetTitleImage,
   navigatorToggleDrawer,
   navigatorToggleTabs,
   navigatorSetTabBadge,
+  navigatorSetTabButton,
   navigatorSwitchToTab,
   navigatorToggleNavBar,
   showContextualMenu,

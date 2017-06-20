@@ -166,6 +166,9 @@ var Controllers = {
       popToRoot: function (params) {
         RCCManager.NavigationControllerIOS(id, "popToRoot", params);
       },
+      setDrawerEnabled: function (params) {
+        RCCManager.DrawerControllerIOS(id, "setDrawerEnabled", params);
+      },
       setTitle: function (params) {
         if (params['style']) {
           params['style'] = Object.assign({}, params['style']);
@@ -175,6 +178,11 @@ var Controllers = {
           params['titleImage'] = resolveAssetSource(params['titleImage']);
         }
         RCCManager.NavigationControllerIOS(id, "setTitle", params);
+      },
+      setStyle: function (params) {
+        style = Object.assign({}, params);
+        _processProperties(style);
+        RCCManager.NavigationControllerIOS(id, "setStyle", style);
       },
       resetTo: function (params) {
         var unsubscribes = [];
@@ -243,6 +251,10 @@ var Controllers = {
       },
       switchTo: function (params) {
         return RCCManager.TabBarControllerIOS(id, "switchTo", params);
+      },
+      setTabButton: function (params) {
+        _processProperties(params);
+        return RCCManager.TabBarControllerIOS(id, "setTabButton", params);
       }
     };
   },
@@ -263,8 +275,8 @@ var Controllers = {
       _validateDrawerProps(layout);
       RCCManager.showController(layout, animationType, passProps);
     },
-    dismissController: function(animationType = 'slide-down') {
-      RCCManager.dismissController(animationType);
+    dismissController: async function(animationType = 'slide-down') {
+      return await RCCManager.dismissController(animationType);
     },
     dismissAllControllers: function(animationType = 'slide-down') {
       RCCManager.dismissAllControllers(animationType);
