@@ -40,6 +40,13 @@ function startTabBasedApp(params) {
     };
   });
 
+  if(params.middleButton) {
+    Controllers.RCCEventEmitter.removeAllListeners('TabBarMiddleButtonClicked')
+    Controllers.RCCEventEmitter.addListener('TabBarMiddleButtonClicked', () => {
+      params.middleButton.onclicked();
+    });
+  }
+
   const Controller = Controllers.createClass({
     render: function() {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
@@ -63,11 +70,21 @@ function startTabBasedApp(params) {
         );
       }
     },
+    renderMiddleButton: function(middleButtonProps) {
+      if(middleButtonProps) {
+        return <TabBarControllerIOS.MiddleButton {...middleButtonProps} />
+      }
+      else {
+        return null;
+      }
+    },
     renderBody: function() {
       return (
         <TabBarControllerIOS
           id={controllerID + '_tabs'}
           style={params.tabsStyle}
+          middleButton={params.middleButton}
+          {this.renderMiddleButton(params.middleButton)}
           appStyle={params.appStyle}>
           {
             params.tabs.map(function(tab, index) {

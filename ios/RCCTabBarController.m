@@ -2,9 +2,11 @@
 #import "RCCViewController.h"
 #import <React/RCTConvert.h>
 #import "RCCManager.h"
+#import "RCTUIManager.h"=
 #import "RCTHelpers.h"
 #import <React/RCTUIManager.h>
 #import "UIViewController+Rotation.h"
+#import "RCCEventEmitter.h"
 
 @interface RCTUIManager ()
 
@@ -68,12 +70,16 @@
   self.delegate = self;
   
   self.tabBar.translucent = YES; // default
-  
+
   UIColor *buttonColor = nil;
   UIColor *selectedButtonColor = nil;
   UIColor *labelColor = nil;
   UIColor *selectedLabelColor = nil;
   NSDictionary *tabsStyle = props[@"style"];
+  
+  NSDictionary *middleButtonProps = nil;
+  bool displayMiddleButton = false;
+
   if (tabsStyle)
   {
     NSString *tabBarButtonColor = tabsStyle[@"tabBarButtonColor"];
@@ -84,6 +90,7 @@
       buttonColor = color;
       selectedButtonColor = color;
     }
+
     NSString *tabBarSelectedButtonColor = tabsStyle[@"tabBarSelectedButtonColor"];
     if (tabBarSelectedButtonColor)
     {
@@ -91,6 +98,7 @@
       self.tabBar.tintColor = color;
       selectedButtonColor = color;
     }
+
     NSString *tabBarLabelColor = tabsStyle[@"tabBarLabelColor"];
     if(tabBarLabelColor) {
       UIColor *color = tabBarLabelColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarLabelColor] : nil;
@@ -127,6 +135,13 @@
   // go over all the tab bar items
   for (NSDictionary *tabItemLayout in children)
   {
+    // check for middle button
+    if([tabItemLayout[@"type"] isEqualToString:@"TabBarControllerIOS.MiddleButton"]) {
+      middleButtonProps = tabItemLayout[@"props"];
+      displayMiddleButton = children.count % 2 == 1;
+      continue;
+    }
+    
     // make sure the layout is valid
     if (![tabItemLayout[@"type"] isEqualToString:@"TabBarControllerIOS.Item"]) continue;
     if (!tabItemLayout[@"props"]) continue;
@@ -162,6 +177,7 @@
     viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
     viewController.tabBarItem.selectedImage = iconImageSelected;
+
     
     id imageInsets = tabItemLayout[@"props"][@"iconInsets"];
     if (imageInsets && imageInsets != (id)[NSNull null])
@@ -182,6 +198,13 @@
     if (!unselectedAttributes[NSForegroundColorAttributeName] && labelColor) {
       unselectedAttributes[NSForegroundColorAttributeName] = labelColor;
     }
+
+    if (selectedButtonColor)
+    {
+      [viewController.tabBarItem setTitleTextAttributes:
+       @{NSForegroundColorAttributeName : selectedButtonColor} forState:UIControlStateSelected];
+    }
+
     
     [viewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal];
     
@@ -191,6 +214,7 @@
     }
     
     [viewController.tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
+
     // create badge
     NSObject *badge = tabItemLayout[@"props"][@"badge"];
     if (badge == nil || [badge isEqual:[NSNull null]])
@@ -203,6 +227,40 @@
     }
     
     [viewControllers addObject:viewController];
+
+    // add dummy view controller to make space for the middle button
+    if(displayMiddleButton && viewControllers.count == children.count / 2) {
+      [viewControllers addObject:[[UIViewController alloc] init]];
+    }
+
+  }
+
+  if(displayMiddleButton) {
+    int buttonWidth = [middleButtonProps[@"width"] intValue];
+    int buttonHeight = [middleButtonProps[@"height"] intValue];
+    int middleViewX = self.view.bounds.size.width/2 - buttonWidth/2;
+    int middleViewY = self.view.bounds.size.height - buttonHeight;
+
+    UIButton *middleView = [UIButton buttonWithType:UIButtonTypeCustom];
+    [middleView setFrame:CGRectMake(middleViewX, middleViewY, buttonWidth, buttonHeight)];
+
+    UIImage *iconImage = nil;
+    id icon = middleButtonProps[@"icon"];
+    if (icon) {
+      iconImage = [RCTConvert UIImage:icon];
+      [middleView setImage:iconImage forState:UIControlStateNormal];
+    }
+    UIImage *iconImageSelected = nil;
+    id selectedIcon = middleButtonProps[@"selectedIcon"];
+    if (selectedIcon) {
+      iconImageSelected = [RCTConvert UIImage:selectedIcon];
+      [middleView setImage:iconImageSelected forState:UIControlStateHighlighted];
+    }
+    
+    [middleView addTarget:self action:@selector(middleButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.view addSubview:middleView];
+
   }
   
   // replace the tabs
@@ -227,7 +285,35 @@
       {
         viewController = [self.viewControllers objectAtIndex:i];
       }
+
+      if (viewController)
+      {
+        NSObject *badge = actionParams[@"badge"];
+
+        if (badge == nil || [badge isEqual:[NSNull null]])
+        {
+          viewController.tabBarItem.badgeValue = nil;
+        }
+        else
+        {
+          viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
+        }
+      }
     }
+
+    if ([performAction isEqualToString:@"switchTo"])
+    {
+      UIViewController *viewController = nil;
+      NSNumber *tabIndex = actionParams[@"tabIndex"];
+      if (tabIndex)
+      {
+        int i = (int)[tabIndex integerValue];
+
+        if ([self.viewControllers count] > i)
+        {
+          viewController = [self.viewControllers objectAtIndex:i];
+        }
+      }
     NSString *contentId = actionParams[@"contentId"];
     NSString *contentType = actionParams[@"contentType"];
     if (contentId && contentType)
@@ -344,6 +430,10 @@
   }
 }
 
+-(void)middleButtonClicked:(id)sender {
+  [RCCEventEmitter tabBarMiddleButtonClicked:sender];
+}
+
 +(void)sendScreenTabChangedEvent:(UIViewController*)viewController body:(NSDictionary*)body{
   [RCCTabBarController sendTabEvent:@"bottomTabSelected" controller:viewController body:body];
 }
@@ -383,7 +473,5 @@
     [RCCTabBarController sendTabEvent:event controller:topViewController body:body];
   }
 }
-
-
 
 @end
