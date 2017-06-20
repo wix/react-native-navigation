@@ -47,6 +47,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     [self setButtons:rightButtons viewController:viewController side:@"right" animated:NO];
   }
   
+  
   self = [super initWithRootViewController:viewController];
   if (!self) return nil;
   self.delegate = self;
@@ -60,16 +61,15 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
 
   [self setRotation:props];
   
+  // Add our custom overlay view
+  NSString *overlayModule = props[@"overlayModuleName"];
+  if (overlayModule)
+  {
+    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:overlayModule initialProperties:@{}];
+    [[self view] addSubview:rootView];
+  }
+  
   return self;
-}
-
-- (void)viewDidLoad {
-  [super viewDidLoad];
-  
-  RCTBridge *bridge = [[RCCManager sharedInstance] getBridge];
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"QuoteBar" initialProperties:@{}];
-  [[self view] addSubview:rootView];
-  
 }
 
 - (void)performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams bridge:(RCTBridge *)bridge
