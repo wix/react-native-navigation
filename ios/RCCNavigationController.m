@@ -65,11 +65,53 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   NSString *overlayModule = props[@"overlayModuleName"];
   if (overlayModule)
   {
-    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:overlayModule initialProperties:@{}];
-    [[self view] addSubview:rootView];
+    
+    self.reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:overlayModule initialProperties:passProps];
+    self.reactView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    self.reactView.backgroundColor = [UIColor clearColor];
+    self.reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
+    self.reactView.center = self.view.center;
+    [self.view addSubview:self.reactView];
+    
+    [self.reactView.contentView.layer addObserver:self forKeyPath:@"frame" options:0 context:nil];
+    [self.reactView.contentView.layer addObserver:self forKeyPath:@"bounds" options:0 context:NULL];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTJavaScriptWillStartLoadingNotification object:nil];
   }
   
   return self;
+}
+
+-(void)removeAllObservers
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [self.reactView.contentView.layer removeObserver:self forKeyPath:@"frame" context:nil];
+  [self.reactView.contentView.layer removeObserver:self forKeyPath:@"bounds" context:NULL];
+}
+
+-(void)dealloc
+{
+  [self removeAllObservers];
+}
+
+-(void)onRNReload
+{
+  [self removeAllObservers];
+  self.reactView = nil;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+  CGSize frameSize = CGSizeZero;
+  if ([object isKindOfClass:[CALayer class]])
+    frameSize = ((CALayer*)object).frame.size;
+  if ([object isKindOfClass:[UIView class]])
+    frameSize = ((UIView*)object).frame.size;
+  
+  if (!CGSizeEqualToSize(frameSize, self.reactView.frame.size))
+  {
+    self.reactView.frame = CGRectMake(0, 0, frameSize.width, frameSize.height);
+  }
 }
 
 - (void)performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams bridge:(RCTBridge *)bridge
