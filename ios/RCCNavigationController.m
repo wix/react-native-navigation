@@ -63,6 +63,14 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   return self;
 }
 
+- (void)viewDidLoad {
+  [super viewDidLoad];
+  
+  RCTBridge *bridge = [[RCCManager sharedInstance] getBridge];
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"QuoteBar" initialProperties:@{}];
+  [[self view] addSubview:rootView];
+  
+}
 
 - (void)performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams bridge:(RCTBridge *)bridge
 {
