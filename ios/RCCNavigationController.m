@@ -67,6 +67,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   {
     
     self.reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:overlayModule initialProperties:passProps];
+    [self.reactView setPassThroughTouches:YES];
     self.reactView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.reactView.backgroundColor = [UIColor clearColor];
     self.reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
