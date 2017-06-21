@@ -488,7 +488,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     private @NonNull ScreenStack getScreenStack(String navigatorId) {
         int index = getScreenStackIndex(navigatorId);
-        return screenStacks[index];
+        return index > -1 ? screenStacks[index] : extraScreenStack;
     }
 
     public void setBottomTabBadgeByIndex(Integer index, String badge) {
@@ -513,6 +513,9 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
                 return i;
             }
         }
+        if (extraScreenStack != null) {
+			return -1;
+		}
         throw new ScreenStackNotFoundException("Stack " + navigatorId + " not found");
     }
 
