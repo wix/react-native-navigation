@@ -1,6 +1,6 @@
 {
   "name": "react-native-navigation",
-  "version": "1.2.13",
+  "version": "1.2.15",
   "description": "React Native Navigation ft. MediaMonksMobile. This is a fork of WIX, they are not responsible for this fork.",
   "license": "MIT",
   "nativePackage": true,
