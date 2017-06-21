@@ -8,13 +8,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
-
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.screens.Screen;
