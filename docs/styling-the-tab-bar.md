@@ -25,7 +25,6 @@ Navigation.startTabBasedApp({
   tabBarSelectedLabelColor: 'red', // iOS only. change the color of the selected tab text
   forceTitlesDisplay: true // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
   tabBarHideShadow: true // iOS only. Remove default tab bar top shadow (hairline)
-  forceTitlesDisplay: true // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
 }
 ```
 
