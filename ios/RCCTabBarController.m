@@ -142,6 +142,15 @@
     {
       self.tabBar.clipsToBounds = [tabBarHideShadow boolValue];
     }
+
+    NSNumber *tabBarHeight = tabsStyle[@"tabBarHeight"];
+    if (tabBarHeight) {
+      if (!self.tabBarHeightConstraint) {
+        self.tabBarHeightConstraint = [NSLayoutConstraint constraintWithItem:self.tabBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
+        [NSLayoutConstraint activateConstraints:@[self.tabBarHeightConstraint]];
+      }
+      self.tabBarHeightConstraint.constant = tabBarHeight.floatValue;
+    }
   }
   
   NSMutableArray *viewControllers = [NSMutableArray array];
