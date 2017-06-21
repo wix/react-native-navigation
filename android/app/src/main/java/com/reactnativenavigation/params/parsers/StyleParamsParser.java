@@ -72,6 +72,7 @@ public class StyleParamsParser {
         result.bottomTabsHiddenOnScroll = getBoolean("bottomTabsHiddenOnScroll", getDefaultBottomTabsHiddenOnScroll());
         result.bottomTabsColor = getColor("bottomTabsColor", getDefaultBottomTabsColor());
         result.bottomTabsButtonColor = getColor("bottomTabsButtonColor", getDefaultBottomTabsButtonColor());
+        result.bottomTabsTextFontSize = getInt("bottomTabsTextFontSize", getDefaultBottomTabsTextFontSize());
         result.selectedBottomTabsButtonColor =
                 getColor("bottomTabsSelectedButtonColor", getDefaultSelectedBottomTabsButtonColor());
         result.bottomTabBadgeTextColor = getColor("bottomTabBadgeTextColor", getBottomTabBadgeTextColor());
@@ -153,6 +154,10 @@ public class StyleParamsParser {
 
     private StyleParams.Color getDefaultBottomTabsButtonColor() {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.bottomTabsButtonColor;
+    }
+
+    private int getDefaultBottomTabsTextFontSize() {
+        return AppStyle.appStyle == null ? 0 : AppStyle.appStyle.bottomTabsTextFontSize;
     }
 
     private StyleParams.Color getDefaultBottomTabsColor() {
