@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':ahbottomnavigation'
+project(':ahbottomnavigation').projectDir = new File('submodules/ahbottomnavigation/ahbottomnavigation')
