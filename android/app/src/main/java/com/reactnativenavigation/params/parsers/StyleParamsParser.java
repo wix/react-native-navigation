@@ -72,6 +72,7 @@ public class StyleParamsParser {
         result.bottomTabsHiddenOnScroll = getBoolean("bottomTabsHiddenOnScroll", getDefaultBottomTabsHiddenOnScroll());
         result.bottomTabsColor = getColor("bottomTabsColor", getDefaultBottomTabsColor());
         result.bottomTabsButtonColor = getColor("bottomTabsButtonColor", getDefaultBottomTabsButtonColor());
+        result.bottomTabsTabBarHeight = getInt("bottomTabsTabBarHeight", 0);
         result.selectedBottomTabsButtonColor =
                 getColor("bottomTabsSelectedButtonColor", getDefaultSelectedBottomTabsButtonColor());
         result.bottomTabBadgeTextColor = getColor("bottomTabBadgeTextColor", getBottomTabBadgeTextColor());

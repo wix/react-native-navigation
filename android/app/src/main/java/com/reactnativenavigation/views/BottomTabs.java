@@ -113,7 +113,8 @@ public class BottomTabs extends AHBottomNavigation {
         if (hasBadgeTextColor()) {
             setNotificationTextColor(AppStyle.appStyle.bottomTabBadgeTextColor.getColor());
         }
-    }
+		setNavigationBarHeight(AppStyle.appStyle.bottomTabsTabBarHeight);
+	}
 
     private boolean hasBadgeTextColor() {
         return AppStyle.appStyle.bottomTabBadgeTextColor != null &&
