@@ -1,0 +1,1 @@
+git ls-remote -t git@github.com:wix/react-native-navigation.git | awk '{print $2}' | cut -d '/' -f 3 | cut -d '^' -f 1 | uniq | xargs -n 1 git push --delete origin
