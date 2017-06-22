@@ -2,7 +2,6 @@ package com.reactnativenavigation.params.parsers;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.params.ScreenParams;
@@ -30,7 +29,7 @@ public class ScreenParamsParser extends Parser {
         assertKeyExists(params, KEY_NAVIGATION_PARAMS);
         result.navigationParams = new NavigationParams(params.getBundle(KEY_NAVIGATION_PARAMS));
 
-        result.styleParams = new StyleParamsParser(params.getBundle(STYLE_PARAMS)).parse();
+        result.styleParams = new StyleParamsParser(params.getBundle(STYLE_PARAMS)).merge(params.getBundle(StyleParamsParser.STYLE_PARAMS_EXTRAS)).parse();
 
         result.title = params.getString(KEY_TITLE);
         result.subtitle = params.getString(KEY_SUBTITLE);
