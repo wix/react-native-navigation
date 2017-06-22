@@ -1,0 +1,3 @@
+[submodule "android/submodules/ahbottomnavigation"]
+	path = android/submodules/ahbottomnavigation
+	url = https://ErikMediaMonks@github.com/MediaMonksMobile/ahbottomnavigation.git
