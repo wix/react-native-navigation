@@ -52,9 +52,9 @@ dependencies {
 
     // node_modules
     compile "com.facebook.react:react-native:+"
+    compile project(':ahbottomnavigation')
 
     // third party
-    compile "com.aurelhubert:ahbottomnavigation:2.0.6"
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.4'
 
     // tests
