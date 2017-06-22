@@ -82,6 +82,7 @@ public class StyleParamsParser {
         result.forceTitlesDisplay = getBoolean("forceTitlesDisplay", getDefaultForceTitlesDisplay());
 
         result.bottomTabFontFamily = getFont("bottomTabFontFamily", getDefaultBottomTabsFontFamily());
+        result.bottomTabFontSize = getInt("bottomTabFontSize", getDefaultBottomTabsFontSize());
 
         return result;
     }
@@ -239,6 +240,10 @@ public class StyleParamsParser {
     private StyleParams.Font getDefaultBottomTabsFontFamily() {
         return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.bottomTabFontFamily;
     }
+
+    private int getDefaultBottomTabsFontSize() {
+		return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.bottomTabFontSize;
+	}
 
     private StyleParams.Font getDefaultTitleTextFontFamily() {
         return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.titleBarTitleFont;

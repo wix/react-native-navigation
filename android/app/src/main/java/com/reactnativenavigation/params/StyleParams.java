@@ -120,6 +120,7 @@ public class StyleParams {
     public Color bottomTabBadgeTextColor;
     public Color bottomTabBadgeBackgroundColor;
     public Font bottomTabFontFamily;
+    public int bottomTabFontSize;
 
     public Color navigationBarColor;
 }
