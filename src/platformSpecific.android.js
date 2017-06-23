@@ -185,14 +185,6 @@ function dismissSnackbar() {
   NativeReactModule.dismissSnackbar();
 }
 
-function showContextualMenu(screenInstanceID, params, onButtonPressed) {
-  NativeReactModule.showContextualMenu(screenInstanceID, params, onButtonPressed);
-}
-
-function dismissContextualMenu(screenInstanceID) {
-  NativeReactModule.dismissContextualMenu(screenInstanceID);
-}
-
 function setScreenStyle(screenInstanceId, style) {
   NativeReactModule.setScreenStyle(screenInstanceId, style);
 }
@@ -233,7 +225,5 @@ module.exports = {
   setBottomTabButtonByIndex,
   showSnackbar,
   dismissSnackbar,
-  showContextualMenu,
-  dismissContextualMenu,
   setScreenStyle
 };

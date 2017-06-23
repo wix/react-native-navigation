@@ -289,9 +289,6 @@ function convertStyleParams(originalStyleObject) {
     titleBarTitleTextCentered: originalStyleObject.navBarTitleTextCentered,
     backButtonHidden: originalStyleObject.backButtonHidden,
     topTabsHidden: originalStyleObject.topTabsHidden,
-    contextualMenuStatusBarColor: processColor(originalStyleObject.contextualMenuStatusBarColor),
-    contextualMenuBackgroundColor: processColor(originalStyleObject.contextualMenuBackgroundColor),
-    contextualMenuButtonsColor: processColor(originalStyleObject.contextualMenuButtonsColor),
 
     drawBelowTopBar: !originalStyleObject.drawUnderNavBar,
 
@@ -824,34 +821,6 @@ function dismissSnackbar() {
   return newPlatformSpecific.dismissSnackbar();
 }
 
-function showContextualMenu(navigator, params) {
-  const contextualMenu = {
-    buttons: [],
-    backButton: {id: 'back'},
-    navigationParams: {navigatorEventID: navigator.navigatorEventID}
-  };
-
-  params.rightButtons.forEach((button, index) => {
-    const btn = {
-      icon: resolveAssetSource(button.icon),
-      showAsAction: button.showAsAction,
-      color: processColor(button.color),
-      label: button.title,
-      index
-    };
-    if (btn.icon) {
-      btn.icon = btn.icon.uri;
-    }
-    contextualMenu.buttons.push(btn);
-  });
-
-  newPlatformSpecific.showContextualMenu(navigator.screenInstanceID, contextualMenu, params.onButtonPressed);
-}
-
-function dismissContextualMenu() {
-  newPlatformSpecific.dismissContextualMenu();
-}
-
 export default {
   startTabBasedApp,
   startSingleScreenApp,
@@ -886,6 +855,4 @@ export default {
   navigatorToggleNavBar,
   showSnackbar,
   dismissSnackbar,
-  showContextualMenu,
-  dismissContextualMenu
 };

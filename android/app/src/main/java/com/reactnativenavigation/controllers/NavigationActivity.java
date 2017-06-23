@@ -12,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
@@ -28,7 +27,6 @@ import com.reactnativenavigation.layouts.LayoutFactory;
 import com.reactnativenavigation.layouts.SingleScreenLayout;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.AppStyle;
-import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.ScreenParams;
@@ -478,23 +476,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     public void dismissSnackbar() {
         layout.dismissSnackbar();
-    }
-
-    public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
-        if (modalController.isShowing()) {
-            modalController.showContextualMenu(screenInstanceId, params, onButtonClicked);
-        } else
-        {
-            layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
-        }
-    }
-
-    public void dismissContextualMenu(String screenInstanceId) {
-        if (modalController.isShowing()) {
-            modalController.dismissContextualMenu(screenInstanceId);
-        } else {
-            layout.dismissContextualMenu(screenInstanceId);
-        }
     }
 
     @Override

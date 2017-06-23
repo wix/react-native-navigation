@@ -40,14 +40,14 @@ public class TitleBar extends Toolbar {
         }
     }
 
-    public void setRightButtons(List<TitleBarButtonParams> rightButtons, String navigatorEventId) {
+    public void setRightButtons(List<TitleBarButtonParams> rightButtons, MenuButtonOnClickListener rightButtonsClickListener, String navigatorEventId) {
         this.rightButtons = rightButtons;
         Menu menu = getMenu();
         menu.clear();
         if (rightButtons == null) {
             return;
         }
-        addButtonsToTitleBar(navigatorEventId, menu);
+        addButtonsToTitleBar(navigatorEventId, menu, rightButtonsClickListener);
     }
 
     public void setLeftButton(TitleBarLeftButtonParams leftButtonParams,
@@ -147,9 +147,9 @@ public class TitleBar extends Toolbar {
         }
     }
 
-    private void addButtonsToTitleBar(String navigatorEventId, Menu menu) {
+    private void addButtonsToTitleBar(String navigatorEventId, Menu menu, MenuButtonOnClickListener navigationButtonClickListener) {
         for (int i = 0; i < rightButtons.size(); i++) {
-            final TitleBarButton button = ButtonFactory.create(menu, this, rightButtons.get(i), navigatorEventId);
+            final TitleBarButton button = ButtonFactory.create(0, menu, this, rightButtons.get(i), navigationButtonClickListener, navigatorEventId);
             addButtonInReverseOrder(rightButtons, i, button);
         }
     }

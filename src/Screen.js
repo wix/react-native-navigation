@@ -136,14 +136,6 @@ class Navigator {
     return platformSpecific.dismissSnackbar();
   }
 
-  showContextualMenu(params, onButtonPressed) {
-    return platformSpecific.showContextualMenu(this, params, onButtonPressed);
-  }
-
-  dismissContextualMenu() {
-    return platformSpecific.dismissContextualMenu();
-  }
-
   handleDeepLink(params = {}) {
     Navigation.handleDeepLink(params);
   }

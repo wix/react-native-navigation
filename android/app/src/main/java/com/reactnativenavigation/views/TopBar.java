@@ -7,10 +7,8 @@ import android.support.design.widget.AppBarLayout;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.params.BaseScreenParams;
-import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -19,11 +17,9 @@ import com.reactnativenavigation.utils.ViewUtils;
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class TopBar extends AppBarLayout {
     protected TitleBar titleBar;
-    private ContextualMenu contextualMenu;
     protected FrameLayout titleBarAndContextualMenuContainer;
     protected TopTabs topTabs;
     private VisibilityAnimator visibilityAnimator;
@@ -52,12 +48,13 @@ public class TopBar extends AppBarLayout {
     }
 
     public void addTitleBarAndSetButtons(List<TitleBarButtonParams> rightButtons,
-                                         TitleBarLeftButtonParams leftButton,
-                                         LeftButtonOnClickListener leftButtonOnClickListener,
-                                         String navigatorEventId, boolean overrideBackPressInJs) {
+										 MenuButtonOnClickListener rightButtonsClickListener,
+										 TitleBarLeftButtonParams leftButton,
+										 LeftButtonOnClickListener leftButtonOnClickListener,
+										 String navigatorEventId, boolean overrideBackPressInJs) {
         titleBar = createTitleBar();
         addTitleBar();
-        addButtons(rightButtons, leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
+        addButtons(rightButtons, rightButtonsClickListener, leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
     }
 
     protected TitleBar createTitleBar() {
@@ -68,8 +65,8 @@ public class TopBar extends AppBarLayout {
         titleBarAndContextualMenuContainer.addView(titleBar, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
     }
 
-    private void addButtons(List<TitleBarButtonParams> rightButtons, TitleBarLeftButtonParams leftButton, LeftButtonOnClickListener leftButtonOnClickListener, String navigatorEventId, boolean overrideBackPressInJs) {
-        titleBar.setRightButtons(rightButtons, navigatorEventId);
+    private void addButtons(List<TitleBarButtonParams> rightButtons, MenuButtonOnClickListener rightButtonsClickListener, TitleBarLeftButtonParams leftButton, LeftButtonOnClickListener leftButtonOnClickListener, String navigatorEventId, boolean overrideBackPressInJs) {
+        titleBar.setRightButtons(rightButtons, rightButtonsClickListener, navigatorEventId);
         titleBar.setLeftButton(leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
     }
 
@@ -110,8 +107,8 @@ public class TopBar extends AppBarLayout {
         }
     }
 
-    public void setTitleBarRightButtons(String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {
-        titleBar.setRightButtons(titleBarButtons, navigatorEventId);
+    public void setTitleBarRightButtons(String navigatorEventId, List<TitleBarButtonParams> titleBarButtons, MenuButtonOnClickListener rightButtonsClickListener) {
+        titleBar.setRightButtons(titleBarButtons, rightButtonsClickListener, navigatorEventId);
     }
 
     public TopTabs initTabs() {
@@ -135,39 +132,6 @@ public class TopBar extends AppBarLayout {
         topTabs.setTopTabsTextColor(style);
         topTabs.setSelectedTabIndicatorStyle(style);
         topTabs.setScrollable(style);
-    }
-
-    public void showContextualMenu(final ContextualMenuParams params, StyleParams styleParams, Callback onButtonClicked) {
-        final ContextualMenu menuToRemove = contextualMenu != null ? contextualMenu : null;
-        contextualMenu = new ContextualMenu(getContext(), params, styleParams, onButtonClicked);
-        titleBarAndContextualMenuContainer.addView(contextualMenu, new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-        ViewUtils.runOnPreDraw(contextualMenu, new Runnable() {
-            @Override
-            public void run() {
-                titleBar.hide();
-                contextualMenu.show(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (menuToRemove != null) {
-                           titleBarAndContextualMenuContainer.removeView(menuToRemove);
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    public void onContextualMenuHidden() {
-        contextualMenu = null;
-        titleBar.show();
-    }
-
-    public void dismissContextualMenu() {
-        if (contextualMenu != null) {
-            contextualMenu.dismiss();
-            contextualMenu = null;
-            titleBar.show();
-        }
     }
 
     public void destroy() {

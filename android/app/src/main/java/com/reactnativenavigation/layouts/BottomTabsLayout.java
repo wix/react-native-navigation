@@ -9,13 +9,11 @@ import android.widget.RelativeLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.params.ActivityParams;
-import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.ScreenParams;
@@ -28,6 +26,7 @@ import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.LightBox;
+import com.reactnativenavigation.views.MenuButtonOnClickListener;
 import com.reactnativenavigation.views.SideMenu;
 import com.reactnativenavigation.views.SideMenu.Side;
 import com.reactnativenavigation.views.SnackbarAndFabContainer;
@@ -39,8 +38,8 @@ import java.util.List;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.OnTabSelectedListener {
-
+public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.OnTabSelectedListener, MenuButtonOnClickListener
+{
     private ActivityParams params;
     private SnackbarAndFabContainer snackbarAndFabContainer;
     private BottomTabs bottomTabs;
@@ -87,7 +86,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
             createAndAddScreens(i);
         }
 
-		ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenStacks[0].getNavigatorId(), this);
+		ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenStacks[0].getNavigatorId(), this, this);
         if (this.selectedPath != null && this.getTabIndexForScreenId(this.selectedPath) < 0) {
 			ScreenParams screenParams = params.screenParams;
 			newStack.pushInitialScreen(screenParams, createScreenLayoutParams(screenParams));
@@ -97,7 +96,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     private void createAndAddScreens(int position) {
         ScreenParams screenParams = params.tabParams.get(position);
-        ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenParams.getNavigatorId(), this);
+        ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenParams.getNavigatorId(), this, this);
         newStack.pushInitialScreen(screenParams, createScreenLayoutParams(screenParams));
         screenStacks[position] = newStack;
     }
@@ -337,16 +336,6 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
-    public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
-        getCurrentScreenStack().peek().showContextualMenu(params, onButtonClicked);
-    }
-
-    @Override
-    public void dismissContextualMenu(String screenInstanceId) {
-        getCurrentScreenStack().peek().dismissContextualMenu();
-    }
-
-    @Override
     public Screen getCurrentScreen() {
         return getCurrentScreenStack().peek();
     }
@@ -523,7 +512,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 	{
 		if (!extraScreenStack.peek().getScreenParams().screenId.equals(screenId))
 		{
-			ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenStacks[0].getNavigatorId(), this);
+			ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenStacks[0].getNavigatorId(), this, this);
 			newStack.pushInitialScreen(screenParams, createScreenLayoutParams(screenParams));
 		}
 
@@ -561,11 +550,11 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
-    public void onSideMenuButtonClick() {
+    public void onSideMenuButtonClick(Side side) {
         final String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         if (sideMenu != null) {
-            sideMenu.openDrawer(Side.Left);
+            sideMenu.openDrawer(side);
         }
     }
 

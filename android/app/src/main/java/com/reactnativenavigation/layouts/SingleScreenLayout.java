@@ -6,11 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
-import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.ScreenParams;
@@ -23,6 +21,7 @@ import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.LightBox;
+import com.reactnativenavigation.views.MenuButtonOnClickListener;
 import com.reactnativenavigation.views.SideMenu;
 import com.reactnativenavigation.views.SideMenu.Side;
 import com.reactnativenavigation.views.SnackbarAndFabContainer;
@@ -33,8 +32,8 @@ import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-public class SingleScreenLayout extends BaseLayout {
-
+public class SingleScreenLayout extends BaseLayout implements MenuButtonOnClickListener
+{
     protected final ScreenParams screenParams;
     private final SideMenuParams leftSideMenuParams;
     private final SideMenuParams rightSideMenuParams;
@@ -80,7 +79,7 @@ public class SingleScreenLayout extends BaseLayout {
         if (stack != null) {
             stack.destroy();
         }
-        stack = new ScreenStack(getActivity(), parent, screenParams.getNavigatorId(), this);
+        stack = new ScreenStack(getActivity(), parent, screenParams.getNavigatorId(), this, this);
         LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         pushInitialScreen(lp);
     }
@@ -301,16 +300,6 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
-    public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
-        stack.showContextualMenu(screenInstanceId, params, onButtonClicked);
-    }
-
-    @Override
-    public void dismissContextualMenu(String screenInstanceId) {
-        stack.dismissContextualMenu(screenInstanceId);
-    }
-
-    @Override
     public Screen getCurrentScreen() {
         return stack.peek();
     }
@@ -325,11 +314,11 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
-    public void onSideMenuButtonClick() {
+    public void onSideMenuButtonClick(Side side) {
         final String navigatorEventId = stack.peek().getNavigatorEventId();
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("sideMenu", navigatorEventId);
         if (sideMenu != null) {
-            sideMenu.openDrawer(Side.Left);
+            sideMenu.openDrawer(side);
         }
     }
 

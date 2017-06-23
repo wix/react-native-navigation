@@ -73,9 +73,6 @@ public class StyleParams {
 
     public Orientation orientation;
     public Color statusBarColor;
-    public Color contextualMenuStatusBarColor;
-    public Color contextualMenuButtonsColor;
-    public Color contextualMenuBackgroundColor;
 
     public Color topBarColor;
     public CollapsingTopBarParams collapsingTopBarParams;
