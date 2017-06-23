@@ -68,8 +68,7 @@ public class StyleParamsParser {
 
         result.screenBackgroundColor = getColor("screenBackgroundColor", getDefaultScreenBackgroundColor());
 
-        result.bottomTabsHidden = getBoolean(PARENT_BOTTOM_TABS_HIDDEN, false) ||
-                getBoolean("bottomTabsHidden", getDefaultBottomTabsHidden());
+        result.bottomTabsHidden = getBoolean("bottomTabsHidden", getBoolean(PARENT_BOTTOM_TABS_HIDDEN, getDefaultBottomTabsHidden()));
 
         result.drawScreenAboveBottomTabs = !result.bottomTabsHidden &&
                 params.getBoolean("drawScreenAboveBottomTabs", getDefaultDrawScreenAboveBottomTabs());
