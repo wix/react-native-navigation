@@ -28,8 +28,6 @@
     "pretest": "npm run lint",
     "test": "npm run test:js && npm run test:android && npm run test:ios",
     "test:watch": "jest --coverage --watch",
-    "preinstall": "git pull --recurse-submodules",
-    "postinstall": "git pull --recurse-submodules",
     "release": "node ./scripts/release.js"
   },
   "peerDependencies": {
