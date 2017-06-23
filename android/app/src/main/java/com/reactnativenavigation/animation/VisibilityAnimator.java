@@ -1,5 +1,7 @@
 package com.reactnativenavigation.animation;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.View;
@@ -67,6 +69,19 @@ public class VisibilityAnimator {
         final ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, show ? SHOW_END_VALUE : hiddenEndValue);
         animator.setDuration(DURATION);
         animator.setInterpolator(interpolator);
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                view.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                view.setVisibility(View.VISIBLE);
+            }
+        });
         return animator;
     }
 }

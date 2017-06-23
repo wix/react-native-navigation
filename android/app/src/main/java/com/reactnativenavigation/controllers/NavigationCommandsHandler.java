@@ -2,7 +2,7 @@ package com.reactnativenavigation.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-
+import android.view.View;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.NavigationApplication;
@@ -17,6 +17,7 @@ import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.ActivityParamsParser;
 import com.reactnativenavigation.params.parsers.ScreenParamsParser;
+import com.reactnativenavigation.params.parsers.StyleParamsParser;
 import com.reactnativenavigation.utils.OrientationHelper;
 import com.reactnativenavigation.views.SideMenu.Side;
 
@@ -49,6 +50,12 @@ public class NavigationCommandsHandler {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
+        }
+
+        if (currentActivity.getBottomTabsVisibility() == View.GONE) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(StyleParamsParser.PARENT_BOTTOM_TABS_HIDDEN, true);
+            screenParams.putBundle(StyleParamsParser.STYLE_PARAMS_EXTRAS, bundle);
         }
 
         final ScreenParams params = ScreenParamsParser.parse(screenParams);

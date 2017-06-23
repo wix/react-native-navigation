@@ -166,6 +166,10 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         bottomTabs.setVisibility(hidden, animated);
     }
 
+    public int getBottomTabsVisibility() {
+        return bottomTabs.getVisibility();
+    }
+
     @Override
     public void setTitleBarTitle(String screenInstanceId, String title) {
         for (int i = 0; i < bottomTabs.getItemsCount(); i++) {

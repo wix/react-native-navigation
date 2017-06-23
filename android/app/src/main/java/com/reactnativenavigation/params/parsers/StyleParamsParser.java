@@ -3,19 +3,24 @@ package com.reactnativenavigation.params.parsers;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import android.support.annotation.Nullable;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.Orientation;
 import com.reactnativenavigation.params.StyleParams;
 
 public class StyleParamsParser {
+    public static final String STYLE_PARAMS_EXTRAS = "NAVIGATION_EXTRAS";
+    public static final String PARENT_BOTTOM_TABS_HIDDEN = "parentBottomTabsHidden";
     private Bundle params;
 
     public StyleParamsParser(Bundle params) {
         this.params = params;
     }
 
-    public StyleParamsParser merge(Bundle b) {
-        params.putAll(b);
+    public StyleParamsParser merge(@Nullable Bundle b) {
+        if (b != null) {
+            params.putAll(b);
+        }
         return this;
     }
 
@@ -63,9 +68,10 @@ public class StyleParamsParser {
 
         result.screenBackgroundColor = getColor("screenBackgroundColor", getDefaultScreenBackgroundColor());
 
-        result.bottomTabsHidden = getBoolean("bottomTabsHidden", getDefaultBottomTabsHidden());
+        result.bottomTabsHidden = getBoolean("bottomTabsHidden", getBoolean(PARENT_BOTTOM_TABS_HIDDEN, getDefaultBottomTabsHidden()));
+
         result.drawScreenAboveBottomTabs = !result.bottomTabsHidden &&
-                                           params.getBoolean("drawScreenAboveBottomTabs", getDefaultDrawScreenAboveBottomTabs());
+                params.getBoolean("drawScreenAboveBottomTabs", getDefaultDrawScreenAboveBottomTabs());
         if (result.titleBarHideOnScroll) {
             result.drawScreenAboveBottomTabs = false;
         }
