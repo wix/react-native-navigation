@@ -72,6 +72,16 @@ function startTabBasedApp(params) {
     tabs.push(screen);
   }
 
+  if (!params.drawer.style) {
+    params.drawer.style = {};
+  }
+  if (params.drawer.left) {
+    params.drawer.style.leftDrawerWidth = params.drawer.left.drawerWidth;
+  }
+  if (params.drawer.right) {
+    params.drawer.style.rightDrawerWidth = params.drawer.right.drawerWidth;
+  }
+
   const tabsNavigatorID = controllerID + '_tabs';
 
   const Controller = Controllers.createClass({
