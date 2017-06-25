@@ -241,6 +241,7 @@ function navigatorPush(navigator, params) {
     titleImage: params.titleImage,
     component: params.screen,
     animated: params.animated,
+    animationType: params.animationType,
     passProps: passProps,
     style: navigatorStyle,
     backButtonTitle: params.backButtonTitle,
@@ -252,13 +253,15 @@ function navigatorPush(navigator, params) {
 
 function navigatorPop(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).pop({
-    animated: params.animated
+    animated: params.animated,
+    animationType: params.animationType
   });
 }
 
 function navigatorPopToRoot(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).popToRoot({
-    animated: params.animated
+    animated: params.animated,
+    animationType: params.animationType
   });
 }
 
@@ -294,6 +297,7 @@ function navigatorResetTo(navigator, params) {
     titleImage: params.titleImage,
     component: params.screen,
     animated: params.animated,
+    animationType: params.animationType,
     passProps: passProps,
     style: navigatorStyle,
     leftButtons: navigatorButtons.leftButtons,
@@ -301,12 +305,28 @@ function navigatorResetTo(navigator, params) {
   });
 }
 
+function navigatorSetDrawerEnabled(navigator, params) {
+    const controllerID = navigator.navigatorID.split('_')[0];
+    Controllers.NavigationControllerIOS(controllerID + '_drawer').setDrawerEnabled(params)
+}
+
 function navigatorSetTitle(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).setTitle({
     title: params.title,
     subtitle: params.subtitle,
     titleImage: params.titleImage,
-    style: params.navigatorStyle
+    style: params.navigatorStyle,
+    isSetSubtitle: false
+  });
+}
+
+function navigatorSetSubtitle(navigator, params) {
+  Controllers.NavigationControllerIOS(navigator.navigatorID).setTitle({
+    title: params.title,
+    subtitle: params.subtitle,
+    titleImage: params.titleImage,
+    style: params.navigatorStyle,
+    isSetSubtitle: true
   });
 }
 
@@ -367,6 +387,24 @@ function navigatorSetTabBadge(navigator, params) {
       contentId: navigator.navigatorID,
       contentType: 'NavigationControllerIOS',
       badge: params.badge
+    });
+  }
+}
+
+function navigatorSetTabButton(navigator, params) {
+  const controllerID = navigator.navigatorID.split('_')[0];
+  if (params.tabIndex || params.tabIndex === 0) {
+    Controllers.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
+      tabIndex: params.tabIndex,
+      icon: params.icon,
+      selectedIcon: params.selectedIcon
+    });
+  } else {
+    Controllers.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
+      contentId: navigator.navigatorID,
+      contentType: 'NavigationControllerIOS',
+      icon: params.icon,
+      selectedIcon: params.selectedIcon
     });
   }
 }
@@ -593,12 +631,15 @@ export default {
   showInAppNotification,
   dismissInAppNotification,
   navigatorSetButtons,
+  navigatorSetDrawerEnabled,
   navigatorSetTitle,
+  navigatorSetSubtitle,
   navigatorSetStyle,
   navigatorSetTitleImage,
   navigatorToggleDrawer,
   navigatorToggleTabs,
   navigatorSetTabBadge,
+  navigatorSetTabButton,
   navigatorSwitchToTab,
   navigatorToggleNavBar,
   showContextualMenu,

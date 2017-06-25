@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Callback;
+import com.reactnativenavigation.animation.VisibilityAnimator;
+import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -24,11 +26,24 @@ public class TopBar extends AppBarLayout {
     private ContextualMenu contextualMenu;
     protected FrameLayout titleBarAndContextualMenuContainer;
     protected TopTabs topTabs;
+    private VisibilityAnimator visibilityAnimator;
 
     public TopBar(Context context) {
         super(context);
         setId(ViewUtils.generateViewId());
+        createTopBarVisibilityAnimator();
         createLayout();
+    }
+
+    private void createTopBarVisibilityAnimator() {
+        ViewUtils.runOnPreDraw(this, new Runnable() {
+            @Override
+            public void run() {
+                visibilityAnimator = new VisibilityAnimator(TopBar.this,
+                        VisibilityAnimator.HideDirection.Up,
+                        getHeight());
+            }
+        });
     }
 
     protected void createLayout() {
@@ -64,6 +79,10 @@ public class TopBar extends AppBarLayout {
 
     public void setSubtitle(String subtitle) {
         titleBar.setSubtitle(subtitle);
+    }
+
+    public void setButtonColor(StyleParams styleParams) {
+        titleBar.setButtonColor(styleParams.titleBarButtonColor);
     }
 
     public void setStyle(StyleParams styleParams) {
@@ -153,5 +172,14 @@ public class TopBar extends AppBarLayout {
 
     public void destroy() {
 
+    }
+
+    public void onViewPagerScreenChanged(BaseScreenParams screenParams) {
+        titleBar.onViewPagerScreenChanged(screenParams);
+    }
+
+    public void setVisible(boolean visible, boolean animate) {
+        titleBar.setVisibility(!visible);
+        visibilityAnimator.setVisible(visible, animate);
     }
 }

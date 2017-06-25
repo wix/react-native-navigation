@@ -6,6 +6,7 @@
 #import <objc/runtime.h>
 #import "RCCTitleViewHelper.h"
 #import "UIViewController+Rotation.h"
+#import "RCTHelpers.h"
 
 @implementation RCCNavigationController
 {
@@ -95,7 +96,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [mergedStyle removeObjectForKey:@"autoAdjustScrollViewInsets"];
       [mergedStyle removeObjectForKey:@"statusBarTextColorSchemeSingleScreen"];
       [mergedStyle removeObjectForKey:@"disabledBackGesture"];
-      
+      [mergedStyle removeObjectForKey:@"navBarCustomView"];
+      [mergedStyle removeObjectForKey:@"navBarComponentAlignment"];
+       
       [mergedStyle addEntriesFromDictionary:navigatorStyle];
       navigatorStyle = mergedStyle;
     }
@@ -140,21 +143,60 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [self setButtons:rightButtons viewController:viewController side:@"right" animated:NO];
     }
     
-    [self pushViewController:viewController animated:animated];
+    NSString *animationType = actionParams[@"animationType"];
+    if ([animationType isEqualToString:@"fade"])
+    {
+      CATransition *transition = [CATransition animation];
+      transition.duration = 0.25;
+      transition.type = kCATransitionFade;
+      
+      [self.view.layer addAnimation:transition forKey:kCATransition];
+      [self pushViewController:viewController animated:NO];
+    }
+    else
+    {
+      [self pushViewController:viewController animated:animated];
+    }
     return;
   }
   
   // pop
   if ([performAction isEqualToString:@"pop"])
   {
-    [self popViewControllerAnimated:animated];
+    NSString *animationType = actionParams[@"animationType"];
+    if ([animationType isEqualToString:@"fade"])
+    {
+      CATransition *transition = [CATransition animation];
+      transition.duration = 0.25;
+      transition.type = kCATransitionFade;
+      
+      [self.view.layer addAnimation:transition forKey:kCATransition];
+      [self popViewControllerAnimated:NO];
+    }
+    else
+    {
+      [self popViewControllerAnimated:animated];
+    }
     return;
   }
   
   // popToRoot
   if ([performAction isEqualToString:@"popToRoot"])
   {
-    [self popToRootViewControllerAnimated:animated];
+    NSString *animationType = actionParams[@"animationType"];
+    if ([animationType isEqualToString:@"fade"])
+    {
+      CATransition *transition = [CATransition animation];
+      transition.duration = 0.25;
+      transition.type = kCATransitionFade;
+      
+      [self.view.layer addAnimation:transition forKey:kCATransition];
+      [self popToRootViewControllerAnimated:NO];
+    }
+    else
+    {
+      [self popToRootViewControllerAnimated:animated];
+    }
     return;
   }
   
@@ -186,7 +228,20 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     
     BOOL animated = actionParams[@"animated"] ? [actionParams[@"animated"] boolValue] : YES;
     
-    [self setViewControllers:@[viewController] animated:animated];
+    NSString *animationType = actionParams[@"animationType"];
+    if ([animationType isEqualToString:@"fade"])
+    {
+      CATransition *transition = [CATransition animation];
+      transition.duration = 0.25;
+      transition.type = kCATransitionFade;
+      
+      [self.view.layer addAnimation:transition forKey:kCATransition];
+      [self setViewControllers:@[viewController] animated:NO];
+    }
+    else
+    {
+      [self setViewControllers:@[viewController] animated:animated];
+    }
     return;
   }
   
@@ -279,6 +334,11 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     else if (title)
     {
       barButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPress:)];
+
+      NSMutableDictionary *buttonTextAttributes = [RCTHelpers textAttributesFromDictionary:button withPrefix:@"button"];
+      if (buttonTextAttributes.allKeys.count > 0) {
+        [barButtonItem setTitleTextAttributes:buttonTextAttributes forState:UIControlStateNormal];
+      }
     }
     else continue;
     objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -325,12 +385,13 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
                   props:(NSDictionary*)props
                   style:(NSDictionary*)style
 {
-  
+  BOOL isSetSubtitleBool = props[@"isSetSubtitle"] ? [props[@"isSetSubtitle"] boolValue] : NO;
   RCCTitleViewHelper *titleViewHelper = [[RCCTitleViewHelper alloc] init:viewController
                                                     navigationController:self
                                                                    title:props[@"title"]
                                                                 subtitle:props[@"subtitle"]
-                                                          titleImageData:props[@"titleImage"]];
+                                                          titleImageData:props[@"titleImage"]
+                                                           isSetSubtitle:isSetSubtitleBool];
   
   [titleViewHelper setup:style];
   

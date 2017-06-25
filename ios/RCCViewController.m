@@ -10,6 +10,8 @@
 #import "RCCExternalViewControllerProtocol.h"
 #import "RCTHelpers.h"
 #import "RCCTitleViewHelper.h"
+#import "RCCCustomTitleView.h"
+
 
 NSString* const RCCViewControllerCancelReactTouchesNotification = @"RCCViewControllerCancelReactTouchesNotification";
 
@@ -22,9 +24,9 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 @property (nonatomic) BOOL _statusBarHideWithNavBar;
 @property (nonatomic) BOOL _statusBarHidden;
 @property (nonatomic) BOOL _statusBarTextColorSchemeLight;
-@property (nonatomic) BOOL _disableBackGesture;
 @property (nonatomic, strong) NSDictionary *originalNavBarImages;
 @property (nonatomic, strong) UIImageView *navBarHairlineImageView;
+@property (nonatomic, weak) id <UIGestureRecognizerDelegate> originalInteractivePopGestureDelegate;
 @end
 
 @implementation RCCViewController
@@ -236,7 +238,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   
   NSString *screenBackgroundColor = self.navigatorStyle[@"screenBackgroundColor"];
   if (screenBackgroundColor) {
-        
+    
     UIColor *color = screenBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:screenBackgroundColor] : nil;
     viewController.view.backgroundColor = color;
   }
@@ -264,26 +266,39 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   if (self.navigationItem.titleView && [self.navigationItem.titleView isKindOfClass:[RCCTitleView class]]) {
     
     RCCTitleView *titleView = (RCCTitleView *)self.navigationItem.titleView;
-    RCCTitleViewHelper *helper = [[RCCTitleViewHelper alloc] init:viewController navigationController:viewController.navigationController title:titleView.titleLabel.text subtitle:titleView.subtitleLabel.text titleImageData:nil];
+    RCCTitleViewHelper *helper = [[RCCTitleViewHelper alloc] init:viewController navigationController:viewController.navigationController title:titleView.titleLabel.text subtitle:titleView.subtitleLabel.text titleImageData:nil isSetSubtitle:NO];
     [helper setup:self.navigatorStyle];
   }
   
   NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarButton"];
+  NSMutableDictionary *leftNavButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarLeftButton"];
+  NSMutableDictionary *rightNavButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarRightButton"];
   
-  if (navButtonTextAttributes.allKeys.count > 0) {
+  if (
+      navButtonTextAttributes.allKeys.count > 0 ||
+      leftNavButtonTextAttributes.allKeys.count > 0 ||
+      rightNavButtonTextAttributes.allKeys.count > 0
+      ) {
     
     for (UIBarButtonItem *item in viewController.navigationItem.leftBarButtonItems) {
       [item setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
+      
+      if (leftNavButtonTextAttributes.allKeys.count > 0) {
+        [item setTitleTextAttributes:leftNavButtonTextAttributes forState:UIControlStateNormal];
+      }
     }
     
     for (UIBarButtonItem *item in viewController.navigationItem.rightBarButtonItems) {
       [item setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
+      
+      if (rightNavButtonTextAttributes.allKeys.count > 0) {
+        [item setTitleTextAttributes:rightNavButtonTextAttributes forState:UIControlStateNormal];
+      }
     }
     
     // At the moment, this seems to be the only thing that gets the back button correctly
     [navButtonTextAttributes removeObjectForKey:NSForegroundColorAttributeName];
     [[UIBarButtonItem appearance] setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
-    //        [viewController.navigationItem.backBarButtonItem setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
   }
   
   NSString *navBarButtonColor = self.navigatorStyle[@"navBarButtonColor"];
@@ -469,7 +484,44 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   } else {
     self.navBarHairlineImageView.hidden = NO;
   }
+  
+ //Bug fix: in case there is a interactivePopGestureRecognizer, it prevents react-native from getting touch events on the left screen area that the gesture handles
+ //overriding the delegate of the gesture prevents this from happening while keeping the gesture intact (another option was to disable it completely by demand)
+ self.originalInteractivePopGestureDelegate = nil;
+ if(self.navigationController.viewControllers.count > 1){
+   if (self.navigationController != nil && self.navigationController.interactivePopGestureRecognizer != nil)
+   {
+     id <UIGestureRecognizerDelegate> interactivePopGestureRecognizer = self.navigationController.interactivePopGestureRecognizer.delegate;
+     if (interactivePopGestureRecognizer != nil)
+     {
+       self.originalInteractivePopGestureDelegate = interactivePopGestureRecognizer;
+       self.navigationController.interactivePopGestureRecognizer.delegate = self;
+     }
+   }
+ }
+  
+  NSString *navBarCustomView = self.navigatorStyle[@"navBarCustomView"];
+  if (navBarCustomView && ![self.navigationItem.titleView isKindOfClass:[RCCCustomTitleView class]]) {
+    if ([self.view isKindOfClass:[RCTRootView class]]) {
+      
+      RCTBridge *bridge = ((RCTRootView*)self.view).bridge;
+      
+      NSDictionary *initialProps = self.navigatorStyle[@"navBarCustomViewInitialProps"];
+      RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:navBarCustomView initialProperties:initialProps];
+      
+      RCCCustomTitleView *titleView = [[RCCCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.navigatorStyle[@"navBarComponentAlignment"]];
+      titleView.backgroundColor = [UIColor clearColor];
+      reactView.backgroundColor = [UIColor clearColor];
+      
+      self.navigationItem.titleView = titleView;
+      
+      self.navigationItem.titleView.backgroundColor = [UIColor clearColor];
+      self.navigationItem.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+      self.navigationItem.titleView.clipsToBounds = YES;
+    }
+  }
 }
+
 
 -(void)storeOriginalNavBarImages {
   
@@ -488,6 +540,12 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 -(void)setStyleOnDisappear {
   self.navBarHairlineImageView.hidden = NO;
+  
+  if (self.navigationController != nil && self.navigationController.interactivePopGestureRecognizer != nil && self.originalInteractivePopGestureDelegate != nil)
+  {
+    self.navigationController.interactivePopGestureRecognizer.delegate = self.originalInteractivePopGestureDelegate;
+    self.originalInteractivePopGestureDelegate = nil;
+  }
 }
 
 // only styles that can't be set on willAppear should be set here
@@ -621,7 +679,9 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 #pragma mark - UIGestureRecognizerDelegate
 -(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-  return self._disableBackGesture ? self._disableBackGesture : YES;
+  NSNumber *disabledBackGesture = self.navigatorStyle[@"disabledBackGesture"];
+  BOOL disabledBackGestureBool = disabledBackGesture ? [disabledBackGesture boolValue] : NO;
+  return !disabledBackGestureBool;
 }
 
 

@@ -21,6 +21,7 @@ public class ScreenParamsParser extends Parser {
     private static final String FRAGMENT_CREATOR_CLASS_NAME = "fragmentCreatorClassName";
     private static final String FRAGMENT_CREATOR_PASS_PROPS = "fragmentCreatorPassProps";
     private static final String OVERRIDE_BACK_PRESS = "overrideBackPress";
+    private static final String ANIMATION_TYPE = "animationType";
 
     @SuppressWarnings("ConstantConditions")
     public static ScreenParams parse(Bundle params) {
@@ -51,6 +52,8 @@ public class ScreenParamsParser extends Parser {
 
         result.animateScreenTransitions = new AnimationParser(params).parse();
         result.sharedElementsTransitions = getSharedElementsTransitions(params);
+
+        result.animationType = params.getString(ANIMATION_TYPE);
 
         return result;
     }

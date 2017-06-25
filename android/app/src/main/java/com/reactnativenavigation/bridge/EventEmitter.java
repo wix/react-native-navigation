@@ -12,6 +12,12 @@ public class EventEmitter {
         this.reactGateway = reactGateway;
     }
 
+    public void sendScreenChangedEvent(String eventId, String navigatorEventId) {
+        WritableMap map = Arguments.createMap();
+        map.putString("type", "ScreenChangedEvent");
+        sendNavigatorEvent(eventId, navigatorEventId, map);
+    }
+
     public void sendNavigatorEvent(String eventId, String navigatorEventId) {
         if (!NavigationApplication.instance.isReactContextInitialized()) {
             return;

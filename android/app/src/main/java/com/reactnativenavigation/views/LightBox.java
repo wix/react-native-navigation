@@ -8,13 +8,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
-
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.screens.Screen;
@@ -36,6 +37,10 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         createContent(activity, params);
         getWindow().setWindowAnimations(android.R.style.Animation);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
     }
 
     private void createContent(final Context context, LightBoxParams params) {

@@ -13,6 +13,9 @@
 
 @synthesize drawerStyle = _drawerStyle;
 
+UIViewController *leftViewController = nil;
+UIViewController *rightViewController = nil;
+
 -(UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return [self supportedControllerOrientations];
 }
@@ -27,13 +30,11 @@
     UIViewController *centerViewController = [RCCViewController controllerWithLayout:children[0] globalProps:globalProps bridge:bridge];
     
     // left
-    UIViewController *leftViewController = nil;
     NSString *componentLeft = props[@"componentLeft"];
     NSDictionary *passPropsLeft = props[@"passPropsLeft"];
     if (componentLeft) leftViewController = [[RCCViewController alloc] initWithComponent:componentLeft passProps:passPropsLeft navigatorStyle:nil globalProps:globalProps bridge:bridge];
     
     // right
-    UIViewController *rightViewController = nil;
     NSString *componentRight = props[@"componentRight"];
     NSDictionary *passPropsRight = props[@"passPropsRight"];
     if (componentRight) rightViewController = [[RCCViewController alloc] initWithComponent:componentRight passProps:passPropsRight navigatorStyle:nil globalProps:globalProps bridge:bridge];
@@ -124,7 +125,18 @@
         
         return;
     }
-    
+
+    // setDrawerEnabled
+    if ([performAction isEqualToString:@"setDrawerEnabled"])
+    {
+        bool enabled = [actionParams[@"enabled"] boolValue];
+        if ([actionParams[@"side"] isEqualToString:@"left"]) {
+            [super setLeftDrawerViewController: enabled ? leftViewController : nil];
+        } else if ([actionParams[@"side"] isEqualToString:@"right"]) {
+            [super setRightDrawerViewController: enabled ? rightViewController : nil];
+        }
+    }
+
     // toggle
     if ([performAction isEqualToString:@"toggle"])
     {
