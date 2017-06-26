@@ -79,7 +79,6 @@ function updateDrawerToScreen(params) {
   addNavigatorParams(params);
   addNavigatorButtons(params);
   addNavigatorOptions(params);
-  addTitleBarBackButtonIfNeeded(params);
   addNavigationStyleParams(params);
 
   /*
