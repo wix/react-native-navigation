@@ -3,6 +3,7 @@ import React from 'react';
 import {AppRegistry} from 'react-native';
 import platformSpecific from './deprecated/platformSpecificDeprecated';
 import Screen from './Screen';
+import Navigator from './Navigator';
 
 import PropRegistry from './PropRegistry';
 
@@ -38,6 +39,26 @@ function _registerComponentNoRedux(screenID, generator) {
         this.state = {
           internalProps: {...props, ...PropRegistry.load(props.screenInstanceID)}
         }
+        this.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+      }
+
+      onNavigatorEvent(event) {
+        switch(event.id) {
+            case 'willAppear':
+              Navigator.addScreen(this.props.screenInstanceID, this.navigator)
+              if(InternalComponent.willAppear) InternalComponent.willAppear();
+              break;
+            case 'didAppear':
+              if(InternalComponent.didAppear) InternalComponent.didAppear();
+              break;
+            case 'willDisappear':
+              Navigator.removeScreen(this.props.screenInstanceID)
+              if(InternalComponent.willDisappear) InternalComponent.willDisappear();
+              break;
+            case 'didDisappear':
+              if(InternalComponent.didDisappear) InternalComponent.didDisappear();
+              break;
+          }
       }
 
       componentWillReceiveProps(nextProps) {
@@ -48,7 +69,7 @@ function _registerComponentNoRedux(screenID, generator) {
 
       render() {
         return (
-          <InternalComponent testID={screenID} navigator={this.navigator} {...this.state.internalProps} />
+          <InternalComponent testID={screenID} navigator={this.navigator} containerId={this.props.screenInstanceID} {...this.state.internalProps} />
         );
       }
     };
