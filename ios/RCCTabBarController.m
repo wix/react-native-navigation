@@ -209,22 +209,9 @@
       tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
       tabBarItem.selectedImage = iconImageSelected;
 
-      id imageInsets = tabItemLayout[@"props"][@"iconInsets"];
-      if (imageInsets && imageInsets != (id)[NSNull null])
-      {
-        id topInset = imageInsets[@"top"];
-        id leftInset = imageInsets[@"left"];
-        id bottomInset = imageInsets[@"bottom"];
-        id rightInset = imageInsets[@"right"];
+	  tabBarItem.imageInsets = UIEdgeInsetsMake(-1, 0, 1, 0);
 
-        CGFloat top = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:topInset] : 0;
-        CGFloat left = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:leftInset] : 0;
-        CGFloat bottom = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:bottomInset] : 0;
-        CGFloat right = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:rightInset] : 0;
-
-        tabBarItem.imageInsets = UIEdgeInsetsMake(top, left, bottom, right);
-      }
-      NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
+	  NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
       if (!unselectedAttributes[NSForegroundColorAttributeName] && labelColor)
       {
         unselectedAttributes[NSForegroundColorAttributeName] = labelColor;
@@ -239,7 +226,9 @@
       }
 
       [tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
-      // create badge
+	  [tabBarItem setTitlePositionAdjustment:UIOffsetMake(0, -5)];
+
+	  // create badge
       NSObject *badge = tabItemLayout[@"props"][@"badge"];
       if (badge == nil || [badge isEqual:[NSNull null]])
       {
@@ -257,6 +246,16 @@
   }
 
   self.tabBar.items = tabBarItems.copy;
+
+  NSUInteger leni = self.tabBar.items.count;
+  CGFloat tabWidth = [UIScreen mainScreen].bounds.size.width / leni;
+  for (NSUInteger i = 0; i < leni; ++i) {
+	  CGFloat x = (i + 1) * tabWidth;
+	  UIView *view = [[UIView alloc] initWithFrame:CGRectMake(x, 10, 0.5, 40)];
+	  view.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1];
+	  [self.tabBar insertSubview:view atIndex:leni - i];
+  }
+
   // replace the tabs
   self.viewControllers = viewControllers.copy;
 
