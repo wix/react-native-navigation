@@ -233,6 +233,10 @@ public class ScreenStack {
         return stack.peek();
     }
 
+    public boolean empty() {
+		return stack.empty();
+	}
+
     private void readdPrevious(Screen previous) {
         previous.setVisibility(View.VISIBLE);
         NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", previous.getNavigatorEventId());

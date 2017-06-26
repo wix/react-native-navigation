@@ -237,7 +237,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 		Layout newLayout = LayoutFactory.create(this, newParams);
 		newLayout.setSideMenu(layout.getSideMenu());
 		screenStackParent.addView(newLayout.asView());
-		layout.setSideMenuVisible(true, false, Side.Left);
 	}
 
     void updateDrawerToTabs(ActivityParams params) {
@@ -285,8 +284,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 		else {
 			bottomTabsLayout.showScreen(params.selectedPath, params.screenParams);
 		}
-
-		layout.setSideMenuVisible(true, false, Side.Left);
 	}
 
     void push(ScreenParams params) {
