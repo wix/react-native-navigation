@@ -480,14 +480,6 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         return index > -1 ? screenStacks[index] : extraScreenStack;
     }
 
-    public void setBottomTabBadgeByIndex(Integer index, String badge) {
-        bottomTabs.setNotification(badge, index);
-    }
-
-    public void setBottomTabBadgeByNavigatorId(String navigatorId, String badge) {
-        bottomTabs.setNotification(badge, getScreenStackIndex(navigatorId));
-    }
-
     public void setBottomTabButtonByIndex(Integer index, ScreenParams params) {
         bottomTabs.setTabButton(params, index);
     }

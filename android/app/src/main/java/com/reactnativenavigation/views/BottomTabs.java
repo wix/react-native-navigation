@@ -35,7 +35,6 @@ public class BottomTabs extends AHBottomNavigation {
             addItem(item);
             setOnTabSelectedListener(onTabSelectedListener);
         }
-        setTitlesDisplayState();
     }
 
     public void setStyleFromScreen(StyleParams params) {
@@ -57,16 +56,6 @@ public class BottomTabs extends AHBottomNavigation {
             AHBottomNavigationItem item = this.getItem(index);
             item.setDrawable(params.tabIcon);
             refresh();
-        }
-    }
-
-    private void setTitlesDisplayState() {
-        if (AppStyle.appStyle.forceTitlesDisplay) {
-            setTitleState(TitleState.ALWAYS_SHOW);
-        } else if (hasTabsWithLabels()) {
-            setTitleState(TitleState.SHOW_WHEN_ACTIVE);
-        } else {
-            setTitleState(TitleState.ALWAYS_HIDE);
         }
     }
 
@@ -107,12 +96,6 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     private void setStyle() {
-        if (hasBadgeBackgroundColor()) {
-            setNotificationBackgroundColor(AppStyle.appStyle.bottomTabBadgeBackgroundColor.getColor());
-        }
-        if (hasBadgeTextColor()) {
-            setNotificationTextColor(AppStyle.appStyle.bottomTabBadgeTextColor.getColor());
-        }
 		setNavigationBarHeight(AppStyle.appStyle.bottomTabsTabBarHeight);
 
 		if (AppStyle.appStyle.bottomTabFontSize > 0) {

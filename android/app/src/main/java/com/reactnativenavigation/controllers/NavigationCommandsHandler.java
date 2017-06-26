@@ -435,34 +435,6 @@ public class NavigationCommandsHandler {
         });
     }
 
-    public static void setBottomTabBadgeByIndex(final Integer index, final String badge) {
-        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
-        if (currentActivity == null) {
-            return;
-        }
-
-        NavigationApplication.instance.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                currentActivity.setBottomTabBadgeByIndex(index, badge);
-            }
-        });
-    }
-
-    public static void setBottomTabBadgeByNavigatorId(final String navigatorId, final String badge) {
-        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
-        if (currentActivity == null) {
-            return;
-        }
-
-        NavigationApplication.instance.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                currentActivity.setBottomTabBadgeByNavigatorId(navigatorId, badge);
-            }
-        });
-    }
-
     public static void setBottomTabButtonByIndex(final Integer index, final Bundle screenParams) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
