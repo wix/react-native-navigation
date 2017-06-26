@@ -54,7 +54,7 @@ const NSInteger kLightBoxTag = 0x101010;
 
                     if (style[@"tapBackgroundToDismiss"] != nil && [RCTConvert BOOL:style[@"tapBackgroundToDismiss"]])
                     {
-                        UITapGestureRecognizer *singleTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismiss)];
+                        UITapGestureRecognizer *singleTap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
                         [self.overlayColorView addGestureRecognizer:singleTap];
                     }
                 }
