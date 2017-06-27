@@ -8,6 +8,8 @@
 - Based on 1.1.85 (394e0960f8824b9206da75de2bb013fbd64554bd)
 - Documentation https://wix.github.io/react-native-navigation/
 
+# This fork is now project specific, the last version that can be reused is 1.2.16.
+
 ## Disable open gesture
 
 You can use the folowing functionality from any screen to
