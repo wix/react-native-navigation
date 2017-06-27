@@ -11,6 +11,7 @@ import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.TintTypedArray;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
@@ -20,6 +21,9 @@ import android.widget.TextView;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.utils.Point;
+
+import static android.R.attr.y;
 
 public class CollapsingTextView extends FrameLayout {
     private static final float TEXT_SCALE_FACTOR = 1.75f;
@@ -123,11 +127,9 @@ public class CollapsingTextView extends FrameLayout {
     }
 
     private void calculateTextPosition(Canvas canvas) {
-        final int[] positionOnScreen = new int[2];
-        getLocationInWindow(positionOnScreen);
-        currentY = initialY = positionOnScreen[1] + canvas.getHeight() - dummy.getMeasuredHeight();
+        currentY = initialY = ViewUtils.getStatusBarHeight() + canvas.getHeight() - dummy.getMeasuredHeight();
         float bottomMargin = ViewUtils.convertDpToPixel(10);
-        collapseY = positionOnScreen[1] + bottomMargin;
+        collapseY = ViewUtils.getStatusBarHeight() + bottomMargin;
     }
 
     private float linearInterpolation(float from, float to, float fraction) {

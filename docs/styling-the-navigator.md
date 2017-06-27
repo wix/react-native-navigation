@@ -51,7 +51,7 @@ this.props.navigator.setStyle({
   navBarBlur: false, // blur the entire nav bar, works best with drawUnderNavBar:true
   tabBarHidden: false, // make the screen content hide the tab bar (remembered across pushes)
   statusBarTextColorScheme: 'dark', // text color of status bar, 'dark' / 'light' (remembered across pushes)
-  statusBarTextColorSchemeSingleScreen: 'light' // same as statusBarTextColorScheme but does NOT remember across pushes
+  statusBarTextColorSchemeSingleScreen: 'light', // same as statusBarTextColorScheme but does NOT remember across pushes
   navBarSubtitleColor: 'red', // subtitle color
   navBarSubtitleFontFamily: 'font-name', // subtitle font
   screenBackgroundColor: 'white', // Default screen color, visible before the actual react view is rendered

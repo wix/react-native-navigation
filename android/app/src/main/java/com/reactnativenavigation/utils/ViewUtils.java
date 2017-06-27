@@ -173,7 +173,7 @@ public class ViewUtils {
         return new Point(xy[0], xy[1]);
     }
 
-    private static int getStatusBarHeight() {
+    public static int getStatusBarHeight() {
         if (statusBarHeight > 0) {
             return statusBarHeight;
         }

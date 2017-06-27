@@ -1,7 +1,6 @@
 package com.reactnativenavigation.params.parsers;
 
 import android.os.Bundle;
-
 import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.NavigationParams;
 
@@ -20,6 +19,7 @@ public class LightBoxParamsParser extends Parser {
         result.screenId = params.getString("screenId");
         result.navigationParams = new NavigationParams(params.getBundle("navigationParams"));
         result.backgroundColor = getColor(params, "backgroundColor");
+        result.tapBackgroundToDismiss = params.getBoolean("tapBackgroundToDismiss");
         return result;
     }
 }
