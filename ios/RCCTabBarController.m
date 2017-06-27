@@ -21,6 +21,9 @@
 @property(nullable, nonatomic,copy) NSArray<__kindof UIViewController *> *viewControllers;
 @property(nullable, nonatomic, assign) __kindof UIViewController *selectedViewController; // This may return the "More" navigation controller if it exists.
 
+@property (nonatomic, strong) NSLayoutConstraint *tabBarHeightConstraint;
+@property (nonatomic, strong) NSNumber *tabBarHeight;
+
 @end
 
 @implementation RCCTabBarController
@@ -76,28 +79,50 @@
   holder.translatesAutoresizingMaskIntoConstraints = NO;
   [self.view addSubview:holder];
 
+  UIView *tabBarHolder = [[UIView alloc] init];
+  tabBarHolder.translatesAutoresizingMaskIntoConstraints = NO;
+  [self.view addSubview:tabBarHolder];
+
   UITabBar *tabBar = [[UITabBar alloc] init];
   self.tabBar = tabBar;
   tabBar.translatesAutoresizingMaskIntoConstraints = NO;
   self.tabBar.delegate = self;
-  [self.view addSubview:tabBar];
+  [tabBarHolder addSubview:tabBar];
 
   NSDictionary *views = @{
           @"view" : self.view,
           @"holder" : holder,
+		  @"tabBarHolder" : tabBarHolder,
           @"tabBar" : tabBar,
   };
 
-  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[holder]-0-|" options:nil metrics:nil views:views]];
-  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[tabBar]-0-|" options:nil metrics:nil views:views]];
-  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[holder]-0-[tabBar]-0-|" options:nil metrics:nil views:views]];
+  NSDictionary *tabsStyle = props[@"style"];
+  NSNumber *tabBarHeight = tabsStyle[@"tabBarHeight"];
+
+  NSMutableDictionary *metrics = @{}.mutableCopy;
+
+  NSString *verticalFormat;
+  if (tabBarHeight) {
+	  metrics[@"tabBarHeight"] = tabBarHeight;
+	  verticalFormat = @"V:|-0-[tabBar(==tabBarHeight)]";
+  }
+  else {
+	  verticalFormat = @"V:|-0-[tabBar]-0-|";
+  }
+
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[tabBar]-0-|" options:nil metrics:metrics views:views]];
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalFormat options:nil metrics:metrics views:views]];
+
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[holder]-0-|" options:nil metrics:metrics views:views]];
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[tabBarHolder]-0-|" options:nil metrics:metrics views:views]];
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[holder]-0-[tabBarHolder]-0-|" options:nil metrics:metrics views:views]];
 
   self.tabBar.translucent = YES; // default
   
   UIColor *buttonColor = nil;
   UIColor *labelColor = nil;
   UIColor *selectedLabelColor = nil;
-  NSDictionary *tabsStyle = props[@"style"];
+
   if (tabsStyle)
   {
     NSString *tabBarButtonColor = tabsStyle[@"tabBarButtonColor"];
@@ -143,10 +168,11 @@
       self.tabBar.clipsToBounds = [tabBarHideShadow boolValue];
     }
 
-    NSNumber *tabBarHeight = tabsStyle[@"tabBarHeight"];
     if (tabBarHeight) {
+	  self.tabBarHeight = tabBarHeight;
+
       if (!self.tabBarHeightConstraint) {
-        self.tabBarHeightConstraint = [NSLayoutConstraint constraintWithItem:self.tabBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
+        self.tabBarHeightConstraint = [NSLayoutConstraint constraintWithItem:tabBarHolder attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
         [NSLayoutConstraint activateConstraints:@[self.tabBarHeightConstraint]];
       }
       self.tabBarHeightConstraint.constant = tabBarHeight.floatValue;
@@ -390,6 +416,9 @@
   if ([performAction isEqualToString:@"setTabBarHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
+
+	  self.tabBarHeightConstraint.constant = hidden ? 0 : self.tabBarHeight.floatValue;
+
     [UIView animateWithDuration: ([actionParams[@"animated"] boolValue] ? 0.45 : 0)
                           delay: 0
          usingSpringWithDamping: 0.75
@@ -397,7 +426,7 @@
                         options: (hidden ? UIViewAnimationOptionCurveEaseIn : UIViewAnimationOptionCurveEaseOut)
                      animations:^()
      {
-       self.tabBar.transform = hidden ? CGAffineTransformMakeTranslation(0, self.tabBar.frame.size.height) : CGAffineTransformIdentity;
+		 [self.view layoutIfNeeded];
      }
                      completion:^(BOOL finished)
      {
