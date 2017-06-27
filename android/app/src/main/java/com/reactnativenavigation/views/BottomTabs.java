@@ -1,29 +1,27 @@
 package com.reactnativenavigation.views;
 
+import android.animation.LayoutTransition;
 import android.content.Context;
 import android.graphics.Color;
-import android.text.TextUtils;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.views.utils.Constants;
 
 import java.util.List;
 
 public class BottomTabs extends AHBottomNavigation {
 
-    private VisibilityAnimator visibilityAnimator;
-
     public BottomTabs(Context context) {
         super(context);
+
         setForceTint(true);
         setId(ViewUtils.generateViewId());
-        createVisibilityAnimator();
         setStyle();
         setFontFamily();
     }
@@ -35,7 +33,6 @@ public class BottomTabs extends AHBottomNavigation {
             addItem(item);
             setOnTabSelectedListener(onTabSelectedListener);
         }
-        setTitlesDisplayState();
     }
 
     public void setStyleFromScreen(StyleParams params) {
@@ -49,7 +46,7 @@ public class BottomTabs extends AHBottomNavigation {
             setAccentColor(params.selectedBottomTabsButtonColor.getColor());
         }
 
-        setVisibility(params.bottomTabsHidden, true);
+        setVisibility(params.bottomTabsHidden, false);
     }
 
     public void setTabButton(ScreenParams params, Integer index) {
@@ -60,29 +57,41 @@ public class BottomTabs extends AHBottomNavigation {
         }
     }
 
-    private void setTitlesDisplayState() {
-        if (AppStyle.appStyle.forceTitlesDisplay) {
-            setTitleState(TitleState.ALWAYS_SHOW);
-        } else if (hasTabsWithLabels()) {
-            setTitleState(TitleState.SHOW_WHEN_ACTIVE);
-        } else {
-            setTitleState(TitleState.ALWAYS_HIDE);
-        }
-    }
+    public void setVisibility(final boolean hidden, boolean animated) {
+        if (animated) {
+			int toVisibility = hidden ? GONE : VISIBLE;
+			if (getVisibility() == toVisibility) return;
 
-    private boolean hasTabsWithLabels() {
-        for (int i = 0; i < getItemsCount(); i++) {
-            String title = getItem(0).getTitle(getContext());
-            if (!TextUtils.isEmpty(title)) {
-                return true;
-            }
-        }
-        return false;
-    }
+			if (hidden)
+			{
+				TranslateAnimation animate = new TranslateAnimation(0, 0, 0, getHeight());
+				animate.setDuration(300);
+				animate.setFillAfter(false);
+				startAnimation(animate);
+				setVisibility(GONE);
+			} else {
+				TranslateAnimation animate = new TranslateAnimation(0, 0, getHeight(), 0);
+				animate.setDuration(300);
+				animate.setAnimationListener(new Animation.AnimationListener()
+				{
+					@Override
+					public void onAnimationStart(Animation animation)
+					{
+					}
 
-    public void setVisibility(boolean hidden, boolean animated) {
-        if (visibilityAnimator != null) {
-            visibilityAnimator.setVisible(!hidden, animated);
+					@Override
+					public void onAnimationEnd(Animation animation)
+					{
+						setVisibility(VISIBLE);
+					}
+
+					@Override
+					public void onAnimationRepeat(Animation animation)
+					{
+					}
+				});
+				startAnimation(animate);
+			}
         } else {
             setVisibility(hidden);
         }
@@ -100,35 +109,13 @@ public class BottomTabs extends AHBottomNavigation {
         setVisibility(bottomTabsHidden ? GONE : VISIBLE);
     }
 
-    private void createVisibilityAnimator() {
-        visibilityAnimator = new VisibilityAnimator(BottomTabs.this,
-                VisibilityAnimator.HideDirection.Down,
-                (int) ViewUtils.convertDpToPixel(Constants.BOTTOM_TABS_HEIGHT));
-    }
-
     private void setStyle() {
-        if (hasBadgeBackgroundColor()) {
-            setNotificationBackgroundColor(AppStyle.appStyle.bottomTabBadgeBackgroundColor.getColor());
-        }
-        if (hasBadgeTextColor()) {
-            setNotificationTextColor(AppStyle.appStyle.bottomTabBadgeTextColor.getColor());
-        }
 		setNavigationBarHeight(AppStyle.appStyle.bottomTabsTabBarHeight);
 
 		if (AppStyle.appStyle.bottomTabFontSize > 0) {
 			setTitleTextSizeInSp(AppStyle.appStyle.bottomTabFontSize, AppStyle.appStyle.bottomTabFontSize);
 		}
 	}
-
-    private boolean hasBadgeTextColor() {
-        return AppStyle.appStyle.bottomTabBadgeTextColor != null &&
-               AppStyle.appStyle.bottomTabBadgeTextColor.hasColor();
-    }
-
-    private boolean hasBadgeBackgroundColor() {
-        return AppStyle.appStyle.bottomTabBadgeBackgroundColor != null &&
-               AppStyle.appStyle.bottomTabBadgeBackgroundColor.hasColor();
-    }
 
     private void setFontFamily() {
         if (AppStyle.appStyle.bottomTabFontFamily.hasFont()) {

@@ -21,6 +21,9 @@
 @property(nullable, nonatomic,copy) NSArray<__kindof UIViewController *> *viewControllers;
 @property(nullable, nonatomic, assign) __kindof UIViewController *selectedViewController; // This may return the "More" navigation controller if it exists.
 
+@property (nonatomic, strong) NSLayoutConstraint *tabBarHeightConstraint;
+@property (nonatomic, strong) NSNumber *tabBarHeight;
+
 @end
 
 @implementation RCCTabBarController
@@ -76,28 +79,58 @@
   holder.translatesAutoresizingMaskIntoConstraints = NO;
   [self.view addSubview:holder];
 
+  UIView *tabBarHolder = [[UIView alloc] init];
+  tabBarHolder.translatesAutoresizingMaskIntoConstraints = NO;
+  [self.view addSubview:tabBarHolder];
+
   UITabBar *tabBar = [[UITabBar alloc] init];
   self.tabBar = tabBar;
   tabBar.translatesAutoresizingMaskIntoConstraints = NO;
   self.tabBar.delegate = self;
-  [self.view addSubview:tabBar];
+  [tabBarHolder addSubview:tabBar];
+
+  UIView *topLine = [[UIView alloc] init];
+  topLine.translatesAutoresizingMaskIntoConstraints = NO;
+  topLine.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1];
+  [tabBarHolder addSubview:topLine];
 
   NSDictionary *views = @{
           @"view" : self.view,
           @"holder" : holder,
+          @"topLine" : topLine,
+		  @"tabBarHolder" : tabBarHolder,
           @"tabBar" : tabBar,
   };
 
-  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[holder]-0-|" options:nil metrics:nil views:views]];
-  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[tabBar]-0-|" options:nil metrics:nil views:views]];
-  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[holder]-0-[tabBar]-0-|" options:nil metrics:nil views:views]];
+  NSDictionary *tabsStyle = props[@"style"];
+  NSNumber *tabBarHeight = tabsStyle[@"tabBarHeight"];
+
+  NSMutableDictionary *metrics = @{}.mutableCopy;
+
+  NSString *verticalFormat;
+  if (tabBarHeight) {
+	  metrics[@"tabBarHeight"] = tabBarHeight;
+	  verticalFormat = @"V:|-0-[tabBar(==tabBarHeight)]";
+  }
+  else {
+	  verticalFormat = @"V:|-0-[tabBar]-0-|";
+  }
+
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[tabBar]-0-|" options:nil metrics:metrics views:views]];
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[topLine]-0-|" options:nil metrics:metrics views:views]];
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalFormat options:nil metrics:metrics views:views]];
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[topLine(1)]" options:nil metrics:metrics views:views]];
+
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[holder]-0-|" options:nil metrics:metrics views:views]];
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[tabBarHolder]-0-|" options:nil metrics:metrics views:views]];
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[holder]-0-[tabBarHolder]-0-|" options:nil metrics:metrics views:views]];
 
   self.tabBar.translucent = YES; // default
   
   UIColor *buttonColor = nil;
   UIColor *labelColor = nil;
   UIColor *selectedLabelColor = nil;
-  NSDictionary *tabsStyle = props[@"style"];
+
   if (tabsStyle)
   {
     NSString *tabBarButtonColor = tabsStyle[@"tabBarButtonColor"];
@@ -143,10 +176,11 @@
       self.tabBar.clipsToBounds = [tabBarHideShadow boolValue];
     }
 
-    NSNumber *tabBarHeight = tabsStyle[@"tabBarHeight"];
     if (tabBarHeight) {
+	  self.tabBarHeight = tabBarHeight;
+
       if (!self.tabBarHeightConstraint) {
-        self.tabBarHeightConstraint = [NSLayoutConstraint constraintWithItem:self.tabBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
+        self.tabBarHeightConstraint = [NSLayoutConstraint constraintWithItem:tabBarHolder attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
         [NSLayoutConstraint activateConstraints:@[self.tabBarHeightConstraint]];
       }
       self.tabBarHeightConstraint.constant = tabBarHeight.floatValue;
@@ -209,22 +243,9 @@
       tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
       tabBarItem.selectedImage = iconImageSelected;
 
-      id imageInsets = tabItemLayout[@"props"][@"iconInsets"];
-      if (imageInsets && imageInsets != (id)[NSNull null])
-      {
-        id topInset = imageInsets[@"top"];
-        id leftInset = imageInsets[@"left"];
-        id bottomInset = imageInsets[@"bottom"];
-        id rightInset = imageInsets[@"right"];
+	  tabBarItem.imageInsets = UIEdgeInsetsMake(-1, 0, 1, 0);
 
-        CGFloat top = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:topInset] : 0;
-        CGFloat left = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:leftInset] : 0;
-        CGFloat bottom = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:bottomInset] : 0;
-        CGFloat right = topInset != (id)[NSNull null] ? [RCTConvert CGFloat:rightInset] : 0;
-
-        tabBarItem.imageInsets = UIEdgeInsetsMake(top, left, bottom, right);
-      }
-      NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
+	  NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
       if (!unselectedAttributes[NSForegroundColorAttributeName] && labelColor)
       {
         unselectedAttributes[NSForegroundColorAttributeName] = labelColor;
@@ -239,7 +260,9 @@
       }
 
       [tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
-      // create badge
+	  [tabBarItem setTitlePositionAdjustment:UIOffsetMake(0, -5)];
+
+	  // create badge
       NSObject *badge = tabItemLayout[@"props"][@"badge"];
       if (badge == nil || [badge isEqual:[NSNull null]])
       {
@@ -257,6 +280,16 @@
   }
 
   self.tabBar.items = tabBarItems.copy;
+
+  NSUInteger leni = self.tabBar.items.count;
+  CGFloat tabWidth = [UIScreen mainScreen].bounds.size.width / leni;
+  for (NSUInteger i = 0; i < leni; ++i) {
+	  CGFloat x = (i + 1) * tabWidth;
+	  UIView *view = [[UIView alloc] initWithFrame:CGRectMake(x, 10, 0.5, 40)];
+	  view.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1];
+	  [self.tabBar insertSubview:view atIndex:leni - i];
+  }
+
   // replace the tabs
   self.viewControllers = viewControllers.copy;
 
@@ -286,41 +319,6 @@
 
 - (void)performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams bridge:(RCTBridge *)bridge completion:(void (^)(void))completion
 {
-  if ([performAction isEqualToString:@"setBadge"])
-  {
-    UIViewController *viewController = nil;
-    NSNumber *tabIndex = actionParams[@"tabIndex"];
-    if (tabIndex)
-    {
-      NSUInteger i = [tabIndex unsignedIntegerValue];
-      
-      if ([self.viewControllers count] > i)
-      {
-        viewController = self.viewControllers[i];
-      }
-    }
-    NSString *contentId = actionParams[@"contentId"];
-    NSString *contentType = actionParams[@"contentType"];
-    if (contentId && contentType)
-    {
-      viewController = [[RCCManager sharedInstance] getControllerWithId:contentId componentType:contentType];
-    }
-    
-    if (viewController)
-    {
-      NSObject *badge = actionParams[@"badge"];
-      
-      if (badge == nil || [badge isEqual:[NSNull null]])
-      {
-        viewController.tabBarItem.badgeValue = nil;
-      }
-      else
-      {
-        viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
-      }
-    }
-  }
-  
   if ([performAction isEqualToString:@"switchTo"])
   {
     UIViewController *viewController = nil;
@@ -391,6 +389,9 @@
   if ([performAction isEqualToString:@"setTabBarHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
+
+	  self.tabBarHeightConstraint.constant = hidden ? 0 : self.tabBarHeight.floatValue;
+
     [UIView animateWithDuration: ([actionParams[@"animated"] boolValue] ? 0.45 : 0)
                           delay: 0
          usingSpringWithDamping: 0.75
@@ -398,7 +399,7 @@
                         options: (hidden ? UIViewAnimationOptionCurveEaseIn : UIViewAnimationOptionCurveEaseOut)
                      animations:^()
      {
-       self.tabBar.transform = hidden ? CGAffineTransformMakeTranslation(0, self.tabBar.frame.size.height) : CGAffineTransformIdentity;
+		 [self.view layoutIfNeeded];
      }
                      completion:^(BOOL finished)
      {

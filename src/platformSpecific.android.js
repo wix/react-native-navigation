@@ -161,14 +161,6 @@ function selectBottomTabByTabIndex(index) {
   NativeReactModule.selectBottomTabByTabIndex(index);
 }
 
-function setBottomTabBadgeByIndex(index, badge) {
-  NativeReactModule.setBottomTabBadgeByIndex(index, badge);
-}
-
-function setBottomTabBadgeByNavigatorId(navigatorId, badge) {
-  NativeReactModule.setBottomTabBadgeByNavigatorId(navigatorId, badge);
-}
-
 function setBottomTabButtonByIndex(index, params) {
   NativeReactModule.setBottomTabButtonByIndex(index, params);
 }
@@ -219,8 +211,6 @@ module.exports = {
   removeSplashScreen,
   selectBottomTabByNavigatorId,
   selectBottomTabByTabIndex,
-  setBottomTabBadgeByNavigatorId,
-  setBottomTabBadgeByIndex,
   setBottomTabButtonByNavigatorId,
   setBottomTabButtonByIndex,
   showSnackbar,
