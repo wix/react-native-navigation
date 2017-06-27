@@ -103,7 +103,7 @@ public class BottomTabs extends AHBottomNavigation {
     private void createVisibilityAnimator() {
         visibilityAnimator = new VisibilityAnimator(BottomTabs.this,
                 VisibilityAnimator.HideDirection.Down,
-                (int) ViewUtils.convertDpToPixel(Constants.BOTTOM_TABS_HEIGHT));
+                Constants.BOTTOM_TABS_HEIGHT);
     }
 
     private void setStyle() {
