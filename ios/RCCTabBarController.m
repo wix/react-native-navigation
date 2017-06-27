@@ -89,9 +89,15 @@
   self.tabBar.delegate = self;
   [tabBarHolder addSubview:tabBar];
 
+  UIView *topLine = [[UIView alloc] init];
+  topLine.translatesAutoresizingMaskIntoConstraints = NO;
+  topLine.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1];
+  [tabBarHolder addSubview:topLine];
+
   NSDictionary *views = @{
           @"view" : self.view,
           @"holder" : holder,
+          @"topLine" : topLine,
 		  @"tabBarHolder" : tabBarHolder,
           @"tabBar" : tabBar,
   };
@@ -111,7 +117,9 @@
   }
 
   [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[tabBar]-0-|" options:nil metrics:metrics views:views]];
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[topLine]-0-|" options:nil metrics:metrics views:views]];
   [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalFormat options:nil metrics:metrics views:views]];
+  [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[topLine(1)]" options:nil metrics:metrics views:views]];
 
   [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[holder]-0-|" options:nil metrics:metrics views:views]];
   [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[tabBarHolder]-0-|" options:nil metrics:metrics views:views]];
