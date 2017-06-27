@@ -1,1 +1,6 @@
+Delete remote tags:
 git ls-remote -t git@github.com:wix/react-native-navigation.git | awk '{print $2}' | cut -d '/' -f 3 | cut -d '^' -f 1 | uniq | xargs -n 1 git push --delete origin
+
+Reset local tags:
+git tag -l | xargs git tag -d
+git fetch --tags
