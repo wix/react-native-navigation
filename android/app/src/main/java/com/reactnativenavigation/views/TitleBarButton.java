@@ -18,15 +18,24 @@ import java.util.ArrayList;
 
 class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
+    protected final int index;
     protected final Menu menu;
     protected final View parent;
     TitleBarButtonParams buttonParams;
+	private final MenuButtonOnClickListener onClickListener;
     @Nullable protected String navigatorEventId;
 
-    TitleBarButton(Menu menu, View parent, TitleBarButtonParams buttonParams, @Nullable String navigatorEventId) {
+    TitleBarButton(int index,
+				   Menu menu,
+				   View parent,
+				   TitleBarButtonParams buttonParams,
+				   MenuButtonOnClickListener onClickListener,
+				   @Nullable String navigatorEventId) {
+		this.index = index;
         this.menu = menu;
         this.parent = parent;
         this.buttonParams = buttonParams;
+		this.onClickListener = onClickListener;
         this.navigatorEventId = navigatorEventId;
     }
 
@@ -126,7 +135,11 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        NavigationApplication.instance.getEventEmitter().sendNavigatorEvent(buttonParams.eventId, navigatorEventId);
+		if (this.buttonParams.eventId.equals("sideMenu")) {
+			onClickListener.onSideMenuButtonClick(SideMenu.Side.Right);
+		} else {
+			NavigationApplication.instance.getEventEmitter().sendNavigatorEvent(buttonParams.eventId, navigatorEventId);
+		}
         return true;
     }
 }

@@ -12,6 +12,7 @@ import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
+import com.reactnativenavigation.views.MenuButtonOnClickListener;
 import com.reactnativenavigation.views.TopTabs;
 
 import java.util.ArrayList;
@@ -25,8 +26,8 @@ public class ViewPagerScreen extends Screen {
     protected List<ContentView> contentViews;
     protected ViewPager viewPager;
 
-    public ViewPagerScreen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener backButtonListener) {
-        super(activity, screenParams, backButtonListener);
+    public ViewPagerScreen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener backButtonListener, MenuButtonOnClickListener rightButtonsClickListener) {
+        super(activity, screenParams, backButtonListener, rightButtonsClickListener);
     }
 
     @Override

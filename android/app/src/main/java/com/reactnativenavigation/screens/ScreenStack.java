@@ -8,9 +8,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
-import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
@@ -19,6 +17,7 @@ import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.utils.KeyboardVisibilityDetector;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
+import com.reactnativenavigation.views.MenuButtonOnClickListener;
 
 import java.util.List;
 import java.util.Stack;
@@ -33,6 +32,7 @@ public class ScreenStack {
     private final AppCompatActivity activity;
     private RelativeLayout parent;
     private LeftButtonOnClickListener leftButtonOnClickListener;
+    private MenuButtonOnClickListener rightButtonsClickListener;
     private Stack<Screen> stack = new Stack<>();
 	private boolean disableBackNavigation = false;
     private final KeyboardVisibilityDetector keyboardVisibilityDetector;
@@ -46,16 +46,18 @@ public class ScreenStack {
     public ScreenStack(AppCompatActivity activity,
                        RelativeLayout parent,
                        String navigatorId,
-                       LeftButtonOnClickListener leftButtonOnClickListener) {
+                       LeftButtonOnClickListener leftButtonOnClickListener,
+					   MenuButtonOnClickListener rightButtonsClickListener) {
         this.activity = activity;
         this.parent = parent;
         this.navigatorId = navigatorId;
         this.leftButtonOnClickListener = leftButtonOnClickListener;
+		this.rightButtonsClickListener = rightButtonsClickListener;
         keyboardVisibilityDetector = new KeyboardVisibilityDetector(parent);
     }
 
     public void newStack(final ScreenParams params, LayoutParams layoutParams) {
-        final Screen nextScreen = ScreenFactory.create(activity, params, leftButtonOnClickListener);
+        final Screen nextScreen = ScreenFactory.create(activity, params, leftButtonOnClickListener, rightButtonsClickListener);
         final Screen previousScreen = stack.peek();
         if (isStackVisible) {
             pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen, new Screen.OnDisplayListener() {
@@ -93,7 +95,7 @@ public class ScreenStack {
     }
 
     public void pushInitialScreen(ScreenParams initialScreenParams, LayoutParams params) {
-        Screen initialScreen = ScreenFactory.create(activity, initialScreenParams, leftButtonOnClickListener);
+        Screen initialScreen = ScreenFactory.create(activity, initialScreenParams, leftButtonOnClickListener, rightButtonsClickListener);
         initialScreen.setVisibility(View.INVISIBLE);
         initialScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
@@ -108,7 +110,7 @@ public class ScreenStack {
     }
 
     public void push(final ScreenParams params, LayoutParams layoutParams) {
-        Screen nextScreen = ScreenFactory.create(activity, params, leftButtonOnClickListener);
+        Screen nextScreen = ScreenFactory.create(activity, params, leftButtonOnClickListener, rightButtonsClickListener);
         final Screen previousScreen = stack.peek();
         if (isStackVisible) {
             if (nextScreen.screenParams.sharedElementsTransitions.isEmpty()) {
@@ -230,6 +232,10 @@ public class ScreenStack {
     public Screen peek() {
         return stack.peek();
     }
+
+    public boolean empty() {
+		return stack.empty();
+	}
 
     private void readdPrevious(Screen previous) {
         previous.setVisibility(View.VISIBLE);
@@ -367,24 +373,6 @@ public class ScreenStack {
 
     private boolean isScreenVisible(Screen screen) {
         return isStackVisible && peek() == screen;
-    }
-
-    public void showContextualMenu(String screenInstanceId, final ContextualMenuParams params, final Callback onButtonClicked) {
-        performOnScreen(screenInstanceId, new Task<Screen>() {
-            @Override
-            public void run(Screen screen) {
-                screen.showContextualMenu(params, onButtonClicked);
-            }
-        });
-    }
-
-    public void dismissContextualMenu(String screenInstanceId) {
-        performOnScreen(screenInstanceId, new Task<Screen>() {
-            @Override
-            public void run(Screen screen) {
-                screen.dismissContextualMenu();
-            }
-        });
     }
 
     public void selectTopTabByTabIndex(String screenInstanceId, final int index) {

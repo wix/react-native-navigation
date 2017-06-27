@@ -13,6 +13,7 @@ import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
+import com.reactnativenavigation.views.MenuButtonOnClickListener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -27,8 +28,8 @@ public class FragmentScreen extends Screen {
     private FrameLayout content;
     private ContentView contentView;
 
-    public FragmentScreen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener leftButtonOnClickListener) {
-        super(activity, screenParams, leftButtonOnClickListener);
+    public FragmentScreen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener leftButtonOnClickListener, MenuButtonOnClickListener rightButtonsClickListener) {
+        super(activity, screenParams, leftButtonOnClickListener, rightButtonsClickListener);
     }
 
     @Override

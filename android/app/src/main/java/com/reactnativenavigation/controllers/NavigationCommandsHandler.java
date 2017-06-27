@@ -2,13 +2,10 @@ package com.reactnativenavigation.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.ActivityParams;
-import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.params.ScreenParams;
@@ -438,34 +435,6 @@ public class NavigationCommandsHandler {
         });
     }
 
-    public static void setBottomTabBadgeByIndex(final Integer index, final String badge) {
-        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
-        if (currentActivity == null) {
-            return;
-        }
-
-        NavigationApplication.instance.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                currentActivity.setBottomTabBadgeByIndex(index, badge);
-            }
-        });
-    }
-
-    public static void setBottomTabBadgeByNavigatorId(final String navigatorId, final String badge) {
-        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
-        if (currentActivity == null) {
-            return;
-        }
-
-        NavigationApplication.instance.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                currentActivity.setBottomTabBadgeByNavigatorId(navigatorId, badge);
-            }
-        });
-    }
-
     public static void setBottomTabButtonByIndex(final Integer index, final Bundle screenParams) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
@@ -534,34 +503,6 @@ public class NavigationCommandsHandler {
             @Override
             public void run() {
                 currentActivity.showSnackbar(params);
-            }
-        });
-    }
-
-    public static void showContextualMenu(final String screenInstanceId, final ContextualMenuParams params, final Callback onButtonClicked) {
-        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
-        if (currentActivity == null) {
-            return;
-        }
-
-        NavigationApplication.instance.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                currentActivity.showContextualMenu(screenInstanceId, params, onButtonClicked);
-            }
-        });
-    }
-
-    public static void dismissContextualMenu(final String screenInstanceId) {
-        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
-        if (currentActivity == null) {
-            return;
-        }
-
-        NavigationApplication.instance.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                currentActivity.dismissContextualMenu(screenInstanceId);
             }
         });
     }

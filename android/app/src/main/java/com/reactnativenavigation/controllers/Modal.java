@@ -8,19 +8,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.layouts.Layout;
 import com.reactnativenavigation.layouts.ModalScreenLayout;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
-import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.Orientation;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.views.SideMenu;
 
 import java.util.List;
 
@@ -60,14 +59,6 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         layout.updateScreenStyle(screenInstanceId, styleParams);
     }
 
-    public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
-        layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
-    }
-
-    public void dismissContextualMenu(String screenInstanceId) {
-        layout.dismissContextualMenu(screenInstanceId);
-    }
-
     void showSlidingOverlay(SlidingOverlayParams params) {
         layout.showSlidingOverlay(params);
     }
@@ -84,7 +75,7 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
         return true;
     }
 
-    public void onSideMenuButtonClick() {
+    public void onSideMenuButtonClick(SideMenu.Side side) {
     }
 
     void selectTopTabByScreen(String screenInstanceId) {

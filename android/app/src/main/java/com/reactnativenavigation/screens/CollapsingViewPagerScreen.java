@@ -16,6 +16,7 @@ import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.views.CollapsingContentView;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
+import com.reactnativenavigation.views.MenuButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseAmount;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseCalculator;
@@ -31,8 +32,8 @@ import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseBeha
 
 @SuppressLint("ViewConstructor")
 public class CollapsingViewPagerScreen extends ViewPagerScreen {
-    public CollapsingViewPagerScreen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener backButtonListener) {
-        super(activity, screenParams, backButtonListener);
+    public CollapsingViewPagerScreen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener backButtonListener, MenuButtonOnClickListener rightButtonsClickListener) {
+        super(activity, screenParams, backButtonListener, rightButtonsClickListener);
     }
 
     @Override

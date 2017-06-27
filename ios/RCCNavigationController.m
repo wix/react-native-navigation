@@ -316,9 +316,12 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
 {
   NSString *buttonId = objc_getAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_ID);
 
+  BOOL leftButton = [self.viewControllers.lastObject.navigationItem.leftBarButtonItems containsObject:barButtonItem];
+  NSString *side = leftButton ? @"left" : @"right";
+
   if ([buttonId isEqualToString:@"sideMenu"])
   {
-    [[[RCCManager sharedInstance] getDrawerController] performAction:@"toggle" actionParams:nil bridge:[[RCCManager sharedInstance] getBridge]];
+    [[[RCCManager sharedInstance] getDrawerController] performAction:@"toggle" actionParams:@{@"side": side} bridge:[[RCCManager sharedInstance] getBridge]];
   }
   else
   {

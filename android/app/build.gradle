@@ -52,7 +52,7 @@ dependencies {
 
     // node_modules
     compile "com.facebook.react:react-native:+"
-    compile project(':ahbottomnavigation')
+    compile 'com.github.MediaMonksMobile:ahbottomnavigation:2.1.1'
 
     // third party
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.4'

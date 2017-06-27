@@ -9,17 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
-import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.controllers.NavigationActivity;
-import com.reactnativenavigation.events.ContextualMenuHiddenEvent;
 import com.reactnativenavigation.events.Event;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.FabSetEvent;
 import com.reactnativenavigation.events.Subscriber;
 import com.reactnativenavigation.events.ViewPagerScreenChangedEvent;
 import com.reactnativenavigation.params.BaseScreenParams;
-import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
@@ -28,6 +25,7 @@ import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.StyleParamsParser;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
+import com.reactnativenavigation.views.MenuButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
 import com.reactnativenavigation.views.sharedElementTransition.SharedElementTransition;
 import com.reactnativenavigation.views.sharedElementTransition.SharedElements;
@@ -48,16 +46,18 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     protected final ScreenParams screenParams;
     protected TopBar topBar;
     private final LeftButtonOnClickListener leftButtonOnClickListener;
+    private final MenuButtonOnClickListener rightButtonsClickListener;
     private ScreenAnimator screenAnimator;
     protected StyleParams styleParams;
     public final SharedElements sharedElements;
 
-    public Screen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener leftButtonOnClickListener) {
+    public Screen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener leftButtonOnClickListener, MenuButtonOnClickListener rightButtonsClickListener) {
         super(activity);
         this.activity = activity;
         this.screenParams = screenParams;
         styleParams = screenParams.styleParams;
         this.leftButtonOnClickListener = leftButtonOnClickListener;
+        this.rightButtonsClickListener = rightButtonsClickListener;
         screenAnimator = new ScreenAnimator(this);
         createViews();
         EventBus.instance.register(this);
@@ -70,12 +70,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     @Override
     public void onEvent(Event event) {
-        if (ContextualMenuHiddenEvent.TYPE.equals(event.getType()) && isShown()) {
-            topBar.onContextualMenuHidden();
-            setStyle();
-        }
         if (ViewPagerScreenChangedEvent.TYPE.equals(event.getType()) && isShown() ) {
-            topBar.dismissContextualMenu();
             topBar.onViewPagerScreenChanged(getScreenParams());
         }
     }
@@ -130,6 +125,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             screenParams.leftButton.setStyleFromScreen(screenParams.styleParams);
         }
         topBar.addTitleBarAndSetButtons(screenParams.rightButtons,
+				rightButtonsClickListener,
                 screenParams.leftButton,
                 leftButtonOnClickListener,
                 getNavigatorEventId(),
@@ -205,7 +201,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void setTitleBarRightButtons(String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {
         setButtonColorFromScreen(titleBarButtons);
-        topBar.setTitleBarRightButtons(navigatorEventId, titleBarButtons);
+        topBar.setTitleBarRightButtons(navigatorEventId, titleBarButtons, rightButtonsClickListener);
     }
 
     public void setTitleBarLeftButton(String navigatorEventId, LeftButtonOnClickListener backButtonListener,
@@ -304,15 +300,6 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", screenParams.getNavigatorEventId());
         NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", screenParams.getNavigatorEventId());
         screenAnimator.hide(animated, onAnimatedEnd);
-    }
-
-    public void showContextualMenu(ContextualMenuParams params, Callback onButtonClicked) {
-        topBar.showContextualMenu(params, styleParams, onButtonClicked);
-        setStatusBarColor(styleParams.contextualMenuStatusBarColor);
-    }
-
-    public void dismissContextualMenu() {
-        topBar.dismissContextualMenu();
     }
 
     public void destroy() {

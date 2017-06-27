@@ -8,6 +8,7 @@ import com.facebook.react.uimanager.RootViewUtil;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.views.CollapsingContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
+import com.reactnativenavigation.views.MenuButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseAmount;
 import com.reactnativenavigation.views.collapsingToolbar.CollapseCalculator;
@@ -21,8 +22,8 @@ import com.reactnativenavigation.views.collapsingToolbar.behaviours.CollapseBeha
 
 public class CollapsingSingleScreen extends SingleScreen {
 
-    public CollapsingSingleScreen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener titleBarBarBackButtonListener) {
-        super(activity, screenParams, titleBarBarBackButtonListener);
+    public CollapsingSingleScreen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener titleBarBarBackButtonListener, MenuButtonOnClickListener rightButtonsClickListener) {
+        super(activity, screenParams, titleBarBarBackButtonListener, rightButtonsClickListener);
     }
 
     @Override

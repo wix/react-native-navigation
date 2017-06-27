@@ -4,16 +4,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
-import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ModalDismissedEvent;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
-import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.views.SideMenu;
 
 import java.util.List;
 import java.util.Stack;
@@ -137,18 +136,6 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
         }
     }
 
-    public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
-        for (Modal modal : stack) {
-            modal.showContextualMenu(screenInstanceId, params, onButtonClicked);
-        }
-    }
-
-    public void dismissContextualMenu(String screenInstanceId) {
-        for (Modal modal : stack) {
-            modal.dismissContextualMenu(screenInstanceId);
-        }
-    }
-
     @Override
     public boolean onTitleBarBackButtonClick() {
         // Do nothing and let the layout handle the back button click
@@ -156,7 +143,7 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
     }
 
     @Override
-    public void onSideMenuButtonClick() {
+    public void onSideMenuButtonClick(SideMenu.Side side) {
         // Do nothing and let the layout handle the click
     }
 

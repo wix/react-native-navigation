@@ -161,14 +161,6 @@ function selectBottomTabByTabIndex(index) {
   NativeReactModule.selectBottomTabByTabIndex(index);
 }
 
-function setBottomTabBadgeByIndex(index, badge) {
-  NativeReactModule.setBottomTabBadgeByIndex(index, badge);
-}
-
-function setBottomTabBadgeByNavigatorId(navigatorId, badge) {
-  NativeReactModule.setBottomTabBadgeByNavigatorId(navigatorId, badge);
-}
-
 function setBottomTabButtonByIndex(index, params) {
   NativeReactModule.setBottomTabButtonByIndex(index, params);
 }
@@ -183,14 +175,6 @@ function showSnackbar(params) {
 
 function dismissSnackbar() {
   NativeReactModule.dismissSnackbar();
-}
-
-function showContextualMenu(screenInstanceID, params, onButtonPressed) {
-  NativeReactModule.showContextualMenu(screenInstanceID, params, onButtonPressed);
-}
-
-function dismissContextualMenu(screenInstanceID) {
-  NativeReactModule.dismissContextualMenu(screenInstanceID);
 }
 
 function setScreenStyle(screenInstanceId, style) {
@@ -227,13 +211,9 @@ module.exports = {
   removeSplashScreen,
   selectBottomTabByNavigatorId,
   selectBottomTabByTabIndex,
-  setBottomTabBadgeByNavigatorId,
-  setBottomTabBadgeByIndex,
   setBottomTabButtonByNavigatorId,
   setBottomTabButtonByIndex,
   showSnackbar,
   dismissSnackbar,
-  showContextualMenu,
-  dismissContextualMenu,
   setScreenStyle
 };

@@ -1,7 +1,5 @@
 package com.reactnativenavigation.views;
 
-public interface LeftButtonOnClickListener {
+public interface LeftButtonOnClickListener extends MenuButtonOnClickListener {
     boolean onTitleBarBackButtonClick();
-
-    void onSideMenuButtonClick();
 }

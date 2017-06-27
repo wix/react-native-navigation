@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
+import com.reactnativenavigation.views.MenuButtonOnClickListener;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
@@ -12,8 +13,9 @@ public class SingleScreen extends Screen {
     protected ContentView contentView;
 
     public SingleScreen(AppCompatActivity activity, ScreenParams screenParams,
-                        LeftButtonOnClickListener titleBarBarBackButtonListener) {
-        super(activity, screenParams, titleBarBarBackButtonListener);
+                        LeftButtonOnClickListener titleBarBarBackButtonListener,
+						MenuButtonOnClickListener rightButtonsClickListener) {
+        super(activity, screenParams, titleBarBarBackButtonListener, rightButtonsClickListener);
     }
 
     @Override

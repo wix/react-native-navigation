@@ -124,16 +124,6 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setBottomTabBadgeByIndex(Integer index, String badge) {
-        NavigationCommandsHandler.setBottomTabBadgeByIndex(index, badge);
-    }
-
-    @ReactMethod
-    public void setBottomTabBadgeByNavigatorId(String navigatorId, String badge) {
-        NavigationCommandsHandler.setBottomTabBadgeByNavigatorId(navigatorId, badge);
-    }
-
-    @ReactMethod
     public void setBottomTabButtonByIndex(Integer index, final ReadableMap params) {
         NavigationCommandsHandler.setBottomTabButtonByIndex(index, BundleConverter.toBundle(params));
     }
@@ -267,18 +257,6 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void dismissSnackbar() {
         NavigationCommandsHandler.dismissSnackbar();
-    }
-
-    @ReactMethod
-    public void showContextualMenu(final String screenInstanceId, final ReadableMap params, final Callback onButtonClicked) {
-        ContextualMenuParams contextualMenuParams =
-                new ContextualMenuParamsParser().parse(BundleConverter.toBundle(params));
-        NavigationCommandsHandler.showContextualMenu(screenInstanceId, contextualMenuParams, onButtonClicked);
-    }
-
-    @ReactMethod
-    public void dismissContextualMenu(String screenInstanceId) {
-        NavigationCommandsHandler.dismissContextualMenu(screenInstanceId);
     }
 
     @ReactMethod

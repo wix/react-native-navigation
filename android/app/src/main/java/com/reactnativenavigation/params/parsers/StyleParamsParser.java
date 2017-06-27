@@ -27,9 +27,6 @@ public class StyleParamsParser {
         StyleParams result = new StyleParams(params);
         result.orientation = Orientation.fromString(params.getString("orientation", getDefaultOrientation()));
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
-        result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
-        result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
-        result.contextualMenuBackgroundColor = getColor("contextualMenuBackgroundColor", getDefaultContextualMenuBackgroundColor());
 
         result.topBarColor = getColor("topBarColor", getDefaultTopBarColor());
         result.titleBarHideOnScroll = getBoolean("titleBarHideOnScroll", getDefaultTitleBarHideOnScroll());
@@ -83,6 +80,7 @@ public class StyleParamsParser {
         result.forceTitlesDisplay = getBoolean("forceTitlesDisplay", getDefaultForceTitlesDisplay());
 
         result.bottomTabFontFamily = getFont("bottomTabFontFamily", getDefaultBottomTabsFontFamily());
+        result.bottomTabFontSize = getInt("bottomTabFontSize", getDefaultBottomTabsFontSize());
 
         return result;
     }
@@ -244,6 +242,10 @@ public class StyleParamsParser {
     private StyleParams.Font getDefaultBottomTabsFontFamily() {
         return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.bottomTabFontFamily;
     }
+
+    private int getDefaultBottomTabsFontSize() {
+		return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.bottomTabFontSize;
+	}
 
     private StyleParams.Font getDefaultTitleTextFontFamily() {
         return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.titleBarTitleFont;

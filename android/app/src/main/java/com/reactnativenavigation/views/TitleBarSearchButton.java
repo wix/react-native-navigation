@@ -26,8 +26,8 @@ class TitleBarSearchButton extends TitleBarButton implements SearchView.OnQueryT
     static final String BUTTON_ID = "searchView";
     private SearchView searchView;
 
-    TitleBarSearchButton(Menu menu, View parent, TitleBarButtonParams buttonParams, @Nullable String navigatorEventId) {
-        super(menu, parent, buttonParams, navigatorEventId);
+    TitleBarSearchButton(int index, Menu menu, View parent, TitleBarButtonParams buttonParams, MenuButtonOnClickListener navigationButtonClickListener, @Nullable String navigatorEventId) {
+        super(index, menu, parent, buttonParams, navigationButtonClickListener, navigatorEventId);
     }
 
     MenuItem addToMenu(int index) {
