@@ -319,41 +319,6 @@
 
 - (void)performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams bridge:(RCTBridge *)bridge completion:(void (^)(void))completion
 {
-  if ([performAction isEqualToString:@"setBadge"])
-  {
-    UIViewController *viewController = nil;
-    NSNumber *tabIndex = actionParams[@"tabIndex"];
-    if (tabIndex)
-    {
-      NSUInteger i = [tabIndex unsignedIntegerValue];
-      
-      if ([self.viewControllers count] > i)
-      {
-        viewController = self.viewControllers[i];
-      }
-    }
-    NSString *contentId = actionParams[@"contentId"];
-    NSString *contentType = actionParams[@"contentType"];
-    if (contentId && contentType)
-    {
-      viewController = [[RCCManager sharedInstance] getControllerWithId:contentId componentType:contentType];
-    }
-    
-    if (viewController)
-    {
-      NSObject *badge = actionParams[@"badge"];
-      
-      if (badge == nil || [badge isEqual:[NSNull null]])
-      {
-        viewController.tabBarItem.badgeValue = nil;
-      }
-      else
-      {
-        viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
-      }
-    }
-  }
-  
   if ([performAction isEqualToString:@"switchTo"])
   {
     UIViewController *viewController = nil;
