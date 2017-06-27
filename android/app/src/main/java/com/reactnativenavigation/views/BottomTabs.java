@@ -20,8 +20,6 @@ public class BottomTabs extends AHBottomNavigation {
     public BottomTabs(Context context) {
         super(context);
 
-		setLayoutTransition(new LayoutTransition());
-
         setForceTint(true);
         setId(ViewUtils.generateViewId());
         setStyle();
