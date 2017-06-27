@@ -132,7 +132,7 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         allAnimators.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                dismiss();
+                destroy();
             }
         });
         allAnimators.start();
