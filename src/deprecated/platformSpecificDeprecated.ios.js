@@ -414,7 +414,7 @@ function updateDrawerToTabs(params) {
 			navigatorID
 		};
 
-		_injectOptionsInParams(params, navigatorOptions);
+		_injectOptionsInParams(tab, navigatorOptions);
 	});
 
   if (params.screen) {
