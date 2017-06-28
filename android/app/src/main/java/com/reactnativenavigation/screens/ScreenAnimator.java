@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -26,7 +28,7 @@ class ScreenAnimator {
     ScreenAnimator(Screen screen) {
         this.screen = screen;
         translationY = 0.08f * ViewUtils.getScreenHeight();
-        translationX = 0.08f * ViewUtils.getScreenWidth();
+        translationX = ViewUtils.getScreenWidth();
     }
 
     public void show(boolean animate, final Runnable onAnimationEnd) {
@@ -68,10 +70,10 @@ class ScreenAnimator {
             }
             case "slide-horizontal": {
                 ObjectAnimator translationX = ObjectAnimator.ofFloat(screen, View.TRANSLATION_X, this.translationX, 0);
-                translationX.setInterpolator(new DecelerateInterpolator());
-                translationX.setDuration(280);
+                translationX.setInterpolator(new FastOutSlowInInterpolator());
+                translationX.setDuration(375);
 
-                set.playTogether(translationX, alpha);
+                set.playTogether(translationX);
                 break;
             }
             default: {
@@ -114,10 +116,10 @@ class ScreenAnimator {
             }
             case "slide-horizontal": {
                 ObjectAnimator translationX = ObjectAnimator.ofFloat(screen, View.TRANSLATION_X, this.translationX);
-                translationX.setInterpolator(new AccelerateInterpolator());
-                translationX.setDuration(250);
+                translationX.setInterpolator(new LinearOutSlowInInterpolator());
+                translationX.setDuration(375);
 
-                set.playTogether(translationX, alpha);
+                set.playTogether(translationX);
                 break;
             }
             default: {
