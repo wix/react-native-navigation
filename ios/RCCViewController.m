@@ -256,10 +256,15 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     viewController.navigationController.navigationBar.barTintColor = color;
     
   } else {
-    viewController.navigationController.navigationBar.barTintColor = nil;
+    viewController.navigationController.navigationBar.barTintColor = [UIColor
+            colorWithRed:11.f / 255.f
+            green:35.f / 255.f
+            blue:67.f / 255.f
+            alpha:1];
   }
   
   NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
+  if (!titleTextAttributes[NSForegroundColorAttributeName]) titleTextAttributes[NSForegroundColorAttributeName] = [UIColor whiteColor];
   [self.navigationController.navigationBar setTitleTextAttributes:titleTextAttributes];
   
   if (self.navigationItem.titleView && [self.navigationItem.titleView isKindOfClass:[RCCTitleView class]]) {
@@ -308,7 +313,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     
   } else
   {
-    viewController.navigationController.navigationBar.tintColor = nil;
+    viewController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
   }
   
   BOOL viewControllerBasedStatusBar = false;
