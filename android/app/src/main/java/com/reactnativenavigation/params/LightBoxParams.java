@@ -4,4 +4,5 @@ public class LightBoxParams {
     public String screenId;
     public NavigationParams navigationParams;
     public StyleParams.Color backgroundColor;
+    public boolean tapBackgroundToDismiss;
 }

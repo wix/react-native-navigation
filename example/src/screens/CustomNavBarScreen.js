@@ -19,6 +19,7 @@ export default class CustomNavBarScreen extends Component {
   constructor(props) {
     super(props);
   }
+
   render() {
     return (
       <View style={styles.container}>
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     marginBottom: 10,
-    marginTop:10,
+    marginTop: 10,
     color: 'blue'
   }
 });

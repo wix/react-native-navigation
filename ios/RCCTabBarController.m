@@ -71,6 +71,8 @@
   
   UIColor *buttonColor = nil;
   UIColor *selectedButtonColor = nil;
+  UIColor *labelColor = nil;
+  UIColor *selectedLabelColor = nil;
   NSDictionary *tabsStyle = props[@"style"];
   if (tabsStyle)
   {
@@ -82,7 +84,6 @@
       buttonColor = color;
       selectedButtonColor = color;
     }
-    
     NSString *tabBarSelectedButtonColor = tabsStyle[@"tabBarSelectedButtonColor"];
     if (tabBarSelectedButtonColor)
     {
@@ -90,7 +91,17 @@
       self.tabBar.tintColor = color;
       selectedButtonColor = color;
     }
-    
+    NSString *tabBarLabelColor = tabsStyle[@"tabBarLabelColor"];
+    if(tabBarLabelColor) {
+      UIColor *color = tabBarLabelColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarLabelColor] : nil;
+      labelColor = color;
+    }
+    NSString *tabBarSelectedLabelColor = tabsStyle[@"tabBarSelectedLabelColor"];
+    if(tabBarLabelColor) {
+      UIColor *color = tabBarSelectedLabelColor != (id)[NSNull null] ? [RCTConvert UIColor:
+                                                                        tabBarSelectedLabelColor] : nil;
+      selectedLabelColor = color;
+    }
     NSString *tabBarBackgroundColor = tabsStyle[@"tabBarBackgroundColor"];
     if (tabBarBackgroundColor)
     {
@@ -167,18 +178,16 @@
       
       viewController.tabBarItem.imageInsets = UIEdgeInsetsMake(top, left, bottom, right);
     }
-    
     NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
-    if (!unselectedAttributes[NSForegroundColorAttributeName] && buttonColor) {
-      unselectedAttributes[NSForegroundColorAttributeName] = buttonColor;
+    if (!unselectedAttributes[NSForegroundColorAttributeName] && labelColor) {
+      unselectedAttributes[NSForegroundColorAttributeName] = labelColor;
     }
     
-    [viewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal]
-    ;
+    [viewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal];
     
     NSMutableDictionary *selectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarSelectedText" baseFont:[UIFont systemFontOfSize:10]];
-    if (!selectedAttributes[NSForegroundColorAttributeName] && selectedButtonColor) {
-      selectedAttributes[NSForegroundColorAttributeName] = selectedButtonColor;
+    if (!selectedAttributes[NSForegroundColorAttributeName] && selectedLabelColor) {
+      selectedAttributes[NSForegroundColorAttributeName] = selectedLabelColor;
     }
     
     [viewController.tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];

@@ -152,6 +152,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setSideMenuEnabled(boolean enabled, String side) {
+        NavigationCommandsHandler.setSideMenuEnabled(enabled, Side.fromString(side));
+    }
+
+    @ReactMethod
     public void toggleTopBarVisible(final ReadableMap params) {
     }
 

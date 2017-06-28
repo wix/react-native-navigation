@@ -13,6 +13,7 @@ this.props.navigator.push({
   titleImage: require('../../img/my_image.png'), //navigation bar title image instead of the title text of the pushed screen (optional)
   passProps: {}, // Object that will be passed as props to the pushed screen (optional)
   animated: true, // does the push have transition animation or does it happen immediately (optional)
+  animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the push have different transition animation (optional)
   backButtonTitle: undefined, // override the back button title (optional)
   backButtonHidden: false, // hide the back button altogether (optional)
   navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
@@ -26,7 +27,8 @@ Pop the top screen from this screen's navigation stack.
 
 ```js
 this.props.navigator.pop({
-  animated: true // does the pop have transition animation or does it happen immediately (optional)
+  animated: true, // does the pop have transition animation or does it happen immediately (optional)
+  animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
 });
 ```
 
@@ -36,7 +38,8 @@ Pop all the screens until the root from this screen's navigation stack.
 
 ```js
 this.props.navigator.popToRoot({
-  animated: true // does the pop have transition animation or does it happen immediately (optional)
+  animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+  animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
 });
 ```
 
@@ -49,7 +52,8 @@ this.props.navigator.resetTo({
   screen: 'example.ScreenThree', // unique ID registered with Navigation.registerScreen
   title: undefined, // navigation bar title of the pushed screen (optional)
   passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
-  animated: true, // does the push have transition animation or does it happen immediately (optional)
+  animated: true, // does the resetTo have transition animation or does it happen immediately (optional)
+  animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the resetTo have different transition animation (optional)
   navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
   navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
 });
@@ -170,6 +174,17 @@ this.props.navigator.toggleDrawer({
   side: 'left', // the side of the drawer since you can have two, 'left' / 'right'
   animated: true, // does the toggle have transition animation or does it happen immediately (optional)
   to: 'open' // optional, 'open' = open the drawer, 'closed' = close it, missing = the opposite of current state
+});
+```
+
+## setDrawerEnabled(params = {})
+
+Enables or disables the side menu drawer assuming you have one in your app. Both drawers are enabled by default.
+
+```js
+this.props.navigator.setDrawerEnabled({
+  side: 'left', // the side of the drawer since you can have two, 'left' / 'right'
+  enabled: false // should the drawer be enabled or disabled (locked closed)
 });
 ```
 

@@ -41,7 +41,7 @@ const NSInteger kLightBoxTag = 0x101010;
                 self.visualEffectView.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
                 [self addSubview:self.visualEffectView];
             }
-            
+
             if (style[@"backgroundColor"] != nil)
             {
                 UIColor *backgroundColor = [RCTConvert UIColor:style[@"backgroundColor"]];
@@ -51,6 +51,12 @@ const NSInteger kLightBoxTag = 0x101010;
                     self.overlayColorView.backgroundColor = backgroundColor;
                     self.overlayColorView.alpha = 0;
                     [self addSubview:self.overlayColorView];
+
+                    if (style[@"tapBackgroundToDismiss"] != nil && [RCTConvert BOOL:style[@"tapBackgroundToDismiss"]])
+                    {
+                        UITapGestureRecognizer *singleTap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissAnimated)];
+                        [self.overlayColorView addGestureRecognizer:singleTap];
+                    }
                 }
             }
         }

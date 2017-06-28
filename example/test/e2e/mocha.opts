@@ -1,0 +1,4 @@
+--recursive
+--timeout 60000
+--require babel-polyfill
+--compilers js:babel-core/register

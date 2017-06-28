@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.reactnativenavigation.NavigationApplication;
@@ -172,7 +173,7 @@ public class ViewUtils {
         return new Point(xy[0], xy[1]);
     }
 
-    private static int getStatusBarHeight() {
+    public static int getStatusBarHeight() {
         if (statusBarHeight > 0) {
             return statusBarHeight;
         }
@@ -191,5 +192,13 @@ public class ViewUtils {
 
     public static void setSpanColor(SpannableString span, int color) {
         span.setSpan(new ForegroundColorSpan(color), 0, span.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    public static void removeRuleCompat(RelativeLayout.LayoutParams layoutParams, int rule) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            layoutParams.removeRule(rule);
+        } else {
+            layoutParams.addRule(rule, 0);
+        }
     }
 }
