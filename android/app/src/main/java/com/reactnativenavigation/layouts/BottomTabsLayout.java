@@ -8,7 +8,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RelativeLayout;
-
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -319,12 +318,24 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         bottomTabs.setCurrentItem(getScreenStackIndex(navigatorId));
     }
 
+    private boolean hasBackgroundColor(StyleParams params) {
+        return params.screenBackgroundColor != null &&
+                params.screenBackgroundColor.hasColor();
+    }
+
+    private void setStyleFromScreen(StyleParams params) {
+        bottomTabs.setStyleFromScreen(params);
+        if (hasBackgroundColor(params)) {
+            asView().setBackgroundColor(params.screenBackgroundColor.getColor());
+        }
+    }
+
     @Override
     public void push(ScreenParams params) {
         ScreenStack screenStack = getScreenStack(params.getNavigatorId());
         screenStack.push(params, createScreenLayoutParams(params));
+        setStyleFromScreen(params.styleParams);
         if (isCurrentStack(screenStack)) {
-            bottomTabs.setStyleFromScreen(params.styleParams);
             alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params.styleParams);
             EventBus.instance.post(new ScreenChangedEvent(params));
         }
@@ -359,7 +370,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         ScreenStack screenStack = getScreenStack(params.getNavigatorId());
         screenStack.newStack(params, createScreenLayoutParams(params));
         if (isCurrentStack(screenStack)) {
-            bottomTabs.setStyleFromScreen(params.styleParams);
+            setStyleFromScreen(params.styleParams);
             alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params.styleParams);
             EventBus.instance.post(new ScreenChangedEvent(params));
         }
@@ -433,7 +444,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     private void showStackAndUpdateStyle(ScreenStack newStack) {
         newStack.show();
-        bottomTabs.setStyleFromScreen(newStack.getCurrentScreenStyleParams());
+        setStyleFromScreen(newStack.getCurrentScreenStyleParams());
     }
 
     private void hideCurrentStack() {
@@ -486,7 +497,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     private void setBottomTabsStyleFromCurrentScreen() {
-        bottomTabs.setStyleFromScreen(getCurrentScreenStack().getCurrentScreenStyleParams());
+        setStyleFromScreen(getCurrentScreenStack().getCurrentScreenStyleParams());
     }
 
     @Override
