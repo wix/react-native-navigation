@@ -16,7 +16,7 @@ function startSingleScreenApp(params) {
     return;
   }
   addNavigatorParams(screen);
-  addNavigatorButtons(screen, params.drawer);
+  addNavigatorButtons(screen);
   addNavigatorOptions(screen);
   addNavigationStyleParams(screen);
   screen.passProps = params.passProps;
@@ -93,44 +93,14 @@ function updateDrawerToScreen(params) {
   newPlatformSpecific.updateDrawerToScreen(adapted)
 }
 
-function updateDrawerToTabs(params) {
-  if (!params.tabs) {
-    console.error('updateDrawerToTabs(params): params.tabs is required');
-    return;
-  }
-
-  const newTabs = [];
-
-  params.tabs = _.cloneDeep(params.tabs);
-
-  params.tabs.forEach(function(tab, idx) {
-    addNavigatorParams(tab, null, idx);
-    addNavigatorButtons(tab, params.drawer);
-    addNavigatorOptions(tab);
-    addNavigationStyleParams(tab);
-    addTabIcon(tab);
-    if (!tab.passProps) {
-      tab.passProps = params.passProps;
-    }
-
-    adaptTopTabs(tab, tab.navigatorID);
-
-    tab.screenId = tab.screen;
-
-    let newtab = adaptNavigationStyleToScreenStyle(tab);
-    newtab = adaptNavigationParams(tab);
-    newtab.overrideBackPress = tab.overrideBackPress;
-    newTabs.push(newtab);
-  });
-  params.tabs = newTabs;
-
+function updateDrawerToTab(params) {
   if (params.screen) {
     const screen = {};
     screen.screen = params.screen;
     screen.navigatorButtons = params.navigatorButtons;
 
     addNavigatorParams(screen);
-    addNavigatorButtons(screen, params.drawer);
+    addNavigatorButtons(screen);
     addNavigatorOptions(screen);
     addNavigationStyleParams(screen);
     screen.passProps = params.passProps;
@@ -143,19 +113,7 @@ function updateDrawerToTabs(params) {
     params.screen = adapted;
   }
 
-  params.appStyle = convertStyleParams(params.appStyle);
-  if (params.appStyle) {
-    params.appStyle.orientation = getOrientation(params);
-  }
-  params.sideMenu = convertDrawerParamsToSideMenuParams(params.drawer);
-  params.animateShow = convertAnimationType(params.animationType);
-  params.screenId = params.screen;
-
-  let adapted = adaptNavigationStyleToScreenStyle(params);
-  adapted = adaptNavigationParams(adapted);
-  adapted.overrideBackPress = params.overrideBackPress;
-
-  newPlatformSpecific.updateDrawerToTabs(adapted)
+  newPlatformSpecific.updateDrawerToTab(params)
 }
 
 function addSplashScreen() {
@@ -378,7 +336,7 @@ function startTabBasedApp(params) {
 
   params.tabs.forEach(function(tab, idx) {
     addNavigatorParams(tab, null, idx);
-    addNavigatorButtons(tab, params.drawer);
+    addNavigatorButtons(tab);
     addNavigatorOptions(tab);
     addNavigationStyleParams(tab);
     addTabIcon(tab);
@@ -401,7 +359,7 @@ function startTabBasedApp(params) {
     const screen = params.screen;
 
     addNavigatorParams(screen);
-    addNavigatorButtons(screen, params.drawer);
+    addNavigatorButtons(screen);
     addNavigatorOptions(screen);
     addNavigationStyleParams(screen);
     screen.passProps = params.passProps;
@@ -641,7 +599,7 @@ function addNavigatorParams(screen, navigator = null, idx = '') {
   screen.navigatorEventID = screen.screenInstanceID + '_events';
 }
 
-function addNavigatorButtons(screen, sideMenuParams) {
+function addNavigatorButtons(screen) {
 
   const Screen = Navigation.getRegisteredScreen(screen.screen);
   if (screen.navigatorButtons == null) {
@@ -825,7 +783,7 @@ export default {
   startSingleScreenApp,
   updateRootScreen,
   updateDrawerToScreen,
-  updateDrawerToTabs,
+  updateDrawerToTab,
   addSplashScreen,
   removeSplashScreen,
   navigatorPush,

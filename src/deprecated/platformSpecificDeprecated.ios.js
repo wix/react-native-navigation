@@ -375,14 +375,9 @@ function updateDrawerToScreen(params) {
   Controllers.DrawerControllerIOS(drawerID).updateScreen(controllerID);
 }
 
-function updateDrawerToTabs(params) {
-  if (!params.tabs) {
-    console.error('updateDrawerToTabs(params): params.tabs is required');
-    return;
-  }
-
+function updateDrawerToTab(params) {
   if (!params.drawerID) {
-    console.error('updateDrawerToTabs(params): params.drawerID is required');
+    console.error('updateDrawerToTab(params): params.drawerID is required');
     return;
   }
 
@@ -391,36 +386,9 @@ function updateDrawerToTabs(params) {
   const controllerID = _.uniqueId('controllerID');
 	const tabsNavigatorID = controllerID + '_tabs';
 
-	let tabs = [...params.tabs];
-
-	tabs.map(function(tab, index) {
-		const navigatorID = controllerID + '_nav' + index;
-		const screenInstanceID = _.uniqueId('screenInstanceID');
-		if (!tab.screen) {
-			console.error('updateDrawerToTabs(params): every tab must include a screen property, take a look at tab#' + (index + 1));
-			return;
-		}
-		const {
-			navigatorStyle,
-			navigatorButtons,
-			navigatorOptions,
-			navigatorEventID
-		} = _mergeScreenSpecificSettings(tab.screen, screenInstanceID, tab);
-		tab.navigationParams = {
-			screenInstanceID,
-			navigatorStyle,
-			navigatorButtons,
-			navigatorEventID,
-			navigatorID
-		};
-
-		_injectOptionsInParams(tab, navigatorOptions);
-	});
-
   if (params.screen) {
     let screen = {};
     screen.screen = params.screen;
-    screen.noTab = true;
     const navigatorID = controllerID + '_nav' + params.tabs.count;
     const screenInstanceID = _.uniqueId('screenInstanceID');
     const {
@@ -437,8 +405,6 @@ function updateDrawerToTabs(params) {
       navigatorID,
     };
     _injectOptionsInParams(screen, navigatorOptions);
-
-    tabs.push(screen);
   }
   const tab = tabs.find((element, index, array) => array[index].screen === params.screen);
 	const tabIndex = tabs.indexOf(tab);
@@ -991,7 +957,7 @@ export default {
   startSingleScreenApp,
   updateRootScreen,
   updateDrawerToScreen,
-  updateDrawerToTabs,
+  updateDrawerToTab,
   addSplashScreen,
   removeSplashScreen,
   navigatorPush,

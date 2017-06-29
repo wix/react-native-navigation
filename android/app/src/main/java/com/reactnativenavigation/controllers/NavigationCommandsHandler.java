@@ -59,7 +59,7 @@ public class NavigationCommandsHandler {
 		});
 	}
 
-    public static void updateDrawerToTabs(final Bundle params) {
+    public static void updateDrawerToTab(final Bundle params) {
 		final NavigationActivity currentActivity = NavigationActivity.currentActivity;
 		if (currentActivity == null) {
 			return;
@@ -70,7 +70,7 @@ public class NavigationCommandsHandler {
 			@Override
 			public void run()
 			{
-				currentActivity.updateDrawerToTabs(ActivityParamsParser.parse(params));
+				currentActivity.updateDrawerToTab(ActivityParamsParser.parse(params));
 			}
 		});
 	}

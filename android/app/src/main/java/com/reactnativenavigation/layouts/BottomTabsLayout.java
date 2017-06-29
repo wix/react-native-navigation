@@ -86,9 +86,9 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
             createAndAddScreens(i);
         }
 
-		ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenStacks[0].getNavigatorId(), this, this);
+		ScreenParams screenParams = params.screenParams;
+		ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenParams.getNavigatorId(), this, this);
         if (this.selectedPath != null && this.getTabIndexForScreenId(this.selectedPath) < 0) {
-			ScreenParams screenParams = params.screenParams;
 			newStack.pushInitialScreen(screenParams, createScreenLayoutParams(screenParams));
 		}
 		extraScreenStack = newStack;
@@ -502,13 +502,15 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
 	public void showScreen(String screenId, ScreenParams screenParams)
 	{
-		if (extraScreenStack.empty() || !extraScreenStack.peek().getScreenParams().screenId.equals(screenId))
+		int tabIndex = this.getTabIndexForScreenId(screenId);
+
+		if (tabIndex == -1 && (extraScreenStack.empty() || !extraScreenStack.peek().getScreenParams().screenId.equals(screenId)))
 		{
-			ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenStacks[0].getNavigatorId(), this, this);
-			newStack.pushInitialScreen(screenParams, createScreenLayoutParams(screenParams));
+			extraScreenStack.destroy();
+			extraScreenStack.pushInitialScreen(screenParams, createScreenLayoutParams(screenParams));
+			showStackAndUpdateStyle(extraScreenStack);
 		}
 
-		int tabIndex = this.getTabIndexForScreenId(screenId);
 		this.selectBottomTabByTabIndex(tabIndex);
 	}
 

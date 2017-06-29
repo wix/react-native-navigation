@@ -149,8 +149,8 @@ function updateDrawerToScreen(params) {
   return platformSpecific.updateDrawerToScreen(params);
 }
 
-function updateDrawerToTabs(params) {
-  return platformSpecific.updateDrawerToTabs(params);
+function updateDrawerToTab(params) {
+  return platformSpecific.updateDrawerToTab(params);
 }
 
 function addSplashScreen() {
@@ -199,7 +199,7 @@ export default {
   startSingleScreenApp,
   updateRootScreen,
   updateDrawerToScreen,
-  updateDrawerToTabs,
+  updateDrawerToTab,
   addSplashScreen,
   removeSplashScreen,
   setEventHandler,
