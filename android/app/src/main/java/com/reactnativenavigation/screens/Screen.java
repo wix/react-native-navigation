@@ -2,6 +2,7 @@ package com.reactnativenavigation.screens;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -66,6 +67,12 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void registerSharedElement(SharedElementTransition toView, String key) {
         sharedElements.addToElement(toView, key);
+    }
+
+    @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setStyle();
     }
 
     @Override
