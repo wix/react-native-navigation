@@ -386,10 +386,9 @@ function updateDrawerToTab(params) {
   const controllerID = _.uniqueId('controllerID');
 	const tabsNavigatorID = controllerID + '_tabs';
 
-  if (params.screen) {
     let screen = {};
     screen.screen = params.screen;
-    const navigatorID = controllerID + '_nav' + params.tabs.count;
+    const navigatorID = controllerID + '_nav';
     const screenInstanceID = _.uniqueId('screenInstanceID');
     const {
       navigatorStyle,
@@ -405,62 +404,25 @@ function updateDrawerToTab(params) {
       navigatorID,
     };
     _injectOptionsInParams(screen, navigatorOptions);
-  }
-  const tab = tabs.find((element, index, array) => array[index].screen === params.screen);
-	const tabIndex = tabs.indexOf(tab);
 
   const Controller = Controllers.createClass({
     render: function() {
       return (
-        <TabBarControllerIOS
-          id={tabsNavigatorID}
-          style={params.tabsStyle}
-          appStyle={params.appStyle}>
-          {
-            tabs.map(function(tab, index) {
-              if (tab.noTab) {
-                return (
-                  <NavigationControllerIOS
-                    id={tab.navigationParams.navigatorID}
-                    title={tab.title}
-                    subtitle={tab.subtitle}
-                    titleImage={tab.titleImage}
-                    component={tab.screen}
-                    passProps={{
-                      navigatorID: tab.navigationParams.navigatorID,
-                      screenInstanceID: tab.navigationParams.screenInstanceID,
-                      navigatorEventID: tab.navigationParams.navigatorEventID
-                    }}
-                    style={tab.navigationParams.navigatorStyle}
-                    leftButtons={tab.navigationParams.navigatorButtons.leftButtons}
-                    rightButtons={tab.navigationParams.navigatorButtons.rightButtons}
-                    selected={tabIndex == index}
-                  />
-                );
-              } else {
-                return (
-                  <TabBarControllerIOS.Item {...tab} title={tab.label} selected={tabIndex == index}>
-                    <NavigationControllerIOS
-                      id={tab.navigationParams.navigatorID}
-                      title={tab.title}
-                      subtitle={tab.subtitle}
-                      titleImage={tab.titleImage}
-                      component={tab.screen}
-                      passProps={{
-                        navigatorID: tab.navigationParams.navigatorID,
-                        screenInstanceID: tab.navigationParams.screenInstanceID,
-                        navigatorEventID: tab.navigationParams.navigatorEventID
-                      }}
-                      style={tab.navigationParams.navigatorStyle}
-                      leftButtons={tab.navigationParams.navigatorButtons.leftButtons}
-                      rightButtons={tab.navigationParams.navigatorButtons.rightButtons}
-                    />
-                  </TabBarControllerIOS.Item>
-                );
-              }
-            })
-          }
-        </TabBarControllerIOS>
+        <NavigationControllerIOS
+          id={screen.navigationParams.navigatorID}
+          title={screen.title}
+          subtitle={screen.subtitle}
+          titleImage={screen.titleImage}
+          component={screen.screen}
+          passProps={{
+            navigatorID: screen.navigationParams.navigatorID,
+            screenInstanceID: screen.navigationParams.screenInstanceID,
+            navigatorEventID: screen.navigationParams.navigatorEventID
+          }}
+          style={screen.navigationParams.navigatorStyle}
+          leftButtons={screen.navigationParams.navigatorButtons.leftButtons}
+          rightButtons={screen.navigationParams.navigatorButtons.rightButtons}
+        />
       );
     }
   });
