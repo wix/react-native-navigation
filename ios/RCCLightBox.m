@@ -8,7 +8,7 @@
 
 const NSInteger kLightBoxTag = 0x101010;
 
-@interface RCCLightBoxView : UIView
+@interface RCCLightBoxView : UIView<UIGestureRecognizerDelegate>
 @property (nonatomic, strong) RCTRootView *reactView;
 @property (nonatomic, strong) UIVisualEffectView *visualEffectView;
 @property (nonatomic, strong) UIView *overlayColorView;
@@ -57,6 +57,7 @@ const NSInteger kLightBoxTag = 0x101010;
             if (style[@"tapBackgroundToDismiss"] != nil && [RCTConvert BOOL:style[@"tapBackgroundToDismiss"]])
             {
                 UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissAnimated)];
+                singleTap.delegate = self;
                 [self addGestureRecognizer:singleTap];
             }
         }
@@ -74,6 +75,12 @@ const NSInteger kLightBoxTag = 0x101010;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTJavaScriptWillStartLoadingNotification object:nil];
     }
     return self;
+}
+
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    return ![touch.view isDescendantOfView:self.reactView];
 }
 
 -(void)layoutSubviews
