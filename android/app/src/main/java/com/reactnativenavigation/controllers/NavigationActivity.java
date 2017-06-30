@@ -204,86 +204,25 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     void updateDrawerToScreen(ScreenParams params) {
-		RelativeLayout screenStackParent;
 
-		if (layout instanceof SingleScreenLayout)
+		if (!(layout instanceof SingleScreenLayout))
 		{
-			SingleScreenLayout screenLayout = (SingleScreenLayout) layout;
-			screenStackParent = screenLayout.getScreenStackParent();
-		} else
-		{
-			BottomTabsLayout tabsLayout = (BottomTabsLayout) layout;
-			screenStackParent = tabsLayout.getScreenStackParent();
+			return;
 		}
 
-		ActivityParams newParams = new ActivityParams();
-		newParams.type = ActivityParams.Type.SingleScreen;
-		newParams.screenParams = params;
-
-		if (hasBackgroundColor()) {
-			layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
-		}
-
-		// Destroy any tabs
-		int leni = screenStackParent.getChildCount();
-		for (int i = 0; i < leni; ++i) {
-			if (screenStackParent.getChildAt(i) instanceof BottomTabsLayout) {
-				((BottomTabsLayout) screenStackParent.getChildAt(i)).destroyStacks();
-				screenStackParent.removeView(screenStackParent.getChildAt(i));
-			}
-		}
-
-		screenStackParent.removeAllViews();
-		Layout newLayout = LayoutFactory.create(this, newParams);
-		newLayout.setSideMenu(layout.getSideMenu());
-		screenStackParent.addView(newLayout.asView());
+		SingleScreenLayout screenLayout = (SingleScreenLayout) layout;
+		screenLayout.newStack(params);
 	}
 
-    void updateDrawerToTabs(ActivityParams params) {
-		RelativeLayout screenStackParent;
+    void updateDrawerToTab(ActivityParams params) {
 
-		if (layout instanceof SingleScreenLayout)
+		if (!(layout instanceof BottomTabsLayout))
 		{
-			SingleScreenLayout screenLayout = (SingleScreenLayout) layout;
-			screenStackParent = screenLayout.getScreenStackParent();
-		} else
-		{
-			BottomTabsLayout tabsLayout = (BottomTabsLayout) layout;
-			screenStackParent = tabsLayout.getScreenStackParent();
+			return;
 		}
 
-		// Find and try to switch to tab
-		int leni = screenStackParent.getChildCount();
-
-		BottomTabsLayout bottomTabsLayout = null;
-
-		for (int i = 0; i < leni; ++i) {
-			if (screenStackParent.getChildAt(i) instanceof BottomTabsLayout) {
-				bottomTabsLayout = (BottomTabsLayout) screenStackParent.getChildAt(i);
-			}
-		}
-
-		if (bottomTabsLayout == null)
-		{
-			ActivityParams newParams = new ActivityParams();
-			newParams.type = params.type;
-			newParams.tabParams = params.tabParams;
-			newParams.selectedPath = params.selectedPath;
-			newParams.screenParams = params.screenParams;
-
-			if (hasBackgroundColor())
-			{
-				layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
-			}
-
-			screenStackParent.removeAllViews();
-			Layout newLayout = LayoutFactory.create(this, newParams);
-			newLayout.setSideMenu(layout.getSideMenu());
-			screenStackParent.addView(newLayout.asView());
-		}
-		else {
-			bottomTabsLayout.showScreen(params.selectedPath, params.screenParams);
-		}
+		BottomTabsLayout tabsLayout = (BottomTabsLayout) layout;
+		tabsLayout.showScreen(params.selectedPath, params.screenParams);
 	}
 
     void push(ScreenParams params) {

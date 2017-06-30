@@ -62,9 +62,9 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
 	}
 
     @ReactMethod
-	public void updateDrawerToTabs(ReadableMap params)
+	public void updateDrawerToTab(ReadableMap params)
 	{
-		NavigationCommandsHandler.updateDrawerToTabs(BundleConverter.toBundle(params));
+		NavigationCommandsHandler.updateDrawerToTab(BundleConverter.toBundle(params));
 	}
 
     @ReactMethod

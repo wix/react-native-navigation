@@ -17,22 +17,13 @@ public class ActivityParamsParser extends Parser {
         if (hasKey(params, "screen")) {
             result.type = ActivityParams.Type.SingleScreen;
             result.screenParams = ScreenParamsParser.parse(params.getBundle("screen"));
+			result.selectedPath = result.screenParams.screenId;
         }
 
         if (hasKey(params, "tabs")) {
             result.type = ActivityParams.Type.TabBased;
             result.tabParams = new ScreenParamsParser().parseTabs(params.getBundle("tabs"));
-
-			if (result.screenParams != null) {
-				result.selectedPath = result.screenParams.screenId;
-			} else if (hasKey(params, "screen")) {
-				result.selectedPath = params.getString("screen");
-
-				ScreenParams screenParams = new ScreenParams();
-				screenParams.screenId = result.selectedPath;
-				result.screenParams = screenParams;
-			}
-        }
+		}
 
         if (hasKey(params, "sideMenu")) {
             SideMenuParams[] sideMenus = SideMenuParamsParser.parse(params.getBundle("sideMenu"));

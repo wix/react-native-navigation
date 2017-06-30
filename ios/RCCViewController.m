@@ -145,7 +145,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   self.edgesForExtendedLayout = UIRectEdgeNone; // default
   self.automaticallyAdjustsScrollViewInsets = NO; // default
   
-  self.navigatorStyle = [NSMutableDictionary dictionaryWithDictionary:navigatorStyle];
+  self.navigatorStyle = navigatorStyle.mutableCopy;
   
   [self setStyleOnInit];
   

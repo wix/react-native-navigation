@@ -156,7 +156,3 @@ Navigation.startSingleScreenApp({
 ## Extended TabBar behavior
 You can now add a screen object when starting a tab-based app. Just
 like how you start a single-screen app.
-
-## Known issues
-When using a tab-bar in combination with a screen that's not inside
-the tabs. You are not able to update this screen.
