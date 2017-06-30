@@ -51,13 +51,13 @@ const NSInteger kLightBoxTag = 0x101010;
                     self.overlayColorView.backgroundColor = backgroundColor;
                     self.overlayColorView.alpha = 0;
                     [self addSubview:self.overlayColorView];
-
-                    if (style[@"tapBackgroundToDismiss"] != nil && [RCTConvert BOOL:style[@"tapBackgroundToDismiss"]])
-                    {
-                        UITapGestureRecognizer *singleTap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissAnimated)];
-                        [self.overlayColorView addGestureRecognizer:singleTap];
-                    }
                 }
+            }
+
+            if (style[@"tapBackgroundToDismiss"] != nil && [RCTConvert BOOL:style[@"tapBackgroundToDismiss"]])
+            {
+                UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissAnimated)];
+                [self addGestureRecognizer:singleTap];
             }
         }
         
