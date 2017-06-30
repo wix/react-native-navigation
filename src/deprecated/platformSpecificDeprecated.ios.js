@@ -386,24 +386,24 @@ function updateDrawerToTab(params) {
   const controllerID = _.uniqueId('controllerID');
 	const tabsNavigatorID = controllerID + '_tabs';
 
-    let screen = {};
-    screen.screen = params.screen;
-    const navigatorID = controllerID + '_nav';
-    const screenInstanceID = _.uniqueId('screenInstanceID');
-    const {
-      navigatorStyle,
-      navigatorButtons,
-      navigatorOptions,
-      navigatorEventID,
-    } = _mergeScreenSpecificSettings(screen.screen, screenInstanceID, params);
-    screen.navigationParams = {
-      screenInstanceID,
-      navigatorStyle,
-      navigatorButtons,
-      navigatorEventID,
-      navigatorID,
-    };
-    _injectOptionsInParams(screen, navigatorOptions);
+  let screen = {};
+  screen.screen = params.screen;
+  const navigatorID = controllerID + '_nav';
+  const screenInstanceID = _.uniqueId('screenInstanceID');
+  const {
+    navigatorStyle,
+    navigatorButtons,
+    navigatorOptions,
+    navigatorEventID,
+  } = _mergeScreenSpecificSettings(screen.screen, screenInstanceID, params);
+  screen.navigationParams = {
+    screenInstanceID,
+    navigatorEventID,
+    navigatorID,
+    navigatorButtons,
+    navigatorStyle,
+  };
+  _injectOptionsInParams(screen, navigatorOptions);
 
   const Controller = Controllers.createClass({
     render: function() {

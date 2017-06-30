@@ -5,6 +5,7 @@
 #import "RCTHelpers.h"
 #import <React/RCTUIManager.h>
 #import "UIViewController+Rotation.h"
+#import "RCCNavigationController.h"
 
 @interface RCTUIManager ()
 
@@ -262,17 +263,6 @@
       [tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
 	  [tabBarItem setTitlePositionAdjustment:UIOffsetMake(0, -5)];
 
-	  // create badge
-      NSObject *badge = tabItemLayout[@"props"][@"badge"];
-      if (badge == nil || [badge isEqual:[NSNull null]])
-      {
-        tabBarItem.badgeValue = nil;
-      }
-      else
-      {
-        tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
-      }
-
       [tabBarItems addObject:tabBarItem];
     }
 
@@ -303,17 +293,18 @@
   [super viewWillAppear:animated];
 
   if (self.holder.subviews.count == 0) {
-    UIViewController *viewController = self.viewControllers.lastObject;
-    [self addChildViewController:viewController];
-    viewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.holder addSubview:viewController.view];
-    [viewController didMoveToParentViewController:self];
+    RCCNavigationController *navigationController = self.viewControllers.lastObject;
 
-    NSDictionary *views = @{ @"view": viewController.view };
+    [self addChildViewController:navigationController];
+    navigationController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.holder addSubview:navigationController.view];
+    [navigationController didMoveToParentViewController:self];
+
+    NSDictionary *views = @{ @"view": navigationController.view };
     [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|" options:nil metrics:nil views:views]];
     [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|" options:nil metrics:nil views:views]];
 
-    _selectedViewController = viewController;
+    _selectedViewController = navigationController;
   }
 }
 
@@ -497,6 +488,43 @@
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
   self.selectedIndex = [self.tabBar.items indexOfObject:item];
+}
+
+- (NSInteger)indexForScreen:(NSString *)screen
+{
+  __block NSInteger selectedIndex = -1;
+
+  [self.viewControllers enumerateObjectsUsingBlock:^(UINavigationController *navigationController, NSUInteger idx, BOOL *stop)
+  {
+      RCTRootView *tabView = (RCTRootView *)navigationController.viewControllers.firstObject.view;
+      NSString *tabScreen = tabView.moduleName;
+
+      if ([screen isEqualToString:tabScreen]) {
+        selectedIndex = idx;
+        *stop = YES;
+      }
+  }];
+
+  return selectedIndex;
+}
+
+- (void)showScreen:(RCCNavigationController *)controller
+{
+  RCTRootView *rootView = (RCTRootView *)controller.viewControllers.firstObject.view;
+  NSString *newScreen = rootView.moduleName;
+
+  NSInteger index = [self indexForScreen:newScreen];
+
+  if (index < 0) {
+	  NSMutableArray *tempControllers = self.viewControllers.mutableCopy;
+	  [tempControllers removeLastObject];
+	  [tempControllers addObject:controller];
+	  self.viewControllers = tempControllers.copy;
+
+	  index = self.tabBar.items.count;
+  }
+
+  self.selectedIndex = (NSUInteger)index;
 }
 
 @end

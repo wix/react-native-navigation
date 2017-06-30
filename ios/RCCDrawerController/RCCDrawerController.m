@@ -1,7 +1,6 @@
 #import "RCCDrawerController.h"
 #import "RCCViewController.h"
 #import "MMExampleDrawerVisualStateManager.h"
-#import "RCCDrawerHelper.h"
 #import <React/RCTConvert.h>
 #import "RCCManagerModule.h"
 #import "UIViewController+Rotation.h"
@@ -167,46 +166,17 @@ UIViewController *rightViewController = nil;
         NSDictionary *layout = actionParams[@"layout"];
         NSDictionary *passProps = actionParams[@"passProps"];
 
-		NSArray *children = layout[@"children"];
-
-		__block NSInteger selectedIndex = -1;
-
-		[children enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-		{
-			if ([obj[@"props"][@"selected"] boolValue]) {
-				selectedIndex = idx;
-				*stop = YES;
-			}
-		}];
-
-		NSString *type = layout[@"type"];
-
-		if ([self.centerViewController isKindOfClass:[RCCTabBarController class]] && [type isEqualToString:@"TabBarControllerIOS"]) {
-			RCCTabBarController *tabBarController = (RCCTabBarController *)self.centerViewController;
-
-			if (selectedIndex > -1)
-			{
-				tabBarController.selectedIndex = (NSUInteger)selectedIndex;
-			}
-		} else {
-			UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:passProps bridge:[[RCCManager sharedInstance] getBridge]];
-			if (controller == nil)
-			{
-				return;
-			}
-
-			if ([controller isKindOfClass:[RCCTabBarController class]])
-			{
-				RCCTabBarController *tabBarController = (RCCTabBarController *)controller;
-
-				if (selectedIndex > -1)
-				{
-					tabBarController.selectedIndex = (NSUInteger)selectedIndex;
-				}
-			}
-
-        	self.centerViewController = controller;
+		id controller = [RCCViewController controllerWithLayout:layout globalProps:passProps bridge:[[RCCManager sharedInstance] getBridge]];
+		if (controller == nil) {
+			return;
 		}
+
+        if ([self.centerViewController isKindOfClass:[RCCTabBarController class]]) {
+            RCCTabBarController *tabBarController = (RCCTabBarController *)self.centerViewController;
+            [tabBarController showScreen:(RCCNavigationController *)controller];
+        } else {
+            self.centerViewController = controller;
+        }
 
         return;
     }
