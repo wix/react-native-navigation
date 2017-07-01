@@ -220,6 +220,13 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
+    public void setSideMenuEnabled(boolean enabled, Side side) {
+        if (sideMenu != null) {
+            sideMenu.setEnabled(enabled, side);
+        }
+    }
+
+    @Override
     public void showSnackbar(SnackbarParams params) {
         final String navigatorEventId = stack.peek().getNavigatorEventId();
         snackbarAndFabContainer.showSnackbar(navigatorEventId, params);

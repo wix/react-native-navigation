@@ -317,6 +317,20 @@ public class NavigationCommandsHandler {
         });
     }
 
+    public static void setSideMenuEnabled(final boolean enabled, final Side side) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.setSideMenuEnabled(enabled, side);
+            }
+        });
+    }
+
     public static void selectTopTabByTabIndex(final String screenInstanceId, final int index) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {

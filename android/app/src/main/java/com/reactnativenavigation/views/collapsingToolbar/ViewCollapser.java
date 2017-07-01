@@ -68,12 +68,21 @@ public class ViewCollapser {
         animator.start();
     }
 
-    void fling(final CollapseAmount amount, final CollapsingTitleBar titleBar, final CollapsingTopBarReactHeader header) {
+    void fling(final CollapseAmount amount, final CollapsingTitleBar titleBar, @NonNull final CollapsingTopBarReactHeader header) {
         fling(amount, new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 titleBar.collapse(new CollapseAmount((Float) animation.getAnimatedValue()));
                 header.collapse((Float) animation.getAnimatedValue());
+            }
+        });
+    }
+
+    void fling(final CollapseAmount amount, final CollapsingTitleBar titleBar) {
+        fling(amount, new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                titleBar.collapse(new CollapseAmount((Float) animation.getAnimatedValue()));
             }
         });
     }
