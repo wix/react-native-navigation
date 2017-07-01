@@ -535,4 +535,9 @@ public class NavigationCommandsHandler {
         }
         promise.resolve(OrientationHelper.getOrientation(currentActivity));
     }
+
+    public static void isAppLaunched(Promise promise) {
+        final boolean isAppLaunched = SplashActivity.isResumed || NavigationActivity.currentActivity != null;
+        promise.resolve(isAppLaunched);
+    }
 }
