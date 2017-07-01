@@ -183,6 +183,7 @@ function startSingleScreenApp(params) {
           subtitle={params.subtitle}
           titleImage={screen.titleImage}
           component={screen.screen}
+          overlay={params.overlay}
           passProps={{
             navigatorID: navigatorID,
             screenInstanceID: screenInstanceID,
