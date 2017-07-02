@@ -11,8 +11,8 @@
     "e2e-release": "detox test --configuration ios.sim.release"
   },
   "dependencies": {
-    "react": "16.0.0-alpha.6",
-    "react-native": "0.44.2",
+    "react": "16.0.0-alpha.12",
+    "react-native": "0.45.1",
     "react-native-animatable": "^1.1.0",
     "react-native-navigation": "latest"
   },

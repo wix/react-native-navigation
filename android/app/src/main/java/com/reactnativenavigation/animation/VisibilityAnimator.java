@@ -46,7 +46,6 @@ public class VisibilityAnimator {
             animator.start();
         } else {
             view.setTranslationY(SHOW_END_VALUE);
-            view.setY(SHOW_END_VALUE);
             view.setVisibility(View.VISIBLE);
         }
     }
@@ -57,7 +56,6 @@ public class VisibilityAnimator {
             animator.start();
         } else {
             view.setTranslationY(hiddenEndValue);
-            view.setY(hiddenEndValue);
             view.setVisibility(View.GONE);
         }
     }

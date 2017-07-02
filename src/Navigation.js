@@ -162,6 +162,10 @@ function handleDeepLink(params = {}) {
   }
 }
 
+async function isAppLaunched() {
+  return await platformSpecific.isAppLaunched();
+}
+
 export default {
   getRegisteredScreen,
   registerComponent,
@@ -177,5 +181,6 @@ export default {
   startSingleScreenApp: startSingleScreenApp,
   setEventHandler: setEventHandler,
   clearEventHandler: clearEventHandler,
-  handleDeepLink: handleDeepLink
+  handleDeepLink: handleDeepLink,
+  isAppLaunched: isAppLaunched
 };

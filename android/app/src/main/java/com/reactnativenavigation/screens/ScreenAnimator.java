@@ -8,15 +8,13 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
-
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.sharedElementTransition.SharedElementsAnimator;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 class ScreenAnimator {
     private final float translationY;
@@ -25,8 +23,8 @@ class ScreenAnimator {
 
     ScreenAnimator(Screen screen) {
         this.screen = screen;
-        translationY = 0.08f * ViewUtils.getScreenHeight();
-        translationX = 0.08f * ViewUtils.getScreenWidth();
+        translationY = 0.08f * ViewUtils.getWindowHeight(screen.activity);
+        translationX = 0.08f * ViewUtils.getWindowWidth(screen.activity);
     }
 
     public void show(boolean animate, final Runnable onAnimationEnd) {

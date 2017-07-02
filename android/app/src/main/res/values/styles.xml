@@ -7,6 +7,7 @@
 
     <style name="LightBox" parent="@android:style/Theme.Translucent.NoTitleBar">
         <item name="android:windowAnimationStyle">@style/modalAnimations</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
     </style>
 
     <style name="modalAnimations">
