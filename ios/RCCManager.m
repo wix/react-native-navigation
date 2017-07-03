@@ -134,28 +134,18 @@
 -(void)showSplashScreen
 {
   CGRect screenBounds = [UIScreen mainScreen].bounds;
-  UIView *splashView = nil;
-  
+  UIViewController *splashViewController = nil;
+
   NSString* launchStoryBoard = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UILaunchStoryboardName"];
   if (launchStoryBoard != nil)
   {//load the splash from the storyboard that's defined in the info.plist as the LaunchScreen
-    @try
-    {
-      splashView = [[NSBundle mainBundle] loadNibNamed:launchStoryBoard owner:self options:nil][0];
-      if (splashView != nil)
-      {
-        splashView.frame = CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height);
-      }
-    }
-    @catch(NSException *e)
-    {
-      splashView = nil;
-    }
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:launchStoryBoard bundle:[NSBundle mainBundle]];
+    splashViewController = [storyboard instantiateInitialViewController];
   }
   else
   {//load the splash from the DEfault image or from LaunchImage in the xcassets
     CGFloat screenHeight = screenBounds.size.height;
-    
+
     NSString* imageName = @"Default";
     if (screenHeight == 568)
       imageName = [imageName stringByAppendingString:@"-568h"];
@@ -163,13 +153,13 @@
       imageName = [imageName stringByAppendingString:@"-667h"];
     else if (screenHeight == 736)
       imageName = [imageName stringByAppendingString:@"-736h"];
-    
+
     //xcassets LaunchImage files
     UIImage *image = [UIImage imageNamed:imageName];
     if (image == nil)
     {
       imageName = @"LaunchImage";
-      
+
       if (screenHeight == 480)
         imageName = [imageName stringByAppendingString:@"-700"];
       if (screenHeight == 568)
@@ -178,23 +168,21 @@
         imageName = [imageName stringByAppendingString:@"-800-667h"];
       else if (screenHeight == 736)
         imageName = [imageName stringByAppendingString:@"-800-Portrait-736h"];
-      
+
       image = [UIImage imageNamed:imageName];
     }
-    
+
     if (image != nil)
     {
-      splashView = [[UIImageView alloc] initWithImage:image];
+      UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+      splashViewController = [[UIViewController alloc] init];
+      splashViewController.view = imageView;
     }
   }
-  
-  if (splashView != nil)
-  {
-    UIViewController *splashVC = [[UIViewController alloc] init];
-    splashVC.view = splashView;
-    
+
+  if (splashViewController != nil) {
     id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
-    appDelegate.window.rootViewController = splashVC;
+    appDelegate.window.rootViewController = splashViewController;
     [appDelegate.window makeKeyAndVisible];
   }
 }
