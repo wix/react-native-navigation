@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		252B529C1F07C77800ECBA11 /* RCCKYDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 252B529B1F07C77800ECBA11 /* RCCKYDrawerController.m */; };
+		252B52A01F07C79900ECBA11 /* KYDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 252B529F1F07C79900ECBA11 /* KYDrawerController.m */; };
 		260804DB1CE0D9D20094DBA1 /* RCCToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 260804DA1CE0D9D20094DBA1 /* RCCToolBar.m */; };
 		261108801E6C495400BF5D98 /* UIViewController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2611087F1E6C495400BF5D98 /* UIViewController+Rotation.m */; };
 		26714EAC1EB0E9D3009F4D52 /* RCCCustomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26714EAB1EB0E9D3009F4D52 /* RCCCustomTitleView.m */; };
@@ -50,6 +52,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		252B529A1F07C77800ECBA11 /* RCCKYDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCKYDrawerController.h; sourceTree = "<group>"; };
+		252B529B1F07C77800ECBA11 /* RCCKYDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCKYDrawerController.m; sourceTree = "<group>"; };
+		252B529E1F07C79900ECBA11 /* KYDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KYDrawerController.h; sourceTree = "<group>"; };
+		252B529F1F07C79900ECBA11 /* KYDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KYDrawerController.m; sourceTree = "<group>"; };
 		260804D91CE0D9D20094DBA1 /* RCCToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCToolBar.h; sourceTree = "<group>"; };
 		260804DA1CE0D9D20094DBA1 /* RCCToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCToolBar.m; sourceTree = "<group>"; };
 		2611087E1E6C495400BF5D98 /* UIViewController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+Rotation.h"; path = "../UIViewController+Rotation.h"; sourceTree = "<group>"; };
@@ -123,6 +129,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		252B529D1F07C79900ECBA11 /* KYDrawerController */ = {
+			isa = PBXGroup;
+			children = (
+				252B529E1F07C79900ECBA11 /* KYDrawerController.h */,
+				252B529F1F07C79900ECBA11 /* KYDrawerController.m */,
+			);
+			path = KYDrawerController;
+			sourceTree = "<group>";
+		};
 		260804D51CE0D7090094DBA1 /* RCCToolBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,10 +150,13 @@
 		D85082BB1CBCF42400FDB961 /* RCCDrawerController */ = {
 			isa = PBXGroup;
 			children = (
+				252B529D1F07C79900ECBA11 /* KYDrawerController */,
 				D85082BC1CBCF42400FDB961 /* MMDrawerController */,
 				D85082CF1CBCF54200FDB961 /* TheSidebarController */,
 				D85082CB1CBCF54200FDB961 /* RCCDrawerHelper.m */,
 				D85082CC1CBCF54200FDB961 /* RCCDrawerProtocol.h */,
+				252B529A1F07C77800ECBA11 /* RCCKYDrawerController.h */,
+				252B529B1F07C77800ECBA11 /* RCCKYDrawerController.m */,
 				D85082CD1CBCF54200FDB961 /* RCCTheSideBarManagerViewController.h */,
 				D85082CE1CBCF54200FDB961 /* RCCTheSideBarManagerViewController.m */,
 				D85082C81CBCF42400FDB961 /* RCCDrawerController.h */,
@@ -304,12 +322,14 @@
 				D85082EA1CBCF54200FDB961 /* TheSidebarController.m in Sources */,
 				CC84A1A01C1A0C4E00B3A6A2 /* RCCNavigationController.m in Sources */,
 				D83514F61D29719A00D53758 /* RCCNotification.m in Sources */,
+				252B529C1F07C77800ECBA11 /* RCCKYDrawerController.m in Sources */,
 				CC84A19F1C1A0C4E00B3A6A2 /* RCCManagerModule.m in Sources */,
 				26AFF3F51D7EEE2400CBA211 /* RCCTitleViewHelper.m in Sources */,
 				D8D779981D04B7180050CFEA /* RCTHelpers.m in Sources */,
 				D85082E81CBCF54200FDB961 /* SidebarLuvocracyAnimation.m in Sources */,
 				D85082E31CBCF54200FDB961 /* SidebarAirbnbAnimation.m in Sources */,
 				D84813191C8C5EB700051BAF /* RCCLightBox.m in Sources */,
+				252B52A01F07C79900ECBA11 /* KYDrawerController.m in Sources */,
 				CC84A19E1C1A0C4E00B3A6A2 /* RCCManager.m in Sources */,
 				26714EAC1EB0E9D3009F4D52 /* RCCCustomTitleView.m in Sources */,
 				D85082E21CBCF54200FDB961 /* RCCTheSideBarManagerViewController.m in Sources */,

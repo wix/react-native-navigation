@@ -11,7 +11,7 @@
 #import "RCTHelpers.h"
 #import "RCCTitleViewHelper.h"
 #import "RCCCustomTitleView.h"
-
+#import "RCCKYDrawerController.h"
 
 NSString* const RCCViewControllerCancelReactTouchesNotification = @"RCCViewControllerCancelReactTouchesNotification";
 
@@ -81,10 +81,10 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     NSString *drawerType = props[@"type"];
     
     if ([drawerType isEqualToString:@"TheSideBar"]) {
-      
       controller = [[RCCTheSideBarManagerViewController alloc] initWithProps:props children:children globalProps:globalProps bridge:bridge];
-    }
-    else {
+    } else if ([drawerType isEqualToString:@"KYDrawerController"]) {
+      controller = [[RCCKYDrawerController alloc] initWithProps:props children:children globalProps:globalProps bridge:bridge];
+    } else {
       controller = [[RCCDrawerController alloc] initWithProps:props children:children globalProps:globalProps bridge:bridge];
     }
   }

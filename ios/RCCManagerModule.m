@@ -8,6 +8,7 @@
 #import <React/RCTConvert.h>
 #import "RCCTabBarController.h"
 #import "RCCTheSideBarManagerViewController.h"
+#import "RCCKYDrawerController.h"
 #import "RCCNotification.h"
 
 #define kSlideDownAnimationDuration 0.35
@@ -278,7 +279,7 @@ RCT_EXPORT_METHOD(
     if (!controllerId || !performAction) return;
     
     id<RCCDrawerDelegate> controller = [[RCCManager sharedIntance] getControllerWithId:controllerId componentType:@"DrawerControllerIOS"];
-    if (!controller || (![controller isKindOfClass:[RCCDrawerController class]] && ![controller isKindOfClass:[RCCTheSideBarManagerViewController class]])) return;
+    if (!controller || (![controller isKindOfClass:[RCCDrawerController class]] && ![controller isKindOfClass:[RCCTheSideBarManagerViewController class]] && ![controller isKindOfClass:[RCCKYDrawerController class]])) return;
     return [controller performAction:performAction actionParams:actionParams bridge:[[RCCManager sharedIntance] getBridge]];
     
 }
