@@ -1,12 +1,12 @@
 {
   "name": "react-native-navigation",
-  "version": "1.1.85",
+  "version": "1.1.87",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
   "author": "Tal Kol <talkol@gmail.com>",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://hub.skipthedishes.com/repository/npm-internal/"
   },
   "bugs": {
     "url": "https://github.com/wix/react-native-navigation/issues"
