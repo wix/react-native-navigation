@@ -675,6 +675,10 @@ function dismissContextualMenu() {
   newPlatformSpecific.dismissContextualMenu();
 }
 
+async function isAppLaunched() {
+  return await newPlatformSpecific.isAppLaunched();
+}
+
 export default {
   startTabBasedApp,
   startSingleScreenApp,
@@ -704,5 +708,6 @@ export default {
   showSnackbar,
   dismissSnackbar,
   showContextualMenu,
-  dismissContextualMenu
+  dismissContextualMenu,
+  isAppLaunched
 };
