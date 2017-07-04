@@ -48,10 +48,27 @@ const NSInteger kLightBoxTag = 0x101010;
                 UIColor *backgroundColor = [RCTConvert UIColor:style[@"backgroundColor"]];
                 if (backgroundColor != nil)
                 {
-                    self.overlayColorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+                    self.overlayColorView = [[UIView alloc] init];
                     self.overlayColorView.backgroundColor = backgroundColor;
                     self.overlayColorView.alpha = 0;
+                    [self.overlayColorView setTranslatesAutoresizingMaskIntoConstraints:NO];
                     [self addSubview:self.overlayColorView];
+
+                    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.overlayColorView
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                    multiplier:1.0
+                                                                      constant:0]];
+
+                    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.overlayColorView
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                    multiplier:1.0
+                                                                      constant:0]];
                 }
             }
 
