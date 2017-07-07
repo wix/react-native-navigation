@@ -161,6 +161,9 @@ var Controllers = {
       popToRoot: function (params) {
         RCCManager.NavigationControllerIOS(id, "popToRoot", params);
       },
+      setDrawerEnabled: function (params) {
+        RCCManager.DrawerControllerIOS(id, "setDrawerEnabled", params);
+      },
       setTitle: function (params) {
         if (params['style']) {
           params['style'] = Object.assign({}, params['style']);

@@ -388,6 +388,10 @@ function navigatorToggleDrawer(navigator, params) {
   }
 }
 
+function navigatorSetDrawerEnabled(navigator, params) {
+  newPlatformSpecific.setSideMenuEnabled(params.enabled, params.side);
+}
+
 function navigatorToggleNavBar(navigator, params) {
   const screenInstanceID = navigator.screenInstanceID;
   const visible = params.to === 'shown' || params.to === 'show';
@@ -440,6 +444,7 @@ function showLightBox(params) {
       params.backgroundColor = processColor('transparent');
     }
   }
+  params.tapBackgroundToDismiss = _.get(params, 'style.tapBackgroundToDismiss') || false;
   newPlatformSpecific.showLightBox(params);
 }
 
@@ -670,6 +675,10 @@ function dismissContextualMenu() {
   newPlatformSpecific.dismissContextualMenu();
 }
 
+async function isAppLaunched() {
+  return await newPlatformSpecific.isAppLaunched();
+}
+
 export default {
   startTabBasedApp,
   startSingleScreenApp,
@@ -693,10 +702,12 @@ export default {
   navigatorSwitchToTab,
   navigatorSwitchToTopTab,
   navigatorToggleDrawer,
+  navigatorSetDrawerEnabled,
   navigatorToggleTabs,
   navigatorToggleNavBar,
   showSnackbar,
   dismissSnackbar,
   showContextualMenu,
-  dismissContextualMenu
+  dismissContextualMenu,
+  isAppLaunched
 };
