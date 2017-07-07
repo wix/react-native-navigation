@@ -7,7 +7,6 @@ import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -44,7 +43,7 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         }
     }
 
-    private void createContent(final Context context, LightBoxParams params) {
+    private void createContent(final Context context, final LightBoxParams params) {
         lightBox = new RelativeLayout(context);
         lightBox.setAlpha(0);
         content = new ContentView(context, params.screenId, params.navigationParams);
