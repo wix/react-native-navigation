@@ -445,6 +445,7 @@ function showLightBox(params) {
     }
   }
   params.tapBackgroundToDismiss = _.get(params, 'style.tapBackgroundToDismiss') || false;
+  params.requiresFullScreen = _.get(params, 'style.requiresFullScreen') || false;
   newPlatformSpecific.showLightBox(params);
 }
 
@@ -650,8 +651,8 @@ function dismissSnackbar() {
 function showContextualMenu(navigator, params) {
   const contextualMenu = {
     buttons: [],
-    backButton: {id: 'back'},
-    navigationParams: {navigatorEventID: navigator.navigatorEventID}
+    backButton: { id: 'back' },
+    navigationParams: { navigatorEventID: navigator.navigatorEventID }
   };
 
   params.rightButtons.forEach((button, index) => {

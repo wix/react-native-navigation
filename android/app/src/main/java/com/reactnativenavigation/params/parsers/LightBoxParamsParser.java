@@ -20,6 +20,7 @@ public class LightBoxParamsParser extends Parser {
         result.navigationParams = new NavigationParams(params.getBundle("navigationParams"));
         result.backgroundColor = getColor(params, "backgroundColor");
         result.tapBackgroundToDismiss = params.getBoolean("tapBackgroundToDismiss");
+        result.requiresFullScreen = params.getBoolean("requiresFullScreen");
         return result;
     }
 }

@@ -81,21 +81,46 @@ const NSInteger kLightBoxTag = 0x101010;
             }
         }
         
-        self.reactView = [[RCTRootView alloc] initWithBridge:[[RCCManager sharedInstance] getBridge] moduleName:self.params[@"component"] initialProperties:passProps];
-        self.reactView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-        self.reactView.backgroundColor = [UIColor clearColor];
-        self.reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
-        self.reactView.center = self.center;
-        [self addSubview:self.reactView];
-        
-        [self.reactView.contentView.layer addObserver:self forKeyPath:@"frame" options:0 context:nil];
-        [self.reactView.contentView.layer addObserver:self forKeyPath:@"bounds" options:0 context:NULL];
+        [self setupReactViewWithStyle:style passProps:passProps];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTJavaScriptWillStartLoadingNotification object:nil];
     }
     return self;
 }
 
+-(void)setupReactViewWithStyle:(NSDictionary*)style passProps:(NSDictionary*)passProps
+{
+    self.reactView = [[RCTRootView alloc] initWithBridge:[[RCCManager sharedInstance] getBridge] moduleName:self.params[@"component"] initialProperties:passProps];
+    
+    if ([RCTConvert BOOL:style[@"requiresFullScreen"]]) {
+        [self.reactView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.reactView
+                                                         attribute:NSLayoutAttributeWidth
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeWidth
+                                                        multiplier:1.0
+                                                          constant:0]];
+        
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.reactView
+                                                         attribute:NSLayoutAttributeHeight
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeHeight
+                                                        multiplier:1.0
+                                                          constant:0]];
+    } else {
+        self.reactView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        self.reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
+        self.reactView.center = self.center;
+    }
+    
+    self.reactView.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.reactView];
+    
+    [self.reactView.contentView.layer addObserver:self forKeyPath:@"frame" options:0 context:nil];
+    [self.reactView.contentView.layer addObserver:self forKeyPath:@"bounds" options:0 context:NULL];
+}
 
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
