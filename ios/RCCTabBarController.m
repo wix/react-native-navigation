@@ -120,6 +120,17 @@
     {
       self.tabBar.clipsToBounds = [tabBarHideShadow boolValue] ? YES : NO;
     }
+    
+    NSString *tabBarBlur = tabsStyle[@"tabBarBlur"];
+    if (tabBarBlur) {
+      [[UITabBar appearance] setBackgroundImage:[UIImage new]];
+      UIToolbar* blurredView = [[UIToolbar alloc] initWithFrame:self.tabBar.bounds];
+      BOOL isDefault = [tabBarBlur boolValue];
+      if (!isDefault && [tabBarBlur isEqualToString:@"dark"]) {
+        [blurredView setBarStyle:UIBarStyleBlack];
+      }
+      [self.tabBar insertSubview:blurredView atIndex:0];
+    }
   }
   
   NSMutableArray *viewControllers = [NSMutableArray array];
