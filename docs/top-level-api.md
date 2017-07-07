@@ -147,6 +147,7 @@ Navigation.showLightBox({
     backgroundBlur: "dark", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
     backgroundColor: "#ff000080", // tint color for the background, you can specify alpha here (optional)
     tapBackgroundToDismiss: true // dismisses LightBox on background taps (optional)
+    requiresFullScreen: true // Content will fill the screen with no blurred/colored background visible. This allows you to handle all layout of the children on your own, including your own custom dimmed views with support for device rotation. Default is false. backgroundBlur, backgroundColor and tapBackgroundToDismiss values will be ignored. (optional)
   }
 });
 ```

@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -66,8 +67,10 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         content.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
-                content.getLayoutParams().height = content.getChildAt(0).getHeight();
-                content.getLayoutParams().width = content.getChildAt(0).getWidth();
+                if (!params.requiresFullScreen) {
+                    content.getLayoutParams().height = content.getChildAt(0).getHeight();
+                    content.getLayoutParams().width = content.getChildAt(0).getWidth();
+                }
                 content.setBackgroundColor(Color.TRANSPARENT);
                 ViewUtils.runOnPreDraw(content, new Runnable() {
                     @Override
