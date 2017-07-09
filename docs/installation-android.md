@@ -48,7 +48,8 @@
 5. In `MainApplication.java`, add the following
 	```java
 	import com.reactnativenavigation.NavigationApplication;
-
+	import com.reactnativenavigation.controllers.ActivityCallbacks;
+	import android.content.Intent;
 	public class MainApplication extends NavigationApplication {
 
 		@Override
@@ -69,6 +70,19 @@
 		public List<ReactPackage> createAdditionalReactPackages() {
 			return getPackages();
 		}
+		@Override
+		  public void onCreate() {
+		    super.onCreate();
+		    setActivityCallbacks(new ActivityCallbacks() {
+		      @Override
+		      public void onActivityResult(int requestCode, int resultCode, Intent data) {
+			mCallbackManager.onActivityResult(requestCode, resultCode, data);
+		      }
+		    });
+		 
+		    SoLoader.init(this, /* native exopackage */ false);
+		  }
+
 	}
 	```
 
