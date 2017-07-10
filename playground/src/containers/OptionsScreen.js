@@ -30,9 +30,9 @@ class OptionsScreen extends Component {
   }
 
   onClickDynamicOptions() {
-    // Navigation.setOptions({
-    //   title: 'Dynamic Title'
-    // });
+    Navigation.setOptions(this.props.containerId, {
+      title: 'Dynamic Title'
+    });
   }
 }
 
