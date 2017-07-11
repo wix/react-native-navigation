@@ -22,6 +22,12 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   return [self supportedControllerOrientations];
 }
 
+- (void)dealloc
+{
+  [_panRecognizer removeTarget:self action:@selector(pan:)];
+  [self.view removeGestureRecognizer:_panRecognizer];
+}
+
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary*)globalProps bridge:(RCTBridge *)bridge
 {
   _queuedViewControllers = [NSMutableArray new];
@@ -53,6 +59,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   
   self.navigationBar.translucent = NO; // default
   
+  [self commonInit];
+  
   [self processTitleView:viewController
                    props:props
                    style:navigatorStyle];
@@ -63,6 +71,24 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   return self;
 }
 
+- (void)awakeFromNib
+{
+  [super awakeFromNib];
+  [self commonInit];
+}
+
+- (void)commonInit
+{
+  RCCDirectionalPanGestureRecognizer *panRecognizer = [[RCCDirectionalPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+  panRecognizer.direction = RCCPanDirectionRight;
+  panRecognizer.maximumNumberOfTouches = 1;
+  panRecognizer.delegate = self;
+  [self.view addGestureRecognizer:panRecognizer];
+  _panRecognizer = panRecognizer;
+  
+  _animator = [[RCCAnimator alloc] init];
+  _animator.delegate = self;
+}
 
 - (void)performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams bridge:(RCTBridge *)bridge
 {
@@ -96,6 +122,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [mergedStyle removeObjectForKey:@"autoAdjustScrollViewInsets"];
       [mergedStyle removeObjectForKey:@"statusBarTextColorSchemeSingleScreen"];
       [mergedStyle removeObjectForKey:@"disabledBackGesture"];
+      [mergedStyle removeObjectForKey:@"enabledBackGestureFullScreen"];
       [mergedStyle removeObjectForKey:@"navBarCustomView"];
       [mergedStyle removeObjectForKey:@"navBarComponentAlignment"];
        
@@ -416,16 +443,87 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   [super pushViewController:viewController animated:animated];
 }
 
+#pragma mark - UIPanGestureRecognizer
+
+- (void)pan:(UIPanGestureRecognizer*)recognizer
+{
+  UIView *view = self.navigationController.view;
+  if (recognizer.state == UIGestureRecognizerStateBegan) {
+    if (self.navigationController.viewControllers.count > 1 && !self.duringAnimation) {
+      self.interactionController = [[UIPercentDrivenInteractiveTransition alloc] init];
+      self.interactionController.completionCurve = UIViewAnimationCurveEaseOut;
+      
+      [self.navigationController popViewControllerAnimated:YES];
+    }
+  } else if (recognizer.state == UIGestureRecognizerStateChanged) {
+    CGPoint translation = [recognizer translationInView:view];
+    // Cumulative translation.x can be less than zero because user can pan slightly to the right and then back to the left.
+    CGFloat d = translation.x > 0 ? translation.x / CGRectGetWidth(view.bounds) : 0;
+    [self.interactionController updateInteractiveTransition:d];
+  } else if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
+    if ([recognizer velocityInView:view].x > 0) {
+      [self.interactionController finishInteractiveTransition];
+    } else {
+      [self.interactionController cancelInteractiveTransition];
+      // When the transition is cancelled, `navigationController:didShowViewController:animated:` isn't called, so we have to maintain `duringAnimation`'s state here too.
+      self.duringAnimation = NO;
+    }
+    self.interactionController = nil;
+  }
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+-(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+  if (self.navigationController.viewControllers.count > 1) {
+    return YES;
+  }
+  return NO;
+}
 
 #pragma mark - UINavigationControllerDelegate
 
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
+{
+  if (operation == UINavigationControllerOperationPop) {
+    return self.animator;
+  }
+  return nil;
+}
+
+- (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController
+{
+  return self.interactionController;
+}
 
 -(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+  if (animated) {
+    self.duringAnimation = YES;
+  }
   [viewController setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+  self.duringAnimation = NO;
+  BOOL enabled = YES;
+  if ([viewController isKindOfClass:[RCCViewController class]]) {
+    NSDictionary *navigatorStyle = ((RCCViewController *)viewController).navigatorStyle;
+    NSNumber *disabledBackGesture = navigatorStyle[@"disabledBackGesture"];
+    NSNumber *enabledBackGestureFullScreen = navigatorStyle[@"enabledBackGestureFullScreen"];
+    BOOL isFullScreenBackGestureEnabled = enabledBackGestureFullScreen ? [enabledBackGestureFullScreen boolValue] : NO;
+    if (!isFullScreenBackGestureEnabled) {
+      enabled = NO;
+    }
+    else {
+      enabled = disabledBackGesture ? ![disabledBackGesture boolValue] : YES;
+    }
+  }
+  if (navigationController.viewControllers.count <= 1) {
+    enabled = NO;
+  }
+  self.panRecognizer.enabled = enabled;
+  
   dispatch_async(dispatch_get_main_queue(), ^{
     _transitioning = NO;
     if ([_queuedViewControllers count] > 0) {
