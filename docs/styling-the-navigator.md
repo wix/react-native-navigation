@@ -79,7 +79,10 @@ this.props.navigator.setStyle({
   // Android only
   navigationBarColor: '#000000', // change the background color of the bottom native navigation bar.
   navBarTitleTextCentered: true, // default: false. centers the title.
-  topBarElevationShadowEnabled: false, // default: true. Disables TopBar elevation shadow on Lolipop and above
+  topBarElevationShadowEnabled: false, // (Android - default: true, iOS - default: false). Disables TopBar elevation shadow on Lolipop and above
+  shadowOpacity: .3, // iOS only - Works only when topBarElevationShadowEnabled: true
+  shadowOffset: 12, // iOS only - Works only when topBarElevationShadowEnabled: true
+  shadowRadius: 3 // iOS only - Works only when topBarElevationShadowEnabled: true
   statusBarColor: '#000000', // change the color of the status bar.
   collapsingToolBarImage: "http://lorempixel.com/400/200/", // Collapsing Toolbar image.
   collapsingToolBarImage: require('../../img/topbar.jpg'), // Collapsing Toolbar image. Either use a url or require a local image.
