@@ -25,7 +25,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
 - (void)dealloc
 {
   [_panRecognizer removeTarget:self action:@selector(pan:)];
-  [self.view removeGestureRecognizer:_panRecognizer];
+  [_navigationController.view removeGestureRecognizer:_panRecognizer];
 }
 
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary*)globalProps bridge:(RCTBridge *)bridge
@@ -59,6 +59,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   
   self.navigationBar.translucent = NO; // default
   
+  _navigationController = self;
   [self commonInit];
   
   [self processTitleView:viewController
@@ -83,7 +84,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   panRecognizer.direction = RCCPanDirectionRight;
   panRecognizer.maximumNumberOfTouches = 1;
   panRecognizer.delegate = self;
-  [self.view addGestureRecognizer:panRecognizer];
+  [_navigationController.view addGestureRecognizer:panRecognizer];
   _panRecognizer = panRecognizer;
   
   _animator = [[RCCAnimator alloc] init];

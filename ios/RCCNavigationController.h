@@ -5,6 +5,7 @@
 
 @interface RCCNavigationController : UINavigationController <UINavigationControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UINavigationController *navigationController;
 @property (strong, nonatomic) RCCAnimator *animator;
 @property (strong, nonatomic) UIPercentDrivenInteractiveTransition *interactionController;
 /// A Boolean value that indicates whether the navigation controller is currently animating a push/pop operation.
