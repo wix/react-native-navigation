@@ -11,7 +11,7 @@ const packageName = `system-images;${sdk};${apis};${abi}`;
 const release = _.includes(process.argv, 'release');
 
 // Run just a single test, e.g. yarn test-e2e-android -- just com.MyClass#myMethod
-const filter = _(process.argv).dropWhile(a => a !== 'just').take(2).last();
+const filter = _(process.argv).dropWhile((a) => a !== 'just').take(2).last();
 
 run();
 
