@@ -10,7 +10,7 @@ import com.facebook.react.ReactRootView;
 import com.reactnativenavigation.react.NavigationEvent;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
-public class ReactRootViewController extends ViewController {
+public class ReactRootViewController extends ViewController implements NavigationOptionsHolder {
 
 	private final String name;
 	private final NavigationOptions navigationOptions;
@@ -29,6 +29,11 @@ public class ReactRootViewController extends ViewController {
 		this.reactInstanceManager = reactInstanceManager;
 	}
 
+	public void mergeNavigationOptions(NavigationOptions options) {
+		navigationOptions.title = options.title;
+		applyNavigationOptions();
+	}
+
 	@Override
 	public void destroy() {
 		super.destroy();
@@ -39,8 +44,7 @@ public class ReactRootViewController extends ViewController {
 	@Override
 	public void onViewAppeared() {
 		super.onViewAppeared();
-		if (getParentStackController() != null)
-			getParentStackController().setTitle(navigationOptions.title);
+		applyNavigationOptions();
 		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).containerStart(getId());
 	}
 
@@ -70,5 +74,10 @@ public class ReactRootViewController extends ViewController {
 		opts.putString("containerId", getId());
 		reactRootView.startReactApplication(this.reactInstanceManager, this.name, opts);
 		return reactRootView;
+	}
+
+	private void applyNavigationOptions() {
+		if (getParentStackController() != null)
+			getParentStackController().setTitle(navigationOptions.title);
 	}
 }

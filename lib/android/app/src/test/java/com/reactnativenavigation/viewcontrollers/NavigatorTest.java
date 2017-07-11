@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.layout.NavigationOptions;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TestStackAnimator;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class NavigatorTest extends BaseTest {
 	private Activity activity;
 	private Navigator uut;
-	private ViewController child1;
+	private SimpleViewController child1;
 	private ViewController child2;
 	private ViewController child3;
 	private ViewController child4;
@@ -185,6 +186,14 @@ public class NavigatorTest extends BaseTest {
 		when(spy.handleBack()).thenReturn(true);
 		assertThat(uut.handleBack()).isTrue();
 		verify(spy, times(1)).handleBack();
+	}
+
+	@Test
+	public void setOptions_CallsMergeNavigationOptions() {
+		uut.setRoot(child1);
+		NavigationOptions options = new NavigationOptions();
+		uut.setOptions(child1.getId(), options);
+		assertThat(child1.lastNavigationOptions).isEqualTo(options);
 	}
 
 	@NonNull

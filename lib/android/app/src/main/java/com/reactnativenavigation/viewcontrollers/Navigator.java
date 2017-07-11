@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.layout.NavigationOptions;
+import com.reactnativenavigation.layout.NavigationOptionsHolder;
 import com.reactnativenavigation.utils.CompatUtils;
 
 import java.util.Collection;
@@ -26,6 +27,7 @@ public class Navigator extends ParentController {
 		return new FrameLayout(getActivity());
 	}
 
+	@NonNull
 	@Override
 	public Collection<ViewController> getChildControllers() {
 		return root == null ? Collections.<ViewController>emptyList() : Collections.singletonList(root);
@@ -57,7 +59,9 @@ public class Navigator extends ParentController {
 
 	public void setOptions(final String containerId, NavigationOptions options) {
 		ViewController target = findControllerById(containerId);
-		target.getParentStackController().setTitle(options.title);
+		if (target instanceof NavigationOptionsHolder) {
+			((NavigationOptionsHolder) target).mergeNavigationOptions(options);
+		}
 	}
 
 	public void push(final String fromId, final ViewController viewController) {
