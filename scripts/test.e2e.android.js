@@ -10,6 +10,9 @@ const packageName = `system-images;${sdk};${apis};${abi}`;
 
 const release = _.includes(process.argv, 'release');
 
+// Run just a single test, e.g. yarn test-e2e-android -- just com.MyClass#myMethod
+const filter = _(process.argv).dropWhile(a => a !== 'just').take(2).last();
+
 run();
 
 function run() {
@@ -23,7 +26,8 @@ function run() {
 function runTests() {
   exec.execSync(`yarn run uninstall-android`);
   exec.execSync(`yarn run install-android ${release ? '-- release' : ''}`);
-  exec.execSync(`cd AndroidE2E && ./gradlew connectedDebugAndroidTest`);
+  const filterParam = filter ? '-Pandroid.testInstrumentationRunnerArguments.class=' + filter : '';
+  exec.execSync(`cd AndroidE2E && ./gradlew ${filterParam} connectedDebugAndroidTest`);
 }
 
 function installEmulator() {
