@@ -10,6 +10,8 @@
 
 -(void) setRoot:(NSDictionary*)layout;
 
+-(void) setOptions:(NSString*)containerId options:(NSDictionary*)options;
+
 -(void) push:(NSString*)containerId layout:(NSDictionary*)layout;
 
 -(void) pop:(NSString*)containerId;

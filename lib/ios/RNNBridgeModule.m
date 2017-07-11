@@ -22,6 +22,10 @@ RCT_EXPORT_METHOD(setRoot:(NSDictionary*)layout) {
 	[_commandsHandler setRoot:layout];
 }
 
+RCT_EXPORT_METHOD(setOptions:(NSString*)containerId options:(NSDictionary*)options) {
+	[_commandsHandler setOptions:containerId options:options];
+}
+
 RCT_EXPORT_METHOD(push:(NSString*)containerId layout:(NSDictionary*)layout) {
 	[_commandsHandler push:containerId layout:layout];
 }

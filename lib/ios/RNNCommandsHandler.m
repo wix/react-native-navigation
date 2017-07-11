@@ -33,6 +33,11 @@
 	[UIApplication.sharedApplication.delegate.window makeKeyAndVisible];
 }
 
+-(void) setOptions:(NSString*)containerId options:(NSDictionary*)options {
+	[self assertReady];
+	[_store findContainerForId:containerId].navigationItem.title = options[@"title"];
+}
+
 -(void) push:(NSString*)containerId layout:(NSDictionary*)layout {
 	[self assertReady];
 	UIViewController *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
