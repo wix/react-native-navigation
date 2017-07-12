@@ -96,6 +96,14 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     [[RCCManager sharedInstance] registerController:controller componentId:componentId componentType:type];
   }
   
+  // set background image at root level
+  NSString *rootBackgroundImageName = props[@"style"][@"rootBackgroundImageName"];
+  if (rootBackgroundImageName) {
+    UIImage *image = [UIImage imageNamed: rootBackgroundImageName];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    [controller.view insertSubview:imageView atIndex:0];
+  }
+  
   return controller;
 }
 

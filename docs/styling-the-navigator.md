@@ -51,7 +51,7 @@ this.props.navigator.setStyle({
   navBarBlur: false, // blur the entire nav bar, works best with drawUnderNavBar:true
   tabBarHidden: false, // make the screen content hide the tab bar (remembered across pushes)
   statusBarTextColorScheme: 'dark', // text color of status bar, 'dark' / 'light' (remembered across pushes)
-  statusBarTextColorSchemeSingleScreen: 'light' // same as statusBarTextColorScheme but does NOT remember across pushes
+  statusBarTextColorSchemeSingleScreen: 'light', // same as statusBarTextColorScheme but does NOT remember across pushes
   navBarSubtitleColor: 'red', // subtitle color
   navBarSubtitleFontFamily: 'font-name', // subtitle font
   screenBackgroundColor: 'white', // Default screen color, visible before the actual react view is rendered
@@ -63,7 +63,8 @@ this.props.navigator.setStyle({
   
   disabledBackGesture: false, // default: false. Disable the back gesture (swipe gesture) in order to pop the top screen. 
   screenBackgroundImageName: '<name of image in Images.xcassets>', // Optional. default screen background image.
-  
+  rootBackgroundImageName: '<name of image in Images.xcassets>', // Static while you transition between screens. Works best with screenBackgroundColor: 'transparent'
+
   navBarButtonFontSize: 20, // Change font size nav bar buttons (eg. the back button) (remembered across pushes)
   navBarButtonFontWeight: '500', // Change font weight nav bar buttons (eg. the back button) (remembered across pushes)
 

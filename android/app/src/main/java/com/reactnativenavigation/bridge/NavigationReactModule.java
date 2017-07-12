@@ -258,4 +258,9 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     public void getOrientation(Promise promise) {
         NavigationCommandsHandler.getOrientation(promise);
     }
+
+    @ReactMethod
+    public void isAppLaunched(Promise promise) {
+        NavigationCommandsHandler.isAppLaunched(promise);
+    }
 }

@@ -54,6 +54,15 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         lightBox.setBackgroundColor(params.backgroundColor.getColor());
         lightBox.addView(content, lp);
 
+        if (params.tapBackgroundToDismiss) {
+            lightBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hide();
+                }
+            });
+        }
+
         content.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
@@ -123,7 +132,7 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         allAnimators.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                dismiss();
+                destroy();
             }
         });
         allAnimators.start();

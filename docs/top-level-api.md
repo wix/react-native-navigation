@@ -145,7 +145,8 @@ Navigation.showLightBox({
   passProps: {}, // simple serializable object that will pass as props to the lightbox (optional)
   style: {
     backgroundBlur: "dark", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
-    backgroundColor: "#ff000080" // tint color for the background, you can specify alpha here (optional)
+    backgroundColor: "#ff000080", // tint color for the background, you can specify alpha here (optional)
+    tapBackgroundToDismiss: true // dismisses LightBox on background taps (optional)
   }
 });
 ```
