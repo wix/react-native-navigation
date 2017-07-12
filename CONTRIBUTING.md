@@ -72,7 +72,7 @@ brew tap facebook/fb && brew install fbsimctl
 | `yarn test-unit-ios` | runs ios unit tests in debug/release <br> **Options:** `-- release` |
 | `yarn test-unit-android` | runs android unit tests in debug/release <br> **Options:** `-- release` |
 | `yarn test-e2e-ios` | runs the ios e2e suite (with detox) in debug/release |
-| `yarn test-e2e-android` | runs the android e2e suite (with uiautomator) in debug/release on running devices/emulators <br> **Options:** `-- release` |
+| `yarn test-e2e-android` | runs the android e2e suite (with uiautomator) in debug/release on running devices/emulators <br> **Options:** `-- [release] [just com.TestClass#testMethod]` |
 | `yarn test-all` | runs all tests in parallel |
 
 ## Workflow
