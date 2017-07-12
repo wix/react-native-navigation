@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.reactnativenavigation.layout.NavigationOptions;
 import com.reactnativenavigation.utils.CompatUtils;
 
 import java.util.Collection;
@@ -35,6 +36,12 @@ public class Navigator extends ParentController {
 		return root != null && root.handleBack();
 	}
 
+	@Override
+	public void destroy() {
+		modalStack.dismissAll();
+		super.destroy();
+	}
+
 	/*
 	 * Navigation methods
 	 */
@@ -46,6 +53,11 @@ public class Navigator extends ParentController {
 
 		root = viewController;
 		getView().addView(viewController.getView());
+	}
+
+	public void setOptions(final String containerId, NavigationOptions options) {
+		ViewController target = findControllerById(containerId);
+		target.getParentStackController().setTitle(options.title);
 	}
 
 	public void push(final String fromId, final ViewController viewController) {

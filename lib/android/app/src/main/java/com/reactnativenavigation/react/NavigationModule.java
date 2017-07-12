@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.NavigationActivity;
 import com.reactnativenavigation.layout.LayoutFactory;
 import com.reactnativenavigation.layout.LayoutNode;
+import com.reactnativenavigation.layout.NavigationOptions;
 import com.reactnativenavigation.parse.JSONParser;
 import com.reactnativenavigation.parse.LayoutNodeParser;
 import com.reactnativenavigation.utils.UiThread;
@@ -38,6 +39,17 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 			public void run() {
 				final ViewController viewController = newLayoutFactory().create(layoutTree);
 				navigator().setRoot(viewController);
+			}
+		});
+	}
+
+	@ReactMethod
+	public void setOptions(final String onContainerId, final ReadableMap options) {
+		final NavigationOptions navOptions = NavigationOptions.parse(JSONParser.parse(options));
+		handle(new Runnable() {
+			@Override
+			public void run() {
+				navigator().setOptions(onContainerId, navOptions);
 			}
 		});
 	}
@@ -130,7 +142,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	private void handle(Runnable task) {
-		if (activity() == null) return;
+		if (activity() == null || activity().isFinishing()) return;
 		UiThread.post(task);
 	}
 }

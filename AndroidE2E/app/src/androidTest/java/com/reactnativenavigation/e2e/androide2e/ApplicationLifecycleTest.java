@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.test.uiautomator.By;
+import android.view.KeyEvent;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
@@ -55,6 +57,40 @@ public class ApplicationLifecycleTest extends BaseTest {
 		device().pressRecentApps();
 		elementByText("Playground").click();
 		assertMainShown();
+	}
+
+	@Test
+	public void pressingMenuOpensDevMenu() throws Exception {
+		device().pressKeyCode(KeyEvent.KEYCODE_MENU);
+		assertExists(By.text("Debug JS Remotely"));
+	}
+
+	@Test
+	public void pressingRTwiceInSuccessionReloadsReactNative() throws Exception {
+		elementByText("PUSH").click();
+		assertExists(By.text("Pushed Screen"));
+
+		device().pressKeyCode(KeyEvent.KEYCODE_R);
+		device().pressKeyCode(KeyEvent.KEYCODE_R);
+		device().waitForIdle();
+		assertMainShown();
+	}
+
+	@Test
+	public void pressingRTwiceWithDelayDoesNothing() throws Exception {
+		elementByText("PUSH").click();
+		assertExists(By.text("Pushed Screen"));
+
+		device().pressKeyCode(KeyEvent.KEYCODE_R);
+		Thread.sleep(1500);
+		device().pressKeyCode(KeyEvent.KEYCODE_R);
+		assertExists(By.text("Pushed Screen"));
+	}
+
+	@Test
+	@Ignore
+	public void reloadReactNativeDoesNotCausesLeaks() throws Exception {
+		// TODO
 	}
 
 	private void killAppSaveInstanceState_ByTogglingPermissions() throws Exception {

@@ -59,9 +59,6 @@ public class ReactRootViewController extends ViewController {
 	@Override
 	protected View createView() {
 		reactRootView = new ReactRootView(getActivity());
-		Bundle opts = new Bundle();
-		opts.putString("containerId", getId());
-		reactRootView.startReactApplication(this.reactInstanceManager, this.name, opts);
 		reactRootView.setEventListener(new ReactRootView.ReactRootViewEventListener() {
 			@Override
 			public void onAttachedToReactInstance(final ReactRootView reactRootView) {
@@ -69,6 +66,9 @@ public class ReactRootViewController extends ViewController {
 				attachedToReactInstance = true;
 			}
 		});
+		final Bundle opts = new Bundle();
+		opts.putString("containerId", getId());
+		reactRootView.startReactApplication(this.reactInstanceManager, this.name, opts);
 		return reactRootView;
 	}
 }

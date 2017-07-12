@@ -35,6 +35,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		navigator.destroy();
 		app().getReactGateway().onActivityDestroyed(this);
 	}
 

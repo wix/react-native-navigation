@@ -38,8 +38,9 @@ function setupGit() {
 function calcNewVersion() {
   const packageVersion = semver.clean(process.env.npm_package_version);
   console.log(`package version: ${packageVersion}`);
+  exec.execSync(`git fetch --unshallow`);
   const commitCount = exec.execSyncRead(`git rev-list --count ${ONLY_ON_BRANCH}`);
-  console.log(`new patch: ${commitCount}`);
+  console.log(`commits in ${ONLY_ON_BRANCH}: ${commitCount}`);
   return `${semver.major(packageVersion)}.${semver.minor(packageVersion)}.${commitCount}`;
 }
 

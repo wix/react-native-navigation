@@ -62,9 +62,10 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 | setTabBadge         |    ✅    |       [Contribute](CONTRIBUTING.md)     |
 | switchToTab         |    ✅    |        [Contribute](CONTRIBUTING.md)    |
 | toggleNavBar        |   ✅     |      [Contribute](CONTRIBUTING.md)      |
-| Screen Visibility   |   ✅     |       ✅     |
+| Element tranisitions  |   ✅     |     [Contribute](CONTRIBUTING.md)       |
+| static styles   |   ✅     |       [Contribute](CONTRIBUTING.md)     |
+| dynamic styles   |   ✅     |       [Contribute](CONTRIBUTING.md)     |
 
-Element tranisitions, adding buttons and styles are not yet implemented. [Contribute](CONTRIBUTING.md)
 
 ## Getting started with v2
 If v2 supports everything you need for your app we encourage you to use it.

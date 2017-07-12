@@ -23,7 +23,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @RunWith(AndroidJUnit4.class)
 public abstract class BaseTest {
 	public static final String PACKAGE_NAME = "com.reactnativenavigation.playground";
-	public static final long TIMEOUT = 3000;
+	public static final long TIMEOUT = 10000;
 
 	@Before
 	public void beforeEach() throws Exception {
