@@ -4,6 +4,7 @@
 #import <React/RCTRootViewDelegate.h>
 #import <React/RCTConvert.h>
 #import <React/RCTUtils.h>
+#import <React/RCTEventDispatcher.h>
 #import "RCTHelpers.h"
 #import <objc/runtime.h>
 
@@ -191,6 +192,8 @@ const NSInteger kLightBoxTag = 0x101010;
 
 -(void)showAnimated
 {
+    [self sendScreenChangedEvent:@"willAppear"];
+
     if (self.visualEffectView != nil || self.overlayColorView != nil)
     {
         [UIView animateWithDuration:0.3 animations:^()
@@ -213,12 +216,14 @@ const NSInteger kLightBoxTag = 0x101010;
     {
         self.reactView.transform = CGAffineTransformIdentity;
         self.reactView.alpha = 1;
+        [self sendScreenChangedEvent:@"didAppear"];
     } completion:nil];
 }
 
 -(void)dismissAnimated
 {
     self.isDismissing = YES;
+    [self sendScreenChangedEvent:@"willDisappear"];
     
     BOOL hasOverlayViews = (self.visualEffectView != nil || self.overlayColorView != nil);
     
@@ -231,6 +236,7 @@ const NSInteger kLightBoxTag = 0x101010;
     {
         if (!hasOverlayViews)
         {
+            [self sendScreenChangedEvent:@"didDisappear"];
             [self removeFromSuperview];
         }
     }];
@@ -251,7 +257,20 @@ const NSInteger kLightBoxTag = 0x101010;
              
          } completion:^(BOOL finished)
          {
+             [self sendScreenChangedEvent:@"didDisappear"];
              [self removeFromSuperview];
+         }];
+    }
+}
+
+- (void)sendScreenChangedEvent:(NSString *)eventName
+{
+    if (self.reactView && self.reactView.appProperties[@"navigatorEventID"]) {
+        
+        [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:self.reactView.appProperties[@"navigatorEventID"] body:@
+         {
+             @"type": @"ScreenChangedEvent",
+             @"id": eventName
          }];
     }
 }
