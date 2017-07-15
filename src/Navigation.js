@@ -39,26 +39,14 @@ function _registerComponentNoRedux(screenID, generator) {
         this.state = {
           internalProps: {...props, ...PropRegistry.load(props.screenInstanceID)}
         }
-        this.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
       }
 
-      onNavigatorEvent(event) {
-        switch(event.id) {
-            case 'willAppear':
-              Navigator.addScreen(this.props.screenInstanceID, this.navigator)
-              if(InternalComponent.willAppear) InternalComponent.willAppear();
-              break;
-            case 'didAppear':
-              if(InternalComponent.didAppear) InternalComponent.didAppear();
-              break;
-            case 'willDisappear':
-              Navigator.removeScreen(this.props.screenInstanceID)
-              if(InternalComponent.willDisappear) InternalComponent.willDisappear();
-              break;
-            case 'didDisappear':
-              if(InternalComponent.didDisappear) InternalComponent.didDisappear();
-              break;
-          }
+      componentWillMount(){
+        Navigator.addScreen(this.props.screenInstanceID, this.navigator)
+      }
+
+      componentWillUnmount(){
+        Navigator.removeScreen(this.props.screenInstanceID)
       }
 
       componentWillReceiveProps(nextProps) {
@@ -98,10 +86,18 @@ function _registerComponentRedux(screenID, generator, store, Provider, options) 
         })
       }
 
+      componentWillMount(){
+        Navigator.addScreen(this.props.screenInstanceID, this.navigator)
+      }
+
+      componentWillUnmount(){
+        Navigator.removeScreen(this.props.screenInstanceID)
+      }
+
       render() {
         return (
           <Provider store={store} {...options}>
-            <InternalComponent testID={screenID} navigator={this.navigator} {...this.state.internalProps} />
+            <InternalComponent testID={screenID} navigator={this.navigator} containerId={this.props.screenInstanceID} {...this.state.internalProps} />
           </Provider>
         );
       }
