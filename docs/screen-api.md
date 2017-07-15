@@ -289,6 +289,9 @@ export default class ExampleScreen extends Component {
 	if (event.id === 'bottomTabSelected') {
 	  console.log('Tab selected!');
 	}
+	if (event.id === 'bottomTabReselected') {
+	  console.log('Tab reselected!');
+	}
   }
 }
 ```
