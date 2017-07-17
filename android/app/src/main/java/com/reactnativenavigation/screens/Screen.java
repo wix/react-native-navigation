@@ -259,15 +259,24 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void show(boolean animated) {
         NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(screenParams);
-        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(screenParams);
-        screenAnimator.show(animated);
+        screenAnimator.show(animated, new Runnable() {
+            @Override
+            public void run() {
+                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(screenParams);
+            }
+        });
     }
 
-    public void show(boolean animated, Runnable onAnimationEnd) {
+    public void show(boolean animated, final Runnable onAnimationEnd) {
         NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(screenParams);
-        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(screenParams);
         setStyle();
-        screenAnimator.show(animated, onAnimationEnd);
+        screenAnimator.show(animated, new Runnable() {
+            @Override
+            public void run() {
+                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(screenParams);
+                if (onAnimationEnd != null) onAnimationEnd.run();
+            }
+        });
     }
 
     public void showWithSharedElementsTransitions(Map<String, SharedElementTransition> fromElements, final Runnable onAnimationEnd) {
@@ -311,10 +320,15 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         sharedElements.removeHiddenElements();
     }
 
-    private void hide(boolean animated, Runnable onAnimatedEnd) {
+    private void hide(boolean animated, final Runnable onAnimatedEnd) {
         NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(screenParams);
-        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(screenParams);
-        screenAnimator.hide(animated, onAnimatedEnd);
+        screenAnimator.hide(animated, new Runnable() {
+            @Override
+            public void run() {
+                NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(screenParams);
+                if (onAnimatedEnd != null) onAnimatedEnd.run();
+            }
+        });
     }
 
     public void showContextualMenu(ContextualMenuParams params, Callback onButtonClicked) {

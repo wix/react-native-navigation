@@ -215,12 +215,14 @@ public class ScreenStack {
         }
     }
 
-    private void hideScreen(boolean animated, final Screen toRemove, Screen previous) {
+    private void hideScreen(boolean animated, final Screen toRemove, final Screen previous) {
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previous.screenParams);
         Runnable onAnimationEnd = new Runnable() {
             @Override
             public void run() {
                 toRemove.destroy();
                 parent.removeView(toRemove);
+                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previous.screenParams);
             }
         };
         if (animated) {
@@ -236,8 +238,6 @@ public class ScreenStack {
 
     private void readdPrevious(Screen previous) {
         previous.setVisibility(View.VISIBLE);
-        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previous.screenParams);
-        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previous.screenParams);
         parent.addView(previous, 0);
     }
 
