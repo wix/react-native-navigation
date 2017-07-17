@@ -22,6 +22,10 @@ class Push extends Component {
     });
   };
 
+  onPopToRoot = () => {
+    this.props.navigator.popToRoot();
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -37,6 +41,12 @@ class Push extends Component {
             style={styles.button}
             onPress={this.onResetTo}
             title="Reset Stack"/>
+        </View>
+        <View style={styles.button}>
+          <Button
+            style={styles.button}
+            onPress={this.onPopToRoot}
+            title="Pop To Root"/>
         </View>
       </View>
     );
