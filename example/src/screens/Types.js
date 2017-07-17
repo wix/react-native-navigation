@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
 import Row from '../components/Row';
 
-class Types extends React.Component {
+class Types extends Component {
 
   toggleDrawer = () => {
     this.props.navigator.toggleDrawer({

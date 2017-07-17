@@ -1,12 +1,43 @@
-import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet, View, Text, Button} from 'react-native';
 
-class Push extends React.Component {
+class Push extends Component {
+
+  onPushAnother = () => {
+    this.props.navigator.push({
+      screen: 'example.Types.Push',
+      title: `Screen ${this.props.count || 1}`,
+      passProps: {
+        count: this.props.count ? this.props.count + 1 : 2
+      }
+    });
+  };
+
+  onResetTo = () => {
+    this.props.navigator.resetTo({
+      label: 'Navigation',
+      screen: 'example.Types',
+      icon: require('../../../img/list.png'),
+      title: 'Navigation Types'
+    });
+  };
 
   render() {
     return (
       <View style={styles.container}>
         <Text>Pushed Screen</Text>
+        <View style={styles.button}>
+          <Button
+
+            onPress={this.onPushAnother}
+            title="Push Another Screen"/>
+        </View>
+        <View style={styles.button}>
+          <Button
+            style={styles.button}
+            onPress={this.onResetTo}
+            title="Reset Stack"/>
+        </View>
       </View>
     );
   }
@@ -18,6 +49,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#ffffff',
+  },
+  button: {
+    marginTop: 16
   },
 });
 
