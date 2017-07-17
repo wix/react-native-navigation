@@ -237,23 +237,23 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     void showModal(ScreenParams screenParams) {
         Screen previousScreen = layout.getCurrentScreen();
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", previousScreen.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", previousScreen.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(previousScreen.getScreenParams());
+        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(previousScreen.getScreenParams());
         modalController.showModal(screenParams);
     }
 
     void dismissTopModal() {
         modalController.dismissTopModal();
         Screen previousScreen = layout.getCurrentScreen();
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", previousScreen.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", previousScreen.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previousScreen.getScreenParams());
+        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previousScreen.getScreenParams());
     }
 
     void dismissAllModals() {
         modalController.dismissAllModals();
         Screen previousScreen = layout.getCurrentScreen();
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", previousScreen.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", previousScreen.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previousScreen.getScreenParams());
+        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previousScreen.getScreenParams());
     }
 
     public void showLightBox(LightBoxParams params) {

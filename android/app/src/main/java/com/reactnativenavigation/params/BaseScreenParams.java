@@ -6,6 +6,7 @@ import android.os.Bundle;
 import java.util.List;
 
 public class BaseScreenParams {
+    public double timestamp;
     public String screenId;
     public String title;
     public String subtitle;

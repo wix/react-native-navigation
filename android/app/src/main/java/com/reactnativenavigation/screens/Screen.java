@@ -252,20 +252,20 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     public abstract void setOnDisplayListener(OnDisplayListener onContentViewDisplayedListener);
 
     public void show() {
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", screenParams.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(screenParams);
+        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(screenParams);
         screenAnimator.show(screenParams.animateScreenTransitions);
     }
 
     public void show(boolean animated) {
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", screenParams.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(screenParams);
+        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(screenParams);
         screenAnimator.show(animated);
     }
 
     public void show(boolean animated, Runnable onAnimationEnd) {
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", screenParams.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(screenParams);
+        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(screenParams);
         setStyle();
         screenAnimator.show(animated, onAnimationEnd);
     }
@@ -312,8 +312,8 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     private void hide(boolean animated, Runnable onAnimatedEnd) {
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", screenParams.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", screenParams.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(screenParams);
+        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(screenParams);
         screenAnimator.hide(animated, onAnimatedEnd);
     }
 
