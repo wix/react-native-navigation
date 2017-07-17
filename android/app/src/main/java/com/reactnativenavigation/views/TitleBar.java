@@ -151,12 +151,11 @@ public class TitleBar extends Toolbar {
     }
 
     protected void setTitleTextFontSize(StyleParams params) {
-        if (params.titleBarTitleFontSize == -1) {
-            return;
-        }
-        View titleView = getTitleView();
-        if (titleView instanceof TextView) {
-            ((TextView) titleView).setTextSize(((float) params.titleBarTitleFontSize));
+        if (params.titleBarTitleFontSize > 0) {
+            View titleView = getTitleView();
+            if (titleView instanceof TextView) {
+                ((TextView) titleView).setTextSize(((float) params.titleBarTitleFontSize));
+            }
         }
     }
 
