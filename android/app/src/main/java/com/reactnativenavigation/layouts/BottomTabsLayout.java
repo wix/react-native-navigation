@@ -148,7 +148,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         }
 
         if (getCurrentScreenStack().canPop()) {
-            getCurrentScreenStack().pop(true);
+            getCurrentScreenStack().pop(true, System.currentTimeMillis());
             setBottomTabsStyleFromCurrentScreen();
             EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
             return true;
@@ -348,7 +348,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     @Override
     public void pop(final ScreenParams params) {
-        getCurrentScreenStack().pop(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
+        getCurrentScreenStack().pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
             @Override
             public void onScreenPopAnimationEnd() {
                 setBottomTabsStyleFromCurrentScreen();
@@ -360,7 +360,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     @Override
     public void popToRoot(final ScreenParams params) {
-        getCurrentScreenStack().popToRoot(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
+        getCurrentScreenStack().popToRoot(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
             @Override
             public void onScreenPopAnimationEnd() {
                 setBottomTabsStyleFromCurrentScreen();
@@ -510,7 +510,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     @Override
     public boolean onTitleBarBackButtonClick() {
         if (getCurrentScreenStack().canPop()) {
-            getCurrentScreenStack().pop(true, new ScreenStack.OnScreenPop() {
+            getCurrentScreenStack().pop(true, System.currentTimeMillis(), new ScreenStack.OnScreenPop() {
                 @Override
                 public void onScreenPopAnimationEnd() {
                     setBottomTabsStyleFromCurrentScreen();

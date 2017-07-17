@@ -113,7 +113,7 @@ public class SingleScreenLayout extends BaseLayout {
         }
 
         if (stack.canPop()) {
-            stack.pop(true);
+            stack.pop(true, System.currentTimeMillis());
             EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
             return true;
         } else {
@@ -145,7 +145,7 @@ public class SingleScreenLayout extends BaseLayout {
 
     @Override
     public void pop(ScreenParams params) {
-        stack.pop(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
+        stack.pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
             @Override
             public void onScreenPopAnimationEnd() {
                 EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
@@ -155,7 +155,7 @@ public class SingleScreenLayout extends BaseLayout {
 
     @Override
     public void popToRoot(ScreenParams params) {
-        stack.popToRoot(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
+        stack.popToRoot(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
             @Override
             public void onScreenPopAnimationEnd() {
                 EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));

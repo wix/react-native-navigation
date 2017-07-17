@@ -178,11 +178,11 @@ public class ScreenStack {
         parent.addView(screen, parent.getChildCount() - 1, layoutParams);
     }
 
-    public void pop(boolean animated) {
-        pop(animated, null);
+    public void pop(boolean animated, double jsPopTimestamp) {
+        pop(animated, jsPopTimestamp, null);
     }
 
-    public void pop(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
+    public void pop(final boolean animated, final double jsPopTimestamp, @Nullable final OnScreenPop onScreenPop) {
         if (!canPop()) {
             return;
         }
@@ -191,18 +191,19 @@ public class ScreenStack {
                 @Override
                 public void run() {
                     keyboardVisibilityDetector.setKeyboardCloseListener(null);
-                    popInternal(animated, onScreenPop);
+                    popInternal(animated, jsPopTimestamp, onScreenPop);
                 }
             });
             keyboardVisibilityDetector.closeKeyboard();
         } else {
-            popInternal(animated, onScreenPop);
+            popInternal(animated, jsPopTimestamp, onScreenPop);
         }
     }
 
-    private void popInternal(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
+    private void popInternal(final boolean animated, double jsPopTimestamp, @Nullable final OnScreenPop onScreenPop) {
         final Screen toRemove = stack.pop();
         final Screen previous = stack.peek();
+        previous.screenParams.timestamp = jsPopTimestamp;
         swapScreens(animated, toRemove, previous, onScreenPop);
     }
 
@@ -241,27 +242,27 @@ public class ScreenStack {
         parent.addView(previous, 0);
     }
 
-    public void popToRoot(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
+    public void popToRoot(final boolean animated, final double jsPopTimestamp, @Nullable final OnScreenPop onScreenPop) {
         if (keyboardVisibilityDetector.isKeyboardVisible()) {
             keyboardVisibilityDetector.setKeyboardCloseListener(new Runnable() {
                 @Override
                 public void run() {
                     keyboardVisibilityDetector.setKeyboardCloseListener(null);
-                    popToRootInternal(animated, onScreenPop);
+                    popToRootInternal(animated, jsPopTimestamp, onScreenPop);
                 }
             });
             keyboardVisibilityDetector.closeKeyboard();
         } else {
-            popToRootInternal(animated, onScreenPop);
+            popToRootInternal(animated, jsPopTimestamp, onScreenPop);
         }
     }
 
-    private void popToRootInternal(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
+    private void popToRootInternal(final boolean animated, double jsPopTimestamp, @Nullable final OnScreenPop onScreenPop) {
         while (canPop()) {
             if (stack.size() == 2) {
-                popInternal(animated, onScreenPop);
+                popInternal(animated, jsPopTimestamp, onScreenPop);
             } else {
-                popInternal(animated, null);
+                popInternal(animated, jsPopTimestamp, null);
             }
         }
     }
