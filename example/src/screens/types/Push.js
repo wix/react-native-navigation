@@ -32,19 +32,16 @@ class Push extends Component {
         <Text>Pushed Screen</Text>
         <View style={styles.button}>
           <Button
-
             onPress={this.onPushAnother}
             title="Push Another Screen"/>
         </View>
         <View style={styles.button}>
           <Button
-            style={styles.button}
             onPress={this.onResetTo}
             title="Reset Stack"/>
         </View>
         <View style={styles.button}>
           <Button
-            style={styles.button}
             onPress={this.onPopToRoot}
             title="Pop To Root"/>
         </View>
@@ -62,7 +59,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 16
-  },
+  }
 });
 
 export default Push;
