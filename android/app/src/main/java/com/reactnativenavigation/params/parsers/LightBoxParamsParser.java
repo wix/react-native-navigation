@@ -21,6 +21,7 @@ public class LightBoxParamsParser extends Parser {
         result.backgroundColor = getColor(params, "backgroundColor");
         result.tapBackgroundToDismiss = params.getBoolean("tapBackgroundToDismiss");
         result.requiresFullScreen = params.getBoolean("requiresFullScreen");
+        result.overrideBackPress = params.getBoolean("overrideBackPress");
         return result;
     }
 }
