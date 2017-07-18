@@ -426,6 +426,7 @@ public class ScreenStack {
         isStackVisible = true;
         stack.peek().setStyle();
         stack.peek().setVisibility(View.VISIBLE);
+        stack.peek().screenParams.timestamp = System.currentTimeMillis();
         NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(stack.peek().screenParams);
         NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(stack.peek().screenParams);
     }
