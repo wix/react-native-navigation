@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -26,6 +25,9 @@ public abstract class NavigationApplication extends Application implements React
     private EventEmitter eventEmitter;
     private Handler handler;
     private ActivityCallbacks activityCallbacks;
+    @Nullable
+    private Runnable runAfterReactContextInitialized;
+    private boolean restartingApp = false;
 
     @Override
     public void onCreate() {
@@ -75,12 +77,27 @@ public abstract class NavigationApplication extends Application implements React
         this.activityCallbacks = activityLifecycleCallbacks;
     }
 
+    public void setRestartingApp(boolean restartingApp) {
+        this.restartingApp = restartingApp;
+    }
+
+    public boolean isRestartingApp() {
+        return restartingApp;
+    }
+
+    public void setRunAfterReactContextInitialized(@Nullable Runnable runAfterReactContextInitialized) {
+        this.runAfterReactContextInitialized = runAfterReactContextInitialized;
+    }
+
     public boolean isReactContextInitialized() {
         return reactGateway.isInitialized();
     }
 
     public void onReactInitialized(ReactContext reactContext) {
-        // nothing
+        if (runAfterReactContextInitialized != null) {
+            runOnMainThread(runAfterReactContextInitialized);
+            runAfterReactContextInitialized = null;
+        }
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.reactnativenavigation.react;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
-
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
@@ -23,9 +22,9 @@ public interface ReactGateway {
 
     void onResumeActivity(Activity activity, DefaultHardwareBackBtnHandler defaultHardwareBackBtnHandler);
 
-    void onPauseActivity();
+    void onPauseActivity(Activity activity);
 
-    void onDestroyApp();
+    void onDestroyApp(Activity activity);
 
     void onBackPressed();
 
