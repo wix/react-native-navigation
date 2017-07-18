@@ -4,6 +4,7 @@
 #import <React/RCTRootViewDelegate.h>
 #import <React/RCTConvert.h>
 #import <React/RCTUtils.h>
+#import <React/RCTEventDispatcher.h>
 #import "RCTHelpers.h"
 #import <objc/runtime.h>
 
@@ -15,6 +16,7 @@ const NSInteger kLightBoxTag = 0x101010;
 @property (nonatomic, strong) UIView *overlayColorView;
 @property (nonatomic, strong) NSDictionary *params;
 @property (nonatomic)         BOOL yellowBoxRemoved;
+@property (nonatomic)         BOOL isDismissing;
 @end
 
 @implementation RCCLightBoxView
@@ -48,10 +50,27 @@ const NSInteger kLightBoxTag = 0x101010;
                 UIColor *backgroundColor = [RCTConvert UIColor:style[@"backgroundColor"]];
                 if (backgroundColor != nil)
                 {
-                    self.overlayColorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+                    self.overlayColorView = [[UIView alloc] init];
                     self.overlayColorView.backgroundColor = backgroundColor;
                     self.overlayColorView.alpha = 0;
+                    [self.overlayColorView setTranslatesAutoresizingMaskIntoConstraints:NO];
                     [self addSubview:self.overlayColorView];
+
+                    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.overlayColorView
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                    multiplier:1.0
+                                                                      constant:0]];
+
+                    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.overlayColorView
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                    multiplier:1.0
+                                                                      constant:0]];
                 }
             }
 
@@ -63,21 +82,46 @@ const NSInteger kLightBoxTag = 0x101010;
             }
         }
         
-        self.reactView = [[RCTRootView alloc] initWithBridge:[[RCCManager sharedInstance] getBridge] moduleName:self.params[@"component"] initialProperties:passProps];
-        self.reactView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-        self.reactView.backgroundColor = [UIColor clearColor];
-        self.reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
-        self.reactView.center = self.center;
-        [self addSubview:self.reactView];
-        
-        [self.reactView.contentView.layer addObserver:self forKeyPath:@"frame" options:0 context:nil];
-        [self.reactView.contentView.layer addObserver:self forKeyPath:@"bounds" options:0 context:NULL];
+        [self setupReactViewWithStyle:style passProps:passProps];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTJavaScriptWillStartLoadingNotification object:nil];
     }
     return self;
 }
 
+-(void)setupReactViewWithStyle:(NSDictionary*)style passProps:(NSDictionary*)passProps
+{
+    self.reactView = [[RCTRootView alloc] initWithBridge:[[RCCManager sharedInstance] getBridge] moduleName:self.params[@"component"] initialProperties:passProps];
+    
+    if ([RCTConvert BOOL:style[@"requiresFullScreen"]]) {
+        [self.reactView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.reactView
+                                                         attribute:NSLayoutAttributeWidth
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeWidth
+                                                        multiplier:1.0
+                                                          constant:0]];
+        
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.reactView
+                                                         attribute:NSLayoutAttributeHeight
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeHeight
+                                                        multiplier:1.0
+                                                          constant:0]];
+    } else {
+        self.reactView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        self.reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
+        self.reactView.center = self.center;
+    }
+    
+    self.reactView.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.reactView];
+    
+    [self.reactView.contentView.layer addObserver:self forKeyPath:@"frame" options:0 context:nil];
+    [self.reactView.contentView.layer addObserver:self forKeyPath:@"bounds" options:0 context:NULL];
+}
 
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
@@ -148,6 +192,8 @@ const NSInteger kLightBoxTag = 0x101010;
 
 -(void)showAnimated
 {
+    [self sendScreenChangedEvent:@"willAppear"];
+
     if (self.visualEffectView != nil || self.overlayColorView != nil)
     {
         [UIView animateWithDuration:0.3 animations:^()
@@ -170,11 +216,15 @@ const NSInteger kLightBoxTag = 0x101010;
     {
         self.reactView.transform = CGAffineTransformIdentity;
         self.reactView.alpha = 1;
+        [self sendScreenChangedEvent:@"didAppear"];
     } completion:nil];
 }
 
 -(void)dismissAnimated
 {
+    self.isDismissing = YES;
+    [self sendScreenChangedEvent:@"willDisappear"];
+    
     BOOL hasOverlayViews = (self.visualEffectView != nil || self.overlayColorView != nil);
     
     [UIView animateWithDuration:0.2 animations:^()
@@ -186,6 +236,7 @@ const NSInteger kLightBoxTag = 0x101010;
     {
         if (!hasOverlayViews)
         {
+            [self sendScreenChangedEvent:@"didDisappear"];
             [self removeFromSuperview];
         }
     }];
@@ -206,7 +257,20 @@ const NSInteger kLightBoxTag = 0x101010;
              
          } completion:^(BOOL finished)
          {
+             [self sendScreenChangedEvent:@"didDisappear"];
              [self removeFromSuperview];
+         }];
+    }
+}
+
+- (void)sendScreenChangedEvent:(NSString *)eventName
+{
+    if (self.reactView && self.reactView.appProperties[@"navigatorEventID"]) {
+        
+        [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:self.reactView.appProperties[@"navigatorEventID"] body:@
+         {
+             @"type": @"ScreenChangedEvent",
+             @"id": eventName
          }];
     }
 }
@@ -218,7 +282,8 @@ const NSInteger kLightBoxTag = 0x101010;
 +(void)showWithParams:(NSDictionary*)params
 {
     UIViewController *viewController = RCTPresentedViewController();
-    if ([viewController.view viewWithTag:kLightBoxTag] != nil)
+    RCCLightBoxView *previousLightBox = [viewController.view viewWithTag:kLightBoxTag];
+    if (previousLightBox != nil && !previousLightBox.isDismissing)
     {
         return;
     }

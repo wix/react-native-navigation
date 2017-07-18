@@ -600,9 +600,7 @@ function savePassProps(params) {
 
   if (params.tabs) {
     _.forEach(params.tabs, (tab) => {
-      if (!tab.passProps) {
-        tab.passProps = params.passProps;
-      }
+      tab.passProps = params.passProps;
       savePassProps(tab);
     });
   }

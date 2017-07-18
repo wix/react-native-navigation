@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.Window;
-
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
@@ -61,17 +60,27 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
+        NavigationApplication.instance.getActivityCallbacks().onActivityCreated(this, savedInstanceState);
+
         if (!NavigationApplication.instance.isReactContextInitialized()) {
+            NavigationApplication.instance.setRunAfterReactContextInitialized(new Runnable() {
+                @Override
+                public void run() {
+                    disableActivityShowAnimationIfNeeded();
+                    setOrientation();
+                    createModalController();
+                    createLayout();
+                }
+            });
             NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
             return;
+        } else {
+            disableActivityShowAnimationIfNeeded();
+            setOrientation();
+            createModalController();
+            createLayout();
         }
-
-        activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
-        disableActivityShowAnimationIfNeeded();
-        setOrientation();
-        createModalController();
-        createLayout();
-        NavigationApplication.instance.getActivityCallbacks().onActivityCreated(this, savedInstanceState);
     }
 
     private void setOrientation() {
@@ -134,7 +143,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onPause();
         currentActivity = null;
         IntentDataHandler.onPause(getIntent());
-        getReactGateway().onPauseActivity();
+        getReactGateway().onPauseActivity(this);
         NavigationApplication.instance.getActivityCallbacks().onActivityPaused(this);
         EventBus.instance.unregister(this);
     }
@@ -164,8 +173,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     private void destroyJsIfNeeded() {
-        if (currentActivity == null || currentActivity.isFinishing()) {
-            getReactGateway().onDestroyApp();
+        if ((currentActivity == null || currentActivity.isFinishing()) && !NavigationApplication.instance.isRestartingApp()) {
+            getReactGateway().onDestroyApp(this);
+        } else if (NavigationApplication.instance.isRestartingApp()) {
+            NavigationApplication.instance.setRestartingApp(false);
         }
     }
 

@@ -3,7 +3,6 @@ package com.reactnativenavigation.react;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
-
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -16,10 +15,9 @@ import com.reactnativenavigation.bridge.NavigationReactPackage;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.JsDevReloadEvent;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 public class NavigationReactGateway implements ReactGateway {
 
@@ -63,13 +61,13 @@ public class NavigationReactGateway implements ReactGateway {
 		getReactInstanceManager().onBackPressed();
 	}
 
-	public void onDestroyApp() {
-		getReactInstanceManager().onHostDestroy();
+	public void onDestroyApp(Activity activity) {
+		getReactInstanceManager().onHostDestroy(activity);
 		host.clear();
 	}
 
-	public void onPauseActivity() {
-		getReactInstanceManager().onHostPause();
+	public void onPauseActivity(Activity activity) {
+		getReactInstanceManager().onHostPause(activity);
 		jsDevReloadHandler.onPauseActivity();
 	}
 

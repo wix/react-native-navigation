@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.screens.Screen;
@@ -29,13 +30,16 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
     private Runnable onDismissListener;
     private ContentView content;
     private RelativeLayout lightBox;
+    private LightBoxParams params;
 
     public LightBox(AppCompatActivity activity, Runnable onDismissListener, LightBoxParams params) {
         super(activity, R.style.LightBox);
         this.onDismissListener = onDismissListener;
+        this.params = params;
         setOnDismissListener(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         createContent(activity, params);
+        setCancelable(!params.overrideBackPress);
         getWindow().setWindowAnimations(android.R.style.Animation);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -43,7 +47,7 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         }
     }
 
-    private void createContent(final Context context, LightBoxParams params) {
+    private void createContent(final Context context, final LightBoxParams params) {
         lightBox = new RelativeLayout(context);
         lightBox.setAlpha(0);
         content = new ContentView(context, params.screenId, params.navigationParams);
@@ -66,8 +70,10 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         content.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
-                content.getLayoutParams().height = content.getChildAt(0).getHeight();
-                content.getLayoutParams().width = content.getChildAt(0).getWidth();
+                if (!params.requiresFullScreen) {
+                    content.getLayoutParams().height = content.getChildAt(0).getHeight();
+                    content.getLayoutParams().width = content.getChildAt(0).getWidth();
+                }
                 content.setBackgroundColor(Color.TRANSPARENT);
                 ViewUtils.runOnPreDraw(content, new Runnable() {
                     @Override
@@ -83,11 +89,14 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
 
     @Override
     public void show() {
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", params.navigationParams.navigatorEventId);
         super.show();
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", params.navigationParams.navigatorEventId);
     }
 
     @Override
     public void hide() {
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", params.navigationParams.navigatorEventId);
         animateHide();
     }
 
@@ -97,7 +106,9 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
     }
 
     public void destroy() {
-        content.unmountReactView();
+        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", params.navigationParams.navigatorEventId);
+        // TODO: Resolve
+        //content.unmountReactView();
         dismiss();
     }
 
