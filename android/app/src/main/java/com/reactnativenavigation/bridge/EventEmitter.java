@@ -41,7 +41,8 @@ public class EventEmitter {
 
     private void sendGlobalScreenChangedEvent(String type, double timestamp, String screenId) {
         WritableMap map = Arguments.createMap();
-        map.putDouble("timestamp", timestamp);
+        map.putDouble("startTime", timestamp);
+        map.putDouble("endTime", System.currentTimeMillis());
         map.putString("screen", screenId);
         sendNavigatorEvent(type, map);
     }
