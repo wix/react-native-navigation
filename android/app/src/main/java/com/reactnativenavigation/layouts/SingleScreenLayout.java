@@ -19,6 +19,7 @@ import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.screens.NavigationType;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
@@ -87,7 +88,7 @@ public class SingleScreenLayout extends BaseLayout {
 
     protected void pushInitialScreen(LayoutParams lp) {
         stack.pushInitialScreen(screenParams, lp);
-        stack.show();
+        stack.show(NavigationType.Push);
     }
 
     private void sendScreenChangedEventAfterInitialPush() {
@@ -286,8 +287,8 @@ public class SingleScreenLayout extends BaseLayout {
     @Override
     public void onModalDismissed() {
         stack.peek().getScreenParams().timestamp = System.currentTimeMillis();
-        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(stack.peek().getScreenParams());
-        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(stack.peek().getScreenParams());
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(stack.peek().getScreenParams(), NavigationType.DismissModal);
+        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(stack.peek().getScreenParams(), NavigationType.DismissModal);
         EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
     }
 

@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
+import com.reactnativenavigation.screens.NavigationType;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 
@@ -139,14 +140,14 @@ public class SideMenu extends DrawerLayout {
         sideMenuListener = new SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
-                NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(getVisibleDrawerScreenParams());
-                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(getVisibleDrawerScreenParams());
+                NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(getVisibleDrawerScreenParams(), NavigationType.OpenSideMenu);
+                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(getVisibleDrawerScreenParams(), NavigationType.OpenSideMenu);
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(getVisibleDrawerScreenParams());
-                NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(getVisibleDrawerScreenParams());
+                NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(getVisibleDrawerScreenParams(), NavigationType.CloseSideMenu);
+                NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(getVisibleDrawerScreenParams(), NavigationType.CloseSideMenu);
             }
 
             private BaseScreenParams getVisibleDrawerScreenParams() {

@@ -85,7 +85,7 @@ public class ScreenStack {
         screen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
-                screen.show(initialScreenParams.animateScreenTransitions);
+                screen.show(initialScreenParams.animateScreenTransitions, NavigationType.InitialScreen);
                 screen.setStyle();
             }
         });
@@ -98,8 +98,8 @@ public class ScreenStack {
             @Override
             public void onDisplay() {
                 if (isStackVisible) {
-                    NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(stack.peek().screenParams);
-                    NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(stack.peek().screenParams);
+//                    NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(stack.peek().screenParams, NavigationType.InitialScreen);
+//                    NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(stack.peek().screenParams, NavigationType.InitialScreen);
                 }
             }
         });
@@ -131,7 +131,7 @@ public class ScreenStack {
                                           @Nullable final Screen.OnDisplayListener onDisplay) {
         nextScreen.setVisibility(View.INVISIBLE);
         addScreen(nextScreen, layoutParams);
-        NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(previousScreen.screenParams);
+        NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(previousScreen.screenParams, NavigationType.Push);
         nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
@@ -139,10 +139,10 @@ public class ScreenStack {
                     @Override
                     public void run() {
                         if (onDisplay != null) onDisplay.onDisplay();
-                        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(previousScreen.screenParams);
+                        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(previousScreen.screenParams, NavigationType.Push);
                         parent.removeView(previousScreen);
                     }
-                });
+                }, NavigationType.Push);
             }
         });
     }
@@ -217,19 +217,19 @@ public class ScreenStack {
     }
 
     private void hideScreen(boolean animated, final Screen toRemove, final Screen previous) {
-        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previous.screenParams);
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previous.screenParams, NavigationType.Pop);
         Runnable onAnimationEnd = new Runnable() {
             @Override
             public void run() {
                 toRemove.destroy();
                 parent.removeView(toRemove);
-                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previous.screenParams);
+                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previous.screenParams, NavigationType.Pop);
             }
         };
         if (animated) {
-            toRemove.animateHide(previous.sharedElements.getToElements(), onAnimationEnd);
+            toRemove.animateHide(previous.sharedElements.getToElements(), onAnimationEnd, NavigationType.Pop);
         } else {
-            toRemove.hide(previous.sharedElements.getToElements(), onAnimationEnd);
+            toRemove.hide(previous.sharedElements.getToElements(), onAnimationEnd, NavigationType.Pop);
         }
     }
 
@@ -422,18 +422,18 @@ public class ScreenStack {
         }
     }
 
-    public void show() {
+    public void show(NavigationType type) {
         isStackVisible = true;
         stack.peek().setStyle();
         stack.peek().setVisibility(View.VISIBLE);
         stack.peek().screenParams.timestamp = System.currentTimeMillis();
-        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(stack.peek().screenParams);
-        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(stack.peek().screenParams);
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(stack.peek().screenParams, type);
+        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(stack.peek().screenParams, type);
     }
 
-    public void hide() {
-        NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(stack.peek().screenParams);
-        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(stack.peek().screenParams);
+    public void hide(NavigationType type) {
+        NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(stack.peek().screenParams, type);
+        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(stack.peek().screenParams, type);
         isStackVisible = false;
         stack.peek().setVisibility(View.INVISIBLE);
     }
