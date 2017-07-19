@@ -39,11 +39,11 @@ class Modal extends Component {
             onPress={this.onResetTo}
             title="Reset Stack"/>
         </View>
-        <View style={styles.button}>
+        {this.props.count > 1 && <View style={styles.button}>
           <Button
             onPress={this.onPopToRoot}
             title="Pop To Root"/>
-        </View>
+        </View>}
       </View>
     );
   }
