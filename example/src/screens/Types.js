@@ -50,6 +50,7 @@ class Types extends React.Component {
       style: {
         backgroundBlur: 'dark',
         backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        tapBackgroundToDismiss: true
       }
     });
   };
