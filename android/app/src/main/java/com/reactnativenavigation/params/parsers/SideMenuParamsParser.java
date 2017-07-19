@@ -23,7 +23,7 @@ class SideMenuParamsParser extends Parser {
         result.screenId = sideMenu.getString("screenId");
         result.navigationParams = new NavigationParams(sideMenu.getBundle("navigationParams"));
         result.disableOpenGesture = sideMenu.getBoolean("disableOpenGesture", false);
-        result.drawerWidth = (int)sideMenu.getDouble("drawerWidth", -1);
+        result.drawerWidth = (int)Math.ceil(sideMenu.getDouble("drawerWidth", -1));
         result.side = side;
         return result;
     }
