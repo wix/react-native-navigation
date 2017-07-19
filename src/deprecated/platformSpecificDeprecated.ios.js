@@ -8,6 +8,8 @@ const {
   NavigationControllerIOS,
   DrawerControllerIOS
 } = React;
+import {processColor} from 'react-native';
+
 import _ from 'lodash';
 
 import PropRegistry from '../PropRegistry';
@@ -377,16 +379,21 @@ function navigatorToggleTabs(navigator, params) {
 
 function navigatorSetTabBadge(navigator, params) {
   const controllerID = navigator.navigatorID.split('_')[0];
+  console.log('navigatorSetTabBadge', params)
   if (params.tabIndex || params.tabIndex === 0) {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').setBadge({
       tabIndex: params.tabIndex,
-      badge: params.badge
+      badge: params.badge,
+      color: processColor(params.color),
+      backgroundColor: params.backgroundColor
     });
   } else {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').setBadge({
       contentId: navigator.navigatorID,
       contentType: 'NavigationControllerIOS',
-      badge: params.badge
+      badge: params.badge,
+      color: processColor(params.color),
+      backgroundColor: params.backgroundColor
     });
   }
 }
@@ -562,7 +569,7 @@ function showInAppNotification(params) {
     navigatorEventID,
     navigatorID
   };
-  
+
   savePassProps(params);
 
   let args = {
