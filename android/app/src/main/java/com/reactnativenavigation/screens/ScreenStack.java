@@ -94,15 +94,6 @@ public class ScreenStack {
     public void pushInitialScreen(ScreenParams initialScreenParams, LayoutParams params) {
         Screen initialScreen = ScreenFactory.create(activity, initialScreenParams, leftButtonOnClickListener);
         initialScreen.setVisibility(View.INVISIBLE);
-        initialScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
-            @Override
-            public void onDisplay() {
-                if (isStackVisible) {
-//                    NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(stack.peek().screenParams, NavigationType.InitialScreen);
-//                    NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(stack.peek().screenParams, NavigationType.InitialScreen);
-                }
-            }
-        });
         addScreen(initialScreen, params);
     }
 
