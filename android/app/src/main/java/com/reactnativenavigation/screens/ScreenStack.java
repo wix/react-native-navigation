@@ -78,14 +78,14 @@ public class ScreenStack {
         }
     }
 
-    public void pushInitialScreenWithAnimation(final ScreenParams initialScreenParams, LayoutParams params) {
+    public void pushInitialModalScreenWithAnimation(final ScreenParams initialScreenParams, LayoutParams params) {
         isStackVisible = true;
         pushInitialScreen(initialScreenParams, params);
         final Screen screen = stack.peek();
         screen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
-                screen.show(initialScreenParams.animateScreenTransitions, NavigationType.InitialScreen);
+                screen.show(initialScreenParams.animateScreenTransitions, NavigationType.ShowModal);
                 screen.setStyle();
             }
         });
