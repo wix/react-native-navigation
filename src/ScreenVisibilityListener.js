@@ -11,10 +11,16 @@ export default class ScreenVisibilityListener {
 
   register() {
     const {willAppear, didAppear, willDisappear, didDisappear} = this.listeners;
-    willAppear && this.emitter.addListener('willAppear', willAppear);
-    didAppear && this.emitter.addListener('didAppear', didAppear);
-    willDisappear && this.emitter.addListener('willDisappear', willDisappear);
-    didDisappear && this.emitter.addListener('didDisappear', didDisappear);
+    this.willAppearSubscription = willAppear && this.emitter.addListener('willAppear', willAppear);
+    this.didAppearSubscription = didAppear && this.emitter.addListener('didAppear', didAppear);
+    this.willDisappearSubscription = willDisappear && this.emitter.addListener('willDisappear', willDisappear);
+    this.didDisappearSubscription  = didDisappear && this.emitter.addListener('didDisappear', didDisappear);
   }
 
+  unregister() {
+    this.willAppearSubscription && this.willAppearSubscription.remove();
+    this.didAppearSubscription && this.didAppearSubscription.remove();
+    this.willDisappearSubscription && this.willDisappearSubscription.remove();
+    this.didDisappearSubscription && this.didDisappearSubscription.remove();
+  }
 }
