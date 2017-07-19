@@ -45,6 +45,9 @@ public class BottomTabs extends AHBottomNavigation {
         if (params.selectedBottomTabsButtonColor.hasColor()) {
             setAccentColor(params.selectedBottomTabsButtonColor.getColor());
         }
+        if (params.bottomTabsTextFontSize > 0) {
+			setTitleTextSizeInSp(params.bottomTabsTextFontSize, params.bottomTabsTextFontSize);
+		}
 
         setVisibility(params.bottomTabsHidden, false);
     }

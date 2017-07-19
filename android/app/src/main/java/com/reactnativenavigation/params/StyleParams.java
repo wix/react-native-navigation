@@ -112,6 +112,7 @@ public class StyleParams {
     public Color bottomTabsColor;
     public Color selectedBottomTabsButtonColor;
     public Color bottomTabsButtonColor;
+    public int bottomTabsTextFontSize;
     public int bottomTabsTabBarHeight;
     public boolean forceTitlesDisplay;
     public Color bottomTabBadgeTextColor;

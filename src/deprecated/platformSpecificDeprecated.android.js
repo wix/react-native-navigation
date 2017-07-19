@@ -262,6 +262,7 @@ function convertStyleParams(originalStyleObject) {
 
     bottomTabsColor: processColor(originalStyleObject.tabBarBackgroundColor),
     bottomTabsButtonColor: processColor(originalStyleObject.tabBarButtonColor),
+    bottomTabsTextFontSize: originalStyleObject.tabBarTextFontSize,
     bottomTabsTabBarHeight: originalStyleObject.tabBarHeight,
     bottomTabsSelectedButtonColor: processColor(originalStyleObject.tabBarSelectedButtonColor),
     bottomTabsHidden: originalStyleObject.tabBarHidden,
