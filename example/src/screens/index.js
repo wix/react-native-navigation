@@ -49,8 +49,8 @@ export function registerScreens() {
 
 export function registerScreenVisibilityListener() {
   new ScreenVisibilityListener({
-    willAppear: ({screen, timestamp}) => console.log(`Displaying screen ${screen}`),
-    didAppear: ({screen, timestamp}) => console.log(`Screen ${screen} displayed in ${Date.now() - timestamp} millis`),
+    willAppear: ({screen}) => console.log(`Displaying screen ${screen}`),
+    didAppear: ({screen, startTime, endTime, commandType}) => console.log('screenVisibility', `Screen ${screen} displayed in ${endTime - startTime} millis [${commandType}]`),
     willDisappear: ({screen}) => console.log(`Screen will disappear ${screen}`),
     didDisappear: ({screen}) => console.log(`Screen disappeared ${screen}`)
   }).register();
