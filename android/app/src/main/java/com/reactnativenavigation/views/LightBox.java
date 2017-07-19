@@ -36,6 +36,7 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         setOnDismissListener(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         createContent(activity, params);
+        setCancelable(!params.overrideBackPress);
         getWindow().setWindowAnimations(android.R.style.Animation);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
