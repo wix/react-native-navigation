@@ -53,17 +53,19 @@ Then:
 ```
 yarn install
 ```
-1. Run the playground project that comes with the app
+1. Run the playground project in Android and iOS so that you can get a feel for the project.
+  1. `yarn start` to get the package running in a terminal, leave it open
 
-1.1 
+  1. iOS 
 ```
 yarn xcode
 yarn start
 ```
-1.1 Run the project from XCode
+  * Run the project from XCode
 
-You should see the playground app open in the iOS simulator. Play around to get a feel for the project.
-You can (and should) also open the playground project in an Android emulator to see the Android implementation.
+  1. Android
+    1. Open the app in android studio
+    1. Run
 
 1. Run the tests. Before you start changing things, make sure everything works.
 
@@ -74,6 +76,7 @@ yarn test-all
 ## Troubleshooting
 
 * If the tests fail with an error like `Ineligible destinations for the "ReactNativeNavigation" scheme`, double check that you have the latest XCode installed.
+* If the tests fail because an Android emulator isn't available (something like `com.android.builder.testing.api.DeviceException: No connected devices!`), start the Android project from Android Studio and leave the emulator running, then try again.
 
 ## Workflow
 This project is driven by tests. Before implementing any feature or fixing any bug, a failing test (e2e or unit or both) should be added, depending on the environment of where the fix should be implemented. For example, for an API change, a failing e2e should be written. For a small bug fix in Android, for example, a unit test in Android should be added.
