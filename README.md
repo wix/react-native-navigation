@@ -42,27 +42,32 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 | drawer             |    ✅  |    ✅ |
 ### Screen API
 
-|  API              | v1     | v2         |
-|---------------------|--------|------------|
-| push                |  ✅     |   ✅       |
-| pop                 |  ✅     |  ✅        |
-| showModal           |  ✅     |  ✅        |
-| popToRoot           |   ✅     |   ✅         |
-| resetTo             |   ✅     |    ✅        |
-| dismissModal        |   ✅     |     ✅       |
-| dismissAllModals    |   ✅     |      ✅      |
-| showLightBox        |   ✅     |      [Contribute](CONTRIBUTING.md)      |
-| dismissLightBox     |   ✅     |       [Contribute](CONTRIBUTING.md)       |
-| handleDeepLink      |   ✅     |       [Contribute](CONTRIBUTING.md)       |
-| setOnNavigatorEvent |   ✅     |       [Contribute](CONTRIBUTING.md)       |
-| setButtons          |   ✅     |         [Contribute](CONTRIBUTING.md)     |
-| setTitle            |   ✅     |         [Contribute](CONTRIBUTING.md)     |
-| toggleDrawer        |   ✅     |        [Contribute](CONTRIBUTING.md)   |
-| toggleTabs          |   ✅     |        [Contribute](CONTRIBUTING.md)     |
-| setTabBadge         |    ✅    |       [Contribute](CONTRIBUTING.md)     |
-| switchToTab         |    ✅    |        [Contribute](CONTRIBUTING.md)    |
-| toggleNavBar        |   ✅     |      [Contribute](CONTRIBUTING.md)      |
-| Screen Visibility   |   ✅     |       ✅     |
+|  API              | v1     | v2  iOS      |	v2 Android |
+|---------------------|--------|------------|--------------|
+| push                |  ✅     |   ✅       |	✅		|
+| pop                 |  ✅     |  ✅        |	✅	|
+| showModal           |  ✅     |  ✅        |	✅|
+| popToRoot           |   ✅     |   ✅         |✅	|
+| resetTo             |   ✅     |    ✅        |	✅|
+| dismissModal        |   ✅     |     ✅       |	✅|
+| dismissAllModals    |   ✅     |      ✅      |	✅|
+| showContextualMenu      |   ✅     |            |[Contribute](CONTRIBUTING.md) |
+| dismissContextualtMenu      |   ✅     |           |[Contribute](CONTRIBUTING.md)  |
+| showFab      |   ✅     |    / Android specific     |  [Contribute](CONTRIBUTING.md)  |
+| dismissFab      |   ✅     |    / Android specific       | [Contribute](CONTRIBUTING.md) |
+| showSnackBar     |   ✅     |     / Android specific    |   [Contribute](CONTRIBUTING.md) |
+| dismissSnackBar     |   ✅     |    / Android specific      |  [Contribute](CONTRIBUTING.md) |
+| showLightBox        |   ✅     |      [Contribute](CONTRIBUTING.md)      | [Contribute](CONTRIBUTING.md)  |
+| dismissLightBox     |   ✅     |       [Contribute](CONTRIBUTING.md)       | [Contribute](CONTRIBUTING.md) |
+| handleDeepLink      |   ✅     |       [Contribute](CONTRIBUTING.md)       | [Contribute](CONTRIBUTING.md) |
+| setButtons          |   ✅     |         [Contribute](CONTRIBUTING.md)     | [Contribute](CONTRIBUTING.md) |
+| setTitle            |   ✅     |        	✅    | 	✅|
+| toggleDrawer        |   ✅     |        [Contribute](CONTRIBUTING.md)   | [Contribute](CONTRIBUTING.md) |
+| toggleTabs          |   ✅     |       in development    | [Contribute](CONTRIBUTING.md)|
+| setTabBadge         |    ✅    |       [Contribute](CONTRIBUTING.md)     | [Contribute](CONTRIBUTING.md)|
+| switchToTab         |    ✅    |      in development    |[Contribute](CONTRIBUTING.md) |
+| toggleNavBar        |   ✅     |      [Contribute](CONTRIBUTING.md)      | [Contribute](CONTRIBUTING.md)|
+| Screen Visibility   |   ✅     |       ✅     |✅|
 
 ### Styles
 
