@@ -9,16 +9,15 @@ We are rebuilding react-native-navigation
 
 ## Why Rebuild react-native-navigation?
 
-### A New Improved Core Architecture
-react-native-navigation has a few issues which are unsolvable in it’s current architecture. <br>
-These issues originate from the same problem: you cannot specify on which screen you wish to make an action. Whenever you want to push a screen, show a modal or any other action, the action defaults to originate from your current screen. This covers most use cases but there are some edge cases: <br>
+### A New & Improved Core Architecture
+react-native-navigation has a few issues which are unsolvable in its current architecture. These issues stem from the same problem: you cannot specify on which screen you wish to make an action. Whenever you want to push a screen, show a modal or any other action, the action defaults to originate from your current screen. In most cases this is fine, but becoms problematic in specific edge cases. For example: <br>
 * What if you want to update your navbar icons and the user pops the screen? Your icons might update on the wrong screen.
 * What if you want to push a screen as a result of a redux action?
 
 There are ways to solve some of these problems in v1 but they are not straightforward. We want to change that.
 
 #### New API
-To solve this problem in v2, every screen receives as a prop it’s containerId. Whenever you want to perform an action from that screen you need to pass the containerId to the function:
+To solve this problem in v2, every screen receives its `containerId` as a prop. Whenever you want to perform an action from that screen you need to pass the `containerId` to the function:
 ```js
 Navigator.pop(this.props.containerId)
 ```
@@ -30,9 +29,9 @@ v2 is written with contributors in mind from day one.
 v2 is written in Test Driven Development. We have a test for every feature including features that are not implemented yet. This makes accepting pull requests extremely easy: If our tests pass, your pull request is accepted.
 
 
-## Where is it standing now?
-v2 currently supports most of react-native-navigation’s basic functions but it is still behind v1.
-Here is the full comparison of features between v1 and v2 (will be updated regulary):
+## Current Status
+v2 currently supports most of react-native-navigation’s basic functionality but it is still behind v1.
+Here is the full comparison of features between v1 and v2 (will be updated regularly):
 ### Top Level API
 
 |    API              | v1  | v2 |
@@ -67,7 +66,7 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 
 ### Styles
 
-Note:  properties who begin with 'navBar' in v1 are now named 'topBar' to avoid confusion with the android native bottom nav bar.
+Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with properties beginning with 'topBar' to avoid confusion with the Android native bottom nav bar.
 
 |                       | v1  | v2 iOS | v2 Android |
 |-----------------------|-----|--------|------------|
