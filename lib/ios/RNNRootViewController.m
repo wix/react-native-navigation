@@ -2,9 +2,10 @@
 #import "RNNRootViewController.h"
 
 @interface RNNRootViewController()
-@property NSString* containerId;
-@property NSString* containerName;
-@property RNNEventEmitter *eventEmitter;
+@property (nonatomic, strong) NSString* containerId;
+@property (nonatomic, strong) NSString* containerName;
+@property (nonatomic, strong) RNNEventEmitter *eventEmitter;
+@property (nonatomic) BOOL _statusBarHidden;
 @end
 
 @implementation RNNRootViewController
@@ -23,9 +24,15 @@
 											   object:nil];
 	
 	self.navigationItem.title = node.data[@"navigationOptions"][@"title"];
+	self._statusBarHidden = [(NSNumber*)node.data[@"navigationOptions"][@"statusBarHidden"] boolValue];
 	
 	return self;
 }
+
+- (BOOL)prefersStatusBarHidden {
+	return self._statusBarHidden; // || self.navigationController.isNavigationBarHidden;
+}
+
 
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];

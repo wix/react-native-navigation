@@ -141,48 +141,37 @@
 	XCTAssertTrue([right.child isMemberOfClass:[RNNRootViewController class]]);
 }
 
-- (void)testCreateLayout_ContainerSideMenuLayoutCenterTabBar {
-	RNNSideMenuController *ans = (RNNSideMenuController*) [self.factory createLayoutAndSaveToStore:
-														   @{@"id": @"cntId",
-															 @"type": @"SideMenuRoot",
-															 @"data": @{},
-															 @"children": @[
-																	 @{@"id": @"cntI_2",
-																	   @"type": @"SideMenuCenter",
-																	   @"data": @{},
-																	   @"children": @[
-																			   @{@"id": @"cntId_3",
-																				 @"type": @"BottomTabs",
-																				 @"data": @{},
-																				 @"children": @[
-																						 @{@"id": @"cntId_4",
-																						   @"type": @"ContainerStack",
-																						   @"data": @{},
-																						   @"children": @[
-																								   @{@"id": @"cntId_2",
-																									 @"type": @"Container",
-																									 @"data": @{},
-																									 @"children": @[]}]}]}]}]}
-														   ];
-	
-	XCTAssertTrue([ans isMemberOfClass:[RNNSideMenuController class]]);
-	XCTAssertTrue([ans isKindOfClass:[UIViewController class]]);
-	XCTAssertTrue([ans.center isMemberOfClass:[RNNSideMenuChildVC class]]);
-	
-	RNNSideMenuChildVC *center = (RNNSideMenuChildVC*)ans.center;
-	XCTAssertTrue(center.type == RNNSideMenuChildTypeCenter);
-	XCTAssertTrue([center.child isMemberOfClass:[UITabBarController class]]);
-	
-	UITabBarController *tabbBar = (UITabBarController*)center.child;
-	XCTAssertTrue(tabbBar.viewControllers.count == 1);
-	
-	UINavigationController *navController = (UINavigationController*)(tabbBar.viewControllers[0]);
-	XCTAssertTrue([navController isMemberOfClass:[UINavigationController class]]);
-	XCTAssertTrue(navController.viewControllers.count == 1);
-	
-	RNNRootViewController *rootViewController = (RNNRootViewController*)navController.viewControllers[0];
-	XCTAssertTrue([rootViewController isMemberOfClass:[RNNRootViewController class]]);
-	
+
+- (void)testNavigationOptions_default {
+	UIViewController *ans = [self.factory createLayoutAndSaveToStore: @{@"id": @"cntId_2",
+																		@"type": @"Container",
+																		@"data": @{@"navigationOptions": @{}},
+																		@"children": @[]}];
+	XCTAssertFalse([ans prefersStatusBarHidden]);
+}
+
+- (void)testNavigationOptions_true {
+	UIViewController *ans = [self.factory createLayoutAndSaveToStore: @{@"id": @"cntId_2",
+																	    @"type": @"Container",
+																		@"data": @{
+																			@"navigationOptions": @{
+																					@"statusBarHidden": @(1)
+																					}
+																			},
+																		@"children": @[]}];
+	XCTAssertTrue([ans prefersStatusBarHidden]);
+}
+
+- (void)testNavigationOptions_false {
+	UIViewController *ans = [self.factory createLayoutAndSaveToStore: @{@"id": @"cntId_2",
+																		@"type": @"Container",
+																		@"data": @{
+																				@"navigationOptions": @{
+																						@"statusBarHidden": @(0)
+																						}
+																				},
+																		@"children": @[]}];
+	XCTAssertFalse([ans prefersStatusBarHidden]);
 }
 
 - (void)testCreateLayout_addContainerToStore {
