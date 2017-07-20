@@ -51,8 +51,8 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 | resetTo             |   ✅     |    ✅        |	✅|
 | dismissModal        |   ✅     |     ✅       |	✅|
 | dismissAllModals    |   ✅     |      ✅      |	✅|
-| showContextualMenu      |   ✅     |            |[Contribute](CONTRIBUTING.md) |
-| dismissContextualtMenu      |   ✅     |           |[Contribute](CONTRIBUTING.md)  |
+| showContextualMenu      |   ✅     |     / Android specific       |[Contribute](CONTRIBUTING.md) |
+| dismissContextualMenu      |   ✅     |   / Androic specific        |[Contribute](CONTRIBUTING.md)  |
 | showFab      |   ✅     |    / Android specific     |  [Contribute](CONTRIBUTING.md)  |
 | dismissFab      |   ✅     |    / Android specific       | [Contribute](CONTRIBUTING.md) |
 | showSnackBar     |   ✅     |     / Android specific    |   [Contribute](CONTRIBUTING.md) |
