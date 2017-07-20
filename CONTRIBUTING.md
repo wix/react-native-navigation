@@ -1,22 +1,8 @@
 # Contributing
-## Folder Structure
 
-| Folder | Description |
-| ------ | ----------- |
-| `lib` | The project itself composed of: |
-| `lib/android` | android sources and unit tests |
-| `lib/ios` | iOS sources and unit tests |
-| `lib/src` | javascript sources and unit tests |
-| `lib/src/index.js` | the entry point for `import Navigation from 'react-native-navigation'` |
-| `e2e` | [detox](https://github.com/wix/detox) iOS e2e tests (in the future, once detox supports it, we will have android e2e here as well) |
-| `AndroidE2E` | Android e2e tests using native uiautomator (until detox for android is ready) |
-| `playground` | The end-user project all e2e tests run against. Contains its own `src`, `android` and `ios`. Does not have its own package.json, depends on the local `<root>/lib` in order not to go through npm. |
-| `integration` | misc javascript integration tests |
-| `scripts` | all scripts |
+Thanks for you interest in helping out! We'd love your contributions, and there's plenty of work to be done regardless of your skill level. Before you start, you'll need to have some things installed in your environment so that you can run locally.
 
-## Running locally
-
-### Environment requirements
+## Environment requirements
 
 * Mac OSX
 * Latest stable XCode
@@ -57,7 +43,61 @@ export CODE_SIGNING_REQUIRED=NO
 brew tap facebook/fb && brew install fbsimctl
 ```
 
-### Scripts
+## Basics - Getting Started
+
+Got your environment set up? Go ahead and clone the repo. (Fork it first so you can open a PR when you're ready.)
+
+Then:
+
+1. Install dependencies
+```
+yarn install
+```
+1. Run the playground project that comes with the app
+
+1.1 
+```
+yarn xcode
+yarn start
+```
+1.1 Run the project from XCode
+
+You should see the playground app open in the iOS simulator. Play around to get a feel for the project.
+You can (and should) also open the playground project in an Android emulator to see the Android implementation.
+
+1. Run the tests. Before you start changing things, make sure everything works.
+
+```
+yarn test-all
+```
+
+## Troubleshooting
+
+* If the tests fail with an error like `Ineligible destinations for the "ReactNativeNavigation" scheme`, double check that you have the latest XCode installed.
+
+## Workflow
+This project is driven by tests. Before implementing any feature or fixing any bug, a failing test (e2e or unit or both) should be added, depending on the environment of where the fix should be implemented. For example, for an API change, a failing e2e should be written. For a small bug fix in Android, for example, a unit test in Android should be added.
+
+This will ensure good quality throughout the life of the project and will avoid unexpected breakages.
+
+No PR will be accepted without adequate test coverage.
+
+## Folder Structure
+
+| Folder | Description |
+| ------ | ----------- |
+| `lib` | The project itself composed of: |
+| `lib/android` | android sources and unit tests |
+| `lib/ios` | iOS sources and unit tests |
+| `lib/src` | javascript sources and unit tests |
+| `lib/src/index.js` | the entry point for `import Navigation from 'react-native-navigation'` |
+| `e2e` | [detox](https://github.com/wix/detox) iOS e2e tests (in the future, once detox supports it, we will have android e2e here as well) |
+| `AndroidE2E` | Android e2e tests using native uiautomator (until detox for android is ready) |
+| `playground` | The end-user project all e2e tests run against. Contains its own `src`, `android` and `ios`. Does not have its own package.json, depends on the local `<root>/lib` in order not to go through npm. |
+| `integration` | misc javascript integration tests |
+| `scripts` | all scripts |
+
+## Scripts
 
 | Command | Description |
 | ------- | ----------- |
@@ -74,13 +114,4 @@ brew tap facebook/fb && brew install fbsimctl
 | `yarn test-e2e-ios` | runs the ios e2e suite (with detox) in debug/release |
 | `yarn test-e2e-android` | runs the android e2e suite (with uiautomator) in debug/release on running devices/emulators <br> **Options:** `-- [release] [just com.TestClass#testMethod]` |
 | `yarn test-all` | runs all tests in parallel |
-
-## Workflow
-This project is driven by tests. Before implementing any feature or fixing any bug, a failing test (e2e or unit or both) should be added, depending on the environment of where the fix should be implemented. For example, for an API change, a failing e2e should be written. For a small bug fix in Android, for example, a unit test in Android should be added.
-
-This will ensure good quality throughout the life of the project and will avoid unexpected breakages.
-
-No PR will be accepted without adequate test coverage.
-
-To run the tests, use the scripts above.
 

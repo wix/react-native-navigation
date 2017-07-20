@@ -5,6 +5,7 @@ We are rebuilding react-native-navigation
 - [Where is it standing now?](#where-is-it-standing-now)
 - [Getting Started](#getting-started-with-v2)
 - [Usage](#usage)
+- [Contributing](CONTRIBUTING.md)
 
 ## Why Rebuild react-native-navigation?
 
