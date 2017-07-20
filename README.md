@@ -66,6 +66,8 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 
 ### Styles
 
+Note:  properties who begin with 'navBar' in v1 are now named 'topBar' to avoid confusion with the android native bottom nav bar.
+
 |                       | v1  | v2 iOS | v2 Android |
 |-----------------------|-----|--------|------------|
 | topBarBackgroundColor |   ✅    |   in development     |     [Contribute](CONTRIBUTING.md)        |
@@ -82,6 +84,18 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 | drawUnderTopBar       |  ✅     |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
 | statusBarBlur         |  ✅     |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
 | topBarBlur            | ✅      |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
+| tabBarHidden  |   ✅  |   [Contribute](CONTRIBUTING.md)     |    [Contribute](CONTRIBUTING.md)        |
+| statusBarTextColorScheme |  ✅   |   in development      |      / iOS specific    |
+| statusBarTextColorSchemeSingleScreen|  ✅   |     in development    |     / iOS specific      |
+| navBarSubtitleColor          |  ✅   |   [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)      |
+| navBarSubtitleFontFamily    |   ✅  |    [Contribute](CONTRIBUTING.md)    |     [Contribute](CONTRIBUTING.md)       |
+| screenBackgroundColor     | ✅    |   in development     |     [Contribute](CONTRIBUTING.md)       |
+| orientation     |  ✅   |  [Contribute](CONTRIBUTING.md)      |   [Contribute](CONTRIBUTING.md)          |
+| statusBarHideWithTopBar        |  ✅   |    [Contribute](CONTRIBUTING.md)     |     [Contribute](CONTRIBUTING.md)       |
+| statusBarHidden       |  ✅   |   [Contribute](CONTRIBUTING.md)       |     [Contribute](CONTRIBUTING.md)      |
+| disabledBackGesture       |   ✅  |   [Contribute](CONTRIBUTING.md)       |    / iOS specific     |
+| screenBackgroundImageName         |   ✅  |   [Contribute](CONTRIBUTING.md)      |    [Contribute](CONTRIBUTING.md)        |
+| rootBackgroundImageName            |  ✅   |    [Contribute](CONTRIBUTING.md)     |    [Contribute](CONTRIBUTING.md)        |
 
 Element tranisitions, adding buttons and styles are not yet implemented. [Contribute](CONTRIBUTING.md)
 
