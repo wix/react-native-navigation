@@ -64,6 +64,25 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 | toggleNavBar        |   ✅     |      [Contribute](CONTRIBUTING.md)      |
 | Screen Visibility   |   ✅     |       ✅     |
 
+### Styles
+
+|                       | v1  | v2 iOS | v2 Android |
+|-----------------------|-----|--------|------------|
+| topBarBackgroundColor |   ✅    |   in development     |     [Contribute](CONTRIBUTING.md)        |
+| topBarTextFontSize    |   ✅    |   in development      |     [Contribute](CONTRIBUTING.md)        |
+| topBarTextFontFamily  |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
+| topBarBackgroundColor |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
+| topBarButtonColor     |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
+| topBarHidden          |   ✅    |   in development      |     [Contribute](CONTRIBUTING.md)        |
+| topBarHideOnScroll    |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
+| topBarTranslucent     |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
+| topBarTransparent     | ✅      |   in development     |     [Contribute](CONTRIBUTING.md)        |
+| topBarNoBorder        |  ✅     |    [Contribute](CONTRIBUTING.md)     |     [Contribute](CONTRIBUTING.md)        |
+| drawUnderTabBar       |  ✅     |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
+| drawUnderTopBar       |  ✅     |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
+| statusBarBlur         |  ✅     |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
+| topBarBlur            | ✅      |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
+
 Element tranisitions, adding buttons and styles are not yet implemented. [Contribute](CONTRIBUTING.md)
 
 ## Getting started with v2
