@@ -73,6 +73,12 @@ Then:
 
 * If the tests fail with an error like `Ineligible destinations for the "ReactNativeNavigation" scheme`, double check that you have the latest XCode installed.
 * If the tests fail because an Android emulator isn't available (something like `com.android.builder.testing.api.DeviceException: No connected devices!`), start the Android project from Android Studio and leave the emulator running, then try again.
+* If tests fail with an error like so: 
+ ```javascript
+ beforeEach(async () => {
+                   ^
+SyntaxError: Unexpected token (
+```
 
 ## Workflow
 This project is driven by tests. Before implementing any feature or fixing any bug, a failing test (e2e or unit or both) should be added, depending on the environment of where the fix should be implemented. For example, for an API change, a failing e2e should be written. For a small bug fix in Android, for example, a unit test in Android should be added.
