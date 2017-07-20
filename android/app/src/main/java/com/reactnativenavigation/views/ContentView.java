@@ -51,8 +51,7 @@ public class ContentView extends ReactRootView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int measuredHeight = viewMeasurer.getMeasuredHeight(heightMeasureSpec);
-        setMeasuredDimension(viewMeasurer.getMeasuredWidth(widthMeasureSpec),
-                measuredHeight);
+        setMeasuredDimension(viewMeasurer.getMeasuredWidth(widthMeasureSpec), measuredHeight);
     }
 
     @Override
