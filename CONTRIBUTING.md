@@ -2,7 +2,7 @@
 
 Thanks for you interest in helping out! We'd love your contributions, and there's plenty of work to be done regardless of your skill level. Before you start, you'll need to have some things installed in your environment so that you can run locally.
 
-## Environment requirements
+## Environment Requirements
 
 * Mac OSX
 * Latest stable XCode
@@ -49,29 +49,25 @@ Got your environment set up? Go ahead and clone the repo. (Fork it first so you 
 
 Then:
 
-1. Install dependencies
-```
-yarn install
-```
+1. Install dependencies:
+
+  ```
+  yarn install
+  ```
+
 1. Run the playground project in Android and iOS so that you can get a feel for the project.
+  
   1. `yarn start` to get the package running in a terminal, leave it open
 
-  1. iOS 
-```
-yarn xcode
-yarn start
-```
-  * Run the project from XCode
-
-  1. Android
-    1. Open the app in android studio
-    1. Run
+  1. iOS: `yarn xcode` & run the project from XCode
+    
+  1. Android: Open the app in Android Studio and click `Run`   
 
 1. Run the tests. Before you start changing things, make sure everything works.
 
-```
-yarn test-all
-```
+  ```
+  yarn test-all
+  ```
 
 ## Troubleshooting
 
