@@ -3,7 +3,11 @@ package com.reactnativenavigation.views;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.app.ActionBar;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -11,9 +15,11 @@ import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 
 import java.util.List;
@@ -79,6 +85,34 @@ public class TopBar extends AppBarLayout {
 
     public void setSubtitle(String subtitle) {
         titleBar.setSubtitle(subtitle);
+    }
+
+    public void setReactView(String topBarReactView, String alignment) {
+        if (!TextUtils.isEmpty(topBarReactView)) {
+            final ContentView view = new ContentView(getContext(), topBarReactView, new NavigationParams(Bundle.EMPTY));
+            if ("fill".equals(alignment)) {
+                addReactViewFill(view);
+            } else {
+                addCenteredReactView(view);
+            }
+        }
+    }
+
+    private void addReactViewFill(ContentView view) {
+        view.setLayoutParams(new LayoutParams(MATCH_PARENT, ViewUtils.getToolBarHeight()));
+        titleBar.addView(view);
+    }
+
+    private void addCenteredReactView(final ContentView view) {
+        titleBar.addView(view, new LayoutParams(WRAP_CONTENT, ViewUtils.getToolBarHeight()));
+        view.setOnDisplayListener(new Screen.OnDisplayListener() {
+            @Override
+            public void onDisplay() {
+                view.getLayoutParams().width = (int) (float) view.getChildAt(0).getMeasuredWidth();
+                ((ActionBar.LayoutParams) view.getLayoutParams()).gravity = Gravity.CENTER;
+                view.requestLayout();
+            }
+        });
     }
 
     public void setButtonColor(StyleParams styleParams) {

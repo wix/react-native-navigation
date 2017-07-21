@@ -32,6 +32,8 @@ public class StyleParamsParser {
         result.contextualMenuBackgroundColor = getColor("contextualMenuBackgroundColor", getDefaultContextualMenuBackgroundColor());
 
         result.topBarColor = getColor("topBarColor", getDefaultTopBarColor());
+        result.topBarReactView = params.getString("topBarReactView");
+        result.topBarReactViewAlignment = params.getString("topBarReactViewAlignment");
         result.titleBarHideOnScroll = getBoolean("titleBarHideOnScroll", getDefaultTitleBarHideOnScroll());
         result.topBarTransparent = getBoolean("topBarTransparent", getDefaultTopBarHidden());
         result.topBarCollapseOnScroll = getBoolean("topBarCollapseOnScroll", false);

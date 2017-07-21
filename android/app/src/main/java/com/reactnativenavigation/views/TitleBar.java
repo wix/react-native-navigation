@@ -51,6 +51,10 @@ public class TitleBar extends Toolbar {
         addButtonsToTitleBar(navigatorEventId, menu);
     }
 
+    public int getRightButtonsWidth() {
+        return actionMenuView.getWidth();
+    }
+
     public void setLeftButton(TitleBarLeftButtonParams leftButtonParams,
                               LeftButtonOnClickListener leftButtonOnClickListener,
                               String navigatorEventId,

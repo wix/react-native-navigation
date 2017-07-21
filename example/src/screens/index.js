@@ -9,6 +9,7 @@ import Drawer from './types/Drawer';
 import LightBox from './types/LightBox';
 import Notification from './types/Notification';
 import Modal from './types/Modal';
+import CustomTopBarScreen from './types/CustomTopBarScreen';
 import TopTabs from './types/TopTabs';
 import TabOne from './types/tabs/TabOne';
 import TabTwo from './types/tabs/TabTwo';
@@ -33,6 +34,7 @@ export default function () {
   Navigation.registerComponent('example.Types.Modal', () => Modal);
   Navigation.registerComponent('example.Types.LightBox', () => LightBox);
   Navigation.registerComponent('example.Types.Notification', () => Notification);
+  Navigation.registerComponent('example.Types.CustomTopBarScreen', () => CustomTopBarScreen);
   Navigation.registerComponent('example.Types.TopTabs', () => TopTabs);
   Navigation.registerComponent('example.Types.TopTabs.TabOne', () => TabOne);
   Navigation.registerComponent('example.Types.TopTabs.TabTwo', () => TabTwo);

@@ -127,8 +127,12 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     private void createTitleBar() {
         addTitleBarButtons();
-        topBar.setTitle(screenParams.title);
-        topBar.setSubtitle(screenParams.subtitle);
+        if (screenParams.styleParams.hasTopBarCustomComponent()) {
+            topBar.setReactView(screenParams.styleParams.topBarReactView, screenParams.styleParams.topBarReactViewAlignment);
+        } else {
+            topBar.setTitle(screenParams.title);
+            topBar.setSubtitle(screenParams.subtitle);
+        }
     }
 
     private void addTitleBarButtons() {
