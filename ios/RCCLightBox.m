@@ -53,22 +53,6 @@ const NSInteger kLightBoxTag = 0x101010;
                     self.overlayColorView.alpha = 0;
                     [self.overlayColorView setTranslatesAutoresizingMaskIntoConstraints:NO];
                     [self addSubview:self.overlayColorView];
-
-                    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.overlayColorView
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                    multiplier:1.0
-                                                                      constant:0]];
-
-                    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.overlayColorView
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                    multiplier:1.0
-                                                                      constant:0]];
                 }
             }
 
@@ -104,6 +88,11 @@ const NSInteger kLightBoxTag = 0x101010;
 -(void)layoutSubviews
 {
     [super layoutSubviews];
+
+    self.reactView.frame = self.bounds;
+    if (self.overlayColorView != nil) {
+        self.overlayColorView.frame = self.bounds;
+    }
     
     if(!self.yellowBoxRemoved)
     {
