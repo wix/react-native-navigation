@@ -267,6 +267,11 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   } else {
     viewController.navigationController.navigationBar.barTintColor = nil;
   }
+
+  NSNumber *navBarTransparency = self.navigatorStyle[@"navBarTransparency"];
+  if (navBarTransparency) {
+    [[[viewController.navigationController.navigationBar subviews] objectAtIndex:0] setAlpha: [navBarTransparency floatValue]];
+  }
   
   NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
   [self.navigationController.navigationBar setTitleTextAttributes:titleTextAttributes];
