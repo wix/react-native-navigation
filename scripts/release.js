@@ -3,10 +3,20 @@ const exec = require('shell-utils').exec;
 const p = require('path');
 const semver = require('semver');
 const fs = require('fs');
+const _ = require('lodash');
 
 const ONLY_ON_BRANCH = 'v2';
 const VERSION_TAG = 'alpha';
 const VERSION_INC = 'patch';
+
+function run() {
+  if (!validateEnv()) {
+    return;
+  }
+  setupGit();
+  createNpmRc();
+  versionTagAndPublish();
+}
 
 function validateEnv() {
   if (!process.env.CI || !process.env.TRAVIS) {
@@ -35,32 +45,6 @@ function setupGit() {
   exec.execSync(`git checkout ${ONLY_ON_BRANCH}`);
 }
 
-function getNextVersion() {
-  const packageVersion = semver.clean(process.env.npm_package_version);
-  console.log(`package version: ${packageVersion}`);
-  const current = exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.${VERSION_TAG}`);
-  console.log(`current published version: ${current}`);
-
-  if (semver.gt(packageVersion, current)) {
-    return packageVersion;
-  } else {
-    return semver.inc(current, VERSION_INC);
-  }
-}
-
-function calcNewVersion() {
-  let candidate = getNextVersion();
-  while (isAlreadyPublished(candidate)) {
-    console.log(`${candidate} already published`);
-    candidate = semver.inc(candidate, VERSION_INC);
-  }
-  return candidate;
-}
-
-function isAlreadyPublished(version) {
-  return exec.execSyncRead(`npm view ${process.env.npm_package_name}@${version} version`).length > 0;
-}
-
 function createNpmRc() {
   const content = `
 email=\${NPM_EMAIL}
@@ -69,21 +53,47 @@ email=\${NPM_EMAIL}
   fs.writeFileSync(`.npmrc`, content);
 }
 
-function tagAndPublish(newVersion) {
-  exec.execSync(`npm version ${newVersion} -m "v${newVersion} [ci skip]"`);
-  exec.execSync(`npm publish --tag ${VERSION_TAG}`);
-  exec.execSyncSilent(`git push deploy --tags || true`);
+function versionTagAndPublish() {
+  const packageVersion = semver.clean(process.env.npm_package_version);
+  console.log(`package version: ${packageVersion}`);
+
+  const currentPublished = findCurrentPublishedVersion();
+  console.log(`current published version: ${currentPublished}`);
+
+  const version = semver.gt(packageVersion, currentPublished) ? packageVersion : semver.inc(currentPublished, VERSION_INC);
+  tryPublishAndTag(version);
 }
 
-function run() {
-  if (!validateEnv()) {
-    return;
+function findCurrentPublishedVersion() {
+  return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.${VERSION_TAG}`);
+}
+
+function tryPublishAndTag(version) {
+  let theCandidate = version;
+  let retry = 0;
+  while (retry < 5) {
+    try {
+      tagAndPublish(theCandidate);
+      console.log(`Released ${theCandidate}`);
+      return;
+    } catch (e) {
+      const alreadyPublished = _.includes(e.toString(), 'You cannot publish over the previously published version');
+      if (!alreadyPublished) {
+        throw e;
+      }
+      console.log(`previously published. retrying with increased ${VERSION_INC}...`);
+      retry++;
+      theCandidate = semver.inc(theCandidate, VERSION_INC);
+    }
   }
-  setupGit();
-  createNpmRc();
-  const newVersion = calcNewVersion();
-  console.log(`new version is: ${newVersion}`);
-  tagAndPublish(newVersion);
+}
+
+function tagAndPublish(newVersion) {
+  console.log(`trying to publish ${newVersion}...`);
+  exec.execSync(`npm --no-git-tag-version version ${newVersion}`);
+  exec.execSyncRead(`npm publish --tag ${VERSION_TAG}`);
+  exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
+  exec.execSyncSilent(`git push deploy ${newVersion} || true`);
 }
 
 run();
