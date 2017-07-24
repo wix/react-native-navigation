@@ -211,6 +211,11 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
+    public String getCurrentlyVisibleScreenId() {
+        return getCurrentScreen().getScreenInstanceId();
+    }
+
+    @Override
     public void selectTopTabByTabIndex(String screenInstanceId, int index) {
         for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
             screenStacks[i].selectTopTabByTabIndex(screenInstanceId, index);

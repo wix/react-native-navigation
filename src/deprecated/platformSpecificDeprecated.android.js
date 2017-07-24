@@ -683,7 +683,7 @@ async function isAppLaunched() {
 }
 
 async function getCurrentlyVisibleScreenId() {
-  //Currently only implemented for iOS
+  return await newPlatformSpecific.getCurrentlyVisibleScreenId();
 }
 
 export default {
