@@ -34,6 +34,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   
   RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component passProps:passProps navigatorStyle:navigatorStyle globalProps:globalProps bridge:bridge];
   if (!viewController) return nil;
+  viewController.controllerId = props[@"id"];
   
   NSArray *leftButtons = props[@"leftButtons"];
   if (leftButtons)
@@ -104,6 +105,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     }
     
     RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component passProps:passProps navigatorStyle:navigatorStyle globalProps:nil bridge:bridge];
+    viewController.controllerId = passProps[@"screenInstanceID"];
     
     [self processTitleView:viewController
                      props:actionParams
@@ -210,6 +212,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     NSDictionary *navigatorStyle = actionParams[@"style"];
     
     RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component passProps:passProps navigatorStyle:navigatorStyle globalProps:nil bridge:bridge];
+    viewController.controllerId = passProps[@"screenInstanceID"];
     
     [self processTitleView:viewController
                      props:actionParams

@@ -94,6 +94,11 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   if (controller && componentId)
   {
     [[RCCManager sharedInstance] registerController:controller componentId:componentId componentType:type];
+    
+    if([controller isKindOfClass:[RCCViewController class]])
+    {
+      ((RCCViewController*)controller).controllerId = componentId;
+    }
   }
   
   // set background image at root level

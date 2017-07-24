@@ -165,6 +165,14 @@ class Navigator {
       Navigation.clearEventHandler(this.navigatorEventID);
     }
   }
+
+  async screenIsCurrentlyVisible() {
+    const res = await Navigation.getCurrentlyVisibleScreenId();
+    if (!res) {
+      return false;
+    }
+    return res.screenId === this.screenInstanceID;
+  }
 }
 
 export default class Screen extends Component {

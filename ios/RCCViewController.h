@@ -7,6 +7,7 @@ extern NSString* const RCCViewControllerCancelReactTouchesNotification;
 
 @property (nonatomic) NSMutableDictionary *navigatorStyle;
 @property (nonatomic) BOOL navBarHidden;
+@property (nonatomic, strong) NSString *controllerId;
 
 + (UIViewController*)controllerWithLayout:(NSDictionary *)layout globalProps:(NSDictionary *)globalProps bridge:(RCTBridge *)bridge;
 

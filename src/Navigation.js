@@ -166,8 +166,13 @@ async function isAppLaunched() {
   return await platformSpecific.isAppLaunched();
 }
 
+function getCurrentlyVisibleScreenId() {
+  return platformSpecific.getCurrentlyVisibleScreenId();
+}
+
 export default {
   getRegisteredScreen,
+  getCurrentlyVisibleScreenId,
   registerComponent,
   showModal: showModal,
   dismissModal: dismissModal,
