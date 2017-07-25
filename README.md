@@ -20,8 +20,13 @@ React Native Navigation provides 100% native platform navigation on both iOS and
 
 ### Real world examples
 
-#### The Wix App
 <img src="https://github.com/wix/react-native/blob/master/src/videos/demo.gif?raw=true" width="240">&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://image.ibb.co/kTbvX5/rnn_example_demo.gif" width="240">
+
+On the left - The Wix app.
+
+On the right - The example app.
+
 
 ## Quick Links
 * [Documentation](https://wix.github.io/react-native-navigation/#/)
