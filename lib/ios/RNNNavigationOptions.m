@@ -13,7 +13,6 @@
 +(instancetype)create:(NSDictionary *)json
 {
 	RNNNavigationOptions* node = [RNNNavigationOptions new];
-	node.data = json;
 	return node;
 }
 @end

@@ -11,7 +11,8 @@ import Navigation from 'react-native-navigation';
 
 class OptionsScreen extends Component {
   static navigationOptions = {
-    title: 'Static Title'
+    title: 'Static Title',
+    topBarBackgroundColor: "red"
   }
 
   constructor(props) {

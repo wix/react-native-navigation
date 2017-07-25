@@ -15,7 +15,7 @@
 	self.containerId = node.nodeId;
 	self.containerName = node.data[@"name"];
 	self.eventEmitter = eventEmitter;
-	
+	NSLog(@"------------------ %@", node.data[@"navigationOptions"]);
 	self.view = [creator createRootView:self.containerName rootViewId:self.containerId];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
