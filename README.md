@@ -100,9 +100,9 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | navBarSubtitleColor          |  ✅   |   [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)      |
 | navBarSubtitleFontFamily    |   ✅  |    [Contribute](CONTRIBUTING.md)    |     [Contribute](CONTRIBUTING.md)       |
 | screenBackgroundColor     | ✅    |   in development     |     [Contribute](CONTRIBUTING.md)       |
-| orientation     |  ✅   |  [Contribute](CONTRIBUTING.md)      |   [Contribute](CONTRIBUTING.md)          |
+| orientation     |  ✅   |  in development      |   [Contribute](CONTRIBUTING.md)          |
 | statusBarHideWithTopBar        |  ✅   |    [Contribute](CONTRIBUTING.md)     |     [Contribute](CONTRIBUTING.md)       |
-| statusBarHidden       |  ✅   |   [Contribute](CONTRIBUTING.md)       |     [Contribute](CONTRIBUTING.md)      |
+| statusBarHidden       |  ✅   |    ✅       |     [Contribute](CONTRIBUTING.md)      |
 | disabledBackGesture       |   ✅  |   [Contribute](CONTRIBUTING.md)       |    / iOS specific     |
 | screenBackgroundImageName         |   ✅  |   [Contribute](CONTRIBUTING.md)      |    [Contribute](CONTRIBUTING.md)        |
 | rootBackgroundImageName            |  ✅   |    [Contribute](CONTRIBUTING.md)     |    [Contribute](CONTRIBUTING.md)        |
