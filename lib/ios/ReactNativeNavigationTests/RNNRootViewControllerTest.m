@@ -8,6 +8,9 @@
 
 #import <XCTest/XCTest.h>
 #import "RNNRootViewController.h"
+#import "RNNReactRootViewCreator.h"
+#import "RNNTestRootViewCreator.h"
+#import <React/RCTConvert.h>
 
 @interface RNNRootViewControllerTest : XCTestCase
 
@@ -37,20 +40,25 @@
     }];
 }
 
--(void)testTopBarBackgroundColor_color{
-	id creator = nil;
+-(void)testTopBarBackgroundColor_validColor{
+	id<RNNRootViewCreator> creator = [[RNNTestRootViewCreator alloc] init];
 	id emitter = nil;
+	NSNumber* inputColor = @(0xFFFF0000);
 	NSDictionary* json =  @{@"id": @"cntId",
-							@"type": @"ContainerStack",
-							@"data": @{},
-							@"children": @[
-									@{@"id": @"cntId_2",
-									  @"type": @"Container",
-									  @"data": @{@"topBarBackgroundColor" : @(0xFFFF0000)},
-									  @"children": @[]}]};
+							@"type": @"Container",
+							@"data": @{@"name": @"someName", @"navigationOptions" : @{@"topBarBackgroundColor" : inputColor, @"title" : @"some item"}},
+							@"children": @[]};
 	RNNLayoutNode* node = [RNNLayoutNode create:json];
 	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithNode:node rootViewCreator:creator eventEmitter:emitter];
-	XCTAssertTrue([vc.navigationController.navigationBar.barTintColor isEqual:@(0xFFFF0000)]);
+	
+	UINavigationController* nc = [[UINavigationController alloc] init];
+	NSMutableArray* controllers = [NSMutableArray new];
+	[controllers addObject:vc];
+	[nc setViewControllers:controllers];
+	[vc viewWillAppear:YES];
+	NSLog(@"------------------ %@", vc.navigationController.navigationBar);
+	UIColor* expectedColor = [RCTConvert UIColor:inputColor];
+	XCTAssertTrue([vc.navigationController.navigationBar.barTintColor isEqual:expectedColor]);
 	
 }
 

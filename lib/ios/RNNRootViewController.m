@@ -1,8 +1,10 @@
 
 #import "RNNRootViewController.h"
+#import <React/RCTConvert.h>
 
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* containerId;
+@property (nonatomic, strong) NSDictionary* nodeData;
 @property (nonatomic, strong) NSString* containerName;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic) BOOL _statusBarHidden;
@@ -13,9 +15,10 @@
 -(instancetype)initWithNode:(RNNLayoutNode*)node rootViewCreator:(id<RNNRootViewCreator>)creator eventEmitter:(RNNEventEmitter*)eventEmitter {
 	self = [super init];
 	self.containerId = node.nodeId;
+	self.nodeData = node.data[@"navigationOptions"];
 	self.containerName = node.data[@"name"];
 	self.eventEmitter = eventEmitter;
-	NSLog(@"------------------ %@", node.data[@"navigationOptions"]);
+	NSLog(@"------------------ %@", node);
 	self.view = [creator createRootView:self.containerName rootViewId:self.containerId];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -25,6 +28,7 @@
 	
 	self.navigationItem.title = node.data[@"navigationOptions"][@"title"];
 	self._statusBarHidden = [(NSNumber*)node.data[@"navigationOptions"][@"statusBarHidden"] boolValue];
+	
 	
 	return self;
 }
@@ -44,6 +48,13 @@
 	[self.eventEmitter sendContainerStop:self.containerId];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+	if ([self.nodeData objectForKey:@"topBarBackgroundColor"]) {
+		UIColor* backgroundColor = [RCTConvert UIColor:self.nodeData[@"topBarBackgroundColor"]];
+		self.navigationController.navigationBar.barTintColor = backgroundColor;
+	}
+
+}
 /**
  *	fix for #877, #878
  */
