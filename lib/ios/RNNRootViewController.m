@@ -12,13 +12,12 @@
 
 @implementation RNNRootViewController
 
--(instancetype)initWithNode:(RNNLayoutNode*)node rootViewCreator:(id<RNNRootViewCreator>)creator eventEmitter:(RNNEventEmitter*)eventEmitter {
+-(instancetype)initWithName:(NSString*)name withOptions:(NSDictionary*)options withContainerId:(NSString*)containerId rootViewCreator:(id<RNNRootViewCreator>)creator eventEmitter:(RNNEventEmitter*)eventEmitter {
 	self = [super init];
-	self.containerId = node.nodeId;
-	self.nodeData = node.data[@"navigationOptions"];
-	self.containerName = node.data[@"name"];
+	self.containerId = containerId;
+	self.nodeData = options;
+	self.containerName = name;
 	self.eventEmitter = eventEmitter;
-	NSLog(@"------------------ %@", node);
 	self.view = [creator createRootView:self.containerName rootViewId:self.containerId];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -26,8 +25,8 @@
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
 	
-	self.navigationItem.title = node.data[@"navigationOptions"][@"title"];
-	self._statusBarHidden = [(NSNumber*)node.data[@"navigationOptions"][@"statusBarHidden"] boolValue];
+	self.navigationItem.title = options[@"title"];
+	self._statusBarHidden = [(NSNumber*)options[@"statusBarHidden"] boolValue];
 	
 	
 	return self;

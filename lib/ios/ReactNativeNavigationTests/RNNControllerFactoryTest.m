@@ -154,6 +154,7 @@
 	UIViewController *ans = [self.factory createLayoutAndSaveToStore: @{@"id": @"cntId_2",
 																	    @"type": @"Container",
 																		@"data": @{
+																			@"name": @"somename",
 																			@"navigationOptions": @{
 																					@"statusBarHidden": @(1)
 																					}

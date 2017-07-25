@@ -7,7 +7,9 @@
 
 @interface RNNRootViewController : UIViewController
 
--(instancetype)initWithNode:(RNNLayoutNode*)node
+-(instancetype)initWithName:(NSString*)name
+				withOptions:(NSDictionary*)options
+			withContainerId:(NSString*)containerId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter;
 

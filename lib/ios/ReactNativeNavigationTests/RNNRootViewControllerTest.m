@@ -47,19 +47,17 @@
 	NSString* containerId = @"containerId2";
 	NSDictionary* options = @{@"topBarBackgroundColor": @(0xFFFF0000)};
 	
-	XCTAssertNoThrow([[RNNRootViewController alloc] initWithName:name withOptions:options withConainerId:containerId rootViewCreator:creator eventEmitter:emitter]);
+	XCTAssertNoThrow([[RNNRootViewController alloc] initWithName:name withOptions:options withContainerId:containerId rootViewCreator:creator eventEmitter:emitter]);
 }
 
 -(void)testTopBarBackgroundColor_validColor{
 	id<RNNRootViewCreator> creator = [[RNNTestRootViewCreator alloc] init];
 	id emitter = nil;
 	NSNumber* inputColor = @(0xFFFF0000);
-	NSDictionary* json =  @{@"id": @"cntId",
-							@"type": @"Container",
-							@"data": @{@"name": @"someName", @"navigationOptions" : @{@"topBarBackgroundColor" : inputColor, @"title" : @"some item"}},
-							@"children": @[]};
-	RNNLayoutNode* node = [RNNLayoutNode create:json];
-	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithNode:node rootViewCreator:creator eventEmitter:emitter];
+	NSString* name = @"somename";
+	NSDictionary* options = @{@"topBarBackgroundColor" : inputColor, @"title" : @"some item"};
+	NSString* containerId = @"cntId";
+	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithName:name withOptions:options withContainerId:containerId rootViewCreator:creator eventEmitter:emitter];
 	
 	UINavigationController* nc = [[UINavigationController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
