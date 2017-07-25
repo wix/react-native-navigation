@@ -107,6 +107,23 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   return controller;
 }
 
+-(NSDictionary*)addCommandTypeAndTimestampIfExists:(NSDictionary*)globalProps passProps:(NSDictionary*)passProps {
+  NSMutableDictionary *modifiedPassProps = [NSMutableDictionary dictionaryWithDictionary:passProps];
+  
+  NSString *commandType = globalProps[GLOBAL_SCREEN_ACTION_COMMAND_TYPE];
+  if (commandType) {
+    modifiedPassProps[GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = commandType;
+  }
+  
+  NSString *timestamp = globalProps[GLOBAL_SCREEN_ACTION_TIMESTAMP];
+  if (timestamp) {
+    modifiedPassProps[GLOBAL_SCREEN_ACTION_TIMESTAMP] = timestamp;
+  }
+  return modifiedPassProps;
+}
+
+
+
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary *)globalProps bridge:(RCTBridge *)bridge
 {
   NSString *component = props[@"component"];
@@ -142,7 +159,9 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   self = [super init];
   if (!self) return nil;
   
-  [self commonInit:reactView navigatorStyle:navigatorStyle props:passProps];
+  NSDictionary *modifiedPassProps = [self addCommandTypeAndTimestampIfExists:globalProps passProps:passProps];
+
+  [self commonInit:reactView navigatorStyle:navigatorStyle props:modifiedPassProps];
   
   return self;
 }
@@ -160,6 +179,10 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTJavaScriptWillStartLoadingNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCancelReactTouches) name:RCCViewControllerCancelReactTouchesNotification object:nil];
+  
+  self.commandType = props[GLOBAL_SCREEN_ACTION_COMMAND_TYPE];
+  self.timestamp = props[GLOBAL_SCREEN_ACTION_TIMESTAMP];
+  
   
   // In order to support 3rd party native ViewControllers, we support passing a class name as a prop mamed `ExternalNativeScreenClass`
   // In this case, we create an instance and add it as a child ViewController which preserves the VC lifecycle.
@@ -203,15 +226,58 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   }
 }
 
+- (void)sendGlobalScreenEvent:(NSString *)eventName endTimestampString:(NSString *)endTimestampStr shouldReset:(BOOL)shouldReset {
+  
+  if (!self.commandType) return;
+  
+  if ([self.view isKindOfClass:[RCTRootView class]]){
+    NSString *screenName = [((RCTRootView*)self.view) moduleName];
+    
+    [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:eventName body:@
+     {
+       @"commandType": self.commandType ? self.commandType : @"",
+       @"screen": screenName ? screenName : @"",
+       @"startTime": self.timestamp ? self.timestamp : @"",
+       @"endTime": endTimestampStr ? endTimestampStr : @""
+     }];
+    
+    if (shouldReset) {
+      self.commandType = nil;
+      self.timestamp = nil;
+    }
+  }
+}
+
+
+-(BOOL)isDisappearTriggeredFromPop:(NSString *)eventName {
+
+  NSArray *navigationViewControllers = self.navigationController.viewControllers;
+  
+  if (navigationViewControllers.lastObject == self || [navigationViewControllers indexOfObject:self] == NSNotFound) {
+    return YES;
+  }
+  return NO;
+}
+
+- (NSString *)getTimestampString {
+  long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+  return [NSString stringWithFormat:@"%lld", milliseconds];
+}
+
+
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
+  
+  [self sendGlobalScreenEvent:@"didAppear" endTimestampString:[self getTimestampString] shouldReset:YES];
   [self sendScreenChangedEvent:@"didAppear"];
+  
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
+  [self sendGlobalScreenEvent:@"willAppear" endTimestampString:[self getTimestampString] shouldReset:NO];
   [self sendScreenChangedEvent:@"willAppear"];
   [self setStyleOnAppear];
 }
@@ -219,12 +285,14 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 - (void)viewDidDisappear:(BOOL)animated
 {
   [super viewDidDisappear:animated];
+  [self sendGlobalScreenEvent:@"didDisappear" endTimestampString:[self getTimestampString] shouldReset:YES];
   [self sendScreenChangedEvent:@"didDisappear"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
   [super viewWillDisappear:animated];
+  [self sendGlobalScreenEvent:@"willDisappear" endTimestampString:[self getTimestampString] shouldReset:NO];
   [self sendScreenChangedEvent:@"willDisappear"];
   [self setStyleOnDisappear];
 }

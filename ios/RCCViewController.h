@@ -1,12 +1,22 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
 
+#define GLOBAL_SCREEN_ACTION_COMMAND_TYPE       @"commandType"
+#define GLOBAL_SCREEN_ACTION_TIMESTAMP          @"timestamp"
+#define COMMAND_TYPE_PUSH                       @"Push"
+#define COMMAND_TYPE_SHOW_MODAL                 @"ShowModal"
+#define COMMAND_TYPE_BOTTOME_TAB_SELECTED       @"BottomTabSelected"
+#define COMMAND_TYPE_INITIAL_SCREEN             @"InitialScreen"
+
+
 extern NSString* const RCCViewControllerCancelReactTouchesNotification;
 
 @interface RCCViewController : UIViewController
 
 @property (nonatomic) NSMutableDictionary *navigatorStyle;
 @property (nonatomic) BOOL navBarHidden;
+@property (nonatomic, strong) NSString *commandType;
+@property (nonatomic, strong) NSString *timestamp;
 
 + (UIViewController*)controllerWithLayout:(NSDictionary *)layout globalProps:(NSDictionary *)globalProps bridge:(RCTBridge *)bridge;
 

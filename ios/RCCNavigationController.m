@@ -74,7 +74,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     NSString *component = actionParams[@"component"];
     if (!component) return;
     
-    NSDictionary *passProps = actionParams[@"passProps"];
+    NSMutableDictionary *passProps = [actionParams[@"passProps"] mutableCopy];
+    passProps[GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_PUSH;
+    passProps[GLOBAL_SCREEN_ACTION_TIMESTAMP] = actionParams[GLOBAL_SCREEN_ACTION_TIMESTAMP];
     NSDictionary *navigatorStyle = actionParams[@"style"];
     
     // merge the navigatorStyle of our parent
@@ -206,7 +208,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     NSString *component = actionParams[@"component"];
     if (!component) return;
     
-    NSDictionary *passProps = actionParams[@"passProps"];
+    NSMutableDictionary *passProps = [actionParams[@"passProps"] mutableCopy];
+    passProps[@"commantType"] = @"resetTo";
     NSDictionary *navigatorStyle = actionParams[@"style"];
     
     RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component passProps:passProps navigatorStyle:navigatorStyle globalProps:nil bridge:bridge];
