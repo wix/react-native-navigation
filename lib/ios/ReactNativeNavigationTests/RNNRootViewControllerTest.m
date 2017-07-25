@@ -40,6 +40,16 @@
     }];
 }
 
+-(void)testInitRNNRootViewController{
+	id<RNNRootViewCreator> creator = [[RNNTestRootViewCreator alloc] init];
+	id emitter = nil;
+	NSString* name = @"name";
+	NSString* containerId = @"containerId2";
+	NSDictionary* options = @{@"topBarBackgroundColor": @(0xFFFF0000)};
+	
+	XCTAssertNoThrow([[RNNRootViewController alloc] initWithName:name withOptions:options withConainerId:containerId rootViewCreator:creator eventEmitter:emitter]);
+}
+
 -(void)testTopBarBackgroundColor_validColor{
 	id<RNNRootViewCreator> creator = [[RNNTestRootViewCreator alloc] init];
 	id emitter = nil;
