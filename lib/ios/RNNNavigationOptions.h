@@ -11,11 +11,11 @@
 
 @interface RNNNavigationOptions : NSObject
 
-@property NSDictionary* data;
+@property (nonatomic, strong) NSNumber* topBarBackgroundColor;
 
+-(instancetype)initWithDict:(NSDictionary *)navigationOptions;
 
-+(instancetype)create:(NSDictionary *)json;
-
+-(void)apply:(UIViewController*)viewController;
 
 @end
 

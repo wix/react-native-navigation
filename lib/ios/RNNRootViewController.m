@@ -2,21 +2,23 @@
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
 
+
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* containerId;
-@property (nonatomic, strong) NSDictionary* nodeData;
 @property (nonatomic, strong) NSString* containerName;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic) BOOL _statusBarHidden;
+@property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
+
 @end
 
 @implementation RNNRootViewController
 
--(instancetype)initWithName:(NSString*)name withOptions:(NSDictionary*)options withContainerId:(NSString*)containerId rootViewCreator:(id<RNNRootViewCreator>)creator eventEmitter:(RNNEventEmitter*)eventEmitter {
+-(instancetype)initWithName:(NSString*)name withOptions:(RNNNavigationOptions*)options withContainerId:(NSString*)containerId rootViewCreator:(id<RNNRootViewCreator>)creator eventEmitter:(RNNEventEmitter*)eventEmitter {
 	self = [super init];
 	self.containerId = containerId;
-	self.nodeData = options;
 	self.containerName = name;
+	self.navigationOptions = options;
 	self.eventEmitter = eventEmitter;
 	self.view = [creator createRootView:self.containerName rootViewId:self.containerId];
 	
@@ -25,8 +27,8 @@
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
 	
-	self.navigationItem.title = options[@"title"];
-	self._statusBarHidden = [(NSNumber*)options[@"statusBarHidden"] boolValue];
+//	self.navigationItem.title = options[@"title"];
+//	self._statusBarHidden = [(NSNumber*)options[@"statusBarHidden"] boolValue];
 	
 	
 	return self;
@@ -48,11 +50,8 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-	if ([self.nodeData objectForKey:@"topBarBackgroundColor"]) {
-		UIColor* backgroundColor = [RCTConvert UIColor:self.nodeData[@"topBarBackgroundColor"]];
-		self.navigationController.navigationBar.barTintColor = backgroundColor;
-	}
-
+	[super viewWillAppear:animated];
+	[self.navigationOptions apply:self];
 }
 /**
  *	fix for #877, #878

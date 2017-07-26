@@ -11,6 +11,7 @@
 #import "RNNReactRootViewCreator.h"
 #import "RNNTestRootViewCreator.h"
 #import <React/RCTConvert.h>
+#import "RNNNavigationOptions.h"
 
 @interface RNNRootViewControllerTest : XCTestCase
 
@@ -52,19 +53,21 @@
 
 -(void)testTopBarBackgroundColor_validColor{
 	id<RNNRootViewCreator> creator = [[RNNTestRootViewCreator alloc] init];
-	id emitter = nil;
-	NSNumber* inputColor = @(0xFFFF0000);
 	NSString* name = @"somename";
-	NSDictionary* options = @{@"topBarBackgroundColor" : inputColor, @"title" : @"some item"};
 	NSString* containerId = @"cntId";
+	id emitter = nil;
+	
+	NSNumber* inputColor = @(0xFFFF0000);
+	
+	RNNNavigationOptions* options = [RNNNavigationOptions new];
+	options.topBarBackgroundColor = inputColor;
+	
 	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithName:name withOptions:options withContainerId:containerId rootViewCreator:creator eventEmitter:emitter];
 	
-	UINavigationController* nc = [[UINavigationController alloc] init];
-	NSMutableArray* controllers = [NSMutableArray new];
-	[controllers addObject:vc];
-	[nc setViewControllers:controllers];
-	[vc viewWillAppear:YES];
-	NSLog(@"------------------ %@", vc.navigationController.navigationBar);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
+	
+	[vc viewWillAppear:false];
+
 	UIColor* expectedColor = [RCTConvert UIColor:inputColor];
 	XCTAssertTrue([vc.navigationController.navigationBar.barTintColor isEqual:expectedColor]);
 	
