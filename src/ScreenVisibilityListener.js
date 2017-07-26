@@ -14,13 +14,24 @@ export default class ScreenVisibilityListener {
     this.willAppearSubscription = willAppear && this.emitter.addListener('willAppear', willAppear);
     this.didAppearSubscription = didAppear && this.emitter.addListener('didAppear', didAppear);
     this.willDisappearSubscription = willDisappear && this.emitter.addListener('willDisappear', willDisappear);
-    this.didDisappearSubscription  = didDisappear && this.emitter.addListener('didDisappear', didDisappear);
+    this.didDisappearSubscription = didDisappear && this.emitter.addListener('didDisappear', didDisappear);
   }
 
   unregister() {
-    this.willAppearSubscription && this.willAppearSubscription.remove();
-    this.didAppearSubscription && this.didAppearSubscription.remove();
-    this.willDisappearSubscription && this.willDisappearSubscription.remove();
-    this.didDisappearSubscription && this.didDisappearSubscription.remove();
+    if (this.willAppearSubscription) {
+      this.willAppearSubscription.remove();
+    }
+
+    if (this.didAppearSubscription) {
+      this.didAppearSubscription.remove();
+    }
+
+    if (this.willDisappearSubscription) {
+      this.willDisappearSubscription.remove();
+    }
+
+    if (this.didDisappearSubscription) {
+      this.didDisappearSubscription.remove();
+    }
   }
 }
