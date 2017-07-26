@@ -38,7 +38,8 @@ Navigation.startTabBasedApp({
       },
       title: 'Screen One', // title of the screen as appears in the nav bar (optional)
       navigatorStyle: {}, // override the navigator style for the tab screen, see "Styling the navigator" below (optional),
-      navigatorButtons: {} // override the nav buttons for the tab screen, see "Adding buttons to the navigator" below (optional)
+      navigatorButtons: {}, // override the nav buttons for the tab screen, see "Adding buttons to the navigator" below (optional)
+      modal: false // prevent tab selection and send a 'modalTabSelected' navigator event instead (optional)
     },
     {
       label: 'Two',
