@@ -64,4 +64,8 @@
 	}
 }
 
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+	return self.center.supportedInterfaceOrientations;
+}
+
 @end

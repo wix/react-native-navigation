@@ -1,11 +1,13 @@
 
 #import "RNNRootViewController.h"
+#import "RNNNavigationController.h"
 
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* containerId;
 @property (nonatomic, strong) NSString* containerName;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic) BOOL _statusBarHidden;
+@property NSUInteger supportedOrientations;
 @end
 
 @implementation RNNRootViewController
@@ -15,7 +17,7 @@
 	self.containerId = node.nodeId;
 	self.containerName = node.data[@"name"];
 	self.eventEmitter = eventEmitter;
-	
+	self.supportedOrientations = node.supportedOrientations;
 	self.view = [creator createRootView:self.containerName rootViewId:self.containerId];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -42,6 +44,10 @@
 -(void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	[self.eventEmitter sendContainerStop:self.containerId];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+	return self.supportedOrientations;
 }
 
 /**

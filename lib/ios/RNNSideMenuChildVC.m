@@ -12,12 +12,13 @@
 
 @property (readwrite) RNNSideMenuChildType type;
 @property (readwrite) UIViewController *child;
+@property (readwrite) UIInterfaceOrientationMask supportedOrientations;
 
 @end
 
 @implementation RNNSideMenuChildVC
 
--(instancetype) initWithChild:(UIViewController*)child type:(RNNSideMenuChildType)type {
+-(instancetype) initWithChild:(UIViewController*)child type:(RNNSideMenuChildType)type supportedOrientations:(UIInterfaceOrientationMask)supportedOrientations {
 	self = [super init];
 	
 	self.child = child;
@@ -29,6 +30,7 @@
 	[self.view bringSubviewToFront:self.child.view];
 	
 	self.type = type;
+	self.supportedOrientations = supportedOrientations;
 	
 	return self;
 }

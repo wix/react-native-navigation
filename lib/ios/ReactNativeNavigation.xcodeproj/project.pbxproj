@@ -53,6 +53,10 @@
 		268692831E5054F800E2C612 /* RNNStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 268692811E5054F800E2C612 /* RNNStore.m */; };
 		26916C981E4B9E7700D13680 /* RNNReactRootViewCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 26916C961E4B9E7700D13680 /* RNNReactRootViewCreator.h */; };
 		26916C991E4B9E7700D13680 /* RNNReactRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */; };
+		503147151F25E40D00418B92 /* RNNNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 503147131F25E40D00418B92 /* RNNNavigationController.h */; };
+		503147161F25E40D00418B92 /* RNNNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 503147141F25E40D00418B92 /* RNNNavigationController.m */; };
+		503147341F2613AA00418B92 /* RNNTabBarController.h in Headers */ = {isa = PBXBuildFile; fileRef = 503147321F2613AA00418B92 /* RNNTabBarController.h */; };
+		503147351F2613AA00418B92 /* RNNTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 503147331F2613AA00418B92 /* RNNTabBarController.m */; };
 		7B1126A01E2D263F00F9B03B /* RNNEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B11269F1E2D263F00F9B03B /* RNNEventEmitter.m */; };
 		7B1126A31E2D2B6C00F9B03B /* RNNSplashScreen.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BA500761E254908001B9E1B /* RNNSplashScreen.h */; };
 		7B1126A41E2D2B6C00F9B03B /* ReactNativeNavigation.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BA500731E2544B9001B9E1B /* ReactNativeNavigation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -161,6 +165,10 @@
 		26916C941E4B9CCC00D13680 /* RNNRootViewCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNRootViewCreator.h; sourceTree = "<group>"; };
 		26916C961E4B9E7700D13680 /* RNNReactRootViewCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNReactRootViewCreator.h; sourceTree = "<group>"; };
 		26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNReactRootViewCreator.m; sourceTree = "<group>"; };
+		503147131F25E40D00418B92 /* RNNNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNNavigationController.h; sourceTree = "<group>"; };
+		503147141F25E40D00418B92 /* RNNNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationController.m; sourceTree = "<group>"; };
+		503147321F2613AA00418B92 /* RNNTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNTabBarController.h; sourceTree = "<group>"; };
+		503147331F2613AA00418B92 /* RNNTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNTabBarController.m; sourceTree = "<group>"; };
 		7B11269E1E2D263F00F9B03B /* RNNEventEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNEventEmitter.h; sourceTree = "<group>"; };
 		7B11269F1E2D263F00F9B03B /* RNNEventEmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNEventEmitter.m; sourceTree = "<group>"; };
 		7B4928061E70415400555040 /* RNNCommandsHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNCommandsHandler.h; sourceTree = "<group>"; };
@@ -315,6 +323,10 @@
 				7BEF0D1B1E43771B003E96B0 /* RNNLayoutNode.m */,
 				7BC9346C1E26886E00EFA125 /* RNNControllerFactory.h */,
 				7BC9346D1E26886E00EFA125 /* RNNControllerFactory.m */,
+				503147131F25E40D00418B92 /* RNNNavigationController.h */,
+				503147141F25E40D00418B92 /* RNNNavigationController.m */,
+				503147321F2613AA00418B92 /* RNNTabBarController.h */,
+				503147331F2613AA00418B92 /* RNNTabBarController.m */,
 				7BEF0D161E437684003E96B0 /* RNNRootViewController.h */,
 				7BEF0D171E437684003E96B0 /* RNNRootViewController.m */,
 				263905D41E4C94970023D7D3 /* RNNSideMenuController.h */,
@@ -416,6 +428,7 @@
 				263905CC1E4C6F440023D7D3 /* SidebarWunderlistAnimation.h in Headers */,
 				7B4928081E70415400555040 /* RNNCommandsHandler.h in Headers */,
 				263905AE1E4C6F440023D7D3 /* MMDrawerBarButtonItem.h in Headers */,
+				503147341F2613AA00418B92 /* RNNTabBarController.h in Headers */,
 				263905BD1E4C6F440023D7D3 /* RCCDrawerProtocol.h in Headers */,
 				263905C21E4C6F440023D7D3 /* SidebarAnimation.h in Headers */,
 				263905B51E4C6F440023D7D3 /* MMExampleDrawerVisualStateManager.h in Headers */,
@@ -424,6 +437,7 @@
 				261F0E641E6EC94900989DE2 /* RNNModalManager.h in Headers */,
 				263905C01E4C6F440023D7D3 /* SidebarAirbnbAnimation.h in Headers */,
 				263905E61E4CAC950023D7D3 /* RNNSideMenuChildVC.h in Headers */,
+				503147151F25E40D00418B92 /* RNNNavigationController.h in Headers */,
 				263905C41E4C6F440023D7D3 /* SidebarFacebookAnimation.h in Headers */,
 				7BEF0D181E437684003E96B0 /* RNNRootViewController.h in Headers */,
 				7B1126A61E2D2B6C00F9B03B /* RNNBridgeModule.h in Headers */,
@@ -547,6 +561,7 @@
 				263905C71E4C6F440023D7D3 /* SidebarFeedlyAnimation.m in Sources */,
 				263905B41E4C6F440023D7D3 /* MMDrawerVisualState.m in Sources */,
 				263905C51E4C6F440023D7D3 /* SidebarFacebookAnimation.m in Sources */,
+				503147161F25E40D00418B92 /* RNNNavigationController.m in Sources */,
 				7BEF0D191E437684003E96B0 /* RNNRootViewController.m in Sources */,
 				263905C31E4C6F440023D7D3 /* SidebarAnimation.m in Sources */,
 				261F0E6B1E6F028A00989DE2 /* RNNNavigationStackManager.m in Sources */,
@@ -557,6 +572,7 @@
 				7BA500751E2544B9001B9E1B /* ReactNativeNavigation.m in Sources */,
 				263905B21E4C6F440023D7D3 /* MMDrawerController.m in Sources */,
 				7BBFE5441E25330E002A6182 /* RNNBridgeModule.m in Sources */,
+				503147351F2613AA00418B92 /* RNNTabBarController.m in Sources */,
 				261F0E651E6EC94900989DE2 /* RNNModalManager.m in Sources */,
 				7BEF0D1D1E43771B003E96B0 /* RNNLayoutNode.m in Sources */,
 				7BA500781E254908001B9E1B /* RNNSplashScreen.m in Sources */,

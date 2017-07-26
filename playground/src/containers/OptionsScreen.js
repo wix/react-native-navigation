@@ -17,14 +17,16 @@ class OptionsScreen extends Component {
   constructor(props) {
     super(props);
     this.onClickDynamicOptions = this.onClickDynamicOptions.bind(this);
+    this.state = { horizontal: false };
   }
 
   render() {
     return (
-      <View style={styles.root}>
+      <View style={styles.root} onLayout={this.detectHorizontal.bind(this)}>
         <Text style={styles.h1}>{`Options Screen`}</Text>
         <Button title="Dynamic Options" onPress={this.onClickDynamicOptions} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
+        <Text style={styles.footer} testID="currentOrientation">{this.state.horizontal ? 'Landscape' : 'Portrait'}</Text>
       </View>
     );
   }
@@ -33,6 +35,12 @@ class OptionsScreen extends Component {
     Navigation.setOptions(this.props.containerId, {
       title: 'Dynamic Title',
       topBarTextColor: '#123456'
+    });
+  }
+
+  detectHorizontal({ nativeEvent: { layout: { width, height, x, y } } }) {
+    this.setState({
+      horizontal: width > height
     });
   }
 }

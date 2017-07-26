@@ -42,4 +42,29 @@
 	return [self.type isEqualToString:@"SideMenuCenter"];
 }
 
+-(UIInterfaceOrientationMask)supportedOrientations {
+	if (!self.data[@"orientations"]) {
+		return [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
+	}
+	
+	NSUInteger supportedOrientations = 0;
+	for (NSString* orientation in self.data[@"orientations"]) {
+		if ([orientation isEqualToString:@"all"]) {
+			return UIInterfaceOrientationMaskAll;
+		}
+		if ([orientation isEqualToString:@"landscape"]) {
+			supportedOrientations = (supportedOrientations | UIInterfaceOrientationMaskLandscape);
+		}
+		if ([orientation isEqualToString:@"portrait"]) {
+			supportedOrientations = (supportedOrientations | UIInterfaceOrientationMaskPortrait);
+		}
+		if ([orientation isEqualToString:@"upsideDown"]) {
+			supportedOrientations = (supportedOrientations | UIInterfaceOrientationMaskPortraitUpsideDown);
+		}
+	}
+	
+	return supportedOrientations;
+}
+
+
 @end

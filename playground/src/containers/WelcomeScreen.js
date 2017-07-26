@@ -37,7 +37,8 @@ class WelcomeScreen extends Component {
             passProps: {
               text: 'This is tab 1',
               myFunction: () => 'Hello from a function!'
-            }
+            },
+            orientations: ['landscape']
           }
         },
         {
@@ -103,6 +104,7 @@ class WelcomeScreen extends Component {
 
   onClickPush() {
     Navigation.push(this.props.containerId, {
+      orientations: ['portrait'],
       name: 'navigation.playground.PushedScreen'
     });
   }
@@ -127,6 +129,7 @@ class WelcomeScreen extends Component {
 
   onClickPushOptionsScreen() {
     Navigation.push(this.props.containerId, {
+      orientations: ['landscape', 'portrait'],
       name: 'navigation.playground.OptionsScreen'
     });
   }

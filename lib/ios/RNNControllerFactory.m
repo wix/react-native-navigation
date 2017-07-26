@@ -4,7 +4,8 @@
 #import "RNNRootViewController.h"
 #import "RNNSideMenuController.h"
 #import "RNNSideMenuChildVC.h"
-
+#import "RNNNavigationController.h"
+#import "RNNTabBarController.h"
 
 @implementation RNNControllerFactory {
 	id<RNNRootViewCreator> _creator;
@@ -79,7 +80,7 @@
 }
 
 - (UINavigationController*)createContainerStack:(RNNLayoutNode*)node {
-	UINavigationController* vc = [[UINavigationController alloc] init];
+	RNNNavigationController* vc = [[RNNNavigationController alloc] init];
 	
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary* child in node.children) {
@@ -91,7 +92,7 @@
 }
 
 -(UITabBarController*)createTabs:(RNNLayoutNode*)node {
-	UITabBarController* vc = [[UITabBarController alloc] init];
+	RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
@@ -122,8 +123,8 @@
 
 - (UIViewController*)createSideMenuChild:(RNNLayoutNode*)node type:(RNNSideMenuChildType)type {
 	UIViewController* child = [self fromTree:node.children[0]];
-	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithChild: child type:type];
-	
+	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithChild: child type:type supportedOrientations:node.supportedOrientations];
+
 	return sideMenuChild;
 }
 

@@ -19,4 +19,6 @@
 -(BOOL)isSideMenuRight;
 -(BOOL)isSideMenuCenter;
 
+-(UIInterfaceOrientationMask)supportedOrientations;
+
 @end

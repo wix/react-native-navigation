@@ -17,12 +17,13 @@ class PushedScreen extends Component {
     this.onClickPopPrevious = this.onClickPopPrevious.bind(this);
     this.onClickPopToFirstPosition = this.onClickPopToFirstPosition.bind(this);
     this.onClickPopToRoot = this.onClickPopToRoot.bind(this);
+    this.state = { horizontal: false };
   }
 
   render() {
     const stackPosition = this.getStackPosition();
     return (
-      <View style={styles.root}>
+      <View style={styles.root} onLayout={this.detectHorizontal.bind(this)}>
         <Text style={styles.h1}>{`Pushed Screen`}</Text>
         <Text style={styles.h2}>{`Stack Position: ${stackPosition}`}</Text>
         <Button title="Push" onPress={this.onClickPush} />
@@ -31,6 +32,7 @@ class PushedScreen extends Component {
         <Button title="Pop To Root" onPress={this.onClickPopToRoot} />
         {stackPosition > 2 && <Button title="Pop To Stack Position 1" onPress={this.onClickPopToFirstPosition} />}
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
+        <Text style={styles.footer} testID="currentOrientation">{this.state.horizontal ? 'Landscape' : 'Portrait'}</Text>
       </View>
     );
   }
@@ -63,6 +65,12 @@ class PushedScreen extends Component {
 
   getStackPosition() {
     return this.props.stackPosition || 1;
+  }
+
+  detectHorizontal({ nativeEvent: { layout: { width, height, x, y } } }) {
+    this.setState({
+      horizontal: width > height
+    });
   }
 }
 

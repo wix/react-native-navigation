@@ -20,6 +20,6 @@ typedef NS_ENUM(NSInteger, RNNSideMenuChildType) {
 @property (readonly) RNNSideMenuChildType type;
 @property (readonly) UIViewController *child;
 
--(instancetype) initWithChild:(UIViewController*)child type:(RNNSideMenuChildType)type;
+-(instancetype) initWithChild:(UIViewController*)child type:(RNNSideMenuChildType)type supportedOrientations:(UIInterfaceOrientationMask)supportedOrientations;
 
 @end

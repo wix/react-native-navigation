@@ -8,7 +8,8 @@ export function start() {
   Navigation.events().onAppLaunched(() => {
     Navigation.setRoot({
       container: {
-        name: 'navigation.playground.WelcomeScreen'
+        name: 'navigation.playground.WelcomeScreen',
+        orientations: ['portrait']
       }
     });
   });
