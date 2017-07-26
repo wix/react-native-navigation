@@ -15,6 +15,7 @@
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions {
 	self = [super init];
 	self.topBarBackgroundColor = [navigationOptions objectForKey:@"topBarBackgroundColor"];
+	self.statusBarHidden = [navigationOptions objectForKey:@"statusBarHidden"];
 	return self;
 }
 
@@ -23,6 +24,9 @@
 		UIColor* backgroundColor = [RCTConvert UIColor:self.topBarBackgroundColor];
 		viewController.navigationController.navigationBar.barTintColor = backgroundColor;
 	}
+//	self.navigationItem.title = options[@"title"];
+	
+
 }
 
 

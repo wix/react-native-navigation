@@ -142,38 +142,7 @@
 }
 
 
-- (void)testNavigationOptions_default {
-	UIViewController *ans = [self.factory createLayoutAndSaveToStore: @{@"id": @"cntId_2",
-																		@"type": @"Container",
-																		@"data": @{@"navigationOptions": @{}},
-																		@"children": @[]}];
-	XCTAssertFalse([ans prefersStatusBarHidden]);
-}
 
-- (void)testNavigationOptions_true {
-	UIViewController *ans = [self.factory createLayoutAndSaveToStore: @{@"id": @"cntId_2",
-																	    @"type": @"Container",
-																		@"data": @{
-																			@"name": @"somename",
-																			@"navigationOptions": @{
-																					@"statusBarHidden": @(1)
-																					}
-																			},
-																		@"children": @[]}];
-	XCTAssertTrue([ans prefersStatusBarHidden]);
-}
-
-- (void)testNavigationOptions_false {
-	UIViewController *ans = [self.factory createLayoutAndSaveToStore: @{@"id": @"cntId_2",
-																		@"type": @"Container",
-																		@"data": @{
-																				@"navigationOptions": @{
-																						@"statusBarHidden": @(0)
-																						}
-																				},
-																		@"children": @[]}];
-	XCTAssertFalse([ans prefersStatusBarHidden]);
-}
 
 - (void)testCreateLayout_addContainerToStore {
 	NSString *containerId = @"cntId";

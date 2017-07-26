@@ -27,15 +27,12 @@
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
 	
-//	self.navigationItem.title = options[@"title"];
-//	self._statusBarHidden = [(NSNumber*)options[@"statusBarHidden"] boolValue];
-	
 	
 	return self;
 }
 
 - (BOOL)prefersStatusBarHidden {
-	return self._statusBarHidden; // || self.navigationController.isNavigationBarHidden;
+	return [self.navigationOptions.statusBarHidden boolValue]; // || self.navigationController.isNavigationBarHidden;
 }
 
 

@@ -46,7 +46,7 @@
 	id emitter = nil;
 	NSString* name = @"name";
 	NSString* containerId = @"containerId2";
-	NSDictionary* options = @{@"topBarBackgroundColor": @(0xFFFF0000)};
+	RNNNavigationOptions* options = [RNNNavigationOptions new];
 	
 	XCTAssertNoThrow([[RNNRootViewController alloc] initWithName:name withOptions:options withContainerId:containerId rootViewCreator:creator eventEmitter:emitter]);
 }
@@ -71,6 +71,58 @@
 	UIColor* expectedColor = [RCTConvert UIColor:inputColor];
 	XCTAssertTrue([vc.navigationController.navigationBar.barTintColor isEqual:expectedColor]);
 	
+}
+
+- (void)testStatusBarHidden_default {
+	id<RNNRootViewCreator> creator = [[RNNTestRootViewCreator alloc] init];
+	NSString* name = @"somename";
+	NSString* containerId = @"cntId";
+	id emitter = nil;
+	
+	RNNNavigationOptions* options = [RNNNavigationOptions new];
+	
+	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithName:name withOptions:options withContainerId:containerId rootViewCreator:creator eventEmitter:emitter];
+	
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
+	
+	[vc viewWillAppear:false];
+	
+	XCTAssertFalse([vc prefersStatusBarHidden]);
+}
+
+- (void)testStatusBarHidden_true {
+	id<RNNRootViewCreator> creator = [[RNNTestRootViewCreator alloc] init];
+	NSString* name = @"somename";
+	NSString* containerId = @"cntId";
+	id emitter = nil;
+	
+	RNNNavigationOptions* options = [RNNNavigationOptions new];
+	options.statusBarHidden = @(1);
+	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithName:name withOptions:options withContainerId:containerId rootViewCreator:creator eventEmitter:emitter];
+	
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
+	
+	[vc viewWillAppear:false];
+	
+	XCTAssertTrue([vc prefersStatusBarHidden]);
+
+}
+
+- (void)testStatusBarHidden_false {
+	id<RNNRootViewCreator> creator = [[RNNTestRootViewCreator alloc] init];
+	NSString* name = @"somename";
+	NSString* containerId = @"cntId";
+	id emitter = nil;
+	
+	RNNNavigationOptions* options = [RNNNavigationOptions new];
+	options.statusBarHidden = @(0);
+	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithName:name withOptions:options withContainerId:containerId rootViewCreator:creator eventEmitter:emitter];
+	
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
+	
+	[vc viewWillAppear:false];
+	
+	XCTAssertFalse([vc prefersStatusBarHidden]);
 }
 
 @end
