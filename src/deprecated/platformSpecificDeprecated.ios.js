@@ -79,10 +79,11 @@ function startTabBasedApp(params) {
                     subtitle={tab.subtitle}
                     titleImage={tab.titleImage}
                     component={tab.screen}
+                    overlayModuleName={tab.overlayModuleName}
                     passProps={{
                     navigatorID: tab.navigationParams.navigatorID,
                     screenInstanceID: tab.navigationParams.screenInstanceID,
-                    navigatorEventID: tab.navigationParams.navigatorEventID
+                    navigatorEventID: tab.navigationParams.navigatorEventID,
                   }}
                     style={tab.navigationParams.navigatorStyle}
                     leftButtons={tab.navigationParams.navigatorButtons.leftButtons}
@@ -161,6 +162,7 @@ function startSingleScreenApp(params) {
           subtitle={params.subtitle}
           titleImage={screen.titleImage}
           component={screen.screen}
+          overlayModuleName={screen.overlayModuleName}
           passProps={{
             navigatorID: navigatorID,
             screenInstanceID: screenInstanceID,
@@ -247,7 +249,8 @@ function navigatorPush(navigator, params) {
     backButtonTitle: params.backButtonTitle,
     backButtonHidden: params.backButtonHidden,
     leftButtons: navigatorButtons.leftButtons,
-    rightButtons: navigatorButtons.rightButtons
+    rightButtons: navigatorButtons.rightButtons,
+    overlayModuleName: params.overlayModuleName
   });
 }
 
@@ -301,7 +304,8 @@ function navigatorResetTo(navigator, params) {
     passProps: passProps,
     style: navigatorStyle,
     leftButtons: navigatorButtons.leftButtons,
-    rightButtons: navigatorButtons.rightButtons
+    rightButtons: navigatorButtons.rightButtons,
+    overlayModuleName: params.overlayModuleName
   });
 }
 
@@ -475,6 +479,7 @@ function showModal(params) {
           subtitle={params.subtitle}
           titleImage={params.titleImage}
           component={params.screen}
+          overlayModuleName={params.overlayModuleName}
           passProps={passProps}
           style={navigatorStyle}
           leftButtons={navigatorButtons.leftButtons}
