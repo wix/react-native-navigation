@@ -16,6 +16,7 @@
 	self = [super init];
 	self.topBarBackgroundColor = [navigationOptions objectForKey:@"topBarBackgroundColor"];
 	self.statusBarHidden = [navigationOptions objectForKey:@"statusBarHidden"];
+	self.title = [navigationOptions objectForKey:@"title"];
 	return self;
 }
 
@@ -24,7 +25,9 @@
 		UIColor* backgroundColor = [RCTConvert UIColor:self.topBarBackgroundColor];
 		viewController.navigationController.navigationBar.barTintColor = backgroundColor;
 	}
-//	self.navigationItem.title = options[@"title"];
+	if (self.title) {
+		viewController.navigationItem.title = self.title;
+	}
 	
 
 }

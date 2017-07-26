@@ -108,5 +108,28 @@
 	XCTAssertFalse([vc prefersStatusBarHidden]);
 }
 
--
+-(void)testTitle_string{
+	NSString* title =@"some title";
+	self.options.title= title;
+	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withContainerId:self.containerId rootViewCreator:self.creator eventEmitter:self.emitter];
+	
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
+	
+	[vc viewWillAppear:false];
+	
+	XCTAssertTrue([vc.navigationItem.title isEqual:title]);
+
+	
+}
+-(void)testTitle_default{
+	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withContainerId:self.containerId rootViewCreator:self.creator eventEmitter:self.emitter];
+	
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
+	
+	[vc viewWillAppear:false];
+	NSLog(@"------------%@", vc.navigationItem.title);
+	XCTAssertNil(vc.navigationItem.title);
+	
+	
+}
 @end
