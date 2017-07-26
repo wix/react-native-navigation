@@ -65,13 +65,6 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 | showLightBox        |   ✅     |      [Contribute](CONTRIBUTING.md)      | [Contribute](CONTRIBUTING.md)  |
 | dismissLightBox     |   ✅     |       [Contribute](CONTRIBUTING.md)       | [Contribute](CONTRIBUTING.md) |
 | handleDeepLink      |   ✅     |       [Contribute](CONTRIBUTING.md)       | [Contribute](CONTRIBUTING.md) |
-| setButtons          |   ✅     |         [Contribute](CONTRIBUTING.md)     | [Contribute](CONTRIBUTING.md) |
-| setTitle            |   ✅     |        	✅    | 	✅|
-| toggleDrawer        |   ✅     |        [Contribute](CONTRIBUTING.md)   | [Contribute](CONTRIBUTING.md) |
-| toggleTabs          |   ✅     |       in development    | [Contribute](CONTRIBUTING.md)|
-| setTabBadge         |    ✅    |       [Contribute](CONTRIBUTING.md)     | [Contribute](CONTRIBUTING.md)|
-| switchToTab         |    ✅    |      in development    |[Contribute](CONTRIBUTING.md) |
-| toggleNavBar        |   ✅     |      [Contribute](CONTRIBUTING.md)      | [Contribute](CONTRIBUTING.md)|
 | Screen Visibility   |   ✅     |       ✅     |✅|
 
 ### Styles
@@ -100,12 +93,19 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | navBarSubtitleColor          |  ✅   |   [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)      |
 | navBarSubtitleFontFamily    |   ✅  |    [Contribute](CONTRIBUTING.md)    |     [Contribute](CONTRIBUTING.md)       |
 | screenBackgroundColor     | ✅    |   in development     |     [Contribute](CONTRIBUTING.md)       |
-| orientation     |  ✅   |  [Contribute](CONTRIBUTING.md)      |   [Contribute](CONTRIBUTING.md)          |
+| orientation     |  ✅   |  in development      |   [Contribute](CONTRIBUTING.md)          |
 | statusBarHideWithTopBar        |  ✅   |    [Contribute](CONTRIBUTING.md)     |     [Contribute](CONTRIBUTING.md)       |
-| statusBarHidden       |  ✅   |   [Contribute](CONTRIBUTING.md)       |     [Contribute](CONTRIBUTING.md)      |
+| statusBarHidden       |  ✅   |    ✅       |     [Contribute](CONTRIBUTING.md)      |
 | disabledBackGesture       |   ✅  |   [Contribute](CONTRIBUTING.md)       |    / iOS specific     |
 | screenBackgroundImageName         |   ✅  |   [Contribute](CONTRIBUTING.md)      |    [Contribute](CONTRIBUTING.md)        |
-| rootBackgroundImageName            |  ✅   |    [Contribute](CONTRIBUTING.md)     |    [Contribute](CONTRIBUTING.md)        |
+| rootBackgroundImageName            |  ✅   |    [Contribute](CONTRIBUTING.md)     |    [Contribute](CONTRIBUTING.md)       |
+| setButtons          |   ✅     |         [Contribute](CONTRIBUTING.md)     | [Contribute](CONTRIBUTING.md) |
+| title            |   ✅     |        	✅    | 	✅|
+| toggleDrawer        |   ✅     |        [Contribute](CONTRIBUTING.md)   | [Contribute](CONTRIBUTING.md) |
+| toggleTabs          |   ✅     |       in development    | [Contribute](CONTRIBUTING.md)|
+| setTabBadge         |    ✅    |       [Contribute](CONTRIBUTING.md)     | [Contribute](CONTRIBUTING.md)|
+| switchToTab         |    ✅    |      in development    |[Contribute](CONTRIBUTING.md) |
+| toggleNavBar        |   ✅     |      [Contribute](CONTRIBUTING.md)      | [Contribute](CONTRIBUTING.md)|
 
 Element tranisitions, adding buttons and styles are not yet implemented. [Contribute](CONTRIBUTING.md)
 
