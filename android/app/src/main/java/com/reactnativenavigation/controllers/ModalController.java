@@ -18,7 +18,7 @@ import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import java.util.List;
 import java.util.Stack;
 
-class ModalController implements ScreenStackContainer, Modal.OnModalDismissedListener {
+class ModalController implements ScreenStackContainer {
     private final AppCompatActivity activity;
     private Stack<Modal> stack = new Stack<>();
 
@@ -35,8 +35,18 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
         return false;
     }
 
-    void showModal(ScreenParams screenParams) {
-        Modal modal = new Modal(activity, this, screenParams);
+    void showModal(ScreenParams screenParams, final Modal.OnModalDismissedListener modalDismissedListener) {
+        Modal modal = new Modal(activity, new Modal.OnModalDismissedListener() {
+            @Override
+            public void onModalDismissed(Modal modal) {
+                stack.remove(modal);
+                if (isShowing()) {
+                    stack.peek().onModalDismissed();
+                }
+                modalDismissedListener.onModalDismissed(modal);
+                EventBus.instance.post(new ModalDismissedEvent());
+            }
+        }, screenParams);
         modal.show();
         stack.add(modal);
     }
@@ -52,6 +62,14 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
             modal.dismiss();
         }
         stack.clear();
+    }
+
+    int getStackSize() {
+        return stack.size();
+    }
+
+    Modal getTopModal() {
+        return stack.peek();
     }
 
     boolean isShowing() {
@@ -84,15 +102,6 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
             modal.dismiss();
         }
         stack.clear();
-    }
-
-    @Override
-    public void onModalDismissed(Modal modal) {
-        stack.remove(modal);
-        if (isShowing()) {
-            stack.peek().onModalDismissed();
-        }
-        EventBus.instance.post(new ModalDismissedEvent());
     }
 
     public void setTopBarVisible(String screenInstanceId, boolean hidden, boolean animated) {
