@@ -11,12 +11,9 @@ const _allNavigatorEventHandlers = {};
 const Emitter = Platform.OS === 'android' ? DeviceEventEmitter : NativeAppEventEmitter;
 
 Emitter.addListener('bottomTabSelected', nativeEvent => {
-  const { unselectedTabIndex, selectedTabIndex } = nativeEvent;
-
   const event = {
+    ...nativeEvent,
     type: 'TabSelected',
-    selectedTabIndex,
-    unselectedTabIndex
   };
   for (let i in _allNavigatorEventHandlers) {
     _allNavigatorEventHandlers[i](event);
