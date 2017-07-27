@@ -325,7 +325,7 @@ RCT_EXPORT_METHOD(
 {
 
     NSMutableDictionary *modifiedGlobalProps = [globalProps mutableCopy];
-    layout[@"props"][@"passProps"][GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_SHOW_MODAL;
+    modifiedGlobalProps[@"props"][@"passProps"][GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_SHOW_MODAL;
     
     UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:modifiedGlobalProps bridge:[[RCCManager sharedInstance] getBridge]];
     if (controller == nil)
