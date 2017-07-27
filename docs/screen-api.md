@@ -116,6 +116,17 @@ Dismiss the current lightbox.
 this.props.navigator.dismissLightBox();
 ```
 
+## showInAppNotification(params = {})
+
+Show in-app notification. This generally looks like a pop-up window that can appear at the top of the screen.
+
+```js
+this.props.navigator.showInAppNotification({
+ screen: "example.InAppNotification", // unique ID registered with Navigation.registerScreen
+ passProps: {}, // simple serializable object that will pass as props to the in-app notification (optional)
+});
+```
+
 ## handleDeepLink(params = {})
 
 Trigger a deep link within the app. See [deep links](https://wix.github.io/react-native-navigation/#/deep-links) for more details about how screens can listen for deep link events.

@@ -9,6 +9,7 @@
 #import "RCCTabBarController.h"
 #import "RCCTheSideBarManagerViewController.h"
 #import "RCCNotification.h"
+#import "RCTHelpers.h"
 
 #define kSlideDownAnimationDuration 0.35
 
@@ -222,11 +223,15 @@ RCT_EXPORT_METHOD(
 
 -(void)performSetRootController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps
 {
+    
+    NSMutableDictionary *modifiedGloablProps = [globalProps mutableCopy];
+    modifiedGloablProps[GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_INITIAL_SCREEN;
+    
     // first clear the registry to remove any refernece to the previous controllers
     [[RCCManager sharedInstance] clearModuleRegistry];
     
     // create the new controller
-    UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:globalProps bridge:[[RCCManager sharedInstance] getBridge]];
+    UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:modifiedGloablProps bridge:[[RCCManager sharedInstance] getBridge]];
     if (controller == nil) return;
     
     id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
@@ -318,7 +323,11 @@ RCT_EXPORT_METHOD(
 RCT_EXPORT_METHOD(
                   showController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:globalProps bridge:[[RCCManager sharedInstance] getBridge]];
+
+    NSMutableDictionary *modifiedGlobalProps = [globalProps mutableCopy];
+    layout[@"props"][@"passProps"][GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_SHOW_MODAL;
+    
+    UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:modifiedGlobalProps bridge:[[RCCManager sharedInstance] getBridge]];
     if (controller == nil)
     {
         [RCCManagerModule handleRCTPromiseRejectBlock:reject

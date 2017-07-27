@@ -3,10 +3,10 @@ package com.reactnativenavigation.views;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -33,6 +33,8 @@ public class TopBar extends AppBarLayout {
     protected FrameLayout titleBarAndContextualMenuContainer;
     protected TopTabs topTabs;
     private VisibilityAnimator visibilityAnimator;
+    @Nullable
+    private ContentView reactView;
 
     public TopBar(Context context) {
         super(context);
@@ -87,15 +89,23 @@ public class TopBar extends AppBarLayout {
         titleBar.setSubtitle(subtitle);
     }
 
-    public void setReactView(String topBarReactView, String alignment) {
-        if (!TextUtils.isEmpty(topBarReactView)) {
-            final ContentView view = new ContentView(getContext(), topBarReactView, new NavigationParams(Bundle.EMPTY));
-            if ("fill".equals(alignment)) {
-                addReactViewFill(view);
+    public void setReactView(@NonNull StyleParams styleParams) {
+        if (styleParams.hasTopBarCustomComponent()) {
+            reactView = createReactView(styleParams);
+            if ("fill".equals(styleParams.topBarReactViewAlignment)) {
+                addReactViewFill(reactView);
             } else {
-                addCenteredReactView(view);
+                addCenteredReactView(reactView);
             }
         }
+    }
+
+    private ContentView createReactView(StyleParams styleParams) {
+        return new ContentView(getContext(),
+                styleParams.topBarReactView,
+                NavigationParams.EMPTY,
+                styleParams.topBarReactViewInitialProps
+        );
     }
 
     private void addReactViewFill(ContentView view) {
@@ -127,6 +137,7 @@ public class TopBar extends AppBarLayout {
             setTransparent();
         }
         titleBar.setStyle(styleParams);
+        setReactView(styleParams);
         setTopTabsStyle(styleParams);
         if (!styleParams.topBarElevationShadowEnabled) {
             disableElevationShadow();
@@ -183,7 +194,7 @@ public class TopBar extends AppBarLayout {
                     @Override
                     public void run() {
                         if (menuToRemove != null) {
-                           titleBarAndContextualMenuContainer.removeView(menuToRemove);
+                            titleBarAndContextualMenuContainer.removeView(menuToRemove);
                         }
                     }
                 });
@@ -205,7 +216,9 @@ public class TopBar extends AppBarLayout {
     }
 
     public void destroy() {
-
+        if (reactView != null) {
+            reactView.unmountReactView();
+        }
     }
 
     public void onViewPagerScreenChanged(BaseScreenParams screenParams) {

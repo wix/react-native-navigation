@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   Text,
+  Alert,
   Platform
 } from 'react-native';
 
@@ -17,10 +18,9 @@ export default class CustomTopBar extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity stye={styles.button} onPress={ () => alert('Thanks for that :)') }>
+        <TouchableOpacity stye={styles.button} onPress={ () => Alert.alert(this.props.title, 'Thanks for that :)') }>
           <Text style={styles.text}>Press Me</Text>
         </TouchableOpacity>
-
       </View>
     );
   }

@@ -112,7 +112,6 @@ public class TitleBar extends Toolbar {
                 if (params.titleBarTitleTextCentered) {
                     titleView.setX(ViewUtils.getWindowWidth(getActivity()) / 2 - titleView.getWidth() / 2);
                 }
-                
             }
         });
     }

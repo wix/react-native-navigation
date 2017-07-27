@@ -81,6 +81,7 @@ public class StyleParams {
     public Color topBarColor;
     public String topBarReactView;
     public String topBarReactViewAlignment;
+    public Bundle topBarReactViewInitialProps;
     public CollapsingTopBarParams collapsingTopBarParams;
     public boolean topBarCollapseOnScroll;
     public boolean topBarElevationShadowEnabled;

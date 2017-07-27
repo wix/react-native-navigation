@@ -27,6 +27,7 @@ import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.screens.NavigationType;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.utils.ViewUtils;
@@ -132,7 +133,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     private void showInitialScreenStack() {
-        showStackAndUpdateStyle(screenStacks[0]);
+        showStackAndUpdateStyle(screenStacks[0], NavigationType.InitialScreen);
         EventBus.instance.post(new ScreenChangedEvent(screenStacks[0].peek().getScreenParams()));
     }
 
@@ -148,7 +149,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         }
 
         if (getCurrentScreenStack().canPop()) {
-            getCurrentScreenStack().pop(true);
+            getCurrentScreenStack().pop(true, System.currentTimeMillis());
             setBottomTabsStyleFromCurrentScreen();
             EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
             return true;
@@ -294,6 +295,9 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     @Override
     public void onModalDismissed() {
+        getCurrentScreenStack().peek().getScreenParams().timestamp = System.currentTimeMillis();
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(getCurrentScreenStack().peek().getScreenParams(), NavigationType.DismissModal);
+        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(getCurrentScreenStack().peek().getScreenParams(), NavigationType.DismissModal);
         EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
     }
 
@@ -353,7 +357,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     @Override
     public void pop(final ScreenParams params) {
-        getCurrentScreenStack().pop(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
+        getCurrentScreenStack().pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
             @Override
             public void onScreenPopAnimationEnd() {
                 setBottomTabsStyleFromCurrentScreen();
@@ -365,7 +369,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     @Override
     public void popToRoot(final ScreenParams params) {
-        getCurrentScreenStack().popToRoot(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
+        getCurrentScreenStack().popToRoot(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
             @Override
             public void onScreenPopAnimationEnd() {
                 setBottomTabsStyleFromCurrentScreen();
@@ -419,7 +423,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
         final int unselectedTabIndex = currentStackIndex;
         hideCurrentStack();
-        showNewStack(position);
+        showNewStack(position, NavigationType.BottomTabSelected);
         EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
         sendTabSelectedEventToJs(position, unselectedTabIndex);
         return true;
@@ -447,19 +451,19 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("bottomTabReselected", navigatorEventId, data);
     }
 
-    private void showNewStack(int position) {
-        showStackAndUpdateStyle(screenStacks[position]);
+    private void showNewStack(int position, NavigationType type) {
+        showStackAndUpdateStyle(screenStacks[position], type);
         currentStackIndex = position;
     }
 
-    private void showStackAndUpdateStyle(ScreenStack newStack) {
-        newStack.show();
+    private void showStackAndUpdateStyle(ScreenStack newStack, NavigationType type) {
+        newStack.show(type);
         setStyleFromScreen(newStack.getCurrentScreenStyleParams());
     }
 
     private void hideCurrentStack() {
         ScreenStack currentScreenStack = getCurrentScreenStack();
-        currentScreenStack.hide();
+        currentScreenStack.hide(NavigationType.BottomTabSelected);
     }
 
     private ScreenStack getCurrentScreenStack() {
@@ -515,7 +519,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     @Override
     public boolean onTitleBarBackButtonClick() {
         if (getCurrentScreenStack().canPop()) {
-            getCurrentScreenStack().pop(true, new ScreenStack.OnScreenPop() {
+            getCurrentScreenStack().pop(true, System.currentTimeMillis(), new ScreenStack.OnScreenPop() {
                 @Override
                 public void onScreenPopAnimationEnd() {
                     setBottomTabsStyleFromCurrentScreen();

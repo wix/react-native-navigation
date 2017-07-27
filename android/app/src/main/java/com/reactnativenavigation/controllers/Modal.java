@@ -21,6 +21,7 @@ import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.screens.NavigationType;
 
 import java.util.List;
 
@@ -181,8 +182,8 @@ public class Modal extends Dialog implements DialogInterface.OnDismissListener, 
     @Override
     public void dismiss() {
         if (!isDestroyed) {
-            NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", layout.getCurrentScreen().getNavigatorEventId());
-            NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", layout.getCurrentScreen().getNavigatorEventId());
+            NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(layout.getCurrentScreen().getScreenParams(), NavigationType.DismissModal);
+            NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(layout.getCurrentScreen().getScreenParams(), NavigationType.DismissModal);
         }
         super.dismiss();
     }
