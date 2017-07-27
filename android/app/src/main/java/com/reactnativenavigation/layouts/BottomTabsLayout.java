@@ -341,7 +341,9 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     public void selectBottomTabByTabIndex(Integer index) {
-        bottomTabs.setCurrentItem(index);
+		boolean wasSelected = bottomTabs.getCurrentItem() == index;
+        bottomTabs.setCurrentItem(index, false);
+		this.onTabSelected(index, wasSelected, false);
     }
 
     public void selectBottomTabByNavigatorId(String navigatorId) {
@@ -416,18 +418,24 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     @Override
     public boolean onTabSelected(int position, boolean wasSelected) {
-        if (wasSelected) {
-            sendTabReselectedEventToJs();
-            return false;
-        }
-
-        final int unselectedTabIndex = currentStackIndex;
-        hideCurrentStack();
-        showNewStack(position);
-        EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
-        sendTabSelectedEventToJs(position, unselectedTabIndex);
-        return true;
+        return this.onTabSelected(position, wasSelected, true);
     }
+
+    private boolean onTabSelected(int position, boolean wasSelected, boolean sendEventToJS) {
+		if (wasSelected && sendEventToJS) {
+			sendTabReselectedEventToJs();
+			return false;
+		}
+
+		final int unselectedTabIndex = currentStackIndex;
+		hideCurrentStack();
+		showNewStack(position);
+		EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
+		if (sendEventToJS) {
+			sendTabSelectedEventToJs(position, unselectedTabIndex);
+		}
+		return true;
+	}
 
     private void sendTabSelectedEventToJs(int selectedTabIndex, int unselectedTabIndex) {
         String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();

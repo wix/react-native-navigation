@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import React from 'react';
-import {AppRegistry} from 'react-native';
+import {AppRegistry, NativeAppEventEmitter, DeviceEventEmitter, Platform} from 'react-native';
 import platformSpecific from './deprecated/platformSpecificDeprecated';
 import Screen from './Screen';
 
@@ -8,6 +8,17 @@ import PropRegistry from './PropRegistry';
 
 const registeredScreens = {};
 const _allNavigatorEventHandlers = {};
+const Emitter = Platform.OS === 'android' ? DeviceEventEmitter : NativeAppEventEmitter;
+
+Emitter.addListener('bottomTabSelected', nativeEvent => {
+  const event = {
+    ...nativeEvent,
+    type: 'TabSelected',
+  };
+  for (let i in _allNavigatorEventHandlers) {
+    _allNavigatorEventHandlers[i](event);
+  }
+});
 
 function registerScreen(screenID, generator) {
   registeredScreens[screenID] = generator;
@@ -161,12 +172,12 @@ function removeSplashScreen() {
   return platformSpecific.removeSplashScreen();
 }
 
-function setEventHandler(navigatorEventID, eventHandler) {
-  _allNavigatorEventHandlers[navigatorEventID] = eventHandler;
+function setEventHandler(uniqueID, eventHandler) {
+  _allNavigatorEventHandlers[uniqueID] = eventHandler;
 }
 
-function clearEventHandler(navigatorEventID) {
-  delete _allNavigatorEventHandlers[navigatorEventID];
+function clearEventHandler(uniqueID) {
+  delete _allNavigatorEventHandlers[uniqueID];
 }
 
 function handleDeepLink(params = {}) {

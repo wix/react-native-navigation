@@ -33,13 +33,13 @@
   return [self supportedControllerOrientations];
 }
 
-- (BOOL)shouldSelectViewController:(UIViewController *)viewController {
+- (BOOL)shouldSelectViewController:(UIViewController *)viewController shouldSendJsEvent:(BOOL)shouldSendJsEvent {
   dispatch_queue_t queue = [[RCCManager sharedInstance].getBridge uiManager].methodQueue;
   dispatch_async(queue, ^{
     [[[RCCManager sharedInstance].getBridge uiManager] configureNextLayoutAnimation:nil withCallback:^(NSArray* arr){} errorCallback:^(NSArray* arr){}];
   });
   
-  if (self.selectedIndex != [self.viewControllers indexOfObject:viewController]) {
+  if (self.selectedIndex != [self.viewControllers indexOfObject:viewController] && shouldSendJsEvent) {
     NSDictionary *body = @{
                            @"selectedTabIndex": @([self.viewControllers indexOfObject:viewController]),
                            @"unselectedTabIndex": @(self.selectedIndex)
@@ -332,7 +332,7 @@
     
     if (viewController)
     {
-      [self setSelectedViewController:viewController];
+      [self setSelectedViewController:viewController shouldSendJsEvent:NO];
     }
   }
   
@@ -409,7 +409,12 @@
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
 {
-  [self setSelectedViewController:self.viewControllers[selectedIndex]];
+  [self setSelectedIndex:selectedIndex shouldSendJsEvent:NO];
+}
+
+- (void)setSelectedIndex:(NSUInteger)selectedIndex shouldSendJsEvent:(BOOL)shouldSendJsEvent
+{
+  [self setSelectedViewController:self.viewControllers[selectedIndex] shouldSendJsEvent:shouldSendJsEvent];
 
   _selectedIndex = selectedIndex;
 
@@ -420,7 +425,7 @@
   }
 }
 
--(void)setSelectedViewController:(__kindof UIViewController *)selectedViewController
+-(void)setSelectedViewController:(__kindof UIViewController *)selectedViewController shouldSendJsEvent:(BOOL)shouldSendJsEvent
 {
   UIViewController *oldController = _selectedViewController;
 
@@ -428,7 +433,7 @@
 
   if (![oldController isEqual:selectedViewController])
   {
-    [self shouldSelectViewController:selectedViewController];
+    [self shouldSelectViewController:selectedViewController shouldSendJsEvent:shouldSendJsEvent];
 
     selectedViewController.view.frame = oldController.view.bounds;
     [self addChildViewController:selectedViewController];
@@ -487,7 +492,7 @@
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-  self.selectedIndex = [self.tabBar.items indexOfObject:item];
+  [self setSelectedIndex:[self.tabBar.items indexOfObject:item] shouldSendJsEvent:YES];
 }
 
 - (NSInteger)indexForScreen:(NSString *)screen
