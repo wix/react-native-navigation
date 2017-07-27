@@ -48,7 +48,6 @@
 
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
-	NSLog(@"-------------%@", self.navigationItem);
 	[self.navigationOptions apply:self];
 }
 /**
