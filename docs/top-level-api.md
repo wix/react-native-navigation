@@ -37,6 +37,7 @@ Navigation.startTabBasedApp({
         right: 0 // optional, default is 0.
       },
       title: 'Screen One', // title of the screen as appears in the nav bar (optional)
+      titleImage: require('../img/titleImage.png'), // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
       navigatorStyle: {}, // override the navigator style for the tab screen, see "Styling the navigator" below (optional),
       navigatorButtons: {} // override the nav buttons for the tab screen, see "Adding buttons to the navigator" below (optional)
     },
