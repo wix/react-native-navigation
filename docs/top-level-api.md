@@ -66,7 +66,7 @@ Navigation.startTabBasedApp({
       screen: 'example.SecondSideMenu', // unique ID registered with Navigation.registerScreen
       passProps: {} // simple serializable object that will pass as props to all top screens (optional)
     },
-    style: {
+    style: { // ( iOS only )
       drawerShadow: true, // optional, add this if you want a side menu drawer shadow
       contentOverlayColor: 'rgba(0,0,0,0.25)', // optional, add this if you want a overlay color when drawer is open
       leftDrawerWidth: 50 // optional, add this if you want a define left drawer width (50=percent)
@@ -100,7 +100,7 @@ Navigation.startSingleScreenApp({
       screen: 'example.SecondSideMenu', // unique ID registered with Navigation.registerScreen
       passProps: {} // simple serializable object that will pass as props to all top screens (optional)
     },
-    style: {
+    style: { // ( iOS only )
       drawerShadow: true, // optional, add this if you want a side menu drawer shadow
       contentOverlayColor: 'rgba(0,0,0,0.25)', // optional, add this if you want a overlay color when drawer is open
       leftDrawerWidth: 50 // optional, add this if you want a define left drawer width (50=percent)
