@@ -28,5 +28,6 @@ public class NavigationOptionsTest extends BaseTest {
 	public void defaultEmptyOptions() throws Exception {
 		NavigationOptions uut = new NavigationOptions();
 		assertThat(uut.title).isEmpty();
+		assertThat(uut.topBarHidden).isFalse();
 	}
 }

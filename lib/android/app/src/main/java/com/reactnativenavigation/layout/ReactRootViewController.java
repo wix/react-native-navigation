@@ -8,12 +8,13 @@ import android.view.View;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
 import com.reactnativenavigation.react.NavigationEvent;
+import com.reactnativenavigation.viewcontrollers.StackController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
 public class ReactRootViewController extends ViewController implements NavigationOptionsHolder {
 
 	private final String name;
-	private final NavigationOptions navigationOptions;
+	private NavigationOptions navigationOptions;
 	private final ReactInstanceManager reactInstanceManager;
 	private boolean attachedToReactInstance = false;
 	private ReactRootView reactRootView;
@@ -30,7 +31,7 @@ public class ReactRootViewController extends ViewController implements Navigatio
 	}
 
 	public void mergeNavigationOptions(NavigationOptions options) {
-		navigationOptions.title = options.title;
+		navigationOptions = NavigationOptions.merge(navigationOptions, options);
 		applyNavigationOptions();
 	}
 
@@ -77,7 +78,10 @@ public class ReactRootViewController extends ViewController implements Navigatio
 	}
 
 	private void applyNavigationOptions() {
-		if (getParentStackController() != null)
-			getParentStackController().setTitle(navigationOptions.title);
+		StackController parent = getParentStackController();
+		if (parent != null) {
+			parent.setTitle(navigationOptions.title);
+			parent.setTopBarHidden(navigationOptions.topBarHidden == Boolean.TRUE);
+		}
 	}
 }

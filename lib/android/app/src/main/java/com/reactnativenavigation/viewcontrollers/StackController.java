@@ -135,4 +135,8 @@ public class StackController extends ParentController {
 	public void setTitle(final String title) {
 		topBar.setTitle(title);
 	}
+
+	public void setTopBarHidden(boolean hidden) {
+		topBar.setVisibility(hidden ? View.GONE : View.VISIBLE);
+	}
 }

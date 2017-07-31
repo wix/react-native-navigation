@@ -19,6 +19,7 @@ class OptionsScreen extends Component {
   constructor(props) {
     super(props);
     this.onClickDynamicOptions = this.onClickDynamicOptions.bind(this);
+    this.onClickTopBarHidden = this.onClickTopBarHidden.bind(this);
   }
 
   render() {
@@ -26,6 +27,7 @@ class OptionsScreen extends Component {
       <View style={styles.root}>
         <Text style={styles.h1}>{`Options Screen`}</Text>
         <Button title="Dynamic Options" onPress={this.onClickDynamicOptions} />
+        <Button title="setTopBarHidden" onPress={this.onClickTopBarHidden} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
@@ -34,7 +36,13 @@ class OptionsScreen extends Component {
   onClickDynamicOptions() {
     Navigation.setOptions(this.props.containerId, {
       title: 'Dynamic Title',
-      topBarTextColor: '#123456'
+      topBarHidden: false
+    });
+  }
+
+  onClickTopBarHidden() {
+    Navigation.setOptions(this.props.containerId, {
+      topBarHidden: true
     });
   }
 }
