@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 
 import com.facebook.react.ReactRootView;
@@ -13,6 +14,7 @@ import com.reactnativenavigation.views.utils.ViewMeasurer;
 public class ContentView extends ReactRootView {
     private final String screenId;
     private final NavigationParams navigationParams;
+    private Bundle initialProps;
 
     boolean isContentVisible = false;
     private SingleScreen.OnDisplayListener onDisplayListener;
@@ -23,9 +25,14 @@ public class ContentView extends ReactRootView {
     }
 
     public ContentView(Context context, String screenId, NavigationParams navigationParams) {
+        this(context, screenId, navigationParams, Bundle.EMPTY);
+    }
+
+    public ContentView(Context context, String screenId, NavigationParams navigationParams, Bundle initialProps) {
         super(context);
         this.screenId = screenId;
         this.navigationParams = navigationParams;
+        this.initialProps = initialProps;
         attachToJS();
         viewMeasurer = new ViewMeasurer();
     }
@@ -35,8 +42,18 @@ public class ContentView extends ReactRootView {
     }
 
     private void attachToJS() {
-        startReactApplication(NavigationApplication.instance.getReactGateway().getReactInstanceManager(), screenId,
-                navigationParams.toBundle());
+        navigationParams.toBundle().putAll(initialProps);
+        startReactApplication(NavigationApplication.instance.getReactGateway().getReactInstanceManager(),
+                screenId,
+                createInitialParams()
+        );
+    }
+
+    private Bundle createInitialParams() {
+        final Bundle params = new Bundle();
+        params.putAll(navigationParams.toBundle());
+        params.putAll(initialProps);
+        return params;
     }
 
     public String getNavigatorEventId() {

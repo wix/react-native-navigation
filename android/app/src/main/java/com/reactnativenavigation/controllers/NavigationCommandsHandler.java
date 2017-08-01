@@ -3,8 +3,10 @@ package com.reactnativenavigation.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
@@ -539,5 +541,21 @@ public class NavigationCommandsHandler {
     public static void isAppLaunched(Promise promise) {
         final boolean isAppLaunched = SplashActivity.isResumed || NavigationActivity.currentActivity != null;
         promise.resolve(isAppLaunched);
+    }
+
+    public static void getCurrentlyVisibleScreenId(final Promise promise) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            promise.resolve("");
+            return;
+        }
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                WritableMap map = Arguments.createMap();
+                map.putString("screenId", currentActivity.getCurrentlyVisibleScreenId());
+                promise.resolve(map);
+            }
+        });
     }
 }
