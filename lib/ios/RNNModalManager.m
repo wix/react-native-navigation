@@ -1,4 +1,5 @@
 #import "RNNModalManager.h"
+#import "RNNRootViewController.h"
 
 @implementation RNNModalManager {
 	RNNStore *_store;
@@ -33,7 +34,7 @@
 -(void)removePendingNextModalIfOnTop {
 	NSString *containerId = [[_store pendingModalIdsToDismiss] lastObject];
 	
-	UIViewController *modalToDismiss = [_store findContainerForId:containerId];
+	RNNRootViewController *modalToDismiss = [_store findContainerForId:containerId];
 	
 	if(!modalToDismiss) {
 		return;

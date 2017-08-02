@@ -8,7 +8,6 @@
 @property (nonatomic, strong) NSString* containerName;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic) BOOL _statusBarHidden;
-@property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
 
 @end
 
@@ -34,7 +33,6 @@
 - (BOOL)prefersStatusBarHidden {
 	return [self.navigationOptions.statusBarHidden boolValue]; // || self.navigationController.isNavigationBarHidden;
 }
-
 
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];

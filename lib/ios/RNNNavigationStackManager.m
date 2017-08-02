@@ -1,4 +1,5 @@
 #import "RNNNavigationStackManager.h"
+#import "RNNRootViewController.h"
 
 @implementation RNNNavigationStackManager {
 	RNNStore *_store;
@@ -11,12 +12,12 @@
 }
 
 -(void)push:(UIViewController *)newTop onTop:(NSString *)containerId {
-	UIViewController *vc = [_store findContainerForId:containerId];
+	RNNRootViewController *vc = [_store findContainerForId:containerId];
 	[[vc navigationController] pushViewController:newTop animated:YES];
 }
 
 -(void)pop:(NSString *)containerId {
-	UIViewController* vc = [_store findContainerForId:containerId];
+	RNNRootViewController* vc = [_store findContainerForId:containerId];
 	UINavigationController* nvc = [vc navigationController];
 	if ([nvc topViewController] == vc) {
 		[nvc popViewControllerAnimated:YES];
@@ -29,7 +30,7 @@
 }
 
 -(void)popTo:(NSString*)containerId {
-	UIViewController *vc = [_store findContainerForId:containerId];
+	RNNRootViewController *vc = [_store findContainerForId:containerId];
 	
 	if (vc) {
 		UINavigationController *nvc = [vc navigationController];
@@ -41,7 +42,7 @@
 }
 
 -(void) popToRoot:(NSString*)containerId {
-	UIViewController* vc = [_store findContainerForId:containerId];
+	RNNRootViewController* vc = [_store findContainerForId:containerId];
 	UINavigationController* nvc = [vc navigationController];
 	NSArray* poppedVCs = [nvc popToRootViewControllerAnimated:YES];
 	[self removePopedViewControllers:poppedVCs];

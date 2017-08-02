@@ -4,6 +4,7 @@
 #import "RNNModalManager.h"
 #import "RNNNavigationStackManager.h"
 #import "RNNNavigationOptions.h"
+#import "RNNRootViewController.h"
 
 @implementation RNNCommandsHandler {
 	RNNControllerFactory *_controllerFactory;
@@ -36,9 +37,9 @@
 
 -(void) setOptions:(NSString*)containerId options:(NSDictionary*)options {
 	[self assertReady];
-	UIViewController* vc = [_store findContainerForId:containerId];
-	RNNNavigationOptions* RNNOptions = [[RNNNavigationOptions alloc] initWithDict:options];
-	[RNNOptions apply:vc];
+	RNNRootViewController* vc = [_store findContainerForId:containerId];
+	[vc.navigationOptions setOptionsDynamically:options];
+	[vc.navigationOptions apply:vc];
 }
 
 -(void) push:(NSString*)containerId layout:(NSDictionary*)layout {

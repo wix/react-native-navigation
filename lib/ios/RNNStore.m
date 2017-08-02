@@ -1,6 +1,6 @@
 
 #import "RNNStore.h"
-
+#import "RNNRootViewController.h"
 @interface RNNStore ()
 
 @end
@@ -19,12 +19,12 @@
 	return self;
 }
 
--(UIViewController *)findContainerForId:(NSString *)containerId {
+-(RNNRootViewController *)findContainerForId:(NSString *)containerId {
 	return [_containerStore objectForKey:containerId];
 }
 
 - (void)setContainer:(UIViewController*)viewController containerId:(NSString*)containerId {
-	UIViewController *existingVewController = [self findContainerForId:containerId];
+	RNNRootViewController *existingVewController = [self findContainerForId:containerId];
 	if (existingVewController) {
 		@throw [NSException exceptionWithName:@"MultipleContainerId" reason:[@"Container id already exists " stringByAppendingString:containerId] userInfo:nil];
 	}

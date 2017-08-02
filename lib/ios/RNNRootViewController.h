@@ -8,10 +8,13 @@
 
 @interface RNNRootViewController : UIViewController
 
+@property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
+
 -(instancetype)initWithName:(NSString*)name
 				withOptions:(RNNNavigationOptions*)options
 			withContainerId:(NSString*)containerId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter;
+
 
 @end

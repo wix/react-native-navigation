@@ -26,7 +26,7 @@
 	self.pageName = @"somename";
 	self.containerId = @"cntId";
 	self.emitter = nil;
-	self.options = [RNNNavigationOptions new];
+	self.options = [[RNNNavigationOptions alloc] initWithDict:@{@"title" : @"static title"}];
 	self.store = [RNNStore new];
 	self.viewController = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withContainerId:self.containerId rootViewCreator:self.creator eventEmitter:self.emitter];
 	[self.store setReadyToReceiveCommands:true];
@@ -79,6 +79,14 @@
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	[self.cmdHandler setOptions:self.containerId options:dictFromJs];
 	XCTAssertTrue([self.viewController.navigationController.navigationBar.barTintColor isEqual:expectedColor]);
+}
+
+-(void)testDynamicStylesMergeWithStaticStyles {
+	NSDictionary* dictFromJs = @{@"topBarBackgroundColor" :@(0xFFFF0000)};
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	[self.cmdHandler setOptions:self.containerId options:dictFromJs];
+	XCTAssertTrue([self.viewController.navigationController.navigationBar.barTintColor isEqual:expectedColor]);
+	XCTAssertTrue([self.viewController.navigationItem.title isEqual:@"static title"]);
 }
 
 
