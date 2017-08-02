@@ -12,7 +12,6 @@ import Navigation from 'react-native-navigation';
 class OptionsScreen extends Component {
   static navigationOptions = {
     title: 'Static Title',
-    topBarBackgroundColor: "red",
     statusBarHidden: true
   }
 
@@ -34,7 +33,8 @@ class OptionsScreen extends Component {
   onClickDynamicOptions() {
     Navigation.setOptions(this.props.containerId, {
       title: 'Dynamic Title',
-      topBarTextColor: '#123456'
+      topBarTextColor: '#00FFFF',
+      topBarBackgroundColor: 'green'
     });
   }
 }

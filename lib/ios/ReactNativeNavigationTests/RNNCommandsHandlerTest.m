@@ -1,8 +1,20 @@
 #import <XCTest/XCTest.h>
 #import <objc/runtime.h>
 #import "RNNCommandsHandler.h"
+#import "RNNNavigationOptions.h"
+#import "RNNTestRootViewCreator.h"
+#import "RNNRootViewController.h"
 
 @interface RNNCommandsHandlerTest : XCTestCase
+
+@property (nonatomic, strong) id<RNNRootViewCreator> creator;
+@property (nonatomic, strong) NSString* pageName;
+@property (nonatomic, strong) NSString* containerId;
+@property (nonatomic, strong) id emitter;
+@property (nonatomic, strong) RNNStore* store;
+@property (nonatomic, strong) RNNNavigationOptions* options;
+@property (nonatomic, strong) RNNRootViewController* viewController;
+@property (nonatomic, strong) RNNCommandsHandler* cmdHandler;
 
 @end
 
@@ -10,8 +22,17 @@
 
 - (void)setUp {
 	[super setUp];
-	
-	
+	self.creator = [[RNNTestRootViewCreator alloc] init];
+	self.pageName = @"somename";
+	self.containerId = @"cntId";
+	self.emitter = nil;
+	self.options = [RNNNavigationOptions new];
+	self.store = [RNNStore new];
+	self.viewController = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withContainerId:self.containerId rootViewCreator:self.creator eventEmitter:self.emitter];
+	[self.store setReadyToReceiveCommands:true];
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.viewController];
+	[self.store setContainer:self.viewController containerId:self.containerId];
+	self.cmdHandler = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:nil];
 }
 
 
@@ -52,6 +73,14 @@
 	
 	return result;
 }
+
+-(void)testDynamicTopBarBackgroundColor_validColor {
+	NSDictionary* dictFromJs = @{@"topBarBackgroundColor" :@(0xFFFF0000)};
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	[self.cmdHandler setOptions:self.containerId options:dictFromJs];
+	XCTAssertTrue([self.viewController.navigationController.navigationBar.barTintColor isEqual:expectedColor]);
+}
+
 
 
 
