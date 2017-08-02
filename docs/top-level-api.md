@@ -72,6 +72,9 @@ Navigation.startTabBasedApp({
       leftDrawerWidth: 50 // optional, add this if you want a define left drawer width (50=percent)
       rightDrawerWidth: 50 // optional, add this if you want a define right drawer width (50=percent)
     },
+    type: 'MMDrawer', // optional, iOS only, types: 'TheSideBar', 'MMDrawer' default: 'MMDrawer'
+    animationType: 'door', //optional, iOS only, for MMDrawer: 'door', 'parallax', 'slide', 'slide-and-scale'
+                                            for TheSideBar: 'airbnb', 'facebook', 'luvocracy','wunder-list'
     disableOpenGesture: false // optional, can the drawer be opened with a swipe instead of button
   },
   passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
@@ -106,6 +109,9 @@ Navigation.startSingleScreenApp({
       leftDrawerWidth: 50 // optional, add this if you want a define left drawer width (50=percent)
       rightDrawerWidth: 50 // optional, add this if you want a define right drawer width (50=percent)
     },
+    type: 'MMDrawer', // optional, iOS only, types: 'TheSideBar', 'MMDrawer' default: 'MMDrawer'
+    animationType: 'door', //optional, iOS only, for MMDrawer: 'door', 'parallax', 'slide', 'slide-and-scale'
+                                            for TheSideBar: 'airbnb', 'facebook', 'luvocracy','wunder-list'
     disableOpenGesture: false // optional, can the drawer be opened with a swipe instead of button
   },
   passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
