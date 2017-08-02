@@ -92,7 +92,4 @@
 	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 
--(void)testTopBarTextColor_invalidColor {
-	
-}
 @end
