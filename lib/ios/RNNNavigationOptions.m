@@ -13,6 +13,12 @@
 	return self;
 }
 
+-(void)setOptionsDynamically:(NSDictionary *)dynamicOptions {
+	for(id key in dynamicOptions) {
+		[self setValue:[dynamicOptions objectForKey:key] forKey:key];
+	}
+}
+
 -(void)apply:(UIViewController*)viewController{
 	if (self.topBarBackgroundColor) {
 		UIColor* backgroundColor = [RCTConvert UIColor:self.topBarBackgroundColor];

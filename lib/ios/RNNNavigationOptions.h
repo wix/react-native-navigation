@@ -12,6 +12,7 @@
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions;
 
 -(void)apply:(UIViewController*)viewController;
+-(void)setOptionsDynamically:(NSDictionary*)dynamicOptions;
 
 @end
 
