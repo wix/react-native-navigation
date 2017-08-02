@@ -83,5 +83,16 @@
 	XCTAssertNil(self.uut.navigationItem.title);
 }
 
+-(void)testTopBarTextColor_validColor{
+	NSNumber* inputColor = @(0xFFFF0000);
+	self.options.topBarTextColor = inputColor;
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+}
 
+-(void)testTopBarTextColor_invalidColor {
+	
+}
 @end
