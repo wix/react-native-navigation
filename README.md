@@ -140,7 +140,7 @@ NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBun
 
 	```groovy
 	include ':react-native-navigation'
-	project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-	navigation/lib/android/app/')
+	project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/lib/android/app/')
 	```
 
 3. Update project dependencies in `android/app/build.gradle`.
@@ -159,14 +159,14 @@ NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBun
 	}
 	```
 
-4. In `MainActivity.java` it should extend `com.reactnativenavigation.controllers.SplashActivity` instead of `ReactActivity`.
+4. In `MainActivity.java` it should extend `com.reactnativenavigation.NavigationActivity` instead of `ReactActivity`.
 
 	This file can be located in `android/app/src/main/java/com/yourproject/`.
 
 	```java
-	import com.reactnativenavigation.controllers.SplashActivity;
+	import com.reactnativenavigation.NavigationActivity;
 
-	public class MainActivity extends SplashActivity {
+	public class MainActivity extends NavigationActivity {
 
 	}
 	```
@@ -192,15 +192,10 @@ NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBun
 				// eg. new VectorIconsPackage()
 			);
 		}
-
-		@Override
-		public List<ReactPackage> createAdditionalReactPackages() {
-			return getPackages();
-		}
 	}
 	```
 
-	Make sure that `isDebug` and `createAdditionalReactPackages` methods are implemented.
+	Make sure that `isDebug` methods is implemented.
 
 6. Update `AndroidManifest.xml` and set **android:name** value to `.MainApplication`
 	```xml
