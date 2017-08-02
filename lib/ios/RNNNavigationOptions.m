@@ -9,6 +9,7 @@
 	self.topBarBackgroundColor = [navigationOptions objectForKey:@"topBarBackgroundColor"];
 	self.statusBarHidden = [navigationOptions objectForKey:@"statusBarHidden"];
 	self.title = [navigationOptions objectForKey:@"title"];
+	self.topBarTextColor = [navigationOptions objectForKey:@"topBarTextColor"];
 	return self;
 }
 
@@ -20,8 +21,10 @@
 	if (self.title) {
 		viewController.navigationItem.title = self.title;
 	}
-	
-
+	if (self.topBarTextColor) {
+		UIColor* textColor = [RCTConvert UIColor:self.topBarTextColor];
+		viewController.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:textColor};
+	}
 }
 
 

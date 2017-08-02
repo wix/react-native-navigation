@@ -4,6 +4,8 @@
 @interface RNNNavigationOptions : NSObject
 
 @property (nonatomic, strong) NSNumber* topBarBackgroundColor;
+@property (nonatomic, strong) NSNumber* topBarTextColor;
+
 @property (nonatomic, strong) NSNumber* statusBarHidden;
 @property (nonatomic, strong) NSString* title;
 
