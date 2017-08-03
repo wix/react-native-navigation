@@ -73,10 +73,10 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 
 |                       | v1  | v2 iOS | v2 Android |
 |-----------------------|-----|--------|------------|
-| topBarBackgroundColor |   ✅    |   in development     |     [Contribute](CONTRIBUTING.md)        |
+| topBarTextColor |   ✅    |    ✅     |     [Contribute](CONTRIBUTING.md)        |
 | topBarTextFontSize    |   ✅    |   in development      |     [Contribute](CONTRIBUTING.md)        |
 | topBarTextFontFamily  |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
-| topBarBackgroundColor |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
+| topBarBackgroundColor |  ✅     |  ✅       |     [Contribute](CONTRIBUTING.md)        |
 | topBarButtonColor     |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
 | topBarHidden          |   ✅    |   in development      |     [Contribute](CONTRIBUTING.md)        |
 | topBarHideOnScroll    |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
@@ -102,7 +102,7 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | setButtons          |   ✅     |         [Contribute](CONTRIBUTING.md)     | [Contribute](CONTRIBUTING.md) |
 | title            |   ✅     |        	✅    | 	✅|
 | toggleDrawer        |   ✅     |        [Contribute](CONTRIBUTING.md)   | [Contribute](CONTRIBUTING.md) |
-| toggleTabs          |   ✅     |       in development    | [Contribute](CONTRIBUTING.md)|
+| toggleTabs          |   ✅     |       in development    | in development|
 | setTabBadge         |    ✅    |       [Contribute](CONTRIBUTING.md)     | [Contribute](CONTRIBUTING.md)|
 | switchToTab         |    ✅    |      in development    |[Contribute](CONTRIBUTING.md) |
 | toggleNavBar        |   ✅     |      [Contribute](CONTRIBUTING.md)      | [Contribute](CONTRIBUTING.md)|
