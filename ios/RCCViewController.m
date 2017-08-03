@@ -277,7 +277,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 // Back to normal after user start scroll with momentum
 - (void)_traverseAndCall:(UIView*)view
 {
-  if([view isKindOfClass:[UIScrollView class]]) {
+  if([view isKindOfClass:[UIScrollView class]] && ([[(UIScrollView*)view delegate] respondsToSelector:@selector(scrollViewDidEndDecelerating:)]) ) {
     [[(UIScrollView*)view delegate] scrollViewDidEndDecelerating:(id)view];
   }
   
