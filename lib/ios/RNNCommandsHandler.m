@@ -37,45 +37,56 @@
 
 -(void) setOptions:(NSString*)containerId options:(NSDictionary*)options {
 	[self assertReady];
-	RNNRootViewController* vc = [_store findContainerForId:containerId];
-	[vc.navigationOptions setOptionsDynamically:options];
-	[vc.navigationOptions apply:vc];
+	
+	UIViewController* vc = [_store findContainerForId:containerId];
+	if([vc isKindOfClass:[RNNRootViewController class]]) {
+		RNNRootViewController* rootVc = (RNNRootViewController*)vc;
+		[rootVc.navigationOptions mergeWith:options];
+		[rootVc.navigationOptions applyOn:vc];
+	}
 }
 
 -(void) push:(NSString*)containerId layout:(NSDictionary*)layout {
 	[self assertReady];
+	
 	UIViewController *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
 	[_navigationStackManager push:newVc onTop:containerId];
 }
 
 -(void) pop:(NSString*)containerId {
 	[self assertReady];
+	
 	[_navigationStackManager pop:containerId];
 }
 
 -(void) popTo:(NSString*)containerId {
 	[self assertReady];
+	
 	[_navigationStackManager popTo:containerId];
 }
 
 -(void) popToRoot:(NSString*)containerId {
 	[self assertReady];
+	
 	[_navigationStackManager popToRoot:containerId];
 }
 
 -(void) showModal:(NSDictionary*)layout {
 	[self assertReady];
+	
 	UIViewController *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
 	[_modalManager showModal:newVc];
 }
 
 -(void) dismissModal:(NSString*)containerId {
 	[self assertReady];
+	
 	[_modalManager dismissModal:containerId];
 }
 
 -(void) dismissAllModals {
 	[self assertReady];
+	
 	[_modalManager dismissAllModals];
 }
 
@@ -83,7 +94,10 @@
 
 -(void) assertReady {
 	if (!_store.isReadyToReceiveCommands) {
-		@throw [NSException exceptionWithName:@"BridgeNotLoadedError" reason:@"Bridge not yet loaded! Send commands after Navigation.events().onAppLaunched() has been called." userInfo:nil];
+		[[NSException exceptionWithName:@"BridgeNotLoadedError"
+								reason:@"Bridge not yet loaded! Send commands after Navigation.events().onAppLaunched() has been called."
+							  userInfo:nil]
+		 raise];
 	}
 }
 

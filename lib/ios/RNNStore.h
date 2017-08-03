@@ -5,7 +5,7 @@
 
 @interface RNNStore : NSObject
 
--(RNNRootViewController*) findContainerForId:(NSString*)containerId;
+-(UIViewController*) findContainerForId:(NSString*)containerId;
 -(void) setContainer:(UIViewController*)viewController containerId:(NSString*)containerId;
 -(void) removeContainer:(NSString*)containerId;
 -(void) removeContainerByViewControllerInstance:(UIViewController*)containerInstance;
