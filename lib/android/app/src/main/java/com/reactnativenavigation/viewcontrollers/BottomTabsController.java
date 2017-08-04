@@ -56,6 +56,7 @@ public class BottomTabsController extends ParentController implements BottomNavi
 	}
 
 	public void selectTabAtIndex(final int newIndex) {
+		this.bottomNavigationView.getMenu().getItem(newIndex).setChecked(true);
 		tabs.get(selectedIndex).getView().setVisibility(View.GONE);
 		selectedIndex = newIndex;
 		tabs.get(selectedIndex).getView().setVisibility(View.VISIBLE);
@@ -68,8 +69,10 @@ public class BottomTabsController extends ParentController implements BottomNavi
 		this.tabs = tabs;
 		getView();
 		for (int i = 0; i < tabs.size(); i++) {
+			ViewController vc = tabs.get(i);
+			vc.setTabsController(this);
 			String title = String.valueOf(i);
-			createTab(tabs.get(i), i, title);
+			createTab(vc, i, title);
 		}
 		selectTabAtIndex(0);
 	}

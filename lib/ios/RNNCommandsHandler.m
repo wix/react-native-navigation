@@ -90,6 +90,12 @@
 	[_modalManager dismissAllModals];
 }
 
+-(void) switchToTab:(NSString*)containerId tabIndex:(NSNumber*)tabIndex {
+	[self assertReady];
+	UIViewController *vc = [_store findContainerForId:containerId];
+	[vc.navigationController.tabBarController setSelectedIndex:tabIndex.integerValue];
+}
+
 #pragma mark - private
 
 -(void) assertReady {

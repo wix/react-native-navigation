@@ -196,6 +196,32 @@ public class NavigatorTest extends BaseTest {
 		assertThat(child1.lastNavigationOptions).isEqualTo(options);
 	}
 
+	@Test
+	public void tabsContainerExistsInChildren() {
+		BottomTabsController bottomTabsController = newTabs();
+		StackController stack1 = newStack();
+		StackController stack2 = newStack();
+		stack1.push(child1);
+		stack2.push(child2);
+		bottomTabsController.setTabs(Arrays.<ViewController>asList(stack1, stack2));
+		uut.setRoot(bottomTabsController);
+		assertThat(child1.getTabsController()).isNotNull();
+		assertThat(child2.getTabsController()).isNotNull();
+	}
+
+	@Test
+	public void switchToTab() {
+		BottomTabsController bottomTabsController = newTabs();
+		StackController stack1 = newStack();
+		StackController stack2 = newStack();
+		stack1.push(child1);
+		stack2.push(child2);
+		bottomTabsController.setTabs(Arrays.<ViewController>asList(stack1, stack2));
+		uut.setRoot(bottomTabsController);
+		bottomTabsController.selectTabAtIndex(1);
+		assertThat(bottomTabsController.getSelectedIndex()).isEqualTo(1);
+	}
+
 	@NonNull
 	private BottomTabsController newTabs() {
 		return new BottomTabsController(activity, "tabsController");

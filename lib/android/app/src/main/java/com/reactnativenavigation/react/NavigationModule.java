@@ -55,6 +55,16 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
+	public void switchToTab(final String onContainerId, final int tabIndex) {
+		handle(new Runnable() {
+			@Override
+			public void run() {
+				navigator().switchToTab(onContainerId, tabIndex);
+			}
+		});
+	}
+
+	@ReactMethod
 	public void push(final String onContainerId, final ReadableMap rawLayoutTree) {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
 		handle(new Runnable() {

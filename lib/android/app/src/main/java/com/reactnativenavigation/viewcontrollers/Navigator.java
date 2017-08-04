@@ -64,6 +64,11 @@ public class Navigator extends ParentController {
 		}
 	}
 
+	public void switchToTab(final String containerId, int tabIndex) {
+        ViewController target = findControllerById(containerId);
+        target.getTabsController().selectTabAtIndex(tabIndex);
+	}
+
 	public void push(final String fromId, final ViewController viewController) {
 		ViewController from = findControllerById(fromId);
 		if (from != null) {

@@ -91,12 +91,12 @@ public class LayoutFactory {
 	}
 
 	private ViewController createBottomTabs(LayoutNode node) {
-		final BottomTabsController tabsContainer = new BottomTabsController(activity, node.id);
+		final BottomTabsController tabsController = new BottomTabsController(activity, node.id);
 		List<ViewController> tabs = new ArrayList<>();
 		for (int i = 0; i < node.children.size(); i++) {
 			tabs.add(create(node.children.get(i)));
 		}
-		tabsContainer.setTabs(tabs);
-		return tabsContainer;
+		tabsController.setTabs(tabs);
+		return tabsController;
 	}
 }

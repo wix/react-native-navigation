@@ -26,6 +26,10 @@ RCT_EXPORT_METHOD(setOptions:(NSString*)containerId options:(NSDictionary*)optio
 	[_commandsHandler setOptions:containerId options:options];
 }
 
+RCT_EXPORT_METHOD(switchToTab:(NSString*)containerId tabIndex:(nonnull NSNumber*)tabIndex) {
+	[_commandsHandler switchToTab:containerId tabIndex:tabIndex];
+}
+
 RCT_EXPORT_METHOD(push:(NSString*)containerId layout:(NSDictionary*)layout) {
 	[_commandsHandler push:containerId layout:layout];
 }

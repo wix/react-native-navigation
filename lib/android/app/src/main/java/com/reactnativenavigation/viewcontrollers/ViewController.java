@@ -16,6 +16,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	private final String id;
 	private View view;
 	private StackController parentStackController;
+	private BottomTabsController tabsController;
 	private boolean isShown = false;
 
 	public ViewController(Activity activity, String id) {
@@ -41,6 +42,17 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 
 	void setParentStackController(final StackController parentStackController) {
 		this.parentStackController = parentStackController;
+	}
+
+	public BottomTabsController getTabsController() {
+		if (parentStackController != null)
+			return parentStackController.getTabsController();
+		else
+			return this.tabsController;
+	}
+
+	public void setTabsController(final BottomTabsController tabsController) {
+		this.tabsController = tabsController;
 	}
 
 	@NonNull
