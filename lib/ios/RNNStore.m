@@ -19,12 +19,12 @@
 	return self;
 }
 
--(RNNRootViewController *)findContainerForId:(NSString *)containerId {
+-(UIViewController *)findContainerForId:(NSString *)containerId {
 	return [_containerStore objectForKey:containerId];
 }
 
 - (void)setContainer:(UIViewController*)viewController containerId:(NSString*)containerId {
-	RNNRootViewController *existingVewController = [self findContainerForId:containerId];
+	UIViewController *existingVewController = [self findContainerForId:containerId];
 	if (existingVewController) {
 		@throw [NSException exceptionWithName:@"MultipleContainerId" reason:[@"Container id already exists " stringByAppendingString:containerId] userInfo:nil];
 	}

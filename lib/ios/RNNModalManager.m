@@ -34,7 +34,7 @@
 -(void)removePendingNextModalIfOnTop {
 	NSString *containerId = [[_store pendingModalIdsToDismiss] lastObject];
 	
-	RNNRootViewController *modalToDismiss = [_store findContainerForId:containerId];
+	UIViewController *modalToDismiss = [_store findContainerForId:containerId];
 	
 	if(!modalToDismiss) {
 		return;
