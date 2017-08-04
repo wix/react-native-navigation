@@ -22,6 +22,15 @@ describe('top level api', () => {
     await expect(elementByLabel('This is a left side menu screen')).toBeVisible();
   });
 
+  it('hides and show the tab bar', async () => {
+    await elementByLabel('Switch to tab based app').tap();
+    await expect(element(by.label('Tab A').and(by.type('UITabBarButtonLabel')))).toBeVisible();
+    await elementByLabel('Hide tab bar').tap();
+    await expect(element(by.label('Tab A').and(by.type('UITabBarButtonLabel')))).toBeNotVisible();
+    await elementByLabel('Show tab bar').tap();
+    await expect(element(by.label('Tab A').and(by.type('UITabBarButtonLabel')))).toBeVisible();
+  });
+
   it('screen lifecycle', async () => {
     await elementByLabel('Push Lifecycle Screen').tap();
     await expect(elementByLabel('onStart')).toBeVisible();

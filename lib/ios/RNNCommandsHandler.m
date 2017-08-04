@@ -46,6 +46,24 @@
 	}
 }
 
+-(void) toggleTabs:(NSString*)containerId actionParams:(NSDictionary*)actionParams {
+	[self assertReady];
+	UIViewController* vc = [_store findContainerForId:containerId];
+	UITabBar* tabBar = vc.navigationController.tabBarController.tabBar;
+	
+	BOOL hidden = [actionParams[@"hidden"] boolValue];
+	BOOL animated = [actionParams[@"animated"] boolValue];
+	[UIView animateWithDuration: (animated ? 0.45 : 0)
+						  delay: 0
+		 usingSpringWithDamping: 0.75
+		  initialSpringVelocity: 0
+						options: (hidden ? UIViewAnimationOptionCurveEaseIn : UIViewAnimationOptionCurveEaseOut)
+					 animations:^() {
+		 tabBar.transform = hidden ? CGAffineTransformMakeTranslation(0, tabBar.frame.size.height) : CGAffineTransformIdentity;
+	 }
+					 completion:nil];
+}
+
 -(void) push:(NSString*)containerId layout:(NSDictionary*)layout {
 	[self assertReady];
 	

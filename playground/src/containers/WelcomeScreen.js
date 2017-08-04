@@ -34,6 +34,7 @@ class WelcomeScreen extends Component {
         {
           container: {
             name: 'navigation.playground.TextScreen',
+            title: 'Tab A',
             passProps: {
               text: 'This is tab 1',
               myFunction: () => 'Hello from a function!'
@@ -43,6 +44,7 @@ class WelcomeScreen extends Component {
         {
           container: {
             name: 'navigation.playground.TextScreen',
+            title: 'Tab B',
             passProps: {
               text: 'This is tab 2'
             }

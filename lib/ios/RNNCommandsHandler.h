@@ -12,6 +12,8 @@
 
 -(void) setOptions:(NSString*)containerId options:(NSDictionary*)options;
 
+-(void) toggleTabs:(NSString*)containerId actionParams:(NSDictionary*)actionParams;
+
 -(void) push:(NSString*)containerId layout:(NSDictionary*)layout;
 
 -(void) pop:(NSString*)containerId;

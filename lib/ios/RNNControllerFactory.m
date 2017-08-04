@@ -101,7 +101,7 @@
 	for (NSDictionary *child in node.children) {
 		UIViewController* childVc = [self fromTree:child];
 		
-		UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"A Tab" image:nil tag:1];
+		UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:child[@"children"][0][@"data"][@"title"] image:nil tag:1];
 		[childVc setTabBarItem:item];
 		[controllers addObject:childVc];
 	}
