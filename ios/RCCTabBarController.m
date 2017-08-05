@@ -45,7 +45,6 @@
         topRCCViewController.timestamp = [RCTHelpers getTimestampString];
       }
     }
-    
   } else {
     [RCCTabBarController sendScreenTabPressedEvent:viewController body:nil];
   }
@@ -108,11 +107,12 @@
       labelColor = color;
     }
     NSString *tabBarSelectedLabelColor = tabsStyle[@"tabBarSelectedLabelColor"];
-    if(tabBarLabelColor) {
+    if(tabBarSelectedLabelColor) {
       UIColor *color = tabBarSelectedLabelColor != (id)[NSNull null] ? [RCTConvert UIColor:
                                                                         tabBarSelectedLabelColor] : nil;
       selectedLabelColor = color;
     }
+
     NSString *tabBarBackgroundColor = tabsStyle[@"tabBarBackgroundColor"];
     if (tabBarBackgroundColor)
     {
@@ -165,7 +165,13 @@
     UIImage *iconImageSelected = nil;
     id selectedIcon = tabItemLayout[@"props"][@"selectedIcon"];
     if (selectedIcon) {
-      iconImageSelected = [RCTConvert UIImage:selectedIcon];
+      iconImageSelected = UIImageRenderingModeAlwaysOriginal;
+
+      if (selectedButtonColor) {
+        iconImageSelected = [[self image:iconImageSelected] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+      } else {
+        iconImageSelected = [[RCTConvert UIImage:selectedIcon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+      }
     } else {
       iconImageSelected = [RCTConvert UIImage:icon];
     }
@@ -197,6 +203,7 @@
     [viewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal];
     
     NSMutableDictionary *selectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarSelectedText" baseFont:[UIFont systemFontOfSize:10]];
+
     if (!selectedAttributes[NSForegroundColorAttributeName] && selectedLabelColor) {
       selectedAttributes[NSForegroundColorAttributeName] = selectedLabelColor;
     }
