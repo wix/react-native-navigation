@@ -165,11 +165,9 @@
     UIImage *iconImageSelected = nil;
     id selectedIcon = tabItemLayout[@"props"][@"selectedIcon"];
     if (selectedIcon) {
-      iconImageSelected = UIImageRenderingModeAlwaysOriginal;
-
-      if (selectedButtonColor) {
-        iconImageSelected = [[self image:iconImageSelected] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-      } else {
+      iconImageSelected = [RCTConvert UIImage:selectedIcon];
+      
+      if (!selectedButtonColor) {
         iconImageSelected = [[RCTConvert UIImage:selectedIcon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
       }
     } else {
