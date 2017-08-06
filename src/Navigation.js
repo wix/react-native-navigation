@@ -2,7 +2,7 @@
 import React from 'react';
 import {AppRegistry} from 'react-native';
 import platformSpecific from './deprecated/platformSpecificDeprecated';
-import Screen from './Screen';
+import { Screen } from './Screen';
 
 import PropRegistry from './PropRegistry';
 
