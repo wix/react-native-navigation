@@ -8,5 +8,6 @@ module.exports = {
   Navigation,
   SharedElementTransition,
   NativeEventsReceiver,
-  ScreenVisibilityListener
+  ScreenVisibilityListener,
+  Navigator
 };
