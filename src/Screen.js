@@ -194,4 +194,7 @@ class Screen extends Component {
   }
 }
 
-export { Screen, Navigator };
+export {
+  Screen,
+  Navigator
+};
