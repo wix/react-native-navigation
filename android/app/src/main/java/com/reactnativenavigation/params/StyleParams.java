@@ -3,6 +3,7 @@ package com.reactnativenavigation.params;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.text.TextUtils;
 
 import com.reactnativenavigation.utils.TypefaceLoader;
 
@@ -72,12 +73,16 @@ public class StyleParams {
     }
 
     public Orientation orientation;
+    public StatusBarTextColorScheme statusBarTextColorScheme;
     public Color statusBarColor;
     public Color contextualMenuStatusBarColor;
     public Color contextualMenuButtonsColor;
     public Color contextualMenuBackgroundColor;
 
     public Color topBarColor;
+    public String topBarReactView;
+    public String topBarReactViewAlignment;
+    public Bundle topBarReactViewInitialProps;
     public CollapsingTopBarParams collapsingTopBarParams;
     public boolean topBarCollapseOnScroll;
     public boolean topBarElevationShadowEnabled;
@@ -93,6 +98,7 @@ public class StyleParams {
     public Color titleBarButtonColor;
     public Color titleBarDisabledButtonColor;
     public Font titleBarTitleFont;
+    public int titleBarTitleFontSize;
     public boolean titleBarTitleTextCentered;
     public boolean backButtonHidden;
 
@@ -121,4 +127,8 @@ public class StyleParams {
     public Font bottomTabFontFamily;
 
     public Color navigationBarColor;
+
+    public boolean hasTopBarCustomComponent() {
+        return !TextUtils.isEmpty(topBarReactView);
+    }
 }

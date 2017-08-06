@@ -183,4 +183,8 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
             modal.selectTopTabByScreen(screenInstanceId);
         }
     }
+
+    String getCurrentlyVisibleScreenId() {
+        return stack.peek().getCurrentlyVisibleScreenId();
+    }
 }
