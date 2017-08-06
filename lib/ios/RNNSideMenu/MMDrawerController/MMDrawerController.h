@@ -458,7 +458,7 @@ typedef void (^MMDrawerControllerDrawerVisualStateBlock)(MMDrawerController * dr
  
  This block is called when a gesture action has started.
  
- @param gestureCompletionBlock A block object to be called that allows the implementer be notified when a gesture action has started.
+ @param gestureStartBlock A block object to be called that allows the implementer be notified when a gesture action has started.
  */
 -(void)setGestureStartBlock:(void (^)(MMDrawerController *, UIGestureRecognizer *))gestureStartBlock;
 

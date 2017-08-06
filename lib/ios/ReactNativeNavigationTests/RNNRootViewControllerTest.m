@@ -100,26 +100,6 @@
 	XCTAssertTrue([self.uut.view.backgroundColor isEqual:expectedColor]);
 }
 
--(void)testTopBarTextFontFamily_validFont{
-	NSString* inputFont = @"HelveticaNeue";
-	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
-	self.options.topBarTextFontFamily = inputFont;
-	[self.uut viewWillAppear:false];
-	UIFont* expectedFont = [UIFont fontWithName:inputFont size:20];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
-}
-
--(void)testTopBarTextFontFamily_invalidFont{
-	NSString* inputFont = @"HelveticaNeueeeee";
-	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
-	self.options.topBarTextFontFamily = inputFont;
-	XCTAssertThrows([self.uut viewWillAppear:false]);
-}
-
-
-
-
-
 
 
 @end

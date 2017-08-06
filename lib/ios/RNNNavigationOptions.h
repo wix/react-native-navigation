@@ -8,12 +8,14 @@
 @property (nonatomic, strong) NSNumber* statusBarHidden;
 @property (nonatomic, strong) NSString* title;
 @property (nonatomic, strong) NSNumber* screenBackgroundColor;
+@property (nonatomic, strong) NSString* setTabBadge;
 @property (nonatomic, strong) NSString* topBarTextFontFamily;
 
+-(instancetype)init;
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions;
 
--(void)apply:(UIViewController*)viewController;
--(void)setOptionsDynamically:(NSDictionary*)dynamicOptions;
+-(void)applyOn:(UIViewController*)viewController;
+-(void)mergeWith:(NSDictionary*)otherOptions;
 
 @end
 

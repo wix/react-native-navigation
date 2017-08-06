@@ -13,7 +13,11 @@
 
 @implementation RNNRootViewController
 
--(instancetype)initWithName:(NSString*)name withOptions:(RNNNavigationOptions*)options withContainerId:(NSString*)containerId rootViewCreator:(id<RNNRootViewCreator>)creator eventEmitter:(RNNEventEmitter*)eventEmitter {
+-(instancetype)initWithName:(NSString*)name
+				withOptions:(RNNNavigationOptions*)options
+			withContainerId:(NSString*)containerId
+			rootViewCreator:(id<RNNRootViewCreator>)creator
+			   eventEmitter:(RNNEventEmitter*)eventEmitter {
 	self = [super init];
 	self.containerId = containerId;
 	self.containerName = name;
@@ -30,6 +34,11 @@
 	return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+	[super viewWillAppear:animated];
+	[self.navigationOptions applyOn:self];
+}
+
 - (BOOL)prefersStatusBarHidden {
 	return [self.navigationOptions.statusBarHidden boolValue]; // || self.navigationController.isNavigationBarHidden;
 }
@@ -44,10 +53,6 @@
 	[self.eventEmitter sendContainerStop:self.containerId];
 }
 
--(void)viewWillAppear:(BOOL)animated{
-	[super viewWillAppear:animated];
-	[self.navigationOptions apply:self];
-}
 /**
  *	fix for #877, #878
  */
