@@ -1,6 +1,7 @@
 #import "RNNNavigationOptions.h"
 #import <React/RCTConvert.h>
 
+
 @implementation RNNNavigationOptions
 
 -(instancetype)init {
@@ -14,6 +15,7 @@
 	self.title = [navigationOptions objectForKey:@"title"];
 	self.topBarTextColor = [navigationOptions objectForKey:@"topBarTextColor"];
 	self.screenBackgroundColor = [navigationOptions objectForKey:@"screenBackgroundColor"];
+	self.setTabBadge = [navigationOptions objectForKey:@"setTabBadge"];
 	return self;
 }
 
@@ -23,7 +25,7 @@
 	}
 }
 
--(void)applyOn:(UIViewController*)viewController{
+-(void)applyOn:(UIViewController*)viewController {
 	if (self.topBarBackgroundColor) {
 		UIColor* backgroundColor = [RCTConvert UIColor:self.topBarBackgroundColor];
 		viewController.navigationController.navigationBar.barTintColor = backgroundColor;
@@ -40,6 +42,14 @@
 	if (self.screenBackgroundColor) {
 		UIColor* screenColor = [RCTConvert UIColor:self.screenBackgroundColor];
 		viewController.view.backgroundColor = screenColor;
+  }
+	if (self.setTabBadge) {
+		NSString *badge = [RCTConvert NSString:self.setTabBadge];
+		if (viewController.navigationController) {
+			viewController.navigationController.tabBarItem.badgeValue = badge;
+    } else {
+			viewController.tabBarItem.badgeValue = badge;
+		}
 	}
 }
 

@@ -1,9 +1,12 @@
+import _ from 'lodash/math';
 import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Text
+  Text,
+  Button
 } from 'react-native';
+import Navigation from 'react-native-navigation';
 
 class TextScreen extends Component {
   render() {
@@ -12,6 +15,7 @@ class TextScreen extends Component {
         <Text style={styles.h1}>{this.props.text || 'Text Screen'}</Text>
         {this.renderTextFromFunctionInProps()}
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
+        <Button title={"setTabBadge"} onPress={() => this.onButtonPress()}/>
       </View>
     );
   }
@@ -23,6 +27,12 @@ class TextScreen extends Component {
     return (
       <Text style={styles.h1}>{this.props.myFunction()}</Text>
     );
+  }
+
+  onButtonPress() {
+    Navigation.setOptions(this.props.containerId, {
+      setTabBadge: `${_.floor(Math.random() * 10)}`
+    });
   }
 }
 
