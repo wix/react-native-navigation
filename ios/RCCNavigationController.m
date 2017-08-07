@@ -7,6 +7,7 @@
 #import "RCCTitleViewHelper.h"
 #import "UIViewController+Rotation.h"
 #import "RCTHelpers.h"
+#import <React/RCTNavItemManager.h>
 
 @implementation RCCNavigationController
 {
@@ -334,8 +335,20 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     id icon = button[@"icon"];
     if (icon) iconImage = [RCTConvert UIImage:icon];
     
+    id systemIcon =button[@"buttonSystemItem"];
+    UIBarButtonSystemItem systemItemIcon=NSNotFound;
+    if (systemIcon) systemItemIcon =[RCTConvert UIBarButtonSystemItem:button[@"buttonSystemItem"]];
+
+    id buttonColorTag = button[@"buttonColor"];
+    UIColor *buttonColor = nil;
+    if (buttonColorTag) buttonColor= [RCTConvert UIColor:buttonColorTag];
+
+
     UIBarButtonItem *barButtonItem;
-    if (iconImage)
+    if (systemItemIcon!=NSNotFound) {
+        barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItemIcon  target:self action:@selector(onButtonPress:)];  
+    }
+    else if (iconImage)
     {
       barButtonItem = [[UIBarButtonItem alloc] initWithImage:iconImage style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPress:)];
     }
@@ -370,6 +383,10 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [barButtonItem setImage:[barButtonItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     }
     
+    if (buttonColor) {
+        barButtonItem.tintColor = buttonColor;
+    }
+
     NSString *testID = button[@"testID"];
     if (testID)
     {
