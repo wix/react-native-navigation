@@ -1,3 +1,3 @@
-import { start } from './app';
+const { start } = require('./app');
 
 start();

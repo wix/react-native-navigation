@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+const _ = require('lodash');
 
 describe('test environment', () => {
   it('handles object spread', () => {

@@ -8,7 +8,7 @@ describe('remx support', () => {
 
   beforeEach(() => {
     jest.resetModules();
-    MyConnectedContainer = require('./component').default;
+    MyConnectedContainer = require('./component');
     store = require('./store');
   });
 

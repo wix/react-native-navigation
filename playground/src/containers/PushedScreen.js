@@ -1,12 +1,11 @@
-import _ from 'lodash';
-import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  Button
-} from 'react-native';
+const _ = require('lodash');
 
-import Navigation from 'react-native-navigation';
+const React = require('react');
+const { Component } = require('react');
+
+const { View, Text, Button } = require('react-native');
+
+const Navigation = require('react-native-navigation');
 
 class PushedScreen extends Component {
   constructor(props) {
@@ -89,4 +88,4 @@ const styles = {
   }
 };
 
-export default PushedScreen;
+module.exports = PushedScreen;

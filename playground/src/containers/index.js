@@ -1,11 +1,11 @@
-import Navigation from 'react-native-navigation';
-import WelcomeScreen from './WelcomeScreen';
-import TextScreen from './TextScreen';
-import PushedScreen from './PushedScreen';
-import LifecycleScreen from './LifecycleScreen';
-import ModalScreen from './ModalScreen';
-import OptionsScreen from './OptionsScreen';
-import ScrollViewScreen from './ScrollViewScreen';
+const Navigation = require('react-native-navigation');
+const WelcomeScreen = require('./WelcomeScreen');
+const TextScreen = require('./TextScreen');
+const PushedScreen = require('./PushedScreen');
+const LifecycleScreen = require('./LifecycleScreen');
+const ModalScreen = require('./ModalScreen');
+const OptionsScreen = require('./OptionsScreen');
+const ScrollViewScreen = require('./ScrollViewScreen');
 
 function registerContainers() {
   Navigation.registerContainer(`navigation.playground.ScrollViewScreen`, () => ScrollViewScreen);

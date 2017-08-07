@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import { View, Text, Button } from 'react-native';
+const React = require('react');
+const { Component } = require('react');
+const { View, Text, Button } = require('react-native');
 
-import Navigation from 'react-native-navigation';
+const Navigation = require('react-native-navigation');
 
 class WelcomeScreen extends Component {
   constructor(props) {
@@ -132,7 +133,7 @@ class WelcomeScreen extends Component {
   }
 }
 
-export default WelcomeScreen;
+module.exports = WelcomeScreen;
 
 const styles = {
   root: {

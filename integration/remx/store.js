@@ -1,13 +1,13 @@
-import _ from 'lodash';
-import * as remx from 'remx';
+const _ = require('lodash');
+const remx = require('remx');
 
-export const state = remx.state({
+const state = remx.state({
   person: {
     name: 'no name'
   }
 });
 
-export const setters = remx.setters({
+const setters = remx.setters({
   setName(newName) {
     state.person.name = newName;
   },
@@ -17,7 +17,7 @@ export const setters = remx.setters({
   }
 });
 
-export const getters = remx.getters({
+const getters = remx.getters({
   getName() {
     return _.get(state, ['person', 'name']);
   },
@@ -26,3 +26,8 @@ export const getters = remx.getters({
     return _(state).get('person.age');
   }
 });
+
+module.exports = {
+  setters,
+  getters
+};

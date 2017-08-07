@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Text } from 'react-native';
+const React = require('react');
+const { Component } = require('react');
 
-import { connect } from 'remx/react-native';
-
-import * as store from './store';
+const { Text } = require('react-native');
+const { connect } = require('remx/react-native');
+const store = require('./store');
 
 class MyContainer extends Component {
   render() {
@@ -28,4 +28,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(MyContainer);
+module.exports = connect(mapStateToProps)(MyContainer);

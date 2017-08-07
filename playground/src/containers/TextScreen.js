@@ -1,11 +1,11 @@
-import _ from 'lodash/math';
-import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  Button
-} from 'react-native';
-import Navigation from 'react-native-navigation';
+const _ = require('lodash/math');
+
+const React = require('react');
+const { Component } = require('react');
+
+const { View, Text, Button } = require('react-native');
+
+const Navigation = require('react-native-navigation');
 
 class TextScreen extends Component {
   render() {
@@ -14,7 +14,7 @@ class TextScreen extends Component {
         <Text style={styles.h1}>{this.props.text || 'Text Screen'}</Text>
         {this.renderTextFromFunctionInProps()}
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
-        <Button title={'setTabBadge'} onPress={() => this.onButtonPress()}/>
+        <Button title={'setTabBadge'} onPress={() => this.onButtonPress()} />
       </View>
     );
   }
@@ -34,6 +34,7 @@ class TextScreen extends Component {
     });
   }
 }
+module.exports = TextScreen;
 
 const styles = {
   root: {
@@ -59,4 +60,3 @@ const styles = {
   }
 };
 
-export default TextScreen;

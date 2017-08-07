@@ -1,6 +1,5 @@
-import Navigation from 'react-native-navigation';
-
-import { registerContainers } from './containers';
+const Navigation = require('react-native-navigation');
+const { registerContainers } = require('./containers');
 
 function start() {
   registerContainers();

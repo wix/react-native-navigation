@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
-import { View, Text, Button } from 'react-native';
+const React = require('react');
+const { Component } = require('react');
 
-import Navigation from 'react-native-navigation';
+const { View, Text, Button } = require('react-native');
+
+const Navigation = require('react-native-navigation');
 
 class LifecycleScreen extends Component {
   constructor(props) {
@@ -41,7 +43,7 @@ class LifecycleScreen extends Component {
     });
   }
 }
-export default LifecycleScreen;
+module.exports = LifecycleScreen;
 
 const styles = {
   root: {
