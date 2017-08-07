@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, Dimensions, Button} from 'react-native';
+import {View, Text} from 'react-native';
 
 class TabOne extends React.Component {
 

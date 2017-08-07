@@ -51,6 +51,10 @@ public class TitleBar extends Toolbar {
         addButtonsToTitleBar(navigatorEventId, menu);
     }
 
+    public int getRightButtonsWidth() {
+        return actionMenuView.getWidth();
+    }
+
     public void setLeftButton(TitleBarLeftButtonParams leftButtonParams,
                               LeftButtonOnClickListener leftButtonOnClickListener,
                               String navigatorEventId,
@@ -75,6 +79,7 @@ public class TitleBar extends Toolbar {
         setVisibility(params.titleBarHidden);
         setTitleTextColor(params);
         setTitleTextFont(params);
+        setTitleTextFontSize(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
         setBackground(params);
@@ -83,6 +88,11 @@ public class TitleBar extends Toolbar {
 
     public void setVisibility(boolean titleBarHidden) {
         setVisibility(titleBarHidden ? GONE : VISIBLE);
+    }
+
+    public void setTitle(String title, StyleParams styleParams) {
+        setTitle(title);
+        centerTitle(styleParams);
     }
 
     private Activity getActivity() {
@@ -107,7 +117,6 @@ public class TitleBar extends Toolbar {
                 if (params.titleBarTitleTextCentered) {
                     titleView.setX(ViewUtils.getWindowWidth(getActivity()) / 2 - titleView.getWidth() / 2);
                 }
-                
             }
         });
     }
@@ -146,6 +155,15 @@ public class TitleBar extends Toolbar {
         View titleView = getTitleView();
         if (titleView instanceof TextView) {
             ((TextView) titleView).setTypeface(params.titleBarTitleFont.get());
+        }
+    }
+
+    protected void setTitleTextFontSize(StyleParams params) {
+        if (params.titleBarTitleFontSize > 0) {
+            View titleView = getTitleView();
+            if (titleView instanceof TextView) {
+                ((TextView) titleView).setTextSize(((float) params.titleBarTitleFontSize));
+            }
         }
     }
 

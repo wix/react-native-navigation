@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ViewUtils {
     private static final AtomicInteger viewId = new AtomicInteger(1);
     private static int statusBarHeight = -1;
+    private static int toolBarHeight = -1;
 
     public static void runOnPreDraw(final View view, final Runnable task) {
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -81,7 +82,7 @@ public class ViewUtils {
     public static float getWindowHeight(Activity activity) {
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        return metrics.widthPixels;
+        return metrics.heightPixels;
     }
 
     private static int compatGenerateViewId() {
@@ -180,6 +181,19 @@ public class ViewUtils {
                 (int) convertDpToPixel(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? 24 : 25);
         return statusBarHeight;
     }
+
+    public static int getToolBarHeight() {
+        if (toolBarHeight > 0) {
+            return toolBarHeight;
+        }
+        final Resources resources = NavigationApplication.instance.getResources();
+        final int resourceId = resources.getIdentifier("action_bar_size", "dimen", "android");
+        toolBarHeight = resourceId > 0 ?
+                resources.getDimensionPixelSize(resourceId) :
+                (int) convertDpToPixel(56);
+        return toolBarHeight;
+    }
+
 
     public static ForegroundColorSpan[] getForegroundColorSpans(TextView view) {
         SpannedString text = new SpannedString(view.getText());

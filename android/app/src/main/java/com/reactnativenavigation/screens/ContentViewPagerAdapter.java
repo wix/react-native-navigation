@@ -55,16 +55,33 @@ class ContentViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
     @Override
     public void onPageSelected(int position) {
         EventBus.instance.post(new ViewPagerScreenChangedEvent());
+        sendDisappearEvents(currentPosition);
         currentPosition = position;
         EventBus.instance.post(new ScreenChangedEvent(pageParams.get(currentPosition)));
         sendTabSelectedEventToJs();
+        sendAppearEvents(position);
     }
+
 
     @Override
     public void onPageScrollStateChanged(int state) {
         if (state == ViewPager.SCROLL_STATE_DRAGGING) {
             EventBus.instance.post(new ViewPagerScreenScrollStartEvent());
         }
+    }
+
+    private void sendAppearEvents(int position) {
+        PageParams pageParams = this.pageParams.get(position);
+        pageParams.timestamp = System.currentTimeMillis();
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(pageParams, NavigationType.TopTabSelected);
+        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(pageParams, NavigationType.TopTabSelected);
+    }
+
+    private void sendDisappearEvents(int position) {
+        PageParams pageParams = this.pageParams.get(position);
+        pageParams.timestamp = System.currentTimeMillis();
+        NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(pageParams, NavigationType.TopTabSelected);
+        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(pageParams, NavigationType.TopTabSelected);
     }
 
     private void sendTabSelectedEventToJs() {

@@ -31,7 +31,7 @@ public class BaseTitleBarButtonParams {
     }
 
     private void setColorFromScreenStyle(StyleParams.Color titleBarButtonColor) {
-        if (!color.hasColor() && titleBarButtonColor.hasColor()) {
+        if (titleBarButtonColor.hasColor()) {
             color = titleBarButtonColor;
         }
     }
