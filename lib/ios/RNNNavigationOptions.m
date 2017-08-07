@@ -1,7 +1,6 @@
 #import "RNNNavigationOptions.h"
 #import <React/RCTConvert.h>
 
-
 @implementation RNNNavigationOptions
 
 -(instancetype)init {
@@ -13,9 +12,12 @@
 	self.topBarBackgroundColor = [navigationOptions objectForKey:@"topBarBackgroundColor"];
 	self.statusBarHidden = [navigationOptions objectForKey:@"statusBarHidden"];
 	self.title = [navigationOptions objectForKey:@"title"];
+	self.topBarTextColor = [navigationOptions objectForKey:@"topBarTextColor"];
 	self.screenBackgroundColor = [navigationOptions objectForKey:@"screenBackgroundColor"];
-	self.setTabBadge = [navigationOptions objectForKey:@"setTabBadge"];
 	self.topBarTextFontFamily = [navigationOptions objectForKey:@"topBarTextFontFamily"];
+	self.topBarHidden = [navigationOptions objectForKey:@"topBarHidden"];
+	self.topBarHideOnScroll = [navigationOptions objectForKey:@"topBarHideOnScroll"];
+    self.setTabBadge = [navigationOptions objectForKey:@"setTabBadge"];
 	return self;
 }
 
@@ -45,10 +47,28 @@
 	} else if (self.topBarTextFontFamily){
 		viewController.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName: [UIFont fontWithName:self.topBarTextFontFamily size:20]};
 	}
+	
 	if (self.screenBackgroundColor) {
 		UIColor* screenColor = [RCTConvert UIColor:self.screenBackgroundColor];
 		viewController.view.backgroundColor = screenColor;
-  }
+	}
+	
+	if (self.topBarHidden){
+		if ([self.topBarHidden boolValue]) {
+			[viewController.navigationController setNavigationBarHidden:YES animated:YES];
+		} else {
+			[viewController.navigationController setNavigationBarHidden:NO animated:YES];
+		}
+	}
+	
+	if (self.topBarHideOnScroll) {
+		BOOL topBarHideOnScrollBool = [self.topBarHideOnScroll boolValue];
+		if (topBarHideOnScrollBool) {
+			viewController.navigationController.hidesBarsOnSwipe = YES;
+		} else {
+			viewController.navigationController.hidesBarsOnSwipe = NO;
+		}
+	}
 	if (self.setTabBadge) {
 		NSString *badge = [RCTConvert NSString:self.setTabBadge];
 		if (viewController.navigationController) {

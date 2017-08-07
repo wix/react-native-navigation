@@ -8,8 +8,10 @@
 @property (nonatomic, strong) NSNumber* statusBarHidden;
 @property (nonatomic, strong) NSString* title;
 @property (nonatomic, strong) NSNumber* screenBackgroundColor;
-@property (nonatomic, strong) NSString* setTabBadge;
 @property (nonatomic, strong) NSString* topBarTextFontFamily;
+@property (nonatomic, strong) NSNumber* topBarHidden;
+@property (nonatomic, strong) NSNumber* topBarHideOnScroll;
+@property (nonatomic, strong) NSString* setTabBadge;
 
 -(instancetype)init;
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions;
