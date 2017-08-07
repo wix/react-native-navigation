@@ -1,5 +1,3 @@
-[![NPM Version](https://img.shields.io/npm/v/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
-[![NPM Downloads](https://img.shields.io/npm/dm/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
 [![Build Status](https://travis-ci.org/wix/react-native-navigation.svg?branch=v2)](https://travis-ci.org/wix/react-native-navigation)
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 
@@ -7,7 +5,7 @@
 We are rebuilding react-native-navigation
 
 - [Why?](#why-rebuild-react-native-navigation)
-- [Where is it standing now?](#where-is-it-standing-now)
+- [Where is it standing now?](#current-status)
 - [Getting Started](#getting-started-with-v2)
 - [Usage](#usage)
 - [Contributing](CONTRIBUTING.md)
@@ -75,12 +73,12 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 |-----------------------|-----|--------|------------|
 | topBarTextColor |   ✅    |    ✅     |     [Contribute](CONTRIBUTING.md)        |
 | topBarTextFontSize    |   ✅    |   in development      |     [Contribute](CONTRIBUTING.md)        |
-| topBarTextFontFamily  |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
+| topBarTextFontFamily  |  ✅     |      ✅     |     [Contribute](CONTRIBUTING.md)        |
 | topBarBackgroundColor |  ✅     |  ✅       |     [Contribute](CONTRIBUTING.md)        |
-| topBarButtonColor     |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
-| topBarHidden          |   ✅    |   in development      |     [Contribute](CONTRIBUTING.md)        |
-| topBarHideOnScroll    |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
-| topBarTranslucent     |  ✅     |   in development      |     [Contribute](CONTRIBUTING.md)        |
+| topBarButtonColor     |  ✅     |    ✅      |     [Contribute](CONTRIBUTING.md)        |
+| topBarHidden          |   ✅    |   ✅      |     [Contribute](CONTRIBUTING.md)        |
+| topBarHideOnScroll    |  ✅     |  ✅    |     [Contribute](CONTRIBUTING.md)        |
+| topBarTranslucent     |  ✅     |   ✅     |     [Contribute](CONTRIBUTING.md)        |
 | topBarTransparent     | ✅      |   in development     |     [Contribute](CONTRIBUTING.md)        |
 | topBarNoBorder        |  ✅     |    [Contribute](CONTRIBUTING.md)     |     [Contribute](CONTRIBUTING.md)        |
 | drawUnderTabBar       |  ✅     |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
@@ -92,7 +90,7 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | statusBarTextColorSchemeSingleScreen|  ✅   |     in development    |     / iOS specific      |
 | navBarSubtitleColor          |  ✅   |   [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)      |
 | navBarSubtitleFontFamily    |   ✅  |    [Contribute](CONTRIBUTING.md)    |     [Contribute](CONTRIBUTING.md)       |
-| screenBackgroundColor     | ✅    |   in development     |     [Contribute](CONTRIBUTING.md)       |
+| screenBackgroundColor     | ✅    |   ✅     |     [Contribute](CONTRIBUTING.md)       |
 | orientation     |  ✅   |  in development      |   [Contribute](CONTRIBUTING.md)          |
 | statusBarHideWithTopBar        |  ✅   |    [Contribute](CONTRIBUTING.md)     |     [Contribute](CONTRIBUTING.md)       |
 | statusBarHidden       |  ✅   |    ✅       |     [Contribute](CONTRIBUTING.md)      |
