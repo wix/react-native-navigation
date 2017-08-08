@@ -178,6 +178,15 @@ Dismiss the current lightbox.
 Navigation.dismissLightBox();
 ```
 
+## handleDeepLink(params = {})
+
+Trigger a deep link within the app. See [deep links](https://wix.github.io/react-native-navigation/#/deep-links) for more details about how screens can listen for deep link events.
+
+```js
+  import {Navigation} from 'react-native-navigation';
+  Navigation.handleDeepLink(...);
+```
+
 ## registerScreen(screenID, generator)
 
 This is an internal function you probably don't want to use directly. If your screen components extend `Screen` directly (`import { Screen } from 'react-native-navigation'`), you can register them directly with `registerScreen` instead of with `registerComponent`. The main benefit of using `registerComponent` is that it wraps your regular screen component with a `Screen` automatically.
