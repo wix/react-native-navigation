@@ -82,7 +82,6 @@ public class TopBar extends AppBarLayout {
     }
 
     public void setTitle(String title, StyleParams styleParams) {
-        titleBar.setTitle(title, styleParams);
     }
 
     public void setSubtitle(String subtitle) {
