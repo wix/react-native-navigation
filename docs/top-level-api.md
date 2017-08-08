@@ -183,8 +183,10 @@ Navigation.dismissLightBox();
 Trigger a deep link within the app. See [deep links](https://wix.github.io/react-native-navigation/#/deep-links) for more details about how screens can listen for deep link events.
 
 ```js
-  import {Navigation} from 'react-native-navigation';
-  Navigation.handleDeepLink(...);
+  Navigation.handleDeepLink({
+    link: 'link/in/any/format',
+    payload: '' // (optional) Extra payload with deep link
+  });
 ```
 
 ## registerScreen(screenID, generator)
