@@ -78,7 +78,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getReactGateway().startReactContextOnceInBackgroundAndExecuteJS();
+        if (getReactGateway().isInitialized()) {
+            destroyLayouts();
+            getReactGateway().restartReactContextOnceInBackgroundAndExecuteJS();
+        } else {
+            getReactGateway().startReactContextOnceInBackgroundAndExecuteJS();
+        }
 
         registerReceiver(receiver, new IntentFilter("com.reactnativenavigation.START_APP"));
 

@@ -14,6 +14,8 @@ public interface ReactGateway {
 
     void startReactContextOnceInBackgroundAndExecuteJS();
 
+    void restartReactContextOnceInBackgroundAndExecuteJS();
+
     boolean isInitialized();
 
     ReactContext getReactContext();

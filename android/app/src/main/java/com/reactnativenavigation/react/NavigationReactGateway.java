@@ -37,6 +37,11 @@ public class NavigationReactGateway implements ReactGateway {
     }
 
     @Override
+    public void restartReactContextOnceInBackgroundAndExecuteJS() {
+        getReactInstanceManager().recreateReactContextInBackground();
+    }
+
+    @Override
     public boolean isInitialized() {
         return host.hasInstance() && getReactInstanceManager().getCurrentReactContext() != null;
     }
