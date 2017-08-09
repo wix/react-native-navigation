@@ -39,11 +39,10 @@ public class NavigationCommandsHandler {
      */
 
     public static void startApp(Bundle params) {
-        Intent intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
-        IntentDataHandler.onStartApp(intent);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent();
         intent.putExtra(ACTIVITY_PARAMS_BUNDLE, params);
         intent.putExtra("animationType", params.getString("animationType"));
+        intent.setAction("com.reactnativenavigation.START_APP");
         NavigationApplication.instance.startActivity(intent);
     }
 
