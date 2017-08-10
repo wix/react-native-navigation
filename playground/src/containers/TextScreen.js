@@ -1,5 +1,3 @@
-const _ = require('lodash/math');
-
 const React = require('react');
 const { Component } = require('react');
 
@@ -14,7 +12,7 @@ class TextScreen extends Component {
         <Text style={styles.h1}>{this.props.text || 'Text Screen'}</Text>
         {this.renderTextFromFunctionInProps()}
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
-        <Button title={'setTabBadge'} onPress={() => this.onButtonPress()} />
+        <Button title={'Set Tab Badge'} onPress={() => this.onButtonPress()} />
       </View>
     );
   }
@@ -30,7 +28,7 @@ class TextScreen extends Component {
 
   onButtonPress() {
     Navigation.setOptions(this.props.containerId, {
-      setTabBadge: `${_.floor(Math.random() * 10)}`
+      setTabBadge: `EnCyClOpEdIa`
     });
   }
 }
