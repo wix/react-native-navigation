@@ -1,6 +1,7 @@
 package com.reactnativenavigation.params;
 
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.MenuItem;
 
 public class BaseTitleBarButtonParams {
@@ -20,6 +21,8 @@ public class BaseTitleBarButtonParams {
     public String eventId;
     public String label;
     public Drawable icon;
+    public String componentName;
+    public Bundle componentProps;
     public StyleParams.Color color;
     public StyleParams.Color disabledColor;
     public ShowAsAction showAsAction;
@@ -41,5 +44,9 @@ public class BaseTitleBarButtonParams {
             return color;
         }
         return disabledColor.hasColor() ? disabledColor : AppStyle.appStyle.titleBarDisabledButtonColor;
+    }
+
+    public boolean hasComponent() {
+        return componentName != null;
     }
 }
