@@ -14,12 +14,12 @@ class LifecycleScreen extends Component {
     };
   }
 
-  onStart() {
-    this.setState({ text: 'onStart' });
+  didAppear() {
+    this.setState({ text: 'didAppear' });
   }
 
-  onStop() {
-    alert('onStop'); // eslint-disable-line no-alert
+  didDisappear() {
+    alert('didDisappear'); // eslint-disable-line no-alert
   }
 
   componentWillUnmount() {
@@ -31,7 +31,7 @@ class LifecycleScreen extends Component {
       <View style={styles.root}>
         <Text style={styles.h1}>{`Lifecycle Screen`}</Text>
         <Text style={styles.h1}>{this.state.text}</Text>
-        <Button title="Push to test onStop" onPress={this.onClickPush} />
+        <Button title="Push to test didDisappear" onPress={this.onClickPush} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );

@@ -45,13 +45,13 @@ public class ReactRootViewController extends ViewController implements Navigatio
 	public void onViewAppeared() {
 		super.onViewAppeared();
 		applyNavigationOptions();
-		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).containerStart(getId());
+		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).containerDidAppear(getId());
 	}
 
 	@Override
 	public void onViewDisappear() {
 		super.onViewDisappear();
-		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).containerStop(getId());
+		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).containerDidDisappear(getId());
 	}
 
 	@Override

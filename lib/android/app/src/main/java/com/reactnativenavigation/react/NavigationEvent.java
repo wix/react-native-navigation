@@ -9,8 +9,8 @@ import static com.facebook.react.modules.core.DeviceEventManagerModule.RCTDevice
 
 public class NavigationEvent {
 	private static final String onAppLaunched = "RNN.appLaunched";
-	private static final String containerStart = "RNN.containerStart";
-	private static final String containerStop = "RNN.containerStop";
+	private static final String containerDidAppear = "RNN.containerDidAppear";
+	private static final String containerDidDisappear = "RNN.containerDidDisappear";
 
 	private final RCTDeviceEventEmitter emitter;
 
@@ -22,12 +22,12 @@ public class NavigationEvent {
 		emit(onAppLaunched);
 	}
 
-	public void containerStop(String id) {
-		emit(containerStop, id);
+	public void containerDidDisappear(String id) {
+		emit(containerDidDisappear, id);
 	}
 
-	public void containerStart(String id) {
-		emit(containerStart, id);
+	public void containerDidAppear(String id) {
+		emit(containerDidAppear, id);
 	}
 
 	private void emit(String eventName) {

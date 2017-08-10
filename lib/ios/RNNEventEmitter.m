@@ -5,12 +5,12 @@
 RCT_EXPORT_MODULE();
 
 static NSString* const onAppLaunched	= @"RNN.appLaunched";
-static NSString* const containerStart	= @"RNN.containerStart";
-static NSString* const containerStop	= @"RNN.containerStop";
+static NSString* const containerDidAppear	= @"RNN.containerDidAppear";
+static NSString* const containerDidDisappear	= @"RNN.containerDidDisappear";
 
 
 -(NSArray<NSString *> *)supportedEvents {
-	return @[onAppLaunched, containerStart, containerStop];
+	return @[onAppLaunched, containerDidAppear, containerDidDisappear];
 }
 
 # pragma mark public
@@ -19,12 +19,12 @@ static NSString* const containerStop	= @"RNN.containerStop";
 	[self send:onAppLaunched body:nil];
 }
 
--(void)sendContainerStart:(NSString *)containerId {
-	[self send:containerStart body:containerId];
+-(void)sendContainerDidAppear:(NSString *)containerId {
+	[self send:containerDidAppear body:containerId];
 }
 
--(void)sendContainerStop:(NSString *)containerId {
-	[self send:containerStop body:containerId];
+-(void)sendContainerDidDisappear:(NSString *)containerId {
+	[self send:containerDidDisappear body:containerId];
 }
 
 # pragma mark private
