@@ -324,7 +324,7 @@ Dismiss all the current modals at the same time.
 ```js
 Navigation.dismissAllModals();
 ```
-#### Screen Lifecycle - onStop() and didAppear()
+#### Screen Lifecycle - didDisppear() and didAppear()
 
 The didDisppear() and didAppear() functions are lifecycle functions that are added to the screen and run when a screen apears and disappears from the screen. To use them simply add them to your component like any other react lifecycle function:
 
