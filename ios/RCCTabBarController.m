@@ -218,6 +218,12 @@
   
   // replace the tabs
   self.viewControllers = viewControllers;
+
+  
+   NSUInteger *initialTabIndex = [props[@"initialTabIndex"] unsignedIntegerValue];
+   if (initialTabIndex && initialTabIndex < viewControllers.count) {
+      [self setSelectedIndex:initialTabIndex];
+   }
   
   [self setRotation:props];
   
