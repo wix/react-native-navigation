@@ -93,7 +93,12 @@ function savePassProps(params) {
   }
 
   if (params.topTabs) {
-    _.forEach(params.topTabs, (tab) => savePassProps(tab));
+    _.forEach(params.topTabs, (tab) => {
+      if (!tab.passProps) {
+        tab.passProps = params.passProps;
+      }
+      savePassProps(tab);
+    });
   }
 
   if (params.tabs) {
