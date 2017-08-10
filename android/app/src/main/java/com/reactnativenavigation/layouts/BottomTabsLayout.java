@@ -76,6 +76,14 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         addScreenStacks();
         createSnackbarContainer();
         showInitialScreenStack();
+        setInitialTabIndex();
+    }
+
+    private void setInitialTabIndex() {
+        if (params.initialTabIndex == null) {
+            return;
+        }
+        bottomTabs.setCurrentItem(params.initialTabIndex);
     }
 
     private void createSideMenu() {

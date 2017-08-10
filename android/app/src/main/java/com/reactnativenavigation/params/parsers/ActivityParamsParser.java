@@ -30,6 +30,7 @@ public class ActivityParamsParser extends Parser {
         }
 
         result.animateShow = params.getBoolean("animateShow", true);
+        result.initialTabIndex = params.getInt("initialTabIndex");
 
         return result;
     }
