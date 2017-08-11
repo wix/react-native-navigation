@@ -140,9 +140,8 @@
     }
   }
   
-  NSString *overlayView = [props valueForKeyPath:@"overlay.view"];
-  if (overlayView) {
-    self.overlayView = [[RCTRootView alloc] initWithBridge:bridge moduleName:overlayView initialProperties:passPropsOverlay];
+  NSString *overlayScreen = [props valueForKeyPath:@"overlay.screen"];
+  if (overlayScreen) {
     // Pass navigation props
     NSMutableDictionary *mutablePassPropsOverlay = [passProps mutableCopy];
     NSDictionary *overlayProps = [props valueForKeyPath:@"overlay.passProps"];
@@ -151,6 +150,7 @@
     }
     
     NSDictionary *passPropsOverlay = [NSDictionary dictionaryWithDictionary:mutablePassPropsOverlay];
+    self.overlayView = [[RCTRootView alloc] initWithBridge:bridge moduleName:overlayScreen initialProperties:passPropsOverlay];
   }
   
   NSMutableArray *viewControllers = [NSMutableArray array];

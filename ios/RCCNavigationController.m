@@ -74,8 +74,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
 
   [self setRotation:props];
 
-  NSString *overlayView = [props valueForKeyPath:@"overlay.view"];
-  if (overlayView) {
+  NSString *overlayScreen = [props valueForKeyPath:@"overlay.screen"];
+  if (overlayScreen) {
     // Pass navigation props
     NSMutableDictionary *mutablePassPropsOverlay = [passProps mutableCopy];
     NSDictionary *overlayProps = [props valueForKeyPath:@"overlay.passProps"];
@@ -84,7 +84,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     }
 
     NSDictionary *passPropsOverlay = [NSDictionary dictionaryWithDictionary:mutablePassPropsOverlay];
-    self.overlayView = [[RCTRootView alloc] initWithBridge:bridge moduleName:overlayView initialProperties:passPropsOverlay];
+    self.overlayView = [[RCTRootView alloc] initWithBridge:bridge moduleName:overlayScreen initialProperties:passPropsOverlay];
   }
 
   return self;
