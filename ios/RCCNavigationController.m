@@ -15,6 +15,12 @@
 #import "RCTHelpers.h"
 #import "RCTConvert+UIBarButtonSystemItem.h"
 
+@interface RCCNavigationController()
+
+@property (strong, nonatomic) RCTRootView *overlayView;
+
+@end
+
 @implementation RCCNavigationController
 {
   BOOL _transitioning;
