@@ -386,6 +386,24 @@ RCT_EXPORT_METHOD(getCurrentlyVisibleScreenId:(RCTPromiseResolveBlock)resolve re
     resolve(result);
 }
 
+RCT_EXPORT_METHOD(
+                  showOverlay:(NSDictionary*)params)
+{
+    UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+    if ([rootVC respondsToSelector:@selector(showOverlay:)]) {
+        [rootVC performSelector:@selector(showOverlay:) withObject:params];
+    }
+}
+
+RCT_EXPORT_METHOD(
+                  removeOverlay)
+{
+    UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+    if ([rootVC respondsToSelector:@selector(removeOverlay)]) {
+        [rootVC performSelector:@selector(removeOverlay)];
+    }
+}
+
 -(BOOL)viewControllerIsModal:(UIViewController*)viewController
 {
     BOOL viewControllerIsModal = (viewController.presentingViewController.presentedViewController == viewController)

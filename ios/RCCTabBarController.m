@@ -251,6 +251,16 @@
   return self;
 }
 
+- (void)showOverlay:(NSDictionary *)params {
+  NSString *overlayScreen = [params valueForKeyPath:@"screen"];
+  NSDictionary *overlayProps = [params valueForKeyPath:@"passProps"];
+  self.overlayView = [[RCTRootView alloc] initWithBridge:[[RCCManager sharedInstance] getBridge] moduleName:overlayScreen initialProperties:overlayProps];
+}
+
+- (void)removeOverlay {
+  self.overlayView = nil;
+}
+
 - (void)setOverlayView:(RCTRootView *)overlayView {
   RCTRootView *previousOverlayView = _overlayView;
   
