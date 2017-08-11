@@ -83,6 +83,10 @@ Navigation.startTabBasedApp({
                                         // for TheSideBar: 'airbnb', 'facebook', 'luvocracy','wunder-list'
     disableOpenGesture: false // optional, can the drawer be opened with a swipe instead of button
   },
+  overlay: { // optional, add this if you want an overlay view over your tabs (iOS only)
+    screen: 'example.OverlayScreen', // unique ID registered with Navigation.registerScreen
+    passProps: {} // simple serializable object that will pass as props to all top screens (optional)
+  },  
   passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
   animationType: 'slide-down' // optional, add transition animation to root change: 'none', 'slide-down', 'fade'
 });
@@ -122,6 +126,10 @@ Navigation.startSingleScreenApp({
                                         // for TheSideBar: 'airbnb', 'facebook', 'luvocracy','wunder-list'
     disableOpenGesture: false // optional, can the drawer, both right and left, be opened with a swipe instead of button
   },
+  overlay: { // optional, add this if you want an overlay view over your navigation controller (iOS only)
+    screen: 'example.OverlayScreen', // unique ID registered with Navigation.registerScreen
+    passProps: {} // simple serializable object that will pass as props to all top screens (optional)
+  },  
   passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
   animationType: 'slide-down' // optional, add transition animation to root change: 'none', 'slide-down', 'fade'
 });
@@ -195,6 +203,25 @@ Trigger a deep link within the app. See [deep links](https://wix.github.io/react
     link: 'link/in/any/format',
     payload: '' // (optional) Extra payload with deep link
   });
+```
+
+## showOverlay(params = {})
+
+Show new overlay or replace currently visible overlay (iOS only)
+
+```js
+Navigation.showOverlay({
+  screen: 'example.OverlayScreen', // unique ID registered with Navigation.registerScreen
+  passProps: {} // simple serializable object that will pass as props to all top screens (optional)
+});
+```
+
+## removeOverlay()
+
+Remove currently visible overlay (iOS only)
+
+```js
+Navigation.removeOverlay();
 ```
 
 ## registerScreen(screenID, generator)
