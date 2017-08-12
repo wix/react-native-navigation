@@ -48,7 +48,7 @@ const NSInteger kLightBoxTag = 0x101010;
                 UIColor *backgroundColor = [RCTConvert UIColor:style[@"backgroundColor"]];
                 if (backgroundColor != nil)
                 {
-                    self.overlayColorView = [[UIView alloc] init];
+                    self.overlayColorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
                     self.overlayColorView.backgroundColor = backgroundColor;
                     self.overlayColorView.alpha = 0;
                     [self addSubview:self.overlayColorView];
@@ -87,11 +87,6 @@ const NSInteger kLightBoxTag = 0x101010;
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-
-    self.reactView.frame = self.bounds;
-    if (self.overlayColorView != nil) {
-        self.overlayColorView.frame = self.bounds;
-    }
     
     if(!self.yellowBoxRemoved)
     {

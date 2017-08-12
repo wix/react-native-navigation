@@ -69,7 +69,7 @@ Navigation.startTabBasedApp({
     style: { // ( iOS only )
       drawerShadow: true, // optional, add this if you want a side menu drawer shadow
       contentOverlayColor: 'rgba(0,0,0,0.25)', // optional, add this if you want a overlay color when drawer is open
-      leftDrawerWidth: 50 // optional, add this if you want a define left drawer width (50=percent)
+      leftDrawerWidth: 50, // optional, add this if you want a define left drawer width (50=percent)
       rightDrawerWidth: 50 // optional, add this if you want a define right drawer width (50=percent)
     },
     type: 'MMDrawer', // optional, iOS only, types: 'TheSideBar', 'MMDrawer' default: 'MMDrawer'
@@ -106,7 +106,7 @@ Navigation.startSingleScreenApp({
     style: { // ( iOS only )
       drawerShadow: true, // optional, add this if you want a side menu drawer shadow
       contentOverlayColor: 'rgba(0,0,0,0.25)', // optional, add this if you want a overlay color when drawer is open
-      leftDrawerWidth: 50 // optional, add this if you want a define left drawer width (50=percent)
+      leftDrawerWidth: 50, // optional, add this if you want a define left drawer width (50=percent)
       rightDrawerWidth: 50 // optional, add this if you want a define right drawer width (50=percent)
     },
     type: 'MMDrawer', // optional, iOS only, types: 'TheSideBar', 'MMDrawer' default: 'MMDrawer'
@@ -176,6 +176,17 @@ Dismiss the current lightbox.
 
 ```js
 Navigation.dismissLightBox();
+```
+
+## handleDeepLink(params = {})
+
+Trigger a deep link within the app. See [deep links](https://wix.github.io/react-native-navigation/#/deep-links) for more details about how screens can listen for deep link events.
+
+```js
+  Navigation.handleDeepLink({
+    link: 'link/in/any/format',
+    payload: '' // (optional) Extra payload with deep link
+  });
 ```
 
 ## registerScreen(screenID, generator)

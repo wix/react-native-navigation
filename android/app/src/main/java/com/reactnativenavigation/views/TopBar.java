@@ -219,6 +219,7 @@ public class TopBar extends AppBarLayout {
         if (reactView != null) {
             reactView.unmountReactView();
         }
+        titleBar.destroy();
     }
 
     public void onViewPagerScreenChanged(BaseScreenParams screenParams) {

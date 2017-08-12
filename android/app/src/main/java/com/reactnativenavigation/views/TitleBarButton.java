@@ -34,6 +34,9 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         MenuItem item = createMenuItem(index);
         item.setShowAsAction(buttonParams.showAsAction.action);
         item.setEnabled(buttonParams.enabled);
+        if (buttonParams.hasComponent()) {
+            item.setActionView(new TitleBarButtonComponent(parent.getContext(), buttonParams.componentName, buttonParams.componentProps));
+        }
         setIcon(item);
         setColor();
         setFont();
