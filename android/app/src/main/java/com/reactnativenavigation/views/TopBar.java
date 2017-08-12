@@ -166,9 +166,14 @@ public class TopBar extends AppBarLayout {
         titleBar.setRightButtons(titleBarButtons, navigatorEventId);
     }
 
-    public TopTabs initTabs() {
+    public TopTabs initTabs(styleParams) {
         topTabs = new TopTabs(getContext());
-        addView(topTabs, new ViewGroup.LayoutParams(MATCH_PARENT, (int) ViewUtils.convertDpToPixel(48)));
+
+        final int topTabsHeight = styleParams.topTabsHeight > 0
+            ? (int) ViewUtils.convertDpToPixel(styleParams.topTabsHeight)
+            : MATCH_PARENT;
+
+        addView(topTabs, new ViewGroup.LayoutParams(MATCH_PARENT, topTabsHeight));
         return topTabs;
     }
 
