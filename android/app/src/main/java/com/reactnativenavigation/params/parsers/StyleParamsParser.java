@@ -55,6 +55,7 @@ public class StyleParamsParser {
         result.titleBarDisabledButtonColor = getColor("titleBarDisabledButtonColor", getTitleBarDisabledButtonColor());
         result.titleBarTitleFont = getFont("titleBarTitleFontFamily", getDefaultTitleTextFontFamily());
         result.titleBarTitleFontSize = getInt("titleBarTitleFontSize", getDefaultTitleTextFontSize());
+        result.titleBarTitleFontBold = getBoolean("titleBarTitleFontBold", getDefaultTitleTextFontBold());
         result.titleBarTitleTextCentered = getBoolean("titleBarTitleTextCentered", getDefaultTitleBarTextCentered());
         result.titleBarHeight = getInt("titleBarHeight", getDefaultTitleBarHeight());
         result.backButtonHidden = getBoolean("backButtonHidden", getDefaultBackButtonHidden());
@@ -257,6 +258,10 @@ public class StyleParamsParser {
 
     private int getDefaultTitleTextFontSize() {
         return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarTitleFontSize;
+    }
+
+    private boolean getDefaultTitleTextFontBold() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.titleBarTitleFontBold;
     }
 
     private boolean getDefaultTitleBarTextCentered() {

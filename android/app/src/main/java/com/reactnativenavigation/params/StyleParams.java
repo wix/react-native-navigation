@@ -99,6 +99,7 @@ public class StyleParams {
     public Color titleBarDisabledButtonColor;
     public Font titleBarTitleFont;
     public int titleBarTitleFontSize;
+    public boolean titleBarTitleFontBold;
     public boolean titleBarTitleTextCentered;
     public int titleBarHeight;
     public boolean backButtonHidden;

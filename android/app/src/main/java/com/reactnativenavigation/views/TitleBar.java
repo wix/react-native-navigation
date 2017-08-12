@@ -76,6 +76,7 @@ public class TitleBar extends Toolbar {
         setTitleTextColor(params);
         setTitleTextFont(params);
         setTitleTextFontSize(params);
+        setTitleTextFontWeight(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
         setBackground(params);
@@ -148,6 +149,15 @@ public class TitleBar extends Toolbar {
             View titleView = getTitleView();
             if (titleView instanceof TextView) {
                 ((TextView) titleView).setTextSize(((float) params.titleBarTitleFontSize));
+            }
+        }
+    }
+
+    protected void setTitleTextFontWeight(StyleParams params) {
+        if (params.titleBarTitleFontBold) {
+            View titleView = getTitleView();
+            if (titleView instanceof TextView) {
+                ((TextView) titleView).setTypeface(((TextView) titleView).getTypeface(), Typeface.BOLD);
             }
         }
     }
