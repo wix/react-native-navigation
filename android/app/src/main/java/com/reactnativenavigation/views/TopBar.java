@@ -166,7 +166,7 @@ public class TopBar extends AppBarLayout {
         titleBar.setRightButtons(titleBarButtons, navigatorEventId);
     }
 
-    public TopTabs initTabs(styleParams) {
+    public TopTabs initTabs(StyleParams styleParams) {
         topTabs = new TopTabs(getContext());
 
         final int topTabsHeight = styleParams.topTabsHeight > 0
