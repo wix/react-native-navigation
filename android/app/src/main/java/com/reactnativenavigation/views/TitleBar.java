@@ -80,10 +80,6 @@ public class TitleBar extends Toolbar {
         colorOverflowButton(params);
         setBackground(params);
         centerTitle(params);
-
-        Toolbar.LayoutParams params = (Toolbar.LayoutParams)this.getLayoutParams();
-        params.height = 22;
-        this.setLayoutParams(params);
     }
 
     public void setVisibility(boolean titleBarHidden) {
