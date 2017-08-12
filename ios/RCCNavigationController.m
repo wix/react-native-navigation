@@ -42,6 +42,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   NSString *component = props[@"component"];
   if (!component) return nil;
   
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTJavaScriptWillStartLoadingNotification object:nil];
+  
   NSDictionary *passProps = props[@"passProps"];
   NSDictionary *navigatorStyle = props[@"style"];
   
@@ -88,6 +90,16 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   }
 
   return self;
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:RCTJavaScriptWillStartLoadingNotification object:nil];
+  self.overlayView = nil;
+}
+
+- (void)onRNReload {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:RCTJavaScriptWillStartLoadingNotification object:nil];
+  self.overlayView = nil;
 }
 
 - (void)showOverlay:(NSDictionary *)params {
