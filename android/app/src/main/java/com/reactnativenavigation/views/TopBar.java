@@ -62,9 +62,10 @@ public class TopBar extends AppBarLayout {
     public void addTitleBarAndSetButtons(List<TitleBarButtonParams> rightButtons,
                                          TitleBarLeftButtonParams leftButton,
                                          LeftButtonOnClickListener leftButtonOnClickListener,
-                                         String navigatorEventId, boolean overrideBackPressInJs) {
+                                         String navigatorEventId, boolean overrideBackPressInJs,
+                                         StyleParams styleParams) {
         titleBar = createTitleBar();
-        addTitleBar();
+        addTitleBar(styleParams);
         addButtons(rightButtons, leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
     }
 
@@ -72,8 +73,14 @@ public class TopBar extends AppBarLayout {
         return new TitleBar(getContext());
     }
 
-    protected void addTitleBar() {
-        titleBarAndContextualMenuContainer.addView(titleBar, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+    protected void addTitleBar(StyleParams styleParams) {
+        final int titleBarHeight = styleParams.titleBarHeight > 0
+            ? (int) ViewUtils.convertDpToPixel(styleParams.titleBarHeight)
+            : MATCH_PARENT;
+
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(MATCH_PARENT, titleBarHeight);
+
+        titleBarAndContextualMenuContainer.addView(titleBar, lp);
     }
 
     private void addButtons(List<TitleBarButtonParams> rightButtons, TitleBarLeftButtonParams leftButton, LeftButtonOnClickListener leftButtonOnClickListener, String navigatorEventId, boolean overrideBackPressInJs) {

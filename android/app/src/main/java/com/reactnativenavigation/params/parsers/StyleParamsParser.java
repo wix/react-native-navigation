@@ -56,6 +56,7 @@ public class StyleParamsParser {
         result.titleBarTitleFont = getFont("titleBarTitleFontFamily", getDefaultTitleTextFontFamily());
         result.titleBarTitleFontSize = getInt("titleBarTitleFontSize", getDefaultTitleTextFontSize());
         result.titleBarTitleTextCentered = getBoolean("titleBarTitleTextCentered", getDefaultTitleBarTextCentered());
+        result.titleBarHeight = getInt("titleBarHeight", getDefaultTitleBarHeight());
         result.backButtonHidden = getBoolean("backButtonHidden", getDefaultBackButtonHidden());
         result.topTabsHidden = getBoolean("topTabsHidden", getDefaultTopTabsHidden());
 
@@ -255,6 +256,10 @@ public class StyleParamsParser {
 
     private boolean getDefaultTitleBarTextCentered() {
         return AppStyle.appStyle != null && AppStyle.appStyle.titleBarTitleTextCentered;
+    }
+
+    private int getDefaultTitleBarHeight() {
+        return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarHeight;
     }
 
     private boolean getBoolean(String key, boolean defaultValue) {
