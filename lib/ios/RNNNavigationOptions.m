@@ -22,7 +22,8 @@
 	self.topBarTranslucent = [navigationOptions objectForKey:@"topBarTranslucent"];
 	self.tabBadge = [navigationOptions objectForKey:@"tabBadge"];
 	self.topBarTextFontSize = [navigationOptions objectForKey:@"topBarTextFontSize"];
-  
+	self.topBarNoBorder = [navigationOptions objectForKey:@"topBarNoBorder"];
+
 	return self;
 }
 
@@ -105,6 +106,16 @@
 		} else {
 			viewController.navigationController.navigationBar.translucent = NO;
 		}		
+	}
+
+	if (self.topBarNoBorder) {
+		if ([self.topBarNoBorder boolValue]) {
+			viewController.navigationController.navigationBar
+			.shadowImage = [[UIImage alloc] init];
+		} else {
+			viewController.navigationController.navigationBar
+			.shadowImage = nil;
+		}
 	}
 
 }
