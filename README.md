@@ -72,17 +72,17 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 |                       | v1  | v2 iOS | v2 Android |
 |-----------------------|-----|--------|------------|
 | topBarTextColor |   ✅    |    ✅     |     [Contribute](CONTRIBUTING.md)        |
-| topBarTextFontSize    |   ✅    |   in development      |     [Contribute](CONTRIBUTING.md)        |
+| topBarTextFontSize    |   ✅    |    ✅      |     [Contribute](CONTRIBUTING.md)        |
 | topBarTextFontFamily  |  ✅     |      ✅     |     [Contribute](CONTRIBUTING.md)        |
-| topBarBackgroundColor |  ✅     |  ✅       |     [Contribute](CONTRIBUTING.md)        |
+| topBarBackgroundColor |  ✅     |  ✅       |     ✅         |
 | topBarButtonColor     |  ✅     |    ✅      |     [Contribute](CONTRIBUTING.md)        |
 | topBarHidden          |   ✅    |   ✅      |     [Contribute](CONTRIBUTING.md)        |
 | topBarHideOnScroll    |  ✅     |  ✅    |     [Contribute](CONTRIBUTING.md)        |
 | topBarTranslucent     |  ✅     |   ✅     |     [Contribute](CONTRIBUTING.md)        |
-| topBarTransparent     | ✅      |   in development     |     [Contribute](CONTRIBUTING.md)        |
+| topBarTransparent     | ✅      |   WIP @bogobogo     |     [Contribute](CONTRIBUTING.md)        |
 | topBarNoBorder        |  ✅     |    [Contribute](CONTRIBUTING.md)     |     [Contribute](CONTRIBUTING.md)        |
-| drawUnderTabBar       |  ✅     |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
-| drawUnderTopBar       |  ✅     |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
+| drawUnderTabBar       |  ✅     |    WIP @gran33     |      [Contribute](CONTRIBUTING.md)       |
+| drawUnderTopBar       |  ✅     |    WIP @gran33     |      [Contribute](CONTRIBUTING.md)       |
 | statusBarBlur         |  ✅     |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
 | topBarBlur            | ✅      |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
 | tabBarHidden  |   ✅  |   [Contribute](CONTRIBUTING.md)     |    [Contribute](CONTRIBUTING.md)        |
@@ -91,10 +91,10 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | navBarSubtitleColor          |  ✅   |   [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)      |
 | navBarSubtitleFontFamily    |   ✅  |    [Contribute](CONTRIBUTING.md)    |     [Contribute](CONTRIBUTING.md)       |
 | screenBackgroundColor     | ✅    |   ✅     |     [Contribute](CONTRIBUTING.md)       |
-| orientation     |  ✅   |  in development      |   [Contribute](CONTRIBUTING.md)          |
+| orientation     |  ✅   |  WIP @yogevbd      |   [Contribute](CONTRIBUTING.md)          |
 | statusBarHideWithTopBar        |  ✅   |    [Contribute](CONTRIBUTING.md)     |     [Contribute](CONTRIBUTING.md)       |
 | statusBarHidden       |  ✅   |    ✅       |     [Contribute](CONTRIBUTING.md)      |
-| disabledBackGesture       |   ✅  |   [Contribute](CONTRIBUTING.md)       |    / iOS specific     |
+| disabledBackGesture       |   ✅  |  WIP @gran33     |    / iOS specific     |
 | screenBackgroundImageName         |   ✅  |   [Contribute](CONTRIBUTING.md)      |    [Contribute](CONTRIBUTING.md)        |
 | rootBackgroundImageName            |  ✅   |    [Contribute](CONTRIBUTING.md)     |    [Contribute](CONTRIBUTING.md)       |
 | setButtons          |   ✅     |         [Contribute](CONTRIBUTING.md)     | [Contribute](CONTRIBUTING.md) |
@@ -103,7 +103,9 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | toggleTabs          |   ✅     |       in development    | in development|
 | setTabBadge         |    ✅    |       ✅    | [Contribute](CONTRIBUTING.md)|
 | switchToTab         |    ✅    |      in development    |[Contribute](CONTRIBUTING.md) |
-| toggleNavBar        |   ✅     |      [Contribute](CONTRIBUTING.md)      | [Contribute](CONTRIBUTING.md)|
+| toggleNavBar        |   ✅     |      WIP @gran33     | [Contribute](CONTRIBUTING.md)|
+| navBarCustomView        |   ✅     |     WIP @gran33     | [Contribute](CONTRIBUTING.md)|
+
 
 Element tranisitions, adding buttons and styles are not yet implemented. [Contribute](CONTRIBUTING.md)
 
@@ -324,9 +326,9 @@ Dismiss all the current modals at the same time.
 ```js
 Navigation.dismissAllModals();
 ```
-#### Screen Lifecycle - onStop() and onStart()
+#### Screen Lifecycle - didDisppear() and didAppear()
 
-The onStop() and onStart() functions are lifecycle functions that are added to the screen and run when a screen apears and disappears from the screen. To use them simply add them to your component like any other react lifecycle function:
+The didDisppear() and didAppear() functions are lifecycle functions that are added to the screen and run when a screen apears and disappears from the screen. To use them simply add them to your component like any other react lifecycle function:
 
 ```js
 class LifecycleScreen extends Component {
@@ -337,12 +339,12 @@ class LifecycleScreen extends Component {
     };
   }
 
-  onStart() {
-    this.setState({ text: 'onStart' });
+  didAppear() {
+    this.setState({ text: 'didAppear' });
   }
 
-  onStop() {
-    alert('onStop');
+  didDisppear() {
+    alert('didDisppear');
   }
 
   componentWillUnmount() {

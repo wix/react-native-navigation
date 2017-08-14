@@ -13,7 +13,9 @@
 @property (nonatomic, strong) NSNumber* topBarHideOnScroll;
 @property (nonatomic, strong) NSNumber* topBarButtonColor;
 @property (nonatomic, strong) NSNumber* topBarTranslucent;
-@property (nonatomic, strong) NSString* setTabBadge;
+@property (nonatomic, strong) NSString* tabBadge;
+@property (nonatomic, strong) NSNumber* topBarTextFontSize;
+
 
 
 

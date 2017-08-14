@@ -185,5 +185,13 @@ public class ViewControllerTest extends BaseTest {
 		uut.destroy();
 		assertThat(parent.getChildCount()).withFailMessage("expected not to have children").isZero();
 	}
+
+	@Test
+	public void ensureViewIsCreated() throws Exception {
+		ViewController spy = spy(uut);
+		verify(spy, times(0)).getView();
+		spy.ensureViewIsCreated();
+		verify(spy, times(1)).getView();
+	}
 }
 

@@ -1,7 +1,6 @@
 package com.reactnativenavigation.parse;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.layout.LayoutNode;
 
 import org.json.JSONObject;
 import org.junit.Test;

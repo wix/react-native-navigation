@@ -2,8 +2,6 @@ package com.reactnativenavigation.parse;
 
 import android.support.annotation.NonNull;
 
-import com.reactnativenavigation.layout.LayoutNode;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 

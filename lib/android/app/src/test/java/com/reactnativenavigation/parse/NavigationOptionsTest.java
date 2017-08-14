@@ -1,7 +1,6 @@
 package com.reactnativenavigation.parse;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.layout.NavigationOptions;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -19,9 +18,11 @@ public class NavigationOptionsTest extends BaseTest {
 	public void parsesJson() throws Exception {
 		JSONObject json = new JSONObject();
 		json.put("title", "the title");
+		json.put("topBarBackgroundColor", 0xff123456);
 
 		NavigationOptions result = NavigationOptions.parse(json);
 		assertThat(result.title).isEqualTo("the title");
+		assertThat(result.topBarBackgroundColor).isEqualTo(0xff123456);
 	}
 
 	@Test

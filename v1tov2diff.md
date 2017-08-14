@@ -289,9 +289,9 @@ Dismiss all the current modals at the same time.
 ```js
 Navigation.dismissAllModals();
 ```
-#### Screen Lifecycle - onStop() and onStart()
+#### Screen Lifecycle - didDisappear() and didAppear()
 
-The onStop() and onStart() functions are lifecycle functions that are added to the screen and run when a screen apears and disappears from the screen. To use them simply add them to your component like any other react lifecycle function:
+The didDisappear() and didAppear() functions are lifecycle functions that are added to the screen and run when a screen apears and disappears from the screen. To use them simply add them to your component like any other react lifecycle function:
 
 ```js
 class LifecycleScreen extends Component {
@@ -302,12 +302,12 @@ class LifecycleScreen extends Component {
     };
   }
 
-  onStart() {
-    this.setState({ text: 'onStart' });
+  didAppear() {
+    this.setState({ text: 'didAppear' });
   }
 
-  onStop() {
-    alert('onStop');
+  didDisappear() {
+    alert('didDisappear');
   }
 
   componentWillUnmount() {

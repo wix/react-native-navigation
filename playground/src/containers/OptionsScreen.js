@@ -9,7 +9,6 @@ class OptionsScreen extends Component {
   static get navigationOptions() {
     return {
       title: 'Static Title',
-      topBarBackgroundColor: 'red',
       topBarTextFontFamily: 'HelveticaNeue-Italic'
     };
   }
@@ -39,8 +38,8 @@ class OptionsScreen extends Component {
     Navigation.setOptions(this.props.containerId, {
       title: 'Dynamic Title',
       topBarTextColor: '#00FFFF',
-      topBarBackgroundColor: 'green',
       topBarButtonColor: 'red',
+      topBarTextFontSize: 20,
       topBarTextFontFamily: 'HelveticaNeue-CondensedBold'
     });
   }

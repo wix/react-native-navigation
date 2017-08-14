@@ -45,12 +45,12 @@
 
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	[self.eventEmitter sendContainerStart:self.containerId];
+	[self.eventEmitter sendContainerDidAppear:self.containerId];
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
-	[self.eventEmitter sendContainerStop:self.containerId];
+	[self.eventEmitter sendContainerDidDisappear:self.containerId];
 }
 
 /**

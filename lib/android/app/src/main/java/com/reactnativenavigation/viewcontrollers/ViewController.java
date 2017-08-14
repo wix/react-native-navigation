@@ -14,6 +14,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 
 	private final Activity activity;
 	private final String id;
+
 	private View view;
 	private StackController parentStackController;
 	private boolean isShown = false;
@@ -25,6 +26,10 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 
 	@NonNull
 	protected abstract View createView();
+
+	public void ensureViewIsCreated() {
+		getView();
+	}
 
 	public boolean handleBack() {
 		return false;

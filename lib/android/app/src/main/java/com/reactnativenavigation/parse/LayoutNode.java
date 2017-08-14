@@ -1,4 +1,4 @@
-package com.reactnativenavigation.layout;
+package com.reactnativenavigation.parse;
 
 import org.json.JSONObject;
 

@@ -16,4 +16,8 @@ public class TopBar extends AppBarLayout {
 	public void setTitle(String title) {
 		titleBar.setTitle(title);
 	}
+
+	public String getTitle() {
+		return titleBar.getTitle() != null ? titleBar.getTitle().toString() : "";
+	}
 }

@@ -44,4 +44,10 @@ describe('screen style', () => {
     await element(by.id('scrollView')).swipe('down', 'fast');
     await expect(element(by.type('UINavigationBar'))).toBeVisible();
   });
+
+  it('set Tab Bar badge on a current Tab', async () => {
+    await elementByLabel('Switch to tab based app').tap();
+    await elementByLabel('Set Tab Badge').tap();
+    await expect(element(by.text('EnCyClOpEdIa'))).toBeVisible();
+  });
 });

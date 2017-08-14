@@ -20,8 +20,9 @@
 	self.topBarHideOnScroll = [navigationOptions objectForKey:@"topBarHideOnScroll"];
 	self.topBarButtonColor = [navigationOptions objectForKey:@"topBarButtonColor"];
 	self.topBarTranslucent = [navigationOptions objectForKey:@"topBarTranslucent"];
-	self.setTabBadge = [navigationOptions objectForKey:@"setTabBadge"];
-
+	self.tabBadge = [navigationOptions objectForKey:@"tabBadge"];
+	self.topBarTextFontSize = [navigationOptions objectForKey:@"topBarTextFontSize"];
+  
 	return self;
 }
 
@@ -43,15 +44,21 @@
 		viewController.navigationItem.title = self.title;
 	}
 	
-	if (self.topBarTextColor) {
-		UIColor* textColor = [RCTConvert UIColor:self.topBarTextColor];
-		NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary dictionaryWithDictionary:@{NSForegroundColorAttributeName: textColor}];
-		if (self.topBarTextFontFamily) {
-			[navigationBarTitleTextAttributes addEntriesFromDictionary:@{NSFontAttributeName: [UIFont fontWithName:self.topBarTextFontFamily size:20]}];
+	if (self.topBarTextFontFamily || self.topBarTextColor || self.topBarTextFontSize){
+		NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
+		if (self.topBarTextColor) {
+			navigationBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:self.topBarTextColor];
+		}
+		if (self.topBarTextFontFamily){
+			if(self.topBarTextFontSize) {
+				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.topBarTextFontFamily size:[self.topBarTextFontSize floatValue]];
+			} else {
+				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.topBarTextFontFamily size:20];
+			}
+		} else if (self.topBarTextFontSize) {
+			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.topBarTextFontSize floatValue]];
 		}
 		viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
-	} else if (self.topBarTextFontFamily){
-		viewController.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName: [UIFont fontWithName:self.topBarTextFontFamily size:20]};
 	}
 	
 	if (self.screenBackgroundColor) {
@@ -81,15 +88,15 @@
 		viewController.navigationController.navigationBar.tintColor = buttonColor;
 	} else {
 		viewController.navigationController.navigationBar.tintColor = nil;
-
-	if (self.setTabBadge) {
-		NSString *badge = [RCTConvert NSString:self.setTabBadge];
+	}
+      
+	if (self.tabBadge) {
+		NSString *badge = [RCTConvert NSString:self.tabBadge];
 		if (viewController.navigationController) {
 			viewController.navigationController.tabBarItem.badgeValue = badge;
-    } else {
+		} else {
 			viewController.tabBarItem.badgeValue = badge;
-	}
-
+	  }
 	}
 	
 	if (self.topBarTranslucent) {
@@ -97,8 +104,8 @@
 			viewController.navigationController.navigationBar.translucent = YES;
 		} else {
 			viewController.navigationController.navigationBar.translucent = NO;
-		}
+		}		
 	}
-	}
+
 }
 @end
