@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class TopBar extends AppBarLayout {
     protected TopTabs topTabs;
     private VisibilityAnimator visibilityAnimator;
     @Nullable
-    private ContentView reactView;
+    private Pair<String, ContentView> reactView;
 
     public TopBar(Context context) {
         super(context);
@@ -91,13 +92,30 @@ public class TopBar extends AppBarLayout {
 
     public void setReactView(@NonNull StyleParams styleParams) {
         if (styleParams.hasTopBarCustomComponent()) {
-            reactView = createReactView(styleParams);
-            if ("fill".equals(styleParams.topBarReactViewAlignment)) {
-                addReactViewFill(reactView);
-            } else {
-                addCenteredReactView(reactView);
+            if (isReactViewAlreadySetAndUnchanged(styleParams)) {
+                return;
             }
+            unmountReactView();
+            reactView = new Pair<>(styleParams.topBarReactView, createReactView(styleParams));
+            if ("fill".equals(styleParams.topBarReactViewAlignment)) {
+                addReactViewFill(reactView.second);
+            } else {
+                addCenteredReactView(reactView.second);
+            }
+        } else {
+            unmountReactView();
         }
+    }
+
+    private void unmountReactView() {
+        if (reactView == null) return;
+        titleBar.removeView(reactView.second);
+        reactView.second.unmountReactView();
+        reactView = null;
+    }
+
+    private boolean isReactViewAlreadySetAndUnchanged(@NonNull StyleParams styleParams) {
+        return reactView != null && styleParams.topBarReactView.equals(reactView.first);
     }
 
     private ContentView createReactView(StyleParams styleParams) {
@@ -217,8 +235,10 @@ public class TopBar extends AppBarLayout {
 
     public void destroy() {
         if (reactView != null) {
-            reactView.unmountReactView();
+            reactView.second.unmountReactView();
+            reactView = null;
         }
+        titleBar.destroy();
     }
 
     public void onViewPagerScreenChanged(BaseScreenParams screenParams) {

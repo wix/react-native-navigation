@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.ActionMenuView;
@@ -14,6 +13,7 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
+
 import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
@@ -49,10 +49,6 @@ public class TitleBar extends Toolbar {
             return;
         }
         addButtonsToTitleBar(navigatorEventId, menu);
-    }
-
-    public int getRightButtonsWidth() {
-        return actionMenuView.getWidth();
     }
 
     public void setLeftButton(TitleBarLeftButtonParams leftButtonParams,
@@ -95,17 +91,6 @@ public class TitleBar extends Toolbar {
         centerTitle(styleParams);
     }
 
-    private Activity getActivity() {
-        Context context = getContext();
-        while (context instanceof ContextWrapper) {
-            if (context instanceof Activity) {
-                return (Activity)context;
-            }
-            context = ((ContextWrapper)context).getBaseContext();
-        }
-        return null;
-    }
-
     private void centerTitle(final StyleParams params) {
         final View titleView = getTitleView();
         if (titleView == null) {
@@ -115,7 +100,7 @@ public class TitleBar extends Toolbar {
             @Override
             public void run() {
                 if (params.titleBarTitleTextCentered) {
-                    titleView.setX(ViewUtils.getWindowWidth(getActivity()) / 2 - titleView.getWidth() / 2);
+                    titleView.setX(ViewUtils.getWindowWidth((Activity) getContext()) / 2 - titleView.getWidth() / 2);
                 }
             }
         });
@@ -175,7 +160,7 @@ public class TitleBar extends Toolbar {
 
     private void addButtonsToTitleBar(String navigatorEventId, Menu menu) {
         for (int i = 0; i < rightButtons.size(); i++) {
-            final TitleBarButton button = ButtonFactory.create(menu, this, rightButtons.get(i), navigatorEventId);
+            final TitleBarButton button = new TitleBarButton(menu, this, rightButtons.get(i), navigatorEventId);
             addButtonInReverseOrder(rightButtons, i, button);
         }
     }
@@ -337,6 +322,18 @@ public class TitleBar extends Toolbar {
     public void onViewPagerScreenChanged(BaseScreenParams screenParams) {
         if (hasLeftButton()) {
             leftButton.updateNavigatorEventId(screenParams.getNavigatorEventId());
+        }
+    }
+
+    public void destroy() {
+        unmountCustomButtons();
+    }
+
+    private void unmountCustomButtons() {
+        for (int i = 0; i < actionMenuView.getChildCount(); i++) {
+            if (actionMenuView.getChildAt(i) instanceof TitleBarButtonComponent) {
+                ((ContentView) actionMenuView.getChildAt(i)).unmountReactView();
+            }
         }
     }
 }

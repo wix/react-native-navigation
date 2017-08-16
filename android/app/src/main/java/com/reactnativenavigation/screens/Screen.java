@@ -1,7 +1,6 @@
 package com.reactnativenavigation.screens;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
@@ -198,8 +197,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     public void setNavigationBarColor(StyleParams.Color navigationBarColor) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
 
-        final Activity context = (Activity) getContext();
-        final Window window = context.getWindow();
+        final Window window = ((NavigationActivity) activity).getScreenWindow();
         if (navigationBarColor.hasColor()) {
             window.setNavigationBarColor(navigationBarColor.getColor());
         } else {
@@ -367,5 +365,6 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         unmountReactView();
         EventBus.instance.unregister(this);
         sharedElements.destroy();
+        topBar.destroy();
     }
 }
