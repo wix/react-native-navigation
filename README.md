@@ -115,7 +115,7 @@ If v2 supports everything you need for your app we encourage you to use it.
 ### Installation
 1. Download react-native-navigation v2
 ```bash
-yarn add react-native-navigation@alpha
+npm install --save react-native-navigation@alpha
 ```
 ##### iOS
 2. In Xcode, in Project Navigator (left pane), right-click on the `Libraries` > `Add files to [project name]`. Add `./node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-1))
@@ -326,9 +326,9 @@ Dismiss all the current modals at the same time.
 ```js
 Navigation.dismissAllModals();
 ```
-#### Screen Lifecycle - didDisppear() and didAppear()
+#### Screen Lifecycle - didDisappear() and didAppear()
 
-The didDisppear() and didAppear() functions are lifecycle functions that are added to the screen and run when a screen apears and disappears from the screen. To use them simply add them to your component like any other react lifecycle function:
+The didDisappear() and didAppear() functions are lifecycle functions that are added to the screen and run when a screen apears and disappears from the screen. To use them simply add them to your component like any other react lifecycle function:
 
 ```js
 class LifecycleScreen extends Component {
@@ -343,8 +343,8 @@ class LifecycleScreen extends Component {
     this.setState({ text: 'didAppear' });
   }
 
-  didDisppear() {
-    alert('didDisppear');
+  didDisappear() {
+    alert('didDisappear');
   }
 
   componentWillUnmount() {
@@ -361,5 +361,3 @@ class LifecycleScreen extends Component {
   }
 }
 ```
-
-

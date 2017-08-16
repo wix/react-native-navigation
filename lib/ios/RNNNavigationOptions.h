@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSNumber* topBarTranslucent;
 @property (nonatomic, strong) NSString* tabBadge;
 @property (nonatomic, strong) NSNumber* topBarTextFontSize;
-
+@property (nonatomic, strong) NSNumber* topBarNoBorder;
 
 
 

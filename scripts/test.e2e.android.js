@@ -10,7 +10,7 @@ const exec = require('shell-utils').exec;
 
 const release = _.includes(process.argv, 'release');
 
-// Run just a single test, e.g. yarn test-e2e-android -- just com.MyClass#myMethod
+// Run just a single test, e.g. npm test-e2e-android -- just com.MyClass#myMethod
 const filter = _(process.argv).dropWhile((a) => a !== 'just').take(2).last();
 
 run();
@@ -24,8 +24,8 @@ function run() {
 }
 
 function runTests() {
-  exec.execSync(`yarn run uninstall-android`);
-  exec.execSync(`yarn run install-android ${release ? '-- release' : ''}`);
+  exec.execSync(`npm run uninstall-android`);
+  exec.execSync(`npm run install-android ${release ? '-- release' : ''}`);
   const filterParam = filter ? '-Pandroid.testInstrumentationRunnerArguments.class=' + filter : '';
   exec.execSync(`cd AndroidE2E && ./gradlew ${filterParam} connectedDebugAndroidTest`);
 }

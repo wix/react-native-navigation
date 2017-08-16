@@ -73,7 +73,7 @@ If v2 supports everything you need for your app we encourage you to use it.
 ### Installation
 1. Download react-native-navigation v2
 ```bash
-yarn add react-native-navigation@alpha
+npm install --save react-native-navigation@alpha
 ```
 ##### iOS
 2. In Xcode, in Project Navigator (left pane), right-click on the `Libraries` > `Add files to [project name]`. Add `./node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-1))
