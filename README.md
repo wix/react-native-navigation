@@ -80,10 +80,10 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | topBarHideOnScroll    |  ✅     |  ✅    |     [Contribute](CONTRIBUTING.md)        |
 | topBarTranslucent     |  ✅     |   ✅     |     [Contribute](CONTRIBUTING.md)        |
 | topBarTransparent     | ✅      |   WIP @bogobogo     |     [Contribute](CONTRIBUTING.md)        |
-| topBarNoBorder        |  ✅     |    [Contribute](CONTRIBUTING.md)     |     [Contribute](CONTRIBUTING.md)        |
+| topBarNoBorder        |  ✅     |    ✅     |     [Contribute](CONTRIBUTING.md)        |
 | drawUnderTabBar       |  ✅     |    WIP @gran33     |      [Contribute](CONTRIBUTING.md)       |
 | drawUnderTopBar       |  ✅     |    WIP @gran33     |      [Contribute](CONTRIBUTING.md)       |
-| statusBarBlur         |  ✅     |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
+| statusBarBlur         |  ✅     |    ✅     |      [Contribute](CONTRIBUTING.md)       |
 | topBarBlur            | ✅      |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
 | tabBarHidden  |   ✅  |   [Contribute](CONTRIBUTING.md)     |    [Contribute](CONTRIBUTING.md)        |
 | statusBarTextColorScheme |  ✅   |   in development      |      / iOS specific    |
