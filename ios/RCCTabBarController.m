@@ -84,6 +84,7 @@
   UIColor *selectedButtonColor = nil;
   UIColor *labelColor = nil;
   UIColor *selectedLabelColor = nil;
+  BOOL renderAsOriginal = NO;
   NSDictionary *tabsStyle = props[@"style"];
   if (tabsStyle)
   {
@@ -131,6 +132,12 @@
     {
       self.tabBar.clipsToBounds = [tabBarHideShadow boolValue] ? YES : NO;
     }
+
+    NSString *tabBarRenderAsOriginal = tabsStyle[@"tabBarRenderAsOriginal"];
+    if (tabBarRenderAsOriginal)
+    {
+      renderAsOriginal = [tabBarRenderAsOriginal boolValue] ? YES : NO;
+    }
   }
   
   NSMutableArray *viewControllers = [NSMutableArray array];
@@ -161,6 +168,11 @@
       {
         iconImage = [[self image:iconImage withColor:buttonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
       }
+
+      if (renderAsOriginal)
+      {
+        iconImage = [iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+      }
     }
     UIImage *iconImageSelected = nil;
     id selectedIcon = tabItemLayout[@"props"][@"selectedIcon"];
@@ -168,6 +180,11 @@
       iconImageSelected = [RCTConvert UIImage:selectedIcon];
     } else {
       iconImageSelected = [RCTConvert UIImage:icon];
+    }
+
+    if (renderAsOriginal)
+    {
+      iconImageSelected = [iconImageSelected imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     }
     
     viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
