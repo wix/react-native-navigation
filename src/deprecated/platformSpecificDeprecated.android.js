@@ -426,6 +426,9 @@ function navigatorToggleTabs(navigator, params) {
 }
 
 function showModal(params) {
+  if (params.modalId) {
+    params.screenInstanceID = params.modalId
+  }
   addNavigatorParams(params);
   addNavigatorButtons(params);
   addTitleBarBackButtonIfNeeded(params);
@@ -492,7 +495,9 @@ function dismissInAppNotification(params) {
 
 function addNavigatorParams(screen, navigator = null, idx = '') {
   screen.navigatorID = navigator ? navigator.navigatorID : _.uniqueId('navigatorID') + '_nav' + idx;
-  screen.screenInstanceID = _.uniqueId('screenInstanceID');
+  if(!screen.screenInstanceID) {
+    screen.screenInstanceID = _.uniqueId('screenInstanceID');
+  }
   screen.navigatorEventID = screen.screenInstanceID + '_events';
 }
 

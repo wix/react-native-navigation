@@ -452,6 +452,11 @@ function showModal(params) {
   const controllerID = _.uniqueId('controllerID');
   const navigatorID = controllerID + '_nav';
   const screenInstanceID = _.uniqueId('screenInstanceID');
+
+  if (params.modalId) {
+    params.screenInstanceID = params.modalId
+  }
+  
   const {
     navigatorStyle,
     navigatorButtons,
