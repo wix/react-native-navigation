@@ -1,4 +1,5 @@
 #import "RCCManager.h"
+#import "RCCViewController.h"
 #import <React/RCTBridge.h>
 #import <React/RCTRedBox.h>
 #import <Foundation/Foundation.h>
@@ -114,6 +115,32 @@
   }
 
   return component;
+}
+
+-(NSString*) getIdForController:(UIViewController*)vc
+{
+  if([vc isKindOfClass:[RCCViewController class]])
+  {
+    NSString *controllerId = ((RCCViewController*)vc).controllerId;
+    if(controllerId != nil)
+    {
+      return controllerId;
+    }
+  }
+  
+  for (NSString *key in [self.modulesRegistry allKeys])
+  {
+    NSMutableDictionary *componentsDic = self.modulesRegistry[key];
+    for (NSString *componentID in [componentsDic allKeys])
+    {
+      UIViewController *tmpVc = componentsDic[componentID];
+      if (tmpVc == vc)
+      {
+        return componentID;
+      }
+    }
+  }
+  return nil;
 }
 
 -(void)initBridgeWithBundleURL:(NSURL *)bundleURL

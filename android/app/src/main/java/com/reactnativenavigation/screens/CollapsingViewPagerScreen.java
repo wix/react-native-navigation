@@ -111,7 +111,6 @@ public class CollapsingViewPagerScreen extends ViewPagerScreen {
                 ((CollapsingContentView) contentView).destroy();
             }
         }
-        topBar.destroy();
     }
 
     protected ContentView getCurrentPage() {

@@ -1,9 +1,11 @@
 import {Platform} from 'react-native';
 import {Navigation} from 'react-native-navigation';
-import registerScreens from './screens';
+import {registerScreens, registerScreenVisibilityListener} from './screens';
+
 
 // screen related book keeping
 registerScreens();
+registerScreenVisibilityListener();
 
 const tabs = [{
   label: 'Navigation',

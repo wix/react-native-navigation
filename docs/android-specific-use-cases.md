@@ -54,7 +54,7 @@ public class MainApplication extends NavigationApplication {
 public class MyApplication extends NavigationApplication {
     @Override
     public void onCreate() {
-        registerActivityLifecycleCallbacks(new LifecycleCallbacks() {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);

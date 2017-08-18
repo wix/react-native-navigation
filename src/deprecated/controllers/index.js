@@ -313,6 +313,12 @@ var Controllers = {
     }
   },
 
+  ScreenUtils: {
+    getCurrentlyVisibleScreenId: async function() {
+      return await RCCManager.getCurrentlyVisibleScreenId();
+    }
+  },
+
   NavigationToolBarIOS: OriginalReactNative.requireNativeComponent('RCCToolBar', null),
 
   Constants: Constants
