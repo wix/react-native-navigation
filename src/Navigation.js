@@ -2,7 +2,7 @@
 import React from 'react';
 import {AppRegistry} from 'react-native';
 import platformSpecific from './deprecated/platformSpecificDeprecated';
-import Screen from './Screen';
+import {Screen} from './Screen';
 import Navigator from './Navigator';
 
 import PropRegistry from './PropRegistry';
@@ -183,8 +183,17 @@ async function isAppLaunched() {
   return await platformSpecific.isAppLaunched();
 }
 
+async function isRootLaunched() {
+  return await platformSpecific.isRootLaunched();
+}
+
+function getCurrentlyVisibleScreenId() {
+  return platformSpecific.getCurrentlyVisibleScreenId();
+}
+
 export default {
   getRegisteredScreen,
+  getCurrentlyVisibleScreenId,
   registerComponent,
   showModal: showModal,
   dismissModal: dismissModal,
@@ -199,5 +208,6 @@ export default {
   setEventHandler: setEventHandler,
   clearEventHandler: clearEventHandler,
   handleDeepLink: handleDeepLink,
-  isAppLaunched: isAppLaunched
+  isAppLaunched: isAppLaunched,
+  isRootLaunched: isRootLaunched
 };

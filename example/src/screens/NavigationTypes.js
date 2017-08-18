@@ -1,8 +1,24 @@
 import React from 'react';
-import {StyleSheet, View, Text, ScrollView, TouchableHighlight} from 'react-native';
+import {StyleSheet, ScrollView} from 'react-native';
 import Row from '../components/Row';
 
-class Types extends React.Component {
+class NavigationTypes extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  onNavigatorEvent(event) {
+    if (event.type === 'DeepLink') {
+      const parts = event.link.split('/');
+      if (parts[0] === 'tab1') {
+        this.props.navigator.push({
+          screen: parts[1]
+        });
+      }
+    }
+  }
 
   toggleDrawer = () => {
     this.props.navigator.toggleDrawer({
@@ -15,6 +31,19 @@ class Types extends React.Component {
     this.props.navigator.push({
       screen: 'example.Types.Push',
       title: 'New Screen',
+    });
+  };
+
+  pushCustomTopBarScreen = () => {
+    this.props.navigator.push({
+      screen: 'example.Types.CustomTopBarScreen'
+    });
+  };
+
+  pushCustomButtonScreen = () => {
+    this.props.navigator.push({
+      screen: 'example.Types.CustomButtonScreen',
+      title: 'Custom Buttons'
     });
   };
 
@@ -50,6 +79,7 @@ class Types extends React.Component {
       style: {
         backgroundBlur: 'dark',
         backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        tapBackgroundToDismiss: true
       }
     });
   };
@@ -69,6 +99,8 @@ class Types extends React.Component {
       <ScrollView style={styles.container}>
         <Row title={'Toggle Drawer'} onPress={this.toggleDrawer}/>
         <Row title={'Push Screen'} testID={'pushScreen'} onPress={this.pushScreen}/>
+        <Row title={'Custom TopBar'} onPress={this.pushCustomTopBarScreen}/>
+        <Row title={'Custom Button'} onPress={this.pushCustomButtonScreen}/>
         <Row title={'Top Tabs Screen'} onPress={this.pushTopTabsScreen} platform={'android'}/>
         <Row title={'Show Modal'} onPress={this.showModal}/>
         <Row title={'Show Lightbox'} onPress={this.showLightBox}/>
@@ -96,4 +128,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Types;
+export default NavigationTypes;

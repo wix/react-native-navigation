@@ -73,12 +73,12 @@ function navigatorPush(navigator, params) {
   addNavigationStyleParams(params);
 
   adaptTopTabs(params, params.navigatorID);
-  // findSharedElementsNodeHandles(params);
 
   params.screenId = params.screen;
   let adapted = adaptNavigationStyleToScreenStyle(params);
   adapted = adaptNavigationParams(adapted);
   adapted.overrideBackPress = params.overrideBackPress;
+  adapted.timestamp = Date.now();
 
   newPlatformSpecific.push(adapted);
 }
@@ -89,6 +89,7 @@ function navigatorPop(navigator, params) {
   params.screenId = params.screen;
   let adapted = adaptNavigationStyleToScreenStyle(params);
   adapted = adaptNavigationParams(adapted);
+  adapted.timestamp = Date.now();
 
   newPlatformSpecific.pop(adapted);
 }
@@ -99,6 +100,7 @@ function navigatorPopToRoot(navigator, params) {
   params.screenId = params.screen;
   let adapted = adaptNavigationStyleToScreenStyle(params);
   adapted = adaptNavigationParams(adapted);
+  adapted.timestamp = Date.now();
 
   newPlatformSpecific.popToRoot(adapted);
 }
@@ -113,6 +115,7 @@ function navigatorResetTo(navigator, params) {
   params.screenId = params.screen;
   let adapted = adaptNavigationStyleToScreenStyle(params);
   adapted = adaptNavigationParams(adapted);
+  adapted.timestamp = Date.now();
 
   newPlatformSpecific.newStack(adapted);
 }
@@ -136,11 +139,17 @@ function convertStyleParams(originalStyleObject) {
   let ret = {
     orientation: originalStyleObject.orientation,
     statusBarColor: processColor(originalStyleObject.statusBarColor),
+    statusBarTextColorScheme: originalStyleObject.statusBarTextColorScheme,
+    topBarReactView: originalStyleObject.navBarCustomView,
+    topBarReactViewAlignment: originalStyleObject.navBarComponentAlignment,
+    topBarReactViewInitialProps: originalStyleObject.navBarCustomViewInitialProps,
     topBarColor: processColor(originalStyleObject.navBarBackgroundColor),
     topBarTransparent: originalStyleObject.navBarTransparent,
     topBarTranslucent: originalStyleObject.navBarTranslucent,
     topBarElevationShadowEnabled: originalStyleObject.topBarElevationShadowEnabled,
     topBarCollapseOnScroll: originalStyleObject.topBarCollapseOnScroll,
+    topBarBorderColor: processColor(originalStyleObject.topBarBorderColor),
+    topBarBorderWidth: originalStyleObject.topBarBorderWidth && `${originalStyleObject.topBarBorderWidth}`,
     collapsingToolBarImage: originalStyleObject.collapsingToolBarImage,
     collapsingToolBarComponent: originalStyleObject.collapsingToolBarComponent,
     collapsingToolBarComponentHeight: originalStyleObject.collapsingToolBarComponentHeight,
@@ -156,7 +165,9 @@ function convertStyleParams(originalStyleObject) {
     titleBarDisabledButtonColor: processColor(originalStyleObject.titleBarDisabledButtonColor),
     titleBarTitleFontFamily: originalStyleObject.navBarTextFontFamily,
     titleBarTitleFontSize: originalStyleObject.navBarTextFontSize,
+    titleBarTitleFontBold: originalStyleObject.navBarTextFontBold,
     titleBarTitleTextCentered: originalStyleObject.navBarTitleTextCentered,
+    titleBarHeight: originalStyleObject.navBarHeight,
     backButtonHidden: originalStyleObject.backButtonHidden,
     topTabsHidden: originalStyleObject.topTabsHidden,
     contextualMenuStatusBarColor: processColor(originalStyleObject.contextualMenuStatusBarColor),
@@ -172,10 +183,12 @@ function convertStyleParams(originalStyleObject) {
     selectedTopTabIndicatorHeight: originalStyleObject.selectedTopTabIndicatorHeight,
     selectedTopTabIndicatorColor: processColor(originalStyleObject.selectedTopTabIndicatorColor),
     topTabsScrollable: originalStyleObject.topTabsScrollable,
+    topTabsHeight: originalStyleObject.topTabsHeight,
     screenBackgroundColor: processColor(originalStyleObject.screenBackgroundColor),
 
     drawScreenAboveBottomTabs: !originalStyleObject.drawUnderTabBar,
 
+    initialTabIndex: originalStyleObject.initialTabIndex,
     bottomTabsColor: processColor(originalStyleObject.tabBarBackgroundColor),
     bottomTabsButtonColor: processColor(originalStyleObject.tabBarButtonColor),
     bottomTabsSelectedButtonColor: processColor(originalStyleObject.tabBarSelectedButtonColor),
@@ -187,7 +200,7 @@ function convertStyleParams(originalStyleObject) {
     bottomTabFontFamily: originalStyleObject.tabFontFamily,
 
     navigationBarColor: processColor(originalStyleObject.navigationBarColor)
-  }
+  };
 
   if (originalStyleObject.collapsingToolBarImage) {
     if (_.isString(originalStyleObject.collapsingToolBarImage)) {
@@ -263,6 +276,7 @@ function startTabBasedApp(params) {
     let newtab = adaptNavigationStyleToScreenStyle(tab);
     newtab = adaptNavigationParams(tab);
     newtab.overrideBackPress = tab.overrideBackPress;
+    newtab.timestamp = Date.now();
     newTabs.push(newtab);
   });
   params.tabs = newTabs;
@@ -429,6 +443,7 @@ function showModal(params) {
   let adapted = adaptNavigationStyleToScreenStyle(params);
   adapted = adaptNavigationParams(adapted);
   adapted.overrideBackPress = params.overrideBackPress;
+  adapted.timestamp = Date.now();
 
   newPlatformSpecific.showModal(adapted);
 }
@@ -685,6 +700,14 @@ async function isAppLaunched() {
   return await newPlatformSpecific.isAppLaunched();
 }
 
+async function isRootLaunched() {
+  return await newPlatformSpecific.isRootLaunched();
+}
+
+async function getCurrentlyVisibleScreenId() {
+  return await newPlatformSpecific.getCurrentlyVisibleScreenId();
+}
+
 export default {
   startTabBasedApp,
   startSingleScreenApp,
@@ -715,5 +738,7 @@ export default {
   dismissSnackbar,
   showContextualMenu,
   dismissContextualMenu,
-  isAppLaunched
+  isAppLaunched,
+  isRootLaunched,
+  getCurrentlyVisibleScreenId
 };

@@ -165,9 +165,17 @@ class Navigator {
       Navigation.clearEventHandler(this.navigatorEventID);
     }
   }
+
+  async screenIsCurrentlyVisible() {
+    const res = await Navigation.getCurrentlyVisibleScreenId();
+    if (!res) {
+      return false;
+    }
+    return res.screenId === this.screenInstanceID;
+  }
 }
 
-export default class Screen extends Component {
+class Screen extends Component {
   static navigatorStyle = {};
   static navigatorButtons = {};
 
@@ -185,3 +193,8 @@ export default class Screen extends Component {
     }
   }
 }
+
+export {
+  Screen,
+  Navigator
+};

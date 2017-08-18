@@ -38,7 +38,9 @@ this.props.navigator.setStyle({
   navBarTextFontSize: 18, // change the font size of the title
   navBarTextFontFamily: 'font-name', // Changes the title font
   navBarBackgroundColor: '#f7f7f7', // change the background color of the nav bar (remembered across pushes)
-
+  navBarCustomView: 'example.CustomTopBar', // registered component name
+  navBarComponentAlignment: 'center', // center/fill
+  navBarCustomViewInitialProps: {}, // Serializable JSON passed as props
   navBarButtonColor: '#007aff', // Change color of nav bar buttons (eg. the back button) (remembered across pushes)
 
   navBarHidden: false, // make the nav bar hidden
@@ -52,13 +54,13 @@ this.props.navigator.setStyle({
   navBarBlur: false, // blur the entire nav bar, works best with drawUnderNavBar:true
   tabBarHidden: false, // make the screen content hide the tab bar (remembered across pushes)
   statusBarTextColorScheme: 'dark', // text color of status bar, 'dark' / 'light' (remembered across pushes)
-  statusBarTextColorSchemeSingleScreen: 'light', // same as statusBarTextColorScheme but does NOT remember across pushes
   navBarSubtitleColor: 'red', // subtitle color
   navBarSubtitleFontFamily: 'font-name', // subtitle font
   screenBackgroundColor: 'white', // Default screen color, visible before the actual react view is rendered
   orientation: 'portrait' // Sets a specific orientation to a modal and all screens pushed to it. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
   
   // iOS only
+  statusBarTextColorSchemeSingleScreen: 'light', // same as statusBarTextColorScheme but does NOT remember across pushes
   statusBarHideWithNavBar: false, // hide the status bar if the nav bar is also hidden, useful for navBarHidden:true
   statusBarHidden: false, // make the status bar hidden regardless of nav bar state
   
@@ -85,6 +87,11 @@ this.props.navigator.setStyle({
   collapsingToolBarImage: "http://lorempixel.com/400/200/", // Collapsing Toolbar image.
   collapsingToolBarImage: require('../../img/topbar.jpg'), // Collapsing Toolbar image. Either use a url or require a local image.
   collapsingToolBarCollapsedColor: '#0f2362', // Collapsing Toolbar scrim color.
+  navBarTextFontBold: false, // Optional. Set the title to bold.
+  navBarHeight: 70, // Optional, set the navBar height in pixels.
+  topTabsHeight: 70, // Optional, set topTabs height in pixels.
+  topBarBorderColor: 'red', Optional, set a flat border under the TopBar.
+  topBarBorderWidth: 5.5, // Optional, set the width of the border.
 }
 ```
 
