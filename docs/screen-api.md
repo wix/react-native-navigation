@@ -125,6 +125,7 @@ Show in-app notification. This generally looks like a pop-up window that can app
 this.props.navigator.showInAppNotification({
  screen: "example.InAppNotification", // unique ID registered with Navigation.registerScreen
  passProps: {}, // simple serializable object that will pass as props to the in-app notification (optional)
+ autoDismissTimerSec: 1 // auto dismiss notification in seconds
 });
 ```
 
