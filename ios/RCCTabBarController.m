@@ -170,9 +170,12 @@
       iconImageSelected = [RCTConvert UIImage:icon];
     }
     
-    viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
+    viewController.tabBarItem = [[UITabBarItem alloc] init];
+    viewController.tabBarItem.title = title;
+    viewController.tabBarItem.image = [iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    viewController.tabBarItem.selectedImage = [iconImageSelected imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    viewController.tabBarItem.tag = 0;
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
-    viewController.tabBarItem.selectedImage = iconImageSelected;
     
     id imageInsets = tabItemLayout[@"props"][@"iconInsets"];
     if (imageInsets && imageInsets != (id)[NSNull null])
