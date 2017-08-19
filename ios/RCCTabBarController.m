@@ -318,7 +318,7 @@
       {
         iconImage = [RCTConvert UIImage:icon];
         iconImage = [[self image:iconImage withColor:self.tabBar.tintColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        viewController.tabBarItem.image = iconImage;
+        viewController.tabBarItem.image = [iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
       
       }
       UIImage *iconImageSelected = nil;
@@ -326,7 +326,7 @@
       if (selectedIcon && selectedIcon != (id)[NSNull null])
       {
         iconImageSelected = [RCTConvert UIImage:selectedIcon];
-        viewController.tabBarItem.selectedImage = iconImageSelected;
+        viewController.tabBarItem.selectedImage = [iconImageSelected imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
       }
     }
   }
