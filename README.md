@@ -105,6 +105,8 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | switchToTab         |    ✅    |      in development    |[Contribute](CONTRIBUTING.md) |
 | toggleNavBar        |   ✅     |      WIP @gran33     | [Contribute](CONTRIBUTING.md)|
 | navBarCustomView        |   ✅     |     WIP @gran33     | [Contribute](CONTRIBUTING.md)|
+| customTransition(shared element)       |     :x:  |     WIP @bogobogo     | [Contribute](CONTRIBUTING.md)|
+| splitViewScreen       |     :x:  |    [Contribute](CONTRIBUTING.md)      | [Contribute](CONTRIBUTING.md)|
 
 
 Element tranisitions, adding buttons and styles are not yet implemented. [Contribute](CONTRIBUTING.md)
