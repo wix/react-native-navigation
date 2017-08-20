@@ -205,4 +205,37 @@
 	//	XCTAssertThrows([self.uut viewWillAppear:false]);
 }
 
+-(void)testTopBarNoBorderOn {
+	NSNumber* topBarNoBorderInput = @(1);
+	self.options.topBarNoBorder = topBarNoBorderInput;
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertNotNil(self.uut.navigationController.navigationBar.shadowImage);
+}
+
+-(void)testTopBarNoBorderOff {
+	NSNumber* topBarNoBorderInput = @(0);
+	self.options.topBarNoBorder = topBarNoBorderInput;
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertNil(self.uut.navigationController.navigationBar.shadowImage);
+}
+
+-(void)testStatusBarBlurOn {
+	NSNumber* statusBarBlurInput = @(1);
+	self.options.statusBarBlur = statusBarBlurInput;
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertNotNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
+}
+
+-(void)testStatusBarBlurOff {
+	NSNumber* statusBarBlurInput = @(0);
+	self.options.statusBarBlur = statusBarBlurInput;
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
+}
+
+
 @end

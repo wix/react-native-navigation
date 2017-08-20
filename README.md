@@ -80,10 +80,10 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | topBarHideOnScroll    |  ✅     |  ✅    |     [Contribute](CONTRIBUTING.md)        |
 | topBarTranslucent     |  ✅     |   ✅     |     [Contribute](CONTRIBUTING.md)        |
 | topBarTransparent     | ✅      |   WIP @bogobogo     |     [Contribute](CONTRIBUTING.md)        |
-| topBarNoBorder        |  ✅     |    [Contribute](CONTRIBUTING.md)     |     [Contribute](CONTRIBUTING.md)        |
+| topBarNoBorder        |  ✅     |    ✅     |     [Contribute](CONTRIBUTING.md)        |
 | drawUnderTabBar       |  ✅     |    WIP @gran33     |      [Contribute](CONTRIBUTING.md)       |
 | drawUnderTopBar       |  ✅     |    WIP @gran33     |      [Contribute](CONTRIBUTING.md)       |
-| statusBarBlur         |  ✅     |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
+| statusBarBlur         |  ✅     |    ✅     |      [Contribute](CONTRIBUTING.md)       |
 | topBarBlur            | ✅      |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
 | tabBarHidden  |   ✅  |   [Contribute](CONTRIBUTING.md)     |    [Contribute](CONTRIBUTING.md)        |
 | statusBarTextColorScheme |  ✅   |   in development      |      / iOS specific    |
@@ -105,6 +105,8 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | switchToTab         |    ✅    |      in development    |[Contribute](CONTRIBUTING.md) |
 | toggleNavBar        |   ✅     |      WIP @gran33     | [Contribute](CONTRIBUTING.md)|
 | navBarCustomView        |   ✅     |     WIP @gran33     | [Contribute](CONTRIBUTING.md)|
+| customTransition(shared element)       |     :x:  |     WIP @bogobogo     | [Contribute](CONTRIBUTING.md)|
+| splitViewScreen       |     :x:  |    [Contribute](CONTRIBUTING.md)      | [Contribute](CONTRIBUTING.md)|
 
 
 Element tranisitions, adding buttons and styles are not yet implemented. [Contribute](CONTRIBUTING.md)
@@ -115,7 +117,7 @@ If v2 supports everything you need for your app we encourage you to use it.
 ### Installation
 1. Download react-native-navigation v2
 ```bash
-yarn add react-native-navigation@alpha
+npm install --save react-native-navigation@alpha
 ```
 ##### iOS
 2. In Xcode, in Project Navigator (left pane), right-click on the `Libraries` > `Add files to [project name]`. Add `./node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-1))
@@ -326,9 +328,9 @@ Dismiss all the current modals at the same time.
 ```js
 Navigation.dismissAllModals();
 ```
-#### Screen Lifecycle - didDisppear() and didAppear()
+#### Screen Lifecycle - didDisappear() and didAppear()
 
-The didDisppear() and didAppear() functions are lifecycle functions that are added to the screen and run when a screen apears and disappears from the screen. To use them simply add them to your component like any other react lifecycle function:
+The didDisappear() and didAppear() functions are lifecycle functions that are added to the screen and run when a screen apears and disappears from the screen. To use them simply add them to your component like any other react lifecycle function:
 
 ```js
 class LifecycleScreen extends Component {
@@ -343,8 +345,8 @@ class LifecycleScreen extends Component {
     this.setState({ text: 'didAppear' });
   }
 
-  didDisppear() {
-    alert('didDisppear');
+  didDisappear() {
+    alert('didDisappear');
   }
 
   componentWillUnmount() {
@@ -361,5 +363,3 @@ class LifecycleScreen extends Component {
   }
 }
 ```
-
-
