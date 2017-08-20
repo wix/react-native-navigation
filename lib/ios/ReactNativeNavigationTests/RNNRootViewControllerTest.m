@@ -59,6 +59,25 @@
 	XCTAssertTrue([self.uut prefersStatusBarHidden]);
 }
 
+- (void)testStatusBarHideWithTopBar_false {
+	self.options.statusBarHideWithTopBar = @(0);
+	self.options.topBarHidden = @(1);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertFalse([self.uut prefersStatusBarHidden]);
+}
+
+- (void)testStatusBarHideWithTopBar_true {
+	self.options.statusBarHideWithTopBar = @(1);
+	self.options.topBarHidden = @(1);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+
+	XCTAssertTrue([self.uut prefersStatusBarHidden]);
+}
+
+
 - (void)testStatusBarHidden_false {
 	self.options.statusBarHidden = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];

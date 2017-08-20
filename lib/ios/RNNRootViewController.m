@@ -40,7 +40,12 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-	return [self.navigationOptions.statusBarHidden boolValue]; // || self.navigationController.isNavigationBarHidden;
+	if ([self.navigationOptions.statusBarHidden boolValue]) {
+		return YES;
+	} else if ([self.navigationOptions.statusBarHideWithTopBar boolValue]) {
+		return self.navigationController.isNavigationBarHidden;
+	}
+	return NO;
 }
 
 -(void)viewDidAppear:(BOOL)animated {
