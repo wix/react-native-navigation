@@ -265,6 +265,7 @@ function startTabBasedApp(params) {
     addNavigatorButtons(tab, params.drawer);
     addNavigationStyleParams(tab);
     addTabIcon(tab);
+    addTabSelectedIcon(tab);
     if (!tab.passProps) {
       tab.passProps = params.passProps;
     }
@@ -301,6 +302,15 @@ function addTabIcon(tab) {
 
   if (!tab.icon) {
     throw new Error("No icon defined for tab " + tab.screen);
+  }
+}
+
+function addTabSelectedIcon(tab) {
+  if (tab.selectedIcon) {
+    const selectedIcon = resolveAssetSource(tab.selectedIcon);
+    if (selectedIcon) {
+      tab.selectedIcon = selectedIcon.uri;
+    }
   }
 }
 

@@ -51,6 +51,7 @@ public class ScreenParamsParser extends Parser {
 
         result.tabLabel = getTabLabel(params);
         result.tabIcon = new TabIconParser(params).parse();
+        result.tabSelectedIcon = new TabIconParser(params).parseSelectedIcon();
 
         result.animateScreenTransitions = new AnimationParser(params).parse();
         result.sharedElementsTransitions = getSharedElementsTransitions(params);
