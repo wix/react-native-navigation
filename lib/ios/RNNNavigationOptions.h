@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+extern const NSInteger BLUR_STATUS_TAG;
+
 @interface RNNNavigationOptions : NSObject
 
 @property (nonatomic, strong) NSNumber* topBarBackgroundColor;
@@ -16,7 +18,7 @@
 @property (nonatomic, strong) NSString* tabBadge;
 @property (nonatomic, strong) NSNumber* topBarTextFontSize;
 @property (nonatomic, strong) NSNumber* topBarNoBorder;
-
+@property (nonatomic, strong) NSNumber* statusBarBlur;
 
 
 -(instancetype)init;
