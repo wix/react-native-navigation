@@ -52,7 +52,7 @@ public class ViewPagerScreen extends Screen {
 
     @Override
     protected void createContent() {
-        TopTabs topTabs = topBar.initTabs();
+        TopTabs topTabs = topBar.initTabs(screenParams.styleParams);
         createViewPager();
         addPages();
         setupViewPager(topTabs);
