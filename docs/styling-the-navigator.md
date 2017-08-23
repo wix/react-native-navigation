@@ -54,13 +54,13 @@ this.props.navigator.setStyle({
   navBarBlur: false, // blur the entire nav bar, works best with drawUnderNavBar:true
   tabBarHidden: false, // make the screen content hide the tab bar (remembered across pushes)
   statusBarTextColorScheme: 'dark', // text color of status bar, 'dark' / 'light' (remembered across pushes)
-  statusBarTextColorSchemeSingleScreen: 'light', // same as statusBarTextColorScheme but does NOT remember across pushes
   navBarSubtitleColor: 'red', // subtitle color
   navBarSubtitleFontFamily: 'font-name', // subtitle font
   screenBackgroundColor: 'white', // Default screen color, visible before the actual react view is rendered
   orientation: 'portrait' // Sets a specific orientation to a modal and all screens pushed to it. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
   
   // iOS only
+  statusBarTextColorSchemeSingleScreen: 'light', // same as statusBarTextColorScheme but does NOT remember across pushes
   statusBarHideWithNavBar: false, // hide the status bar if the nav bar is also hidden, useful for navBarHidden:true
   statusBarHidden: false, // make the status bar hidden regardless of nav bar state
   
@@ -87,6 +87,11 @@ this.props.navigator.setStyle({
   collapsingToolBarImage: "http://lorempixel.com/400/200/", // Collapsing Toolbar image.
   collapsingToolBarImage: require('../../img/topbar.jpg'), // Collapsing Toolbar image. Either use a url or require a local image.
   collapsingToolBarCollapsedColor: '#0f2362', // Collapsing Toolbar scrim color.
+  navBarTextFontBold: false, // Optional. Set the title to bold.
+  navBarHeight: 70, // Optional, set the navBar height in pixels.
+  topTabsHeight: 70, // Optional, set topTabs height in pixels.
+  topBarBorderColor: 'red', Optional, set a flat border under the TopBar.
+  topBarBorderWidth: 5.5, // Optional, set the width of the border.
 }
 ```
 

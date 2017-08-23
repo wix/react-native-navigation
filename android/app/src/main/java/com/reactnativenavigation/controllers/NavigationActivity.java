@@ -246,16 +246,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     void dismissTopModal() {
         modalController.dismissTopModal();
-        Screen previousScreen = layout.getCurrentScreen();
-        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previousScreen.getScreenParams(), NavigationType.DismissModal);
-        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previousScreen.getScreenParams(), NavigationType.DismissModal);
     }
 
     void dismissAllModals() {
         modalController.dismissAllModals();
-        Screen previousScreen = layout.getCurrentScreen();
-        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previousScreen.getScreenParams(), NavigationType.DismissModal);
-        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previousScreen.getScreenParams(), NavigationType.DismissModal);
     }
 
     public void showLightBox(LightBoxParams params) {

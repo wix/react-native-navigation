@@ -3,8 +3,10 @@
 #import "RCCManager.h"
 #import <React/RCTEventDispatcher.h>
 #import <React/RCTConvert.h>
+#import <React/RCTRootView.h>
 #import <objc/runtime.h>
 #import "RCCTitleViewHelper.h"
+#import "RCCCustomBarButtonItem.h"
 #import "UIViewController+Rotation.h"
 #import "RCTHelpers.h"
 
@@ -217,6 +219,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component passProps:passProps navigatorStyle:navigatorStyle globalProps:nil bridge:bridge];
     viewController.controllerId = passProps[@"screenInstanceID"];
     
+    viewController.navigationItem.hidesBackButton = YES;
+    
     [self processTitleView:viewController
                      props:actionParams
                      style:navigatorStyle];
@@ -331,7 +335,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     UIImage *iconImage = nil;
     id icon = button[@"icon"];
     if (icon) iconImage = [RCTConvert UIImage:icon];
-    
+    NSString *__nullable component = button[@"component"];
+
     UIBarButtonItem *barButtonItem;
     if (iconImage)
     {
@@ -345,6 +350,10 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       if (buttonTextAttributes.allKeys.count > 0) {
         [barButtonItem setTitleTextAttributes:buttonTextAttributes forState:UIControlStateNormal];
       }
+    }
+    else if (component) {
+      RCTBridge *bridge = [[RCCManager sharedInstance] getBridge];
+      barButtonItem = [[RCCCustomBarButtonItem alloc] initWithComponentName:component passProps:button[@"passProps"] bridge:bridge];
     }
     else continue;
     objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);

@@ -122,7 +122,7 @@ public class ScreenStack {
                                           @Nullable final Screen.OnDisplayListener onDisplay) {
         nextScreen.setVisibility(View.INVISIBLE);
         addScreen(nextScreen, layoutParams);
-        NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(previousScreen.screenParams, NavigationType.Push);
+        NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(previousScreen.getScreenParams(), NavigationType.Push);
         nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
@@ -130,7 +130,7 @@ public class ScreenStack {
                     @Override
                     public void run() {
                         if (onDisplay != null) onDisplay.onDisplay();
-                        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(previousScreen.screenParams, NavigationType.Push);
+                        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(previousScreen.getScreenParams(), NavigationType.Push);
                         parent.removeView(previousScreen);
                     }
                 }, NavigationType.Push);
@@ -208,13 +208,13 @@ public class ScreenStack {
     }
 
     private void hideScreen(boolean animated, final Screen toRemove, final Screen previous) {
-        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previous.screenParams, NavigationType.Pop);
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previous.getScreenParams(), NavigationType.Pop);
         Runnable onAnimationEnd = new Runnable() {
             @Override
             public void run() {
                 toRemove.destroy();
                 parent.removeView(toRemove);
-                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previous.screenParams, NavigationType.Pop);
+                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previous.getScreenParams(), NavigationType.Pop);
             }
         };
         if (animated) {

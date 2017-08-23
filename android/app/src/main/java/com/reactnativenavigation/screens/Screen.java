@@ -1,12 +1,12 @@
 package com.reactnativenavigation.screens;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
@@ -23,6 +23,7 @@ import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.StatusBarTextColorScheme;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -104,6 +105,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void setStyle() {
         setStatusBarColor(styleParams.statusBarColor);
+        setStatusBarTextColorScheme(styleParams.statusBarTextColorScheme);
         setNavigationBarColor(styleParams.navigationBarColor);
         topBar.setStyle(styleParams);
         if (styleParams.screenBackgroundColor.hasColor()) {
@@ -130,7 +132,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         if (screenParams.styleParams.hasTopBarCustomComponent()) {
             topBar.setReactView(screenParams.styleParams);
         } else {
-            topBar.setTitle(screenParams.title);
+            topBar.setTitle(screenParams.title, styleParams);
             topBar.setSubtitle(screenParams.subtitle);
         }
     }
@@ -144,7 +146,8 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
                 screenParams.leftButton,
                 leftButtonOnClickListener,
                 getNavigatorEventId(),
-                screenParams.overrideBackPressInJs);
+                screenParams.overrideBackPressInJs,
+                styleParams);
     }
 
     private void createAndAddTopBar() {
@@ -172,12 +175,30 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
+    private void setStatusBarTextColorScheme(StatusBarTextColorScheme textColorScheme) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
+        if (StatusBarTextColorScheme.Dark.equals(textColorScheme)) {
+            int flags = getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            setSystemUiVisibility(flags);
+        } else {
+            clearLightStatusBar();
+        }
+    }
+
+    public void clearLightStatusBar() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
+        int flags = getSystemUiVisibility();
+        flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        setSystemUiVisibility(flags);
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void setNavigationBarColor(StyleParams.Color navigationBarColor) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
 
-        final Activity context = (Activity) getContext();
-        final Window window = context.getWindow();
+        final Window window = ((NavigationActivity) activity).getScreenWindow();
         if (navigationBarColor.hasColor()) {
             window.setNavigationBarColor(navigationBarColor.getColor());
         } else {
@@ -207,7 +228,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setTitleBarTitle(String title) {
-        topBar.setTitle(title);
+       topBar.setTitle(title, styleParams);
     }
 
     public void setTitleBarSubtitle(String subtitle) {
@@ -345,5 +366,6 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         unmountReactView();
         EventBus.instance.unregister(this);
         sharedElements.destroy();
+        topBar.destroy();
     }
 }

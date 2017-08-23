@@ -543,6 +543,10 @@ public class NavigationCommandsHandler {
         promise.resolve(isAppLaunched);
     }
 
+    public static void isRootLaunched(Promise promise) {
+        promise.resolve(NavigationActivity.currentActivity != null);
+    }
+
     public static void getCurrentlyVisibleScreenId(final Promise promise) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {

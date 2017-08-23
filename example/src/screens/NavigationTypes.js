@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
 import Row from '../components/Row';
 
-class Types extends Component {
+class NavigationTypes extends React.Component {
 
   constructor(props) {
     super(props);
@@ -37,6 +37,13 @@ class Types extends Component {
   pushCustomTopBarScreen = () => {
     this.props.navigator.push({
       screen: 'example.Types.CustomTopBarScreen'
+    });
+  };
+
+  pushCustomButtonScreen = () => {
+    this.props.navigator.push({
+      screen: 'example.Types.CustomButtonScreen',
+      title: 'Custom Buttons'
     });
   };
 
@@ -93,6 +100,7 @@ class Types extends Component {
         <Row title={'Toggle Drawer'} onPress={this.toggleDrawer}/>
         <Row title={'Push Screen'} testID={'pushScreen'} onPress={this.pushScreen}/>
         <Row title={'Custom TopBar'} onPress={this.pushCustomTopBarScreen}/>
+        <Row title={'Custom Button'} onPress={this.pushCustomButtonScreen}/>
         <Row title={'Top Tabs Screen'} onPress={this.pushTopTabsScreen} platform={'android'}/>
         <Row title={'Show Modal'} onPress={this.showModal}/>
         <Row title={'Show Lightbox'} onPress={this.showLightBox}/>
@@ -120,4 +128,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Types;
+export default NavigationTypes;

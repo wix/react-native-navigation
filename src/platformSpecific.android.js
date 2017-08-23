@@ -181,6 +181,10 @@ async function isAppLaunched() {
   return await NativeReactModule.isAppLaunched();
 }
 
+async function isRootLaunched() {
+  return await NativeReactModule.isRootLaunched();
+}
+
 async function getCurrentlyVisibleScreenId() {
   return await NativeReactModule.getCurrentlyVisibleScreenId();
 }
@@ -220,5 +224,6 @@ module.exports = {
   dismissContextualMenu,
   setScreenStyle,
   isAppLaunched,
+  isRootLaunched,
   getCurrentlyVisibleScreenId
 };

@@ -1,6 +1,6 @@
 import {Navigation, ScreenVisibilityListener} from 'react-native-navigation';
 
-import Types from './Types';
+import Types from './NavigationTypes';
 import Actions from './Actions';
 import Transitions from './Transitions';
 
@@ -10,6 +10,7 @@ import LightBox from './types/LightBox';
 import Notification from './types/Notification';
 import Modal from './types/Modal';
 import CustomTopBarScreen from './types/CustomTopBarScreen';
+import CustomButtonScreen from './types/CustomButtonScreen';
 import TopTabs from './types/TopTabs';
 import TabOne from './types/tabs/TabOne';
 import TabTwo from './types/tabs/TabTwo';
@@ -35,6 +36,7 @@ export function registerScreens() {
   Navigation.registerComponent('example.Types.LightBox', () => LightBox);
   Navigation.registerComponent('example.Types.Notification', () => Notification);
   Navigation.registerComponent('example.Types.CustomTopBarScreen', () => CustomTopBarScreen);
+  Navigation.registerComponent('example.Types.CustomButtonScreen', () => CustomButtonScreen);
   Navigation.registerComponent('example.Types.TopTabs', () => TopTabs);
   Navigation.registerComponent('example.Types.TopTabs.TabOne', () => TabOne);
   Navigation.registerComponent('example.Types.TopTabs.TabTwo', () => TabTwo);
