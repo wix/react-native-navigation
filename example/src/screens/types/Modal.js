@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, Button, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, Button, TouchableOpacity, Platform} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 
 const CloseModalButton = ({text}) =>
@@ -18,7 +18,7 @@ class Modal extends Component {
     rightButtons: [
       {
         id: 'close-modal-button',
-        component: 'CloseModalButton',
+        component: Platform.OS === 'ios' ? 'CloseModalButton' : null,
         passProps: {
           text: 'Close'
         }
