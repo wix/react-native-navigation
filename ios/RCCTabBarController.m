@@ -38,14 +38,14 @@
     if ([viewController isKindOfClass:[UINavigationController class]]) {
       UINavigationController *navigationController = (UINavigationController*)viewController;
       UIViewController *topViewController = navigationController.topViewController;
-      
+
       if ([topViewController isKindOfClass:[RCCViewController class]]) {
         RCCViewController *topRCCViewController = (RCCViewController*)topViewController;
         topRCCViewController.commandType = COMMAND_TYPE_BOTTOME_TAB_SELECTED;
         topRCCViewController.timestamp = [RCTHelpers getTimestampString];
       }
     }
-    
+
   } else {
     [RCCTabBarController sendScreenTabPressedEvent:viewController body:nil];
   }
@@ -221,16 +221,13 @@
   // replace the tabs
   self.viewControllers = viewControllers;
 
-<<<<<<< HEAD
-=======
   NSNumber *initialTab = tabsStyle[@"initialTabIndex"];
   if (initialTab)
   {
     NSInteger initialTabIndex = initialTab.integerValue;
     [self setSelectedIndex:initialTabIndex];
   }
-  
->>>>>>> 8ce9dac6576a52b9cba047b0047093089affc5b4
+
   [self setRotation:props];
 
   return self;
