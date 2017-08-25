@@ -52,10 +52,13 @@ Navigation.startTabBasedApp({
   tabsStyle: { // optional, add this if you want to style the tab bar beyond the defaults
     tabBarButtonColor: '#ffff00', // optional, change the color of the tab icons and text (also unselected)
     tabBarSelectedButtonColor: '#ff9900', // optional, change the color of the selected tab icon and text (only selected)
-    tabBarBackgroundColor: '#551A8B' // optional, change the background color of the tab bar
+    tabBarBackgroundColor: '#551A8B', // optional, change the background color of the tab bar
+    initialTabIndex: 1, // optional, the default selected bottom tab. Default: 0
   },
   appStyle: {
-    orientation: 'portrait' // Sets a specific orientation to the entire app. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
+    orientation: 'portrait', // Sets a specific orientation to the entire app. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
+    bottomTabBadgeTextColor: 'red', // Optional, change badge text color. Android only
+    bottomTabBadgeBackgroundColor: 'green' // Optional, change badge background color. Android only
   },
   drawer: { // optional, add this if you want a side menu drawer in your app
     left: { // optional, define if you want a drawer from the left
