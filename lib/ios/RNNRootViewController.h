@@ -9,6 +9,8 @@
 @interface RNNRootViewController : UIViewController
 
 @property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
+@property (nonatomic, strong) RNNEventEmitter *eventEmitter;
+@property (nonatomic, strong) NSString* containerId;
 
 -(instancetype)initWithName:(NSString*)name
 				withOptions:(RNNNavigationOptions*)options
@@ -16,5 +18,7 @@
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter;
 
+
+-(void) applyNavigationButtons;
 
 @end

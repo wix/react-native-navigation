@@ -7,10 +7,10 @@ RCT_EXPORT_MODULE();
 static NSString* const onAppLaunched	= @"RNN.appLaunched";
 static NSString* const containerDidAppear	= @"RNN.containerDidAppear";
 static NSString* const containerDidDisappear	= @"RNN.containerDidDisappear";
-
+static NSString* const onNavigationButtonPressed	= @"RNN.navigationButtonPressed";
 
 -(NSArray<NSString *> *)supportedEvents {
-	return @[onAppLaunched, containerDidAppear, containerDidDisappear];
+	return @[onAppLaunched, containerDidAppear, containerDidDisappear, onNavigationButtonPressed];
 }
 
 # pragma mark public
@@ -25,6 +25,10 @@ static NSString* const containerDidDisappear	= @"RNN.containerDidDisappear";
 
 -(void)sendContainerDidDisappear:(NSString *)containerId {
 	[self send:containerDidDisappear body:containerId];
+}
+
+-(void)sendOnNavigationButtonPressed:(NSString *)containerId buttonId:(NSString*)buttonId {
+	[self send:onNavigationButtonPressed body:@{@"containerId":containerId , @"buttonId": buttonId }];
 }
 
 # pragma mark private

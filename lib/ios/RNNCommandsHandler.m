@@ -43,6 +43,7 @@
 		RNNRootViewController* rootVc = (RNNRootViewController*)vc;
 		[rootVc.navigationOptions mergeWith:options];
 		[rootVc.navigationOptions applyOn:vc];
+		[rootVc applyNavigationButtons];
 	}
 }
 

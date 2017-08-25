@@ -1,13 +1,12 @@
 
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
-
+#import "RNNNavigationButtons.h"
 
 @interface RNNRootViewController()
-@property (nonatomic, strong) NSString* containerId;
 @property (nonatomic, strong) NSString* containerName;
-@property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic) BOOL _statusBarHidden;
+@property (nonatomic, strong) RNNNavigationButtons* navigationButtons;
 
 @end
 
@@ -30,6 +29,7 @@
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
 	
+	self.navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self];
 	
 	return self;
 }
@@ -37,6 +37,7 @@
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.navigationOptions applyOn:self];
+	[self applyNavigationButtons];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -51,6 +52,10 @@
 -(void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	[self.eventEmitter sendContainerDidDisappear:self.containerId];
+}
+
+-(void) applyNavigationButtons{
+	[self.navigationButtons applyLeftButtons:self.navigationOptions.leftButtons rightButtons:self.navigationOptions.rightButtons];
 }
 
 /**

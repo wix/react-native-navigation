@@ -12,4 +12,6 @@
 
 -(void)sendContainerDidDisappear:(NSString*)containerId;
 
+-(void)sendOnNavigationButtonPressed:(NSString*)containerId buttonId:(NSString*)buttonId;
+
 @end

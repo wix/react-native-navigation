@@ -1,13 +1,12 @@
 #import "RNNNavigationOptions.h"
 #import <React/RCTConvert.h>
 
-
 @implementation RNNNavigationOptions
 
 -(instancetype)init {
 	return [self initWithDict:@{}];
 }
-
+	
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions {
 	self = [super init];
 	self.topBarBackgroundColor = [navigationOptions objectForKey:@"topBarBackgroundColor"];
@@ -22,7 +21,9 @@
 	self.topBarTranslucent = [navigationOptions objectForKey:@"topBarTranslucent"];
 	self.tabBadge = [navigationOptions objectForKey:@"tabBadge"];
 	self.topBarTextFontSize = [navigationOptions objectForKey:@"topBarTextFontSize"];
-  
+	self.leftButtons = [navigationOptions objectForKey:@"leftButtons"];
+	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
+	
 	return self;
 }
 
@@ -106,6 +107,6 @@
 			viewController.navigationController.navigationBar.translucent = NO;
 		}		
 	}
-
 }
+
 @end

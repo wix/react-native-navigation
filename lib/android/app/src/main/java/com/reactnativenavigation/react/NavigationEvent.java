@@ -11,6 +11,7 @@ public class NavigationEvent {
 	private static final String onAppLaunched = "RNN.appLaunched";
 	private static final String containerDidAppear = "RNN.containerDidAppear";
 	private static final String containerDidDisappear = "RNN.containerDidDisappear";
+	private static final String onNavigationButtonPressed = "RNN.navigationButtonPressed";
 
 	private final RCTDeviceEventEmitter emitter;
 
@@ -28,6 +29,11 @@ public class NavigationEvent {
 
 	public void containerDidAppear(String id) {
 		emit(containerDidAppear, id);
+	}
+
+	public void sendOnNavigationButtonPressed(String id, String buttonId) {
+		//TODO!
+		//emit(onNavigationButtonPressed, id);
 	}
 
 	private void emit(String eventName) {
