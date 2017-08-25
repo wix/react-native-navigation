@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+extern const NSInteger BLUR_STATUS_TAG;
+
 @interface RNNNavigationOptions : NSObject
 
 @property (nonatomic, strong) NSNumber* topBarBackgroundColor;
@@ -17,6 +19,8 @@
 @property (nonatomic, strong) NSNumber* topBarTextFontSize;
 @property (nonatomic, strong) NSArray* leftButtons;
 @property (nonatomic, strong) NSArray* rightButtons;
+@property (nonatomic, strong) NSNumber* topBarNoBorder;
+@property (nonatomic, strong) NSNumber* statusBarBlur;
 
 -(instancetype)init;
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions;

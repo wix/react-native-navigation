@@ -27,9 +27,6 @@ cache:
 install:
         # node:
   - source ./scripts/env/installNode.sh
-        # yarn:
-  - source ./scripts/env/installYarn.sh
-  - yarn config set cache-folder $YARN_CACHE
         # android sdk:
   - source ./scripts/env/installAndroidSDK.sh
         # fbsimctl:

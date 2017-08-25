@@ -1,7 +1,7 @@
 # Installing
 
 ### Add dependency
-`yarn add react-native-navigation@alpha`
+`npm install --save react-native-navigation@alpha`
 
 ### Configure Xcode
 drag-drop `node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj` into Libraries folder in xcode (along the rest of react)

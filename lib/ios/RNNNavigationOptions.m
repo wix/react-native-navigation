@@ -1,6 +1,8 @@
 #import "RNNNavigationOptions.h"
 #import <React/RCTConvert.h>
 
+const NSInteger BLUR_STATUS_TAG = 78264801;
+
 @implementation RNNNavigationOptions
 
 -(instancetype)init {
@@ -23,7 +25,8 @@
 	self.topBarTextFontSize = [navigationOptions objectForKey:@"topBarTextFontSize"];
 	self.leftButtons = [navigationOptions objectForKey:@"leftButtons"];
 	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
-	
+	self.topBarNoBorder = [navigationOptions objectForKey:@"topBarNoBorder"];
+
 	return self;
 }
 
@@ -107,6 +110,33 @@
 			viewController.navigationController.navigationBar.translucent = NO;
 		}		
 	}
+
+	if (self.topBarNoBorder) {
+		if ([self.topBarNoBorder boolValue]) {
+			viewController.navigationController.navigationBar
+			.shadowImage = [[UIImage alloc] init];
+		} else {
+			viewController.navigationController.navigationBar
+			.shadowImage = nil;
+		}
+	}
+	
+	if (self.statusBarBlur) {
+		UIView* curBlurView = [viewController.view viewWithTag:BLUR_STATUS_TAG];
+		if ([self.statusBarBlur boolValue]) {
+			if (!curBlurView) {
+				UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+				blur.frame = [[UIApplication sharedApplication] statusBarFrame];
+				blur.tag = BLUR_STATUS_TAG;
+				[viewController.view insertSubview:blur atIndex:0];
+			}
+		} else {
+			if (curBlurView) {
+				[curBlurView removeFromSuperview];
+			}
+		}
+	}
+	
 }
 
 @end
