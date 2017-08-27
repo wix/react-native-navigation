@@ -1,6 +1,6 @@
 const Utils = require('./Utils');
 
-const elementByLabel = Utils.elementByLabel;
+const { elementByLabel, elementById } = Utils;
 
 describe('screen style', () => {
   beforeEach(async () => {
@@ -49,5 +49,19 @@ describe('screen style', () => {
     await elementByLabel('Switch to tab based app').tap();
     await elementByLabel('Set Tab Badge').tap();
     await expect(element(by.text('EnCyClOpEdIa'))).toBeVisible();
+  });
+
+  it('set right buttons', async () => {
+    await elementByLabel('Push Options Screen').tap();
+    await expect(elementById('buttonOne')).toBeVisible();
+    await elementById('buttonOne').tap();
+    await expect(elementById('buttonTwo')).toBeVisible();
+    await elementById('buttonTwo').tap();
+    await expect(elementById('buttonOne')).toBeVisible();
+  });
+
+  it('set left buttons', async () => {
+    await elementByLabel('Push Options Screen').tap();
+    await expect(elementById('buttonLeft')).toBeVisible();
   });
 });

@@ -8,7 +8,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 -(instancetype)init {
 	return [self initWithDict:@{}];
 }
-
+	
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions {
 	self = [super init];
 	self.topBarBackgroundColor = [navigationOptions objectForKey:@"topBarBackgroundColor"];
@@ -23,6 +23,8 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	self.topBarTranslucent = [navigationOptions objectForKey:@"topBarTranslucent"];
 	self.tabBadge = [navigationOptions objectForKey:@"tabBadge"];
 	self.topBarTextFontSize = [navigationOptions objectForKey:@"topBarTextFontSize"];
+	self.leftButtons = [navigationOptions objectForKey:@"leftButtons"];
+	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
 	self.topBarNoBorder = [navigationOptions objectForKey:@"topBarNoBorder"];
 	self.tabBarHidden = [navigationOptions objectForKey:@"tabBarHidden"];
 
@@ -137,4 +139,5 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 	
 }
+
 @end

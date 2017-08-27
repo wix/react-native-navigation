@@ -4,6 +4,7 @@
 #import "RNNTestRootViewCreator.h"
 #import <React/RCTConvert.h>
 #import "RNNNavigationOptions.h"
+#import "RNNUIBarButtonItem.h"
 
 @interface RNNRootViewControllerTest : XCTestCase
 
@@ -222,6 +223,67 @@
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	self.options.topBarTextFontFamily = inputFont;
 	//	XCTAssertThrows([self.uut viewWillAppear:false]);
+}
+
+-(void)testRightButtonsWithTitle_withoutStyle {
+	self.options.rightButtons = @[@{@"id": @"testId", @"title": @"test"}];
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
+	NSString* expectedButtonId = @"testId";
+	NSString* expectedTitle = @"test";
+	XCTAssertTrue([button.buttonId isEqualToString:expectedButtonId]);
+	XCTAssertTrue([button.title isEqualToString:expectedTitle]);
+	XCTAssertTrue(button.enabled);
+}
+
+-(void)testRightButtonsWithTitle_withStyle {
+	NSNumber* inputColor = @(0xFFFF0000);
+	
+	self.options.rightButtons = @[@{@"id": @"testId", @"title": @"test", @"disabled": @true, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
+	NSString* expectedButtonId = @"testId";
+	NSString* expectedTitle = @"test";
+	XCTAssertTrue([button.buttonId isEqualToString:expectedButtonId]);
+	XCTAssertTrue([button.title isEqualToString:expectedTitle]);
+	XCTAssertFalse(button.enabled);
+	
+	//TODO: Determine how to tests buttonColor,buttonFontSize and buttonFontWeight?
+}
+
+
+-(void)testLeftButtonsWithTitle_withoutStyle {
+	self.options.leftButtons = @[@{@"id": @"testId", @"title": @"test"}];
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
+	NSString* expectedButtonId = @"testId";
+	NSString* expectedTitle = @"test";
+	XCTAssertTrue([button.buttonId isEqualToString:expectedButtonId]);
+	XCTAssertTrue([button.title isEqualToString:expectedTitle]);
+	XCTAssertTrue(button.enabled);
+}
+
+-(void)testLeftButtonsWithTitle_withStyle {
+	NSNumber* inputColor = @(0xFFFF0000);
+	
+	self.options.leftButtons = @[@{@"id": @"testId", @"title": @"test", @"disabled": @true, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
+	NSString* expectedButtonId = @"testId";
+	NSString* expectedTitle = @"test";
+	XCTAssertTrue([button.buttonId isEqualToString:expectedButtonId]);
+	XCTAssertTrue([button.title isEqualToString:expectedTitle]);
+	XCTAssertFalse(button.enabled);
+	
+	//TODO: Determine how to tests buttonColor,buttonFontSize and buttonFontWeight?
 }
 
 -(void)testTopBarNoBorderOn {

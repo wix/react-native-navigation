@@ -5,11 +5,28 @@ const { View, Text, Button } = require('react-native');
 
 const Navigation = require('react-native-navigation');
 
+const BUTTON_ONE = 'buttonOne';
+const BUTTON_TWO = 'buttonTwo';
+const BUTTON_LEFT = 'buttonLeft';
+
 class OptionsScreen extends Component {
+
   static get navigationOptions() {
     return {
       title: 'Static Title',
-      topBarTextFontFamily: 'HelveticaNeue-Italic'
+      topBarTextFontFamily: 'HelveticaNeue-Italic',
+      rightButtons: [{
+        id: BUTTON_ONE,
+        testID: BUTTON_ONE,
+        title: 'One',
+        buttonColor: 'red'
+      }],
+      leftButtons: [{
+        id: BUTTON_LEFT,
+        testID: BUTTON_LEFT,
+        title: 'Left',
+        buttonColor: 'purple'
+      }]
     };
   }
 
@@ -32,6 +49,35 @@ class OptionsScreen extends Component {
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
+  }
+
+  onNavigationButtonPressed(id) {
+    if (id === BUTTON_ONE) {
+      Navigation.setOptions(this.props.containerId, {
+        rightButtons: [{
+          id: BUTTON_TWO,
+          testID: BUTTON_TWO,
+          title: 'Two',
+          // icon: require('../../img/navicon_add.png'),
+          // disableIconTint: true,
+          // disabled: true
+          buttonColor: 'green',
+          buttonFontSize: 28,
+          buttonFontWeight: '800'
+        }]
+      });
+    } else if (id === BUTTON_TWO) {
+      Navigation.setOptions(this.props.containerId, {
+        rightButtons: [{
+          id: BUTTON_ONE,
+          testID: BUTTON_ONE,
+          title: 'One',
+          buttonColor: 'red'
+        }]
+      });
+    } else if (id === BUTTON_LEFT) {
+      Navigation.pop(this.props.containerId);
+    }
   }
 
   onClickDynamicOptions() {

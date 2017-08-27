@@ -17,11 +17,12 @@ extern const NSInteger BLUR_STATUS_TAG;
 @property (nonatomic, strong) NSNumber* topBarTranslucent;
 @property (nonatomic, strong) NSString* tabBadge;
 @property (nonatomic, strong) NSNumber* topBarTextFontSize;
+@property (nonatomic, strong) NSArray* leftButtons;
+@property (nonatomic, strong) NSArray* rightButtons;
 @property (nonatomic, strong) NSNumber* topBarNoBorder;
 @property (nonatomic, strong) NSNumber* statusBarBlur;
 @property (nonatomic, strong) NSNumber* statusBarHideWithTopBar;
 @property (nonatomic, strong) NSNumber* tabBarHidden;
-
 
 -(instancetype)init;
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions;
@@ -30,4 +31,3 @@ extern const NSInteger BLUR_STATUS_TAG;
 -(void)mergeWith:(NSDictionary*)otherOptions;
 
 @end
-
