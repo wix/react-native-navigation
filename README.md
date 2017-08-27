@@ -85,7 +85,7 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | drawUnderTopBar       |  ✅     |    WIP @gran33     |      [Contribute](CONTRIBUTING.md)       ||
 | statusBarBlur         |  ✅     |    ✅     |      [Contribute](CONTRIBUTING.md)       | @gtchance|
 | topBarBlur            | ✅      |    [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)       |
-| tabBarHidden  |   ✅  |   [Contribute](CONTRIBUTING.md)     |    [Contribute](CONTRIBUTING.md)        |
+| tabBarHidden  |   ✅  |   ✅     |    [Contribute](CONTRIBUTING.md)        | @gtchance|
 | statusBarTextColorScheme |  ✅   |   in development      |      / iOS specific    |
 | statusBarTextColorSchemeSingleScreen|  ✅   |     in development    |     / iOS specific      |
 | navBarSubtitleColor          |  ✅   |   [Contribute](CONTRIBUTING.md)     |      [Contribute](CONTRIBUTING.md)      |

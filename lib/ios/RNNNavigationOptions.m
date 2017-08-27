@@ -26,6 +26,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	self.leftButtons = [navigationOptions objectForKey:@"leftButtons"];
 	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
 	self.topBarNoBorder = [navigationOptions objectForKey:@"topBarNoBorder"];
+	self.tabBarHidden = [navigationOptions objectForKey:@"tabBarHidden"];
 
 	return self;
 }

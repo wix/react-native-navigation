@@ -49,6 +49,14 @@
 	return NO;
 }
 
+- (BOOL)hidesBottomBarWhenPushed
+{
+	if (self.navigationOptions.tabBarHidden) {
+		return [self.navigationOptions.tabBarHidden boolValue];
+	}
+	return NO;
+}
+
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[self.eventEmitter sendContainerDidAppear:self.containerId];

@@ -318,5 +318,28 @@
 	XCTAssertNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
 }
 
+- (void)testTabBarHidden_default {
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+
+	XCTAssertFalse([self.uut hidesBottomBarWhenPushed]);
+}
+
+
+- (void)testTabBarHidden_true {
+	self.options.tabBarHidden = @(1);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+
+	XCTAssertTrue([self.uut hidesBottomBarWhenPushed]);
+}
+
+- (void)testTabBarHidden_false {
+	self.options.tabBarHidden = @(0);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+
+	XCTAssertFalse([self.uut hidesBottomBarWhenPushed]);
+}
 
 @end
