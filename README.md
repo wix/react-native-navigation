@@ -97,7 +97,7 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | disabledBackGesture       |   ✅  |  WIP @gran33     |    / iOS specific     |
 | screenBackgroundImageName         |   ✅  |   [Contribute](CONTRIBUTING.md)      |    [Contribute](CONTRIBUTING.md)        |
 | rootBackgroundImageName            |  ✅   |    [Contribute](CONTRIBUTING.md)     |    [Contribute](CONTRIBUTING.md)       |
-| setButtons          |   ✅     |      WIP   @@Johan-dutoit  | [Contribute](CONTRIBUTING.md) |
+| setButtons          |   ✅     |    ✅    | [Contribute](CONTRIBUTING.md) | @Johan-dutoit|
 | title            |   ✅     |        	✅    | 	✅| Wix|
 | toggleDrawer        |   ✅     |        [Contribute](CONTRIBUTING.md)   | [Contribute](CONTRIBUTING.md) |
 | toggleTabs          |   ✅     |       in development    | in development|
