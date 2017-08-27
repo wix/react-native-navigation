@@ -21,6 +21,7 @@ extern const NSInteger BLUR_STATUS_TAG;
 @property (nonatomic, strong) NSArray* rightButtons;
 @property (nonatomic, strong) NSNumber* topBarNoBorder;
 @property (nonatomic, strong) NSNumber* statusBarBlur;
+@property (nonatomic, strong) NSNumber* statusBarHideWithTopBar;
 
 -(instancetype)init;
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions;
