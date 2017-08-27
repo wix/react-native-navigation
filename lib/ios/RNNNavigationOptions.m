@@ -24,6 +24,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	self.tabBadge = [navigationOptions objectForKey:@"tabBadge"];
 	self.topBarTextFontSize = [navigationOptions objectForKey:@"topBarTextFontSize"];
 	self.topBarNoBorder = [navigationOptions objectForKey:@"topBarNoBorder"];
+	self.tabBarHidden = [navigationOptions objectForKey:@"tabBarHidden"];
 
 	return self;
 }

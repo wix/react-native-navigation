@@ -20,6 +20,7 @@ extern const NSInteger BLUR_STATUS_TAG;
 @property (nonatomic, strong) NSNumber* topBarNoBorder;
 @property (nonatomic, strong) NSNumber* statusBarBlur;
 @property (nonatomic, strong) NSNumber* statusBarHideWithTopBar;
+@property (nonatomic, strong) NSNumber* tabBarHidden;
 
 
 -(instancetype)init;
