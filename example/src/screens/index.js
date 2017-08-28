@@ -16,6 +16,8 @@ import TabOne from './types/tabs/TabOne';
 import TabTwo from './types/tabs/TabTwo';
 
 import CollapsingHeader from './transitions/CollapsingHeader';
+import UpdatableCollapsingHeader from './transitions/UpdatableCollapsingHeader';
+import UpdatableCollapsingToolbarHeaderComponent from '../components/UpdatableCollapsingToolbarHeaderComponent';
 import SharedElementTransitions from './transitions/SharedElementTransitions';
 
 import Cards from './transitions/sharedElementTransitions/Cards/Cards';
@@ -42,6 +44,8 @@ export function registerScreens() {
   Navigation.registerComponent('example.Types.TopTabs.TabTwo', () => TabTwo);
 
   Navigation.registerComponent('example.Transitions.CollapsingHeader', () => CollapsingHeader);
+  Navigation.registerComponent('example.Transitions.UpdatableCollapsingHeader', () => UpdatableCollapsingHeader);
+  Navigation.registerComponent('example.Transitions.UpdatableCollapsingHeader.component', () => UpdatableCollapsingToolbarHeaderComponent);
   Navigation.registerComponent('example.Transitions.SharedElementTransitions', () => SharedElementTransitions);
   Navigation.registerComponent('example.Transitions.SharedElementTransitions.Cards', () => Cards);
   Navigation.registerComponent('example.Transitions.SharedElementTransitions.Cards.Info', () => CardsInfo);

@@ -10,6 +10,13 @@ class Transitions extends React.Component {
       screen: 'example.Transitions.CollapsingHeader',
     });
   };
+  
+  showUpdatableCollapsingHeader = () => {
+    this.props.navigator.showModal({
+      title: 'Collapsing Header',
+      screen: 'example.Transitions.UpdatableCollapsingHeader',
+    });
+  };
 
   showSharedElementTransitions = () => {
     this.props.navigator.showModal({
@@ -22,6 +29,7 @@ class Transitions extends React.Component {
     return (
       <ScrollView style={styles.container}>
         <Row title={'Collapsing Header'} onPress={this.showCollapsingHeader}/>
+        <Row title={'Updatable Collapsing Header'} onPress={this.showUpdatableCollapsingHeader}/>
         <Row title={'Shared Element Transition'} onPress={this.showSharedElementTransitions}/>
       </ScrollView>
     );

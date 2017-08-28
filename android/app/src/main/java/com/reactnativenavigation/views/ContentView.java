@@ -37,6 +37,10 @@ public class ContentView extends ReactRootView {
         viewMeasurer = new ViewMeasurer();
     }
 
+    public String getScreenId() {
+        return this.screenId;
+    }
+
     public void setViewMeasurer(ViewMeasurer viewMeasurer) {
         this.viewMeasurer = viewMeasurer;
     }

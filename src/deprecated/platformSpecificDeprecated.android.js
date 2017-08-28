@@ -153,6 +153,8 @@ function convertStyleParams(originalStyleObject) {
     collapsingToolBarImage: originalStyleObject.collapsingToolBarImage,
     collapsingToolBarComponent: originalStyleObject.collapsingToolBarComponent,
     collapsingToolBarComponentHeight: originalStyleObject.collapsingToolBarComponentHeight,
+    collapsingToolBarComponentInitialProps: originalStyleObject.collapsingToolBarComponentInitialProps,
+    componentHeight: originalStyleObject.componentHeight,
     collapsingToolBarCollapsedColor: processColor(originalStyleObject.collapsingToolBarCollapsedColor),
     collapsingToolBarExpendedColor: processColor(originalStyleObject.collapsingToolBarExpendedColor),
     showTitleWhenExpended: originalStyleObject.showTitleWhenExpended,

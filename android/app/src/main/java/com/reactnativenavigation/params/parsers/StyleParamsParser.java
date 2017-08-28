@@ -46,6 +46,7 @@ public class StyleParamsParser {
             result.drawScreenBelowTopBar = false;
         }
         result.collapsingTopBarParams = new CollapsingTopBarParamsParser(params, result.titleBarHideOnScroll, result.drawScreenBelowTopBar).parse();
+        result.collapsingTopBarComponentInitialProps = getBundle("collapsingToolBarComponentInitialProps");
         result.titleBarHidden = getBoolean("titleBarHidden", getDefaultTopBarHidden());
         result.topBarElevationShadowEnabled = getBoolean("topBarElevationShadowEnabled", getDefaultTopBarElevationShadowEnabled());
         result.titleBarTitleColor = getColor("titleBarTitleColor", getDefaultTitleBarColor());

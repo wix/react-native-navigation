@@ -93,4 +93,10 @@ public class CollapsingSingleScreen extends SingleScreen {
     private CollapseBehaviour getCollapseBehaviour() {
         return screenParams.styleParams.collapsingTopBarParams.collapseBehaviour;
     }
+
+    @Override
+    public void setStyle() {
+        CollapsingTopBar tempCollapsingTopBar = (CollapsingTopBar)topBar;
+        tempCollapsingTopBar.setStyle(styleParams);
+    }
 }
