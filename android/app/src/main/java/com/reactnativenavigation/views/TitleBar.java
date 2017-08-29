@@ -25,6 +25,7 @@ import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.react.ImageLoader;
 import com.reactnativenavigation.utils.ViewUtils;
 
 import java.util.List;
@@ -78,7 +79,6 @@ public class TitleBar extends Toolbar {
     }
 
     public void setStyle(StyleParams params) {
-
         setVisibility(params.titleBarHidden);
         setTitleTextColor(params);
         setTitleTextFont(params);
@@ -134,16 +134,17 @@ public class TitleBar extends Toolbar {
         }
     }
 
+    /**
+     * Set background image for ToolBar
+     *
+     * @param params - path to image (remote or local)
+     */
     protected void setBackground(StyleParams params) {
         String img = params.topBarBackgroundImage;
         if (img != null) {
-            Log.d("SetTitleBackground", "img not null: " + img);
-            Uri path = Uri.parse(params.topBarBackgroundImage);
-            Drawable d = Drawable.createFromPath(getRealPathFromURI(path));
-            setBackground(d);
+            setBackground(ImageLoader.loadImage(img));
         } else {
             setTranslucent(params);
-            Log.d("SetTitleBackground", "img null");
         }
     }
 

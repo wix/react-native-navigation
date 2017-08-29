@@ -70,10 +70,6 @@ public class TopBar extends AppBarLayout {
         addButtons(rightButtons, leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
     }
 
-    public TitleBar getTitleBar() {
-        return this.titleBar;
-    }
-
     protected TitleBar createTitleBar() {
         return new TitleBar(getContext());
     }
@@ -219,7 +215,7 @@ public class TopBar extends AppBarLayout {
     }
 
     public void showContextualMenu(final ContextualMenuParams params, StyleParams styleParams, Callback onButtonClicked) {
-        final ContextualMenu menuToRemove = contextualMenu != null ? contextualMenu : null;
+        final ContextualMenu menuToRemove = contextualMenu != null ? contextualMenu : null; //TODO WHAT IS IT :)
         contextualMenu = new ContextualMenu(getContext(), params, styleParams, onButtonClicked);
         titleBarAndContextualMenuContainer.addView(contextualMenu, new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
         ViewUtils.runOnPreDraw(contextualMenu, new Runnable() {

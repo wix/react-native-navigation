@@ -81,7 +81,6 @@ public class StyleParams {
     public Color contextualMenuButtonsColor;
     public Color contextualMenuBackgroundColor;
 
-    @Nullable
     public String topBarBackgroundImage;
 
     public Color topBarColor;
