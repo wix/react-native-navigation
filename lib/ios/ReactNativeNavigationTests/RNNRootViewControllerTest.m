@@ -342,4 +342,27 @@
 	XCTAssertFalse([self.uut hidesBottomBarWhenPushed]);
 }
 
+-(void)testTopBarBlur_default {
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
+}
+
+
+-(void)testTopBarBlur_false {
+	NSNumber* topBarBlurInput = @(0);
+	self.options.topBarBlur = topBarBlurInput;
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
+}
+
+-(void)testTopBarBlur_true {
+	NSNumber* topBarBlurInput = @(1);
+	self.options.topBarBlur = topBarBlurInput;
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertNotNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
+}
+
 @end
