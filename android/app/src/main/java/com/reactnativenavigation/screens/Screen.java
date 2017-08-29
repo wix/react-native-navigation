@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.facebook.react.bridge.Callback;
@@ -83,7 +82,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             topBar.onContextualMenuHidden();
             setStyle();
         }
-        if (ViewPagerScreenChangedEvent.TYPE.equals(event.getType()) && isShown()) {
+        if (ViewPagerScreenChangedEvent.TYPE.equals(event.getType()) && isShown() ) {
             topBar.dismissContextualMenu();
             topBar.onViewPagerScreenChanged(getScreenParams());
         }
@@ -105,10 +104,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setStyle() {
-        if (styleParams.isTranslucentStatus)
-            setStatusBarTranslucent(true);
-        else
-            setStatusBarColor(styleParams.statusBarColor);
+        setStatusBarColor(styleParams.statusBarColor);
         setStatusBarTextColorScheme(styleParams.statusBarTextColorScheme);
         setNavigationBarColor(styleParams.navigationBarColor);
         topBar.setStyle(styleParams);
@@ -179,36 +175,6 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         }
     }
 
-    public int getStatusBarHeight() {
-        try {
-            int result = 0;
-            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-            if (resourceId > 0) {
-                result = getResources().getDimensionPixelSize(resourceId);
-            }
-            return result;
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-            return 56;
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setStatusBarTranslucent(boolean isTranslucent) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
-
-        final Window window = ((NavigationActivity) activity).getScreenWindow();
-        if (isTranslucent) {
-            window.setStatusBarColor(Color.TRANSPARENT);
-            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            topBar.setPadding(0, getStatusBarHeight(), 0, 0);
-        } else {
-            window.setStatusBarColor(Color.BLACK);
-        }
-    }
-
-
     @TargetApi(Build.VERSION_CODES.M)
     private void setStatusBarTextColorScheme(StatusBarTextColorScheme textColorScheme) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
@@ -262,7 +228,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setTitleBarTitle(String title) {
-        topBar.setTitle(title, styleParams);
+       topBar.setTitle(title, styleParams);
     }
 
     public void setTitleBarSubtitle(String subtitle) {
