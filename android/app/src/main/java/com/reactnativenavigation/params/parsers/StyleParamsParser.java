@@ -29,7 +29,7 @@ public class StyleParamsParser {
         StyleParams result = new StyleParams(params);
         result.orientation = Orientation.fromString(params.getString("orientation", getDefaultOrientation()));
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
-        result.isTranslucentStatus = getBoolean("statusBarTranslucent", getDefaultTranslucentStatus());
+        result.statusBarTranslucent = getBoolean("statusBarTranslucent", getDefaultTranslucentStatus());
         result.statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"));
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
         result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
@@ -234,7 +234,7 @@ public class StyleParamsParser {
     }
 
     private boolean getDefaultTranslucentStatus() {
-        return AppStyle.appStyle != null && AppStyle.appStyle.isTranslucentStatus;
+        return AppStyle.appStyle != null && AppStyle.appStyle.statusBarTranslucent;
     }
 
     private boolean getDefaultTopBarElevationShadowEnabled() {

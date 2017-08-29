@@ -105,8 +105,8 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setStyle() {
-        if (styleParams.isTranslucentStatus)
-            setStatusBarTranslucent(true);
+        if (styleParams.statusBarTranslucent)
+            setStatusBarTranslucent();
         else
             setStatusBarColor(styleParams.statusBarColor);
         setStatusBarTextColorScheme(styleParams.statusBarTextColorScheme);
@@ -194,18 +194,14 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setStatusBarTranslucent(boolean isTranslucent) {
+    private void setStatusBarTranslucent() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
 
         final Window window = ((NavigationActivity) activity).getScreenWindow();
-        if (isTranslucent) {
-            window.setStatusBarColor(Color.TRANSPARENT);
-            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            topBar.setPadding(0, getStatusBarHeight(), 0, 0);
-        } else {
-            window.setStatusBarColor(Color.BLACK);
-        }
+        topBar.setFitsSystemWindows(true);
+        topBar.requestApplyInsets();
+        window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
 
