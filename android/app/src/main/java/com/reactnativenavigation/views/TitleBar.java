@@ -113,6 +113,7 @@ public class TitleBar extends Toolbar {
         if (shouldColorOverflowButton(params, overflowIcon)) {
             ViewUtils.tintDrawable(overflowIcon, params.titleBarButtonColor.getColor(), true);
         }
+
     }
 
     protected void setBackground(StyleParams params) {
