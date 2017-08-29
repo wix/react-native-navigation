@@ -70,14 +70,18 @@ public class TopBar extends AppBarLayout {
         addButtons(rightButtons, leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
     }
 
+    public TitleBar getTitleBar() {
+        return this.titleBar;
+    }
+
     protected TitleBar createTitleBar() {
         return new TitleBar(getContext());
     }
 
     protected void addTitleBar(StyleParams styleParams) {
         final int titleBarHeight = styleParams.titleBarHeight > 0
-            ? (int) ViewUtils.convertDpToPixel(styleParams.titleBarHeight)
-            : MATCH_PARENT;
+                ? (int) ViewUtils.convertDpToPixel(styleParams.titleBarHeight)
+                : MATCH_PARENT;
 
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(MATCH_PARENT, titleBarHeight);
 
@@ -190,8 +194,8 @@ public class TopBar extends AppBarLayout {
         topTabs = new TopTabs(getContext());
 
         final int topTabsHeight = styleParams.topTabsHeight > 0
-            ? (int) ViewUtils.convertDpToPixel(styleParams.topTabsHeight)
-            : MATCH_PARENT;
+                ? (int) ViewUtils.convertDpToPixel(styleParams.topTabsHeight)
+                : MATCH_PARENT;
 
         addView(topTabs, new ViewGroup.LayoutParams(MATCH_PARENT, topTabsHeight));
         return topTabs;

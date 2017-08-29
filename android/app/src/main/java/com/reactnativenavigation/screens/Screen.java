@@ -1,10 +1,16 @@
 package com.reactnativenavigation.screens;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -34,6 +40,7 @@ import com.reactnativenavigation.views.TopBar;
 import com.reactnativenavigation.views.sharedElementTransition.SharedElementTransition;
 import com.reactnativenavigation.views.sharedElementTransition.SharedElements;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -82,7 +89,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             topBar.onContextualMenuHidden();
             setStyle();
         }
-        if (ViewPagerScreenChangedEvent.TYPE.equals(event.getType()) && isShown() ) {
+        if (ViewPagerScreenChangedEvent.TYPE.equals(event.getType()) && isShown()) {
             topBar.dismissContextualMenu();
             topBar.onViewPagerScreenChanged(getScreenParams());
         }
@@ -104,6 +111,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setStyle() {
+
         setStatusBarColor(styleParams.statusBarColor);
         setStatusBarTextColorScheme(styleParams.statusBarTextColorScheme);
         setNavigationBarColor(styleParams.navigationBarColor);
@@ -228,7 +236,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setTitleBarTitle(String title) {
-       topBar.setTitle(title, styleParams);
+        topBar.setTitle(title, styleParams);
     }
 
     public void setTitleBarSubtitle(String subtitle) {

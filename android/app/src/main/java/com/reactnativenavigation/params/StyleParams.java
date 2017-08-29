@@ -3,6 +3,7 @@ package com.reactnativenavigation.params;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.reactnativenavigation.utils.TypefaceLoader;
@@ -13,6 +14,7 @@ public class StyleParams {
     public StyleParams(Bundle params) {
         this.params = params;
     }
+
     public static class Color {
         @ColorInt
         private Integer color = null;
@@ -78,6 +80,9 @@ public class StyleParams {
     public Color contextualMenuStatusBarColor;
     public Color contextualMenuButtonsColor;
     public Color contextualMenuBackgroundColor;
+
+    @Nullable
+    public String topBarBackgroundImage;
 
     public Color topBarColor;
     public Color topBarBorderColor;

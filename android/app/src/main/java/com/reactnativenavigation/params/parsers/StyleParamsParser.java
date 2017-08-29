@@ -45,6 +45,7 @@ public class StyleParamsParser {
         if (result.topBarTransparent) {
             result.drawScreenBelowTopBar = false;
         }
+
         result.collapsingTopBarParams = new CollapsingTopBarParamsParser(params, result.titleBarHideOnScroll, result.drawScreenBelowTopBar).parse();
         result.titleBarHidden = getBoolean("titleBarHidden", getDefaultTopBarHidden());
         result.topBarElevationShadowEnabled = getBoolean("topBarElevationShadowEnabled", getDefaultTopBarElevationShadowEnabled());
@@ -52,6 +53,7 @@ public class StyleParamsParser {
         result.topBarTranslucent = getBoolean("topBarTranslucent", getDefaultTopBarTranslucent());
         result.topBarBorderColor = getColor("topBarBorderColor", getDefaultTopBarBorderColor());
         result.topBarBorderWidth = Float.parseFloat(params.getString("topBarBorderWidth", getDefaultTopBarBorderWidth()));
+        result.topBarBackgroundImage = params.getString("topBarBackgroundImage", null);
 
         result.titleBarSubtitleColor = getColor("titleBarSubtitleColor", getDefaultSubtitleBarColor());
         result.titleBarButtonColor = getColor("titleBarButtonColor", getTitleBarButtonColor());

@@ -215,6 +215,18 @@ function convertStyleParams(originalStyleObject) {
   if (_.isUndefined(ret.expendCollapsingToolBarOnTopTabChange)) {
     ret.expendCollapsingToolBarOnTopTabChange = true;
   }
+
+  if (originalStyleObject.topBarBackgroundImage) {
+    if (_.isString(originalStyleObject.topBarBackgroundImage)){
+      ret.topBarBackgroundImage = originalStyleObject.topBarBackgroundImage;
+    }
+
+    const topBarBackgroundImage = resolveAssetSource(originalStyleObject.topBarBackgroundImage)
+    if (topBarBackgroundImage) {
+      ret.topBarBackgroundImage = topBarBackgroundImage.uri;
+    }
+  }
+
   return ret;
 }
 

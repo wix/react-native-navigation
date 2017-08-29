@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.content.Context;
+import android.net.Uri;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -36,7 +37,7 @@ public class CollapsingTopBarBackground extends FrameLayout {
 
     private void setImageSource() {
         if (params.imageUri != null) {
-            backdrop.setImageURI(params.imageUri);
+            backdrop.setImageURI(Uri.parse(params.imageUri));
         }
     }
 

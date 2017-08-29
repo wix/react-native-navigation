@@ -2,13 +2,18 @@ package com.reactnativenavigation.views;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -73,6 +78,7 @@ public class TitleBar extends Toolbar {
     }
 
     public void setStyle(StyleParams params) {
+
         setVisibility(params.titleBarHidden);
         setTitleTextColor(params);
         setTitleTextFont(params);
@@ -82,6 +88,19 @@ public class TitleBar extends Toolbar {
         colorOverflowButton(params);
         setBackground(params);
         centerTitle(params);
+    }
+
+
+    @SuppressLint("Recycle")
+    private String getRealPathFromURI(Uri contentURI) {
+        Cursor cursor = getContext().getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            return contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(idx);
+        }
     }
 
     public void setVisibility(boolean titleBarHidden) {
@@ -116,7 +135,16 @@ public class TitleBar extends Toolbar {
     }
 
     protected void setBackground(StyleParams params) {
-        setTranslucent(params);
+        String img = params.topBarBackgroundImage;
+        if (img != null) {
+            Log.d("SetTitleBackground", "img not null: " + img);
+            Uri path = Uri.parse(params.topBarBackgroundImage);
+            Drawable d = Drawable.createFromPath(getRealPathFromURI(path));
+            setBackground(d);
+        } else {
+            setTranslucent(params);
+            Log.d("SetTitleBackground", "img null");
+        }
     }
 
     protected void setTranslucent(StyleParams params) {
