@@ -52,8 +52,8 @@
     "jest-cli": "18.x.x",
     "jest-react-native": "18.x.x",
     "prop-types": "^15.5.10",
-    "react": "16.0.0-alpha.6",
-    "react-native": "0.43.0",
+    "react": "16.0.0-alpha.12",
+    "react-native": "0.45.1",
     "react-test-renderer": "15.4.2",
     "semver": "5.x.x"
   },
