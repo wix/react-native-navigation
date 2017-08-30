@@ -9,7 +9,7 @@ class UpdatableCollapsingHeader extends React.Component {
     navBarTextColor: '#ffffff',
     collapsingToolBarCollapsedColor: '#0f2362',
     collapsingToolBarComponent: 'example.Transitions.UpdatableCollapsingHeader.component',
-    collapsingToolBarComponentInitialProps: {costs: 10},
+    // collapsingToolBarComponentInitialProps: {costs: 10}, // Commented this line, since it only serves as an example
     navBarBackgroundColor: '#eeeeee'
   };
 
@@ -26,7 +26,7 @@ class UpdatableCollapsingHeader extends React.Component {
     });
 
     this.props.navigator.setStyle({
-      collapsingToolBarComponentInitialProps: {costs: this.state.costs},
+      // collapsingToolBarComponentInitialProps: {costs: this.state.costs}, // Commented this line, since it only serves as an example
     });
   };
 
