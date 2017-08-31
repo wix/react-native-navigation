@@ -11,9 +11,16 @@
 	return self;
 }
 
--(void)push:(UIViewController *)newTop onTop:(NSString *)containerId {
+-(void)push:(UIViewController *)newTop onTop:(NSString *)containerId completion:(RNNTransitionCompletionBlock)completion {
 	UIViewController *vc = [_store findContainerForId:containerId];
+	[CATransaction begin];
 	[[vc navigationController] pushViewController:newTop animated:YES];
+	[CATransaction setCompletionBlock:^{
+		if (completion) {
+			completion(containerId);
+		}
+	}];
+	[CATransaction commit];
 }
 
 -(void)pop:(NSString *)containerId {

@@ -12,9 +12,11 @@
 	return self;
 }
 
--(void)showModal:(UIViewController *)viewController {
+-(void)showModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {
 	UIViewController *topVC = [self topPresentedVC];
-	[topVC presentViewController:viewController animated:YES completion:nil];
+	[topVC presentViewController:viewController animated:YES completion:^{
+		completion(@(YES));
+	}];
 }
 
 -(void)dismissModal:(NSString *)containerId {

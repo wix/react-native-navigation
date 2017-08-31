@@ -3,6 +3,8 @@
 #import <UIKit/UIKit.h>
 #import "RNNRootViewController.h"
 
+typedef void (^RNNTransitionCompletionBlock)(id result);
+
 @interface RNNStore : NSObject
 
 -(UIViewController*) findContainerForId:(NSString*)containerId;

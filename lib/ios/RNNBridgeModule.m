@@ -22,12 +22,14 @@ RCT_EXPORT_METHOD(setRoot:(NSDictionary*)layout) {
 	[_commandsHandler setRoot:layout];
 }
 
-RCT_EXPORT_METHOD(setOptions:(NSString*)containerId options:(NSDictionary*)options) {
+RCT_EXPORT_METHOD(setOptions:(NSString*)containerId options:(NSDictionary*)options ) {
 	[_commandsHandler setOptions:containerId options:options];
 }
 
-RCT_EXPORT_METHOD(push:(NSString*)containerId layout:(NSDictionary*)layout) {
-	[_commandsHandler push:containerId layout:layout];
+RCT_EXPORT_METHOD(push:(NSString*)containerId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler push:containerId layout:layout completion:^(id result) {
+		resolve(result);
+	}];
 }
 
 RCT_EXPORT_METHOD(pop:(NSString*)containerId) {
@@ -42,8 +44,10 @@ RCT_EXPORT_METHOD(popToRoot:(NSString*)containerId) {
 	[_commandsHandler popToRoot:containerId];
 }
 
-RCT_EXPORT_METHOD(showModal:(NSDictionary*)layout) {
-	[_commandsHandler showModal:layout];
+RCT_EXPORT_METHOD(showModal:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler showModal:layout completion:^(id result) {
+		resolve(result);
+	}];
 }
 
 RCT_EXPORT_METHOD(dismissModal:(NSString*)containerId) {
