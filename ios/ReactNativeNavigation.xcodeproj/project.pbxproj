@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		247893731F14EEE30052258A /* RCCAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 247893721F14EEE30052258A /* RCCAnimator.m */; };
+		247893761F14EF380052258A /* RCCDirectionalPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 247893751F14EF380052258A /* RCCDirectionalPanGestureRecognizer.m */; };
 		260804DB1CE0D9D20094DBA1 /* RCCToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 260804DA1CE0D9D20094DBA1 /* RCCToolBar.m */; };
 		261108801E6C495400BF5D98 /* UIViewController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2611087F1E6C495400BF5D98 /* UIViewController+Rotation.m */; };
 		26714EAC1EB0E9D3009F4D52 /* RCCCustomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26714EAB1EB0E9D3009F4D52 /* RCCCustomTitleView.m */; };
@@ -51,6 +53,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		247893721F14EEE30052258A /* RCCAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCAnimator.m; sourceTree = "<group>"; };
+		247893741F14EF170052258A /* RCCAnimator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCAnimator.h; sourceTree = "<group>"; };
+		247893751F14EF380052258A /* RCCDirectionalPanGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCDirectionalPanGestureRecognizer.m; sourceTree = "<group>"; };
+		247893771F14EF530052258A /* RCCDirectionalPanGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCDirectionalPanGestureRecognizer.h; sourceTree = "<group>"; };
 		260804D91CE0D9D20094DBA1 /* RCCToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCToolBar.h; sourceTree = "<group>"; };
 		260804DA1CE0D9D20094DBA1 /* RCCToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCToolBar.m; sourceTree = "<group>"; };
 		2611087E1E6C495400BF5D98 /* UIViewController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+Rotation.h"; path = "../UIViewController+Rotation.h"; sourceTree = "<group>"; };
@@ -126,6 +132,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2478936B1F14EBD00052258A /* RCCSwiper */ = {
+			isa = PBXGroup;
+			children = (
+				247893741F14EF170052258A /* RCCAnimator.h */,
+				247893721F14EEE30052258A /* RCCAnimator.m */,
+				247893771F14EF530052258A /* RCCDirectionalPanGestureRecognizer.h */,
+				247893751F14EF380052258A /* RCCDirectionalPanGestureRecognizer.m */,
+			);
+			name = RCCSwiper;
+			sourceTree = "<group>";
+		};
 		260804D51CE0D7090094DBA1 /* RCCToolBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -202,6 +219,7 @@
 		D8AFADB41BEE6F3F00A4592D = {
 			isa = PBXGroup;
 			children = (
+				2478936B1F14EBD00052258A /* RCCSwiper */,
 				D8D779951D04B7180050CFEA /* Helpers */,
 				260804D51CE0D7090094DBA1 /* RCCToolBar */,
 				D85082BB1CBCF42400FDB961 /* RCCDrawerController */,
@@ -310,6 +328,7 @@
 				CC84A1A01C1A0C4E00B3A6A2 /* RCCNavigationController.m in Sources */,
 				2DCD499A1F33AAC30035123A /* RCCCustomBarButtonItem.m in Sources */,
 				D83514F61D29719A00D53758 /* RCCNotification.m in Sources */,
+				247893731F14EEE30052258A /* RCCAnimator.m in Sources */,
 				CC84A19F1C1A0C4E00B3A6A2 /* RCCManagerModule.m in Sources */,
 				26AFF3F51D7EEE2400CBA211 /* RCCTitleViewHelper.m in Sources */,
 				D8D779981D04B7180050CFEA /* RCTHelpers.m in Sources */,
@@ -328,6 +347,7 @@
 				D85082E51CBCF54200FDB961 /* SidebarFacebookAnimation.m in Sources */,
 				CC84A1A21C1A0C4E00B3A6A2 /* RCCViewController.m in Sources */,
 				D85082E91CBCF54200FDB961 /* SidebarWunderlistAnimation.m in Sources */,
+				247893761F14EF380052258A /* RCCDirectionalPanGestureRecognizer.m in Sources */,
 				D85082E11CBCF54200FDB961 /* RCCDrawerHelper.m in Sources */,
 				261108801E6C495400BF5D98 /* UIViewController+Rotation.m in Sources */,
 				D85082FE1CBCF8A800FDB961 /* MMDrawerVisualState.m in Sources */,
