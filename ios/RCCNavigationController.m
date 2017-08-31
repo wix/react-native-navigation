@@ -82,30 +82,35 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     passProps[GLOBAL_SCREEN_ACTION_TIMESTAMP] = actionParams[GLOBAL_SCREEN_ACTION_TIMESTAMP];
     NSDictionary *navigatorStyle = actionParams[@"style"];
     
-    // merge the navigatorStyle of our parent
-    if ([self.topViewController isKindOfClass:[RCCViewController class]])
-    {
-      RCCViewController *parent = (RCCViewController*)self.topViewController;
-      NSMutableDictionary *mergedStyle = [NSMutableDictionary dictionaryWithDictionary:parent.navigatorStyle];
+    NSNumber *keepStyleAcrossPush = [[RCCManager sharedInstance] getAppStyle][@"keepStyleAcrossPush"];
+    BOOL keepStyleAcrossPushBool = keepStyleAcrossPush ? [keepStyleAcrossPush boolValue] : YES;
+    
+    if (keepStyleAcrossPushBool) {
       
-      // there are a few styles that we don't want to remember from our parent (they should be local)
-      [mergedStyle removeObjectForKey:@"navBarHidden"];
-      [mergedStyle removeObjectForKey:@"statusBarHidden"];
-      [mergedStyle removeObjectForKey:@"navBarHideOnScroll"];
-      [mergedStyle removeObjectForKey:@"drawUnderNavBar"];
-      [mergedStyle removeObjectForKey:@"drawUnderTabBar"];
-      [mergedStyle removeObjectForKey:@"statusBarBlur"];
-      [mergedStyle removeObjectForKey:@"navBarBlur"];
-      [mergedStyle removeObjectForKey:@"navBarTranslucent"];
-      [mergedStyle removeObjectForKey:@"statusBarHideWithNavBar"];
-      [mergedStyle removeObjectForKey:@"autoAdjustScrollViewInsets"];
-      [mergedStyle removeObjectForKey:@"statusBarTextColorSchemeSingleScreen"];
-      [mergedStyle removeObjectForKey:@"disabledBackGesture"];
-      [mergedStyle removeObjectForKey:@"navBarCustomView"];
-      [mergedStyle removeObjectForKey:@"navBarComponentAlignment"];
-       
-      [mergedStyle addEntriesFromDictionary:navigatorStyle];
-      navigatorStyle = mergedStyle;
+      if ([self.topViewController isKindOfClass:[RCCViewController class]])
+      {
+        RCCViewController *parent = (RCCViewController*)self.topViewController;
+        NSMutableDictionary *mergedStyle = [NSMutableDictionary dictionaryWithDictionary:parent.navigatorStyle];
+        
+        // there are a few styles that we don't want to remember from our parent (they should be local)
+        [mergedStyle removeObjectForKey:@"navBarHidden"];
+        [mergedStyle removeObjectForKey:@"statusBarHidden"];
+        [mergedStyle removeObjectForKey:@"navBarHideOnScroll"];
+        [mergedStyle removeObjectForKey:@"drawUnderNavBar"];
+        [mergedStyle removeObjectForKey:@"drawUnderTabBar"];
+        [mergedStyle removeObjectForKey:@"statusBarBlur"];
+        [mergedStyle removeObjectForKey:@"navBarBlur"];
+        [mergedStyle removeObjectForKey:@"navBarTranslucent"];
+        [mergedStyle removeObjectForKey:@"statusBarHideWithNavBar"];
+        [mergedStyle removeObjectForKey:@"autoAdjustScrollViewInsets"];
+        [mergedStyle removeObjectForKey:@"statusBarTextColorSchemeSingleScreen"];
+        [mergedStyle removeObjectForKey:@"disabledBackGesture"];
+        [mergedStyle removeObjectForKey:@"navBarCustomView"];
+        [mergedStyle removeObjectForKey:@"navBarComponentAlignment"];
+        
+        [mergedStyle addEntriesFromDictionary:navigatorStyle];
+        navigatorStyle = mergedStyle;
+      }
     }
     
     RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component passProps:passProps navigatorStyle:navigatorStyle globalProps:nil bridge:bridge];
