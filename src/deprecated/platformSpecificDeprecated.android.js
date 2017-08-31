@@ -202,6 +202,10 @@ function convertStyleParams(originalStyleObject) {
     navigationBarColor: processColor(originalStyleObject.navigationBarColor)
   };
 
+  if (originalStyleObject.disabledButtonColor) {
+    ret.titleBarDisabledButtonColor = processColor(originalStyleObject.disabledButtonColor);
+  }
+
   if (originalStyleObject.collapsingToolBarImage) {
     if (_.isString(originalStyleObject.collapsingToolBarImage)) {
       ret.collapsingToolBarImage = originalStyleObject.collapsingToolBarImage;
