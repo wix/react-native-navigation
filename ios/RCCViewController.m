@@ -585,12 +585,11 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   
  //Bug fix: in case there is a interactivePopGestureRecognizer, it prevents react-native from getting touch events on the left screen area that the gesture handles
  //overriding the delegate of the gesture prevents this from happening while keeping the gesture intact (another option was to disable it completely by demand)
- self.originalInteractivePopGestureDelegate = nil;
  if(self.navigationController.viewControllers.count > 1){
    if (self.navigationController != nil && self.navigationController.interactivePopGestureRecognizer != nil)
    {
      id <UIGestureRecognizerDelegate> interactivePopGestureRecognizer = self.navigationController.interactivePopGestureRecognizer.delegate;
-     if (interactivePopGestureRecognizer != nil)
+     if (interactivePopGestureRecognizer != nil && interactivePopGestureRecognizer != self)
      {
        self.originalInteractivePopGestureDelegate = interactivePopGestureRecognizer;
        self.navigationController.interactivePopGestureRecognizer.delegate = self;
