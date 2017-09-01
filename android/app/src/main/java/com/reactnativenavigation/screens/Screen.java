@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -112,11 +113,6 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setStyle() {
-
-        if (styleParams.statusBarTranslucent)
-            setStatusBarTranslucent();
-        else
-            setStatusBarColor(styleParams.statusBarColor);
         setStatusBarTextColorScheme(styleParams.statusBarTextColorScheme);
         setNavigationBarColor(styleParams.navigationBarColor);
         topBar.setStyle(styleParams);
@@ -188,18 +184,6 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setStatusBarTranslucent() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
-
-        final Window window = ((NavigationActivity) activity).getScreenWindow();
-        topBar.setFitsSystemWindows(true);
-        topBar.requestApplyInsets();
-        window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-    }
-
-
     @TargetApi(Build.VERSION_CODES.M)
     private void setStatusBarTextColorScheme(StatusBarTextColorScheme textColorScheme) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
@@ -211,6 +195,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             clearLightStatusBar();
         }
     }
+
 
     public void clearLightStatusBar() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;

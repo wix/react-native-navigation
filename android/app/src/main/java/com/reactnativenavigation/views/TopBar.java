@@ -1,6 +1,8 @@
 package com.reactnativenavigation.views;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -8,12 +10,18 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.facebook.react.bridge.Callback;
+import com.reactnativenavigation.R;
 import com.reactnativenavigation.animation.VisibilityAnimator;
+import com.reactnativenavigation.controllers.NavigationActivity;
 import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.NavigationParams;
@@ -168,6 +176,21 @@ public class TopBar extends AppBarLayout {
         setTopTabsStyle(styleParams);
         if (!styleParams.topBarElevationShadowEnabled) {
             disableElevationShadow();
+        }
+        if (styleParams.statusBarTranslucent)
+            setStatusBarTranslucent();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setStatusBarTranslucent() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            titleBar.setLayoutParams(new FrameLayout.LayoutParams(MATCH_PARENT, ViewUtils.getToolBarHeight()));
+        } else {
+            Window window = ((NavigationActivity) getContext()).getScreenWindow();
+            titleBar.setFitsSystemWindows(true);
+            titleBar.requestApplyInsets();
+            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
 

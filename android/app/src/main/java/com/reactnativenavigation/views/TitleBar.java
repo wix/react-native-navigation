@@ -141,6 +141,7 @@ public class TitleBar extends Toolbar {
      */
     protected void setBackground(StyleParams params) {
         String img = params.topBarBackgroundImage;
+        Log.e("setBackground", img + " ");
         if (img != null) {
             setBackground(ImageLoader.loadImage(img));
         } else {
