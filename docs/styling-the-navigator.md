@@ -65,6 +65,7 @@ this.props.navigator.setStyle({
   statusBarHidden: false, // make the status bar hidden regardless of nav bar state
   
   disabledBackGesture: false, // default: false. Disable the back gesture (swipe gesture) in order to pop the top screen. 
+  disabledSimultaneousGesture: true, // default: true. Disable simultaneous gesture recognition.
   screenBackgroundImageName: '<name of image in Images.xcassets>', // Optional. default screen background image.
   rootBackgroundImageName: '<name of image in Images.xcassets>', // Static while you transition between screens. Works best with screenBackgroundColor: 'transparent'
 

@@ -783,5 +783,10 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   return !disabledBackGestureBool;
 }
 
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+  NSNumber *disabledSimultaneousGesture = self.navigatorStyle[@"disabledSimultaneousGesture"];
+  BOOL disabledSimultaneousGestureBool = disabledSimultaneousGesture ? [disabledSimultaneousGesture boolValue] : YES; // make default value of disabledSimultaneousGesture is true
+  return !disabledSimultaneousGestureBool;
+}
 
 @end
