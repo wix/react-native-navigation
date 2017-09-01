@@ -22,7 +22,7 @@
 }
 
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
-    CGSize size = rootView.intrinsicSize;
+    CGSize size = rootView.intrinsicContentSize;
     rootView.frame = CGRectMake(0, 0, size.width, size.height);
     self.width = size.width;
 }
