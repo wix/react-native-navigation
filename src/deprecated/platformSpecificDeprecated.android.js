@@ -202,6 +202,10 @@ function convertStyleParams(originalStyleObject) {
     navigationBarColor: processColor(originalStyleObject.navigationBarColor)
   };
 
+  if (originalStyleObject.disabledButtonColor) {
+    ret.titleBarDisabledButtonColor = processColor(originalStyleObject.disabledButtonColor);
+  }
+
   if (originalStyleObject.collapsingToolBarImage) {
     if (_.isString(originalStyleObject.collapsingToolBarImage)) {
       ret.collapsingToolBarImage = originalStyleObject.collapsingToolBarImage;
@@ -329,6 +333,9 @@ function navigatorSetButtons(navigator, navigatorEventID, _params) {
           button.icon = icon.uri;
         }
       }
+      if (button.buttonColor) {
+        button.color = processColor(button.buttonColor);
+      }
     });
   }
   let leftButton = getLeftButton(params);
@@ -338,6 +345,9 @@ function navigatorSetButtons(navigator, navigatorEventID, _params) {
       if (icon) {
         leftButton.icon = icon.uri;
       }
+    }
+    if (leftButton.buttonColor) {
+      leftButton.color = processColor(leftButton.buttonColor);
     }
   } else if (shouldRemoveLeftButton(params)) {
     leftButton = {};
@@ -524,6 +534,9 @@ function addNavigatorButtons(screen, sideMenuParams) {
           button.icon = icon.uri;
         }
       }
+      if (button.buttonColor) {
+        button.color = processColor(button.buttonColor);
+      }
     });
   }
 
@@ -534,6 +547,9 @@ function addNavigatorButtons(screen, sideMenuParams) {
       if (icon) {
         leftButton.icon = icon.uri;
       }
+    }
+    if (leftButton.buttonColor) {
+      leftButton.color = processColor(leftButton.buttonColor);
     }
   }
 
