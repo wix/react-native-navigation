@@ -41,4 +41,12 @@ describe('screen stack', () => {
     await elementByLabel('Pop To Root').tap();
     await expect(elementByLabel('React Native Navigation!')).toBeVisible();
   });
+
+  it('switch to tab', async () => {
+    await elementByLabel('Switch to tab based app').tap();
+    await expect(elementByLabel('This is tab 1')).toBeVisible();
+    await elementByLabel('Switch To Tab 2').tap();
+    await expect(elementByLabel('This is tab 1')).toBeNotVisible();
+    await expect(elementByLabel('This is tab 2')).toBeVisible();
+  });
 });
