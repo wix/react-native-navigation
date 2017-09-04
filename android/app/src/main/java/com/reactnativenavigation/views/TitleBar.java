@@ -2,22 +2,18 @@ package com.reactnativenavigation.views;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.graphics.Typeface;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.reactnativenavigation.params.BaseScreenParams;
@@ -82,24 +78,22 @@ public class TitleBar extends Toolbar {
         setVisibility(params.titleBarHidden);
         setTitleTextColor(params);
         setTitleTextFont(params);
+        setSubTitleTextFont(params);
         setTitleTextFontSize(params);
         setTitleTextFontWeight(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
-        setBackground(params);
         centerTitle(params);
+        setSubtitleFontSize(params);
+        setBackground(params);
     }
 
-
-    @SuppressLint("Recycle")
-    private String getRealPathFromURI(Uri contentURI) {
-        Cursor cursor = getContext().getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) { // Source is Dropbox or other similar local file path
-            return contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            return cursor.getString(idx);
+    public void setSubtitleFontSize(StyleParams params) {
+        if (params.titleBarSubTitleFontSize > 0) {
+            View subTitleView = getSubTitleView();
+            if (subTitleView instanceof TextView) {
+                ((TextView) subTitleView).setTextSize(((float) params.titleBarSubTitleFontSize));
+            }
         }
     }
 
@@ -117,6 +111,7 @@ public class TitleBar extends Toolbar {
         if (titleView == null) {
             return;
         }
+        titleView.setPadding(0, -17, 0, 0);
         ViewUtils.runOnPreDraw(titleView, new Runnable() {
             @Override
             public void run() {
@@ -134,14 +129,9 @@ public class TitleBar extends Toolbar {
         }
     }
 
-    /**
-     * Set background image for ToolBar
-     *
-     * @param params - path to image (remote or local)
-     */
+
     protected void setBackground(StyleParams params) {
         String img = params.topBarBackgroundImage;
-        Log.e("setBackground", img + " ");
         if (img != null) {
             setBackground(ImageLoader.loadImage(img));
         } else {
@@ -172,6 +162,16 @@ public class TitleBar extends Toolbar {
         View titleView = getTitleView();
         if (titleView instanceof TextView) {
             ((TextView) titleView).setTypeface(params.titleBarTitleFont.get());
+        }
+    }
+
+    protected void setSubTitleTextFont(StyleParams params) {
+        if (!params.titleBarSubTitleFont.hasFont()) {
+            return;
+        }
+        View titleView = getSubTitleView();
+        if (titleView instanceof TextView) {
+            ((TextView) titleView).setTypeface(params.titleBarSubTitleFont.get());
         }
     }
 
@@ -308,6 +308,19 @@ public class TitleBar extends Toolbar {
                 return child.getText().equals(getTitle());
             }
         });
+    }
+
+    @Nullable
+    protected View getSubTitleView() {
+        for (int i = 0; i < getChildCount(); i++) {
+            if (getChildAt(i) instanceof TextView) {
+                TextView subTitle = (TextView) getChildAt(i);
+                if (subTitle.getText().equals(getSubtitle())) {
+                    return subTitle;
+                }
+            }
+        }
+        return null;
     }
 
     public void setButtonColor(StyleParams.Color titleBarButtonColor) {

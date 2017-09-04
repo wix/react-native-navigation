@@ -4,19 +4,24 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.R;
@@ -28,6 +33,7 @@ import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.react.ImageLoader;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 
@@ -141,9 +147,16 @@ public class TopBar extends AppBarLayout {
         );
     }
 
-    private void addReactViewFill(ContentView view) {
-        view.setLayoutParams(new LayoutParams(MATCH_PARENT, ViewUtils.getToolBarHeight()));
-        titleBar.addView(view);
+    private void addReactViewFill(final ContentView view) {
+        titleBar.addView(view, new LayoutParams(MATCH_PARENT, ViewUtils.getToolBarHeight()));
+        view.setOnDisplayListener(new Screen.OnDisplayListener() {
+            @Override
+            public void onDisplay() {
+                view.getLayoutParams().height = ViewUtils.getToolBarHeight();
+                ((ActionBar.LayoutParams) view.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
+                view.requestLayout();
+            }
+        });
     }
 
     private void addCenteredReactView(final ContentView view) {
@@ -179,16 +192,21 @@ public class TopBar extends AppBarLayout {
         }
         if (styleParams.statusBarTranslucent)
             setStatusBarTranslucent();
+        String img = styleParams.topBarBackgroundImage;
+        if (img != null)
+            setTransparent();
     }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarTranslucent() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            titleBar.setLayoutParams(new FrameLayout.LayoutParams(MATCH_PARENT, ViewUtils.getToolBarHeight()));
+            setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, ViewUtils.getToolBarHeight()));
         } else {
             Window window = ((NavigationActivity) getContext()).getScreenWindow();
-            titleBar.setFitsSystemWindows(true);
-            titleBar.requestApplyInsets();
+            setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, (ViewUtils.getToolBarHeight() + ViewUtils.getStatusBarHeight())));
+            titleBar.setPadding(0, ViewUtils.getStatusBarHeight(), 0, 0);
+            setPadding(0, 0, 0, -10);
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }

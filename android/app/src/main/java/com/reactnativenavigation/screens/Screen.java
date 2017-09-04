@@ -1,22 +1,16 @@
 package com.reactnativenavigation.screens;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
@@ -42,7 +36,8 @@ import com.reactnativenavigation.views.TopBar;
 import com.reactnativenavigation.views.sharedElementTransition.SharedElementTransition;
 import com.reactnativenavigation.views.sharedElementTransition.SharedElements;
 
-import java.io.File;
+import org.w3c.dom.Text;
+
 import java.util.List;
 import java.util.Map;
 
@@ -144,6 +139,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             topBar.setSubtitle(screenParams.subtitle);
         }
     }
+
 
     private void addTitleBarButtons() {
         setButtonColorFromScreen(screenParams.rightButtons);

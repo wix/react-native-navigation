@@ -60,7 +60,9 @@ public class StyleParamsParser {
         result.titleBarButtonColor = getColor("titleBarButtonColor", getTitleBarButtonColor());
         result.titleBarDisabledButtonColor = getColor("titleBarDisabledButtonColor", getTitleBarDisabledButtonColor());
         result.titleBarTitleFont = getFont("titleBarTitleFontFamily", getDefaultTitleTextFontFamily());
+        result.titleBarSubTitleFont = getFont("titleBarSubTitleFontFamily", getDefaultSubTitleTextFontFamily());
         result.titleBarTitleFontSize = getInt("titleBarTitleFontSize", getDefaultTitleTextFontSize());
+        result.titleBarSubTitleFontSize = getInt("titleBarSubTitleFontSize", getDefaultSubTitleTextFontSize());
         result.titleBarTitleFontBold = getBoolean("titleBarTitleFontBold", getDefaultTitleTextFontBold());
         result.titleBarTitleTextCentered = getBoolean("titleBarTitleTextCentered", getDefaultTitleBarTextCentered());
         result.titleBarHeight = getInt("titleBarHeight", getDefaultTitleBarHeight());
@@ -81,7 +83,7 @@ public class StyleParamsParser {
         result.bottomTabsInitialIndex = getInt("initialTabIndex", 0);
         result.bottomTabsHidden = getBoolean("bottomTabsHidden", getDefaultBottomTabsHidden());
         result.drawScreenAboveBottomTabs = !result.bottomTabsHidden &&
-                                           params.getBoolean("drawScreenAboveBottomTabs", getDefaultDrawScreenAboveBottomTabs());
+                params.getBoolean("drawScreenAboveBottomTabs", getDefaultDrawScreenAboveBottomTabs());
         if (result.titleBarHideOnScroll) {
             result.drawScreenAboveBottomTabs = false;
         }
@@ -274,9 +276,16 @@ public class StyleParamsParser {
     private StyleParams.Font getDefaultTitleTextFontFamily() {
         return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.titleBarTitleFont;
     }
+    private StyleParams.Font getDefaultSubTitleTextFontFamily() {
+        return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.titleBarSubTitleFont;
+    }
 
     private int getDefaultTitleTextFontSize() {
         return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarTitleFontSize;
+    }
+
+    private int getDefaultSubTitleTextFontSize() {
+        return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarSubTitleFontSize;
     }
 
     private boolean getDefaultTitleTextFontBold() {
