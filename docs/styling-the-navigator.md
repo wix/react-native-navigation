@@ -20,6 +20,19 @@ export default class StyledScreen extends Component {
   }
 ```
 
+## Disabling persistent styling properties on iOS
+By design, most style properties on iOS are carried on to pushed screens. For example, If the navigation stack contains a single screen with `navBarButtonColor: 'blue'`; any screen pushed to this stack will have a blue `navBar` without needing to declare that property. This results in unpredictable and hard to determine style mechanism, therefore it wasn't implemented on Android.
+To disable this behavior on iOS, add `keepStyleAcrossPush: false` to `appStyle`:
+
+```js
+Navigation.startTabBasedApp({
+  ...
+  appStyle: {
+    keepStyleAcrossPush: false
+  }
+});
+```
+
 ## Setting styles dynamically
 Use the `setStyle` method to change a screen's style dynamically.
 
