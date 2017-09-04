@@ -75,7 +75,6 @@ public class TitleBar extends Toolbar {
     }
 
     public void setStyle(StyleParams params) {
-        setVisibility(params.titleBarHidden);
         setTitleTextColor(params);
         setTitleTextFont(params);
         setSubTitleTextFont(params);
@@ -86,6 +85,7 @@ public class TitleBar extends Toolbar {
         centerTitle(params);
         setSubtitleFontSize(params);
         setBackground(params);
+        setVisibility(params.titleBarHidden);
     }
 
     public void setSubtitleFontSize(StyleParams params) {

@@ -195,8 +195,11 @@ public class TopBar extends AppBarLayout {
         String img = styleParams.topBarBackgroundImage;
         if (img != null)
             setTransparent();
+        setVisibility(styleParams.titleBarHidden);
     }
-
+    public void setVisibility(boolean titleBarHidden) {
+        setVisibility(titleBarHidden ? GONE : VISIBLE);
+    }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarTranslucent() {
