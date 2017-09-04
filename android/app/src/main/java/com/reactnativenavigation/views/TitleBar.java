@@ -9,8 +9,10 @@ import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
@@ -107,11 +109,16 @@ public class TitleBar extends Toolbar {
     }
 
     private void centerTitle(final StyleParams params) {
-        final View titleView = getTitleView();
+        final TextView titleView = (TextView) getTitleView();
         if (titleView == null) {
             return;
         }
-        titleView.setPadding(0, -17, 0, 0);
+
+        LayoutParams lp = (LayoutParams) titleView.getLayoutParams();
+        lp.gravity = Gravity.START;
+        lp.setMargins(0, 10, 0, 0);
+        titleView.setLayoutParams(lp);
+        titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
         ViewUtils.runOnPreDraw(titleView, new Runnable() {
             @Override
             public void run() {

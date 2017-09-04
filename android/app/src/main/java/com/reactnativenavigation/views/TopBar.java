@@ -197,19 +197,20 @@ public class TopBar extends AppBarLayout {
             setTransparent();
         setVisibility(styleParams.titleBarHidden);
     }
+
     public void setVisibility(boolean titleBarHidden) {
         setVisibility(titleBarHidden ? GONE : VISIBLE);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarTranslucent() {
+        setPadding(0, 0, 0, -10);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, ViewUtils.getToolBarHeight()));
         } else {
             Window window = ((NavigationActivity) getContext()).getScreenWindow();
             setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, (ViewUtils.getToolBarHeight() + ViewUtils.getStatusBarHeight())));
             titleBar.setPadding(0, ViewUtils.getStatusBarHeight(), 0, 0);
-            setPadding(0, 0, 0, -10);
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
