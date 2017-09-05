@@ -3,7 +3,7 @@ const { Component } = require('react');
 
 const { Text } = require('react-native');
 const { connect } = require('remx');
-const store = require('./store');
+const store = require('./MyStore');
 
 class MyContainer extends Component {
   render() {

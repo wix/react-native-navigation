@@ -59,6 +59,8 @@
     "react-native": "0.44.0",
     "react-test-renderer": "16.0.0-alpha.6",
     "remx": "2.x.x",
+    "redux": "3.x.x",
+    "react-redux": "5.x.x",
     "semver": "5.x.x",
     "shell-utils": "1.x.x"
   },
