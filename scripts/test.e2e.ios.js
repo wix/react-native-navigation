@@ -34,6 +34,9 @@ function e2e() {
 }
 
 function run() {
+  if (!exec.which(`fbsimctl`)) {
+    throw new Error(`fbsimctl must be installed: "brew tap facebook/fb && brew install fbsimctl"`);
+  }
   buildProjForDetox();
   e2e();
 }
