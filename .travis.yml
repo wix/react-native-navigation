@@ -27,8 +27,6 @@ install:
   - source ./scripts/env/installNode.sh
         # android sdk:
   - source ./scripts/env/installAndroidSDK.sh
-        # fbsimctl:
-  - source ./scripts/env/installFbSimCtl.sh
 
 script:
   - set -e
