@@ -59,7 +59,7 @@ public abstract class BaseTest {
 				scrollToText("Playground");
 			}
 			elementByText("Playground").click();
-			elementByText("Permit drawing over other apps").click();
+			device().findObject(new UiSelector().checkable(true).checked(false)).click();
 			device().pressBack();
 			device().pressBack();
 		}
