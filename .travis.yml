@@ -4,7 +4,6 @@ language: generic
 
 env:
   global:
-    - YARN_CACHE=$HOME/.yarn-cache
     - CODE_SIGNING_REQUIRED=NO
     - RCT_NO_LAUNCH_PACKAGER=true
 
@@ -18,7 +17,6 @@ before_cache:
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - $YARN_CACHE
     - $HOME/.m2
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/

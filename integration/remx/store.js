@@ -13,7 +13,7 @@ const setters = remx.setters({
   },
 
   setAge(age) {
-    state.merge({ person: { age } });
+    state.person.age = age;
   }
 });
 
