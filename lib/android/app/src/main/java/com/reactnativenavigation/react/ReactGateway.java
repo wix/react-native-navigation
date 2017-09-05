@@ -25,10 +25,12 @@ public class ReactGateway {
 
 	public void onActivityResumed(NavigationActivity activity) {
 		initializer.onActivityResumed(activity);
+		jsDevReloadHandler.onActivityResumed(activity);
 	}
 
 	public void onActivityPaused(NavigationActivity activity) {
 		initializer.onActivityPaused(activity);
+		jsDevReloadHandler.onActivityPaused(activity);
 	}
 
 	public void onActivityDestroyed(NavigationActivity activity) {
