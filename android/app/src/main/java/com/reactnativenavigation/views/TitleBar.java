@@ -2,8 +2,10 @@ package com.reactnativenavigation.views;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
@@ -74,6 +76,8 @@ public class TitleBar extends Toolbar {
         setVisibility(params.titleBarHidden);
         setTitleTextColor(params);
         setTitleTextFont(params);
+        setTitleTextFontSize(params);
+        setTitleTextFontWeight(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
         setBackground(params);
@@ -82,6 +86,11 @@ public class TitleBar extends Toolbar {
 
     public void setVisibility(boolean titleBarHidden) {
         setVisibility(titleBarHidden ? GONE : VISIBLE);
+    }
+
+    public void setTitle(String title, StyleParams styleParams) {
+        setTitle(title);
+        centerTitle(styleParams);
     }
 
     private void centerTitle(final StyleParams params) {
@@ -93,9 +102,8 @@ public class TitleBar extends Toolbar {
             @Override
             public void run() {
                 if (params.titleBarTitleTextCentered) {
-                    titleView.setX(ViewUtils.getScreenWidth() / 2 - titleView.getWidth() / 2);
+                    titleView.setX(ViewUtils.getWindowWidth((Activity) getContext()) / 2 - titleView.getWidth() / 2);
                 }
-                
             }
         });
     }
@@ -137,6 +145,24 @@ public class TitleBar extends Toolbar {
         }
     }
 
+    protected void setTitleTextFontSize(StyleParams params) {
+        if (params.titleBarTitleFontSize > 0) {
+            View titleView = getTitleView();
+            if (titleView instanceof TextView) {
+                ((TextView) titleView).setTextSize(((float) params.titleBarTitleFontSize));
+            }
+        }
+    }
+
+    protected void setTitleTextFontWeight(StyleParams params) {
+        if (params.titleBarTitleFontBold) {
+            View titleView = getTitleView();
+            if (titleView instanceof TextView) {
+                ((TextView) titleView).setTypeface(((TextView) titleView).getTypeface(), Typeface.BOLD);
+            }
+        }
+    }
+
     protected void setSubtitleTextColor(StyleParams params) {
         if (params.titleBarSubtitleColor.hasColor()) {
             setSubtitleTextColor(params.titleBarSubtitleColor.getColor());
@@ -145,7 +171,7 @@ public class TitleBar extends Toolbar {
 
     private void addButtonsToTitleBar(String navigatorEventId, Menu menu) {
         for (int i = 0; i < rightButtons.size(); i++) {
-            final TitleBarButton button = ButtonFactory.create(menu, this, rightButtons.get(i), navigatorEventId);
+            final TitleBarButton button = new TitleBarButton(menu, this, rightButtons.get(i), navigatorEventId);
             addButtonInReverseOrder(rightButtons, i, button);
         }
     }
@@ -307,6 +333,18 @@ public class TitleBar extends Toolbar {
     public void onViewPagerScreenChanged(BaseScreenParams screenParams) {
         if (hasLeftButton()) {
             leftButton.updateNavigatorEventId(screenParams.getNavigatorEventId());
+        }
+    }
+
+    public void destroy() {
+        unmountCustomButtons();
+    }
+
+    private void unmountCustomButtons() {
+        for (int i = 0; i < actionMenuView.getChildCount(); i++) {
+            if (actionMenuView.getChildAt(i) instanceof TitleBarButtonComponent) {
+                ((ContentView) actionMenuView.getChildAt(i)).unmountReactView();
+            }
         }
     }
 }

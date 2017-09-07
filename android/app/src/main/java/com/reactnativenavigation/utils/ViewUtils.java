@@ -1,6 +1,6 @@
 package com.reactnativenavigation.utils;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -16,10 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.screens.Screen;
@@ -30,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ViewUtils {
     private static final AtomicInteger viewId = new AtomicInteger(1);
     private static int statusBarHeight = -1;
+    private static int toolBarHeight = -1;
 
     public static void runOnPreDraw(final View view, final Runnable task) {
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -74,18 +73,16 @@ public class ViewUtils {
         }
     }
 
-    public static float getScreenHeight() {
-        WindowManager wm = (WindowManager) NavigationApplication.instance.getSystemService(Context.WINDOW_SERVICE);
+    public static float getWindowWidth(Activity activity) {
         DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        return metrics.heightPixels;
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        return metrics.widthPixels;
     }
 
-    public static float getScreenWidth() {
-        WindowManager wm = (WindowManager) NavigationApplication.instance.getSystemService(Context.WINDOW_SERVICE);
+    public static float getWindowHeight(Activity activity) {
         DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        return metrics.widthPixels;
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        return metrics.heightPixels;
     }
 
     private static int compatGenerateViewId() {
@@ -184,6 +181,19 @@ public class ViewUtils {
                 (int) convertDpToPixel(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? 24 : 25);
         return statusBarHeight;
     }
+
+    public static int getToolBarHeight() {
+        if (toolBarHeight > 0) {
+            return toolBarHeight;
+        }
+        final Resources resources = NavigationApplication.instance.getResources();
+        final int resourceId = resources.getIdentifier("action_bar_size", "dimen", "android");
+        toolBarHeight = resourceId > 0 ?
+                resources.getDimensionPixelSize(resourceId) :
+                (int) convertDpToPixel(56);
+        return toolBarHeight;
+    }
+
 
     public static ForegroundColorSpan[] getForegroundColorSpans(TextView view) {
         SpannedString text = new SpannedString(view.getText());

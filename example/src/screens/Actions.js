@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import Row from '../components/Row';
 
 class Actions extends React.Component {
@@ -141,15 +141,15 @@ class Actions extends React.Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <Row title={'Set Title'} onPress={this.setTitle}/>
-        <Row title={'Toggle Tabs'} onPress={this.toggleTabs}/>
-        <Row title={'Set Tab Badge'} onPress={this.setTabBadge}/>
-        <Row title={'Switch To Tab 0'} onPress={this.switchToTab}/>
-        <Row title={'Toggle Nav Bar'} onPress={this.toggleNavBar}/>
-        <Row title={'Show Snackbar'} onPress={this.showSnackbar} platform={'android'}/>
-        <Row title={'Toggle Contextual Menu'} onPress={this.toggleContextualMenu} platform={'android'}/>
-        <Row title={'Set Right Buttons'} onPress={this.setButtons}/>
-        <Row title={'Toggle FAB'} onPress={this.toggleFAB} platform={'android'}/>
+        <Row title={'Set Title'} onPress={this.setTitle} />
+        <Row title={'Toggle Tabs'} onPress={this.toggleTabs} />
+        <Row title={'Set Tab Badge'} onPress={this.setTabBadge} />
+        <Row title={'Switch To Tab 0'} onPress={this.switchToTab} />
+        <Row title={'Toggle Nav Bar'} onPress={this.toggleNavBar} />
+        <Row title={'Show Snackbar'} onPress={this.showSnackbar} platform={'android'} />
+        <Row title={'Toggle Contextual Menu'} onPress={this.toggleContextualMenu} platform={'android'} />
+        <Row title={'Set Right Buttons'} onPress={this.setButtons} />
+        <Row title={'Toggle FAB'} onPress={this.toggleFAB} platform={'android'} />
       </ScrollView>
     );
   }

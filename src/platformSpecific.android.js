@@ -177,6 +177,18 @@ function setScreenStyle(screenInstanceId, style) {
   NativeReactModule.setScreenStyle(screenInstanceId, style);
 }
 
+async function isAppLaunched() {
+  return await NativeReactModule.isAppLaunched();
+}
+
+async function isRootLaunched() {
+  return await NativeReactModule.isRootLaunched();
+}
+
+async function getCurrentlyVisibleScreenId() {
+  return await NativeReactModule.getCurrentlyVisibleScreenId();
+}
+
 module.exports = {
   startApp,
   push,
@@ -210,5 +222,8 @@ module.exports = {
   dismissSnackbar,
   showContextualMenu,
   dismissContextualMenu,
-  setScreenStyle
+  setScreenStyle,
+  isAppLaunched,
+  isRootLaunched,
+  getCurrentlyVisibleScreenId
 };

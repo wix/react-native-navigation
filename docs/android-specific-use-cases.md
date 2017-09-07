@@ -54,7 +54,7 @@ public class MainApplication extends NavigationApplication {
 public class MyApplication extends NavigationApplication {
     @Override
     public void onCreate() {
-        registerActivityLifecycleCallbacks(new LifecycleCallbacks() {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -303,6 +303,28 @@ specify the rate of change of a parameter over time
 When Shared Element Transition is used, a cross-fade transition is used between the entering and exiting screens. Make sure the root `View` has a background color in order for the cross-fade animation to be visible.
 
 To disable the cross-fade animation, set `animated: false` when pushing the second screen. Disabling this animation is useful if you'd like to animate the reset of the elements on screen your self.
+
+## Compatibility with HeadlessJs
+In most cases, `Navigation.startSingleScreenApp()` or `Navigation.startTabBasedApp` are called from global context. If the bundle is parsed when the app is not running, this will result in the app opening even though the developer had no intent to open the app.
+
+`Navigation.startSingleScreenApp()` or `Navigation.startTabBasedApp` are called from global context since RNN assums react context isn't created when the app is launched. When a background task completes, react context is put into a **paused state** and not destroyed. Therefore we should also handle the use case where our app is opened when react context is created , and the bundle has already been parsed. We do that by listening to `RNN.AppLaunched` event.
+
+```js
+import {Navigation, NativeEventsReceiver} from 'react-native-navigation';
+
+Promise.resolve(Navigation.isAppLaunched())
+  .then(appLaunched => {
+    if (appLaunched) {
+      startApp(); // App is launched -> show UI
+    } else {
+      new NativeEventsReceiver().appLaunched(startApp); // App hasn't been launched yet -> show the UI only when needed.
+    }
+  });
+
+function startApp() {
+  Navigation.startTabBasedApp({ ... });
+}
+```
 
 ## Reloading from terminal
 You can easily reload your app from terminal using `adb shell am broadcast -a react.native.RELOAD`. This is particularly useful when debugging on device.

@@ -2,7 +2,7 @@
 import React from 'react';
 import {AppRegistry} from 'react-native';
 import platformSpecific from './deprecated/platformSpecificDeprecated';
-import Screen from './Screen';
+import {Screen} from './Screen';
 
 import PropRegistry from './PropRegistry';
 
@@ -162,8 +162,21 @@ function handleDeepLink(params = {}) {
   }
 }
 
+async function isAppLaunched() {
+  return await platformSpecific.isAppLaunched();
+}
+
+async function isRootLaunched() {
+  return await platformSpecific.isRootLaunched();
+}
+
+function getCurrentlyVisibleScreenId() {
+  return platformSpecific.getCurrentlyVisibleScreenId();
+}
+
 export default {
   getRegisteredScreen,
+  getCurrentlyVisibleScreenId,
   registerComponent,
   showModal: showModal,
   dismissModal: dismissModal,
@@ -177,5 +190,7 @@ export default {
   startSingleScreenApp: startSingleScreenApp,
   setEventHandler: setEventHandler,
   clearEventHandler: clearEventHandler,
-  handleDeepLink: handleDeepLink
+  handleDeepLink: handleDeepLink,
+  isAppLaunched: isAppLaunched,
+  isRootLaunched: isRootLaunched
 };
