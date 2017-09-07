@@ -25,8 +25,8 @@ class ScreenAnimator {
 
     ScreenAnimator(Screen screen) {
         this.screen = screen;
-        translationY = 0.08f * ViewUtils.getScreenHeight();
-        translationX = ViewUtils.getScreenWidth();
+        translationY = 0.08f * ViewUtils.getWindowHeight(screen.activity);
+        translationX = ViewUtils.getWindowWidth(screen.activity);
     }
 
     public void show(boolean animate, final Runnable onAnimationEnd) {
