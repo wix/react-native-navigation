@@ -94,6 +94,11 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   if (controller && componentId)
   {
     [[RCCManager sharedInstance] registerController:controller componentId:componentId componentType:type];
+    
+    if([controller isKindOfClass:[RCCViewController class]])
+    {
+      ((RCCViewController*)controller).controllerId = componentId;
+    }
   }
   
   // set background image at root level
@@ -173,7 +178,9 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   self.edgesForExtendedLayout = UIRectEdgeNone; // default
   self.automaticallyAdjustsScrollViewInsets = NO; // default
   
-  self.navigatorStyle = [NSMutableDictionary dictionaryWithDictionary:navigatorStyle];
+  self.navigatorStyle = [NSMutableDictionary dictionaryWithDictionary:[[RCCManager sharedInstance] getAppStyle]];
+  [self.navigatorStyle addEntriesFromDictionary:navigatorStyle];
+
   
   [self setStyleOnInit];
   
@@ -264,6 +271,22 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   return [NSString stringWithFormat:@"%lld", milliseconds];
 }
 
+// This is walk around for React-Native bug.
+// https://github.com/wix/react-native-navigation/issues/1446
+//
+// Buttons in ScrollView after changing route/pushing/showing modal
+// while there is a momentum scroll are not clickable.
+// Back to normal after user start scroll with momentum
+- (void)_traverseAndCall:(UIView*)view
+{
+  if([view isKindOfClass:[UIScrollView class]] && ([[(UIScrollView*)view delegate] respondsToSelector:@selector(scrollViewDidEndDecelerating:)]) ) {
+    [[(UIScrollView*)view delegate] scrollViewDidEndDecelerating:(id)view];
+  }
+  
+  [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self _traverseAndCall:obj];
+  }];
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -284,6 +307,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+  [self _traverseAndCall:self.view];
   [super viewDidDisappear:animated];
   [self sendGlobalScreenEvent:@"didDisappear" endTimestampString:[self getTimestampString] shouldReset:YES];
   [self sendScreenChangedEvent:@"didDisappear"];
@@ -563,12 +587,11 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   
  //Bug fix: in case there is a interactivePopGestureRecognizer, it prevents react-native from getting touch events on the left screen area that the gesture handles
  //overriding the delegate of the gesture prevents this from happening while keeping the gesture intact (another option was to disable it completely by demand)
- self.originalInteractivePopGestureDelegate = nil;
  if(self.navigationController.viewControllers.count > 1){
    if (self.navigationController != nil && self.navigationController.interactivePopGestureRecognizer != nil)
    {
      id <UIGestureRecognizerDelegate> interactivePopGestureRecognizer = self.navigationController.interactivePopGestureRecognizer.delegate;
-     if (interactivePopGestureRecognizer != nil)
+     if (interactivePopGestureRecognizer != nil && interactivePopGestureRecognizer != self)
      {
        self.originalInteractivePopGestureDelegate = interactivePopGestureRecognizer;
        self.navigationController.interactivePopGestureRecognizer.delegate = self;
@@ -760,5 +783,10 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   return !disabledBackGestureBool;
 }
 
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+  NSNumber *disabledSimultaneousGesture = self.navigatorStyle[@"disabledSimultaneousGesture"];
+  BOOL disabledSimultaneousGestureBool = disabledSimultaneousGesture ? [disabledSimultaneousGesture boolValue] : YES; // make default value of disabledSimultaneousGesture is true
+  return !disabledSimultaneousGestureBool;
+}
 
 @end

@@ -1,4 +1,5 @@
 #import "RCCManager.h"
+#import "RCCViewController.h"
 #import <React/RCTBridge.h>
 #import <React/RCTRedBox.h>
 #import <Foundation/Foundation.h>
@@ -7,6 +8,7 @@
 @property (nonatomic, strong) NSMutableDictionary *modulesRegistry;
 @property (nonatomic, strong) RCTBridge *sharedBridge;
 @property (nonatomic, strong) NSURL *bundleURL;
+@property (nonatomic, strong, readwrite) NSDictionary *globalAppStyle;
 @end
 
 @implementation RCCManager
@@ -52,6 +54,7 @@
 {
   id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
   appDelegate.window.rootViewController = nil;
+  [self setAppStyle:nil];
   [self clearModuleRegistry];
 }
 
@@ -114,6 +117,32 @@
   }
 
   return component;
+}
+
+-(NSString*) getIdForController:(UIViewController*)vc
+{
+  if([vc isKindOfClass:[RCCViewController class]])
+  {
+    NSString *controllerId = ((RCCViewController*)vc).controllerId;
+    if(controllerId != nil)
+    {
+      return controllerId;
+    }
+  }
+  
+  for (NSString *key in [self.modulesRegistry allKeys])
+  {
+    NSMutableDictionary *componentsDic = self.modulesRegistry[key];
+    for (NSString *componentID in [componentsDic allKeys])
+    {
+      UIViewController *tmpVc = componentsDic[componentID];
+      if (tmpVc == vc)
+      {
+        return componentID;
+      }
+    }
+  }
+  return nil;
 }
 
 -(void)initBridgeWithBundleURL:(NSURL *)bundleURL
@@ -210,6 +239,17 @@
   UIWindow *window = (app.keyWindow != nil) ? app.keyWindow : app.windows[0];
   return window;
 }
+
+-(NSDictionary*)getAppStyle
+{
+  return [NSDictionary dictionaryWithDictionary:self.globalAppStyle];
+}
+
+-(void)setAppStyle:(NSDictionary*)appStyle
+{
+  self.globalAppStyle = [NSDictionary dictionaryWithDictionary:appStyle];
+}
+
 
 #pragma mark - RCTBridgeDelegate methods
 

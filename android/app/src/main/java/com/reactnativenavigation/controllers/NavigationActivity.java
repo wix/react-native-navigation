@@ -190,6 +190,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        NavigationApplication.instance.getActivityCallbacks().onKeyUp(keyCode, event);
         return getReactGateway().onKeyUp(getCurrentFocus(), keyCode) || super.onKeyUp(keyCode, event);
     }
 
@@ -245,16 +246,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     void dismissTopModal() {
         modalController.dismissTopModal();
-        Screen previousScreen = layout.getCurrentScreen();
-        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previousScreen.getScreenParams(), NavigationType.DismissModal);
-        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previousScreen.getScreenParams(), NavigationType.DismissModal);
     }
 
     void dismissAllModals() {
         modalController.dismissAllModals();
-        Screen previousScreen = layout.getCurrentScreen();
-        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previousScreen.getScreenParams(), NavigationType.DismissModal);
-        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previousScreen.getScreenParams(), NavigationType.DismissModal);
     }
 
     public void showLightBox(LightBoxParams params) {
@@ -392,8 +387,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
         if (modalController.isShowing()) {
             modalController.showContextualMenu(screenInstanceId, params, onButtonClicked);
-        } else
-        {
+        } else {
             layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
         }
     }
@@ -448,5 +442,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             mPermissionListener = null;
         }
+    }
+
+    public String getCurrentlyVisibleScreenId() {
+        return modalController.isShowing() ? modalController.getCurrentlyVisibleScreenId() : layout.getCurrentlyVisibleScreenId();
     }
 }

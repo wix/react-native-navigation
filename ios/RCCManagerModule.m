@@ -229,6 +229,12 @@ RCT_EXPORT_METHOD(
     
     // first clear the registry to remove any refernece to the previous controllers
     [[RCCManager sharedInstance] clearModuleRegistry];
+    [[RCCManager sharedInstance] setAppStyle:nil];
+    
+    NSDictionary *appStyle = layout[@"props"][@"appStyle"];
+    if (appStyle) {
+        [[RCCManager sharedIntance] setAppStyle:appStyle];
+    }
     
     // create the new controller
     UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:modifiedGloablProps bridge:[[RCCManager sharedInstance] getBridge]];
@@ -325,7 +331,7 @@ RCT_EXPORT_METHOD(
 {
 
     NSMutableDictionary *modifiedGlobalProps = [globalProps mutableCopy];
-    layout[@"props"][@"passProps"][GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_SHOW_MODAL;
+    modifiedGlobalProps[GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_SHOW_MODAL;
     
     UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:modifiedGlobalProps bridge:[[RCCManager sharedInstance] getBridge]];
     if (controller == nil)
@@ -349,6 +355,35 @@ RCT_EXPORT_METHOD(
     [[RCCManagerModule lastModalPresenterViewController] presentViewController:controller
                                                                       animated:![animationType isEqualToString:@"none"]
                                                                     completion:^(){ resolve(nil); }];
+}
+
+- (UIViewController *) getVisibleViewControllerFor:(UIViewController *)vc
+{
+    if ([vc isKindOfClass:[UINavigationController class]])
+    {
+        return [self getVisibleViewControllerFor:[((UINavigationController*)vc) visibleViewController]];
+    }
+    else if ([vc isKindOfClass:[UITabBarController class]])
+    {
+        return [self getVisibleViewControllerFor:[((UITabBarController*)vc) selectedViewController]];
+    }
+    else if (vc.presentedViewController)
+    {
+        return [self getVisibleViewControllerFor:vc.presentedViewController];
+    }
+    else
+    {
+        return vc;
+    }
+}
+
+RCT_EXPORT_METHOD(getCurrentlyVisibleScreenId:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+    UIViewController *visibleVC = [self getVisibleViewControllerFor:rootVC];
+    NSString *controllerId = [[RCCManager sharedIntance] getIdForController:visibleVC];
+    id result = (controllerId != nil) ? @{@"screenId": controllerId} : nil;
+    resolve(result);
 }
 
 -(BOOL)viewControllerIsModal:(UIViewController*)viewController

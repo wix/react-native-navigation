@@ -17,6 +17,7 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.params.ActivityParams;
+import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.LightBoxParams;
@@ -76,6 +77,11 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         addScreenStacks();
         createSnackbarContainer();
         showInitialScreenStack();
+        setInitialTabIndex();
+    }
+
+    private void setInitialTabIndex() {
+        bottomTabs.setCurrentItem(AppStyle.appStyle.bottomTabsInitialIndex);
     }
 
     private void createSideMenu() {
@@ -209,6 +215,11 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
             screenStacks[i].updateScreenStyle(screenInstanceId, styleParams);
         }
+    }
+
+    @Override
+    public String getCurrentlyVisibleScreenId() {
+        return getCurrentScreen().getScreenInstanceId();
     }
 
     @Override

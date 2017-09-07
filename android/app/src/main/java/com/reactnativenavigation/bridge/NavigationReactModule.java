@@ -263,4 +263,14 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     public void isAppLaunched(Promise promise) {
         NavigationCommandsHandler.isAppLaunched(promise);
     }
+
+    @ReactMethod
+    public void isRootLaunched(Promise promise) {
+        NavigationCommandsHandler.isRootLaunched(promise);
+    }
+
+    @ReactMethod
+    public void getCurrentlyVisibleScreenId(Promise promise) {
+        NavigationCommandsHandler.getCurrentlyVisibleScreenId(promise);
+    }
 }

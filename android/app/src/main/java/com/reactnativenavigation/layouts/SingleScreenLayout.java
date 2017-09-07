@@ -275,6 +275,11 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
+    public String getCurrentlyVisibleScreenId() {
+        return stack.peek().getScreenInstanceId();
+    }
+
+    @Override
     public void showSlidingOverlay(final SlidingOverlayParams params) {
         slidingOverlaysQueue.add(new SlidingOverlay(this, params));
     }

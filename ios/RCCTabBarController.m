@@ -243,6 +243,13 @@
   // replace the tabs
   self.viewControllers = viewControllers;
   self.modalTabIndices = [modalTabs copy];
+
+  NSNumber *initialTab = tabsStyle[@"initialTabIndex"];
+  if (initialTab)
+  {
+    NSInteger initialTabIndex = initialTab.integerValue;
+    [self setSelectedIndex:initialTabIndex];
+  }
   
   [self setRotation:props];
   

@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import Navigation from './../Navigation';
-import Controllers, {Modal, Notification} from './controllers';
+import Controllers, {Modal, Notification, ScreenUtils} from './controllers';
 const React = Controllers.hijackReact();
 const {
   ControllerRegistry,
@@ -68,7 +68,8 @@ function startTabBasedApp(params) {
         <TabBarControllerIOS
           id={controllerID + '_tabs'}
           style={params.tabsStyle}
-          appStyle={params.appStyle}>
+          appStyle={params.appStyle}
+          initialTabIndex={params.initialTabIndex}>
           {
             params.tabs.map(function(tab, index) {
               return (
@@ -620,6 +621,10 @@ function dismissContextualMenu() {
   // Android only
 }
 
+async function getCurrentlyVisibleScreenId() {
+  return await ScreenUtils.getCurrentlyVisibleScreenId();
+}
+
 export default {
   startTabBasedApp,
   startSingleScreenApp,
@@ -647,5 +652,6 @@ export default {
   navigatorSwitchToTab,
   navigatorToggleNavBar,
   showContextualMenu,
-  dismissContextualMenu
+  dismissContextualMenu,
+  getCurrentlyVisibleScreenId
 };

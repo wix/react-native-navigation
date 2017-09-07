@@ -10,7 +10,7 @@ Push a new screen into this screen's navigation stack.
 this.props.navigator.push({
   screen: 'example.ScreenThree', // unique ID registered with Navigation.registerScreen
   title: undefined, // navigation bar title of the pushed screen (optional)
-  titleImage: require('../../img/my_image.png'), //navigation bar title image instead of the title text of the pushed screen (optional)
+  titleImage: require('../../img/my_image.png'), // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
   passProps: {}, // Object that will be passed as props to the pushed screen (optional)
   animated: true, // does the push have transition animation or does it happen immediately (optional)
   animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the push have different transition animation (optional)
@@ -104,7 +104,8 @@ this.props.navigator.showLightBox({
  style: {
    backgroundBlur: "dark", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
    backgroundColor: "#ff000080" // tint color for the background, you can specify alpha here (optional)
- }
+ },
+ adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
 });
 ```
 
@@ -124,6 +125,7 @@ Show in-app notification. This generally looks like a pop-up window that can app
 this.props.navigator.showInAppNotification({
  screen: "example.InAppNotification", // unique ID registered with Navigation.registerScreen
  passProps: {}, // simple serializable object that will pass as props to the in-app notification (optional)
+ autoDismissTimerSec: 1 // auto dismiss notification in seconds
 });
 ```
 
@@ -263,7 +265,10 @@ this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 ```
 
 # Screen Visibility
-Listen to screen visibility events in onNavigatorEvent handler:
+
+`const isVisible = await this.props.navigator.screenIsCurrentlyVisible()`
+
+## Listen visibility events in onNavigatorEvent handler
 
 ```js
 export default class ExampleScreen extends Component {
@@ -281,6 +286,34 @@ export default class ExampleScreen extends Component {
         break;
       case 'didDisappear':
         break;
+    }
+  }
+}
+```
+
+## Listen to visibility events globally
+
+```js
+import {ScreenVisibilityListener as RNNScreenVisibilityListener} from 'react-native-navigation';
+
+export class ScreenVisibilityListener {
+
+  constructor() {
+    this.listener = new RNNScreenVisibilityListener({
+      didAppear: ({screen, startTime, endTime, commandType}) => {
+        console.log('screenVisibility', `Screen ${screen} displayed in ${endTime - startTime} millis after [${commandType}]`);
+      }
+    });
+  }
+
+  register() {
+    this.listener.register();
+  }
+
+  unregister() {
+    if (this.listener) {
+      this.listener.unregister();
+      this.listener = null;
     }
   }
 }

@@ -43,6 +43,7 @@ public class SideMenu extends DrawerLayout {
     }
 
     public void destroy() {
+        removeDrawerListener(sideMenuListener);
         destroySideMenu(leftSideMenuView);
         destroySideMenu(rightSideMenuView);
     }
@@ -146,12 +147,16 @@ public class SideMenu extends DrawerLayout {
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(getVisibleDrawerScreenParams(), NavigationType.CloseSideMenu);
-                NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(getVisibleDrawerScreenParams(), NavigationType.CloseSideMenu);
+                NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(getVisibleDrawerScreenParams((ContentView) drawerView), NavigationType.CloseSideMenu);
+                NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(getVisibleDrawerScreenParams((ContentView) drawerView), NavigationType.CloseSideMenu);
             }
 
             private BaseScreenParams getVisibleDrawerScreenParams() {
                 return isDrawerOpen(Side.Left.gravity) ? leftMenuParams : rightMenuParams;
+            }
+
+            private BaseScreenParams getVisibleDrawerScreenParams(ContentView drawerView) {
+                return drawerView == leftSideMenuView ? leftMenuParams : rightMenuParams;
             }
         };
         addDrawerListener(sideMenuListener);
