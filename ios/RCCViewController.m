@@ -191,7 +191,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   self.timestamp = props[GLOBAL_SCREEN_ACTION_TIMESTAMP];
   
   
-  // In order to support 3rd party native ViewControllers, we support passing a class name as a prop mamed `ExternalNativeScreenClass`
+  // In order to support 3rd party native ViewControllers, we support passing a class name as a prop named `ExternalNativeScreenClass`
   // In this case, we create an instance and add it as a child ViewController which preserves the VC lifecycle.
   // In case some props are necessary in the native ViewController, the ExternalNativeScreenProps can be used to pass them
   [self addExternalVCIfNecessary:props];
