@@ -392,11 +392,13 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   
   if ([side isEqualToString:@"left"])
   {
+    viewController.navigationItem.leftBarButtonItems = @[];// make sure to clear all old items.
     [viewController.navigationItem setLeftBarButtonItems:barButtonItems animated:animated];
   }
   
   if ([side isEqualToString:@"right"])
   {
+    viewController.navigationItem.rightBarButtonItems = @[];// make sure to clear all old items.
     [viewController.navigationItem setRightBarButtonItems:barButtonItems animated:animated];
   }
 }
