@@ -1,6 +1,9 @@
 #import "RNNEventEmitter.h"
 
-@implementation RNNEventEmitter
+@implementation RNNEventEmitter {
+  NSInteger _appLaunchedListenerCount;
+  BOOL _appLaunchedEventDeferred;
+}
 
 RCT_EXPORT_MODULE();
 
@@ -16,7 +19,11 @@ static NSString* const onNavigationButtonPressed	= @"RNN.navigationButtonPressed
 # pragma mark public
 
 -(void)sendOnAppLaunched {
-	[self send:onAppLaunched body:nil];
+	if (_appLaunchedListenerCount > 0) {
+		[self send:onAppLaunched body:nil];
+	} else {
+		_appLaunchedEventDeferred = TRUE;
+	}
 }
 
 -(void)sendContainerDidAppear:(NSString *)containerId {
@@ -29,6 +36,17 @@ static NSString* const onNavigationButtonPressed	= @"RNN.navigationButtonPressed
 
 -(void)sendOnNavigationButtonPressed:(NSString *)containerId buttonId:(NSString*)buttonId {
 	[self send:onNavigationButtonPressed body:@{@"containerId":containerId , @"buttonId": buttonId }];
+}
+
+- (void)addListener:(NSString *)eventName {
+	[super addListener:eventName];
+	if ([eventName isEqualToString:onAppLaunched]) {
+		_appLaunchedListenerCount++;
+		if (_appLaunchedEventDeferred) {
+			_appLaunchedEventDeferred = FALSE;
+			[self sendOnAppLaunched];
+		}
+	}
 }
 
 # pragma mark private
