@@ -41,7 +41,16 @@ class WelcomeScreen extends Component {
               text: 'This is tab 1',
               myFunction: () => 'Hello from a function!'
             }
-          }
+          },
+          tabItem: {
+            icon: require('../../img/one@2x.ios.png'),
+            label: 'Tab 1',
+            iconColor: '#999',
+            labelColor: '#999',
+            selectedIconColor: 'blue',
+            selectedLabelColor: 'blue',
+            badge: 'Bug',
+          },
         },
         {
           container: {
@@ -49,7 +58,22 @@ class WelcomeScreen extends Component {
             passProps: {
               text: 'This is tab 2'
             }
-          }
+          },
+          tabItem: {
+            icon: require('../../img/navicon_add@2x.ios.png'),
+            label: 'Tab 2',
+            iconColor: '#999',
+            labelColor: '#999',
+            selectedIconColor: 'blue',
+            selectedLabelColor: 'blue',
+            iconInsets: {
+              top: 2,
+              left: 2,
+              right: 2,
+              bottom: 2,
+            },
+            badge: '3',
+          },
         }
       ]
     });
