@@ -49,8 +49,8 @@ class WelcomeScreen extends Component {
             labelColor: '#999',
             selectedIconColor: 'blue',
             selectedLabelColor: 'blue',
-            badge: 'Bug',
-          },
+            badge: 'Bug'
+          }
         },
         {
           container: {
@@ -70,10 +70,10 @@ class WelcomeScreen extends Component {
               top: 2,
               left: 2,
               right: 2,
-              bottom: 2,
+              bottom: 2
             },
-            badge: '3',
-          },
+            badge: '3'
+          }
         }
       ]
     });
