@@ -75,6 +75,7 @@ public class StyleParams {
     public Orientation orientation;
     public StatusBarTextColorScheme statusBarTextColorScheme;
     public Color statusBarColor;
+    public boolean statusBarHidden;
     public Color contextualMenuStatusBarColor;
     public Color contextualMenuButtonsColor;
     public Color contextualMenuBackgroundColor;

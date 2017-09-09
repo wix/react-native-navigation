@@ -139,6 +139,7 @@ function convertStyleParams(originalStyleObject) {
   let ret = {
     orientation: originalStyleObject.orientation,
     statusBarColor: processColor(originalStyleObject.statusBarColor),
+    statusBarHidden: originalStyleObject.statusBarHidden,
     statusBarTextColorScheme: originalStyleObject.statusBarTextColorScheme,
     topBarReactView: originalStyleObject.navBarCustomView,
     topBarReactViewAlignment: originalStyleObject.navBarComponentAlignment,
