@@ -6,11 +6,6 @@ const { View, Text, Button } = require('react-native');
 const Navigation = require('react-native-navigation');
 
 class TextScreen extends Component {
-  static get navigationOptions() {
-    return {
-      orientation: ['landscape']
-    };
-  }
 
   render() {
     return (
