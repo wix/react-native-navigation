@@ -8,39 +8,52 @@ describe('orientation', () => {
     await device.relaunchApp();
   });
 
-  it('orientation should not change from landscape', async () => {
-    await elementByLabel('Orientation').tap();
+  afterEach(async () => {
     await device.setOrientation('landscape');
-    await elementByLabel('Push landscape only screen').tap();
     await device.setOrientation('portrait');
-    await expect(element(by.id('currentOrientation'))).toHaveText('Landscape');
   });
 
-  it('orientation should not change from portrait', async () => {
+  it('default allows all', async () => {
     await elementByLabel('Orientation').tap();
-    await device.setOrientation('portrait');
-    await elementByLabel('Push portrait only screen').tap();
-    await device.setOrientation('landscape');
+    await elementByLabel('default').tap();
     await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
-  });
-
-  it('orientation should change to portrait and landscape', async () => {
-    await elementByLabel('Orientation').tap();
-    await device.setOrientation('portrait');
-    await elementByLabel('Push landscape and portrait').tap();
     await device.setOrientation('landscape');
     await expect(element(by.id('currentOrientation'))).toHaveText('Landscape');
     await device.setOrientation('portrait');
     await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await elementByLabel('Dismiss').tap();
   });
 
-  it('orientation default should change to portrait and landscape', async () => {
+  it('landscape and portrait array', async () => {
     await elementByLabel('Orientation').tap();
-    await device.setOrientation('portrait');
-    await elementByLabel('Push default').tap();
+    await elementByLabel('landscape and portrait').tap();
+    await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
     await device.setOrientation('landscape');
     await expect(element(by.id('currentOrientation'))).toHaveText('Landscape');
     await device.setOrientation('portrait');
     await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await elementByLabel('Dismiss').tap();
+  });
+
+  it('portrait only', async () => {
+    await elementByLabel('Orientation').tap();
+    await elementByLabel('portrait only').tap();
+    await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await device.setOrientation('landscape');
+    await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await device.setOrientation('portrait');
+    await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await elementByLabel('Dismiss').tap();
+  });
+
+  it('landscape only', async () => {
+    await elementByLabel('Orientation').tap();
+    await elementByLabel('landscape only').tap();
+    await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await device.setOrientation('landscape');
+    await expect(element(by.id('currentOrientation'))).toHaveText('Landscape');
+    await device.setOrientation('portrait');
+    await expect(element(by.id('currentOrientation'))).toHaveText('Landscape');
+    await elementByLabel('Dismiss').tap();
   });
 });
