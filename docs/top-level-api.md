@@ -58,7 +58,8 @@ Navigation.startTabBasedApp({
   appStyle: {
     orientation: 'portrait', // Sets a specific orientation to the entire app. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
     bottomTabBadgeTextColor: 'red', // Optional, change badge text color. Android only
-    bottomTabBadgeBackgroundColor: 'green' // Optional, change badge background color. Android only
+    bottomTabBadgeBackgroundColor: 'green', // Optional, change badge background color. Android only
+    backButtonImage: require('./pathToImage.png') // Change the back button default arrow image with provided image. iOS only
   },
   drawer: { // optional, add this if you want a side menu drawer in your app
     left: { // optional, define if you want a drawer from the left
