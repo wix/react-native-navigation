@@ -115,6 +115,11 @@
 	}
 	[vc setViewControllers:controllers];
 	
+	int selectedIndex = [node.data[@"selectedIndex"] intValue];
+	if (selectedIndex > 0) {
+		[vc setSelectedIndex:selectedIndex];
+	}
+	
 	return vc;
 }
 
