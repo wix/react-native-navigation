@@ -136,7 +136,7 @@ class WelcomeScreen extends Component {
 
   onClickPushOrientationMenuScreen() {
     Navigation.push(this.props.containerId, {
-      name: 'navigation.playground.OrientationMenuScreen'
+      name: 'navigation.playground.OrientationSelectScreen'
     });
   }
 }
