@@ -2,6 +2,7 @@
 #import <React/RCTConvert.h>
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
+#import "RNNRootViewController.h"
 
 const NSInteger BLUR_STATUS_TAG = 78264801;
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
