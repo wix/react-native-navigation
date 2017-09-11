@@ -60,6 +60,7 @@ Navigation.startTabBasedApp({
     bottomTabBadgeTextColor: 'red', // Optional, change badge text color. Android only
     bottomTabBadgeBackgroundColor: 'green', // Optional, change badge background color. Android only
     backButtonImage: require('./pathToImage.png') // Change the back button default arrow image with provided image. iOS only
+    hideBackButtonTitle: true/false // Hide back button title. Default is false. If `backButtonTitle` provided so it will take into account and the `backButtonTitle` value will show. iOS only
   },
   drawer: { // optional, add this if you want a side menu drawer in your app
     left: { // optional, define if you want a drawer from the left
