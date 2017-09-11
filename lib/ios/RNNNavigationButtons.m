@@ -83,6 +83,11 @@
 	barButtonItem.target = self;
 	barButtonItem.action = @selector(onButtonPress:);
 	
+	id tintColorId = dictionary[@"tintColor"];
+	if (tintColorId) {
+		[barButtonItem setTintColor:[RCTConvert UIColor: tintColorId]];
+	}
+	
 	NSNumber *disabled = dictionary[@"disabled"];
 	BOOL disabledBool = disabled ? [disabled boolValue] : NO;
 	if (disabledBool) {
