@@ -9,6 +9,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) NSNumber* topBarBackgroundColor;
 @property (nonatomic, strong) NSNumber* topBarTextColor;
 @property (nonatomic, strong) NSNumber* statusBarHidden;
+@property (nonatomic, strong) NSString* statusBarStyle;
 @property (nonatomic, strong) NSString* title;
 @property (nonatomic, strong) NSNumber* screenBackgroundColor;
 @property (nonatomic, strong) NSString* topBarTextFontFamily;
