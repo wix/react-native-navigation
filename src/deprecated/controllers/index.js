@@ -1,4 +1,5 @@
 /*eslint-disable*/
+var _ = require('lodash');
 var OriginalReactNative = require('react-native');
 var RCCManager = OriginalReactNative.NativeModules.RCCManager;
 var NativeAppEventEmitter = OriginalReactNative.NativeAppEventEmitter;
@@ -125,6 +126,7 @@ var Controllers = {
       if (controller === undefined) return;
       var layout = controller.render();
       _validateDrawerProps(layout);
+      _processProperties(_.get(layout, 'props.appStyle', {}));
       RCCManager.setRootController(layout, animationType, passProps);
     }
   },
