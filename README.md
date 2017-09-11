@@ -7,7 +7,7 @@ We are rebuilding react-native-navigation
 - [Why?](#why-rebuild-react-native-navigation)
 - [Where is it standing now?](#current-status)
 - [Documentation](https://wix.github.io/react-native-navigation/v2/)
-- [Contributing](/docs/docs//docs/docs/CONTRIBUTING.md)
+- [Contributing](/docs/docs/CONTRIBUTING.md)
 
 ## Why Rebuild react-native-navigation?
 
