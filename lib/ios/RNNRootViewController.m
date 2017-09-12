@@ -79,7 +79,6 @@
 	[self.eventEmitter sendContainerDidDisappear:self.containerId];
 }
 
-<<<<<<< HEAD
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
 	RNNRootViewController* vc =  (RNNRootViewController*)viewController;
 	if (![vc.navigationOptions.backButtonTransition isEqualToString:@"custom"]){
@@ -106,12 +105,10 @@
 
 
 
-=======
 -(void) applyNavigationButtons{
 	[self.navigationButtons applyLeftButtons:self.navigationOptions.leftButtons rightButtons:self.navigationOptions.rightButtons];
 }
 
->>>>>>> v2
 /**
  *	fix for #877, #878
  */

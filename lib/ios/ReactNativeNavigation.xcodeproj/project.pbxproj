@@ -386,15 +386,10 @@
 				263905E51E4CAC950023D7D3 /* RNNSideMenuChildVC.m */,
 				E83BAD691F27362500A9F3DD /* RNNNavigationOptions.h */,
 				E83BAD6A1F27363A00A9F3DD /* RNNNavigationOptions.m */,
-<<<<<<< HEAD
-				E8A5CD581F48CCC300E89D0D /* RNNNavigationController.h */,
-				E8A5CD591F48CCC300E89D0D /* RNNNavigationController.m */,
-=======
 				21B85E5E1F44482A00B314B5 /* RNNNavigationButtons.h */,
 				21B85E5C1F44480200B314B5 /* RNNNavigationButtons.m */,
 				214545261F4DC164006E8DA1 /* RNNUIBarButtonItem.h */,
 				214545241F4DC125006E8DA1 /* RNNUIBarButtonItem.m */,
->>>>>>> v2
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -694,12 +689,8 @@
 				268692831E5054F800E2C612 /* RNNStore.m in Sources */,
 				7BC9346E1E26886E00EFA125 /* RNNControllerFactory.m in Sources */,
 				263905B61E4C6F440023D7D3 /* MMExampleDrawerVisualStateManager.m in Sources */,
-<<<<<<< HEAD
-				E8A5CD5B1F48CCC300E89D0D /* RNNNavigationController.m in Sources */,
-=======
 				50F5DFC61F407AA0001A00BC /* RNNNavigationController.m in Sources */,
 				21B85E5D1F44480200B314B5 /* RNNNavigationButtons.m in Sources */,
->>>>>>> v2
 				263905C91E4C6F440023D7D3 /* SidebarFlipboardAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

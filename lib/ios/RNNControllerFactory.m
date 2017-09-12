@@ -6,11 +6,7 @@
 #import "RNNSideMenuChildVC.h"
 #import "RNNNavigationOptions.h"
 #import "RNNNavigationController.h"
-<<<<<<< HEAD
-
-=======
 #import "RNNTabBarController.h"
->>>>>>> v2
 
 @implementation RNNControllerFactory {
 	id<RNNRootViewCreator> _creator;
