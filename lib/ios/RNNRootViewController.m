@@ -5,7 +5,6 @@
 #import "RNNNavigationButtons.h"
 
 @interface RNNRootViewController()
-@property (nonatomic, strong) NSString* containerId;
 @property (nonatomic, strong) NSString* containerName;
 @property (nonatomic) BOOL _statusBarHidden;
 @property (nonatomic, strong) RNNNavigationButtons* navigationButtons;

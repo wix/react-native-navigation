@@ -10,13 +10,10 @@ const BUTTON_TWO = 'buttonTwo';
 const BUTTON_LEFT = 'buttonLeft';
 
 class OptionsScreen extends Component {
-
+  
   static get navigationOptions() {
     return {
       title: 'Static Title',
-<<<<<<< HEAD
-      topBarTextFontFamily: 'HelveticaNeue-Italic'
-=======
       topBarTextFontFamily: 'HelveticaNeue-Italic',
       rightButtons: [{
         id: BUTTON_ONE,
@@ -30,7 +27,6 @@ class OptionsScreen extends Component {
         title: 'Left',
         buttonColor: 'purple'
       }]
->>>>>>> v2
     };
   }
 

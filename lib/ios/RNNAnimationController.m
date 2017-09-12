@@ -66,9 +66,6 @@
 		if ([transition[@"type"] isEqualToString:@"sharedElement"]){
 			RNNSharedElementView* fromElement = [self findViewToShare:RNNSharedElementViews withId:transition[@"fromId"]];
 			RNNSharedElementView* toElement = [self findViewToShare:RNNSharedElementViews withId:transition[@"toId"]];
-//			if (!(fromElement && toElement)){
-//				
-//			}
 			CGRect originFrame = [self frameFromSuperView:[fromElement subviews][0]];
 			CGRect toFrame = [self frameFromSuperView:[toElement subviews][0]];
 			UIView* animationView = nil;

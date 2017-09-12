@@ -49,7 +49,7 @@ class CustomTransitionOrigin extends Component {
       Navigation.push( this.props.containerId, {
           name: 'navigation.playground.CustomTransitionDestination',
           transition: {
-            transitions: [{type:"sharedElement", fromId: elementId, toId: "customDestinationImagee", interactiveImagePop: true}],
+            transitions: [{type:"sharedElement", fromId: elementId, toId: "customDestinationImage", interactiveImagePop: true}],
             duration: 0.4
           }
       });

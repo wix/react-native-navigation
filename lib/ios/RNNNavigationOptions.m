@@ -36,7 +36,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 	self.topBarNoBorder = [navigationOptions objectForKey:@"topBarNoBorder"];
 	self.tabBarHidden = [navigationOptions objectForKey:@"tabBarHidden"];
 	self.topBarBlur = [navigationOptions objectForKey:@"topBarBlur"];
-
+	
 	return self;
 }
 
@@ -169,8 +169,6 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 			[blur removeFromSuperview];
 		}
 	}
-
-	}
 	
 	void (^disableTopBarTransparent)() = ^void(){
 		UIView *transparentView = [viewController.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
@@ -181,7 +179,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 			self.originalTopBarImages = nil;
 		}
 	};
-
+	
 	if (self.topBarTransparent) {
 		if ([self.topBarTransparent boolValue]) {
 			if (![viewController.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG]){
@@ -198,6 +196,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 	} else {
 		disableTopBarTransparent();
 	}
+	
 }
 
 - (UIInterfaceOrientationMask)supportedOrientations {
