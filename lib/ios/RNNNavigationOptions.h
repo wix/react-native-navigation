@@ -1,12 +1,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-<<<<<<< HEAD
-
-=======
 extern const NSInteger BLUR_STATUS_TAG;
 extern const NSInteger BLUR_TOPBAR_TAG;
->>>>>>> v2
+
 
 @interface RNNNavigationOptions : NSObject
 
@@ -24,12 +21,9 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) NSNumber* topBarTranslucent;
 @property (nonatomic, strong) NSString* tabBadge;
 @property (nonatomic, strong) NSNumber* topBarTextFontSize;
-<<<<<<< HEAD
 @property (nonatomic, strong) NSNumber* topBarTransparent;
-@property (nonatomic) int topBarTransparentTag;
 @property (nonatomic, strong) NSMutableDictionary* originalTopBarImages;
 @property (nonatomic, strong) NSString* backButtonTransition;
-=======
 @property (nonatomic, strong) id orientation;
 @property (nonatomic, strong) NSArray* leftButtons;
 @property (nonatomic, strong) NSArray* rightButtons;
@@ -41,7 +35,6 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 
 
 - (UIInterfaceOrientationMask)supportedOrientations;
->>>>>>> v2
 
 -(instancetype)init;
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions;
