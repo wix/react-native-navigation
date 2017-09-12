@@ -389,6 +389,16 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [barButtonItem setImage:[barButtonItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     }
     
+    if ([viewController isKindOfClass:[RCCViewController class]]) {
+      RCCViewController *rccViewController = ((RCCViewController*)viewController);
+      NSDictionary *navigatorStyle = rccViewController.navigatorStyle;
+      id disabledButtonColor = navigatorStyle[@"disabledButtonColor"];
+      if (disabledButtonColor) {
+        UIColor *color = [RCTConvert UIColor:disabledButtonColor];
+        [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName : color} forState:UIControlStateDisabled];
+      }
+    }
+    
     NSString *testID = button[@"testID"];
     if (testID)
     {
