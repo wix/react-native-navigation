@@ -9,6 +9,7 @@ class WelcomeScreen extends Component {
     this.onClickShowModal = this.onClickShowModal.bind(this);
     this.onClickLifecycleScreen = this.onClickLifecycleScreen.bind(this);
     this.onClickPushOptionsScreen = this.onClickPushOptionsScreen.bind(this);
+    this.onClickPushOrientationMenuScreen = this.onClickPushOrientationMenuScreen.bind(this);
   }
 
   render() {
@@ -22,6 +23,7 @@ class WelcomeScreen extends Component {
         <Button title="Push Options Screen" onPress={this.onClickPushOptionsScreen} />
         <Button title="Show Modal" onPress={this.onClickShowModal} />
         <Button title="Show Redbox" onPress={this.onClickShowRedbox} />
+        <Button title="Orientation" onPress={this.onClickPushOrientationMenuScreen} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
@@ -127,6 +129,12 @@ class WelcomeScreen extends Component {
   onClickPushOptionsScreen() {
     Navigation.push(this.props.containerId, {
       name: 'navigation.playground.OptionsScreen'
+    });
+  }
+
+  onClickPushOrientationMenuScreen() {
+    Navigation.push(this.props.containerId, {
+      name: 'navigation.playground.OrientationSelectScreen'
     });
   }
 }

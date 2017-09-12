@@ -4,7 +4,8 @@
 #import "RNNRootViewController.h"
 #import "RNNSideMenuController.h"
 #import "RNNSideMenuChildVC.h"
-
+#import "RNNNavigationController.h"
+#import "RNNTabBarController.h"
 
 @interface RNNControllerFactoryTest : XCTestCase
 
@@ -48,11 +49,11 @@
 				@"type": @"ContainerStack",
 				@"data": @{},
 				@"children": @[]}];
-	XCTAssertTrue([ans isMemberOfClass:[UINavigationController class]]);
+	XCTAssertTrue([ans isMemberOfClass:[RNNNavigationController class]]);
 }
 
 - (void)testCreateLayout_ContainerStackLayoutRecursive {
-	UINavigationController* ans = (UINavigationController*) [self.factory createLayoutAndSaveToStore:
+	RNNNavigationController* ans = (RNNNavigationController*) [self.factory createLayoutAndSaveToStore:
 															 @{@"id": @"cntId",
 															   @"type": @"ContainerStack",
 															   @"data": @{},
@@ -62,13 +63,13 @@
 																		 @"data": @{},
 																		 @"children": @[]}]}];
 	
-	XCTAssertTrue([ans isMemberOfClass:[UINavigationController class]]);
+	XCTAssertTrue([ans isMemberOfClass:[RNNNavigationController class]]);
 	XCTAssertTrue(ans.childViewControllers.count == 1);
 	XCTAssertTrue([ans.childViewControllers[0] isMemberOfClass:[RNNRootViewController class]]);
 }
 
 - (void)testCreateLayout_BottomTabsLayout {
-	UITabBarController* tabBar = (UITabBarController*) [self.factory createLayoutAndSaveToStore:
+	RNNTabBarController* tabBar = (RNNTabBarController*) [self.factory createLayoutAndSaveToStore:
 														@{
 														  @"id": @"cntId",
 														  @"type": @"BottomTabs",
@@ -83,9 +84,9 @@
 																			  @"data": @{},
 																			  @"children": @[]}]}]}];
 	
-	XCTAssertTrue([tabBar isMemberOfClass:[UITabBarController class]]);
+	XCTAssertTrue([tabBar isMemberOfClass:[RNNTabBarController class]]);
 	XCTAssertTrue(tabBar.childViewControllers.count == 1);
-	XCTAssertTrue([tabBar.childViewControllers[0] isMemberOfClass:[UINavigationController class]]);
+	XCTAssertTrue([tabBar.childViewControllers[0] isMemberOfClass:[RNNNavigationController class]]);
 	
 	UINavigationController *navController = tabBar.childViewControllers[0];
 	XCTAssertTrue(navController.childViewControllers.count == 1);

@@ -1,1 +1,4 @@
 - Getting started
+ - [Installation - iOS](/docs/installation-ios)
+ - [Installation - Android](/docs/installation-android)
+ - [Usage](/docs/usage)

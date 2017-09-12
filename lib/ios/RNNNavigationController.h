@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //
 //  RNNNavigationController.h
 //  ReactNativeNavigation
@@ -7,6 +8,9 @@
 //
 
 #import <Foundation/Foundation.h>
+=======
+
+>>>>>>> v2
 #import <UIKit/UIKit.h>
 
 @interface RNNNavigationController : UINavigationController

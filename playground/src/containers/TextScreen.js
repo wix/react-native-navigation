@@ -6,6 +6,7 @@ const { View, Text, Button } = require('react-native');
 const Navigation = require('react-native-navigation');
 
 class TextScreen extends Component {
+
   render() {
     return (
       <View style={styles.root}>

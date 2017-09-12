@@ -15,13 +15,6 @@ nvm install stable
 nvm use stable
 ```
 
-* Latest stable Yarn:
-
-```
-curl -o- -L https://yarnpkg.com/install.sh | bash
-export PATH=$PATH:$HOME/.yarn/bin
-```
-
 * Android SDK:
 
 ```
@@ -52,28 +45,28 @@ Then:
 1. Install dependencies:
 
     ```
-    yarn install
+    npm install
     ```
 
 1. Run the playground project in Android and iOS so that you can get a feel for the project.
-  
-    1. `yarn start` to get the package running in a terminal, leave it open
 
-    1. iOS: `yarn xcode` & run the project from XCode
-    
-    1. Android: Open the app in Android Studio and click `Run`   
+    1. `npm run start` to get the package running in a terminal, leave it open
+
+    1. iOS: `npm run xcode` & run the project from XCode
+
+    1. Android: Open the app in Android Studio and click `Run`
 
 1. Run the tests. Before you start changing things, make sure everything works.
 
      ```
-     yarn test-all
+     npm run test-all
      ```
 
 ## Troubleshooting
 
 * If the tests fail with an error like `Ineligible destinations for the "ReactNativeNavigation" scheme`, double check that you have the latest XCode installed.
 * If the tests fail because an Android emulator isn't available (something like `com.android.builder.testing.api.DeviceException: No connected devices!`), start the Android project from Android Studio and leave the emulator running, then try again.
-* If the tests fail with an error such as: 
+* If the tests fail with an error such as:
 
 ```js
 
@@ -82,7 +75,7 @@ Then:
 SyntaxError: Unexpected token (
 
 ```
-    
+
 You probably have an old node version which doesn't support async functions. Update your node using nvm according to the instructions above.
 
 ## Workflow
@@ -111,17 +104,17 @@ No PR will be accepted without adequate test coverage.
 
 | Command | Description |
 | ------- | ----------- |
-| `yarn install` | installs dependencies |
-| `yarn clean` | cleans all build directories, stops packager, fixes flakiness by removing watchman cache, etc. |
-| `yarn start` | starts the react-native packager for local debugging |
-| `yarn xcode` | for convenience, opens xcode in this project |
-| `yarn install-android`  |  builds playground debug/release version and installs on running android devices/emulators. <br> **Options:** `-- release` |
-| `yarn uninstall-android` | uninstalls playground from running android devices/simulators |
-| `yarn test-js` | runs javascript tests and coverage report |
-| `yarn test-watch` | runs javascript tests in watch mode (can also use the provided wallaby config) |
-| `yarn test-unit-ios` | runs ios unit tests in debug/release <br> **Options:** `-- release` |
-| `yarn test-unit-android` | runs android unit tests in debug/release <br> **Options:** `-- release` |
-| `yarn test-e2e-ios` | runs the ios e2e suite (with detox) in debug/release |
-| `yarn test-e2e-android` | runs the android e2e suite (with uiautomator) in debug/release on running devices/emulators <br> **Options:** `-- [release] [just com.TestClass#testMethod]` |
-| `yarn test-all` | runs all tests in parallel |
+| `npm install` | installs dependencies |
+| `npm run clean` | cleans all build directories, stops packager, fixes flakiness by removing watchman cache, etc. |
+| `npm run start` | starts the react-native packager for local debugging |
+| `npm run xcode` | for convenience, opens xcode in this project |
+| `npm run install-android`  |  builds playground debug/release version and installs on running android devices/emulators. <br> **Options:** `-- release` |
+| `npm run uninstall-android` | uninstalls playground from running android devices/simulators |
+| `npm run test-js` | runs javascript tests and coverage report |
+| `npm run test-watch` | runs javascript tests in watch mode (can also use the provided wallaby config) |
+| `npm run test-unit-ios` | runs ios unit tests in debug/release <br> **Options:** `-- release` |
+| `npm run test-unit-android` | runs android unit tests in debug/release <br> **Options:** `-- release` |
+| `npm run test-e2e-ios` | runs the ios e2e suite (with detox) in debug/release |
+| `npm run test-e2e-android` | runs the android e2e suite (with uiautomator) in debug/release on running devices/emulators <br> **Options:** `-- [release] [just com.TestClass#testMethod]` |
+| `npm run test-all` | runs all tests in parallel |
 

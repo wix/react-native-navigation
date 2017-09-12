@@ -7,9 +7,8 @@ describe('remx support', () => {
   let store;
 
   beforeEach(() => {
-    jest.resetModules();
-    MyConnectedContainer = require('./component');
-    store = require('./store');
+    MyConnectedContainer = require('./MyContainer');
+    store = require('./MyStore');
   });
 
   it('renders normally', () => {
@@ -31,7 +30,7 @@ describe('remx support', () => {
     expect(renderCountIncrement).toHaveBeenCalledTimes(2);
   });
 
-  it('rerenders as a result of an underlying state change with a new key using merge', () => {
+  it('rerenders as a result of an underlying state change with a new key', () => {
     const renderCountIncrement = jest.fn();
     const tree = renderer.create(<MyConnectedContainer printAge={true} renderCountIncrement={renderCountIncrement} />);
 

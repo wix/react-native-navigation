@@ -2,8 +2,8 @@ const React = require('react');
 const { Component } = require('react');
 
 const { Text } = require('react-native');
-const { connect } = require('remx/react-native');
-const store = require('./store');
+const { connect } = require('remx');
+const store = require('./MyStore');
 
 class MyContainer extends Component {
   render() {

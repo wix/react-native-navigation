@@ -1,6 +1,10 @@
 #import "RNNNavigationOptions.h"
 #import <React/RCTConvert.h>
+#import "RNNNavigationController.h"
+#import "RNNTabBarController.h"
 
+const NSInteger BLUR_STATUS_TAG = 78264801;
+const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 @implementation RNNNavigationOptions
 
@@ -26,6 +30,13 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 	self.topBarTextFontSize = [navigationOptions objectForKey:@"topBarTextFontSize"];
 	self.topBarTransparent = [navigationOptions objectForKey:@"topBarTransparent"];
 	self.backButtonTransition = [navigationOptions objectForKey:@"backButtonTransition"];
+	self.orientation = [navigationOptions objectForKey:@"orientation"];
+	self.leftButtons = [navigationOptions objectForKey:@"leftButtons"];
+	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
+	self.topBarNoBorder = [navigationOptions objectForKey:@"topBarNoBorder"];
+	self.tabBarHidden = [navigationOptions objectForKey:@"tabBarHidden"];
+	self.topBarBlur = [navigationOptions objectForKey:@"topBarBlur"];
+
 	return self;
 }
 
@@ -108,7 +119,57 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 		} else {
 			viewController.navigationController.navigationBar.translucent = NO;
 		}
+	}
+	
+	if (self.topBarNoBorder) {
+		if ([self.topBarNoBorder boolValue]) {
+			viewController.navigationController.navigationBar
+			.shadowImage = [[UIImage alloc] init];
+		} else {
+			viewController.navigationController.navigationBar
+			.shadowImage = nil;
+		}
+	}
+	
+	if (self.statusBarBlur) {
+		UIView* curBlurView = [viewController.view viewWithTag:BLUR_STATUS_TAG];
+		if ([self.statusBarBlur boolValue]) {
+			if (!curBlurView) {
+				UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+				blur.frame = [[UIApplication sharedApplication] statusBarFrame];
+				blur.tag = BLUR_STATUS_TAG;
+				[viewController.view insertSubview:blur atIndex:0];
+			}
+		} else {
+			if (curBlurView) {
+				[curBlurView removeFromSuperview];
+			}
+		}
+	}
+	
+	if (self.topBarBlur && [self.topBarBlur boolValue]) {
 		
+		if (![viewController.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]) {
+			
+			[viewController.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+			viewController.navigationController.navigationBar.shadowImage = [UIImage new];
+			UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+			CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+			blur.frame = CGRectMake(0, -1 * statusBarFrame.size.height, viewController.navigationController.navigationBar.frame.size.width, viewController.navigationController.navigationBar.frame.size.height + statusBarFrame.size.height);
+			blur.userInteractionEnabled = NO;
+			blur.tag = BLUR_TOPBAR_TAG;
+			[viewController.navigationController.navigationBar insertSubview:blur atIndex:0];
+			[viewController.navigationController.navigationBar sendSubviewToBack:blur];
+		}
+	} else {
+		UIView *blur = [viewController.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG];
+		if (blur) {
+			[viewController.navigationController.navigationBar setBackgroundImage: nil forBarMetrics:UIBarMetricsDefault];
+			viewController.navigationController.navigationBar.shadowImage = nil;
+			[blur removeFromSuperview];
+		}
+	}
+
 	}
 	
 	void (^disableTopBarTransparent)() = ^void(){
@@ -139,6 +200,32 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 	}
 }
 
+- (UIInterfaceOrientationMask)supportedOrientations {
+	NSArray* orientationsArray = [self.orientation isKindOfClass:[NSString class]] ? @[self.orientation] : self.orientation;
+	NSUInteger supportedOrientationsMask = 0;
+	if (!orientationsArray || [self.orientation isEqual:@"default"]) {
+		return [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
+	} else {
+		for (NSString* orientation in orientationsArray) {
+			if ([orientation isEqualToString:@"all"]) {
+				supportedOrientationsMask = UIInterfaceOrientationMaskAll;
+				break;
+			}
+			if ([orientation isEqualToString:@"landscape"]) {
+				supportedOrientationsMask = (supportedOrientationsMask | UIInterfaceOrientationMaskLandscape);
+			}
+			if ([orientation isEqualToString:@"portrait"]) {
+				supportedOrientationsMask = (supportedOrientationsMask | UIInterfaceOrientationMaskPortrait);
+			}
+			if ([orientation isEqualToString:@"upsideDown"]) {
+				supportedOrientationsMask = (supportedOrientationsMask | UIInterfaceOrientationMaskPortraitUpsideDown);
+			}
+		}
+	}
+	
+	return supportedOrientationsMask;
+}
+
 -(void)storeOriginalTopBarImages:(UIViewController*)viewController {
 	NSMutableDictionary *originalTopBarImages = [@{} mutableCopy];
 	UIImage *bgImage = [viewController.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault];
@@ -151,4 +238,6 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 	}
 	self.originalTopBarImages = originalTopBarImages;
 }
+
+
 @end

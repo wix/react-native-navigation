@@ -4,6 +4,7 @@
 #import "RNNNavigationOptions.h"
 #import "RNNTestRootViewCreator.h"
 #import "RNNRootViewController.h"
+#import "RNNNavigationController.h"
 
 @interface RNNCommandsHandlerTest : XCTestCase
 
@@ -68,7 +69,7 @@
 															withContainerId:@"containerId"
 															rootViewCreator:[[RNNTestRootViewCreator alloc] init]
 															   eventEmitter:nil];
-	UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:vc];
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
 	

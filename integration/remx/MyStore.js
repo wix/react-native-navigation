@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const remx = require('remx');
 
 const state = remx.state({
@@ -13,17 +12,17 @@ const setters = remx.setters({
   },
 
   setAge(age) {
-    state.merge({ person: { age } });
+    state.person.age = age;
   }
 });
 
 const getters = remx.getters({
   getName() {
-    return _.get(state, ['person', 'name']);
+    return state.person.name;
   },
 
   getAge() {
-    return _(state).get('person.age');
+    return state.person.age;
   }
 });
 

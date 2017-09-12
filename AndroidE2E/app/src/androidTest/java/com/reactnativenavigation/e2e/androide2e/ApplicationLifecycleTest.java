@@ -6,7 +6,6 @@ import android.provider.Settings;
 import android.support.test.uiautomator.By;
 import android.view.KeyEvent;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
@@ -88,9 +87,13 @@ public class ApplicationLifecycleTest extends BaseTest {
 	}
 
 	@Test
-	@Ignore
-	public void reloadReactNativeDoesNotCausesLeaks() throws Exception {
-		// TODO
+	public void sendingReloadBroadcastReloadsReactNative() throws Exception {
+		elementByText("PUSH").click();
+		assertExists(By.text("Pushed Screen"));
+
+		device().executeShellCommand("am broadcast -a com.reactnativenavigation.broadcast.RELOAD");
+		device().waitForIdle();
+		assertMainShown();
 	}
 
 	private void killAppSaveInstanceState_ByTogglingPermissions() throws Exception {
