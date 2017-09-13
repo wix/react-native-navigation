@@ -250,7 +250,10 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     
     BOOL animated = actionParams[@"animated"] ? [actionParams[@"animated"] boolValue] : YES;
 
-    [self.viewControllers.lastObject viewWillDisappear:animated];
+    if (self.viewControllers.count > 0)
+    {
+      [self.viewControllers.lastObject viewWillDisappear:animated];
+    }
     
     NSString *animationType = actionParams[@"animationType"];
     if ([animationType isEqualToString:@"fade"])
