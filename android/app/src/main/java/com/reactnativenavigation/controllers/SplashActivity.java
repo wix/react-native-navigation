@@ -27,8 +27,6 @@ public abstract class SplashActivity extends AppCompatActivity {
 
         if (NavigationApplication.instance.getReactGateway().hasStartedCreatingContext()) {
             NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
-            overridePendingTransition(0, 0);
-            finish();
             return;
         }
 
@@ -38,7 +36,7 @@ public abstract class SplashActivity extends AppCompatActivity {
         }
 
         if (NavigationApplication.instance.isReactContextInitialized()) {
-            finish();
+            NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
             return;
         }
 
