@@ -71,6 +71,7 @@ this.props.navigator.setStyle({
   navBarSubtitleFontFamily: 'font-name', // subtitle font
   screenBackgroundColor: 'white', // Default screen color, visible before the actual react view is rendered
   orientation: 'portrait' // Sets a specific orientation to a modal and all screens pushed to it. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
+  disabledButtonColor: '#ff0000' // chnaged the navigation bar button text color when disabled.
   
   // iOS only
   statusBarTextColorSchemeSingleScreen: 'light', // same as statusBarTextColorScheme but does NOT remember across pushes

@@ -122,6 +122,12 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
                      style:navigatorStyle];
     
     NSString *backButtonTitle = actionParams[@"backButtonTitle"];
+    if (!backButtonTitle) {
+      NSNumber *hideBackButtonTitle = [[RCCManager sharedInstance] getAppStyle][@"hideBackButtonTitle"];
+      BOOL hideBackButtonTitleBool = hideBackButtonTitle ? [hideBackButtonTitle boolValue] : NO;
+      backButtonTitle = hideBackButtonTitleBool ? @"" : backButtonTitle;
+    }
+    
     if (backButtonTitle)
     {
       UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:backButtonTitle
@@ -381,6 +387,16 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     BOOL disableIconTint = disableIconTintString ? [disableIconTintString boolValue] : NO;
     if (disableIconTint) {
       [barButtonItem setImage:[barButtonItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    }
+    
+    if ([viewController isKindOfClass:[RCCViewController class]]) {
+      RCCViewController *rccViewController = ((RCCViewController*)viewController);
+      NSDictionary *navigatorStyle = rccViewController.navigatorStyle;
+      id disabledButtonColor = navigatorStyle[@"disabledButtonColor"];
+      if (disabledButtonColor) {
+        UIColor *color = [RCTConvert UIColor:disabledButtonColor];
+        [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName : color} forState:UIControlStateDisabled];
+      }
     }
     
     NSString *testID = button[@"testID"];
