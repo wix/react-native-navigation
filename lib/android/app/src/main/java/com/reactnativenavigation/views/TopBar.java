@@ -1,10 +1,10 @@
 package com.reactnativenavigation.views;
 
 import android.app.Activity;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
-import android.support.annotation.ColorInt;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -28,6 +28,13 @@ public class TopBar extends AppBarLayout {
 
 	public void setTitleTextColor(@ColorInt int color) {
 		titleBar.setTitleTextColor(color);
+	}
+
+	public void setTitleFontSize(float size) {
+		TextView titleTextView = getTitleTextView();
+		if (titleTextView != null) {
+			titleTextView.setTextSize(size);
+		}
 	}
 
 	public TextView getTitleTextView() {

@@ -144,4 +144,22 @@ public class ContainerViewControllerTest extends BaseTest {
 		assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);
 		assertThat(stackController.getTopBar().getTitleTextView().getCurrentTextColor()).isEqualTo(Color.RED);
 	}
+
+	@Test
+	public void appliesTopBarTextSize() throws Exception {
+		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
+		initialNavigationOptions.title = "the title";
+		StackController stackController = new StackController(activity, "stackId");
+		stackController.push(uut);
+		uut.onViewAppeared();
+		assertThat(stackController.getTopBar().getTitleTextView().getTextSize()).isNotEqualTo(18);
+
+		NavigationOptions opts = new NavigationOptions();
+		opts.title = "the title";
+		opts.topBarTextFontSize = 18;
+		uut.mergeNavigationOptions(opts);
+
+		assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);
+		assertThat(stackController.getTopBar().getTitleTextView().getTextSize()).isEqualTo(18);
+	}
 }
