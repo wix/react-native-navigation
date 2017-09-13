@@ -53,6 +53,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
      * Along with that, we should handle commands from the bridge using onNewIntent
      */
     static NavigationActivity currentActivity;
+    private static int activityCount;
 
     private ActivityParams activityParams;
     private ModalController modalController;
@@ -61,6 +62,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activityCount++;
         super.onCreate(savedInstanceState);
         if (!NavigationApplication.instance.isReactContextInitialized()) {
             NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
@@ -99,7 +101,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     private boolean hasBackgroundColor() {
         return AppStyle.appStyle.screenBackgroundColor != null &&
-               AppStyle.appStyle.screenBackgroundColor.hasColor();
+                AppStyle.appStyle.screenBackgroundColor.hasColor();
     }
 
     @Override
@@ -148,6 +150,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     protected void onDestroy() {
+        activityCount--;
         destroyLayouts();
         destroyJsIfNeeded();
         NavigationApplication.instance.getActivityCallbacks().onActivityDestroyed(this);
@@ -165,7 +168,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     private void destroyJsIfNeeded() {
-        if (currentActivity == null || currentActivity.isFinishing()) {
+        if (activityCount == 0) {
             getReactGateway().onDestroyApp();
         }
     }
