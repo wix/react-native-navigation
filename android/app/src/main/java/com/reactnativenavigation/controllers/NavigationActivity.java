@@ -1,7 +1,10 @@
 package com.reactnativenavigation.controllers;
 
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,32 +60,43 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     private ActivityParams activityParams;
     private ModalController modalController;
     private Layout layout;
-    @Nullable private PermissionListener mPermissionListener;
+    @Nullable
+    private PermissionListener mPermissionListener;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            destroyLayouts();
+
+            activityParams = NavigationCommandsHandler.parseActivityParams(intent);
+            createModalController();
+            setOrientation();
+            createLayout();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!NavigationApplication.instance.isReactContextInitialized()) {
-            NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
-            return;
+
+        if (getReactGateway().isInitialized()) {
+            destroyLayouts();
+            getReactGateway().restartReactContextOnceInBackgroundAndExecuteJS();
+        } else {
+            getReactGateway().startReactContextOnceInBackgroundAndExecuteJS();
         }
 
-        activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
-        disableActivityShowAnimationIfNeeded();
-        setOrientation();
-        createModalController();
-        createLayout();
+        registerReceiver(receiver, new IntentFilter("com.reactnativenavigation.START_APP"));
+
         NavigationApplication.instance.getActivityCallbacks().onActivityCreated(this, savedInstanceState);
+
+        int splashLayout = getIntent().getIntExtra("SplashLayout", 0);
+        if (splashLayout != 0) {
+            setContentView(splashLayout);
+        }
     }
 
     private void setOrientation() {
         OrientationHelper.setOrientation(this, AppStyle.appStyle.orientation);
-    }
-
-    private void disableActivityShowAnimationIfNeeded() {
-        if (!activityParams.animateShow) {
-            overridePendingTransition(0, 0);
-        }
     }
 
     private void createModalController() {
@@ -111,16 +125,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onResume() {
         super.onResume();
-        if (isFinishing() || !NavigationApplication.instance.isReactContextInitialized()) {
+        if (isFinishing()) {
             return;
         }
 
         currentActivity = this;
-        IntentDataHandler.onResume(getIntent());
-        getReactGateway().onResumeActivity(this, this);
-        NavigationApplication.instance.getActivityCallbacks().onActivityResumed(this);
-        EventBus.instance.register(this);
-        IntentDataHandler.onPostResume(getIntent());
+        getReactGateway().onResumeActivity(NavigationActivity.this, NavigationActivity.this);
+        NavigationApplication.instance.getActivityCallbacks().onActivityResumed(NavigationActivity.this);
+        EventBus.instance.register(NavigationActivity.this);
     }
 
     @Override
@@ -134,8 +146,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     protected void onPause() {
         super.onPause();
         currentActivity = null;
-        IntentDataHandler.onPause(getIntent());
-        getReactGateway().onPauseActivity();
+        getReactGateway().onPauseActivity(this);
         NavigationApplication.instance.getActivityCallbacks().onActivityPaused(this);
         EventBus.instance.unregister(this);
     }
@@ -149,8 +160,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onDestroy() {
         destroyLayouts();
-        destroyJsIfNeeded();
+        getReactGateway().onDestroyApp(this);
         NavigationApplication.instance.getActivityCallbacks().onActivityDestroyed(this);
+        unregisterReceiver(receiver);
         super.onDestroy();
     }
 
@@ -161,12 +173,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (layout != null) {
             layout.destroy();
             layout = null;
-        }
-    }
-
-    private void destroyJsIfNeeded() {
-        if (currentActivity == null || currentActivity.isFinishing()) {
-            getReactGateway().onDestroyApp();
         }
     }
 
@@ -424,8 +430,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         NavigationApplication.instance.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                layout.destroy();
-                modalController.destroy();
+                if (layout != null) {
+                    layout.destroy();
+                }
+                if (modalController != null) {
+                    modalController.destroy();
+                }
             }
         });
     }
