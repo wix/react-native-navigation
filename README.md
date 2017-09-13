@@ -70,7 +70,7 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 
 |                       | v1  | v2 iOS | v2 Android | Contributors |
 |-----------------------|-----|--------|------------|------------|
-| topBarTextColor |   ✅    |    ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
+| topBarTextColor |   ✅    |    ✅     |     ✅        | Wix|
 | topBarTextFontSize    |   ✅    |    ✅      |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
 | topBarTextFontFamily  |  ✅     |      ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix |
 | topBarBackgroundColor |  ✅     |  ✅       |     ✅         | Wix|

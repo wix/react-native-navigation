@@ -86,6 +86,7 @@ public class ContainerViewController extends ViewController {
 		if (getParentStackController() != null) {
 			getParentStackController().getTopBar().setTitle(navigationOptions.title);
 			getParentStackController().getTopBar().setBackgroundColor(navigationOptions.topBarBackgroundColor);
+      		getParentStackController().getTopBar().setTitleTextColor(navigationOptions.topBarTextColor);
 		}
 	}
 

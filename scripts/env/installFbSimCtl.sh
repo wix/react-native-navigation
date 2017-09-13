@@ -1,4 +1,4 @@
 #!/bin/bash -e
 
 brew tap facebook/fb
-brew install fbsimctl
+brew install fbsimctl --HEAD

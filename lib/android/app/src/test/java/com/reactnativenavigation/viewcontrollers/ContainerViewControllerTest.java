@@ -126,4 +126,22 @@ public class ContainerViewControllerTest extends BaseTest {
 
 		assertThat(((ColorDrawable) stackController.getTopBar().getBackground()).getColor()).isEqualTo(0xffff0000);
 	}
+
+	@Test
+	public void appliesTopBarTextColor() throws Exception {
+		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
+		initialNavigationOptions.title = "the title";
+		StackController stackController = new StackController(activity, "stackId");
+		stackController.push(uut);
+		uut.onViewAppeared();
+		assertThat(stackController.getTopBar().getTitleTextView().getCurrentTextColor()).isNotEqualTo(Color.RED);
+
+		NavigationOptions opts = new NavigationOptions();
+		opts.title = "the title";
+		opts.topBarTextColor = Color.RED;
+		uut.mergeNavigationOptions(opts);
+
+		assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);
+		assertThat(stackController.getTopBar().getTitleTextView().getCurrentTextColor()).isEqualTo(Color.RED);
+	}
 }
