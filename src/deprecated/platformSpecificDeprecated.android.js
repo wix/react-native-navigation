@@ -478,8 +478,11 @@ function dismissLightBox() {
   newPlatformSpecific.dismissLightBox();
 }
 
-function dismissModal() {
-  newPlatformSpecific.dismissTopModal();
+function dismissModal(params) {
+  newPlatformSpecific.dismissTopModal({
+    ...params,
+    navigationParams: {}
+  });
 }
 
 function dismissAllModals(params) {
