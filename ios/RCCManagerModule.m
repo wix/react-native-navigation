@@ -229,6 +229,12 @@ RCT_EXPORT_METHOD(
     
     // first clear the registry to remove any refernece to the previous controllers
     [[RCCManager sharedInstance] clearModuleRegistry];
+    [[RCCManager sharedInstance] setAppStyle:nil];
+    
+    NSDictionary *appStyle = layout[@"props"][@"appStyle"];
+    if (appStyle) {
+        [[RCCManager sharedIntance] setAppStyle:appStyle];
+    }
     
     // create the new controller
     UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:modifiedGloablProps bridge:[[RCCManager sharedInstance] getBridge]];
@@ -325,7 +331,7 @@ RCT_EXPORT_METHOD(
 {
 
     NSMutableDictionary *modifiedGlobalProps = [globalProps mutableCopy];
-    modifiedGlobalProps[@"props"][@"passProps"][GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_SHOW_MODAL;
+    modifiedGlobalProps[GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_SHOW_MODAL;
     
     UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:modifiedGlobalProps bridge:[[RCCManager sharedInstance] getBridge]];
     if (controller == nil)

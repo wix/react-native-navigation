@@ -7,6 +7,7 @@ import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.Orientation;
 import com.reactnativenavigation.params.StatusBarTextColorScheme;
 import com.reactnativenavigation.params.StyleParams;
+import com.reactnativenavigation.utils.ViewUtils;
 
 public class StyleParamsParser {
     private Bundle params;
@@ -50,13 +51,17 @@ public class StyleParamsParser {
         result.topBarElevationShadowEnabled = getBoolean("topBarElevationShadowEnabled", getDefaultTopBarElevationShadowEnabled());
         result.titleBarTitleColor = getColor("titleBarTitleColor", getDefaultTitleBarColor());
         result.topBarTranslucent = getBoolean("topBarTranslucent", getDefaultTopBarTranslucent());
+        result.topBarBorderColor = getColor("topBarBorderColor", getDefaultTopBarBorderColor());
+        result.topBarBorderWidth = Float.parseFloat(params.getString("topBarBorderWidth", getDefaultTopBarBorderWidth()));
 
         result.titleBarSubtitleColor = getColor("titleBarSubtitleColor", getDefaultSubtitleBarColor());
         result.titleBarButtonColor = getColor("titleBarButtonColor", getTitleBarButtonColor());
         result.titleBarDisabledButtonColor = getColor("titleBarDisabledButtonColor", getTitleBarDisabledButtonColor());
         result.titleBarTitleFont = getFont("titleBarTitleFontFamily", getDefaultTitleTextFontFamily());
         result.titleBarTitleFontSize = getInt("titleBarTitleFontSize", getDefaultTitleTextFontSize());
+        result.titleBarTitleFontBold = getBoolean("titleBarTitleFontBold", getDefaultTitleTextFontBold());
         result.titleBarTitleTextCentered = getBoolean("titleBarTitleTextCentered", getDefaultTitleBarTextCentered());
+        result.titleBarHeight = getInt("titleBarHeight", getDefaultTitleBarHeight());
         result.backButtonHidden = getBoolean("backButtonHidden", getDefaultBackButtonHidden());
         result.topTabsHidden = getBoolean("topTabsHidden", getDefaultTopTabsHidden());
 
@@ -67,9 +72,11 @@ public class StyleParamsParser {
         result.selectedTopTabIndicatorHeight = getInt("selectedTopTabIndicatorHeight", getDefaultSelectedTopTabIndicatorHeight());
         result.selectedTopTabIndicatorColor = getColor("selectedTopTabIndicatorColor", getDefaultSelectedTopTabIndicatorColor());
         result.topTabsScrollable = getBoolean("topTabsScrollable", getDefaultTopTabsScrollable());
+        result.topTabsHeight = getInt("topTabsHeight", getDefaultTopTabsHeight());
 
         result.screenBackgroundColor = getColor("screenBackgroundColor", getDefaultScreenBackgroundColor());
 
+        result.bottomTabsInitialIndex = getInt("initialTabIndex", 0);
         result.bottomTabsHidden = getBoolean("bottomTabsHidden", getDefaultBottomTabsHidden());
         result.drawScreenAboveBottomTabs = !result.bottomTabsHidden &&
                                            params.getBoolean("drawScreenAboveBottomTabs", getDefaultDrawScreenAboveBottomTabs());
@@ -194,6 +201,10 @@ public class StyleParamsParser {
         return AppStyle.appStyle != null && AppStyle.appStyle.topTabsScrollable;
     }
 
+    private int getDefaultTopTabsHeight() {
+        return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.topTabsHeight;
+    }
+
     private StyleParams.Color getDefaultTopTabIconColor() {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.topTabIconColor;
     }
@@ -230,6 +241,14 @@ public class StyleParamsParser {
         return AppStyle.appStyle != null && AppStyle.appStyle.topBarTranslucent;
     }
 
+    private StyleParams.Color getDefaultTopBarBorderColor() {
+        return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.topBarBorderColor;
+    }
+
+    private String getDefaultTopBarBorderWidth() {
+        return String.valueOf(AppStyle.appStyle == null ? ViewUtils.convertDpToPixel(1) : AppStyle.appStyle.topBarBorderWidth);
+    }
+
     private boolean getDefaultTitleBarHideOnScroll() {
         return AppStyle.appStyle != null && AppStyle.appStyle.titleBarHideOnScroll;
     }
@@ -258,8 +277,16 @@ public class StyleParamsParser {
         return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarTitleFontSize;
     }
 
+    private boolean getDefaultTitleTextFontBold() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.titleBarTitleFontBold;
+    }
+
     private boolean getDefaultTitleBarTextCentered() {
         return AppStyle.appStyle != null && AppStyle.appStyle.titleBarTitleTextCentered;
+    }
+
+    private int getDefaultTitleBarHeight() {
+        return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarHeight;
     }
 
     private boolean getBoolean(String key, boolean defaultValue) {
