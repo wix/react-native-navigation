@@ -50,8 +50,8 @@ Navigation.startTabBasedApp({
     }
   ],
   tabsStyle: { // optional, add this if you want to style the tab bar beyond the defaults
-    tabBarButtonColor: '#ffff00', // optional, change the color of the tab icons and text (also unselected). For Android, add this to appStyle
-    tabBarSelectedButtonColor: '#ff9900', // optional, change the color of the selected tab icon and text (only selected). For Android, add this to appStyle
+    tabBarButtonColor: '#ffff00', // optional, change the color of the tab icons and text (also unselected). On Android, add this to appStyle
+    tabBarSelectedButtonColor: '#ff9900', // optional, change the color of the selected tab icon and text (only selected). On Android, add this to appStyle
     tabBarBackgroundColor: '#551A8B', // optional, change the background color of the tab bar
     initialTabIndex: 1, // optional, the default selected bottom tab. Default: 0
   },
