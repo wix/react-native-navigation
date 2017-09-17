@@ -55,7 +55,7 @@ public class ScreenParamsParser extends Parser {
         result.animateScreenTransitions = new AnimationParser(params).parse();
         result.sharedElementsTransitions = getSharedElementsTransitions(params);
 
-        result.animationType = params.getString(ANIMATION_TYPE);
+        result.animationType = params.getString(ANIMATION_TYPE, "slide-up");
 
         return result;
     }

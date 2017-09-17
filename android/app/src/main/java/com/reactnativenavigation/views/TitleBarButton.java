@@ -2,11 +2,13 @@ package com.reactnativenavigation.views;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.ActionMenuView;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.NavigationApplication;
@@ -19,11 +21,11 @@ import java.util.ArrayList;
 class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
     protected final Menu menu;
-    protected final View parent;
-    TitleBarButtonParams buttonParams;
+    protected final ViewGroup parent;
+    private TitleBarButtonParams buttonParams;
     @Nullable protected String navigatorEventId;
 
-    TitleBarButton(Menu menu, View parent, TitleBarButtonParams buttonParams, @Nullable String navigatorEventId) {
+    TitleBarButton(Menu menu, ViewGroup parent, TitleBarButtonParams buttonParams, @Nullable String navigatorEventId) {
         this.menu = menu;
         this.parent = parent;
         this.buttonParams = buttonParams;
@@ -37,7 +39,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         if (buttonParams.hasComponent()) {
             item.setActionView(new TitleBarButtonComponent(parent.getContext(), buttonParams.componentName, buttonParams.componentProps));
         }
-        setIcon(item);
+        setIcon(item, index);
         setColor();
         setFont();
         item.setOnMenuItemClickListener(this);
@@ -54,10 +56,25 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         return menu.add(Menu.NONE, Menu.NONE, index, title);
     }
 
-    private void setIcon(MenuItem item) {
+    private void setIcon(MenuItem item, int index) {
         if (hasIcon()) {
             item.setIcon(buttonParams.icon);
+            if (TextUtils.isEmpty(buttonParams.label)) {
+                dontShowLabelOnLongPress(index);
+            }
         }
+    }
+
+    private void dontShowLabelOnLongPress(final int index) {
+        ViewUtils.runOnPreDraw(parent, new Runnable() {
+            @Override
+            public void run() {
+                ActionMenuView actionMenuView = ViewUtils.findChildByClass(parent, ActionMenuView.class);
+                if (actionMenuView != null) {
+                    actionMenuView.getChildAt(index).setOnLongClickListener(null);
+                }
+            }
+        });
     }
 
     private void setColor() {

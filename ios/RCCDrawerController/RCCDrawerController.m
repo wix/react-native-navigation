@@ -100,6 +100,10 @@ UIViewController *rightViewController = nil;
         UIColor *color = contentOverlayColor != (id)[NSNull null] ? [RCTConvert UIColor:contentOverlayColor] : nil;
         [self setCenterOverlayColor:color];
     }
+    
+    if (self.drawerStyle[@"shouldStretchDrawer"]) {
+        self.shouldStretchDrawer = ([self.drawerStyle[@"shouldStretchDrawer"] boolValue]) ? YES : NO;
+    }
 }
 
 
