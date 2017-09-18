@@ -18,23 +18,20 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ContainerViewControllerTest extends BaseTest {
-	private Activity activity;
 	private ContainerViewController uut;
 	private ContainerViewController.ContainerView view;
-	private NavigationOptions initialNavigationOptions;
 
 	@Override
 	public void beforeEach() {
 		super.beforeEach();
-		activity = newActivity();
-		initialNavigationOptions = new NavigationOptions();
+		Activity activity = newActivity();
 		view = spy(new TestContainerView(activity));
 		uut = new ContainerViewController(activity, "containerId1", "containerName", new ContainerViewController.ContainerViewCreator() {
 			@Override
 			public ContainerViewController.ContainerView create(final Activity activity1, final String containerId, final String containerName) {
 				return view;
 			}
-		}, initialNavigationOptions);
+		}, new NavigationOptions());
 	}
 
 	@Test
@@ -71,60 +68,5 @@ public class ContainerViewControllerTest extends BaseTest {
 		assertThat(uut.isViewShown()).isFalse();
 		when(view.isReady()).thenReturn(true);
 		assertThat(uut.isViewShown()).isTrue();
-	}
-
-	@Test
-	public void applyNavigationOptionsHandlesNoParentStack() throws Exception {
-		assertThat(uut.getParentStackController()).isNull();
-		uut.onViewAppeared();
-		assertThat(uut.getParentStackController()).isNull();
-	}
-
-	@Test
-	public void initialOptionsAppliedOnAppear() throws Exception {
-		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
-		initialNavigationOptions.title = "the title";
-		StackController stackController = new StackController(activity, "stackId");
-		stackController.push(uut);
-		assertThat(stackController.getTopBar().getTitle()).isEmpty();
-
-		uut.onViewAppeared();
-		assertThat(stackController.getTopBar().getTitle()).isEqualTo("the title");
-	}
-
-	@Test
-	public void mergeNavigationOptionsUpdatesCurrentOptions() throws Exception {
-		assertThat(uut.getNavigationOptions().title).isEmpty();
-		NavigationOptions options = new NavigationOptions();
-		options.title = "new title";
-		uut.mergeNavigationOptions(options);
-		assertThat(uut.getNavigationOptions().title).isEqualTo("new title");
-		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
-	}
-
-	@Test
-	public void appliesOptions() throws Exception {
-		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
-		initialNavigationOptions.title = "the title";
-		StackController stackController = new StackController(activity, "stackId");
-		stackController.push(uut);
-		uut.onViewAppeared();
-		assertThat(((ColorDrawable) stackController.getTopBar().getBackground()).getColor()).isNotEqualTo(Color.RED);
-		assertThat(stackController.getTopBar().getTitleTextView().getCurrentTextColor()).isNotEqualTo(Color.RED);
-		assertThat(stackController.getTopBar().getTitleTextView().getTextSize()).isNotEqualTo(18);
-		assertThat(stackController.getTopBar().getTitle()).isNotEqualTo("the new title");
-
-		NavigationOptions opts = new NavigationOptions();
-		opts.title = "the new title";
-		opts.topBarTextColor = Color.RED;
-		opts.topBarTextFontSize = 18;
-		opts.topBarBackgroundColor = Color.RED;
-		uut.mergeNavigationOptions(opts);
-
-		assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);
-		assertThat(((ColorDrawable) stackController.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
-		assertThat(stackController.getTopBar().getTitleTextView().getCurrentTextColor()).isEqualTo(Color.RED);
-		assertThat(stackController.getTopBar().getTitleTextView().getTextSize()).isEqualTo(18);
-		assertThat(stackController.getTopBar().getTitle()).isEqualTo("the new title");
 	}
 }

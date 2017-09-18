@@ -57,7 +57,7 @@ public class ContainerViewController extends ViewController {
 	public void onViewAppeared() {
 		super.onViewAppeared();
 		ensureViewIsCreated();
-		getOptionsPresenter().applyOptions(navigationOptions);
+		applyOptions();
 		containerView.sendContainerStart();
 	}
 
@@ -81,17 +81,15 @@ public class ContainerViewController extends ViewController {
 
 	public void mergeNavigationOptions(final NavigationOptions options) {
 		navigationOptions.mergeWith(options);
-		getOptionsPresenter().applyOptions(navigationOptions);
+		applyOptions();
 	}
 
 	public NavigationOptions getNavigationOptions() {
 		return navigationOptions;
 	}
 
-	private OptionsPresenter getOptionsPresenter() {
-		if (optionsPresenter == null) {
-			optionsPresenter = new OptionsPresenter(getParentStackController());
-		}
-		return optionsPresenter;
+	private void applyOptions() {
+		OptionsPresenter presenter = new OptionsPresenter(getParentStackController());
+		presenter.applyOptions(navigationOptions);
 	}
 }
