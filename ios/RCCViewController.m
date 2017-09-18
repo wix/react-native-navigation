@@ -191,7 +191,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   self.timestamp = props[GLOBAL_SCREEN_ACTION_TIMESTAMP];
   
   
-  // In order to support 3rd party native ViewControllers, we support passing a class name as a prop mamed `ExternalNativeScreenClass`
+  // In order to support 3rd party native ViewControllers, we support passing a class name as a prop named `ExternalNativeScreenClass`
   // In this case, we create an instance and add it as a child ViewController which preserves the VC lifecycle.
   // In case some props are necessary in the native ViewController, the ExternalNativeScreenProps can be used to pass them
   [self addExternalVCIfNecessary:props];
@@ -288,10 +288,24 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   }];
 }
 
+// fix iOS11 safeArea - https://github.com/facebook/react-native/issues/15681
+// rnn issue - https://github.com/wix/react-native-navigation/issues/1858
+- (void)_traverseAndFixScrollViewSafeArea:(UIView *)view {
+#ifdef __IPHONE_11_0
+  if ([view isKindOfClass:UIScrollView.class]) {
+    [((UIScrollView*)view) setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
+  }
+  
+  [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self _traverseAndFixScrollViewSafeArea:obj];
+  }];
+#endif
+  
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
-  
   [self sendGlobalScreenEvent:@"didAppear" endTimestampString:[self getTimestampString] shouldReset:YES];
   [self sendScreenChangedEvent:@"didAppear"];
   
@@ -300,6 +314,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
+  [self _traverseAndFixScrollViewSafeArea:self.view];
   [self sendGlobalScreenEvent:@"willAppear" endTimestampString:[self getTimestampString] shouldReset:NO];
   [self sendScreenChangedEvent:@"willAppear"];
   [self setStyleOnAppear];
@@ -450,6 +465,13 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     [viewController setNeedsStatusBarAppearanceUpdate];
   }
   
+  NSNumber *tabBarHidden = self.navigatorStyle[@"tabBarHidden"];
+  BOOL tabBarHiddenBool = tabBarHidden ? [tabBarHidden boolValue] : NO;
+  if (tabBarHiddenBool) {
+    UITabBar *tabBar = viewController.tabBarController.tabBar;
+    tabBar.transform = CGAffineTransformMakeTranslation(0, tabBar.frame.size.height);
+  }
+
   NSNumber *navBarHidden = self.navigatorStyle[@"navBarHidden"];
   BOOL navBarHiddenBool = navBarHidden ? [navBarHidden boolValue] : NO;
   if (viewController.navigationController.navigationBarHidden != navBarHiddenBool) {

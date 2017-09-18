@@ -63,9 +63,9 @@ this.props.navigator.setStyle({
   navBarNoBorder: false, // hide the navigation bar bottom border (hair line). Default false
   drawUnderNavBar: false, // draw the screen content under the nav bar, works best with navBarTranslucent:true
   drawUnderTabBar: false, // draw the screen content under the tab bar (the tab bar is always translucent)
-  statusBarBlur: false, // blur the area under the status bar, works best with navBarHidden:true
   navBarBlur: false, // blur the entire nav bar, works best with drawUnderNavBar:true
   tabBarHidden: false, // make the screen content hide the tab bar (remembered across pushes)
+  statusBarHidden: false, // make the status bar hidden regardless of nav bar state
   statusBarTextColorScheme: 'dark', // text color of status bar, 'dark' / 'light' (remembered across pushes)
   navBarSubtitleColor: 'red', // subtitle color
   navBarSubtitleFontFamily: 'font-name', // subtitle font
@@ -76,7 +76,7 @@ this.props.navigator.setStyle({
   // iOS only
   statusBarTextColorSchemeSingleScreen: 'light', // same as statusBarTextColorScheme but does NOT remember across pushes
   statusBarHideWithNavBar: false, // hide the status bar if the nav bar is also hidden, useful for navBarHidden:true
-  statusBarHidden: false, // make the status bar hidden regardless of nav bar state
+  statusBarBlur: false, // blur the area under the status bar, works best with navBarHidden:true
   
   disabledBackGesture: false, // default: false. Disable the back gesture (swipe gesture) in order to pop the top screen. 
   disabledSimultaneousGesture: true, // default: true. Disable simultaneous gesture recognition.
