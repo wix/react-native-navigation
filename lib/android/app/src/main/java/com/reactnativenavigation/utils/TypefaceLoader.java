@@ -3,6 +3,7 @@ package com.reactnativenavigation.utils;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
+import android.support.annotation.Nullable;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,7 +27,25 @@ public class TypefaceLoader {
 	}
 
 	private Typeface load(Context context, String fontFamilyName) {
+		Typeface typeface = getTypefaceFromAssets(context, fontFamilyName);
+		if (typeface != null) return typeface;
+
+		int style = getStyle(fontFamilyName);
+		return Typeface.create(fontFamilyName, style);
+	}
+
+	private int getStyle(String fontFamilyName) {
 		int style = Typeface.NORMAL;
+		if (fontFamilyName.toLowerCase().contains("bold")) {
+			style = Typeface.BOLD;
+		} else if (fontFamilyName.toLowerCase().contains("italic")) {
+			style = Typeface.ITALIC;
+		}
+		return style;
+	}
+
+	@Nullable
+	Typeface getTypefaceFromAssets(Context context, String fontFamilyName) {
 		try {
 			if (context != null) {
 				AssetManager assets = context.getAssets();
@@ -39,16 +58,10 @@ public class TypefaceLoader {
 					return Typeface.createFromAsset(assets, "fonts/" + fontFamilyName + ".otf");
 				}
 			}
-
-			if (fontFamilyName.toLowerCase().contains("bold")) {
-				style = Typeface.BOLD;
-			} else if (fontFamilyName.toLowerCase().contains("italic")) {
-				style = Typeface.ITALIC;
-			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return Typeface.create(fontFamilyName, style);
+		return null;
 	}
 }
 
