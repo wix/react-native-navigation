@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 
 public class ContainerViewController extends ViewController {
