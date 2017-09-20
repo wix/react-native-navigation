@@ -40,8 +40,7 @@ public class StackController extends ParentController {
 
 		child.setParentStackController(this);
 		stack.push(child.getId(), child);
-		final ReactContainerView enteringView = (ReactContainerView) child.getView();
-		enteringView.setBackgroundColor(getRandomColor());
+		View enteringView = child.getView();
 		getContainer().addView(enteringView);
 
 		//TODO animatePush only when needed
@@ -52,7 +51,6 @@ public class StackController extends ParentController {
 					getContainer().removeView(previousTop.getView());
 				}
 			});
-
 		}
 	}
 
@@ -66,9 +64,8 @@ public class StackController extends ParentController {
 		final ViewController poppedTop = stack.pop();
 		ViewController newTop = peek();
 
-		final View enteringView = newTop.getView();
+		View enteringView = newTop.getView();
 		final View exitingView = poppedTop.getView();
-		enteringView.setBackgroundColor(getRandomColor());
 		getContainer().addView(enteringView, getContainer().getChildCount() - 1);
 
 		//TODO animatePush only when needed
@@ -158,12 +155,4 @@ public class StackController extends ParentController {
 		}
 		return container;
 	}
-
-	//TODO: remove after tests
-	private int getRandomColor() {
-		Random rnd = new Random();
-		return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-	}
-
-
 }
