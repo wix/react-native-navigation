@@ -29,7 +29,6 @@ public class ContainerViewController extends ViewController {
 	}
 
 	private final String containerName;
-	private OptionsPresenter optionsPresenter;
 
 	private final ContainerViewCreator viewCreator;
 	private final NavigationOptions navigationOptions;

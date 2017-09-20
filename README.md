@@ -72,7 +72,7 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 |-----------------------|-----|--------|------------|------------|
 | topBarTextColor |   ✅    |    ✅     |     ✅        | Wix|
 | topBarTextFontSize    |   ✅    |    ✅      |     ✅        | Wix|
-| topBarTextFontFamily  |  ✅     |      ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix |
+| topBarTextFontFamily  |  ✅     |      ✅     |     ✅        | Wix |
 | topBarBackgroundColor |  ✅     |  ✅       |     ✅         | Wix|
 | topBarButtonColor     |  ✅     |    ✅      |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
 | topBarHidden          |   ✅    |   ✅      |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
