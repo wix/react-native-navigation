@@ -94,6 +94,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (hasBackgroundColor()) {
             layout.asView().setBackgroundColor(AppStyle.appStyle.screenBackgroundColor.getColor());
         }
+        String screenBackgroundImageName = activityParams.screenParams.styleParams.screenBackgroundImageName;
+        if (screenBackgroundImageName != null) {
+            layout.asView().setBackgroundResource(this.getResources().getIdentifier(screenBackgroundImageName, "drawable", this.getPackageName()));
+        }
         setContentView(layout.asView());
     }
 

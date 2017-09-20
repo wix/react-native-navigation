@@ -117,6 +117,7 @@ public class StyleParams {
     public int topTabsHeight;
 
     public Color screenBackgroundColor;
+    public String screenBackgroundImageName;
 
     public boolean drawScreenAboveBottomTabs;
 

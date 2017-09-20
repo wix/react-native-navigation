@@ -186,6 +186,7 @@ function convertStyleParams(originalStyleObject) {
     topTabsScrollable: originalStyleObject.topTabsScrollable,
     topTabsHeight: originalStyleObject.topTabsHeight,
     screenBackgroundColor: processColor(originalStyleObject.screenBackgroundColor),
+    screenBackgroundImageName: originalStyleObject.screenBackgroundImageName,
 
     drawScreenAboveBottomTabs: !originalStyleObject.drawUnderTabBar,
 
