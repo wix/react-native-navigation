@@ -23,7 +23,6 @@ class ScreenAnimator {
     private static final int DURATION = 250;
     private static final int ALPHA_START_DELAY = 100;
     private static final int ALPHA_SHORT_DURATION = 150;
-    private static final LinearInterpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
     private static final DecelerateInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();
     private static final AccelerateDecelerateInterpolator ACCELERATE_DECELERATE_INTERPOLATOR = new AccelerateDecelerateInterpolator();
     private static final AccelerateInterpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
@@ -78,7 +77,8 @@ class ScreenAnimator {
                 ObjectAnimator translationX = ObjectAnimator.ofFloat(screen, View.TRANSLATION_X, this.translationX, 0);
                 translationX.setInterpolator(ACCELERATE_DECELERATE_INTERPOLATOR);
                 translationX.setDuration(DURATION);
-                set.play(translationX);
+                alpha.setDuration(ALPHA_SHORT_DURATION);
+                set.playTogether(translationX, alpha);
                 break;
             }
             default: {
@@ -122,7 +122,8 @@ class ScreenAnimator {
                 ObjectAnimator translationX = ObjectAnimator.ofFloat(screen, View.TRANSLATION_X, this.translationX);
                 translationX.setInterpolator(ACCELERATE_INTERPOLATOR);
                 translationX.setDuration(DURATION);
-                set.play(translationX);
+                alpha.setDuration(DURATION);
+                set.playTogether(translationX, alpha);
                 break;
             }
             default: {
