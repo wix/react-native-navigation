@@ -1,6 +1,7 @@
 package com.reactnativenavigation.presentation;
 
 import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.StackController;
 
 /**
@@ -21,6 +22,8 @@ public class OptionsPresenter {
 			controller.getTopBar().setBackgroundColor(options.topBarBackgroundColor);
 			controller.getTopBar().setTitleTextColor(options.topBarTextColor);
 			controller.getTopBar().setTitleFontSize(options.topBarTextFontSize);
+			TypefaceLoader typefaceLoader = new TypefaceLoader();
+			controller.getTopBar().setTitleTypeface(typefaceLoader.getTypeFace(controller.getActivity(), options.topBarTextFontFamily));
 		}
 	}
 }

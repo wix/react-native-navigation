@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -34,6 +35,13 @@ public class TopBar extends AppBarLayout {
 		TextView titleTextView = getTitleTextView();
 		if (titleTextView != null) {
 			titleTextView.setTextSize(size);
+		}
+	}
+
+	public void setTitleTypeface(Typeface typeface) {
+		TextView titleTextView = getTitleTextView();
+		if (titleTextView != null) {
+			titleTextView.setTypeface(typeface);
 		}
 	}
 
