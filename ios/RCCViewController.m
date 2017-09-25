@@ -292,7 +292,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 // rnn issue - https://github.com/wix/react-native-navigation/issues/1858
 - (void)_traverseAndFixScrollViewSafeArea:(UIView *)view {
 #ifdef __IPHONE_11_0
-  if ([view isKindOfClass:UIScrollView.class]) {
+  if ([view isKindOfClass:UIScrollView.class] && [view respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]) {
     [((UIScrollView*)view) setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
   }
   
