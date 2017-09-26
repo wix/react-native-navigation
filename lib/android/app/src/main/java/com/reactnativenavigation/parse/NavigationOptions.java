@@ -11,6 +11,9 @@ public class NavigationOptions {
 
 	private static final int DEFAULT_COLOR = Color.WHITE;
 
+	public NavigationOptions() {
+	}
+
 	public NavigationOptions(JSONObject json) {
 		parse(json);
 	}
