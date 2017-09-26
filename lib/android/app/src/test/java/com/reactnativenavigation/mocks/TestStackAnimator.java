@@ -14,12 +14,12 @@ public class TestStackAnimator extends StackAnimator {
 	}
 
 	@Override
-	public void animatePush(final View enteringView, final View exitingView, final Runnable onComplete) {
-		if (onComplete != null) onComplete.run();
+	public void animatePush(final View enteringView, StackAnimationListener animationListener) {
+		if (animationListener != null) animationListener.onAnimationEnd();
 	}
 
 	@Override
-	public void animatePop(final View enteringView, final View exitingView, @Nullable final Runnable onComplete) {
-		if (onComplete != null) onComplete.run();
+	public void animatePop(final View enteringView, StackAnimationListener animationListener) {
+		if (animationListener != null) animationListener.onAnimationEnd();
 	}
 }

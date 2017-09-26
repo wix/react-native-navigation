@@ -40,7 +40,7 @@ public class StackController extends ParentController {
 
 		child.setParentStackController(this);
 		stack.push(child.getId(), child);
-		final ReactContainerView enteringView = (ReactContainerView) child.getView();
+		View enteringView = child.getView();
 		getContainer().addView(enteringView);
 
 		//TODO animatePush only when needed
@@ -65,7 +65,7 @@ public class StackController extends ParentController {
 		final ViewController poppedTop = stack.pop();
 		ViewController newTop = peek();
 
-		final View enteringView = newTop.getView();
+		View enteringView = newTop.getView();
 		final View exitingView = poppedTop.getView();
 		getContainer().addView(enteringView, getContainer().getChildCount() - 1);
 

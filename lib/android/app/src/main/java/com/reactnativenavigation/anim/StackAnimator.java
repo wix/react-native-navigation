@@ -4,8 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
@@ -22,11 +25,11 @@ public class StackAnimator {
 	private static final AccelerateInterpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
 	private float translationY;
 
-	public StackAnimator(Activity activity) {
-		translationY = getWindowHeight(activity);
+	public StackAnimator(Context context) {
+		translationY = getWindowHeight(context);
 	}
 
-	public void animatePush(final View view, final StackAnimationListener animationListener) {
+	public void animatePush(final View view, @Nullable final StackAnimationListener animationListener) {
 		view.setVisibility(View.INVISIBLE);
 		ObjectAnimator alpha = ObjectAnimator.ofFloat(view, View.ALPHA, 0, 1);
 		alpha.setInterpolator(DECELERATE_INTERPOLATOR);
@@ -63,7 +66,7 @@ public class StackAnimator {
 		set.start();
 	}
 
-	public void animatePop(View view, final StackAnimationListener animationListener) {
+	public void animatePop(View view, @Nullable final StackAnimationListener animationListener) {
 		ObjectAnimator alpha = ObjectAnimator.ofFloat(view, View.ALPHA, 1, 0);
 		alpha.setInterpolator(ACCELERATE_INTERPOLATOR);
 
@@ -99,9 +102,10 @@ public class StackAnimator {
 		set.start();
 	}
 
-	private float getWindowHeight(Activity activity) {
+	private float getWindowHeight(Context context) {
 		DisplayMetrics metrics = new DisplayMetrics();
-		activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+		windowManager.getDefaultDisplay().getMetrics(metrics);
 		return metrics.heightPixels;
 	}
 
