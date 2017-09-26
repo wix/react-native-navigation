@@ -17,6 +17,8 @@ import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
+import org.json.JSONObject;
+
 public class NavigationModule extends ReactContextBaseJavaModule {
 	private static final String NAME = "RNNBridgeModule";
 	private final ReactInstanceManager reactInstanceManager;
@@ -45,11 +47,12 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void setOptions(final String onContainerId, final ReadableMap options) {
-		final NavigationOptions navOptions = NavigationOptions.parse(JSONParser.parse(options));
+//		final NavigationOptions navOptions = NavigationOptions.parse(JSONParser.parse(options));
+		final JSONObject jsonObject = JSONParser.parse(options);
 		handle(new Runnable() {
 			@Override
 			public void run() {
-				navigator().setOptions(onContainerId, navOptions);
+				navigator().setOptions(onContainerId, jsonObject);
 			}
 		});
 	}

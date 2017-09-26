@@ -80,7 +80,7 @@ public class LayoutFactory {
 	private ViewController createContainer(LayoutNode node) {
 		String id = node.id;
 		String name = node.data.optString("name");
-		NavigationOptions navigationOptions = NavigationOptions.parse(node.data.optJSONObject("navigationOptions"));
+		NavigationOptions navigationOptions = new NavigationOptions(node.data.optJSONObject("navigationOptions"));
 		return new ContainerViewController(activity, id, name, new ReactContainerViewCreator(reactInstanceManager), navigationOptions);
 	}
 
