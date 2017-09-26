@@ -280,7 +280,10 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 - (void)_traverseAndCall:(UIView*)view
 {
   if([view isKindOfClass:[UIScrollView class]] && ([[(UIScrollView*)view delegate] respondsToSelector:@selector(scrollViewDidEndDecelerating:)]) ) {
-    [[(UIScrollView*)view delegate] scrollViewDidEndDecelerating:(id)view];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [[(UIScrollView*)view delegate] scrollViewDidEndDecelerating:(id)view];
+    });
+  
   }
   
   [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
