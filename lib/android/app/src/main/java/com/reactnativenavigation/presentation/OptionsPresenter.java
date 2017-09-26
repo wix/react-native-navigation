@@ -1,5 +1,7 @@
 package com.reactnativenavigation.presentation;
 
+import android.util.Log;
+
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.StackController;
