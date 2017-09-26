@@ -49,8 +49,12 @@ public class TopBar extends AppBarLayout {
 		return findTextView(titleBar);
 	}
 
+	public void setTopBarHidden(boolean hidden) {
+		titleBar.setVisibility(hidden ? GONE : VISIBLE);
+	}
+
 	@Nullable
-	public TextView findTextView(ViewGroup root) {
+	private TextView findTextView(ViewGroup root) {
 		for (int i = 0; i < root.getChildCount(); i++) {
 			View view = root.getChildAt(i);
 			if (view instanceof TextView) {

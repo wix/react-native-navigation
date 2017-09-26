@@ -24,6 +24,7 @@ public class OptionsPresenter {
 			controller.getTopBar().setTitleFontSize(options.topBarTextFontSize);
 			TypefaceLoader typefaceLoader = new TypefaceLoader();
 			controller.getTopBar().setTitleTypeface(typefaceLoader.getTypeFace(controller.getActivity(), options.topBarTextFontFamily));
+			controller.getTopBar().setTopBarHidden(options.topBarHidden);
 		}
 	}
 }
