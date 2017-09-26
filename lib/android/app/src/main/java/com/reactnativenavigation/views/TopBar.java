@@ -50,7 +50,7 @@ public class TopBar extends AppBarLayout {
 	}
 
 	public void setTopBarHidden(boolean hidden) {
-		titleBar.setVisibility(hidden ? GONE : VISIBLE);
+		setVisibility(hidden ? GONE : VISIBLE);
 	}
 
 	@Nullable

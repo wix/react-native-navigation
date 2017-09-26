@@ -11,7 +11,7 @@ public class NavigationOptionsTest extends BaseTest {
 
 	@Test
 	public void parsesNullAsDefaultEmptyOptions() throws Exception {
-		assertThat(NavigationOptions.parse(null)).isNotNull();
+		assertThat(new NavigationOptions(null)).isNotNull();
 	}
 
 	@Test
@@ -22,13 +22,15 @@ public class NavigationOptionsTest extends BaseTest {
 		json.put("topBarTextColor", 0xff123456);
 		json.put("topBarTextFontSize", 18);
 		json.put("topBarTextFontFamily", "HelveticaNeue-CondensedBold");
+		json.put("topBarHidden", true);
 
-		NavigationOptions result = NavigationOptions.parse(json);
+		NavigationOptions result = new NavigationOptions(json);
 		assertThat(result.title).isEqualTo("the title");
 		assertThat(result.topBarBackgroundColor).isEqualTo(0xff123456);
 		assertThat(result.topBarTextColor).isEqualTo(0xff123456);
 		assertThat(result.topBarTextFontSize).isEqualTo(18);
 		assertThat(result.topBarTextFontFamily).isEqualTo("HelveticaNeue-CondensedBold");
+		assertThat(result.topBarHidden).isEqualTo(true);
 	}
 
 	@Test

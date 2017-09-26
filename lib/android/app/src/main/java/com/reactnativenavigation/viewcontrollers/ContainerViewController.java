@@ -33,7 +33,7 @@ public class ContainerViewController extends ViewController {
 	private final String containerName;
 
 	private final ContainerViewCreator viewCreator;
-	private final NavigationOptions navigationOptions;
+	private NavigationOptions navigationOptions;
 	private ContainerView containerView;
 
 	public ContainerViewController(final Activity activity,
@@ -82,6 +82,11 @@ public class ContainerViewController extends ViewController {
 
 	public void mergeNavigationOptions(JSONObject options) {
 		navigationOptions.mergeWith(options);
+		applyOptions();
+	}
+
+	public void applyNavigationOptions(NavigationOptions options) {
+		navigationOptions = options;
 		applyOptions();
 	}
 

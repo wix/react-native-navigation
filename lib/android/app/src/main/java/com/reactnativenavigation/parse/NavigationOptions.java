@@ -18,7 +18,7 @@ public class NavigationOptions {
 		parse(json);
 	}
 
-	public String title;
+	public String title = "";
 	@ColorInt
 	public int topBarBackgroundColor = DEFAULT_COLOR;
 	@ColorInt
