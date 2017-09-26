@@ -57,11 +57,10 @@
 	} else if (recognizer.state == UIGestureRecognizerStateEnded) {
 		if([recognizer velocityInView:self.imageSnapshot].y < 0 || self.totalTranslate < 0) {
 			[self cancelInteractiveTransition];
-			[UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.8 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+			[UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.8 options:UIViewAnimationOptionCurveEaseOut  animations:^{
 				self.imageSnapshot.frame = self.topFrame;
 			} completion:^(BOOL finished) {
-				[self.topView setHidden:NO];
-				self.nc.delegate = nil;
+				self.nc.delegate = (RNNRootViewController*)self.vc;
 				
 			}];
 		} else {
@@ -85,7 +84,7 @@
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-	return 1;
+	return 0.7;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
@@ -106,9 +105,7 @@
 	imageSnapshot.frame = fromOriginRect;
 	imageSnapshot.clipsToBounds = true;
 	self.imageSnapshot = imageSnapshot;
-	
 	[self.bottomView setHidden:YES];
-	
 	UIView* toSnapshot = [toVC.view snapshotViewAfterScreenUpdates:true];
 	toSnapshot.frame = fromVC.view.frame;
 	[containerView insertSubview:(UIView *)toSnapshot atIndex:1];
@@ -127,15 +124,16 @@
 							  }
 							  completion:^(BOOL finished) {
 								  [self.bottomView setHidden:NO];
-								  [self.imageSnapshot removeFromSuperview];
 								  [toSnapshot removeFromSuperview];
-	
+								  [self.imageSnapshot removeFromSuperview];
+								  self.totalTranslate = 0;
 								  if (![transitionContext transitionWasCancelled]) {
 									  [containerView addSubview: toVC.view];
 									  [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
 									  
 								  }
 								  if ([transitionContext transitionWasCancelled]) {
+									  [self.topView setHidden:NO];
 									  [containerView addSubview: fromVC.view];
 									  [transitionContext completeTransition:NO];
 								  }

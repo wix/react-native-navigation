@@ -47,10 +47,10 @@
 
 -(void)push:(NSString*)containerId layout:(NSDictionary*)layout bridge:(RCTBridge*)bridge {
 	[self assertReady];
-	NSDictionary* customAnimation = layout[@"data"][@"transition"];
+	NSDictionary* customAnimation = layout[@"data"][@"customTransition"];
 	UIViewController *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
 	if (customAnimation) {
-		if ([customAnimation objectForKey:@"transitions"]) {
+		if ([customAnimation objectForKey:@"animations"]) {
 			[_navigationStackManager customPush:newVc onTop:containerId customAnimationData:(NSDictionary*)customAnimation bridge:bridge];
 		} else {
 			[[NSException exceptionWithName:NSInvalidArgumentException reason:@"unsupported transitionAnimation" userInfo:nil] raise];
@@ -62,9 +62,9 @@
 
 -(void)pop:(NSString*)containerId options:(NSDictionary*)options{
 	[self assertReady];
-	NSDictionary* animationData = options[@"transition"];
+	NSDictionary* animationData = options[@"customTransition"];
 	if (animationData){
-		if ([animationData objectForKey:@"transitions"]) {
+		if ([animationData objectForKey:@"animations"]) {
 			[_navigationStackManager customPop:containerId withAnimationData:animationData];
 		} else {
 			[[NSException exceptionWithName:NSInvalidArgumentException reason:@"unsupported transitionAnimation" userInfo:nil] raise];

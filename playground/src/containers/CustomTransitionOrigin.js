@@ -20,22 +20,22 @@ class CustomTransitionOrigin extends Component {
 
           <View style={{flex: 1, justifyContent: 'flex-start'}}>
             <TouchableOpacity activeOpacity={0.5} onPress={() => this.onClickNavigationIcon('image1')}> 
-              <Navigation.SharedElement type={"image"} elementId={"image1"}>
-                <Image resizeMode={"contain"} style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
+              <Navigation.SharedElement type={"image"}  elementId={"image1"}>
+                <Image resizeMode={"contain"} style={styles.gyroImage} source={require('../../img/2048.jpeg')} />
               </Navigation.SharedElement>
             </TouchableOpacity> 
             <TouchableOpacity activeOpacity={0.5} onPress={() => this.onClickNavigationIcon('image2')}> 
-              <Navigation.SharedElement type={"image"} elementId={"image2"}>
-                <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
+              <Navigation.SharedElement  elementId={"image2"}>
+                <Image style={styles.gyroImage} source={require('../../img/2048.jpeg')} />
               </Navigation.SharedElement>
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.5} onPress={() => this.onClickNavigationIcon('image3')}> 
-              <Navigation.SharedElement type={"image"} elementId={"image3"}>
+              <Navigation.SharedElement  elementId={"image3"}>
                 <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
               </Navigation.SharedElement>
             </TouchableOpacity> 
             <TouchableOpacity activeOpacity={0.5} onPress={() => this.onClickNavigationIcon('image4')}> 
-              <Navigation.SharedElement type={"image"} elementId={"image4"}>
+              <Navigation.SharedElement  elementId={"image4"}>
                 <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />  
               </Navigation.SharedElement>
             </TouchableOpacity>  
@@ -48,9 +48,20 @@ class CustomTransitionOrigin extends Component {
   onClickNavigationIcon(elementId) {
       Navigation.push( this.props.containerId, {
           name: 'navigation.playground.CustomTransitionDestination',
-          transition: {
-            transitions: [{type:"sharedElement", fromId: elementId, toId: "customDestinationImage", interactiveImagePop: true}],
-            duration: 0.4
+          customTransition: {
+            /// startDelay
+            /// startX, startY
+            ///endX endY
+            /// duration
+            /// animations
+            animations: [
+                          {type:"sharedElement", fromId: "image1", toId: "customDestinationImage", startDelay: 0, springVelocity: 0.2, duration:0.5 ,interactiveImagePop: true},
+                          {type:"sharedElement", fromId: "image2", toId: "customDestinationImage2", startDelay: 0, duration:0.8 },
+                          { fromId:'image4', endY:50, endX:50, endAlpha: 0, startDelay: 0, duration:0.8, springVelocity: 0.5 },
+                          { fromId:'customDestinationParagraph', startY:100, startX:-400, startDelay: 0.1, duration:0.8 }
+                          
+            ],
+            duration: 0.8
           }
       });
   }

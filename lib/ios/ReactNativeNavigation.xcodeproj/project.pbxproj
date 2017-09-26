@@ -104,7 +104,6 @@
 		E8A5CD521F464F0400E89D0D /* RNNAnimationController.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A5CD501F464F0400E89D0D /* RNNAnimationController.h */; };
 		E8A5CD531F464F0400E89D0D /* RNNAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A5CD511F464F0400E89D0D /* RNNAnimationController.m */; };
 		E8A5CD5A1F48CCC300E89D0D /* RNNNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A5CD581F48CCC300E89D0D /* RNNNavigationController.h */; };
-		E8A5CD5B1F48CCC300E89D0D /* RNNNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A5CD591F48CCC300E89D0D /* RNNNavigationController.m */; };
 		E8A5CD621F49114F00E89D0D /* RNNSharedElement.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A5CD601F49114F00E89D0D /* RNNSharedElement.h */; };
 		E8A5CD631F49114F00E89D0D /* RNNSharedElement.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A5CD611F49114F00E89D0D /* RNNSharedElement.m */; };
 		E8AEDB3C1F55A1C2000F5A6A /* RNNSharedElementView.h in Headers */ = {isa = PBXBuildFile; fileRef = E8AEDB3A1F55A1C2000F5A6A /* RNNSharedElementView.h */; };
@@ -240,7 +239,6 @@
 		E8A5CD501F464F0400E89D0D /* RNNAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNAnimationController.h; sourceTree = "<group>"; };
 		E8A5CD511F464F0400E89D0D /* RNNAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNAnimationController.m; sourceTree = "<group>"; };
 		E8A5CD581F48CCC300E89D0D /* RNNNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNNavigationController.h; sourceTree = "<group>"; };
-		E8A5CD591F48CCC300E89D0D /* RNNNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationController.m; sourceTree = "<group>"; };
 		E8A5CD601F49114F00E89D0D /* RNNSharedElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNSharedElement.h; sourceTree = "<group>"; };
 		E8A5CD611F49114F00E89D0D /* RNNSharedElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNSharedElement.m; sourceTree = "<group>"; };
 		E8AEDB3A1F55A1C2000F5A6A /* RNNSharedElementView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNSharedElementView.h; sourceTree = "<group>"; };
@@ -459,6 +457,7 @@
 				7B49FEBC1E95090800DEB3EA /* ReactNativeNavigationTests */,
 				D8AFADBE1BEE6F3F00A4592D /* Products */,
 				7B49FED01E950A7A00DEB3EA /* Frameworks */,
+				E8367B791F77BA1F00675C05 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 			tabWidth = 4;
@@ -472,6 +471,14 @@
 				7B49FEBB1E95090800DEB3EA /* ReactNativeNavigationTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E8367B791F77BA1F00675C05 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				E8A5CD581F48CCC300E89D0D /* RNNNavigationController.h */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		E8AEDB461F58414D000F5A6A /* Animations */ = {

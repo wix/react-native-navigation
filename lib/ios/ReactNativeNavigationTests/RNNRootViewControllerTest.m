@@ -194,14 +194,6 @@
 	
 }
 
-// TODO: Currently not passing
--(void)testTopBarTextFontFamily_invalidFont{
-	NSString* inputFont = @"HelveticaNeueeeee";
-	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
-	self.options.topBarTextFontFamily = inputFont;
-	//	XCTAssertThrows([self.uut viewWillAppear:false]);
-}
-
 -(void)testTopBarTextFontSize_withoutTextFontFamily_withoutTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
 	self.options.topBarTextFontSize = topBarTextFontSizeInput;
