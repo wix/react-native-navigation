@@ -1,6 +1,6 @@
 package com.reactnativenavigation.views;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;

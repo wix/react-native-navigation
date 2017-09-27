@@ -1,13 +1,15 @@
 package com.reactnativenavigation.presentation;
 
 import android.view.View;
+import android.widget.Button;
 
 import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
-import com.reactnativenavigation.parse.TopTabsOptions;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.views.TopBar;
+
+import java.util.ArrayList;
 
 public class OptionsPresenter {
 
@@ -23,7 +25,7 @@ public class OptionsPresenter {
 
 	public void applyOptions(NavigationOptions options) {
         applyTopBarOptions(options.topBarOptions);
-        applyTopTabsOptions(options.topTabsOptions);
+        applyButtons(options.leftButtons, options.rightButtons);
 	}
 
     private void applyTopBarOptions(TopBarOptions options) {
@@ -64,7 +66,7 @@ public class OptionsPresenter {
 		}
 	}
 
-    private void applyTopTabsOptions(TopTabsOptions topTabsOptions) {
-        // TODO: -guyca
+    private void applyButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
+        topBar.setButtons(leftButtons, rightButtons);
     }
 }

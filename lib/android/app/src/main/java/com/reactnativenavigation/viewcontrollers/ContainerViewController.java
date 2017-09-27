@@ -6,9 +6,7 @@ import android.support.annotation.RestrictTo;
 import android.view.View;
 
 import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.presentation.NavigationOptionsListener;
-import com.reactnativenavigation.views.ReactContainer;
-import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 
 public class ContainerViewController extends ViewController implements NavigationOptionsListener {
 

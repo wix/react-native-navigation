@@ -1,8 +1,11 @@
 package com.reactnativenavigation.parse;
 
 import android.support.annotation.NonNull;
+import android.widget.Button;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class NavigationOptions implements DEFAULT_VALUES {
 
@@ -37,16 +40,26 @@ public class NavigationOptions implements DEFAULT_VALUES {
 		return result.withDefaultOptions(defaultOptions);
 	}
 
-	public TopBarOptions topBarOptions = new TopBarOptions();
-    public TopTabsOptions topTabsOptions = new TopTabsOptions();
-    public TopTabOptions topTabOptions = new TopTabOptions();
-    public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
+    @NonNull public TopBarOptions topBarOptions = new TopBarOptions();
+    @NonNull public TopTabsOptions topTabsOptions = new TopTabsOptions();
+    @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
+    @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
+    public ArrayList<Button> leftButtons;
+    public ArrayList<Button> rightButtons;
 
 	public void mergeWith(final NavigationOptions other) {
         topBarOptions.mergeWith(other.topBarOptions);
         topTabsOptions.mergeWith(other.topTabsOptions);
         bottomTabsOptions.mergeWith(other.bottomTabsOptions);
-	}
+
+        if(other.leftButtons != null) {
+            leftButtons = other.leftButtons;
+        }
+
+        if(other.rightButtons != null) {
+            rightButtons = other.rightButtons;
+        }
+    }
 
     NavigationOptions withDefaultOptions(final NavigationOptions other) {
         topBarOptions.mergeWithDefault(other.topBarOptions);
