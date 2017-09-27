@@ -99,6 +99,9 @@
 		NSNumber* duration = @(1);
 		NSNumber* springDamping = [NSNumber numberWithDouble:self.springDamping];
 		NSNumber* springVelocity = [NSNumber numberWithDouble:self.springVelocity];
+		NSNumber* startAlpha = @(1);
+		NSNumber* endAlpha = @(1);
+		NSNumber* interactiveImagePop = @(0);
 		if ([transition objectForKey:@"springDamping"]) {
 			springDamping = transition[@"springDamping"];
 		}
@@ -111,7 +114,14 @@
 		if ([transition objectForKey:@"duration"]) {
 			duration = transition[@"duration"];
 		}
-		NSNumber* interactiveImagePop = @(0);
+		
+		if ([transition objectForKey:@"startAlpha"]) {
+			startAlpha = transition[@"startAlpha"];
+		}
+		
+		if ([transition objectForKey:@"endAlpha"]) {
+			endAlpha = transition[@"endAlpha"];
+		}
 		if ([transition objectForKey:@"interactiveImagePop"]) {
 			interactiveImagePop = [transition objectForKey:@"interactiveImagePop"];
 		}
@@ -188,18 +198,7 @@
 			animationView.frame = CGRectMake(0, 0, toSize.width, toSize.height);
 			animationView.center = toCenter;
 		}
-		
-		
 		NSMutableDictionary* elementData = [NSMutableDictionary new];
-		
-		NSNumber* startAlpha = @(1);
-		if ([transition objectForKey:@"startAlpha"]) {
-			startAlpha = transition[@"startAlpha"];
-		}
-		NSNumber* endAlpha = @(1);
-		if ([transition objectForKey:@"endAlpha"]) {
-			endAlpha = transition[@"endAlpha"];
-		}
 		if (!self.backButton){
 			animationView.alpha = [startAlpha doubleValue];
 		} else {
@@ -217,9 +216,7 @@
 					}
 				}
 			}
-			//			if (!self.backButton) {
 			[toElement setHidden: YES];
-			//			}
 			
 		}
 		[fromElement setHidden:YES];
@@ -313,19 +310,16 @@
 			[UIView animateWithDuration:[viewData[@"duration"] doubleValue] delay:[viewData[@"startDelay"] doubleValue] usingSpringWithDamping:[viewData[@"springDamping"] doubleValue] initialSpringVelocity:[viewData[@"springVelocity"] doubleValue] options:UIViewAnimationOptionCurveEaseOut  animations:^{
 				UIView* animtedView = viewData[@"animationView"];
 				animtedView.alpha = [viewData[@"endAlpha"] doubleValue];
+				animtedView.center = [viewData[@"toCenter"] CGPointValue];
+				animtedView.transform = [viewData[@"toTransform"] CGAffineTransformValue];
 				if ([viewData[@"transition"] isEqualToString:@"sharedElement"]) {
-					animtedView.frame =[viewData[@"topFrame"] CGRectValue];
 					if ([viewData[@"elementType"] isEqualToString:@"image"]) {
 						animtedView.contentMode = UIViewContentModeScaleAspectFill;
 						if ([viewData[@"toView"] resizeMode]){
 							animtedView.contentMode = [RNNAnimationController contentModefromString:[viewData[@"toView"] resizeMode]] ;
 						}
 					}
-				} else {
-					animtedView.center = [viewData[@"toCenter"] CGPointValue];
-					animtedView.transform = [viewData[@"toTransform"] CGAffineTransformValue];
 				}
-				
 			} completion:^(BOOL finished) {
 				
 			}];
@@ -336,22 +330,16 @@
 			[UIView animateWithDuration:[viewData[@"duration"] doubleValue] delay:[viewData[@"startDelay"] doubleValue] usingSpringWithDamping:[viewData[@"springDamping"] doubleValue] initialSpringVelocity:[viewData[@"springVelocity"] doubleValue] options:UIViewAnimationOptionCurveEaseOut  animations:^{
 				UIView* animtedView = viewData[@"animationView"];
 				animtedView.alpha = [viewData[@"startAlpha"] doubleValue];
+				animtedView.center = [viewData[@"originCenter"] CGPointValue];
+				animtedView.transform = [viewData[@"transformBack"] CGAffineTransformValue];
 				if ([viewData[@"transition"] isEqualToString:@"sharedElement"]) {
-					animtedView.frame =[viewData[@"bottomFrame"] CGRectValue];
 					if ([viewData[@"elementType"] isEqualToString:@"image"]) {
 						animtedView.contentMode = UIViewContentModeScaleAspectFill;
 						if ([viewData[@"fromView"] resizeMode]){
 							animtedView.contentMode = [RNNAnimationController contentModefromString:[viewData[@"fromView"] resizeMode]] ;
 						}
 					}
-				} else {
-					animtedView.center = [viewData[@"originCenter"] CGPointValue];
-					animtedView.transform = [viewData[@"transformBack"] CGAffineTransformValue];
 				}
-				
-				
-				
-				
 			} completion:^(BOOL finished) {
 				
 			}];
