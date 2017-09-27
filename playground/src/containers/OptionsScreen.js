@@ -14,6 +14,8 @@ class OptionsScreen extends Component {
   static get navigationOptions() {
     return {
       title: 'Static Title',
+      topBarTextColor: 'black',
+      topBarTextFontSize: 16,
       topBarTextFontFamily: 'HelveticaNeue-Italic',
       rightButtons: [{
         id: BUTTON_ONE,

@@ -11,7 +11,7 @@ before(async () => {
       }
     }
   };
-  await detox.init(detoxConfig);
+  await detox.init(detoxConfig, { launchApp: false });
 });
 
 after(async () => {

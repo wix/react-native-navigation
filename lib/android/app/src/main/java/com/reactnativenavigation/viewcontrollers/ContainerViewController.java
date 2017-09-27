@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 
 public class ContainerViewController extends ViewController {
 
@@ -34,10 +35,10 @@ public class ContainerViewController extends ViewController {
 	private ContainerView containerView;
 
 	public ContainerViewController(final Activity activity,
-	                               final String id,
-	                               final String containerName,
-	                               final ContainerViewCreator viewCreator,
-	                               final NavigationOptions initialNavigationOptions) {
+								   final String id,
+								   final String containerName,
+								   final ContainerViewCreator viewCreator,
+								   final NavigationOptions initialNavigationOptions) {
 		super(activity, id);
 		this.containerName = containerName;
 		this.viewCreator = viewCreator;
@@ -55,7 +56,7 @@ public class ContainerViewController extends ViewController {
 	public void onViewAppeared() {
 		super.onViewAppeared();
 		ensureViewIsCreated();
-		applyNavigationOptions();
+		applyOptions();
 		containerView.sendContainerStart();
 	}
 
@@ -79,17 +80,15 @@ public class ContainerViewController extends ViewController {
 
 	public void mergeNavigationOptions(final NavigationOptions options) {
 		navigationOptions.mergeWith(options);
-		applyNavigationOptions();
-	}
-
-	private void applyNavigationOptions() {
-		if (getParentStackController() != null) {
-			getParentStackController().getTopBar().setTitle(navigationOptions.title);
-			getParentStackController().getTopBar().setBackgroundColor(navigationOptions.topBarBackgroundColor);
-		}
+		applyOptions();
 	}
 
 	public NavigationOptions getNavigationOptions() {
 		return navigationOptions;
+	}
+
+	private void applyOptions() {
+		OptionsPresenter presenter = new OptionsPresenter(getParentStackController());
+		presenter.applyOptions(navigationOptions);
 	}
 }

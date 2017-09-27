@@ -19,10 +19,16 @@ public class NavigationOptionsTest extends BaseTest {
 		JSONObject json = new JSONObject();
 		json.put("title", "the title");
 		json.put("topBarBackgroundColor", 0xff123456);
+		json.put("topBarTextColor", 0xff123456);
+		json.put("topBarTextFontSize", 18);
+		json.put("topBarTextFontFamily", "HelveticaNeue-CondensedBold");
 
 		NavigationOptions result = NavigationOptions.parse(json);
 		assertThat(result.title).isEqualTo("the title");
 		assertThat(result.topBarBackgroundColor).isEqualTo(0xff123456);
+		assertThat(result.topBarTextColor).isEqualTo(0xff123456);
+		assertThat(result.topBarTextFontSize).isEqualTo(18);
+		assertThat(result.topBarTextFontFamily).isEqualTo("HelveticaNeue-CondensedBold");
 	}
 
 	@Test
