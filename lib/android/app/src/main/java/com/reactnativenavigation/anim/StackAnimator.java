@@ -148,7 +148,7 @@ public class StackAnimator {
 			@Override
 			public void onAnimationEnd(Animator animation) {
 				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) container.getLayoutParams();
-				layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+				layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
 				container.setLayoutParams(layoutParams);
 			}
 
@@ -201,6 +201,7 @@ public class StackAnimator {
 				container.setTranslationY(0);
 
 				topBar.setVisibility(View.GONE);
+				topBar.setTranslationY(0);
 			}
 
 			@Override

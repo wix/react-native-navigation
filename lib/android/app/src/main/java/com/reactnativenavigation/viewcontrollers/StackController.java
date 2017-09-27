@@ -133,7 +133,7 @@ public class StackController extends ParentController {
 		topBar.setId(CompatUtils.generateViewId());
 		root.addView(topBar);
 		container = new FrameLayout(getActivity());
-		container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 		root.addView(container);
 		return root;
 	}
