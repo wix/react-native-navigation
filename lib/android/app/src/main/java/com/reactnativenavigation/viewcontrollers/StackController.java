@@ -134,7 +134,6 @@ public class StackController extends ParentController {
 		root.addView(topBar);
 		container = new FrameLayout(getActivity());
 		container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-		container.setBackgroundColor(Color.GREEN);
 		root.addView(container);
 		return root;
 	}
@@ -160,9 +159,13 @@ public class StackController extends ParentController {
 	public void setTopBarHidden(boolean hidden, boolean animated) {
 		if (animated) {
 			if (hidden) {
-				animator.animateHideTopBar(topBar, container);
+				if (topBar.getVisibility() != View.GONE) {
+					animator.animateHideTopBar(topBar, container);
+				}
 			} else {
-				animator.animateShowTopBar(topBar, container);
+				if (topBar.getVisibility() != View.VISIBLE) {
+					animator.animateShowTopBar(topBar, container);
+				}
 			}
 		} else {
 			topBar.setVisibility(hidden ? View.GONE : View.VISIBLE);
