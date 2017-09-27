@@ -22,6 +22,11 @@ RCT_CUSTOM_VIEW_PROPERTY(interactive, NSNumber, RNNSharedElement)
 	[(RNNSharedElementView*)view setInteractive:json];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(resizeMode, NSNumber, RNNSharedElement)
+{
+	[(RNNSharedElementView*)view setResizeMode:json];
+}
+
 RCT_EXPORT_MODULE();
 
 - (RNNSharedElementView *)view

@@ -2,6 +2,7 @@
 #import "RNNAnimationController.h"
 #import "RNNSharedElementView.h"
 #import "RNNInteractivePopController.h"
+#import "VICMAImageView.h"
 
 @interface  RNNAnimationController()
 @property (nonatomic, strong)NSArray* animations;
@@ -37,6 +38,17 @@
 	}
 	
 	self.backButton = false;
+}
++(UIViewContentMode)contentModefromString:(NSString*)resizeMode{
+	if ([resizeMode isEqualToString:@"cover"]) {
+		return UIViewContentModeScaleAspectFill;
+	} else if ([resizeMode isEqualToString:@"contain"]) {
+		return UIViewContentModeScaleAspectFit;
+	} else if ([resizeMode isEqualToString:@"stretch"]) {
+		return UIViewContentModeScaleToFill;
+	} else {
+		return 0;
+	}
 }
 
 -(NSArray*)findRNNSharedElementViews:(UIView*)view{
@@ -120,7 +132,7 @@
 		CGSize toSize = [fromElement subviews][0].frame.size;
 		CGPoint toCenter = originCenter;
 		CGRect toFrame = originFrame;
-		UIView* toElement = nil;
+		RNNSharedElementView* toElement = nil;
 		if ([transition objectForKey:@"toId"]) {
 			if ([self findViewToShare:RNNSharedElementsToVC withId:transition[@"toId"]]) {
 				toElement = [self findViewToShare:RNNSharedElementsToVC withId:transition[@"toId"]];
@@ -148,8 +160,12 @@
 			toCenter.x = originCenter.x + [transition[@"endX"] doubleValue];
 		}
 		UIView* animationView = nil;
+		NSString* elementType = @"normal";
 		if ([fromElement type] && [[fromElement type] isEqualToString:@"image"]) {
-			animationView = [[UIImageView alloc] initWithImage:[[fromElement subviews][0] image]];
+			UIImage* image = [[fromElement subviews][0] image];
+			animationView = [[VICMAImageView alloc] initWithImage:image];
+			animationView.contentMode = UIViewContentModeScaleAspectFill;
+			elementType = @"image";
 		} else {
 			if (!self.backButton) {
 				if ([elementVC isEqualToString:@"fromVC"]) {
@@ -158,35 +174,53 @@
 					animationView = [[fromElement subviews][0] snapshotViewAfterScreenUpdates:YES];
 				}
 			} else {
-				if ([elementVC isEqualToString:@"toVC"]) {
-					animationView = [[fromElement subviews][0] snapshotViewAfterScreenUpdates:NO];
+				if (toElement) {
+					animationView = [[toElement subviews][0] snapshotViewAfterScreenUpdates:NO];
 				} else {
 					animationView = [[fromElement subviews][0] snapshotViewAfterScreenUpdates:NO];
 				}
 			}
 		}
 		if (!self.backButton){
-			
 			animationView.frame = CGRectMake(0, 0, originSize.width, originSize.height);
 			animationView.center = fromCenter;
 		} else {
-			
 			animationView.frame = CGRectMake(0, 0, toSize.width, toSize.height);
 			animationView.center = toCenter;
 		}
-		animationView.contentMode = UIViewContentModeScaleAspectFit;
+		
 		
 		NSMutableDictionary* elementData = [NSMutableDictionary new];
-		if ([transition[@"type"] isEqualToString:@"sharedElement"]){
-			[toElement setHidden: YES];
-		}
+		
 		NSNumber* startAlpha = @(1);
 		if ([transition objectForKey:@"startAlpha"]) {
-			animationView.alpha = [transition[@"startAlpha"] doubleValue];
+			startAlpha = transition[@"startAlpha"];
 		}
 		NSNumber* endAlpha = @(1);
 		if ([transition objectForKey:@"endAlpha"]) {
 			endAlpha = transition[@"endAlpha"];
+		}
+		if (!self.backButton){
+			animationView.alpha = [startAlpha doubleValue];
+		} else {
+			animationView.alpha = [endAlpha doubleValue];
+		}
+		if ([transition[@"type"] isEqualToString:@"sharedElement"]){
+			if ([fromElement type] && [[fromElement type] isEqualToString:@"image"]) {
+				if (!self.backButton){
+					if (fromElement.resizeMode){
+						animationView.contentMode = [RNNAnimationController contentModefromString:fromElement.resizeMode];
+					}
+				} else {
+					if (toElement.resizeMode){
+						animationView.contentMode = [RNNAnimationController contentModefromString:toElement.resizeMode];
+					}
+				}
+			}
+			//			if (!self.backButton) {
+			[toElement setHidden: YES];
+			//			}
+			
 		}
 		[fromElement setHidden:YES];
 		[containerView addSubview:animationView];
@@ -213,6 +247,7 @@
 												@"topFrame" : [NSValue valueWithCGRect:toFrame],
 												@"bottomFrame" : [NSValue valueWithCGRect:originFrame],
 												@"fromView" : fromElement,
+												@"elementType": elementType,
 												@"toView" : toElement
 												};
 			[elementData addEntriesFromDictionary:sharedElementDict];
@@ -278,8 +313,18 @@
 			[UIView animateWithDuration:[viewData[@"duration"] doubleValue] delay:[viewData[@"startDelay"] doubleValue] usingSpringWithDamping:[viewData[@"springDamping"] doubleValue] initialSpringVelocity:[viewData[@"springVelocity"] doubleValue] options:UIViewAnimationOptionCurveEaseOut  animations:^{
 				UIView* animtedView = viewData[@"animationView"];
 				animtedView.alpha = [viewData[@"endAlpha"] doubleValue];
-				animtedView.center = [viewData[@"toCenter"] CGPointValue];
-				animtedView.transform = [viewData[@"toTransform"] CGAffineTransformValue];
+				if ([viewData[@"transition"] isEqualToString:@"sharedElement"]) {
+					animtedView.frame =[viewData[@"topFrame"] CGRectValue];
+					if ([viewData[@"elementType"] isEqualToString:@"image"]) {
+						animtedView.contentMode = UIViewContentModeScaleAspectFill;
+						if ([viewData[@"toView"] resizeMode]){
+							animtedView.contentMode = [RNNAnimationController contentModefromString:[viewData[@"toView"] resizeMode]] ;
+						}
+					}
+				} else {
+					animtedView.center = [viewData[@"toCenter"] CGPointValue];
+					animtedView.transform = [viewData[@"toTransform"] CGAffineTransformValue];
+				}
 				
 			} completion:^(BOOL finished) {
 				
@@ -291,8 +336,21 @@
 			[UIView animateWithDuration:[viewData[@"duration"] doubleValue] delay:[viewData[@"startDelay"] doubleValue] usingSpringWithDamping:[viewData[@"springDamping"] doubleValue] initialSpringVelocity:[viewData[@"springVelocity"] doubleValue] options:UIViewAnimationOptionCurveEaseOut  animations:^{
 				UIView* animtedView = viewData[@"animationView"];
 				animtedView.alpha = [viewData[@"startAlpha"] doubleValue];
-				animtedView.center = [viewData[@"originCenter"] CGPointValue];
-				animtedView.transform = [viewData[@"transformBack"] CGAffineTransformValue];
+				if ([viewData[@"transition"] isEqualToString:@"sharedElement"]) {
+					animtedView.frame =[viewData[@"bottomFrame"] CGRectValue];
+					if ([viewData[@"elementType"] isEqualToString:@"image"]) {
+						animtedView.contentMode = UIViewContentModeScaleAspectFill;
+						if ([viewData[@"fromView"] resizeMode]){
+							animtedView.contentMode = [RNNAnimationController contentModefromString:[viewData[@"fromView"] resizeMode]] ;
+						}
+					}
+				} else {
+					animtedView.center = [viewData[@"originCenter"] CGPointValue];
+					animtedView.transform = [viewData[@"transformBack"] CGAffineTransformValue];
+				}
+				
+				
+				
 				
 			} completion:^(BOOL finished) {
 				

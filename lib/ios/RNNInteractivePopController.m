@@ -7,8 +7,10 @@
 //
 
 #import "RNNInteractivePopController.h"
+#import "RNNAnimationController.h"
 #import "RNNSharedElementView.h"
 #import "RNNRootViewController.h"
+#import "VICMAImageView.h"
 
 @interface  RNNInteractivePopController()
 @property (nonatomic) CGRect topFrame;
@@ -66,6 +68,10 @@
 		} else {
 			[UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.8 options:UIViewAnimationOptionCurveEaseOut  animations:^{
 				self.imageSnapshot.frame = self.originFrame;
+				self.imageSnapshot.contentMode = UIViewContentModeScaleAspectFill;
+				if ([self.bottomView resizeMode]) {
+					self.imageSnapshot.contentMode = [RNNAnimationController contentModefromString:[self.bottomView resizeMode]];
+				}
 			} completion:^(BOOL finished) {
 				self.nc.delegate = nil;
 			}];
@@ -97,13 +103,17 @@
 	
 	toVC.view.frame = fromVC.view.frame;
 	UIView* topViewContent = [self.topView subviews][0];
-	UIView* imageSnapshot = [topViewContent snapshotViewAfterScreenUpdates:false];
+	UIImage* image = [[self.topView subviews][0] image];
+	UIView* imageSnapshot = [[VICMAImageView alloc] initWithImage:image];
 	CGPoint fromSharedViewFrameOrigin = [topViewContent.superview convertPoint:topViewContent.frame.origin toView:nil];
 	CGRect fromOriginRect = CGRectMake(fromSharedViewFrameOrigin.x, fromSharedViewFrameOrigin.y, topViewContent.frame.size.width, topViewContent.frame.size.height);
 	self.topFrame = fromOriginRect;
-	imageSnapshot.contentMode = UIViewContentModeScaleAspectFit;
+	imageSnapshot.contentMode = UIViewContentModeScaleAspectFill;
+	if ([self.topView resizeMode]) {
+		imageSnapshot.contentMode = [RNNAnimationController contentModefromString:[self.topView resizeMode]];
+	}
 	imageSnapshot.frame = fromOriginRect;
-	imageSnapshot.clipsToBounds = true;
+	
 	self.imageSnapshot = imageSnapshot;
 	[self.bottomView setHidden:YES];
 	UIView* toSnapshot = [toVC.view snapshotViewAfterScreenUpdates:true];

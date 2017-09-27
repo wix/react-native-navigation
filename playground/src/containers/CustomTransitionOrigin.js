@@ -16,16 +16,17 @@ class CustomTransitionOrigin extends Component {
   render() {
     return (
       <View style={styles.root}>
+        <Navigation.SharedElement elementId={"title1"}>
         <Text style={styles.h1}>{`Custom Transition Screen`}</Text>
-
+        </Navigation.SharedElement>
           <View style={{flex: 1, justifyContent: 'flex-start'}}>
             <TouchableOpacity activeOpacity={0.5} onPress={() => this.onClickNavigationIcon('image1')}> 
-              <Navigation.SharedElement type={"image"}  elementId={"image1"}>
-                <Image resizeMode={"contain"} style={styles.gyroImage} source={require('../../img/2048.jpeg')} />
+              <Navigation.SharedElement type={"image"} resizeMode={"cover"}  elementId={"image1"}>
+                <Image resizeMode={"cover"} style={styles.gyroImage} source={require('../../img/400.jpeg')} />
               </Navigation.SharedElement>
             </TouchableOpacity> 
             <TouchableOpacity activeOpacity={0.5} onPress={() => this.onClickNavigationIcon('image2')}> 
-              <Navigation.SharedElement  elementId={"image2"}>
+              <Navigation.SharedElement   elementId={"image2"}>
                 <Image style={styles.gyroImage} source={require('../../img/2048.jpeg')} />
               </Navigation.SharedElement>
             </TouchableOpacity>
@@ -55,10 +56,12 @@ class CustomTransitionOrigin extends Component {
             /// duration
             /// animations
             animations: [
+              { type:"sharedElement", fromId: "title1", toId: "title2", startDelay: 0, springVelocity: 0.2, duration:0.5},            
                           {type:"sharedElement", fromId: "image1", toId: "customDestinationImage", startDelay: 0, springVelocity: 0.2, duration:0.5 ,interactiveImagePop: true},
+                         
                           {type:"sharedElement", fromId: "image2", toId: "customDestinationImage2", startDelay: 0, duration:0.8 },
                           { fromId:'image4', endY:50, endX:50, endAlpha: 0, startDelay: 0, duration:0.8, springVelocity: 0.5 },
-                          { fromId:'customDestinationParagraph', startY:100, startX:-400, startDelay: 0.1, duration:0.8 }
+                          { fromId:'customDestinationParagraph', startY:50, startX:50, startAlpha: 0, endAlpha: 1,  startDelay: 0, duration:0.8 }
                           
             ],
             duration: 0.8
