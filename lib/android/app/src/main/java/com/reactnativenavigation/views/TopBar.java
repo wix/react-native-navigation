@@ -49,10 +49,6 @@ public class TopBar extends AppBarLayout {
 		return findTextView(titleBar);
 	}
 
-	public void setTopBarHidden(boolean hidden) {
-		setVisibility(hidden ? GONE : VISIBLE);
-	}
-
 	@Nullable
 	private TextView findTextView(ViewGroup root) {
 		for (int i = 0; i < root.getChildCount(); i++) {

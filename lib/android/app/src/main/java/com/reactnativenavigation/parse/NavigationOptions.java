@@ -26,6 +26,7 @@ public class NavigationOptions {
 	public float topBarTextFontSize;
 	public String topBarTextFontFamily;
 	public boolean topBarHidden;
+	public boolean animateTopBarHide;
 
 	public void mergeWith(JSONObject json) {
 		parse(json);
@@ -40,5 +41,6 @@ public class NavigationOptions {
 		this.topBarTextFontSize = (float) json.optDouble("topBarTextFontSize", topBarTextFontSize);
 		this.topBarTextFontFamily = json.optString("topBarTextFontFamily", topBarTextFontFamily);
 		this.topBarHidden = json.optBoolean("topBarHidden", topBarHidden);
+		this.animateTopBarHide = json.optBoolean("animateTopBarHide", false);
 	}
 }
