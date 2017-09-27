@@ -18,13 +18,15 @@ Navigation.startTabBasedApp({
   tabBarHidden: false, // make the tab bar hidden
   tabBarButtonColor: '#ffff00', // change the color of the tab icons and text (also unselected)
   tabBarSelectedButtonColor: '#ff9900', // change the color of the selected tab icon and text (only selected)
-  tabBarBackgroundColor: '#551A8B' // change the background color of the tab bar
-  tabBarTranslucent: false // change the translucent of the tab bar to false
-  tabBarTextFontFamily: 'Avenir-Medium' //change the tab font family
+  tabBarBackgroundColor: '#551A8B', // change the background color of the tab bar
+  tabBarTranslucent: false, // change the translucent of the tab bar to false
+  tabBarTextFontFamily: 'Avenir-Medium', //change the tab font family
   tabBarLabelColor: '#ffb700', // iOS only. change the color of tab text
   tabBarSelectedLabelColor: 'red', // iOS only. change the color of the selected tab text
-  forceTitlesDisplay: true // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
-  tabBarHideShadow: true // iOS only. Remove default tab bar top shadow (hairline)
+  forceTitlesDisplay: true, // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
+  tabBarHideShadow: true, // iOS only. Remove default tab bar top shadow (hairline)
+  disableIconTint: true, // optional, by default the tab icons colors are overridden and tinted to tabBarButtonColor, set to true to keep the original icons colors
+  disableSelectedIconTint: true // optional, by default the selected tab icon color is overridden and tinted to tabBarSelectedButtonColor, set to true to keep the original icon color
 }
 ```
 

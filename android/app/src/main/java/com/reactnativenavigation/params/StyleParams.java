@@ -135,6 +135,9 @@ public class StyleParams {
 
     public Color navigationBarColor;
 
+    public boolean disableIconTint;
+    public boolean disableSelectedIconTint;
+
     public boolean hasTopBarCustomComponent() {
         return !TextUtils.isEmpty(topBarReactView);
     }
