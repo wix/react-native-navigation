@@ -1,10 +1,9 @@
 os: osx
-osx_image: xcode8.3
+osx_image: xcode9
 language: generic
 
 env:
   global:
-    - CODE_SIGNING_REQUIRED=NO
     - RCT_NO_LAUNCH_PACKAGER=true
 
 branches:
@@ -27,8 +26,6 @@ install:
   - source ./scripts/env/installNode.sh
         # android sdk:
   - source ./scripts/env/installAndroidSDK.sh
-        # fbsimctl:
-  - source ./scripts/env/installFbSimCtl.sh
 
 script:
   - set -e

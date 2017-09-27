@@ -29,12 +29,6 @@ echo "Downloading Android SDK"
 curl --location https://dl.google.com/android/android-sdk_r24.4.1-macosx.zip | tar -x -z -C $HOME
 ```
 
-* fbsimctl:
-
-```
-export CODE_SIGNING_REQUIRED=NO
-brew tap facebook/fb && brew install fbsimctl
-```
 
 ## Basics - Getting Started
 
