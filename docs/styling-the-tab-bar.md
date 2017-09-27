@@ -25,8 +25,8 @@ Navigation.startTabBasedApp({
   tabBarSelectedLabelColor: 'red', // iOS only. change the color of the selected tab text
   forceTitlesDisplay: true, // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
   tabBarHideShadow: true, // iOS only. Remove default tab bar top shadow (hairline)
-  disableIconTint: true, // optional, by default the tab icons colors are overridden and tinted to tabBarButtonColor, set to true to keep the original icons colors
-  disableSelectedIconTint: true // optional, by default the selected tab icon color is overridden and tinted to tabBarSelectedButtonColor, set to true to keep the original icon color
+  disableIconTint: true, // iOS only. By default the tab icons colors are overridden and tinted to tabBarButtonColor, set to true to keep the original icons colors
+  disableSelectedIconTint: true // iOS only. By default the selected tab icon color is overridden and tinted to tabBarSelectedButtonColor, set to true to keep the original icon color
 }
 ```
 
@@ -40,7 +40,9 @@ Navigation.startTabBasedApp({
     tabBarButtonColor: '#ffffff',
     tabBarSelectedButtonColor: '#63d7cc',
     tabBarTranslucent: false,
-    tabFontFamily: 'Avenir-Medium.ttf'  // for asset file or use existing font family name
+    tabFontFamily: 'Avenir-Medium.ttf',  // for asset file or use existing font family name
+    disableIconTint: true, // optional, by default the tab icons colors are overridden and tinted to tabBarButtonColor, set to true to keep the original icons colors
+    disableSelectedIconTint: true // optional, by default the selected tab icon color is overridden and tinted to tabBarSelectedButtonColor, set to true to keep the original icon color
   },
 ...
 }
