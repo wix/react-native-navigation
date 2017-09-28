@@ -34,6 +34,14 @@ class NavigationTypes extends React.Component {
     });
   };
 
+  pushListScreen = () => {
+    console.log('RANG', 'pushListScreen');
+    this.props.navigator.push({
+      screen: 'example.Types.ListScreen',
+      title: 'List Screen',
+    });
+  };
+
   pushCustomTopBarScreen = () => {
     this.props.navigator.push({
       screen: 'example.Types.CustomTopBarScreen'
