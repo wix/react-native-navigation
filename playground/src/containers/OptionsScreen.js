@@ -52,7 +52,7 @@ class OptionsScreen extends Component {
         <Button title="Top Bar Transparent" onPress={this.onClickTopBarTransparent} />
         <Button title="Top Bar Opaque" onPress={this.onClickTopBarOpaque} />
         <Button tag={'someIdHaha'} title="scrollView Screen" onPress={this.onClickScrollViewScreen} />
-        <Button title="Custom Transition Page" onPress={this.onClickCustomTranstition} />
+        <Button title="Custom Transition" onPress={this.onClickCustomTranstition} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );

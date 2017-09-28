@@ -204,20 +204,19 @@
 		} else {
 			animationView.alpha = [endAlpha doubleValue];
 		}
-		if ([transition[@"type"] isEqualToString:@"sharedElement"]){
-			if ([fromElement type] && [[fromElement type] isEqualToString:@"image"]) {
-				if (!self.backButton){
-					if (fromElement.resizeMode){
-						animationView.contentMode = [RNNAnimationController contentModefromString:fromElement.resizeMode];
-					}
-				} else {
-					if (toElement.resizeMode){
-						animationView.contentMode = [RNNAnimationController contentModefromString:toElement.resizeMode];
-					}
+		if ([fromElement type] && [[fromElement type] isEqualToString:@"image"]) {
+			if (!self.backButton){
+				if (fromElement.resizeMode){
+					animationView.contentMode = [RNNAnimationController contentModefromString:fromElement.resizeMode];
+				}
+			} else {
+				if (toElement.resizeMode){
+					animationView.contentMode = [RNNAnimationController contentModefromString:toElement.resizeMode];
 				}
 			}
+		}
+		if ([transition[@"type"] isEqualToString:@"sharedElement"]){
 			[toElement setHidden: YES];
-			
 		}
 		[fromElement setHidden:YES];
 		[containerView addSubview:animationView];

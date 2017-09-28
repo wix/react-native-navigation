@@ -17,45 +17,43 @@ class CustomTransitionDestination extends Component {
     };
   }
   pop() {
-    Navigation.pop(this.props.containerId, {customTransition: {
-            animations: [{ type:"sharedElement", fromId: "title2", toId: "title1", startDelay: 0, springVelocity: 0.2, duration:0.5},            
-            {type:"sharedElement", toId: "image1", fromId: "customDestinationImage", startDelay: 0, springVelocity: 0.2, duration:0.5 ,interactiveImagePop: true},
-           
-            {type:"sharedElement", toId: "image2", fromId: "customDestinationImage2", startDelay: 0, duration:0.8 },
-            { fromId:'image4', startY:50, startX:50, startAlpha: 0, startDelay: 0, duration:0.8, springVelocity: 0.5 },
-            { fromId:'customDestinationParagraph', endY:50, endX:50, endAlpha: 0, startAlpha: 1,  startDelay: 0, duration:0.8 }
-          ],
-            duration: 0.8
-          }});
+    Navigation.pop(this.props.containerId, { customTransition: {
+      animations: [{ type: 'sharedElement', fromId: 'title2', toId: 'title1', startDelay: 0, springVelocity: 0.2, duration: 0.5 },
+            { type: 'sharedElement', toId: 'image1', fromId: 'customDestinationImage', startDelay: 0, springVelocity: 0.2, duration: 0.5, interactiveImagePop: true },
+            { type: 'sharedElement', toId: 'image2', fromId: 'customDestinationImage2', startDelay: 0, duration: 0.8 },
+            { fromId: 'image4', startY: 50, startX: 50, startAlpha: 0, startDelay: 0, duration: 0.8, springVelocity: 0.5 },
+            { fromId: 'customDestinationParagraph', endY: 50, endX: 50, endAlpha: 0, startAlpha: 1, startDelay: 0, duration: 0.8 }
+      ],
+      duration: 0.8
+    } });
   }
   render() {
     return (
-      <View style={styles.root}>   
+      <View style={styles.root}>
         <View>
-          <Navigation.SharedElement resizeMode={"contain"} type={"image"} elementId={"customDestinationImage"}>
-            <Image resizeMode={"contain"} style={{width:400, height:400}} source={require('../../img/400.jpeg')} />
-          </Navigation.SharedElement> 
-          <Navigation.SharedElement  elementId={"customDestinationImage2"}>
-            <Image style={{width:100, height:100}} source={require('../../img/2048.jpeg')} />
-          </Navigation.SharedElement> 
-          
+          <Navigation.SharedElement resizeMode={'contain'} type={'image'} elementId={'customDestinationImage'}>
+            <Image resizeMode={'contain'} style={{ width: 400, height: 400 }} source={require('../../img/400.jpeg')} />
+          </Navigation.SharedElement>
+          <Navigation.SharedElement elementId={'customDestinationImage2'}>
+            <Image style={{ width: 100, height: 100 }} source={require('../../img/2048.jpeg')} />
+          </Navigation.SharedElement>
         </View>
-       
-        
+
         <TouchableOpacity onPress={this.pop}>
-          <Navigation.SharedElement elementId={"title2"}>
-         <Text style={styles.h1}>{`Custom Transition Screen`}</Text>
-         </Navigation.SharedElement>
+          <Navigation.SharedElement testID={'shared_image2'} elementId={'title2'}>
+            <Text style={styles.h1}>{`Custom Transition Screen`}</Text>
+          </Navigation.SharedElement>
         </TouchableOpacity>
-        <Navigation.SharedElement elementId={"customDestinationParagraph"}>
-        <Text style={styles.p}>{`Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        <Navigation.SharedElement elementId={'customDestinationParagraph'}>
+          <Text style={styles.p}>{`Lorem ipsum dolor sit amet, consectetur adipiscing elit,
            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
            in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-          cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum`}</Text>
-        
-        </Navigation.SharedElement> 
+          cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum`}
+          </Text>
+
+        </Navigation.SharedElement>
       </View>
     );
   }
