@@ -24,9 +24,7 @@ Navigation.startTabBasedApp({
   tabBarLabelColor: '#ffb700', // iOS only. change the color of tab text
   tabBarSelectedLabelColor: 'red', // iOS only. change the color of the selected tab text
   forceTitlesDisplay: true, // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
-  tabBarHideShadow: true, // iOS only. Remove default tab bar top shadow (hairline)
-  disableIconTint: true, // iOS only. By default the tab icons colors are overridden and tinted to tabBarButtonColor, set to true to keep the original icons colors
-  disableSelectedIconTint: true // iOS only. By default the selected tab icon color is overridden and tinted to tabBarSelectedButtonColor, set to true to keep the original icon color
+  tabBarHideShadow: true // iOS only. Remove default tab bar top shadow (hairline)
 }
 ```
 
@@ -41,8 +39,20 @@ Navigation.startTabBasedApp({
     tabBarSelectedButtonColor: '#63d7cc',
     tabBarTranslucent: false,
     tabFontFamily: 'Avenir-Medium.ttf',  // for asset file or use existing font family name
-    disableIconTint: true, // optional, by default the tab icons colors are overridden and tinted to tabBarButtonColor, set to true to keep the original icons colors
-    disableSelectedIconTint: true // optional, by default the selected tab icon color is overridden and tinted to tabBarSelectedButtonColor, set to true to keep the original icon color
+  },
+...
+}
+```
+
+?> By default, the tab icons colors are overridden and tinted to `tabBarButtonColor`, use the settings below to keep the original icons colors:
+
+```js
+Navigation.startTabBasedApp({
+  tabs: [...],
+  appStyle: {
+    ...
+    disableIconTint: true,
+    disableSelectedIconTint: true
   },
 ...
 }
