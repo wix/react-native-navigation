@@ -2,6 +2,7 @@ const React = require('react');
 const { Component } = require('react');
 const { View, Text, Button } = require('react-native');
 const Navigation = require('react-native-navigation');
+
 class WelcomeScreen extends Component {
   constructor(props) {
     super(props);

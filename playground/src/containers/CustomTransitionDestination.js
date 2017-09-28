@@ -1,8 +1,6 @@
 const React = require('react');
 const { Component } = require('react');
-
-const { View, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, Text, Button } = require('react-native');
-
+const { View, TouchableOpacity, Image, Text } = require('react-native');
 const Navigation = require('react-native-navigation');
 
 class CustomTransitionDestination extends Component {

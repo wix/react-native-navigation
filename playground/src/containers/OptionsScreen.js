@@ -10,7 +10,6 @@ const BUTTON_TWO = 'buttonTwo';
 const BUTTON_LEFT = 'buttonLeft';
 
 class OptionsScreen extends Component {
-  
   static get navigationOptions() {
     return {
       title: 'Static Title',
@@ -52,7 +51,7 @@ class OptionsScreen extends Component {
         <Button title="Hide Top Bar" onPress={this.onClickHideTopBar} />
         <Button title="Top Bar Transparent" onPress={this.onClickTopBarTransparent} />
         <Button title="Top Bar Opaque" onPress={this.onClickTopBarOpaque} />
-        <Button tag = {'someIdHaha'} title="scrollView Screen" onPress={this.onClickScrollViewScreen} />
+        <Button tag={'someIdHaha'} title="scrollView Screen" onPress={this.onClickScrollViewScreen} />
         <Button title="Custom Transition Page" onPress={this.onClickCustomTranstition} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>

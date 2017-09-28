@@ -23,11 +23,11 @@ class ScrollViewScreen extends Component {
   render() {
     return (
       <View>
-      <ScrollView testID="scrollView" contentContainerStyle={styles.contentContainer}>
-        <View>
-          <Button title="Toggle Top Bar Hide On Scroll" onPress={this.onClickToggleTopBarHideOnScroll} />
-        </View>
-      </ScrollView>
+        <ScrollView testID="scrollView" contentContainerStyle={styles.contentContainer}>
+          <View>
+            <Button title="Toggle Top Bar Hide On Scroll" onPress={this.onClickToggleTopBarHideOnScroll} />
+          </View>
+        </ScrollView>
       </View>
     );
   }
