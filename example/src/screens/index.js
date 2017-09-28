@@ -7,6 +7,7 @@ import Transitions from './Transitions';
 import Push from './types/Push';
 import Drawer from './types/Drawer';
 import ListScreen from './types/ListScreen';
+import DummyScreen from './types/DummyScreen';
 import LightBox from './types/LightBox';
 import Notification from './types/Notification';
 import Modal from './types/Modal';
@@ -34,6 +35,7 @@ export function registerScreens() {
   Navigation.registerComponent('example.Types.Drawer', () => Drawer);
   Navigation.registerComponent('example.Types.Screen', () => Drawer);
   Navigation.registerComponent('example.Types.ListScreen', () => ListScreen);
+  Navigation.registerComponent('example.Types.DummyScreen', () => DummyScreen);
   Navigation.registerComponent('example.Types.Modal', () => Modal);
   Navigation.registerComponent('example.Types.LightBox', () => LightBox);
   Navigation.registerComponent('example.Types.Notification', () => Notification);
