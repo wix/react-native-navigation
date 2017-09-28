@@ -107,6 +107,7 @@ class NavigationTypes extends React.Component {
       <ScrollView style={styles.container}>
         <Row title={'Toggle Drawer'} onPress={this.toggleDrawer}/>
         <Row title={'Push Screen'} testID={'pushScreen'} onPress={this.pushScreen}/>
+        {/*<Row title={'Push List Screen'} testID={'pushListScreen'} onPress={this.pushListScreen}/>*/}
         <Row title={'Custom TopBar'} onPress={this.pushCustomTopBarScreen}/>
         <Row title={'Custom Button'} onPress={this.pushCustomButtonScreen}/>
         <Row title={'Top Tabs Screen'} onPress={this.pushTopTabsScreen} platform={'android'}/>
