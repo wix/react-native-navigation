@@ -31,9 +31,16 @@ const Colors = [
   "#bdc3c7",
   "#7f8c8d"
 ];
-const {height, width} = Dimensions.get('window');
 
 class ListScreen extends Component {
+  static navigatorStyle = {
+    drawUnderNavBar: true,
+    navBarTranslucent:true,
+    navBarButtonColor: 'black',
+    navBarTextColor: 'black'
+
+  };
+
   constructor(props){
     super(props);
     this.data = [];
@@ -57,14 +64,15 @@ class ListScreen extends Component {
   render(){
     return (
       <ScrollView
-        style={[{flex: 1, backgroundColor: 'transparent',}]}
+        style={[{flex: 1, backgroundColor: 'transparent'}]}
         scrollEnabled={true}
         scrollsToTop={false}
         scrollEventThrottle={100}
         automaticallyAdjustContentInsets={false}
         directionalLockEnabled={true}
         showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        contentOffset={{y: -64}}>
 
 
         {_.map(this.data, (o, i) => {
