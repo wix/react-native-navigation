@@ -139,7 +139,11 @@ function convertStyleParams(originalStyleObject) {
   let ret = {
     orientation: originalStyleObject.orientation,
     statusBarColor: processColor(originalStyleObject.statusBarColor),
+
     statusBarTranslucent: originalStyleObject.statusBarTranslucent,
+
+    statusBarHidden: originalStyleObject.statusBarHidden,
+
     statusBarTextColorScheme: originalStyleObject.statusBarTextColorScheme,
     topBarReactView: originalStyleObject.navBarCustomView,
     topBarReactViewAlignment: originalStyleObject.navBarComponentAlignment,
@@ -204,6 +208,10 @@ function convertStyleParams(originalStyleObject) {
 
     navigationBarColor: processColor(originalStyleObject.navigationBarColor)
   };
+
+  if (originalStyleObject.disabledButtonColor) {
+    ret.titleBarDisabledButtonColor = processColor(originalStyleObject.disabledButtonColor);
+  }
 
   if (originalStyleObject.collapsingToolBarImage) {
     if (_.isString(originalStyleObject.collapsingToolBarImage)) {
@@ -334,6 +342,9 @@ function navigatorSetButtons(navigator, navigatorEventID, _params) {
           button.icon = icon.uri;
         }
       }
+      if (button.buttonColor) {
+        button.color = processColor(button.buttonColor);
+      }
     });
   }
   let leftButton = getLeftButton(params);
@@ -343,6 +354,9 @@ function navigatorSetButtons(navigator, navigatorEventID, _params) {
       if (icon) {
         leftButton.icon = icon.uri;
       }
+    }
+    if (leftButton.buttonColor) {
+      leftButton.color = processColor(leftButton.buttonColor);
     }
   } else if (shouldRemoveLeftButton(params)) {
     leftButton = {};
@@ -483,8 +497,11 @@ function dismissLightBox() {
   newPlatformSpecific.dismissLightBox();
 }
 
-function dismissModal() {
-  newPlatformSpecific.dismissTopModal();
+function dismissModal(params) {
+  newPlatformSpecific.dismissTopModal({
+    ...params,
+    navigationParams: {}
+  });
 }
 
 function dismissAllModals(params) {
@@ -529,6 +546,9 @@ function addNavigatorButtons(screen, sideMenuParams) {
           button.icon = icon.uri;
         }
       }
+      if (button.buttonColor) {
+        button.color = processColor(button.buttonColor);
+      }
     });
   }
 
@@ -539,6 +559,9 @@ function addNavigatorButtons(screen, sideMenuParams) {
       if (icon) {
         leftButton.icon = icon.uri;
       }
+    }
+    if (leftButton.buttonColor) {
+      leftButton.color = processColor(leftButton.buttonColor);
     }
   }
 

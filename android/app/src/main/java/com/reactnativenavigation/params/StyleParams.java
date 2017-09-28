@@ -78,6 +78,7 @@ public class StyleParams {
     public StatusBarTextColorScheme statusBarTextColorScheme;
     public Color statusBarColor;
     public boolean statusBarTranslucent;
+    public boolean statusBarHidden;
     public Color contextualMenuStatusBarColor;
     public Color contextualMenuButtonsColor;
     public Color contextualMenuBackgroundColor;
@@ -143,5 +144,9 @@ public class StyleParams {
 
     public boolean hasTopBarCustomComponent() {
         return !TextUtils.isEmpty(topBarReactView);
+    }
+
+    public boolean hasCustomTitleBarHeight() {
+        return titleBarHeight != -1;
     }
 }

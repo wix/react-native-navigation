@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
@@ -108,6 +109,9 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setStyle() {
+        setStatusBarColor(styleParams.statusBarColor);
+        setStatusBarHidden(styleParams.statusBarHidden);
+
         setStatusBarTextColorScheme(styleParams.statusBarTextColorScheme);
         setNavigationBarColor(styleParams.navigationBarColor);
         topBar.setStyle(styleParams);
@@ -179,6 +183,14 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         }
     }
 
+    private void setStatusBarHidden(boolean statusBarHidden) {
+        final Window window = ((NavigationActivity) activity).getScreenWindow();
+        if (statusBarHidden) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+    }
 
     @TargetApi(Build.VERSION_CODES.M)
     private void setStatusBarTextColorScheme(StatusBarTextColorScheme textColorScheme) {

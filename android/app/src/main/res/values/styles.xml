@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Modal" parent="@android:style/Theme.Translucent.NoTitleBar">
-        <item name="android:windowAnimationStyle">@style/modalAnimations</item>
         <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
     </style>
 
     <style name="LightBox" parent="@android:style/Theme.Translucent.NoTitleBar">
-        <item name="android:windowAnimationStyle">@style/modalAnimations</item>
+        <item name="android:windowAnimationStyle">@style/ModalDefaultAnimations</item>
         <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
     </style>
 
-    <style name="modalAnimations">
+    <style name="ModalDefaultAnimations">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+
+    <style name="ModalFadeAnimation">
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="ModalNoAnimation">
+        <item name="android:windowEnterAnimation">@anim/no_animation</item>
+        <item name="android:windowExitAnimation">@anim/no_animation</item>
+    </style>
+
+    <style name="ModalSlideHorizontal">
+        <item name="android:windowExitAnimation">@anim/slide_out_right</item>
     </style>
 </resources>

@@ -34,9 +34,14 @@ public class BaseTitleBarButtonParams {
     }
 
     private void setColorFromScreenStyle(StyleParams.Color titleBarButtonColor) {
-        if (titleBarButtonColor.hasColor()) {
+        if (titleBarButtonColor.hasColor() && shouldOverrideColorFromScreenStyle()) {
             color = titleBarButtonColor;
         }
+    }
+
+    private boolean shouldOverrideColorFromScreenStyle() {
+        // Override color if no color is defined, or if the defined color was set by AppStyle
+        return !color.hasColor() || color == AppStyle.appStyle.titleBarButtonColor;
     }
 
     public StyleParams.Color getColor() {

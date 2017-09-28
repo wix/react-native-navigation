@@ -30,6 +30,7 @@ public class StyleParamsParser {
         result.orientation = Orientation.fromString(params.getString("orientation", getDefaultOrientation()));
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
         result.statusBarTranslucent = getBoolean("statusBarTranslucent", getDefaultTranslucentStatus());
+        result.statusBarHidden = getBoolean("statusBarHidden", getDefaultStatusHidden());
         result.statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"));
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
         result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
@@ -267,6 +268,10 @@ public class StyleParamsParser {
 
     private StyleParams.Color getDefaultStatusBarColor() {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.statusBarColor;
+    }
+
+    private boolean getDefaultStatusHidden() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.statusBarHidden;
     }
 
     private StyleParams.Font getDefaultBottomTabsFontFamily() {
