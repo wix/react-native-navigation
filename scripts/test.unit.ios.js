@@ -6,7 +6,7 @@ const release = _.includes(process.argv, 'release');
 function run() {
   const conf = release ? `Release` : `Debug`;
 
-  exec.execSync(`cd ./playground/ios &&
+  execWithXcprettyIfPossible(`cd ./playground/ios &&
             RCT_NO_LAUNCH_PACKAGER=true
             xcodebuild build build-for-testing
             -scheme "ReactNativeNavigation"
@@ -16,7 +16,7 @@ function run() {
             -derivedDataPath ./DerivedData/playground
             ONLY_ACTIVE_ARCH=YES`);
 
-  exec.execSync(`cd ./playground/ios &&
+  execWithXcprettyIfPossible(`cd ./playground/ios &&
             RCT_NO_LAUNCH_PACKAGER=true
             xcodebuild test-without-building
             -scheme "ReactNativeNavigation"
@@ -26,6 +26,14 @@ function run() {
             -destination 'platform=iOS Simulator,name=iPhone 7'
             -derivedDataPath ./DerivedData/playground
             ONLY_ACTIVE_ARCH=YES`);
+}
+
+function execWithXcprettyIfPossible(cmd) {
+  if (exec.which('xcpretty')) {
+    exec.execSync(`${cmd} | xcpretty`);
+  } else {
+    exec.execSync(cmd);
+  }
 }
 
 run();

@@ -26,6 +26,10 @@ install:
   - source ./scripts/env/installNode.sh
         # android sdk:
   - source ./scripts/env/installAndroidSDK.sh
+        # AppleSimUtils
+  - source ./scripts/env/installAppleSimUtils.sh
+        # xcpretty
+  - source ./scripts/env/installXcpretty.sh
 
 script:
   - set -e

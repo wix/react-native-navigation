@@ -7,7 +7,7 @@ function buildProjForDetox() {
   const scheme = release ? `playground_release` : `playground`;
   const conf = release ? `Release` : `Debug`;
 
-  exec.execSync(`cd ./playground/ios &&
+  execWithXcprettyIfPossible(`cd ./playground/ios &&
             RCT_NO_LAUNCH_PACKAGER=true
             xcodebuild build
             -scheme ${scheme}
@@ -36,6 +36,14 @@ function e2e() {
 function run() {
   buildProjForDetox();
   e2e();
+}
+
+function execWithXcprettyIfPossible(cmd) {
+  if (exec.which('xcpretty')) {
+    exec.execSync(`${cmd} | xcpretty`);
+  } else {
+    exec.execSync(cmd);
+  }
 }
 
 run();
