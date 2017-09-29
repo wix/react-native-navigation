@@ -70,7 +70,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
             @Override
             public void run() {
                 ActionMenuView actionMenuView = ViewUtils.findChildByClass(parent, ActionMenuView.class);
-                if (actionMenuView != null) {
+                if (actionMenuView != null && actionMenuView.getChildAt(index) != null) {
                     actionMenuView.getChildAt(index).setOnLongClickListener(null);
                 }
             }
