@@ -5,10 +5,11 @@
 
 const NSInteger BLUR_STATUS_TAG = 78264801;
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
+const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 
 @implementation RNNNavigationOptions
 
-const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
+
 
 -(instancetype)init {
 	return [self initWithDict:@{}];

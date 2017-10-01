@@ -172,10 +172,10 @@
 
 -(void)testTopBarTransparent_BOOL_True {
 	NSNumber* topBarTransparentInput = @(1);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	self.options.topBarTransparent = topBarTransparentInput;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:78264803];
+	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
 	XCTAssertTrue(transparentView);
 	XCTAssertTrue([NSStringFromCGRect(transparentView.frame) isEqual: NSStringFromCGRect(CGRectZero)]);
 }
@@ -185,7 +185,7 @@
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	self.options.topBarTransparent = topBarTransparentInput;
 	[self.uut viewWillAppear:false];
-	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:78264803];
+	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
 	XCTAssertFalse(transparentView);
 }
 

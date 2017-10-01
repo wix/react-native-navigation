@@ -32,15 +32,15 @@ class CustomTransitionDestination extends Component {
       <View style={styles.root}>
         <View>
           <Navigation.SharedElement resizeMode={'contain'} type={'image'} elementId={'customDestinationImage'}>
-            <Image resizeMode={'contain'} style={{ width: 400, height: 400 }} source={require('../../img/400.jpeg')} />
+            <Image resizeMode={'contain'} style={{ width: 300, height: 300 }} source={require('../../img/400.jpeg')} />
           </Navigation.SharedElement>
           <Navigation.SharedElement elementId={'customDestinationImage2'}>
             <Image style={{ width: 100, height: 100 }} source={require('../../img/2048.jpeg')} />
           </Navigation.SharedElement>
         </View>
 
-        <TouchableOpacity onPress={this.pop}>
-          <Navigation.SharedElement testID={'shared_image2'} elementId={'title2'}>
+        <TouchableOpacity testID={'shared_image2'} onPress={this.pop}>
+          <Navigation.SharedElement  elementId={'title2'}>
             <Text style={styles.h1}>{`Custom Transition Screen`}</Text>
           </Navigation.SharedElement>
         </TouchableOpacity>

@@ -27,7 +27,7 @@ RCT_EXPORT_METHOD(setOptions:(NSString*)containerId options:(NSDictionary*)optio
 }
 
 RCT_EXPORT_METHOD(push:(NSString*)containerId layout:(NSDictionary*)layout) {
-	[_commandsHandler push:containerId layout:layout bridge:self.bridge];
+	[_commandsHandler push:containerId layout:layout];
 }
 
 RCT_EXPORT_METHOD(pop:(NSString*)containerId options:(NSDictionary*)options) {

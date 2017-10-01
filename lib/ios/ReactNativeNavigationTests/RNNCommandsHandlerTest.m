@@ -10,6 +10,7 @@
 
 @property (nonatomic, strong) RNNStore* store;
 @property (nonatomic, strong) RNNCommandsHandler* uut;
+@property (nonatomic, strong) RCTBridge* bridge;
 
 @end
 
@@ -17,47 +18,50 @@
 
 - (void)setUp {
 	[super setUp];
+//	[self.store setReadyToReceiveCommands:true];
 	self.store = [[RNNStore alloc] init];
-	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:nil];
+	self.bridge = nil;
+	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:nil andBridge:self.bridge];
 }
 
 
 - (void)testAssertReadyForEachMethodThrowsExceptoins {
 	NSArray* methods = [self getPublicMethodNamesForObject:self.uut];
-	
+	[self.store setReadyToReceiveCommands:false];
 	for (NSString* methodName in methods) {
-		
+
 		__strong id uut = self.uut;
 		SEL s = NSSelectorFromString(methodName);
 		IMP imp = [uut methodForSelector:s];
 		void (*func)(id, SEL) = (void *)imp;
-		
+
 		XCTAssertThrowsSpecificNamed(func(uut,s), NSException, @"BridgeNotLoadedError");
 	}
 }
 
 -(NSArray*) getPublicMethodNamesForObject:(NSObject*)obj{
 	NSMutableArray* skipMethods = [NSMutableArray new];
-	[skipMethods addObject:@"initWithStore:controllerFactory:"];
+
+	[skipMethods addObject:@"initWithStore:controllerFactory:andBridge:"];
 	[skipMethods addObject:@"assertReady"];
 	[skipMethods addObject:@".cxx_destruct"];
-	
+
 	NSMutableArray* result = [NSMutableArray new];
-	
+
 	// count and names:
 	int i=0;
 	unsigned int mc = 0;
 	Method * mlist = class_copyMethodList(object_getClass(obj), &mc);
-	
+
 	for(i=0; i<mc; i++) {
 		NSString *methodName = [NSString stringWithUTF8String:sel_getName(method_getName(mlist[i]))];
-		
+
 		// filter skippedMethods
 		if (methodName && ![skipMethods containsObject:methodName]) {
 			[result addObject:methodName];
 		}
 	}
-	
+
 	return result;
 }
 
@@ -72,15 +76,15 @@
 	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:vc];
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
-	
+
 	[self.store setReadyToReceiveCommands:true];
 	[self.store setContainer:vc containerId:@"containerId"];
-	
+
 	NSDictionary* dictFromJs = @{@"topBarBackgroundColor" :@(0xFFFF0000)};
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	
+
 	[self.uut setOptions:@"containerId" options:dictFromJs];
-	
+
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
 	XCTAssertTrue([nav.navigationBar.barTintColor isEqual:expectedColor]);
 }

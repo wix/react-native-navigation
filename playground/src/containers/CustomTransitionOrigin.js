@@ -16,11 +16,11 @@ class CustomTransitionOrigin extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <Navigation.SharedElement testID={'shared_image1'} elementId={'title1'}>
-          <Text style={styles.h1}>{`Custom Transition Screen`}</Text>
+        <Navigation.SharedElement  elementId={'title1'}>
+          <Text  style={styles.h1}>{`Custom Transition Screen`}</Text>
         </Navigation.SharedElement>
         <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-          <TouchableOpacity activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
+          <TouchableOpacity testID={'shared_image1'} activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
             <Navigation.SharedElement type={'image'} resizeMode={'cover'} elementId={'image1'}>
               <Image resizeMode={'cover'} style={styles.gyroImage} source={require('../../img/400.jpeg')} />
             </Navigation.SharedElement>

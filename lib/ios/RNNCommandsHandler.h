@@ -6,13 +6,13 @@
 
 @interface RNNCommandsHandler : NSObject
 
--(instancetype) initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory;
+-(instancetype) initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory andBridge:(RCTBridge*)bridge;
 
 -(void) setRoot:(NSDictionary*)layout;
 
 -(void) setOptions:(NSString*)containerId options:(NSDictionary*)options;
 
--(void) push:(NSString*)containerId layout:(NSDictionary*)layout bridge:(RCTBridge*)bridge;
+-(void) push:(NSString*)containerId layout:(NSDictionary*)layout;
 
 -(void) pop:(NSString*)containerId options:(NSDictionary*)options;
 
