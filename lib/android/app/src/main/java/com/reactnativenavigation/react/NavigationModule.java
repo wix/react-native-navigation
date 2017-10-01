@@ -67,7 +67,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void pop(final String onContainerId) {
+	public void pop(final String onContainerId, final ReadableMap options) {
 		handle(new Runnable() {
 			@Override
 			public void run() {
