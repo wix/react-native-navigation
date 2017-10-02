@@ -1,13 +1,13 @@
 const _ = require('lodash');
 const exec = require('shell-utils').exec;
 
-const release = _.includes(process.argv, 'release');
+const release = _.includes(process.argv, '--release');
 
 function buildProjForDetox() {
   const scheme = release ? `playground_release` : `playground`;
   const conf = release ? `Release` : `Debug`;
 
-  exec.execSync(`cd ./playground/ios &&
+  execWithXcprettyIfPossible(`cd ./playground/ios &&
             RCT_NO_LAUNCH_PACKAGER=true
             xcodebuild build
             -scheme ${scheme}
@@ -34,11 +34,16 @@ function e2e() {
 }
 
 function run() {
-  if (!exec.which(`fbsimctl`)) {
-    throw new Error(`fbsimctl must be installed: "brew tap facebook/fb && brew install fbsimctl"`);
-  }
   buildProjForDetox();
   e2e();
+}
+
+function execWithXcprettyIfPossible(cmd) {
+  if (exec.which('xcpretty')) {
+    exec.execSync(`${cmd} | xcpretty`);
+  } else {
+    exec.execSync(cmd);
+  }
 }
 
 run();

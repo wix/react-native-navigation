@@ -52,7 +52,7 @@
     "eslint-config-xo": "0.18.x",
     "eslint-config-xo-react": "0.13.x",
     "eslint-plugin-react": "7.x.x",
-    "detox": "5.x.x",
+    "detox": "canary",
     "jest": "21.x.x",
     "mocha": "3.x.x",
     "react": "16.0.0-alpha.6",

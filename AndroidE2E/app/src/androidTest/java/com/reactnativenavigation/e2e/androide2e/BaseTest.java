@@ -1,5 +1,7 @@
 package com.reactnativenavigation.e2e.androide2e;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.test.runner.AndroidJUnit4;
@@ -97,5 +99,10 @@ public abstract class BaseTest {
 
 	public void swipeOpenLeftSideMenu() {
 		device().swipe(5, 152, 500, 152, 15);
+	}
+
+	public boolean isDebug() throws Exception {
+		PackageInfo packageInfo = getInstrumentation().getTargetContext().getPackageManager().getPackageInfo("com.reactnativenavigation.playground", 0);
+		return (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
 	}
 }
