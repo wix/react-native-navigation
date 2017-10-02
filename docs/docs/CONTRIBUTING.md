@@ -29,6 +29,12 @@ echo "Downloading Android SDK"
 curl --location https://dl.google.com/android/android-sdk_r24.4.1-macosx.zip | tar -x -z -C $HOME
 ```
 
+* [AppleSimulatorUtils](https://github.com/wix/AppleSimulatorUtils)
+
+```
+brew tap wix/brew
+brew install --HEAD applesimutils
+```
 
 ## Basics - Getting Started
 
