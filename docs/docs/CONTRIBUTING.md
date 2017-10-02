@@ -108,13 +108,13 @@ No PR will be accepted without adequate test coverage.
 | `npm run clean` | cleans all build directories, stops packager, fixes flakiness by removing watchman cache, etc. |
 | `npm run start` | starts the react-native packager for local debugging |
 | `npm run xcode` | for convenience, opens xcode in this project |
-| `npm run install-android`  |  builds playground debug/release version and installs on running android devices/emulators. <br> **Options:** `-- release` |
+| `npm run install-android`  |  builds playground debug/release version and installs on running android devices/emulators. <br> **Options:** `-- --release` |
 | `npm run uninstall-android` | uninstalls playground from running android devices/simulators |
 | `npm run test-js` | runs javascript tests and coverage report |
 | `npm run test-watch` | runs javascript tests in watch mode (can also use the provided wallaby config) |
-| `npm run test-unit-ios` | runs ios unit tests in debug/release <br> **Options:** `-- release` |
-| `npm run test-unit-android` | runs android unit tests in debug/release <br> **Options:** `-- release` |
-| `npm run test-e2e-ios` | runs the ios e2e suite (with detox) in debug/release |
-| `npm run test-e2e-android` | runs the android e2e suite (with uiautomator) in debug/release on running devices/emulators <br> **Options:** `-- [release] [just com.TestClass#testMethod]` |
+| `npm run test-unit-ios` | runs ios unit tests in debug/release <br> **Options:** `-- --release` |
+| `npm run test-unit-android` | runs android unit tests in debug/release <br> **Options:** `-- --release` |
+| `npm run test-e2e-ios` | runs the ios e2e suite (with detox) in debug/release <br> **Options:** `-- --release`|
+| `npm run test-e2e-android` | runs the android e2e suite (with uiautomator) in debug/release on running devices/emulators <br> **Options:** `-- [--release] [--just com.TestClass#testMethod]` |
 | `npm run test-all` | runs all tests in parallel |
 
