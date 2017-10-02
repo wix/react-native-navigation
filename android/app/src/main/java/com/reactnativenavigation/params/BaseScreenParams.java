@@ -22,6 +22,7 @@ public class BaseScreenParams {
     public Bundle fragmentCreatorPassProps;
     public boolean animateScreenTransitions;
     public String animationType;
+    public int setSoftInputMode;
 
     public boolean isFragmentScreen() {
         return fragmentCreatorClassName != null;
