@@ -37,6 +37,7 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
 
     void showModal(ScreenParams screenParams) {
         Modal modal = new Modal(activity, this, screenParams);
+        modal.getWindow().setSoftInputMode(screenParams.setSoftInputMode);
         modal.show();
         stack.add(modal);
     }
