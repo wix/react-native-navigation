@@ -101,7 +101,7 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | toggleDrawer        |   ✅     |        [Contribute](/docs/docs/CONTRIBUTING.md)   | [Contribute](/docs/docs/CONTRIBUTING.md) |
 | toggleTabs          |   ✅     |       in development    | in development|
 | setTabBadge         |    ✅    |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md)| Wix|
-| switchToTab         |    ✅    |      in development    |[Contribute](/docs/docs/CONTRIBUTING.md) |
+| switchToTab         |    ✅    |       ✅   |[Contribute](/docs/docs/CONTRIBUTING.md) |
 | toggleNavBar        |   ✅     |      WIP @gran33     | [Contribute](/docs/docs/CONTRIBUTING.md)|
 | navBarCustomView        |   ✅     |     WIP @gran33     | [Contribute](/docs/docs/CONTRIBUTING.md)|
 | customTransition(shared element)       |     :x:  |     WIP @bogobogo     | [Contribute](/docs/docs/CONTRIBUTING.md)|
