@@ -1,21 +1,30 @@
 package com.reactnativenavigation.viewcontrollers;
 
+import android.animation.Animator;
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.react.ReactContainerView;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.Collection;
+import java.util.Random;
 
 public class StackController extends ParentController {
+
 	private final IdStack<ViewController> stack = new IdStack<>();
 	private final StackAnimator animator;
 	private TopBar topBar;
+	private FrameLayout container;
 
 	public StackController(final Activity activity, String id) {
 		this(activity, id, new StackAnimator(activity));
@@ -31,14 +40,15 @@ public class StackController extends ParentController {
 
 		child.setParentStackController(this);
 		stack.push(child.getId(), child);
+		View enteringView = child.getView();
+		getContainer().addView(enteringView);
 
-		getView().addView(child.getView());
-//TODO animate only when needed
+		//TODO animatePush only when needed
 		if (previousTop != null) {
-			animator.animatePush(child.getView(), previousTop.getView(), new Runnable() {
+			animator.animatePush(enteringView, new StackAnimator.StackAnimationListener() {
 				@Override
-				public void run() {
-					getView().removeView(previousTop.getView());
+				public void onAnimationEnd() {
+					getContainer().removeView(previousTop.getView());
 				}
 			});
 		}
@@ -54,19 +64,18 @@ public class StackController extends ParentController {
 		final ViewController poppedTop = stack.pop();
 		ViewController newTop = peek();
 
-		final View enteringView = newTop.getView();
+		View enteringView = newTop.getView();
 		final View exitingView = poppedTop.getView();
+		getContainer().addView(enteringView, getContainer().getChildCount() - 1);
 
-		getView().addView(enteringView);
-
-		//TODO animate only when needed
-//		animator.animatePop(enteringView, exitingView, new Runnable() {
-//			@Override
-//			public void run() {
-		getView().removeView(exitingView);
-		poppedTop.destroy();
-//			}
-//		});
+		//TODO animatePush only when needed
+		animator.animatePop(exitingView, new StackAnimator.StackAnimationListener() {
+			@Override
+			public void onAnimationEnd() {
+				getContainer().removeView(exitingView);
+				poppedTop.destroy();
+			}
+		});
 	}
 
 	public void popSpecific(final ViewController childController) {
@@ -123,6 +132,9 @@ public class StackController extends ParentController {
 		topBar = new TopBar(getActivity());
 		topBar.setId(CompatUtils.generateViewId());
 		root.addView(topBar);
+		container = new FrameLayout(getActivity());
+		container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		root.addView(container);
 		return root;
 	}
 
@@ -135,5 +147,12 @@ public class StackController extends ParentController {
 	public TopBar getTopBar() {
 		ensureViewIsCreated();
 		return topBar;
+	}
+
+	private ViewGroup getContainer() {
+		if (container == null) {
+			getView();
+		}
+		return container;
 	}
 }

@@ -21,4 +21,6 @@ remove everything in the method didFinishLaunchingWithOptions and add:
 ```
 NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 [ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
+
+return YES;
 ```

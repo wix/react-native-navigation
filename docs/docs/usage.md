@@ -55,7 +55,7 @@ Navigation.setRoot({
 Start a tab based app:
 ```js
 Navigation.setRoot({
-  tabs: [
+  bottomTabs: [
     {
       container: {
         name: 'navigation.playground.TextScreen',

@@ -1,57 +1,113 @@
 package com.reactnativenavigation.anim;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 @SuppressWarnings("ResourceType")
 public class StackAnimator {
 
-	private static int androidOpenEnterAnimResId;
-	private static int androidOpenExitAnimResId;
-	private static int androidCloseEnterAnimResId;
-	private static int androidCloseExitAnimResId;
-	private final Context context;
+	public interface StackAnimationListener {
+		void onAnimationEnd();
+	}
+
+	private static final int DURATION = 300;
+	private static final int START_DELAY = 100;
+	private static final DecelerateInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();
+	private static final AccelerateInterpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
+	private float translationY;
 
 	public StackAnimator(Context context) {
-		this.context = context;
-		loadResIfNeeded(context);
+		translationY = getWindowHeight(context);
 	}
 
-	private void loadResIfNeeded(Context context) {
-		if (androidOpenEnterAnimResId > 0) return;
+	public void animatePush(final View view, @Nullable final StackAnimationListener animationListener) {
+		view.setVisibility(View.INVISIBLE);
+		ObjectAnimator alpha = ObjectAnimator.ofFloat(view, View.ALPHA, 0, 1);
+		alpha.setInterpolator(DECELERATE_INTERPOLATOR);
 
-		int[] attrs = {android.R.attr.activityOpenEnterAnimation, android.R.attr.activityOpenExitAnimation, android.R.attr.activityCloseEnterAnimation, android.R.attr.activityCloseExitAnimation};
-		TypedArray typedArray = context.obtainStyledAttributes(android.R.style.Animation_Activity, attrs);
-		androidOpenEnterAnimResId = typedArray.getResourceId(0, -1);
-		androidOpenExitAnimResId = typedArray.getResourceId(1, -1);
-		androidCloseEnterAnimResId = typedArray.getResourceId(2, -1);
-		androidCloseExitAnimResId = typedArray.getResourceId(3, -1);
-		typedArray.recycle();
+		AnimatorSet set = new AnimatorSet();
+		set.addListener(new Animator.AnimatorListener() {
+			@Override
+			public void onAnimationStart(Animator animation) {
+				view.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				if (animationListener != null) {
+					animationListener.onAnimationEnd();
+				}
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+
+			}
+		});
+		ObjectAnimator translationY = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, this.translationY, 0);
+		translationY.setInterpolator(DECELERATE_INTERPOLATOR);
+		translationY.setDuration(DURATION);
+		alpha.setDuration(DURATION);
+		set.playTogether(translationY, alpha);
+		set.start();
 	}
 
-	public void animatePush(final View enteringView, final View exitingView, @Nullable final Runnable onComplete) {
-		Animation enterAnim = AnimationUtils.loadAnimation(context, androidOpenEnterAnimResId);
-		Animation exitAnim = AnimationUtils.loadAnimation(context, androidOpenExitAnimResId);
+	public void animatePop(View view, @Nullable final StackAnimationListener animationListener) {
+		ObjectAnimator alpha = ObjectAnimator.ofFloat(view, View.ALPHA, 1, 0);
+		alpha.setInterpolator(ACCELERATE_INTERPOLATOR);
 
-		new ViewAnimationSetBuilder()
-				.withEndListener(onComplete)
-				.add(enteringView, enterAnim)
-				.add(exitingView, exitAnim)
-				.start();
+		AnimatorSet set = new AnimatorSet();
+		set.addListener(new Animator.AnimatorListener() {
+			@Override
+			public void onAnimationStart(Animator animation) {
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				if (animationListener != null) {
+					animationListener.onAnimationEnd();
+				}
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+
+			}
+		});
+		ObjectAnimator translationY = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0, this.translationY);
+		translationY.setInterpolator(ACCELERATE_INTERPOLATOR);
+		translationY.setDuration(DURATION);
+		alpha.setDuration(DURATION);
+		set.playTogether(translationY, alpha);
+		set.start();
 	}
 
-	public void animatePop(final View enteringView, final View exitingView, @Nullable final Runnable onComplete) {
-		Animation enterAnim = AnimationUtils.loadAnimation(context, androidCloseEnterAnimResId);
-		Animation exitAnim = AnimationUtils.loadAnimation(context, androidCloseExitAnimResId);
-
-		new ViewAnimationSetBuilder()
-				.withEndListener(onComplete)
-				.add(enteringView, enterAnim)
-				.add(exitingView, exitAnim)
-				.start();
+	private float getWindowHeight(Context context) {
+		DisplayMetrics metrics = new DisplayMetrics();
+		WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+		windowManager.getDefaultDisplay().getMetrics(metrics);
+		return metrics.heightPixels;
 	}
+
+
 }
