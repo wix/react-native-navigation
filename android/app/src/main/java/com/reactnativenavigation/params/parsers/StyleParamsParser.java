@@ -96,9 +96,6 @@ public class StyleParamsParser {
 
         result.bottomTabFontFamily = getFont("bottomTabFontFamily", getDefaultBottomTabsFontFamily());
 
-        result.disableIconTint = getBoolean("disableIconTint", getDefaultDisableIconTint());
-        result.disableSelectedIconTint = getBoolean("disableSelectedIconTint", getDefaultDisableSelectedIconTint());
-
         return result;
     }
 
@@ -290,14 +287,6 @@ public class StyleParamsParser {
 
     private int getDefaultTitleBarHeight() {
         return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarHeight;
-    }
-
-    private boolean getDefaultDisableIconTint() {
-        return AppStyle.appStyle != null && AppStyle.appStyle.disableIconTint;
-    }
-
-    private boolean getDefaultDisableSelectedIconTint() {
-        return AppStyle.appStyle != null && AppStyle.appStyle.disableSelectedIconTint;
     }
 
     private boolean getBoolean(String key, boolean defaultValue) {

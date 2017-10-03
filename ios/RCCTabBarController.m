@@ -156,7 +156,7 @@
     id icon = tabItemLayout[@"props"][@"icon"];
     if (icon)
     {
-      BOOL disableIconTint = [[RCCManager sharedInstance] getAppStyle][@"disableIconTint"];
+      BOOL disableIconTint = [[RCCManager sharedInstance] getAppStyle][@"tabBarDisableIconTint"];
       if (disableIconTint) {
         iconImage = [[RCTConvert UIImage:icon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
       } else {
@@ -169,7 +169,7 @@
     }
     UIImage *iconImageSelected = nil;
     id selectedIcon = tabItemLayout[@"props"][@"selectedIcon"];
-    BOOL disableSelectedIconTint = [[RCCManager sharedInstance] getAppStyle][@"disableSelectedIconTint"];
+    BOOL disableSelectedIconTint = [[RCCManager sharedInstance] getAppStyle][@"tabBarDisableSelectedIconTint"];
     if (selectedIcon) {
       if (disableSelectedIconTint) {
         iconImageSelected = [[RCTConvert UIImage:selectedIcon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -334,7 +334,7 @@
       id icon = actionParams[@"icon"];
       if (icon && icon != (id)[NSNull null])
       {
-        BOOL disableIconTint = [[RCCManager sharedInstance] getAppStyle][@"disableIconTint"];
+        BOOL disableIconTint = [[RCCManager sharedInstance] getAppStyle][@"tabBarDisableIconTint"];
         if (disableIconTint) {
           iconImage = [[RCTConvert UIImage:icon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         } else {
@@ -346,7 +346,7 @@
       id selectedIcon = actionParams[@"selectedIcon"];
       if (selectedIcon && selectedIcon != (id)[NSNull null])
       {
-        BOOL disableSelectedIconTint = [[RCCManager sharedInstance] getAppStyle][@"disableSelectedIconTint"];
+        BOOL disableSelectedIconTint = [[RCCManager sharedInstance] getAppStyle][@"tabBarDisableSelectedIconTint"];
         if (disableSelectedIconTint) {
           iconImageSelected = [[RCTConvert UIImage:selectedIcon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         } else {

@@ -42,12 +42,12 @@ public class BottomTabs extends AHBottomNavigation {
         if (params.bottomTabsColor.hasColor()) {
             setBackgroundColor(params.bottomTabsColor);
         }
-        if (params.bottomTabsButtonColor.hasColor() && !params.disableIconTint) {
+        if (params.bottomTabsButtonColor.hasColor()) {
             if (getInactiveColor() != params.bottomTabsButtonColor.getColor()) {
                 setInactiveColor(params.bottomTabsButtonColor.getColor());
             }
         }
-        if (params.selectedBottomTabsButtonColor.hasColor() && !params.disableSelectedIconTint) {
+        if (params.selectedBottomTabsButtonColor.hasColor()) {
             if (getAccentColor() != params.selectedBottomTabsButtonColor.getColor()) {
                 setAccentColor(params.selectedBottomTabsButtonColor.getColor());
             }
