@@ -1,7 +1,7 @@
 const React = require('react');
 const {Component} = require('react');
 
-const {View, Text, Button, Alert, ToastAndroid} = require('react-native');
+const {View, Text, Button, Alert} = require('react-native');
 
 const Navigation = require('react-native-navigation');
 
@@ -19,24 +19,13 @@ class LifecycleScreen extends Component {
   }
 
   didDisappear() {
-    // alert('didDisappear'); // eslint-disable-line no-alert
-    // console.log("TAG", "got didDisappear");
-    Alert.alert("", "didDisappear", [
-      {
-        text: 'OK',
-        onPress: () => console.log('OK Pressed!')
-      }
-    ]);
+    setTimeout(() => {
+      alert('didDisappear');
+    }, 1000);
   }
 
   componentWillUnmount() {
-    // alert('componentWillUnmount'); // eslint-disable-line no-alert
-    Alert.alert("", "componentWillUnmount", [
-      {
-        text: 'OK',
-        onPress: () => console.log('OK Pressed!')
-      }
-    ]);
+    alert('componentWillUnmount'); // eslint-disable-line no-alert
   }
 
   onNavigationButtonPressed(id) {
