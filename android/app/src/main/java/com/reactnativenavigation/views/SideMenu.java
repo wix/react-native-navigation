@@ -76,11 +76,23 @@ public class SideMenu extends DrawerLayout {
     }
 
     public void openDrawer(Side side) {
-        openDrawer(side.gravity);
+        try{
+            openDrawer(Gravity.LEFT);
+        }catch (IllegalArgumentException ex){
+            if ("No drawer view found with gravity LEFT".equalsIgnoreCase(ex.getMessage())){
+                openDrawer(Gravity.RIGHT);
+            }
+        }
     }
 
     public void openDrawer(boolean animated, Side side) {
-        openDrawer(side.gravity, animated);
+        try{
+            openDrawer(Gravity.LEFT, animated);
+        }catch (IllegalArgumentException ex){
+            if ("No drawer view found with gravity LEFT".equalsIgnoreCase(ex.getMessage())){
+                openDrawer(Gravity.RIGHT, animated);
+            }
+        }
     }
 
     public void toggleVisible(boolean animated, Side side) {
