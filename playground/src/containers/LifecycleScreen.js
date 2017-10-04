@@ -1,7 +1,7 @@
 const React = require('react');
-const {Component} = require('react');
+const { Component } = require('react');
 
-const {View, Text, Button, Alert} = require('react-native');
+const { View, Text, Button } = require('react-native');
 
 const Navigation = require('react-native-navigation');
 
@@ -15,12 +15,12 @@ class LifecycleScreen extends Component {
   }
 
   didAppear() {
-    this.setState({text: 'didAppear'});
+    this.setState({ text: 'didAppear' });
   }
 
   didDisappear() {
     setTimeout(() => {
-      alert('didDisappear');
+      alert('didDisappear'); // eslint-disable-line no-alert
     }, 1000);
   }
 
@@ -44,7 +44,7 @@ class LifecycleScreen extends Component {
   }
 
   onClickPush() {
-    Navigation.push(this.props.containerId, {name: 'navigation.playground.TextScreen'});
+    Navigation.push(this.props.containerId, { name: 'navigation.playground.TextScreen' });
   }
 }
 module.exports = LifecycleScreen;

@@ -32,6 +32,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	self.topBarNoBorder = [navigationOptions objectForKey:@"topBarNoBorder"];
 	self.tabBarHidden = [navigationOptions objectForKey:@"tabBarHidden"];
 	self.topBarBlur = [navigationOptions objectForKey:@"topBarBlur"];
+	self.animateTopBarHide = [navigationOptions objectForKey:@"animateTopBarHide"];
 
 	return self;
 }
@@ -49,11 +50,11 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	} else {
 		viewController.navigationController.navigationBar.barTintColor = nil;
 	}
-	
+
 	if (self.title) {
 		viewController.navigationItem.title = self.title;
 	}
-	
+
 	if (self.topBarTextFontFamily || self.topBarTextColor || self.topBarTextFontSize){
 		NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
 		if (self.topBarTextColor) {
@@ -70,20 +71,16 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 		}
 		viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
 	}
-	
+
 	if (self.screenBackgroundColor) {
 		UIColor* screenColor = [RCTConvert UIColor:self.screenBackgroundColor];
 		viewController.view.backgroundColor = screenColor;
 	}
-	
+
 	if (self.topBarHidden){
-		if ([self.topBarHidden boolValue]) {
-			[viewController.navigationController setNavigationBarHidden:YES animated:YES];
-		} else {
-			[viewController.navigationController setNavigationBarHidden:NO animated:YES];
-		}
+		[viewController.navigationController setNavigationBarHidden:[self.topBarHidden boolValue] animated:[self.animateTopBarHide boolValue]];
 	}
-	
+
 	if (self.topBarHideOnScroll) {
 		BOOL topBarHideOnScrollBool = [self.topBarHideOnScroll boolValue];
 		if (topBarHideOnScrollBool) {
@@ -92,14 +89,14 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			viewController.navigationController.hidesBarsOnSwipe = NO;
 		}
 	}
-	
+
 	if (self.topBarButtonColor) {
 		UIColor* buttonColor = [RCTConvert UIColor:self.topBarButtonColor];
 		viewController.navigationController.navigationBar.tintColor = buttonColor;
 	} else {
 		viewController.navigationController.navigationBar.tintColor = nil;
 	}
-	
+
 	if (self.tabBadge) {
 		NSString *badge = [RCTConvert NSString:self.tabBadge];
 		if (viewController.navigationController) {
@@ -108,7 +105,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			viewController.tabBarItem.badgeValue = badge;
 		}
 	}
-	
+
 	if (self.topBarTranslucent) {
 		if ([self.topBarTranslucent boolValue]) {
 			viewController.navigationController.navigationBar.translucent = YES;
@@ -116,7 +113,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			viewController.navigationController.navigationBar.translucent = NO;
 		}
 	}
-	
+
 	if (self.topBarNoBorder) {
 		if ([self.topBarNoBorder boolValue]) {
 			viewController.navigationController.navigationBar
@@ -126,7 +123,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			.shadowImage = nil;
 		}
 	}
-	
+
 	if (self.statusBarBlur) {
 		UIView* curBlurView = [viewController.view viewWithTag:BLUR_STATUS_TAG];
 		if ([self.statusBarBlur boolValue]) {
@@ -142,11 +139,11 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			}
 		}
 	}
-	
+
 	if (self.topBarBlur && [self.topBarBlur boolValue]) {
-		
+
 		if (![viewController.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]) {
-			
+
 			[viewController.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
 			viewController.navigationController.navigationBar.shadowImage = [UIImage new];
 			UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
@@ -157,7 +154,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			[viewController.navigationController.navigationBar insertSubview:blur atIndex:0];
 			[viewController.navigationController.navigationBar sendSubviewToBack:blur];
 		}
-		
+
 	} else {
 		UIView *blur = [viewController.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG];
 		if (blur) {
@@ -190,7 +187,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			}
 		}
 	}
-	
+
 	return supportedOrientationsMask;
 }
 
