@@ -117,7 +117,7 @@ public class StackAnimator {
 		return metrics.heightPixels;
 	}
 
-	public void animateShowTopBar(final TopBar topBar, final FrameLayout container) {
+	public void animateShowTopBar(final TopBar topBar, final View container) {
 		ValueAnimator containerHeightAnim = ValueAnimator.ofInt(container.getMeasuredHeight(), container.getMeasuredHeight() - topBar.getMeasuredHeight());
 		containerHeightAnim.setInterpolator(DECELERATE_INTERPOLATOR);
 		containerHeightAnim.setDuration(DURATION_TOPBAR);
@@ -166,7 +166,7 @@ public class StackAnimator {
 		set.start();
 	}
 
-	public void animateHideTopBar(final TopBar topBar, final FrameLayout container) {
+	public void animateHideTopBar(final TopBar topBar, final View container) {
 		ValueAnimator containerHeightAnim = ValueAnimator.ofInt(container.getMeasuredHeight(), container.getMeasuredHeight() + topBar.getMeasuredHeight());
 		containerHeightAnim.setInterpolator(ACCELERATE_INTERPOLATOR);
 		containerHeightAnim.setDuration(DURATION_TOPBAR);

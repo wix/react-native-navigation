@@ -22,8 +22,6 @@ public class StackController extends ParentController {
 
 	private final IdStack<ViewController> stack = new IdStack<>();
 	private final StackAnimator animator;
-	private TopBar topBar;
-	private FrameLayout container;
 
 	public StackController(final Activity activity, String id) {
 		this(activity, id, new StackAnimator(activity));
@@ -40,14 +38,14 @@ public class StackController extends ParentController {
 		child.setParentStackController(this);
 		stack.push(child.getId(), child);
 		View enteringView = child.getView();
-		getContainer().addView(enteringView);
+		getView().addView(enteringView);
 
 		//TODO animatePush only when needed
 		if (previousTop != null) {
 			animator.animatePush(enteringView, new StackAnimator.StackAnimationListener() {
 				@Override
 				public void onAnimationEnd() {
-					getContainer().removeView(previousTop.getView());
+					getView().removeView(previousTop.getView());
 				}
 			});
 
@@ -66,13 +64,13 @@ public class StackController extends ParentController {
 
 		View enteringView = newTop.getView();
 		final View exitingView = poppedTop.getView();
-		getContainer().addView(enteringView, getContainer().getChildCount() - 1);
+		getView().addView(enteringView, getView().getChildCount() - 1);
 
 		//TODO animatePush only when needed
 		animator.animatePop(exitingView, new StackAnimator.StackAnimationListener() {
 			@Override
 			public void onAnimationEnd() {
-				getContainer().removeView(exitingView);
+				getView().removeView(exitingView);
 				poppedTop.destroy();
 			}
 		});
@@ -127,15 +125,7 @@ public class StackController extends ParentController {
 	@NonNull
 	@Override
 	protected ViewGroup createView() {
-		LinearLayout root = new LinearLayout(getActivity());
-		root.setOrientation(LinearLayout.VERTICAL);
-		topBar = new TopBar(getActivity());
-		topBar.setId(CompatUtils.generateViewId());
-		root.addView(topBar);
-		container = new FrameLayout(getActivity());
-		container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-		root.addView(container);
-		return root;
+		return new FrameLayout(getActivity());
 	}
 
 	@NonNull
@@ -146,29 +136,10 @@ public class StackController extends ParentController {
 
 	public TopBar getTopBar() {
 		ensureViewIsCreated();
-		return topBar;
-	}
-
-	private ViewGroup getContainer() {
-		if (container == null) {
-			getView();
-		}
-		return container;
+		return ((ContainerViewController) stack.peek()).getTopBar();
 	}
 
 	public void setTopBarHidden(boolean hidden, boolean animated) {
-		if (animated) {
-			if (hidden) {
-				if (topBar.getVisibility() != View.GONE) {
-					animator.animateHideTopBar(topBar, container);
-				}
-			} else {
-				if (topBar.getVisibility() != View.VISIBLE) {
-					animator.animateShowTopBar(topBar, container);
-				}
-			}
-		} else {
-			topBar.setVisibility(hidden ? View.GONE : View.VISIBLE);
-		}
+		((ContainerViewController) stack.peek()).setTopBarHidden(hidden, animated);
 	}
 }

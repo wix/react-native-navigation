@@ -3,9 +3,14 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
+import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.views.TopBar;
 
 import org.json.JSONObject;
 
@@ -36,6 +41,9 @@ public class ContainerViewController extends ViewController {
 	private NavigationOptions navigationOptions;
 	private ContainerView containerView;
 
+	private TopBar topBar;
+	private final StackAnimator animator;
+
 	public ContainerViewController(final Activity activity,
 								   final String id,
 								   final String containerName,
@@ -45,6 +53,7 @@ public class ContainerViewController extends ViewController {
 		this.containerName = containerName;
 		this.viewCreator = viewCreator;
 		this.navigationOptions = initialNavigationOptions;
+		animator = new StackAnimator(getActivity());
 	}
 
 	@Override
@@ -76,26 +85,52 @@ public class ContainerViewController extends ViewController {
 	@NonNull
 	@Override
 	protected View createView() {
+		LinearLayout root = new LinearLayout(getActivity());
+		root.setOrientation(LinearLayout.VERTICAL);
+		topBar = new TopBar(getActivity());
+		topBar.setId(CompatUtils.generateViewId());
+		root.addView(topBar);
 		containerView = viewCreator.create(getActivity(), getId(), containerName);
-		return containerView.asView();
+		root.addView(containerView.asView());
+		return root;
 	}
 
-	public void mergeNavigationOptions(JSONObject options) {
+	void mergeNavigationOptions(JSONObject options) {
 		navigationOptions.mergeWith(options);
 		applyOptions();
 	}
 
-	public void applyNavigationOptions(NavigationOptions options) {
+	void applyNavigationOptions(NavigationOptions options) {
 		navigationOptions = options;
 		applyOptions();
 	}
 
-	public NavigationOptions getNavigationOptions() {
+	NavigationOptions getNavigationOptions() {
 		return navigationOptions;
 	}
 
 	private void applyOptions() {
 		OptionsPresenter presenter = new OptionsPresenter(getParentStackController());
 		presenter.applyOptions(navigationOptions);
+	}
+
+	TopBar getTopBar() {
+		return topBar;
+	}
+
+	void setTopBarHidden(boolean hidden, boolean animated) {
+		if (animated) {
+			if (hidden) {
+				if (topBar.getVisibility() != View.GONE) {
+					animator.animateHideTopBar(topBar, containerView.asView());
+				}
+			} else {
+				if (topBar.getVisibility() != View.VISIBLE) {
+					animator.animateShowTopBar(topBar, containerView.asView());
+				}
+			}
+		} else {
+			topBar.setVisibility(hidden ? View.GONE : View.VISIBLE);
+		}
 	}
 }
