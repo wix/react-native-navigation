@@ -30,7 +30,7 @@ public class StyleParamsParser {
         result.orientation = Orientation.fromString(params.getString("orientation", getDefaultOrientation()));
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
         result.statusBarHidden = getBoolean("statusBarHidden", getDefaultStatusHidden());
-        result.statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"));
+        result.statusBarTextColorScheme = getStatusBarTextColorScheme();
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
         result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
         result.contextualMenuBackgroundColor = getColor("contextualMenuBackgroundColor", getDefaultContextualMenuBackgroundColor());
@@ -101,6 +101,16 @@ public class StyleParamsParser {
 
     private String getDefaultOrientation() {
         return AppStyle.appStyle == null ? null : AppStyle.appStyle.orientation.name;
+    }
+
+    private StatusBarTextColorScheme getStatusBarTextColorScheme() {
+        StatusBarTextColorScheme statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"));
+
+        if (statusBarTextColorScheme == StatusBarTextColorScheme.Undefined) {
+            statusBarTextColorScheme = AppStyle.appStyle == null ? statusBarTextColorScheme : AppStyle.appStyle.statusBarTextColorScheme;
+        }
+
+        return statusBarTextColorScheme;
     }
 
     private StyleParams createDefaultStyleParams() {
