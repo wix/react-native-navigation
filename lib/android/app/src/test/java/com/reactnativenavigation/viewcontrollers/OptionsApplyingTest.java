@@ -8,6 +8,7 @@ import android.view.View;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TestContainerView;
 import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.views.TopbarContainerViewCreator;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -30,12 +31,13 @@ public class OptionsApplyingTest extends BaseTest {
 		activity = newActivity();
 		initialNavigationOptions = new NavigationOptions();
 		view = spy(new TestContainerView(activity));
-		uut = new ContainerViewController(activity, "containerId1", "containerName", new ContainerViewController.ContainerViewCreator() {
-			@Override
-			public ContainerViewController.ContainerView create(final Activity activity1, final String containerId, final String containerName) {
-				return view;
-			}
-		}, initialNavigationOptions);
+		uut = new ContainerViewController(activity, "containerId1", "containerName",
+				new TopbarContainerViewCreator(new ContainerViewController.ContainerViewCreator() {
+					@Override
+					public ContainerViewController.ContainerView create(final Activity activity1, final String containerId, final String containerName) {
+						return view;
+					}
+				}), initialNavigationOptions);
 	}
 
 	@Test

@@ -3,14 +3,13 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.views.TopbarContainerView;
+import com.reactnativenavigation.views.TopbarContainerViewCreator;
 
 import org.json.JSONObject;
 
@@ -85,14 +84,11 @@ public class ContainerViewController extends ViewController {
 	@NonNull
 	@Override
 	protected View createView() {
-		LinearLayout root = new LinearLayout(getActivity());
-		root.setOrientation(LinearLayout.VERTICAL);
-		topBar = new TopBar(getActivity());
-		topBar.setId(CompatUtils.generateViewId());
-		root.addView(topBar);
 		containerView = viewCreator.create(getActivity(), getId(), containerName);
-		root.addView(containerView.asView());
-		return root;
+		if (containerView instanceof TopbarContainerView) {
+			topBar = ((TopbarContainerView) containerView).getTopBar();
+		}
+		return containerView.asView();
 	}
 
 	void mergeNavigationOptions(JSONObject options) {
@@ -119,14 +115,15 @@ public class ContainerViewController extends ViewController {
 	}
 
 	void setTopBarHidden(boolean hidden, boolean animated) {
-		if (animated) {
+		if (animated && containerView instanceof TopbarContainerView) {
+			TopbarContainerView topbarContainerView = (TopbarContainerView) containerView;
 			if (hidden) {
 				if (topBar.getVisibility() != View.GONE) {
-					animator.animateHideTopBar(topBar, containerView.asView());
+					animator.animateHideTopBar(topBar, topbarContainerView.getContainerView().asView());
 				}
 			} else {
 				if (topBar.getVisibility() != View.VISIBLE) {
-					animator.animateShowTopBar(topBar, containerView.asView());
+					animator.animateShowTopBar(topBar, topbarContainerView.getContainerView().asView());
 				}
 			}
 		} else {

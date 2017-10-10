@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 public class TopBar extends AppBarLayout {
 	private final Toolbar titleBar;
 
-	public TopBar(final Activity context) {
+	public TopBar(final Context context) {
 		super(context);
 		titleBar = new Toolbar(context);
 		addView(titleBar);
