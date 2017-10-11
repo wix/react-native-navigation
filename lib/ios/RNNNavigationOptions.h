@@ -27,8 +27,9 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) NSNumber* tabBarHidden;
 @property (nonatomic, strong) NSNumber* topBarBlur;
 
-
+#if !(TARGET_OS_TV)
 - (UIInterfaceOrientationMask)supportedOrientations;
+#endif
 
 -(instancetype)init;
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions;

@@ -49,9 +49,11 @@
 	return NO;
 }
 
+#if !(TARGET_OS_TV)
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.navigationOptions.supportedOrientations;
 }
+#endif
 
 - (BOOL)hidesBottomBarWhenPushed
 {
