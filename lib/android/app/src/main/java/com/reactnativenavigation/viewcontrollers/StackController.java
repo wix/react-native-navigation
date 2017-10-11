@@ -133,13 +133,4 @@ public class StackController extends ParentController {
 	public Collection<ViewController> getChildControllers() {
 		return stack.values();
 	}
-
-	public TopBar getTopBar() {
-		ensureViewIsCreated();
-		return ((ContainerViewController) stack.peek()).getTopBar();
-	}
-
-	public void setTopBarHidden(boolean hidden, boolean animated) {
-		((ContainerViewController) stack.peek()).setTopBarHidden(hidden, animated);
-	}
 }

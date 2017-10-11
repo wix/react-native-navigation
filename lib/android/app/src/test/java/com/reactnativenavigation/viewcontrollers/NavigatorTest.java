@@ -207,21 +207,6 @@ public class NavigatorTest extends BaseTest {
 		uut.setOptions("some unknown child id", new NavigationOptions());
 	}
 
-	@Test
-	public void setOptions_ActuallyAffectsTheTitleView() throws Exception {
-		ContainerViewController containerVc = new SimpleContainerViewController(activity, "theId");
-		StackController stackController = new StackController(activity, "stackId", new TestStackAnimator());
-		stackController.push(containerVc);
-		uut.setRoot(stackController);
-		assertThat(stackController.getTopBar().getTitle()).isEmpty();
-
-		NavigationOptions opts = new NavigationOptions();
-		opts.title = "the new title";
-		uut.setOptions("theId", opts);
-
-		assertThat(stackController.getTopBar().getTitle()).isEqualTo("the new title");
-	}
-
 	@NonNull
 	private BottomTabsController newTabs() {
 		return new BottomTabsController(activity, "tabsController");

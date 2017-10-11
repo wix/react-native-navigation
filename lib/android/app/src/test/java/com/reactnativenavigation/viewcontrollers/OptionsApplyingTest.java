@@ -53,85 +53,87 @@ public class OptionsApplyingTest extends BaseTest {
 		initialNavigationOptions.title = "the title";
 		StackController stackController = new StackController(activity, "stackId");
 		stackController.push(uut);
-		assertThat(stackController.getTopBar().getTitle()).isEmpty();
+		assertThat(uut.getTopBar().getTitle()).isEmpty();
 
 		uut.onViewAppeared();
-		assertThat(stackController.getTopBar().getTitle()).isEqualTo("the title");
+		assertThat(uut.getTopBar().getTitle()).isEqualTo("the title");
 	}
 
 	@Test
 	public void reappliesOptionsOnMerge() throws Exception {
-		StackController stackController = new StackController(activity, "stackId");
-		stackController.push(uut);
-		assertThat(stackController.getTopBar().getTitle()).isEmpty();
+//		StackController stackController = new StackController(activity, "stackId");
+//		stackController.push(uut);
+		uut.onViewAppeared();
+		assertThat(uut.getTopBar().getTitle()).isEmpty();
 
 		JSONObject options = new JSONObject();
 		options.put("title", "the new title");
 		uut.mergeNavigationOptions(options);
 
-		assertThat(stackController.getTopBar().getTitle()).isEqualTo("the new title");
+		assertThat(uut.getTopBar().getTitle()).isEqualTo("the new title");
 	}
 
 	@Test
 	public void appliesTopBackBackgroundColor() throws Exception {
-		StackController stackController = new StackController(activity, "stackId");
-		stackController.push(uut);
-		assertThat(((ColorDrawable) stackController.getTopBar().getBackground()).getColor()).isNotEqualTo(Color.RED);
+//		StackController stackController = new StackController(activity, "stackId");
+//		stackController.push(uut);
+		uut.onViewAppeared();
+		assertThat(((ColorDrawable) uut.getTopBar().getBackground()).getColor()).isNotEqualTo(Color.RED);
 
 		JSONObject options = new JSONObject();
 		options.put("topBarBackgroundColor", Color.RED);
 		uut.mergeNavigationOptions(options);
 
-		assertThat(((ColorDrawable) stackController.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
+		assertThat(((ColorDrawable) uut.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
 	}
 
 	@Test
 	public void appliesTopBarTextColor() throws Exception {
 		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
 		initialNavigationOptions.title = "the title";
-		StackController stackController = new StackController(activity, "stackId");
-		stackController.push(uut);
+//		StackController stackController = new StackController(activity, "stackId");
+//		stackController.push(uut);
 		uut.onViewAppeared();
-		assertThat(stackController.getTopBar().getTitleTextView().getCurrentTextColor()).isNotEqualTo(Color.RED);
+		assertThat(uut.getTopBar().getTitleTextView().getCurrentTextColor()).isNotEqualTo(Color.RED);
 
 		JSONObject options = new JSONObject();
 		options.put("topBarTextColor", Color.RED);
 		uut.mergeNavigationOptions(options);
 
-		assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);
-		assertThat(stackController.getTopBar().getTitleTextView().getCurrentTextColor()).isEqualTo(Color.RED);
+		assertThat(uut.getTopBar().getTitleTextView()).isNotEqualTo(null);
+		assertThat(uut.getTopBar().getTitleTextView().getCurrentTextColor()).isEqualTo(Color.RED);
 	}
 
 	@Test
 	public void appliesTopBarTextSize() throws Exception {
 		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
 		initialNavigationOptions.title = "the title";
-		StackController stackController = new StackController(activity, "stackId");
-		stackController.push(uut);
+//		StackController stackController = new StackController(activity, "stackId");
+//		stackController.push(uut);
 		uut.onViewAppeared();
-		assertThat(stackController.getTopBar().getTitleTextView().getTextSize()).isNotEqualTo(18);
+		assertThat(uut.getTopBar().getTitleTextView().getTextSize()).isNotEqualTo(18);
 
 		JSONObject options = new JSONObject();
 		options.put("topBarTextFontSize", 18);
 		uut.mergeNavigationOptions(options);
 
-		assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);
-		assertThat(stackController.getTopBar().getTitleTextView().getTextSize()).isEqualTo(18);
+		assertThat(uut.getTopBar().getTitleTextView()).isNotEqualTo(null);
+		assertThat(uut.getTopBar().getTitleTextView().getTextSize()).isEqualTo(18);
 	}
 
 	@Test
 	public void appliesTopBarHidden() throws Exception {
 		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
 		initialNavigationOptions.title = "the title";
-		StackController stackController = new StackController(activity, "stackId");
-		stackController.push(uut);
+//		StackController stackController = new StackController(activity, "stackId");
+//		stackController.push(uut);
 		uut.onViewAppeared();
-		assertThat(stackController.getTopBar().getVisibility()).isNotEqualTo(View.GONE);
+		assertThat(uut.getTopBar().getVisibility()).isNotEqualTo(View.GONE);
 
 		JSONObject options = new JSONObject();
 		options.put("topBarHidden", true);
 		uut.mergeNavigationOptions(options);
 
-		assertThat(stackController.getTopBar().getVisibility()).isEqualTo(View.GONE);
+		assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
 	}
 }

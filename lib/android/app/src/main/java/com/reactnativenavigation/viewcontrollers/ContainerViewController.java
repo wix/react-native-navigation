@@ -86,6 +86,8 @@ public class ContainerViewController extends ViewController {
 		containerView = viewCreator.create(getActivity(), getId(), containerName);
 		if (containerView instanceof TopbarContainerView) {
 			topBar = ((TopbarContainerView) containerView).getTopBar();
+//		} else {
+//			throw new IllegalArgumentException("ContainerViewController should has TopBarContainerView as container view");
 		}
 		return containerView.asView();
 	}
@@ -105,15 +107,15 @@ public class ContainerViewController extends ViewController {
 	}
 
 	private void applyOptions() {
-		OptionsPresenter presenter = new OptionsPresenter(getParentStackController());
+		OptionsPresenter presenter = new OptionsPresenter(this);
 		presenter.applyOptions(navigationOptions);
 	}
 
-	TopBar getTopBar() {
+	public TopBar getTopBar() {
 		return topBar;
 	}
 
-	void setTopBarHidden(boolean hidden, boolean animated) {
+	public void setTopBarHidden(boolean hidden, boolean animated) {
 		if (animated && containerView instanceof TopbarContainerView) {
 			TopbarContainerView topbarContainerView = (TopbarContainerView) containerView;
 			if (hidden) {

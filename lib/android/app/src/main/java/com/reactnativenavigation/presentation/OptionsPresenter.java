@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.utils.TypefaceLoader;
+import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.viewcontrollers.StackController;
 
 /**
@@ -12,9 +13,9 @@ import com.reactnativenavigation.viewcontrollers.StackController;
 
 public class OptionsPresenter {
 
-	private StackController controller;
+	private ContainerViewController controller;
 
-	public OptionsPresenter(StackController controller) {
+	public OptionsPresenter(ContainerViewController controller) {
 		this.controller = controller;
 	}
 
