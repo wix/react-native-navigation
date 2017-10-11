@@ -1,12 +1,13 @@
 /*eslint-disable*/
 import React, {Component} from 'react';
 import {
-  NativeAppEventEmitter,
-  DeviceEventEmitter,
-  Platform
+    NativeAppEventEmitter,
+    DeviceEventEmitter,
+    Platform
 } from 'react-native';
 import platformSpecific from './deprecated/platformSpecificDeprecated';
 import Navigation from './Navigation';
+import _ from 'lodash';
 
 const NavigationSpecific = {
   push: platformSpecific.navigatorPush,
@@ -22,9 +23,13 @@ class Navigator {
     this.navigatorEventID = navigatorEventID;
     this.navigatorEventHandler = null;
     this.navigatorEventSubscription = null;
+    this._lastAction = {params: undefined, timestamp: 0};
   }
 
   push(params = {}) {
+    if (this.duplicated({method: 'push', passProps: params.passProps, screen: params.screen})) {
+        return;
+    }
     return NavigationSpecific.push(this, params);
   }
 
@@ -146,6 +151,16 @@ class Navigator {
       let Emitter = Platform.OS === 'android' ? DeviceEventEmitter : NativeAppEventEmitter;
       this.navigatorEventSubscription = Emitter.addListener(this.navigatorEventID, (event) => this.onNavigatorEvent(event));
       Navigation.setEventHandler(this.navigatorEventID, (event) => this.onNavigatorEvent(event));
+    }
+  }
+
+  duplicated(params) {
+    if (Date.now() - this._lastAction.timestamp < 5000
+        && _.isEqual(params, this._lastAction.params)) {
+        return true;
+    } else {
+        this._lastAction = {params, timestamp: Date.now()};
+        return false;
     }
   }
 
