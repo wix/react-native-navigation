@@ -20,7 +20,7 @@ public class OptionsPresenter {
 	}
 
 	public void applyOptions(NavigationOptions options) {
-		if (controller != null) {
+		if (controller != null && controller.getTopBar() != null) {
 			controller.getTopBar().setTitle(options.title);
 			controller.getTopBar().setBackgroundColor(options.topBarBackgroundColor);
 			controller.getTopBar().setTitleTextColor(options.topBarTextColor);
