@@ -10,7 +10,7 @@ import com.reactnativenavigation.viewcontrollers.ContainerViewController;
  * Created by romanko on 10/10/17.
  */
 
-public class TopbarContainerView extends LinearLayout implements ContainerViewController.ContainerView{
+public class TopbarContainerView extends LinearLayout implements ContainerViewController.ContainerView {
 
 	private TopBar topBar;
 	private ContainerViewController.ContainerView containerView;
@@ -19,6 +19,14 @@ public class TopbarContainerView extends LinearLayout implements ContainerViewCo
 		super(context);
 		this.topBar = topBar;
 		this.containerView = containerView;
+
+		initViews();
+	}
+
+	private void initViews() {
+		setOrientation(LinearLayout.VERTICAL);
+		addView(topBar);
+		addView(containerView.asView());
 	}
 
 	public TopbarContainerView(Context context) {

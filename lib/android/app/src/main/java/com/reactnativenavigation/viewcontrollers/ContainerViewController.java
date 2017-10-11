@@ -9,7 +9,6 @@ import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.views.TopBar;
 import com.reactnativenavigation.views.TopbarContainerView;
-import com.reactnativenavigation.views.TopbarContainerViewCreator;
 
 import org.json.JSONObject;
 

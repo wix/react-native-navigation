@@ -27,9 +27,6 @@ public class TopbarContainerViewCreator implements ContainerViewController.Conta
 		ContainerViewController.ContainerView containerView = creator.create(activity, containerId, containerName);
 
 		TopbarContainerView root = new TopbarContainerView(activity, topBar, containerView);
-		root.setOrientation(LinearLayout.VERTICAL);
-		root.addView(topBar);
-		root.addView(containerView.asView());
 		return root;
 
 	}
