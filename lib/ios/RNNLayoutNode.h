@@ -8,6 +8,7 @@
 @property NSString* nodeId;
 @property NSDictionary* data;
 @property NSArray* children;
+@property NSDictionary* tabsStyle;
 
 +(instancetype)create:(NSDictionary *)json;
 
