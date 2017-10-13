@@ -244,6 +244,7 @@ var Controllers = {
         return RCCManager.TabBarControllerIOS(id, "setTabBarHidden", params);
       },
       setBadge: function (params) {
+        _processProperties(params);
         return RCCManager.TabBarControllerIOS(id, "setBadge", params);
       },
       switchTo: function (params) {
