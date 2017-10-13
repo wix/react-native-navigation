@@ -62,8 +62,8 @@ function dismissLightBox() {
   NativeReactModule.dismissLightBox();
 }
 
-function dismissTopModal() {
-  NativeReactModule.dismissTopModal();
+function dismissTopModal(params) {
+  NativeReactModule.dismissTopModal(params);
 }
 
 function dismissAllModals() {
