@@ -104,7 +104,8 @@ this.props.navigator.showLightBox({
  style: {
    backgroundBlur: "dark", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
    backgroundColor: "#ff000080" // tint color for the background, you can specify alpha here (optional)
- }
+ },
+ adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
 });
 ```
 
@@ -124,6 +125,7 @@ Show in-app notification. This generally looks like a pop-up window that can app
 this.props.navigator.showInAppNotification({
  screen: "example.InAppNotification", // unique ID registered with Navigation.registerScreen
  passProps: {}, // simple serializable object that will pass as props to the in-app notification (optional)
+ autoDismissTimerSec: 1 // auto dismiss notification in seconds
 });
 ```
 
@@ -217,7 +219,8 @@ Set the badge on a tab (any string or numeric value).
 ```js
 this.props.navigator.setTabBadge({
   tabIndex: 0, // (optional) if missing, the badge will be added to this screen's tab
-  badge: 17 // badge value, null to remove badge
+  badge: 17, // badge value, null to remove badge
+  badgeColor: '#006400', // (optional) if missing, the badge will use the default color
 });
 ```
 ## setTabButton(params = {})

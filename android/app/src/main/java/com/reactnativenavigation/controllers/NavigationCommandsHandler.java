@@ -263,7 +263,7 @@ public class NavigationCommandsHandler {
         });
     }
 
-    public static void dismissTopModal() {
+    public static void dismissTopModal(final ScreenParams params) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
@@ -272,7 +272,7 @@ public class NavigationCommandsHandler {
         NavigationApplication.instance.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                currentActivity.dismissTopModal();
+                currentActivity.dismissTopModal(params);
             }
         });
     }
@@ -541,6 +541,10 @@ public class NavigationCommandsHandler {
     public static void isAppLaunched(Promise promise) {
         final boolean isAppLaunched = SplashActivity.isResumed || NavigationActivity.currentActivity != null;
         promise.resolve(isAppLaunched);
+    }
+
+    public static void isRootLaunched(Promise promise) {
+        promise.resolve(NavigationActivity.currentActivity != null);
     }
 
     public static void getCurrentlyVisibleScreenId(final Promise promise) {

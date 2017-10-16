@@ -135,7 +135,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onPause();
         currentActivity = null;
         IntentDataHandler.onPause(getIntent());
-        getReactGateway().onPauseActivity();
+        getReactGateway().onPauseActivity(this);
         NavigationApplication.instance.getActivityCallbacks().onActivityPaused(this);
         EventBus.instance.unregister(this);
     }
@@ -166,7 +166,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     private void destroyJsIfNeeded() {
         if (currentActivity == null || currentActivity.isFinishing()) {
-            getReactGateway().onDestroyApp();
+            getReactGateway().onDestroyApp(this);
         }
     }
 
@@ -244,18 +244,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.showModal(screenParams);
     }
 
-    void dismissTopModal() {
-        modalController.dismissTopModal();
-        Screen previousScreen = layout.getCurrentScreen();
-        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previousScreen.getScreenParams(), NavigationType.DismissModal);
-        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previousScreen.getScreenParams(), NavigationType.DismissModal);
+    void dismissTopModal(ScreenParams params) {
+        modalController.dismissTopModal(params);
     }
 
     void dismissAllModals() {
         modalController.dismissAllModals();
-        Screen previousScreen = layout.getCurrentScreen();
-        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previousScreen.getScreenParams(), NavigationType.DismissModal);
-        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previousScreen.getScreenParams(), NavigationType.DismissModal);
     }
 
     public void showLightBox(LightBoxParams params) {

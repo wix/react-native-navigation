@@ -75,11 +75,14 @@ public class StyleParams {
     public Orientation orientation;
     public StatusBarTextColorScheme statusBarTextColorScheme;
     public Color statusBarColor;
+    public boolean statusBarHidden;
     public Color contextualMenuStatusBarColor;
     public Color contextualMenuButtonsColor;
     public Color contextualMenuBackgroundColor;
 
     public Color topBarColor;
+    public Color topBarBorderColor;
+    public float topBarBorderWidth;
     public String topBarReactView;
     public String topBarReactViewAlignment;
     public Bundle topBarReactViewInitialProps;
@@ -99,7 +102,9 @@ public class StyleParams {
     public Color titleBarDisabledButtonColor;
     public Font titleBarTitleFont;
     public int titleBarTitleFontSize;
+    public boolean titleBarTitleFontBold;
     public boolean titleBarTitleTextCentered;
+    public int titleBarHeight;
     public boolean backButtonHidden;
 
     public Color topTabTextColor;
@@ -109,6 +114,7 @@ public class StyleParams {
     public int selectedTopTabIndicatorHeight;
     public Color selectedTopTabIndicatorColor;
     public boolean topTabsScrollable;
+    public int topTabsHeight;
 
     public Color screenBackgroundColor;
 
@@ -116,6 +122,7 @@ public class StyleParams {
 
     public Color snackbarButtonColor;
 
+    public int bottomTabsInitialIndex;
     public boolean bottomTabsHidden;
     public boolean bottomTabsHiddenOnScroll;
     public Color bottomTabsColor;
@@ -130,5 +137,9 @@ public class StyleParams {
 
     public boolean hasTopBarCustomComponent() {
         return !TextUtils.isEmpty(topBarReactView);
+    }
+
+    public boolean hasCustomTitleBarHeight() {
+        return titleBarHeight != -1;
     }
 }

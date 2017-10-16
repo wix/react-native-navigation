@@ -175,7 +175,7 @@ class Navigator {
   }
 }
 
-export default class Screen extends Component {
+class Screen extends Component {
   static navigatorStyle = {};
   static navigatorButtons = {};
 
@@ -193,3 +193,8 @@ export default class Screen extends Component {
     }
   }
 }
+
+export {
+  Screen,
+  Navigator
+};

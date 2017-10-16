@@ -68,7 +68,8 @@ function startTabBasedApp(params) {
         <TabBarControllerIOS
           id={controllerID + '_tabs'}
           style={params.tabsStyle}
-          appStyle={params.appStyle}>
+          appStyle={params.appStyle}
+          initialTabIndex={params.initialTabIndex}>
           {
             params.tabs.map(function(tab, index) {
               return (
@@ -383,7 +384,8 @@ function navigatorSetTabBadge(navigator, params) {
   if (params.tabIndex || params.tabIndex === 0) {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').setBadge({
       tabIndex: params.tabIndex,
-      badge: params.badge
+      badge: params.badge,
+      badgeColor: params.badgeColor
     });
   } else {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').setBadge({
