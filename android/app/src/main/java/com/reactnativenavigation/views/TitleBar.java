@@ -9,10 +9,13 @@ import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.reactnativenavigation.params.BaseScreenParams;
@@ -20,6 +23,7 @@ import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.react.ImageLoader;
 import com.reactnativenavigation.utils.ViewUtils;
 
 import java.util.List;
@@ -73,15 +77,26 @@ public class TitleBar extends Toolbar {
     }
 
     public void setStyle(StyleParams params) {
-        setVisibility(params.titleBarHidden);
         setTitleTextColor(params);
         setTitleTextFont(params);
+        setSubTitleTextFont(params);
         setTitleTextFontSize(params);
         setTitleTextFontWeight(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
-        setBackground(params);
         centerTitle(params);
+        setSubtitleFontSize(params);
+        setBackground(params);
+        setVisibility(params.titleBarHidden);
+    }
+
+    public void setSubtitleFontSize(StyleParams params) {
+        if (params.titleBarSubTitleFontSize > 0) {
+            View subTitleView = getSubTitleView();
+            if (subTitleView instanceof TextView) {
+                ((TextView) subTitleView).setTextSize(((float) params.titleBarSubTitleFontSize));
+            }
+        }
     }
 
     public void setVisibility(boolean titleBarHidden) {
@@ -94,10 +109,16 @@ public class TitleBar extends Toolbar {
     }
 
     private void centerTitle(final StyleParams params) {
-        final View titleView = getTitleView();
+        final TextView titleView = (TextView) getTitleView();
         if (titleView == null) {
             return;
         }
+
+        LayoutParams lp = (LayoutParams) titleView.getLayoutParams();
+        lp.gravity = Gravity.START;
+        lp.setMargins(0, 10, 0, 0);
+        titleView.setLayoutParams(lp);
+        titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
         ViewUtils.runOnPreDraw(titleView, new Runnable() {
             @Override
             public void run() {
@@ -115,8 +136,14 @@ public class TitleBar extends Toolbar {
         }
     }
 
+
     protected void setBackground(StyleParams params) {
-        setTranslucent(params);
+        String img = params.topBarBackgroundImage;
+        if (img != null) {
+            setBackground(ImageLoader.loadImage(img));
+        } else {
+            setTranslucent(params);
+        }
     }
 
     protected void setTranslucent(StyleParams params) {
@@ -142,6 +169,16 @@ public class TitleBar extends Toolbar {
         View titleView = getTitleView();
         if (titleView instanceof TextView) {
             ((TextView) titleView).setTypeface(params.titleBarTitleFont.get());
+        }
+    }
+
+    protected void setSubTitleTextFont(StyleParams params) {
+        if (!params.titleBarSubTitleFont.hasFont()) {
+            return;
+        }
+        View titleView = getSubTitleView();
+        if (titleView instanceof TextView) {
+            ((TextView) titleView).setTypeface(params.titleBarSubTitleFont.get());
         }
     }
 
@@ -278,6 +315,19 @@ public class TitleBar extends Toolbar {
                 return child.getText().equals(getTitle());
             }
         });
+    }
+
+    @Nullable
+    protected View getSubTitleView() {
+        for (int i = 0; i < getChildCount(); i++) {
+            if (getChildAt(i) instanceof TextView) {
+                TextView subTitle = (TextView) getChildAt(i);
+                if (subTitle.getText().equals(getSubtitle())) {
+                    return subTitle;
+                }
+            }
+        }
+        return null;
     }
 
     public void setButtonColor(StyleParams.Color titleBarButtonColor) {

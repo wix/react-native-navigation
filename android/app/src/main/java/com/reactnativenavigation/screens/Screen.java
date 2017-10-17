@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
@@ -34,6 +36,8 @@ import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
 import com.reactnativenavigation.views.sharedElementTransition.SharedElementTransition;
 import com.reactnativenavigation.views.sharedElementTransition.SharedElements;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.Map;
@@ -83,7 +87,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             topBar.onContextualMenuHidden();
             setStyle();
         }
-        if (ViewPagerScreenChangedEvent.TYPE.equals(event.getType()) && isShown() ) {
+        if (ViewPagerScreenChangedEvent.TYPE.equals(event.getType()) && isShown()) {
             topBar.dismissContextualMenu();
             topBar.onViewPagerScreenChanged(getScreenParams());
         }
@@ -107,6 +111,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     public void setStyle() {
         setStatusBarColor(styleParams.statusBarColor);
         setStatusBarHidden(styleParams.statusBarHidden);
+
         setStatusBarTextColorScheme(styleParams.statusBarTextColorScheme);
         setNavigationBarColor(styleParams.navigationBarColor);
         topBar.setStyle(styleParams);
@@ -138,6 +143,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             topBar.setSubtitle(screenParams.subtitle);
         }
     }
+
 
     private void addTitleBarButtons() {
         setButtonColorFromScreen(screenParams.rightButtons);
@@ -198,6 +204,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         }
     }
 
+
     public void clearLightStatusBar() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
         int flags = getSystemUiVisibility();
@@ -239,7 +246,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setTitleBarTitle(String title) {
-       topBar.setTitle(title, styleParams);
+        topBar.setTitle(title, styleParams);
     }
 
     public void setTitleBarSubtitle(String subtitle) {

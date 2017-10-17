@@ -139,7 +139,11 @@ function convertStyleParams(originalStyleObject) {
   let ret = {
     orientation: originalStyleObject.orientation,
     statusBarColor: processColor(originalStyleObject.statusBarColor),
+
+    statusBarTranslucent: originalStyleObject.statusBarTranslucent,
+
     statusBarHidden: originalStyleObject.statusBarHidden,
+
     statusBarTextColorScheme: originalStyleObject.statusBarTextColorScheme,
     topBarReactView: originalStyleObject.navBarCustomView,
     topBarReactViewAlignment: originalStyleObject.navBarComponentAlignment,
@@ -165,7 +169,9 @@ function convertStyleParams(originalStyleObject) {
     titleBarButtonColor: processColor(originalStyleObject.navBarButtonColor),
     titleBarDisabledButtonColor: processColor(originalStyleObject.titleBarDisabledButtonColor),
     titleBarTitleFontFamily: originalStyleObject.navBarTextFontFamily,
+    titleBarSubTitleFontFamily: originalStyleObject.navBarSubTitleFontFamily,
     titleBarTitleFontSize: originalStyleObject.navBarTextFontSize,
+    titleBarSubTitleFontSize: originalStyleObject.navBarSubTitleFontSize,
     titleBarTitleFontBold: originalStyleObject.navBarTextFontBold,
     titleBarTitleTextCentered: originalStyleObject.navBarTitleTextCentered,
     titleBarHeight: originalStyleObject.navBarHeight,
@@ -220,6 +226,18 @@ function convertStyleParams(originalStyleObject) {
   if (_.isUndefined(ret.expendCollapsingToolBarOnTopTabChange)) {
     ret.expendCollapsingToolBarOnTopTabChange = true;
   }
+
+  if (originalStyleObject.topBarBackgroundImage) {
+    if (_.isString(originalStyleObject.topBarBackgroundImage)){
+      ret.topBarBackgroundImage = originalStyleObject.topBarBackgroundImage;
+    }
+
+    const topBarBackgroundImage = resolveAssetSource(originalStyleObject.topBarBackgroundImage)
+    if (topBarBackgroundImage) {
+      ret.topBarBackgroundImage = topBarBackgroundImage.uri;
+    }
+  }
+
   return ret;
 }
 
