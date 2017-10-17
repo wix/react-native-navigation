@@ -49,9 +49,11 @@ function startTabBasedApp(params) {
         return (
           <DrawerControllerIOS id={navigatorID}
                                componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
-                               passPropsLeft={{navigatorID: navigatorID}}
+															 passPropsLeft={{navigatorID: navigatorID}}
+															 styleLeft={params.drawer.left ? params.drawer.left.navigatorStyle : {}}
                                componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
-                               passPropsRight={{navigatorID: navigatorID}}
+															 passPropsRight={{navigatorID: navigatorID}}
+															 styleRight={params.drawer.right ? params.drawer.right.navigatorStyle : {}}
                                disableOpenGesture={params.drawer.disableOpenGesture}
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
@@ -568,7 +570,7 @@ function showInAppNotification(params) {
     navigatorEventID,
     navigatorID
   };
-  
+
   savePassProps(params);
 
   let args = {
