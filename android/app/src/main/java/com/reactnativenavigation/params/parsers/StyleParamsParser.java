@@ -29,7 +29,8 @@ public class StyleParamsParser {
         StyleParams result = new StyleParams(params);
         result.orientation = Orientation.fromString(params.getString("orientation", getDefaultOrientation()));
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
-        result.statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"));
+        result.statusBarHidden = getBoolean("statusBarHidden", getDefaultStatusHidden());
+        result.statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"), getDefaultStatusBarTextColorScheme());
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
         result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
         result.contextualMenuBackgroundColor = getColor("contextualMenuBackgroundColor", getDefaultContextualMenuBackgroundColor());
@@ -98,6 +99,10 @@ public class StyleParamsParser {
         return result;
     }
 
+    private StatusBarTextColorScheme getDefaultStatusBarTextColorScheme() {
+        return AppStyle.appStyle == null ? StatusBarTextColorScheme.Undefined : AppStyle.appStyle.statusBarTextColorScheme;
+    }
+
     private String getDefaultOrientation() {
         return AppStyle.appStyle == null ? null : AppStyle.appStyle.orientation.name;
     }
@@ -109,6 +114,7 @@ public class StyleParamsParser {
         result.titleBarHideOnScroll = false;
         result.orientation = Orientation.auto;
         result.bottomTabFontFamily = new StyleParams.Font();
+        result.titleBarHeight = -1;
         return result;
     }
 
@@ -258,6 +264,10 @@ public class StyleParamsParser {
 
     private StyleParams.Color getDefaultStatusBarColor() {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.statusBarColor;
+    }
+
+    private boolean getDefaultStatusHidden() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.statusBarHidden;
     }
 
     private StyleParams.Font getDefaultBottomTabsFontFamily() {

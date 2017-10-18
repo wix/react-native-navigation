@@ -27,6 +27,15 @@ class Actions extends React.Component {
     });
   };
 
+  setSubtitle = () => {
+    this.props.navigator.setSubTitle({
+      subtitle: 'New SubTitle!',
+      navigatorStyle: {
+        navBarSubtitleColor: 'red'
+      }
+    });
+  };
+
   toggleTabs = () => {
     const to = this._toggleTabs === 'shown' ? 'hidden' : 'shown';
 
@@ -142,6 +151,7 @@ class Actions extends React.Component {
     return (
       <ScrollView style={styles.container}>
         <Row title={'Set Title'} onPress={this.setTitle} />
+        <Row title={'Set Subtitle'} onPress={this.setSubtitle} />
         <Row title={'Toggle Tabs'} onPress={this.toggleTabs} />
         <Row title={'Set Tab Badge'} onPress={this.setTabBadge} />
         <Row title={'Switch To Tab 0'} onPress={this.switchToTab} />

@@ -229,6 +229,12 @@ RCT_EXPORT_METHOD(
     
     // first clear the registry to remove any refernece to the previous controllers
     [[RCCManager sharedInstance] clearModuleRegistry];
+    [[RCCManager sharedInstance] setAppStyle:nil];
+    
+    NSDictionary *appStyle = layout[@"props"][@"appStyle"];
+    if (appStyle) {
+        [[RCCManager sharedIntance] setAppStyle:appStyle];
+    }
     
     // create the new controller
     UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:modifiedGloablProps bridge:[[RCCManager sharedInstance] getBridge]];
