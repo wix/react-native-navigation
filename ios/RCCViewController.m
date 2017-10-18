@@ -429,6 +429,19 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   {
     viewController.navigationController.navigationBar.tintColor = nil;
   }
+
+  BOOL topBarElevationShadowEnabled = self.navigatorStyle[@"topBarElevationShadowEnabled"];
+  if (topBarElevationShadowEnabled) {
+    CGFloat shadowOpacity = self.navigatorStyle[@"shadowOpacity"] != (id)[NSNull null] ? [RCTConvert CGFloat:self.navigatorStyle[@"shadowOpacity"]] : .3;
+    CGFloat shadowOffset = self.navigatorStyle[@"shadowOffset"] != (id)[NSNull null] ? [RCTConvert CGFloat:self.navigatorStyle[@"shadowOffset"]] : 3;
+    CGFloat shadowRadius = self.navigatorStyle[@"shadowRadius"] != (id)[NSNull null] ? [RCTConvert CGFloat:self.navigatorStyle[@"shadowRadius"]] : 2;
+
+    viewController.navigationController.navigationBar.layer.shadowOpacity = shadowOpacity;
+    viewController.navigationController.navigationBar.layer.shadowColor = UIColor.blackColor.CGColor;
+    viewController.navigationController.navigationBar.layer.shadowOffset = CGSizeMake(0, shadowOffset);
+    viewController.navigationController.navigationBar.layer.shadowRadius = shadowRadius;
+  }
+
   
   BOOL viewControllerBasedStatusBar = false;
   
