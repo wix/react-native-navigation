@@ -68,7 +68,8 @@ this.props.navigator.setStyle({
   statusBarHidden: false, // make the status bar hidden regardless of nav bar state
   statusBarTextColorScheme: 'dark', // text color of status bar, 'dark' / 'light' (remembered across pushes)
   navBarSubtitleColor: 'red', // subtitle color
-  navBarSubtitleFontFamily: 'font-name', // subtitle font
+  navBarSubtitleFontFamily: 'font-name', // subtitle font, 'sans-serif-thin' for example
+  navBarSubtitleFontSize: 13, // subtitle font size
   screenBackgroundColor: 'white', // Default screen color, visible before the actual react view is rendered
   orientation: 'portrait' // Sets a specific orientation to a modal and all screens pushed to it. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
   disabledButtonColor: '#ff0000' // chnaged the navigation bar button text color when disabled.
