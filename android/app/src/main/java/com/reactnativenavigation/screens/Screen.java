@@ -135,7 +135,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             topBar.setReactView(screenParams.styleParams);
         } else {
             topBar.setTitle(screenParams.title, styleParams);
-            topBar.setSubtitle(screenParams.subtitle);
+            topBar.setSubtitle(screenParams.subtitle, styleParams);
         }
     }
 
@@ -243,7 +243,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setTitleBarSubtitle(String subtitle) {
-        topBar.setSubtitle(subtitle);
+        topBar.setSubtitle(subtitle, styleParams);
     }
 
     public void setTitleBarRightButtons(String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {

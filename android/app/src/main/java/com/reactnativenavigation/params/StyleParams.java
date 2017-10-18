@@ -52,8 +52,10 @@ public class StyleParams {
 
     public static class Font {
         private Typeface typeface;
+        String fontFamilyName;
 
         public Font(String font) {
+            fontFamilyName = font;
             typeface = new TypefaceLoader(font).getTypeFace();
         }
 
@@ -61,7 +63,7 @@ public class StyleParams {
         }
 
         public boolean hasFont() {
-            return typeface != null;
+            return typeface != null && fontFamilyName != null;
         }
 
         public Typeface get() {
@@ -69,6 +71,11 @@ public class StyleParams {
                 throw new RuntimeException("Font undefined");
             }
             return typeface;
+        }
+
+        @Override
+        public String toString() {
+            return fontFamilyName;
         }
     }
 
@@ -98,6 +105,8 @@ public class StyleParams {
     public boolean topBarTranslucent;
     public Color titleBarTitleColor;
     public Color titleBarSubtitleColor;
+    public int titleBarSubtitleFontSize;
+    public Font titleBarSubtitleFontFamily;
     public Color titleBarButtonColor;
     public Color titleBarDisabledButtonColor;
     public Font titleBarTitleFont;

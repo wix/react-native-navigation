@@ -55,6 +55,8 @@ public class StyleParamsParser {
         result.topBarBorderWidth = Float.parseFloat(params.getString("topBarBorderWidth", getDefaultTopBarBorderWidth()));
 
         result.titleBarSubtitleColor = getColor("titleBarSubtitleColor", getDefaultSubtitleBarColor());
+        result.titleBarSubtitleFontSize = getInt("titleBarSubtitleFontSize", getDefaultSubtitleTextFontSize());
+        result.titleBarSubtitleFontFamily = getFont("titleBarSubtitleFontFamily", getDefaultSubtitleFontFamily());
         result.titleBarButtonColor = getColor("titleBarButtonColor", getTitleBarButtonColor());
         result.titleBarDisabledButtonColor = getColor("titleBarDisabledButtonColor", getTitleBarDisabledButtonColor());
         result.titleBarTitleFont = getFont("titleBarTitleFontFamily", getDefaultTitleTextFontFamily());
@@ -280,6 +282,14 @@ public class StyleParamsParser {
 
     private int getDefaultTitleTextFontSize() {
         return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarTitleFontSize;
+    }
+
+    private int getDefaultSubtitleTextFontSize() {
+        return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarSubtitleFontSize;
+    }
+
+    private StyleParams.Font getDefaultSubtitleFontFamily() {
+        return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.titleBarSubtitleFontFamily;
     }
 
     private boolean getDefaultTitleTextFontBold() {
