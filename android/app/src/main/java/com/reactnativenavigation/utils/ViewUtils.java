@@ -1,6 +1,6 @@
 package com.reactnativenavigation.utils;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -16,9 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.screens.Screen;
@@ -29,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ViewUtils {
     private static final AtomicInteger viewId = new AtomicInteger(1);
     private static int statusBarHeight = -1;
+    private static int toolBarHeight = -1;
 
     public static void runOnPreDraw(final View view, final Runnable task) {
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -73,18 +73,16 @@ public class ViewUtils {
         }
     }
 
-    public static float getScreenHeight() {
-        WindowManager wm = (WindowManager) NavigationApplication.instance.getSystemService(Context.WINDOW_SERVICE);
+    public static float getWindowWidth(Activity activity) {
         DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        return metrics.heightPixels;
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        return metrics.widthPixels;
     }
 
-    public static float getScreenWidth() {
-        WindowManager wm = (WindowManager) NavigationApplication.instance.getSystemService(Context.WINDOW_SERVICE);
+    public static float getWindowHeight(Activity activity) {
         DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        return metrics.widthPixels;
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        return metrics.heightPixels;
     }
 
     private static int compatGenerateViewId() {
@@ -115,7 +113,7 @@ public class ViewUtils {
     public static <T> T findChildByClass(ViewGroup root, Class clazz, Matcher<T> matcher) {
         for (int i = 0; i < root.getChildCount(); i++) {
             View view = root.getChildAt(i);
-            if (clazz.isAssignableFrom(view.getClass())) {
+            if (clazz.isAssignableFrom(view.getClass()) && (matcher == null || matcher.match((T) view))) {
                 return (T) view;
             }
 
@@ -172,7 +170,7 @@ public class ViewUtils {
         return new Point(xy[0], xy[1]);
     }
 
-    private static int getStatusBarHeight() {
+    public static int getStatusBarHeight() {
         if (statusBarHeight > 0) {
             return statusBarHeight;
         }
@@ -184,6 +182,19 @@ public class ViewUtils {
         return statusBarHeight;
     }
 
+    public static int getToolBarHeight() {
+        if (toolBarHeight > 0) {
+            return toolBarHeight;
+        }
+        final Resources resources = NavigationApplication.instance.getResources();
+        final int resourceId = resources.getIdentifier("action_bar_size", "dimen", "android");
+        toolBarHeight = resourceId > 0 ?
+                resources.getDimensionPixelSize(resourceId) :
+                (int) convertDpToPixel(56);
+        return toolBarHeight;
+    }
+
+
     public static ForegroundColorSpan[] getForegroundColorSpans(TextView view) {
         SpannedString text = new SpannedString(view.getText());
         return text.getSpans(0, text.length(), ForegroundColorSpan.class);
@@ -191,5 +202,13 @@ public class ViewUtils {
 
     public static void setSpanColor(SpannableString span, int color) {
         span.setSpan(new ForegroundColorSpan(color), 0, span.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    public static void removeRuleCompat(RelativeLayout.LayoutParams layoutParams, int rule) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            layoutParams.removeRule(rule);
+        } else {
+            layoutParams.addRule(rule, 0);
+        }
     }
 }

@@ -62,8 +62,8 @@ function dismissLightBox() {
   NativeReactModule.dismissLightBox();
 }
 
-function dismissTopModal() {
-  NativeReactModule.dismissTopModal();
+function dismissTopModal(params) {
+  NativeReactModule.dismissTopModal(params);
 }
 
 function dismissAllModals() {
@@ -121,6 +121,10 @@ function setSideMenuVisible(animated, visible, side) {
   NativeReactModule.setSideMenuVisible(animated, visible, side);
 }
 
+function setSideMenuEnabled(enabled, side) {
+  NativeReactModule.setSideMenuEnabled(enabled, side);
+}
+
 function selectTopTabByTabIndex(screenInstanceId, index) {
   NativeReactModule.selectTopTabByTabIndex(screenInstanceId, index);
 }
@@ -145,6 +149,14 @@ function setBottomTabBadgeByNavigatorId(navigatorId, badge) {
   NativeReactModule.setBottomTabBadgeByNavigatorId(navigatorId, badge);
 }
 
+function setBottomTabButtonByIndex(index, params) {
+  NativeReactModule.setBottomTabButtonByIndex(index, params);
+}
+
+function setBottomTabButtonByNavigatorId(navigatorId, params) {
+  NativeReactModule.setBottomTabButtonByNavigatorId(navigatorId, params);
+}
+
 function showSnackbar(params) {
   NativeReactModule.showSnackbar(params);
 }
@@ -159,6 +171,22 @@ function showContextualMenu(screenInstanceID, params, onButtonPressed) {
 
 function dismissContextualMenu(screenInstanceID) {
   NativeReactModule.dismissContextualMenu(screenInstanceID);
+}
+
+function setScreenStyle(screenInstanceId, style) {
+  NativeReactModule.setScreenStyle(screenInstanceId, style);
+}
+
+async function isAppLaunched() {
+  return await NativeReactModule.isAppLaunched();
+}
+
+async function isRootLaunched() {
+  return await NativeReactModule.isRootLaunched();
+}
+
+async function getCurrentlyVisibleScreenId() {
+  return await NativeReactModule.getCurrentlyVisibleScreenId();
 }
 
 module.exports = {
@@ -183,12 +211,19 @@ module.exports = {
   dismissInAppNotification,
   toggleSideMenuVisible,
   setSideMenuVisible,
+  setSideMenuEnabled,
   selectBottomTabByNavigatorId,
   selectBottomTabByTabIndex,
   setBottomTabBadgeByNavigatorId,
   setBottomTabBadgeByIndex,
+  setBottomTabButtonByNavigatorId,
+  setBottomTabButtonByIndex,
   showSnackbar,
   dismissSnackbar,
   showContextualMenu,
-  dismissContextualMenu
+  dismissContextualMenu,
+  setScreenStyle,
+  isAppLaunched,
+  isRootLaunched,
+  getCurrentlyVisibleScreenId
 };

@@ -1,5 +1,6 @@
 package com.reactnativenavigation.layouts;
 
+import android.os.Bundle;
 import android.view.View;
 
 import com.facebook.react.bridge.Callback;
@@ -36,6 +37,8 @@ public interface Layout extends ScreenStackContainer {
 
     void setSideMenuVisible(boolean animated, boolean visible, Side side);
 
+    void setSideMenuEnabled(boolean enabled, Side side);
+
     void showSnackbar(SnackbarParams params);
 
     void showSlidingOverlay(SlidingOverlayParams params);
@@ -61,4 +64,8 @@ public interface Layout extends ScreenStackContainer {
     void selectTopTabByTabIndex(String screenInstanceId, int index);
 
     void selectTopTabByScreen(String screenInstanceId);
+
+    void updateScreenStyle(String screenInstanceId, Bundle styleParams);
+
+    String getCurrentlyVisibleScreenId();
 }

@@ -24,9 +24,9 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 @property (nonatomic) BOOL _statusBarHideWithNavBar;
 @property (nonatomic) BOOL _statusBarHidden;
 @property (nonatomic) BOOL _statusBarTextColorSchemeLight;
-@property (nonatomic) BOOL _disableBackGesture;
 @property (nonatomic, strong) NSDictionary *originalNavBarImages;
 @property (nonatomic, strong) UIImageView *navBarHairlineImageView;
+@property (nonatomic, weak) id <UIGestureRecognizerDelegate> originalInteractivePopGestureDelegate;
 @end
 
 @implementation RCCViewController
@@ -94,10 +94,40 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   if (controller && componentId)
   {
     [[RCCManager sharedInstance] registerController:controller componentId:componentId componentType:type];
+    
+    if([controller isKindOfClass:[RCCViewController class]])
+    {
+      ((RCCViewController*)controller).controllerId = componentId;
+    }
+  }
+  
+  // set background image at root level
+  NSString *rootBackgroundImageName = props[@"style"][@"rootBackgroundImageName"];
+  if (rootBackgroundImageName) {
+    UIImage *image = [UIImage imageNamed: rootBackgroundImageName];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    [controller.view insertSubview:imageView atIndex:0];
   }
   
   return controller;
 }
+
+-(NSDictionary*)addCommandTypeAndTimestampIfExists:(NSDictionary*)globalProps passProps:(NSDictionary*)passProps {
+  NSMutableDictionary *modifiedPassProps = [NSMutableDictionary dictionaryWithDictionary:passProps];
+  
+  NSString *commandType = globalProps[GLOBAL_SCREEN_ACTION_COMMAND_TYPE];
+  if (commandType) {
+    modifiedPassProps[GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = commandType;
+  }
+  
+  NSString *timestamp = globalProps[GLOBAL_SCREEN_ACTION_TIMESTAMP];
+  if (timestamp) {
+    modifiedPassProps[GLOBAL_SCREEN_ACTION_TIMESTAMP] = timestamp;
+  }
+  return modifiedPassProps;
+}
+
+
 
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary *)globalProps bridge:(RCTBridge *)bridge
 {
@@ -134,7 +164,9 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   self = [super init];
   if (!self) return nil;
   
-  [self commonInit:reactView navigatorStyle:navigatorStyle props:passProps];
+  NSDictionary *modifiedPassProps = [self addCommandTypeAndTimestampIfExists:globalProps passProps:passProps];
+
+  [self commonInit:reactView navigatorStyle:navigatorStyle props:modifiedPassProps];
   
   return self;
 }
@@ -146,14 +178,20 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   self.edgesForExtendedLayout = UIRectEdgeNone; // default
   self.automaticallyAdjustsScrollViewInsets = NO; // default
   
-  self.navigatorStyle = [NSMutableDictionary dictionaryWithDictionary:navigatorStyle];
+  self.navigatorStyle = [NSMutableDictionary dictionaryWithDictionary:[[RCCManager sharedInstance] getAppStyle]];
+  [self.navigatorStyle addEntriesFromDictionary:navigatorStyle];
+
   
   [self setStyleOnInit];
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTJavaScriptWillStartLoadingNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCancelReactTouches) name:RCCViewControllerCancelReactTouchesNotification object:nil];
   
-  // In order to support 3rd party native ViewControllers, we support passing a class name as a prop mamed `ExternalNativeScreenClass`
+  self.commandType = props[GLOBAL_SCREEN_ACTION_COMMAND_TYPE];
+  self.timestamp = props[GLOBAL_SCREEN_ACTION_TIMESTAMP];
+  
+  
+  // In order to support 3rd party native ViewControllers, we support passing a class name as a prop named `ExternalNativeScreenClass`
   // In this case, we create an instance and add it as a child ViewController which preserves the VC lifecycle.
   // In case some props are necessary in the native ViewController, the ExternalNativeScreenProps can be used to pass them
   [self addExternalVCIfNecessary:props];
@@ -195,28 +233,108 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   }
 }
 
+- (void)sendGlobalScreenEvent:(NSString *)eventName endTimestampString:(NSString *)endTimestampStr shouldReset:(BOOL)shouldReset {
+  
+  if (!self.commandType) return;
+  
+  if ([self.view isKindOfClass:[RCTRootView class]]){
+    NSString *screenName = [((RCTRootView*)self.view) moduleName];
+    
+    [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:eventName body:@
+     {
+       @"commandType": self.commandType ? self.commandType : @"",
+       @"screen": screenName ? screenName : @"",
+       @"startTime": self.timestamp ? self.timestamp : @"",
+       @"endTime": endTimestampStr ? endTimestampStr : @""
+     }];
+    
+    if (shouldReset) {
+      self.commandType = nil;
+      self.timestamp = nil;
+    }
+  }
+}
+
+
+-(BOOL)isDisappearTriggeredFromPop:(NSString *)eventName {
+
+  NSArray *navigationViewControllers = self.navigationController.viewControllers;
+  
+  if (navigationViewControllers.lastObject == self || [navigationViewControllers indexOfObject:self] == NSNotFound) {
+    return YES;
+  }
+  return NO;
+}
+
+- (NSString *)getTimestampString {
+  long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+  return [NSString stringWithFormat:@"%lld", milliseconds];
+}
+
+// This is walk around for React-Native bug.
+// https://github.com/wix/react-native-navigation/issues/1446
+//
+// Buttons in ScrollView after changing route/pushing/showing modal
+// while there is a momentum scroll are not clickable.
+// Back to normal after user start scroll with momentum
+- (void)_traverseAndCall:(UIView*)view
+{
+  if([view isKindOfClass:[UIScrollView class]] && ([[(UIScrollView*)view delegate] respondsToSelector:@selector(scrollViewDidEndDecelerating:)]) ) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [[(UIScrollView*)view delegate] scrollViewDidEndDecelerating:(id)view];
+    });
+  
+  }
+  
+  [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self _traverseAndCall:obj];
+  }];
+}
+
+// fix iOS11 safeArea - https://github.com/facebook/react-native/issues/15681
+// rnn issue - https://github.com/wix/react-native-navigation/issues/1858
+- (void)_traverseAndFixScrollViewSafeArea:(UIView *)view {
+#ifdef __IPHONE_11_0
+  if ([view isKindOfClass:UIScrollView.class] && [view respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]) {
+    [((UIScrollView*)view) setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
+  }
+  
+  [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self _traverseAndFixScrollViewSafeArea:obj];
+  }];
+#endif
+  
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
+  [self sendGlobalScreenEvent:@"didAppear" endTimestampString:[self getTimestampString] shouldReset:YES];
   [self sendScreenChangedEvent:@"didAppear"];
+  
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
+  [self _traverseAndFixScrollViewSafeArea:self.view];
+  [self sendGlobalScreenEvent:@"willAppear" endTimestampString:[self getTimestampString] shouldReset:NO];
   [self sendScreenChangedEvent:@"willAppear"];
   [self setStyleOnAppear];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+  [self _traverseAndCall:self.view];
   [super viewDidDisappear:animated];
+  [self sendGlobalScreenEvent:@"didDisappear" endTimestampString:[self getTimestampString] shouldReset:YES];
   [self sendScreenChangedEvent:@"didDisappear"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
   [super viewWillDisappear:animated];
+  [self sendGlobalScreenEvent:@"willDisappear" endTimestampString:[self getTimestampString] shouldReset:NO];
   [self sendScreenChangedEvent:@"willDisappear"];
   [self setStyleOnDisappear];
 }
@@ -266,7 +384,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   if (self.navigationItem.titleView && [self.navigationItem.titleView isKindOfClass:[RCCTitleView class]]) {
     
     RCCTitleView *titleView = (RCCTitleView *)self.navigationItem.titleView;
-    RCCTitleViewHelper *helper = [[RCCTitleViewHelper alloc] init:viewController navigationController:viewController.navigationController title:titleView.titleLabel.text subtitle:titleView.subtitleLabel.text titleImageData:nil];
+    RCCTitleViewHelper *helper = [[RCCTitleViewHelper alloc] init:viewController navigationController:viewController.navigationController title:titleView.titleLabel.text subtitle:titleView.subtitleLabel.text titleImageData:nil isSetSubtitle:NO];
     [helper setup:self.navigatorStyle];
   }
   
@@ -350,6 +468,13 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     [viewController setNeedsStatusBarAppearanceUpdate];
   }
   
+  NSNumber *tabBarHidden = self.navigatorStyle[@"tabBarHidden"];
+  BOOL tabBarHiddenBool = tabBarHidden ? [tabBarHidden boolValue] : NO;
+  if (tabBarHiddenBool) {
+    UITabBar *tabBar = viewController.tabBarController.tabBar;
+    tabBar.transform = CGAffineTransformMakeTranslation(0, tabBar.frame.size.height);
+  }
+
   NSNumber *navBarHidden = self.navigatorStyle[@"navBarHidden"];
   BOOL navBarHiddenBool = navBarHidden ? [navBarHidden boolValue] : NO;
   if (viewController.navigationController.navigationBarHidden != navBarHiddenBool) {
@@ -485,24 +610,40 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     self.navBarHairlineImageView.hidden = NO;
   }
   
+ //Bug fix: in case there is a interactivePopGestureRecognizer, it prevents react-native from getting touch events on the left screen area that the gesture handles
+ //overriding the delegate of the gesture prevents this from happening while keeping the gesture intact (another option was to disable it completely by demand)
+ if(self.navigationController.viewControllers.count > 1){
+   if (self.navigationController != nil && self.navigationController.interactivePopGestureRecognizer != nil)
+   {
+     id <UIGestureRecognizerDelegate> interactivePopGestureRecognizer = self.navigationController.interactivePopGestureRecognizer.delegate;
+     if (interactivePopGestureRecognizer != nil && interactivePopGestureRecognizer != self)
+     {
+       self.originalInteractivePopGestureDelegate = interactivePopGestureRecognizer;
+       self.navigationController.interactivePopGestureRecognizer.delegate = self;
+     }
+   }
+ }
+  
   NSString *navBarCustomView = self.navigatorStyle[@"navBarCustomView"];
-  if (navBarCustomView && !self.navigationItem.titleView) {
+  if (navBarCustomView && ![self.navigationItem.titleView isKindOfClass:[RCCCustomTitleView class]]) {
     if ([self.view isKindOfClass:[RCTRootView class]]) {
       
       RCTBridge *bridge = ((RCTRootView*)self.view).bridge;
-      RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:navBarCustomView initialProperties:nil];
+      
+      NSDictionary *initialProps = self.navigatorStyle[@"navBarCustomViewInitialProps"];
+      RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:navBarCustomView initialProperties:initialProps];
       
       RCCCustomTitleView *titleView = [[RCCCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.navigatorStyle[@"navBarComponentAlignment"]];
       titleView.backgroundColor = [UIColor clearColor];
       reactView.backgroundColor = [UIColor clearColor];
-    
+      
       self.navigationItem.titleView = titleView;
       
       self.navigationItem.titleView.backgroundColor = [UIColor clearColor];
       self.navigationItem.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
       self.navigationItem.titleView.clipsToBounds = YES;
     }
-  }  
+  }
 }
 
 
@@ -523,6 +664,12 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 -(void)setStyleOnDisappear {
   self.navBarHairlineImageView.hidden = NO;
+  
+  if (self.navigationController != nil && self.navigationController.interactivePopGestureRecognizer != nil && self.originalInteractivePopGestureDelegate != nil)
+  {
+    self.navigationController.interactivePopGestureRecognizer.delegate = self.originalInteractivePopGestureDelegate;
+    self.originalInteractivePopGestureDelegate = nil;
+  }
 }
 
 // only styles that can't be set on willAppear should be set here
@@ -656,8 +803,15 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 #pragma mark - UIGestureRecognizerDelegate
 -(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-  return self._disableBackGesture ? self._disableBackGesture : YES;
+  NSNumber *disabledBackGesture = self.navigatorStyle[@"disabledBackGesture"];
+  BOOL disabledBackGestureBool = disabledBackGesture ? [disabledBackGesture boolValue] : NO;
+  return !disabledBackGestureBool;
 }
 
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+  NSNumber *disabledSimultaneousGesture = self.navigatorStyle[@"disabledSimultaneousGesture"];
+  BOOL disabledSimultaneousGestureBool = disabledSimultaneousGesture ? [disabledSimultaneousGesture boolValue] : YES; // make default value of disabledSimultaneousGesture is true
+  return !disabledSimultaneousGestureBool;
+}
 
 @end

@@ -3,10 +3,16 @@ package com.reactnativenavigation.params;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.text.TextUtils;
 
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 public class StyleParams {
+    public Bundle params;
+
+    public StyleParams(Bundle params) {
+        this.params = params;
+    }
     public static class Color {
         @ColorInt
         private Integer color = null;
@@ -46,8 +52,10 @@ public class StyleParams {
 
     public static class Font {
         private Typeface typeface;
+        String fontFamilyName;
 
         public Font(String font) {
+            fontFamilyName = font;
             typeface = new TypefaceLoader(font).getTypeFace();
         }
 
@@ -55,7 +63,7 @@ public class StyleParams {
         }
 
         public boolean hasFont() {
-            return typeface != null;
+            return typeface != null && fontFamilyName != null;
         }
 
         public Typeface get() {
@@ -64,15 +72,27 @@ public class StyleParams {
             }
             return typeface;
         }
+
+        @Override
+        public String toString() {
+            return fontFamilyName;
+        }
     }
 
     public Orientation orientation;
+    public StatusBarTextColorScheme statusBarTextColorScheme;
     public Color statusBarColor;
+    public boolean statusBarHidden;
     public Color contextualMenuStatusBarColor;
     public Color contextualMenuButtonsColor;
     public Color contextualMenuBackgroundColor;
 
     public Color topBarColor;
+    public Color topBarBorderColor;
+    public float topBarBorderWidth;
+    public String topBarReactView;
+    public String topBarReactViewAlignment;
+    public Bundle topBarReactViewInitialProps;
     public CollapsingTopBarParams collapsingTopBarParams;
     public boolean topBarCollapseOnScroll;
     public boolean topBarElevationShadowEnabled;
@@ -85,11 +105,17 @@ public class StyleParams {
     public boolean topBarTranslucent;
     public Color titleBarTitleColor;
     public Color titleBarSubtitleColor;
+    public int titleBarSubtitleFontSize;
+    public Font titleBarSubtitleFontFamily;
     public Color titleBarButtonColor;
     public Color titleBarDisabledButtonColor;
     public Font titleBarTitleFont;
+    public int titleBarTitleFontSize;
+    public boolean titleBarTitleFontBold;
     public boolean titleBarTitleTextCentered;
+    public int titleBarHeight;
     public boolean backButtonHidden;
+    public Font titleBarButtonFontFamily;
 
     public Color topTabTextColor;
     public Color topTabIconColor;
@@ -98,6 +124,7 @@ public class StyleParams {
     public int selectedTopTabIndicatorHeight;
     public Color selectedTopTabIndicatorColor;
     public boolean topTabsScrollable;
+    public int topTabsHeight;
 
     public Color screenBackgroundColor;
 
@@ -105,6 +132,7 @@ public class StyleParams {
 
     public Color snackbarButtonColor;
 
+    public int bottomTabsInitialIndex;
     public boolean bottomTabsHidden;
     public boolean bottomTabsHiddenOnScroll;
     public Color bottomTabsColor;
@@ -116,4 +144,12 @@ public class StyleParams {
     public Font bottomTabFontFamily;
 
     public Color navigationBarColor;
+
+    public boolean hasTopBarCustomComponent() {
+        return !TextUtils.isEmpty(topBarReactView);
+    }
+
+    public boolean hasCustomTitleBarHeight() {
+        return titleBarHeight != -1;
+    }
 }

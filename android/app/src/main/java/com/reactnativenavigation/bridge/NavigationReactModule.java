@@ -18,6 +18,7 @@ import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.ContextualMenuParamsParser;
 import com.reactnativenavigation.params.parsers.FabParamsParser;
 import com.reactnativenavigation.params.parsers.LightBoxParamsParser;
+import com.reactnativenavigation.params.parsers.ScreenParamsParser;
 import com.reactnativenavigation.params.parsers.SlidingOverlayParamsParser;
 import com.reactnativenavigation.params.parsers.SnackbarParamsParser;
 import com.reactnativenavigation.params.parsers.TitleBarButtonParamsParser;
@@ -97,6 +98,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setScreenStyle(String screenInstanceId, ReadableMap style) {
+        NavigationCommandsHandler.setScreenStyle(screenInstanceId, BundleConverter.toBundle(style));
+    }
+
+    @ReactMethod
     public void setBottomTabBadgeByIndex(Integer index, String badge) {
         NavigationCommandsHandler.setBottomTabBadgeByIndex(index, badge);
     }
@@ -104,6 +110,16 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setBottomTabBadgeByNavigatorId(String navigatorId, String badge) {
         NavigationCommandsHandler.setBottomTabBadgeByNavigatorId(navigatorId, badge);
+    }
+
+    @ReactMethod
+    public void setBottomTabButtonByIndex(Integer index, final ReadableMap params) {
+        NavigationCommandsHandler.setBottomTabButtonByIndex(index, BundleConverter.toBundle(params));
+    }
+
+    @ReactMethod
+    public void setBottomTabButtonByNavigatorId(String navigatorId, final ReadableMap params) {
+        NavigationCommandsHandler.setBottomTabButtonByNavigatorId(navigatorId, BundleConverter.toBundle(params));
     }
 
     @ReactMethod
@@ -134,6 +150,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setSideMenuVisible(boolean animated, boolean visible, String side) {
         NavigationCommandsHandler.setSideMenuVisible(animated, visible, Side.fromString(side));
+    }
+
+    @ReactMethod
+    public void setSideMenuEnabled(boolean enabled, String side) {
+        NavigationCommandsHandler.setSideMenuEnabled(enabled, Side.fromString(side));
     }
 
     @ReactMethod
@@ -196,8 +217,8 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void dismissTopModal() {
-        NavigationCommandsHandler.dismissTopModal();
+    public void dismissTopModal(final ReadableMap params) {
+        NavigationCommandsHandler.dismissTopModal(ScreenParamsParser.parse(BundleConverter.toBundle(params)));
     }
 
     @ReactMethod
@@ -237,5 +258,20 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getOrientation(Promise promise) {
         NavigationCommandsHandler.getOrientation(promise);
+    }
+
+    @ReactMethod
+    public void isAppLaunched(Promise promise) {
+        NavigationCommandsHandler.isAppLaunched(promise);
+    }
+
+    @ReactMethod
+    public void isRootLaunched(Promise promise) {
+        NavigationCommandsHandler.isRootLaunched(promise);
+    }
+
+    @ReactMethod
+    public void getCurrentlyVisibleScreenId(Promise promise) {
+        NavigationCommandsHandler.getCurrentlyVisibleScreenId(promise);
     }
 }

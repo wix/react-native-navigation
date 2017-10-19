@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 public class ActivityCallbacks {
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -45,4 +46,9 @@ public class ActivityCallbacks {
     public void onConfigurationChanged(Configuration newConfig) {
 
     }
+
+    public void onKeyUp(int keyCode, KeyEvent event) {
+
+    }
+
 }

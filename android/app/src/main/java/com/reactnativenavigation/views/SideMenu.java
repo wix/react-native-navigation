@@ -4,14 +4,21 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
+import com.reactnativenavigation.screens.NavigationType;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 
 public class SideMenu extends DrawerLayout {
+    private SideMenuParams leftMenuParams;
+    private SideMenuParams rightMenuParams;
+
     public enum Side {
         Left(Gravity.LEFT), Right(Gravity.RIGHT);
 
@@ -29,12 +36,14 @@ public class SideMenu extends DrawerLayout {
     private ContentView leftSideMenuView;
     private ContentView rightSideMenuView;
     private RelativeLayout contentContainer;
+    private SimpleDrawerListener sideMenuListener;
 
     public RelativeLayout getContentContainer() {
         return contentContainer;
     }
 
     public void destroy() {
+        removeDrawerListener(sideMenuListener);
         destroySideMenu(leftSideMenuView);
         destroySideMenu(rightSideMenuView);
     }
@@ -43,17 +52,26 @@ public class SideMenu extends DrawerLayout {
         if (sideMenuView == null) {
             return;
         }
+        removeDrawerListener(sideMenuListener);
         sideMenuView.unmountReactView();
         removeView(sideMenuView);
     }
 
     public void setVisible(boolean visible, boolean animated, Side side) {
-        if (!isShown() && visible) {
+        if (visible) {
             openDrawer(animated, side);
         }
 
-        if (isShown() && !visible) {
+        if (!visible) {
             closeDrawer(animated, side);
+        }
+    }
+
+    public void setEnabled(boolean enabled, Side side) {
+        if (enabled) {
+            setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, side.gravity);
+        } else {
+            setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, side.gravity);
         }
     }
 
@@ -79,11 +97,14 @@ public class SideMenu extends DrawerLayout {
 
     public SideMenu(Context context, SideMenuParams leftMenuParams, SideMenuParams rightMenuParams) {
         super(context);
+        this.leftMenuParams = leftMenuParams;
+        this.rightMenuParams = rightMenuParams;
         createContentContainer();
         leftSideMenuView = createSideMenu(leftMenuParams);
         rightSideMenuView = createSideMenu(rightMenuParams);
         setStyle(leftMenuParams);
         setStyle(rightMenuParams);
+        setScreenEventListener();
     }
 
     private void createContentContainer() {
@@ -114,6 +135,31 @@ public class SideMenu extends DrawerLayout {
                 sideMenuView.setLayoutParams(lp);
             }
         });
+    }
+
+    public void setScreenEventListener() {
+        sideMenuListener = new SimpleDrawerListener() {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(getVisibleDrawerScreenParams(), NavigationType.OpenSideMenu);
+                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(getVisibleDrawerScreenParams(), NavigationType.OpenSideMenu);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(getVisibleDrawerScreenParams((ContentView) drawerView), NavigationType.CloseSideMenu);
+                NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(getVisibleDrawerScreenParams((ContentView) drawerView), NavigationType.CloseSideMenu);
+            }
+
+            private BaseScreenParams getVisibleDrawerScreenParams() {
+                return isDrawerOpen(Side.Left.gravity) ? leftMenuParams : rightMenuParams;
+            }
+
+            private BaseScreenParams getVisibleDrawerScreenParams(ContentView drawerView) {
+                return drawerView == leftSideMenuView ? leftMenuParams : rightMenuParams;
+            }
+        };
+        addDrawerListener(sideMenuListener);
     }
 
     private void setStyle(SideMenuParams params) {

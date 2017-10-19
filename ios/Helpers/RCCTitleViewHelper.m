@@ -8,6 +8,7 @@
 
 #import "RCCTitleViewHelper.h"
 #import <React/RCTConvert.h>
+#import "RCCViewController.h"
 #import "RCTHelpers.h"
 
 @implementation RCCTitleView
@@ -23,6 +24,7 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *subtitle;
 @property (nonatomic, strong) id titleImageData;
+@property (nonatomic) BOOL isSetSubtitle;
 
 @property (nonatomic, strong) RCCTitleView *titleView;
 
@@ -35,12 +37,18 @@
 navigationController:(UINavigationController*)navigationController
                title:(NSString*)title subtitle:(NSString*)subtitle
       titleImageData:(id)titleImageData
+       isSetSubtitle:(BOOL)isSetSubtitle
+
 {
     self = [super init];
     if (self) {
         self.viewController = viewController;
         self.navigationController = navigationController;
-        self.title = [RCCTitleViewHelper validateString:title];
+        if(isSetSubtitle){
+            self.title = viewController.navigationItem.title;
+        } else {
+            self.title = [RCCTitleViewHelper validateString:title];
+        }
         self.subtitle = [RCCTitleViewHelper validateString:subtitle];
         self.titleImageData = titleImageData;
     }
@@ -60,6 +68,13 @@ navigationController:(UINavigationController*)navigationController
     if (!self.navigationController)
     {
         return;
+    }
+    
+    if ([self.viewController isKindOfClass:[RCCViewController class]]) {
+        NSMutableDictionary *mergedStyle = [NSMutableDictionary dictionaryWithDictionary:((RCCViewController*)self.viewController).navigatorStyle];
+        [mergedStyle addEntriesFromDictionary:style];
+        
+        style = mergedStyle;
     }
     
     CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;
@@ -157,7 +172,7 @@ navigationController:(UINavigationController*)navigationController
     labelframe.size = labelSize;
     subtitleLabel.frame = labelframe;
     [subtitleLabel sizeToFit];
-
+    
     [self.titleView addSubview:subtitleLabel];
     
     return subtitleLabel;

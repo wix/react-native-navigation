@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import Navigation from './../Navigation';
-import Controllers, {Modal, Notification} from './controllers';
+import Controllers, {Modal, Notification, ScreenUtils} from './controllers';
 const React = Controllers.hijackReact();
 const {
   ControllerRegistry,
@@ -46,17 +46,31 @@ function startTabBasedApp(params) {
         return this.renderBody();
       } else {
         const navigatorID = controllerID + '_drawer';
+
+        const leftScreenId = _.uniqueId('screenInstanceID');
+        const rightScreenId = _.uniqueId('screenInstanceID')
+
+        const { navigatorStyle: leftNavigatorStyle } = params.drawer.left
+          ? _mergeScreenSpecificSettings(params.drawer.left.screen, leftScreenId, params.drawer.left)
+          : {};
+
+        const { navigatorStyle: rightNavigatorStyle } = params.drawer.right
+          ? _mergeScreenSpecificSettings(params.drawer.right.screen, rightScreenId, params.drawer.right)
+          : {};
+
         return (
           <DrawerControllerIOS id={navigatorID}
-                               componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
-                               passPropsLeft={{navigatorID: navigatorID}}
-                               componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
-                               passPropsRight={{navigatorID: navigatorID}}
-                               disableOpenGesture={params.drawer.disableOpenGesture}
-                               type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
-                               animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
-                               style={params.drawer.style}
-                               appStyle={params.appStyle}
+            componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
+            styleLeft={leftNavigatorStyle}
+            passPropsLeft={{navigatorID: navigatorID}}
+            componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
+            styleRight={rightNavigatorStyle}
+            passPropsRight={{navigatorID: navigatorID}}
+            disableOpenGesture={params.drawer.disableOpenGesture}
+            type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
+            animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
+            style={params.drawer.style}
+            appStyle={params.appStyle}
           >
             {this.renderBody()}
           </DrawerControllerIOS>
@@ -68,7 +82,8 @@ function startTabBasedApp(params) {
         <TabBarControllerIOS
           id={controllerID + '_tabs'}
           style={params.tabsStyle}
-          appStyle={params.appStyle}>
+          appStyle={params.appStyle}
+          initialTabIndex={params.initialTabIndex}>
           {
             params.tabs.map(function(tab, index) {
               return (
@@ -82,7 +97,7 @@ function startTabBasedApp(params) {
                     passProps={{
                     navigatorID: tab.navigationParams.navigatorID,
                     screenInstanceID: tab.navigationParams.screenInstanceID,
-                    navigatorEventID: tab.navigationParams.navigatorEventID
+                    navigatorEventID: tab.navigationParams.navigatorEventID,
                   }}
                     style={tab.navigationParams.navigatorStyle}
                     leftButtons={tab.navigationParams.navigatorButtons.leftButtons}
@@ -97,6 +112,7 @@ function startTabBasedApp(params) {
     }
   });
   savePassProps(params);
+  _.set(params, 'passProps.timestamp', Date.now());
 
   ControllerRegistry.registerController(controllerID, () => Controller);
   ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {});
@@ -241,24 +257,29 @@ function navigatorPush(navigator, params) {
     titleImage: params.titleImage,
     component: params.screen,
     animated: params.animated,
+    animationType: params.animationType,
     passProps: passProps,
     style: navigatorStyle,
     backButtonTitle: params.backButtonTitle,
     backButtonHidden: params.backButtonHidden,
     leftButtons: navigatorButtons.leftButtons,
-    rightButtons: navigatorButtons.rightButtons
+    rightButtons: navigatorButtons.rightButtons,
+    timestamp: Date.now()
   });
 }
 
 function navigatorPop(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).pop({
-    animated: params.animated
+    animated: params.animated,
+    animationType: params.animationType,
+    timestamp: Date.now()
   });
 }
 
 function navigatorPopToRoot(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).popToRoot({
-    animated: params.animated
+    animated: params.animated,
+    animationType: params.animationType
   });
 }
 
@@ -294,6 +315,7 @@ function navigatorResetTo(navigator, params) {
     titleImage: params.titleImage,
     component: params.screen,
     animated: params.animated,
+    animationType: params.animationType,
     passProps: passProps,
     style: navigatorStyle,
     leftButtons: navigatorButtons.leftButtons,
@@ -301,12 +323,28 @@ function navigatorResetTo(navigator, params) {
   });
 }
 
+function navigatorSetDrawerEnabled(navigator, params) {
+    const controllerID = navigator.navigatorID.split('_')[0];
+    Controllers.NavigationControllerIOS(controllerID + '_drawer').setDrawerEnabled(params)
+}
+
 function navigatorSetTitle(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).setTitle({
     title: params.title,
     subtitle: params.subtitle,
     titleImage: params.titleImage,
-    style: params.navigatorStyle
+    style: params.navigatorStyle,
+    isSetSubtitle: false
+  });
+}
+
+function navigatorSetSubtitle(navigator, params) {
+  Controllers.NavigationControllerIOS(navigator.navigatorID).setTitle({
+    title: params.title,
+    subtitle: params.subtitle,
+    titleImage: params.titleImage,
+    style: params.navigatorStyle,
+    isSetSubtitle: true
   });
 }
 
@@ -360,13 +398,32 @@ function navigatorSetTabBadge(navigator, params) {
   if (params.tabIndex || params.tabIndex === 0) {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').setBadge({
       tabIndex: params.tabIndex,
-      badge: params.badge
+      badge: params.badge,
+      badgeColor: params.badgeColor
     });
   } else {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').setBadge({
       contentId: navigator.navigatorID,
       contentType: 'NavigationControllerIOS',
       badge: params.badge
+    });
+  }
+}
+
+function navigatorSetTabButton(navigator, params) {
+  const controllerID = navigator.navigatorID.split('_')[0];
+  if (params.tabIndex || params.tabIndex === 0) {
+    Controllers.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
+      tabIndex: params.tabIndex,
+      icon: params.icon,
+      selectedIcon: params.selectedIcon
+    });
+  } else {
+    Controllers.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
+      contentId: navigator.navigatorID,
+      contentType: 'NavigationControllerIOS',
+      icon: params.icon,
+      selectedIcon: params.selectedIcon
     });
   }
 }
@@ -419,6 +476,7 @@ function showModal(params) {
   passProps.navigatorID = navigatorID;
   passProps.screenInstanceID = screenInstanceID;
   passProps.navigatorEventID = navigatorEventID;
+  passProps.timestamp = Date.now();
 
   params.navigationParams = {
     screenInstanceID,
@@ -524,7 +582,7 @@ function showInAppNotification(params) {
     navigatorEventID,
     navigatorID
   };
-  
+
   savePassProps(params);
 
   let args = {
@@ -578,6 +636,10 @@ function dismissContextualMenu() {
   // Android only
 }
 
+async function getCurrentlyVisibleScreenId() {
+  return await ScreenUtils.getCurrentlyVisibleScreenId();
+}
+
 export default {
   startTabBasedApp,
   startSingleScreenApp,
@@ -593,14 +655,18 @@ export default {
   showInAppNotification,
   dismissInAppNotification,
   navigatorSetButtons,
+  navigatorSetDrawerEnabled,
   navigatorSetTitle,
+  navigatorSetSubtitle,
   navigatorSetStyle,
   navigatorSetTitleImage,
   navigatorToggleDrawer,
   navigatorToggleTabs,
   navigatorSetTabBadge,
+  navigatorSetTabButton,
   navigatorSwitchToTab,
   navigatorToggleNavBar,
   showContextualMenu,
-  dismissContextualMenu
+  dismissContextualMenu,
+  getCurrentlyVisibleScreenId
 };

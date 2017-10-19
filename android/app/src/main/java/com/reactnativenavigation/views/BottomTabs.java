@@ -11,6 +11,7 @@ import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.utils.Constants;
 
 import java.util.List;
 
@@ -42,13 +43,25 @@ public class BottomTabs extends AHBottomNavigation {
             setBackgroundColor(params.bottomTabsColor);
         }
         if (params.bottomTabsButtonColor.hasColor()) {
-            setInactiveColor(params.bottomTabsButtonColor.getColor());
+            if (getInactiveColor() != params.bottomTabsButtonColor.getColor()) {
+                setInactiveColor(params.bottomTabsButtonColor.getColor());
+            }
         }
         if (params.selectedBottomTabsButtonColor.hasColor()) {
-            setAccentColor(params.selectedBottomTabsButtonColor.getColor());
+            if (getAccentColor() != params.selectedBottomTabsButtonColor.getColor()) {
+                setAccentColor(params.selectedBottomTabsButtonColor.getColor());
+            }
         }
 
         setVisibility(params.bottomTabsHidden, true);
+    }
+
+    public void setTabButton(ScreenParams params, Integer index) {
+        if (params.tabIcon != null) {
+            AHBottomNavigationItem item = this.getItem(index);
+            item.setDrawable(params.tabIcon);
+            refresh();
+        }
     }
 
     private void setTitlesDisplayState() {
@@ -81,8 +94,10 @@ public class BottomTabs extends AHBottomNavigation {
 
     private void setBackgroundColor(StyleParams.Color bottomTabsColor) {
         if (bottomTabsColor.hasColor()) {
-            setDefaultBackgroundColor(bottomTabsColor.getColor());
-        } else {
+            if (bottomTabsColor.getColor() != getDefaultBackgroundColor()) {
+                setDefaultBackgroundColor(bottomTabsColor.getColor());
+            }
+        } else if (Color.WHITE != getDefaultBackgroundColor()){
             setDefaultBackgroundColor(Color.WHITE);
         }
     }
@@ -92,14 +107,9 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     private void createVisibilityAnimator() {
-        ViewUtils.runOnPreDraw(this, new Runnable() {
-            @Override
-            public void run() {
-                visibilityAnimator = new VisibilityAnimator(BottomTabs.this,
-                        VisibilityAnimator.HideDirection.Down,
-                        getHeight());
-            }
-        });
+        visibilityAnimator = new VisibilityAnimator(BottomTabs.this,
+                VisibilityAnimator.HideDirection.Down,
+                Constants.BOTTOM_TABS_HEIGHT);
     }
 
     private void setStyle() {

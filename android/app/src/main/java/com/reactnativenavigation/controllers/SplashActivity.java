@@ -11,6 +11,7 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.ReactDevPermission;
 
 public abstract class SplashActivity extends AppCompatActivity {
+    public static boolean isResumed = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,9 +23,14 @@ public abstract class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        isResumed = true;
 
         if (NavigationApplication.instance.getReactGateway().hasStartedCreatingContext()) {
-            finish();
+            NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
+            if (NavigationApplication.instance.clearHostOnActivityDestroy()) {
+                overridePendingTransition(0, 0);
+                finish();
+            }
             return;
         }
 
@@ -34,12 +40,18 @@ public abstract class SplashActivity extends AppCompatActivity {
         }
 
         if (NavigationApplication.instance.isReactContextInitialized()) {
-            finish();
+            NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
             return;
         }
 
         // TODO I'm starting to think this entire flow is incorrect and should be done in Application
         NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isResumed = false;
     }
 
     private void setSplashLayout() {

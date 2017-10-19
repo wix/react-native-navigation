@@ -54,7 +54,7 @@ public class MainApplication extends NavigationApplication {
 public class MyApplication extends NavigationApplication {
     @Override
     public void onCreate() {
-        registerActivityLifecycleCallbacks(new LifecycleCallbacks() {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -68,7 +68,52 @@ public class MyApplication extends NavigationApplication {
 `MainActivity` extends `SplashActiviy` which is used to start the react context. Once react is up and running `MainActivity` is **stopped** and another activity takes over to run our app: `NavigationActivity`. Due to this design, there's usually no point in overriding lifecycle callbacks in `MainActivity`.
 
 ## Splash screen
-Override `getSplashLayout` or `createSplashLayout` in `MainActivity` to provide a splash layout which will be displayed while Js context initialises.
+Override `getSplashLayout` or `createSplashLayout` in `MainActivity` to provide a splash layout which will be displayed while Js context initialises, for example:
+
+```java
+import android.widget.LinearLayout;
+import android.graphics.Color;
+import android.widget.TextView;
+import android.view.Gravity;
+import android.util.TypedValue;
+
+import com.reactnativenavigation.controllers.SplashActivity;
+
+public class MainActivity extends SplashActivity {
+
+    @Override
+    public LinearLayout createSplashLayout() {
+        LinearLayout view = new LinearLayout(this);
+        TextView textView = new TextView(this);
+
+        view.setBackgroundColor(Color.parseColor("#607D8B"));
+        view.setGravity(Gravity.CENTER);
+
+        textView.setTextColor(Color.parseColor("#FFFFFF"));
+        textView.setText("React Native Navigation");
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 40);
+
+        view.addView(textView);
+        return view;
+    }
+}
+```
+
+## Snackbar
+Snackbars provide lightweight feedback about an operation. They show a brief message at the bottom of the screen. Snackbars appear above all other elements on screen and only one can be displayed at a time.
+
+```js
+this.props.navigator.showSnackbar({
+  text: 'Hello from Snackbar',
+  actionText: 'done', // optional
+  actionId: 'fabClicked', // Mandatory if you've set actionText
+  actionColor: 'green', // optional
+  textColor: 'red', // optional
+  backgroundColor: 'blue', // optional
+  duration: 'indefinite' // default is `short`. Available options: short, long, indefinite
+});
+```
 
 ## Collapsing React header
 A screen can have a header, either an image or a react component, that collapses as the screen is scrolled.
@@ -257,7 +302,29 @@ specify the rate of change of a parameter over time
 ### Screen animation
 When Shared Element Transition is used, a cross-fade transition is used between the entering and exiting screens. Make sure the root `View` has a background color in order for the cross-fade animation to be visible.
 
-To disable the corss-fade animation, set `animated: false` when pushing the second screen. Disabling this animation is useful if you'd like to animate the reset of the elements on screen your self.
+To disable the cross-fade animation, set `animated: false` when pushing the second screen. Disabling this animation is useful if you'd like to animate the reset of the elements on screen your self.
+
+## Compatibility with HeadlessJs
+In most cases, `Navigation.startSingleScreenApp()` or `Navigation.startTabBasedApp` are called from global context. If the bundle is parsed when the app is not running, this will result in the app opening even though the developer had no intent to open the app.
+
+`Navigation.startSingleScreenApp()` or `Navigation.startTabBasedApp` are called from global context since RNN assums react context isn't created when the app is launched. When a background task completes, react context is put into a **paused state** and not destroyed. Therefore we should also handle the use case where our app is opened when react context is created , and the bundle has already been parsed. We do that by listening to `RNN.AppLaunched` event.
+
+```js
+import {Navigation, NativeEventsReceiver} from 'react-native-navigation';
+
+Promise.resolve(Navigation.isAppLaunched())
+  .then(appLaunched => {
+    if (appLaunched) {
+      startApp(); // App is launched -> show UI
+    } else {
+      new NativeEventsReceiver().appLaunched(startApp); // App hasn't been launched yet -> show the UI only when needed.
+    }
+  });
+
+function startApp() {
+  Navigation.startTabBasedApp({ ... });
+}
+```
 
 ## Reloading from terminal
 You can easily reload your app from terminal using `adb shell am broadcast -a react.native.RELOAD`. This is particularly useful when debugging on device.

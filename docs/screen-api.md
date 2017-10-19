@@ -10,9 +10,10 @@ Push a new screen into this screen's navigation stack.
 this.props.navigator.push({
   screen: 'example.ScreenThree', // unique ID registered with Navigation.registerScreen
   title: undefined, // navigation bar title of the pushed screen (optional)
-  titleImage: require('../../img/my_image.png'), //navigation bar title image instead of the title text of the pushed screen (optional)
+  titleImage: require('../../img/my_image.png'), // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
   passProps: {}, // Object that will be passed as props to the pushed screen (optional)
   animated: true, // does the push have transition animation or does it happen immediately (optional)
+  animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the push have different transition animation (optional)
   backButtonTitle: undefined, // override the back button title (optional)
   backButtonHidden: false, // hide the back button altogether (optional)
   navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
@@ -26,7 +27,8 @@ Pop the top screen from this screen's navigation stack.
 
 ```js
 this.props.navigator.pop({
-  animated: true // does the pop have transition animation or does it happen immediately (optional)
+  animated: true, // does the pop have transition animation or does it happen immediately (optional)
+  animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
 });
 ```
 
@@ -36,7 +38,8 @@ Pop all the screens until the root from this screen's navigation stack.
 
 ```js
 this.props.navigator.popToRoot({
-  animated: true // does the pop have transition animation or does it happen immediately (optional)
+  animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+  animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
 });
 ```
 
@@ -49,7 +52,8 @@ this.props.navigator.resetTo({
   screen: 'example.ScreenThree', // unique ID registered with Navigation.registerScreen
   title: undefined, // navigation bar title of the pushed screen (optional)
   passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
-  animated: true, // does the push have transition animation or does it happen immediately (optional)
+  animated: true, // does the resetTo have transition animation or does it happen immediately (optional)
+  animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the resetTo have different transition animation (optional)
   navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
   navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
 });
@@ -100,7 +104,8 @@ this.props.navigator.showLightBox({
  style: {
    backgroundBlur: "dark", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
    backgroundColor: "#ff000080" // tint color for the background, you can specify alpha here (optional)
- }
+ },
+ adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
 });
 ```
 
@@ -112,9 +117,21 @@ Dismiss the current lightbox.
 this.props.navigator.dismissLightBox();
 ```
 
+## showInAppNotification(params = {})
+
+Show in-app notification. This generally looks like a pop-up window that can appear at the top of the screen.
+
+```js
+this.props.navigator.showInAppNotification({
+ screen: "example.InAppNotification", // unique ID registered with Navigation.registerScreen
+ passProps: {}, // simple serializable object that will pass as props to the in-app notification (optional)
+ autoDismissTimerSec: 1 // auto dismiss notification in seconds
+});
+```
+
 ## handleDeepLink(params = {})
 
-Trigger a deep link within the app. See [deep links](#deep-links) for more details about how screens can listen for deep link events.
+Trigger a deep link within the app. See [deep links](https://wix.github.io/react-native-navigation/#/deep-links) for more details about how screens can listen for deep link events.
 
 ```js
 this.props.navigator.handleDeepLink({
@@ -126,15 +143,6 @@ this.props.navigator.handleDeepLink({
 ```js
   import {Navigation} from 'react-native-navigation';
   Navigation.handleDeepLink(...);
-```
-
-## setOnNavigatorEvent(callback)
-
-Set a handler for navigator events (like nav button press). This would normally go in your component constructor.
-
-```js
-// this.onNavigatorEvent will be our handler
-this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 ```
 
 ## setButtons(params = {})
@@ -159,6 +167,17 @@ this.props.navigator.setTitle({
 });
 ```
 
+
+## setSubTitle(params = {})
+
+Set the nav bar subtitle dynamically. If your subtitle doesn't change during runtime, set it when the screen is defined / pushed.
+
+```js
+this.props.navigator.setSubTitle({
+  subtitle: "Connecting..."
+});
+```
+
 ## toggleDrawer(params = {})
 
 Toggle the side menu drawer assuming you have one in your app.
@@ -168,6 +187,17 @@ this.props.navigator.toggleDrawer({
   side: 'left', // the side of the drawer since you can have two, 'left' / 'right'
   animated: true, // does the toggle have transition animation or does it happen immediately (optional)
   to: 'open' // optional, 'open' = open the drawer, 'closed' = close it, missing = the opposite of current state
+});
+```
+
+## setDrawerEnabled(params = {})
+
+Enables or disables the side menu drawer assuming you have one in your app. Both drawers are enabled by default.
+
+```js
+this.props.navigator.setDrawerEnabled({
+  side: 'left', // the side of the drawer since you can have two, 'left' / 'right'
+  enabled: false // should the drawer be enabled or disabled (locked closed)
 });
 ```
 
@@ -189,7 +219,19 @@ Set the badge on a tab (any string or numeric value).
 ```js
 this.props.navigator.setTabBadge({
   tabIndex: 0, // (optional) if missing, the badge will be added to this screen's tab
-  badge: 17 // badge value, null to remove badge
+  badge: 17, // badge value, null to remove badge
+  badgeColor: '#006400', // (optional) if missing, the badge will use the default color
+});
+```
+## setTabButton(params = {})
+
+Change the tab icon on a bottom tab.
+
+```js
+this.props.navigator.setTabButton({
+  tabIndex: 0, // (optional) if missing, the icon will be added to this screen's tab
+  icon: require('../img/one.png'), // local image asset for the tab icon unselected state (optional)
+  selectedIcon: require('../img/one_selected.png'), // local image asset for the tab icon selected state (optional, iOS only)
 });
 ```
 
@@ -214,8 +256,20 @@ this.props.navigator.toggleNavBar({
 });
 ```
 
+## setOnNavigatorEvent(callback)
+
+Set a handler for navigator events (like nav button press). This would normally go in your component constructor.
+
+```js
+// this.onNavigatorEvent will be our handler
+this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+```
+
 # Screen Visibility
-Listen to screen visibility events in onNavigatorEvent handler:
+
+`const isVisible = await this.props.navigator.screenIsCurrentlyVisible()`
+
+## Listen visibility events in onNavigatorEvent handler
 
 ```js
 export default class ExampleScreen extends Component {
@@ -234,6 +288,55 @@ export default class ExampleScreen extends Component {
       case 'didDisappear':
         break;
     }
+  }
+}
+```
+
+## Listen to visibility events globally
+
+```js
+import {ScreenVisibilityListener as RNNScreenVisibilityListener} from 'react-native-navigation';
+
+export class ScreenVisibilityListener {
+
+  constructor() {
+    this.listener = new RNNScreenVisibilityListener({
+      didAppear: ({screen, startTime, endTime, commandType}) => {
+        console.log('screenVisibility', `Screen ${screen} displayed in ${endTime - startTime} millis after [${commandType}]`);
+      }
+    });
+  }
+
+  register() {
+    this.listener.register();
+  }
+
+  unregister() {
+    if (this.listener) {
+      this.listener.unregister();
+      this.listener = null;
+    }
+  }
+}
+```
+
+# Listening to tab selected events
+In order to listen to `bottomTabSelected` event, set an `onNavigatorEventListener` on screens that are pushed to BottomTab. The event is dispatched to the top most screen pushed to the selected tab's stack.
+
+```js
+export default class ExampleScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  onNavigatorEvent(event) {
+	if (event.id === 'bottomTabSelected') {
+	  console.log('Tab selected!');
+	}
+	if (event.id === 'bottomTabReselected') {
+	  console.log('Tab reselected!');
+	}
   }
 }
 ```

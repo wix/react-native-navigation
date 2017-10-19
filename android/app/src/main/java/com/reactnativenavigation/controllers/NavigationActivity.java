@@ -35,6 +35,8 @@ import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.react.ReactGateway;
+import com.reactnativenavigation.screens.NavigationType;
+import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.OrientationHelper;
 import com.reactnativenavigation.views.SideMenu.Side;
 
@@ -133,7 +135,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onPause();
         currentActivity = null;
         IntentDataHandler.onPause(getIntent());
-        getReactGateway().onPauseActivity();
+        getReactGateway().onPauseActivity(this);
         NavigationApplication.instance.getActivityCallbacks().onActivityPaused(this);
         EventBus.instance.unregister(this);
     }
@@ -164,7 +166,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     private void destroyJsIfNeeded() {
         if (currentActivity == null || currentActivity.isFinishing()) {
-            getReactGateway().onDestroyApp();
+            getReactGateway().onDestroyApp(this);
         }
     }
 
@@ -188,6 +190,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        NavigationApplication.instance.getActivityCallbacks().onKeyUp(keyCode, event);
         return getReactGateway().onKeyUp(getCurrentFocus(), keyCode) || super.onKeyUp(keyCode, event);
     }
 
@@ -235,11 +238,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     void showModal(ScreenParams screenParams) {
+        Screen previousScreen = layout.getCurrentScreen();
+        NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(previousScreen.getScreenParams(), NavigationType.ShowModal);
+        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(previousScreen.getScreenParams(), NavigationType.ShowModal);
         modalController.showModal(screenParams);
     }
 
-    void dismissTopModal() {
-        modalController.dismissTopModal();
+    void dismissTopModal(ScreenParams params) {
+        modalController.dismissTopModal(params);
     }
 
     void dismissAllModals() {
@@ -291,12 +297,21 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.setFab(screenInstanceId, navigatorEventId, fab);
     }
 
+    public void setScreenStyle(String screenInstanceId, Bundle styleParams) {
+        layout.updateScreenStyle(screenInstanceId, styleParams);
+        modalController.updateScreenStyle(screenInstanceId, styleParams);
+    }
+
     public void toggleSideMenuVisible(boolean animated, Side side) {
         layout.toggleSideMenuVisible(animated, side);
     }
 
     public void setSideMenuVisible(boolean animated, boolean visible, Side side) {
         layout.setSideMenuVisible(animated, visible, side);
+    }
+
+    public void setSideMenuEnabled(boolean enabled, Side side) {
+        layout.setSideMenuEnabled(enabled, side);
     }
 
     public void selectTopTabByTabIndex(String screenInstanceId, int index) {
@@ -333,6 +348,18 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         }
     }
 
+    public void setBottomTabButtonByIndex(Integer index, ScreenParams params) {
+        if (layout instanceof BottomTabsLayout) {
+            ((BottomTabsLayout) layout).setBottomTabButtonByIndex(index, params);
+        }
+    }
+
+    public void setBottomTabButtonByNavigatorId(String navigatorId, ScreenParams params) {
+        if (layout instanceof BottomTabsLayout) {
+            ((BottomTabsLayout) layout).setBottomTabButtonByNavigatorId(navigatorId, params);
+        }
+    }
+
     public void showSlidingOverlay(SlidingOverlayParams params) {
         if (modalController.isShowing()) {
             modalController.showSlidingOverlay(params);
@@ -360,8 +387,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked) {
         if (modalController.isShowing()) {
             modalController.showContextualMenu(screenInstanceId, params, onButtonClicked);
-        } else
-        {
+        } else {
             layout.showContextualMenu(screenInstanceId, params, onButtonClicked);
         }
     }
@@ -386,6 +412,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     private void handleModalDismissedEvent() {
         if (!modalController.isShowing()) {
             layout.onModalDismissed();
+            OrientationHelper.setOrientation(this, AppStyle.appStyle.orientation);
         }
     }
 
@@ -415,5 +442,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             mPermissionListener = null;
         }
+    }
+
+    public String getCurrentlyVisibleScreenId() {
+        return modalController.isShowing() ? modalController.getCurrentlyVisibleScreenId() : layout.getCurrentlyVisibleScreenId();
     }
 }
