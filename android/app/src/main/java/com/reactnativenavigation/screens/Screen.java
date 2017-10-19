@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.facebook.react.bridge.Callback;
@@ -105,6 +106,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void setStyle() {
         setStatusBarColor(styleParams.statusBarColor);
+        setStatusBarHidden(styleParams.statusBarHidden);
         setStatusBarTextColorScheme(styleParams.statusBarTextColorScheme);
         setNavigationBarColor(styleParams.navigationBarColor);
         topBar.setStyle(styleParams);
@@ -133,7 +135,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             topBar.setReactView(screenParams.styleParams);
         } else {
             topBar.setTitle(screenParams.title, styleParams);
-            topBar.setSubtitle(screenParams.subtitle);
+            topBar.setSubtitle(screenParams.subtitle, styleParams);
         }
     }
 
@@ -172,6 +174,15 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             window.setStatusBarColor(statusBarColor.getColor());
         } else {
             window.setStatusBarColor(Color.BLACK);
+        }
+    }
+
+    private void setStatusBarHidden(boolean statusBarHidden) {
+        final Window window = ((NavigationActivity) activity).getScreenWindow();
+        if (statusBarHidden) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
     }
 
@@ -232,7 +243,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setTitleBarSubtitle(String subtitle) {
-        topBar.setSubtitle(subtitle);
+        topBar.setSubtitle(subtitle, styleParams);
     }
 
     public void setTitleBarRightButtons(String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {

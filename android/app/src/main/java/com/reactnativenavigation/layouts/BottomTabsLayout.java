@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -333,7 +334,13 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     public void selectBottomTabByNavigatorId(String navigatorId) {
-        bottomTabs.setCurrentItem(getScreenStackIndex(navigatorId));
+        try {
+            bottomTabs.setCurrentItem(getScreenStackIndex(navigatorId));
+        } catch (ScreenStackNotFoundException e) {
+            Log.e("BottomTabsLayout", "Could not select bottom tab by navigatorId [" + navigatorId + "]." +
+                                      "This should not have happened, it probably means navigator.switchToTab()" +
+                                      "was called from an unmounted tab.");
+        }
     }
 
     private boolean hasBackgroundColor(StyleParams params) {

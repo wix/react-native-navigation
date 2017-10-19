@@ -219,7 +219,8 @@ Set the badge on a tab (any string or numeric value).
 ```js
 this.props.navigator.setTabBadge({
   tabIndex: 0, // (optional) if missing, the badge will be added to this screen's tab
-  badge: 17 // badge value, null to remove badge
+  badge: 17, // badge value, null to remove badge
+  badgeColor: '#006400', // (optional) if missing, the badge will use the default color
 });
 ```
 ## setTabButton(params = {})
