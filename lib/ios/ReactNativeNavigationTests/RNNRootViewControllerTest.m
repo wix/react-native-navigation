@@ -227,6 +227,7 @@
 	//	XCTAssertThrows([self.uut viewWillAppear:false]);
 }
 
+#if !(TARGET_OS_TV)
 -(void)testOrientation_portrait {
 	NSArray* supportedOrientations = @[@"portrait"];
 	self.options.orientation = supportedOrientations;
@@ -314,6 +315,7 @@
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskAll;
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
 }
+#endif
 
 -(void)testRightButtonsWithTitle_withoutStyle {
 	self.options.rightButtons = @[@{@"id": @"testId", @"title": @"test"}];

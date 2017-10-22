@@ -57,6 +57,77 @@
 		268692831E5054F800E2C612 /* RNNStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 268692811E5054F800E2C612 /* RNNStore.m */; };
 		26916C981E4B9E7700D13680 /* RNNReactRootViewCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 26916C961E4B9E7700D13680 /* RNNReactRootViewCreator.h */; };
 		26916C991E4B9E7700D13680 /* RNNReactRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */; };
+		280F26F01F8D28A600162374 /* SidebarFeedlyAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905A51E4C6F440023D7D3 /* SidebarFeedlyAnimation.m */; };
+		280F26F11F8D28A600162374 /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905901E4C6F440023D7D3 /* MMDrawerVisualState.m */; };
+		280F26F21F8D28A600162374 /* SidebarFacebookAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905A31E4C6F440023D7D3 /* SidebarFacebookAnimation.m */; };
+		280F26F31F8D28A600162374 /* RNNRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEF0D171E437684003E96B0 /* RNNRootViewController.m */; };
+		280F26F41F8D28A600162374 /* SidebarAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905A11E4C6F440023D7D3 /* SidebarAnimation.m */; };
+		280F26F51F8D28A600162374 /* RNNNavigationStackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 261F0E691E6F028A00989DE2 /* RNNNavigationStackManager.m */; };
+		280F26F61F8D28A600162374 /* RCCTheSideBarManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2639059B1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.m */; };
+		280F26F71F8D28A600162374 /* RNNEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B11269F1E2D263F00F9B03B /* RNNEventEmitter.m */; };
+		280F26F81F8D28A600162374 /* SidebarLuvocracyAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905A91E4C6F440023D7D3 /* SidebarLuvocracyAnimation.m */; };
+		280F26F91F8D28A600162374 /* RNNSideMenuChildVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905E51E4CAC950023D7D3 /* RNNSideMenuChildVC.m */; };
+		280F26FA1F8D28A600162374 /* ReactNativeNavigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA500741E2544B9001B9E1B /* ReactNativeNavigation.m */; };
+		280F26FB1F8D28A600162374 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2639058E1E4C6F440023D7D3 /* MMDrawerController.m */; };
+		280F26FC1F8D28A600162374 /* RNNNavigationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E83BAD6A1F27363A00A9F3DD /* RNNNavigationOptions.m */; };
+		280F26FD1F8D28A600162374 /* RNNBridgeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BBFE5431E25330E002A6182 /* RNNBridgeModule.m */; };
+		280F26FE1F8D28A600162374 /* RNNModalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 261F0E631E6EC94900989DE2 /* RNNModalManager.m */; };
+		280F26FF1F8D28A600162374 /* RNNLayoutNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEF0D1B1E43771B003E96B0 /* RNNLayoutNode.m */; };
+		280F27001F8D28A600162374 /* RNNSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA500771E254908001B9E1B /* RNNSplashScreen.m */; };
+		280F27011F8D28A600162374 /* RCCDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905961E4C6F440023D7D3 /* RCCDrawerController.m */; };
+		280F27021F8D28A600162374 /* RNNTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F5DFC01F407A8C001A00BC /* RNNTabBarController.m */; };
+		280F27031F8D28A600162374 /* RCCDrawerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905981E4C6F440023D7D3 /* RCCDrawerHelper.m */; };
+		280F27041F8D28A600162374 /* RCTHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 214545291F4DC85F006E8DA1 /* RCTHelpers.m */; };
+		280F27051F8D28A600162374 /* SidebarAirbnbAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2639059F1E4C6F440023D7D3 /* SidebarAirbnbAnimation.m */; };
+		280F27061F8D28A600162374 /* RNNSideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905D51E4C94970023D7D3 /* RNNSideMenuController.m */; };
+		280F27071F8D28A600162374 /* RNNReactRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */; };
+		280F27081F8D28A600162374 /* RNNUIBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 214545241F4DC125006E8DA1 /* RNNUIBarButtonItem.m */; };
+		280F27091F8D28A600162374 /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905941E4C6F440023D7D3 /* UIViewController+MMDrawerController.m */; };
+		280F270A1F8D28A600162374 /* SidebarWunderlistAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905AB1E4C6F440023D7D3 /* SidebarWunderlistAnimation.m */; };
+		280F270B1F8D28A600162374 /* TheSidebarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905AD1E4C6F440023D7D3 /* TheSidebarController.m */; };
+		280F270C1F8D28A600162374 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2639058B1E4C6F440023D7D3 /* MMDrawerBarButtonItem.m */; };
+		280F270D1F8D28A600162374 /* RNNCommandsHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4928071E70415400555040 /* RNNCommandsHandler.m */; };
+		280F270E1F8D28A600162374 /* RNNStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 268692811E5054F800E2C612 /* RNNStore.m */; };
+		280F270F1F8D28A600162374 /* RNNControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BC9346D1E26886E00EFA125 /* RNNControllerFactory.m */; };
+		280F27101F8D28A600162374 /* MMExampleDrawerVisualStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905921E4C6F440023D7D3 /* MMExampleDrawerVisualStateManager.m */; };
+		280F27111F8D28A600162374 /* RNNNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F5DFC41F407AA0001A00BC /* RNNNavigationController.m */; };
+		280F27121F8D28A600162374 /* RNNNavigationButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 21B85E5C1F44480200B314B5 /* RNNNavigationButtons.m */; };
+		280F27131F8D28A600162374 /* SidebarFlipboardAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 263905A71E4C6F440023D7D3 /* SidebarFlipboardAnimation.m */; };
+		280F27171F8D28A600162374 /* RNNNavigationStackManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 261F0E681E6F028A00989DE2 /* RNNNavigationStackManager.h */; };
+		280F27181F8D28A600162374 /* RNNReactRootViewCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 26916C961E4B9E7700D13680 /* RNNReactRootViewCreator.h */; };
+		280F27191F8D28A600162374 /* MMDrawerController+Subclass.h in Headers */ = {isa = PBXBuildFile; fileRef = 2639058C1E4C6F440023D7D3 /* MMDrawerController+Subclass.h */; };
+		280F271A1F8D28A600162374 /* ReactNativeNavigation.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BA500731E2544B9001B9E1B /* ReactNativeNavigation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		280F271B1F8D28A600162374 /* UIViewController+MMDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905931E4C6F440023D7D3 /* UIViewController+MMDrawerController.h */; };
+		280F271C1F8D28A600162374 /* RCCDrawerHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905971E4C6F440023D7D3 /* RCCDrawerHelper.h */; };
+		280F271D1F8D28A600162374 /* SidebarWunderlistAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905AA1E4C6F440023D7D3 /* SidebarWunderlistAnimation.h */; };
+		280F271E1F8D28A600162374 /* RNNCommandsHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B4928061E70415400555040 /* RNNCommandsHandler.h */; };
+		280F271F1F8D28A600162374 /* MMDrawerBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 2639058A1E4C6F440023D7D3 /* MMDrawerBarButtonItem.h */; };
+		280F27201F8D28A600162374 /* RNNTabBarController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F5DFBF1F407A8C001A00BC /* RNNTabBarController.h */; };
+		280F27211F8D28A600162374 /* RCCDrawerProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905991E4C6F440023D7D3 /* RCCDrawerProtocol.h */; };
+		280F27221F8D28A600162374 /* SidebarAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905A01E4C6F440023D7D3 /* SidebarAnimation.h */; };
+		280F27231F8D28A600162374 /* MMExampleDrawerVisualStateManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905911E4C6F440023D7D3 /* MMExampleDrawerVisualStateManager.h */; };
+		280F27241F8D28A600162374 /* SidebarFeedlyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905A41E4C6F440023D7D3 /* SidebarFeedlyAnimation.h */; };
+		280F27251F8D28A600162374 /* RNNSplashScreen.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BA500761E254908001B9E1B /* RNNSplashScreen.h */; };
+		280F27261F8D28A600162374 /* RNNModalManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 261F0E621E6EC94900989DE2 /* RNNModalManager.h */; };
+		280F27271F8D28A600162374 /* SidebarAirbnbAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2639059E1E4C6F440023D7D3 /* SidebarAirbnbAnimation.h */; };
+		280F27281F8D28A600162374 /* RNNSideMenuChildVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905E41E4CAC950023D7D3 /* RNNSideMenuChildVC.h */; };
+		280F27291F8D28A600162374 /* SidebarFacebookAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905A21E4C6F440023D7D3 /* SidebarFacebookAnimation.h */; };
+		280F272A1F8D28A600162374 /* RNNNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F5DFC31F407AA0001A00BC /* RNNNavigationController.h */; };
+		280F272B1F8D28A600162374 /* RNNNavigationButtons.h in Headers */ = {isa = PBXBuildFile; fileRef = 21B85E5E1F44482A00B314B5 /* RNNNavigationButtons.h */; };
+		280F272C1F8D28A600162374 /* RNNRootViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEF0D161E437684003E96B0 /* RNNRootViewController.h */; };
+		280F272D1F8D28A600162374 /* RNNBridgeModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BBFE5421E25330E002A6182 /* RNNBridgeModule.h */; };
+		280F272E1F8D28A600162374 /* RCCTheSideBarManagerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2639059A1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.h */; };
+		280F272F1F8D28A600162374 /* TheSidebarController.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905AC1E4C6F440023D7D3 /* TheSidebarController.h */; };
+		280F27301F8D28A600162374 /* RNNEventEmitter.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B11269E1E2D263F00F9B03B /* RNNEventEmitter.h */; };
+		280F27311F8D28A600162374 /* RNNStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 268692801E5054F800E2C612 /* RNNStore.h */; };
+		280F27321F8D28A600162374 /* SidebarLuvocracyAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905A81E4C6F440023D7D3 /* SidebarLuvocracyAnimation.h */; };
+		280F27331F8D28A600162374 /* MMDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2639058D1E4C6F440023D7D3 /* MMDrawerController.h */; };
+		280F27341F8D28A600162374 /* RCCDrawerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905951E4C6F440023D7D3 /* RCCDrawerController.h */; };
+		280F27351F8D28A600162374 /* MMDrawerVisualState.h in Headers */ = {isa = PBXBuildFile; fileRef = 2639058F1E4C6F440023D7D3 /* MMDrawerVisualState.h */; };
+		280F27361F8D28A600162374 /* RNNControllerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BC9346C1E26886E00EFA125 /* RNNControllerFactory.h */; };
+		280F27371F8D28A600162374 /* RNNSideMenuController.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905D41E4C94970023D7D3 /* RNNSideMenuController.h */; };
+		280F27381F8D28A600162374 /* SidebarFlipboardAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 263905A61E4C6F440023D7D3 /* SidebarFlipboardAnimation.h */; };
+		280F27391F8D28A600162374 /* RNNLayoutNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BEF0D1A1E43771B003E96B0 /* RNNLayoutNode.h */; };
 		50F5DFC11F407A8C001A00BC /* RNNTabBarController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F5DFBF1F407A8C001A00BC /* RNNTabBarController.h */; };
 		50F5DFC21F407A8C001A00BC /* RNNTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F5DFC01F407A8C001A00BC /* RNNTabBarController.m */; };
 		50F5DFC51F407AA0001A00BC /* RNNNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F5DFC31F407AA0001A00BC /* RNNNavigationController.h */; };
@@ -114,6 +185,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		280F27151F8D28A600162374 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D8AFADBB1BEE6F3F00A4592D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -179,6 +259,7 @@
 		26916C941E4B9CCC00D13680 /* RNNRootViewCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNRootViewCreator.h; sourceTree = "<group>"; };
 		26916C961E4B9E7700D13680 /* RNNReactRootViewCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNReactRootViewCreator.h; sourceTree = "<group>"; };
 		26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNReactRootViewCreator.m; sourceTree = "<group>"; };
+		280F273D1F8D28A600162374 /* libReactNativeNavigation-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libReactNativeNavigation-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50F5DFBF1F407A8C001A00BC /* RNNTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTabBarController.h; sourceTree = "<group>"; };
 		50F5DFC01F407A8C001A00BC /* RNNTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTabBarController.m; sourceTree = "<group>"; };
 		50F5DFC31F407AA0001A00BC /* RNNNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNNavigationController.h; sourceTree = "<group>"; };
@@ -230,6 +311,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		280F27141F8D28A600162374 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B49FEB81E95090800DEB3EA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -448,6 +536,7 @@
 			children = (
 				D8AFADBD1BEE6F3F00A4592D /* libReactNativeNavigation.a */,
 				7B49FEBB1E95090800DEB3EA /* ReactNativeNavigationTests.xctest */,
+				280F273D1F8D28A600162374 /* libReactNativeNavigation-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -455,6 +544,48 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		280F27161F8D28A600162374 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				280F27171F8D28A600162374 /* RNNNavigationStackManager.h in Headers */,
+				280F27181F8D28A600162374 /* RNNReactRootViewCreator.h in Headers */,
+				280F27191F8D28A600162374 /* MMDrawerController+Subclass.h in Headers */,
+				280F271A1F8D28A600162374 /* ReactNativeNavigation.h in Headers */,
+				280F271B1F8D28A600162374 /* UIViewController+MMDrawerController.h in Headers */,
+				280F271C1F8D28A600162374 /* RCCDrawerHelper.h in Headers */,
+				280F271D1F8D28A600162374 /* SidebarWunderlistAnimation.h in Headers */,
+				280F271E1F8D28A600162374 /* RNNCommandsHandler.h in Headers */,
+				280F271F1F8D28A600162374 /* MMDrawerBarButtonItem.h in Headers */,
+				280F27201F8D28A600162374 /* RNNTabBarController.h in Headers */,
+				280F27211F8D28A600162374 /* RCCDrawerProtocol.h in Headers */,
+				280F27221F8D28A600162374 /* SidebarAnimation.h in Headers */,
+				280F27231F8D28A600162374 /* MMExampleDrawerVisualStateManager.h in Headers */,
+				280F27241F8D28A600162374 /* SidebarFeedlyAnimation.h in Headers */,
+				280F27251F8D28A600162374 /* RNNSplashScreen.h in Headers */,
+				280F27261F8D28A600162374 /* RNNModalManager.h in Headers */,
+				280F27271F8D28A600162374 /* SidebarAirbnbAnimation.h in Headers */,
+				280F27281F8D28A600162374 /* RNNSideMenuChildVC.h in Headers */,
+				280F27291F8D28A600162374 /* SidebarFacebookAnimation.h in Headers */,
+				280F272A1F8D28A600162374 /* RNNNavigationController.h in Headers */,
+				280F272B1F8D28A600162374 /* RNNNavigationButtons.h in Headers */,
+				280F272C1F8D28A600162374 /* RNNRootViewController.h in Headers */,
+				280F272D1F8D28A600162374 /* RNNBridgeModule.h in Headers */,
+				280F272E1F8D28A600162374 /* RCCTheSideBarManagerViewController.h in Headers */,
+				280F272F1F8D28A600162374 /* TheSidebarController.h in Headers */,
+				280F27301F8D28A600162374 /* RNNEventEmitter.h in Headers */,
+				280F27311F8D28A600162374 /* RNNStore.h in Headers */,
+				280F27321F8D28A600162374 /* SidebarLuvocracyAnimation.h in Headers */,
+				280F27331F8D28A600162374 /* MMDrawerController.h in Headers */,
+				280F27341F8D28A600162374 /* RCCDrawerController.h in Headers */,
+				280F27351F8D28A600162374 /* MMDrawerVisualState.h in Headers */,
+				280F27361F8D28A600162374 /* RNNControllerFactory.h in Headers */,
+				280F27371F8D28A600162374 /* RNNSideMenuController.h in Headers */,
+				280F27381F8D28A600162374 /* SidebarFlipboardAnimation.h in Headers */,
+				280F27391F8D28A600162374 /* RNNLayoutNode.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B1126A21E2D2B5500F9B03B /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -500,6 +631,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		280F26EE1F8D28A600162374 /* ReactNativeNavigation-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 280F273A1F8D28A600162374 /* Build configuration list for PBXNativeTarget "ReactNativeNavigation-tvOS" */;
+			buildPhases = (
+				280F26EF1F8D28A600162374 /* Sources */,
+				280F27141F8D28A600162374 /* Frameworks */,
+				280F27151F8D28A600162374 /* CopyFiles */,
+				280F27161F8D28A600162374 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ReactNativeNavigation-tvOS";
+			productName = libReactContacts;
+			productReference = 280F273D1F8D28A600162374 /* libReactNativeNavigation-tvOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		7B49FEBA1E95090800DEB3EA /* ReactNativeNavigationTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7B49FEC51E95090800DEB3EA /* Build configuration list for PBXNativeTarget "ReactNativeNavigationTests" */;
@@ -568,6 +717,7 @@
 			targets = (
 				D8AFADBC1BEE6F3F00A4592D /* ReactNativeNavigation */,
 				7B49FEBA1E95090800DEB3EA /* ReactNativeNavigationTests */,
+				280F26EE1F8D28A600162374 /* ReactNativeNavigation-tvOS */,
 			);
 		};
 /* End PBXProject section */
@@ -583,6 +733,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		280F26EF1F8D28A600162374 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				280F26F01F8D28A600162374 /* SidebarFeedlyAnimation.m in Sources */,
+				280F26F11F8D28A600162374 /* MMDrawerVisualState.m in Sources */,
+				280F26F21F8D28A600162374 /* SidebarFacebookAnimation.m in Sources */,
+				280F26F31F8D28A600162374 /* RNNRootViewController.m in Sources */,
+				280F26F41F8D28A600162374 /* SidebarAnimation.m in Sources */,
+				280F26F51F8D28A600162374 /* RNNNavigationStackManager.m in Sources */,
+				280F26F61F8D28A600162374 /* RCCTheSideBarManagerViewController.m in Sources */,
+				280F26F71F8D28A600162374 /* RNNEventEmitter.m in Sources */,
+				280F26F81F8D28A600162374 /* SidebarLuvocracyAnimation.m in Sources */,
+				280F26F91F8D28A600162374 /* RNNSideMenuChildVC.m in Sources */,
+				280F26FA1F8D28A600162374 /* ReactNativeNavigation.m in Sources */,
+				280F26FB1F8D28A600162374 /* MMDrawerController.m in Sources */,
+				280F26FC1F8D28A600162374 /* RNNNavigationOptions.m in Sources */,
+				280F26FD1F8D28A600162374 /* RNNBridgeModule.m in Sources */,
+				280F26FE1F8D28A600162374 /* RNNModalManager.m in Sources */,
+				280F26FF1F8D28A600162374 /* RNNLayoutNode.m in Sources */,
+				280F27001F8D28A600162374 /* RNNSplashScreen.m in Sources */,
+				280F27011F8D28A600162374 /* RCCDrawerController.m in Sources */,
+				280F27021F8D28A600162374 /* RNNTabBarController.m in Sources */,
+				280F27031F8D28A600162374 /* RCCDrawerHelper.m in Sources */,
+				280F27041F8D28A600162374 /* RCTHelpers.m in Sources */,
+				280F27051F8D28A600162374 /* SidebarAirbnbAnimation.m in Sources */,
+				280F27061F8D28A600162374 /* RNNSideMenuController.m in Sources */,
+				280F27071F8D28A600162374 /* RNNReactRootViewCreator.m in Sources */,
+				280F27081F8D28A600162374 /* RNNUIBarButtonItem.m in Sources */,
+				280F27091F8D28A600162374 /* UIViewController+MMDrawerController.m in Sources */,
+				280F270A1F8D28A600162374 /* SidebarWunderlistAnimation.m in Sources */,
+				280F270B1F8D28A600162374 /* TheSidebarController.m in Sources */,
+				280F270C1F8D28A600162374 /* MMDrawerBarButtonItem.m in Sources */,
+				280F270D1F8D28A600162374 /* RNNCommandsHandler.m in Sources */,
+				280F270E1F8D28A600162374 /* RNNStore.m in Sources */,
+				280F270F1F8D28A600162374 /* RNNControllerFactory.m in Sources */,
+				280F27101F8D28A600162374 /* MMExampleDrawerVisualStateManager.m in Sources */,
+				280F27111F8D28A600162374 /* RNNNavigationController.m in Sources */,
+				280F27121F8D28A600162374 /* RNNNavigationButtons.m in Sources */,
+				280F27131F8D28A600162374 /* SidebarFlipboardAnimation.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7B49FEB71E95090800DEB3EA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -652,6 +845,30 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		280F273B1F8D28A600162374 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "include/${PRODUCT_NAME}";
+				SDKROOT = appletvos11.0;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		280F273C1F8D28A600162374 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "include/${PRODUCT_NAME}";
+				SDKROOT = appletvos11.0;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		7B49FEC31E95090800DEB3EA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -797,6 +1014,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		280F273A1F8D28A600162374 /* Build configuration list for PBXNativeTarget "ReactNativeNavigation-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				280F273B1F8D28A600162374 /* Debug */,
+				280F273C1F8D28A600162374 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7B49FEC51E95090800DEB3EA /* Build configuration list for PBXNativeTarget "ReactNativeNavigationTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
