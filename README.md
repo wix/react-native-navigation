@@ -107,4 +107,4 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | customTransition(shared element)       |     :x:  |     WIP @bogobogo     | [Contribute](/docs/docs/CONTRIBUTING.md)|
 | splitViewScreen       |     :x:  |    [Contribute](/docs/docs/CONTRIBUTING.md)      | [Contribute](/docs/docs/CONTRIBUTING.md)|
 
-Element tranisitions, adding buttons and styles are not yet implemented. [Contribute](/docs/docs/CONTRIBUTING.md)
+Element transitions, adding buttons and styles are not yet implemented. [Contribute](/docs/docs/CONTRIBUTING.md)  

@@ -1,4 +1,4 @@
 #!/bin/bash -e
 
 brew tap wix/brew
-brew install --HEAD applesimutils
+brew install wix/brew/applesimutils
