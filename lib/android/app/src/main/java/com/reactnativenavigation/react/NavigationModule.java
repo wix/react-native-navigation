@@ -47,11 +47,11 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void setOptions(final String onContainerId, final ReadableMap options) {
-		final JSONObject jsonObject = JSONParser.parse(options);
+		final NavigationOptions navOptions = NavigationOptions.parse(JSONParser.parse(options));
 		handle(new Runnable() {
 			@Override
 			public void run() {
-				navigator().setOptions(onContainerId, jsonObject);
+				navigator().setOptions(onContainerId, navOptions);
 			}
 		});
 	}

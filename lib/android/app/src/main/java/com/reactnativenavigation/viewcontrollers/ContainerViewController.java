@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 
 import com.reactnativenavigation.anim.StackAnimator;
@@ -9,8 +10,6 @@ import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.views.TopBar;
 import com.reactnativenavigation.views.TopbarContainerView;
-
-import org.json.JSONObject;
 
 public class ContainerViewController extends ViewController {
 
@@ -40,7 +39,6 @@ public class ContainerViewController extends ViewController {
 	private ContainerView containerView;
 
 	private TopBar topBar;
-	private final StackAnimator animator;
 
 	public ContainerViewController(final Activity activity,
 								   final String id,
@@ -51,7 +49,6 @@ public class ContainerViewController extends ViewController {
 		this.containerName = containerName;
 		this.viewCreator = viewCreator;
 		this.navigationOptions = initialNavigationOptions;
-		animator = new StackAnimator(getActivity());
 	}
 
 	@Override
@@ -86,19 +83,12 @@ public class ContainerViewController extends ViewController {
 		containerView = viewCreator.create(getActivity(), getId(), containerName);
 		if (containerView instanceof TopbarContainerView) {
 			topBar = ((TopbarContainerView) containerView).getTopBar();
-//		} else {
-//			throw new IllegalArgumentException("ContainerViewController should has TopBarContainerView as container view");
 		}
 		return containerView.asView();
 	}
 
-	void mergeNavigationOptions(JSONObject options) {
+	void mergeNavigationOptions(NavigationOptions options) {
 		navigationOptions.mergeWith(options);
-		applyOptions();
-	}
-
-	void applyNavigationOptions(NavigationOptions options) {
-		navigationOptions = options;
 		applyOptions();
 	}
 
@@ -115,20 +105,7 @@ public class ContainerViewController extends ViewController {
 		return topBar;
 	}
 
-	public void setTopBarHidden(boolean hidden, boolean animated) {
-		if (animated && containerView instanceof TopbarContainerView) {
-			TopbarContainerView topbarContainerView = (TopbarContainerView) containerView;
-			if (hidden) {
-				if (topBar.getVisibility() != View.GONE) {
-					animator.animateHideTopBar(topBar, topbarContainerView.getContainerView().asView());
-				}
-			} else {
-				if (topBar.getVisibility() != View.VISIBLE) {
-					animator.animateShowTopBar(topBar, topbarContainerView.getContainerView().asView());
-				}
-			}
-		} else {
-			topBar.setVisibility(hidden ? View.GONE : View.VISIBLE);
-		}
+	public ContainerView getContainerView() {
+		return containerView;
 	}
 }

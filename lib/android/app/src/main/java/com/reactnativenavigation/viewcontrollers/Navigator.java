@@ -58,17 +58,10 @@ public class Navigator extends ParentController {
 		getView().addView(viewController.getView());
 	}
 
-	public void setOptions(final String containerId, JSONObject options) {
-		ViewController target = findControllerById(containerId);
-		if (target instanceof ContainerViewController) {
-			((ContainerViewController) target).mergeNavigationOptions(options);
-		}
-	}
-
 	public void setOptions(final String containerId, NavigationOptions options) {
 		ViewController target = findControllerById(containerId);
 		if (target instanceof ContainerViewController) {
-			((ContainerViewController) target).applyNavigationOptions(options);
+			((ContainerViewController) target).mergeNavigationOptions(options);
 		}
 	}
 
