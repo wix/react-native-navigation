@@ -49,6 +49,15 @@
 	return NO;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	if ([self.navigationOptions.statusBarStyle isKindOfClass:[NSString class]]) {
+		if ([self.navigationOptions.statusBarStyle isEqualToString:@"light-content"]) {
+			return UIStatusBarStyleLightContent;
+		}
+	}
+	return UIStatusBarStyleDefault;
+}
+
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.navigationOptions.supportedOrientations;
 }

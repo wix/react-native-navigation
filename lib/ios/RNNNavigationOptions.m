@@ -2,6 +2,7 @@
 #import <React/RCTConvert.h>
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
+#import "RNNRootViewController.h"
 
 const NSInteger BLUR_STATUS_TAG = 78264801;
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
@@ -16,6 +17,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	self = [super init];
 	self.topBarBackgroundColor = [navigationOptions objectForKey:@"topBarBackgroundColor"];
 	self.statusBarHidden = [navigationOptions objectForKey:@"statusBarHidden"];
+	self.statusBarStyle = [navigationOptions objectForKey:@"statusBarStyle"];
 	self.title = [navigationOptions objectForKey:@"title"];
 	self.topBarTextColor = [navigationOptions objectForKey:@"topBarTextColor"];
 	self.screenBackgroundColor = [navigationOptions objectForKey:@"screenBackgroundColor"];
@@ -140,6 +142,14 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			if (curBlurView) {
 				[curBlurView removeFromSuperview];
 			}
+		}
+	}
+
+	if (self.statusBarStyle) {
+		if ([viewController isKindOfClass:[RNNRootViewController class]]) {
+			RNNRootViewController *vc = (RNNRootViewController *)viewController;
+			vc.navigationOptions.statusBarStyle = self.statusBarStyle;
+			[vc setNeedsStatusBarAppearanceUpdate];
 		}
 	}
 	
