@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 public class NavigationOptions {
 
-	private static final String NO_VALUE = "no_string";
+	private static final String NO_VALUE = "";
 	private static final int NO_INT_VALUE = Integer.MIN_VALUE;
 	private static final float NO_FLOAT_VALUE = Float.MIN_VALUE;
 	private static final int NO_COLOR_VALUE = Color.TRANSPARENT;

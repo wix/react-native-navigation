@@ -50,6 +50,11 @@ public class TopBar extends AppBarLayout {
 		return findTextView(titleBar);
 	}
 
+	@Override
+	public void setBackgroundColor(@ColorInt int color) {
+		titleBar.setBackgroundColor(color);
+	}
+
 	@Nullable
 	private TextView findTextView(ViewGroup root) {
 		for (int i = 0; i < root.getChildCount(); i++) {
@@ -62,5 +67,9 @@ public class TopBar extends AppBarLayout {
 			}
 		}
 		return null;
+	}
+
+	public Toolbar getTitleBar() {
+		return titleBar;
 	}
 }

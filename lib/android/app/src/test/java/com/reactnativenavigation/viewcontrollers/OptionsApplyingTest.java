@@ -84,13 +84,14 @@ public class OptionsApplyingTest extends BaseTest {
 	@Test
 	public void appliesTopBackBackgroundColor() throws Exception {
 		uut.onViewAppeared();
-		assertThat(((ColorDrawable) uut.getTopBar().getBackground()).getColor()).isNotEqualTo(Color.RED);
+		//TODO: FIX TEST
+		assertThat(((ColorDrawable) uut.getTopBar().getTitleBar().getBackground()).getColor()).isNotEqualTo(Color.RED);
 
 		NavigationOptions opts = new NavigationOptions();
 		opts.topBarBackgroundColor = Color.RED;
 		uut.mergeNavigationOptions(opts);
 
-		assertThat(((ColorDrawable) uut.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
+		assertThat(((ColorDrawable) uut.getTopBar().getTitleBar().getBackground()).getColor()).isEqualTo(Color.RED);
 	}
 
 	@Test
