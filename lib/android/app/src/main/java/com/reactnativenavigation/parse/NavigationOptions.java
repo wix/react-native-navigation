@@ -44,7 +44,7 @@ public class NavigationOptions {
 
 	public String title = "";
 	@ColorInt
-	public int topBarBackgroundColor = Color.WHITE;
+	public int topBarBackgroundColor;
 	@ColorInt
 	public int topBarTextColor;
 	public float topBarTextFontSize;

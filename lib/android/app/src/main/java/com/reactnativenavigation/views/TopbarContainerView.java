@@ -2,22 +2,19 @@ package com.reactnativenavigation.views;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
-
-/**
- * Created by romanko on 10/10/17.
- */
 
 public class TopbarContainerView extends LinearLayout implements ContainerViewController.ContainerView {
 
 	private TopBar topBar;
 	private ContainerViewController.ContainerView containerView;
 
-	public TopbarContainerView(Context context, TopBar topBar, ContainerViewController.ContainerView containerView) {
+	public TopbarContainerView(Context context, ContainerViewController.ContainerView containerView) {
 		super(context);
-		this.topBar = topBar;
+		this.topBar = new TopBar(context);
 		this.containerView = containerView;
 
 		initViews();
