@@ -1,38 +1,46 @@
 package com.reactnativenavigation.parse;
 
+import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import org.json.JSONObject;
 
 public class NavigationOptions {
 
-	@NonNull
-	public static NavigationOptions parse(JSONObject json) {
-		NavigationOptions result = new NavigationOptions();
-		if (json == null) return result;
+	private static final int DEFAULT_COLOR = Color.WHITE;
 
-		result.title = json.optString("title");
-		result.topBarBackgroundColor = json.optInt("topBarBackgroundColor");
-		result.topBarTextColor = json.optInt("topBarTextColor");
-		result.topBarTextFontSize = (float) json.optDouble("topBarTextFontSize");
-		result.topBarTextFontFamily = json.optString("topBarTextFontFamily");
+	public NavigationOptions() {
+	}
 
-		return result;
+	public NavigationOptions(JSONObject json) {
+		parse(json);
 	}
 
 	public String title = "";
-	public int topBarBackgroundColor = 0;
+	@ColorInt
+	public int topBarBackgroundColor = DEFAULT_COLOR;
 	@ColorInt
 	public int topBarTextColor;
 	public float topBarTextFontSize;
 	public String topBarTextFontFamily;
+	public boolean topBarHidden;
+	public boolean animateTopBarHide;
 
-	public void mergeWith(final NavigationOptions other) {
-		title = other.title;
-		topBarBackgroundColor = other.topBarBackgroundColor;
-		topBarTextColor = other.topBarTextColor;
-		topBarTextFontSize = other.topBarTextFontSize;
-		topBarTextFontFamily = other.topBarTextFontFamily;
+	public void mergeWith(JSONObject json) {
+		parse(json);
+	}
+
+	private void parse(JSONObject json) {
+		if (json == null) return;
+
+		this.title = json.optString("title", title);
+		this.topBarBackgroundColor = json.optInt("topBarBackgroundColor", topBarBackgroundColor);
+		this.topBarTextColor = json.optInt("topBarTextColor", topBarTextColor);
+		this.topBarTextFontSize = (float) json.optDouble("topBarTextFontSize", topBarTextFontSize);
+		this.topBarTextFontFamily = json.optString("topBarTextFontFamily", topBarTextFontFamily);
+		this.topBarHidden = json.optBoolean("topBarHidden", topBarHidden);
+		this.animateTopBarHide = json.optBoolean("animateTopBarHide", false);
 	}
 }

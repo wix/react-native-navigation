@@ -100,13 +100,15 @@ class OptionsScreen extends Component {
 
   onClickShowTopBar() {
     Navigation.setOptions(this.props.containerId, {
-      topBarHidden: false
+      topBarHidden: false,
+      animateTopBarHide: true
     });
   }
 
   onClickHideTopBar() {
     Navigation.setOptions(this.props.containerId, {
-      topBarHidden: true
+      topBarHidden: true,
+      animateTopBarHide: true
     });
   }
 }

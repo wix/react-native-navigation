@@ -1,23 +1,22 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.graphics.Color;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.anim.StackAnimator;
-import com.reactnativenavigation.react.ReactContainerView;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.Collection;
-import java.util.Random;
+
+import static android.widget.RelativeLayout.BELOW;
 
 public class StackController extends ParentController {
 
@@ -51,6 +50,7 @@ public class StackController extends ParentController {
 					getContainer().removeView(previousTop.getView());
 				}
 			});
+
 		}
 	}
 
@@ -133,7 +133,7 @@ public class StackController extends ParentController {
 		topBar.setId(CompatUtils.generateViewId());
 		root.addView(topBar);
 		container = new FrameLayout(getActivity());
-		container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 		root.addView(container);
 		return root;
 	}
@@ -154,5 +154,21 @@ public class StackController extends ParentController {
 			getView();
 		}
 		return container;
+	}
+
+	public void setTopBarHidden(boolean hidden, boolean animated) {
+		if (animated) {
+			if (hidden) {
+				if (topBar.getVisibility() != View.GONE) {
+					animator.animateHideTopBar(topBar, container);
+				}
+			} else {
+				if (topBar.getVisibility() != View.VISIBLE) {
+					animator.animateShowTopBar(topBar, container);
+				}
+			}
+		} else {
+			topBar.setVisibility(hidden ? View.GONE : View.VISIBLE);
+		}
 	}
 }

@@ -8,6 +8,8 @@ import android.widget.FrameLayout;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.utils.CompatUtils;
 
+import org.json.JSONObject;
+
 import java.util.Collection;
 import java.util.Collections;
 
@@ -56,10 +58,17 @@ public class Navigator extends ParentController {
 		getView().addView(viewController.getView());
 	}
 
-	public void setOptions(final String containerId, NavigationOptions options) {
+	public void setOptions(final String containerId, JSONObject options) {
 		ViewController target = findControllerById(containerId);
 		if (target instanceof ContainerViewController) {
 			((ContainerViewController) target).mergeNavigationOptions(options);
+		}
+	}
+
+	public void setOptions(final String containerId, NavigationOptions options) {
+		ViewController target = findControllerById(containerId);
+		if (target instanceof ContainerViewController) {
+			((ContainerViewController) target).applyNavigationOptions(options);
 		}
 	}
 

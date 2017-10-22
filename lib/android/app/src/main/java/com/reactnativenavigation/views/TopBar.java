@@ -50,7 +50,7 @@ public class TopBar extends AppBarLayout {
 	}
 
 	@Nullable
-	public TextView findTextView(ViewGroup root) {
+	private TextView findTextView(ViewGroup root) {
 		for (int i = 0; i < root.getChildCount(); i++) {
 			View view = root.getChildAt(i);
 			if (view instanceof TextView) {

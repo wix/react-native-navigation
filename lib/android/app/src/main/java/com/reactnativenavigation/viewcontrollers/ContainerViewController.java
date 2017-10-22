@@ -7,6 +7,8 @@ import android.view.View;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 
+import org.json.JSONObject;
+
 public class ContainerViewController extends ViewController {
 
 	public interface ContainerViewCreator {
@@ -31,7 +33,7 @@ public class ContainerViewController extends ViewController {
 	private final String containerName;
 
 	private final ContainerViewCreator viewCreator;
-	private final NavigationOptions navigationOptions;
+	private NavigationOptions navigationOptions;
 	private ContainerView containerView;
 
 	public ContainerViewController(final Activity activity,
@@ -78,8 +80,13 @@ public class ContainerViewController extends ViewController {
 		return containerView.asView();
 	}
 
-	public void mergeNavigationOptions(final NavigationOptions options) {
+	public void mergeNavigationOptions(JSONObject options) {
 		navigationOptions.mergeWith(options);
+		applyOptions();
+	}
+
+	public void applyNavigationOptions(NavigationOptions options) {
+		navigationOptions = options;
 		applyOptions();
 	}
 
