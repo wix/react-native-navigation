@@ -172,14 +172,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public void invokeDefaultOnBackPressed() {
-        if (layout != null && !layout.onBackPressed()) {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
     @Override
     public void onBackPressed() {
-        if (getReactGateway().isInitialized()) {
+        if (layout != null && !layout.onBackPressed()) {
             getReactGateway().onBackPressed();
         }
     }
