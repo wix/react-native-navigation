@@ -54,19 +54,13 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 		viewController.navigationItem.title = self.title;
 	}
 	
-	if (self.topBarTextFontFamily || self.topBarTextColor || self.topBarTextFontSize){
+	if (self.topBarTextFont || self.topBarTextColor){
 		NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
 		if (self.topBarTextColor) {
 			navigationBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:self.topBarTextColor];
 		}
-		if (self.topBarTextFontFamily){
-			if(self.topBarTextFontSize) {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.topBarTextFontFamily size:[self.topBarTextFontSize floatValue]];
-			} else {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.topBarTextFontFamily size:20];
-			}
-		} else if (self.topBarTextFontSize) {
-			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.topBarTextFontSize floatValue]];
+		if (self.topBarTextFont){
+			navigationBarTitleTextAttributes[NSFontAttributeName] = self.topBarTextFont;
 		}
 		viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
 	}
@@ -166,6 +160,22 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			[blur removeFromSuperview];
 		}
 	}
+}
+
+-(UIFont *)topBarTextFont {
+	if (self.topBarTextFontFamily) {
+		return [UIFont fontWithName:self.topBarTextFontFamily size:self.topBarTextFontSizeValue];
+	}
+	else if (self.topBarTextFontSize) {
+		return [UIFont systemFontOfSize:self.topBarTextFontSizeValue];
+	}
+	else {
+		return nil;
+	}
+}
+
+-(CGFloat)topBarTextFontSizeValue {
+	return self.topBarTextFontSize ? [self.topBarTextFontSize floatValue] : 20;
 }
 
 - (UIInterfaceOrientationMask)supportedOrientations {
