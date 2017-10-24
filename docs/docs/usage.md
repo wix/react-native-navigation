@@ -59,7 +59,6 @@ Navigation.setRoot({
     {
       container: {
         name: 'navigation.playground.TextScreen',
-        title: 'Tab 1',
         passProps: {
           text: 'This is tab 1',
           myFunction: () => 'Hello from a function!'
@@ -69,19 +68,12 @@ Navigation.setRoot({
     {
       container: {
         name: 'navigation.playground.TextScreen',
-        title: 'Tab 2',
         passProps: {
           text: 'This is tab 2'
         }
       }
     }
-  ],
-  tabsStyle: {
-    'tabBarTextColor': processColor('#AAA'),
-    'tabBarSelectedTextColor': processColor('#FFF'),
-    'tabBarTextFontFamily': 'Helvetica',
-    'tabBarTextFontSize': 14,
-  }
+  ]
 });
 ```
 ## Screen API

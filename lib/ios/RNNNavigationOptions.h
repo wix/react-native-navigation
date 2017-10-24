@@ -24,8 +24,15 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) NSNumber* topBarNoBorder;
 @property (nonatomic, strong) NSNumber* statusBarBlur;
 @property (nonatomic, strong) NSNumber* statusBarHideWithTopBar;
-@property (nonatomic, strong) NSNumber* tabBarHidden;
 @property (nonatomic, strong) NSNumber* topBarBlur;
+@property (nonatomic, strong) NSNumber* tabBarHidden;
+@property (nonatomic, strong) NSNumber* tabBarTranslucent;
+@property (nonatomic, strong) NSNumber* tabBarHideShadow;
+@property (nonatomic, strong) NSNumber* tabBarBackgroundColor;
+@property (nonatomic, strong) NSNumber* tabBarTextColor;
+@property (nonatomic, strong) NSNumber* tabBarSelectedTextColor;
+@property (nonatomic, strong) NSString* tabBarTextFontFamily;
+@property (nonatomic, strong) NSNumber* tabBarTextFontSize;
 
 
 - (UIInterfaceOrientationMask)supportedOrientations;

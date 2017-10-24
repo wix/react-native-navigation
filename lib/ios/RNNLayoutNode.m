@@ -10,7 +10,6 @@
 	node.nodeId = json[@"id"];
 	node.data = json[@"data"];
 	node.children = json[@"children"];
-	node.tabsStyle = json[@"tabsStyle"];
 	return node;
 }
 

@@ -7,7 +7,6 @@
 #import "RNNNavigationOptions.h"
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
-#import "RCTHelpers.h"
 
 @implementation RNNControllerFactory {
 	id<RNNRootViewCreator> _creator;
@@ -103,15 +102,7 @@
 	for (NSDictionary *child in node.children) {
 		UIViewController* childVc = [self fromTree:child];
 
-		NSDictionary* childData = child[@"children"][0][@"data"];
-		UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:childData[@"title"] image:nil tag:1];
-
-		NSDictionary* textAttributes = [RCTHelpers textAttributesFromDictionary:node.tabsStyle withPrefix:@"tabBarText"];
-		[item setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
-
-		NSDictionary* selectedTextAttributes = [RCTHelpers textAttributesFromDictionary:node.tabsStyle withPrefix:@"tabBarSelectedText"];
-		[item setTitleTextAttributes:selectedTextAttributes forState:UIControlStateSelected];
-
+		UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"A Tab" image:nil tag:1];
 		[childVc setTabBarItem:item];
 		[controllers addObject:childVc];
 	}
