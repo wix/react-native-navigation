@@ -593,7 +593,9 @@ function showInAppNotification(params) {
     position: params.position,
     shadowRadius: params.shadowRadius,
     dismissWithSwipe: params.dismissWithSwipe || true,
-    autoDismissTimerSec: params.autoDismissTimerSec || 5
+    autoDismissTimerSec: params.autoDismissTimerSec || 5,
+    hideStatusBar:params.hideStatusBar
+
   };
   if (params.autoDismiss === false) delete args.autoDismissTimerSec;
   Notification.show(args);
