@@ -5,6 +5,7 @@ import com.reactnativenavigation.BaseTest;
 import org.json.JSONObject;
 import org.junit.Test;
 
+import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.True;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class NavigationOptionsTest extends BaseTest {
@@ -22,6 +23,7 @@ public class NavigationOptionsTest extends BaseTest {
 		json.put("topBarTextColor", 0xff123456);
 		json.put("topBarTextFontSize", 18);
 		json.put("topBarTextFontFamily", "HelveticaNeue-CondensedBold");
+		json.put("topBarHidden", true);
 
 		NavigationOptions result = NavigationOptions.parse(json);
 		assertThat(result.title).isEqualTo("the title");
@@ -29,6 +31,7 @@ public class NavigationOptionsTest extends BaseTest {
 		assertThat(result.topBarTextColor).isEqualTo(0xff123456);
 		assertThat(result.topBarTextFontSize).isEqualTo(18);
 		assertThat(result.topBarTextFontFamily).isEqualTo("HelveticaNeue-CondensedBold");
+		assertThat(result.topBarHidden).isEqualTo(True);
 	}
 
 	@Test

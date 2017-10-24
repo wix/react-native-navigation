@@ -25,6 +25,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) NSNumber* statusBarBlur;
 @property (nonatomic, strong) NSNumber* statusBarHideWithTopBar;
 @property (nonatomic, strong) NSNumber* topBarBlur;
+@property (nonatomic, strong) NSNumber* animateTopBarHide;
 @property (nonatomic, strong) NSNumber* tabBarHidden;
 @property (nonatomic, strong) NSNumber* tabBarTranslucent;
 @property (nonatomic, strong) NSNumber* tabBarHideShadow;

@@ -9,6 +9,7 @@ import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.viewcontrollers.SideMenuController;
 import com.reactnativenavigation.viewcontrollers.StackController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.views.TopbarContainerViewCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,8 @@ public class LayoutFactory {
 		String id = node.id;
 		String name = node.data.optString("name");
 		NavigationOptions navigationOptions = NavigationOptions.parse(node.data.optJSONObject("navigationOptions"));
-		return new ContainerViewController(activity, id, name, new ReactContainerViewCreator(reactInstanceManager), navigationOptions);
+		return new ContainerViewController(activity, id, name,
+				new TopbarContainerViewCreator(new ReactContainerViewCreator(reactInstanceManager)), navigationOptions);
 	}
 
 	private ViewController createContainerStack(LayoutNode node) {

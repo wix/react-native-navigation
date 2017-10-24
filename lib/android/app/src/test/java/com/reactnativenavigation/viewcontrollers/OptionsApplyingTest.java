@@ -3,11 +3,14 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TestContainerView;
 import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.views.TopbarContainerViewCreator;
 
+import org.json.JSONObject;
 import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -28,12 +31,13 @@ public class OptionsApplyingTest extends BaseTest {
 		activity = newActivity();
 		initialNavigationOptions = new NavigationOptions();
 		view = spy(new TestContainerView(activity));
-		uut = new ContainerViewController(activity, "containerId1", "containerName", new ContainerViewController.ContainerViewCreator() {
-			@Override
-			public ContainerViewController.ContainerView create(final Activity activity1, final String containerId, final String containerName) {
-				return view;
-			}
-		}, initialNavigationOptions);
+		uut = new ContainerViewController(activity, "containerId1", "containerName",
+				new TopbarContainerViewCreator(new ContainerViewController.ContainerViewCreator() {
+					@Override
+					public ContainerViewController.ContainerView create(final Activity activity1, final String containerId, final String containerName) {
+						return view;
+					}
+				}), initialNavigationOptions);
 	}
 
 	@Test
@@ -49,10 +53,10 @@ public class OptionsApplyingTest extends BaseTest {
 		initialNavigationOptions.title = "the title";
 		StackController stackController = new StackController(activity, "stackId");
 		stackController.push(uut);
-		assertThat(stackController.getTopBar().getTitle()).isEmpty();
+		assertThat(uut.getTopBar().getTitle()).isEmpty();
 
 		uut.onViewAppeared();
-		assertThat(stackController.getTopBar().getTitle()).isEqualTo("the title");
+		assertThat(uut.getTopBar().getTitle()).isEqualTo("the title");
 	}
 
 	@Test
@@ -67,63 +71,72 @@ public class OptionsApplyingTest extends BaseTest {
 
 	@Test
 	public void reappliesOptionsOnMerge() throws Exception {
-		StackController stackController = new StackController(activity, "stackId");
-		stackController.push(uut);
-		assertThat(stackController.getTopBar().getTitle()).isEmpty();
+		uut.onViewAppeared();
+		assertThat(uut.getTopBar().getTitle()).isEmpty();
 
 		NavigationOptions opts = new NavigationOptions();
 		opts.title = "the new title";
 		uut.mergeNavigationOptions(opts);
 
-		assertThat(stackController.getTopBar().getTitle()).isEqualTo("the new title");
+		assertThat(uut.getTopBar().getTitle()).isEqualTo("the new title");
 	}
 
 	@Test
 	public void appliesTopBackBackgroundColor() throws Exception {
-		StackController stackController = new StackController(activity, "stackId");
-		stackController.push(uut);
-		assertThat(((ColorDrawable) stackController.getTopBar().getBackground()).getColor()).isNotEqualTo(Color.RED);
+		uut.onViewAppeared();
+		//TODO: FIX TEST
+		assertThat(((ColorDrawable) uut.getTopBar().getTitleBar().getBackground()).getColor()).isNotEqualTo(Color.RED);
 
 		NavigationOptions opts = new NavigationOptions();
 		opts.topBarBackgroundColor = Color.RED;
 		uut.mergeNavigationOptions(opts);
 
-		assertThat(((ColorDrawable) stackController.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
+		assertThat(((ColorDrawable) uut.getTopBar().getTitleBar().getBackground()).getColor()).isEqualTo(Color.RED);
 	}
 
 	@Test
 	public void appliesTopBarTextColor() throws Exception {
 		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
 		initialNavigationOptions.title = "the title";
-		StackController stackController = new StackController(activity, "stackId");
-		stackController.push(uut);
 		uut.onViewAppeared();
-		assertThat(stackController.getTopBar().getTitleTextView().getCurrentTextColor()).isNotEqualTo(Color.RED);
+		assertThat(uut.getTopBar().getTitleTextView().getCurrentTextColor()).isNotEqualTo(Color.RED);
 
 		NavigationOptions opts = new NavigationOptions();
 		opts.title = "the title";
 		opts.topBarTextColor = Color.RED;
 		uut.mergeNavigationOptions(opts);
 
-		assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);
-		assertThat(stackController.getTopBar().getTitleTextView().getCurrentTextColor()).isEqualTo(Color.RED);
+		assertThat(uut.getTopBar().getTitleTextView()).isNotEqualTo(null);
+		assertThat(uut.getTopBar().getTitleTextView().getCurrentTextColor()).isEqualTo(Color.RED);
 	}
 
 	@Test
 	public void appliesTopBarTextSize() throws Exception {
 		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
 		initialNavigationOptions.title = "the title";
-		StackController stackController = new StackController(activity, "stackId");
-		stackController.push(uut);
 		uut.onViewAppeared();
-		assertThat(stackController.getTopBar().getTitleTextView().getTextSize()).isNotEqualTo(18);
+		assertThat(uut.getTopBar().getTitleTextView().getTextSize()).isNotEqualTo(18);
 
 		NavigationOptions opts = new NavigationOptions();
 		opts.title = "the title";
 		opts.topBarTextFontSize = 18;
 		uut.mergeNavigationOptions(opts);
 
-		assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);
-		assertThat(stackController.getTopBar().getTitleTextView().getTextSize()).isEqualTo(18);
+		assertThat(uut.getTopBar().getTitleTextView()).isNotEqualTo(null);
+		assertThat(uut.getTopBar().getTitleTextView().getTextSize()).isEqualTo(18);
+	}
+
+	@Test
+	public void appliesTopBarHidden() throws Exception {
+		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
+		initialNavigationOptions.title = "the title";
+		uut.onViewAppeared();
+		assertThat(uut.getTopBar().getVisibility()).isNotEqualTo(View.GONE);
+
+		NavigationOptions opts = new NavigationOptions();
+		opts.topBarHidden = NavigationOptions.BooleanOptions.True;
+		uut.mergeNavigationOptions(opts);
+
+		assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
 	}
 }

@@ -17,6 +17,8 @@ import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
+import org.json.JSONObject;
+
 public class NavigationModule extends ReactContextBaseJavaModule {
 	private static final String NAME = "RNNBridgeModule";
 	private final ReactInstanceManager reactInstanceManager;

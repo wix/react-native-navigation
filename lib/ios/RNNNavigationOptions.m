@@ -31,6 +31,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
 	self.topBarNoBorder = [navigationOptions objectForKey:@"topBarNoBorder"];
 	self.topBarBlur = [navigationOptions objectForKey:@"topBarBlur"];
+	self.animateTopBarHide = [navigationOptions objectForKey:@"animateTopBarHide"];
 	self.tabBarHidden = [navigationOptions objectForKey:@"tabBarHidden"];
 	self.tabBarTranslucent = [navigationOptions objectForKey:@"tabBarTranslucent"];
 	self.tabBarHideShadow = [navigationOptions objectForKey:@"tabBarHideShadow"];
@@ -111,11 +112,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	}
 
 	if (self.topBarHidden){
-		if ([self.topBarHidden boolValue]) {
-			[viewController.navigationController setNavigationBarHidden:YES animated:YES];
-		} else {
-			[viewController.navigationController setNavigationBarHidden:NO animated:YES];
-		}
+		[viewController.navigationController setNavigationBarHidden:[self.topBarHidden boolValue] animated:[self.animateTopBarHide boolValue]];
 	}
 
 	if (self.topBarHideOnScroll) {
