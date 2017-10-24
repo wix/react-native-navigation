@@ -265,7 +265,10 @@
       {
         NSString *badgeColor = actionParams[@"badgeColor"];
         UIColor *color = badgeColor != (id)[NSNull null] ? [RCTConvert UIColor:badgeColor] : nil;
-        viewController.tabBarItem.badgeColor = color;
+        
+        if (viewController.tabBarItem respondsToSelector:@selector(badgeColor)) {
+          viewController.tabBarItem.badgeColor = color;
+        }
         viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
       }
     }
