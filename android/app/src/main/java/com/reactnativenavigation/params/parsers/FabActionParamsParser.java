@@ -1,5 +1,6 @@
 package com.reactnativenavigation.params.parsers;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.reactnativenavigation.params.FabActionParams;
@@ -12,7 +13,12 @@ public class FabActionParamsParser extends Parser {
         fabActionParams.id = params.getString("id");
         fabActionParams.navigatorEventId = navigatorEventId;
         fabActionParams.icon = ImageLoader.loadImage(params.getString("icon"));
-        fabActionParams.backgroundColor = StyleParams.Color.parse(params, "backgroundColor");
+        fabActionParams.backgroundColor = getColor(params, "backgroundColor", new StyleParams.Color());
+        fabActionParams.title = params.getString("title");
+        fabActionParams.titleBackgroundColor = getColor(params, "titleBackgroundColor",
+                new StyleParams.Color(Color.parseColor("#CC000000")));
+        fabActionParams.titleColor = getColor(params, "titleColor", new StyleParams.Color(Color.WHITE));
+
         return fabActionParams;
     }
 }

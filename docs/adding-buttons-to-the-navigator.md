@@ -170,6 +170,35 @@ Each screen can contain a single Fab which is displayed at the bottom right corn
     }
 ```
 
+* Fab with expanded state and labels
+```js
+    fab: {
+      collapsedId: 'share',
+      collapsedIcon: require('../../img/ic_add.png'),
+      expendedId: 'clear',
+      expendedIcon: require('../../img/ic_clear.png'),
+      backgroundColor: '#3F51B5',
+      actions: [
+        {
+          id: 'mail',
+          icon: require('../../img/ic_mail.png'),
+          title: 'Send email',
+          titleColor: '#000',             // Default #ffffff
+          titleBackgroundColor: '#fff',   // Default: #CC000000
+          backgroundColor: '#03A9F4'
+        },
+        {
+          id: 'twitter',
+          icon: require('../../img/ic_twitter.png'),
+          title: 'Open twitter',
+          titleColor: '#000',             // Default #ffffff
+          titleBackgroundColor: '#fff',   // Default: #CC000000
+          backgroundColor: '#4CAF50'
+        }
+      ]
+    }
+```
+
 #### Contextual TopBar Menu - Android only
 A contextual menu offers actions that affect a specific item or context frame in the UI. You can provide a context menu for any view, but they are most often used for items in a ListView, GridView, or other view collections in which the user can perform direct actions on each item. (Taken from the [Android documentation](https://developer.android.com/guide/topics/ui/menus.html#context-menu))
 
