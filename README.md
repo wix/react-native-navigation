@@ -5,7 +5,8 @@
 We are rebuilding react-native-navigation
 
 - [Why?](#why-rebuild-react-native-navigation)
-- [Where is it standing now?](#current-status)
+- [v2 Roadmap](#v2-roadmap)
+- [v1 vs v2 feature comparison](#v1-vs-v2-feature-comparison)
 - [Documentation](https://wix.github.io/react-native-navigation/v2/)
 - [Contributing](/docs/docs/CONTRIBUTING.md)
 
@@ -30,8 +31,105 @@ v2 is written with contributors in mind from day one.
 #### Written In TDD
 v2 is written in Test Driven Development. We have a test for every feature including features that are not implemented yet. This makes accepting pull requests extremely easy: If our tests pass, your pull request is accepted.
 
+## v2 Roadmap
 
-## Current Status
+### Current Priorities 
+
+1) buttons in Android
+2) showOverlay in iOS
+3) showOverlay in Android
+4) async commands
+5) currentTab 
+6) change navigationOptions to be nested
+
+### Top API
+
+|       Top API         | iOS  | Android |
+|--------------------|-----|----|
+| setRoot   |   ✅    |   ✅  |
+| registerContainer |   ✅   |  ✅   |
+| container     |   ✅   |  ✅   |
+| sideMenu             |    ✅  |    ✅ |
+| tabs            |    ✅  |    ✅ |
+| customViewController           |   [Contribute](/docs/docs/CONTRIBUTING.md)  |   [Contribute](/docs/docs/CONTRIBUTING.md) |
+| splitView           |   [Contribute](/docs/docs/CONTRIBUTING.md)   |   [Contribute](/docs/docs/CONTRIBUTING.md) |
+
+### Screen API
+
+|       Screen API         | iOS  | Android |
+|--------------------|-----|----|
+| push              |   ✅       |	✅		|
+| pop               |  ✅        |	✅	|
+| popToRoot              |   ✅         |✅	|
+| resetTo             |   ✅        |	✅|
+| showModal              |  ✅        |	✅|
+| dismissModal           |     ✅       |	✅|
+| showOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	[Contribute](/docs/docs/CONTRIBUTING.md) |
+| dismissOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	[Contribute](/docs/docs/CONTRIBUTING.md) |
+| customTransition            |   ✅        |	[Contribute](/docs/docs/CONTRIBUTING.md) |
+| Screen Visibility        | ✅     |✅|
+| async commands (await push)     |  [Contribute](/docs/docs/CONTRIBUTING.md)        |[Contribute](/docs/docs/CONTRIBUTING.md)   |
+
+### Navigation Options
+
+|       topBar         | iOS  | Android | contributors|
+|--------------------|-----|----|-----|
+| title         |        	✅    | 	✅| Wix|
+| textColor    | ✅     |     ✅        | Wix|
+| textFontSize       |    ✅      |     ✅        | Wix|
+| textFontFamily     |      ✅     |     ✅        | Wix |
+| backgroundColor    |  ✅       |     ✅         | Wix|
+| buttonColor         |    ✅      |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
+| hidden             |   ✅      |     ✅        | Wix|
+| hideOnScroll         |  ✅    |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
+| translucent         |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
+| transparent         |   WIP @bogobogo     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |
+| noBorder             |    ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |  @gtchance|
+| drawUnder         |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       ||
+| blur               |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
+| custom          |     WIP @gran33     | [Contribute](/docs/docs/CONTRIBUTING.md)|
+| subtitleColor            |   [Contribute](/docs/docs/CONTRIBUTING.md)     |      [Contribute](/docs/docs/CONTRIBUTING.md)      |
+| subtitleFontFamily      |    [Contribute](/docs/docs/CONTRIBUTING.md)    |     [Contribute](/docs/docs/CONTRIBUTING.md)       |
+| largeTitle (iOS 11)      |    ✅     |     /iOS Specific       |
+
+|       tabBar         | iOS  | Android | contributors|
+|--------------------|-----|----|-----|
+| drawUnder          |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
+| hidden   |   ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)        | @gtchance|
+| tabBadge          |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md)| Wix|
+| currentTab by Index          |       [Contribute](/docs/docs/CONTRIBUTING.md)    | [Contribute](/docs/docs/CONTRIBUTING.md)| |
+| currentTab by cointainerId         |       [Contribute](/docs/docs/CONTRIBUTING.md)    | [Contribute](/docs/docs/CONTRIBUTING.md)| |
+
+|       buttons        | iOS  | Android | contributors|
+|--------------------|-----|----|-----|
+| id    |   ✅      |      [Contribute](/docs/docs/CONTRIBUTING.md)    |@Johan-dutoit|
+| testID   |     ✅   |    [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit|
+| color             |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @Johan-dutoit|
+| icon          |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       | @Johan-dutoit|
+| disableTint        |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit|
+| fontSize        |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit |
+| fontWeight        |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit |
+| fontWeight        |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit |
+
+|       statusBar        | iOS  | Android | contributors|
+|--------------------|-----|----|-----|
+| textColorScheme    |   in development      |      / iOS specific    |
+| textColorSchemeSingleScreen   |     in development    |     / iOS specific      |
+| blur             |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
+| hideWithTopBar          |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
+| hidden         |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | WIX |
+
+|       other        | iOS  | Android | contributors|
+|--------------------|-----|----|-----|
+| screenBackgroundColor        |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       |  Wix|
+| orientation       |    ✅     |   [Contribute](/docs/docs/CONTRIBUTING.md)          | Wix|
+| disabledBackGesture        |  WIP @gran33     |    / iOS specific     |
+| screenBackgroundImageName        |   [Contribute](/docs/docs/CONTRIBUTING.md)      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
+| rootBackgroundImageName              |    [Contribute](/docs/docs/CONTRIBUTING.md)     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
+| sideMenuVisible          |        [Contribute](/docs/docs/CONTRIBUTING.md)   | [Contribute](/docs/docs/CONTRIBUTING.md) |
+
+
+## v1 vs v2 Feature Comparison  
 v2 currently supports most of react-native-navigation’s basic functionality but it is still behind v1.
 Here is the full comparison of features between v1 and v2 (will be updated regularly):
 ### Top Level API
@@ -87,8 +185,8 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | tabBarHidden  |   ✅  |   ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)        | @gtchance|
 | statusBarTextColorScheme |  ✅   |   in development      |      / iOS specific    |
 | statusBarTextColorSchemeSingleScreen|  ✅   |     in development    |     / iOS specific      |
-| navBarSubtitleColor          |  ✅   |   [Contribute](/docs/docs/CONTRIBUTING.md)     |      [Contribute](/docs/docs/CONTRIBUTING.md)      |
-| navBarSubtitleFontFamily    |   ✅  |    [Contribute](/docs/docs/CONTRIBUTING.md)    |     [Contribute](/docs/docs/CONTRIBUTING.md)       |
+| topBarSubtitleColor          |  ✅   |   [Contribute](/docs/docs/CONTRIBUTING.md)     |      [Contribute](/docs/docs/CONTRIBUTING.md)      |
+| topBarSubtitleFontFamily    |   ✅  |    [Contribute](/docs/docs/CONTRIBUTING.md)    |     [Contribute](/docs/docs/CONTRIBUTING.md)       |
 | screenBackgroundColor     | ✅    |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       |  Wix|
 | orientation     |  ✅   |    ✅     |   [Contribute](/docs/docs/CONTRIBUTING.md)          | Wix|
 | statusBarHideWithTopBar        |  ✅   |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
@@ -99,11 +197,9 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | setButtons          |   ✅     |    ✅    | [Contribute](/docs/docs/CONTRIBUTING.md) | @Johan-dutoit|
 | title            |   ✅     |        	✅    | 	✅| Wix|
 | toggleDrawer        |   ✅     |        [Contribute](/docs/docs/CONTRIBUTING.md)   | [Contribute](/docs/docs/CONTRIBUTING.md) |
-| toggleTabs          |   ✅     |       in development    | in development|
 | setTabBadge         |    ✅    |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md)| Wix|
 | switchToTab         |    ✅    |       ✅   |[Contribute](/docs/docs/CONTRIBUTING.md) |
-| toggleNavBar        |   ✅     |      WIP @gran33     | [Contribute](/docs/docs/CONTRIBUTING.md)|
-| navBarCustomView        |   ✅     |     WIP @gran33     | [Contribute](/docs/docs/CONTRIBUTING.md)|
+| topBarCustomView        |   ✅     |     WIP @gran33     | [Contribute](/docs/docs/CONTRIBUTING.md)|
 | customTransition(shared element)       |     :x:  |     WIP @bogobogo     | [Contribute](/docs/docs/CONTRIBUTING.md)|
 | splitViewScreen       |     :x:  |    [Contribute](/docs/docs/CONTRIBUTING.md)      | [Contribute](/docs/docs/CONTRIBUTING.md)|
 
