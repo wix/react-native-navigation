@@ -93,8 +93,8 @@ public class TopBar extends AppBarLayout {
         titleBar.setTitle(title, styleParams);
     }
 
-    public void setSubtitle(String subtitle) {
-        titleBar.setSubtitle(subtitle);
+    public void setSubtitle(String subtitle, StyleParams styleParams) {
+        titleBar.setSubtitle(subtitle, styleParams);
     }
 
     public void setReactView(@NonNull StyleParams styleParams) {

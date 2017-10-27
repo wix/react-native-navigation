@@ -46,17 +46,31 @@ function startTabBasedApp(params) {
         return this.renderBody();
       } else {
         const navigatorID = controllerID + '_drawer';
+
+        const leftScreenId = _.uniqueId('screenInstanceID');
+        const rightScreenId = _.uniqueId('screenInstanceID')
+
+        const { navigatorStyle: leftNavigatorStyle } = params.drawer.left
+          ? _mergeScreenSpecificSettings(params.drawer.left.screen, leftScreenId, params.drawer.left)
+          : {};
+
+        const { navigatorStyle: rightNavigatorStyle } = params.drawer.right
+          ? _mergeScreenSpecificSettings(params.drawer.right.screen, rightScreenId, params.drawer.right)
+          : {};
+
         return (
           <DrawerControllerIOS id={navigatorID}
-                               componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
-                               passPropsLeft={{navigatorID: navigatorID}}
-                               componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
-                               passPropsRight={{navigatorID: navigatorID}}
-                               disableOpenGesture={params.drawer.disableOpenGesture}
-                               type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
-                               animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
-                               style={params.drawer.style}
-                               appStyle={params.appStyle}
+            componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
+            styleLeft={leftNavigatorStyle}
+            passPropsLeft={{navigatorID: navigatorID}}
+            componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
+            styleRight={rightNavigatorStyle}
+            passPropsRight={{navigatorID: navigatorID}}
+            disableOpenGesture={params.drawer.disableOpenGesture}
+            type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
+            animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
+            style={params.drawer.style}
+            appStyle={params.appStyle}
           >
             {this.renderBody()}
           </DrawerControllerIOS>
@@ -568,7 +582,7 @@ function showInAppNotification(params) {
     navigatorEventID,
     navigatorID
   };
-  
+
   savePassProps(params);
 
   let args = {

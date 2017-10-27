@@ -21,6 +21,8 @@ public interface Layout extends ScreenStackContainer {
 
     boolean onBackPressed();
 
+    boolean handleBackInJs();
+
     void setTopBarVisible(String screenInstanceId, boolean hidden, boolean animated);
 
     void setTitleBarTitle(String screenInstanceId, String title);
