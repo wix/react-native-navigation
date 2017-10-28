@@ -146,12 +146,8 @@ RCT_EXPORT_MODULE(RCCManager);
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^
                        {
-                           __block NSUInteger counter = 0;
                            for (UIViewController *viewController in allPresentedViewControllers)
                            {
-                               counter++;
-                               
-                               [[RCCManager sharedIntance] unregisterController:viewController];
                                if (viewController.presentedViewController != nil)
                                {
                                    dispatch_semaphore_t dismiss_sema = dispatch_semaphore_create(0);
@@ -160,40 +156,26 @@ RCT_EXPORT_MODULE(RCCManager);
                                                   {
                                                       [viewController dismissViewControllerAnimated:NO completion:^()
                                                        {
-                                                           if (counter == allPresentedViewControllers.count && allPresentedViewControllers.count > 0)
-                                                           {
-                                                               [allPresentedViewControllers removeAllObjects];
-                                                               
-                                                               if (resolve != nil)
-                                                               {
-                                                                   resolve(nil);
-                                                               }
-                                                           }
                                                            dispatch_semaphore_signal(dismiss_sema);
                                                        }];
                                                   });
                                    
                                    dispatch_semaphore_wait(dismiss_sema, DISPATCH_TIME_FOREVER);
-                               }
-                               else if (counter == allPresentedViewControllers.count && allPresentedViewControllers.count > 0)
-                               {
-                                   [allPresentedViewControllers removeAllObjects];
-                                   
-                                   if (resolve != nil)
-                                   {
-                                       dispatch_async(dispatch_get_main_queue(), ^
-                                                      {
-                                                          resolve(nil);
-                                                      });
-                                   }
+                               } else {
+                                   [[RCCManager sharedIntance] unregisterController:viewController];
                                }
                            }
+                           
+                           dispatch_async(dispatch_get_main_queue(), ^{
+                              resolve(nil);
+                           });
                        });
+        return;
     }
-    else if (resolve != nil)
-    {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
         resolve(nil);
-    }
+    });
 }
 
 #pragma mark - RCT exported methods
@@ -329,7 +311,7 @@ RCT_EXPORT_METHOD(
 RCT_EXPORT_METHOD(
                   showController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-
+    
     NSMutableDictionary *modifiedGlobalProps = [globalProps mutableCopy];
     modifiedGlobalProps[GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_SHOW_MODAL;
     
@@ -407,7 +389,7 @@ RCT_EXPORT_METHOD(
     }
     else
     {
-      resolve(nil);
+        resolve(nil);
     }
 }
 
@@ -460,3 +442,4 @@ RCT_EXPORT_METHOD(
 }
 
 @end
+
