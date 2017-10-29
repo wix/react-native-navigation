@@ -1,5 +1,6 @@
 package com.reactnativenavigation.screens;
 
+import android.animation.LayoutTransition;
 import android.annotation.TargetApi;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -239,6 +240,12 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void setTopBarVisible(boolean visible, boolean animate) {
         screenParams.styleParams.titleBarHidden = !visible;
+        if (animate && styleParams.drawScreenBelowTopBar) {
+            setLayoutTransition(new LayoutTransition());
+            getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        } else {
+            setLayoutTransition(null);
+        }
         topBar.setVisible(visible, animate);
     }
 
