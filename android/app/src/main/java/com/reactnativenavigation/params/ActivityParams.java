@@ -9,6 +9,7 @@ public class ActivityParams {
 
     public Type type;
     public ScreenParams screenParams;
+    public ScreenParams overlayParams;
     public List<ScreenParams> tabParams;
     public SideMenuParams leftSideMenuParams;
     public SideMenuParams rightSideMenuParams;

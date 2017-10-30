@@ -111,6 +111,10 @@ function savePassProps(params) {
   if (params.sideMenu && params.sideMenu.right) {
     PropRegistry.save(params.sideMenu.right.navigationParams.screenInstanceID, params.sideMenu.right.passProps);
   }
+
+  if (params.overlay) {
+    PropRegistry.save(params.overlay.navigationParams.screenInstanceID, params.overlay.passProps);
+  }
 }
 
 function toggleSideMenuVisible(animated, side) {
