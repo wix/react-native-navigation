@@ -6,6 +6,8 @@ import org.json.JSONObject;
 public class OverlayOptions {
 
 	public static OverlayOptions parse(JSONObject json) {
+		if (json == null) return new OverlayOptions();
+
 		OverlayOptions options = new OverlayOptions();
 
 		//TODO: parse
@@ -15,8 +17,8 @@ public class OverlayOptions {
 		return options;
 	}
 
-	private String title;
-	private String text;
+	private String title = "";
+	private String text = "";
 
 	public String getText() {
 		return text;
