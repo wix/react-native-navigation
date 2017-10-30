@@ -65,7 +65,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | resetTo             |   ✅        |	✅|
 | showModal              |  ✅        |	✅|
 | dismissModal           |     ✅       |	✅|
-| showOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	[Contribute](/docs/docs/CONTRIBUTING.md) |
+| showOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	WIP @cool04ek |
 | dismissOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	[Contribute](/docs/docs/CONTRIBUTING.md) |
 | customTransition            |   ✅        |	[Contribute](/docs/docs/CONTRIBUTING.md) |
 | Screen Visibility        | ✅     |✅|
