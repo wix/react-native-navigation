@@ -116,7 +116,7 @@ class OptionsScreen extends Component {
   onClickAlert() {
     Navigation.showOverlay('alert', {
       text: 'test!'
-    })
+    });
   }
 }
 
