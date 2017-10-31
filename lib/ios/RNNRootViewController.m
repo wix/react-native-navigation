@@ -22,6 +22,9 @@
 	self.containerName = name;
 	self.navigationOptions = options;
 	self.eventEmitter = eventEmitter;
+	
+	self.edgesForExtendedLayout = UIRectEdgeNone;
+	
 	self.view = [creator createRootView:self.containerName rootViewId:self.containerId];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
