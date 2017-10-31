@@ -20,7 +20,7 @@ class LifecycleScreen extends Component {
 
   didDisappear() {
     Navigation.showOverlay('alert', {
-      text: "didDisappear",
+      text: 'didDisappear',
       positiveButton: {
         text: 'OK'
       }
@@ -29,7 +29,7 @@ class LifecycleScreen extends Component {
 
   componentWillUnmount() {
     Navigation.showOverlay('alert', {
-      text: "componentWillUnmount",
+      text: 'componentWillUnmount',
       positiveButton: {
         text: 'OK'
       }

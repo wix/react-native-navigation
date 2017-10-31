@@ -118,8 +118,8 @@ class OptionsScreen extends Component {
       title: 'Title',
       text: 'test!',
       positiveButton: {
-        text: "OK",
-        action: "some aciton",
+        text: 'OK',
+        action: 'some aciton'
       }
     });
   }
