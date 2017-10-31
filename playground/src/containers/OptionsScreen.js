@@ -115,7 +115,17 @@ class OptionsScreen extends Component {
 
   onClickAlert() {
     Navigation.showOverlay('alert', {
-      text: 'test!'
+      title: 'Title',
+      text: 'test!',
+      positiveButton: {
+        text: "OK",
+        action: "some aciton",
+        visible: false
+      },
+      negativeButton: {
+        text: "Cancel",
+        action: "some action"
+      }
     });
   }
 }

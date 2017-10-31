@@ -12,17 +12,29 @@ public class AlertOverlay implements OverlayInterface {
 	private AlertDialog dialog;
 
 	@Override
-	public AlertOverlay create(Context context, OverlayOptions options) {
+	public AlertOverlay create(Context context, final OverlayOptions options) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
 		builder.setTitle(options.getTitle());
 		builder.setMessage(options.getText());
-		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
+		if (options.getPositiveButton().isVisible()) {
+			builder.setPositiveButton(options.getPositiveButton().getText(), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					//TODO: perform action options.getPositiveButton().getAction();
+					dialog.dismiss();
+				}
+			});
+		}
+		if (options.getNegativeButton().isVisible()) {
+			builder.setNegativeButton(options.getNegativeButton().getText(), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					//TODO: perform action options.getNegativeButton().getAction();
+					dialog.dismiss();
+				}
+			});
+		}
 		dialog = builder.create();
 
 		return this;
