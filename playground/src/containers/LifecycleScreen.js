@@ -1,7 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Button } = require('react-native');
+const { View, Text, Button, Platform } = require('react-native');
 
 const Navigation = require('react-native-navigation');
 
@@ -19,21 +19,29 @@ class LifecycleScreen extends Component {
   }
 
   didDisappear() {
-    Navigation.showOverlay('alert', {
-      text: 'didDisappear',
-      positiveButton: {
-        text: 'OK'
-      }
-    });
+    if (Platform.OS === 'ios') {
+      alert('didDisappear')
+    } else {
+      Navigation.showOverlay('alert', {
+        text: 'didDisappear',
+        positiveButton: {
+          text: 'OK'
+        }
+      });
+    }
   }
 
   componentWillUnmount() {
-    Navigation.showOverlay('alert', {
-      text: 'componentWillUnmount',
-      positiveButton: {
-        text: 'OK'
-      }
-    });
+    if (Platform.OS === 'ios') {
+      alert('componentWillUnmount')
+    } else {
+      Navigation.showOverlay('alert', {
+        text: 'componentWillUnmount',
+        positiveButton: {
+          text: 'OK'
+        }
+      });
+    }
   }
 
   onNavigationButtonPressed(id) {
