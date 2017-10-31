@@ -9,8 +9,9 @@ public class SnackbarOverlay implements OverlayInterface {
 
 
 	@Override
-	public void init(Context context, OverlayOptions options) {
+	public SnackbarOverlay create(Context context, OverlayOptions options) {
 		//TODO; implement
+		return this;
 	}
 
 	@Override

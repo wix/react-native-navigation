@@ -8,8 +8,9 @@ import com.reactnativenavigation.parse.OverlayOptions;
 public class CustomOverlay implements OverlayInterface {
 
 	@Override
-	public void init(Context context, OverlayOptions options) {
+	public CustomOverlay create(Context context, OverlayOptions options) {
 		//TODO; implement
+		return this;
 	}
 
 	@Override

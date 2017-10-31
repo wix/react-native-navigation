@@ -9,8 +9,9 @@ public class FabOverlay implements OverlayInterface {
 
 
 	@Override
-	public void init(Context context, OverlayOptions options) {
+	public FabOverlay create(Context context, OverlayOptions options) {
 		//TODO; implement
+		return this;
 	}
 
 	@Override

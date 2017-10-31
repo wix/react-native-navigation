@@ -12,7 +12,7 @@ public class AlertOverlay implements OverlayInterface {
 	private AlertDialog dialog;
 
 	@Override
-	public void init(Context context, OverlayOptions options) {
+	public AlertOverlay create(Context context, OverlayOptions options) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
 		builder.setTitle(options.getTitle());
@@ -24,6 +24,8 @@ public class AlertOverlay implements OverlayInterface {
 			}
 		});
 		dialog = builder.create();
+
+		return this;
 	}
 
 	@Override
