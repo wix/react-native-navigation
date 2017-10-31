@@ -20,10 +20,16 @@ public class OverlayOptionsTest extends BaseTest {
 		JSONObject json = new JSONObject();
 		json.put("title", "the title");
 		json.put("text", "the text");
+		JSONObject nestedButton = new JSONObject();
+		nestedButton.put("text", "OK");
+		nestedButton.put("action", "action");
+		json.put("positiveButton", nestedButton);
 
 		OverlayOptions result = OverlayOptions.parse(json);
 		assertThat(result.getTitle()).isEqualTo("the title");
 		assertThat(result.getText()).isEqualTo("the text");
+		assertThat(result.getPositiveButton().getText()).isEqualTo("OK");
+		assertThat(result.getPositiveButton().getAction()).isEqualTo("action");
 	}
 
 	@Test
