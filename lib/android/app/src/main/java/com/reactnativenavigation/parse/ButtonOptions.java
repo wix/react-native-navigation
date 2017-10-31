@@ -19,7 +19,7 @@ public class ButtonOptions {
 
 	private String text;
 	private String action;
-	private boolean visible = true;
+	private boolean visible = false;
 
 	public String getText() {
 		return text;

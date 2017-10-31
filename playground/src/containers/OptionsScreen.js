@@ -120,11 +120,6 @@ class OptionsScreen extends Component {
       positiveButton: {
         text: "OK",
         action: "some aciton",
-        visible: false
-      },
-      negativeButton: {
-        text: "Cancel",
-        action: "some action"
       }
     });
   }
