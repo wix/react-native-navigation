@@ -23,6 +23,7 @@ public class ScreenParamsParser extends Parser {
     private static final String FRAGMENT_CREATOR_PASS_PROPS = "fragmentCreatorPassProps";
     private static final String OVERRIDE_BACK_PRESS = "overrideBackPress";
     private static final String ANIMATION_TYPE = "animationType";
+    private static final String SET_SOFT_INPUT_MODE = "setSoftInputMode";
 
     @SuppressWarnings("ConstantConditions")
     public static ScreenParams parse(Bundle params) {
@@ -56,6 +57,7 @@ public class ScreenParamsParser extends Parser {
         result.sharedElementsTransitions = getSharedElementsTransitions(params);
 
         result.animationType = params.getString(ANIMATION_TYPE, "slide-up");
+        result.setSoftInputMode = params.getInt(SET_SOFT_INPUT_MODE);
 
         return result;
     }
