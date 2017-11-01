@@ -1,14 +1,13 @@
 package com.reactnativenavigation.screens;
 
+import android.animation.LayoutTransition;
 import android.annotation.TargetApi;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.facebook.react.bridge.Callback;
@@ -29,6 +28,7 @@ import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.StyleParamsParser;
+import com.reactnativenavigation.utils.StatusBar;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
@@ -115,6 +115,10 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         }
     }
 
+    public void updateBottomTabsVisibility(boolean hidden) {
+        styleParams.bottomTabsHidden = hidden;
+    }
+
     private void createViews() {
         createAndAddTopBar();
         createTitleBar();
@@ -135,7 +139,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             topBar.setReactView(screenParams.styleParams);
         } else {
             topBar.setTitle(screenParams.title, styleParams);
-            topBar.setSubtitle(screenParams.subtitle);
+            topBar.setSubtitle(screenParams.subtitle, styleParams);
         }
     }
 
@@ -165,44 +169,16 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         addView(topBar, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarColor(StyleParams.Color statusBarColor) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
-
-        final Window window = ((NavigationActivity) activity).getScreenWindow();
-        if (statusBarColor.hasColor()) {
-            window.setStatusBarColor(statusBarColor.getColor());
-        } else {
-            window.setStatusBarColor(Color.BLACK);
-        }
+        StatusBar.setColor(((NavigationActivity) activity).getScreenWindow(), statusBarColor);
     }
 
     private void setStatusBarHidden(boolean statusBarHidden) {
-        final Window window = ((NavigationActivity) activity).getScreenWindow();
-        if (statusBarHidden) {
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
+        StatusBar.setHidden(((NavigationActivity) activity).getScreenWindow(), statusBarHidden);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     private void setStatusBarTextColorScheme(StatusBarTextColorScheme textColorScheme) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
-        if (StatusBarTextColorScheme.Dark.equals(textColorScheme)) {
-            int flags = getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            setSystemUiVisibility(flags);
-        } else {
-            clearLightStatusBar();
-        }
-    }
-
-    public void clearLightStatusBar() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
-        int flags = getSystemUiVisibility();
-        flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        setSystemUiVisibility(flags);
+        StatusBar.setTextColorScheme(this, textColorScheme);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -235,6 +211,12 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void setTopBarVisible(boolean visible, boolean animate) {
         screenParams.styleParams.titleBarHidden = !visible;
+        if (animate && styleParams.drawScreenBelowTopBar) {
+            setLayoutTransition(new LayoutTransition());
+            getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        } else {
+            setLayoutTransition(null);
+        }
         topBar.setVisible(visible, animate);
     }
 
@@ -243,7 +225,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setTitleBarSubtitle(String subtitle) {
-        topBar.setSubtitle(subtitle);
+        topBar.setSubtitle(subtitle, styleParams);
     }
 
     public void setTitleBarRightButtons(String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {

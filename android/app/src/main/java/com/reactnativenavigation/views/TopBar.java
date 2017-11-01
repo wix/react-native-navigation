@@ -93,8 +93,8 @@ public class TopBar extends AppBarLayout {
         titleBar.setTitle(title, styleParams);
     }
 
-    public void setSubtitle(String subtitle) {
-        titleBar.setSubtitle(subtitle);
+    public void setSubtitle(String subtitle, StyleParams styleParams) {
+        titleBar.setSubtitle(subtitle, styleParams);
     }
 
     public void setReactView(@NonNull StyleParams styleParams) {
@@ -261,7 +261,16 @@ public class TopBar extends AppBarLayout {
     }
 
     public void setVisible(boolean visible, boolean animate) {
-        titleBar.setVisibility(!visible);
-        visibilityAnimator.setVisible(visible, animate);
+        if (visible) {
+            titleBar.setVisibility(false);
+            visibilityAnimator.setVisible(true, animate, null);
+        } else {
+            visibilityAnimator.setVisible(false, animate, new Runnable() {
+                @Override
+                public void run() {
+                    titleBar.setVisibility(true);
+                }
+            });
+        }
     }
 }
