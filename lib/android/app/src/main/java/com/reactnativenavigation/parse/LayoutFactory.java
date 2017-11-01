@@ -86,6 +86,13 @@ public class LayoutFactory {
 				new TopbarContainerViewCreator(new ReactContainerViewCreator(reactInstanceManager)), navigationOptions);
 	}
 
+	public ContainerViewController.ContainerView createOverlayContainer(LayoutNode node) {
+		String id = node.id;
+		String name = node.data.optString("name");
+		ReactContainerViewCreator creator = new ReactContainerViewCreator(reactInstanceManager);
+		return creator.create(activity, id, name);
+	}
+
 	private ViewController createContainerStack(LayoutNode node) {
 		StackController stackController = new StackController(activity, node.id);
 		for (LayoutNode child : node.children) {

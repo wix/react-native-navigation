@@ -1,6 +1,8 @@
 package com.reactnativenavigation.parse;
 
 
+import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+
 import org.json.JSONObject;
 
 public class OverlayOptions {
@@ -18,10 +20,20 @@ public class OverlayOptions {
 		return options;
 	}
 
+	public static OverlayOptions create(ContainerViewController.ContainerView containerView) {
+		OverlayOptions options = new OverlayOptions();
+		if (containerView == null) return options;
+
+		options.customView = containerView;
+		return options;
+	}
+
 	private String title = "";
 	private String text = "";
 	private ButtonOptions positiveButton;
 	private ButtonOptions negativeButton;
+
+	private ContainerViewController.ContainerView customView;
 
 	public String getText() {
 		return text;
@@ -37,5 +49,9 @@ public class OverlayOptions {
 
 	public ButtonOptions getNegativeButton() {
 		return negativeButton;
+	}
+
+	public ContainerViewController.ContainerView getCustomView() {
+		return customView;
 	}
 }

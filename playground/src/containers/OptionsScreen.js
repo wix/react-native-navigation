@@ -1,5 +1,5 @@
 const React = require('react');
-const { Component } = require('react');
+const { Component, PureComponent } = require('react');
 
 const { View, Text, Button } = require('react-native');
 
@@ -114,14 +114,19 @@ class OptionsScreen extends Component {
   }
 
   onClickAlert() {
-    Navigation.showOverlay('alert', {
-      title: 'Title',
-      text: 'test!',
-      positiveButton: {
-        text: 'OK',
-        action: 'some aciton'
-      }
-    });
+    Navigation.showOverlay('custom', {
+      name: 'navigation.playground.CustomDialog'
+    }); //TODO
+  }
+}
+
+class CustomDialog extends PureComponent {
+  render() {
+    return (
+      <View style={styles.root} backgroundColor='red'>
+        <Text style={styles.h1}>Test view</Text>
+      </View>
+    )
   }
 }
 

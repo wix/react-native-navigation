@@ -15,6 +15,7 @@ import com.reactnativenavigation.parse.JSONParser;
 import com.reactnativenavigation.parse.LayoutNodeParser;
 import com.reactnativenavigation.parse.OverlayOptions;
 import com.reactnativenavigation.utils.UiThread;
+import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
@@ -138,6 +139,18 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 			@Override
 			public void run() {
 				navigator().showOverlay(type, overlayOptions);
+			}
+		});
+	}
+
+	@ReactMethod
+	public void showCustomOverlay(final String type, final ReadableMap rawLayoutTree) {
+		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
+		handle(new Runnable() {
+			@Override
+			public void run() {
+				ContainerViewController.ContainerView containerView = newLayoutFactory().createOverlayContainer(layoutTree);
+				navigator().showOverlay(type, OverlayOptions.create(containerView));
 			}
 		});
 	}

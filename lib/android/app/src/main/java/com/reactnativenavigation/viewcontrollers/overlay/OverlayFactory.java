@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.reactnativenavigation.parse.OverlayOptions;
 
-public class OverlayFabric {
+public class OverlayFactory {
 
 	private enum Overlay {
 		AlertDialog("alert", new AlertOverlay()),
@@ -27,7 +27,7 @@ public class OverlayFabric {
 					return overlay;
 				}
 			}
-			return CustomDialog;
+			return AlertDialog;
 		}
 	}
 
