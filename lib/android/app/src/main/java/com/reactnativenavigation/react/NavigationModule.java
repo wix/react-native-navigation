@@ -18,6 +18,7 @@ import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.overlay.OverlayFactory;
 
 import org.json.JSONObject;
 
@@ -133,26 +134,27 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void showOverlay(final String type, final ReadableMap options) {
-		final OverlayOptions overlayOptions = OverlayOptions.parse(JSONParser.parse(options));
-		handle(new Runnable() {
-			@Override
-			public void run() {
-				navigator().showOverlay(type, overlayOptions);
-			}
-		});
-	}
+	public void showOverlay(final String type, final ReadableMap data) {
+		if (OverlayFactory.Overlay.create(type) == OverlayFactory.Overlay.CustomDialog) {
+			final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(data));
+			handle(new Runnable() {
+				@Override
+				public void run() {
+					ViewController viewController = newLayoutFactory().create(layoutTree);
+					navigator().showOverlay(type, OverlayOptions.create(viewController));
+				}
+			});
+		} else {
+			final OverlayOptions overlayOptions = OverlayOptions.parse(JSONParser.parse(data));
+			handle(new Runnable() {
+				@Override
+				public void run() {
+					navigator().showOverlay(type, overlayOptions);
+				}
+			});
+		}
 
-	@ReactMethod
-	public void showCustomOverlay(final String type, final ReadableMap rawLayoutTree) {
-		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
-		handle(new Runnable() {
-			@Override
-			public void run() {
-				ContainerViewController.ContainerView containerView = newLayoutFactory().createOverlayContainer(layoutTree);
-				navigator().showOverlay(type, OverlayOptions.create(containerView));
-			}
-		});
+
 	}
 
 	private NavigationActivity activity() {

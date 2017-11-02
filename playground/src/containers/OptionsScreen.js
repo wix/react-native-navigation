@@ -114,9 +114,7 @@ class OptionsScreen extends Component {
   }
 
   onClickAlert() {
-    Navigation.showOverlay('custom', {
-      name: 'navigation.playground.CustomDialog'
-    }); //TODO
+    Navigation.showOverlay('custom', 'navigation.playground.CustomDialog'); //TODO
   }
 }
 

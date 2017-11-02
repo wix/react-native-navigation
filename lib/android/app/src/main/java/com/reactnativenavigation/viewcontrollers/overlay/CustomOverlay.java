@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.reactnativenavigation.parse.OverlayOptions;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.CustomDialog;
 
 public class CustomOverlay implements OverlayInterface {
@@ -15,8 +16,8 @@ public class CustomOverlay implements OverlayInterface {
 	public CustomOverlay create(Context context, OverlayOptions options) {
 		//TODO; implement
 
-		ContainerViewController.ContainerView customView = options.getCustomView();
-		dialog = new CustomDialog(context, customView.asView());
+		ViewController viewController = options.getCustomView();
+		dialog = new CustomDialog(context, viewController.getView());
 
 		return this;
 	}

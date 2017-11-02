@@ -7,7 +7,7 @@ import com.reactnativenavigation.parse.OverlayOptions;
 
 public class OverlayFactory {
 
-	private enum Overlay {
+	public enum Overlay {
 		AlertDialog("alert", new AlertOverlay()),
 		Snackbar("snackbar", new SnackbarOverlay()),
 		Fab("fab", new FabOverlay()),

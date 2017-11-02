@@ -13,7 +13,8 @@ public class LayoutNode {
 		SideMenuRoot,
 		SideMenuCenter,
 		SideMenuLeft,
-		SideMenuRight
+		SideMenuRight,
+		CustomDialog
 	}
 
 	public final String id;

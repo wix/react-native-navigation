@@ -2,6 +2,7 @@ package com.reactnativenavigation.parse;
 
 
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 
 import org.json.JSONObject;
 
@@ -20,7 +21,7 @@ public class OverlayOptions {
 		return options;
 	}
 
-	public static OverlayOptions create(ContainerViewController.ContainerView containerView) {
+	public static OverlayOptions create(ViewController containerView) {
 		OverlayOptions options = new OverlayOptions();
 		if (containerView == null) return options;
 
@@ -33,7 +34,7 @@ public class OverlayOptions {
 	private ButtonOptions positiveButton;
 	private ButtonOptions negativeButton;
 
-	private ContainerViewController.ContainerView customView;
+	private ViewController customView;
 
 	public String getText() {
 		return text;
@@ -51,7 +52,7 @@ public class OverlayOptions {
 		return negativeButton;
 	}
 
-	public ContainerViewController.ContainerView getCustomView() {
+	public ViewController getCustomView() {
 		return customView;
 	}
 }
