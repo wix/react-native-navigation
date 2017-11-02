@@ -22,7 +22,7 @@ class CustomDialog extends PureComponent {
 
 const styles = {
   root: {
-    flexGrow: 1,
+    flex: 1,
     backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center'
