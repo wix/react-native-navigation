@@ -44,4 +44,11 @@ public class AlertOverlay implements OverlayInterface {
 	public void show() {
 		dialog.show();
 	}
+
+	@Override
+	public void dismiss() {
+		if (dialog != null) {
+			dialog.dismiss();
+		}
+	}
 }

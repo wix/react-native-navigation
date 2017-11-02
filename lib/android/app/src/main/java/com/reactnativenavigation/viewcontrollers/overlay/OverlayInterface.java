@@ -8,4 +8,5 @@ import com.reactnativenavigation.parse.OverlayOptions;
 public interface OverlayInterface {
 	OverlayInterface create(Context context, OverlayOptions options);
 	void show();
+	void dismiss();
 }

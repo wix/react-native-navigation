@@ -20,7 +20,7 @@ class LifecycleScreen extends Component {
 
   didDisappear() {
     if (Platform.OS === 'ios') {
-      alert('didDisappear')
+      alert('didDisappear'); // eslint-disable-line no-alert
     } else {
       Navigation.showOverlay('alert', {
         text: 'didDisappear',
@@ -33,7 +33,7 @@ class LifecycleScreen extends Component {
 
   componentWillUnmount() {
     if (Platform.OS === 'ios') {
-      alert('componentWillUnmount')
+      alert('componentWillUnmount'); // eslint-disable-line no-alert
     } else {
       Navigation.showOverlay('alert', {
         text: 'componentWillUnmount',

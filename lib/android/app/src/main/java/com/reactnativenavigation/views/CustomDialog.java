@@ -21,6 +21,6 @@ public class CustomDialog extends Dialog {
 	}
 
 	private void init() {
-		addContentView(container, new ViewGroup.LayoutParams(300, 300));
+		addContentView(container, new ViewGroup.LayoutParams(500, 500));
 	}
 }

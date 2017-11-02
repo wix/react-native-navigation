@@ -157,6 +157,16 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	}
 
+	@ReactMethod
+	public void dismissOverlay() {
+		handle(new Runnable() {
+			@Override
+			public void run() {
+				navigator().dismissOverlay();
+			}
+		});
+	}
+
 	private NavigationActivity activity() {
 		return (NavigationActivity) getCurrentActivity();
 	}

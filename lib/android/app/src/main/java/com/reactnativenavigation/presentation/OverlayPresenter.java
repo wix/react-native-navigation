@@ -19,4 +19,8 @@ public class OverlayPresenter {
 	public void show() {
 		overlay.show();
 	}
+
+	public void dismiss() {
+		overlay.dismiss();
+	}
 }

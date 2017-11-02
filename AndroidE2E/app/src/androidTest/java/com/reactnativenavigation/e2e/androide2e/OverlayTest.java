@@ -12,9 +12,8 @@ public class OverlayTest extends BaseTest {
 	public void testOverlayAlertAppear() throws Exception {
 		elementByText("PUSH OPTIONS SCREEN").click();
 		elementByText("SHOW ALERT").click();
-		assertExists(By.text("test!"));
+		assertExists(By.text("Test view"));
 		elementByText("OK").click();
 		assertExists(By.text("Static Title"));
-
 	}
 }

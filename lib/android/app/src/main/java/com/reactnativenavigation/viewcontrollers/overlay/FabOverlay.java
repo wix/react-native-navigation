@@ -18,4 +18,9 @@ public class FabOverlay implements OverlayInterface {
 	public void show() {
 		//TODO; implement
 	}
+
+	@Override
+	public void dismiss() {
+		//TODO; implement
+	}
 }
