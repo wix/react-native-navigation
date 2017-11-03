@@ -13,11 +13,11 @@ public class CustomOverlay implements OverlayInterface {
 	private CustomDialog dialog;
 
 	@Override
-	public CustomOverlay create(Context context, OverlayOptions options) {
+	public CustomOverlay create(ViewController root, OverlayOptions options) {
 		//TODO; implement
 
 		ViewController viewController = options.getCustomView();
-		dialog = new CustomDialog(context, viewController.getView());
+		dialog = new CustomDialog(root.getActivity(), viewController.getView());
 
 		return this;
 	}

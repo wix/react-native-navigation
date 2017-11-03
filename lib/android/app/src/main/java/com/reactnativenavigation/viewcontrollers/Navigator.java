@@ -131,7 +131,7 @@ public class Navigator extends ParentController {
 	}
 
 	public void showOverlay(String type, OverlayOptions options) {
-		overlayPresenter = new OverlayPresenter(getActivity(), type, options);
+		overlayPresenter = new OverlayPresenter(root, type, options);
 		overlayPresenter.show();
 	}
 

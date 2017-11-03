@@ -1,7 +1,11 @@
 package com.reactnativenavigation.parse;
 
 
+import android.support.annotation.ColorInt;
+
 import org.json.JSONObject;
+
+import static com.reactnativenavigation.parse.OverlayOptions.NO_COLOR;
 
 public class ButtonOptions {
 
@@ -13,13 +17,16 @@ public class ButtonOptions {
 		options.text = json.optString("text");
 		options.action = json.optString("action");
 		options.visible = json.optBoolean("visible", true);
+		options.textColor = json.optInt("textColor", NO_COLOR);
 
 		return options;
 	}
 
-	private String text;
+	private String text = "";
 	private String action;
 	private boolean visible = false;
+	@ColorInt
+	private int textColor;
 
 	public String getText() {
 		return text;
@@ -31,5 +38,9 @@ public class ButtonOptions {
 
 	public boolean isVisible() {
 		return visible;
+	}
+
+	public int getTextColor() {
+		return textColor;
 	}
 }

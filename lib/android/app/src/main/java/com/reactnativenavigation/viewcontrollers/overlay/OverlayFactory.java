@@ -4,6 +4,7 @@ package com.reactnativenavigation.viewcontrollers.overlay;
 import android.content.Context;
 
 import com.reactnativenavigation.parse.OverlayOptions;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 
 public class OverlayFactory {
 
@@ -31,8 +32,8 @@ public class OverlayFactory {
 		}
 	}
 
-	public static OverlayInterface create(String type, Context context, OverlayOptions options) {
-		return Overlay.create(type).overlayInstance.create(context, options);
+	public static OverlayInterface create(String type, ViewController viewController, OverlayOptions options) {
+		return Overlay.create(type).overlayInstance.create(viewController, options);
 	}
 
 }

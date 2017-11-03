@@ -6,14 +6,15 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
 import com.reactnativenavigation.parse.OverlayOptions;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 
 public class AlertOverlay implements OverlayInterface {
 
 	private AlertDialog dialog;
 
 	@Override
-	public AlertOverlay create(Context context, final OverlayOptions options) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+	public AlertOverlay create(ViewController viewController, final OverlayOptions options) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(viewController.getActivity());
 
 		builder.setTitle(options.getTitle());
 		builder.setMessage(options.getText());
