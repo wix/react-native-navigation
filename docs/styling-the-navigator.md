@@ -94,7 +94,11 @@ this.props.navigator.setStyle({
   navBarRightButtonFontSize: 17, // Change font size of right nav bar button
   navBarRightButtonColor: 'blue', // Change color of right nav bar button
   navBarRightButtonFontWeight: '600', // Change font weight of right nav bar button
-  
+
+  navBarLargeTextColor: '#000000', // change the text color of large titles
+  navBarLargeTextFontSize: 34, // change the font size of large titles
+  navBarLargeTextFontFamily: 'font-name', // Changes the large title font
+
   // Android only
   navigationBarColor: '#000000', // change the background color of the bottom native navigation bar.
   navBarTitleTextCentered: true, // default: false. centers the title.
