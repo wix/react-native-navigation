@@ -118,7 +118,7 @@
 	
 	UIFont *font = [RCTFont updateFont:baseFont withFamily:fontFamily size:fontSize weight:fontWeight style:fontStyle variant:nil scaleMultiplier:1];
 	
-	if (font && (fontStyle || fontWeight || fontSize || fontFamily)) {
+	if (font) {
 		[textAttributes setObject:font forKey:NSFontAttributeName];
 	}
 	
@@ -133,6 +133,26 @@
 + (NSString *)getTimestampString {
 	long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
 	return [NSString stringWithFormat:@"%lld", milliseconds];
+}
+
++ (UILabel *)labelWithFrame:(CGRect)frame textAttributes:(NSDictionary *)textAttributes andText:(NSString *)text {
+	UILabel *label = [[UILabel alloc] initWithFrame:frame];
+	label.textAlignment = NSTextAlignmentCenter;
+	label.backgroundColor = [UIColor clearColor];
+	if (text) {
+		[label setAttributedText:[[NSAttributedString alloc] initWithString:text attributes:textAttributes]];
+	}
+	
+	CGRect labelFrame = label.frame;
+	labelFrame.size = [label.text sizeWithAttributes:textAttributes];
+	label.frame = labelFrame;
+	[label sizeToFit];
+	return label;
+}
+
++ (UILabel *)labelWithFrame:(CGRect)frame textAttributesFromDictionary:(NSDictionary *)dictionary baseFont:(UIFont *)baseFont andText:(NSString *)text {
+	NSMutableDictionary *textAttributes = [RCTHelpers textAttributesFromDictionary:dictionary withPrefix:@"text" baseFont:baseFont];
+	return [self labelWithFrame:frame textAttributes:textAttributes andText:text];
 }
 
 @end
