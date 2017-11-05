@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.utils.ViewUtils;
@@ -23,7 +22,6 @@ class ScreenAnimator {
     private static final int DURATION = 250;
     private static final int ALPHA_START_DELAY = 100;
     private static final int ALPHA_SHORT_DURATION = 150;
-    private static final LinearInterpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
     private static final DecelerateInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();
     private static final AccelerateDecelerateInterpolator ACCELERATE_DECELERATE_INTERPOLATOR = new AccelerateDecelerateInterpolator();
     private static final AccelerateInterpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
