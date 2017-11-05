@@ -116,7 +116,7 @@ this.props.navigator.setStyle({
 If you set any styles related to the Status Bar, make sure that in Xcode > project > Info.plist, the property `View controller-based status bar appearance` is set to `YES`.
 
 ## Custom fonts
-If you'd like to use a custom font, you'll first have to your project.
+If you'd like to use a custom font, you'll first have to edit your project.
 
 * Android - add the `.ttf` or `.otf` files to `src/main/assets/fonts/`
 
