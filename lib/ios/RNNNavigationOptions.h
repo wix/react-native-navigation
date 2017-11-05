@@ -4,20 +4,27 @@
 extern const NSInteger BLUR_STATUS_TAG;
 extern const NSInteger BLUR_TOPBAR_TAG;
 
+extern const NSInteger TOPBAR_TITLE_VIEW_TITLE_TAG;
+extern const NSInteger TOPBAR_TITLE_VIEW_SUBTITLE_TAG;
+
 @interface RNNNavigationOptions : NSObject
 
 @property (nonatomic, strong) NSNumber* topBarBackgroundColor;
 @property (nonatomic, strong) NSNumber* topBarTextColor;
+@property (nonatomic, strong) NSNumber* topBarSubtitleTextColor;
 @property (nonatomic, strong) NSNumber* statusBarHidden;
 @property (nonatomic, strong) NSString* title;
+@property (nonatomic, strong) NSString* subtitle;
 @property (nonatomic, strong) NSNumber* screenBackgroundColor;
 @property (nonatomic, strong) NSString* topBarTextFontFamily;
+@property (nonatomic, strong) NSString* topBarSubtitleTextFontFamily;
 @property (nonatomic, strong) NSNumber* topBarHidden;
 @property (nonatomic, strong) NSNumber* topBarHideOnScroll;
 @property (nonatomic, strong) NSNumber* topBarButtonColor;
 @property (nonatomic, strong) NSNumber* topBarTranslucent;
 @property (nonatomic, strong) NSString* tabBadge;
 @property (nonatomic, strong) NSNumber* topBarTextFontSize;
+@property (nonatomic, strong) NSNumber* topBarSubtitleTextFontSize;
 @property (nonatomic, strong) id orientation;
 @property (nonatomic, strong) NSArray* leftButtons;
 @property (nonatomic, strong) NSArray* rightButtons;
