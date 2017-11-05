@@ -105,6 +105,48 @@
 	XCTAssertNil(self.uut.navigationItem.title);
 }
 
+-(void)testSubtitle_default{
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	
+	[self.uut viewWillAppear:false];
+	XCTAssertNil(self.uut.navigationItem.titleView);
+}
+
+-(void)testSubtitle_emptyString{
+	NSString* subtitle =@"";
+	self.options.subtitle= subtitle;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	
+	[self.uut viewWillAppear:false];
+	XCTAssertNil(self.uut.navigationItem.titleView);
+}
+
+-(void)testSubtitle_string{
+	NSString* subtitle =@"some subtitle";
+	self.options.subtitle= subtitle;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	
+	[self.uut viewWillAppear:false];
+	UILabel *titleLabel = (UILabel *)[self.uut.navigationItem.titleView viewWithTag:TOPBAR_TITLE_VIEW_TITLE_TAG];
+	XCTAssertNil(titleLabel.text);
+	UILabel *subtitleLabel = (UILabel *)[self.uut.navigationItem.titleView viewWithTag:TOPBAR_TITLE_VIEW_SUBTITLE_TAG];
+	XCTAssertTrue([subtitleLabel.text isEqualToString:subtitle]);
+}
+
+-(void)testBothTitleAndSubtitle_string{
+	NSString* title =@"some title";
+	NSString* subtitle =@"some subtitle";
+	self.options.title= title;
+	self.options.subtitle= subtitle;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	
+	[self.uut viewWillAppear:false];
+	UILabel *titleLabel = (UILabel *)[self.uut.navigationItem.titleView viewWithTag:TOPBAR_TITLE_VIEW_TITLE_TAG];
+	XCTAssertTrue([titleLabel.text isEqualToString:title]);
+	UILabel *subtitleLabel = (UILabel *)[self.uut.navigationItem.titleView viewWithTag:TOPBAR_TITLE_VIEW_SUBTITLE_TAG];
+	XCTAssertTrue([subtitleLabel.text isEqualToString:subtitle]);
+}
+
 -(void)testTopBarTextColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
 	self.options.topBarTextColor = inputColor;
@@ -217,6 +259,51 @@
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
 	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+}
+
+-(void)testTopBarSubtitle_textAttributes {
+	NSString *subtitle = @"some subtitle";
+	NSNumber* topBarSubtitleTextFontSizeInput = @(15);
+	NSNumber* inputColor = @(0xFFFF0000);
+	NSString* inputFont = @"HelveticaNeue";
+	self.options.subtitle = subtitle;
+	self.options.topBarSubtitleTextFontSize = topBarSubtitleTextFontSizeInput;
+	self.options.topBarSubtitleTextColor = inputColor;
+	self.options.topBarSubtitleTextFontFamily = inputFont;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
+	
+	UILabel *subtitleLabel = (UILabel *)[self.uut.navigationItem.titleView viewWithTag:TOPBAR_TITLE_VIEW_SUBTITLE_TAG];
+	NSDictionary *textAttributes = [subtitleLabel.attributedText attributesAtIndex:0 longestEffectiveRange:nil inRange:NSMakeRange(0, subtitle.length)];
+	
+	XCTAssertTrue([textAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([textAttributes[@"NSColor"] isEqual:expectedColor]);
+}
+
+-(void)testTopBarBothTitleAndSubtitle_textAttributes {
+	NSString *title = @"some title";
+	NSString *subtitle = @"some subtitle";
+	NSNumber* titleTextColor = @(0xFFFF0000);
+	NSNumber* topBarSubtitleTextFontSizeInput = @(15);
+	self.options.title = title;
+	self.options.subtitle = subtitle;
+	self.options.topBarSubtitleTextFontSize = topBarSubtitleTextFontSizeInput;
+	self.options.topBarTextColor = titleTextColor;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	UIColor* expectedTitleColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	UIFont* expectedSubtitleFont = [UIFont systemFontOfSize:15.f];
+	
+	UILabel *titleLabel = (UILabel *)[self.uut.navigationItem.titleView viewWithTag:TOPBAR_TITLE_VIEW_TITLE_TAG];
+	UILabel *subtitleLabel = (UILabel *)[self.uut.navigationItem.titleView viewWithTag:TOPBAR_TITLE_VIEW_SUBTITLE_TAG];
+	
+	NSDictionary *titleTextAttributes = [titleLabel.attributedText attributesAtIndex:0 longestEffectiveRange:nil inRange:NSMakeRange(0, title.length)];
+	NSDictionary *subtitleTextAttributes = [subtitleLabel.attributedText attributesAtIndex:0 longestEffectiveRange:nil inRange:NSMakeRange(0, subtitle.length)];
+	
+	XCTAssertTrue([subtitleTextAttributes[@"NSFont"] isEqual:expectedSubtitleFont]);
+	XCTAssertTrue([titleTextAttributes[@"NSColor"] isEqual:expectedTitleColor]);
 }
 
 // TODO: Currently not passing
