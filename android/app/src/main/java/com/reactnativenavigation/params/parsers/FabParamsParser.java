@@ -12,6 +12,7 @@ public class FabParamsParser extends Parser {
         FabParams fabParams = new FabParams();
         fabParams.collapsedId = params.getString("collapsedId");
         fabParams.expendedId = params.getString("expendedId");
+        fabParams.left = params.getBoolean("left", false);
         fabParams.navigatorEventId = navigatorEventId;
         fabParams.screenInstanceId = screenInstanceId;
         fabParams.backgroundColor = getColor(params, "backgroundColor", new StyleParams.Color());
