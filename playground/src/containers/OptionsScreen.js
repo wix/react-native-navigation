@@ -98,9 +98,9 @@ class OptionsScreen extends Component {
   onClickSubtitleOptions() {
     Navigation.setOptions(this.props.containerId, {
       subtitle: 'Styled Subtitle',
-      topBarSubtitleTextColor: 'red',
-      topBarSubtitleTextFontSize: 15,
-      topBarSubtitleTextFontFamily: 'HelveticaNeue-MediumItalic'
+      topBarSubtitleColor: 'red',
+      topBarSubtitleFontSize: 15,
+      topBarSubtitleFontFamily: 'HelveticaNeue-MediumItalic'
     });
   }
 

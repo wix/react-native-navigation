@@ -263,13 +263,13 @@
 
 -(void)testTopBarSubtitle_textAttributes {
 	NSString *subtitle = @"some subtitle";
-	NSNumber* topBarSubtitleTextFontSizeInput = @(15);
+	NSNumber* topBarSubtitleFontSizeInput = @(15);
 	NSNumber* inputColor = @(0xFFFF0000);
 	NSString* inputFont = @"HelveticaNeue";
 	self.options.subtitle = subtitle;
-	self.options.topBarSubtitleTextFontSize = topBarSubtitleTextFontSizeInput;
-	self.options.topBarSubtitleTextColor = inputColor;
-	self.options.topBarSubtitleTextFontFamily = inputFont;
+	self.options.topBarSubtitleFontSize = topBarSubtitleFontSizeInput;
+	self.options.topBarSubtitleColor = inputColor;
+	self.options.topBarSubtitleFontFamily = inputFont;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
@@ -286,10 +286,10 @@
 	NSString *title = @"some title";
 	NSString *subtitle = @"some subtitle";
 	NSNumber* titleTextColor = @(0xFFFF0000);
-	NSNumber* topBarSubtitleTextFontSizeInput = @(15);
+	NSNumber* topBarSubtitleFontSizeInput = @(15);
 	self.options.title = title;
 	self.options.subtitle = subtitle;
-	self.options.topBarSubtitleTextFontSize = topBarSubtitleTextFontSizeInput;
+	self.options.topBarSubtitleFontSize = topBarSubtitleFontSizeInput;
 	self.options.topBarTextColor = titleTextColor;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
