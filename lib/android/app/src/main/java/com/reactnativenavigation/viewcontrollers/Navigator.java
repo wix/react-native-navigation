@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.OverlayOptions;
+import com.reactnativenavigation.presentation.OverlayPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 
 import org.json.JSONObject;
@@ -125,5 +127,9 @@ public class Navigator extends ParentController {
 
 	public void dismissAllModals() {
 		modalStack.dismissAll();
+	}
+
+	public void showOverlay(String type, OverlayOptions options) {
+		new OverlayPresenter(getActivity(), type, options).show();
 	}
 }
