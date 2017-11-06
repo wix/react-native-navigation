@@ -11,7 +11,6 @@ public class OverlayFactory {
 	public enum Overlay {
 		AlertDialog("alert", new AlertOverlay()),
 		Snackbar("snackbar", new SnackbarOverlay()),
-		Fab("fab", new FabOverlay()),
 		CustomDialog("custom", new CustomOverlay());
 
 		private String name;
