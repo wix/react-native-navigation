@@ -64,20 +64,12 @@ const NSInteger TOPBAR_TITLE_VIEW_SUBTITLE_TAG = 88264802;
 	}
 
 	if (self.topBarTextFontFamily || self.topBarTextColor || self.topBarTextFontSize){
-		NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
-		if (self.topBarTextColor) {
-			navigationBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:self.topBarTextColor];
-		}
-		if (self.topBarTextFontFamily){
-			if(self.topBarTextFontSize) {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.topBarTextFontFamily size:[self.topBarTextFontSize floatValue]];
-			} else {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.topBarTextFontFamily size:20];
-			}
-		} else if (self.topBarTextFontSize) {
-			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.topBarTextFontSize floatValue]];
-		}
-		viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
+		NSMutableDictionary *attributesDict = [NSMutableDictionary dictionary];
+		attributesDict[@"textColor"] = self.topBarTextColor;
+		attributesDict[@"textFontFamily"] = self.topBarTextFontFamily;
+		attributesDict[@"textFontSize"] = self.topBarTextFontSize;
+
+		viewController.navigationController.navigationBar.titleTextAttributes = [RCTHelpers textAttributesFromDictionary:attributesDict withPrefix:@"text" baseFont:[UIFont systemFontOfSize:(self.topBarTextFontSize ? self.topBarTextFontSize.floatValue : 20)]];
 	}
 	
 	if (self.subtitle && [self.subtitle length]) {
@@ -105,7 +97,7 @@ const NSInteger TOPBAR_TITLE_VIEW_SUBTITLE_TAG = 88264802;
 		attributesDict[@"textFontFamily"] = self.topBarSubtitleFontFamily;
 		attributesDict[@"textFontSize"] = self.topBarSubtitleFontSize;
 		
-		UILabel *subtitleLabel = [RCTHelpers labelWithFrame:subtitleFrame textAttributesFromDictionary:attributesDict baseFont:[UIFont systemFontOfSize:14] andText:self.subtitle];
+		UILabel *subtitleLabel = [RCTHelpers labelWithFrame:subtitleFrame textAttributesFromDictionary:attributesDict baseFont:[UIFont systemFontOfSize:self.topBarSubtitleFontSize ? self.topBarSubtitleFontSize.floatValue : 17] andText:self.subtitle];
 		subtitleLabel.autoresizingMask = titleView.autoresizingMask;
 		subtitleLabel.tag = TOPBAR_TITLE_VIEW_SUBTITLE_TAG;
 		
