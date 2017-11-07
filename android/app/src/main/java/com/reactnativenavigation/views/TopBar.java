@@ -93,8 +93,8 @@ public class TopBar extends AppBarLayout {
         titleBar.setTitle(title, styleParams);
     }
 
-    public void setSubtitle(String subtitle) {
-        titleBar.setSubtitle(subtitle);
+    public void setSubtitle(String subtitle, StyleParams styleParams) {
+        titleBar.setSubtitle(subtitle, styleParams);
     }
 
     public void setReactView(@NonNull StyleParams styleParams) {
@@ -104,10 +104,11 @@ public class TopBar extends AppBarLayout {
             }
             unmountReactView();
             reactView = new Pair<>(styleParams.topBarReactView, createReactView(styleParams));
+            int height = styleParams.hasCustomTitleBarHeight() ? (int) ViewUtils.convertDpToPixel(styleParams.titleBarHeight) : ViewUtils.getToolBarHeight();
             if ("fill".equals(styleParams.topBarReactViewAlignment)) {
-                addReactViewFill(reactView.second);
+                addReactViewFill(reactView.second, height);
             } else {
-                addCenteredReactView(reactView.second);
+                addCenteredReactView(reactView.second, height);
             }
         } else {
             unmountReactView();
@@ -133,13 +134,13 @@ public class TopBar extends AppBarLayout {
         );
     }
 
-    private void addReactViewFill(ContentView view) {
-        view.setLayoutParams(new LayoutParams(MATCH_PARENT, ViewUtils.getToolBarHeight()));
+    private void addReactViewFill(ContentView view, int height) {
+        view.setLayoutParams(new LayoutParams(MATCH_PARENT, height));
         titleBar.addView(view);
     }
 
-    private void addCenteredReactView(final ContentView view) {
-        titleBar.addView(view, new LayoutParams(WRAP_CONTENT, ViewUtils.getToolBarHeight()));
+    private void addCenteredReactView(final ContentView view, int height) {
+        titleBar.addView(view, new LayoutParams(WRAP_CONTENT, height));
         view.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
@@ -260,7 +261,16 @@ public class TopBar extends AppBarLayout {
     }
 
     public void setVisible(boolean visible, boolean animate) {
-        titleBar.setVisibility(!visible);
-        visibilityAnimator.setVisible(visible, animate);
+        if (visible) {
+            titleBar.setVisibility(false);
+            visibilityAnimator.setVisible(true, animate, null);
+        } else {
+            visibilityAnimator.setVisible(false, animate, new Runnable() {
+                @Override
+                public void run() {
+                    titleBar.setVisibility(true);
+                }
+            });
+        }
     }
 }

@@ -135,7 +135,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onPause();
         currentActivity = null;
         IntentDataHandler.onPause(getIntent());
-        getReactGateway().onPauseActivity();
+        getReactGateway().onPauseActivity(this);
         NavigationApplication.instance.getActivityCallbacks().onActivityPaused(this);
         EventBus.instance.unregister(this);
     }
@@ -166,19 +166,26 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     private void destroyJsIfNeeded() {
         if (currentActivity == null || currentActivity.isFinishing()) {
-            getReactGateway().onDestroyApp();
+            getReactGateway().onDestroyApp(this);
         }
     }
 
     @Override
     public void invokeDefaultOnBackPressed() {
-        super.onBackPressed();
+        if (layout != null && !layout.onBackPressed()) {
+            super.onBackPressed();
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if (layout != null && !layout.onBackPressed()) {
+        if (layout != null && layout.handleBackInJs()) {
+            return;
+        }
+        if (getReactGateway().isInitialized()) {
             getReactGateway().onBackPressed();
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -244,8 +251,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.showModal(screenParams);
     }
 
-    void dismissTopModal() {
-        modalController.dismissTopModal();
+    void dismissTopModal(ScreenParams params) {
+        modalController.dismissTopModal(params);
     }
 
     void dismissAllModals() {
