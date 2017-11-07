@@ -85,6 +85,23 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     NSNumber *keepStyleAcrossPush = [[RCCManager sharedInstance] getAppStyle][@"keepStyleAcrossPush"];
     BOOL keepStyleAcrossPushBool = keepStyleAcrossPush ? [keepStyleAcrossPush boolValue] : YES;
     
+    //Reduce push flicker
+    BOOL holdPush = passProps[@"holdPush"] ? YES : NO;
+    BOOL pushNow = passProps[@"pushNow"] ? YES : NO;
+
+    if (holdPush) {
+        _transitioning = YES;
+    } else if (pushNow) {
+        if ([_queuedViewControllers count] > 0) {
+          _transitioning = NO;
+          NSDictionary *toPushDetails = [_queuedViewControllers firstObject];
+          [_queuedViewControllers removeObjectAtIndex:0];
+          [self pushViewController:toPushDetails[@"viewController"] animated:[toPushDetails[@"animated"] boolValue]];
+
+          return;
+        }
+    }
+    
     if (keepStyleAcrossPushBool) {
       
       if ([self.topViewController isKindOfClass:[RCCViewController class]])
