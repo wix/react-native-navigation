@@ -194,7 +194,7 @@ navigationController:(UINavigationController*)navigationController
     
     UIFont *titleFont = [UIFont boldSystemFontOfSize:17.f];
     
-    id fontSize = style[@"navBarTitleFontSize"];
+    id fontSize = style[@"navBarTextFontSize"];
     if (fontSize) {
         CGFloat fontSizeFloat = [RCTConvert CGFloat:fontSize];
         titleFont = [UIFont boldSystemFontOfSize:fontSizeFloat];
