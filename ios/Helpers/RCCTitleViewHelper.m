@@ -195,9 +195,16 @@ navigationController:(UINavigationController*)navigationController
     UIFont *titleFont = [UIFont boldSystemFontOfSize:17.f];
     
     id fontSize = style[@"navBarTextFontSize"];
+    id fontBold = style[@"navBarTextFontBold"];
+    
     if (fontSize) {
         CGFloat fontSizeFloat = [RCTConvert CGFloat:fontSize];
-        titleFont = [UIFont boldSystemFontOfSize:fontSizeFloat];
+        
+        if (fontBold == 1) {
+            titleFont = [UIFont boldSystemFontOfSize:fontSizeFloat];
+        } else {
+            titleFont = [UIFont systemFontOfSize:fontSizeFloat weight:UIFontWeightMedium];
+        }
     }
     
     titleLabel.font = titleFont;
