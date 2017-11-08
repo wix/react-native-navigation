@@ -19,10 +19,13 @@ import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.Orientation;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.SlidingOverlayParams;
+import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.ModalAnimationFactory;
 import com.reactnativenavigation.screens.NavigationType;
+import com.reactnativenavigation.utils.NavigationBar;
+import com.reactnativenavigation.utils.StatusBar;
 
 import java.util.List;
 
@@ -112,6 +115,18 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
         this.screenParams = screenParams;
         createContent();
         setAnimation(screenParams);
+        setStatusBarStyle(screenParams.styleParams);
+        setNavigationBarStyle(screenParams.styleParams);
+    }
+
+    private void setStatusBarStyle(StyleParams styleParams) {
+        Window window = getWindow();
+        if (window == null) return;
+        StatusBar.setTextColorScheme(window.getDecorView(), styleParams.statusBarTextColorScheme);
+    }
+
+    private void setNavigationBarStyle(StyleParams styleParams) {
+        NavigationBar.setColor(getWindow(), styleParams.navigationBarColor);
     }
 
     public AppCompatActivity getActivity() {
