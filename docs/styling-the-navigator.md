@@ -50,6 +50,7 @@ this.props.navigator.setStyle({
   navBarTextColor: '#000000', // change the text color of the title (remembered across pushes)
   navBarTextFontSize: 18, // change the font size of the title
   navBarTextFontFamily: 'font-name', // Changes the title font
+  navBarTextFontBold: false, // Optional. Set the title to bold.
   navBarBackgroundColor: '#f7f7f7', // change the background color of the nav bar (remembered across pushes)
   navBarCustomView: 'example.CustomTopBar', // registered component name
   navBarComponentAlignment: 'center', // center/fill
@@ -73,13 +74,13 @@ this.props.navigator.setStyle({
   screenBackgroundColor: 'white', // Default screen color, visible before the actual react view is rendered
   orientation: 'portrait' // Sets a specific orientation to a modal and all screens pushed to it. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
   disabledButtonColor: '#ff0000' // chnaged the navigation bar button text color when disabled.
-  
+
   // iOS only
   statusBarTextColorSchemeSingleScreen: 'light', // same as statusBarTextColorScheme but does NOT remember across pushes
   statusBarHideWithNavBar: false, // hide the status bar if the nav bar is also hidden, useful for navBarHidden:true
   statusBarBlur: false, // blur the area under the status bar, works best with navBarHidden:true
-  
-  disabledBackGesture: false, // default: false. Disable the back gesture (swipe gesture) in order to pop the top screen. 
+
+  disabledBackGesture: false, // default: false. Disable the back gesture (swipe gesture) in order to pop the top screen.
   disabledSimultaneousGesture: true, // default: true. Disable simultaneous gesture recognition.
   screenBackgroundImageName: '<name of image in Images.xcassets>', // Optional. default screen background image.
   rootBackgroundImageName: '<name of image in Images.xcassets>', // Static while you transition between screens. Works best with screenBackgroundColor: 'transparent'
@@ -94,7 +95,7 @@ this.props.navigator.setStyle({
   navBarRightButtonFontSize: 17, // Change font size of right nav bar button
   navBarRightButtonColor: 'blue', // Change color of right nav bar button
   navBarRightButtonFontWeight: '600', // Change font weight of right nav bar button
-  
+
   // Android only
   navigationBarColor: '#000000', // change the background color of the bottom native navigation bar.
   navBarTitleTextCentered: true, // default: false. centers the title.
@@ -104,7 +105,6 @@ this.props.navigator.setStyle({
   collapsingToolBarImage: "http://lorempixel.com/400/200/", // Collapsing Toolbar image.
   collapsingToolBarImage: require('../../img/topbar.jpg'), // Collapsing Toolbar image. Either use a url or require a local image.
   collapsingToolBarCollapsedColor: '#0f2362', // Collapsing Toolbar scrim color.
-  navBarTextFontBold: false, // Optional. Set the title to bold.
   navBarHeight: 70, // Optional, set the navBar height in pixels.
   topTabsHeight: 70, // Optional, set topTabs height in pixels.
   topBarBorderColor: 'red', Optional, set a flat border under the TopBar.
