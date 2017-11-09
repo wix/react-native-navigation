@@ -13,6 +13,7 @@ public class FabParams {
     public String navigatorEventId;
     public List<FabActionParams> actions;
     public String screenInstanceId;
+    public boolean left;
 
     public boolean hasExpendedState() {
         return actions != null && actions.size() > 0;
