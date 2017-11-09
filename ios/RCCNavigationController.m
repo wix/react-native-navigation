@@ -406,13 +406,16 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     }
   }
   
+  UIBarButtonItem *itemToIncreaseInsets = [barButtonItems lastObject];
   if ([side isEqualToString:@"left"])
   {
+    if (itemToIncreaseInsets) itemToIncreaseInsets.imageInsets = UIEdgeInsetsMake(0, 0, 0, 2 * itemToIncreaseInsets.image.size.width);
     [viewController.navigationItem setLeftBarButtonItems:barButtonItems animated:animated];
   }
   
   if ([side isEqualToString:@"right"])
   {
+    if (itemToIncreaseInsets) itemToIncreaseInsets.imageInsets = UIEdgeInsetsMake(0, 2 * itemToIncreaseInsets.image.size.width, 0, 0);
     [viewController.navigationItem setRightBarButtonItems:barButtonItems animated:animated];
   }
 }
