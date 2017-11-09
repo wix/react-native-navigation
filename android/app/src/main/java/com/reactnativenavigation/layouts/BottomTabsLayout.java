@@ -380,24 +380,36 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     @Override
     public void pop(final ScreenParams params) {
-        getCurrentScreenStack().pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
+        performOnStack(params.getNavigatorId(), new Task<ScreenStack>() {
             @Override
-            public void onScreenPopAnimationEnd() {
-                setBottomTabsStyleFromCurrentScreen();
-                alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params.styleParams);
-                EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
+            public void run(ScreenStack stack) {
+            stack.pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
+                    @Override
+                    public void onScreenPopAnimationEnd() {
+                        setBottomTabsStyleFromCurrentScreen();
+                        alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params.styleParams);
+                        EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
+                    }
+                });
             }
         });
     }
 
     @Override
     public void popToRoot(final ScreenParams params) {
-        getCurrentScreenStack().popToRoot(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
+        performOnStack(params.getNavigatorId(), new Task<ScreenStack>() {
             @Override
-            public void onScreenPopAnimationEnd() {
-                setBottomTabsStyleFromCurrentScreen();
-                alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params.styleParams);
-                EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
+            public void run(final ScreenStack stack) {
+                stack.popToRoot(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
+                    @Override
+                    public void onScreenPopAnimationEnd() {
+                        if (isCurrentStack(stack)) {
+                            setBottomTabsStyleFromCurrentScreen();
+                            alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params.styleParams);
+                            EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
+                        }
+                    }
+                });
             }
         });
     }
