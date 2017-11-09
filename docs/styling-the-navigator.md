@@ -68,7 +68,8 @@ this.props.navigator.setStyle({
   statusBarHidden: false, // make the status bar hidden regardless of nav bar state
   statusBarTextColorScheme: 'dark', // text color of status bar, 'dark' / 'light' (remembered across pushes)
   navBarSubtitleColor: 'red', // subtitle color
-  navBarSubtitleFontFamily: 'font-name', // subtitle font
+  navBarSubtitleFontFamily: 'font-name', // subtitle font, 'sans-serif-thin' for example
+  navBarSubtitleFontSize: 13, // subtitle font size
   screenBackgroundColor: 'white', // Default screen color, visible before the actual react view is rendered
   orientation: 'portrait' // Sets a specific orientation to a modal and all screens pushed to it. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
   disabledButtonColor: '#ff0000' // chnaged the navigation bar button text color when disabled.
@@ -97,6 +98,7 @@ this.props.navigator.setStyle({
   // Android only
   navigationBarColor: '#000000', // change the background color of the bottom native navigation bar.
   navBarTitleTextCentered: true, // default: false. centers the title.
+  navBarButtonFontFamily: 'sans-serif-thin', // Change the font family of textual buttons
   topBarElevationShadowEnabled: false, // default: true. Disables TopBar elevation shadow on Lolipop and above
   statusBarColor: '#000000', // change the color of the status bar.
   collapsingToolBarImage: "http://lorempixel.com/400/200/", // Collapsing Toolbar image.
@@ -114,7 +116,7 @@ this.props.navigator.setStyle({
 If you set any styles related to the Status Bar, make sure that in Xcode > project > Info.plist, the property `View controller-based status bar appearance` is set to `YES`.
 
 ## Custom fonts
-If you'd like to use a custom font, you'll first have to your project.
+If you'd like to use a custom font, you'll first have to edit your project.
 
 * Android - add the `.ttf` or `.otf` files to `src/main/assets/fonts/`
 

@@ -62,9 +62,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!NavigationApplication.instance.isReactContextInitialized()) {
-            NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
-            return;
+        if (!NavigationApplication.instance.getReactGateway().hasStartedCreatingContext()) {
+            SplashActivity.start(this);
+            finish();
         }
 
         activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
@@ -172,13 +172,20 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     @Override
     public void invokeDefaultOnBackPressed() {
-        super.onBackPressed();
+        if (layout != null && !layout.onBackPressed()) {
+            super.onBackPressed();
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if (layout != null && !layout.onBackPressed()) {
+        if (layout != null && layout.handleBackInJs()) {
+            return;
+        }
+        if (getReactGateway().isInitialized()) {
             getReactGateway().onBackPressed();
+        } else {
+            super.onBackPressed();
         }
     }
 

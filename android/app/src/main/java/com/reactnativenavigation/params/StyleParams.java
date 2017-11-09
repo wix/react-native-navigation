@@ -52,8 +52,10 @@ public class StyleParams {
 
     public static class Font {
         private Typeface typeface;
+        String fontFamilyName;
 
         public Font(String font) {
+            fontFamilyName = font;
             typeface = new TypefaceLoader(font).getTypeFace();
         }
 
@@ -61,7 +63,7 @@ public class StyleParams {
         }
 
         public boolean hasFont() {
-            return typeface != null;
+            return typeface != null && fontFamilyName != null;
         }
 
         public Typeface get() {
@@ -70,9 +72,15 @@ public class StyleParams {
             }
             return typeface;
         }
+
+        @Override
+        public String toString() {
+            return fontFamilyName;
+        }
     }
 
     public Orientation orientation;
+    public String screenAnimationType;
     public StatusBarTextColorScheme statusBarTextColorScheme;
     public Color statusBarColor;
     public boolean statusBarHidden;
@@ -98,6 +106,8 @@ public class StyleParams {
     public boolean topBarTranslucent;
     public Color titleBarTitleColor;
     public Color titleBarSubtitleColor;
+    public int titleBarSubtitleFontSize;
+    public Font titleBarSubtitleFontFamily;
     public Color titleBarButtonColor;
     public Color titleBarDisabledButtonColor;
     public Font titleBarTitleFont;
@@ -106,6 +116,7 @@ public class StyleParams {
     public boolean titleBarTitleTextCentered;
     public int titleBarHeight;
     public boolean backButtonHidden;
+    public Font titleBarButtonFontFamily;
 
     public Color topTabTextColor;
     public Color topTabIconColor;
