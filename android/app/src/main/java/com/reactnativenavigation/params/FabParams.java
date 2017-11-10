@@ -8,6 +8,8 @@ public class FabParams {
     public Drawable collapsedIcon;
     public Drawable expendedIcon;
     public StyleParams.Color backgroundColor;
+    public StyleParams.Color collapsedIconColor;
+    public StyleParams.Color expendedIconColor;
     public String collapsedId;
     public String expendedId;
     public String navigatorEventId;
