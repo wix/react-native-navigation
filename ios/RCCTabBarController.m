@@ -157,10 +157,7 @@
     if (icon)
     {
       iconImage = [RCTConvert UIImage:icon];
-      if (buttonColor)
-      {
-        iconImage = [iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-      }
+      iconImage = [iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     }
     UIImage *iconImageSelected = nil;
     id selectedIcon = tabItemLayout[@"props"][@"selectedIcon"];
@@ -169,6 +166,7 @@
     } else {
       iconImageSelected = [RCTConvert UIImage:icon];
     }
+    iconImageSelected = [iconImageSelected imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
     viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
     viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
@@ -336,6 +334,7 @@
       if (selectedIcon && selectedIcon != (id)[NSNull null])
       {
         iconImageSelected = [RCTConvert UIImage:selectedIcon];
+        iconImageSelected = [iconImageSelected imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         viewController.tabBarItem.selectedImage = iconImageSelected;
       }
     }
