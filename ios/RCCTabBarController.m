@@ -159,7 +159,7 @@
       iconImage = [RCTConvert UIImage:icon];
       if (buttonColor)
       {
-        iconImage = [[self image:iconImage withColor:buttonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        iconImage = [iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
       }
     }
     UIImage *iconImageSelected = nil;
