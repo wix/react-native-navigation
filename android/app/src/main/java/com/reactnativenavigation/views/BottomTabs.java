@@ -96,6 +96,10 @@ public class BottomTabs extends AHBottomNavigation {
         }
     }
 
+    public void setCurrentItemWithoutInvokingTabSelectedListener(Integer index) {
+        setCurrentItem(index, false);
+    }
+
     private void setBackgroundColor(StyleParams.Color bottomTabsColor) {
         if (bottomTabsColor.hasColor()) {
             if (bottomTabsColor.getColor() != getDefaultBackgroundColor()) {
