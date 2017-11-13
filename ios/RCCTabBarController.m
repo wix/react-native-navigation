@@ -413,5 +413,8 @@
 }
 
 
+- (BOOL)shouldAutorotate {
+  return NO;
+}
 
 @end
