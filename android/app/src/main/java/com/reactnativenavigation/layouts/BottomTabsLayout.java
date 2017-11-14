@@ -344,7 +344,8 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     public void selectBottomTabByTabIndex(Integer index) {
         if (bottomTabs.getCurrentItem() != index) {
-            bottomTabs.setCurrentItem(index);
+            bottomTabs.setCurrentItemWithoutInvokingTabSelectedListener(index);
+            switchTab(index, NavigationType.SwitchToTab);
         }
     }
 
@@ -478,11 +479,15 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         }
 
         final int unselectedTabIndex = currentStackIndex;
-        hideCurrentStack();
-        showNewStack(position, NavigationType.BottomTabSelected);
-        EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
+        switchTab(position, NavigationType.BottomTabSelected);
         sendTabSelectedEventToJs(position, unselectedTabIndex);
         return true;
+    }
+
+    private void switchTab(int position, NavigationType navigationType) {
+        hideCurrentStack();
+        showNewStack(position, navigationType);
+        EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
     }
 
     private void sendTabSelectedEventToJs(int selectedTabIndex, int unselectedTabIndex) {
