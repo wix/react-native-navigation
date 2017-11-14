@@ -12,7 +12,7 @@ function startApp(activityParams) {
 
 function push(screenParams) {
   savePassProps(screenParams);
-  NativeReactModule.push(screenParams);
+  return NativeReactModule.push(screenParams);
 }
 
 function pop(screenParams) {
@@ -62,8 +62,8 @@ function dismissLightBox() {
   NativeReactModule.dismissLightBox();
 }
 
-function dismissTopModal() {
-  NativeReactModule.dismissTopModal();
+function dismissTopModal(params) {
+  NativeReactModule.dismissTopModal(params);
 }
 
 function dismissAllModals() {

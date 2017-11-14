@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.Window;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
@@ -62,8 +63,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!NavigationApplication.instance.isReactContextInitialized()) {
-            NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
+        if (!NavigationApplication.instance.getReactGateway().hasStartedCreatingContext()) {
+            SplashActivity.start(this);
+            finish();
             return;
         }
 
@@ -135,7 +137,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onPause();
         currentActivity = null;
         IntentDataHandler.onPause(getIntent());
-        getReactGateway().onPauseActivity();
+        getReactGateway().onPauseActivity(this);
         NavigationApplication.instance.getActivityCallbacks().onActivityPaused(this);
         EventBus.instance.unregister(this);
     }
@@ -166,19 +168,26 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     private void destroyJsIfNeeded() {
         if (currentActivity == null || currentActivity.isFinishing()) {
-            getReactGateway().onDestroyApp();
+            getReactGateway().onDestroyApp(this);
         }
     }
 
     @Override
     public void invokeDefaultOnBackPressed() {
-        super.onBackPressed();
+        if (layout != null && !layout.onBackPressed()) {
+            super.onBackPressed();
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if (layout != null && !layout.onBackPressed()) {
+        if (layout != null && layout.handleBackInJs()) {
+            return;
+        }
+        if (getReactGateway().isInitialized()) {
             getReactGateway().onBackPressed();
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -205,11 +214,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onConfigurationChanged(newConfig);
     }
 
-    void push(ScreenParams params) {
+    void push(ScreenParams params, Promise onPushComplete) {
         if (modalController.containsNavigator(params.getNavigatorId())) {
-            modalController.push(params);
+            modalController.push(params, onPushComplete);
         } else {
-            layout.push(params);
+            layout.push(params, onPushComplete);
         }
     }
 
@@ -244,8 +253,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.showModal(screenParams);
     }
 
-    void dismissTopModal() {
-        modalController.dismissTopModal();
+    void dismissTopModal(ScreenParams params) {
+        modalController.dismissTopModal(params);
     }
 
     void dismissAllModals() {

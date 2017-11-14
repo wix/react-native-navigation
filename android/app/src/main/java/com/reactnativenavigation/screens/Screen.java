@@ -1,14 +1,9 @@
 package com.reactnativenavigation.screens;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
+import android.animation.LayoutTransition;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.view.Window;
 import android.widget.RelativeLayout;
 
 import com.facebook.react.bridge.Callback;
@@ -29,6 +24,8 @@ import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.StyleParamsParser;
+import com.reactnativenavigation.utils.NavigationBar;
+import com.reactnativenavigation.utils.StatusBar;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
@@ -106,12 +103,17 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void setStyle() {
         setStatusBarColor(styleParams.statusBarColor);
+        setStatusBarHidden(styleParams.statusBarHidden);
         setStatusBarTextColorScheme(styleParams.statusBarTextColorScheme);
         setNavigationBarColor(styleParams.navigationBarColor);
         topBar.setStyle(styleParams);
         if (styleParams.screenBackgroundColor.hasColor()) {
             setBackgroundColor(styleParams.screenBackgroundColor.getColor());
         }
+    }
+
+    public void updateBottomTabsVisibility(boolean hidden) {
+        styleParams.bottomTabsHidden = hidden;
     }
 
     private void createViews() {
@@ -134,7 +136,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
             topBar.setReactView(screenParams.styleParams);
         } else {
             topBar.setTitle(screenParams.title, styleParams);
-            topBar.setSubtitle(screenParams.subtitle);
+            topBar.setSubtitle(screenParams.subtitle, styleParams);
         }
     }
 
@@ -147,7 +149,8 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
                 screenParams.leftButton,
                 leftButtonOnClickListener,
                 getNavigatorEventId(),
-                screenParams.overrideBackPressInJs);
+                screenParams.overrideBackPressInJs,
+                styleParams);
     }
 
     private void createAndAddTopBar() {
@@ -163,48 +166,20 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         addView(topBar, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarColor(StyleParams.Color statusBarColor) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
-
-        final Window window = ((NavigationActivity) activity).getScreenWindow();
-        if (statusBarColor.hasColor()) {
-            window.setStatusBarColor(statusBarColor.getColor());
-        } else {
-            window.setStatusBarColor(Color.BLACK);
-        }
+        StatusBar.setColor(((NavigationActivity) activity).getScreenWindow(), statusBarColor);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
+    private void setStatusBarHidden(boolean statusBarHidden) {
+        StatusBar.setHidden(((NavigationActivity) activity).getScreenWindow(), statusBarHidden);
+    }
+
     private void setStatusBarTextColorScheme(StatusBarTextColorScheme textColorScheme) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
-        if (StatusBarTextColorScheme.Dark.equals(textColorScheme)) {
-            int flags = getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            setSystemUiVisibility(flags);
-        } else {
-            clearLightStatusBar();
-        }
+        StatusBar.setTextColorScheme(this, textColorScheme);
     }
 
-    public void clearLightStatusBar() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
-        int flags = getSystemUiVisibility();
-        flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        setSystemUiVisibility(flags);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void setNavigationBarColor(StyleParams.Color navigationBarColor) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
-
-        final Activity context = (Activity) getContext();
-        final Window window = context.getWindow();
-        if (navigationBarColor.hasColor()) {
-            window.setNavigationBarColor(navigationBarColor.getColor());
-        } else {
-            window.setNavigationBarColor(Color.BLACK);
-        }
+        NavigationBar.setColor(((NavigationActivity) activity).getScreenWindow(), navigationBarColor);
     }
 
     public abstract void unmountReactView();
@@ -225,6 +200,12 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void setTopBarVisible(boolean visible, boolean animate) {
         screenParams.styleParams.titleBarHidden = !visible;
+        if (animate && styleParams.drawScreenBelowTopBar) {
+            setLayoutTransition(new LayoutTransition());
+            getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        } else {
+            setLayoutTransition(null);
+        }
         topBar.setVisible(visible, animate);
     }
 
@@ -233,7 +214,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setTitleBarSubtitle(String subtitle) {
-        topBar.setSubtitle(subtitle);
+        topBar.setSubtitle(subtitle, styleParams);
     }
 
     public void setTitleBarRightButtons(String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {

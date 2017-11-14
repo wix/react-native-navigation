@@ -6,17 +6,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.params.ActivityParams;
+import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
 import com.reactnativenavigation.params.LightBoxParams;
@@ -30,6 +33,7 @@ import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.screens.NavigationType;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.screens.ScreenStack;
+import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.LightBox;
@@ -76,6 +80,11 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         addScreenStacks();
         createSnackbarContainer();
         showInitialScreenStack();
+        setInitialTabIndex();
+    }
+
+    private void setInitialTabIndex() {
+        bottomTabs.setCurrentItem(AppStyle.appStyle.bottomTabsInitialIndex);
     }
 
     private void createSideMenu() {
@@ -133,8 +142,13 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     private void showInitialScreenStack() {
-        showStackAndUpdateStyle(screenStacks[0], NavigationType.InitialScreen);
+        bottomTabs.setVisibilityByInitialScreen(getInitialScreenStack().peek().getStyleParams());
+        showStackAndUpdateStyle(getInitialScreenStack(), NavigationType.InitialScreen);
         EventBus.instance.post(new ScreenChangedEvent(screenStacks[0].peek().getScreenParams()));
+    }
+
+    private ScreenStack getInitialScreenStack() {
+        return screenStacks[AppStyle.appStyle.bottomTabsInitialIndex];
     }
 
     @Override
@@ -144,7 +158,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     @Override
     public boolean onBackPressed() {
-        if (getCurrentScreenStack().handleBackPressInJs()) {
+        if (handleBackInJs()) {
             return true;
         }
 
@@ -159,6 +173,11 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
+    public boolean handleBackInJs() {
+        return getCurrentScreenStack().handleBackPressInJs();
+    }
+
+    @Override
     public void setTopBarVisible(String screenInstanceId, boolean hidden, boolean animated) {
         for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
             screenStacks[i].setScreenTopBarVisible(screenInstanceId, hidden, animated);
@@ -166,6 +185,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     public void setBottomTabsVisible(boolean hidden, boolean animated) {
+        getCurrentScreenStack().peek().updateBottomTabsVisibility(hidden);
         bottomTabs.setVisibility(hidden, animated);
     }
 
@@ -323,11 +343,19 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     public void selectBottomTabByTabIndex(Integer index) {
-        bottomTabs.setCurrentItem(index);
+        if (bottomTabs.getCurrentItem() != index) {
+            bottomTabs.setCurrentItemWithoutInvokingTabSelectedListener(index);
+            switchTab(index, NavigationType.SwitchToTab);
+        }
     }
 
-    public void selectBottomTabByNavigatorId(String navigatorId) {
-        bottomTabs.setCurrentItem(getScreenStackIndex(navigatorId));
+    public void selectBottomTabByNavigatorId(final String navigatorId) {
+        performOnStack(navigatorId, new Task<ScreenStack>() {
+            @Override
+            public void run(ScreenStack param) {
+                selectBottomTabByTabIndex(getScreenStackIndex(navigatorId));
+            }
+        });
     }
 
     private boolean hasBackgroundColor(StyleParams params) {
@@ -345,49 +373,67 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     @Override
-    public void push(ScreenParams params) {
-        ScreenStack screenStack = getScreenStack(params.getNavigatorId());
-        screenStack.push(params, createScreenLayoutParams(params));
-        setStyleFromScreen(params.styleParams);
-        if (isCurrentStack(screenStack)) {
-            alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params.styleParams);
-            EventBus.instance.post(new ScreenChangedEvent(params));
-        }
+    public void push(final ScreenParams params, final Promise onPushComplete) {
+        performOnStack(params.getNavigatorId(), new Task<ScreenStack>() {
+            @Override
+            public void run(ScreenStack screenStack) {
+                screenStack.push(params, createScreenLayoutParams(params), onPushComplete);
+                if (isCurrentStack(screenStack)) {
+                    setStyleFromScreen(params.styleParams);
+                    EventBus.instance.post(new ScreenChangedEvent(params));
+                }
+            }
+        });
     }
 
     @Override
     public void pop(final ScreenParams params) {
-        getCurrentScreenStack().pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
+        performOnStack(params.getNavigatorId(), new Task<ScreenStack>() {
             @Override
-            public void onScreenPopAnimationEnd() {
-                setBottomTabsStyleFromCurrentScreen();
-                alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params.styleParams);
-                EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
+            public void run(ScreenStack stack) {
+            stack.pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
+                    @Override
+                    public void onScreenPopAnimationEnd() {
+                        setBottomTabsStyleFromCurrentScreen();
+                        EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
+                    }
+                });
             }
         });
     }
 
     @Override
     public void popToRoot(final ScreenParams params) {
-        getCurrentScreenStack().popToRoot(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
+        performOnStack(params.getNavigatorId(), new Task<ScreenStack>() {
             @Override
-            public void onScreenPopAnimationEnd() {
-                setBottomTabsStyleFromCurrentScreen();
-                alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params.styleParams);
-                EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
+            public void run(final ScreenStack stack) {
+                stack.popToRoot(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
+                    @Override
+                    public void onScreenPopAnimationEnd() {
+                        if (isCurrentStack(stack)) {
+                            setBottomTabsStyleFromCurrentScreen();
+                            alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params.styleParams);
+                            EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
+                        }
+                    }
+                });
             }
         });
     }
 
     @Override
     public void newStack(final ScreenParams params) {
-        ScreenStack screenStack = getScreenStack(params.getNavigatorId());
-        screenStack.newStack(params, createScreenLayoutParams(params));
-        if (isCurrentStack(screenStack)) {
-            setStyleFromScreen(params.styleParams);
-            alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params.styleParams);
-            EventBus.instance.post(new ScreenChangedEvent(params));
-        }
+        performOnStack(params.getNavigatorId(), new Task<ScreenStack>() {
+            @Override
+            public void run(ScreenStack screenStack) {
+                screenStack.newStack(params, createScreenLayoutParams(params));
+                if (isCurrentStack(screenStack)) {
+                    setStyleFromScreen(params.styleParams);
+                    alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params.styleParams);
+                    EventBus.instance.post(new ScreenChangedEvent(params));
+                }
+            }
+        });
     }
 
     private void alignSnackbarContainerWithBottomTabs(LayoutParams lp, StyleParams styleParams) {
@@ -395,6 +441,17 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
             lp.addRule(ABOVE, bottomTabs.getId());
         } else {
             ViewUtils.removeRuleCompat(lp, ABOVE);
+        }
+    }
+
+    private void performOnStack(String navigatorId, Task<ScreenStack> task) {
+        try {
+            ScreenStack screenStack = getScreenStack(navigatorId);
+            task.run(screenStack);
+        } catch (ScreenStackNotFoundException e) {
+            Log.e("Navigation", "Could not perform action on stack [" + navigatorId + "]." +
+                                      "This should not have happened, it probably means a navigator action" +
+                                      "was called from an unmounted tab.");
         }
     }
 
@@ -422,11 +479,15 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         }
 
         final int unselectedTabIndex = currentStackIndex;
-        hideCurrentStack();
-        showNewStack(position, NavigationType.BottomTabSelected);
-        EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
+        switchTab(position, NavigationType.BottomTabSelected);
         sendTabSelectedEventToJs(position, unselectedTabIndex);
         return true;
+    }
+
+    private void switchTab(int position, NavigationType navigationType) {
+        hideCurrentStack();
+        showNewStack(position, navigationType);
+        EventBus.instance.post(new ScreenChangedEvent(getCurrentScreenStack().peek().getScreenParams()));
     }
 
     private void sendTabSelectedEventToJs(int selectedTabIndex, int unselectedTabIndex) {
@@ -472,7 +533,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     private
     @NonNull
-    ScreenStack getScreenStack(String navigatorId) {
+    ScreenStack getScreenStack(String navigatorId) throws ScreenStackNotFoundException {
         int index = getScreenStackIndex(navigatorId);
         return screenStacks[index];
     }
