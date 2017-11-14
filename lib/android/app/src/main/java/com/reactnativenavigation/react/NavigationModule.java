@@ -101,33 +101,33 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void showModal(final ReadableMap rawLayoutTree) {
+	public void showModal(final ReadableMap rawLayoutTree, final Promise promise) {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
 		handle(new Runnable() {
 			@Override
 			public void run() {
 				final ViewController viewController = newLayoutFactory().create(layoutTree);
-				navigator().showModal(viewController);
+				navigator().showModal(viewController, promise);
 			}
 		});
 	}
 
 	@ReactMethod
-	public void dismissModal(final String containerId) {
+	public void dismissModal(final String containerId, final Promise promise) {
 		handle(new Runnable() {
 			@Override
 			public void run() {
-				navigator().dismissModal(containerId);
+				navigator().dismissModal(containerId, promise);
 			}
 		});
 	}
 
 	@ReactMethod
-	public void dismissAllModals() {
+	public void dismissAllModals(final Promise promise) {
 		handle(new Runnable() {
 			@Override
 			public void run() {
-				navigator().dismissAllModals();
+				navigator().dismissAllModals(promise);
 			}
 		});
 	}

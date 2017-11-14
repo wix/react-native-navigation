@@ -54,8 +54,8 @@ class ModalScreen extends Component {
     });
   }
 
-  onClickDismissModal() {
-    Navigation.dismissModal(this.props.containerId);
+  async onClickDismissModal() {
+    await Navigation.dismissModal(this.props.containerId);
   }
 
   onClickDismissPreviousModal() {

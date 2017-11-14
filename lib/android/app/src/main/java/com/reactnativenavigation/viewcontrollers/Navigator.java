@@ -44,7 +44,7 @@ public class Navigator extends ParentController {
 
 	@Override
 	public void destroy() {
-		modalStack.dismissAll();
+		modalStack.dismissAll(null);
 		super.destroy();
 	}
 
@@ -146,16 +146,16 @@ public class Navigator extends ParentController {
 		}
 	}
 
-	public void showModal(final ViewController viewController) {
-		modalStack.showModal(viewController);
+	public void showModal(final ViewController viewController, Promise promise) {
+		modalStack.showModal(viewController, promise);
 	}
 
-	public void dismissModal(final String containerId) {
-		modalStack.dismissModal(containerId);
+	public void dismissModal(final String containerId, Promise promise) {
+		modalStack.dismissModal(containerId, promise);
 	}
 
-	public void dismissAllModals() {
-		modalStack.dismissAll();
+	public void dismissAllModals(Promise promise) {
+		modalStack.dismissAll(promise);
 	}
 
 	public void showOverlay(String type, OverlayOptions options) {
