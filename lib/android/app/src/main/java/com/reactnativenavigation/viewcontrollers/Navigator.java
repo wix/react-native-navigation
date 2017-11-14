@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.OverlayOptions;
 import com.reactnativenavigation.presentation.OverlayPresenter;
@@ -67,53 +68,61 @@ public class Navigator extends ParentController {
 		}
 	}
 
-	public void push(final String fromId, final ViewController viewController) {
+	public void push(final String fromId, final ViewController viewController, Promise promise) {
 		ViewController from = findControllerById(fromId);
 		if (from != null) {
 			StackController parentStackController = from.getParentStackController();
 			if (parentStackController != null) {
-				parentStackController.push(viewController);
+				parentStackController.push(viewController, promise);
 			}
 		}
 	}
 
-	public void pop(final String fromId) {
+	public void pop(final String fromId, Promise promise) {
 		ViewController from = findControllerById(fromId);
 		if (from != null) {
 			StackController parentStackController = from.getParentStackController();
 			if (parentStackController != null) {
-				parentStackController.pop();
+				parentStackController.pop(promise);
 			}
 		}
 	}
 
-	public void popSpecific(final String id) {
+	public void popSpecific(final String id, Promise promise) {
 		ViewController from = findControllerById(id);
 		if (from != null) {
 			StackController parentStackController = from.getParentStackController();
 			if (parentStackController != null) {
-				parentStackController.popSpecific(from);
+				parentStackController.popSpecific(from, promise);
+			} else {
+				rejectPromise(promise);
 			}
+		} else {
+			rejectPromise(promise);
 		}
 	}
 
-	public void popToRoot(final String id) {
+	public void popToRoot(final String id, Promise promise) {
 		ViewController from = findControllerById(id);
 		if (from != null) {
 			StackController parentStackController = from.getParentStackController();
 			if (parentStackController != null) {
-				parentStackController.popToRoot();
+				parentStackController.popToRoot(promise);
 			}
 		}
 	}
 
-	public void popTo(final String containerId) {
+	public void popTo(final String containerId, Promise promise) {
 		ViewController target = findControllerById(containerId);
 		if (target != null) {
 			StackController parentStackController = target.getParentStackController();
 			if (parentStackController != null) {
-				parentStackController.popTo(target);
+				parentStackController.popTo(target, promise);
+			} else {
+				rejectPromise(promise);
 			}
+		} else {
+			rejectPromise(promise);
 		}
 	}
 
@@ -131,5 +140,11 @@ public class Navigator extends ParentController {
 
 	public void showOverlay(String type, OverlayOptions options) {
 		new OverlayPresenter(getActivity(), type, options).show();
+	}
+
+	public static void rejectPromise(Promise promise) {
+		if (promise != null) {
+			promise.reject(new Throwable("Nothing to pop"));
+		}
 	}
 }

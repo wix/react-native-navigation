@@ -33,30 +33,35 @@ class PushedScreen extends Component {
     );
   }
 
-  onClickPush() {
-    Navigation.push(this.props.containerId, {
+  async onClickPush() {
+    const result = await Navigation.push(this.props.containerId, {
       name: 'navigation.playground.PushedScreen',
       passProps: {
         stackPosition: this.getStackPosition() + 1,
         previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.containerId)
       }
     });
+    console.log("NIGA push = " + result);
   }
 
-  onClickPop() {
-    Navigation.pop(this.props.containerId);
+  async onClickPop() {
+    const result = await Navigation.pop(this.props.containerId);
+    console.log("NIGA pop = " + result);
   }
 
-  onClickPopPrevious() {
-    Navigation.pop(_.last(this.props.previousScreenIds));
+  async onClickPopPrevious() {
+    const result = await Navigation.pop(_.last(this.props.previousScreenIds));
+    console.log("NIGA pop previous = " + result);
   }
 
-  onClickPopToFirstPosition() {
-    Navigation.popTo(this.props.previousScreenIds[0]);
+  async onClickPopToFirstPosition() {
+    const result = await Navigation.popTo(this.props.previousScreenIds[0]);
+    console.log("NIGA pop to first = " + result);
   }
 
-  onClickPopToRoot() {
-    Navigation.popToRoot(this.props.containerId);
+  async onClickPopToRoot() {
+    const result = await Navigation.popToRoot(this.props.containerId);
+    console.log("NIGA pop to root = " + result);
   }
 
   getStackPosition() {

@@ -89,7 +89,7 @@ public class LayoutFactory {
 	private ViewController createContainerStack(LayoutNode node) {
 		StackController stackController = new StackController(activity, node.id);
 		for (LayoutNode child : node.children) {
-			stackController.push(create(child));
+			stackController.push(create(child), null);
 		}
 		return stackController;
 	}
