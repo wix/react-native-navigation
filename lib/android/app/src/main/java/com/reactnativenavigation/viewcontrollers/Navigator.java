@@ -52,13 +52,16 @@ public class Navigator extends ParentController {
 	 * Navigation methods
 	 */
 
-	public void setRoot(final ViewController viewController) {
+	public void setRoot(final ViewController viewController, Promise promise) {
 		if (root != null) {
 			root.destroy();
 		}
 
 		root = viewController;
 		getView().addView(viewController.getView());
+		if (promise != null) {
+			promise.resolve(viewController.getId());
+		}
 	}
 
 	public void setOptions(final String containerId, NavigationOptions options) {
@@ -158,11 +161,12 @@ public class Navigator extends ParentController {
 		modalStack.dismissAll(promise);
 	}
 
-	public void showOverlay(String type, OverlayOptions options) {
+	public void showOverlay(String type, OverlayOptions options, Promise promise) {
 		new OverlayPresenter(getActivity(), type, options).show();
+		promise.resolve(true);
 	}
 
-	public static void rejectPromise(Promise promise) {
+	static void rejectPromise(Promise promise) {
 		if (promise != null) {
 			promise.reject(new Throwable("Nothing to pop"));
 		}

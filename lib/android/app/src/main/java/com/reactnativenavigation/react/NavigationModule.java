@@ -36,13 +36,13 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void setRoot(final ReadableMap rawLayoutTree) {
+	public void setRoot(final ReadableMap rawLayoutTree, final Promise promise) {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
 		handle(new Runnable() {
 			@Override
 			public void run() {
 				final ViewController viewController = newLayoutFactory().create(layoutTree);
-				navigator().setRoot(viewController);
+				navigator().setRoot(viewController, promise);
 			}
 		});
 	}
@@ -133,12 +133,12 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void showOverlay(final String type, final ReadableMap options) {
+	public void showOverlay(final String type, final ReadableMap options, final Promise promise) {
 		final OverlayOptions overlayOptions = OverlayOptions.parse(JSONParser.parse(options));
 		handle(new Runnable() {
 			@Override
 			public void run() {
-				navigator().showOverlay(type, overlayOptions);
+				navigator().showOverlay(type, overlayOptions, promise);
 			}
 		});
 	}
