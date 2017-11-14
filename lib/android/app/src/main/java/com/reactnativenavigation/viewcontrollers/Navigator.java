@@ -52,6 +52,10 @@ public class Navigator extends ParentController {
 	 * Navigation methods
 	 */
 
+	public void setRoot(final ViewController viewController) {
+		setRoot(viewController, null);
+	}
+
 	public void setRoot(final ViewController viewController, Promise promise) {
 		if (root != null) {
 			root.destroy();
