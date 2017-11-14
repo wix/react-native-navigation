@@ -68,6 +68,10 @@ public class Navigator extends ParentController {
 		}
 	}
 
+	public void push(final String fromId, final ViewController viewController) {
+		push(fromId, viewController, null);
+	}
+
 	public void push(final String fromId, final ViewController viewController, Promise promise) {
 		ViewController from = findControllerById(fromId);
 		if (from != null) {
@@ -78,6 +82,10 @@ public class Navigator extends ParentController {
 		}
 	}
 
+	public void pop(final String fromId) {
+		pop(fromId, null);
+	}
+
 	public void pop(final String fromId, Promise promise) {
 		ViewController from = findControllerById(fromId);
 		if (from != null) {
@@ -86,6 +94,10 @@ public class Navigator extends ParentController {
 				parentStackController.pop(promise);
 			}
 		}
+	}
+
+	public void popSpecific(final String id) {
+		popSpecific(id, null);
 	}
 
 	public void popSpecific(final String id, Promise promise) {
@@ -102,6 +114,10 @@ public class Navigator extends ParentController {
 		}
 	}
 
+	public void popToRoot(final String id) {
+		popToRoot(id, null);
+	}
+
 	public void popToRoot(final String id, Promise promise) {
 		ViewController from = findControllerById(id);
 		if (from != null) {
@@ -110,6 +126,10 @@ public class Navigator extends ParentController {
 				parentStackController.popToRoot(promise);
 			}
 		}
+	}
+
+	public void popTo(final String containerId) {
+		popTo(containerId, null);
 	}
 
 	public void popTo(final String containerId, Promise promise) {

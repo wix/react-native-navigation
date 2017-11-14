@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleContainerViewController;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TestStackAnimator;
@@ -13,6 +14,8 @@ import com.reactnativenavigation.utils.CompatUtils;
 import org.junit.Test;
 
 import java.util.Arrays;
+
+import javax.annotation.Nullable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.spy;
@@ -28,6 +31,7 @@ public class NavigatorTest extends BaseTest {
 	private ViewController child3;
 	private ViewController child4;
 	private ViewController child5;
+
 
 	@Override
 	public void beforeEach() {
@@ -215,5 +219,67 @@ public class NavigatorTest extends BaseTest {
 	@NonNull
 	private StackController newStack() {
 		return new StackController(activity, "stack" + CompatUtils.generateViewId(), new TestStackAnimator());
+	}
+
+	@Test
+	public void push_Promise() throws Exception {
+		final StackController stackController = newStack();
+		stackController.push(child1);
+		uut.setRoot(stackController);
+
+		assertIsChildById(uut.getView(), stackController.getView());
+		assertIsChildById(stackController.getView(), child1.getView());
+
+		uut.push(child1.getId(), child2, new MockPromise() {
+			@Override
+			public void resolve(@Nullable Object value) {
+				assertIsChildById(uut.getView(), stackController.getView());
+				assertIsChildById(stackController.getView(), child2.getView());
+			}
+		});
+	}
+
+	@Test
+	public void push_InvalidPushWithoutAStack_DoesNothing_Promise() throws Exception {
+		uut.setRoot(child1);
+		uut.push(child1.getId(), child2, new MockPromise() {
+			@Override
+			public void reject(String code, Throwable e) {
+				assertIsChildById(uut.getView(), child1.getView());
+			}
+		});
+
+	}
+
+	@Test
+	public void pop_InvalidDoesNothing_Promise() throws Exception {
+		uut.pop("123");
+		uut.setRoot(child1);
+		uut.pop(child1.getId(), new MockPromise() {
+			@Override
+			public void reject(Throwable reason) {
+				assertThat(uut.getChildControllers()).hasSize(1);
+			}
+		});
+	}
+
+	@Test
+	public void pop_FromCorrectStackByFindingChildId_Promise() throws Exception {
+		BottomTabsController bottomTabsController = newTabs();
+		StackController stack1 = newStack();
+		final StackController stack2 = newStack();
+		stack1.push(child1);
+		stack2.push(child2);
+		stack2.push(child3);
+		stack2.push(child4);
+		bottomTabsController.setTabs(Arrays.<ViewController>asList(stack1, stack2));
+		uut.setRoot(bottomTabsController);
+
+		uut.pop("child4", new MockPromise() {
+			@Override
+			public void resolve(@Nullable Object value) {
+				assertThat(stack2.getChildControllers()).containsOnly(child2, child3);
+			}
+		});
 	}
 }

@@ -26,6 +26,10 @@ public class StackController extends ParentController {
 		this.animator = animator;
 	}
 
+	public void push(final ViewController child) {
+		push(child, null);
+	}
+
 	public void push(final ViewController child, final Promise promise) {
 		final ViewController previousTop = peek();
 
@@ -95,6 +99,10 @@ public class StackController extends ParentController {
 		}
 	}
 
+	void popSpecific(final ViewController childController) {
+		popSpecific(childController, null);
+	}
+
 	void popSpecific(final ViewController childController, Promise promise) {
 		if (stack.isTop(childController.getId())) {
 			pop(promise);
@@ -105,6 +113,10 @@ public class StackController extends ParentController {
 				promise.resolve(childController.getId());
 			}
 		}
+	}
+
+	void popTo(ViewController viewController) {
+		popTo(viewController, null);
 	}
 
 	void popTo(final ViewController viewController, Promise promise) {
@@ -121,6 +133,10 @@ public class StackController extends ParentController {
 			pop(animate, animate ? promise : null);
 			currentControlId = nextControlId;
 		}
+	}
+
+	void popToRoot() {
+		popToRoot(null);
 	}
 
 	void popToRoot(Promise promise) {

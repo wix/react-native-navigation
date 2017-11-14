@@ -105,10 +105,9 @@ class WelcomeScreen extends Component {
   }
 
   async onClickPush() {
-    const result = await Navigation.push(this.props.containerId, {
+    await Navigation.push(this.props.containerId, {
       name: 'navigation.playground.PushedScreen'
     });
-    console.log("NIGA pushed = " + result);
   }
 
   onClickLifecycleScreen() {
