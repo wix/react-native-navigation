@@ -1,13 +1,9 @@
 package com.reactnativenavigation.screens;
 
 import android.animation.LayoutTransition;
-import android.annotation.TargetApi;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
 import android.widget.RelativeLayout;
 
 import com.facebook.react.bridge.Callback;
@@ -28,6 +24,7 @@ import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.StyleParamsParser;
+import com.reactnativenavigation.utils.NavigationBar;
 import com.reactnativenavigation.utils.StatusBar;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
@@ -181,16 +178,8 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         StatusBar.setTextColorScheme(this, textColorScheme);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void setNavigationBarColor(StyleParams.Color navigationBarColor) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
-
-        final Window window = ((NavigationActivity) activity).getScreenWindow();
-        if (navigationBarColor.hasColor()) {
-            window.setNavigationBarColor(navigationBarColor.getColor());
-        } else {
-            window.setNavigationBarColor(Color.BLACK);
-        }
+        NavigationBar.setColor(((NavigationActivity) activity).getScreenWindow(), navigationBarColor);
     }
 
     public abstract void unmountReactView();
