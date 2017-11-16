@@ -36,13 +36,13 @@ function _registerComponentNoRedux(screenID, generator) {
       constructor(props) {
         super(props);
         this.state = {
-          internalProps: {...props, ...PropRegistry.load(props.screenInstanceID || props.passPropsKey)}
+          internalProps: {...props, ...PropRegistry.load(props.screenInstanceID)}
         }
       }
 
       componentWillReceiveProps(nextProps) {
         this.setState({
-          internalProps: {...PropRegistry.load(this.props.screenInstanceID || props.passPropsKey), ...nextProps}
+          internalProps: {...PropRegistry.load(this.props.screenInstanceID), ...nextProps}
         })
       }
 
