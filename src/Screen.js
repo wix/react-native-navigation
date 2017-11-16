@@ -143,7 +143,7 @@ class Navigator {
 
   setOnNavigatorEvent(callback) {
     if (this.navigatorEventHandlers.length > 0) {
-      throw 'setOnNavigatorEvent can not be used after addOnNavigatorEvent has been called';
+      throw new Error('setOnNavigatorEvent can not be used after addOnNavigatorEvent has been called');
     }
     this.navigatorEventHandler = callback;
     this._registerNavigatorEvent();
@@ -151,7 +151,7 @@ class Navigator {
 
   addOnNavigatorEvent(callback) {
     if (this.navigatorEventHandler) {
-      throw 'addOnNavigatorEvent can not be used after setOnNavigatorEvent has been called';
+      throw new Error('addOnNavigatorEvent can not be used after setOnNavigatorEvent has been called');
     }
     if (this.navigatorEventHandlers.indexOf(callback) === -1) {
       this.navigatorEventHandlers.push(callback);
