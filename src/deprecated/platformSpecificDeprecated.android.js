@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import ReactNative, {AppRegistry, NativeModules, processColor} from 'react-native';
 import _ from 'lodash';
+import PropRegistry from './../PropRegistry';
 
 import Navigation from './../Navigation';
 
@@ -330,6 +331,11 @@ function navigatorSetButtons(navigator, navigatorEventID, _params) {
       }
       if (button.buttonColor) {
         button.color = processColor(button.buttonColor);
+      }
+      if (button.component) {
+        const passPropsKey = _.uniqueId('customButtonComponent');
+        PropRegistry.save(passPropsKey, button.passProps);
+        button.passProps = {passPropsKey};
       }
     });
   }
