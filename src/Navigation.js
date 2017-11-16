@@ -28,7 +28,7 @@ function _registerComponentNoRedux(screenID, generator) {
     if (!InternalComponent) {
       console.error(`Navigation: ${screenID} registration result is 'undefined'`);
     }
-    
+
     return class extends Screen {
       static navigatorStyle = InternalComponent.navigatorStyle || {};
       static navigatorButtons = InternalComponent.navigatorButtons || {};
@@ -42,7 +42,7 @@ function _registerComponentNoRedux(screenID, generator) {
 
       componentWillReceiveProps(nextProps) {
         this.setState({
-          internalProps: {...PropRegistry.load(this.props.screenInstanceID || props.passPropsKey), ...nextProps}
+          internalProps: {...PropRegistry.load(this.props.screenInstanceID || nextProps.passPropsKey), ...nextProps}
         })
       }
 
