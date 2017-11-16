@@ -157,6 +157,9 @@ class Navigator {
       this.navigatorEventHandlers.push(callback);
     }
     this._registerNavigatorEvent();
+
+    return () => this._removeOnNavigatorEvent(callback)
+    
   }
 
   _registerNavigatorEvent() {
@@ -167,7 +170,7 @@ class Navigator {
     }
   }
 
-  removeOnNavigatorEvent(callback) {
+  _removeOnNavigatorEvent(callback) {
     const index = this.navigatorEventHandlers.indexOf(callback);
     if (index !== -1) {
       this.navigatorEventHandlers.splice(index, 1);
