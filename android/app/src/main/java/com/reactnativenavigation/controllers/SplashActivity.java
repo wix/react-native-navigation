@@ -12,6 +12,8 @@ import android.view.View;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.ReactDevPermission;
 import com.reactnativenavigation.utils.CompatUtils;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 
 public abstract class SplashActivity extends AppCompatActivity {
     public static boolean isResumed = false;
