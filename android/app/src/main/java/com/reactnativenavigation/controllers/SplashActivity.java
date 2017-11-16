@@ -94,7 +94,18 @@ public abstract class SplashActivity extends AppCompatActivity {
      */
     public View createSplashLayout() {
         View view = new View(this);
-        view.setBackgroundColor(Color.WHITE);
+        int splashBackgroundColor = Color.WHITE;
+        try {
+            Bundle bundle = this.getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA).metaData;
+            String color = bundle.getString("splashBackgroundColor");
+            if (color != null && color.equals("transparent")) {
+                splashBackgroundColor = Color.TRANSPARENT;
+            }
+
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        view.setBackgroundColor(splashBackgroundColor);
         return view;
     }
 }
