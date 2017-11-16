@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.layouts.Layout;
@@ -24,6 +25,7 @@ import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.ModalAnimationFactory;
 import com.reactnativenavigation.screens.NavigationType;
+import com.reactnativenavigation.utils.NavigationBar;
 import com.reactnativenavigation.utils.StatusBar;
 
 import java.util.List;
@@ -115,13 +117,17 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
         createContent();
         setAnimation(screenParams);
         setStatusBarStyle(screenParams.styleParams);
+        setNavigationBarStyle(screenParams.styleParams);
     }
 
     private void setStatusBarStyle(StyleParams styleParams) {
         Window window = getWindow();
         if (window == null) return;
-        StatusBar.setColor(window, styleParams.statusBarColor);
         StatusBar.setTextColorScheme(window.getDecorView(), styleParams.statusBarTextColorScheme);
+    }
+
+    private void setNavigationBarStyle(StyleParams styleParams) {
+        NavigationBar.setColor(getWindow(), styleParams.navigationBarColor);
     }
 
     public AppCompatActivity getActivity() {
@@ -155,8 +161,8 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
     }
 
     @Override
-    public void push(ScreenParams params) {
-        layout.push(params);
+    public void push(ScreenParams params, Promise onPushComplete) {
+        layout.push(params, onPushComplete);
     }
 
     @Override

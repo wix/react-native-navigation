@@ -80,6 +80,7 @@ public class StyleParams {
     }
 
     public Orientation orientation;
+    public String screenAnimationType;
     public StatusBarTextColorScheme statusBarTextColorScheme;
     public Color statusBarColor;
     public boolean statusBarHidden;

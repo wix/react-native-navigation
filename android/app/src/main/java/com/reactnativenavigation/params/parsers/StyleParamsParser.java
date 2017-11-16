@@ -28,6 +28,7 @@ public class StyleParamsParser {
 
         StyleParams result = new StyleParams(params);
         result.orientation = Orientation.fromString(params.getString("orientation", getDefaultOrientation()));
+        result.screenAnimationType = params.getString("screenAnimationType", getDefaultScreenAnimationType());
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
         result.statusBarHidden = getBoolean("statusBarHidden", getDefaultStatusHidden());
         result.statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"), getDefaultStatusBarTextColorScheme());
@@ -90,8 +91,7 @@ public class StyleParamsParser {
         result.bottomTabsHiddenOnScroll = getBoolean("bottomTabsHiddenOnScroll", getDefaultBottomTabsHiddenOnScroll());
         result.bottomTabsColor = getColor("bottomTabsColor", getDefaultBottomTabsColor());
         result.bottomTabsButtonColor = getColor("bottomTabsButtonColor", getDefaultBottomTabsButtonColor());
-        result.selectedBottomTabsButtonColor =
-                getColor("bottomTabsSelectedButtonColor", getDefaultSelectedBottomTabsButtonColor());
+        result.selectedBottomTabsButtonColor = getColor("bottomTabsSelectedButtonColor", getDefaultSelectedBottomTabsButtonColor());
         result.bottomTabBadgeTextColor = getColor("bottomTabBadgeTextColor", getBottomTabBadgeTextColor());
         result.bottomTabBadgeBackgroundColor = getColor("bottomTabBadgeBackgroundColor", getBottomTabBadgeBackgroundColor());
 
@@ -101,6 +101,10 @@ public class StyleParamsParser {
         result.bottomTabFontFamily = getFont("bottomTabFontFamily", getDefaultBottomTabsFontFamily());
 
         return result;
+    }
+
+    private String getDefaultScreenAnimationType() {
+        return AppStyle.appStyle == null ? "slide-up" : AppStyle.appStyle.screenAnimationType;
     }
 
     private StatusBarTextColorScheme getDefaultStatusBarTextColorScheme() {
@@ -122,6 +126,7 @@ public class StyleParamsParser {
         result.titleBarSubtitleFontFamily = new StyleParams.Font();
         result.titleBarButtonFontFamily = new StyleParams.Font();
         result.titleBarHeight = -1;
+        result.screenAnimationType = "slide-up";
         return result;
     }
 

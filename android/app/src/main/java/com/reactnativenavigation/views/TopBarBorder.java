@@ -57,7 +57,6 @@ class TopBarBorder extends ShapeDrawable {
 
     @Override
     protected void onDraw(Shape shape, Canvas canvas, Paint paint) {
-        super.onDraw(shape, canvas, paint);
         createBorder(canvas);
         paint.setColor(backgroundColor.getColor(Color.WHITE));
         canvas.drawPath(border.path, pathPaint);
