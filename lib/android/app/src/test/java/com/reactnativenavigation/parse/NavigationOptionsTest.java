@@ -18,25 +18,29 @@ public class NavigationOptionsTest extends BaseTest {
 	@Test
 	public void parsesJson() throws Exception {
 		JSONObject json = new JSONObject();
-		json.put("title", "the title");
-		json.put("topBarBackgroundColor", 0xff123456);
-		json.put("topBarTextColor", 0xff123456);
-		json.put("topBarTextFontSize", 18);
-		json.put("topBarTextFontFamily", "HelveticaNeue-CondensedBold");
-		json.put("topBarHidden", true);
+		JSONObject topBarJson = new JSONObject();
+
+		topBarJson.put("title", "the title");
+		topBarJson.put("backgroundColor", 0xff123456);
+		topBarJson.put("textColor", 0xff123456);
+		topBarJson.put("textFontSize", 18);
+		topBarJson.put("textFontFamily", "HelveticaNeue-CondensedBold");
+		topBarJson.put("hidden", true);
+
+		json.put("topBar", topBarJson);
 
 		NavigationOptions result = NavigationOptions.parse(json);
-		assertThat(result.title).isEqualTo("the title");
-		assertThat(result.topBarBackgroundColor).isEqualTo(0xff123456);
-		assertThat(result.topBarTextColor).isEqualTo(0xff123456);
-		assertThat(result.topBarTextFontSize).isEqualTo(18);
-		assertThat(result.topBarTextFontFamily).isEqualTo("HelveticaNeue-CondensedBold");
-		assertThat(result.topBarHidden).isEqualTo(True);
+		assertThat(result.topBarOptions.title).isEqualTo("the title");
+		assertThat(result.topBarOptions.backgroundColor).isEqualTo(0xff123456);
+		assertThat(result.topBarOptions.textColor).isEqualTo(0xff123456);
+		assertThat(result.topBarOptions.textFontSize).isEqualTo(18);
+		assertThat(result.topBarOptions.textFontFamily).isEqualTo("HelveticaNeue-CondensedBold");
+		assertThat(result.topBarOptions.hidden).isEqualTo(True);
 	}
 
 	@Test
 	public void defaultEmptyOptions() throws Exception {
 		NavigationOptions uut = new NavigationOptions();
-		assertThat(uut.title).isEmpty();
+		assertThat(uut.topBarOptions.title).isEmpty();
 	}
 }

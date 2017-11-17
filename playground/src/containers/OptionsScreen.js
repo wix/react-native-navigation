@@ -85,11 +85,13 @@ class OptionsScreen extends Component {
 
   onClickDynamicOptions() {
     Navigation.setOptions(this.props.containerId, {
-      title: 'Dynamic Title',
-      topBarTextColor: '#00FFFF',
-      topBarButtonColor: 'red',
-      topBarTextFontSize: 20,
-      topBarTextFontFamily: 'HelveticaNeue-CondensedBold'
+      topBar: {
+        title: 'Dynamic Title',
+        textColor: '#00FFFF',
+        buttonColor: 'red',
+        textFontSize: 20,
+        textFontFamily: 'HelveticaNeue-CondensedBold'
+      }
     });
   }
 
@@ -101,15 +103,19 @@ class OptionsScreen extends Component {
 
   onClickShowTopBar() {
     Navigation.setOptions(this.props.containerId, {
-      topBarHidden: false,
-      animateTopBarHide: true
+      topBar: {
+        hidden: false,
+        animateHide: true
+      }
     });
   }
 
   onClickHideTopBar() {
     Navigation.setOptions(this.props.containerId, {
-      topBarHidden: true,
-      animateTopBarHide: true
+      topBar: {
+        hidden: true,
+        animateHide: true
+      }
     });
   }
 
