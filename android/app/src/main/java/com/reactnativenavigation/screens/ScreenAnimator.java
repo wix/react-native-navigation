@@ -20,9 +20,9 @@ import javax.annotation.Nullable;
 
 class ScreenAnimator {
     private static final int DURATION = 250;
-    private static final int ALPHA_START_DELAY = 100;
-    private static final int ALPHA_SHORT_DURATION = 150;
+    private static final int ALPHA_HIDE_DURATION = 100;
     private static final DecelerateInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();
+    private static final DecelerateInterpolator DECELERATE_INTERPOLATOR_1x5 = new DecelerateInterpolator(1.5f);
     private static final AccelerateDecelerateInterpolator ACCELERATE_DECELERATE_INTERPOLATOR = new AccelerateDecelerateInterpolator();
     private static final AccelerateInterpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
     private final float translationY;
@@ -31,7 +31,7 @@ class ScreenAnimator {
 
     ScreenAnimator(Screen screen) {
         this.screen = screen;
-        translationY = 0.08f * ViewUtils.getWindowHeight(screen.activity);
+        translationY = 0.05f * ViewUtils.getWindowHeight(screen.activity);
         translationX = ViewUtils.getWindowWidth(screen.activity);
     }
 
@@ -63,12 +63,12 @@ class ScreenAnimator {
 
     private Animator createShowAnimator(final @Nullable Runnable onAnimationEnd) {
         ObjectAnimator alpha = ObjectAnimator.ofFloat(screen, View.ALPHA, 0, 1);
-        alpha.setInterpolator(DECELERATE_INTERPOLATOR);
 
         AnimatorSet set = new AnimatorSet();
         switch (String.valueOf(this.screen.screenParams.animationType)) {
             case "fade": {
                 alpha.setDuration(DURATION);
+                alpha.setInterpolator(DECELERATE_INTERPOLATOR);
                 set.play(alpha);
                 break;
             }
@@ -81,9 +81,8 @@ class ScreenAnimator {
             }
             default: {
                 ObjectAnimator translationY = ObjectAnimator.ofFloat(screen, View.TRANSLATION_Y, this.translationY, 0);
-                translationY.setInterpolator(DECELERATE_INTERPOLATOR);
-                translationY.setDuration(DURATION);
-                alpha.setDuration(ALPHA_SHORT_DURATION);
+                set.setInterpolator(DECELERATE_INTERPOLATOR_1x5);
+                set.setDuration(DURATION);
                 set.playTogether(translationY, alpha);
                 break;
             }
@@ -107,12 +106,12 @@ class ScreenAnimator {
 
     private Animator createHideAnimator(final Runnable onAnimationEnd) {
         ObjectAnimator alpha = ObjectAnimator.ofFloat(screen, View.ALPHA, 0);
-        alpha.setInterpolator(DECELERATE_INTERPOLATOR);
 
         AnimatorSet set = new AnimatorSet();
         switch (String.valueOf(this.screen.screenParams.animationType)) {
             case "fade": {
                 alpha.setDuration(DURATION);
+                alpha.setInterpolator(DECELERATE_INTERPOLATOR);
                 set.play(alpha);
                 break;
             }
@@ -125,10 +124,9 @@ class ScreenAnimator {
             }
             default: {
                 ObjectAnimator translationY = ObjectAnimator.ofFloat(screen, View.TRANSLATION_Y, this.translationY);
-                translationY.setInterpolator(ACCELERATE_INTERPOLATOR);
                 translationY.setDuration(DURATION);
-                alpha.setStartDelay(ALPHA_START_DELAY);
-                alpha.setDuration(ALPHA_SHORT_DURATION);
+                alpha.setDuration(ALPHA_HIDE_DURATION);
+                set.setInterpolator(DECELERATE_INTERPOLATOR);
                 set.playTogether(translationY, alpha);
                 break;
             }
