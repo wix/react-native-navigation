@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, ScrollView, TouchableHighlight} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, TouchableHighlight, findNodeHandle} from 'react-native';
 import Row from '../components/Row';
 
 class Types extends React.Component {
@@ -17,6 +17,16 @@ class Types extends React.Component {
       title: 'New Screen',
     });
   };
+
+  previewScreen = () => {
+    this.props.navigator.push({
+      screen: 'example.Types.Push',
+      title: 'New Screen',
+      passProps: {
+        previewViewID: findNodeHandle(this.previewRef)
+      }
+    });
+  }
 
   pushTopTabsScreen = () => {
     this.props.navigator.push({
@@ -69,6 +79,15 @@ class Types extends React.Component {
       <ScrollView style={styles.container}>
         <Row title={'Toggle Drawer'} onPress={this.toggleDrawer}/>
         <Row title={'Push Screen'} testID={'pushScreen'} onPress={this.pushScreen}/>
+        <Row
+          ref={(ref) => {
+            this.previewRef = ref;
+          }}
+          title={'Preview Screen'}
+          testID={'previewScreen'}
+          onPress={this.pushScreen}
+          onPressIn={this.previewScreen}
+        />
         <Row title={'Top Tabs Screen'} onPress={this.pushTopTabsScreen} platform={'android'}/>
         <Row title={'Show Modal'} onPress={this.showModal}/>
         <Row title={'Show Lightbox'} onPress={this.showLightBox}/>

@@ -19,7 +19,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 const NSInteger BLUR_NAVBAR_TAG = 78264802;
 const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
-@interface RCCViewController() <UIGestureRecognizerDelegate>
+@interface RCCViewController() <UIGestureRecognizerDelegate, UIViewControllerPreviewingDelegate>
 @property (nonatomic) BOOL _hidesBottomBarWhenPushed;
 @property (nonatomic) BOOL _statusBarHideWithNavBar;
 @property (nonatomic) BOOL _statusBarHidden;
@@ -29,7 +29,21 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 @property (nonatomic, weak) id <UIGestureRecognizerDelegate> originalInteractivePopGestureDelegate;
 @end
 
-@implementation RCCViewController
+@implementation RCCViewController {
+  RCCViewController *_previewController;
+  UIView *_previewView;
+}
+
+- (void)setPreviewController:(RCCViewController *)controller {
+  _previewController = controller;
+}
+
+- (void)setPreviewView:(UIView *)view {
+  _previewView = view;
+  if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+    [self registerForPreviewingWithDelegate:(id)self sourceView:_previewView];
+  }
+}
 
 -(UIImageView *)navBarHairlineImageView {
   if (!_navBarHairlineImageView) {
@@ -690,6 +704,16 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   NSNumber *disabledBackGesture = self.navigatorStyle[@"disabledBackGesture"];
   BOOL disabledBackGestureBool = disabledBackGesture ? [disabledBackGesture boolValue] : NO;
   return !disabledBackGestureBool;
+}
+
+#pragma mark - UIViewControllerPreviewingDelegate
+- (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location {
+  return _previewController;
+}
+
+- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
+  [self sendScreenChangedEvent:@"didCommitPreview"];
+  [self.navigationController pushViewController:_previewController animated:false];
 }
 
 

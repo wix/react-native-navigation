@@ -2,6 +2,7 @@
 #import "RCCViewController.h"
 #import "RCCManager.h"
 #import <React/RCTEventDispatcher.h>
+#import <React/RCTUIManager.h>
 #import <React/RCTConvert.h>
 #import <objc/runtime.h>
 #import "RCCTitleViewHelper.h"
@@ -141,6 +142,19 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     if (rightButtons)
     {
       [self setButtons:rightButtons viewController:viewController side:@"right" animated:NO];
+    }
+    
+    NSString *previewViewID = passProps[@"previewViewID"];
+    if (previewViewID) {
+      RCCViewController *topViewController = ((RCCViewController*)self.topViewController);
+      dispatch_async(RCTGetUIManagerQueue(), ^{
+        [bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+          UIView *view = viewRegistry[passProps[@"previewViewID"]];
+          [topViewController setPreviewView:view];
+        }];
+      });
+      [topViewController setPreviewController:viewController];
+      return;
     }
     
     NSString *animationType = actionParams[@"animationType"];
