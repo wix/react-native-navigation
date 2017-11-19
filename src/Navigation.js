@@ -42,7 +42,7 @@ function _registerComponentNoRedux(screenID, generator) {
 
       componentWillReceiveProps(nextProps) {
         this.setState({
-          internalProps: {...PropRegistry.load(this.props.screenInstanceID || props.passPropsKey), ...nextProps}
+          internalProps: {...PropRegistry.load(this.props.screenInstanceID || this.props.passPropsKey), ...nextProps}
         })
       }
 
