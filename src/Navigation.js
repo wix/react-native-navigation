@@ -2,7 +2,7 @@
 import React from 'react';
 import {AppRegistry} from 'react-native';
 import platformSpecific from './deprecated/platformSpecificDeprecated';
-import Screen from './Screen';
+import {Screen} from './Screen';
 
 import PropRegistry from './PropRegistry';
 
@@ -36,13 +36,13 @@ function _registerComponentNoRedux(screenID, generator) {
       constructor(props) {
         super(props);
         this.state = {
-          internalProps: {...props, ...PropRegistry.load(props.screenInstanceID)}
+          internalProps: {...props, ...PropRegistry.load(props.screenInstanceID || props.passPropsKey)}
         }
       }
 
       componentWillReceiveProps(nextProps) {
         this.setState({
-          internalProps: {...PropRegistry.load(this.props.screenInstanceID), ...nextProps}
+          internalProps: {...PropRegistry.load(this.props.screenInstanceID || this.props.passPropsKey), ...nextProps}
         })
       }
 
@@ -166,8 +166,17 @@ async function isAppLaunched() {
   return await platformSpecific.isAppLaunched();
 }
 
+async function isRootLaunched() {
+  return await platformSpecific.isRootLaunched();
+}
+
+function getCurrentlyVisibleScreenId() {
+  return platformSpecific.getCurrentlyVisibleScreenId();
+}
+
 export default {
   getRegisteredScreen,
+  getCurrentlyVisibleScreenId,
   registerComponent,
   showModal: showModal,
   dismissModal: dismissModal,
@@ -182,5 +191,6 @@ export default {
   setEventHandler: setEventHandler,
   clearEventHandler: clearEventHandler,
   handleDeepLink: handleDeepLink,
-  isAppLaunched: isAppLaunched
+  isAppLaunched: isAppLaunched,
+  isRootLaunched: isRootLaunched
 };

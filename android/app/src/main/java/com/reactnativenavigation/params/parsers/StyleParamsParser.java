@@ -5,7 +5,9 @@ import android.os.Bundle;
 
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.Orientation;
+import com.reactnativenavigation.params.StatusBarTextColorScheme;
 import com.reactnativenavigation.params.StyleParams;
+import com.reactnativenavigation.utils.ViewUtils;
 
 public class StyleParamsParser {
     private Bundle params;
@@ -26,12 +28,18 @@ public class StyleParamsParser {
 
         StyleParams result = new StyleParams(params);
         result.orientation = Orientation.fromString(params.getString("orientation", getDefaultOrientation()));
+        result.screenAnimationType = params.getString("screenAnimationType", getDefaultScreenAnimationType());
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
+        result.statusBarHidden = getBoolean("statusBarHidden", getDefaultStatusHidden());
+        result.statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"), getDefaultStatusBarTextColorScheme());
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
         result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
         result.contextualMenuBackgroundColor = getColor("contextualMenuBackgroundColor", getDefaultContextualMenuBackgroundColor());
 
         result.topBarColor = getColor("topBarColor", getDefaultTopBarColor());
+        result.topBarReactView = params.getString("topBarReactView");
+        result.topBarReactViewAlignment = params.getString("topBarReactViewAlignment");
+        result.topBarReactViewInitialProps = getBundle("topBarReactViewInitialProps");
         result.titleBarHideOnScroll = getBoolean("titleBarHideOnScroll", getDefaultTitleBarHideOnScroll());
         result.topBarTransparent = getBoolean("topBarTransparent", getDefaultTopBarHidden());
         result.topBarCollapseOnScroll = getBoolean("topBarCollapseOnScroll", false);
@@ -44,12 +52,20 @@ public class StyleParamsParser {
         result.topBarElevationShadowEnabled = getBoolean("topBarElevationShadowEnabled", getDefaultTopBarElevationShadowEnabled());
         result.titleBarTitleColor = getColor("titleBarTitleColor", getDefaultTitleBarColor());
         result.topBarTranslucent = getBoolean("topBarTranslucent", getDefaultTopBarTranslucent());
+        result.topBarBorderColor = getColor("topBarBorderColor", getDefaultTopBarBorderColor());
+        result.topBarBorderWidth = Float.parseFloat(params.getString("topBarBorderWidth", getDefaultTopBarBorderWidth()));
 
         result.titleBarSubtitleColor = getColor("titleBarSubtitleColor", getDefaultSubtitleBarColor());
+        result.titleBarSubtitleFontSize = getInt("titleBarSubtitleFontSize", getDefaultSubtitleTextFontSize());
+        result.titleBarSubtitleFontFamily = getFont("titleBarSubtitleFontFamily", getDefaultSubtitleFontFamily());
         result.titleBarButtonColor = getColor("titleBarButtonColor", getTitleBarButtonColor());
+        result.titleBarButtonFontFamily = getFont("titleBarButtonFontFamily", getDefaultTitleBarButtonFont());
         result.titleBarDisabledButtonColor = getColor("titleBarDisabledButtonColor", getTitleBarDisabledButtonColor());
         result.titleBarTitleFont = getFont("titleBarTitleFontFamily", getDefaultTitleTextFontFamily());
+        result.titleBarTitleFontSize = getInt("titleBarTitleFontSize", getDefaultTitleTextFontSize());
+        result.titleBarTitleFontBold = getBoolean("titleBarTitleFontBold", getDefaultTitleTextFontBold());
         result.titleBarTitleTextCentered = getBoolean("titleBarTitleTextCentered", getDefaultTitleBarTextCentered());
+        result.titleBarHeight = getInt("titleBarHeight", getDefaultTitleBarHeight());
         result.backButtonHidden = getBoolean("backButtonHidden", getDefaultBackButtonHidden());
         result.topTabsHidden = getBoolean("topTabsHidden", getDefaultTopTabsHidden());
 
@@ -60,9 +76,11 @@ public class StyleParamsParser {
         result.selectedTopTabIndicatorHeight = getInt("selectedTopTabIndicatorHeight", getDefaultSelectedTopTabIndicatorHeight());
         result.selectedTopTabIndicatorColor = getColor("selectedTopTabIndicatorColor", getDefaultSelectedTopTabIndicatorColor());
         result.topTabsScrollable = getBoolean("topTabsScrollable", getDefaultTopTabsScrollable());
+        result.topTabsHeight = getInt("topTabsHeight", getDefaultTopTabsHeight());
 
         result.screenBackgroundColor = getColor("screenBackgroundColor", getDefaultScreenBackgroundColor());
 
+        result.bottomTabsInitialIndex = getInt("initialTabIndex", 0);
         result.bottomTabsHidden = getBoolean("bottomTabsHidden", getDefaultBottomTabsHidden());
         result.drawScreenAboveBottomTabs = !result.bottomTabsHidden &&
                                            params.getBoolean("drawScreenAboveBottomTabs", getDefaultDrawScreenAboveBottomTabs());
@@ -72,8 +90,7 @@ public class StyleParamsParser {
         result.bottomTabsHiddenOnScroll = getBoolean("bottomTabsHiddenOnScroll", getDefaultBottomTabsHiddenOnScroll());
         result.bottomTabsColor = getColor("bottomTabsColor", getDefaultBottomTabsColor());
         result.bottomTabsButtonColor = getColor("bottomTabsButtonColor", getDefaultBottomTabsButtonColor());
-        result.selectedBottomTabsButtonColor =
-                getColor("bottomTabsSelectedButtonColor", getDefaultSelectedBottomTabsButtonColor());
+        result.selectedBottomTabsButtonColor = getColor("bottomTabsSelectedButtonColor", getDefaultSelectedBottomTabsButtonColor());
         result.bottomTabBadgeTextColor = getColor("bottomTabBadgeTextColor", getBottomTabBadgeTextColor());
         result.bottomTabBadgeBackgroundColor = getColor("bottomTabBadgeBackgroundColor", getBottomTabBadgeBackgroundColor());
 
@@ -83,6 +100,14 @@ public class StyleParamsParser {
         result.bottomTabFontFamily = getFont("bottomTabFontFamily", getDefaultBottomTabsFontFamily());
 
         return result;
+    }
+
+    private String getDefaultScreenAnimationType() {
+        return AppStyle.appStyle == null ? "slide-up" : AppStyle.appStyle.screenAnimationType;
+    }
+
+    private StatusBarTextColorScheme getDefaultStatusBarTextColorScheme() {
+        return AppStyle.appStyle == null ? StatusBarTextColorScheme.Undefined : AppStyle.appStyle.statusBarTextColorScheme;
     }
 
     private String getDefaultOrientation() {
@@ -96,6 +121,11 @@ public class StyleParamsParser {
         result.titleBarHideOnScroll = false;
         result.orientation = Orientation.auto;
         result.bottomTabFontFamily = new StyleParams.Font();
+        result.titleBarTitleFont = new StyleParams.Font();
+        result.titleBarSubtitleFontFamily = new StyleParams.Font();
+        result.titleBarButtonFontFamily = new StyleParams.Font();
+        result.titleBarHeight = -1;
+        result.screenAnimationType = "slide-up";
         return result;
     }
 
@@ -187,6 +217,10 @@ public class StyleParamsParser {
         return AppStyle.appStyle != null && AppStyle.appStyle.topTabsScrollable;
     }
 
+    private int getDefaultTopTabsHeight() {
+        return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.topTabsHeight;
+    }
+
     private StyleParams.Color getDefaultTopTabIconColor() {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.topTabIconColor;
     }
@@ -223,6 +257,14 @@ public class StyleParamsParser {
         return AppStyle.appStyle != null && AppStyle.appStyle.topBarTranslucent;
     }
 
+    private StyleParams.Color getDefaultTopBarBorderColor() {
+        return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.topBarBorderColor;
+    }
+
+    private String getDefaultTopBarBorderWidth() {
+        return String.valueOf(AppStyle.appStyle == null ? ViewUtils.convertDpToPixel(1) : AppStyle.appStyle.topBarBorderWidth);
+    }
+
     private boolean getDefaultTitleBarHideOnScroll() {
         return AppStyle.appStyle != null && AppStyle.appStyle.titleBarHideOnScroll;
     }
@@ -235,6 +277,10 @@ public class StyleParamsParser {
         return AppStyle.appStyle == null ? new StyleParams.Color() : AppStyle.appStyle.statusBarColor;
     }
 
+    private boolean getDefaultStatusHidden() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.statusBarHidden;
+    }
+
     private StyleParams.Font getDefaultBottomTabsFontFamily() {
         return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.bottomTabFontFamily;
     }
@@ -243,8 +289,32 @@ public class StyleParamsParser {
         return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.titleBarTitleFont;
     }
 
+    private int getDefaultTitleTextFontSize() {
+        return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarTitleFontSize;
+    }
+
+    private int getDefaultSubtitleTextFontSize() {
+        return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarSubtitleFontSize;
+    }
+
+    private StyleParams.Font getDefaultSubtitleFontFamily() {
+        return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.titleBarSubtitleFontFamily;
+    }
+
+    private StyleParams.Font getDefaultTitleBarButtonFont() {
+        return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.titleBarButtonFontFamily;
+    }
+
+    private boolean getDefaultTitleTextFontBold() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.titleBarTitleFontBold;
+    }
+
     private boolean getDefaultTitleBarTextCentered() {
         return AppStyle.appStyle != null && AppStyle.appStyle.titleBarTitleTextCentered;
+    }
+
+    private int getDefaultTitleBarHeight() {
+        return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarHeight;
     }
 
     private boolean getBoolean(String key, boolean defaultValue) {
@@ -267,5 +337,9 @@ public class StyleParamsParser {
 
     private int getInt(String key, int defaultValue) {
         return params.containsKey(key) ? params.getInt(key) : defaultValue;
+    }
+
+    private Bundle getBundle(String key) {
+        return params.containsKey(key) ? params.getBundle(key) : Bundle.EMPTY;
     }
 }

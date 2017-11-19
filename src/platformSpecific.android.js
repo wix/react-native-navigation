@@ -12,7 +12,7 @@ function startApp(activityParams) {
 
 function push(screenParams) {
   savePassProps(screenParams);
-  NativeReactModule.push(screenParams);
+  return NativeReactModule.push(screenParams);
 }
 
 function pop(screenParams) {
@@ -62,8 +62,8 @@ function dismissLightBox() {
   NativeReactModule.dismissLightBox();
 }
 
-function dismissTopModal() {
-  NativeReactModule.dismissTopModal();
+function dismissTopModal(params) {
+  NativeReactModule.dismissTopModal(params);
 }
 
 function dismissAllModals() {
@@ -181,6 +181,14 @@ async function isAppLaunched() {
   return await NativeReactModule.isAppLaunched();
 }
 
+async function isRootLaunched() {
+  return await NativeReactModule.isRootLaunched();
+}
+
+async function getCurrentlyVisibleScreenId() {
+  return await NativeReactModule.getCurrentlyVisibleScreenId();
+}
+
 module.exports = {
   startApp,
   push,
@@ -215,5 +223,7 @@ module.exports = {
   showContextualMenu,
   dismissContextualMenu,
   setScreenStyle,
-  isAppLaunched
+  isAppLaunched,
+  isRootLaunched,
+  getCurrentlyVisibleScreenId
 };

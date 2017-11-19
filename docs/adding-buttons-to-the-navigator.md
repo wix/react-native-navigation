@@ -55,13 +55,15 @@ class FirstTabScreen extends Component {
   rightButtons: [{ // buttons for the right side of the nav bar (optional)
     title: 'Edit', // if you want a textual button
     icon: require('../../img/navicon_edit.png'), // if you want an image button
+    component: 'example.CustomButton', // if you want a custom button
+    passProps: {}, // Object that will be passed as props to custom components (optional)
     id: 'compose', // id of the button which will pass to your press event handler. See the section bellow for Android specific button ids
     testID: 'e2e_is_awesome', // if you have e2e tests, use this to find your button
     disabled: true, // optional, used to disable the button (appears faded and doesn't interact)
     disableIconTint: true, // optional, by default the image colors are overridden and tinted to navBarButtonColor, set to true to keep the original image colors
     buttonColor: 'blue', // Set color for the button (can also be used in setButtons function to set different button style programatically)
     buttonFontSize: 14, // Set font size for the button (can also be used in setButtons function to set different button style programatically)
-    buttonFontWeight: '600', // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
+    buttonFontWeight: '600' // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
   }],
   leftButtons: [] // buttons for the left side of the nav bar (optional)
 }
@@ -75,15 +77,72 @@ On Android, four button types are supported by default without the need to provi
 * accept
 * sideMenu
 
+#### Custom Navigation Buttons
+
+On iOS, react-native-navigation uses `UIBarButtonItem` to display all items in the navigation bar. Instead of using images or text for normal `UIBarButtonItem`s, you can supply a custom component to be displayed within a custom view of a `UIBarButtonItem`, using the `component` property when specifying a navigation button.
+
+Custom components must first be registered, just as screens are registered, using [`Navigation.registerComponent`](#/top-level-api?id=registercomponentscreenid-generator-store-undefined-provider-undefined).
+
+Additionally, ensure that the view is able to size itself, as custom navigation buttons will size depending on their content. Only `width` will be respected by the navigation bar; views can overflow outside of the navigation bar if they are too tall.
+
+```js
+const styles = StyleSheet.create({
+  button: {
+    overflow: 'hidden',
+    width: 34,
+    height: 34,
+    borderRadius: 34 / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+// Our custom component we want as a button in the nav bar
+const CustomButton = ({ text }) =>
+  <TouchableOpacity
+    style={[styles.button, { backgroundColor: 'tomato' }]}
+    onPress={() => console.log('pressed me!')}
+  >
+    <View style={styles.button}>
+      <Text style={{ color: 'white' }}>
+        {text}
+      </Text>
+    </View>
+  </TouchableOpacity>;
+
+// Register the component
+Navigation.registerComponent('CustomButton', () => CustomButton);
+
+Navigation.startSingleScreenApp({
+  screen: {
+    screen: 'example.screen',
+    title: 'React Native Navigation',
+    navigatorButtons: {
+      leftButtons: [
+        {
+          id: 'custom-button',
+          component: 'CustomButton', // This line loads our component as a nav bar button item
+          passProps: {
+            text: 'Hi!',
+          },
+        },
+      ],
+    },
+  },
+});
+```
+
 #### Floating Action Button (FAB) - Android only
 Each screen can contain a single Fab which is displayed at the bottom right corner of the screen.
 
 * Simple Fab:
+
 ```js
   static navigatorButtons = {
     fab: {
       collapsedId: 'share',
       collapsedIcon: require('../../img/ic_share.png'),
+      collapsedIconColor: 'red', // optional
       backgroundColor: '#607D8B'
     }
   };
@@ -91,17 +150,21 @@ Each screen can contain a single Fab which is displayed at the bottom right corn
 
 * Fab with expanded state
 [Example](https://material-design.storage.googleapis.com/publish/material_v_9/0B8v7jImPsDi-ZmQ0UnFPZmtiSU0/components-buttons-fab-transition_speeddial_02.mp4)
+
 ```js
     fab: {
       collapsedId: 'share',
       collapsedIcon: require('../../img/ic_share.png'),
+      collapsedIconColor: 'green', // optional
       expendedId: 'clear',
       expendedIcon: require('../../img/ic_clear.png'),
+      expendedIconColor: 'red', // optional
       backgroundColor: '#3F51B5',
       actions: [
         {
           id: 'mail',
           icon: require('../../img/ic_mail.png'),
+          iconColor: 'blue', // optional
           backgroundColor: '#03A9F4'
         },
         {

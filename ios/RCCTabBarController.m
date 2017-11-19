@@ -35,6 +35,17 @@
     [RCCTabBarController sendScreenTabChangedEvent:viewController body:body];
     
     [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:@"bottomTabSelected" body:body];
+    if ([viewController isKindOfClass:[UINavigationController class]]) {
+      UINavigationController *navigationController = (UINavigationController*)viewController;
+      UIViewController *topViewController = navigationController.topViewController;
+      
+      if ([topViewController isKindOfClass:[RCCViewController class]]) {
+        RCCViewController *topRCCViewController = (RCCViewController*)topViewController;
+        topRCCViewController.commandType = COMMAND_TYPE_BOTTOME_TAB_SELECTED;
+        topRCCViewController.timestamp = [RCTHelpers getTimestampString];
+      }
+    }
+    
   } else {
     [RCCTabBarController sendScreenTabPressedEvent:viewController body:nil];
   }
@@ -207,6 +218,13 @@
   
   // replace the tabs
   self.viewControllers = viewControllers;
+
+  NSNumber *initialTab = tabsStyle[@"initialTabIndex"];
+  if (initialTab)
+  {
+    NSInteger initialTabIndex = initialTab.integerValue;
+    [self setSelectedIndex:initialTabIndex];
+  }
   
   [self setRotation:props];
   
@@ -245,6 +263,12 @@
       }
       else
       {
+        NSString *badgeColor = actionParams[@"badgeColor"];
+        UIColor *color = badgeColor != (id)[NSNull null] ? [RCTConvert UIColor:badgeColor] : nil;
+        
+        if ([viewController.tabBarItem respondsToSelector:@selector(badgeColor)]) {
+          viewController.tabBarItem.badgeColor = color;
+        }
         viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
       }
     }
@@ -320,6 +344,10 @@
   if ([performAction isEqualToString:@"setTabBarHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
+    
+    CGRect nextFrame = self.tabBar.frame;
+    nextFrame.origin.y = UIScreen.mainScreen.bounds.size.height - (hidden ? 0 : self.tabBar.frame.size.height);
+    
     [UIView animateWithDuration: ([actionParams[@"animated"] boolValue] ? 0.45 : 0)
                           delay: 0
          usingSpringWithDamping: 0.75
@@ -327,7 +355,7 @@
                         options: (hidden ? UIViewAnimationOptionCurveEaseIn : UIViewAnimationOptionCurveEaseOut)
                      animations:^()
      {
-       self.tabBar.transform = hidden ? CGAffineTransformMakeTranslation(0, self.tabBar.frame.size.height) : CGAffineTransformIdentity;
+         [self.tabBar setFrame:nextFrame];
      }
                      completion:^(BOOL finished)
      {
