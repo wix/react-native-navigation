@@ -71,7 +71,7 @@ class Actions extends React.Component {
 
   showSnackbar = () => {
     this.props.navigator.showSnackbar({
-      title: 'Woo Snacks!',
+      text: 'Woo Snacks!',
     });
   };
 

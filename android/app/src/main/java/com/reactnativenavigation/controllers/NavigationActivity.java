@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.Window;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
@@ -65,6 +66,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (!NavigationApplication.instance.getReactGateway().hasStartedCreatingContext()) {
             SplashActivity.start(this);
             finish();
+            return;
         }
 
         activityParams = NavigationCommandsHandler.parseActivityParams(getIntent());
@@ -212,11 +214,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onConfigurationChanged(newConfig);
     }
 
-    void push(ScreenParams params) {
+    void push(ScreenParams params, Promise onPushComplete) {
         if (modalController.containsNavigator(params.getNavigatorId())) {
-            modalController.push(params);
+            modalController.push(params, onPushComplete);
         } else {
-            layout.push(params);
+            layout.push(params, onPushComplete);
         }
     }
 
