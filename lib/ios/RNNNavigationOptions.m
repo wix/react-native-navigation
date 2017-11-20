@@ -29,12 +29,11 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 -(void)mergeWith:(NSDictionary *)otherOptions {
 	for (id key in otherOptions) {
-		if (![key isEqualToString:@"topBar"]) {
+		if ([key isEqualToString:@"topBar"]) {
+			[self.topBar mergeWith:[otherOptions objectForKey:@"topBar"]];
+		} else {
 			[self setValue:[otherOptions objectForKey:key] forKey:key];
 		}
-	}
-	if ([otherOptions objectForKey:@"topBar"]) {
-		[self.topBar mergeWith:[otherOptions objectForKey:@"topBar"]];
 	}
 }
 
