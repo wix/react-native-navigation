@@ -13,10 +13,12 @@ class OptionsScreen extends Component {
 
   static get navigationOptions() {
     return {
-      title: 'Static Title',
-      topBarTextColor: 'black',
-      topBarTextFontSize: 16,
-      topBarTextFontFamily: 'HelveticaNeue-Italic',
+      topBar: {
+        title: 'Static Title',
+        textColor: 'black',
+        textFontSize: 16,
+        textFontFamily: 'HelveticaNeue-Italic'
+      },
       rightButtons: [{
         id: BUTTON_ONE,
         testID: BUTTON_ONE,

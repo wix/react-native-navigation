@@ -8,14 +8,18 @@ const Navigation = require('react-native-navigation');
 class ScrollViewScreen extends Component {
   static get navigationOptions() {
     return {
-      topBarTranslucent: false
+      topBar: {
+        translucent: false
+      }
     };
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      topBarHideOnScroll: false
+      topBar: {
+        hideOnScroll: false
+      }
     };
     this.onClickToggleTopBarHideOnScroll = this.onClickToggleTopBarHideOnScroll.bind(this);
   }
@@ -32,7 +36,9 @@ class ScrollViewScreen extends Component {
 
   onClickToggleTopBarHideOnScroll() {
     Navigation.setOptions(this.props.containerId, {
-      topBarHideOnScroll: !this.state.topBarHideOnScroll
+      topBar: {
+        hideOnScroll: !this.state.topBarHideOnScroll
+      }
     });
   }
 }
