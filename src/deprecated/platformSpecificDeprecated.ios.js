@@ -31,6 +31,7 @@ function startTabBasedApp(params) {
       navigatorButtons,
       navigatorEventID
     } = _mergeScreenSpecificSettings(tab.screen, screenInstanceID, tab);
+    _processNavigatorButtons(navigatorButtons);
     tab.navigationParams = {
       screenInstanceID,
       navigatorStyle,
@@ -138,6 +139,7 @@ function startSingleScreenApp(params) {
     navigatorButtons,
     navigatorEventID
   } = _mergeScreenSpecificSettings(screen.screen, screenInstanceID, screen);
+  _processNavigatorButtons(navigatorButtons);
   params.navigationParams = {
     screenInstanceID,
     navigatorStyle,
@@ -236,6 +238,7 @@ function navigatorPush(navigator, params) {
     navigatorButtons,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
+  _processNavigatorButtons(navigatorButtons);
   const passProps = Object.assign({}, params.passProps);
   passProps.navigatorID = navigator.navigatorID;
   passProps.screenInstanceID = screenInstanceID;
@@ -294,6 +297,7 @@ function navigatorResetTo(navigator, params) {
     navigatorButtons,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
+  _processNavigatorButtons(navigatorButtons);
   const passProps = Object.assign({}, params.passProps);
   passProps.navigatorID = navigator.navigatorID;
   passProps.screenInstanceID = screenInstanceID;
@@ -443,6 +447,7 @@ function navigatorSwitchToTab(navigator, params) {
 }
 
 function navigatorSetButtons(navigator, navigatorEventID, params) {
+  _processNavigatorButtons(params);
   if (params.leftButtons) {
     const buttons = params.leftButtons.slice(); // clone
     for (let i = 0; i < buttons.length; i++) {
@@ -472,6 +477,7 @@ function showModal(params) {
     navigatorButtons,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
+  _processNavigatorButtons(navigatorButtons);
   const passProps = Object.assign({}, params.passProps);
   passProps.navigatorID = navigatorID;
   passProps.screenInstanceID = screenInstanceID;
@@ -638,6 +644,21 @@ function dismissContextualMenu() {
 
 async function getCurrentlyVisibleScreenId() {
   return await ScreenUtils.getCurrentlyVisibleScreenId();
+}
+
+function _processNavigatorButtons({rightButtons, leftButtons}) {
+  _saveNavigatorButtonsPassProps(rightButtons);
+  _saveNavigatorButtonsPassProps(leftButtons);
+}
+
+function _saveNavigatorButtonsPassProps(buttons = []) {
+  buttons.forEach((button) => {
+    if (button.component) {
+      const passPropsKey = _.uniqueId('customButtonComponent');
+      PropRegistry.save(passPropsKey, button.passProps);
+      button.passProps = {passPropsKey};
+    }
+  })
 }
 
 export default {
