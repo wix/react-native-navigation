@@ -104,10 +104,12 @@ Navigation.startSingleScreenApp({
     left: { // optional, define if you want a drawer from the left
       screen: 'example.FirstSideMenu', // unique ID registered with Navigation.registerScreen
       passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
+      disableOpenGesture: false // optional, can the drawer be opened with a swipe instead of button
     },
     right: { // optional, define if you want a drawer from the right
       screen: 'example.SecondSideMenu', // unique ID registered with Navigation.registerScreen
       passProps: {} // simple serializable object that will pass as props to all top screens (optional)
+      disableOpenGesture: false // optional, can the drawer be opened with a swipe instead of button
     },
     style: { // ( iOS only )
       drawerShadow: true, // optional, add this if you want a side menu drawer shadow
@@ -118,7 +120,7 @@ Navigation.startSingleScreenApp({
     type: 'MMDrawer', // optional, iOS only, types: 'TheSideBar', 'MMDrawer' default: 'MMDrawer'
     animationType: 'door', //optional, iOS only, for MMDrawer: 'door', 'parallax', 'slide', 'slide-and-scale'
                                         // for TheSideBar: 'airbnb', 'facebook', 'luvocracy','wunder-list'
-    disableOpenGesture: false // optional, can the drawer be opened with a swipe instead of button
+    disableOpenGesture: false // optional, can the drawer, both right and left, be opened with a swipe instead of button
   },
   passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
   animationType: 'slide-down' // optional, add transition animation to root change: 'none', 'slide-down', 'fade'
