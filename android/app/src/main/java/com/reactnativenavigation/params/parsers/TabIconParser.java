@@ -20,4 +20,12 @@ class TabIconParser extends Parser {
         }
         return tabIcon;
     }
+
+    public Drawable parseSelectedIcon() {
+        Drawable tabSelectedIcon = null;
+        if (hasKey(params, "selectedIcon")) {
+            tabSelectedIcon = ImageLoader.loadImage(params.getString("selectedIcon"));
+        }
+        return tabSelectedIcon;
+    }
 }
