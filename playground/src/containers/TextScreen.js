@@ -1,7 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Button } = require('react-native');
+const { View, Text, Button, Platform } = require('react-native');
 
 const Navigation = require('react-native-navigation');
 
@@ -35,7 +35,15 @@ class TextScreen extends Component {
   }
 
   onClickSwitchToTab() {
-    Navigation.switchToTab(this.props.containerId, 1);
+    if (Platform.OS == 'ios') {
+      Navigation.switchToTab(this.props.containerId, 1);
+    } else {
+      Navigation.setOptions(this.props.containerId, {
+        tabBar: {
+          currentTabIndex: 1
+        }
+      })
+    }
   }
 }
 module.exports = TextScreen;

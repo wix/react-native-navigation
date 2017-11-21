@@ -27,13 +27,16 @@ public class NavigationOptions implements DEFAULT_VALUES {
 		if (json == null) return result;
 
 		result.topBarOptions = TopBarOptions.parse(json.optJSONObject("topBar"));
+		result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("tabBar"));
 
 		return result;
 	}
 
 	public TopBarOptions topBarOptions = new TopBarOptions();
+	public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
 
 	public void mergeWith(final NavigationOptions other) {
 		topBarOptions.mergeWith(other.topBarOptions);
+		bottomTabsOptions.mergeWith(other.bottomTabsOptions);
 	}
 }
