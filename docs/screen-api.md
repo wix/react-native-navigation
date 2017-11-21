@@ -259,11 +259,19 @@ this.props.navigator.toggleNavBar({
 ## setOnNavigatorEvent(callback)
 
 Set a handler for navigator events (like nav button press). This would normally go in your component constructor.
+Can not be used in conjuction with `addOnNavigatorEvent`.
 
 ```js
 // this.onNavigatorEvent will be our handler
 this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 ```
+
+## addOnNavigatorEvent(callback)
+
+Add a handler for navigator events (like nav button press). This would normally go in your component constructor.
+If you choose to use `addOnNavigatorEvent` instead of `setOnNavigatorEvent` you will be able to add multiple handlers.
+Bear in mind that you can't use both `addOnNavigatorEvent` and `setOnNavigatorEvent`.
+`addOnNavigatorEvent` returns a function, that once called will remove the registered handler.
 
 # Screen Visibility
 
