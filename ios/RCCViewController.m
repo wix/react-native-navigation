@@ -644,12 +644,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
       self.navigationItem.titleView.clipsToBounds = YES;
     }
   }
-  
-  if ([self.navigationController.navigationBar respondsToSelector:@selector(setPrefersLargeTitles:)]) {
-    NSNumber *prefersLargeTitles = self.navigatorStyle[@"prefersLargeTitles"];
-    BOOL prefersLargeTitlesBool = prefersLargeTitles ? [prefersLargeTitles boolValue] : NO;
-    self.navigationController.navigationBar.prefersLargeTitles = prefersLargeTitlesBool;
-  }
 }
 
 
