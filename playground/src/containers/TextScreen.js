@@ -35,14 +35,14 @@ class TextScreen extends Component {
   }
 
   onClickSwitchToTab() {
-    if (Platform.OS == 'ios') {
+    if (Platform.OS === 'ios') {
       Navigation.switchToTab(this.props.containerId, 1);
     } else {
       Navigation.setOptions(this.props.containerId, {
         tabBar: {
           currentTabIndex: 1
         }
-      })
+      });
     }
   }
 }

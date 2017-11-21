@@ -11,6 +11,14 @@ public class TopLevelApiTest extends BaseTest {
 		elementByText("SWITCH TO TAB BASED APP").click();
 		assertExists(By.text("This is tab 1"));
 		assertExists(By.text("Hello from a function!"));
+  }
+  
+  @Test
+	public void switchToTabBasedApp_SwitchTab() throws Exception {
+		elementByText("SWITCH TO TAB BASED APP").click();
+		assertExists(By.text("This is tab 1"));
+    elementByText("SWITCH TO TAB 2").click();
+    assertExists(By.text("This is tab 2"));
 	}
 
 	@Test
