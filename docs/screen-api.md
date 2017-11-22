@@ -22,7 +22,7 @@ this.props.navigator.push({
   previewView: undefined, // react ref or node id (optional)
   previewHeight: undefined, // set preview height, defaults to full height (optional)
   previewCommit: true, // commit to push preview controller to the navigation stack (optional)
-  previewActions: [{
+  previewActions: [{ // action presses can be detected with the `PreviewActionPress` event on the commited screen.
     id: '', // action id (required)
     title: '', // action title (required)
     style: undefined, // 'selected' or 'destructive' (optional)
