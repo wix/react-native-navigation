@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {StyleSheet, View, Text, TouchableHighlight, Platform} from 'react-native';
 
-class Row extends React.Component {
+class Row extends React.PureComponent {
   render() {
     const {title, onPress, onPressIn, platform, testID} = this.props;
     if (platform && platform !== Platform.OS) {

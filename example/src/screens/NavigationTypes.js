@@ -38,7 +38,7 @@ class NavigationTypes extends React.Component {
     this.props.navigator.push({
       screen: 'example.Types.Push',
       title: 'New Screen',
-      previewViewID: findNodeHandle(this.previewRef),
+      previewView: this.previewRef,
       previewActions: [{
         id: 'action-cancel',
         title: 'Cancel'
