@@ -18,14 +18,15 @@ this.props.navigator.push({
   backButtonHidden: false, // hide the back button altogether (optional)
   navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
   navigatorButtons: {}, // override the nav buttons for the pushed screen (optional)
+  // enable peek and pop - commited screen will have `isPreview` prop set as true.
   previewView: undefined, // react ref or node id (optional)
   previewHeight: undefined, // set preview height, defaults to full height (optional)
-  previewCommit: true, // weither to commit to push preview controller to the navigation stack (optional)
+  previewCommit: true, // commit to push preview controller to the navigation stack (optional)
   previewActions: [{
     id: '', // action id (required)
     title: '', // action title (required)
     style: undefined, // 'selected' or 'destructive' (optional)
-    actions: [], // List of sub-actions
+    actions: [], // list of sub-actions
   }],
 });
 ```
@@ -303,6 +304,8 @@ export default class ExampleScreen extends Component {
       case 'willDisappear':
         break;
       case 'didDisappear':
+        break;
+      case 'willCommitPreview':
         break;
     }
   }
