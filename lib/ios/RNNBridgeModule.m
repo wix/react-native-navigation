@@ -54,9 +54,5 @@ RCT_EXPORT_METHOD(dismissAllModals) {
 	[_commandsHandler dismissAllModals];
 }
 
-RCT_EXPORT_METHOD(switchToTab:(NSString*)containerId tabIndex:(nonnull NSNumber*)tabIndex) {
-	[_commandsHandler switchToTab:containerId tabIndex:tabIndex];
-}
-
 @end
 

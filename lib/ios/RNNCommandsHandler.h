@@ -26,6 +26,4 @@
 
 -(void) dismissAllModals;
 
--(void) switchToTab:(NSString*)containerId tabIndex:(NSNumber*)tabIndex;
-
 @end
