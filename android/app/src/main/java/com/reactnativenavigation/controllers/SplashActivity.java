@@ -12,6 +12,8 @@ import android.view.View;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.ReactDevPermission;
 import com.reactnativenavigation.utils.CompatUtils;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 
 public abstract class SplashActivity extends AppCompatActivity {
     public static boolean isResumed = false;
@@ -94,7 +96,18 @@ public abstract class SplashActivity extends AppCompatActivity {
      */
     public View createSplashLayout() {
         View view = new View(this);
-        view.setBackgroundColor(Color.WHITE);
+        int splashBackgroundColor = Color.WHITE;
+        try {
+            Bundle bundle = this.getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA).metaData;
+            String color = bundle.getString("splashBackgroundColor");
+            if (color != null && color.equals("transparent")) {
+                splashBackgroundColor = Color.TRANSPARENT;
+            }
+
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        view.setBackgroundColor(splashBackgroundColor);
         return view;
     }
 }
