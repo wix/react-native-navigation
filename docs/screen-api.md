@@ -17,7 +17,16 @@ this.props.navigator.push({
   backButtonTitle: undefined, // override the back button title (optional)
   backButtonHidden: false, // hide the back button altogether (optional)
   navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
-  navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
+  navigatorButtons: {}, // override the nav buttons for the pushed screen (optional)
+  previewView: undefined, // react ref or node id (optional)
+  previewHeight: undefined, // set preview height, defaults to full height (optional)
+  previewCommit: true, // weither to commit to push preview controller to the navigation stack (optional)
+  previewActions: [{
+    id: '', // action id (required)
+    title: '', // action title (required)
+    style: undefined, // 'selected' or 'destructive' (optional)
+    actions: [], // List of sub-actions
+  }],
 });
 ```
 

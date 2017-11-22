@@ -238,6 +238,10 @@ function navigatorPush(navigator, params) {
   const screenInstanceID = _.uniqueId('screenInstanceID');
   if (params.previewView instanceof Component) {
     previewViewID = findNodeHandle(params.previewView)
+  } else if (typeof params.previewView === 'number') {
+    previewViewID = params.previewView;
+  } else {
+    console.error('Navigator.push(params): params.previewView is not a valid react view');
   }
   const {
     navigatorStyle,
@@ -249,6 +253,8 @@ function navigatorPush(navigator, params) {
   passProps.navigatorID = navigator.navigatorID;
   passProps.screenInstanceID = screenInstanceID;
   passProps.navigatorEventID = navigatorEventID;
+  passProps.previewViewID = previewViewID;
+  passProps.isPreview = !!previewViewID;
 
   params.navigationParams = {
     screenInstanceID,
@@ -275,6 +281,8 @@ function navigatorPush(navigator, params) {
     rightButtons: navigatorButtons.rightButtons,
     previewViewID: previewViewID,
     previewActions: params.previewActions,
+    previewHeight: params.previewHeight,
+    previewCommit: params.previewCommit,
     timestamp: Date.now()
   });
 }

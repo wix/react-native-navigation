@@ -851,7 +851,11 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 }
 
 - (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
-  [self.navigationController pushViewController:self.previewController animated:false];
+  if (self.previewController.previewCommit == YES) {
+    [self.previewController sendGlobalScreenEvent:@"willCommitPreview" endTimestampString:[self.previewController getTimestampString] shouldReset:YES];
+    [self.previewController sendScreenChangedEvent:@"willCommitPreview"];
+    [self.navigationController pushViewController:self.previewController animated:false];
+  }
 }
 
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItems {

@@ -172,6 +172,11 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       {
         RCCViewController *topViewController = ((RCCViewController*)self.topViewController);
         viewController.previewActions = previewActions;
+        viewController.previewCommit = actionParams[@"previewCommit"] ? [actionParams[@"previewCommit"] boolValue] : YES;
+        NSNumber *previewHeight = actionParams[@"previewHeight"];
+        if (previewHeight) {
+          viewController.preferredContentSize = CGSizeMake(viewController.view.frame.size.width, [previewHeight floatValue]);
+        }
         if (topViewController.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)
         {
           dispatch_async(RCTGetUIManagerQueue(), ^{
