@@ -39,7 +39,19 @@ class NavigationTypes extends React.Component {
       screen: 'example.Types.Push',
       title: 'New Screen',
       passProps: {
-        previewViewID: findNodeHandle(this.previewRef)
+        previewViewID: findNodeHandle(this.previewRef),
+        previewActions: [{
+          id: 'action-cancel',
+          title: 'Cancel'
+        }, {
+          id: 'action-delete',
+          title: 'Delete',
+          actions: [{
+            id: 'action-delete-sure',
+            title: 'Are you sure?',
+            style: 'destructive'
+          }]
+        }]
       }
     });
   };
@@ -118,9 +130,7 @@ class NavigationTypes extends React.Component {
         <Row title={'Toggle Drawer'} onPress={this.toggleDrawer}/>
         <Row title={'Push Screen'} testID={'pushScreen'} onPress={this.pushScreen}/>
         <Row
-          ref={(ref) => {
-            this.previewRef = ref;
-          }}
+          ref={(ref) => (this.previewRef = ref)}
           title={'Preview Screen'}
           testID={'previewScreen'}
           onPress={this.pushScreen}

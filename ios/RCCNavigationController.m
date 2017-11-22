@@ -3,6 +3,9 @@
 #import "RCCManager.h"
 #import <React/RCTEventDispatcher.h>
 #import <React/RCTUIManager.h>
+#if __has_include(<React/RCTUIManagerUtils.h>)
+#import <React/RCTUIManagerUtils.h>
+#endif
 #import <React/RCTConvert.h>
 #import <React/RCTRootView.h>
 #import <objc/runtime.h>
@@ -161,18 +164,27 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     {
       [self setButtons:rightButtons viewController:viewController side:@"right" animated:NO];
     }
-    
+
+    NSArray *previewActions = passProps[@"previewActions"];
     NSString *previewViewID = passProps[@"previewViewID"];
     if (previewViewID) {
-      RCCViewController *topViewController = ((RCCViewController*)self.topViewController);
-      dispatch_async(RCTGetUIManagerQueue(), ^{
-        [bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-          UIView *view = viewRegistry[passProps[@"previewViewID"]];
-          [topViewController setPreviewView:view];
-        }];
-      });
-      [topViewController setPreviewController:viewController];
-      return;
+      if ([self.topViewController isKindOfClass:[RCCViewController class]])
+      {
+        RCCViewController *topViewController = ((RCCViewController*)self.topViewController);
+        viewController.previewActions = previewActions;
+        if (topViewController.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)
+        {
+          dispatch_async(RCTGetUIManagerQueue(), ^{
+            [bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+              UIView *view = viewRegistry[passProps[@"previewViewID"]];
+              topViewController.previewView = view;
+              [topViewController registerForPreviewingWithDelegate:(id)topViewController sourceView:view];
+            }];
+          });
+          topViewController.previewController = viewController;
+        }
+        return;
+      }
     }
     
     NSString *animationType = actionParams[@"animationType"];

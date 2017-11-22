@@ -29,21 +29,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 @property (nonatomic, weak) id <UIGestureRecognizerDelegate> originalInteractivePopGestureDelegate;
 @end
 
-@implementation RCCViewController {
-  RCCViewController *_previewController;
-  UIView *_previewView;
-}
-
-- (void)setPreviewController:(RCCViewController *)controller {
-  _previewController = controller;
-}
-
-- (void)setPreviewView:(UIView *)view {
-  _previewView = view;
-  if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
-    [self registerForPreviewingWithDelegate:(id)self sourceView:_previewView];
-  }
-}
+@implementation RCCViewController
 
 -(UIImageView *)navBarHairlineImageView {
   if (!_navBarHairlineImageView) {
@@ -792,6 +778,37 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   }
 }
 
+#pragma mark - Preview Actions
+
+- (void)onActionPress:(NSString *)id {
+  if ([self.view isKindOfClass:[RCTRootView class]]) {
+    RCTRootView *rootView = (RCTRootView *)self.view;
+    if (rootView.appProperties && rootView.appProperties[@"navigatorEventID"]) {
+      [[[RCCManager sharedInstance] getBridge].eventDispatcher
+       sendAppEventWithName:rootView.appProperties[@"navigatorEventID"]
+       body:@{
+              @"type": @"PreviewActionPress",
+              @"id": id
+              }];
+    }
+  }
+}
+
+- (UIPreviewAction *) convertAction:(NSDictionary *)action {
+  NSString *actionId = action[@"id"];
+  NSString *actionTitle = action[@"title"];
+  UIPreviewActionStyle actionStyle = UIPreviewActionStyleDefault;
+  if ([action[@"style"] isEqualToString:@"selected"]) {
+    actionStyle = UIPreviewActionStyleSelected;
+  }
+  if ([action[@"style"] isEqualToString:@"destructive"]) {
+    actionStyle = UIPreviewActionStyleDestructive;
+  }
+  return [UIPreviewAction actionWithTitle:actionTitle style:actionStyle handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+    [self onActionPress:actionId];
+  }];
+}
+
 #pragma mark - NewRelic
 
 - (NSString*) customNewRelicInteractionName
@@ -830,13 +847,30 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 #pragma mark - UIViewControllerPreviewingDelegate
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location {
-  return _previewController;
+  return self.previewController;
 }
 
 - (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
-  [self sendScreenChangedEvent:@"didCommitPreview"];
-  [self.navigationController pushViewController:_previewController animated:false];
+  [self.navigationController pushViewController:self.previewController animated:false];
 }
 
+- (NSArray<id<UIPreviewActionItem>> *)previewActionItems {
+  NSMutableArray *actions = [[NSMutableArray alloc] init];
+  for (NSDictionary *previewAction in self.previewActions) {
+    UIPreviewAction *action = [self convertAction:previewAction];
+    NSDictionary *actionActions = previewAction[@"actions"];
+    if (actionActions.count > 0) {
+      NSMutableArray *group = [[NSMutableArray alloc] init];
+      for (NSDictionary *previewGroupAction in actionActions) {
+        [group addObject:[self convertAction:previewGroupAction]];
+      }
+      UIPreviewActionGroup *actionGroup = [UIPreviewActionGroup actionGroupWithTitle:action.title style:UIPreviewActionStyleDefault actions:group];
+      [actions addObject:actionGroup];
+    } else {
+      [actions addObject:action];
+    }
+  }
+  return actions;
+}
 
 @end

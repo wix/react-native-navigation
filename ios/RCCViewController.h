@@ -18,6 +18,9 @@ extern NSString* const RCCViewControllerCancelReactTouchesNotification;
 @property (nonatomic, strong) NSString *controllerId;
 @property (nonatomic, strong) NSString *commandType;
 @property (nonatomic, strong) NSString *timestamp;
+@property (nonatomic) RCCViewController *previewController;
+@property (nonatomic) UIView *previewView;
+@property (nonatomic) NSArray *previewActions;
 
 + (UIViewController*)controllerWithLayout:(NSDictionary *)layout globalProps:(NSDictionary *)globalProps bridge:(RCTBridge *)bridge;
 
