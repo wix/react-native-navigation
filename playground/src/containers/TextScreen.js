@@ -1,7 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Button, Platform } = require('react-native');
+const { View, Text, Button } = require('react-native');
 
 const Navigation = require('react-native-navigation');
 
