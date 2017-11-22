@@ -242,7 +242,12 @@ function convertDrawerParamsToSideMenuParams(drawerParams) {
       addNavigatorParams(result[key]);
       result[key] = adaptNavigationParams(result[key]);
       result[key].passProps = drawer[key].passProps;
-      result[key].disableOpenGesture = drawer.disableOpenGesture;
+      if (drawer.disableOpenGesture) {
+        result[key].disableOpenGesture = drawer.disableOpenGesture;
+      } else {
+        result[key].disableOpenGesture = drawer[key].disableOpenGesture;
+      }
+      
     } else {
       result[key] = null;
     }
