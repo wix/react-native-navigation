@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, findNodeHandle} from 'react-native';
+import {StyleSheet, ScrollView} from 'react-native';
 import Row from '../components/Row';
 
 class NavigationTypes extends React.Component {
