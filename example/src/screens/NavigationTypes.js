@@ -38,21 +38,19 @@ class NavigationTypes extends React.Component {
     this.props.navigator.push({
       screen: 'example.Types.Push',
       title: 'New Screen',
-      passProps: {
-        previewViewID: findNodeHandle(this.previewRef),
-        previewActions: [{
-          id: 'action-cancel',
-          title: 'Cancel'
-        }, {
-          id: 'action-delete',
-          title: 'Delete',
-          actions: [{
-            id: 'action-delete-sure',
-            title: 'Are you sure?',
-            style: 'destructive'
-          }]
+      previewViewID: findNodeHandle(this.previewRef),
+      previewActions: [{
+        id: 'action-cancel',
+        title: 'Cancel'
+      }, {
+        id: 'action-delete',
+        title: 'Delete',
+        actions: [{
+          id: 'action-delete-sure',
+          title: 'Are you sure?',
+          style: 'destructive'
         }]
-      }
+      }]
     });
   };
 

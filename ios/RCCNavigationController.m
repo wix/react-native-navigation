@@ -165,8 +165,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [self setButtons:rightButtons viewController:viewController side:@"right" animated:NO];
     }
 
-    NSArray *previewActions = passProps[@"previewActions"];
-    NSString *previewViewID = passProps[@"previewViewID"];
+    NSArray *previewActions = actionParams[@"previewActions"];
+    NSString *previewViewID = actionParams[@"previewViewID"];
     if (previewViewID) {
       if ([self.topViewController isKindOfClass:[RCCViewController class]])
       {
@@ -176,7 +176,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
         {
           dispatch_async(RCTGetUIManagerQueue(), ^{
             [bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-              UIView *view = viewRegistry[passProps[@"previewViewID"]];
+              UIView *view = viewRegistry[previewViewID];
               topViewController.previewView = view;
               [topViewController registerForPreviewingWithDelegate:(id)topViewController sourceView:view];
             }];

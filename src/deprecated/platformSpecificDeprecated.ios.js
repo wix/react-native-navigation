@@ -267,6 +267,8 @@ function navigatorPush(navigator, params) {
     backButtonHidden: params.backButtonHidden,
     leftButtons: navigatorButtons.leftButtons,
     rightButtons: navigatorButtons.rightButtons,
+    previewViewID: params.previewViewID,
+    previewActions: params.previewActions,
     timestamp: Date.now()
   });
 }
