@@ -38,7 +38,7 @@ class NavigationTypes extends React.Component {
     this.props.navigator.push({
       screen: 'example.Types.Push',
       title: 'New Screen',
-      previewCommit: false,
+      previewCommit: true,
       previewHeight: 250,
       previewView: this.previewRef,
       previewActions: [{
