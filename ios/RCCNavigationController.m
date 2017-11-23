@@ -2,6 +2,10 @@
 #import "RCCViewController.h"
 #import "RCCManager.h"
 #import <React/RCTEventDispatcher.h>
+#import <React/RCTUIManager.h>
+#if __has_include(<React/RCTUIManagerUtils.h>)
+#import <React/RCTUIManagerUtils.h>
+#endif
 #import <React/RCTConvert.h>
 #import <React/RCTRootView.h>
 #import <objc/runtime.h>
@@ -159,6 +163,33 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     if (rightButtons)
     {
       [self setButtons:rightButtons viewController:viewController side:@"right" animated:NO];
+    }
+
+    NSArray *previewActions = actionParams[@"previewActions"];
+    NSString *previewViewID = actionParams[@"previewViewID"];
+    if (previewViewID) {
+      if ([self.topViewController isKindOfClass:[RCCViewController class]])
+      {
+        RCCViewController *topViewController = ((RCCViewController*)self.topViewController);
+        viewController.previewActions = previewActions;
+        viewController.previewCommit = actionParams[@"previewCommit"] ? [actionParams[@"previewCommit"] boolValue] : YES;
+        NSNumber *previewHeight = actionParams[@"previewHeight"];
+        if (previewHeight) {
+          viewController.preferredContentSize = CGSizeMake(viewController.view.frame.size.width, [previewHeight floatValue]);
+        }
+        if (topViewController.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)
+        {
+          dispatch_async(RCTGetUIManagerQueue(), ^{
+            [bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
+              UIView *view = viewRegistry[previewViewID];
+              topViewController.previewView = view;
+              [topViewController registerForPreviewingWithDelegate:(id)topViewController sourceView:view];
+            }];
+          });
+          topViewController.previewController = viewController;
+        }
+        return;
+      }
     }
     
     NSString *animationType = actionParams[@"animationType"];
