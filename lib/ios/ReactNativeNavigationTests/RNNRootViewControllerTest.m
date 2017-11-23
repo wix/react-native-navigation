@@ -8,6 +8,21 @@
 #import "RNNTabBarController.h"
 #import "RNNUIBarButtonItem.h"
 
+@interface RNNRootViewController (EmbedInTabBar)
+- (void)embedInTabBarController;
+@end
+
+@implementation RNNRootViewController (EmbedInTabBar)
+
+- (void)embedInTabBarController {
+	RNNTabBarController* tabVC = [[RNNTabBarController alloc] init];
+	tabVC.viewControllers = @[self];
+	[self viewWillAppear:false];
+}
+
+@end
+
+
 @interface RNNRootViewControllerTest : XCTestCase
 
 @property (nonatomic, strong) id<RNNRootViewCreator> creator;
@@ -408,6 +423,31 @@
 	XCTAssertNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
 }
 
+-(void)testTopBarBlur_default {
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
+}
+
+
+-(void)testTopBarBlur_false {
+	NSNumber* topBarBlurInput = @(0);
+	self.options.topBarBlur = topBarBlurInput;
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
+}
+
+-(void)testTopBarBlur_true {
+	NSNumber* topBarBlurInput = @(1);
+	self.options.topBarBlur = topBarBlurInput;
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertNotNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
+}
+
+#pragma mark - Tab bar
+
 - (void)testTabBarHidden_default {
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
@@ -432,27 +472,105 @@
 	XCTAssertFalse([self.uut hidesBottomBarWhenPushed]);
 }
 
--(void)testTopBarBlur_default {
-	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
+- (void)testTabBarTranslucent_default {
+	[self.uut embedInTabBarController];
+	XCTAssertFalse(self.uut.tabBarController.tabBar.translucent);
 }
 
-
--(void)testTopBarBlur_false {
-	NSNumber* topBarBlurInput = @(0);
-	self.options.topBarBlur = topBarBlurInput;
-	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
+- (void)testTabBarTranslucent_true {
+	self.options.tabBarTranslucent = @(1);
+	[self.uut embedInTabBarController];
+	XCTAssertTrue(self.uut.tabBarController.tabBar.translucent);
 }
 
--(void)testTopBarBlur_true {
-	NSNumber* topBarBlurInput = @(1);
-	self.options.topBarBlur = topBarBlurInput;
-	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-	XCTAssertNotNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
+- (void)testTabBarTranslucent_false {
+	self.options.tabBarTranslucent = @(0);
+	[self.uut embedInTabBarController];
+	XCTAssertFalse(self.uut.tabBarController.tabBar.translucent);
+}
+
+- (void)testTabBarHideShadow_default {
+	[self.uut embedInTabBarController];
+	XCTAssertFalse(self.uut.tabBarController.tabBar.clipsToBounds);
+}
+
+- (void)testTabBarHideShadow_true {
+	self.options.tabBarHideShadow = @(1);
+	[self.uut embedInTabBarController];
+	XCTAssertTrue(self.uut.tabBarController.tabBar.clipsToBounds);
+}
+
+- (void)testTabBarHideShadow_false {
+	self.options.tabBarHideShadow = @(0);
+	[self.uut embedInTabBarController];
+	XCTAssertFalse(self.uut.tabBarController.tabBar.clipsToBounds);
+}
+
+- (void)testTabBarBackgroundColor {
+	self.options.tabBarBackgroundColor = @(0xFFFF0000);
+	[self.uut embedInTabBarController];
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	XCTAssertTrue([self.uut.tabBarController.tabBar.barTintColor isEqual:expectedColor]);
+}
+
+-(void)testTabBarTextColor_validColor{
+	NSNumber* inputColor = @(0xFFFF0000);
+	self.options.tabBarTextColor = inputColor;
+	[self.uut embedInTabBarController];
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
+	XCTAssertTrue([attributes[@"NSColor"] isEqual:expectedColor]);
+}
+
+-(void)testTabBarTextFontFamily_validFont{
+	NSString* inputFont = @"HelveticaNeue";
+	self.options.tabBarTextFontFamily = inputFont;
+	[self.uut embedInTabBarController];
+	UIFont* expectedFont = [UIFont fontWithName:inputFont size:10];
+	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
+	XCTAssertTrue([attributes[@"NSFont"] isEqual:expectedFont]);
+}
+
+-(void)testTabBarTextFontSize_withoutTextFontFamily_withoutTextColor {
+	self.options.tabBarTextFontSize = @(15);
+	[self.uut embedInTabBarController];
+	UIFont* expectedFont = [UIFont systemFontOfSize:15];
+	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
+	XCTAssertTrue([attributes[@"NSFont"] isEqual:expectedFont]);
+}
+
+-(void)testTabBarTextFontSize_withoutTextFontFamily_withTextColor {
+	self.options.tabBarTextFontSize = @(15);
+	self.options.tabBarTextColor = @(0xFFFF0000);
+	[self.uut embedInTabBarController];
+	UIFont* expectedFont = [UIFont systemFontOfSize:15];
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
+	XCTAssertTrue([attributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([attributes[@"NSColor"] isEqual:expectedColor]);
+}
+
+-(void)testTabBarTextFontSize_withTextFontFamily_withTextColor {
+	NSString* inputFont = @"HelveticaNeue";
+	self.options.tabBarTextFontSize = @(15);
+	self.options.tabBarTextColor = @(0xFFFF0000);
+	self.options.tabBarTextFontFamily = inputFont;
+	[self.uut embedInTabBarController];
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
+	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
+	XCTAssertTrue([attributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([attributes[@"NSColor"] isEqual:expectedColor]);
+}
+
+-(void)testTabBarTextFontSize_withTextFontFamily_withoutTextColor {
+	NSString* inputFont = @"HelveticaNeue";
+	self.options.tabBarTextFontSize = @(15);
+	self.options.tabBarTextFontFamily = inputFont;
+	[self.uut embedInTabBarController];
+	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
+	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
+	XCTAssertTrue([attributes[@"NSFont"] isEqual:expectedFont]);
 }
 
 @end
