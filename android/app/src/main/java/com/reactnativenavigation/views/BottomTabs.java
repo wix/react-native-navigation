@@ -88,7 +88,7 @@ public class BottomTabs extends AHBottomNavigation {
 
     private boolean hasTabsWithLabels() {
         for (int i = 0; i < getItemsCount(); i++) {
-            String title = getItem(0).getTitle(getContext());
+            String title = getItem(i).getTitle(getContext());
             if (!TextUtils.isEmpty(title)) {
                 return true;
             }
