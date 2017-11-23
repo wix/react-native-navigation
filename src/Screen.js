@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import platformSpecific from './deprecated/platformSpecificDeprecated';
 import Navigation from './Navigation';
+import _ from 'lodash';
+
 
 const NavigationSpecific = {
   push: platformSpecific.navigatorPush,
@@ -23,9 +25,17 @@ class Navigator {
     this.navigatorEventHandler = null;
     this.navigatorEventHandlers = [];
     this.navigatorEventSubscription = null;
+    this._lastAction = { params: undefined, timestamp: 0 };
   }
 
   push(params = {}) {
+    if (!this._checkLastAction({
+        method: 'push',
+        passProps: params.passProps,
+        screen: params.screen,
+      })) {
+      return;
+    }
     return NavigationSpecific.push(this, params);
   }
 
@@ -174,6 +184,17 @@ class Navigator {
     const index = this.navigatorEventHandlers.indexOf(callback);
     if (index !== -1) {
       this.navigatorEventHandlers.splice(index, 1);
+    }
+  }
+
+  _checkLastAction(params) {
+    if (Date.now() - this._lastAction.timestamp < 800
+      && _.isEqual(params, this._lastAction.params)
+      && !params.force) {
+      return false;
+    } else {
+      this._lastAction = { params, timestamp: Date.now() };
+      return true;
     }
   }
 
