@@ -17,7 +17,17 @@ this.props.navigator.push({
   backButtonTitle: undefined, // override the back button title (optional)
   backButtonHidden: false, // hide the back button altogether (optional)
   navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
-  navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
+  navigatorButtons: {}, // override the nav buttons for the pushed screen (optional)
+  // enable peek and pop - commited screen will have `isPreview` prop set as true.
+  previewView: undefined, // react ref or node id (optional)
+  previewHeight: undefined, // set preview height, defaults to full height (optional)
+  previewCommit: true, // commit to push preview controller to the navigation stack (optional)
+  previewActions: [{ // action presses can be detected with the `PreviewActionPress` event on the commited screen.
+    id: '', // action id (required)
+    title: '', // action title (required)
+    style: undefined, // 'selected' or 'destructive' (optional)
+    actions: [], // list of sub-actions
+  }],
 });
 ```
 
@@ -259,11 +269,19 @@ this.props.navigator.toggleNavBar({
 ## setOnNavigatorEvent(callback)
 
 Set a handler for navigator events (like nav button press). This would normally go in your component constructor.
+Can not be used in conjuction with `addOnNavigatorEvent`.
 
 ```js
 // this.onNavigatorEvent will be our handler
 this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 ```
+
+## addOnNavigatorEvent(callback)
+
+Add a handler for navigator events (like nav button press). This would normally go in your component constructor.
+If you choose to use `addOnNavigatorEvent` instead of `setOnNavigatorEvent` you will be able to add multiple handlers.
+Bear in mind that you can't use both `addOnNavigatorEvent` and `setOnNavigatorEvent`.
+`addOnNavigatorEvent` returns a function, that once called will remove the registered handler.
 
 # Screen Visibility
 
@@ -286,6 +304,8 @@ export default class ExampleScreen extends Component {
       case 'willDisappear':
         break;
       case 'didDisappear':
+        break;
+      case 'willCommitPreview':
         break;
     }
   }
@@ -340,3 +360,12 @@ export default class ExampleScreen extends Component {
   }
 }
 ```
+
+# Peek and pop (3D touch)
+
+react-native-navigation supports the [Peek and pop](
+https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/Adopting3DTouchOniPhone/#//apple_ref/doc/uid/TP40016543-CH1-SW3) feature by setting a react view reference as a `previewView` parameter when doing a push, more options are available in the `push` section.
+
+You can define actions and listen for interactions on the pushed screen with the `PreviewActionPress` event.
+
+Previewed screens will have the prop `isPreview` that can be used to render different things when the screen is in the "Peek" state and will then recieve a navigator event of `willCommitPreview` when in the "Pop" state.
