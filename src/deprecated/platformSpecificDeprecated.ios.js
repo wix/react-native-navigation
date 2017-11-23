@@ -242,7 +242,7 @@ function navigatorPush(navigator, params) {
     previewViewID = findNodeHandle(params.previewView)
   } else if (typeof params.previewView === 'number') {
     previewViewID = params.previewView;
-  } else {
+  } else if (params.previewView) {
     console.error('Navigator.push(params): params.previewView is not a valid react view');
   }
   const {

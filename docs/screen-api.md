@@ -360,3 +360,12 @@ export default class ExampleScreen extends Component {
   }
 }
 ```
+
+# Peek and pop (3D touch)
+
+react-native-navigation supports the [Peek and pop](
+https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/Adopting3DTouchOniPhone/#//apple_ref/doc/uid/TP40016543-CH1-SW3) feature by setting a react view reference as a `previewView` parameter when doing a push, more options are available in the `push` section.
+
+You can define actions and listen for interactions on the pushed screen with the `PreviewActionPress` event.
+
+Previewed screens will have the prop `isPreview` that can be used to render different things when the screen is in the "Peek" state and will then recieve a navigator event of `willCommitPreview` when in the "Pop" state.
