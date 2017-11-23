@@ -312,13 +312,12 @@ In most cases, `Navigation.startSingleScreenApp()` or `Navigation.startTabBasedA
 ```js
 import {Navigation, NativeEventsReceiver} from 'react-native-navigation';
 
-Promise.resolve(Navigation.isAppLaunched())
+Navigation.isAppLaunched()
   .then(appLaunched => {
     if (appLaunched) {
       startApp(); // App is launched -> show UI
-    } else {
-      new NativeEventsReceiver().appLaunched(startApp); // App hasn't been launched yet -> show the UI only when needed.
     }
+    new NativeEventsReceiver().appLaunched(startApp); // App hasn't been launched yet -> show the UI only when needed.
   });
 
 function startApp() {

@@ -225,6 +225,11 @@ function convertStyleParams(originalStyleObject) {
   if (_.isUndefined(ret.expendCollapsingToolBarOnTopTabChange)) {
     ret.expendCollapsingToolBarOnTopTabChange = true;
   }
+  if (ret.topBarReactViewInitialProps) {
+    const passPropsKey = _.uniqueId('customNavBarComponent');
+    PropRegistry.save(passPropsKey, ret.topBarReactViewInitialProps);
+    ret.topBarReactViewInitialProps = {passPropsKey};  
+  }
   return ret;
 }
 
@@ -545,6 +550,11 @@ function addNavigatorButtons(screen, sideMenuParams) {
       }
       if (button.buttonColor) {
         button.color = processColor(button.buttonColor);
+      }
+      if (button.component) {
+        const passPropsKey = _.uniqueId('customButtonComponent');
+        PropRegistry.save(passPropsKey, button.passProps);
+        button.passProps = {passPropsKey};
       }
     });
   }

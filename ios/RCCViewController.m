@@ -19,7 +19,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 const NSInteger BLUR_NAVBAR_TAG = 78264802;
 const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
-@interface RCCViewController() <UIGestureRecognizerDelegate>
+@interface RCCViewController() <UIGestureRecognizerDelegate, UIViewControllerPreviewingDelegate>
 @property (nonatomic) BOOL _hidesBottomBarWhenPushed;
 @property (nonatomic) BOOL _statusBarHideWithNavBar;
 @property (nonatomic) BOOL _statusBarHidden;
@@ -794,6 +794,37 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   }
 }
 
+#pragma mark - Preview Actions
+
+- (void)onActionPress:(NSString *)id {
+  if ([self.view isKindOfClass:[RCTRootView class]]) {
+    RCTRootView *rootView = (RCTRootView *)self.view;
+    if (rootView.appProperties && rootView.appProperties[@"navigatorEventID"]) {
+      [[[RCCManager sharedInstance] getBridge].eventDispatcher
+       sendAppEventWithName:rootView.appProperties[@"navigatorEventID"]
+       body:@{
+              @"type": @"PreviewActionPress",
+              @"id": id
+              }];
+    }
+  }
+}
+
+- (UIPreviewAction *) convertAction:(NSDictionary *)action {
+  NSString *actionId = action[@"id"];
+  NSString *actionTitle = action[@"title"];
+  UIPreviewActionStyle actionStyle = UIPreviewActionStyleDefault;
+  if ([action[@"style"] isEqualToString:@"selected"]) {
+    actionStyle = UIPreviewActionStyleSelected;
+  }
+  if ([action[@"style"] isEqualToString:@"destructive"]) {
+    actionStyle = UIPreviewActionStyleDestructive;
+  }
+  return [UIPreviewAction actionWithTitle:actionTitle style:actionStyle handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+    [self onActionPress:actionId];
+  }];
+}
+
 #pragma mark - NewRelic
 
 - (NSString*) customNewRelicInteractionName
@@ -828,6 +859,38 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   NSNumber *disabledSimultaneousGesture = self.navigatorStyle[@"disabledSimultaneousGesture"];
   BOOL disabledSimultaneousGestureBool = disabledSimultaneousGesture ? [disabledSimultaneousGesture boolValue] : YES; // make default value of disabledSimultaneousGesture is true
   return !disabledSimultaneousGestureBool;
+}
+
+#pragma mark - UIViewControllerPreviewingDelegate
+- (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location {
+  return self.previewController;
+}
+
+- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
+  if (self.previewController.previewCommit == YES) {
+    [self.previewController sendGlobalScreenEvent:@"willCommitPreview" endTimestampString:[self.previewController getTimestampString] shouldReset:YES];
+    [self.previewController sendScreenChangedEvent:@"willCommitPreview"];
+    [self.navigationController pushViewController:self.previewController animated:false];
+  }
+}
+
+- (NSArray<id<UIPreviewActionItem>> *)previewActionItems {
+  NSMutableArray *actions = [[NSMutableArray alloc] init];
+  for (NSDictionary *previewAction in self.previewActions) {
+    UIPreviewAction *action = [self convertAction:previewAction];
+    NSDictionary *actionActions = previewAction[@"actions"];
+    if (actionActions.count > 0) {
+      NSMutableArray *group = [[NSMutableArray alloc] init];
+      for (NSDictionary *previewGroupAction in actionActions) {
+        [group addObject:[self convertAction:previewGroupAction]];
+      }
+      UIPreviewActionGroup *actionGroup = [UIPreviewActionGroup actionGroupWithTitle:action.title style:UIPreviewActionStyleDefault actions:group];
+      [actions addObject:actionGroup];
+    } else {
+      [actions addObject:action];
+    }
+  }
+  return actions;
 }
 
 @end
