@@ -2,6 +2,7 @@ package com.reactnativenavigation.views;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -10,6 +11,7 @@ import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
+import com.reactnativenavigation.params.parsers.StyleParamsParser;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.utils.Constants;
 
@@ -38,6 +40,11 @@ public class BottomTabs extends AHBottomNavigation {
         setTitlesDisplayState();
     }
 
+    public void updateScreenStyle(Bundle styleParams) {
+        StyleParams parsedStyleParams = new StyleParamsParser(styleParams).parse();
+        this.setStyleFromScreen(parsedStyleParams);
+    }
+
     public void setStyleFromScreen(StyleParams params) {
         if (params.bottomTabsColor.hasColor()) {
             setBackgroundColor(params.bottomTabsColor);
@@ -52,6 +59,7 @@ public class BottomTabs extends AHBottomNavigation {
                 setAccentColor(params.selectedBottomTabsButtonColor.getColor());
             }
         }
+        
 
         setVisibility(params.bottomTabsHidden, true);
     }

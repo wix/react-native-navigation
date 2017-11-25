@@ -351,6 +351,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       
       parent.navigatorStyle = navigatorStyle;
       
+      
       [parent setStyleOnInit];
       [parent updateStyle];
     }

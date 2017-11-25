@@ -484,11 +484,49 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     [viewController setNeedsStatusBarAppearanceUpdate];
   }
   
-  NSNumber *tabBarHidden = self.navigatorStyle[@"tabBarHidden"];
-  BOOL tabBarHiddenBool = tabBarHidden ? [tabBarHidden boolValue] : NO;
-  if (tabBarHiddenBool) {
+  if (viewController.tabBarController && viewController.tabBarController.tabBar != (id)[NSNull null]) {
     UITabBar *tabBar = viewController.tabBarController.tabBar;
-    tabBar.transform = CGAffineTransformMakeTranslation(0, tabBar.frame.size.height);
+    
+    if (tabBar && tabBar != (id)[NSNull null]) {
+      NSNumber *tabBarHidden = self.navigatorStyle[@"tabBarHidden"];
+      BOOL tabBarHiddenBool = tabBarHidden ? [tabBarHidden boolValue] : NO;
+      if (tabBarHiddenBool) {
+        tabBar.transform = CGAffineTransformMakeTranslation(0, tabBar.frame.size.height);
+      }
+      
+      NSString *tabBarButtonColor = self.navigatorStyle[@"tabBarButtonColor"];
+      if (tabBarButtonColor)
+      {
+        UIColor *color = tabBarButtonColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarButtonColor] : nil;
+        tabBar.tintColor = color;
+      }
+      NSString *tabBarSelectedButtonColor = self.navigatorStyle[@"tabBarSelectedButtonColor"];
+      if (tabBarSelectedButtonColor)
+      {
+        UIColor *color = tabBarSelectedButtonColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarSelectedButtonColor] : nil;
+        tabBar.tintColor = color;
+      }
+      NSString *tabBarBackgroundColor = self.navigatorStyle[@"tabBarBackgroundColor"];
+      if (tabBarBackgroundColor)
+      {
+        UIColor *color = tabBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarBackgroundColor] : nil;
+        tabBar.barTintColor = color;
+      }
+      
+      NSNumber *tabBarTranslucent = self.navigatorStyle[@"tabBarTranslucent"];
+      if (tabBarTranslucent)
+      {
+        BOOL tabBarTranslucentBool = tabBarTranslucent ? [tabBarTranslucent boolValue] : NO;
+        tabBar.translucent = tabBarTranslucentBool;
+      }
+      
+      NSNumber *tabBarHideShadow = self.navigatorStyle[@"tabBarHideShadow"];
+      if (tabBarHideShadow)
+      {
+        BOOL tabBarHideShadowBool = tabBarHideShadow ? [tabBarHideShadow boolValue] : NO;
+        tabBar.clipsToBounds = tabBarHideShadowBool ? YES : NO;
+      }
+    }
   }
 
   NSNumber *navBarHidden = self.navigatorStyle[@"navBarHidden"];
