@@ -26,7 +26,7 @@ public class BottomTabs extends AHBottomNavigation {
         setForceTint(true);
         setId(ViewUtils.generateViewId());
         createVisibilityAnimator();
-        setStyle();
+        setStyle(AppStyle.appStyle);
         setFontFamily();
     }
 
@@ -40,26 +40,13 @@ public class BottomTabs extends AHBottomNavigation {
         setTitlesDisplayState();
     }
 
-    public void updateScreenStyle(Bundle styleParams) {
+    public void updateTabStyle(Bundle styleParams) {
         StyleParams parsedStyleParams = new StyleParamsParser(styleParams).parse();
         this.setStyleFromScreen(parsedStyleParams);
     }
 
     public void setStyleFromScreen(StyleParams params) {
-        if (params.bottomTabsColor.hasColor()) {
-            setBackgroundColor(params.bottomTabsColor);
-        }
-        if (params.bottomTabsButtonColor.hasColor()) {
-            if (getInactiveColor() != params.bottomTabsButtonColor.getColor()) {
-                setInactiveColor(params.bottomTabsButtonColor.getColor());
-            }
-        }
-        if (params.selectedBottomTabsButtonColor.hasColor()) {
-            if (getAccentColor() != params.selectedBottomTabsButtonColor.getColor()) {
-                setAccentColor(params.selectedBottomTabsButtonColor.getColor());
-            }
-        }
-        
+        this.setStyle(params);
 
         setVisibility(params.bottomTabsHidden, true);
     }
@@ -140,23 +127,52 @@ public class BottomTabs extends AHBottomNavigation {
                 Constants.BOTTOM_TABS_HEIGHT);
     }
 
-    private void setStyle() {
-        if (hasBadgeBackgroundColor()) {
+    private void setStyle(StyleParams params) {
+        if (hasBadgeBackgroundColor(params)) {
             setNotificationBackgroundColor(AppStyle.appStyle.bottomTabBadgeBackgroundColor.getColor());
         }
-        if (hasBadgeTextColor()) {
+        if (hasBadgeTextColor(params)) {
             setNotificationTextColor(AppStyle.appStyle.bottomTabBadgeTextColor.getColor());
+        }
+
+        if (hasBottomTabsColor(params)) {
+            setBackgroundColor(params.bottomTabsColor);
+        }
+        if (hasBottomTabsButtonColor(params)) {
+            if (getInactiveColor() != params.bottomTabsButtonColor.getColor()) {
+                setInactiveColor(params.bottomTabsButtonColor.getColor());
+            }
+        }
+        if (hasSelectedBottomTabsButtonColor(params)) {
+            if (getAccentColor() != params.selectedBottomTabsButtonColor.getColor()) {
+                setAccentColor(params.selectedBottomTabsButtonColor.getColor());
+            }
         }
     }
 
-    private boolean hasBadgeTextColor() {
-        return AppStyle.appStyle.bottomTabBadgeTextColor != null &&
-               AppStyle.appStyle.bottomTabBadgeTextColor.hasColor();
+    private boolean hasBadgeTextColor(StyleParams params) {
+        return params.bottomTabBadgeTextColor != null &&
+                params.bottomTabBadgeTextColor.hasColor();
     }
 
-    private boolean hasBadgeBackgroundColor() {
-        return AppStyle.appStyle.bottomTabBadgeBackgroundColor != null &&
-               AppStyle.appStyle.bottomTabBadgeBackgroundColor.hasColor();
+    private boolean hasBadgeBackgroundColor(StyleParams params) {
+        return params.bottomTabBadgeBackgroundColor != null &&
+                params.bottomTabBadgeBackgroundColor.hasColor();
+    }
+
+    private boolean hasBottomTabsColor(StyleParams params) {
+        return params.bottomTabsColor != null &&
+                params.bottomTabsColor.hasColor();
+    }
+
+    private boolean hasBottomTabsButtonColor(StyleParams params) {
+        return params.bottomTabsButtonColor != null &&
+                params.bottomTabsButtonColor.hasColor();
+    }
+
+    private boolean hasSelectedBottomTabsButtonColor(StyleParams params) {
+        return params.selectedBottomTabsButtonColor != null &&
+                params.selectedBottomTabsButtonColor.hasColor();
     }
 
     private void setFontFamily() {
