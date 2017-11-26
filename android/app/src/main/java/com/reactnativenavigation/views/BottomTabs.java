@@ -128,51 +128,26 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     private void setStyle(StyleParams params) {
-        if (hasBadgeBackgroundColor(params)) {
+        if (params.bottomTabBadgeBackgroundColor.hasColor()) {
             setNotificationBackgroundColor(AppStyle.appStyle.bottomTabBadgeBackgroundColor.getColor());
         }
-        if (hasBadgeTextColor(params)) {
+        if (params.bottomTabBadgeTextColor.hasColor()) {
             setNotificationTextColor(AppStyle.appStyle.bottomTabBadgeTextColor.getColor());
         }
 
-        if (hasBottomTabsColor(params)) {
+        if (params.bottomTabsColor.hasColor()) {
             setBackgroundColor(params.bottomTabsColor);
         }
-        if (hasBottomTabsButtonColor(params)) {
+        if (params.bottomTabsButtonColor.hasColor()) {
             if (getInactiveColor() != params.bottomTabsButtonColor.getColor()) {
                 setInactiveColor(params.bottomTabsButtonColor.getColor());
             }
         }
-        if (hasSelectedBottomTabsButtonColor(params)) {
+        if (params.selectedBottomTabsButtonColor.hasColor()) {
             if (getAccentColor() != params.selectedBottomTabsButtonColor.getColor()) {
                 setAccentColor(params.selectedBottomTabsButtonColor.getColor());
             }
         }
-    }
-
-    private boolean hasBadgeTextColor(StyleParams params) {
-        return params.bottomTabBadgeTextColor != null &&
-                params.bottomTabBadgeTextColor.hasColor();
-    }
-
-    private boolean hasBadgeBackgroundColor(StyleParams params) {
-        return params.bottomTabBadgeBackgroundColor != null &&
-                params.bottomTabBadgeBackgroundColor.hasColor();
-    }
-
-    private boolean hasBottomTabsColor(StyleParams params) {
-        return params.bottomTabsColor != null &&
-                params.bottomTabsColor.hasColor();
-    }
-
-    private boolean hasBottomTabsButtonColor(StyleParams params) {
-        return params.bottomTabsButtonColor != null &&
-                params.bottomTabsButtonColor.hasColor();
-    }
-
-    private boolean hasSelectedBottomTabsButtonColor(StyleParams params) {
-        return params.selectedBottomTabsButtonColor != null &&
-                params.selectedBottomTabsButtonColor.hasColor();
     }
 
     private void setFontFamily() {
