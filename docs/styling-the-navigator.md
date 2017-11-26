@@ -107,7 +107,7 @@ this.props.navigator.setStyle({
   navBarTextFontBold: false, // Optional. Set the title to bold.
   navBarHeight: 70, // Optional, set the navBar height in pixels.
   topTabsHeight: 70, // Optional, set topTabs height in pixels.
-  topBarBorderColor: 'red', Optional, set a flat border under the TopBar.
+  topBarBorderColor: 'red', // Optional, set a flat border under the TopBar.
   topBarBorderWidth: 5.5, // Optional, set the width of the border.
 }
 ```
