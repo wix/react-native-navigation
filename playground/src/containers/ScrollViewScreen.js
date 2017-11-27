@@ -17,9 +17,7 @@ class ScrollViewScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      topBar: {
-        hideOnScroll: false
-      }
+      topBarHideOnScroll: false
     };
     this.onClickToggleTopBarHideOnScroll = this.onClickToggleTopBarHideOnScroll.bind(this);
   }
