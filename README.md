@@ -71,6 +71,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | Screen Visibility        | ✅     |✅|
 | async commands (await push)     |  [Contribute](/docs/docs/CONTRIBUTING.md)        | ✅   |
 
+
 ### Navigation Options
 
 |       topBar         | iOS  | Android | contributors|

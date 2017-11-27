@@ -13,10 +13,12 @@ class OptionsScreen extends Component {
 
   static get navigationOptions() {
     return {
-      title: 'Static Title',
-      topBarTextColor: 'black',
-      topBarTextFontSize: 16,
-      topBarTextFontFamily: 'HelveticaNeue-Italic',
+      topBar: {
+        title: 'Static Title',
+        textColor: 'black',
+        textFontSize: 16,
+        textFontFamily: 'HelveticaNeue-Italic'
+      },
       rightButtons: [{
         id: BUTTON_ONE,
         testID: BUTTON_ONE,
@@ -85,11 +87,13 @@ class OptionsScreen extends Component {
 
   onClickDynamicOptions() {
     Navigation.setOptions(this.props.containerId, {
-      title: 'Dynamic Title',
-      topBarTextColor: '#00FFFF',
-      topBarButtonColor: 'red',
-      topBarTextFontSize: 20,
-      topBarTextFontFamily: 'HelveticaNeue-CondensedBold'
+      topBar: {
+        title: 'Dynamic Title',
+        textColor: '#00FFFF',
+        buttonColor: 'red',
+        textFontSize: 20,
+        textFontFamily: 'HelveticaNeue-CondensedBold'
+      }
     });
   }
 
@@ -101,15 +105,19 @@ class OptionsScreen extends Component {
 
   onClickShowTopBar() {
     Navigation.setOptions(this.props.containerId, {
-      topBarHidden: false,
-      animateTopBarHide: true
+      topBar: {
+        hidden: false,
+        animateHide: true
+      }
     });
   }
 
   onClickHideTopBar() {
     Navigation.setOptions(this.props.containerId, {
-      topBarHidden: true,
-      animateTopBarHide: true
+      topBar: {
+        hidden: true,
+        animateHide: true
+      }
     });
   }
 

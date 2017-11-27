@@ -1,6 +1,5 @@
 package com.reactnativenavigation.presentation;
 
-import android.util.Log;
 import android.view.View;
 
 import com.reactnativenavigation.anim.StackAnimator;
@@ -21,22 +20,22 @@ public class OptionsPresenter {
 
 	public void applyOptions(NavigationOptions options) {
 		if (controller != null && controller.getTopBar() != null) {
-			controller.getTopBar().setTitle(options.title);
-			controller.getTopBar().setBackgroundColor(options.topBarBackgroundColor);
-			controller.getTopBar().setTitleTextColor(options.topBarTextColor);
-			controller.getTopBar().setTitleFontSize(options.topBarTextFontSize);
+			controller.getTopBar().setTitle(options.topBarOptions.title);
+			controller.getTopBar().setBackgroundColor(options.topBarOptions.backgroundColor);
+			controller.getTopBar().setTitleTextColor(options.topBarOptions.textColor);
+			controller.getTopBar().setTitleFontSize(options.topBarOptions.textFontSize);
 			TypefaceLoader typefaceLoader = new TypefaceLoader();
-			controller.getTopBar().setTitleTypeface(typefaceLoader.getTypeFace(controller.getActivity(), options.topBarTextFontFamily));
+			controller.getTopBar().setTitleTypeface(typefaceLoader.getTypeFace(controller.getActivity(), options.topBarOptions.textFontFamily));
 			applyTopbarHiddenOptions(options);
 		}
 	}
 
 	private void applyTopbarHiddenOptions(NavigationOptions options) {
-		if (options.topBarHidden == NavigationOptions.BooleanOptions.True) {
-			hideTopbar(options.animateTopBarHide);
+		if (options.topBarOptions.hidden == NavigationOptions.BooleanOptions.True) {
+			hideTopbar(options.topBarOptions.animateHide);
 		}
-		if (options.topBarHidden == NavigationOptions.BooleanOptions.False) {
-			showTopbar(options.animateTopBarHide);
+		if (options.topBarOptions.hidden == NavigationOptions.BooleanOptions.False) {
+			showTopbar(options.topBarOptions.animateHide);
 		}
 	}
 
