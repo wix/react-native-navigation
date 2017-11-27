@@ -35,9 +35,9 @@ describe('top level api', () => {
     await elementByLabel('Push Lifecycle Screen').tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
     await Utils.tapBackIos();
-    await expect(elementByLabel('didDisappear')).toBeVisible();
-    await element(by.traits(['button']).and(by.label('OK'))).atIndex(0).tap();
     await expect(elementByLabel('componentWillUnmount')).toBeVisible();
+    await element(by.traits(['button']).and(by.label('OK'))).atIndex(0).tap();
+    await expect(elementByLabel('didDisappear')).toBeVisible();
   });
 });
 
