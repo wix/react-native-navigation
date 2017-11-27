@@ -2,9 +2,13 @@
 #import <React/RCTConvert.h>
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
+#import "RCTHelpers.h"
 
 const NSInteger BLUR_STATUS_TAG = 78264801;
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
+
+const NSInteger TOPBAR_TITLE_VIEW_TITLE_TAG = 88264801;
+const NSInteger TOPBAR_TITLE_VIEW_SUBTITLE_TAG = 88264802;
 
 @implementation RNNNavigationOptions
 
@@ -17,15 +21,19 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	self.topBarBackgroundColor = [navigationOptions objectForKey:@"topBarBackgroundColor"];
 	self.statusBarHidden = [navigationOptions objectForKey:@"statusBarHidden"];
 	self.title = [navigationOptions objectForKey:@"title"];
+	self.subtitle = [navigationOptions objectForKey:@"subtitle"];
 	self.topBarTextColor = [navigationOptions objectForKey:@"topBarTextColor"];
+	self.topBarSubtitleColor = [navigationOptions objectForKey:@"topBarSubtitleColor"];
 	self.screenBackgroundColor = [navigationOptions objectForKey:@"screenBackgroundColor"];
 	self.topBarTextFontFamily = [navigationOptions objectForKey:@"topBarTextFontFamily"];
+	self.topBarSubtitleFontFamily = [navigationOptions objectForKey:@"topBarSubtitleFontFamily"];
 	self.topBarHidden = [navigationOptions objectForKey:@"topBarHidden"];
 	self.topBarHideOnScroll = [navigationOptions objectForKey:@"topBarHideOnScroll"];
 	self.topBarButtonColor = [navigationOptions objectForKey:@"topBarButtonColor"];
 	self.topBarTranslucent = [navigationOptions objectForKey:@"topBarTranslucent"];
 	self.tabBadge = [navigationOptions objectForKey:@"tabBadge"];
 	self.topBarTextFontSize = [navigationOptions objectForKey:@"topBarTextFontSize"];
+	self.topBarSubtitleFontSize = [navigationOptions objectForKey:@"topBarSubtitleFontSize"];
 	self.orientation = [navigationOptions objectForKey:@"orientation"];
 	self.leftButtons = [navigationOptions objectForKey:@"leftButtons"];
 	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
@@ -56,20 +64,57 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	}
 
 	if (self.topBarTextFontFamily || self.topBarTextColor || self.topBarTextFontSize){
-		NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
-		if (self.topBarTextColor) {
-			navigationBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:self.topBarTextColor];
+		NSMutableDictionary *attributesDict = [NSMutableDictionary dictionary];
+		attributesDict[@"textColor"] = self.topBarTextColor;
+		attributesDict[@"textFontFamily"] = self.topBarTextFontFamily;
+		attributesDict[@"textFontSize"] = self.topBarTextFontSize;
+
+		viewController.navigationController.navigationBar.titleTextAttributes = [RCTHelpers textAttributesFromDictionary:attributesDict withPrefix:@"text" baseFont:[UIFont systemFontOfSize:(self.topBarTextFontSize ? self.topBarTextFontSize.floatValue : 20)]];
+	}
+	
+	if (self.subtitle && [self.subtitle length]) {
+		CGRect navigationBarBounds = viewController.navigationController.navigationBar.bounds;
+		
+		UIView *titleView = [[UIView alloc] initWithFrame:navigationBarBounds];
+		titleView.backgroundColor = [UIColor clearColor];
+		titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+		titleView.clipsToBounds = YES;
+		
+		CGRect titleLabelFrame = titleView.frame;
+		titleLabelFrame.size.height /= 2;
+		
+		UILabel *titleLabel = [RCTHelpers labelWithFrame:titleLabelFrame textAttributes:viewController.navigationController.navigationBar.titleTextAttributes andText:self.title];
+		titleLabel.autoresizingMask = titleView.autoresizingMask;
+		titleLabel.tag = TOPBAR_TITLE_VIEW_TITLE_TAG;
+		
+		[titleView addSubview:titleLabel];
+		
+		CGRect subtitleFrame = titleLabelFrame;
+		subtitleFrame.origin.y = subtitleFrame.size.height;
+		
+		NSMutableDictionary *attributesDict = [NSMutableDictionary dictionary];
+		attributesDict[@"textColor"] = self.topBarSubtitleColor;
+		attributesDict[@"textFontFamily"] = self.topBarSubtitleFontFamily;
+		attributesDict[@"textFontSize"] = self.topBarSubtitleFontSize;
+		
+		UILabel *subtitleLabel = [RCTHelpers labelWithFrame:subtitleFrame textAttributesFromDictionary:attributesDict baseFont:[UIFont systemFontOfSize:self.topBarSubtitleFontSize ? self.topBarSubtitleFontSize.floatValue : 17] andText:self.subtitle];
+		subtitleLabel.autoresizingMask = titleView.autoresizingMask;
+		subtitleLabel.tag = TOPBAR_TITLE_VIEW_SUBTITLE_TAG;
+		
+		[titleView addSubview:subtitleLabel];
+		
+		viewController.navigationItem.titleView = titleView;
+		
+		CGRect titleViewFrame = titleView.frame;
+		titleViewFrame.size.width = MAX(titleLabel.frame.size.width, subtitleLabel.frame.size.width);;
+		titleView.frame = titleViewFrame;
+		
+		for (UIView *view in titleView.subviews) {
+			CGRect viewFrame = view.frame;
+			viewFrame.size.width = titleView.frame.size.width;
+			viewFrame.origin.x = (titleView.frame.size.width - viewFrame.size.width)/2;
+			view.frame = viewFrame;
 		}
-		if (self.topBarTextFontFamily){
-			if(self.topBarTextFontSize) {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.topBarTextFontFamily size:[self.topBarTextFontSize floatValue]];
-			} else {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.topBarTextFontFamily size:20];
-			}
-		} else if (self.topBarTextFontSize) {
-			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.topBarTextFontSize floatValue]];
-		}
-		viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
 	}
 
 	if (self.screenBackgroundColor) {

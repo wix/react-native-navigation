@@ -19,6 +19,12 @@ describe('screen style', () => {
     await expect(element(by.label('Dynamic Title').and(by.type('UILabel')))).toBeVisible();
   });
 
+  it('change subtitle on container component', async () => {
+    await elementByLabel('Push Options Screen').tap();
+    await elementByLabel('Subtitle Options').tap();
+    await expect(elementByLabel('Styled Subtitle')).toBeVisible();
+  });
+
   it('set dynamic options with valid options will do something and not crash', async () => {
     // we have no way of testing individual styles for the screen
     await elementByLabel('Push Options Screen').tap();

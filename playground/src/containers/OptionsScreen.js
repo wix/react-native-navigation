@@ -35,6 +35,7 @@ class OptionsScreen extends Component {
   constructor(props) {
     super(props);
     this.onClickDynamicOptions = this.onClickDynamicOptions.bind(this);
+    this.onClickSubtitleOptions = this.onClickSubtitleOptions.bind(this);
     this.onClickShowTopBar = this.onClickShowTopBar.bind(this);
     this.onClickHideTopBar = this.onClickHideTopBar.bind(this);
     this.onClickScrollViewScreen = this.onClickScrollViewScreen.bind(this);
@@ -45,6 +46,7 @@ class OptionsScreen extends Component {
       <View style={styles.root}>
         <Text style={styles.h1}>{`Options Screen`}</Text>
         <Button title="Dynamic Options" onPress={this.onClickDynamicOptions} />
+        <Button title="Subtitle Options" onPress={this.onClickSubtitleOptions} />
         <Button title="Show Top Bar" onPress={this.onClickShowTopBar} />
         <Button title="Hide Top Bar" onPress={this.onClickHideTopBar} />
         <Button title="scrollView Screen" onPress={this.onClickScrollViewScreen} />
@@ -90,6 +92,15 @@ class OptionsScreen extends Component {
       topBarButtonColor: 'red',
       topBarTextFontSize: 20,
       topBarTextFontFamily: 'HelveticaNeue-CondensedBold'
+    });
+  }
+
+  onClickSubtitleOptions() {
+    Navigation.setOptions(this.props.containerId, {
+      subtitle: 'Styled Subtitle',
+      topBarSubtitleColor: 'red',
+      topBarSubtitleFontSize: 15,
+      topBarSubtitleFontFamily: 'HelveticaNeue-MediumItalic'
     });
   }
 
