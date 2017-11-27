@@ -48,7 +48,7 @@ describe('screen style', () => {
   it('set Tab Bar badge on a current Tab', async () => {
     await elementByLabel('Switch to tab based app').tap();
     await elementByLabel('Set Tab Badge').tap();
-    await expect(element(by.text('EnCyClOpEdIa'))).toBeVisible();
+    await expect(element(by.text('TeSt'))).toBeVisible();
   });
 
   it('set right buttons', async () => {

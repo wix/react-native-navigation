@@ -31,7 +31,7 @@ class TextScreen extends Component {
   onButtonPress() {
     Navigation.setOptions(this.props.containerId, {
       tabBar: {
-        tabBadge: `EnCyClOpEdIa`
+        tabBadge: `TeSt`
       }
     });
   }
