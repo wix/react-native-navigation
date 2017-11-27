@@ -10,6 +10,7 @@ import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.view.Gravity;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Callback;
@@ -36,12 +37,16 @@ public class TopBar extends AppBarLayout {
     private VisibilityAnimator visibilityAnimator;
     @Nullable
     private Pair<String, ContentView> reactView;
+    private ViewOutlineProvider outlineProvider;
 
     public TopBar(Context context) {
         super(context);
         setId(ViewUtils.generateViewId());
         createTopBarVisibilityAnimator();
         createLayout();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            outlineProvider = getOutlineProvider();
+        }
     }
 
     private void createTopBarVisibilityAnimator() {
@@ -167,19 +172,17 @@ public class TopBar extends AppBarLayout {
         titleBar.setStyle(styleParams);
         setReactView(styleParams);
         setTopTabsStyle(styleParams);
-        if (!styleParams.topBarElevationShadowEnabled) {
-            disableElevationShadow();
-        }
+        setElevationEnabled(styleParams.topBarElevationShadowEnabled);
     }
 
     private void setTransparent() {
         setBackgroundColor(Color.TRANSPARENT);
-        disableElevationShadow();
+        setElevationEnabled(false);
     }
 
-    private void disableElevationShadow() {
+    private void setElevationEnabled (boolean enabled) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setOutlineProvider(null);
+            setOutlineProvider(enabled ? outlineProvider : null);
         }
     }
 
