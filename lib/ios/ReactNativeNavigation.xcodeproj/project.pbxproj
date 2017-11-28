@@ -99,6 +99,7 @@
 		7BEF0D1D1E43771B003E96B0 /* RNNLayoutNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEF0D1B1E43771B003E96B0 /* RNNLayoutNode.m */; };
 		A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */; };
 		A7626C011FC5796200492FB8 /* RNNTabBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626C001FC5796200492FB8 /* RNNTabBarOptions.m */; };
+		A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */; };
 		E83BAD681F2734B500A9F3DD /* RNNNavigationOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E83BAD671F2734B500A9F3DD /* RNNNavigationOptionsTest.m */; };
 		E83BAD6B1F27363A00A9F3DD /* RNNNavigationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E83BAD6A1F27363A00A9F3DD /* RNNNavigationOptions.m */; };
 		E83BAD791F27416B00A9F3DD /* RNNRootViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E83BAD781F27416B00A9F3DD /* RNNRootViewControllerTest.m */; };

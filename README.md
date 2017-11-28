@@ -69,7 +69,8 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | dismissOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	WIP @cool04ek |
 | customTransition            |   ✅        |	[Contribute](/docs/docs/CONTRIBUTING.md) |
 | Screen Visibility        | ✅     |✅|
-| async commands (await push)     |  [Contribute](/docs/docs/CONTRIBUTING.md)        | WIP @cool04ek   |
+| async commands (await push)     |  [Contribute](/docs/docs/CONTRIBUTING.md)        | ✅   |
+
 
 ### Navigation Options
 

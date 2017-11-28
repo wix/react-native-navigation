@@ -26,13 +26,11 @@
 	NSArray* methods = [self getPublicMethodNamesForObject:self.uut];
 	
 	for (NSString* methodName in methods) {
-		
-		__strong id uut = self.uut;
 		SEL s = NSSelectorFromString(methodName);
-		IMP imp = [uut methodForSelector:s];
-		void (*func)(id, SEL) = (void *)imp;
-		
-		XCTAssertThrowsSpecificNamed(func(uut,s), NSException, @"BridgeNotLoadedError");
+		NSMethodSignature* signature = [self.uut methodSignatureForSelector:s];
+		NSInvocation* invocation = [NSInvocation invocationWithMethodSignature:signature];
+		invocation.selector = s;
+		XCTAssertThrowsSpecificNamed([invocation invokeWithTarget:self.uut], NSException, @"BridgeNotLoadedError");
 	}
 }
 

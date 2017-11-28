@@ -3,6 +3,7 @@ package com.reactnativenavigation.react;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -35,13 +36,13 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void setRoot(final ReadableMap rawLayoutTree) {
+	public void setRoot(final ReadableMap rawLayoutTree, final Promise promise) {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
 		handle(new Runnable() {
 			@Override
 			public void run() {
 				final ViewController viewController = newLayoutFactory().create(layoutTree);
-				navigator().setRoot(viewController);
+				navigator().setRoot(viewController, promise);
 			}
 		});
 	}
@@ -58,86 +59,86 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void push(final String onContainerId, final ReadableMap rawLayoutTree) {
+	public void push(final String onContainerId, final ReadableMap rawLayoutTree, final Promise promise) {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
 		handle(new Runnable() {
 			@Override
 			public void run() {
 				final ViewController viewController = newLayoutFactory().create(layoutTree);
-				navigator().push(onContainerId, viewController);
+				navigator().push(onContainerId, viewController, promise);
 			}
 		});
 	}
 
 	@ReactMethod
-	public void pop(final String onContainerId) {
+	public void pop(final String onContainerId, final Promise promise) {
 		handle(new Runnable() {
 			@Override
 			public void run() {
-				navigator().popSpecific(onContainerId);
+				navigator().popSpecific(onContainerId, promise);
 			}
 		});
 	}
 
 	@ReactMethod
-	public void popTo(final String containerId) {
+	public void popTo(final String containerId, final Promise promise) {
 		handle(new Runnable() {
 			@Override
 			public void run() {
-				navigator().popTo(containerId);
+				navigator().popTo(containerId, promise);
 			}
 		});
 	}
 
 	@ReactMethod
-	public void popToRoot(final String containerId) {
+	public void popToRoot(final String containerId, final Promise promise) {
 		handle(new Runnable() {
 			@Override
 			public void run() {
-				navigator().popToRoot(containerId);
+				navigator().popToRoot(containerId, promise);
 			}
 		});
 	}
 
 	@ReactMethod
-	public void showModal(final ReadableMap rawLayoutTree) {
+	public void showModal(final ReadableMap rawLayoutTree, final Promise promise) {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
 		handle(new Runnable() {
 			@Override
 			public void run() {
 				final ViewController viewController = newLayoutFactory().create(layoutTree);
-				navigator().showModal(viewController);
+				navigator().showModal(viewController, promise);
 			}
 		});
 	}
 
 	@ReactMethod
-	public void dismissModal(final String containerId) {
+	public void dismissModal(final String containerId, final Promise promise) {
 		handle(new Runnable() {
 			@Override
 			public void run() {
-				navigator().dismissModal(containerId);
+				navigator().dismissModal(containerId, promise);
 			}
 		});
 	}
 
 	@ReactMethod
-	public void dismissAllModals() {
+	public void dismissAllModals(final Promise promise) {
 		handle(new Runnable() {
 			@Override
 			public void run() {
-				navigator().dismissAllModals();
+				navigator().dismissAllModals(promise);
 			}
 		});
 	}
 
 	@ReactMethod
-	public void showOverlay(final String type, final ReadableMap options) {
+	public void showOverlay(final String type, final ReadableMap options, final Promise promise) {
 		final OverlayOptions overlayOptions = OverlayOptions.parse(JSONParser.parse(options));
 		handle(new Runnable() {
 			@Override
 			public void run() {
-				navigator().showOverlay(type, overlayOptions);
+				navigator().showOverlay(type, overlayOptions, promise);
 			}
 		});
 	}
