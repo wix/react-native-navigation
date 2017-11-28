@@ -50,7 +50,7 @@ public class OptionsApplyingTest extends BaseTest {
 	@Test
 	public void initialOptionsAppliedOnAppear() throws Exception {
 		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
-		initialNavigationOptions.title = "the title";
+		initialNavigationOptions.topBarOptions.title = "the title";
 		StackController stackController = new StackController(activity, "stackId");
 		stackController.push(uut);
 		assertThat(uut.getTopBar().getTitle()).isEmpty();
@@ -61,11 +61,11 @@ public class OptionsApplyingTest extends BaseTest {
 
 	@Test
 	public void mergeNavigationOptionsUpdatesCurrentOptions() throws Exception {
-		assertThat(uut.getNavigationOptions().title).isEmpty();
+		assertThat(uut.getNavigationOptions().topBarOptions.title).isEmpty();
 		NavigationOptions options = new NavigationOptions();
-		options.title = "new title";
+		options.topBarOptions.title = "new title";
 		uut.mergeNavigationOptions(options);
-		assertThat(uut.getNavigationOptions().title).isEqualTo("new title");
+		assertThat(uut.getNavigationOptions().topBarOptions.title).isEqualTo("new title");
 		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
 	}
 
@@ -75,7 +75,7 @@ public class OptionsApplyingTest extends BaseTest {
 		assertThat(uut.getTopBar().getTitle()).isEmpty();
 
 		NavigationOptions opts = new NavigationOptions();
-		opts.title = "the new title";
+		opts.topBarOptions.title = "the new title";
 		uut.mergeNavigationOptions(opts);
 
 		assertThat(uut.getTopBar().getTitle()).isEqualTo("the new title");
@@ -88,7 +88,7 @@ public class OptionsApplyingTest extends BaseTest {
 		assertThat(((ColorDrawable) uut.getTopBar().getTitleBar().getBackground()).getColor()).isNotEqualTo(Color.RED);
 
 		NavigationOptions opts = new NavigationOptions();
-		opts.topBarBackgroundColor = Color.RED;
+		opts.topBarOptions.backgroundColor = Color.RED;
 		uut.mergeNavigationOptions(opts);
 
 		assertThat(((ColorDrawable) uut.getTopBar().getTitleBar().getBackground()).getColor()).isEqualTo(Color.RED);
@@ -97,13 +97,13 @@ public class OptionsApplyingTest extends BaseTest {
 	@Test
 	public void appliesTopBarTextColor() throws Exception {
 		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
-		initialNavigationOptions.title = "the title";
+		initialNavigationOptions.topBarOptions.title = "the title";
 		uut.onViewAppeared();
 		assertThat(uut.getTopBar().getTitleTextView().getCurrentTextColor()).isNotEqualTo(Color.RED);
 
 		NavigationOptions opts = new NavigationOptions();
-		opts.title = "the title";
-		opts.topBarTextColor = Color.RED;
+		opts.topBarOptions.title = "the title";
+		opts.topBarOptions.textColor = Color.RED;
 		uut.mergeNavigationOptions(opts);
 
 		assertThat(uut.getTopBar().getTitleTextView()).isNotEqualTo(null);
@@ -113,13 +113,13 @@ public class OptionsApplyingTest extends BaseTest {
 	@Test
 	public void appliesTopBarTextSize() throws Exception {
 		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
-		initialNavigationOptions.title = "the title";
+		initialNavigationOptions.topBarOptions.title = "the title";
 		uut.onViewAppeared();
 		assertThat(uut.getTopBar().getTitleTextView().getTextSize()).isNotEqualTo(18);
 
 		NavigationOptions opts = new NavigationOptions();
-		opts.title = "the title";
-		opts.topBarTextFontSize = 18;
+		opts.topBarOptions.title = "the title";
+		opts.topBarOptions.textFontSize = 18;
 		uut.mergeNavigationOptions(opts);
 
 		assertThat(uut.getTopBar().getTitleTextView()).isNotEqualTo(null);
@@ -129,12 +129,12 @@ public class OptionsApplyingTest extends BaseTest {
 	@Test
 	public void appliesTopBarHidden() throws Exception {
 		assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
-		initialNavigationOptions.title = "the title";
+		initialNavigationOptions.topBarOptions.title = "the title";
 		uut.onViewAppeared();
 		assertThat(uut.getTopBar().getVisibility()).isNotEqualTo(View.GONE);
 
 		NavigationOptions opts = new NavigationOptions();
-		opts.topBarHidden = NavigationOptions.BooleanOptions.True;
+		opts.topBarOptions.hidden = NavigationOptions.BooleanOptions.True;
 		uut.mergeNavigationOptions(opts);
 
 		assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
