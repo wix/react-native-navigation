@@ -57,10 +57,22 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     public void setTabButton(ScreenParams params, Integer index) {
-        if (params.tabIcon != null) {
+        if (params.tabIcon != null || params.tabLabel != null) {
             AHBottomNavigationItem item = this.getItem(index);
-            item.setDrawable(params.tabIcon);
-            refresh();
+            boolean tabNeedsRefresh = false;
+
+            if (params.tabIcon != null) {
+                item.setDrawable(params.tabIcon);
+                tabNeedsRefresh = true;
+            }
+            if (params.tabLabel != null) {
+                item.setTitle(params.tabLabel);
+                tabNeedsRefresh = true;
+            }
+
+            if (tabNeedsRefresh) {
+                this.refresh();
+            }
         }
     }
 
@@ -76,7 +88,7 @@ public class BottomTabs extends AHBottomNavigation {
 
     private boolean hasTabsWithLabels() {
         for (int i = 0; i < getItemsCount(); i++) {
-            String title = getItem(0).getTitle(getContext());
+            String title = getItem(i).getTitle(getContext());
             if (!TextUtils.isEmpty(title)) {
                 return true;
             }

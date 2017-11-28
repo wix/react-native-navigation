@@ -441,14 +441,16 @@ function navigatorSetTabButton(navigator, params) {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
       tabIndex: params.tabIndex,
       icon: params.icon,
-      selectedIcon: params.selectedIcon
+      selectedIcon: params.selectedIcon,
+      label: params.label,
     });
   } else {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
       contentId: navigator.navigatorID,
       contentType: 'NavigationControllerIOS',
       icon: params.icon,
-      selectedIcon: params.selectedIcon
+      selectedIcon: params.selectedIcon,
+      label: params.label,
     });
   }
 }
