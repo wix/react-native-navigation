@@ -158,7 +158,7 @@
 
 -(void)testTabBadge {
 	NSString* tabBadgeInput = @"5";
-	self.options.tabBadge = tabBadgeInput;
+	self.options.tabBar.tabBadge = tabBadgeInput;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
 	UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"A Tab" image:nil tag:1];
@@ -417,7 +417,7 @@
 
 
 - (void)testTabBarHidden_true {
-	self.options.tabBarHidden = @(1);
+	self.options.tabBar.hidden = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
@@ -425,7 +425,7 @@
 }
 
 - (void)testTabBarHidden_false {
-	self.options.tabBarHidden = @(0);
+	self.options.tabBar.hidden = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 

@@ -17,12 +17,11 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	self = [super init];
 	self.statusBarHidden = [navigationOptions objectForKey:@"statusBarHidden"];
 	self.screenBackgroundColor = [navigationOptions objectForKey:@"screenBackgroundColor"];
-	self.tabBadge = [navigationOptions objectForKey:@"tabBadge"];
 	self.orientation = [navigationOptions objectForKey:@"orientation"];
 	self.leftButtons = [navigationOptions objectForKey:@"leftButtons"];
 	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
-	self.tabBarHidden = [navigationOptions objectForKey:@"tabBarHidden"];
 	self.topBar = [[RNNTopBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"topBar"]];
+	self.tabBar = [[RNNTabBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"tabBar"]];
 	
 	return self;
 }
@@ -30,7 +29,9 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 -(void)mergeWith:(NSDictionary *)otherOptions {
 	for (id key in otherOptions) {
 		if ([key isEqualToString:@"topBar"]) {
-			[self.topBar mergeWith:[otherOptions objectForKey:@"topBar"]];
+			[self.topBar mergeWith:[otherOptions objectForKey:key]];
+		} else if ([key isEqualToString:@"tabBar"]) {
+			[self.tabBar mergeWith:[otherOptions objectForKey:key]];
 		} else {
 			[self setValue:[otherOptions objectForKey:key] forKey:key];
 		}
@@ -66,16 +67,16 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			}
 			viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
 		}
-
-
+		
+		
 		if (self.topBar.hidden){
 			[viewController.navigationController setNavigationBarHidden:[self.topBar.hidden boolValue] animated:[self.topBar.animateHide boolValue]];
 		}
-
+		
 		if (self.topBar.hideOnScroll) {
 			viewController.navigationController.hidesBarsOnSwipe = [self.topBar.hideOnScroll boolValue];
 		}
-
+		
 		if (self.topBar.buttonColor) {
 			UIColor* buttonColor = [RCTConvert UIColor:self.topBar.buttonColor];
 			viewController.navigationController.navigationBar.tintColor = buttonColor;
@@ -125,12 +126,17 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 		viewController.view.backgroundColor = screenColor;
 	}
 	
-	if (self.tabBadge) {
-		NSString *badge = [RCTConvert NSString:self.tabBadge];
-		if (viewController.navigationController) {
-			viewController.navigationController.tabBarItem.badgeValue = badge;
-		} else {
-			viewController.tabBarItem.badgeValue = badge;
+	if (self.tabBar) {
+		if (self.tabBar.tabBadge) {
+			NSString *badge = [RCTConvert NSString:self.tabBar.tabBadge];
+			if (viewController.navigationController) {
+				viewController.navigationController.tabBarItem.badgeValue = badge;
+			} else {
+				viewController.tabBarItem.badgeValue = badge;
+			}
+		}
+		if (self.tabBar.currentTabIndex) {
+			[viewController.tabBarController setSelectedIndex:[self.tabBar.currentTabIndex unsignedIntegerValue]];
 		}
 	}
 	
