@@ -13,6 +13,7 @@
 #import "RCCCustomBarButtonItem.h"
 #import "UIViewController+Rotation.h"
 #import "RCTHelpers.h"
+#import "RCTConvert+UIBarButtonSystemItem.h"
 
 @implementation RCCNavigationController
 {
@@ -379,6 +380,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     id icon = button[@"icon"];
     if (icon) iconImage = [RCTConvert UIImage:icon];
     NSString *__nullable component = button[@"component"];
+    NSString *__nullable systemItemName = button[@"systemItem"];
+    UIBarButtonSystemItem systemItem = [RCTConvert UIBarButtonSystemItem:systemItemName];
 
     UIBarButtonItem *barButtonItem;
     if (iconImage)
@@ -397,6 +400,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     else if (component) {
       RCTBridge *bridge = [[RCCManager sharedInstance] getBridge];
       barButtonItem = [[RCCCustomBarButtonItem alloc] initWithComponentName:component passProps:button[@"passProps"] bridge:bridge];
+    }
+    else if (systemItemName) {
+      barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:self action:@selector(onButtonPress:)];
     }
     else continue;
     objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
