@@ -178,7 +178,7 @@ public class ScreenStack {
     }
 
     private void addScreenBeforeSnackbarAndFabLayout(Screen screen, LayoutParams layoutParams) {
-        parent.addView(screen, parent.getChildCount() - 1, layoutParams);
+        parent.addView(screen, parent.getChildCount(), layoutParams);
     }
 
     public void pop(boolean animated, double jsPopTimestamp) {
