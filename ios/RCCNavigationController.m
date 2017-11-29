@@ -384,7 +384,11 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
                                      rightButtons:(NSArray<NSDictionary *> *)rightButtons
                                            bridge:(RCTBridge *)bridge
 {
-  RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component passProps:props navigatorStyle:style globalProps:nil bridge:bridge];
+  RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component
+                                                                         passProps:props
+                                                                    navigatorStyle:style
+                                                                       globalProps:nil
+                                                                            bridge:bridge];
   viewController.controllerId = props[@"screenInstanceID"];
 
   viewController.navigationItem.hidesBackButton = YES;
