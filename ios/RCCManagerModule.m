@@ -151,7 +151,10 @@ RCT_EXPORT_MODULE(RCCManager);
                            {
                                counter++;
                                
-                               [[RCCManager sharedIntance] unregisterController:viewController];
+                               if ([self viewControllerIsModal:viewController]) {
+                                   [[RCCManager sharedIntance] unregisterController:viewController];
+                               }
+                               
                                if (viewController.presentedViewController != nil)
                                {
                                    dispatch_semaphore_t dismiss_sema = dispatch_semaphore_create(0);
