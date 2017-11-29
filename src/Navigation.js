@@ -67,13 +67,13 @@ function _registerComponentRedux(screenID, generator, store, Provider, options) 
       constructor(props) {
         super(props);
         this.state = {
-          internalProps: {...props, ...PropRegistry.load(props.screenInstanceID)}
+          internalProps: {...props, ...PropRegistry.load(props.screenInstanceID || props.passPropsKey)}
         }
       }
 
       componentWillReceiveProps(nextProps) {
         this.setState({
-          internalProps: {...PropRegistry.load(this.props.screenInstanceID), ...nextProps}
+          internalProps: {...PropRegistry.load(this.props.screenInstanceID || this.props.passPropsKey), ...nextProps}
         })
       }
 
