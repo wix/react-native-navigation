@@ -255,21 +255,49 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   // resetTo
   if ([performAction isEqualToString:@"resetTo"])
   {
+    NSArray<UIViewController *> *viewControllers;
+
     NSString *component = actionParams[@"component"];
-    if (!component) return;
+    NSArray<NSDictionary *> *componentConfigs = actionParams[@"components"];
+    if (component) {
+      NSMutableDictionary *passProps = [actionParams[@"passProps"] mutableCopy];
+      passProps[@"commandType"] = @"resetTo";
+      NSDictionary *style = actionParams[@"style"];
+      NSArray *leftButtons = actionParams[@"leftButtons"];
+      NSArray *rightButtons = actionParams[@"rightButtons"];
 
-    NSMutableDictionary *passProps = [actionParams[@"passProps"] mutableCopy];
-    passProps[@"commandType"] = @"resetTo";
-    NSDictionary *navigatorStyle = actionParams[@"style"];
-    NSArray *leftButtons = actionParams[@"leftButtons"];
-    NSArray *rightButtons = actionParams[@"rightButtons"];
+      UIViewController *viewController = [self viewControllerWithComponent:component
+                                                                     props:[passProps copy]
+                                                                     style:style
+                                                               leftButtons:leftButtons
+                                                              rightButtons:rightButtons
+                                                                    bridge:bridge];
 
-    UIViewController *viewController = [self viewControllerWithComponent:component
-                                                                   props:[passProps copy]
-                                                                   style:navigatorStyle
-                                                             leftButtons:leftButtons
-                                                            rightButtons:rightButtons
-                                                                  bridge:bridge];
+      viewControllers = @[viewController];
+    } else if (componentConfigs) {
+      NSMutableArray *mutableViewControllers = [NSMutableArray arrayWithCapacity:[componentConfigs count]];
+      [componentConfigs enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull config, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *component = config[@"component"];
+
+        NSMutableDictionary *props = [config[@"passProps"] mutableCopy];
+        props[@"commandType"] = @"resetTo";
+        NSDictionary *style = config[@"style"];
+        NSArray *leftButtons = config[@"leftButtons"];
+        NSArray *rightButtons = config[@"rightButtons"];
+
+        UIViewController *viewController = [self viewControllerWithComponent:component
+                                                                       props:[props copy]
+                                                                       style:style
+                                                                 leftButtons:leftButtons
+                                                                rightButtons:rightButtons
+                                                                      bridge:bridge];
+
+        [mutableViewControllers addObject:viewController];
+      }];
+      viewControllers = [mutableViewControllers copy];
+    }
+
+    if (!viewControllers) return;
 
     BOOL animated = actionParams[@"animated"] ? [actionParams[@"animated"] boolValue] : YES;
     
@@ -281,11 +309,11 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       transition.type = kCATransitionFade;
       
       [self.view.layer addAnimation:transition forKey:kCATransition];
-      [self setViewControllers:@[viewController] animated:NO];
+      [self setViewControllers:viewControllers animated:NO];
     }
     else
     {
-      [self setViewControllers:@[viewController] animated:animated];
+      [self setViewControllers:viewControllers animated:animated];
     }
     return;
   }
