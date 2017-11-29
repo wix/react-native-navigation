@@ -257,31 +257,20 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   {
     NSString *component = actionParams[@"component"];
     if (!component) return;
-    
+
     NSMutableDictionary *passProps = [actionParams[@"passProps"] mutableCopy];
     passProps[@"commandType"] = @"resetTo";
     NSDictionary *navigatorStyle = actionParams[@"style"];
-    
-    RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component passProps:passProps navigatorStyle:navigatorStyle globalProps:nil bridge:bridge];
-    viewController.controllerId = passProps[@"screenInstanceID"];
-    
-    viewController.navigationItem.hidesBackButton = YES;
-    
-    [self processTitleView:viewController
-                     props:actionParams
-                     style:navigatorStyle];
     NSArray *leftButtons = actionParams[@"leftButtons"];
-    if (leftButtons)
-    {
-      [self setButtons:leftButtons viewController:viewController side:@"left" animated:NO];
-    }
-    
     NSArray *rightButtons = actionParams[@"rightButtons"];
-    if (rightButtons)
-    {
-      [self setButtons:rightButtons viewController:viewController side:@"right" animated:NO];
-    }
-    
+
+    UIViewController *viewController = [self viewControllerWithComponent:component
+                                                                   props:[passProps copy]
+                                                                   style:navigatorStyle
+                                                             leftButtons:leftButtons
+                                                            rightButtons:rightButtons
+                                                                  bridge:bridge];
+
     BOOL animated = actionParams[@"animated"] ? [actionParams[@"animated"] boolValue] : YES;
     
     NSString *animationType = actionParams[@"animationType"];
@@ -358,6 +347,35 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [parent updateStyle];
     }
   }
+}
+
+- (UIViewController *)viewControllerWithComponent:(NSString *)component
+                                            props:(NSDictionary *)props
+                                            style:(NSDictionary *)style
+                                      leftButtons:(NSArray<NSDictionary *> *)leftButtons
+                                     rightButtons:(NSArray<NSDictionary *> *)rightButtons
+                                           bridge:(RCTBridge *)bridge
+{
+  RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component passProps:props navigatorStyle:style globalProps:nil bridge:bridge];
+  viewController.controllerId = props[@"screenInstanceID"];
+
+  viewController.navigationItem.hidesBackButton = YES;
+
+  [self processTitleView:viewController
+                   props:props
+                   style:style];
+
+  if (leftButtons)
+  {
+    [self setButtons:leftButtons viewController:viewController side:@"left" animated:NO];
+  }
+
+  if (rightButtons)
+  {
+    [self setButtons:rightButtons viewController:viewController side:@"right" animated:NO];
+  }
+
+  return viewController;
 }
 
 -(void)onButtonPress:(UIBarButtonItem*)barButtonItem
