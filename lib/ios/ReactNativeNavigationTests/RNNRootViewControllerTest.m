@@ -156,6 +156,16 @@
 	XCTAssertFalse(self.uut.navigationController.navigationBar.translucent);
 }
 
+-(void)testTopBarTransparent {
+	NSNumber* topBarTransparentInput = @(0);
+	self.options.topBar.transparent = topBarTransparentInput;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertNotNil(self.uut.navigationController.navigationBar.shadowImage);
+	XCTAssertNotNil([self.uut.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault]);
+	XCTAssertTrue(CGRectEqualToRect(self.uut.navigationController.navigationBar.subviews.firstObject.frame, CGRectZero));
+}
+
 -(void)testTabBadge {
 	NSString* tabBadgeInput = @"5";
 	self.options.tabBar.tabBadge = tabBadgeInput;
