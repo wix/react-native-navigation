@@ -110,6 +110,13 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			viewController.navigationController.navigationBar.translucent = [self.topBar.translucent boolValue];
 		}
 		
+		if (self.topBar.transparent) {
+			[viewController.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+			viewController.navigationController.navigationBar.shadowImage = [UIImage new];
+			UIView *transparentView = [[UIView alloc] initWithFrame:CGRectZero];
+			[viewController.navigationController.navigationBar insertSubview:transparentView atIndex:0];
+		}
+		
 		if (self.topBar.noBorder) {
 			if ([self.topBar.noBorder boolValue]) {
 				viewController.navigationController.navigationBar
