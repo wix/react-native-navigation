@@ -48,6 +48,16 @@ public class TopBar extends AppBarLayout {
 		}
 	}
 
+	public void setButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
+        Menu menu = getTitleBar().getMenu();
+        if(rightButtons.isEmpty()) {
+            menu.clear();
+        } else {
+            setRightButtons(getContext(), menu, rightButtons);
+        }
+
+    }
+
 	public TextView getTitleTextView() {
 		return findTextView(titleBar);
 	}
@@ -70,6 +80,16 @@ public class TopBar extends AppBarLayout {
 		}
 		return null;
 	}
+
+	private void setRightButtons(Context context, Menu menu, ArrayList<Button> rightButtons) {
+		menu.clear();
+
+		for (int i = 0; i < rightButtons.size(); i++){
+	   		Button button = rightButtons.get(i);
+			TitleBarButton titleBarButton = new TitleBarButton(this.containerView, this.titleBar, button);
+			titleBarButton.addToMenu(context, menu);
+       }
+    }
 
 	public Toolbar getTitleBar() {
 		return titleBar;

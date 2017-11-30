@@ -59,4 +59,14 @@ public class ReactView extends ReactRootView implements ContainerViewController.
 	public void sendContainerStop() {
 		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).containerDidDisappear(containerId);
 	}
+
+	@Override
+	public void sendOnNavigationButtonPressed(String id, String buttonId) {
+		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).sendOnNavigationButtonPressed(id, buttonId);
+	}
+
+	@Override
+	public String getContainerId() {
+		return this.containerId;
+	}
 }
