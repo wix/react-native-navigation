@@ -3,6 +3,7 @@ package com.reactnativenavigation.react.coordinator;
 
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -27,14 +28,21 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
 	@Override
 	public void addView(CoordinatorLayoutView parent, View child, int index) {
 		super.addView(parent, child, index);
-		if (child instanceof NestedScrollView) {
-			CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(
-					FrameLayout.LayoutParams.MATCH_PARENT,
-					FrameLayout.LayoutParams.MATCH_PARENT
-			);
 
-			params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
-			child.setLayoutParams(params);
+		if (child instanceof FloatingActionButtonView) {
+			setFabAnchor(parent, child);
+		}
+	}
+
+	private void setFabAnchor(CoordinatorLayoutView parent, View child) {
+		FloatingActionButtonView fab = (FloatingActionButtonView) child;
+		for (int i = 0; i < parent.getChildCount(); i++) {
+			View childView = parent.getChildAt(i);
+			if (childView instanceof NestedScrollingChild) {
+				int anchorId = childView.getId();
+				fab.setAnchor(anchorId);
+				fab.setBehavior(new ScrollAwareFabBehavior());
+			}
 		}
 	}
 }

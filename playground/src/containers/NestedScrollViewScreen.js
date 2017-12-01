@@ -37,6 +37,7 @@ class NestedScrollViewScreen extends Component {
           </View>
         </NestedScrollView>
         <FloatingActionButton
+          collapsable={false}
           gravityBottom
           gravityRight
           backgroundColor={'blue'}
