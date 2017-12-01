@@ -5,6 +5,7 @@
 1. Install `react-native-navigation` latest stable version.
 
     ```sh
+    yarn add prop-types@*
     yarn add react-native-navigation@latest
     ```
 
@@ -16,7 +17,9 @@
 
 5. In Xcode, you will need to edit this file: `AppDelegate.m`. 
 This function:
-````````
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions { ... }
-````````
+
+    ```sh
+    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions { ... }
+    ```
+    
 is the main entry point for your app. Its content must be replaced with the content of this [reference](https://github.com/wix/react-native-navigation/blob/master/example/ios/example/AppDelegate.m)
