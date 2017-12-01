@@ -32,6 +32,7 @@ public class StyleParamsParser {
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
         result.statusBarHidden = getBoolean("statusBarHidden", getDefaultStatusHidden());
         result.statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"), getDefaultStatusBarTextColorScheme());
+        result.drawUnderStatusBar = params.getBoolean("drawUnderStatusBar", getDefaultDrawUnderStatusBar());
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
         result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
         result.contextualMenuBackgroundColor = getColor("contextualMenuBackgroundColor", getDefaultContextualMenuBackgroundColor());
@@ -279,6 +280,10 @@ public class StyleParamsParser {
 
     private boolean getDefaultStatusHidden() {
         return AppStyle.appStyle != null && AppStyle.appStyle.statusBarHidden;
+    }
+
+    private boolean getDefaultDrawUnderStatusBar() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.drawUnderStatusBar;
     }
 
     private StyleParams.Font getDefaultBottomTabsFontFamily() {

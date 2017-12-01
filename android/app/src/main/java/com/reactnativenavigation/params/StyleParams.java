@@ -84,6 +84,7 @@ public class StyleParams {
     public StatusBarTextColorScheme statusBarTextColorScheme;
     public Color statusBarColor;
     public boolean statusBarHidden;
+    public boolean drawUnderStatusBar;
     public Color contextualMenuStatusBarColor;
     public Color contextualMenuButtonsColor;
     public Color contextualMenuBackgroundColor;
