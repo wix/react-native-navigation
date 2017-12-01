@@ -551,7 +551,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         if (!unselectedAttributes[NSForegroundColorAttributeName] && labelColor) {
           unselectedAttributes[NSForegroundColorAttributeName] = labelColor;
         }
-        
         [tabViewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal];
         
         
@@ -559,8 +558,12 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         if (!selectedAttributes[NSForegroundColorAttributeName] && selectedLabelColor) {
           selectedAttributes[NSForegroundColorAttributeName] = selectedLabelColor;
         }
-        
         [viewController.tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
+        
+        if (buttonColor)
+        {
+          tabViewController.tabBarItem.image = [[RCCTabBarController image:tabViewController.tabBarItem.image withColor:buttonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        }
       }
     }
   }
