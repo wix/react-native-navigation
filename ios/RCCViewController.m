@@ -500,20 +500,23 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
       }
       
       NSString *tabBarButtonColor = self.navigatorStyle[@"tabBarButtonColor"];
+      NSString *tabBarSelectedButtonColor = self.navigatorStyle[@"tabBarSelectedButtonColor"];
+      
       if (tabBarButtonColor)
       {
-        UIColor *color = tabBarButtonColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarButtonColor] : nil;
-        tabBar.tintColor = color;
-        buttonColor = color;
-        selectedButtonColor = color;
+        buttonColor = tabBarButtonColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarButtonColor] : nil;
+        
+        if (tabBarSelectedButtonColor) {
+          selectedButtonColor = tabBarSelectedButtonColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarSelectedButtonColor] : nil;
+          
+          tabBar.tintColor = selectedLabelColor = selectedButtonColor;
+          tabBar.unselectedItemTintColor = labelColor = buttonColor;
+        }
+        else {
+          tabBar.tintColor = labelColor = buttonColor;
+        }
       }
-      NSString *tabBarSelectedButtonColor = self.navigatorStyle[@"tabBarSelectedButtonColor"];
-      if (tabBarSelectedButtonColor)
-      {
-        UIColor *color = tabBarSelectedButtonColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarSelectedButtonColor] : nil;
-        tabBar.tintColor = color;
-        selectedButtonColor = color;
-      }
+      
       NSString *tabBarLabelColor = self.navigatorStyle[@"tabBarLabelColor"];
       if(tabBarLabelColor) {
         UIColor *color = tabBarLabelColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarLabelColor] : nil;
