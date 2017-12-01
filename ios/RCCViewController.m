@@ -488,6 +488,11 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     UITabBar *tabBar = viewController.tabBarController.tabBar;
     
     if (tabBar && tabBar != (id)[NSNull null]) {
+      UIColor *buttonColor = nil;
+      UIColor *selectedButtonColor = nil;
+      UIColor *labelColor = nil;
+      UIColor *selectedLabelColor = nil;
+      
       NSNumber *tabBarHidden = self.navigatorStyle[@"tabBarHidden"];
       BOOL tabBarHiddenBool = tabBarHidden ? [tabBarHidden boolValue] : NO;
       if (tabBarHiddenBool) {
@@ -499,13 +504,27 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
       {
         UIColor *color = tabBarButtonColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarButtonColor] : nil;
         tabBar.tintColor = color;
+        buttonColor = color;
+        selectedButtonColor = color;
       }
       NSString *tabBarSelectedButtonColor = self.navigatorStyle[@"tabBarSelectedButtonColor"];
       if (tabBarSelectedButtonColor)
       {
         UIColor *color = tabBarSelectedButtonColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarSelectedButtonColor] : nil;
         tabBar.tintColor = color;
+        selectedButtonColor = color;
       }
+      NSString *tabBarLabelColor = self.navigatorStyle[@"tabBarLabelColor"];
+      if(tabBarLabelColor) {
+        UIColor *color = tabBarLabelColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarLabelColor] : nil;
+        labelColor = color;
+      }
+      NSString *tabBarSelectedLabelColor = self.navigatorStyle[@"tabBarSelectedLabelColor"];
+      if(tabBarLabelColor) {
+        UIColor *color = tabBarSelectedLabelColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarSelectedLabelColor] : nil;
+        selectedLabelColor = color;
+      }
+      
       NSString *tabBarBackgroundColor = self.navigatorStyle[@"tabBarBackgroundColor"];
       if (tabBarBackgroundColor)
       {
@@ -525,6 +544,23 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
       {
         BOOL tabBarHideShadowBool = tabBarHideShadow ? [tabBarHideShadow boolValue] : NO;
         tabBar.clipsToBounds = tabBarHideShadowBool ? YES : NO;
+      }
+      
+      for (UIViewController *tabViewController in [viewController.tabBarController viewControllers]) {
+        NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
+        if (!unselectedAttributes[NSForegroundColorAttributeName] && labelColor) {
+          unselectedAttributes[NSForegroundColorAttributeName] = labelColor;
+        }
+        
+        [tabViewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal];
+        
+        
+        NSMutableDictionary *selectedAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"tabBarSelectedText" baseFont:[UIFont systemFontOfSize:10]];
+        if (!selectedAttributes[NSForegroundColorAttributeName] && selectedLabelColor) {
+          selectedAttributes[NSForegroundColorAttributeName] = selectedLabelColor;
+        }
+        
+        [viewController.tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
       }
     }
   }
