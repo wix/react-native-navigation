@@ -516,6 +516,10 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
           tabBar.tintColor = labelColor = buttonColor;
         }
       }
+      else if (tabBarSelectedButtonColor) {
+        selectedButtonColor = tabBarSelectedButtonColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarSelectedButtonColor] : nil;
+        tabBar.tintColor = selectedLabelColor = selectedButtonColor;
+      }
       
       NSString *tabBarLabelColor = self.navigatorStyle[@"tabBarLabelColor"];
       if(tabBarLabelColor) {
@@ -561,7 +565,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         if (!selectedAttributes[NSForegroundColorAttributeName] && selectedLabelColor) {
           selectedAttributes[NSForegroundColorAttributeName] = selectedLabelColor;
         }
-        [viewController.tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
+        [tabViewController.tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
         
         if (buttonColor)
         {
