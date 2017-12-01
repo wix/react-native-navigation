@@ -4,12 +4,9 @@ package com.reactnativenavigation.react.coordinator;
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.widget.NestedScrollView;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 public class CoordinatorLayoutView extends CoordinatorLayout {
 

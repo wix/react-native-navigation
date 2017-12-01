@@ -8,6 +8,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.reactnativenavigation.react.coordinator.CoordinatorLayoutManager;
 import com.reactnativenavigation.react.coordinator.FloatingActionButtonManager;
+import com.reactnativenavigation.react.coordinator.NestedScrollViewManager;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,7 +37,8 @@ public class NavigationPackage implements ReactPackage {
 	public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
 		return Arrays.<ViewManager>asList(
 				new CoordinatorLayoutManager(),
-				new FloatingActionButtonManager()
+				new FloatingActionButtonManager(),
+				new NestedScrollViewManager()
 		);
 	}
 }

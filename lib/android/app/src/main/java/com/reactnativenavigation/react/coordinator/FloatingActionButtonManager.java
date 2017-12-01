@@ -2,23 +2,10 @@ package com.reactnativenavigation.react.coordinator;
 
 
 import android.graphics.Color;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.view.Gravity;
-import android.view.View;
 
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.common.MapBuilder;
-import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.facebook.react.uimanager.events.RCTEventEmitter;
-
-import java.util.Map;
 
 public class FloatingActionButtonManager extends SimpleViewManager<FloatingActionButtonView> {
 

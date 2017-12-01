@@ -145,7 +145,7 @@ class WelcomeScreen extends Component {
 
   onClickFab() {
     Navigation.push(this.props.containerId, {
-      name: 'navigation.playground.FabScreen'
+      name: 'navigation.playground.NestedScrollViewScreen'
     });
   }
 }
