@@ -216,6 +216,10 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 				viewController.edgesForExtendedLayout &= ~UIRectEdgeBottom;
 			}
 		}
+		
+		if (self.bottomTabs.currentTabID) {
+			[(RNNTabBarController*)viewController.tabBarController setSelectedIndexByContainerID:self.tabBar.currentTabID];
+		}
 	}
 	
 	if (self.statusBarBlur) {
