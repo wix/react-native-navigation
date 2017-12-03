@@ -1,4 +1,6 @@
 /*eslint-disable*/
+import { Component } from 'react';
+import { findNodeHandle } from 'react-native';
 import Navigation from './../Navigation';
 import Controllers, {Modal, Notification, ScreenUtils} from './controllers';
 const React = Controllers.hijackReact();
@@ -31,6 +33,8 @@ function startTabBasedApp(params) {
       navigatorButtons,
       navigatorEventID
     } = _mergeScreenSpecificSettings(tab.screen, screenInstanceID, tab);
+    _saveNavigatorButtonsProps(navigatorButtons);
+    _saveNavBarComponentProps(navigatorStyle);
     tab.navigationParams = {
       screenInstanceID,
       navigatorStyle,
@@ -138,6 +142,8 @@ function startSingleScreenApp(params) {
     navigatorButtons,
     navigatorEventID
   } = _mergeScreenSpecificSettings(screen.screen, screenInstanceID, screen);
+  _saveNavigatorButtonsProps(navigatorButtons);
+  _saveNavBarComponentProps(navigatorStyle);
   params.navigationParams = {
     screenInstanceID,
     navigatorStyle,
@@ -230,16 +236,28 @@ function navigatorPush(navigator, params) {
     console.error('Navigator.push(params): params.screen is required');
     return;
   }
+  let previewViewID;
   const screenInstanceID = _.uniqueId('screenInstanceID');
+  if (params.previewView instanceof Component) {
+    previewViewID = findNodeHandle(params.previewView)
+  } else if (typeof params.previewView === 'number') {
+    previewViewID = params.previewView;
+  } else if (params.previewView) {
+    console.error('Navigator.push(params): params.previewView is not a valid react view');
+  }
   const {
     navigatorStyle,
     navigatorButtons,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
+  _saveNavigatorButtonsProps(navigatorButtons);
+  _saveNavBarComponentProps(navigatorStyle);
   const passProps = Object.assign({}, params.passProps);
   passProps.navigatorID = navigator.navigatorID;
   passProps.screenInstanceID = screenInstanceID;
   passProps.navigatorEventID = navigatorEventID;
+  passProps.previewViewID = previewViewID;
+  passProps.isPreview = !!previewViewID;
 
   params.navigationParams = {
     screenInstanceID,
@@ -264,6 +282,10 @@ function navigatorPush(navigator, params) {
     backButtonHidden: params.backButtonHidden,
     leftButtons: navigatorButtons.leftButtons,
     rightButtons: navigatorButtons.rightButtons,
+    previewViewID: previewViewID,
+    previewActions: params.previewActions,
+    previewHeight: params.previewHeight,
+    previewCommit: params.previewCommit,
     timestamp: Date.now()
   });
 }
@@ -294,6 +316,8 @@ function navigatorResetTo(navigator, params) {
     navigatorButtons,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
+  _saveNavigatorButtonsProps(navigatorButtons);
+  _saveNavBarComponentProps(navigatorStyle);
   const passProps = Object.assign({}, params.passProps);
   passProps.navigatorID = navigator.navigatorID;
   passProps.screenInstanceID = screenInstanceID;
@@ -362,6 +386,7 @@ function navigatorToggleNavBar(navigator, params) {
 }
 
 function navigatorSetStyle(navigator, params) {
+  _saveNavBarComponentProps(params);
   Controllers.NavigationControllerIOS(navigator.navigatorID).setStyle(params)
 }
 
@@ -416,14 +441,16 @@ function navigatorSetTabButton(navigator, params) {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
       tabIndex: params.tabIndex,
       icon: params.icon,
-      selectedIcon: params.selectedIcon
+      selectedIcon: params.selectedIcon,
+      label: params.label,
     });
   } else {
     Controllers.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
       contentId: navigator.navigatorID,
       contentType: 'NavigationControllerIOS',
       icon: params.icon,
-      selectedIcon: params.selectedIcon
+      selectedIcon: params.selectedIcon,
+      label: params.label,
     });
   }
 }
@@ -443,6 +470,7 @@ function navigatorSwitchToTab(navigator, params) {
 }
 
 function navigatorSetButtons(navigator, navigatorEventID, params) {
+  _saveNavigatorButtonsProps(params);
   if (params.leftButtons) {
     const buttons = params.leftButtons.slice(); // clone
     for (let i = 0; i < buttons.length; i++) {
@@ -472,6 +500,8 @@ function showModal(params) {
     navigatorButtons,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
+  _saveNavigatorButtonsProps(navigatorButtons);
+  _saveNavBarComponentProps(navigatorStyle);
   const passProps = Object.assign({}, params.passProps);
   passProps.navigatorID = navigatorID;
   passProps.screenInstanceID = screenInstanceID;
@@ -638,6 +668,29 @@ function dismissContextualMenu() {
 
 async function getCurrentlyVisibleScreenId() {
   return await ScreenUtils.getCurrentlyVisibleScreenId();
+}
+
+function _saveNavBarComponentProps(navigatorStyle) {
+  if (navigatorStyle.navBarCustomViewInitialProps) {
+    const passPropsKey = _.uniqueId('navBarComponent');
+    PropRegistry.save(passPropsKey, navigatorStyle.navBarCustomViewInitialProps);
+    navigatorStyle.navBarCustomViewInitialProps = {passPropsKey};
+  }
+}
+
+function _saveNavigatorButtonsProps({rightButtons, leftButtons}) {
+  _saveNavigatorButtonsPassProps(rightButtons);
+  _saveNavigatorButtonsPassProps(leftButtons);
+}
+
+function _saveNavigatorButtonsPassProps(buttons = []) {
+  buttons.forEach((button) => {
+    if (button.component) {
+      const passPropsKey = _.uniqueId('customButtonComponent');
+      PropRegistry.save(passPropsKey, button.passProps);
+      button.passProps = {passPropsKey};
+    }
+  })
 }
 
 export default {

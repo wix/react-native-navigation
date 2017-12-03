@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import ReactNative, {AppRegistry, NativeModules, processColor} from 'react-native';
 import _ from 'lodash';
+import PropRegistry from './../PropRegistry';
 
 import Navigation from './../Navigation';
 
@@ -224,6 +225,11 @@ function convertStyleParams(originalStyleObject) {
   if (_.isUndefined(ret.expendCollapsingToolBarOnTopTabChange)) {
     ret.expendCollapsingToolBarOnTopTabChange = true;
   }
+  if (ret.topBarReactViewInitialProps) {
+    const passPropsKey = _.uniqueId('customNavBarComponent');
+    PropRegistry.save(passPropsKey, ret.topBarReactViewInitialProps);
+    ret.topBarReactViewInitialProps = {passPropsKey};  
+  }
   return ret;
 }
 
@@ -241,7 +247,12 @@ function convertDrawerParamsToSideMenuParams(drawerParams) {
       addNavigatorParams(result[key]);
       result[key] = adaptNavigationParams(result[key]);
       result[key].passProps = drawer[key].passProps;
-      result[key].disableOpenGesture = drawer.disableOpenGesture;
+      if (drawer.disableOpenGesture) {
+        result[key].disableOpenGesture = drawer.disableOpenGesture;
+      } else {
+        result[key].disableOpenGesture = drawer[key].disableOpenGesture;
+      }
+      
     } else {
       result[key] = null;
     }
@@ -330,6 +341,11 @@ function navigatorSetButtons(navigator, navigatorEventID, _params) {
       }
       if (button.buttonColor) {
         button.color = processColor(button.buttonColor);
+      }
+      if (button.component) {
+        const passPropsKey = _.uniqueId('customButtonComponent');
+        PropRegistry.save(passPropsKey, button.passProps);
+        button.passProps = {passPropsKey};
       }
     });
   }
@@ -534,6 +550,11 @@ function addNavigatorButtons(screen, sideMenuParams) {
       }
       if (button.buttonColor) {
         button.color = processColor(button.buttonColor);
+      }
+      if (button.component) {
+        const passPropsKey = _.uniqueId('customButtonComponent');
+        PropRegistry.save(passPropsKey, button.passProps);
+        button.passProps = {passPropsKey};
       }
     });
   }
