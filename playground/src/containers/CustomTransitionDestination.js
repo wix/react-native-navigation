@@ -20,9 +20,9 @@ class CustomTransitionDestination extends Component {
       }
     };
   }
-  push(){
-    Navigation.push(this.props.containerId, { 
-      name: 'navigation.playground.OptionsScreen',
+  push() {
+    Navigation.push(this.props.containerId, {
+      name: 'navigation.playground.OptionsScreen'
     });
   }
   pop() {

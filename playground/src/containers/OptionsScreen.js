@@ -63,7 +63,7 @@ class OptionsScreen extends Component {
       </View>
     );
   }
-  
+
   onNavigationButtonPressed(id) {
     if (id === BUTTON_ONE) {
       Navigation.setOptions(this.props.containerId, {
@@ -120,14 +120,14 @@ class OptionsScreen extends Component {
 
   onClickTopBarTransparent() {
     Navigation.setOptions(this.props.containerId, {
-      topBar : {
+      topBar: {
         transparent: true
       }
     });
   }
   onClickTopBarOpaque() {
     Navigation.setOptions(this.props.containerId, {
-      topBar : {
+      topBar: {
         transparent: false
       }
     });

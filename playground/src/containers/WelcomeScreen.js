@@ -4,11 +4,13 @@ const { View, Text, Button } = require('react-native');
 const Navigation = require('react-native-navigation');
 
 class WelcomeScreen extends Component {
-  static navigationOptions = {
-    topBar : {
-      title: 'Welcome',
-      largeTitle: false
-    } 
+  static get navigationOptions() {
+    return {
+      topBar: {
+        title: 'Welcome',
+        largeTitle: false
+      }
+    };
   }
   constructor(props) {
     super(props);

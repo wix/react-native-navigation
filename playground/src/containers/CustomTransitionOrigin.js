@@ -10,7 +10,7 @@ class CustomTransitionOrigin extends Component {
   }
   static get navigationOptions() {
     return {
-      topBar : {
+      topBar: {
         textFontFamily: 'HelveticaNeue-Italic',
         largeTitle: false
       }
