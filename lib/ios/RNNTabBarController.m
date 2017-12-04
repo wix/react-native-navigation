@@ -22,8 +22,12 @@
 }
 
 - (void)setSelectedIndexByContainerID:(NSString *)containerID {
-	for (RNNRootViewController* child in self.childViewControllers) {
-		if ([child.containerId isEqualToString:containerID]) {
+	for (id child in self.childViewControllers) {
+		RNNRootViewController* vc = child;
+		if ([child isKindOfClass:[UINavigationController class]]) {
+			vc = ((UINavigationController *)child).childViewControllers.firstObject;
+		}
+		if ([vc.containerId isEqualToString:containerID]) {
 			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
 		}
 	}
