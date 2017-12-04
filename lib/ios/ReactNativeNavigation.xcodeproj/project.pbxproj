@@ -99,6 +99,9 @@
 		7BEF0D1D1E43771B003E96B0 /* RNNLayoutNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEF0D1B1E43771B003E96B0 /* RNNLayoutNode.m */; };
 		E8367B801F7A8A4700675C05 /* VICMAImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = E8367B7E1F7A8A4700675C05 /* VICMAImageView.h */; };
 		E8367B811F7A8A4700675C05 /* VICMAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E8367B7F1F7A8A4700675C05 /* VICMAImageView.m */; };
+		A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */; };
+		A7626C011FC5796200492FB8 /* RNNTabBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626C001FC5796200492FB8 /* RNNTabBarOptions.m */; };
+		A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */; };
 		E83BAD681F2734B500A9F3DD /* RNNNavigationOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E83BAD671F2734B500A9F3DD /* RNNNavigationOptionsTest.m */; };
 		E83BAD6B1F27363A00A9F3DD /* RNNNavigationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E83BAD6A1F27363A00A9F3DD /* RNNNavigationOptions.m */; };
 		E83BAD791F27416B00A9F3DD /* RNNRootViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E83BAD781F27416B00A9F3DD /* RNNRootViewControllerTest.m */; };
@@ -243,6 +246,10 @@
 		7BEF0D171E437684003E96B0 /* RNNRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNRootViewController.m; sourceTree = "<group>"; };
 		7BEF0D1A1E43771B003E96B0 /* RNNLayoutNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNLayoutNode.h; sourceTree = "<group>"; };
 		7BEF0D1B1E43771B003E96B0 /* RNNLayoutNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNLayoutNode.m; sourceTree = "<group>"; };
+		A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTopBarOptions.m; sourceTree = "<group>"; };
+		A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopBarOptions.h; sourceTree = "<group>"; };
+		A7626BFF1FC578AB00492FB8 /* RNNTabBarOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTabBarOptions.h; sourceTree = "<group>"; };
+		A7626C001FC5796200492FB8 /* RNNTabBarOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTabBarOptions.m; sourceTree = "<group>"; };
 		D8AFADBD1BEE6F3F00A4592D /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeNavigation.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8367B7E1F7A8A4700675C05 /* VICMAImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VICMAImageView.h; sourceTree = "<group>"; };
 		E8367B7F1F7A8A4700675C05 /* VICMAImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VICMAImageView.m; sourceTree = "<group>"; };
@@ -418,6 +425,10 @@
 				21B85E5C1F44480200B314B5 /* RNNNavigationButtons.m */,
 				214545261F4DC164006E8DA1 /* RNNUIBarButtonItem.h */,
 				214545241F4DC125006E8DA1 /* RNNUIBarButtonItem.m */,
+				A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */,
+				A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */,
+				A7626BFF1FC578AB00492FB8 /* RNNTabBarOptions.h */,
+				A7626C001FC5796200492FB8 /* RNNTabBarOptions.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -719,6 +730,7 @@
 				E8DA24411F97459B00CD552B /* RNNElementFinder.m in Sources */,
 				263905BF1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.m in Sources */,
 				7B1126A01E2D263F00F9B03B /* RNNEventEmitter.m in Sources */,
+				A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */,
 				263905CB1E4C6F440023D7D3 /* SidebarLuvocracyAnimation.m in Sources */,
 				263905E71E4CAC950023D7D3 /* RNNSideMenuChildVC.m in Sources */,
 				7BA500751E2544B9001B9E1B /* ReactNativeNavigation.m in Sources */,
@@ -743,6 +755,7 @@
 				263905CF1E4C6F440023D7D3 /* TheSidebarController.m in Sources */,
 				E8A430121F9CB87B00B61A20 /* RNNAnimatedView.m in Sources */,
 				E8367B811F7A8A4700675C05 /* VICMAImageView.m in Sources */,
+				A7626C011FC5796200492FB8 /* RNNTabBarOptions.m in Sources */,
 				263905AF1E4C6F440023D7D3 /* MMDrawerBarButtonItem.m in Sources */,
 				E8AEDB4B1F5C0BAF000F5A6A /* RNNInteractivePopAnimator.m in Sources */,
 				7B4928091E70415400555040 /* RNNCommandsHandler.m in Sources */,

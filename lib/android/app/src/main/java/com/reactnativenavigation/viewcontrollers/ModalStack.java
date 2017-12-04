@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.R;
 
 import java.util.ArrayList;
@@ -16,25 +17,36 @@ public class ModalStack {
 
 	private List<Modal> modals = new ArrayList<>();
 
-	public void showModal(final ViewController viewController) {
+	public void showModal(final ViewController viewController, Promise promise) {
 		Modal modal = new Modal(viewController);
 		modals.add(modal);
 		modal.show();
+		if (promise != null) {
+			promise.resolve(viewController.getId());
+		}
 	}
 
-	public void dismissModal(final String containerId) {
+	public void dismissModal(final String containerId, Promise promise) {
 		Modal modal = findModalByContainerId(containerId);
 		if (modal != null) {
 			modal.dismiss();
 			modals.remove(modal);
+			if (promise != null) {
+				promise.resolve(containerId);
+			}
+		} else {
+			Navigator.rejectPromise(promise);
 		}
 	}
 
-	public void dismissAll() {
+	public void dismissAll(Promise promise) {
 		for (Modal modal : modals) {
 			modal.dismiss();
 		}
 		modals.clear();
+		if (promise != null) {
+			promise.resolve(true);
+		}
 	}
 
 	@Nullable

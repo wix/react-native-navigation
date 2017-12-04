@@ -29,13 +29,11 @@
 	NSArray* methods = [self getPublicMethodNamesForObject:self.uut];
 	[self.store setReadyToReceiveCommands:false];
 	for (NSString* methodName in methods) {
-
-		__strong id uut = self.uut;
 		SEL s = NSSelectorFromString(methodName);
-		IMP imp = [uut methodForSelector:s];
-		void (*func)(id, SEL) = (void *)imp;
-
-		XCTAssertThrowsSpecificNamed(func(uut,s), NSException, @"BridgeNotLoadedError");
+		NSMethodSignature* signature = [self.uut methodSignatureForSelector:s];
+		NSInvocation* invocation = [NSInvocation invocationWithMethodSignature:signature];
+		invocation.selector = s;
+		XCTAssertThrowsSpecificNamed([invocation invokeWithTarget:self.uut], NSException, @"BridgeNotLoadedError");
 	}
 }
 
@@ -67,7 +65,7 @@
 
 -(void)testDynamicStylesMergeWithStaticStyles {
 	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] init];
-	[initialOptions setTitle:@"the title"];
+	[initialOptions.topBar setTitle:@"the title"];
 	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithName:@"name"
 																withOptions:initialOptions
 															withContainerId:@"containerId"
@@ -79,8 +77,8 @@
 
 	[self.store setReadyToReceiveCommands:true];
 	[self.store setContainer:vc containerId:@"containerId"];
-
-	NSDictionary* dictFromJs = @{@"topBarBackgroundColor" :@(0xFFFF0000)};
+	
+	NSDictionary* dictFromJs = @{@"topBar": @{@"backgroundColor" :@(0xFFFF0000)}};
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 
 	[self.uut setOptions:@"containerId" options:dictFromJs];

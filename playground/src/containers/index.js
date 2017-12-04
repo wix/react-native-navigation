@@ -10,6 +10,7 @@ const OrientationDetectScreen = require('./OrientationDetectScreen');
 const ScrollViewScreen = require('./ScrollViewScreen');
 const CustomTransitionOrigin = require('./CustomTransitionOrigin');
 const CustomTransitionDestination = require('./CustomTransitionDestination');
+const CustomDialog = require('./CustomDialog');
 
 function registerContainers() {
   Navigation.registerContainer(`navigation.playground.CustomTransitionDestination`, () => CustomTransitionDestination);
@@ -23,6 +24,7 @@ function registerContainers() {
   Navigation.registerContainer(`navigation.playground.OptionsScreen`, () => OptionsScreen);
   Navigation.registerContainer(`navigation.playground.OrientationSelectScreen`, () => OrientationSelectScreen);
   Navigation.registerContainer(`navigation.playground.OrientationDetectScreen`, () => OrientationDetectScreen);
+  Navigation.registerContainer('navigation.playground.CustomDialog', () => CustomDialog);
 }
 
 module.exports = {

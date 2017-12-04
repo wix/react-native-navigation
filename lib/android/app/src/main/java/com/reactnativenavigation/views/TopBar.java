@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 public class TopBar extends AppBarLayout {
 	private final Toolbar titleBar;
 
-	public TopBar(final Activity context) {
+	public TopBar(final Context context) {
 		super(context);
 		titleBar = new Toolbar(context);
 		addView(titleBar);
@@ -49,8 +50,13 @@ public class TopBar extends AppBarLayout {
 		return findTextView(titleBar);
 	}
 
+	@Override
+	public void setBackgroundColor(@ColorInt int color) {
+		titleBar.setBackgroundColor(color);
+	}
+
 	@Nullable
-	public TextView findTextView(ViewGroup root) {
+	private TextView findTextView(ViewGroup root) {
 		for (int i = 0; i < root.getChildCount(); i++) {
 			View view = root.getChildAt(i);
 			if (view instanceof TextView) {
@@ -61,5 +67,9 @@ public class TopBar extends AppBarLayout {
 			}
 		}
 		return null;
+	}
+
+	public Toolbar getTitleBar() {
+		return titleBar;
 	}
 }

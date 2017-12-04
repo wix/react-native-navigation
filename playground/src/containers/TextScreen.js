@@ -30,12 +30,18 @@ class TextScreen extends Component {
 
   onButtonPress() {
     Navigation.setOptions(this.props.containerId, {
-      tabBadge: `EnCyClOpEdIa`
+      tabBar: {
+        tabBadge: `TeSt`
+      }
     });
   }
 
   onClickSwitchToTab() {
-    Navigation.switchToTab(this.props.containerId, 1);
+    Navigation.setOptions(this.props.containerId, {
+      tabBar: {
+        currentTabIndex: 1
+      }
+    });
   }
 }
 module.exports = TextScreen;

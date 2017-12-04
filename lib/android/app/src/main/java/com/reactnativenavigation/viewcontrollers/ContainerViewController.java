@@ -2,12 +2,17 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 
+import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.views.TopbarContainerView;
 
-public class ContainerViewController extends ViewController {
+public class ContainerViewController extends ViewController implements NavigationOptionsListener {
 
 	public interface ContainerViewCreator {
 
@@ -31,8 +36,10 @@ public class ContainerViewController extends ViewController {
 	private final String containerName;
 
 	private final ContainerViewCreator viewCreator;
-	private final NavigationOptions navigationOptions;
+	private NavigationOptions navigationOptions;
 	private ContainerView containerView;
+
+	private TopBar topBar;
 
 	public ContainerViewController(final Activity activity,
 								   final String id,
@@ -75,20 +82,32 @@ public class ContainerViewController extends ViewController {
 	@Override
 	protected View createView() {
 		containerView = viewCreator.create(getActivity(), getId(), containerName);
+		if (containerView instanceof TopbarContainerView) {
+			topBar = ((TopbarContainerView) containerView).getTopBar();
+		}
 		return containerView.asView();
 	}
 
-	public void mergeNavigationOptions(final NavigationOptions options) {
+	@Override
+	public void mergeNavigationOptions(NavigationOptions options) {
 		navigationOptions.mergeWith(options);
 		applyOptions();
 	}
 
-	public NavigationOptions getNavigationOptions() {
+	NavigationOptions getNavigationOptions() {
 		return navigationOptions;
 	}
 
 	private void applyOptions() {
-		OptionsPresenter presenter = new OptionsPresenter(getParentStackController());
+		OptionsPresenter presenter = new OptionsPresenter(this);
 		presenter.applyOptions(navigationOptions);
+	}
+
+	public TopBar getTopBar() {
+		return topBar;
+	}
+
+	public ContainerView getContainerView() {
+		return containerView;
 	}
 }

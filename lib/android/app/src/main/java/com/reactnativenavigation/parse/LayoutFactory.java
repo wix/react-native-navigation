@@ -9,6 +9,8 @@ import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.viewcontrollers.SideMenuController;
 import com.reactnativenavigation.viewcontrollers.StackController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.overlay.DialogViewController;
+import com.reactnativenavigation.views.TopbarContainerViewCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,8 @@ public class LayoutFactory {
 				return createSideMenuLeft(node);
 			case SideMenuRight:
 				return createSideMenuRight(node);
+			case CustomDialog:
+				return createDialogContainer(node);
 			default:
 				throw new IllegalArgumentException("Invalid node type: " + node.type);
 		}
@@ -81,13 +85,14 @@ public class LayoutFactory {
 		String id = node.id;
 		String name = node.data.optString("name");
 		NavigationOptions navigationOptions = NavigationOptions.parse(node.data.optJSONObject("navigationOptions"));
-		return new ContainerViewController(activity, id, name, new ReactContainerViewCreator(reactInstanceManager), navigationOptions);
+		return new ContainerViewController(activity, id, name,
+				new TopbarContainerViewCreator(new ReactContainerViewCreator(reactInstanceManager)), navigationOptions);
 	}
 
 	private ViewController createContainerStack(LayoutNode node) {
 		StackController stackController = new StackController(activity, node.id);
 		for (LayoutNode child : node.children) {
-			stackController.push(create(child));
+			stackController.push(create(child), null);
 		}
 		return stackController;
 	}
@@ -100,5 +105,12 @@ public class LayoutFactory {
 		}
 		tabsContainer.setTabs(tabs);
 		return tabsContainer;
+	}
+
+	private ViewController createDialogContainer(LayoutNode node) {
+		String id = node.id;
+		String name = node.data.optString("name");
+		ReactContainerViewCreator creator = new ReactContainerViewCreator(reactInstanceManager);
+		return new DialogViewController(activity, id, name, creator);
 	}
 }

@@ -1,30 +1,21 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.animation.Animator;
 import android.app.Activity;
-import android.graphics.Color;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
+import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.anim.StackAnimator;
-import com.reactnativenavigation.react.ReactContainerView;
-import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.views.TopBar;
 
 import java.util.Collection;
-import java.util.Random;
+import java.util.Iterator;
 
 public class StackController extends ParentController {
 
 	private final IdStack<ViewController> stack = new IdStack<>();
 	private final StackAnimator animator;
-	private TopBar topBar;
-	private FrameLayout container;
 
 	public StackController(final Activity activity, String id) {
 		this(activity, id, new StackAnimator(activity));
@@ -36,73 +27,126 @@ public class StackController extends ParentController {
 	}
 
 	public void push(final ViewController child) {
+		push(child, null);
+	}
+
+	public void push(final ViewController child, final Promise promise) {
 		final ViewController previousTop = peek();
 
 		child.setParentStackController(this);
 		stack.push(child.getId(), child);
 		View enteringView = child.getView();
-		getContainer().addView(enteringView);
+		getView().addView(enteringView);
 
 		//TODO animatePush only when needed
 		if (previousTop != null) {
 			animator.animatePush(enteringView, new StackAnimator.StackAnimationListener() {
 				@Override
 				public void onAnimationEnd() {
-					getContainer().removeView(previousTop.getView());
+					getView().removeView(previousTop.getView());
+					if (promise != null) {
+						promise.resolve(child.getId());
+					}
 				}
 			});
+		} else if (promise != null) {
+			promise.resolve(child.getId());
 		}
 	}
 
-	public boolean canPop() {
+	boolean canPop() {
 		return stack.size() > 1;
 	}
 
-	public void pop() {
-		if (!canPop()) return;
+	void pop(Promise promise) {
+		pop(true, promise);
+	}
+
+	void pop() {
+		pop(true, null);
+	}
+
+	private void pop(boolean animate, final Promise promise) {
+		if (!canPop()) {
+			Navigator.rejectPromise(promise);
+			return;
+		}
 
 		final ViewController poppedTop = stack.pop();
 		ViewController newTop = peek();
 
 		View enteringView = newTop.getView();
 		final View exitingView = poppedTop.getView();
-		getContainer().addView(enteringView, getContainer().getChildCount() - 1);
+		getView().addView(enteringView, getView().getChildCount() - 1);
 
-		//TODO animatePush only when needed
-		animator.animatePop(exitingView, new StackAnimator.StackAnimationListener() {
-			@Override
-			public void onAnimationEnd() {
-				getContainer().removeView(exitingView);
-				poppedTop.destroy();
-			}
-		});
+		if (animate) {
+			animator.animatePop(exitingView, new StackAnimator.StackAnimationListener() {
+				@Override
+				public void onAnimationEnd() {
+					finishPopping(exitingView, poppedTop, promise);
+				}
+			});
+		} else {
+			finishPopping(exitingView, poppedTop, promise);
+		}
 	}
 
-	public void popSpecific(final ViewController childController) {
+	private void finishPopping(View exitingView, ViewController poppedTop, Promise promise) {
+		getView().removeView(exitingView);
+		poppedTop.destroy();
+		if (promise != null) {
+			promise.resolve(poppedTop.getId());
+		}
+	}
+
+	void popSpecific(final ViewController childController) {
+		popSpecific(childController, null);
+	}
+
+	void popSpecific(final ViewController childController, Promise promise) {
 		if (stack.isTop(childController.getId())) {
-			pop();
+			pop(promise);
 		} else {
 			stack.remove(childController.getId());
 			childController.destroy();
+			if (promise != null) {
+				promise.resolve(childController.getId());
+			}
 		}
 	}
 
-	public void popTo(final ViewController viewController) {
+	void popTo(ViewController viewController) {
+		popTo(viewController, null);
+	}
+
+	void popTo(final ViewController viewController, Promise promise) {
 		if (!stack.containsId(viewController.getId())) {
+			Navigator.rejectPromise(promise);
 			return;
 		}
-		while (!stack.isTop(viewController.getId())) {
-			pop();
+
+		Iterator<String> iterator = stack.iterator();
+		String currentControlId = iterator.next();
+		while (!viewController.getId().equals(currentControlId)) {
+			String nextControlId = iterator.next();
+			boolean animate = nextControlId.equals(viewController.getId());
+			pop(animate, animate ? promise : null);
+			currentControlId = nextControlId;
 		}
 	}
 
-	public void popToRoot() {
+	void popToRoot() {
+		popToRoot(null);
+	}
+
+	void popToRoot(Promise promise) {
 		while (canPop()) {
-			pop();
+			boolean animate = stack.size() == 2; //first element is root
+			pop(animate, animate ? promise : null);
 		}
 	}
 
-	public ViewController peek() {
+	ViewController peek() {
 		return stack.peek();
 	}
 
@@ -117,7 +161,7 @@ public class StackController extends ParentController {
 	@Override
 	public boolean handleBack() {
 		if (canPop()) {
-			pop();
+			pop(null);
 			return true;
 		} else {
 			return false;
@@ -127,32 +171,12 @@ public class StackController extends ParentController {
 	@NonNull
 	@Override
 	protected ViewGroup createView() {
-		LinearLayout root = new LinearLayout(getActivity());
-		root.setOrientation(LinearLayout.VERTICAL);
-		topBar = new TopBar(getActivity());
-		topBar.setId(CompatUtils.generateViewId());
-		root.addView(topBar);
-		container = new FrameLayout(getActivity());
-		container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		root.addView(container);
-		return root;
+		return new FrameLayout(getActivity());
 	}
 
 	@NonNull
 	@Override
 	public Collection<ViewController> getChildControllers() {
 		return stack.values();
-	}
-
-	public TopBar getTopBar() {
-		ensureViewIsCreated();
-		return topBar;
-	}
-
-	private ViewGroup getContainer() {
-		if (container == null) {
-			getView();
-		}
-		return container;
 	}
 }
