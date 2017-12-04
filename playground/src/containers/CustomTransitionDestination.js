@@ -12,10 +12,12 @@ class CustomTransitionDestination extends Component {
 
   static get navigationOptions() {
     return {
-      title: 'ye babyyyyyy',
-      topBarTextFontFamily: 'HelveticaNeue-Italic',
       backButtonTransition: 'custom',
-      topBarLargeTitle: true
+      topBar: {
+        title: 'ye babyyyyyy',
+        textFontFamily: 'HelveticaNeue-Italic',
+        largeTitle: true
+      }
     };
   }
   push(){
@@ -38,7 +40,7 @@ class CustomTransitionDestination extends Component {
     return (
       <View style={styles.root}>
         <View>
-          <Navigation.Element resizeMode={'contain'} type={'image'} elementId={'customDestinationImage'}>
+          <Navigation.Element resizeMode={'contain'} elementId={'customDestinationImage'}>
             <Image resizeMode={'contain'} style={{ width: 300, height: 300 }} source={require('../../img/400.jpeg')} />
           </Navigation.Element>
           <Navigation.Element elementId={'customDestinationImage2'}>

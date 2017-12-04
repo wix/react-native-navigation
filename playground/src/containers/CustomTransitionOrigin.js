@@ -10,8 +10,10 @@ class CustomTransitionOrigin extends Component {
   }
   static get navigationOptions() {
     return {
-      topBarTextFontFamily: 'HelveticaNeue-Italic',
-      topBarLargeTitle: false
+      topBar : {
+        textFontFamily: 'HelveticaNeue-Italic',
+        largeTitle: false
+      }
     };
   }
   render() {
