@@ -20,6 +20,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 	self = [super init];
 	self.statusBarHidden = [navigationOptions objectForKey:@"statusBarHidden"];
 	self.screenBackgroundColor = [navigationOptions objectForKey:@"screenBackgroundColor"];
+	self.backButtonTransition = [navigationOptions objectForKey:@"backButtonTransition"];
 	self.orientation = [navigationOptions objectForKey:@"orientation"];
 	self.leftButtons = [navigationOptions objectForKey:@"leftButtons"];
 	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
