@@ -126,6 +126,14 @@ public class StyleParamsParser {
         result.titleBarButtonFontFamily = new StyleParams.Font();
         result.titleBarHeight = -1;
         result.screenAnimationType = "slide-up";
+
+        result.bottomTabsColor = getDefaultBottomTabsColor();
+        result.bottomTabsButtonColor = getDefaultBottomTabsButtonColor();
+        result.selectedBottomTabsButtonColor = getDefaultSelectedBottomTabsButtonColor();
+
+        result.bottomTabBadgeTextColor = getBottomTabBadgeTextColor();
+        result.bottomTabBadgeBackgroundColor = getBottomTabBadgeBackgroundColor();
+
         return result;
     }
 
