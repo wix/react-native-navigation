@@ -14,27 +14,25 @@ class NestedScrollViewScreen extends Component {
     return (
       <CoordinatorLayout style={{ flex: 1 }}>
         <NestedScrollView>
-          <View collapsable={false} >
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-            <Text style={styles.text}>Test Nigga</Text>
-          </View>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Nigga</Text>
         </NestedScrollView>
         <FloatingActionButton
           collapsable={false}

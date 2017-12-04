@@ -21,11 +21,4 @@ public class RnnNestedScrollViewManager extends ViewGroupManager<RnnNestedScroll
 	protected RnnNestedScrollView createViewInstance(ThemedReactContext reactContext) {
 		return new RnnNestedScrollView(reactContext);
 	}
-
-	@Override
-	public void addView(RnnNestedScrollView parent, View child, int index) {
-//		super.addView(parent, child, index);
-		parent.addViewToContainer(child);
-		reorderChildrenByZIndex(parent);
-	}
 }
