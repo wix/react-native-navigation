@@ -21,17 +21,17 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
 	public int tabBadge = NO_INT_VALUE;
 	public NavigationOptions.BooleanOptions hidden = NavigationOptions.BooleanOptions.False;
 	public NavigationOptions.BooleanOptions animateHide = NavigationOptions.BooleanOptions.False;
-	public int currentTabIndex;
-	public String currentTabId;
+	public int currentTabIndex = NO_INT_VALUE;
+	public String currentTabId = NO_VALUE;
 
 	void mergeWith(final BottomTabsOptions other) {
 		if (!NO_VALUE.equals(other.currentTabId)) {
 			currentTabId = other.currentTabId;
 		}
-		if(NO_INT_VALUE != other.currentTabIndex) {
+		if (NO_INT_VALUE != other.currentTabIndex) {
 			currentTabId = other.currentTabId;
 		}
-		if(NO_INT_VALUE != other.tabBadge) {
+		if (NO_INT_VALUE != other.tabBadge) {
 			tabBadge = other.tabBadge;
 		}
 		if (other.hidden != NavigationOptions.BooleanOptions.NoValue) {
