@@ -18,8 +18,9 @@ RCT_EXPORT_MODULE();
 
 #pragma mark - JS interface
 
-RCT_EXPORT_METHOD(setRoot:(NSDictionary*)layout) {
+RCT_EXPORT_METHOD(setRoot:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
 	[_commandsHandler setRoot:layout];
+	resolve(layout);
 }
 
 RCT_EXPORT_METHOD(setOptions:(NSString*)containerId options:(NSDictionary*)options) {
