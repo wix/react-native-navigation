@@ -28,7 +28,7 @@
 //
 //}
 
--(void)showModal:(UIViewController *)viewController {
+-(void)showModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {
 	self.toVC = viewController;
 //	[self prepareShowModal]
 	[self waitForContentToAppearAndThen:@selector(showModalAfterLoad:)];

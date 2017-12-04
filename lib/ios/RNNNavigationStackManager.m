@@ -7,6 +7,7 @@
 dispatch_queue_t RCTGetUIManagerQueue(void);
 @implementation RNNNavigationStackManager {
 	RNNStore *_store;
+	RNNTransitionCompletionBlock _completionBlock;
 }
 
 -(instancetype)initWithStore:(RNNStore*)store {
@@ -15,14 +16,13 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	return self;
 }
 
-
--(void)push:(UIViewController *)newTop onTop:(NSString *)containerId customAnimationData:(NSDictionary*)customAnimationData bridge:(RCTBridge*)bridge {
+-(void)push:(UIViewController *)newTop onTop:(NSString *)containerId customAnimationData:(NSDictionary*)customAnimationData bridge:(RCTBridge*)bridge completion:(RNNTransitionCompletionBlock)completion {
 	UIViewController *vc = [_store findContainerForId:containerId];
-	[self preparePush:newTop onTopVC:vc customAnimationData:customAnimationData bridge:bridge];
+	[self preparePush:newTop onTopVC:vc customAnimationData:customAnimationData bridge:bridge completion:completion];
 	[self waitForContentToAppearAndThen:@selector(pushAfterLoad:)];
 }
 
--(void)preparePush:(UIViewController *)newTop onTopVC:(UIViewController*)vc customAnimationData:(NSDictionary*)customAnimationData bridge:(RCTBridge*)bridge {
+-(void)preparePush:(UIViewController *)newTop onTopVC:(UIViewController*)vc customAnimationData:(NSDictionary*)customAnimationData bridge:(RCTBridge*)bridge completion:(RNNTransitionCompletionBlock)completion {
 	if (customAnimationData) {
 		RNNRootViewController* newTopRootView = (RNNRootViewController*)newTop;
 		self.fromVC = vc;
@@ -39,6 +39,8 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 		vc.navigationController.delegate = nil;
 		self.fromVC.navigationController.interactivePopGestureRecognizer.delegate = nil;
 	}
+	
+	_completionBlock = completion;
 }
 
 -(void)waitForContentToAppearAndThen:(SEL)nameOfSelector {
@@ -50,7 +52,17 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 
 -(void)pushAfterLoad:(NSDictionary*)notif {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
+	[CATransaction begin];
+	[CATransaction setCompletionBlock:^{
+		if (_completionBlock) {
+			_completionBlock(self.toVC.containerId);
+			_completionBlock = nil;
+		}
+	}];
+	
 	[[self.fromVC navigationController] pushViewController:self.toVC animated:YES];
+	[CATransaction commit];
+	
 	self.toVC = nil;
 	self.fromVC.navigationController.interactivePopGestureRecognizer.delegate = nil;
 	self.fromVC = nil;
