@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const exec = require('shell-utils').exec;
 
-const release = _.includes(process.argv, 'release');
+const release = _.includes(process.argv, '--release');
 
 function run() {
   const conf = release ? `Release` : `Debug`;

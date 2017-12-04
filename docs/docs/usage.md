@@ -55,7 +55,7 @@ Navigation.setRoot({
 Start a tab based app:
 ```js
 Navigation.setRoot({
-  tabs: [
+  bottomTabs: [
     {
       container: {
         name: 'navigation.playground.TextScreen',
@@ -91,9 +91,9 @@ Pop the top screen from this screen's navigation stack.
 ```js
 Navigation.pop(this.props.containerId);
 ```
-### popTo(params)
+### popTo(containerId)
 ```js
-Navigation.popTo(this.props.containerId, this.props.previousScreenIds[0]);
+Navigation.popTo(previousScreenId);
 ```
 ### popToRoot()
 Pop all the screens until the root from this screen's navigation stack
