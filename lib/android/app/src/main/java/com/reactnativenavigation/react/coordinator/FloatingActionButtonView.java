@@ -120,11 +120,13 @@ public class FloatingActionButtonView extends FloatingActionButton {
 
 	private void setGravityParam(CoordinatorLayout.LayoutParams params, int gravityParam) {
 		params.gravity = params.gravity | gravityParam;
+		params.anchorGravity = params.anchorGravity | gravityParam;
 	}
 
 	private void removeGravityParam(CoordinatorLayout.LayoutParams params, int gravityParam) {
 		if ((params.gravity & gravityParam) == gravityParam) {
 			params.gravity = params.gravity & ~gravityParam;
+			params.anchorGravity = params.anchorGravity & ~gravityParam;
 		}
 	}
 
