@@ -6,7 +6,7 @@
 
 const NSInteger BLUR_STATUS_TAG = 78264801;
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
-const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
+const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @implementation RNNNavigationOptions
 

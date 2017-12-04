@@ -1,13 +1,4 @@
-//
-//  RNNTransitionManager.h
-//  ReactNativeNavigation
-//
-//  Created by Elad Bogomolny on 03/10/2017.
-//  Copyright © 2017 Wix. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
-
 #import "RNNElementView.h"
 #import "RNNViewLocation.h"
 #import "RNNAnimatedView.h"

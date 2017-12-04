@@ -69,40 +69,36 @@
 	}
 	return transitions;
 }
+
 -(void)animateTransitions:(NSArray*)transitions {
 	for (RNNTransitionStateHolder* transition in transitions ) {
 		[UIView animateWithDuration:transition.duration delay:transition.startDelay usingSpringWithDamping:transition.springDamping initialSpringVelocity:transition.springVelocity options:UIViewAnimationOptionCurveEaseOut  animations:^{
 			RNNAnimatedView* animatedView = transition.animatedView;
 			if (!self.backButton) {
-				animatedView.alpha = transition.endAlpha;
-				animatedView.center = transition.locations.toCenter;
-				animatedView.transform = transition.locations.transform;
-				if (transition.isSharedElementTransition) {
-					if ([[transition.fromElement subviews][0] isKindOfClass:[UIImageView class]]) {
-						animatedView.contentMode = UIViewContentModeScaleAspectFill;
-						if ([transition.toElement resizeMode]){
-							animatedView.contentMode = [RNNAnimatedView contentModefromString:[transition.toElement resizeMode]];
-						}
-					}
-				}
+				[self setAnimatedViewFinalProperties:animatedView toElement:transition.toElement fromElement:transition.fromElement isSharedElementTransition:transition.isSharedElementTransition withTransform:transition.locations.transform withCenter:transition.locations.toCenter andAlpha:transition.endAlpha];
 			} else {
-				animatedView.alpha = transition.startAlpha;;
-				animatedView.center = transition.locations.fromCenter;
-				animatedView.transform = transition.locations.transformBack;
-				if (transition.isSharedElementTransition) {
-					if ([[transition.fromElement subviews][0] isKindOfClass:[UIImageView class]]) {
-						animatedView.contentMode = UIViewContentModeScaleAspectFill;
-						if ([transition.fromElement resizeMode]){
-							animatedView.contentMode = [RNNAnimatedView contentModefromString:[transition.fromElement resizeMode]] ;
-						}
-					}
-				}
+				[self setAnimatedViewFinalProperties:animatedView toElement:transition.fromElement fromElement:transition.fromElement isSharedElementTransition:transition.isSharedElementTransition withTransform:transition.locations.transformBack withCenter:transition.locations.fromCenter andAlpha:transition.startAlpha];
 			}
 		} completion:^(BOOL finished) {
 
 		}];
 	}
 }
+
+-(void)setAnimatedViewFinalProperties:(RNNAnimatedView*)animatedView toElement:(RNNElementView*)toElement fromElement:(RNNElementView*)fromElement isSharedElementTransition:(BOOL)isShared withTransform:(CGAffineTransform)transform withCenter:(CGPoint)center andAlpha:(double)alpha {
+	animatedView.alpha = alpha;
+	animatedView.center = center;
+	animatedView.transform = transform;
+	if (isShared) {
+		if ([[fromElement subviews][0] isKindOfClass:[UIImageView class]]) {
+			animatedView.contentMode = UIViewContentModeScaleAspectFill;
+			if ([toElement resizeMode]){
+				animatedView.contentMode = [RNNAnimatedView contentModefromString:[toElement resizeMode]];
+			}
+		}
+	}
+}
+
 
 -(void)animateComplition:(NSArray*)transitions fromVCSnapshot:(UIView*)fromSnapshot andTransitioningContext:(id<UIViewControllerContextTransitioning>)transitionContext {
 	[UIView animateWithDuration:[self transitionDuration:transitionContext ] delay:0 usingSpringWithDamping:self.springDamping initialSpringVelocity:self.springVelocity options:UIViewAnimationOptionCurveEaseOut  animations:^{

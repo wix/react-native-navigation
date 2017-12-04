@@ -1,48 +1,54 @@
 #import "RNNAnimatedView.h"
-
+#import "RNNElementView.h"
 
 @implementation RNNAnimatedView
 
 -(instancetype)initWithTransition:(RNNTransitionStateHolder*)transition andLocation:(RNNViewLocation*)location andIsBackButton:(BOOL)backButton {
-	UIView* animationView = nil;
+	UIView* animatedView = nil;
 	if (backButton) {
-		if ([[transition.fromElement subviews][0] isKindOfClass:[UIImageView class]]) {
-			UIImage* image = [[transition.fromElement subviews][0] image];
-			animationView = [[VICMAImageView alloc] initWithImage:image];
-			animationView.contentMode = UIViewContentModeScaleAspectFill;
-			if (transition.toElement.resizeMode){
-				animationView.contentMode = [RNNAnimatedView contentModefromString:transition.toElement.resizeMode];
-			}
+		if ([self elementIsImage:transition.fromElement]) {
+			animatedView = [self createImageAnimatedView:animatedView fromElement:transition.fromElement toElement:transition.toElement];
 		} else {
 			if (transition.toElement) {
-				animationView = [[transition.toElement subviews][0] snapshotViewAfterScreenUpdates:NO];
+				animatedView = [[transition.toElement subviews][0] snapshotViewAfterScreenUpdates:NO];
 			} else {
-				animationView = [[transition.fromElement subviews][0] snapshotViewAfterScreenUpdates:NO];
+				animatedView = [[transition.fromElement subviews][0] snapshotViewAfterScreenUpdates:NO];
 			}
 		}
-		animationView.frame = CGRectMake(0, 0, location.toSize.width, location.toSize.height);
-		animationView.center = location.toCenter;
-		animationView.alpha = transition.endAlpha;
+		[self assignStyle:animatedView withSize:location.toSize center:location.toCenter andAlpha:transition.endAlpha];
 	} else {
-		if ([[transition.fromElement subviews][0] isKindOfClass:[UIImageView class]]) {
-			UIImage* image = [[transition.fromElement subviews][0] image];
-			animationView = [[VICMAImageView alloc] initWithImage:image];
-			animationView.contentMode = UIViewContentModeScaleAspectFill;
-			if (transition.fromElement.resizeMode){
-				animationView.contentMode = [RNNAnimatedView contentModefromString:transition.fromElement.resizeMode];
-			}
+		if ([self elementIsImage:transition.fromElement]) {
+			animatedView = [self createImageAnimatedView:animatedView fromElement:transition.fromElement toElement:transition.fromElement];
 		} else {
 			if (transition.isFromVC) {
-				animationView = [[transition.fromElement subviews][0] snapshotViewAfterScreenUpdates:NO];
+				animatedView = [[transition.fromElement subviews][0] snapshotViewAfterScreenUpdates:NO];
 			} else {
-				animationView = [[transition.fromElement subviews][0] snapshotViewAfterScreenUpdates:YES];
+				animatedView = [[transition.fromElement subviews][0] snapshotViewAfterScreenUpdates:YES];
 			}
 		}
-		animationView.frame = CGRectMake(0, 0, location.fromSize.width, location.fromSize.height);
-		animationView.center = location.fromCenter;
-		animationView.alpha = transition.startAlpha;
+		[self assignStyle:animatedView withSize:location.fromSize center:location.fromCenter andAlpha:transition.startAlpha];
 	}
-	return (RNNAnimatedView*)animationView;
+	return (RNNAnimatedView*)animatedView;
+}
+
+-(BOOL)elementIsImage:(RNNElementView*)element {
+	return [[element subviews][0] isKindOfClass:[UIImageView class]];
+}
+
+-(UIView*)createImageAnimatedView:(UIView*)animatedView fromElement:(RNNElementView*)fromElement toElement:(RNNElementView*)toElement {
+	UIImage* image = [[fromElement subviews][0] image];
+	animatedView = [[VICMAImageView alloc] initWithImage:image];
+	animatedView.contentMode = UIViewContentModeScaleAspectFill;
+	if (toElement.resizeMode){
+		animatedView.contentMode = [RNNAnimatedView contentModefromString:toElement.resizeMode];
+	}
+	return animatedView;
+}
+
+-(void)assignStyle:(UIView*)animatedView withSize:(CGSize)size center:(CGPoint)center andAlpha:(double)alpha {
+	animatedView.frame = CGRectMake(0, 0, size.width, size.height);
+	animatedView.center = center;
+	animatedView.alpha = alpha;
 }
 
 +(UIViewContentMode)contentModefromString:(NSString*)resizeMode{

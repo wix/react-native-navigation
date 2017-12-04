@@ -1,11 +1,3 @@
-//
-//  RNNInteractivePopController.m
-//  ReactNativeNavigation
-//
-//  Created by Elad Bogomolny on 03/09/2017.
-//  Copyright © 2017 Wix. All rights reserved.
-//
-
 #import "RNNInteractivePopAnimator.h"
 #import "RNNAnimator.h"
 #import "RNNAnimatedView.h"
