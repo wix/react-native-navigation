@@ -10,10 +10,8 @@
 -(instancetype)initWithStore:(RNNStore*)store;
 
 
--(void)push:(UIViewController*)newTop onTop:(NSString*)containerId;
--(void)customPush:(UIViewController *)newTop onTop:(NSString *)containerId customAnimationData:(NSDictionary*)customAnimationData bridge:(RCTBridge*)bridge;
--(void)pop:(NSString*)containerId;
--(void)customPop:(NSString*)containerId withAnimationData:(NSDictionary*)animationData;
+-(void)push:(UIViewController*)newTop onTop:(NSString*)containerId customAnimationData:(NSDictionary*)customAnimationData bridge:(RCTBridge*)bridge;
+-(void)pop:(NSString*)containerId withAnimationData:(NSDictionary*)animationData;
 -(void)popTo:(NSString*)containerId;
 -(void)popToRoot:(NSString*)containerId;
 

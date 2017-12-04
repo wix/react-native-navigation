@@ -10,35 +10,36 @@ class CustomTransitionOrigin extends Component {
   }
   static get navigationOptions() {
     return {
-      topBarTextFontFamily: 'HelveticaNeue-Italic'
+      topBarTextFontFamily: 'HelveticaNeue-Italic',
+      topBarLargeTitle: false
     };
   }
   render() {
     return (
       <View style={styles.root}>
-        <Navigation.SharedElement elementId={'title1'}>
+        <Navigation.Element elementId={'title1'}>
           <Text style={styles.h1}>{`Custom Transition Screen`}</Text>
-        </Navigation.SharedElement>
+        </Navigation.Element>
         <View style={{ flex: 1, justifyContent: 'flex-start' }}>
           <TouchableOpacity testID={'shared_image1'} activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
-            <Navigation.SharedElement type={'image'} resizeMode={'cover'} elementId={'image1'}>
+            <Navigation.Element resizeMode={'cover'} elementId={'image1'}>
               <Image resizeMode={'cover'} style={styles.gyroImage} source={require('../../img/400.jpeg')} />
-            </Navigation.SharedElement>
+            </Navigation.Element>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
-            <Navigation.SharedElement elementId={'image2'}>
+            <Navigation.Element elementId={'image2'}>
               <Image style={styles.gyroImage} source={require('../../img/2048.jpeg')} />
-            </Navigation.SharedElement>
+            </Navigation.Element>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
-            <Navigation.SharedElement elementId={'image3'}>
+            <Navigation.Element elementId={'image3'}>
               <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
-            </Navigation.SharedElement>
+            </Navigation.Element>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
-            <Navigation.SharedElement elementId={'image4'}>
+            <Navigation.Element elementId={'image4'}>
               <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
-            </Navigation.SharedElement>
+            </Navigation.Element>
           </TouchableOpacity>
         </View>
 
@@ -51,7 +52,7 @@ class CustomTransitionOrigin extends Component {
       customTransition: {
         animations: [
               { type: 'sharedElement', fromId: 'title1', toId: 'title2', startDelay: 0, springVelocity: 0.2, duration: 0.5 },
-              { type: 'sharedElement', fromId: 'image1', toId: 'customDestinationImage', startDelay: 0, springVelocity: 0.9, springDamping: 0.9, duration: 0.8, interactiveImagePop: true },
+              { type: 'sharedElement', fromId: 'image1', toId: 'customDestinationImage', startDelay: 0, springVelocity: 0.9, springDamping: 0.9, duration: 0.8, interactivePop: true },
               { type: 'sharedElement', fromId: 'image2', toId: 'customDestinationImage2', startDelay: 0, duration: 0.8 },
               { fromId: 'image4', endY: 50, endX: 50, endAlpha: 0, startDelay: 0, duration: 0.8, springVelocity: 0.5 },
               { fromId: 'customDestinationParagraph', startY: 50, startAlpha: 0, endAlpha: 1, startDelay: 0, duration: 0.8 }

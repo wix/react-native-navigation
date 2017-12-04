@@ -1,7 +1,7 @@
 
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
-#import "RNNAnimationController.h"
+#import "RNNAnimator.h"
 #import "RNNNavigationButtons.h"
 
 @interface RNNRootViewController()
@@ -29,14 +29,13 @@
 											 selector:@selector(onJsReload)
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
-	self.animator = [[RNNAnimationController alloc] init];
+	self.animator = [[RNNAnimator alloc] init];
 	self.navigationController.modalPresentationStyle = UIModalPresentationCustom;
 	self.navigationController.delegate = self;
 	self.navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self];
-	
 	return self;
 }
-
+	
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.navigationOptions applyOn:self];
@@ -45,7 +44,7 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	}
+}
 
 - (BOOL)prefersStatusBarHidden {
 	if ([self.navigationOptions.statusBarHidden boolValue]) {

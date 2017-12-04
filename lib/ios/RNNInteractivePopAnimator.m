@@ -6,13 +6,14 @@
 //  Copyright © 2017 Wix. All rights reserved.
 //
 
-#import "RNNInteractivePopController.h"
-#import "RNNAnimationController.h"
-#import "RNNSharedElementView.h"
+#import "RNNInteractivePopAnimator.h"
+#import "RNNAnimator.h"
+#import "RNNAnimatedView.h"
+#import "RNNElementView.h"
 #import "RNNRootViewController.h"
 #import "VICMAImageView.h"
 
-@interface  RNNInteractivePopController()
+@interface  RNNInteractivePopAnimator()
 @property (nonatomic) CGRect topFrame;
 @property (nonatomic) CGFloat percent;
 @property (nonatomic) UINavigationController* nc;
@@ -20,12 +21,13 @@
 @property (nonatomic) double totalTranslate;
 @property (nonatomic) id transitionContext;
 
+
 @end
 
-@implementation RNNInteractivePopController
+@implementation RNNInteractivePopAnimator
 
--(instancetype)initWithTopView:(RNNSharedElementView*)topView andBottomView:(RNNSharedElementView*)bottomView andOriginFrame:(CGRect)originFrame andViewController:(UIViewController*)vc{
-	RNNInteractivePopController* interactiveController = [[RNNInteractivePopController alloc] init];
+-(instancetype)initWithTopView:(RNNElementView*)topView andBottomView:(RNNElementView*)bottomView andOriginFrame:(CGRect)originFrame andViewController:(UIViewController*)vc{
+	RNNInteractivePopAnimator* interactiveController = [[RNNInteractivePopAnimator alloc] init];
 	[interactiveController setTopView:topView];
 	[interactiveController setBottomView:bottomView];
 	[interactiveController setOriginFrame:originFrame];
@@ -37,15 +39,27 @@
 -(void)startInteractiveTransition:(id<UIViewControllerContextTransitioning>)transitionContext{
 	[super startInteractiveTransition:transitionContext];
 }
+
+-(BOOL)shouldBeginInteractivePop:(CGPoint)velocity {
+	if (velocity.y > 0) {
+		return YES;
+	}
+	return NO;
+}
+
+-(BOOL)shouldCancelInteractivePop:(UIPanGestureRecognizer*)recognizer {
+	return ([recognizer velocityInView:self.imageSnapshot].y < 0 || self.totalTranslate < 0);
+}
 -(void)handleGesture:(UIPanGestureRecognizer*)recognizer {
 	CGPoint translation = [recognizer translationInView:self.topView];
 	if (recognizer.state == UIGestureRecognizerStateBegan) {
 		CGPoint velocity = [recognizer velocityInView:recognizer.view];
 		self.nc.delegate = self;
-		if (velocity.y > 0) {
+		if ([self shouldBeginInteractivePop:velocity]) {
 			[self.nc popViewControllerAnimated:YES];
 		}
-	} else if (recognizer.state == UIGestureRecognizerStateChanged) {
+	} else
+	if (recognizer.state == UIGestureRecognizerStateChanged) {
 		self.totalTranslate = self.totalTranslate + translation.y;
 		[self animateAlongsideTransition:^void(id context){
 			self.imageSnapshot.center = CGPointMake(self.imageSnapshot.center.x + translation.x,
@@ -57,20 +71,19 @@
 			[self updateInteractiveTransition:self.totalTranslate/400];
 		}
 	} else if (recognizer.state == UIGestureRecognizerStateEnded) {
-		if([recognizer velocityInView:self.imageSnapshot].y < 0 || self.totalTranslate < 0) {
+		if([self shouldCancelInteractivePop:recognizer]) {
 			[self cancelInteractiveTransition];
 			[UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.8 options:UIViewAnimationOptionCurveEaseOut  animations:^{
 				self.imageSnapshot.frame = self.topFrame;
 			} completion:^(BOOL finished) {
 				self.nc.delegate = (RNNRootViewController*)self.vc;
-				
 			}];
 		} else {
 			[UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.8 options:UIViewAnimationOptionCurveEaseOut  animations:^{
 				self.imageSnapshot.frame = self.originFrame;
 				self.imageSnapshot.contentMode = UIViewContentModeScaleAspectFill;
 				if ([self.bottomView resizeMode]) {
-					self.imageSnapshot.contentMode = [RNNAnimationController contentModefromString:[self.bottomView resizeMode]];
+					self.imageSnapshot.contentMode = [RNNAnimatedView contentModefromString:[self.bottomView resizeMode]];
 				}
 			} completion:^(BOOL finished) {
 				self.nc.delegate = nil;
@@ -105,15 +118,14 @@
 	UIView* topViewContent = [self.topView subviews][0];
 	UIImage* image = [[self.topView subviews][0] image];
 	UIView* imageSnapshot = [[VICMAImageView alloc] initWithImage:image];
-	CGPoint fromSharedViewFrameOrigin = [topViewContent.superview convertPoint:topViewContent.frame.origin toView:nil];
+	CGPoint fromSharedViewFrameOrigin = [topViewContent.superview convertPoint:topViewContent.frame.origin toView:fromVC.view];
 	CGRect fromOriginRect = CGRectMake(fromSharedViewFrameOrigin.x, fromSharedViewFrameOrigin.y, topViewContent.frame.size.width, topViewContent.frame.size.height);
 	self.topFrame = fromOriginRect;
 	imageSnapshot.contentMode = UIViewContentModeScaleAspectFill;
 	if ([self.topView resizeMode]) {
-		imageSnapshot.contentMode = [RNNAnimationController contentModefromString:[self.topView resizeMode]];
+		imageSnapshot.contentMode = [RNNAnimatedView contentModefromString:[self.topView resizeMode]];
 	}
 	imageSnapshot.frame = fromOriginRect;
-	
 	self.imageSnapshot = imageSnapshot;
 	[self.bottomView setHidden:YES];
 	UIView* toSnapshot = [toVC.view snapshotViewAfterScreenUpdates:true];
@@ -122,7 +134,6 @@
 	[containerView addSubview:self.imageSnapshot];
 	toSnapshot.alpha = 0.0;
 	[self.topView setHidden:YES];
-	
 	[UIView animateKeyframesWithDuration:(NSTimeInterval)[self transitionDuration:transitionContext]
 								   delay:0
 								 options: UIViewKeyframeAnimationOptionAllowUserInteraction

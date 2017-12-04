@@ -309,7 +309,7 @@
 			isa = PBXGroup;
 			children = (
 				7B8F2FEB1E840F6700110AEC /* libRCTAnimation.a */,
-				7B8F2FED1E840F6700110AEC /* libRCTAnimation-tvOS.a */,
+				7B8F2FED1E840F6700110AEC /* libRCTAnimation.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -612,10 +612,10 @@
 			remoteRef = 7B8F2FEA1E840F6700110AEC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		7B8F2FED1E840F6700110AEC /* libRCTAnimation-tvOS.a */ = {
+		7B8F2FED1E840F6700110AEC /* libRCTAnimation.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libRCTAnimation-tvOS.a";
+			path = libRCTAnimation.a;
 			remoteRef = 7B8F2FEC1E840F6700110AEC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -783,6 +783,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = playground/Info.plist;
@@ -793,6 +795,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.reactnativenavigation.playground;
 				PRODUCT_NAME = playground;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -800,6 +803,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = playground/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -809,6 +814,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.reactnativenavigation.playground;
 				PRODUCT_NAME = playground;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

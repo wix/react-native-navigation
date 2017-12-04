@@ -7,19 +7,26 @@ class CustomTransitionDestination extends Component {
   constructor(props) {
     super(props);
     this.pop = this.pop.bind(this);
+    this.push = this.push.bind(this);
   }
 
   static get navigationOptions() {
     return {
       title: 'ye babyyyyyy',
       topBarTextFontFamily: 'HelveticaNeue-Italic',
-      backButtonTransition: 'custom'
+      backButtonTransition: 'custom',
+      topBarLargeTitle: true
     };
+  }
+  push(){
+    Navigation.push(this.props.containerId, { 
+      name: 'navigation.playground.OptionsScreen',
+    });
   }
   pop() {
     Navigation.pop(this.props.containerId, { customTransition: {
       animations: [{ type: 'sharedElement', fromId: 'title2', toId: 'title1', startDelay: 0, springVelocity: 0.2, duration: 0.5 },
-            { type: 'sharedElement', toId: 'image1', fromId: 'customDestinationImage', startDelay: 0, springVelocity: 0.2, duration: 0.5, interactiveImagePop: true },
+            { type: 'sharedElement', toId: 'image1', fromId: 'customDestinationImage', startDelay: 0, springVelocity: 0.2, duration: 0.5 },
             { type: 'sharedElement', toId: 'image2', fromId: 'customDestinationImage2', startDelay: 0, duration: 0.8 },
             { fromId: 'image4', startY: 50, startX: 50, startAlpha: 0, startDelay: 0, duration: 0.8, springVelocity: 0.5 },
             { fromId: 'customDestinationParagraph', endY: 50, endX: 50, endAlpha: 0, startAlpha: 1, startDelay: 0, duration: 0.8 }
@@ -31,20 +38,20 @@ class CustomTransitionDestination extends Component {
     return (
       <View style={styles.root}>
         <View>
-          <Navigation.SharedElement resizeMode={'contain'} type={'image'} elementId={'customDestinationImage'}>
+          <Navigation.Element resizeMode={'contain'} type={'image'} elementId={'customDestinationImage'}>
             <Image resizeMode={'contain'} style={{ width: 300, height: 300 }} source={require('../../img/400.jpeg')} />
-          </Navigation.SharedElement>
-          <Navigation.SharedElement elementId={'customDestinationImage2'}>
+          </Navigation.Element>
+          <Navigation.Element elementId={'customDestinationImage2'}>
             <Image style={{ width: 100, height: 100 }} source={require('../../img/2048.jpeg')} />
-          </Navigation.SharedElement>
+          </Navigation.Element>
         </View>
 
         <TouchableOpacity testID={'shared_image2'} onPress={this.pop}>
-          <Navigation.SharedElement elementId={'title2'}>
+          <Navigation.Element elementId={'title2'}>
             <Text style={styles.h1}>{`Custom Transition Screen`}</Text>
-          </Navigation.SharedElement>
+          </Navigation.Element>
         </TouchableOpacity>
-        <Navigation.SharedElement elementId={'customDestinationParagraph'}>
+        <Navigation.Element elementId={'customDestinationParagraph'}>
           <Text style={styles.p}>{`Lorem ipsum dolor sit amet, consectetur adipiscing elit,
            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
@@ -53,7 +60,7 @@ class CustomTransitionDestination extends Component {
           cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum`}
           </Text>
 
-        </Navigation.SharedElement>
+        </Navigation.Element>
       </View>
     );
   }

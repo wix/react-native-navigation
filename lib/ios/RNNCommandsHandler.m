@@ -51,15 +51,15 @@
 	[self assertReady];
 	NSDictionary* customAnimation = layout[@"data"][@"customTransition"];
 	UIViewController *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
+	RCTBridge* bridge = _bridge;
 	if (customAnimation) {
 		if ([customAnimation objectForKey:@"animations"]) {
-			RCTBridge* bridge = _bridge;
-			[_navigationStackManager customPush:newVc onTop:containerId customAnimationData:(NSDictionary*)customAnimation bridge:bridge];
+			[_navigationStackManager push:newVc onTop:containerId customAnimationData:(NSDictionary*)customAnimation bridge:bridge];
 		} else {
 			[[NSException exceptionWithName:NSInvalidArgumentException reason:@"unsupported transitionAnimation" userInfo:nil] raise];
 		}
 	} else {
-		[_navigationStackManager push:newVc onTop:containerId];
+		[_navigationStackManager push:newVc onTop:containerId customAnimationData:(NSDictionary*)nil bridge:bridge];
 	}
 }
 
@@ -68,12 +68,12 @@
 	NSDictionary* animationData = options[@"customTransition"];
 	if (animationData){
 		if ([animationData objectForKey:@"animations"]) {
-			[_navigationStackManager customPop:containerId withAnimationData:animationData];
+			[_navigationStackManager pop:containerId withAnimationData:animationData];
 		} else {
 			[[NSException exceptionWithName:NSInvalidArgumentException reason:@"unsupported transitionAnimation" userInfo:nil] raise];
 		}
 	} else {
-		[_navigationStackManager pop:containerId];
+		[_navigationStackManager pop:containerId withAnimationData:nil];
 	}
 	
 }

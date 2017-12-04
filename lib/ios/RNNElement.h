@@ -1,6 +1,6 @@
 #import <React/RCTViewManager.h>
 #import <Foundation/Foundation.h>
 
-@interface RNNSharedElement : RCTViewManager
+@interface RNNElement : RCTViewManager
 
 @end

@@ -37,6 +37,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 	self.topBarNoBorder = [navigationOptions objectForKey:@"topBarNoBorder"];
 	self.tabBarHidden = [navigationOptions objectForKey:@"tabBarHidden"];
 	self.topBarBlur = [navigationOptions objectForKey:@"topBarBlur"];
+	self.topBarLargeTitle = [navigationOptions objectForKey:@"topBarLargeTitle"];
 	
 	return self;
 }
@@ -58,7 +59,23 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264801;
 	if (self.title) {
 		viewController.navigationItem.title = self.title;
 	}
-	
+	if (self.topBarLargeTitle){
+		if ([self.topBarLargeTitle boolValue]) {
+			if (@available(iOS 11.0, *)) {
+				viewController.navigationController.navigationBar.prefersLargeTitles = YES;
+				viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
+			}
+		} else {
+			if (@available(iOS 11.0, *)) {
+				viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+			}
+		}
+	} else {
+		if (@available(iOS 11.0, *)) {
+			viewController.navigationController.navigationBar.prefersLargeTitles = NO;
+			viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+		}
+	}
 	if (self.topBarTextFontFamily || self.topBarTextColor || self.topBarTextFontSize){
 		NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
 		if (self.topBarTextColor) {

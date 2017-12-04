@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@interface RNNSharedElementView : UIView
+@interface RNNElementView : UIView
 
 @property (nonatomic, strong) NSString* elementId;
 @property (nonatomic, strong) NSString* type;

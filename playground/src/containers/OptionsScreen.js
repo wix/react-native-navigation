@@ -13,6 +13,8 @@ class OptionsScreen extends Component {
   static get navigationOptions() {
     return {
       title: 'Static Title',
+      topBarLargeTitle: true,
+      topBarHidden: false,
       topBarTextColor: 'black',
       topBarTextFontSize: 16,
       topBarTextFontFamily: 'HelveticaNeue-Italic',
@@ -57,7 +59,7 @@ class OptionsScreen extends Component {
       </View>
     );
   }
-
+  
   onNavigationButtonPressed(id) {
     if (id === BUTTON_ONE) {
       Navigation.setOptions(this.props.containerId, {
@@ -90,6 +92,7 @@ class OptionsScreen extends Component {
   onClickDynamicOptions() {
     Navigation.setOptions(this.props.containerId, {
       title: 'Dynamic Title',
+      topBarLargeTitle: false,
       topBarTextColor: '#00FFFF',
       topBarButtonColor: 'red',
       topBarTextFontSize: 20,

@@ -461,7 +461,26 @@
 	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
 }
 
-
+-(void)testTopBarLargeTitle_default {
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
+}
+-(void)testTopBarLargeTitle_true {
+	self.options.topBarLargeTitle = @(1);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
+}
+-(void)testTopBarLargeTitle_false {
+	self.options.tabBarHidden = @(0);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
+}
 -(void)testTopBarBlur_false {
 	NSNumber* topBarBlurInput = @(0);
 	self.options.topBarBlur = topBarBlurInput;

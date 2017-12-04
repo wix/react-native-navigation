@@ -32,6 +32,7 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) NSNumber* statusBarHideWithTopBar;
 @property (nonatomic, strong) NSNumber* tabBarHidden;
 @property (nonatomic, strong) NSNumber* topBarBlur;
+@property (nonatomic, strong) NSNumber* topBarLargeTitle;
 
 
 - (UIInterfaceOrientationMask)supportedOrientations;
