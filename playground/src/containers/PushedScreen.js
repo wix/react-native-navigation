@@ -33,8 +33,8 @@ class PushedScreen extends Component {
     );
   }
 
-  onClickPush() {
-    Navigation.push(this.props.containerId, {
+  async onClickPush() {
+    await Navigation.push(this.props.containerId, {
       name: 'navigation.playground.PushedScreen',
       passProps: {
         stackPosition: this.getStackPosition() + 1,
@@ -43,20 +43,20 @@ class PushedScreen extends Component {
     });
   }
 
-  onClickPop() {
-    Navigation.pop(this.props.containerId);
+  async onClickPop() {
+    await Navigation.pop(this.props.containerId);
   }
 
-  onClickPopPrevious() {
-    Navigation.pop(_.last(this.props.previousScreenIds));
+  async onClickPopPrevious() {
+    await Navigation.pop(_.last(this.props.previousScreenIds));
   }
 
-  onClickPopToFirstPosition() {
-    Navigation.popTo(this.props.previousScreenIds[0]);
+  async onClickPopToFirstPosition() {
+    await Navigation.popTo(this.props.previousScreenIds[0]);
   }
 
-  onClickPopToRoot() {
-    Navigation.popToRoot(this.props.containerId);
+  async onClickPopToRoot() {
+    await Navigation.popToRoot(this.props.containerId);
   }
 
   getStackPosition() {

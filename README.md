@@ -65,8 +65,8 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | resetTo             |   ✅        |	✅|
 | showModal              |  ✅        |	✅|
 | dismissModal           |     ✅       |	✅|
-| showOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	WIP @cool04ek |
-| dismissOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	WIP @cool04ek |
+| showOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	✅ |
+| dismissOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	✅ |
 | customTransition            |   ✅        |	[Contribute](/docs/docs/CONTRIBUTING.md) |
 | Screen Visibility        | ✅     |✅|
 | async commands (await push)     |  [Contribute](/docs/docs/CONTRIBUTING.md)        | WIP @cool04ek   |
@@ -98,8 +98,8 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | drawUnder          |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
 | hidden   |   ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)        | @gtchance|
 | tabBadge          |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md)| Wix|
-| currentTab by Index          |       [Contribute](/docs/docs/CONTRIBUTING.md)    | [Contribute](/docs/docs/CONTRIBUTING.md)| |
-| currentTab by cointainerId         |       [Contribute](/docs/docs/CONTRIBUTING.md)    | [Contribute](/docs/docs/CONTRIBUTING.md)| |
+| currentTab by Index          |       ✅    | ✅ | Wix |
+| currentTab by cointainerId         |       [Contribute](/docs/docs/CONTRIBUTING.md)    | ✅ | Wix |
 
 |       buttons        | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
