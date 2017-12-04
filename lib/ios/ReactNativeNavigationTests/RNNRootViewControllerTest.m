@@ -172,7 +172,7 @@
 
 -(void)testTopBarTransparent_BOOL_True {
 	NSNumber* topBarTransparentInput = @(1);
-	self.options.topBarTransparent = topBarTransparentInput;
+	self.options.topBar.transparent = topBarTransparentInput;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
@@ -183,7 +183,7 @@
 -(void)testTopBarTransparent_BOOL_false {
 	NSNumber* topBarTransparentInput = @(0);
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	self.options.topBarTransparent = topBarTransparentInput;
+	self.options.topBar.transparent = topBarTransparentInput;
 	[self.uut viewWillAppear:false];
 	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
 	XCTAssertFalse(transparentView);
@@ -468,14 +468,14 @@
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
 }
 -(void)testTopBarLargeTitle_true {
-	self.options.topBarLargeTitle = @(1);
+	self.options.topBar.largeTitle = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
 }
 -(void)testTopBarLargeTitle_false {
-	self.options.tabBarHidden = @(0);
+	self.options.tabBar.hidden = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
