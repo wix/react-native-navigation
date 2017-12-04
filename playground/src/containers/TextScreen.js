@@ -49,6 +49,7 @@ class TextScreen extends Component {
   }
 
   onClickSwitchToTab() {
+<<<<<<< HEAD
     Navigation.setOptions(this.props.containerId, {
       bottomTabs: {
         currentTabIndex: 1,
@@ -71,6 +72,18 @@ class TextScreen extends Component {
       sideMenu: {
         [side]: {
           visible: true
+=======
+    if (this.props.containerId === 'Container5') {
+      Navigation.setOptions(this.props.containerId, {
+        tabBar: {
+          currentTabIndex: 1
+        }
+      });
+    } else {
+      Navigation.setOptions(this.props.containerId, {
+        tabBar: {
+          currentTabContainerID: 'Container5'
+>>>>>>> lint fix
         }
       }
     });
