@@ -27,10 +27,10 @@
 	
 	for (NSString* methodName in methods) {
 		SEL s = NSSelectorFromString(methodName);
-		NSMethodSignature* signature = [self.uut methodSignatureForSelector:s];
-		NSInvocation* invocation = [NSInvocation invocationWithMethodSignature:signature];
-		invocation.selector = s;
-		XCTAssertThrowsSpecificNamed([invocation invokeWithTarget:self.uut], NSException, @"BridgeNotLoadedError");
+		IMP imp = [uut methodForSelector:s];
+		void (*func)(id, SEL, id, id, id) = (void *)imp;
+		
+		XCTAssertThrowsSpecificNamed(func(uut,s, nil, nil, nil), NSException, @"BridgeNotLoadedError");
 	}
 }
 

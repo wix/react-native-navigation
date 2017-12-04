@@ -47,11 +47,11 @@
 	}
 }
 
--(void) push:(NSString*)containerId layout:(NSDictionary*)layout {
+-(void) push:(NSString*)containerId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
 	UIViewController *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
-	[_navigationStackManager push:newVc onTop:containerId];
+	[_navigationStackManager push:newVc onTop:containerId completion:completion];
 }
 
 -(void) pop:(NSString*)containerId {
@@ -72,11 +72,11 @@
 	[_navigationStackManager popToRoot:containerId];
 }
 
--(void) showModal:(NSDictionary*)layout {
+-(void) showModal:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
 	UIViewController *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
-	[_modalManager showModal:newVc];
+	[_modalManager showModal:newVc completion:completion];
 }
 
 -(void) dismissModal:(NSString*)containerId {
