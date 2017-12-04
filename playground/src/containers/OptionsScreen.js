@@ -120,12 +120,16 @@ class OptionsScreen extends Component {
 
   onClickTopBarTransparent() {
     Navigation.setOptions(this.props.containerId, {
-      topBarTransparent: true
+      topBar : {
+        transparent: true
+      }
     });
   }
   onClickTopBarOpaque() {
     Navigation.setOptions(this.props.containerId, {
-      topBarTransparent: false
+      topBar : {
+        transparent: false
+      }
     });
   }
   onClickShowTopBar() {
