@@ -16,6 +16,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) NSNumber* noBorder;
 @property (nonatomic, strong) NSNumber* blur;
 @property (nonatomic, strong) NSNumber* animateHide;
+@property (nonatomic, strong) NSNumber* largeTitle;
+@property (nonatomic, strong) NSNumber* transparent;
 
 -(instancetype)init;
 -(instancetype)initWithDict:(NSDictionary *)topBarOptions;
