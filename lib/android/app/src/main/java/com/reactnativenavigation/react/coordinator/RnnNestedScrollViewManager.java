@@ -8,7 +8,7 @@ import com.facebook.react.uimanager.ViewGroupManager;
 
 import java.util.List;
 
-public class NestedScrollViewManager extends ViewGroupManager<RnnNestedScrollView> {
+public class RnnNestedScrollViewManager extends ViewGroupManager<RnnNestedScrollView> {
 
 	private static final String CLASS_NAME = "RnnNestedScrollView";
 
@@ -24,6 +24,8 @@ public class NestedScrollViewManager extends ViewGroupManager<RnnNestedScrollVie
 
 	@Override
 	public void addView(RnnNestedScrollView parent, View child, int index) {
-		super.addView(parent, child, index);
+//		super.addView(parent, child, index);
+		parent.addViewToContainer(child);
+		reorderChildrenByZIndex(parent);
 	}
 }
