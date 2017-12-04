@@ -54,24 +54,21 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		if (self.topBar.title) {
 			viewController.navigationItem.title = self.topBar.title;
 		}
-
-		if (self.topBar.largeTitle){
-			if ([self.topBar.largeTitle boolValue]) {
-				if (@available(iOS 11.0, *)) {
+		
+		if (@available(iOS 11.0, *)) {
+			if (self.topBar.largeTitle){
+				if ([self.topBar.largeTitle boolValue]) {
 					viewController.navigationController.navigationBar.prefersLargeTitles = YES;
 					viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
-				}
-			} else {
-				if (@available(iOS 11.0, *)) {
+				} else {
 					viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
 				}
-			}
-		} else {
-			if (@available(iOS 11.0, *)) {
+			} else {
 				viewController.navigationController.navigationBar.prefersLargeTitles = NO;
 				viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
 			}
 		}
+		
 		
 		if (self.topBar.textFontFamily || self.topBar.textFontSize || self.topBar.textColor) {
 			NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
