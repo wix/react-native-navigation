@@ -121,6 +121,10 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 		}
 	}
 	
+	if (self.disabledBackGesture) {
+		viewController.navigationController.interactivePopGestureRecognizer.enabled = ![self.disabledBackGesture boolValue];
+	}
+	
 	if (self.screenBackgroundColor) {
 		UIColor* screenColor = [RCTConvert UIColor:self.screenBackgroundColor];
 		viewController.view.backgroundColor = screenColor;

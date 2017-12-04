@@ -122,6 +122,22 @@
 	XCTAssertTrue([self.uut.view.backgroundColor isEqual:expectedColor]);
 }
 
+-(void)testDisabledBackGesture_true{
+	NSNumber* disabledBackGesture = @(1);
+	self.options.disabledBackGesture = disabledBackGesture;
+	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertFalse(self.uut.navigationController.interactivePopGestureRecognizer.enabled);
+}
+
+-(void)testDisabledBackGesture_false{
+	NSNumber* disabledBackGesture = @(0);
+	self.options.disabledBackGesture = disabledBackGesture;
+	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertTrue(self.uut.navigationController.interactivePopGestureRecognizer.enabled);
+}
+
 -(void)testTopBarTextFontFamily_validFont{
 	NSString* inputFont = @"HelveticaNeue";
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
