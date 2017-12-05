@@ -9,6 +9,7 @@ const OrientationSelectScreen = require('./OrientationSelectScreen');
 const OrientationDetectScreen = require('./OrientationDetectScreen');
 const ScrollViewScreen = require('./ScrollViewScreen');
 const CustomDialog = require('./CustomDialog');
+const BandHandlerScreen = require('./BackHandlerScreen');
 
 function registerContainers() {
   Navigation.registerContainer(`navigation.playground.ScrollViewScreen`, () => ScrollViewScreen);
@@ -21,6 +22,7 @@ function registerContainers() {
   Navigation.registerContainer(`navigation.playground.OrientationSelectScreen`, () => OrientationSelectScreen);
   Navigation.registerContainer(`navigation.playground.OrientationDetectScreen`, () => OrientationDetectScreen);
   Navigation.registerContainer('navigation.playground.CustomDialog', () => CustomDialog);
+  Navigation.registerContainer('navigation.playground.BackHandlerScreen', () => BandHandlerScreen);
 }
 
 module.exports = {
