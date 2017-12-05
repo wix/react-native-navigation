@@ -13,7 +13,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
 
 		options.title = json.optString("title", NO_VALUE);
 		options.backgroundColor = json.optInt("backgroundColor", NO_COLOR_VALUE);
-		options.textColor = json.optInt("textColor", NO_INT_VALUE);
+		options.textColor = json.optInt("textColor", NO_COLOR_VALUE);
 		options.textFontSize = (float) json.optDouble("textFontSize", NO_FLOAT_VALUE);
 		options.textFontFamily = json.optString("textFontFamily", NO_VALUE);
 		options.hidden = NavigationOptions.BooleanOptions.parse(json.optString("hidden"));
@@ -36,7 +36,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
 		if (!NO_VALUE.equals(other.title)) title = other.title;
 		if (other.backgroundColor != NO_COLOR_VALUE)
 			backgroundColor = other.backgroundColor;
-		if (other.textColor != NO_INT_VALUE)
+		if (other.textColor != NO_COLOR_VALUE)
 			textColor = other.textColor;
 		if (other.textFontSize != NO_FLOAT_VALUE)
 			textFontSize = other.textFontSize;
