@@ -69,7 +69,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | dismissOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	✅ |
 | customTransition            |   ✅        |	[Contribute](/docs/docs/CONTRIBUTING.md) |
 | Screen Visibility        | ✅     |✅|
-| async commands (await push)     |  [Contribute](/docs/docs/CONTRIBUTING.md)        | WIP @cool04ek   |
+| async commands (await push)     |  [Contribute](/docs/docs/CONTRIBUTING.md)        |✅   |
 
 ### Navigation Options
 
@@ -96,7 +96,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 |       tabBar         | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
 | drawUnder          |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
-| hidden   |   ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)        | @gtchance|
+| hidden   |   ✅     |    ✅        | @gtchance |
 | tabBadge          |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md)| Wix|
 | currentTab by Index          |       ✅    | ✅ | Wix |
 | currentTab by cointainerId         |       [Contribute](/docs/docs/CONTRIBUTING.md)    | ✅ | Wix |
