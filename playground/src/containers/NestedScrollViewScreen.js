@@ -1,9 +1,8 @@
 const React = require('react');
 const { Component } = require('react');
-
-const { StyleSheet, Text, View } = require('react-native');
-
+const { StyleSheet, Text } = require('react-native');
 const Navigation = require('react-native-navigation');
+
 const CoordinatorLayout = Navigation.CoordinatorLayout;
 const NestedScrollView = Navigation.NestedScrollView;
 const FloatingActionButton = Navigation.FloatingActionButton;
