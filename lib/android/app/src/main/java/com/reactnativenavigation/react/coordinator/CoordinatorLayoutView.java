@@ -37,6 +37,5 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
 	public void requestLayout() {
 		super.requestLayout();
 		post(measureAndLayout);
-		Log.i("NIGA", "children count = " + getChildCount());
 	}
 }
