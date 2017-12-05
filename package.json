@@ -48,21 +48,25 @@
     "lodash": "4.x.x"
   },
   "devDependencies": {
-    "xo": "0.18.x",
+    "detox": "5.x.x",
+    "eslint": "^4.12.1",
+    "eslint-config-airbnb": "^16.1.0",
     "eslint-config-xo": "0.18.x",
     "eslint-config-xo-react": "0.14.x",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "7.x.x",
-    "detox": "5.x.x",
     "jest": "21.x.x",
     "mocha": "4.x.x",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
-    "react-test-renderer": "16.0.0-alpha.6",
-    "remx": "2.x.x",
-    "redux": "3.x.x",
     "react-redux": "5.x.x",
+    "react-test-renderer": "16.0.0-alpha.6",
+    "redux": "3.x.x",
+    "remx": "2.x.x",
     "semver": "5.x.x",
-    "shell-utils": "1.x.x"
+    "shell-utils": "1.x.x",
+    "xo": "0.18.x"
   },
   "babel": {
     "env": {
