@@ -52,7 +52,7 @@
     "eslint-config-xo": "0.18.x",
     "eslint-config-xo-react": "0.14.x",
     "eslint-plugin-react": "7.x.x",
-    "detox": "5.x.x",
+    "detox": "6.x.x",
     "jest": "21.x.x",
     "mocha": "4.x.x",
     "react": "16.0.0-alpha.6",
@@ -95,6 +95,16 @@
         "functions": 100,
         "lines": 100,
         "statements": 100
+      }
+    }
+  },
+  "detox": {
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
+        "build": "xcodebuild -project playground/ios/playground.xcodeproj -scheme playground -configuration Debug -sdk iphonesimulator RCT_NO_LAUNCH_PACKAGER=true -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES",
+        "type": "ios.simulator",
+        "name": "iPhone 7"
       }
     }
   },
