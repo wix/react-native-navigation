@@ -10,29 +10,40 @@ const FloatingActionButton = Navigation.FloatingActionButton;
 
 class NestedScrollViewScreen extends Component {
 
+  static get navigationOptions() {
+    return {
+      topBar: {
+        title: 'Fab test',
+        textColor: 'black',
+        textFontSize: 16,
+        textFontFamily: 'HelveticaNeue-Italic'
+      }
+    };
+  }
+
   render() {
     return (
       <CoordinatorLayout style={{ flex: 1 }}>
         <NestedScrollView>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
-          <Text style={styles.text}>Test Nigga</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
+          <Text style={styles.text}>Test Row</Text>
         </NestedScrollView>
         <FloatingActionButton
           collapsable={false}
