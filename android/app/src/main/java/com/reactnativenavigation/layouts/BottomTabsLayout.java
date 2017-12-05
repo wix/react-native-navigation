@@ -229,8 +229,6 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
             screenStacks[i].updateScreenStyle(screenInstanceId, styleParams);
         }
-
-        bottomTabs.updateTabStyle(styleParams);
     }
 
     @Override
