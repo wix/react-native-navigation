@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -158,6 +160,12 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
         final WindowManager.LayoutParams attributes = getWindow().getAttributes();
         attributes.windowAnimations = ModalAnimationFactory.create(screenParams);
         getWindow().setAttributes(attributes);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, @NonNull KeyEvent event) {
+        NavigationApplication.instance.getActivityCallbacks().onKeyUp(keyCode, event);
+        return super.onKeyUp(keyCode, event);
     }
 
     @Override
