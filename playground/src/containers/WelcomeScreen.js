@@ -104,8 +104,8 @@ class WelcomeScreen extends Component {
     });
   }
 
-  onClickPush() {
-    Navigation.push(this.props.containerId, {
+  async onClickPush() {
+    await Navigation.push(this.props.containerId, {
       name: 'navigation.playground.PushedScreen'
     });
   }
@@ -116,8 +116,8 @@ class WelcomeScreen extends Component {
     });
   }
 
-  onClickShowModal() {
-    Navigation.showModal({
+  async onClickShowModal() {
+    await Navigation.showModal({
       container: {
         name: 'navigation.playground.ModalScreen'
       }

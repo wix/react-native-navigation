@@ -13,10 +13,12 @@ class OptionsScreen extends Component {
 
   static get navigationOptions() {
     return {
-      title: 'Static Title',
-      topBarTextColor: 'black',
-      topBarTextFontSize: 16,
-      topBarTextFontFamily: 'HelveticaNeue-Italic',
+      topBar: {
+        title: 'Static Title',
+        textColor: 'black',
+        textFontSize: 16,
+        textFontFamily: 'HelveticaNeue-Italic'
+      },
       rightButtons: [{
         id: BUTTON_ONE,
         testID: BUTTON_ONE,
@@ -48,7 +50,8 @@ class OptionsScreen extends Component {
         <Button title="Show Top Bar" onPress={this.onClickShowTopBar} />
         <Button title="Hide Top Bar" onPress={this.onClickHideTopBar} />
         <Button title="scrollView Screen" onPress={this.onClickScrollViewScreen} />
-        <Button title="Show alert" onPress={this.onClickAlert} />
+        <Button title="Show custom alert" onPress={this.onClickAlert} />
+        <Button title="Show snackbar" onPress={this.onClickSnackbar} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
@@ -85,11 +88,13 @@ class OptionsScreen extends Component {
 
   onClickDynamicOptions() {
     Navigation.setOptions(this.props.containerId, {
-      title: 'Dynamic Title',
-      topBarTextColor: '#00FFFF',
-      topBarButtonColor: 'red',
-      topBarTextFontSize: 20,
-      topBarTextFontFamily: 'HelveticaNeue-CondensedBold'
+      topBar: {
+        title: 'Dynamic Title',
+        textColor: '#00FFFF',
+        buttonColor: 'red',
+        textFontSize: 20,
+        textFontFamily: 'HelveticaNeue-CondensedBold'
+      }
     });
   }
 
@@ -101,21 +106,36 @@ class OptionsScreen extends Component {
 
   onClickShowTopBar() {
     Navigation.setOptions(this.props.containerId, {
-      topBarHidden: false,
-      animateTopBarHide: true
+      topBar: {
+        hidden: false,
+        animateHide: true
+      }
     });
   }
 
   onClickHideTopBar() {
     Navigation.setOptions(this.props.containerId, {
-      topBarHidden: true,
-      animateTopBarHide: true
+      topBar: {
+        hidden: true,
+        animateHide: true
+      }
     });
   }
 
   onClickAlert() {
-    Navigation.showOverlay('alert', {
-      text: 'test!'
+    Navigation.showOverlay('custom', 'navigation.playground.CustomDialog');
+  }
+
+  onClickSnackbar() {
+    Navigation.showOverlay('snackbar', {
+      text: 'Test!',
+      // textColor: 'red',
+      // backgroundColor: 'green',
+      duration: 'long',
+      button: {
+        text: 'Action',
+        textColor: 'blue'
+      }
     });
   }
 }

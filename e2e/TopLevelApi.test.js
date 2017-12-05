@@ -34,13 +34,10 @@ describe('top level api', () => {
   it('unmount is called on pop', async () => {
     await elementByLabel('Push Lifecycle Screen').tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
-    try {
-      await element(by.trait(['button']).and(by.label('Back'))).tap();
-    } catch (err) {
-      await element(by.type('_UIModernBarButton').and(by.label('Back'))).tap();
-    }
-    await expect(elementByLabel('didDisappear')).toBeVisible();
+    await Utils.tapBackIos();
     await expect(elementByLabel('componentWillUnmount')).toBeVisible();
+    await element(by.traits(['button']).and(by.label('OK'))).atIndex(0).tap();
+    await expect(elementByLabel('didDisappear')).toBeVisible();
   });
 });
 

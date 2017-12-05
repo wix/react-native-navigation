@@ -4,13 +4,13 @@ package com.reactnativenavigation.viewcontrollers.overlay;
 import android.content.Context;
 
 import com.reactnativenavigation.parse.OverlayOptions;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 
-public class OverlayFabric {
+public class OverlayFactory {
 
-	private enum Overlay {
+	public enum Overlay {
 		AlertDialog("alert", new AlertOverlay()),
 		Snackbar("snackbar", new SnackbarOverlay()),
-		Fab("fab", new FabOverlay()),
 		CustomDialog("custom", new CustomOverlay());
 
 		private String name;
@@ -27,12 +27,12 @@ public class OverlayFabric {
 					return overlay;
 				}
 			}
-			return CustomDialog;
+			return AlertDialog;
 		}
 	}
 
-	public static OverlayInterface create(String type, Context context, OverlayOptions options) {
-		return Overlay.create(type).overlayInstance.create(context, options);
+	public static OverlayInterface create(String type, ViewController viewController, OverlayOptions options) {
+		return Overlay.create(type).overlayInstance.create(viewController, options);
 	}
 
 }
