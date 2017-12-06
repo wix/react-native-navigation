@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +18,6 @@ import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 
 import java.util.ArrayList;
-
-//https://github.com/wix/react-native-navigation/blob/d089ec845b724df1f4d5ba6424159f3e55043975/android/app/src/main/java/com/reactnativenavigation/views/TitleBarButton.java
 
 public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 	private Toolbar toolbar;
@@ -34,6 +33,7 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
 	public void addToMenu(Context context, final Menu menu) {
 		MenuItem menuItem = menu.add(button.title);
+		menuItem.
 		menuItem.setShowAsAction(button.showAsAction);
 		menuItem.setEnabled(button.disabled != NavigationOptions.BooleanOptions.True);
 		menuItem.setOnMenuItemClickListener(this);
@@ -45,28 +45,54 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 		}
 	}
 
-	private void setIcon(Context context, final MenuItem menuItem) {
-		if (button.icon != null) {
-			ImageUtils.tryLoadIcon(context, button.icon, new ImageUtils.ImageLoadingListener() {
-				@Override
-				public void onComplete(@NonNull Drawable drawable) {
-					icon = drawable;
-					UiUtils.runOnMainThread(new Runnable() {
-						@Override
-						public void run() {
-							menuItem.setIcon(icon);
-							setIconColor();
-						}
-					});
-				}
-
-				@Override
-				public void onError(Throwable error) {
-					//TODO: handle
-					error.printStackTrace();
-				}
-			});
+	public void setNavigationIcon(Context context) {
+		if (!hasIcon()) {
+			Log.w("RNN", "Left button needs to have an icon");
+			return;
 		}
+
+		ImageUtils.tryLoadIcon(context, button.icon, new ImageUtils.ImageLoadingListener() {
+			@Override
+			public void onComplete(@NonNull Drawable drawable) {
+				icon = drawable;
+				UiUtils.runOnMainThread(new Runnable() {
+					@Override
+					public void run() {
+						setIconColor();
+						setNavigationClickListener();
+						toolbar.setNavigationIcon(icon);
+					}
+				});
+			}
+
+			@Override
+			public void onError(Throwable error) {
+				//TODO: handle
+				error.printStackTrace();
+			}
+		});
+	}
+
+	private void setIcon(Context context, final MenuItem menuItem) {
+		ImageUtils.tryLoadIcon(context, button.icon, new ImageUtils.ImageLoadingListener() {
+			@Override
+			public void onComplete(@NonNull Drawable drawable) {
+				icon = drawable;
+				UiUtils.runOnMainThread(new Runnable() {
+					@Override
+					public void run() {
+						menuItem.setIcon(icon);
+						setIconColor();
+					}
+				});
+			}
+
+			@Override
+			public void onError(Throwable error) {
+				//TODO: handle
+				error.printStackTrace();
+			}
+		});
 	}
 
 	private void setIconColor() {
@@ -92,9 +118,18 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 		});
 	}
 
+	private void setNavigationClickListener() {
+		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				containerView.sendOnNavigationButtonPressed(containerView.getContainerId(), button.id);
+			}
+		});
+	}
+
 	@Override
 	public boolean onMenuItemClick(MenuItem menuItem) {
-		this.containerView.sendOnNavigationButtonPressed(this.containerView.getContainerId(), this.button.id);
+		this.containerView.sendOnNavigationButtonPressed(containerView.getContainerId(), button.id);
 		return true;
 	}
 

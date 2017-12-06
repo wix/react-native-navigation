@@ -27,9 +27,9 @@ public class Button {
 	public String buttonFontWeight;
 	public String icon;
 
-	public static Button parseJson(JSONObject json) throws JSONException {
+	public static Button parseJson(JSONObject json)  {
 		Button button = new Button();
-		button.id = json.getString("id");
+		button.id = json.optString("id");
 		button.title = json.optString("title", NO_VALUE);
 		button.disabled = NavigationOptions.BooleanOptions.parse(json.optString("disabled", NO_VALUE));
 		button.disableIconTint = NavigationOptions.BooleanOptions.parse(json.optString("disableIconTint", NO_VALUE));
@@ -46,16 +46,17 @@ public class Button {
 		return button;
 	}
 
-	public static ArrayList<Button> parseJsonArray(JSONArray jsonArray) throws JSONException {
+	public static ArrayList<Button> parseJsonArray(JSONArray jsonArray) {
 		ArrayList<Button> buttons = new ArrayList<>();
 
 		if (jsonArray == null) {
-			return buttons;
+			return null;
 		}
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject json = jsonArray.getJSONObject(i);
-			buttons.add(Button.parseJson(json));
+			JSONObject json = jsonArray.optJSONObject(i);
+			Button button =	Button.parseJson(json);
+			buttons.add(button);
 		}
 
 		return buttons;

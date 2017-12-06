@@ -1,16 +1,25 @@
 package com.reactnativenavigation.views;
 
-import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
+import com.reactnativenavigation.parse.Button;
+import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.utils.ImageUtils;
+import com.reactnativenavigation.utils.UiUtils;
+import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 
 public class TopBar extends AppBarLayout {
 	private final Toolbar titleBar;
@@ -49,13 +58,8 @@ public class TopBar extends AppBarLayout {
 	}
 
 	public void setButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
-        Menu menu = getTitleBar().getMenu();
-        if(rightButtons.isEmpty()) {
-            menu.clear();
-        } else {
-            setRightButtons(getContext(), menu, rightButtons);
-        }
-
+		setLeftButtons(leftButtons);
+		setRightButtons(rightButtons);
     }
 
 	public TextView getTitleTextView() {
