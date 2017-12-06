@@ -33,7 +33,6 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
 	public void addToMenu(Context context, final Menu menu) {
 		MenuItem menuItem = menu.add(button.title);
-		menuItem.
 		menuItem.setShowAsAction(button.showAsAction);
 		menuItem.setEnabled(button.disabled != NavigationOptions.BooleanOptions.True);
 		menuItem.setOnMenuItemClickListener(this);
