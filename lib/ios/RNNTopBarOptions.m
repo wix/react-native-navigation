@@ -23,7 +23,6 @@
 	self.noBorder = [topBarOptions valueForKey:@"noBorder"];
 	self.animateHide =[topBarOptions valueForKey:@"animateHide"];
 	self.largeTitle =[topBarOptions valueForKey:@"largeTitle"];
-	self.transparent =[topBarOptions valueForKey:@"transparent"];
 	
 	return self;
 }
