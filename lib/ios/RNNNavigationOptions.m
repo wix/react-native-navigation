@@ -121,8 +121,8 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 		}
 	}
 	
-	if (self.disabledBackGesture) {
-		viewController.navigationController.interactivePopGestureRecognizer.enabled = ![self.disabledBackGesture boolValue];
+	if (self.popGesture) {
+		viewController.navigationController.interactivePopGestureRecognizer.enabled = [self.popGesture boolValue];
 	}
 	
 	if (self.screenBackgroundColor) {
