@@ -23,6 +23,7 @@ public class BottomTabs extends AHBottomNavigation {
 
     public BottomTabs(Context context) {
         super(context);
+
         setForceTint(true);
         setId(ViewUtils.generateViewId());
         createVisibilityAnimator();
@@ -32,17 +33,11 @@ public class BottomTabs extends AHBottomNavigation {
 
     public void addTabs(List<ScreenParams> params, OnTabSelectedListener onTabSelectedListener) {
         for (ScreenParams screenParams : params) {
-            AHBottomNavigationItem item = new AHBottomNavigationItem(screenParams.tabLabel, screenParams.tabIcon,
-                    Color.GRAY);
+            AHBottomNavigationItem item = new AHBottomNavigationItem(screenParams.tabLabel, screenParams.tabIcon, Color.GRAY);
             addItem(item);
             setOnTabSelectedListener(onTabSelectedListener);
         }
         setTitlesDisplayState();
-    }
-
-    public void updateTabStyle(Bundle styleParams) {
-        StyleParams parsedStyleParams = new StyleParamsParser(styleParams).parse();
-        this.setStyleFromScreen(parsedStyleParams);
     }
 
     public void setStyleFromScreen(StyleParams params) {

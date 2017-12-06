@@ -16,8 +16,11 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.events.BottomTabsStyleChangedEvent;
+import com.reactnativenavigation.events.Event;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
+import com.reactnativenavigation.events.Subscriber;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ContextualMenuParams;
@@ -49,7 +52,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressLint("ViewConstructor")
-public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.OnTabSelectedListener {
+public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.OnTabSelectedListener, Subscriber {
 
     private ActivityParams params;
     private SnackbarAndFabContainer snackbarAndFabContainer;
@@ -67,6 +70,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     public BottomTabsLayout(AppCompatActivity activity, ActivityParams params) {
         super(activity);
         this.params = params;
+        EventBus.instance.register(this);
         leftSideMenuParams = params.leftSideMenuParams;
         rightSideMenuParams = params.rightSideMenuParams;
         screenStacks = new ScreenStack[params.tabParams.size()];
@@ -229,8 +233,6 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
             screenStacks[i].updateScreenStyle(screenInstanceId, styleParams);
         }
-
-        bottomTabs.updateTabStyle(styleParams);
     }
 
     @Override
@@ -362,7 +364,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     private boolean hasBackgroundColor(StyleParams params) {
         return params.screenBackgroundColor != null &&
-            params.screenBackgroundColor.hasColor();
+                params.screenBackgroundColor.hasColor();
     }
 
     private void setStyleFromScreen(StyleParams params) {
@@ -393,7 +395,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         performOnStack(params.getNavigatorId(), new Task<ScreenStack>() {
             @Override
             public void run(ScreenStack stack) {
-            stack.pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
+                stack.pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
                     @Override
                     public void onScreenPopAnimationEnd() {
                         setBottomTabsStyleFromCurrentScreen();
@@ -452,8 +454,8 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
             task.run(screenStack);
         } catch (ScreenStackNotFoundException e) {
             Log.e("Navigation", "Could not perform action on stack [" + navigatorId + "]." +
-                                      "This should not have happened, it probably means a navigator action" +
-                                      "was called from an unmounted tab.");
+                    "This should not have happened, it probably means a navigator action" +
+                    "was called from an unmounted tab.");
         }
     }
 
@@ -563,6 +565,15 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
             }
         }
         throw new ScreenStackNotFoundException("Stack " + navigatorId + " not found");
+    }
+
+    @Override
+    public void onEvent(Event event) {
+        if (event.getType().equals(BottomTabsStyleChangedEvent.TYPE)) {
+            BottomTabsStyleChangedEvent styleChangedEvent = (BottomTabsStyleChangedEvent) event;
+
+            this.setStyleFromScreen(styleChangedEvent.styleParams);
+        }
     }
 
     private class ScreenStackNotFoundException extends RuntimeException {

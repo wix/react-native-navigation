@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.controllers.NavigationActivity;
+import com.reactnativenavigation.events.BottomTabsStyleChangedEvent;
 import com.reactnativenavigation.events.ContextualMenuHiddenEvent;
 import com.reactnativenavigation.events.Event;
 import com.reactnativenavigation.events.EventBus;
@@ -110,6 +111,8 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         if (styleParams.screenBackgroundColor.hasColor()) {
             setBackgroundColor(styleParams.screenBackgroundColor.getColor());
         }
+
+        EventBus.instance.post(new BottomTabsStyleChangedEvent(this.styleParams));
     }
 
     public void updateBottomTabsVisibility(boolean hidden) {
@@ -210,7 +213,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setTitleBarTitle(String title) {
-       topBar.setTitle(title, styleParams);
+        topBar.setTitle(title, styleParams);
     }
 
     public void setTitleBarSubtitle(String subtitle) {
