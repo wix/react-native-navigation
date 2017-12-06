@@ -39,7 +39,9 @@ class TextScreen extends Component {
   onClickSwitchToTab() {
     Navigation.setOptions(this.props.containerId, {
       tabBar: {
-        currentTabIndex: 1
+        currentTabIndex: 1,
+        hidden: true,
+        animateHide: true
       }
     });
   }
