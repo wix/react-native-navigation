@@ -1,6 +1,8 @@
 package com.reactnativenavigation.parse;
 
 
+import com.reactnativenavigation.parse.NavigationOptions.BooleanOptions;
+
 import org.json.JSONObject;
 
 public class BottomTabsOptions implements DEFAULT_VALUES {
@@ -12,15 +14,15 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
 		options.currentTabId = json.optString("currentTabId", NO_VALUE);
 		options.currentTabIndex = json.optInt("currentTabIndex", NO_INT_VALUE);
 		options.tabBadge = json.optInt("tabBadge", NO_INT_VALUE);
-		options.hidden = NavigationOptions.BooleanOptions.parse(json.optString("hidden"));
-		options.animateHide = NavigationOptions.BooleanOptions.parse(json.optString("animateHide"));
+		options.hidden = BooleanOptions.parse(json.optString("hidden"));
+		options.animateHide = BooleanOptions.parse(json.optString("animateHide"));
 
 		return options;
 	}
 
 	public int tabBadge = NO_INT_VALUE;
-	public NavigationOptions.BooleanOptions hidden = NavigationOptions.BooleanOptions.False;
-	public NavigationOptions.BooleanOptions animateHide = NavigationOptions.BooleanOptions.False;
+	public BooleanOptions hidden = BooleanOptions.False;
+	public BooleanOptions animateHide = BooleanOptions.False;
 	public int currentTabIndex = NO_INT_VALUE;
 	public String currentTabId = NO_VALUE;
 
@@ -29,16 +31,34 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
 			currentTabId = other.currentTabId;
 		}
 		if (NO_INT_VALUE != other.currentTabIndex) {
-			currentTabId = other.currentTabId;
+            currentTabIndex = other.currentTabIndex;
 		}
 		if (NO_INT_VALUE != other.tabBadge) {
 			tabBadge = other.tabBadge;
 		}
-		if (other.hidden != NavigationOptions.BooleanOptions.NoValue) {
+		if (other.hidden != BooleanOptions.NoValue) {
 			hidden = other.hidden;
 		}
-		if (other.animateHide != NavigationOptions.BooleanOptions.NoValue) {
+		if (other.animateHide != BooleanOptions.NoValue) {
 			animateHide = other.animateHide;
 		}
 	}
+
+    void mergeWithDefault(final BottomTabsOptions defaultOptions) {
+        if (NO_VALUE.equals(currentTabId)) {
+            currentTabId = defaultOptions.currentTabId;
+        }
+        if (NO_INT_VALUE == currentTabIndex) {
+            currentTabIndex = defaultOptions.currentTabIndex;
+        }
+        if (NO_INT_VALUE == tabBadge) {
+            tabBadge = defaultOptions.tabBadge;
+        }
+        if (hidden == BooleanOptions.NoValue) {
+            hidden = defaultOptions.hidden;
+        }
+        if (animateHide == BooleanOptions.NoValue) {
+            animateHide = defaultOptions.animateHide;
+        }
+    }
 }
