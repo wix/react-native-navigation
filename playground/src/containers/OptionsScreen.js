@@ -15,7 +15,7 @@ class OptionsScreen extends Component {
       topBar: {
         title: 'Static Title',
         textColor: 'black',
-        largeTitle: true,
+        largeTitle: false,
         hidden: false,
         textFontSize: 16,
         textFontFamily: 'HelveticaNeue-Italic'

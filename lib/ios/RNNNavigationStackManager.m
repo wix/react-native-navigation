@@ -51,7 +51,9 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 -(void)pushAfterLoad:(NSDictionary*)notif {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
 	[[self.fromVC navigationController] pushViewController:self.toVC animated:YES];
+	self.toVC = nil;
 	self.fromVC.navigationController.interactivePopGestureRecognizer.delegate = nil;
+	self.fromVC = nil;
 }
 
 -(void)pop:(NSString *)containerId withAnimationData:(NSDictionary *)animationData {

@@ -7,7 +7,6 @@ class WelcomeScreen extends Component {
   static get navigationOptions() {
     return {
       topBar: {
-        title: 'Welcome',
         largeTitle: false
       }
     };

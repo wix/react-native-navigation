@@ -46,16 +46,16 @@
   },
   "dependencies": {
     "lodash": "4.x.x",
-    "prop-types": "^15.5.10"
+    "prop-types": "15.x.x"
   },
   "devDependencies": {
     "xo": "0.18.x",
     "eslint-config-xo": "0.18.x",
-    "eslint-config-xo-react": "0.14.x",
+    "eslint-config-xo-react": "0.13.x",
     "eslint-plugin-react": "7.x.x",
-    "detox": "5.x.x",
+    "detox": "canary",
     "jest": "21.x.x",
-    "mocha": "4.x.x",
+    "mocha": "3.x.x",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
     "react-test-renderer": "16.0.0-alpha.6",
@@ -86,8 +86,7 @@
       "integration/**/*.js",
       "!lib/src/index.js",
       "!lib/src/Navigation.js",
-      "!lib/src/adapters/**/*",
-      "!lib/src/components/**/*"
+      "!lib/src/adapters/**/*"
     ],
     "resetMocks": true,
     "resetModules": true,
@@ -149,7 +148,6 @@
         }
       ],
       "react/jsx-tag-spacing": 0,
-      "react/jsx-curly-brace-presence": 0,
       "react/jsx-sort-props": 0,
       "react/jsx-boolean-value": 0,
       "react/prop-types": 0,

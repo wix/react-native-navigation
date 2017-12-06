@@ -4,7 +4,7 @@
 //
 //  Created by Vito on 12/30/14.
 //  Copyright (c) 2014 Vito. All rights reserved.
-//
+// 	project can be found at: https://github.com/vitoziv/VICMAImageView
 
 #import "VICMAImageView.h"
 
