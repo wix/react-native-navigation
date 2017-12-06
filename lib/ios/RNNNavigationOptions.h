@@ -18,6 +18,7 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) NSArray* rightButtons;
 @property (nonatomic, strong) NSNumber* statusBarBlur;
 @property (nonatomic, strong) NSNumber* statusBarHideWithTopBar;
+@property (nonatomic, strong) NSNumber* popGesture;
 @property (nonatomic, strong) RNNTopBarOptions* topBar;
 @property (nonatomic, strong) RNNTabBarOptions* tabBar;
 
