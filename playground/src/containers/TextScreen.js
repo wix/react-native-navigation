@@ -32,7 +32,7 @@ class TextScreen extends Component {
 
   onButtonPress() {
     Navigation.setOptions(this.props.containerId, {
-      tabBar: {
+      bottomTabs: {
         tabBadge: `TeSt`
       }
     });
@@ -40,7 +40,7 @@ class TextScreen extends Component {
 
   onClickSwitchToTab() {
     Navigation.setOptions(this.props.containerId, {
-      tabBar: {
+      bottomTabs: {
         currentTabIndex: 1,
         hidden: true,
         animateHide: true
@@ -50,7 +50,7 @@ class TextScreen extends Component {
 
   hideTabBar(hidden) {
     Navigation.setOptions(this.props.containerId, {
-      tabBar: {
+      bottomTabs: {
         hidden
       }
     });

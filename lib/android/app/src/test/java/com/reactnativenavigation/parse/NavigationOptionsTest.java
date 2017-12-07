@@ -29,14 +29,14 @@ public class NavigationOptionsTest extends BaseTest {
 
 		json.put("topBar", topBarJson);
 
-		JSONObject tabBarJson = new JSONObject();
-		tabBarJson.put("currentTabId", "ContainerId");
-		tabBarJson.put("currentTabIndex", 1);
-		tabBarJson.put("hidden", true);
-		tabBarJson.put("animateHide", true);
-		tabBarJson.put("tabBadge", 3);
+		JSONObject bottomTabsJson = new JSONObject();
+		bottomTabsJson.put("currentTabId", "ContainerId");
+		bottomTabsJson.put("currentTabIndex", 1);
+		bottomTabsJson.put("hidden", true);
+		bottomTabsJson.put("animateHide", true);
+		bottomTabsJson.put("tabBadge", 3);
 
-		json.put("tabBar", tabBarJson);
+		json.put("bottomTabs", bottomTabsJson);
 
 		NavigationOptions result = NavigationOptions.parse(json);
 		assertThat(result.topBarOptions.title).isEqualTo("the title");
