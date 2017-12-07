@@ -34,7 +34,7 @@ public class NavigationOptionsTest extends BaseTest {
 	public void parsesJson() throws Exception {
 		JSONObject json = new JSONObject()
                 .put("topBar", createTopBar())
-                .put("tabBar", createTabBar());
+                .put("bottomTabs", createTabBar());
 		NavigationOptions result = NavigationOptions.parse(json);
         assertResult(result);
 	}
