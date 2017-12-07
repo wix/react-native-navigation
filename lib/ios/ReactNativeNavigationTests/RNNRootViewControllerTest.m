@@ -172,16 +172,6 @@
 	XCTAssertFalse(self.uut.navigationController.navigationBar.translucent);
 }
 
--(void)testTopBarTransparent {
-	NSNumber* topBarTransparentInput = @(0);
-	self.options.topBar.transparent = topBarTransparentInput;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-	XCTAssertNotNil(self.uut.navigationController.navigationBar.shadowImage);
-	XCTAssertNotNil([self.uut.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault]);
-	XCTAssertTrue(CGRectEqualToRect(self.uut.navigationController.navigationBar.subviews.firstObject.frame, CGRectZero));
-}
-
 -(void)testTabBadge {
 	NSString* tabBadgeInput = @"5";
 	self.options.tabBar.tabBadge = tabBadgeInput;
@@ -196,6 +186,29 @@
 	
 }
 
+-(void)testTopBarTransparent_BOOL_True {
+	NSNumber* topBarTransparentInput = @(1);
+	self.options.topBar.transparent = topBarTransparentInput;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
+	XCTAssertTrue(transparentView);
+	XCTAssertTrue([NSStringFromCGRect(transparentView.frame) isEqual: NSStringFromCGRect(CGRectZero)]);
+}
+
+-(void)testTopBarTransparent_BOOL_false {
+	NSNumber* topBarTransparentInput = @(0);
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	self.options.topBar.transparent = topBarTransparentInput;
+	[self.uut viewWillAppear:false];
+	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
+	XCTAssertFalse(transparentView);
+}
+
+
+-(void)testStoreOriginalTopBarImages {
+	
+}
 
 -(void)testTopBarTextFontSize_withoutTextFontFamily_withoutTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
@@ -464,7 +477,26 @@
 	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
 }
 
-
+-(void)testTopBarLargeTitle_default {
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
+}
+-(void)testTopBarLargeTitle_true {
+	self.options.topBar.largeTitle = @(1);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
+}
+-(void)testTopBarLargeTitle_false {
+	self.options.tabBar.hidden = @(0);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
+}
 -(void)testTopBarBlur_false {
 	NSNumber* topBarBlurInput = @(0);
 	self.options.topBar.blur = topBarBlurInput;

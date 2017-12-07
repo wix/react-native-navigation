@@ -1,6 +1,4 @@
-
 #import "RNNCommandsHandler.h"
-
 #import "RNNModalManager.h"
 #import "RNNNavigationStackManager.h"
 #import "RNNNavigationOptions.h"
@@ -9,12 +7,14 @@
 @implementation RNNCommandsHandler {
 	RNNControllerFactory *_controllerFactory;
 	RNNStore *_store;
+	RCTBridge* _bridge;
 	RNNNavigationStackManager* _navigationStackManager;
 	RNNModalManager* _modalManager;
 }
 
--(instancetype) initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory {
+-(instancetype) initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory andBridge:(RCTBridge*)bridge {
 	self = [super init];
+	_bridge = bridge;
 	_store = store;
 	_controllerFactory = controllerFactory;
 	_navigationStackManager = [[RNNNavigationStackManager alloc] initWithStore:_store];
@@ -47,17 +47,35 @@
 	}
 }
 
--(void) push:(NSString*)containerId layout:(NSDictionary*)layout {
+-(void)push:(NSString*)containerId layout:(NSDictionary*)layout {
 	[self assertReady];
-	
+	NSDictionary* customAnimation = layout[@"data"][@"customTransition"];
 	UIViewController *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
-	[_navigationStackManager push:newVc onTop:containerId];
+	RCTBridge* bridge = _bridge;
+	if (customAnimation) {
+		if ([customAnimation objectForKey:@"animations"]) {
+			[_navigationStackManager push:newVc onTop:containerId customAnimationData:(NSDictionary*)customAnimation bridge:bridge];
+		} else {
+			[[NSException exceptionWithName:NSInvalidArgumentException reason:@"unsupported transitionAnimation" userInfo:nil] raise];
+		}
+	} else {
+		[_navigationStackManager push:newVc onTop:containerId customAnimationData:(NSDictionary*)nil bridge:bridge];
+	}
 }
 
--(void) pop:(NSString*)containerId {
+-(void)pop:(NSString*)containerId options:(NSDictionary*)options{
 	[self assertReady];
+	NSDictionary* animationData = options[@"customTransition"];
+	if (animationData){
+		if ([animationData objectForKey:@"animations"]) {
+			[_navigationStackManager pop:containerId withAnimationData:animationData];
+		} else {
+			[[NSException exceptionWithName:NSInvalidArgumentException reason:@"unsupported transitionAnimation" userInfo:nil] raise];
+		}
+	} else {
+		[_navigationStackManager pop:containerId withAnimationData:nil];
+	}
 	
-	[_navigationStackManager pop:containerId];
 }
 
 -(void) popTo:(NSString*)containerId {

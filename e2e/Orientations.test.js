@@ -50,7 +50,6 @@ describe('orientation', () => {
   it('landscape only', async () => {
     await elementById(testIDs.ORIENTATION_BUTTON).tap();
     await elementById(testIDs.LANDSCAPE_ORIENTATION_BUTTON).tap();
-    await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
     await device.setOrientation('landscape');
     await expect(element(by.id('currentOrientation'))).toHaveText('Landscape');
     await device.setOrientation('portrait');
