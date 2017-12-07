@@ -1,7 +1,10 @@
 package com.reactnativenavigation.parse;
 
+import android.support.annotation.NonNull;
+
 import com.reactnativenavigation.BaseTest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 
@@ -10,47 +13,114 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class NavigationOptionsTest extends BaseTest {
 
-	@Test
+    private static final String TITLE = "the title";
+    private static final int TOP_BAR_BACKGROUND_COLOR = 0xff123456;
+    private static final int TOP_BAR_TEXT_COLOR = 0xff123456;
+    private static final int TOP_BAR_FONT_SIZE = 18;
+    private static final String TOP_BAR_FONT_FAMILY = "HelveticaNeue-CondensedBold";
+    private static final NavigationOptions.BooleanOptions TOP_BAR_HIDDEN = True;
+    private static final NavigationOptions.BooleanOptions BOTTOM_TABS_ANIMATE_HIDE = True;
+    private static final NavigationOptions.BooleanOptions BOTTOM_TABS_HIDDEN = True;
+    private static final int BOTTOM_TABS_BADGE = 3;
+    private static final String BOTTOM_TABS_CURRENT_TAB_ID = "ContainerId";
+    private static final int BOTTOM_TABS_CURRENT_TAB_INDEX = 1;
+
+    @Test
 	public void parsesNullAsDefaultEmptyOptions() throws Exception {
 		assertThat(NavigationOptions.parse(null)).isNotNull();
 	}
 
 	@Test
 	public void parsesJson() throws Exception {
-		JSONObject json = new JSONObject();
-		JSONObject topBarJson = new JSONObject();
-
-		topBarJson.put("title", "the title");
-		topBarJson.put("backgroundColor", 0xff123456);
-		topBarJson.put("textColor", 0xff123456);
-		topBarJson.put("textFontSize", 18);
-		topBarJson.put("textFontFamily", "HelveticaNeue-CondensedBold");
-		topBarJson.put("hidden", true);
-
-		json.put("topBar", topBarJson);
-
-		JSONObject tabBarJson = new JSONObject();
-		tabBarJson.put("currentTabId", "ContainerId");
-		tabBarJson.put("currentTabIndex", 1);
-		tabBarJson.put("hidden", true);
-		tabBarJson.put("animateHide", true);
-		tabBarJson.put("tabBadge", 3);
-
-		json.put("tabBar", tabBarJson);
-
+		JSONObject json = new JSONObject()
+                .put("topBar", createTopBar())
+                .put("tabBar", createTabBar());
 		NavigationOptions result = NavigationOptions.parse(json);
-		assertThat(result.topBarOptions.title).isEqualTo("the title");
-		assertThat(result.topBarOptions.backgroundColor).isEqualTo(0xff123456);
-		assertThat(result.topBarOptions.textColor).isEqualTo(0xff123456);
-		assertThat(result.topBarOptions.textFontSize).isEqualTo(18);
-		assertThat(result.topBarOptions.textFontFamily).isEqualTo("HelveticaNeue-CondensedBold");
-		assertThat(result.topBarOptions.hidden).isEqualTo(True);
-		assertThat(result.bottomTabsOptions.animateHide).isEqualTo(True);
-		assertThat(result.bottomTabsOptions.hidden).isEqualTo(True);
-		assertThat(result.bottomTabsOptions.tabBadge).isEqualTo(3);
-		assertThat(result.bottomTabsOptions.currentTabId).isEqualTo("ContainerId");
-		assertThat(result.bottomTabsOptions.currentTabIndex).isEqualTo(1);
+        assertResult(result);
 	}
+
+    private void assertResult(NavigationOptions result) {
+        assertThat(result.topBarOptions.title).isEqualTo(TITLE);
+        assertThat(result.topBarOptions.backgroundColor).isEqualTo(TOP_BAR_BACKGROUND_COLOR);
+        assertThat(result.topBarOptions.textColor).isEqualTo(TOP_BAR_TEXT_COLOR);
+        assertThat(result.topBarOptions.textFontSize).isEqualTo(TOP_BAR_FONT_SIZE);
+        assertThat(result.topBarOptions.textFontFamily).isEqualTo(TOP_BAR_FONT_FAMILY);
+        assertThat(result.topBarOptions.hidden).isEqualTo(TOP_BAR_HIDDEN);
+        assertThat(result.bottomTabsOptions.animateHide).isEqualTo(BOTTOM_TABS_ANIMATE_HIDE);
+        assertThat(result.bottomTabsOptions.hidden).isEqualTo(BOTTOM_TABS_HIDDEN);
+        assertThat(result.bottomTabsOptions.tabBadge).isEqualTo(BOTTOM_TABS_BADGE);
+        assertThat(result.bottomTabsOptions.currentTabId).isEqualTo(BOTTOM_TABS_CURRENT_TAB_ID);
+        assertThat(result.bottomTabsOptions.currentTabIndex).isEqualTo(BOTTOM_TABS_CURRENT_TAB_INDEX);
+    }
+
+    @NonNull
+    private JSONObject createTabBar() throws JSONException {
+        return new JSONObject()
+            .put("currentTabId", BOTTOM_TABS_CURRENT_TAB_ID)
+            .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX)
+            .put("hidden", BOTTOM_TABS_HIDDEN)
+            .put("animateHide", BOTTOM_TABS_ANIMATE_HIDE)
+            .put("tabBadge", BOTTOM_TABS_BADGE);
+    }
+
+    @NonNull
+    private JSONObject createTopBar() throws JSONException {
+        return new JSONObject()
+            .put("title", TITLE)
+            .put("backgroundColor", TOP_BAR_BACKGROUND_COLOR)
+            .put("textColor", TOP_BAR_TEXT_COLOR)
+            .put("textFontSize", TOP_BAR_FONT_SIZE)
+            .put("textFontFamily", TOP_BAR_FONT_FAMILY)
+            .put("hidden", TOP_BAR_HIDDEN);
+    }
+
+    @NonNull
+    private JSONObject createOtherTopBar() throws JSONException {
+        return new JSONObject()
+                .put("title", TITLE)
+                .put("backgroundColor", TOP_BAR_BACKGROUND_COLOR)
+                .put("textColor", TOP_BAR_TEXT_COLOR)
+                .put("textFontSize", TOP_BAR_FONT_SIZE)
+                .put("textFontFamily", TOP_BAR_FONT_FAMILY)
+                .put("hidden", TOP_BAR_HIDDEN);
+    }
+
+    @NonNull
+    private JSONObject createOtherTabBar() throws JSONException {
+        return new JSONObject()
+                .put("currentTabId", BOTTOM_TABS_CURRENT_TAB_ID)
+                .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX)
+                .put("hidden", BOTTOM_TABS_HIDDEN)
+                .put("animateHide", BOTTOM_TABS_ANIMATE_HIDE)
+                .put("tabBadge", BOTTOM_TABS_BADGE);
+    }
+
+    @Test
+    public void mergeDefaultOptions() throws Exception {
+        JSONObject json = new JSONObject();
+        json.put("topBar", createTopBar());
+        json.put("tabBar", createTabBar());
+        NavigationOptions defaultOptions = NavigationOptions.parse(json);
+        NavigationOptions options = new NavigationOptions();
+
+        options.mergeWith(defaultOptions);
+        assertResult(options);
+    }
+
+    @Test
+    public void mergedDefaultOptionsDontOverrideGivenOptions() throws Exception {
+        JSONObject defaultJson = new JSONObject()
+            .put("topBar", createOtherTopBar())
+            .put("tabBar", createOtherTabBar());
+        NavigationOptions defaultOptions = NavigationOptions.parse(defaultJson);
+
+        JSONObject json = new JSONObject()
+                .put("topBar", createTopBar())
+                .put("tabBar", createTabBar());
+        NavigationOptions options = NavigationOptions.parse(json);
+        options.withDefaultOptions(defaultOptions);
+        assertResult(options);
+    }
 
 	@Test
 	public void defaultEmptyOptions() throws Exception {

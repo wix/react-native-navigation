@@ -12,8 +12,6 @@ import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.OverlayPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 
-import org.json.JSONObject;
-
 import java.util.Collection;
 import java.util.Collections;
 
@@ -22,8 +20,9 @@ public class Navigator extends ParentController {
 	private final ModalStack modalStack = new ModalStack();
 	private ViewController root;
 	private OverlayPresenter overlayPresenter;
+    private NavigationOptions defaultOptions = new NavigationOptions();
 
-	public Navigator(final Activity activity) {
+    public Navigator(final Activity activity) {
 		super(activity, "navigator" + CompatUtils.generateViewId());
 	}
 
@@ -69,6 +68,14 @@ public class Navigator extends ParentController {
 			promise.resolve(viewController.getId());
 		}
 	}
+
+    public void setDefaultOptions(NavigationOptions defaultOptions) {
+        this.defaultOptions = defaultOptions;
+    }
+
+    public NavigationOptions getDefaultOptions() {
+        return defaultOptions;
+    }
 
 	public void setOptions(final String containerId, NavigationOptions options) {
 		ViewController target = findControllerById(containerId);
