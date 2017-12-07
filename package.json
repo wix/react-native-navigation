@@ -86,8 +86,7 @@
       "integration/**/*.js",
       "!lib/src/index.js",
       "!lib/src/Navigation.js",
-      "!lib/src/adapters/**/*",
-      "!lib/src/components/Element.js"
+      "!lib/src/adapters/**/*"
     ],
     "resetMocks": true,
     "resetModules": true,
