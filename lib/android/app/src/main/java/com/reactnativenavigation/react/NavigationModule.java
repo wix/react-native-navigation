@@ -9,19 +9,16 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.NavigationActivity;
+import com.reactnativenavigation.parse.JSONParser;
 import com.reactnativenavigation.parse.LayoutFactory;
 import com.reactnativenavigation.parse.LayoutNode;
-import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.parse.JSONParser;
 import com.reactnativenavigation.parse.LayoutNodeParser;
+import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.OverlayOptions;
 import com.reactnativenavigation.utils.UiThread;
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.overlay.OverlayFactory;
-
-import org.json.JSONObject;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
 	private static final String NAME = "RNNBridgeModule";
@@ -48,6 +45,17 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 			}
 		});
 	}
+
+	@ReactMethod
+	public void setDefaultOptions(final ReadableMap options) {
+        final NavigationOptions defaultOptions = NavigationOptions.parse(JSONParser.parse(options));
+        handle(new Runnable() {
+            @Override
+            public void run() {
+                navigator().setDefaultOptions(defaultOptions);
+            }
+        });
+    }
 
 	@ReactMethod
 	public void setOptions(final String onContainerId, final ReadableMap options) {
@@ -178,7 +186,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@NonNull
 	private LayoutFactory newLayoutFactory() {
-		return new LayoutFactory(activity(), reactInstanceManager);
+		return new LayoutFactory(activity(), reactInstanceManager, navigator().getDefaultOptions());
 	}
 
 	private void handle(Runnable task) {

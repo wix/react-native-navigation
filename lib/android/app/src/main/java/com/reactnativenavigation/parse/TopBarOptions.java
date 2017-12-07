@@ -49,4 +49,21 @@ public class TopBarOptions implements DEFAULT_VALUES {
 			animateHide = other.animateHide;
 		}
 	}
+
+    void mergeWithDefault(TopBarOptions defaultOptions) {
+        if (NO_VALUE.equals(title))
+            title = defaultOptions.title;
+        if (backgroundColor == NO_COLOR_VALUE)
+            backgroundColor = defaultOptions.backgroundColor;
+        if (textColor == NO_COLOR_VALUE)
+            textColor = defaultOptions.textColor;
+        if (textFontSize == NO_FLOAT_VALUE)
+            textFontSize = defaultOptions.textFontSize;
+        if (NO_VALUE.equals(textFontFamily))
+            textFontFamily = defaultOptions.textFontFamily;
+        if (hidden == NavigationOptions.BooleanOptions.NoValue)
+            hidden = defaultOptions.hidden;
+        if (animateHide == NavigationOptions.BooleanOptions.NoValue)
+            animateHide = defaultOptions.animateHide;
+    }
 }

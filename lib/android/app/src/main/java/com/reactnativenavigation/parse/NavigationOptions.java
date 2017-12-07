@@ -1,14 +1,12 @@
 package com.reactnativenavigation.parse;
 
-import android.graphics.Color;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 
 import org.json.JSONObject;
 
 public class NavigationOptions implements DEFAULT_VALUES {
 
-	public enum BooleanOptions {
+    public enum BooleanOptions {
 		True,
 		False,
 		NoValue;
@@ -21,22 +19,33 @@ public class NavigationOptions implements DEFAULT_VALUES {
 		}
 	}
 
+    @NonNull
+    public static NavigationOptions parse(JSONObject json) {
+        return parse(json, new NavigationOptions());
+    }
+
 	@NonNull
-	public static NavigationOptions parse(JSONObject json) {
+	public static NavigationOptions parse(JSONObject json, @NonNull NavigationOptions defaultOptions) {
 		NavigationOptions result = new NavigationOptions();
 		if (json == null) return result;
 
 		result.topBarOptions = TopBarOptions.parse(json.optJSONObject("topBar"));
 		result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("tabBar"));
 
-		return result;
+		return result.withDefaultOptions(defaultOptions);
 	}
 
 	public TopBarOptions topBarOptions = new TopBarOptions();
 	public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
 
 	public void mergeWith(final NavigationOptions other) {
-		topBarOptions.mergeWith(other.topBarOptions);
+        topBarOptions.mergeWith(other.topBarOptions);
 		bottomTabsOptions.mergeWith(other.bottomTabsOptions);
 	}
+
+    NavigationOptions withDefaultOptions(final NavigationOptions other) {
+        topBarOptions.mergeWithDefault(other.topBarOptions);
+        bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
+        return this;
+    }
 }

@@ -19,11 +19,13 @@ public class LayoutFactory {
 
 	private final Activity activity;
 	private final ReactInstanceManager reactInstanceManager;
+    private NavigationOptions defaultOptions;
 
-	public LayoutFactory(Activity activity, final ReactInstanceManager reactInstanceManager) {
+    public LayoutFactory(Activity activity, final ReactInstanceManager reactInstanceManager, NavigationOptions defaultOptions) {
 		this.activity = activity;
 		this.reactInstanceManager = reactInstanceManager;
-	}
+        this.defaultOptions = defaultOptions;
+    }
 
 	public ViewController create(final LayoutNode node) {
 		switch (node.type) {
@@ -84,7 +86,7 @@ public class LayoutFactory {
 	private ViewController createContainer(LayoutNode node) {
 		String id = node.id;
 		String name = node.data.optString("name");
-		NavigationOptions navigationOptions = NavigationOptions.parse(node.data.optJSONObject("navigationOptions"));
+		NavigationOptions navigationOptions = NavigationOptions.parse(node.data.optJSONObject("navigationOptions"), defaultOptions);
 		return new ContainerViewController(activity, id, name,
 				new TopbarContainerViewCreator(new ReactContainerViewCreator(reactInstanceManager)), navigationOptions);
 	}
