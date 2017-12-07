@@ -4,6 +4,7 @@ const { Component } = require('react');
 const { StyleSheet, ScrollView, View, Button } = require('react-native');
 
 const Navigation = require('react-native-navigation');
+const testIDs = require('../testIDs');
 
 class ScrollViewScreen extends Component {
   static get navigationOptions() {
@@ -24,9 +25,9 @@ class ScrollViewScreen extends Component {
 
   render() {
     return (
-      <ScrollView testID="scrollView" contentContainerStyle={styles.contentContainer}>
+      <ScrollView testID={testIDs.SCROLLVIEW_ELEMENT} contentContainerStyle={styles.contentContainer}>
         <View>
-          <Button title="Toggle Top Bar Hide On Scroll" onPress={this.onClickToggleTopBarHideOnScroll} />
+          <Button title="Toggle Top Bar Hide On Scroll" testID={testIDs.TOGGLE_TOP_BAR_HIDE_ON_SCROLL} onPress={this.onClickToggleTopBarHideOnScroll} />
         </View>
       </ScrollView>
     );

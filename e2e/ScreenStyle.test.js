@@ -1,6 +1,7 @@
 const Utils = require('./Utils');
+const testIDs = require('../playground/src/testIDs');
 
-const { elementByLabel, elementById } = Utils;
+const { elementById } = Utils;
 
 describe('screen style', () => {
   beforeEach(async () => {
@@ -8,51 +9,51 @@ describe('screen style', () => {
   });
 
   it('declare a navigationOptions on container component', async () => {
-    await elementByLabel('Push Options Screen').tap();
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(element(by.label('Static Title').and(by.type('UILabel')))).toBeVisible();
   });
 
   it('change title on container component', async () => {
-    await elementByLabel('Push Options Screen').tap();
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(element(by.label('Static Title').and(by.type('UILabel')))).toBeVisible();
-    await elementByLabel('Dynamic Options').tap();
+    await elementById(testIDs.DYNAMIC_OPTIONS_BUTTON).tap();
     await expect(element(by.label('Dynamic Title').and(by.type('UILabel')))).toBeVisible();
   });
 
   it('set dynamic options with valid options will do something and not crash', async () => {
     // we have no way of testing individual styles for the screen
-    await elementByLabel('Push Options Screen').tap();
-    await elementByLabel('Dynamic Options').tap();
-    await expect(element(by.label('Options Screen'))).toBeVisible();
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.DYNAMIC_OPTIONS_BUTTON).tap();
+    await expect(elementById(testIDs.OPTIONS_SCREEN_HEADER)).toBeVisible();
   });
 
   it('hides Tab Bar when pressing on Hide Top Bar and shows it when pressing on Show Top Bar', async () => {
-    await elementByLabel('Push Options Screen').tap();
-    await elementByLabel('Hide Top Bar').tap();
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.HIDE_TOP_BAR_BUTTON).tap();
     await expect(element(by.type('UINavigationBar'))).toBeNotVisible();
-    await elementByLabel('Show Top Bar').tap();
+    await elementById(testIDs.SHOW_TOP_BAR_BUTTON).tap();
     await expect(element(by.type('UINavigationBar'))).toBeVisible();
   });
 
   it('hides topBar onScroll down and shows it on scroll up', async () => {
-    await elementByLabel('Push Options Screen').tap();
-    await elementByLabel('scrollView Screen').tap();
-    await elementByLabel('Toggle Top Bar Hide On Scroll').tap();
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.SCROLLVIEW_SCREEN_BUTTON).tap();
+    await elementById(testIDs.TOGGLE_TOP_BAR_HIDE_ON_SCROLL).tap();
     await expect(element(by.type('UINavigationBar'))).toBeVisible();
-    await element(by.id('scrollView')).swipe('up', 'fast');
+    await element(by.id(testIDs.SCROLLVIEW_ELEMENT)).swipe('up', 'fast');
     await expect(element(by.type('UINavigationBar'))).toBeNotVisible();
-    await element(by.id('scrollView')).swipe('down', 'fast');
+    await element(by.id(testIDs.SCROLLVIEW_ELEMENT)).swipe('down', 'fast');
     await expect(element(by.type('UINavigationBar'))).toBeVisible();
   });
 
   it('set Tab Bar badge on a current Tab', async () => {
-    await elementByLabel('Switch to tab based app').tap();
-    await elementByLabel('Set Tab Badge').tap();
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await elementById(testIDs.SET_TAB_BADGE_BUTTON).tap();
     await expect(element(by.text('TeSt'))).toBeVisible();
   });
 
   it('set right buttons', async () => {
-    await elementByLabel('Push Options Screen').tap();
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementById('buttonOne')).toBeVisible();
     await elementById('buttonOne').tap();
     await expect(elementById('buttonTwo')).toBeVisible();
@@ -61,7 +62,7 @@ describe('screen style', () => {
   });
 
   it('set left buttons', async () => {
-    await elementByLabel('Push Options Screen').tap();
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementById('buttonLeft')).toBeVisible();
   });
 });

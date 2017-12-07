@@ -1,6 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 const { View, Text, Button } = require('react-native');
+const testIDs = require('../testIDs');
 
 const Navigation = require('react-native-navigation');
 
@@ -18,16 +19,16 @@ class WelcomeScreen extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <Text style={styles.h1}>{`React Native Navigation!`}</Text>
-        <Button title="Switch to tab based app" onPress={this.onClickSwitchToTabs} />
-        <Button title="Switch to app with side menus" onPress={this.onClickSwitchToSideMenus} />
-        <Button title="Push Lifecycle Screen" onPress={this.onClickLifecycleScreen} />
-        <Button title="Push" onPress={this.onClickPush} />
-        <Button title="Push Options Screen" onPress={this.onClickPushOptionsScreen} />
-        <Button title="Back Handler" onPress={this.onClickBackHandler} />
-        <Button title="Show Modal" onPress={this.onClickShowModal} />
-        <Button title="Show Redbox" onPress={this.onClickShowRedbox} />
-        <Button title="Orientation" onPress={this.onClickPushOrientationMenuScreen} />
+        <Text testID={testIDs.WELCOME_SCREEN_HEADER} style={styles.h1}>{`React Native Navigation!`}</Text>
+        <Button title="Switch to tab based app" testID={testIDs.TAB_BASED_APP_BUTTON} onPress={this.onClickSwitchToTabs} />
+        <Button title="Switch to app with side menus" testID={testIDs.TAB_BASED_APP_SIDE_BUTTON} onPress={this.onClickSwitchToSideMenus} />
+        <Button title="Push Lifecycle Screen" testID={testIDs.PUSH_LIFECYCLE_BUTTON} onPress={this.onClickLifecycleScreen} />
+        <Button title="Push" testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
+        <Button title="Push Options Screen" testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
+        <Button title="Back Handler" testID={testIDs.BACK_HANDLER_BUTTON} onPress={this.onClickBackHandler} />
+        <Button title="Show Modal" testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
+        <Button title="Show Redbox" testID={testIDs.SHOW_REDBOX_BUTTON} onPress={this.onClickShowRedbox} />
+        <Button title="Orientation" testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );

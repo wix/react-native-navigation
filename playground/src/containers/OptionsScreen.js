@@ -4,6 +4,7 @@ const { Component } = require('react');
 const { View, Text, Button } = require('react-native');
 
 const Navigation = require('react-native-navigation');
+const testIDs = require('../testIDs');
 
 const BUTTON_ONE = 'buttonOne';
 const BUTTON_TWO = 'buttonTwo';
@@ -45,13 +46,13 @@ class OptionsScreen extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <Text style={styles.h1}>{`Options Screen`}</Text>
-        <Button title="Dynamic Options" onPress={this.onClickDynamicOptions} />
-        <Button title="Show Top Bar" onPress={this.onClickShowTopBar} />
-        <Button title="Hide Top Bar" onPress={this.onClickHideTopBar} />
-        <Button title="scrollView Screen" onPress={this.onClickScrollViewScreen} />
-        <Button title="Show custom alert" onPress={this.onClickAlert} />
-        <Button title="Show snackbar" onPress={this.onClickSnackbar} />
+        <Text style={styles.h1} testID={testIDs.OPTIONS_SCREEN_HEADER}>{`Options Screen`}</Text>
+        <Button title="Dynamic Options" testID={testIDs.DYNAMIC_OPTIONS_BUTTON} onPress={this.onClickDynamicOptions} />
+        <Button title="Show Top Bar" testID={testIDs.SHOW_TOP_BAR_BUTTON} onPress={this.onClickShowTopBar} />
+        <Button title="Hide Top Bar" testID={testIDs.HIDE_TOP_BAR_BUTTON} onPress={this.onClickHideTopBar} />
+        <Button title="scrollView Screen" testID={testIDs.SCROLLVIEW_SCREEN_BUTTON} onPress={this.onClickScrollViewScreen} />
+        <Button title="Show custom alert" testID={testIDs.SHOW_CUSTOM_ALERT_BUTTON} onPress={this.onClickAlert} />
+        <Button title="Show snackbar" testID={testIDs.SHOW_SNACKBAR_BUTTON} onPress={this.onClickSnackbar} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );

@@ -4,6 +4,7 @@ const { Component } = require('react');
 const { View, Text, Button } = require('react-native');
 
 const Navigation = require('react-native-navigation');
+const testIDs = require('../testIDs');
 
 class TextScreen extends Component {
 
@@ -13,8 +14,8 @@ class TextScreen extends Component {
         <Text style={styles.h1}>{this.props.text || 'Text Screen'}</Text>
         {this.renderTextFromFunctionInProps()}
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
-        <Button title={'Set Tab Badge'} onPress={() => this.onButtonPress()} />
-        <Button title="Switch To Tab 2" onPress={() => this.onClickSwitchToTab()} />
+        <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onButtonPress()} />
+        <Button title="Switch To Tab 2" testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
       </View>
     );
   }

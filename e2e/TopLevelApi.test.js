@@ -1,6 +1,7 @@
 const Utils = require('./Utils');
+const testIDs = require('../playground/src/testIDs');
 
-const elementByLabel = Utils.elementByLabel;
+const { elementByLabel, elementById } = Utils;
 
 describe('top level api', () => {
   beforeEach(async () => {
@@ -8,31 +9,31 @@ describe('top level api', () => {
   });
 
   it('shows welcome screen', async () => {
-    await expect(elementByLabel('React Native Navigation!')).toBeVisible();
+    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
   it('switch to tab based app, passProps and functions', async () => {
-    await elementByLabel('Switch to tab based app').tap();
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementByLabel('This is tab 1')).toBeVisible();
     await expect(elementByLabel('Hello from a function!')).toBeVisible();
   });
 
   it('switch to tabs with side menus', async () => {
-    await elementByLabel('Switch to app with side menus').tap();
+    await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
     await elementByLabel('This is a side menu center screen tab 1').swipe('right');
     await expect(elementByLabel('This is a left side menu screen')).toBeVisible();
   });
 
   it('screen lifecycle', async () => {
-    await elementByLabel('Push Lifecycle Screen').tap();
+    await elementById(testIDs.PUSH_LIFECYCLE_BUTTON).tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
-    await elementByLabel('Push to test didDisappear').tap();
+    await elementById(testIDs.PUSH_TO_TEST_DID_DISAPPEAR_BUTTON).tap();
     await expect(elementByLabel('Alert')).toBeVisible();
     await expect(elementByLabel('didDisappear')).toBeVisible();
   });
 
   it('unmount is called on pop', async () => {
-    await elementByLabel('Push Lifecycle Screen').tap();
+    await elementById(testIDs.PUSH_LIFECYCLE_BUTTON).tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
     await Utils.tapBackIos();
     await expect(elementByLabel('componentWillUnmount')).toBeVisible();
@@ -47,9 +48,9 @@ describe('reload app', async () => {
   });
 
   it('push a screen to ensure its not there after reload', async () => {
-    await elementByLabel('Push').tap();
+    await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
     await device.reloadReactNative();
-    await expect(elementByLabel('React Native Navigation!')).toBeVisible();
+    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 });
