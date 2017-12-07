@@ -11,10 +11,27 @@
 	_store = store;
 	return self;
 }
+-(void)waitForContentToAppearAndThen:(SEL)nameOfSelector {
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:nameOfSelector
+												 name: @"RCTContentDidAppearNotification"
+											   object:nil];
+}
+
+-(void)showModalAfterLoad:(NSDictionary*)notif {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
+	UIViewController *topVC = [self topPresentedVC];
+	[topVC presentViewController:self.toVC animated:YES completion:nil];
+}
+
+//-(void)prepareShowModal{
+//
+//}
 
 -(void)showModal:(UIViewController *)viewController {
-	UIViewController *topVC = [self topPresentedVC];
-	[topVC presentViewController:viewController animated:YES completion:nil];
+	self.toVC = viewController;
+//	[self prepareShowModal]
+	[self waitForContentToAppearAndThen:@selector(showModalAfterLoad:)];
 }
 
 -(void)dismissModal:(NSString *)containerId {

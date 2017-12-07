@@ -1,10 +1,16 @@
 const React = require('react');
 const { Component } = require('react');
 const { View, Text, Button } = require('react-native');
-
 const Navigation = require('react-native-navigation');
 
 class WelcomeScreen extends Component {
+  static get navigationOptions() {
+    return {
+      topBar: {
+        largeTitle: false
+      }
+    };
+  }
   constructor(props) {
     super(props);
     this.onClickPush = this.onClickPush.bind(this);

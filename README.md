@@ -84,7 +84,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | hidden             |   ✅      |     ✅        | Wix|
 | hideOnScroll         |  ✅    |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
 | translucent         |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
-| transparent         |   WIP @bogobogo     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |
+| transparent         |  ✅        |     [Contribute](/docs/docs/CONTRIBUTING.md)        |
 | noBorder             |    ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |  @gtchance|
 | drawUnder         |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       ||
 | blur               |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|

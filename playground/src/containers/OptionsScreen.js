@@ -10,12 +10,13 @@ const BUTTON_TWO = 'buttonTwo';
 const BUTTON_LEFT = 'buttonLeft';
 
 class OptionsScreen extends Component {
-
   static get navigationOptions() {
     return {
       topBar: {
         title: 'Static Title',
         textColor: 'black',
+        largeTitle: false,
+        hidden: false,
         textFontSize: 16,
         textFontFamily: 'HelveticaNeue-Italic'
       },
@@ -40,6 +41,9 @@ class OptionsScreen extends Component {
     this.onClickShowTopBar = this.onClickShowTopBar.bind(this);
     this.onClickHideTopBar = this.onClickHideTopBar.bind(this);
     this.onClickScrollViewScreen = this.onClickScrollViewScreen.bind(this);
+    this.onClickTopBarTransparent = this.onClickTopBarTransparent.bind(this);
+    this.onClickTopBarOpaque = this.onClickTopBarOpaque.bind(this);
+    this.onClickCustomTranstition = this.onClickCustomTranstition.bind(this);
   }
 
   render() {
@@ -49,7 +53,10 @@ class OptionsScreen extends Component {
         <Button title="Dynamic Options" onPress={this.onClickDynamicOptions} />
         <Button title="Show Top Bar" onPress={this.onClickShowTopBar} />
         <Button title="Hide Top Bar" onPress={this.onClickHideTopBar} />
+        <Button title="Top Bar Transparent" onPress={this.onClickTopBarTransparent} />
+        <Button title="Top Bar Opaque" onPress={this.onClickTopBarOpaque} />
         <Button title="scrollView Screen" onPress={this.onClickScrollViewScreen} />
+        <Button title="Custom Transition" onPress={this.onClickCustomTranstition} />
         <Button title="Show custom alert" onPress={this.onClickAlert} />
         <Button title="Show snackbar" onPress={this.onClickSnackbar} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
@@ -91,6 +98,7 @@ class OptionsScreen extends Component {
       topBar: {
         title: 'Dynamic Title',
         textColor: '#00FFFF',
+        largeTitle: false,
         buttonColor: 'red',
         textFontSize: 20,
         textFontFamily: 'HelveticaNeue-CondensedBold'
@@ -104,6 +112,26 @@ class OptionsScreen extends Component {
     });
   }
 
+  onClickCustomTranstition() {
+    Navigation.push(this.props.containerId, {
+      name: 'navigation.playground.CustomTransitionOrigin'
+    });
+  }
+
+  onClickTopBarTransparent() {
+    Navigation.setOptions(this.props.containerId, {
+      topBar: {
+        transparent: true
+      }
+    });
+  }
+  onClickTopBarOpaque() {
+    Navigation.setOptions(this.props.containerId, {
+      topBar: {
+        transparent: false
+      }
+    });
+  }
   onClickShowTopBar() {
     Navigation.setOptions(this.props.containerId, {
       topBar: {

@@ -24,11 +24,13 @@ class ScrollViewScreen extends Component {
 
   render() {
     return (
-      <ScrollView testID="scrollView" contentContainerStyle={styles.contentContainer}>
-        <View>
-          <Button title="Toggle Top Bar Hide On Scroll" onPress={this.onClickToggleTopBarHideOnScroll} />
-        </View>
-      </ScrollView>
+      <View>
+        <ScrollView testID="scrollView" contentContainerStyle={styles.contentContainer}>
+          <View>
+            <Button title="Toggle Top Bar Hide On Scroll" onPress={this.onClickToggleTopBarHideOnScroll} />
+          </View>
+        </ScrollView>
+      </View>
     );
   }
 
@@ -45,9 +47,8 @@ module.exports = ScrollViewScreen;
 
 const styles = StyleSheet.create({
   contentContainer: {
-    paddingVertical: 20,
     alignItems: 'center',
-    height: 1000
+    height: 1200
   }
 });
 

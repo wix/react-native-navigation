@@ -1,6 +1,7 @@
 
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
+#import "RNNAnimator.h"
 #import "RNNNavigationButtons.h"
 
 @interface RNNRootViewController()
@@ -28,16 +29,21 @@
 											 selector:@selector(onJsReload)
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
-	
+	self.animator = [[RNNAnimator alloc] init];
+	self.navigationController.modalPresentationStyle = UIModalPresentationCustom;
+	self.navigationController.delegate = self;
 	self.navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self];
-	
 	return self;
 }
-
+	
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.navigationOptions applyOn:self];
 	[self applyNavigationButtons];
+}
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -70,6 +76,32 @@
 	[super viewDidDisappear:animated];
 	[self.eventEmitter sendContainerDidDisappear:self.containerId];
 }
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+	RNNRootViewController* vc =  (RNNRootViewController*)viewController;
+	if (![vc.navigationOptions.backButtonTransition isEqualToString:@"custom"]){
+		navigationController.delegate = nil;
+	}
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+								  animationControllerForOperation:(UINavigationControllerOperation)operation
+											   fromViewController:(UIViewController*)fromVC
+												 toViewController:(UIViewController*)toVC {
+{
+	if (operation == UINavigationControllerOperationPush) {
+		return self.animator;
+	} else if (operation == UINavigationControllerOperationPop) {
+		return self.animator;
+	} else {
+		return nil;
+	}
+}
+	return nil;
+
+}
+
+
 
 -(void) applyNavigationButtons{
 	[self.navigationButtons applyLeftButtons:self.navigationOptions.leftButtons rightButtons:self.navigationOptions.rightButtons];

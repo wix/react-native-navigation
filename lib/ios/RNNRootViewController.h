@@ -5,10 +5,10 @@
 #import "RNNRootViewCreator.h"
 #import "RNNEventEmitter.h"
 #import "RNNNavigationOptions.h"
-
-@interface RNNRootViewController : UIViewController
-
+#import "RNNAnimator.h"
+@interface RNNRootViewController : UIViewController	<UINavigationControllerDelegate>
 @property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
+@property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic, strong) NSString* containerId;
 
