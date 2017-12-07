@@ -247,6 +247,8 @@ function convertDrawerParamsToSideMenuParams(drawerParams) {
       addNavigatorParams(result[key]);
       result[key] = adaptNavigationParams(result[key]);
       result[key].passProps = drawer[key].passProps;
+      result[key].percentOfScreenWidth = drawer[key].percentOfScreenWidth;
+      
       if (drawer.disableOpenGesture) {
         result[key].disableOpenGesture = drawer.disableOpenGesture;
       } else {
