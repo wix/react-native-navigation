@@ -11,16 +11,15 @@
 @interface RCCCustomTitleView ()
 @property (nonatomic, strong) UIView *subView;
 @property (nonatomic, strong) NSString *subViewAlign;
-@property BOOL correctedTheNavBarWidth;
-@property CGRect correctFrame;
+@property float initialWidth;
 @end
 
 @implementation RCCCustomTitleView
 
 
 -(instancetype)initWithFrame:(CGRect)frame subView:(UIView*)subView alignment:(NSString*)alignment {
-    _correctFrame = frame;
-    self = [super initWithFrame:_correctFrame];
+    _initialWidth = frame.size.width;
+    self = [super initWithFrame:frame];
     
     if (self) {
         self.backgroundColor = [UIColor clearColor];
@@ -55,28 +54,38 @@
     }
 }
 
-- (void)setFrame:(CGRect) newFrame {
-    float correctNavBarWidth = _correctFrame.size.width;
-    float newNavBarWidth = newFrame.size.width;
-    BOOL frameNeedsToBeCorrected = newNavBarWidth < correctNavBarWidth;
+- (void)setFrame:(CGRect) frame {
 
-    if (_correctedTheNavBarWidth == NO) {
-        if (frameNeedsToBeCorrected) {
-            // first we need to find out the total horizontal margin
-            float navBarHorizontalMargin = correctNavBarWidth - newNavBarWidth;
-            
-            // then we need to place the nav bar half times the horizontal margin to the left
-            newFrame.origin.x -= navBarHorizontalMargin / 2;
-            
-            // and finally set the width to whatever we initially intended the width to be
-            newFrame.size.width = correctNavBarWidth;
-            
-            [super setFrame:newFrame];
-            _correctedTheNavBarWidth = YES;
-        } else { // if frame needs no correction
-            [super setFrame:newFrame];
-        }
+    float referenceWidth = [self statusBarWidth];
+    if (referenceWidth == 0) {
+        referenceWidth = _initialWidth;
     }
+    float newNavBarWidth = frame.size.width;
+    BOOL frameNeedsToBeCorrected = newNavBarWidth < referenceWidth || CGRectEqualToRect(self.frame, CGRectZero);
+
+    if (frameNeedsToBeCorrected) {
+        // first we need to find out the total point diff of the status bar and the nav bar
+        float navBarHorizontalMargin = referenceWidth - newNavBarWidth;
+        
+        CGRect correctedFrame = frame;
+
+        // then we need to place the nav bar half times the horizontal margin to the left
+        correctedFrame.origin.x = -(navBarHorizontalMargin / 2);
+        
+        // and finally set the width so that it's equal to the status bar width
+        correctedFrame.size.width = referenceWidth;
+        
+        [super setFrame:correctedFrame];
+    } else if (frame.size.height != self.frame.size.height) { // otherwise
+        // if only the height has changed
+        CGRect newHeightFrame = self.frame;
+        // make sure we update just the height
+        newHeightFrame.size.height = frame.size.height;
+        [super setFrame:newHeightFrame];
+    }
+    
+    // keep a ref to the last frame, so that we avoid setting the frame twice for no reason
+//    _lastFrame = frame;
 }
 
 
@@ -87,10 +96,14 @@
 
     if (newFrame.size.width < size.width) {
         newFrame.size.width = size.width;
-        _correctFrame = newFrame;
+        newFrame.origin.x = 0;
     }
     [super setFrame:newFrame];
-    [self setNeedsLayout];
+}
+
+-(float) statusBarWidth {
+    CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+    return MAX(statusBarSize.width, statusBarSize.height);
 }
 
 @end

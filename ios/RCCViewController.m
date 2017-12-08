@@ -659,18 +659,18 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
       self.navigationItem.titleView = titleView;
       
       self.navigationItem.titleView.backgroundColor = [UIColor clearColor];
-      self.navigationItem.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+      self.navigationItem.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
       self.navigationItem.titleView.clipsToBounds = YES;
     }
   }
 }
 
 - (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+  [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
   RCCCustomTitleView* customNavBar = (RCCCustomTitleView*) self.navigationItem.titleView;
   if (customNavBar && [customNavBar isKindOfClass:[RCCCustomTitleView class]]) {
     [customNavBar viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
   }
-  [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
 
 
