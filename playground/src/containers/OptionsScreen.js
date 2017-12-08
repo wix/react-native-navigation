@@ -26,6 +26,7 @@ class OptionsScreen extends Component {
         id: BUTTON_ONE,
         testID: BUTTON_ONE,
         title: 'One',
+        buttonFontSize: 28,
         buttonColor: 'red'
       }],
       leftButtons: [{

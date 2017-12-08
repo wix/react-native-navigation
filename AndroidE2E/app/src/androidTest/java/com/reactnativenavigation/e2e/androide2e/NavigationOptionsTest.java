@@ -32,4 +32,11 @@ public class NavigationOptionsTest extends BaseTest {
 //		elementByText("SHOW TOP BAR").click();
 //		assertExists(By.text("Static Title"));
 //	}
+
+    @Test
+    public void testRightButtons() throws Exception {
+        elementByText("PUSH OPTIONS SCREEN").click();
+        assertExists(By.text("ONE"));
+        elementByText("ONE").click();
+    }
 }

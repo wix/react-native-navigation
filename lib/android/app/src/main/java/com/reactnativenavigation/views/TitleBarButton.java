@@ -5,6 +5,11 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +46,7 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 			setIcon(context, menuItem);
 		} else {
 			setTextColor();
+			setFontSize(menuItem);
 		}
 	}
 
@@ -115,6 +121,12 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 				setTextColorForFoundButtonViews(outViews);
 			}
 		});
+	}
+
+	private void setFontSize(MenuItem menuItem) {
+		SpannableString spanString = new SpannableString(button.title);
+		spanString.setSpan(new AbsoluteSizeSpan(button.buttonFontSize, true), 0, button.title.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		menuItem.setTitleCondensed(spanString);
 	}
 
 	private void setNavigationClickListener() {

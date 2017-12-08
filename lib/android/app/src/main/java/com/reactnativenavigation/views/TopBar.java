@@ -85,7 +85,31 @@ public class TopBar extends AppBarLayout {
 		return null;
 	}
 
-	private void setRightButtons(Context context, Menu menu, ArrayList<Button> rightButtons) {
+	private void setLeftButtons(ArrayList<Button> leftButtons) {
+		if(leftButtons == null || leftButtons.isEmpty()) {
+			titleBar.setNavigationIcon(null);
+			return;
+		}
+
+		if(leftButtons.size() > 1) {
+			Log.w("RNN", "Use a custom TopBar to have more than one left button");
+		}
+
+		Button leftButton = leftButtons.get(0);
+		setLeftButton(leftButton);
+	}
+
+	private void setLeftButton(final Button button) {
+		TitleBarButton leftBarButton = new TitleBarButton(this.containerView, this.titleBar, button);
+		leftBarButton.setNavigationIcon(getContext());
+	}
+
+	private void setRightButtons(ArrayList<Button> rightButtons) {
+		if(rightButtons == null || rightButtons.size() == 0) {
+			return;
+		}
+
+		Menu menu = getTitleBar().getMenu();
 		menu.clear();
 
 		for (int i = 0; i < rightButtons.size(); i++){
