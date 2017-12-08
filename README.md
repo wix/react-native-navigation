@@ -103,14 +103,13 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 
 |       buttons        | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
-| id    |   ✅      |      [Contribute](/docs/docs/CONTRIBUTING.md)    |@Johan-dutoit|
-| testID   |     ✅   |    [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit|
-| color             |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @Johan-dutoit|
-| icon          |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       | @Johan-dutoit|
-| disableTint        |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit|
-| fontSize        |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit |
-| fontWeight        |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit |
-| fontWeight        |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit |
+| id    |   ✅      |     @Johan-dutoit  |@Johan-dutoit|
+| testID   |     ✅   |   [Contribute](/docs/docs/CONTRIBUTING.md)  | @Johan-dutoit|
+| color             |    ✅     |     @Johan-dutoit     | @Johan-dutoit|
+| icon          |   ✅     |    @Johan-dutoit     | @Johan-dutoit|
+| disableTint        |    ✅       |    @Johan-dutoit    | @Johan-dutoit|
+| fontSize        |    ✅       |    @Johan-dutoit    | @Johan-dutoit |
+| fontWeight        |    ✅       |    [Contribute](/docs/docs/CONTRIBUTING.md)   |  [Contribute](/docs/docs/CONTRIBUTING.md) |
 
 |       statusBar        | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
