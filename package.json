@@ -38,7 +38,8 @@
     "test-e2e-ios": "node ./scripts/test.e2e.ios.js",
     "test-all": "node ./scripts/test.all.js",
     "test-watch": "jest --coverage --watch",
-    "release": "node ./scripts/release.js"
+    "release": "node ./scripts/release.js",
+    "gen-doc": "node ./scripts/generate-js-doc.js"
   },
   "peerDependencies": {
     "react": "*",
@@ -49,21 +50,23 @@
     "prop-types": "15.x.x"
   },
   "devDependencies": {
-    "xo": "0.18.x",
+    "detox": "6.x.x",
     "eslint-config-xo": "0.18.x",
     "eslint-config-xo-react": "0.13.x",
     "eslint-plugin-react": "7.x.x",
-    "detox": "6.x.x",
     "jest": "21.x.x",
-    "mocha": "3.x.x",
+    "jsdoc": "3.x.x",
+    "jsdoc-to-markdown": "3.x.x",
+    "mocha": "4.x.x",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.2",
-    "react-test-renderer": "16.0.0-alpha.6",
-    "remx": "2.x.x",
-    "redux": "3.x.x",
     "react-redux": "5.x.x",
+    "react-test-renderer": "16.0.0-alpha.6",
+    "redux": "3.x.x",
+    "remx": "2.x.x",
     "semver": "5.x.x",
-    "shell-utils": "1.x.x"
+    "shell-utils": "1.x.x",
+    "xo": "0.18.x"
   },
   "babel": {
     "env": {
