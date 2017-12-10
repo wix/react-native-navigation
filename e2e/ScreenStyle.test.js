@@ -1,7 +1,7 @@
 const Utils = require('./Utils');
 const testIDs = require('../playground/src/testIDs');
 
-const { elementById } = Utils;
+const { elementById, elementByLabel } = Utils;
 
 describe('screen style', () => {
   beforeEach(async () => {
