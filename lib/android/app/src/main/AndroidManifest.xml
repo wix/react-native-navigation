@@ -4,6 +4,7 @@
     <application>
         <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
-            android:exported="false"/>
+            android:exported="false"
+            android:testOnly="false"/>
     </application>
 </manifest>

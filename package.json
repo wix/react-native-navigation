@@ -45,17 +45,16 @@
     "react-native": "*"
   },
   "dependencies": {
-    "lodash": "4.x.x",
-    "prop-types": "15.x.x"
+    "lodash": "4.x.x"
   },
   "devDependencies": {
     "xo": "0.18.x",
     "eslint-config-xo": "0.18.x",
-    "eslint-config-xo-react": "0.13.x",
+    "eslint-config-xo-react": "0.14.x",
     "eslint-plugin-react": "7.x.x",
     "detox": "6.x.x",
     "jest": "21.x.x",
-    "mocha": "3.x.x",
+    "mocha": "4.x.x",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
     "react-test-renderer": "16.0.0-alpha.6",
@@ -115,6 +114,12 @@
         "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -project playground/ios/playground.xcodeproj -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet",
         "type": "ios.simulator",
         "name": "iPhone 7"
+      },
+      "android.emu.debug": {
+        "binaryPath": "playground/android/app/build/outputs/apk/app-debug.apk",
+        "build": "pushd playground/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && popd",
+        "type": "android.emulator",
+        "name": "Nexus_5X_API_26"
       }
     }
   },
@@ -167,6 +172,7 @@
         }
       ],
       "react/jsx-tag-spacing": 0,
+      "react/jsx-curly-brace-presence": 0,
       "react/jsx-sort-props": 0,
       "react/jsx-boolean-value": 0,
       "react/prop-types": 0,

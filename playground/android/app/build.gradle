@@ -13,13 +13,17 @@ android {
 
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+
+        testBuildType System.getProperty('testBuildType', 'debug')
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     signingConfigs {
         release {
@@ -42,4 +46,8 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     compile "com.android.support:appcompat-v7:25.3.1"
     compile project(':react-native-navigation')
+
+    androidTestCompile(project(path: ":detox", configuration: "oldOkhttpDebug"), {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 }
