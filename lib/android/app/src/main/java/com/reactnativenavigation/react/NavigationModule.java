@@ -81,7 +81,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void pop(final String onContainerId, final Promise promise) {
+	public void pop(final String onContainerId, final ReadableMap options, final Promise promise) {
 		handle(new Runnable() {
 			@Override
 			public void run() {
