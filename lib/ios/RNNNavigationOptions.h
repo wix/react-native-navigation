@@ -20,7 +20,7 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) NSNumber* statusBarHideWithTopBar;
 @property (nonatomic, strong) NSNumber* popGesture;
 @property (nonatomic, strong) RNNTopBarOptions* topBar;
-@property (nonatomic, strong) RNNTabBarOptions* tabBar;
+@property (nonatomic, strong) RNNTabBarOptions* bottomTabs;
 
 
 - (UIInterfaceOrientationMask)supportedOrientations;

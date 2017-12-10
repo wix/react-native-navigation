@@ -25,7 +25,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.leftButtons = [navigationOptions objectForKey:@"leftButtons"];
 	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
 	self.topBar = [[RNNTopBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"topBar"]];
-	self.tabBar = [[RNNTabBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"tabBar"]];
+	self.bottomTabs = [[RNNTabBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTabs"]];
 	
 	return self;
 }
@@ -34,8 +34,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	for (id key in otherOptions) {
 		if ([key isEqualToString:@"topBar"]) {
 			[self.topBar mergeWith:[otherOptions objectForKey:key]];
-		} else if ([key isEqualToString:@"tabBar"]) {
-			[self.tabBar mergeWith:[otherOptions objectForKey:key]];
+		} else if ([key isEqualToString:@"bottomTabs"]) {
+			[self.bottomTabs mergeWith:[otherOptions objectForKey:key]];
 		} else {
 			[self setValue:[otherOptions objectForKey:key] forKey:key];
 		}
@@ -176,17 +176,20 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		viewController.view.backgroundColor = screenColor;
 	}
 	
-	if (self.tabBar) {
-		if (self.tabBar.tabBadge) {
-			NSString *badge = [RCTConvert NSString:self.tabBar.tabBadge];
+	if (self.bottomTabs) {
+		if (self.bottomTabs.tabBadge) {
+			NSString *badge = [RCTConvert NSString:self.bottomTabs.tabBadge];
 			if (viewController.navigationController) {
 				viewController.navigationController.tabBarItem.badgeValue = badge;
 			} else {
 				viewController.tabBarItem.badgeValue = badge;
 			}
 		}
-		if (self.tabBar.currentTabIndex) {
-			[viewController.tabBarController setSelectedIndex:[self.tabBar.currentTabIndex unsignedIntegerValue]];
+		if (self.bottomTabs.currentTabIndex) {
+			[viewController.tabBarController setSelectedIndex:[self.bottomTabs.currentTabIndex unsignedIntegerValue]];
+		}
+		if (self.bottomTabs.hidden) {
+			[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:[self.bottomTabs.hidden boolValue] animated:[self.bottomTabs.animateHide boolValue]];
 		}
 	}
 	

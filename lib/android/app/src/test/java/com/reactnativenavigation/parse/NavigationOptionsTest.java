@@ -34,7 +34,7 @@ public class NavigationOptionsTest extends BaseTest {
 	public void parsesJson() throws Exception {
 		JSONObject json = new JSONObject()
                 .put("topBar", createTopBar())
-                .put("tabBar", createTabBar());
+                .put("bottomTabs", createTabBar());
 		NavigationOptions result = NavigationOptions.parse(json);
         assertResult(result);
 	}
@@ -99,7 +99,7 @@ public class NavigationOptionsTest extends BaseTest {
     public void mergeDefaultOptions() throws Exception {
         JSONObject json = new JSONObject();
         json.put("topBar", createTopBar());
-        json.put("tabBar", createTabBar());
+        json.put("bottomTabs", createTabBar());
         NavigationOptions defaultOptions = NavigationOptions.parse(json);
         NavigationOptions options = new NavigationOptions();
 
@@ -111,12 +111,12 @@ public class NavigationOptionsTest extends BaseTest {
     public void mergedDefaultOptionsDontOverrideGivenOptions() throws Exception {
         JSONObject defaultJson = new JSONObject()
             .put("topBar", createOtherTopBar())
-            .put("tabBar", createOtherTabBar());
+            .put("bottomTabs", createOtherTabBar());
         NavigationOptions defaultOptions = NavigationOptions.parse(defaultJson);
 
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar())
-                .put("tabBar", createTabBar());
+                .put("bottomTabs", createTabBar());
         NavigationOptions options = NavigationOptions.parse(json);
         options.withDefaultOptions(defaultOptions);
         assertResult(options);

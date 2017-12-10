@@ -60,6 +60,21 @@ describe('screen style', () => {
     await expect(element(by.text('TeSt'))).toBeVisible();
   });
 
+  it('hide Tab Bar', async () => {
+    await elementByLabel('Switch to tab based app').tap();
+    await expect(element(by.type('UITabBar'))).toBeVisible();
+    await elementByLabel('Hide Tab Bar').tap();
+    await expect(element(by.type('UITabBar'))).toBeNotVisible();
+  });
+
+  it('show Tab Bar', async () => {
+    await elementByLabel('Switch to tab based app').tap();
+    await elementByLabel('Hide Tab Bar').tap();
+    await expect(element(by.type('UITabBar'))).toBeNotVisible();
+    await elementByLabel('Show Tab Bar').tap();
+    await expect(element(by.type('UITabBar'))).toBeVisible();
+  });
+
   it('set right buttons', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementById('buttonOne')).toBeVisible();

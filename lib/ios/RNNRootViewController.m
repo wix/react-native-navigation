@@ -61,8 +61,8 @@
 
 - (BOOL)hidesBottomBarWhenPushed
 {
-	if (self.navigationOptions.tabBar && self.navigationOptions.tabBar.hidden) {
-		return [self.navigationOptions.tabBar.hidden boolValue];
+	if (self.navigationOptions.bottomTabs && self.navigationOptions.bottomTabs.hidden) {
+		return [self.navigationOptions.bottomTabs.hidden boolValue];
 	}
 	return NO;
 }
