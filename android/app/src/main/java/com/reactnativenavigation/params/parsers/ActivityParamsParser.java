@@ -24,7 +24,12 @@ public class ActivityParamsParser extends Parser {
         }
 
         if (hasKey(params, "sideMenu")) {
-            SideMenuParams[] sideMenus = SideMenuParamsParser.parse(params.getBundle("sideMenu"));
+            Bundle style = null;
+            if (hasKey(params, "drawer") && hasKey(params.getBundle("drawer"), "style")) {
+                style = params.getBundle("drawer").getBundle("style");
+            }
+
+            SideMenuParams[] sideMenus = SideMenuParamsParser.parse(params.getBundle("sideMenu"), style);
             result.leftSideMenuParams = sideMenus[SideMenu.Side.Left.ordinal()];
             result.rightSideMenuParams = sideMenus[SideMenu.Side.Right.ordinal()];
         }

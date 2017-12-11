@@ -52,6 +52,10 @@ Navigation.startTabBasedApp({
   drawer: {
     left: {
       screen: 'example.Types.Drawer'
-    }
+    },
+    style: {
+      leftDrawerWidth: 50, // optional, add this if you want a define left drawer width (50=percent)
+      rightDrawerWidth: 50, // optional, add this if you want a define right drawer width (50=percent)
+    },
   }
 });
