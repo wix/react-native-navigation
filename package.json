@@ -42,7 +42,8 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "prop-types": "*"
   },
   "dependencies": {
     "lodash": "4.x.x",
@@ -63,7 +64,8 @@
     "redux": "3.x.x",
     "react-redux": "5.x.x",
     "semver": "5.x.x",
-    "shell-utils": "1.x.x"
+    "shell-utils": "1.x.x",
+    "prop-types": "^15.6.0"
   },
   "babel": {
     "env": {
@@ -173,6 +175,7 @@
       "react/jsx-no-bind": 0,
       "react/jsx-handler-names": 0,
       "react/forbid-component-props": 0,
+      "react/require-default-props": 0,
       "capitalized-comments": 0,
       "no-use-before-define": [
         2,
