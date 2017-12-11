@@ -38,7 +38,8 @@
     "test-e2e-ios": "node ./scripts/test.e2e.ios.js",
     "test-all": "node ./scripts/test.all.js",
     "test-watch": "jest --coverage --watch",
-    "release": "node ./scripts/release.js"
+    "release": "node ./scripts/release.js",
+    "test-e2e-android-detox": "node ./scripts/test.e2e.android.detox.js"
   },
   "peerDependencies": {
     "react": "*",
