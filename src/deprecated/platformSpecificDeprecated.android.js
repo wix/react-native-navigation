@@ -80,6 +80,12 @@ function navigatorPush(navigator, params) {
   adapted = adaptNavigationParams(adapted);
   adapted.overrideBackPress = params.overrideBackPress;
   adapted.timestamp = Date.now();
+  if (!adapted.passProps) {
+    adapted.passProps = {};
+  }
+  if (!adapted.passProps.commandType) {
+    adapted.passProps.commandType = 'Push';
+  }
 
   return newPlatformSpecific.push(adapted);
 }
@@ -472,6 +478,12 @@ function showModal(params) {
   adapted = adaptNavigationParams(adapted);
   adapted.overrideBackPress = params.overrideBackPress;
   adapted.timestamp = Date.now();
+  if (!adapted.passProps) {
+    adapted.passProps = {};
+  }
+  if (!adapted.passProps.commandType) {
+    adapted.passProps.commandType = 'ShowModal';
+  }
 
   newPlatformSpecific.showModal(adapted);
 }
