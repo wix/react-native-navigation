@@ -75,6 +75,22 @@ describe('screen style', () => {
     await expect(element(by.type('UITabBar'))).toBeVisible();
   });
 
+  it('side menu visibility - left', async () => {
+    await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
+    await elementById(testIDs.SHOW_LEFT_SIDE_MENU_BUTTON).tap();
+    await expect(elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON)).toBeVisible();
+    await elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON).tap();
+    await expect(elementById(testIDs.CENTERED_TEXT_HEADER)).toBeVisible();
+  });
+
+  it('side menu visibility - right', async () => {
+    await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
+    await elementById(testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON).tap();
+    await expect(elementById(testIDs.HIDE_RIGHT_SIDE_MENU_BUTTON)).toBeVisible();
+    await elementById(testIDs.HIDE_RIGHT_SIDE_MENU_BUTTON).tap();
+    await expect(elementById(testIDs.CENTERED_TEXT_HEADER)).toBeVisible();
+  });
+
   it('set right buttons', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementById('buttonOne')).toBeVisible();

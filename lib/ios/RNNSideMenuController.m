@@ -41,6 +41,16 @@
 	return self;
 }
 
+-(void)showSideMenu:(BOOL)show side:(MMDrawerSide)side animated:(BOOL)animated {
+	if (show) {
+		if (self.sideMenu.openSide != side) {
+			[self.sideMenu toggleDrawerSide:side animated:animated completion:nil];
+		}
+	} else if (self.sideMenu.openSide != MMDrawerSideNone) {
+		[self.sideMenu closeDrawerAnimated:animated completion:nil];
+	}
+}
+
 -(void)setControllers:(NSArray*)controllers {
 	for (id controller in controllers) {
 		

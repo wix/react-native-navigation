@@ -20,8 +20,8 @@ describe('top level api', () => {
 
   it('switch to tabs with side menus', async () => {
     await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
-    await elementByLabel('This is a side menu center screen tab 1').swipe('right');
-    await expect(elementByLabel('This is a left side menu screen')).toBeVisible();
+    await elementById(testIDs.CENTERED_TEXT_HEADER).swipe('right');
+    await expect(elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON)).toBeVisible();
   });
 
   it('screen lifecycle', async () => {

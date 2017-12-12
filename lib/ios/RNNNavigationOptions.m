@@ -3,6 +3,7 @@
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
 #import "RNNTopBarOptions.h"
+#import "RNNSideMenuController.h"
 
 const NSInteger BLUR_STATUS_TAG = 78264801;
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
@@ -26,6 +27,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
 	self.topBar = [[RNNTopBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"topBar"]];
 	self.bottomTabs = [[RNNTabBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTabs"]];
+	self.sideMenu = [[RNNSideMenuOptions alloc] initWithDict:[navigationOptions objectForKey:@"sideMenu"]];
 	
 	return self;
 }
@@ -36,6 +38,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 			[self.topBar mergeWith:[otherOptions objectForKey:key]];
 		} else if ([key isEqualToString:@"bottomTabs"]) {
 			[self.bottomTabs mergeWith:[otherOptions objectForKey:key]];
+		} else if ([key isEqualToString:@"sideMenu"]) {
+			[self.sideMenu mergeWith:[otherOptions objectForKey:@"sideMenu"]];
 		} else {
 			[self setValue:[otherOptions objectForKey:key] forKey:key];
 		}
@@ -206,6 +210,19 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 			if (curBlurView) {
 				[curBlurView removeFromSuperview];
 			}
+		}
+	}
+	
+	UIViewController* rootViewController = UIApplication.sharedApplication.delegate.window.rootViewController;
+	if ([rootViewController isKindOfClass:[RNNSideMenuController class]]) {
+		if (self.sideMenu.leftSideVisible) {
+			[(RNNSideMenuController*)rootViewController showSideMenu:[self.sideMenu.leftSideVisible boolValue] side:MMDrawerSideLeft animated:YES];
+			[self.sideMenu resetOptions];
+		}
+		
+		if (self.sideMenu.rightSideVisible) {
+			[(RNNSideMenuController*)rootViewController showSideMenu:[self.sideMenu.rightSideVisible boolValue] side:MMDrawerSideRight animated:YES];
+			[self.sideMenu resetOptions];
 		}
 	}
 }

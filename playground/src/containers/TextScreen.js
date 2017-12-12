@@ -11,13 +11,15 @@ class TextScreen extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <Text style={styles.h1}>{this.props.text || 'Text Screen'}</Text>
+        <Text style={styles.h1} testID={testIDs.CENTERED_TEXT_HEADER}>{this.props.text || 'Text Screen'}</Text>
         {this.renderTextFromFunctionInProps()}
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
         <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onButtonPress()} />
         <Button title={'Switch To Tab 2'} testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
         <Button title="Hide Tab Bar" onPress={() => this.hideTabBar(true)} />
         <Button title="Show Tab Bar" onPress={() => this.hideTabBar(false)} />
+        <Button title="Show Left Side Menu" testID={testIDs.SHOW_LEFT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('left')} />
+        <Button title="Show Right Side Menu" testID={testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('right')} />
       </View>
     );
   }
@@ -56,7 +58,18 @@ class TextScreen extends Component {
       }
     });
   }
+
+  showSideMenu(side) {
+    Navigation.setOptions(this.props.containerId, {
+      sideMenu: {
+        [side]: {
+          visible: true
+        }
+      }
+    });
+  }
 }
+
 module.exports = TextScreen;
 
 const styles = {

@@ -12,6 +12,7 @@ const CustomTransitionOrigin = require('./CustomTransitionOrigin');
 const CustomTransitionDestination = require('./CustomTransitionDestination');
 const CustomDialog = require('./CustomDialog');
 const BandHandlerScreen = require('./BackHandlerScreen');
+const SideMenuScreen = require('./SideMenuScreen');
 
 function registerContainers() {
   Navigation.registerContainer(`navigation.playground.CustomTransitionDestination`, () => CustomTransitionDestination);
@@ -27,6 +28,7 @@ function registerContainers() {
   Navigation.registerContainer(`navigation.playground.OrientationDetectScreen`, () => OrientationDetectScreen);
   Navigation.registerContainer('navigation.playground.CustomDialog', () => CustomDialog);
   Navigation.registerContainer('navigation.playground.BackHandlerScreen', () => BandHandlerScreen);
+  Navigation.registerContainer('navigation.playground.SideMenuScreen', () => SideMenuScreen);
 }
 
 module.exports = {
