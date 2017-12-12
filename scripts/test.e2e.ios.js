@@ -7,6 +7,6 @@ run();
 
 function run() {
   const conf = release ? `release` : `debug`;
-  exec.execSync(`detox build --configuration ios.sim.${conf} && detox test --configuration ios.sim.${conf} ${process.env.CI ? '--cleanup' : ''} --loglevel verbose`);
+  exec.execSync(`detox build --configuration ios.sim.${conf} && detox test --configuration ios.sim.${conf} ${process.env.CI ? '--cleanup' : ''}`);
 }
 
