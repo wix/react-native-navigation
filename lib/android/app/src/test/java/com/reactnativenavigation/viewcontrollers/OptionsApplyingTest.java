@@ -8,7 +8,7 @@ import android.view.View;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TestContainerView;
 import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.views.ContainerLayoutCreator;
+import com.reactnativenavigation.views.ContainerViewCreator;
 
 import org.junit.Test;
 
@@ -29,7 +29,7 @@ public class OptionsApplyingTest extends BaseTest {
 		initialNavigationOptions = new NavigationOptions();
 		view = spy(new TestContainerView(activity));
 		uut = new ContainerViewController(activity, "containerId1", "containerName",
-				new ContainerLayoutCreator(new ContainerViewController.ReactViewCreator() {
+				new ContainerViewCreator(new ContainerViewController.ReactViewCreator() {
 					@Override
 					public ContainerViewController.IReactView create(final Activity activity1, final String containerId, final String containerName) {
 						return view;

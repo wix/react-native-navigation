@@ -2,14 +2,13 @@ package com.reactnativenavigation.views;
 
 import android.app.Activity;
 
-import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 
-public class ContainerLayoutCreator implements ContainerViewController.ReactViewCreator {
+public class ContainerViewCreator implements ContainerViewController.ReactViewCreator {
 
 	private ContainerViewController.ReactViewCreator creator;
 
-	public ContainerLayoutCreator(ContainerViewController.ReactViewCreator creator) {
+	public ContainerViewCreator(ContainerViewController.ReactViewCreator creator) {
 		this.creator = creator;
 	}
 
