@@ -66,6 +66,7 @@ this.props.navigator.setStyle({
   navBarBlur: false, // blur the entire nav bar, works best with drawUnderNavBar:true
   tabBarHidden: false, // make the screen content hide the tab bar (remembered across pushes)
   statusBarHidden: false, // make the status bar hidden regardless of nav bar state
+  statusBarColor: '#000000', // change the color of the status bar.
   statusBarTextColorScheme: 'dark', // text color of status bar, 'dark' / 'light' (remembered across pushes)
   navBarSubtitleColor: 'red', // subtitle color
   navBarSubtitleFontFamily: 'font-name', // subtitle font, 'sans-serif-thin' for example
@@ -100,7 +101,6 @@ this.props.navigator.setStyle({
   navBarTitleTextCentered: true, // default: false. centers the title.
   navBarButtonFontFamily: 'sans-serif-thin', // Change the font family of textual buttons
   topBarElevationShadowEnabled: false, // default: true. Disables TopBar elevation shadow on Lolipop and above
-  statusBarColor: '#000000', // change the color of the status bar.
   collapsingToolBarImage: "http://lorempixel.com/400/200/", // Collapsing Toolbar image.
   collapsingToolBarImage: require('../../img/topbar.jpg'), // Collapsing Toolbar image. Either use a url or require a local image.
   collapsingToolBarCollapsedColor: '#0f2362', // Collapsing Toolbar scrim color.
