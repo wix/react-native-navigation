@@ -48,6 +48,11 @@ public class StyleParams {
         public int getColor(int defaultColor) {
             return hasColor() ? getColor() : defaultColor;
         }
+
+        @Override
+        public String toString() {
+            return this.getHexColor();
+        }
     }
 
     public static class Font {

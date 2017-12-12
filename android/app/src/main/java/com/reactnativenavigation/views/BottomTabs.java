@@ -2,7 +2,6 @@ package com.reactnativenavigation.views;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -11,7 +10,6 @@ import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
-import com.reactnativenavigation.params.parsers.StyleParamsParser;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.utils.Constants;
 
@@ -26,7 +24,7 @@ public class BottomTabs extends AHBottomNavigation {
         setForceTint(true);
         setId(ViewUtils.generateViewId());
         createVisibilityAnimator();
-        setStyle(AppStyle.appStyle);
+        setStyle();
         setFontFamily();
     }
 
@@ -40,13 +38,20 @@ public class BottomTabs extends AHBottomNavigation {
         setTitlesDisplayState();
     }
 
-    public void updateTabStyle(Bundle styleParams) {
-        StyleParams parsedStyleParams = new StyleParamsParser(styleParams).parse();
-        this.setStyleFromScreen(parsedStyleParams);
-    }
-
     public void setStyleFromScreen(StyleParams params) {
-        this.setStyle(params);
+        if (params.bottomTabsColor.hasColor()) {
+            setBackgroundColor(params.bottomTabsColor);
+        }
+        if (params.bottomTabsButtonColor.hasColor()) {
+            if (getInactiveColor() != params.bottomTabsButtonColor.getColor()) {
+                setInactiveColor(params.bottomTabsButtonColor.getColor());
+            }
+        }
+        if (params.selectedBottomTabsButtonColor.hasColor()) {
+            if (getAccentColor() != params.selectedBottomTabsButtonColor.getColor()) {
+                setAccentColor(params.selectedBottomTabsButtonColor.getColor());
+            }
+        }
 
         setVisibility(params.bottomTabsHidden, true);
     }
@@ -127,27 +132,23 @@ public class BottomTabs extends AHBottomNavigation {
                 Constants.BOTTOM_TABS_HEIGHT);
     }
 
-    private void setStyle(StyleParams params) {
-        if (params.bottomTabBadgeBackgroundColor.hasColor()) {
+    private void setStyle() {
+        if (hasBadgeBackgroundColor()) {
             setNotificationBackgroundColor(AppStyle.appStyle.bottomTabBadgeBackgroundColor.getColor());
         }
-        if (params.bottomTabBadgeTextColor.hasColor()) {
+        if (hasBadgeTextColor()) {
             setNotificationTextColor(AppStyle.appStyle.bottomTabBadgeTextColor.getColor());
         }
+    }
 
-        if (params.bottomTabsColor.hasColor()) {
-            setBackgroundColor(params.bottomTabsColor);
-        }
-        if (params.bottomTabsButtonColor.hasColor()) {
-            if (getInactiveColor() != params.bottomTabsButtonColor.getColor()) {
-                setInactiveColor(params.bottomTabsButtonColor.getColor());
-            }
-        }
-        if (params.selectedBottomTabsButtonColor.hasColor()) {
-            if (getAccentColor() != params.selectedBottomTabsButtonColor.getColor()) {
-                setAccentColor(params.selectedBottomTabsButtonColor.getColor());
-            }
-        }
+    private boolean hasBadgeTextColor() {
+        return AppStyle.appStyle.bottomTabBadgeTextColor != null &&
+               AppStyle.appStyle.bottomTabBadgeTextColor.hasColor();
+    }
+
+    private boolean hasBadgeBackgroundColor() {
+        return AppStyle.appStyle.bottomTabBadgeBackgroundColor != null &&
+               AppStyle.appStyle.bottomTabBadgeBackgroundColor.hasColor();
     }
 
     private void setFontFamily() {

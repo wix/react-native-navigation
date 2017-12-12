@@ -75,7 +75,7 @@ Navigation.startTabBasedApp({
       drawerShadow: true, // optional, add this if you want a side menu drawer shadow
       contentOverlayColor: 'rgba(0,0,0,0.25)', // optional, add this if you want a overlay color when drawer is open
       leftDrawerWidth: 50, // optional, add this if you want a define left drawer width (50=percent)
-      rightDrawerWidth: 50 // optional, add this if you want a define right drawer width (50=percent)
+      rightDrawerWidth: 50, // optional, add this if you want a define right drawer width (50=percent)
       shouldStretchDrawer: true // optional, iOS only with 'MMDrawer' type, whether or not the panning gesture will “hard-stop” at the maximum width for a given drawer side, default : true
     },
     type: 'MMDrawer', // optional, iOS only, types: 'TheSideBar', 'MMDrawer' default: 'MMDrawer'
