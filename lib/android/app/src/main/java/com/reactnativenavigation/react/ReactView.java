@@ -1,5 +1,6 @@
 package com.reactnativenavigation.react;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -8,14 +9,15 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 
-public class ReactContainerView extends ReactRootView implements ContainerViewController.ContainerView {
+@SuppressLint("ViewConstructor")
+public class ReactView extends ReactRootView implements ContainerViewController.IReactView {
 
 	private final ReactInstanceManager reactInstanceManager;
 	private final String containerId;
 	private final String containerName;
 	private boolean isAttachedToReactInstance = false;
 
-	public ReactContainerView(final Context context, ReactInstanceManager reactInstanceManager, String containerId, String containerName) {
+	public ReactView(final Context context, ReactInstanceManager reactInstanceManager, String containerId, String containerName) {
 		super(context);
 		this.reactInstanceManager = reactInstanceManager;
 		this.containerId = containerId;

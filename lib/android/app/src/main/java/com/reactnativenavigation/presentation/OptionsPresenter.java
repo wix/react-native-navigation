@@ -6,7 +6,7 @@ import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
-import com.reactnativenavigation.views.TopbarContainerView;
+import com.reactnativenavigation.views.ContainerView;
 
 public class OptionsPresenter {
 
@@ -26,38 +26,38 @@ public class OptionsPresenter {
 			controller.getTopBar().setTitleFontSize(options.topBarOptions.textFontSize);
 			TypefaceLoader typefaceLoader = new TypefaceLoader();
 			controller.getTopBar().setTitleTypeface(typefaceLoader.getTypeFace(controller.getActivity(), options.topBarOptions.textFontFamily));
-			applyTopbarHiddenOptions(options);
+			applyTopBarHiddenOptions(options);
 		}
 	}
 
-	private void applyTopbarHiddenOptions(NavigationOptions options) {
+	private void applyTopBarHiddenOptions(NavigationOptions options) {
 		if (options.topBarOptions.hidden == NavigationOptions.BooleanOptions.True) {
-			hideTopbar(options.topBarOptions.animateHide);
+			hideTopBar(options.topBarOptions.animateHide);
 		}
 		if (options.topBarOptions.hidden == NavigationOptions.BooleanOptions.False) {
-			showTopbar(options.topBarOptions.animateHide);
+			showTopBar(options.topBarOptions.animateHide);
 		}
 	}
 
-	private void showTopbar(NavigationOptions.BooleanOptions animated) {
+	private void showTopBar(NavigationOptions.BooleanOptions animated) {
 		if (controller.getTopBar().getVisibility() == View.VISIBLE) {
 			return;
 		}
 		if (animated == NavigationOptions.BooleanOptions.True) {
-			TopbarContainerView topbarContainerView = (TopbarContainerView) controller.getContainerView();
-			animator.animateShowTopBar(controller.getTopBar(), topbarContainerView.getContainerView().asView());
+			ContainerView topBarContainerView = (ContainerView) controller.getContainerView();
+			animator.animateShowTopBar(controller.getTopBar(), topBarContainerView.getReactView().asView());
 		} else {
 			controller.getTopBar().setVisibility(View.VISIBLE);
 		}
 	}
 
-	private void hideTopbar(NavigationOptions.BooleanOptions animated) {
+	private void hideTopBar(NavigationOptions.BooleanOptions animated) {
 		if (controller.getTopBar().getVisibility() == View.GONE) {
 			return;
 		}
 		if (animated == NavigationOptions.BooleanOptions.True) {
-			TopbarContainerView topbarContainerView = (TopbarContainerView) controller.getContainerView();
-			animator.animateHideTopBar(controller.getTopBar(), topbarContainerView.getContainerView().asView());
+			ContainerView topBarContainerView = (ContainerView) controller.getContainerView();
+			animator.animateHideTopBar(controller.getTopBar(), topBarContainerView.getReactView().asView());
 		} else {
 			controller.getTopBar().setVisibility(View.GONE);
 		}
