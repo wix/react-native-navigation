@@ -15,6 +15,6 @@ public class ContainerLayoutCreator implements ContainerViewController.ReactView
 
 	@Override
 	public ContainerViewController.IReactView create(Activity activity, String containerId, String containerName) {
-        return new ContainerView(activity, (ReactView) creator.create(activity, containerId, containerName));
+        return new ContainerView(activity, creator.create(activity, containerId, containerName));
 	}
 }

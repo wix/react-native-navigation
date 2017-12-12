@@ -4,15 +4,14 @@ import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.reactnativenavigation.react.ReactView;
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.reactnativenavigation.viewcontrollers.ContainerViewController.IReactView;
 
-public class ContainerView extends LinearLayout implements ContainerViewController.IReactView {
+public class ContainerView extends LinearLayout implements IReactView {
 
 	private TopBar topBar;
-	private ReactView reactView;
+	private IReactView reactView;
 
-	public ContainerView(Context context, ReactView reactView) {
+	public ContainerView(Context context, IReactView reactView) {
 		super(context);
 		this.topBar = new TopBar(context);
 		this.reactView = reactView;
@@ -58,7 +57,7 @@ public class ContainerView extends LinearLayout implements ContainerViewControll
 		return topBar;
 	}
 
-	public ContainerViewController.IReactView getReactView() {
+	public IReactView getReactView() {
 		return reactView;
 	}
 }
