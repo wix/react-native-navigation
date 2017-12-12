@@ -337,23 +337,23 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   // setStyle
   if ([performAction isEqualToString:@"setStyle"])
   {
-    for (UIViewController *viewController in self.viewControllers) {
-      if ([viewController isKindOfClass:[RCCViewController class]])
-      {
-        RCCViewController *rccViewController = (RCCViewController*)viewController;
-        
-        NSDictionary *navigatorStyle = [[NSDictionary alloc] initWithDictionary:actionParams copyItems:YES];
-        NSMutableDictionary *mergedStyle = [NSMutableDictionary dictionaryWithDictionary:rccViewController.navigatorStyle];
-        
-        // there are a few styles that we don't want to remember from our parent (they should be local)
-        [mergedStyle setValuesForKeysWithDictionary:navigatorStyle];
-        navigatorStyle = mergedStyle;
-        
-        rccViewController.navigatorStyle = navigatorStyle;
-        
-        [rccViewController setStyleOnInit];
-        [rccViewController updateStyle];
-      }
+    
+    NSDictionary *navigatorStyle = actionParams;
+    
+    // merge the navigatorStyle of our parent
+    if ([self.topViewController isKindOfClass:[RCCViewController class]])
+    {
+      RCCViewController *parent = (RCCViewController*)self.topViewController;
+      NSMutableDictionary *mergedStyle = [NSMutableDictionary dictionaryWithDictionary:parent.navigatorStyle];
+      
+      // there are a few styles that we don't want to remember from our parent (they should be local)
+      [mergedStyle setValuesForKeysWithDictionary:navigatorStyle];
+      navigatorStyle = mergedStyle;
+      
+      parent.navigatorStyle = navigatorStyle;
+      
+      [parent setStyleOnInit];
+      [parent updateStyle];
     }
   }
 }
