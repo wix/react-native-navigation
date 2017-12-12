@@ -3,7 +3,7 @@ apply from: '../prepare-robolectric.gradle'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion "27.0.1"
 
     defaultConfig {
         minSdkVersion 16

@@ -9,7 +9,7 @@ apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion "27.0.1"
 
     defaultConfig {
         applicationId "com.reactnativenavigation.playground"
