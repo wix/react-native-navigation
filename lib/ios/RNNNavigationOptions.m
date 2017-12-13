@@ -213,17 +213,25 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		}
 	}
 	
-	UIViewController* rootViewController = UIApplication.sharedApplication.delegate.window.rootViewController;
-	if ([rootViewController isKindOfClass:[RNNSideMenuController class]]) {
+	RNNSideMenuController* sideMenuController = (RNNSideMenuController*)UIApplication.sharedApplication.delegate.window.rootViewController;
+	if ([sideMenuController isKindOfClass:[RNNSideMenuController class]]) {
 		if (self.sideMenu.leftSideVisible) {
-			[(RNNSideMenuController*)rootViewController showSideMenu:[self.sideMenu.leftSideVisible boolValue] side:MMDrawerSideLeft animated:YES];
-			[self.sideMenu resetOptions];
+			if (self.sideMenu.leftSideVisible.boolValue) {
+				[sideMenuController showSideMenu:MMDrawerSideLeft animated:YES];
+			} else {
+				[sideMenuController hideSideMenu:MMDrawerSideLeft animated:YES];
+			}
 		}
 		
 		if (self.sideMenu.rightSideVisible) {
-			[(RNNSideMenuController*)rootViewController showSideMenu:[self.sideMenu.rightSideVisible boolValue] side:MMDrawerSideRight animated:YES];
-			[self.sideMenu resetOptions];
+			if (self.sideMenu.rightSideVisible.boolValue) {
+				[sideMenuController showSideMenu:MMDrawerSideRight animated:YES];
+			} else {
+				[sideMenuController hideSideMenu:MMDrawerSideRight animated:YES];
+			}
 		}
+		
+		[self.sideMenu resetOptions];
 	}
 }
 
