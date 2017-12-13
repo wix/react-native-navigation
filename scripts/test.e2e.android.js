@@ -38,10 +38,10 @@ function isDeviceRunning() {
 
 function startEmulator() {
   console.log(`Looking for avd...`);
-  const avds = exec.execSyncRead(`${process.env.ANDROID_HOME}/tools/bin/avdmanager list avd -c`);
-  const avdName = /^.*package\.xml(\S+)$/.exec(avds)[1];
+  const avdsRaw = exec.execSyncRead(`${process.env.ANDROID_HOME}/tools/bin/avdmanager list avd -c`);
+  const avdName = /^.*package\.xml(\S+)$/m.exec(avdsRaw)[1];
   if (_.isEmpty(avdName)) {
-    throw new Error(`Launch an android emulator or connect a device`);
+    throw new Error(`Can't find avd to launch. Please create an avd first.`);
   }
   console.log(`found avd name: ${avdName}, Launching...`);
   exec.execAsyncSilent(`${process.env.ANDROID_HOME}/tools/emulator -gpu host -no-audio @${avdName}`);
