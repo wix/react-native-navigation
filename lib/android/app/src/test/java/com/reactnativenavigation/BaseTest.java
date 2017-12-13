@@ -1,20 +1,18 @@
 package com.reactnativenavigation;
 
-import android.app.Activity;
-import android.view.View;
-import android.view.ViewGroup;
+import android.app.*;
+import android.support.v7.app.*;
+import android.view.*;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
+import org.junit.*;
+import org.junit.runner.*;
+import org.robolectric.*;
+import org.robolectric.annotation.*;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.*;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 25, constants = BuildConfig.class, manifest = "/../../../../../src/test/AndroidManifest.xml")
+@Config(sdk = 27, application = TestApplication.class)
 public abstract class BaseTest {
 	@Before
 	public void beforeEach() {
@@ -27,7 +25,7 @@ public abstract class BaseTest {
 	}
 
 	public Activity newActivity() {
-		return Robolectric.setupActivity(Activity.class);
+		return Robolectric.setupActivity(AppCompatActivity.class);
 	}
 
 	public void assertIsChildById(ViewGroup parent, View child) {
