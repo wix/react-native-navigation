@@ -3,11 +3,11 @@ package com.reactnativenavigation.mocks;
 import android.app.Activity;
 
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
-import com.reactnativenavigation.viewcontrollers.ContainerViewController.ContainerViewCreator;
+import com.reactnativenavigation.viewcontrollers.ContainerViewController.ReactViewCreator;
 
-public class TestContainerViewCreator implements ContainerViewCreator {
+public class TestContainerViewCreator implements ReactViewCreator {
 	@Override
-	public ContainerViewController.ContainerView create(final Activity activity, final String containerId, final String containerName) {
+	public ContainerViewController.IReactView create(final Activity activity, final String containerId, final String containerName) {
 		return new TestContainerView(activity);
 	}
 }

@@ -2,12 +2,11 @@ package com.reactnativenavigation.mocks;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.views.TopBar;
 
-public class TestContainerView extends View implements ContainerViewController.ContainerView {
+public class TestContainerView extends View implements ContainerViewController.IReactView {
 
 	private TopBar topBar;
 

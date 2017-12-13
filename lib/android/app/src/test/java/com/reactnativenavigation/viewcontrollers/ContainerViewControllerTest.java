@@ -1,13 +1,10 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TestContainerView;
 import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.presentation.OptionsPresenter;
 
 import org.junit.Test;
 
@@ -19,16 +16,16 @@ import static org.mockito.Mockito.when;
 
 public class ContainerViewControllerTest extends BaseTest {
 	private ContainerViewController uut;
-	private ContainerViewController.ContainerView view;
+	private ContainerViewController.IReactView view;
 
 	@Override
 	public void beforeEach() {
 		super.beforeEach();
 		Activity activity = newActivity();
 		view = spy(new TestContainerView(activity));
-		uut = new ContainerViewController(activity, "containerId1", "containerName", new ContainerViewController.ContainerViewCreator() {
+		uut = new ContainerViewController(activity, "containerId1", "containerName", new ContainerViewController.ReactViewCreator() {
 			@Override
-			public ContainerViewController.ContainerView create(final Activity activity1, final String containerId, final String containerName) {
+			public ContainerViewController.IReactView create(final Activity activity1, final String containerId, final String containerName) {
 				return view;
 			}
 		}, new NavigationOptions());

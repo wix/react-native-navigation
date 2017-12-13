@@ -10,10 +10,10 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 
 public class DialogViewController extends ViewController {
 
-	private ContainerViewController.ContainerViewCreator viewCreator;
+	private ContainerViewController.ReactViewCreator viewCreator;
 	private String containerName;
 
-	public DialogViewController(Activity activity, String id, String containerName, ContainerViewController.ContainerViewCreator viewCreator) {
+	public DialogViewController(Activity activity, String id, String containerName, ContainerViewController.ReactViewCreator viewCreator) {
 		super(activity, id);
 		this.viewCreator = viewCreator;
 		this.containerName = containerName;

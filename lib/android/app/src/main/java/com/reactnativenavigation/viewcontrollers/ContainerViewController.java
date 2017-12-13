@@ -2,24 +2,22 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 
-import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.views.TopBar;
-import com.reactnativenavigation.views.TopbarContainerView;
+import com.reactnativenavigation.views.ContainerView;
 
 public class ContainerViewController extends ViewController implements NavigationOptionsListener {
 
-	public interface ContainerViewCreator {
+	public interface ReactViewCreator {
 
-		ContainerView create(Activity activity, String containerId, String containerName);
+        IReactView create(Activity activity, String containerId, String containerName);
 	}
 
-	public interface ContainerView {
+	public interface IReactView {
 
 		boolean isReady();
 
@@ -35,16 +33,16 @@ public class ContainerViewController extends ViewController implements Navigatio
 
 	private final String containerName;
 
-	private final ContainerViewCreator viewCreator;
+	private final ReactViewCreator viewCreator;
 	private NavigationOptions navigationOptions;
-	private ContainerView containerView;
+	private IReactView containerView;
 
 	private TopBar topBar;
 
 	public ContainerViewController(final Activity activity,
 								   final String id,
 								   final String containerName,
-								   final ContainerViewCreator viewCreator,
+								   final ReactViewCreator viewCreator,
 								   final NavigationOptions initialNavigationOptions) {
 		super(activity, id);
 		this.containerName = containerName;
@@ -82,8 +80,8 @@ public class ContainerViewController extends ViewController implements Navigatio
 	@Override
 	protected View createView() {
 		containerView = viewCreator.create(getActivity(), getId(), containerName);
-		if (containerView instanceof TopbarContainerView) {
-			topBar = ((TopbarContainerView) containerView).getTopBar();
+		if (containerView instanceof ContainerView) {
+			topBar = ((ContainerView) containerView).getTopBar();
 		}
 		return containerView.asView();
 	}
@@ -107,7 +105,7 @@ public class ContainerViewController extends ViewController implements Navigatio
 		return topBar;
 	}
 
-	public ContainerView getContainerView() {
+	public IReactView getContainerView() {
 		return containerView;
 	}
 }
