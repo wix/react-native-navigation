@@ -4,6 +4,8 @@ import android.view.View;
 
 import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.TopBarOptions;
+import com.reactnativenavigation.parse.TopTabsOptions;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.views.ContainerView;
@@ -20,24 +22,25 @@ public class OptionsPresenter {
 
 	public void applyOptions(NavigationOptions options) {
 		if (controller != null && controller.getTopBar() != null) {
-			controller.getTopBar().setTitle(options.topBarOptions.title);
-			controller.getTopBar().setBackgroundColor(options.topBarOptions.backgroundColor);
-			controller.getTopBar().setTitleTextColor(options.topBarOptions.textColor);
-			controller.getTopBar().setTitleFontSize(options.topBarOptions.textFontSize);
-			TypefaceLoader typefaceLoader = new TypefaceLoader();
-			controller.getTopBar().setTitleTypeface(typefaceLoader.getTypeFace(controller.getActivity(), options.topBarOptions.textFontFamily));
-			applyTopBarHiddenOptions(options);
+            applyTopBarOptions(options.topBarOptions);
+            applyTopTabsOptions(options.topTabsOptions);
 		}
 	}
 
-	private void applyTopBarHiddenOptions(NavigationOptions options) {
-		if (options.topBarOptions.hidden == NavigationOptions.BooleanOptions.True) {
-			hideTopBar(options.topBarOptions.animateHide);
-		}
-		if (options.topBarOptions.hidden == NavigationOptions.BooleanOptions.False) {
-			showTopBar(options.topBarOptions.animateHide);
-		}
-	}
+    private void applyTopBarOptions(TopBarOptions options) {
+        controller.setTitle(options.title);
+        controller.setBackgroundColor(options.backgroundColor);
+        controller.setTitleTextColor(options.textColor);
+        controller.setTitleFontSize(options.textFontSize);
+        TypefaceLoader typefaceLoader = new TypefaceLoader();
+        controller.getTopBar().setTitleTypeface(typefaceLoader.getTypeFace(controller.getActivity(), options.textFontFamily));
+        if (options.hidden == NavigationOptions.BooleanOptions.True) {
+            hideTopBar(options.animateHide);
+        }
+        if (options.hidden == NavigationOptions.BooleanOptions.False) {
+            showTopBar(options.animateHide);
+        }
+    }
 
 	private void showTopBar(NavigationOptions.BooleanOptions animated) {
 		if (controller.getTopBar().getVisibility() == View.VISIBLE) {
@@ -62,4 +65,8 @@ public class OptionsPresenter {
 			controller.getTopBar().setVisibility(View.GONE);
 		}
 	}
+
+    private void applyTopTabsOptions(TopTabsOptions topTabsOptions) {
+        // TODO: -guyca
+    }
 }

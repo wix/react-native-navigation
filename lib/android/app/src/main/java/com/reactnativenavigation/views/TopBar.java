@@ -12,11 +12,13 @@ import android.widget.TextView;
 
 public class TopBar extends AppBarLayout {
 	private final Toolbar titleBar;
+	private final TopTabs topTabs;
 
 	public TopBar(final Context context) {
 		super(context);
 		titleBar = new Toolbar(context);
-		addView(titleBar);
+        topTabs = new TopTabs(context);
+        addView(titleBar);
 	}
 
 	public void setTitle(String title) {

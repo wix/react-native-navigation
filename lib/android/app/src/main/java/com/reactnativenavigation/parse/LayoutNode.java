@@ -14,7 +14,9 @@ public class LayoutNode {
 		SideMenuCenter,
 		SideMenuLeft,
 		SideMenuRight,
-		CustomDialog
+		CustomDialog,
+        TopTabsContainer,
+        TopTab
 	}
 
 	public final String id;

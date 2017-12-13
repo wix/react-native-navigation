@@ -30,21 +30,25 @@ public class NavigationOptions implements DEFAULT_VALUES {
 		if (json == null) return result;
 
 		result.topBarOptions = TopBarOptions.parse(json.optJSONObject("topBar"));
+		result.topTabsOptions = TopTabsOptions.parse(json.optJSONObject("topTabs"));
 		result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
 
 		return result.withDefaultOptions(defaultOptions);
 	}
 
 	public TopBarOptions topBarOptions = new TopBarOptions();
-	public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
+    public TopTabsOptions topTabsOptions = new TopTabsOptions();
+    public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
 
 	public void mergeWith(final NavigationOptions other) {
         topBarOptions.mergeWith(other.topBarOptions);
-		bottomTabsOptions.mergeWith(other.bottomTabsOptions);
+        topTabsOptions.mergeWith(other.topTabsOptions);
+        bottomTabsOptions.mergeWith(other.bottomTabsOptions);
 	}
 
     NavigationOptions withDefaultOptions(final NavigationOptions other) {
         topBarOptions.mergeWithDefault(other.topBarOptions);
+        topTabsOptions.mergeWithDefault(other.topTabsOptions);
         bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
         return this;
     }
