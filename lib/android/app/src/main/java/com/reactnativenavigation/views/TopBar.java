@@ -101,7 +101,7 @@ public class TopBar extends AppBarLayout {
 
 	private void setLeftButton(final Button button) {
 		TitleBarButton leftBarButton = new TitleBarButton(this.containerView, this.titleBar, button);
-		leftBarButton.setNavigationIcon(getContext());
+		leftBarButton.applyNavigationIcon(getContext());
 	}
 
 	private void setRightButtons(ArrayList<Button> rightButtons) {

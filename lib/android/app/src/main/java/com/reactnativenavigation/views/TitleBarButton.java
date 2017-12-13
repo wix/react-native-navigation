@@ -43,14 +43,14 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 		menuItem.setOnMenuItemClickListener(this);
 
 		if (hasIcon()) {
-			setIcon(context, menuItem);
+			applyIcon(context, menuItem);
 		} else {
 			setTextColor();
 			setFontSize(menuItem);
 		}
 	}
 
-	public void setNavigationIcon(Context context) {
+	public void applyNavigationIcon(Context context) {
 		if (!hasIcon()) {
 			Log.w("RNN", "Left button needs to have an icon");
 			return;
@@ -78,7 +78,7 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 		});
 	}
 
-	private void setIcon(Context context, final MenuItem menuItem) {
+	private void applyIcon(Context context, final MenuItem menuItem) {
 		ImageUtils.tryLoadIcon(context, button.icon, new ImageUtils.ImageLoadingListener() {
 			@Override
 			public void onComplete(@NonNull Drawable drawable) {
