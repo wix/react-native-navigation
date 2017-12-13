@@ -13,6 +13,7 @@
 	self.animateHide = [tabBarOptions valueForKey:@"animateHide"];
 	self.tabBadge = [tabBarOptions valueForKey:@"tabBadge"];
 	self.currentTabIndex = [tabBarOptions valueForKey:@"currentTabIndex"];
+	self.testID = [tabBarOptions valueForKey:@"testID"];
 	
 	return self;
 }

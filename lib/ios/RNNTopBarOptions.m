@@ -21,8 +21,9 @@
 	self.translucent = [topBarOptions valueForKey:@"translucent"];
 	self.transparent = [topBarOptions valueForKey:@"transparent"];
 	self.noBorder = [topBarOptions valueForKey:@"noBorder"];
-	self.animateHide =[topBarOptions valueForKey:@"animateHide"];
-	self.largeTitle =[topBarOptions valueForKey:@"largeTitle"];
+	self.animateHide = [topBarOptions valueForKey:@"animateHide"];
+	self.largeTitle = [topBarOptions valueForKey:@"largeTitle"];
+	self.testID = [topBarOptions valueForKey:@"testID"];
 	
 	return self;
 }
