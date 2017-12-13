@@ -48,6 +48,11 @@ public class StyleParams {
         public int getColor(int defaultColor) {
             return hasColor() ? getColor() : defaultColor;
         }
+
+        @Override
+        public String toString() {
+            return this.getHexColor();
+        }
     }
 
     public static class Font {
@@ -84,6 +89,7 @@ public class StyleParams {
     public StatusBarTextColorScheme statusBarTextColorScheme;
     public Color statusBarColor;
     public boolean statusBarHidden;
+    public boolean drawUnderStatusBar;
     public Color contextualMenuStatusBarColor;
     public Color contextualMenuButtonsColor;
     public Color contextualMenuBackgroundColor;
