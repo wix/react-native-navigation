@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
 import com.reactnativenavigation.utils.CompatUtils;
@@ -24,10 +25,9 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		this.id = id;
 	}
 
-	@NonNull
 	protected abstract View createView();
 
-	public void ensureViewIsCreated() {
+	void ensureViewIsCreated() {
 		getView();
 	}
 
@@ -40,7 +40,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	}
 
 	@Nullable
-	public StackController getParentStackController() {
+    StackController getParentStackController() {
 		return parentStackController;
 	}
 
@@ -62,7 +62,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		return id;
 	}
 
-	public boolean isSameId(final String id) {
+	boolean isSameId(final String id) {
 		return StringUtils.isEqual(this.id, id);
 	}
 
@@ -87,7 +87,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		if (view != null) {
 			view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 			if (view.getParent() instanceof ViewGroup) {
-				((ViewGroup) view.getParent()).removeView(view);
+				((ViewManager) view.getParent()).removeView(view);
 			}
 			view = null;
 		}

@@ -10,7 +10,10 @@ import com.reactnativenavigation.viewcontrollers.SideMenuController;
 import com.reactnativenavigation.viewcontrollers.StackController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.overlay.DialogViewController;
+import com.reactnativenavigation.viewcontrollers.toptabs.TopTabController;
+import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
 import com.reactnativenavigation.views.ContainerViewCreator;
+import com.reactnativenavigation.views.TopTabCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,12 +48,16 @@ public class LayoutFactory {
 				return createSideMenuRight(node);
 			case CustomDialog:
 				return createDialogContainer(node);
+            case TopTabsContainer:
+                return createTopTabsContainer(node);
+            case TopTab:
+                return createTopTabContainer(node);
 			default:
 				throw new IllegalArgumentException("Invalid node type: " + node.type);
 		}
 	}
 
-	private ViewController createSideMenuRoot(LayoutNode node) {
+    private ViewController createSideMenuRoot(LayoutNode node) {
 		SideMenuController sideMenuLayout = new SideMenuController(activity, node.id);
 		for (LayoutNode child : node.children) {
 			ViewController childLayout = create(child);
@@ -114,4 +121,20 @@ public class LayoutFactory {
 		ReactContainerViewCreator creator = new ReactContainerViewCreator(reactInstanceManager);
 		return new DialogViewController(activity, id, name, creator);
 	}
+
+    private ViewController createTopTabsContainer(LayoutNode node) {
+        final List<ViewController> tabs = new ArrayList<>();
+        for (LayoutNode child : node.children) {
+            tabs.add(create(child));
+        }
+        return new TopTabsController(activity, node.id, tabs);
+    }
+
+    private TopTabController createTopTabContainer(LayoutNode node) {
+        String name = node.data.optString("name");
+        return new TopTabController(activity,
+                node.id,
+                name,
+                new TopTabCreator(new ReactContainerViewCreator(reactInstanceManager)));
+    }
 }

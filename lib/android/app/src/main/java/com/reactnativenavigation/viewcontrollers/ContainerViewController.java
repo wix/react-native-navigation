@@ -12,7 +12,7 @@ import com.reactnativenavigation.views.ContainerView;
 
 public class ContainerViewController extends ViewController implements NavigationOptionsListener {
 
-	public interface ReactViewCreator {
+    public interface ReactViewCreator {
 
         IReactView create(Activity activity, String containerId, String containerName);
 	}
@@ -38,6 +38,22 @@ public class ContainerViewController extends ViewController implements Navigatio
 	private IReactView containerView;
 
 	private TopBar topBar;
+
+    public void setTitle(String title) {
+        topBar.setTitle(title);
+    }
+
+    public void setBackgroundColor(int backgroundColor) {
+        topBar.setBackgroundColor(backgroundColor);
+    }
+
+    public void setTitleTextColor(int textColor) {
+        topBar.setTitleTextColor(textColor);
+    }
+
+    public void setTitleFontSize(float textFontSize) {
+        topBar.setTitleFontSize(textFontSize);
+    }
 
 	public ContainerViewController(final Activity activity,
 								   final String id,

@@ -22,6 +22,7 @@ class WelcomeScreen extends Component {
     this.onClickPushOptionsScreen = this.onClickPushOptionsScreen.bind(this);
     this.onClickPushOrientationMenuScreen = this.onClickPushOrientationMenuScreen.bind(this);
     this.onClickBackHandler = this.onClickBackHandler.bind(this);
+    this.onClickPushTopTabsScreen = this.onClickPushTopTabsScreen.bind(this);
   }
 
   render() {
@@ -33,6 +34,7 @@ class WelcomeScreen extends Component {
         <Button title="Push Lifecycle Screen" testID={testIDs.PUSH_LIFECYCLE_BUTTON} onPress={this.onClickLifecycleScreen} />
         <Button title="Push" testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
         <Button title="Push Options Screen" testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
+        <Button title="Push TopTabs screen" testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />
         <Button title="Back Handler" testID={testIDs.BACK_HANDLER_BUTTON} onPress={this.onClickBackHandler} />
         <Button title="Show Modal" testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
         <Button title="Show Redbox" testID={testIDs.SHOW_REDBOX_BUTTON} onPress={this.onClickShowRedbox} />
@@ -142,6 +144,37 @@ class WelcomeScreen extends Component {
   onClickPushOptionsScreen() {
     Navigation.push(this.props.containerId, {
       name: 'navigation.playground.OptionsScreen'
+    });
+  }
+
+  onClickPushTopTabsScreen() {
+    Navigation.push(this.props.containerId, {
+      topTabs: [
+        {
+          container: {
+            name: 'navigation.playground.TextScreen',
+            passProps: {
+              text: 'This is top tab 1'
+            }
+          }
+        },
+        {
+          container: {
+            name: 'navigation.playground.TextScreen',
+            passProps: {
+              text: 'This is top tab 2'
+            }
+          }
+        },
+        {
+          container: {
+            name: 'navigation.playground.TextScreen',
+            passProps: {
+              text: 'This is top tab 3'
+            }
+          }
+        }
+      ]
     });
   }
 
