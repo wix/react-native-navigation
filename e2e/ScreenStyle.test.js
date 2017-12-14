@@ -104,4 +104,10 @@ describe('screen style', () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementById('buttonLeft')).toBeVisible();
   });
+
+  it('tab bar items visibility', async () => {
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await expect(elementById(testIDs.FIRST_TAB_BAR_BUTTON)).toBeVisible();
+    await expect(elementById(testIDs.SECOND_TAB_BAR_BUTTON)).toBeVisible();
+  });
 });

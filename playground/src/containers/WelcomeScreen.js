@@ -56,7 +56,8 @@ class WelcomeScreen extends Component {
             },
             navigationOptions: {
               tabItem: {
-                title: 'Tab 1'
+                title: 'Tab 1',
+                testID: testIDs.FIRST_TAB_BAR_BUTTON
               }
             }
           }
@@ -69,7 +70,8 @@ class WelcomeScreen extends Component {
             },
             navigationOptions: {
               tabItem: {
-                title: 'Tab 2'
+                title: 'Tab 2',
+                testID: testIDs.SECOND_TAB_BAR_BUTTON
               }
             }
           }
