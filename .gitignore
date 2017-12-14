@@ -1,5 +1,6 @@
 dist
 .vscode/
+package-lock.json
 
 ############
 # Node
