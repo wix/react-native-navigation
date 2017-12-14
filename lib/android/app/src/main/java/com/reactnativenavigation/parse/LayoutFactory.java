@@ -32,7 +32,7 @@ public class LayoutFactory {
 	public ViewController create(final LayoutNode node) {
 		switch (node.type) {
 			case Container:
-				return createContainer(node, new ContainerViewCreator(new ReactContainerViewCreator(reactInstanceManager)));
+				return createContainer(node, new ContainerViewCreator(reactInstanceManager));
 			case ContainerStack:
 				return createContainerStack(node);
 			case BottomTabs:
@@ -50,7 +50,7 @@ public class LayoutFactory {
             case TopTabsContainer:
                 return createTopTabsContainer(node);
             case TopTab:
-                return createContainer(node, new TopTabCreator(new ReactContainerViewCreator(reactInstanceManager)));
+                return createContainer(node, new TopTabCreator(reactInstanceManager));
 			default:
 				throw new IllegalArgumentException("Invalid node type: " + node.type);
 		}

@@ -8,6 +8,6 @@ import com.reactnativenavigation.viewcontrollers.ContainerViewController.ReactVi
 public class TestContainerViewCreator implements ReactViewCreator {
 	@Override
 	public ContainerViewController.IReactView create(final Activity activity, final String containerId, final String containerName) {
-		return new TestContainerView(activity);
+		return new TestContainerLayout(activity);
 	}
 }

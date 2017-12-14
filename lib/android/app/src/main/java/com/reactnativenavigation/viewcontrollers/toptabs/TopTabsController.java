@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.TopTabsContainer;
+import com.reactnativenavigation.views.TopTabsLayout;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,12 +23,17 @@ public class TopTabsController extends ParentController {
     @NonNull
     @Override
     protected ViewGroup createView() {
-        return new TopTabsContainer(getActivity(), tabs);
+        return new TopTabsLayout(getActivity(), tabs);
     }
 
     @NonNull
     @Override
     public Collection<ViewController> getChildControllers() {
         return tabs;
+    }
+
+    @Override
+    protected boolean isViewShown() {
+        return super.isViewShown();
     }
 }

@@ -4,19 +4,19 @@ import android.content.Context;
 import android.view.View;
 
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.reactnativenavigation.views.Container;
 import com.reactnativenavigation.views.TopBar;
 
-public class TestContainerView extends View implements ContainerViewController.IReactView {
+public class TestContainerLayout extends View implements ContainerViewController.IReactView, Container {
 
 	private TopBar topBar;
 
-	public TestContainerView(final Context context) {
+	public TestContainerLayout(final Context context) {
 		super(context);
 		topBar = new TopBar(context);
-
 	}
 
-	@Override
+    @Override
 	public boolean isReady() {
 		return false;
 	}
@@ -37,4 +37,9 @@ public class TestContainerView extends View implements ContainerViewController.I
 	@Override
 	public void sendContainerStop() {
 	}
+
+    @Override
+    public TopBar getTopBar() {
+        return topBar;
+    }
 }
