@@ -1,13 +1,13 @@
 package com.reactnativenavigation;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
-import android.widget.Toast;
+import android.os.*;
+import android.support.annotation.*;
+import android.support.v7.app.*;
+import android.view.*;
+import android.widget.*;
 
-import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
-import com.reactnativenavigation.viewcontrollers.Navigator;
+import com.facebook.react.modules.core.*;
+import com.reactnativenavigation.viewcontrollers.*;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
 	private Navigator navigator;
@@ -41,14 +41,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
 	@Override
 	public void invokeDefaultOnBackPressed() {
-        if (!navigator.handleBack()) {
-		    super.onBackPressed();
-        }
+		if (!navigator.handleBack()) {
+			super.onBackPressed();
+		}
 	}
 
 	@Override
 	public void onBackPressed() {
-        app().getReactGateway().onBackPressed();
+		app().getReactGateway().onBackPressed();
 	}
 
 	@Override

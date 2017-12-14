@@ -1,6 +1,6 @@
 package com.reactnativenavigation;
 
-import android.app.Application;
+import android.app.*;
 
 public class TestApplication extends Application {
 	@Override
