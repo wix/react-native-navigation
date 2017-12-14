@@ -3,7 +3,7 @@ def robolectricDependenciesFolder = new File(rootProject.buildDir, "robolectric-
 configurations.create('robolectricRuntime')
 
 dependencies {
-    testCompile "org.khronos:opengl-api:gl1.1-android-2.1_r1"
+    testImplementation "org.khronos:opengl-api:gl1.1-android-2.1_r1"
 
     robolectricRuntime "org.robolectric:android-all:8.1.0-robolectric-4402310"
 
