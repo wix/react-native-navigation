@@ -152,7 +152,7 @@ class WelcomeScreen extends Component {
       topTabs: [
         {
           container: {
-            name: 'navigation.playground.TextScreen',
+            name: 'navigation.playground.TopTabScreen',
             passProps: {
               text: 'This is top tab 1'
             }
@@ -160,7 +160,7 @@ class WelcomeScreen extends Component {
         },
         {
           container: {
-            name: 'navigation.playground.TextScreen',
+            name: 'navigation.playground.TopTabScreen',
             passProps: {
               text: 'This is top tab 2'
             }
@@ -168,7 +168,7 @@ class WelcomeScreen extends Component {
         },
         {
           container: {
-            name: 'navigation.playground.TextScreen',
+            name: 'navigation.playground.TopTabScreen',
             passProps: {
               text: 'This is top tab 3'
             }
