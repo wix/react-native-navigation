@@ -53,6 +53,11 @@ class WelcomeScreen extends Component {
             passProps: {
               text: 'This is tab 1',
               myFunction: () => 'Hello from a function!'
+            },
+            navigationOptions: {
+              tabItem: {
+                title: 'Tab 1'
+              }
             }
           }
         },
@@ -61,6 +66,11 @@ class WelcomeScreen extends Component {
             name: 'navigation.playground.TextScreen',
             passProps: {
               text: 'This is tab 2'
+            },
+            navigationOptions: {
+              tabItem: {
+                title: 'Tab 2'
+              }
             }
           }
         }

@@ -3,6 +3,7 @@
 #import "RNNTopBarOptions.h"
 #import "RNNTabBarOptions.h"
 #import "RNNSideMenuOptions.h"
+#import "RNNUITabBarItem.h"
 
 extern const NSInteger BLUR_STATUS_TAG;
 extern const NSInteger BLUR_TOPBAR_TAG;
@@ -25,6 +26,8 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) RNNSideMenuOptions* sideMenu;
 @property (nonatomic, strong) UIImage* backgroundImage;
 @property (nonatomic, strong) UIImage* rootBackgroundImage;
+@property (nonatomic, strong) RNNUITabBarItem* tabItem;
+
 
 - (UIInterfaceOrientationMask)supportedOrientations;
 
