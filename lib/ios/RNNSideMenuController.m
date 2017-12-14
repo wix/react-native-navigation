@@ -41,6 +41,14 @@
 	return self;
 }
 
+-(void)showSideMenu:(MMDrawerSide)side animated:(BOOL)animated {
+	[self.sideMenu openDrawerSide:side animated:animated completion:nil];
+}
+
+-(void)hideSideMenu:(MMDrawerSide)side animated:(BOOL)animated {
+	[self.sideMenu closeDrawerAnimated:animated completion:nil];
+}
+
 -(void)setControllers:(NSArray*)controllers {
 	for (id controller in controllers) {
 		

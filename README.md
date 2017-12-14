@@ -197,7 +197,7 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | rootBackgroundImageName            |  ✅   |    [Contribute](/docs/docs/CONTRIBUTING.md)     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
 | setButtons          |   ✅     |    ✅    | [Contribute](/docs/docs/CONTRIBUTING.md) | @Johan-dutoit|
 | title            |   ✅     |        	✅    | 	✅| Wix|
-| toggleDrawer        |   ✅     |        [Contribute](/docs/docs/CONTRIBUTING.md)   | [Contribute](/docs/docs/CONTRIBUTING.md) |
+| toggleDrawer        |   ✅     |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md) |
 | setTabBadge         |    ✅    |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md)| Wix|
 | switchToTab         |    ✅    |       ✅   |[Contribute](/docs/docs/CONTRIBUTING.md) |
 | topBarCustomView        |   ✅     |     WIP @gran33     | [Contribute](/docs/docs/CONTRIBUTING.md)|

@@ -19,4 +19,7 @@
 
 -(instancetype)initWithControllers:(NSArray*)controllers;
 
+-(void)showSideMenu:(MMDrawerSide)side animated:(BOOL)animated;
+-(void)hideSideMenu:(MMDrawerSide)side animated:(BOOL)animated;
+
 @end

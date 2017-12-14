@@ -2,6 +2,7 @@
 #import <UIKit/UIKit.h>
 #import "RNNTopBarOptions.h"
 #import "RNNTabBarOptions.h"
+#import "RNNSideMenuOptions.h"
 
 extern const NSInteger BLUR_STATUS_TAG;
 extern const NSInteger BLUR_TOPBAR_TAG;
@@ -21,6 +22,7 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) NSNumber* popGesture;
 @property (nonatomic, strong) RNNTopBarOptions* topBar;
 @property (nonatomic, strong) RNNTabBarOptions* bottomTabs;
+@property (nonatomic, strong) RNNSideMenuOptions* sideMenu;
 
 
 - (UIInterfaceOrientationMask)supportedOrientations;

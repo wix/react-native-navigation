@@ -3,6 +3,7 @@
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
 #import "RNNTopBarOptions.h"
+#import "RNNSideMenuController.h"
 
 const NSInteger BLUR_STATUS_TAG = 78264801;
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
@@ -26,6 +27,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
 	self.topBar = [[RNNTopBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"topBar"]];
 	self.bottomTabs = [[RNNTabBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTabs"]];
+	self.sideMenu = [[RNNSideMenuOptions alloc] initWithDict:[navigationOptions objectForKey:@"sideMenu"]];
 	
 	return self;
 }
@@ -36,6 +38,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 			[self.topBar mergeWith:[otherOptions objectForKey:key]];
 		} else if ([key isEqualToString:@"bottomTabs"]) {
 			[self.bottomTabs mergeWith:[otherOptions objectForKey:key]];
+		} else if ([key isEqualToString:@"sideMenu"]) {
+			[self.sideMenu mergeWith:[otherOptions objectForKey:@"sideMenu"]];
 		} else {
 			[self setValue:[otherOptions objectForKey:key] forKey:key];
 		}
@@ -215,6 +219,27 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 				[curBlurView removeFromSuperview];
 			}
 		}
+	}
+	
+	RNNSideMenuController* sideMenuController = (RNNSideMenuController*)UIApplication.sharedApplication.delegate.window.rootViewController;
+	if ([sideMenuController isKindOfClass:[RNNSideMenuController class]]) {
+		if (self.sideMenu.leftSideVisible) {
+			if (self.sideMenu.leftSideVisible.boolValue) {
+				[sideMenuController showSideMenu:MMDrawerSideLeft animated:YES];
+			} else {
+				[sideMenuController hideSideMenu:MMDrawerSideLeft animated:YES];
+			}
+		}
+		
+		if (self.sideMenu.rightSideVisible) {
+			if (self.sideMenu.rightSideVisible.boolValue) {
+				[sideMenuController showSideMenu:MMDrawerSideRight animated:YES];
+			} else {
+				[sideMenuController hideSideMenu:MMDrawerSideRight animated:YES];
+			}
+		}
+		
+		[self.sideMenu resetOptions];
 	}
 }
 
