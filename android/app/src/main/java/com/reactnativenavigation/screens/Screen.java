@@ -62,6 +62,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         createViews();
         EventBus.instance.register(this);
         sharedElements = new SharedElements();
+        setDrawUnderStatusBar(styleParams.drawUnderStatusBar);
     }
 
     public void registerSharedElement(SharedElementTransition toView, String key) {
@@ -106,6 +107,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         setStatusBarHidden(styleParams.statusBarHidden);
         setStatusBarTextColorScheme(styleParams.statusBarTextColorScheme);
         setNavigationBarColor(styleParams.navigationBarColor);
+        setDrawUnderStatusBar(styleParams.drawUnderStatusBar);
         topBar.setStyle(styleParams);
         if (styleParams.screenBackgroundColor.hasColor()) {
             setBackgroundColor(styleParams.screenBackgroundColor.getColor());
@@ -172,6 +174,10 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     private void setStatusBarHidden(boolean statusBarHidden) {
         StatusBar.setHidden(((NavigationActivity) activity).getScreenWindow(), statusBarHidden);
+    }
+
+    private void setDrawUnderStatusBar(boolean drawUnderStatusBar) {
+        StatusBar.displayOverScreen(this, drawUnderStatusBar);
     }
 
     private void setStatusBarTextColorScheme(StatusBarTextColorScheme textColorScheme) {

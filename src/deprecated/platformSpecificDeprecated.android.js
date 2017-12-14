@@ -80,6 +80,12 @@ function navigatorPush(navigator, params) {
   adapted = adaptNavigationParams(adapted);
   adapted.overrideBackPress = params.overrideBackPress;
   adapted.timestamp = Date.now();
+  if (!adapted.passProps) {
+    adapted.passProps = {};
+  }
+  if (!adapted.passProps.commandType) {
+    adapted.passProps.commandType = 'Push';
+  }
 
   return newPlatformSpecific.push(adapted);
 }
@@ -143,6 +149,7 @@ function convertStyleParams(originalStyleObject) {
     statusBarColor: processColor(originalStyleObject.statusBarColor),
     statusBarHidden: originalStyleObject.statusBarHidden,
     statusBarTextColorScheme: originalStyleObject.statusBarTextColorScheme,
+    drawUnderStatusBar: originalStyleObject.drawUnderStatusBar || false,
     topBarReactView: originalStyleObject.navBarCustomView,
     topBarReactViewAlignment: originalStyleObject.navBarComponentAlignment,
     topBarReactViewInitialProps: originalStyleObject.navBarCustomViewInitialProps,
@@ -183,6 +190,7 @@ function convertStyleParams(originalStyleObject) {
     drawBelowTopBar: !originalStyleObject.drawUnderNavBar,
 
     topTabTextColor: processColor(originalStyleObject.topTabTextColor),
+    topTabTextFontFamily: originalStyleObject.topTabTextFontFamily,
     topTabIconColor: processColor(originalStyleObject.topTabIconColor),
     selectedTopTabIconColor: processColor(originalStyleObject.selectedTopTabIconColor),
     selectedTopTabTextColor: processColor(originalStyleObject.selectedTopTabTextColor),
@@ -472,6 +480,12 @@ function showModal(params) {
   adapted = adaptNavigationParams(adapted);
   adapted.overrideBackPress = params.overrideBackPress;
   adapted.timestamp = Date.now();
+  if (!adapted.passProps) {
+    adapted.passProps = {};
+  }
+  if (!adapted.passProps.commandType) {
+    adapted.passProps.commandType = 'ShowModal';
+  }
 
   newPlatformSpecific.showModal(adapted);
 }
