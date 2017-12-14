@@ -125,6 +125,7 @@ public class StyleParams {
     public Font titleBarButtonFontFamily;
 
     public Color topTabTextColor;
+    public Font topTabTextFontFamily;
     public Color topTabIconColor;
     public Color selectedTopTabTextColor;
     public Color selectedTopTabIconColor;
