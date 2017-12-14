@@ -48,8 +48,4 @@ public class TopTab extends FrameLayout implements IReactView {
 	public void sendContainerStop() {
 		reactView.sendContainerStop();
 	}
-
-	public IReactView getReactView() {
-		return reactView;
-	}
 }

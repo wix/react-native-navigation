@@ -3,7 +3,7 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.TestContainerView;
+import com.reactnativenavigation.mocks.TestContainerLayout;
 import com.reactnativenavigation.parse.NavigationOptions;
 
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class ContainerViewControllerTest extends BaseTest {
 	public void beforeEach() {
 		super.beforeEach();
 		Activity activity = newActivity();
-		view = spy(new TestContainerView(activity));
+		view = spy(new TestContainerLayout(activity));
 		uut = new ContainerViewController(activity, "containerId1", "containerName", new ContainerViewController.ReactViewCreator() {
 			@Override
 			public ContainerViewController.IReactView create(final Activity activity1, final String containerId, final String containerName) {

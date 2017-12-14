@@ -1,5 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.toptabs;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
+@SuppressLint("ViewConstructor")
 public class TopTabsViewPager extends ViewPager implements ContainerViewController.IReactView {
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
     private final List<ViewController> tabs;

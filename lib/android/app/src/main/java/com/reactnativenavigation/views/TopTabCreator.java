@@ -2,18 +2,22 @@ package com.reactnativenavigation.views;
 
 import android.app.Activity;
 
+import com.facebook.react.ReactInstanceManager;
+import com.reactnativenavigation.react.ReactContainerViewCreator;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 
 public class TopTabCreator implements ContainerViewController.ReactViewCreator {
 
-	private ContainerViewController.ReactViewCreator creator;
 
-	public TopTabCreator(ContainerViewController.ReactViewCreator creator) {
-		this.creator = creator;
-	}
+    private ReactInstanceManager instanceManager;
+
+    public TopTabCreator(ReactInstanceManager instanceManager) {
+        this.instanceManager = instanceManager;
+    }
 
 	@Override
 	public ContainerViewController.IReactView create(Activity activity, String containerId, String containerName) {
-        return new TopTab(activity, creator.create(activity, containerId, containerName));
+        ContainerViewController.IReactView reactView = new ReactContainerViewCreator(instanceManager).create(activity, containerId, containerName);
+        return new TopTab(activity, reactView);
 	}
 }

@@ -7,8 +7,8 @@ import android.view.View;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.views.Container;
 import com.reactnativenavigation.views.TopBar;
-import com.reactnativenavigation.views.ContainerView;
 
 public class ContainerViewController extends ViewController implements NavigationOptionsListener {
 
@@ -96,8 +96,8 @@ public class ContainerViewController extends ViewController implements Navigatio
 	@Override
 	protected View createView() {
 		containerView = viewCreator.create(getActivity(), getId(), containerName);
-		if (containerView instanceof ContainerView) {
-			topBar = ((ContainerView) containerView).getTopBar();
+		if (containerView instanceof Container) {
+			topBar = ((Container) containerView).getTopBar();
 		}
 		return containerView.asView();
 	}

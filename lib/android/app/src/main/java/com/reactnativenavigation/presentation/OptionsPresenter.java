@@ -8,7 +8,7 @@ import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
-import com.reactnativenavigation.views.ContainerView;
+import com.reactnativenavigation.views.ContainerLayout;
 
 public class OptionsPresenter {
 
@@ -47,7 +47,7 @@ public class OptionsPresenter {
 			return;
 		}
 		if (animated == NavigationOptions.BooleanOptions.True) {
-			ContainerView topBarContainerView = (ContainerView) controller.getContainerView();
+			ContainerLayout topBarContainerView = (ContainerLayout) controller.getContainerView();
 			animator.animateShowTopBar(controller.getTopBar(), topBarContainerView.getReactView().asView());
 		} else {
 			controller.getTopBar().setVisibility(View.VISIBLE);
@@ -59,7 +59,7 @@ public class OptionsPresenter {
 			return;
 		}
 		if (animated == NavigationOptions.BooleanOptions.True) {
-			ContainerView topBarContainerView = (ContainerView) controller.getContainerView();
+			ContainerLayout topBarContainerView = (ContainerLayout) controller.getContainerView();
 			animator.animateHideTopBar(controller.getTopBar(), topBarContainerView.getReactView().asView());
 		} else {
 			controller.getTopBar().setVisibility(View.GONE);

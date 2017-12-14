@@ -6,15 +6,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.TestContainerView;
+import com.reactnativenavigation.mocks.TestContainerLayout;
 import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.views.ContainerViewCreator;
 
 import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 
 public class OptionsApplyingTest extends BaseTest {
 	private Activity activity;
@@ -27,14 +25,14 @@ public class OptionsApplyingTest extends BaseTest {
 		super.beforeEach();
 		activity = newActivity();
 		initialNavigationOptions = new NavigationOptions();
-		view = spy(new TestContainerView(activity));
+		view = spy(new TestContainerLayout(activity));
 		uut = new ContainerViewController(activity, "containerId1", "containerName",
-				new ContainerViewCreator(new ContainerViewController.ReactViewCreator() {
-					@Override
-					public ContainerViewController.IReactView create(final Activity activity1, final String containerId, final String containerName) {
-						return view;
-					}
-				}), initialNavigationOptions);
+                new ContainerViewController.ReactViewCreator() {
+                    @Override
+                    public ContainerViewController.IReactView create(final Activity activity1, final String containerId, final String containerName) {
+                        return view;
+                    }
+                }, initialNavigationOptions);
 	}
 
 	@Test
