@@ -101,6 +101,7 @@ this.props.navigator.setStyle({
   navBarButtonFontFamily: 'sans-serif-thin', // Change the font family of textual buttons
   topBarElevationShadowEnabled: false, // default: true. Disables TopBar elevation shadow on Lolipop and above
   statusBarColor: '#000000', // change the color of the status bar.
+  drawUnderStatusBar: false, // default: false, will draw the screen underneath the statusbar. Useful togheter with statusBarColor: transparent
   collapsingToolBarImage: "http://lorempixel.com/400/200/", // Collapsing Toolbar image.
   collapsingToolBarImage: require('../../img/topbar.jpg'), // Collapsing Toolbar image. Either use a url or require a local image.
   collapsingToolBarCollapsedColor: '#0f2362', // Collapsing Toolbar scrim color.

@@ -30,6 +30,23 @@ public class StatusBar {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void displayOverScreen(View view, boolean shouldDisplay) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
+
+        if(shouldDisplay) {
+            int flags = view.getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            flags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            view.setSystemUiVisibility(flags);
+        } else {
+            int flags = view.getSystemUiVisibility();
+            flags &= ~View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            flags &= ~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            view.setSystemUiVisibility(flags);
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.M)
     public static void setTextColorScheme(View view, StatusBarTextColorScheme textColorScheme) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
