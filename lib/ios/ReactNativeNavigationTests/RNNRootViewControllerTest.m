@@ -27,7 +27,7 @@
 	self.containerId = @"cntId";
 	self.emitter = nil;
 	self.options = [RNNNavigationOptions new];
-	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withContainerId:self.containerId rootViewCreator:self.creator eventEmitter:self.emitter];
+	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withContainerId:self.containerId rootViewCreator:self.creator eventEmitter:self.emitter customTransitionDict:nil];
 }
 
 -(void)testTopBarBackgroundColor_validColor{
@@ -491,7 +491,7 @@
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
 }
 -(void)testTopBarLargeTitle_false {
-	self.options.tabBar.hidden = @(0);
+	self.options.bottomTabs.hidden = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	

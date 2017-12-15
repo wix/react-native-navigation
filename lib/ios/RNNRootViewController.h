@@ -6,19 +6,23 @@
 #import "RNNEventEmitter.h"
 #import "RNNNavigationOptions.h"
 #import "RNNAnimator.h"
+
 @interface RNNRootViewController : UIViewController	<UINavigationControllerDelegate>
 @property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
 @property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
+@property (nonatomic, strong) NSDictionary *customAnimationsDict;
 @property (nonatomic, strong) NSString* containerId;
 
 -(instancetype)initWithName:(NSString*)name
 				withOptions:(RNNNavigationOptions*)options
 			withContainerId:(NSString*)containerId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter;
+			   eventEmitter:(RNNEventEmitter*)eventEmitter
+		   customTransitionDict:(NSDictionary*)customTransitionDict;
 
 
--(void) applyNavigationButtons;
+-(void)applyNavigationButtons;
+-(BOOL)isAnimated;
 
 @end

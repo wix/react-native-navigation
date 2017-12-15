@@ -78,9 +78,10 @@
 
 - (RNNRootViewController*)createContainer:(RNNLayoutNode*)node {
 	NSString* name = node.data[@"name"];
+	NSDictionary* customTransition = node.data[@"customTransition"];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"navigationOptions"]];
 	NSString* containerId = node.nodeId;
-	return [[RNNRootViewController alloc] initWithName:name withOptions:options withContainerId:containerId rootViewCreator:_creator eventEmitter:_eventEmitter];
+	return [[RNNRootViewController alloc] initWithName:name withOptions:options withContainerId:containerId rootViewCreator:_creator eventEmitter:_eventEmitter customTransitionDict:customTransition];
 }
 
 - (RNNNavigationController*)createContainerStack:(RNNLayoutNode*)node {

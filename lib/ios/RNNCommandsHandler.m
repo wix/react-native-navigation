@@ -3,6 +3,7 @@
 #import "RNNNavigationStackManager.h"
 #import "RNNNavigationOptions.h"
 #import "RNNRootViewController.h"
+#import "React/RCTUIManager.h"
 
 @implementation RNNCommandsHandler {
 	RNNControllerFactory *_controllerFactory;
@@ -49,18 +50,10 @@
 
 -(void) push:(NSString*)containerId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	NSDictionary* customAnimation = layout[@"data"][@"customTransition"];
 	UIViewController *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
-	RCTBridge* bridge = _bridge;
-	if (customAnimation) {
-		if ([customAnimation objectForKey:@"animations"]) {
-			[_navigationStackManager push:newVc onTop:containerId customAnimationData:(NSDictionary*)customAnimation bridge:bridge completion:completion];
-		} else {
-			[[NSException exceptionWithName:NSInvalidArgumentException reason:@"unsupported transitionAnimation" userInfo:nil] raise];
-		}
-	} else {
-		[_navigationStackManager push:newVc onTop:containerId customAnimationData:(NSDictionary*)nil bridge:bridge completion:completion];
-	}
+	UIViewController *fromVc = [_store findContainerForId:containerId];
+	[_bridge.uiManager setAvailableSize:fromVc.view.bounds.size forRootView:newVc.view];
+	[_navigationStackManager push:newVc onTop:containerId completion:completion];
 }
 
 -(void)pop:(NSString*)containerId options:(NSDictionary*)options{

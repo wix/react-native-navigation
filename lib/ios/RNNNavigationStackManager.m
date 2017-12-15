@@ -1,6 +1,5 @@
 #import "RNNNavigationStackManager.h"
 #import "RNNRootViewController.h"
-#import "React/RCTUIManager.h"
 #import "RNNAnimator.h"
 
 
@@ -16,26 +15,20 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	return self;
 }
 
--(void)push:(UIViewController *)newTop onTop:(NSString *)containerId customAnimationData:(NSDictionary*)customAnimationData bridge:(RCTBridge*)bridge completion:(RNNTransitionCompletionBlock)completion {
+-(void)push:(UIViewController *)newTop onTop:(NSString *)containerId completion:(RNNTransitionCompletionBlock)completion {
 	UIViewController *vc = [_store findContainerForId:containerId];
-	[self preparePush:newTop onTopVC:vc customAnimationData:customAnimationData bridge:bridge completion:completion];
+	[self preparePush:newTop onTopVC:vc completion:completion];
 	[self waitForContentToAppearAndThen:@selector(pushAfterLoad:)];
 }
 
--(void)preparePush:(UIViewController *)newTop onTopVC:(UIViewController*)vc customAnimationData:(NSDictionary*)customAnimationData bridge:(RCTBridge*)bridge completion:(RNNTransitionCompletionBlock)completion {
-	if (customAnimationData) {
+-(void)preparePush:(UIViewController *)newTop onTopVC:(UIViewController*)vc completion:(RNNTransitionCompletionBlock)completion {
+	self.toVC = (RNNRootViewController*)newTop;
+	self.fromVC = vc;
+	
+	if (self.toVC.isAnimated) {
 		RNNRootViewController* newTopRootView = (RNNRootViewController*)newTop;
-		self.fromVC = vc;
-		self.toVC = newTopRootView;
 		vc.navigationController.delegate = newTopRootView;
-		[newTopRootView.animator setupTransition:customAnimationData];
-		RCTUIManager *uiManager = bridge.uiManager;
-		CGRect screenBound = [vc.view bounds];
-		CGSize screenSize = screenBound.size;
-		[uiManager setAvailableSize:screenSize forRootView:self.toVC.view];
 	} else {
-		self.fromVC = vc;
-		self.toVC = (RNNRootViewController*)newTop;
 		vc.navigationController.delegate = nil;
 		self.fromVC.navigationController.interactivePopGestureRecognizer.delegate = nil;
 	}
