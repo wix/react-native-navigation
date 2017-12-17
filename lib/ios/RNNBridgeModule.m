@@ -45,8 +45,8 @@ RCT_EXPORT_METHOD(popToRoot:(NSString*)containerId) {
 }
 
 RCT_EXPORT_METHOD(showModal:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler showModal:layout completion:^(id result) {
-		resolve(result);
+	[_commandsHandler showModal:layout completion:^(id containerID) {
+		resolve(containerID);
 	}];
 }
 
