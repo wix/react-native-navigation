@@ -14,7 +14,8 @@ function run() {
   }
   setupGit();
   createNpmRc();
-  versionTagAndPublish();
+  exec.execSync(`npm publish`);
+  // versionTagAndPublish();
 }
 
 function validateEnv() {

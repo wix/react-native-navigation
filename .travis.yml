@@ -5,43 +5,43 @@ env:
 jobs:
   include:
 
-    - stage: test
-      env: TYPE=js
-      os: linux
-      language: generic
-      script:
-        - ./scripts/travis-fold.sh "npm run test-js"
+    # - stage: test
+    #   env: TYPE=js
+    #   os: linux
+    #   language: generic
+    #   script:
+    #     - ./scripts/travis-fold.sh "npm run test-js"
 
-    - stage: test
-      env: TYPE=iOS
-      os: osx
-      osx_image: xcode9
-      language: objective-c
-      before_install:
-        - source ./scripts/env/env.ios.sh
-      script:
-        - ./scripts/travis-fold.sh "npm run test-unit-ios -- --release"
-        - ./scripts/travis-fold.sh "npm run test-e2e-ios -- --release"
+    # - stage: test
+    #   env: TYPE=iOS
+    #   os: osx
+    #   osx_image: xcode9
+    #   language: objective-c
+    #   before_install:
+    #     - source ./scripts/env/env.ios.sh
+    #   script:
+    #     - ./scripts/travis-fold.sh "npm run test-unit-ios -- --release"
+    #     - ./scripts/travis-fold.sh "npm run test-e2e-ios -- --release"
 
-    - stage: test
-      env: TYPE=Android
-      os: linux
-      jdk: oraclejdk8
-      language: java
-      before_install:
-        - source ./scripts/env/env.android.sh
-      script:
-        - ./scripts/travis-fold.sh "npm run test-unit-android -- --release"
-        - ./scripts/travis-fold.sh "npm run test-e2e-android -- --release"
-      before_cache:
-        - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-        - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-      cache:
-        directories:
-          - $HOME/.m2
-          - $HOME/.gradle/caches/
-          - $HOME/.gradle/wrapper/
-          - $HOME/.android/build-cache
+    # - stage: test
+    #   env: TYPE=Android
+    #   os: linux
+    #   jdk: oraclejdk8
+    #   language: java
+    #   before_install:
+    #     - source ./scripts/env/env.android.sh
+    #   script:
+    #     - ./scripts/travis-fold.sh "npm run test-unit-android -- --release"
+    #     - ./scripts/travis-fold.sh "npm run test-e2e-android -- --release"
+    #   before_cache:
+    #     - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+    #     - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+    #   cache:
+    #     directories:
+    #       - $HOME/.m2
+    #       - $HOME/.gradle/caches/
+    #       - $HOME/.gradle/wrapper/
+    #       - $HOME/.android/build-cache
 
     - stage: deploy
       if: NOT type = pull_request
