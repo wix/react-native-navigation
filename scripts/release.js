@@ -14,7 +14,10 @@ function run() {
   }
   setupGit();
   createNpmRc();
-  versionTagAndPublish();
+  process.env.npm_package_name = 'fix-travis-rnn';
+  process.env.npm_package_version = '0.0.3';
+  exec.execSync(`npm publish`);
+  // versionTagAndPublish();
 }
 
 function validateEnv() {
