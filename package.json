@@ -1,5 +1,5 @@
 {
-  "name": "react-native-navigation",
+  "name": "react-native-navigation_fix-travis",
   "version": "2.0.0",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
