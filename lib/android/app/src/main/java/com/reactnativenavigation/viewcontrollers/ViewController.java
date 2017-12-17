@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
+import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.StringUtils;
+import com.reactnativenavigation.utils.Task;
 
 public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutListener {
 
@@ -17,7 +19,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	private final String id;
 
 	private View view;
-	private StackController parentStackController;
+	private ParentController parentController;
 	private boolean isShown = false;
 
 	public ViewController(Activity activity, String id) {
@@ -39,14 +41,32 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		return activity;
 	}
 
+    protected ViewController getParentController() {
+	    return parentController;
+    }
+
 	@Nullable
-    StackController getParentStackController() {
-		return parentStackController;
+    ParentController getParentStackController() {
+		return parentController;
 	}
 
-	void setParentStackController(final StackController parentStackController) {
-		this.parentStackController = parentStackController;
+	public void setParentController(final ParentController parentController) {
+		this.parentController = parentController;
 	}
+
+    void performOnParentStack(Task<StackController> task) {
+	    if (parentController instanceof StackController) {
+            task.run((StackController) parentController);
+        }
+    }
+
+    void performOnParentStack(Task<StackController> accept, Runnable  reject) {
+        if (parentController instanceof StackController) {
+            accept.run((StackController) parentController);
+        } else {
+            reject.run();
+        }
+    }
 
 	@NonNull
 	public View getView() {
@@ -72,12 +92,16 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	}
 
 	public void onViewAppeared() {
-		//
-	}
+        isShown = true;
+    }
 
 	public void onViewDisappear() {
-		//
-	}
+        isShown = false;
+    }
+
+    public void applyOptions(NavigationOptions options) {
+
+    }
 
 	public void destroy() {
 		if (isShown) {

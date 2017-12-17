@@ -33,7 +33,7 @@ public class StackController extends ParentController {
 	public void push(final ViewController child, final Promise promise) {
 		final ViewController previousTop = peek();
 
-		child.setParentStackController(this);
+		child.setParentController(this);
 		stack.push(child.getId(), child);
 		View enteringView = child.getView();
 		getView().addView(enteringView);
