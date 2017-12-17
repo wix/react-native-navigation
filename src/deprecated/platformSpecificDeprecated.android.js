@@ -181,6 +181,7 @@ function convertStyleParams(originalStyleObject) {
     titleBarTitleFontBold: originalStyleObject.navBarTextFontBold,
     titleBarTitleTextCentered: originalStyleObject.navBarTitleTextCentered,
     titleBarHeight: originalStyleObject.navBarHeight,
+    titleBarTopPadding: originalStyleObject.navBarTopPadding,
     backButtonHidden: originalStyleObject.backButtonHidden,
     topTabsHidden: originalStyleObject.topTabsHidden,
     contextualMenuStatusBarColor: processColor(originalStyleObject.contextualMenuStatusBarColor),
@@ -190,6 +191,7 @@ function convertStyleParams(originalStyleObject) {
     drawBelowTopBar: !originalStyleObject.drawUnderNavBar,
 
     topTabTextColor: processColor(originalStyleObject.topTabTextColor),
+    topTabTextFontFamily: originalStyleObject.topTabTextFontFamily,
     topTabIconColor: processColor(originalStyleObject.topTabIconColor),
     selectedTopTabIconColor: processColor(originalStyleObject.selectedTopTabIconColor),
     selectedTopTabTextColor: processColor(originalStyleObject.selectedTopTabTextColor),
