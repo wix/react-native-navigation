@@ -10,14 +10,14 @@ describe('screen style', () => {
 
   it('declare a navigationOptions on container component', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
-    await expect(element(by.label('Static Title').and(by.type('UILabel')))).toBeVisible();
+    await expect(element(by.label('Static Title'))).toBeVisible();
   });
 
   it('change title on container component', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
-    await expect(element(by.label('Static Title').and(by.type('UILabel')))).toBeVisible();
+    await expect(element(by.label('Static Title'))).toBeVisible();
     await elementById(testIDs.DYNAMIC_OPTIONS_BUTTON).tap();
-    await expect(element(by.label('Dynamic Title').and(by.type('UILabel')))).toBeVisible();
+    await expect(element(by.label('Dynamic Title'))).toBeVisible();
   });
 
   it('set dynamic options with valid options will do something and not crash', async () => {
@@ -30,20 +30,20 @@ describe('screen style', () => {
   it('hides Tab Bar when pressing on Hide Top Bar and shows it when pressing on Show Top Bar', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.HIDE_TOP_BAR_BUTTON).tap();
-    await expect(element(by.type('UINavigationBar'))).toBeNotVisible();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
     await elementById(testIDs.SHOW_TOP_BAR_BUTTON).tap();
-    await expect(element(by.type('UINavigationBar'))).toBeVisible();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
   it('hides topBar onScroll down and shows it on scroll up', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.SCROLLVIEW_SCREEN_BUTTON).tap();
     await elementById(testIDs.TOGGLE_TOP_BAR_HIDE_ON_SCROLL).tap();
-    await expect(element(by.type('UINavigationBar'))).toBeVisible();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
     await element(by.id(testIDs.SCROLLVIEW_ELEMENT)).swipe('up', 'fast');
-    await expect(element(by.type('UINavigationBar'))).toBeNotVisible();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
     await element(by.id(testIDs.SCROLLVIEW_ELEMENT)).swipe('down', 'fast');
-    await expect(element(by.type('UINavigationBar'))).toBeVisible();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
   it('makes topBar transparent and opaque', async () => {
@@ -61,18 +61,18 @@ describe('screen style', () => {
   });
 
   it('hide Tab Bar', async () => {
-    await elementByLabel('Switch to tab based app').tap();
-    await expect(element(by.type('UITabBar'))).toBeVisible();
-    await elementByLabel('Hide Tab Bar').tap();
-    await expect(element(by.type('UITabBar'))).toBeNotVisible();
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
+    await elementById(testIDs.HIDE_BOTTOM_TABS_BUTTON).tap();
+    await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeNotVisible();
   });
 
   it('show Tab Bar', async () => {
-    await elementByLabel('Switch to tab based app').tap();
-    await elementByLabel('Hide Tab Bar').tap();
-    await expect(element(by.type('UITabBar'))).toBeNotVisible();
-    await elementByLabel('Show Tab Bar').tap();
-    await expect(element(by.type('UITabBar'))).toBeVisible();
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await elementById(testIDs.HIDE_BOTTOM_TABS_BUTTON).tap();
+    await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeNotVisible();
+    await elementById(testIDs.SHOW_BOTTOM_TABS_BUTTON).tap();
+    await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
   });
 
   it('side menu visibility - left', async () => {
