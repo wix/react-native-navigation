@@ -15,10 +15,10 @@ import java.util.List;
 
 public class TopTabsController extends ParentController implements NavigationOptionsListener {
 
-    private List<ViewController> tabs;
+    private List<TopTabController> tabs;
     private TopTabsLayout topTabsLayout;
 
-    public TopTabsController(Activity activity, String id, List<ViewController> tabs) {
+    public TopTabsController(Activity activity, String id, List<TopTabController> tabs) {
         super(activity, id);
         this.tabs = tabs;
         for (ViewController tab : tabs) {
@@ -35,13 +35,18 @@ public class TopTabsController extends ParentController implements NavigationOpt
 
     @NonNull
     @Override
-    public Collection<ViewController> getChildControllers() {
+    public Collection<? extends ViewController> getChildControllers() {
         return tabs;
     }
 
     @Override
     public void onViewAppeared() {
-        tabs.get(0).onViewAppeared();
+        topTabsLayout.performOnCurrentTab(TopTabController::onViewAppeared);
+    }
+
+    @Override
+    public void onViewDisappear() {
+        topTabsLayout.performOnCurrentTab(TopTabController::onViewDisappear);
     }
 
     @Override
@@ -52,5 +57,9 @@ public class TopTabsController extends ParentController implements NavigationOpt
     @Override
     public void mergeNavigationOptions(NavigationOptions options) {
 
+    }
+
+    public void switchToTab(int index) {
+        topTabsLayout.switchToTab(index);
     }
 }

@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
@@ -29,7 +30,8 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 
 	protected abstract View createView();
 
-	void ensureViewIsCreated() {
+	@VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
+	public void ensureViewIsCreated() {
 		getView();
 	}
 

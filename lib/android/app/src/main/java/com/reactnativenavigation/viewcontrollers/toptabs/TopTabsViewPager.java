@@ -14,9 +14,9 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 @SuppressLint("ViewConstructor")
 public class TopTabsViewPager extends ViewPager {
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
-    private List<ViewController> tabs;
+    private List<TopTabController> tabs;
 
-    public TopTabsViewPager(Context context, List<ViewController> tabs) {
+    public TopTabsViewPager(Context context, List<TopTabController> tabs) {
         super(context);
         this.tabs = tabs;
         init();

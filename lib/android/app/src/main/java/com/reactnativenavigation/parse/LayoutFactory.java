@@ -32,7 +32,7 @@ public class LayoutFactory {
 	public ViewController create(final LayoutNode node) {
 		switch (node.type) {
 			case Container:
-				return createContainer(node, new ContainerViewCreator(reactInstanceManager));
+				return createContainer(node);
 			case ContainerStack:
 				return createContainerStack(node);
 			case BottomTabs:
@@ -89,14 +89,14 @@ public class LayoutFactory {
 		return create(node.children.get(0));
 	}
 
-	private ViewController createContainer(LayoutNode node, ContainerViewController.ReactViewCreator reactViewCreator) {
+	private ViewController createContainer(LayoutNode node) {
 		String id = node.id;
 		String name = node.data.optString("name");
 		NavigationOptions navigationOptions = NavigationOptions.parse(node.data.optJSONObject("navigationOptions"), defaultOptions);
 		return new ContainerViewController(activity,
                 id,
                 name,
-                reactViewCreator,
+                new ContainerViewCreator(reactInstanceManager),
                 navigationOptions
         );
 	}
@@ -127,9 +127,9 @@ public class LayoutFactory {
 	}
 
     private ViewController createTopTabs(LayoutNode node) {
-        final List<ViewController> tabs = new ArrayList<>();
+        final List<TopTabController> tabs = new ArrayList<>();
         for (LayoutNode child : node.children) {
-            tabs.add(create(child));
+            tabs.add((TopTabController) create(child));
         }
         return new TopTabsController(activity, node.id, tabs);
     }
@@ -141,7 +141,7 @@ public class LayoutFactory {
         return new TopTabController(activity,
                 id,
                 name,
-                reactInstanceManager,
+                new ReactContainerViewCreator(reactInstanceManager),
                 navigationOptions
         );
     }

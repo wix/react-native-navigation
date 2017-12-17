@@ -5,15 +5,13 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.viewcontrollers.ViewController;
-
 import java.util.List;
 
 public class TopTabsAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
-    private List<ViewController> tabs;
+    private List<TopTabController> tabs;
     private int currentPage = 0;
 
-    TopTabsAdapter(List<ViewController> tabs) {
+    TopTabsAdapter(List<TopTabController> tabs) {
         this.tabs = tabs;
     }
 

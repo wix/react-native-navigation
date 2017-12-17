@@ -3,25 +3,24 @@ package com.reactnativenavigation.viewcontrollers.toptabs;
 import android.app.Activity;
 import android.view.View;
 
-import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
-import com.reactnativenavigation.react.ReactContainerViewCreator;
+import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.TopTab;
 
 public class TopTabController extends ViewController implements NavigationOptionsListener {
 
     private final String containerName;
-    private final ReactInstanceManager instanceManager;
+    private ContainerViewController.ReactViewCreator viewCreator;
     private final NavigationOptions options;
     private TopTab topTab;
     private boolean isSelectedTab;
 
-    public TopTabController(Activity activity, String id, String name, ReactInstanceManager instanceManager, NavigationOptions initialOptions) {
+    public TopTabController(Activity activity, String id, String name, ContainerViewController.ReactViewCreator viewCreator, NavigationOptions initialOptions) {
         super(activity, id);
         this.containerName = name;
-        this.instanceManager = instanceManager;
+        this.viewCreator = viewCreator;
         this.options = initialOptions;
     }
 
@@ -29,6 +28,12 @@ public class TopTabController extends ViewController implements NavigationOption
     public void onViewAppeared() {
         super.onViewAppeared();
         isSelectedTab = true;
+        applyOptions(options);
+        topTab.sendContainerStart();
+    }
+
+    @Override
+    public void applyOptions(NavigationOptions options) {
         getParentController().applyOptions(options);
     }
 
@@ -36,6 +41,7 @@ public class TopTabController extends ViewController implements NavigationOption
     public void onViewDisappear() {
         super.onViewDisappear();
         isSelectedTab = false;
+        topTab.sendContainerStop();
     }
 
     @Override
@@ -44,10 +50,10 @@ public class TopTabController extends ViewController implements NavigationOption
     }
 
     @Override
-    protected View createView() {
+    public View createView() {
         topTab = new TopTab(
                 getActivity(),
-                new ReactContainerViewCreator(instanceManager).create(getActivity(), getId(), containerName)
+                viewCreator.create(getActivity(), getId(), containerName)
         );
         return topTab;
     }
