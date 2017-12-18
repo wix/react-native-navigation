@@ -12,16 +12,17 @@ jobs:
     #   script:
     #     - ./scripts/travis-fold.sh "npm run test-js"
 
-    # - stage: test
-    #   env: TYPE=iOS
-    #   os: osx
-    #   osx_image: xcode9
-    #   language: objective-c
-    #   before_install:
-    #     - source ./scripts/env/env.ios.sh
-    #   script:
-    #     - ./scripts/travis-fold.sh "npm run test-unit-ios -- --release"
-    #     - ./scripts/travis-fold.sh "npm run test-e2e-ios -- --release"
+    - stage: test
+      env: TYPE=iOS
+      os: osx
+      osx_image: xcode9
+      language: objective-c
+      before_install:
+        - source ./scripts/env/env.ios.sh
+      script:
+        - brew install ffmpeg --with-ffplay
+        # - ./scripts/travis-fold.sh "npm run test-unit-ios -- --release"
+        - ./scripts/travis-fold.sh "npm run test-e2e-ios -- --release"
 
     # - stage: test
     #   env: TYPE=Android
@@ -43,13 +44,13 @@ jobs:
     #       - $HOME/.gradle/wrapper/
     #       - $HOME/.android/build-cache
 
-    - stage: deploy
-      if: NOT type = pull_request
-      env: TYPE=deploy
-      os: linux
-      language: generic
-      script:
-          - ./scripts/travis-fold.sh "npm run release"
+    # - stage: deploy
+    #   if: NOT type = pull_request
+    #   env: TYPE=deploy
+    #   os: linux
+    #   language: generic
+    #   script:
+    #       - ./scripts/travis-fold.sh "npm run release"
 
 branches:
   only:

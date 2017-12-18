@@ -3,18 +3,25 @@ package com.reactnativenavigation.mocks;
 import android.content.Context;
 import android.view.View;
 
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
-import com.reactnativenavigation.views.Container;
+import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.views.ReactContainer;
 import com.reactnativenavigation.views.TopBar;
 
-public class TestContainerLayout extends View implements ContainerViewController.IReactView, Container {
+public class TestContainerLayout extends View implements ReactContainer {
 
-	private TopBar topBar;
+    private final TopBar topBar;
+    private final OptionsPresenter optionsPresenter;
 
-	public TestContainerLayout(final Context context) {
+    public TestContainerLayout(final Context context) {
 		super(context);
-		topBar = new TopBar(context);
-	}
+        topBar = new TopBar(context);
+        optionsPresenter = new OptionsPresenter(topBar, this);
+    }
+
+    public TopBar getTopBar() {
+        return topBar;
+    }
 
     @Override
 	public boolean isReady() {
@@ -39,7 +46,7 @@ public class TestContainerLayout extends View implements ContainerViewController
 	}
 
     @Override
-    public TopBar getTopBar() {
-        return topBar;
+    public void applyOptions(NavigationOptions options) {
+        optionsPresenter.applyOptions(options);
     }
 }

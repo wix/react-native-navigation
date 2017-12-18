@@ -26,13 +26,13 @@ public class OptionsApplyingTest extends BaseTest {
 		activity = newActivity();
 		initialNavigationOptions = new NavigationOptions();
 		view = spy(new TestContainerLayout(activity));
-		uut = new ContainerViewController(activity, "containerId1", "containerName",
-                new ContainerViewController.ReactViewCreator() {
-                    @Override
-                    public ContainerViewController.IReactView create(final Activity activity1, final String containerId, final String containerName) {
-                        return view;
-                    }
-                }, initialNavigationOptions);
+		uut = new ContainerViewController(activity,
+                "containerId1",
+                "containerName",
+                (activity1, containerId, containerName) -> view,
+                initialNavigationOptions
+        );
+		uut.ensureViewIsCreated();
 	}
 
 	@Test

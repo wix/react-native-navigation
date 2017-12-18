@@ -1,27 +1,21 @@
 package com.reactnativenavigation.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.viewcontrollers.ContainerViewController.IReactView;
 
+@SuppressLint("ViewConstructor")
 public class TopTab extends FrameLayout implements IReactView {
 
-	private IReactView reactView;
+	private final IReactView reactView;
 
 	public TopTab(Context context, IReactView reactView) {
 		super(context);
 		this.reactView = reactView;
-		initViews();
-	}
-
-	private void initViews() {
-		addView(reactView.asView());
-	}
-
-	public TopTab(Context context) {
-		super(context);
+        addView(reactView.asView());
 	}
 
 	@Override
