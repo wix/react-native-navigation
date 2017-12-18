@@ -88,6 +88,7 @@ function startTabBasedApp(params) {
           style={params.tabsStyle}
           appStyle={params.appStyle}
           initialTabIndex={params.initialTabIndex}>
+          overlay={params.overlay}
           {
             params.tabs.map(function(tab, index) {
               return (
@@ -183,6 +184,7 @@ function startSingleScreenApp(params) {
           subtitle={params.subtitle}
           titleImage={screen.titleImage}
           component={screen.screen}
+          overlay={params.overlay}
           passProps={{
             navigatorID: navigatorID,
             screenInstanceID: screenInstanceID,
@@ -658,6 +660,14 @@ function savePassProps(params) {
   }
 }
 
+function showOverlay(params) {
+  ScreenUtils.showOverlay(params)
+}
+
+function removeOverlay() {
+  ScreenUtils.removeOverlay()
+}
+
 function showContextualMenu() {
   // Android only
 }
@@ -721,5 +731,7 @@ export default {
   navigatorToggleNavBar,
   showContextualMenu,
   dismissContextualMenu,
-  getCurrentlyVisibleScreenId
+  getCurrentlyVisibleScreenId,
+  showOverlay,
+  removeOverlay
 };

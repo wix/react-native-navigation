@@ -15,6 +15,12 @@
 #import "RCTHelpers.h"
 #import "RCTConvert+UIBarButtonSystemItem.h"
 
+@interface RCCNavigationController()
+
+@property (strong, nonatomic) RCTRootView *overlayView;
+
+@end
+
 @implementation RCCNavigationController
 {
   BOOL _transitioning;
@@ -35,6 +41,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   
   NSString *component = props[@"component"];
   if (!component) return nil;
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRNReload) name:RCTJavaScriptWillStartLoadingNotification object:nil];
   
   NSDictionary *passProps = props[@"passProps"];
   NSDictionary *navigatorStyle = props[@"style"];
@@ -67,10 +75,69 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   
 
   [self setRotation:props];
-  
+
+  NSString *overlayScreen = [props valueForKeyPath:@"overlay.screen"];
+  if (overlayScreen) {
+    // Pass navigation props
+    NSMutableDictionary *mutablePassPropsOverlay = [passProps mutableCopy];
+    NSDictionary *overlayProps = [props valueForKeyPath:@"overlay.passProps"];
+    if (overlayProps) {
+      [mutablePassPropsOverlay addEntriesFromDictionary:overlayProps];
+    }
+
+    NSDictionary *passPropsOverlay = [NSDictionary dictionaryWithDictionary:mutablePassPropsOverlay];
+    self.overlayView = [[RCTRootView alloc] initWithBridge:bridge moduleName:overlayScreen initialProperties:passPropsOverlay];
+  }
+
   return self;
 }
 
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:RCTJavaScriptWillStartLoadingNotification object:nil];
+  self.overlayView = nil;
+}
+
+- (void)onRNReload {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:RCTJavaScriptWillStartLoadingNotification object:nil];
+  self.overlayView = nil;
+}
+
+- (void)showOverlay:(NSDictionary *)params {
+  NSString *overlayScreen = [params valueForKeyPath:@"screen"];
+  NSDictionary *overlayProps = [params valueForKeyPath:@"passProps"];
+  self.overlayView = [[RCTRootView alloc] initWithBridge:[[RCCManager sharedInstance] getBridge] moduleName:overlayScreen initialProperties:overlayProps];
+}
+
+- (void)removeOverlay {
+  self.overlayView = nil;
+}
+
+- (void)setOverlayView:(RCTRootView *)overlayView {
+  RCTRootView *previousOverlayView = _overlayView;
+
+  if (previousOverlayView) {
+    [previousOverlayView removeFromSuperview];
+  }
+
+  _overlayView = overlayView;
+
+  if (!_overlayView) {
+    return;
+  }
+
+  _overlayView.passThroughTouches = YES;
+  _overlayView.backgroundColor = [UIColor clearColor];
+  _overlayView.frame = self.view.bounds;
+  [self.view addSubview:_overlayView];
+}
+
+- (void)viewDidLayoutSubviews {
+  [super viewDidLayoutSubviews];
+  
+  if (_overlayView) {
+    [self.view bringSubviewToFront:_overlayView];
+  }
+}
 
 - (void)performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams bridge:(RCTBridge *)bridge
 {
