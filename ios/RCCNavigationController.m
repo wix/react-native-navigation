@@ -172,6 +172,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       if ([self.topViewController isKindOfClass:[RCCViewController class]])
       {
         RCCViewController *topViewController = ((RCCViewController*)self.topViewController);
+        topViewController.previewController = nil;
+        [topViewController.navigationController unregisterForPreviewingWithContext:topViewController.previewContext];
         viewController.previewActions = previewActions;
         viewController.previewCommit = actionParams[@"previewCommit"] ? [actionParams[@"previewCommit"] boolValue] : YES;
         NSNumber *previewHeight = actionParams[@"previewHeight"];
@@ -184,7 +186,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
             [bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
               UIView *view = viewRegistry[previewViewID];
               topViewController.previewView = view;
-              [topViewController registerForPreviewingWithDelegate:(id)topViewController sourceView:view];
+              topViewController.previewContext = [topViewController registerForPreviewingWithDelegate:(id)topViewController sourceView:view];
             }];
           });
           topViewController.previewController = viewController;
@@ -257,7 +259,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     if (!component) return;
     
     NSMutableDictionary *passProps = [actionParams[@"passProps"] mutableCopy];
-    passProps[@"commantType"] = @"resetTo";
+    passProps[@"commandType"] = @"resetTo";
     NSDictionary *navigatorStyle = actionParams[@"style"];
     
     RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component passProps:passProps navigatorStyle:navigatorStyle globalProps:nil bridge:bridge];

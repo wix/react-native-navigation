@@ -32,6 +32,7 @@ public class StyleParamsParser {
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
         result.statusBarHidden = getBoolean("statusBarHidden", getDefaultStatusHidden());
         result.statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"), getDefaultStatusBarTextColorScheme());
+        result.drawUnderStatusBar = params.getBoolean("drawUnderStatusBar", getDefaultDrawUnderStatusBar());
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
         result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
         result.contextualMenuBackgroundColor = getColor("contextualMenuBackgroundColor", getDefaultContextualMenuBackgroundColor());
@@ -68,8 +69,10 @@ public class StyleParamsParser {
         result.titleBarHeight = getInt("titleBarHeight", getDefaultTitleBarHeight());
         result.backButtonHidden = getBoolean("backButtonHidden", getDefaultBackButtonHidden());
         result.topTabsHidden = getBoolean("topTabsHidden", getDefaultTopTabsHidden());
+        result.titleBarTopPadding = getInt("titleBarTopPadding", getTitleBarTopPadding());
 
         result.topTabTextColor = getColor("topTabTextColor", getDefaultTopTabTextColor());
+        result.topTabTextFontFamily = getFont("topTabTextFontFamily", getDefaultTopTabTextFontFamily());
         result.topTabIconColor = getColor("topTabIconColor", getDefaultTopTabIconColor());
         result.selectedTopTabIconColor = getColor("selectedTopTabIconColor", getDefaultSelectedTopTabIconColor());
         result.selectedTopTabTextColor = getColor("selectedTopTabTextColor", getDefaultSelectedTopTabTextColor());
@@ -124,6 +127,7 @@ public class StyleParamsParser {
         result.titleBarTitleFont = new StyleParams.Font();
         result.titleBarSubtitleFontFamily = new StyleParams.Font();
         result.titleBarButtonFontFamily = new StyleParams.Font();
+        result.topTabTextFontFamily = new StyleParams.Font();
         result.titleBarHeight = -1;
         result.screenAnimationType = "slide-up";
         return result;
@@ -281,6 +285,10 @@ public class StyleParamsParser {
         return AppStyle.appStyle != null && AppStyle.appStyle.statusBarHidden;
     }
 
+    private boolean getDefaultDrawUnderStatusBar() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.drawUnderStatusBar;
+    }
+
     private StyleParams.Font getDefaultBottomTabsFontFamily() {
         return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.bottomTabFontFamily;
     }
@@ -301,6 +309,10 @@ public class StyleParamsParser {
         return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.titleBarSubtitleFontFamily;
     }
 
+    private StyleParams.Font getDefaultTopTabTextFontFamily() {
+        return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.topTabTextFontFamily;
+    }
+
     private StyleParams.Font getDefaultTitleBarButtonFont() {
         return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.titleBarButtonFontFamily;
     }
@@ -315,6 +327,10 @@ public class StyleParamsParser {
 
     private int getDefaultTitleBarHeight() {
         return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarHeight;
+    }
+
+    private int getTitleBarTopPadding() {
+        return AppStyle.appStyle == null ? 0 : AppStyle.appStyle.titleBarTopPadding;
     }
 
     private boolean getBoolean(String key, boolean defaultValue) {
