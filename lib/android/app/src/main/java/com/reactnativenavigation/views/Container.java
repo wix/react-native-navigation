@@ -1,7 +1,12 @@
 package com.reactnativenavigation.views;
 
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import android.support.annotation.RestrictTo;
 
-public interface Container extends ContainerViewController.IReactView {
+import com.reactnativenavigation.parse.NavigationOptions;
+
+public interface Container {
+    void applyOptions(NavigationOptions options);
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
     TopBar getTopBar();
 }
