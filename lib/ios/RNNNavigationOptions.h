@@ -23,7 +23,8 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) RNNTopBarOptions* topBar;
 @property (nonatomic, strong) RNNTabBarOptions* bottomTabs;
 @property (nonatomic, strong) RNNSideMenuOptions* sideMenu;
-
+@property (nonatomic, strong) UIImage* backgroundImage;
+@property (nonatomic, strong) UIImage* rootBackgroundImage;
 
 - (UIInterfaceOrientationMask)supportedOrientations;
 
