@@ -15,11 +15,12 @@ jobs:
     - stage: test
       env: TYPE=iOS
       os: osx
-      osx_image: xcode9.2
+      osx_image: xcode9
       language: objective-c
       before_install:
         - source ./scripts/env/env.ios.sh
       script:
+        - brew install ffmpeg --with-ffplay
         # - ./scripts/travis-fold.sh "npm run test-unit-ios -- --release"
         - ./scripts/travis-fold.sh "npm run test-e2e-ios -- --release"
 
