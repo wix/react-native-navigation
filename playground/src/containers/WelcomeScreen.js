@@ -151,29 +151,38 @@ class WelcomeScreen extends Component {
     Navigation.push(this.props.containerId, {
       topTabs: [
         {
-          container: {
-            name: 'navigation.playground.TopTabOptionsScreen',
-            passProps: {
-              title: 'Tab 1',
-              text: 'This is top tab 1'
+          name: 'navigation.playground.TopTabOptionsScreen',
+          passProps: {
+            title: 'Tab 1',
+            text: 'This is top tab 1'
+          },
+          navigationOptions: {
+            topTab: {
+              title: 'Tab 1'
             }
           }
         },
         {
-          container: {
-            name: 'navigation.playground.TopTabScreen',
-            passProps: {
-              title: 'Tab 2',
-              text: 'This is top tab 2'
+          name: 'navigation.playground.TopTabScreen',
+          passProps: {
+            title: 'Tab 2',
+            text: 'This is top tab 2'
+          },
+          navigationOptions: {
+            topTab: {
+              title: 'Tab 2'
             }
           }
         },
         {
-          container: {
-            name: 'navigation.playground.TopTabScreen',
-            passProps: {
-              title: 'Tab 3',
-              text: 'This is top tab 3'
+          name: 'navigation.playground.TopTabScreen',
+          passProps: {
+            title: 'Tab 3',
+            text: 'This is top tab 3'
+          },
+          navigationOptions: {
+            topTab: {
+              title: 'Tab 3'
             }
           }
         }
