@@ -69,4 +69,8 @@ public class TopTabController extends ViewController implements NavigationOption
     public void mergeNavigationOptions(NavigationOptions options) {
         this.options.mergeWith(options);
     }
+
+    String getTabTitle() {
+        return options.topTabOptions.title;
+    }
 }

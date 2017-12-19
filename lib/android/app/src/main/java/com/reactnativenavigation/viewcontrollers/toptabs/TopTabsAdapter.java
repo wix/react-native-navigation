@@ -16,6 +16,11 @@ public class TopTabsAdapter extends PagerAdapter implements ViewPager.OnPageChan
     }
 
     @Override
+    public CharSequence getPageTitle(int position) {
+        return tabs.get(position).getTabTitle();
+    }
+
+    @Override
     public int getCount() {
         return tabs.size();
     }
