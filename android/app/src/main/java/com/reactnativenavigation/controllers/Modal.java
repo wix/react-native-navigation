@@ -107,6 +107,10 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
         return layout.getCurrentlyVisibleScreenId();
     }
 
+    String getCurrentlyVisibleEventId() {
+        return layout.getCurrentScreen().getNavigatorEventId();
+    }
+
     interface OnModalDismissedListener {
         void onModalDismissed(Modal modal);
     }
@@ -120,12 +124,19 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
         setAnimation(screenParams);
         setStatusBarStyle(screenParams.styleParams);
         setNavigationBarStyle(screenParams.styleParams);
+        setDrawUnderStatusBar(screenParams.styleParams);
     }
 
     private void setStatusBarStyle(StyleParams styleParams) {
         Window window = getWindow();
         if (window == null) return;
         StatusBar.setTextColorScheme(window.getDecorView(), styleParams.statusBarTextColorScheme);
+    }
+
+    private void setDrawUnderStatusBar(StyleParams styleParams) {
+        Window window = getWindow();
+        if (window == null) return;
+        StatusBar.displayOverScreen(window.getDecorView(), styleParams.drawUnderStatusBar);
     }
 
     private void setNavigationBarStyle(StyleParams styleParams) {
