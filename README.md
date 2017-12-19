@@ -125,8 +125,8 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | screenBackgroundColor        |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       |  Wix|
 | orientation       |    ✅     |   [Contribute](/docs/docs/CONTRIBUTING.md)          | Wix|
 | disabledBackGesture        |    ✅     |    / iOS specific     |
-| screenBackgroundImageName        |   [Contribute](/docs/docs/CONTRIBUTING.md)      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
-| rootBackgroundImageName              |    [Contribute](/docs/docs/CONTRIBUTING.md)     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
+| screenBackgroundImageName        |   ✅      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
+| rootBackgroundImageName              |    ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
 | sideMenuVisible          |        [Contribute](/docs/docs/CONTRIBUTING.md)   | [Contribute](/docs/docs/CONTRIBUTING.md) |
 
 
@@ -193,8 +193,8 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | statusBarHideWithTopBar        |  ✅   |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
 | statusBarHidden       |  ✅   |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | WIX |
 | disabledBackGesture       |   ✅  |   ✅  |    / iOS specific     |
-| screenBackgroundImageName         |   ✅  |   [Contribute](/docs/docs/CONTRIBUTING.md)      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
-| rootBackgroundImageName            |  ✅   |    [Contribute](/docs/docs/CONTRIBUTING.md)     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
+| screenBackgroundImageName         |   ✅  |   ✅      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
+| rootBackgroundImageName            |  ✅   |    ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
 | setButtons          |   ✅     |    ✅    | [Contribute](/docs/docs/CONTRIBUTING.md) | @Johan-dutoit|
 | title            |   ✅     |        	✅    | 	✅| Wix|
 | toggleDrawer        |   ✅     |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md) |
