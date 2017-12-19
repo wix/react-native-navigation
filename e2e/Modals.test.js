@@ -1,6 +1,7 @@
 const Utils = require('./Utils');
+const testIDs = require('../playground/src/testIDs');
 
-const elementByLabel = Utils.elementByLabel;
+const { elementByLabel, elementById } = Utils;
 
 describe('modal', () => {
   beforeEach(async () => {
@@ -8,87 +9,87 @@ describe('modal', () => {
   });
 
   it('show modal', async () => {
-    await elementByLabel('Show Modal').tap();
-    await expect(elementByLabel('Modal Screen')).toBeVisible();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
+    await expect(elementById(testIDs.MODAL_SCREEN)).toBeVisible();
   });
 
   it('dismiss modal', async () => {
-    await elementByLabel('Show Modal').tap();
-    await expect(elementByLabel('Modal Screen')).toBeVisible();
-    await elementByLabel('Dismiss Modal').tap();
-    await expect(elementByLabel('React Native Navigation!')).toBeVisible();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
+    await expect(elementById(testIDs.MODAL_SCREEN)).toBeVisible();
+    await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
+    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
   it('show multiple modals', async () => {
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 2')).toBeVisible();
-    await elementByLabel('Dismiss Modal').tap();
+    await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
-    await elementByLabel('Dismiss Modal').tap();
-    await expect(elementByLabel('React Native Navigation!')).toBeVisible();
+    await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
+    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
   it('dismiss unknown screen id', async () => {
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
-    await elementByLabel('Dismiss Unknown Modal').tap();
+    await elementById(testIDs.DISMISS_UNKNOWN_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
-    await elementByLabel('Dismiss Modal').tap();
-    await expect(elementByLabel('React Native Navigation!')).toBeVisible();
+    await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
+    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
   it('dismiss modal by id which is not the top most', async () => {
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 2')).toBeVisible();
-    await elementByLabel('Dismiss Previous Modal').tap();
+    await elementById(testIDs.DISMISS_PREVIOUS_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 2')).toBeVisible();
-    await elementByLabel('Dismiss Modal').tap();
-    await expect(elementByLabel('React Native Navigation!')).toBeVisible();
+    await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
+    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
   it('dismiss all previous modals by id when they are below top presented modal', async () => {
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 2')).toBeVisible();
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 3')).toBeVisible();
 
-    await elementByLabel('Dismiss ALL Previous Modals').tap();
+    await elementById(testIDs.DISMISS_ALL_PREVIOUS_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 3')).toBeVisible();
 
-    await elementByLabel('Dismiss Modal').tap();
-    await expect(elementByLabel('React Native Navigation!')).toBeVisible();
+    await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
+    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
   it('dismiss some modal by id deep in the stack', async () => {
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 2')).toBeVisible();
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 3')).toBeVisible();
 
-    await elementByLabel('Dismiss First In Stack').tap();
+    await elementById(testIDs.DISMISS_FIRST_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 3')).toBeVisible();
 
-    await elementByLabel('Dismiss Modal').tap();
+    await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 2')).toBeVisible();
 
-    await elementByLabel('Dismiss Modal').tap();
-    await expect(elementByLabel('React Native Navigation!')).toBeVisible();
+    await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
+    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
   it('dismissAllModals', async () => {
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
-    await elementByLabel('Show Modal').tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 2')).toBeVisible();
-    await elementByLabel('Dismiss All Modals').tap();
-    await expect(elementByLabel('React Native Navigation!')).toBeVisible();
+    await elementById(testIDs.DISMISS_ALL_MODALS_BUTTON).tap();
+    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 });

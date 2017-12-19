@@ -4,19 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.views.TopBar;
 
@@ -121,15 +116,12 @@ public class StackAnimator {
 		ValueAnimator containerHeightAnim = ValueAnimator.ofInt(container.getMeasuredHeight(), container.getMeasuredHeight() - topBar.getMeasuredHeight());
 		containerHeightAnim.setInterpolator(DECELERATE_INTERPOLATOR);
 		containerHeightAnim.setDuration(DURATION_TOPBAR);
-		containerHeightAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-			@Override
-			public void onAnimationUpdate(ValueAnimator valueAnimator) {
-				int val = (Integer) valueAnimator.getAnimatedValue();
-				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) container.getLayoutParams();
-				layoutParams.height = val;
-				container.setLayoutParams(layoutParams);
-			}
-		});
+		containerHeightAnim.addUpdateListener(valueAnimator -> {
+            int val = (Integer) valueAnimator.getAnimatedValue();
+            ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
+            layoutParams.height = val;
+            container.setLayoutParams(layoutParams);
+        });
 		ObjectAnimator containerTransitionAnim = ObjectAnimator.ofFloat(container, View.TRANSLATION_Y, -1 * topBar.getMeasuredHeight(), 0);
 		containerTransitionAnim.setInterpolator(DECELERATE_INTERPOLATOR);
 		containerTransitionAnim.setDuration(DURATION_TOPBAR);
@@ -147,8 +139,8 @@ public class StackAnimator {
 
 			@Override
 			public void onAnimationEnd(Animator animation) {
-				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) container.getLayoutParams();
-				layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
+                ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
+				layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
 				container.setLayoutParams(layoutParams);
 			}
 
@@ -170,15 +162,12 @@ public class StackAnimator {
 		ValueAnimator containerHeightAnim = ValueAnimator.ofInt(container.getMeasuredHeight(), container.getMeasuredHeight() + topBar.getMeasuredHeight());
 		containerHeightAnim.setInterpolator(ACCELERATE_INTERPOLATOR);
 		containerHeightAnim.setDuration(DURATION_TOPBAR);
-		containerHeightAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-			@Override
-			public void onAnimationUpdate(ValueAnimator valueAnimator) {
-				int val = (Integer) valueAnimator.getAnimatedValue();
-				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) container.getLayoutParams();
-				layoutParams.height = val;
-				container.setLayoutParams(layoutParams);
-			}
-		});
+		containerHeightAnim.addUpdateListener(valueAnimator -> {
+            int val = (Integer) valueAnimator.getAnimatedValue();
+            ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
+            layoutParams.height = val;
+            container.setLayoutParams(layoutParams);
+        });
 		ObjectAnimator containerTransitionAnim = ObjectAnimator.ofFloat(container, View.TRANSLATION_Y, 0, -1 * topBar.getMeasuredHeight());
 		containerTransitionAnim.setInterpolator(ACCELERATE_INTERPOLATOR);
 		containerTransitionAnim.setDuration(DURATION_TOPBAR);
@@ -195,8 +184,8 @@ public class StackAnimator {
 
 			@Override
 			public void onAnimationEnd(Animator animation) {
-				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) container.getLayoutParams();
-				layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
+                ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
+				layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
 				container.setLayoutParams(layoutParams);
 				container.setTranslationY(0);
 

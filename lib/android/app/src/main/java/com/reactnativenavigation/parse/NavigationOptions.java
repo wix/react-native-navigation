@@ -1,19 +1,12 @@
 package com.reactnativenavigation.parse;
 
-import android.graphics.Color;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 
 import org.json.JSONObject;
 
-public class NavigationOptions {
+public class NavigationOptions implements DEFAULT_VALUES {
 
-	private static final String NO_VALUE = "";
-	private static final int NO_INT_VALUE = Integer.MIN_VALUE;
-	private static final float NO_FLOAT_VALUE = Float.MIN_VALUE;
-	private static final int NO_COLOR_VALUE = Color.TRANSPARENT;
-
-	public enum BooleanOptions {
+    public enum BooleanOptions {
 		True,
 		False,
 		NoValue;
@@ -26,47 +19,39 @@ public class NavigationOptions {
 		}
 	}
 
+    @NonNull
+    public static NavigationOptions parse(JSONObject json) {
+        return parse(json, new NavigationOptions());
+    }
+
 	@NonNull
-	public static NavigationOptions parse(JSONObject json) {
+	public static NavigationOptions parse(JSONObject json, @NonNull NavigationOptions defaultOptions) {
 		NavigationOptions result = new NavigationOptions();
 		if (json == null) return result;
 
-		result.title = json.optString("title", NO_VALUE);
-		result.topBarBackgroundColor = json.optInt("topBarBackgroundColor", NO_COLOR_VALUE);
-		result.topBarTextColor = json.optInt("topBarTextColor", NO_INT_VALUE);
-		result.topBarTextFontSize = (float) json.optDouble("topBarTextFontSize", NO_FLOAT_VALUE);
-		result.topBarTextFontFamily = json.optString("topBarTextFontFamily", NO_VALUE);
-		result.topBarHidden = BooleanOptions.parse(json.optString("topBarHidden"));
-		result.animateTopBarHide = BooleanOptions.parse(json.optString("animateTopBarHide"));
+		result.topBarOptions = TopBarOptions.parse(json.optJSONObject("topBar"));
+		result.topTabsOptions = TopTabsOptions.parse(json.optJSONObject("topTabs"));
+        result.topTabOptions = TopTabOptions.parse(json.optJSONObject("topTab"));
+		result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
 
-		return result;
+		return result.withDefaultOptions(defaultOptions);
 	}
 
-	public String title = "";
-	@ColorInt
-	public int topBarBackgroundColor;
-	@ColorInt
-	public int topBarTextColor;
-	public float topBarTextFontSize;
-	public String topBarTextFontFamily;
-	public BooleanOptions topBarHidden = BooleanOptions.False;
-	public BooleanOptions animateTopBarHide = BooleanOptions.False;
+	public TopBarOptions topBarOptions = new TopBarOptions();
+    public TopTabsOptions topTabsOptions = new TopTabsOptions();
+    public TopTabOptions topTabOptions = new TopTabOptions();
+    public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
 
 	public void mergeWith(final NavigationOptions other) {
-		if (!NO_VALUE.equals(other.title)) title = other.title;
-		if (other.topBarBackgroundColor != NO_COLOR_VALUE)
-			topBarBackgroundColor = other.topBarBackgroundColor;
-		if (other.topBarTextColor != NO_INT_VALUE)
-			topBarTextColor = other.topBarTextColor;
-		if (other.topBarTextFontSize != NO_FLOAT_VALUE)
-			topBarTextFontSize = other.topBarTextFontSize;
-		if (!NO_VALUE.equals(other.topBarTextFontFamily))
-			topBarTextFontFamily = other.topBarTextFontFamily;
-		if (other.topBarHidden != BooleanOptions.NoValue) {
-			topBarHidden = other.topBarHidden;
-		}
-		if (other.animateTopBarHide != BooleanOptions.NoValue) {
-			animateTopBarHide = other.animateTopBarHide;
-		}
+        topBarOptions.mergeWith(other.topBarOptions);
+        topTabsOptions.mergeWith(other.topTabsOptions);
+        bottomTabsOptions.mergeWith(other.bottomTabsOptions);
 	}
+
+    NavigationOptions withDefaultOptions(final NavigationOptions other) {
+        topBarOptions.mergeWithDefault(other.topBarOptions);
+        topTabsOptions.mergeWithDefault(other.topTabsOptions);
+        bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
+        return this;
+    }
 }

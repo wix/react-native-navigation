@@ -53,8 +53,7 @@
 
 
 - (void)testPop_removeTopVCFromStore {
-	[self.uut pop:@"vc3"];
-	
+	[self.uut pop:@"vc3" withAnimationData:(NSDictionary*)nil];
 	XCTAssertNil([self.store findContainerForId:@"vc3"]);
 	XCTAssertNotNil([self.store findContainerForId:@"vc2"]);
 	XCTAssertNotNil([self.store findContainerForId:@"vc1"]);

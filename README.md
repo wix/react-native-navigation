@@ -65,8 +65,8 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | resetTo             |   ✅        |	✅|
 | showModal              |  ✅        |	✅|
 | dismissModal           |     ✅       |	✅|
-| showOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	WIP @cool04ek |
-| dismissOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	[Contribute](/docs/docs/CONTRIBUTING.md) |
+| showOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	✅ |
+| dismissOverlay             |  [Contribute](/docs/docs/CONTRIBUTING.md)         |	✅ |
 | customTransition            |   ✅        |	[Contribute](/docs/docs/CONTRIBUTING.md) |
 | Screen Visibility        | ✅     |✅|
 | async commands (await push)     |  [Contribute](/docs/docs/CONTRIBUTING.md)        |✅   |
@@ -84,9 +84,9 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | hidden             |   ✅      |     ✅        | Wix|
 | hideOnScroll         |  ✅    |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
 | translucent         |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
-| transparent         |   WIP @bogobogo     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |
+| transparent         |  ✅        |     [Contribute](/docs/docs/CONTRIBUTING.md)        |
 | noBorder             |    ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |  @gtchance|
-| drawUnder         |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       ||
+| drawUnder         |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       ||
 | blur               |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
 | custom          |     WIP @gran33     | [Contribute](/docs/docs/CONTRIBUTING.md)|
 | subtitleColor            |   [Contribute](/docs/docs/CONTRIBUTING.md)     |      [Contribute](/docs/docs/CONTRIBUTING.md)      |
@@ -95,11 +95,11 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 
 |       tabBar         | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
-| drawUnder          |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
+| drawUnder          |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
 | hidden   |   ✅     |    ✅        | @gtchance |
 | tabBadge          |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md)| Wix|
-| currentTab by Index          |       [Contribute](/docs/docs/CONTRIBUTING.md)    | ✅|Wix |
-| currentTab by cointainerId         |       [Contribute](/docs/docs/CONTRIBUTING.md)    | ✅|Wix |
+| currentTab by Index          |       ✅    | ✅ | Wix |
+| currentTab by cointainerId         |       [Contribute](/docs/docs/CONTRIBUTING.md)    | ✅ | Wix |
 
 |       buttons        | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
@@ -124,7 +124,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 |--------------------|-----|----|-----|
 | screenBackgroundColor        |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       |  Wix|
 | orientation       |    ✅     |   [Contribute](/docs/docs/CONTRIBUTING.md)          | Wix|
-| disabledBackGesture        |  WIP @gran33     |    / iOS specific     |
+| disabledBackGesture        |    ✅     |    / iOS specific     |
 | screenBackgroundImageName        |   [Contribute](/docs/docs/CONTRIBUTING.md)      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
 | rootBackgroundImageName              |    [Contribute](/docs/docs/CONTRIBUTING.md)     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
 | sideMenuVisible          |        [Contribute](/docs/docs/CONTRIBUTING.md)   | [Contribute](/docs/docs/CONTRIBUTING.md) |
@@ -179,8 +179,8 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | topBarTranslucent     |  ✅     |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
 | topBarTransparent     | ✅      |   WIP @bogobogo     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |
 | topBarNoBorder        |  ✅     |    ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |  @gtchance|
-| drawUnderTabBar       |  ✅     |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
-| drawUnderTopBar       |  ✅     |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       ||
+| drawUnderTabBar       |  ✅     |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
+| drawUnderTopBar       |  ✅     |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       ||
 | statusBarBlur         |  ✅     |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
 | topBarBlur            | ✅      |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
 | tabBarHidden  |   ✅  |   ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)        | @gtchance|
@@ -192,12 +192,12 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | orientation     |  ✅   |    ✅     |   [Contribute](/docs/docs/CONTRIBUTING.md)          | Wix|
 | statusBarHideWithTopBar        |  ✅   |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
 | statusBarHidden       |  ✅   |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | WIX |
-| disabledBackGesture       |   ✅  |  WIP @gran33     |    / iOS specific     |
+| disabledBackGesture       |   ✅  |   ✅  |    / iOS specific     |
 | screenBackgroundImageName         |   ✅  |   [Contribute](/docs/docs/CONTRIBUTING.md)      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
 | rootBackgroundImageName            |  ✅   |    [Contribute](/docs/docs/CONTRIBUTING.md)     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
 | setButtons          |   ✅     |    ✅    | [Contribute](/docs/docs/CONTRIBUTING.md) | @Johan-dutoit|
 | title            |   ✅     |        	✅    | 	✅| Wix|
-| toggleDrawer        |   ✅     |        [Contribute](/docs/docs/CONTRIBUTING.md)   | [Contribute](/docs/docs/CONTRIBUTING.md) |
+| toggleDrawer        |   ✅     |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md) |
 | setTabBadge         |    ✅    |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md)| Wix|
 | switchToTab         |    ✅    |       ✅   |[Contribute](/docs/docs/CONTRIBUTING.md) |
 | topBarCustomView        |   ✅     |     WIP @gran33     | [Contribute](/docs/docs/CONTRIBUTING.md)|
@@ -205,3 +205,4 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | splitViewScreen       |     :x:  |    [Contribute](/docs/docs/CONTRIBUTING.md)      | [Contribute](/docs/docs/CONTRIBUTING.md)|
 
 Element transitions, adding buttons and styles are not yet implemented. [Contribute](/docs/docs/CONTRIBUTING.md)  
+

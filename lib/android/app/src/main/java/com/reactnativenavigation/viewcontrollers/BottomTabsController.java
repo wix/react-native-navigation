@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.utils.CompatUtils;
 
 import java.util.ArrayList;
@@ -20,8 +22,11 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.RelativeLayout.ABOVE;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
+import static com.reactnativenavigation.parse.DEFAULT_VALUES.NO_INT_VALUE;
+import static com.reactnativenavigation.parse.DEFAULT_VALUES.NO_VALUE;
 
-public class BottomTabsController extends ParentController implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class BottomTabsController extends ParentController
+		implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationOptionsListener {
 	private BottomNavigationView bottomNavigationView;
 	private List<ViewController> tabs = new ArrayList<>();
 	private int selectedIndex = 0;
@@ -86,8 +91,43 @@ public class BottomTabsController extends ParentController implements BottomNavi
 		return selectedIndex;
 	}
 
+	@NonNull
 	@Override
 	public Collection<ViewController> getChildControllers() {
 		return tabs;
+	}
+
+	@Override
+	public void mergeNavigationOptions(NavigationOptions options) {
+		if (options.bottomTabsOptions != null) {
+			if (options.bottomTabsOptions.currentTabIndex != NO_INT_VALUE) {
+				selectTabAtIndex(options.bottomTabsOptions.currentTabIndex);
+			}
+			if (!NO_VALUE.equals(options.bottomTabsOptions.currentTabId)) {
+				String id = options.bottomTabsOptions.currentTabId;
+				for (ViewController controller : tabs) {
+					if (controller.getId().equals(id)) {
+						selectTabAtIndex(tabs.indexOf(controller));
+					}
+					if (controller instanceof StackController) {
+						if (hasControlWithId((StackController) controller, id)) {
+							selectTabAtIndex(tabs.indexOf(controller));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private boolean hasControlWithId(StackController controller, String id) {
+		for (ViewController child : controller.getChildControllers()) {
+			if (id.equals(child.getId())) {
+				return true;
+			}
+			if (child instanceof StackController) {
+				return hasControlWithId((StackController) child, id);
+			}
+		}
+		return false;
 	}
 }

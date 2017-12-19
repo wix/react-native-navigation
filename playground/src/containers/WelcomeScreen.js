@@ -2,9 +2,18 @@ const React = require('react');
 const { Component } = require('react');
 const { View, Text, Button } = require('react-native');
 
+const testIDs = require('../testIDs');
+
 const Navigation = require('react-native-navigation');
 
 class WelcomeScreen extends Component {
+  static get navigationOptions() {
+    return {
+      topBar: {
+        largeTitle: false
+      }
+    };
+  }
   constructor(props) {
     super(props);
     this.onClickPush = this.onClickPush.bind(this);
@@ -12,20 +21,24 @@ class WelcomeScreen extends Component {
     this.onClickLifecycleScreen = this.onClickLifecycleScreen.bind(this);
     this.onClickPushOptionsScreen = this.onClickPushOptionsScreen.bind(this);
     this.onClickPushOrientationMenuScreen = this.onClickPushOrientationMenuScreen.bind(this);
+    this.onClickBackHandler = this.onClickBackHandler.bind(this);
+    this.onClickPushTopTabsScreen = this.onClickPushTopTabsScreen.bind(this);
   }
 
   render() {
     return (
       <View style={styles.root}>
-        <Text style={styles.h1}>{`React Native Navigation!`}</Text>
-        <Button title="Switch to tab based app" onPress={this.onClickSwitchToTabs} />
-        <Button title="Switch to app with side menus" onPress={this.onClickSwitchToSideMenus} />
-        <Button title="Push Lifecycle Screen" onPress={this.onClickLifecycleScreen} />
-        <Button title="Push" onPress={this.onClickPush} />
-        <Button title="Push Options Screen" onPress={this.onClickPushOptionsScreen} />
-        <Button title="Show Modal" onPress={this.onClickShowModal} />
-        <Button title="Show Redbox" onPress={this.onClickShowRedbox} />
-        <Button title="Orientation" onPress={this.onClickPushOrientationMenuScreen} />
+        <Text testID={testIDs.WELCOME_SCREEN_HEADER} style={styles.h1}>{`React Native Navigation!`}</Text>
+        <Button title="Switch to tab based app" testID={testIDs.TAB_BASED_APP_BUTTON} onPress={this.onClickSwitchToTabs} />
+        <Button title="Switch to app with side menus" testID={testIDs.TAB_BASED_APP_SIDE_BUTTON} onPress={this.onClickSwitchToSideMenus} />
+        <Button title="Push Lifecycle Screen" testID={testIDs.PUSH_LIFECYCLE_BUTTON} onPress={this.onClickLifecycleScreen} />
+        <Button title="Push" testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
+        <Button title="Push Options Screen" testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
+        <Button title="Push Top Tabs screen" testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />
+        <Button title="Back Handler" testID={testIDs.BACK_HANDLER_BUTTON} onPress={this.onClickBackHandler} />
+        <Button title="Show Modal" testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
+        <Button title="Show Redbox" testID={testIDs.SHOW_REDBOX_BUTTON} onPress={this.onClickShowRedbox} />
+        <Button title="Orientation" testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
@@ -86,17 +99,17 @@ class WelcomeScreen extends Component {
       sideMenu: {
         left: {
           container: {
-            name: 'navigation.playground.TextScreen',
+            name: 'navigation.playground.SideMenuScreen',
             passProps: {
-              text: 'This is a left side menu screen'
+              side: 'left'
             }
           }
         },
         right: {
           container: {
-            name: 'navigation.playground.TextScreen',
+            name: 'navigation.playground.SideMenuScreen',
             passProps: {
-              text: 'This is a right side menu screen'
+              side: 'right'
             }
           }
         }
@@ -104,8 +117,8 @@ class WelcomeScreen extends Component {
     });
   }
 
-  onClickPush() {
-    Navigation.push(this.props.containerId, {
+  async onClickPush() {
+    await Navigation.push(this.props.containerId, {
       name: 'navigation.playground.PushedScreen'
     });
   }
@@ -116,8 +129,8 @@ class WelcomeScreen extends Component {
     });
   }
 
-  onClickShowModal() {
-    Navigation.showModal({
+  async onClickShowModal() {
+    await Navigation.showModal({
       container: {
         name: 'navigation.playground.ModalScreen'
       }
@@ -131,6 +144,55 @@ class WelcomeScreen extends Component {
   onClickPushOptionsScreen() {
     Navigation.push(this.props.containerId, {
       name: 'navigation.playground.OptionsScreen'
+    });
+  }
+
+  onClickPushTopTabsScreen() {
+    Navigation.push(this.props.containerId, {
+      topTabs: [
+        {
+          name: 'navigation.playground.TopTabOptionsScreen',
+          passProps: {
+            title: 'Tab 1',
+            text: 'This is top tab 1'
+          },
+          navigationOptions: {
+            topTab: {
+              title: 'Tab 1'
+            }
+          }
+        },
+        {
+          name: 'navigation.playground.TopTabScreen',
+          passProps: {
+            title: 'Tab 2',
+            text: 'This is top tab 2'
+          },
+          navigationOptions: {
+            topTab: {
+              title: 'Tab 2'
+            }
+          }
+        },
+        {
+          name: 'navigation.playground.TopTabScreen',
+          passProps: {
+            title: 'Tab 3',
+            text: 'This is top tab 3'
+          },
+          navigationOptions: {
+            topTab: {
+              title: 'Tab 3'
+            }
+          }
+        }
+      ]
+    });
+  }
+
+  onClickBackHandler() {
+    Navigation.push(this.props.containerId, {
+      name: 'navigation.playground.BackHandlerScreen'
     });
   }
 

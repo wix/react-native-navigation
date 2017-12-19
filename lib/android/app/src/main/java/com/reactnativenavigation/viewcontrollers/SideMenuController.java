@@ -26,8 +26,7 @@ public class SideMenuController extends ParentController {
 	@NonNull
 	@Override
 	protected ViewGroup createView() {
-		DrawerLayout root = new DrawerLayout(getActivity());
-		return root;
+        return new DrawerLayout(getActivity());
 	}
 
 	@NonNull

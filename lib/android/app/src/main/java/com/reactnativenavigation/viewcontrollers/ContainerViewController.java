@@ -2,23 +2,22 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.annotation.RestrictTo;
 import android.view.View;
 
-import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.NavigationOptionsListener;
+import com.reactnativenavigation.views.ReactContainer;
 import com.reactnativenavigation.views.TopBar;
-import com.reactnativenavigation.views.TopbarContainerView;
 
-public class ContainerViewController extends ViewController {
+public class ContainerViewController extends ViewController implements NavigationOptionsListener {
 
-	public interface ContainerViewCreator {
+    public interface ReactViewCreator {
 
-		ContainerView create(Activity activity, String containerId, String containerName);
+        IReactView create(Activity activity, String containerId, String containerName);
 	}
 
-	public interface ContainerView {
+	public interface IReactView {
 
 		boolean isReady();
 
@@ -34,16 +33,14 @@ public class ContainerViewController extends ViewController {
 
 	private final String containerName;
 
-	private final ContainerViewCreator viewCreator;
+	private final ReactViewCreator viewCreator;
 	private NavigationOptions navigationOptions;
-	private ContainerView containerView;
-
-	private TopBar topBar;
+	private ReactContainer container;
 
 	public ContainerViewController(final Activity activity,
 								   final String id,
 								   final String containerName,
-								   final ContainerViewCreator viewCreator,
+								   final ReactViewCreator viewCreator,
 								   final NavigationOptions initialNavigationOptions) {
 		super(activity, id);
 		this.containerName = containerName;
@@ -51,61 +48,51 @@ public class ContainerViewController extends ViewController {
 		this.navigationOptions = initialNavigationOptions;
 	}
 
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    TopBar getTopBar() {
+        return container.getTopBar();
+    }
+
 	@Override
 	public void destroy() {
 		super.destroy();
-		if (containerView != null) containerView.destroy();
-		containerView = null;
+		if (container != null) container.destroy();
+		container = null;
 	}
 
 	@Override
 	public void onViewAppeared() {
 		super.onViewAppeared();
 		ensureViewIsCreated();
-		applyOptions();
-		containerView.sendContainerStart();
+		container.applyOptions(navigationOptions);
+		container.sendContainerStart();
 	}
 
 	@Override
 	public void onViewDisappear() {
 		super.onViewDisappear();
-		containerView.sendContainerStop();
+		container.sendContainerStop();
 	}
 
 	@Override
 	protected boolean isViewShown() {
-		return super.isViewShown() && containerView.isReady();
+		return super.isViewShown() && container.isReady();
 	}
 
 	@NonNull
 	@Override
 	protected View createView() {
-		containerView = viewCreator.create(getActivity(), getId(), containerName);
-		if (containerView instanceof TopbarContainerView) {
-			topBar = ((TopbarContainerView) containerView).getTopBar();
-		}
-		return containerView.asView();
+		container = (ReactContainer) viewCreator.create(getActivity(), getId(), containerName);
+        return container.asView();
 	}
 
-	void mergeNavigationOptions(NavigationOptions options) {
+	@Override
+	public void mergeNavigationOptions(NavigationOptions options) {
 		navigationOptions.mergeWith(options);
-		applyOptions();
+        container.applyOptions(options);
 	}
 
 	NavigationOptions getNavigationOptions() {
 		return navigationOptions;
-	}
-
-	private void applyOptions() {
-		OptionsPresenter presenter = new OptionsPresenter(this);
-		presenter.applyOptions(navigationOptions);
-	}
-
-	public TopBar getTopBar() {
-		return topBar;
-	}
-
-	public ContainerView getContainerView() {
-		return containerView;
 	}
 }

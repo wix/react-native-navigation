@@ -4,8 +4,9 @@
 
 @interface RNNModalManager : NSObject
 
--(instancetype)initWithStore:(RNNStore*)store;
+@property (nonatomic, strong) UIViewController* toVC;
 
+-(instancetype)initWithStore:(RNNStore*)store;
 -(void)showModal:(UIViewController*)viewController;
 -(void)dismissModal:(NSString*)containerId;
 -(void)dismissAllModals;

@@ -1,21 +1,17 @@
 package com.reactnativenavigation.utils;
 
-import android.view.View;
+import android.view.*;
 
-import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.*;
 
-import org.junit.Test;
-import org.robolectric.shadow.api.Shadow;
+import org.junit.*;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 public class UiUtilsTest extends BaseTest {
 	@Test
 	public void runOnPreDrawOnce() throws Exception {
-		View view = Shadow.newInstanceOf(View.class);
+		View view = new View(newActivity());
 		Runnable task = mock(Runnable.class);
 		verifyZeroInteractions(task);
 

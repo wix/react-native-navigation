@@ -1,6 +1,5 @@
 package com.reactnativenavigation.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
@@ -11,16 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
+
 public class TopBar extends AppBarLayout {
 	private final Toolbar titleBar;
+	private TopTabs topTabs;
 
-	public TopBar(final Context context) {
-		super(context);
-		titleBar = new Toolbar(context);
-		addView(titleBar);
-	}
+    public TopBar(final Context context) {
+        super(context);
+        titleBar = new Toolbar(context);
+        addView(titleBar);
+    }
 
-	public void setTitle(String title) {
+    public void setTitle(String title) {
 		titleBar.setTitle(title);
 	}
 
@@ -72,4 +74,14 @@ public class TopBar extends AppBarLayout {
 	public Toolbar getTitleBar() {
 		return titleBar;
 	}
+
+    public void setupTopTabsWithViewPager(TopTabsViewPager viewPager) {
+        initTopTabs();
+        topTabs.setupWithViewPager(viewPager);
+    }
+
+    private void initTopTabs() {
+        topTabs = new TopTabs(getContext());
+        addView(topTabs);
+    }
 }

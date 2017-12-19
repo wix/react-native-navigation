@@ -46,4 +46,8 @@ public class ReactGateway {
 	public boolean onKeyUp(final int keyCode) {
 		return jsDevReloadHandler.onKeyUp(keyCode);
 	}
+
+    public void onBackPressed() {
+	    reactNativeHost.getReactInstanceManager().onBackPressed();
+    }
 }

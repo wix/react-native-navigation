@@ -4,6 +4,7 @@ const { Component } = require('react');
 const { View, Text, Button } = require('react-native');
 
 const Navigation = require('react-native-navigation');
+const testIDs = require('../testIDs');
 
 class OrientationDetectScreen extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class OrientationDetectScreen extends Component {
     return (
       <View style={styles.root} onLayout={this.detectHorizontal}>
         <Text style={styles.h1}>{`Orientation Screen`}</Text>
-        <Button title="Dismiss" onPress={() => Navigation.dismissModal(this.props.containerId)} />
+        <Button title="Dismiss" testID={testIDs.DISMISS_BUTTON} onPress={() => Navigation.dismissModal(this.props.containerId)} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
         <Text style={styles.footer} testID="currentOrientation">{this.state.horizontal ? 'Landscape' : 'Portrait'}</Text>
       </View>
