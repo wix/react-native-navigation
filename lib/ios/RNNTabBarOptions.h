@@ -9,6 +9,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) NSString* tabBadge;
 @property (nonatomic, strong) NSNumber* currentTabIndex;
 @property (nonatomic, strong) NSString* testID;
+@property (nonatomic, strong) NSNumber* drawUnder;
 
 -(instancetype)init;
 -(instancetype)initWithDict:(NSDictionary *)topBarOptions;
