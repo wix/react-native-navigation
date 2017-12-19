@@ -31,6 +31,7 @@ public class NavigationOptions implements DEFAULT_VALUES {
 
 		result.topBarOptions = TopBarOptions.parse(json.optJSONObject("topBar"));
 		result.topTabsOptions = TopTabsOptions.parse(json.optJSONObject("topTabs"));
+        result.topTabOptions = TopTabOptions.parse(json.optJSONObject("topTab"));
 		result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
 
 		return result.withDefaultOptions(defaultOptions);
@@ -38,6 +39,7 @@ public class NavigationOptions implements DEFAULT_VALUES {
 
 	public TopBarOptions topBarOptions = new TopBarOptions();
     public TopTabsOptions topTabsOptions = new TopTabsOptions();
+    public TopTabOptions topTabOptions = new TopTabOptions();
     public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
 
 	public void mergeWith(final NavigationOptions other) {

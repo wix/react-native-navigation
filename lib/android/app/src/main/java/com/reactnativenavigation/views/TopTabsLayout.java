@@ -35,6 +35,7 @@ public class TopTabsLayout extends LinearLayout implements Container {
         setOrientation(VERTICAL);
         addView(topBar);
         addView(viewPager);
+        topBar.setupTopTabsWithViewPager(viewPager);
     }
 
     @Override
