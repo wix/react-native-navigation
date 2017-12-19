@@ -51,4 +51,8 @@ public class TopTabsAdapter extends PagerAdapter implements ViewPager.OnPageChan
     public void onPageScrollStateChanged(int state) {
 
     }
+
+    int getCurrentItem() {
+        return currentPage;
+    }
 }

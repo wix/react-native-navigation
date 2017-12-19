@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
+import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.TopTabsLayout;
@@ -17,10 +18,12 @@ public class TopTabsController extends ParentController implements NavigationOpt
 
     private List<TopTabController> tabs;
     private TopTabsLayout topTabsLayout;
+    private TopTabsAdapter adapter;
 
     public TopTabsController(Activity activity, String id, List<TopTabController> tabs) {
         super(activity, id);
         this.tabs = tabs;
+        this.adapter = new TopTabsAdapter(tabs);
         for (ViewController tab : tabs) {
             tab.setParentController(this);
         }
@@ -29,7 +32,7 @@ public class TopTabsController extends ParentController implements NavigationOpt
     @NonNull
     @Override
     protected ViewGroup createView() {
-        topTabsLayout = new TopTabsLayout(getActivity(), tabs);
+        topTabsLayout = new TopTabsLayout(getActivity(), tabs, adapter);
         return topTabsLayout;
     }
 
@@ -41,12 +44,12 @@ public class TopTabsController extends ParentController implements NavigationOpt
 
     @Override
     public void onViewAppeared() {
-        topTabsLayout.performOnCurrentTab(TopTabController::onViewAppeared);
+        performOnCurrentTab(TopTabController::onViewAppeared);
     }
 
     @Override
     public void onViewDisappear() {
-        topTabsLayout.performOnCurrentTab(TopTabController::onViewDisappear);
+        performOnCurrentTab(TopTabController::onViewDisappear);
     }
 
     @Override
@@ -61,5 +64,9 @@ public class TopTabsController extends ParentController implements NavigationOpt
 
     public void switchToTab(int index) {
         topTabsLayout.switchToTab(index);
+    }
+
+    private void performOnCurrentTab(Task<TopTabController> task) {
+        task.run(tabs.get(adapter.getCurrentItem()));
     }
 }

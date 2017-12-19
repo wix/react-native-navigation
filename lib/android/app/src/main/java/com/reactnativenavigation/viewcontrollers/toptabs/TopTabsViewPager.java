@@ -16,18 +16,17 @@ public class TopTabsViewPager extends ViewPager {
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
     private List<TopTabController> tabs;
 
-    public TopTabsViewPager(Context context, List<TopTabController> tabs) {
+    public TopTabsViewPager(Context context, List<TopTabController> tabs, TopTabsAdapter adapter) {
         super(context);
         this.tabs = tabs;
-        init();
+        init(adapter);
     }
 
-    private void init() {
+    private void init(TopTabsAdapter adapter) {
         setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
         for (ViewController tab : tabs) {
             addView(tab.getView(), new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         }
-        TopTabsAdapter adapter = new TopTabsAdapter(tabs);
         setAdapter(adapter);
         addOnPageChangeListener(adapter);
     }
