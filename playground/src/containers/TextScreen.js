@@ -7,6 +7,13 @@ const Navigation = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
 class TextScreen extends Component {
+  static get navigationOptions() {
+    return {
+      bottomTabs: {
+        testID: testIDs.BOTTOM_TABS_ELEMENT
+      }
+    };
+  }
 
   render() {
     return (
@@ -16,8 +23,8 @@ class TextScreen extends Component {
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
         <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onButtonPress()} />
         <Button title={'Switch To Tab 2'} testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
-        <Button title="Hide Tab Bar" onPress={() => this.hideTabBar(true)} />
-        <Button title="Show Tab Bar" onPress={() => this.hideTabBar(false)} />
+        <Button title="Hide Tab Bar" testID={testIDs.HIDE_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(true)} />
+        <Button title="Show Tab Bar" testID={testIDs.SHOW_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(false)} />
         <Button title="Show Left Side Menu" testID={testIDs.SHOW_LEFT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('left')} />
         <Button title="Show Right Side Menu" testID={testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('right')} />
       </View>

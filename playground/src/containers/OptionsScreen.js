@@ -19,7 +19,8 @@ class OptionsScreen extends Component {
         largeTitle: false,
         hidden: false,
         textFontSize: 16,
-        textFontFamily: 'HelveticaNeue-Italic'
+        textFontFamily: 'HelveticaNeue-Italic',
+        testID: testIDs.TOP_BAR_ELEMENT
       },
       rightButtons: [{
         id: BUTTON_ONE,
