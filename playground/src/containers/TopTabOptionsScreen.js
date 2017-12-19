@@ -1,26 +1,18 @@
 const React = require('react');
 const { PureComponent } = require('react');
-const { View, Text } = require('react-native');
-const Navigation = require('react-native-navigation');
 
-class TopTabScreen extends PureComponent {
+const { View, Text } = require('react-native');
+
+class TopTabOptionsScreen extends PureComponent {
   static get navigationOptions() {
     return {
       topBar: {
+        title: 'Tab 1',
         textColor: 'black',
         textFontSize: 16,
         textFontFamily: 'HelveticaNeue-Italic'
       }
     };
-  }
-
-  constructor(props) {
-    super(props);
-    Navigation.setOptions(this.props.containerId, {
-      topBar: {
-        title: this.props.title
-      }
-    });
   }
 
   render() {
@@ -32,8 +24,6 @@ class TopTabScreen extends PureComponent {
     );
   }
 }
-
-module.exports = TopTabScreen;
 
 const styles = {
   root: {
@@ -58,3 +48,5 @@ const styles = {
     marginTop: 10
   }
 };
+
+module.exports = TopTabOptionsScreen;

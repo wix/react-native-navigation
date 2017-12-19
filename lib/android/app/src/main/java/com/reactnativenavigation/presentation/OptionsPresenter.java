@@ -7,33 +7,33 @@ import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
 import com.reactnativenavigation.utils.TypefaceLoader;
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
-import com.reactnativenavigation.views.ContainerLayout;
+import com.reactnativenavigation.views.TopBar;
 
 public class OptionsPresenter {
 
-	private ContainerViewController controller;
 	private final StackAnimator animator;
+    private View contentView;
+    private TopBar topBar;
 
-	public OptionsPresenter(ContainerViewController controller) {
-		this.controller = controller;
-		animator = new StackAnimator(controller.getActivity());
-	}
+    public OptionsPresenter(TopBar topBar, View contentView) {
+        this.topBar = topBar;
+        this.contentView = contentView;
+        animator = new StackAnimator(topBar.getContext());
+    }
 
 	public void applyOptions(NavigationOptions options) {
-		if (controller != null && controller.getTopBar() != null) {
-            applyTopBarOptions(options.topBarOptions);
-            applyTopTabsOptions(options.topTabsOptions);
-		}
+        applyTopBarOptions(options.topBarOptions);
+        applyTopTabsOptions(options.topTabsOptions);
 	}
 
     private void applyTopBarOptions(TopBarOptions options) {
-        controller.setTitle(options.title);
-        controller.setBackgroundColor(options.backgroundColor);
-        controller.setTitleTextColor(options.textColor);
-        controller.setTitleFontSize(options.textFontSize);
+        topBar.setTitle(options.title);
+        topBar.setBackgroundColor(options.backgroundColor);
+        topBar.setTitleTextColor(options.textColor);
+        topBar.setTitleFontSize(options.textFontSize);
+
         TypefaceLoader typefaceLoader = new TypefaceLoader();
-        controller.getTopBar().setTitleTypeface(typefaceLoader.getTypeFace(controller.getActivity(), options.textFontFamily));
+        topBar.setTitleTypeface(typefaceLoader.getTypeFace(topBar.getContext(), options.textFontFamily));
         if (options.hidden == NavigationOptions.BooleanOptions.True) {
             hideTopBar(options.animateHide);
         }
@@ -43,26 +43,24 @@ public class OptionsPresenter {
     }
 
 	private void showTopBar(NavigationOptions.BooleanOptions animated) {
-		if (controller.getTopBar().getVisibility() == View.VISIBLE) {
+		if (topBar.getVisibility() == View.VISIBLE) {
 			return;
 		}
 		if (animated == NavigationOptions.BooleanOptions.True) {
-			ContainerLayout topBarContainerView = (ContainerLayout) controller.getContainerView();
-			animator.animateShowTopBar(controller.getTopBar(), topBarContainerView.getReactView().asView());
+			animator.animateShowTopBar(topBar, contentView);
 		} else {
-			controller.getTopBar().setVisibility(View.VISIBLE);
+			topBar.setVisibility(View.VISIBLE);
 		}
 	}
 
 	private void hideTopBar(NavigationOptions.BooleanOptions animated) {
-		if (controller.getTopBar().getVisibility() == View.GONE) {
+		if (topBar.getVisibility() == View.GONE) {
 			return;
 		}
 		if (animated == NavigationOptions.BooleanOptions.True) {
-			ContainerLayout topBarContainerView = (ContainerLayout) controller.getContainerView();
-			animator.animateHideTopBar(controller.getTopBar(), topBarContainerView.getReactView().asView());
+			animator.animateHideTopBar(topBar, contentView);
 		} else {
-			controller.getTopBar().setVisibility(View.GONE);
+			topBar.setVisibility(View.GONE);
 		}
 	}
 

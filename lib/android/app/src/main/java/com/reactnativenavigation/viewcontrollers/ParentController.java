@@ -24,7 +24,7 @@ public abstract class ParentController extends ViewController {
 	protected abstract ViewGroup createView();
 
 	@NonNull
-	public abstract Collection<ViewController> getChildControllers();
+	public abstract Collection<? extends ViewController> getChildControllers();
 
 	@Nullable
 	@Override
