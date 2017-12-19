@@ -1,11 +1,14 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.NavigationApplication;
@@ -121,20 +124,31 @@ public class SideMenu extends DrawerLayout {
         ContentView sideMenuView = new ContentView(getContext(), params.screenId, params.navigationParams);
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         lp.gravity = params.side.gravity;
-        setSideMenuWidth(sideMenuView);
+        setSideMenuWidth(sideMenuView, params.percentOfScreenWidth);
         addView(sideMenuView, lp);
         return sideMenuView;
     }
 
-    private void setSideMenuWidth(final ContentView sideMenuView) {
+    private void setSideMenuWidth(final ContentView sideMenuView, final double percentOfScreenWidth) {
         sideMenuView.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
                 ViewGroup.LayoutParams lp = sideMenuView.getLayoutParams();
-                lp.width = sideMenuView.getChildAt(0).getWidth();
+                lp.width = getDrawerWidth(percentOfScreenWidth);
                 sideMenuView.setLayoutParams(lp);
             }
         });
+    }
+
+    private int getDrawerWidth(double percentOfScreenWidth) {
+        Display display= ((WindowManager) getContext()
+                .getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay();
+
+        Point size = new Point();
+        display.getSize(size);
+
+        return (int) (size.x * percentOfScreenWidth);
     }
 
     public void setScreenEventListener() {
