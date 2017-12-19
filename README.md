@@ -86,7 +86,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | translucent         |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
 | transparent         |  ✅        |     [Contribute](/docs/docs/CONTRIBUTING.md)        |
 | noBorder             |    ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |  @gtchance|
-| drawUnder         |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       ||
+| drawUnder         |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       ||
 | blur               |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
 | custom          |     WIP @gran33     | [Contribute](/docs/docs/CONTRIBUTING.md)|
 | subtitleColor            |   [Contribute](/docs/docs/CONTRIBUTING.md)     |      [Contribute](/docs/docs/CONTRIBUTING.md)      |
@@ -95,7 +95,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 
 |       tabBar         | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
-| drawUnder          |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
+| drawUnder          |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
 | hidden   |   ✅     |    ✅        | @gtchance |
 | tabBadge          |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md)| Wix|
 | currentTab by Index          |       ✅    | ✅ | Wix |
@@ -179,8 +179,8 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | topBarTranslucent     |  ✅     |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
 | topBarTransparent     | ✅      |   WIP @bogobogo     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |
 | topBarNoBorder        |  ✅     |    ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |  @gtchance|
-| drawUnderTabBar       |  ✅     |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
-| drawUnderTopBar       |  ✅     |    WIP @gran33     |      [Contribute](/docs/docs/CONTRIBUTING.md)       ||
+| drawUnderTabBar       |  ✅     |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
+| drawUnderTopBar       |  ✅     |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       ||
 | statusBarBlur         |  ✅     |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
 | topBarBlur            | ✅      |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
 | tabBarHidden  |   ✅  |   ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)        | @gtchance|
