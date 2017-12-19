@@ -491,7 +491,7 @@
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
 }
 -(void)testTopBarLargeTitle_false {
-	self.options.bottomTabs.hidden = @(0);
+	self.options.topBar.largeTitle  = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -527,6 +527,38 @@
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue([[(UIImageView*)self.uut.navigationController.view.subviews[0] image] isEqual:rootBackgroundImage]);
+}
+
+-(void)testTopBarDrawUnder_true {
+	self.options.topBar.drawUnder = @(1);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertTrue(self.uut.edgesForExtendedLayout & UIRectEdgeTop);
+}
+
+-(void)testTopBarDrawUnder_false {
+	self.options.topBar.drawUnder = @(0);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertFalse(self.uut.edgesForExtendedLayout & UIRectEdgeTop);
+}
+
+-(void)testBottomTabsDrawUnder_true {
+	self.options.bottomTabs.drawUnder = @(1);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertTrue(self.uut.edgesForExtendedLayout & UIRectEdgeBottom);
+}
+
+-(void)testBottomTabsDrawUnder_false {
+	self.options.bottomTabs.drawUnder = @(0);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertFalse(self.uut.edgesForExtendedLayout & UIRectEdgeBottom);
 }
 
 @end
