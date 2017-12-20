@@ -1,11 +1,9 @@
 package com.reactnativenavigation.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
@@ -16,18 +14,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Button;
-import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.utils.ImageUtils;
-import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
 
+import java.util.ArrayList;
+
+@SuppressLint("ViewConstructor")
 public class TopBar extends AppBarLayout {
 	private final Toolbar titleBar;
-	private TopTabs topTabs;
+    private Container container;
+    private TopTabs topTabs;
 
-    public TopBar(final Context context) {
+    public TopBar(final Context context, Container container) {
         super(context);
         titleBar = new Toolbar(context);
+        this.container = container;
         addView(titleBar);
     }
 
@@ -100,7 +100,7 @@ public class TopBar extends AppBarLayout {
 	}
 
 	private void setLeftButton(final Button button) {
-		TitleBarButton leftBarButton = new TitleBarButton(this.containerView, this.titleBar, button);
+		TitleBarButton leftBarButton = new TitleBarButton(container, this.titleBar, button);
 		leftBarButton.applyNavigationIcon(getContext());
 	}
 
@@ -114,8 +114,8 @@ public class TopBar extends AppBarLayout {
 
 		for (int i = 0; i < rightButtons.size(); i++){
 	   		Button button = rightButtons.get(i);
-			TitleBarButton titleBarButton = new TitleBarButton(this.containerView, this.titleBar, button);
-			titleBarButton.addToMenu(context, menu);
+			TitleBarButton titleBarButton = new TitleBarButton(container, this.titleBar, button);
+			titleBarButton.addToMenu(getContext(), menu);
        }
     }
 

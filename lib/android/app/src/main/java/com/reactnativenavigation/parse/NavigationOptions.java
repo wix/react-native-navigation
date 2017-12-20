@@ -1,7 +1,6 @@
 package com.reactnativenavigation.parse;
 
 import android.support.annotation.NonNull;
-import android.widget.Button;
 
 import org.json.JSONObject;
 
@@ -36,12 +35,14 @@ public class NavigationOptions implements DEFAULT_VALUES {
 		result.topTabsOptions = TopTabsOptions.parse(json.optJSONObject("topTabs"));
         result.topTabOptions = TopTabOptions.parse(json.optJSONObject("topTab"));
 		result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
+		result.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
+        result.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"));
 
 		return result.withDefaultOptions(defaultOptions);
 	}
 
     @NonNull public TopBarOptions topBarOptions = new TopBarOptions();
-    @NonNull public TopTabsOptions topTabsOptions = new TopTabsOptions();
+    @NonNull private TopTabsOptions topTabsOptions = new TopTabsOptions();
     @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
     @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
     public ArrayList<Button> leftButtons;

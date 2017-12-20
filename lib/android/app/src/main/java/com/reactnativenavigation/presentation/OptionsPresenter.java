@@ -1,9 +1,9 @@
 package com.reactnativenavigation.presentation;
 
 import android.view.View;
-import android.widget.Button;
 
 import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.utils.TypefaceLoader;

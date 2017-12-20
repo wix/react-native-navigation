@@ -19,7 +19,7 @@ public class ContainerLayout extends LinearLayout implements ReactContainer {
 
 	public ContainerLayout(Context context, IReactView reactView) {
 		super(context);
-		this.topBar = new TopBar(context);
+		this.topBar = new TopBar(context, this);
 		this.reactView = reactView;
         optionsPresenter = new OptionsPresenter(topBar, reactView.asView());
         initViews();
@@ -62,6 +62,11 @@ public class ContainerLayout extends LinearLayout implements ReactContainer {
     }
 
 	@Override
+    public void sendOnNavigationButtonPressed(String buttonId) {
+        reactView.sendOnNavigationButtonPressed(buttonId);
+    }
+
+    @Override
     @RestrictTo(RestrictTo.Scope.TESTS)
     public TopBar getTopBar() {
         return topBar;

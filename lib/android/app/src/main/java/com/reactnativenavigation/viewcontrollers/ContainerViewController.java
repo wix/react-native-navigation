@@ -6,7 +6,9 @@ import android.support.annotation.RestrictTo;
 import android.view.View;
 
 import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.NavigationOptionsListener;
+import com.reactnativenavigation.views.ReactContainer;
+import com.reactnativenavigation.views.TopBar;
 
 public class ContainerViewController extends ViewController implements NavigationOptionsListener {
 
@@ -27,7 +29,8 @@ public class ContainerViewController extends ViewController implements Navigatio
 
 		void sendContainerStop();
 
-	}
+        void sendOnNavigationButtonPressed(String buttonId);
+    }
 
 	private final String containerName;
 

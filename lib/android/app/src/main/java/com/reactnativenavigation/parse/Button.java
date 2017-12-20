@@ -3,17 +3,13 @@ package com.reactnativenavigation.parse;
 import android.support.annotation.ColorInt;
 import android.view.MenuItem;
 
-
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.reactnativenavigation.parse.NavigationOptions.NO_VALUE;
+import static com.reactnativenavigation.parse.DEFAULT_VALUES.NO_VALUE;
 import static com.reactnativenavigation.parse.NavigationOptions.NO_INT_VALUE;
-import static com.reactnativenavigation.parse.NavigationOptions.NO_FLOAT_VALUE;
-import static com.reactnativenavigation.parse.NavigationOptions.NO_COLOR_VALUE;
 
 public class Button {
 	public String id;
@@ -21,13 +17,12 @@ public class Button {
 	public NavigationOptions.BooleanOptions disabled;
 	public NavigationOptions.BooleanOptions disableIconTint;
 	public int showAsAction;
-	@ColorInt
-	public int buttonColor;
+	@ColorInt public int buttonColor;
 	public int buttonFontSize;
 	public String buttonFontWeight;
 	public String icon;
 
-	public static Button parseJson(JSONObject json)  {
+	private static Button parseJson(JSONObject json)  {
 		Button button = new Button();
 		button.id = json.optString("id");
 		button.title = json.optString("title", NO_VALUE);
