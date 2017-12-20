@@ -27,7 +27,7 @@ public class TopTabsLayout extends LinearLayout implements Container {
         topBar = new TopBar(context);
         this.tabs = tabs;
         viewPager = new TopTabsViewPager(context, tabs);
-        optionsPresenter = new OptionsPresenter(topBar, this);
+        optionsPresenter = new OptionsPresenter(topBar, viewPager);
         initViews();
     }
 

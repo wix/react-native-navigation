@@ -16,7 +16,7 @@ public class TestContainerLayout extends View implements ReactContainer {
     public TestContainerLayout(final Context context) {
 		super(context);
         topBar = new TopBar(context);
-        optionsPresenter = new OptionsPresenter(topBar, this);
+        optionsPresenter = new OptionsPresenter(topBar, new View(context));
     }
 
     public TopBar getTopBar() {

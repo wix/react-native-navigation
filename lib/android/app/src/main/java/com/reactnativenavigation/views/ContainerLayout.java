@@ -21,7 +21,7 @@ public class ContainerLayout extends LinearLayout implements ReactContainer {
 		super(context);
 		this.topBar = new TopBar(context);
 		this.reactView = reactView;
-        optionsPresenter = new OptionsPresenter(topBar, this);
+        optionsPresenter = new OptionsPresenter(topBar, reactView.asView());
         initViews();
 	}
 
@@ -61,7 +61,7 @@ public class ContainerLayout extends LinearLayout implements ReactContainer {
         optionsPresenter.applyOptions(options);
     }
 
-    @Override
+	@Override
     @RestrictTo(RestrictTo.Scope.TESTS)
     public TopBar getTopBar() {
         return topBar;

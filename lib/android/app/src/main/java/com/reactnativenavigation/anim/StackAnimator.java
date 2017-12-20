@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.LinearLayout;
 
 import com.reactnativenavigation.views.TopBar;
 
@@ -118,7 +119,7 @@ public class StackAnimator {
 		containerHeightAnim.setDuration(DURATION_TOPBAR);
 		containerHeightAnim.addUpdateListener(valueAnimator -> {
             int val = (Integer) valueAnimator.getAnimatedValue();
-            ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) container.getLayoutParams();
             layoutParams.height = val;
             container.setLayoutParams(layoutParams);
         });
@@ -164,7 +165,7 @@ public class StackAnimator {
 		containerHeightAnim.setDuration(DURATION_TOPBAR);
 		containerHeightAnim.addUpdateListener(valueAnimator -> {
             int val = (Integer) valueAnimator.getAnimatedValue();
-            ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
+			LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) container.getLayoutParams();
             layoutParams.height = val;
             container.setLayoutParams(layoutParams);
         });
