@@ -3,6 +3,7 @@
 
 @implementation RNNModalManager {
 	RNNStore *_store;
+	RNNTransitionCompletionBlock _completionBlock;
 }
 
 
@@ -21,16 +22,16 @@
 -(void)showModalAfterLoad:(NSDictionary*)notif {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
 	UIViewController *topVC = [self topPresentedVC];
-	[topVC presentViewController:self.toVC animated:YES completion:nil];
+	[topVC presentViewController:self.toVC animated:YES completion:^{
+		if (_completionBlock) {
+			_completionBlock([_store containerKeyForInstance:self.toVC]);
+		}
+	}];
 }
 
-//-(void)prepareShowModal{
-//
-//}
-
--(void)showModal:(UIViewController *)viewController {
+-(void)showModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {
 	self.toVC = viewController;
-//	[self prepareShowModal]
+	_completionBlock = completion;
 	[self waitForContentToAppearAndThen:@selector(showModalAfterLoad:)];
 }
 
