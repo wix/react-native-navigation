@@ -2,12 +2,12 @@ package com.reactnativenavigation.mocks;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.views.ReactContainer;
 import com.reactnativenavigation.views.TopBar;
 
-public class TestContainerView extends View implements ContainerViewController.ContainerView {
+public class TestContainerView extends View implements ReactContainer {
 
 	private TopBar topBar;
 
@@ -39,12 +39,18 @@ public class TestContainerView extends View implements ContainerViewController.C
 	public void sendContainerStop() {
 	}
 
-	@Override
-	public void sendOnNavigationButtonPressed(String id, String buttonId) {
-	}
+    @Override
+    public void applyOptions(NavigationOptions options) {
 
-	@Override
-	public String getContainerId() {
-		return null;
-	}
+    }
+
+    @Override
+    public void sendOnNavigationButtonPressed(String id) {
+
+    }
+
+    @Override
+    public TopBar getTopBar() {
+        return topBar;
+    }
 }
