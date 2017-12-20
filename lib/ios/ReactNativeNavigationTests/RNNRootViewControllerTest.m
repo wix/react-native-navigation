@@ -27,7 +27,7 @@
 	self.containerId = @"cntId";
 	self.emitter = nil;
 	self.options = [RNNNavigationOptions new];
-	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withContainerId:self.containerId rootViewCreator:self.creator eventEmitter:self.emitter];
+	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withContainerId:self.containerId rootViewCreator:self.creator eventEmitter:self.emitter animator:nil];
 }
 
 -(void)testTopBarBackgroundColor_validColor{

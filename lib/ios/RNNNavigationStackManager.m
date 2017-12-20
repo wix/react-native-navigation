@@ -1,12 +1,12 @@
 #import "RNNNavigationStackManager.h"
 #import "RNNRootViewController.h"
-#import "React/RCTUIManager.h"
 #import "RNNAnimator.h"
 
 
 dispatch_queue_t RCTGetUIManagerQueue(void);
 @implementation RNNNavigationStackManager {
 	RNNStore *_store;
+	RNNTransitionCompletionBlock _completionBlock;
 }
 
 -(instancetype)initWithStore:(RNNStore*)store {
@@ -15,30 +15,25 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	return self;
 }
 
-
--(void)push:(UIViewController *)newTop onTop:(NSString *)containerId customAnimationData:(NSDictionary*)customAnimationData bridge:(RCTBridge*)bridge {
+-(void)push:(UIViewController *)newTop onTop:(NSString *)containerId completion:(RNNTransitionCompletionBlock)completion {
 	UIViewController *vc = [_store findContainerForId:containerId];
-	[self preparePush:newTop onTopVC:vc customAnimationData:customAnimationData bridge:bridge];
+	[self preparePush:newTop onTopVC:vc completion:completion];
 	[self waitForContentToAppearAndThen:@selector(pushAfterLoad:)];
 }
 
--(void)preparePush:(UIViewController *)newTop onTopVC:(UIViewController*)vc customAnimationData:(NSDictionary*)customAnimationData bridge:(RCTBridge*)bridge {
-	if (customAnimationData) {
+-(void)preparePush:(UIViewController *)newTop onTopVC:(UIViewController*)vc completion:(RNNTransitionCompletionBlock)completion {
+	self.toVC = (RNNRootViewController*)newTop;
+	self.fromVC = vc;
+	
+	if (self.toVC.isAnimated) {
 		RNNRootViewController* newTopRootView = (RNNRootViewController*)newTop;
-		self.fromVC = vc;
-		self.toVC = newTopRootView;
 		vc.navigationController.delegate = newTopRootView;
-		[newTopRootView.animator setupTransition:customAnimationData];
-		RCTUIManager *uiManager = bridge.uiManager;
-		CGRect screenBound = [vc.view bounds];
-		CGSize screenSize = screenBound.size;
-		[uiManager setAvailableSize:screenSize forRootView:self.toVC.view];
 	} else {
-		self.fromVC = vc;
-		self.toVC = (RNNRootViewController*)newTop;
 		vc.navigationController.delegate = nil;
 		self.fromVC.navigationController.interactivePopGestureRecognizer.delegate = nil;
 	}
+	
+	_completionBlock = completion;
 }
 
 -(void)waitForContentToAppearAndThen:(SEL)nameOfSelector {
@@ -50,7 +45,17 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 
 -(void)pushAfterLoad:(NSDictionary*)notif {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
+	[CATransaction begin];
+	[CATransaction setCompletionBlock:^{
+		if (_completionBlock) {
+			_completionBlock(self.toVC.containerId);
+			_completionBlock = nil;
+		}
+	}];
+	
 	[[self.fromVC navigationController] pushViewController:self.toVC animated:YES];
+	[CATransaction commit];
+	
 	self.toVC = nil;
 	self.fromVC.navigationController.interactivePopGestureRecognizer.delegate = nil;
 	self.fromVC = nil;

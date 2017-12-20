@@ -12,7 +12,7 @@
 
 -(void) setOptions:(NSString*)containerId options:(NSDictionary*)options;
 
--(void) push:(NSString*)containerId layout:(NSDictionary*)layout;
+-(void) push:(NSString*)containerId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
 
 -(void) pop:(NSString*)containerId options:(NSDictionary*)options;
 
@@ -20,7 +20,7 @@
 
 -(void) popToRoot:(NSString*)containerId;
 
--(void) showModal:(NSDictionary*)layout;
+-(void) showModal:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
 
 -(void) dismissModal:(NSString*)containerId;
 

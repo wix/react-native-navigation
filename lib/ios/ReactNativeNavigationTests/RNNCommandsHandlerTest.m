@@ -30,10 +30,10 @@
 	[self.store setReadyToReceiveCommands:false];
 	for (NSString* methodName in methods) {
 		SEL s = NSSelectorFromString(methodName);
-		NSMethodSignature* signature = [self.uut methodSignatureForSelector:s];
-		NSInvocation* invocation = [NSInvocation invocationWithMethodSignature:signature];
-		invocation.selector = s;
-		XCTAssertThrowsSpecificNamed([invocation invokeWithTarget:self.uut], NSException, @"BridgeNotLoadedError");
+		IMP imp = [self.uut methodForSelector:s];
+		void (*func)(id, SEL, id, id, id) = (void *)imp;
+		
+		XCTAssertThrowsSpecificNamed(func(self.uut,s, nil, nil, nil), NSException, @"BridgeNotLoadedError");
 	}
 }
 
@@ -70,7 +70,8 @@
 																withOptions:initialOptions
 															withContainerId:@"containerId"
 															rootViewCreator:[[RNNTestRootViewCreator alloc] init]
-															   eventEmitter:nil];
+															   eventEmitter:nil
+																   animator:nil];
 	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:vc];
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);

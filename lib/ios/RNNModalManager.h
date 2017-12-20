@@ -7,7 +7,7 @@
 @property (nonatomic, strong) UIViewController* toVC;
 
 -(instancetype)initWithStore:(RNNStore*)store;
--(void)showModal:(UIViewController*)viewController;
+-(void)showModal:(UIViewController*)viewController completion:(RNNTransitionCompletionBlock)completion;
 -(void)dismissModal:(NSString*)containerId;
 -(void)dismissAllModals;
 
