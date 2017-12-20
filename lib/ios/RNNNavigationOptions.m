@@ -300,7 +300,9 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 - (void)applyTabBarItemOptions:(UIViewController*)viewController {
 	if (self.tabItem) {
 		if (self.tabItem.title || self.tabItem.icon) {
-			[viewController.navigationController setTabBarItem:[[UITabBarItem alloc] initWithTitle:self.tabItem.title image:[RCTConvert UIImage:self.tabItem.icon] tag:self.tabItem.tag]];
+			UITabBarItem* tabItem = [[UITabBarItem alloc] initWithTitle:self.tabItem.title image:[RCTConvert UIImage:self.tabItem.icon] tag:self.tabItem.tag];
+			tabItem.accessibilityIdentifier = self.tabItem.testID;
+			[viewController.navigationController setTabBarItem:tabItem];
 		}
 		
 		if (self.tabItem.tabBadge) {

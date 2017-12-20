@@ -8,6 +8,7 @@
 	self.title = tabItemDict[@"title"];
 	self.tag = [tabItemDict[@"tag"] integerValue];
 	self.tabBadge = tabItemDict[@"tabBadge"];
+	self.testID = tabItemDict[@"testID"];
 	self.visible = tabItemDict[@"visible"];
 	self.icon = tabItemDict[@"icon"];
 	
@@ -25,6 +26,7 @@
 	self.tabBadge = nil;
 	self.visible = nil;
 	self.icon = nil;
+	self.testID = nil;
 }
 
 @end

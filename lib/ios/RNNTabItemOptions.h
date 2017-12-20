@@ -5,6 +5,7 @@
 @property (nonatomic) NSUInteger tag;
 @property (nonatomic, strong) NSString* title;
 @property (nonatomic, strong) NSString* tabBadge;
+@property (nonatomic, strong) NSString* testID;
 @property (nonatomic, strong) NSNumber* visible;
 @property (nonatomic, strong) NSDictionary* icon;
 
