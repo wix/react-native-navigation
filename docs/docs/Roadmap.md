@@ -14,4 +14,4 @@
 
 1) `{fab: {collapsing: true}}` Collapses while scrolling.
 2) `{fab: {hidden: true, animateHide: true/false}}` Hides, when options are set.
-THis action do not affect other content
+This action do not affect other content
