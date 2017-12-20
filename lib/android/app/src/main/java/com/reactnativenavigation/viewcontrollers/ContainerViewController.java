@@ -89,7 +89,7 @@ public class ContainerViewController extends ViewController implements Navigatio
 	@Override
 	public void mergeNavigationOptions(NavigationOptions options) {
 		navigationOptions.mergeWith(options);
-        container.applyOptions(options);
+        container.applyOptions(navigationOptions);
 	}
 
 	NavigationOptions getNavigationOptions() {
