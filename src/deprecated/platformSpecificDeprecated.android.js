@@ -257,9 +257,15 @@ function convertDrawerParamsToSideMenuParams(drawerParams) {
       result[key] = adaptNavigationParams(result[key]);
       result[key].passProps = drawer[key].passProps;
       if (drawer.disableOpenGesture) {
-        result[key].disableOpenGesture = drawer.disableOpenGesture;
+        result[key].disableOpenGesture = parseInt(drawer.disableOpenGesture);
       } else {
-        result[key].disableOpenGesture = drawer[key].disableOpenGesture;
+        let fixedWidth = drawer[key].disableOpenGesture;
+        result[key].disableOpenGesture = fixedWidth ? parseInt(fixedWidth) : null;
+      }
+      if (drawer.fixedWidth) {
+        result[key].fixedWidth = drawer.fixedWidth;
+      } else {
+        result[key].fixedWidth = drawer[key].fixedWidth;
       }
       
     } else {
