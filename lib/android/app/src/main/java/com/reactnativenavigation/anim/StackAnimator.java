@@ -119,7 +119,7 @@ public class StackAnimator {
 		containerHeightAnim.setDuration(DURATION_TOPBAR);
 		containerHeightAnim.addUpdateListener(valueAnimator -> {
             int val = (Integer) valueAnimator.getAnimatedValue();
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) container.getLayoutParams();
+			ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
             layoutParams.height = val;
             container.setLayoutParams(layoutParams);
         });
@@ -165,7 +165,7 @@ public class StackAnimator {
 		containerHeightAnim.setDuration(DURATION_TOPBAR);
 		containerHeightAnim.addUpdateListener(valueAnimator -> {
             int val = (Integer) valueAnimator.getAnimatedValue();
-			LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) container.getLayoutParams();
+			ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
             layoutParams.height = val;
             container.setLayoutParams(layoutParams);
         });
