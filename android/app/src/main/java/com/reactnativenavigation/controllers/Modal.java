@@ -107,6 +107,10 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
         return layout.getCurrentlyVisibleScreenId();
     }
 
+    String getCurrentlyVisibleEventId() {
+        return layout.getCurrentScreen().getNavigatorEventId();
+    }
+
     interface OnModalDismissedListener {
         void onModalDismissed(Modal modal);
     }
