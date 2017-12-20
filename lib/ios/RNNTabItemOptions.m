@@ -7,7 +7,7 @@
 	
 	self.title = tabItemDict[@"title"];
 	self.tag = [tabItemDict[@"tag"] integerValue];
-	self.tabBadge = tabItemDict[@"tabBadge"];
+	self.badge = tabItemDict[@"badge"];
 	self.testID = tabItemDict[@"testID"];
 	self.visible = tabItemDict[@"visible"];
 	self.icon = tabItemDict[@"icon"];
@@ -23,7 +23,7 @@
 
 -(void)resetOptions {
 	self.title = nil;
-	self.tabBadge = nil;
+	self.badge = nil;
 	self.visible = nil;
 	self.icon = nil;
 	self.testID = nil;

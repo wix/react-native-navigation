@@ -305,8 +305,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 			[viewController.navigationController setTabBarItem:tabItem];
 		}
 		
-		if (self.tabItem.tabBadge) {
-			NSString *badge = [RCTConvert NSString:self.tabItem.tabBadge];
+		if (self.tabItem.badge) {
+			NSString *badge = [RCTConvert NSString:self.tabItem.badge];
 			if (viewController.navigationController) {
 				viewController.navigationController.tabBarItem.badgeValue = badge;
 			} else {
