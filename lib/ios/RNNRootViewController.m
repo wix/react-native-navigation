@@ -113,7 +113,7 @@
 }
 
 -(void)applyTabBarItem {
-	[self.navigationOptions applyTabBarItem:self];
+	[self.navigationOptions applyTabBarItemOptions:self];
 }
 
 /**

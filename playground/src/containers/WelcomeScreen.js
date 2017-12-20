@@ -55,7 +55,7 @@ class WelcomeScreen extends Component {
               myFunction: () => 'Hello from a function!'
             },
             navigationOptions: {
-              tabItem: {
+              bottomTab: {
                 title: 'Tab 1',
                 testID: testIDs.FIRST_TAB_BAR_BUTTON
               }
@@ -69,7 +69,7 @@ class WelcomeScreen extends Component {
               text: 'This is tab 2'
             },
             navigationOptions: {
-              tabItem: {
+              bottomTab: {
                 title: 'Tab 2',
                 testID: testIDs.SECOND_TAB_BAR_BUTTON
               }
