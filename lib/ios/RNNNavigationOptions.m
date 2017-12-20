@@ -28,7 +28,9 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.topBar = [[RNNTopBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"topBar"]];
 	self.bottomTabs = [[RNNTabBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTabs"]];
 	self.sideMenu = [[RNNSideMenuOptions alloc] initWithDict:[navigationOptions objectForKey:@"sideMenu"]];
-	
+	self.backgroundImage = [RCTConvert UIImage:[navigationOptions objectForKey:@"backgroundImage"]];
+	self.rootBackgroundImage = [RCTConvert UIImage:[navigationOptions objectForKey:@"rootBackgroundImage"]];
+
 	return self;
 }
 
@@ -256,6 +258,30 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		}
 		
 		[self.sideMenu resetOptions];
+	}
+	
+	if (self.backgroundImage) {
+		UIImageView* backgroundImageView = (viewController.view.subviews.count > 0) ? viewController.view.subviews[0] : nil;
+		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
+			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
+			[viewController.view insertSubview:backgroundImageView atIndex:0];
+		}
+		
+		backgroundImageView.layer.masksToBounds = YES;
+		backgroundImageView.image = self.backgroundImage;
+		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+	}
+	
+	if (self.rootBackgroundImage) {
+		UIImageView* backgroundImageView = (viewController.navigationController.view.subviews.count > 0) ? viewController.navigationController.view.subviews[0] : nil;
+		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
+			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
+			[viewController.navigationController.view insertSubview:backgroundImageView atIndex:0];
+		}
+		
+		backgroundImageView.layer.masksToBounds = YES;
+		backgroundImageView.image = self.rootBackgroundImage;
+		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
 }
 
