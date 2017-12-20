@@ -3,6 +3,8 @@
 #import "RNNElementView.h"
 
 @interface RNNAnimator : NSObject <UIViewControllerAnimatedTransitioning>
+
+-(instancetype)initWithAnimationsDictionary:(NSDictionary *)animationsDic;
 -(void)setupTransition:(NSDictionary*)data;
 
 @end

@@ -18,20 +18,19 @@
 			withContainerId:(NSString*)containerId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter
-	   customTransitionDict:(NSDictionary *)customTransitionDict {
+				   animator:(RNNAnimator *)animator {
 	self = [super init];
 	self.containerId = containerId;
 	self.containerName = name;
 	self.navigationOptions = options;
 	self.eventEmitter = eventEmitter;
-	self.customAnimationsDict = customTransitionDict;
+	self.animator = animator;
 	self.view = [creator createRootView:self.containerName rootViewId:self.containerId];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(onJsReload)
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
-	[self setupCustomTransitionAnimations];
 	self.navigationController.modalPresentationStyle = UIModalPresentationCustom;
 	self.navigationController.delegate = self;
 	self.navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self];
@@ -48,19 +47,8 @@
 	[super viewDidLoad];
 }
 
--(void)setupCustomTransitionAnimations {
-	if (self.isAnimated) {
-		if (!self.customAnimationsDict[@"animations"]) {
-			[[NSException exceptionWithName:NSInvalidArgumentException reason:@"unsupported transitionAnimation" userInfo:nil] raise];
-		}
-		
-		self.animator = [[RNNAnimator alloc] init];
-		[self.animator setupTransition:self.customAnimationsDict];
-	}
-}
-
 -(BOOL)isAnimated {
-	return self.customAnimationsDict;
+	return self.animator;
 }
 
 - (BOOL)prefersStatusBarHidden {

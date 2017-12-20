@@ -71,7 +71,7 @@
 															withContainerId:@"containerId"
 															rootViewCreator:[[RNNTestRootViewCreator alloc] init]
 															   eventEmitter:nil
-													   customTransitionDict:nil];
+																   animator:nil];
 	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:vc];
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);

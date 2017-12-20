@@ -21,6 +21,17 @@
 
 @implementation RNNAnimator
 
+- (instancetype)initWithAnimationsDictionary:(NSDictionary *)animationsDic {
+	self = [super init];
+	if (animationsDic) {
+		[self setupTransition:animationsDic];
+	} else {
+		return nil;
+	}
+	
+	return self;
+}
+
 -(void)setupTransition:(NSDictionary*)data{
 	if ([data objectForKey:@"animations"]) {
 		self.animations= [data objectForKey:@"animations"];

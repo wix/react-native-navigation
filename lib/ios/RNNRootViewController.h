@@ -11,7 +11,6 @@
 @property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
 @property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
-@property (nonatomic, strong) NSDictionary *customAnimationsDict;
 @property (nonatomic, strong) NSString* containerId;
 
 -(instancetype)initWithName:(NSString*)name
@@ -19,7 +18,7 @@
 			withContainerId:(NSString*)containerId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter
-		   customTransitionDict:(NSDictionary*)customTransitionDict;
+		   animator:(RNNAnimator*)animator;
 
 
 -(void)applyNavigationButtons;
