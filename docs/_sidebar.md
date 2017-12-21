@@ -10,7 +10,7 @@
  - [TopBar](/docs/TopBar)
  - [BottomTabs](/docs/BottomTabs)
 - Options
- - [BottomTabs](/docs/options/NavigatorOptions)
+ - [NavigatorOptions](/docs/options/NavigatorOptions)
  - [BottomTabs](/docs/options/BottomTabs)
  - [Button](/docs/options/Button)
- - [BottomTabs](/docs/options/TopBar)
+ - [TopBar](/docs/options/TopBar)
