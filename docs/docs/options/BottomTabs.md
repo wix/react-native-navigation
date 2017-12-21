@@ -1,6 +1,6 @@
-<a name="TabBar"></a>
+<a name="BottomTabs"></a>
 
-## TabBar
+## BottomTabs
 **Properties**
 
 | Name | Type |
