@@ -2,7 +2,7 @@ const jsdoc2md = require('jsdoc-to-markdown');
 const fs = require('fs');
 const path = require('path');
 
-const inputFiles = ['./lib/src/params/NavigationOptions.js', './lib/src/Navigation.js'];
+const paramsDir = './lib/src/params/';
 const outputDir = './docs/docs/';
 const partial = ['./docs/templates/scope.hbs', './docs/templates/docs.hbs'];
 
@@ -35,4 +35,11 @@ function createDocFileForClass(className, templateData) {
   fs.writeFileSync(path.resolve(outputDir, `${className}.md`), output);
 }
 
-inputFiles.forEach((inputFile) => generateMarkdownForFile(inputFile));
+function inputFiles() {
+  return [
+    './lib/src/Navigation.js',
+    ...fs.readdirSync(paramsDir).map((file) => paramsDir + file)
+  ];
+}
+
+inputFiles().forEach((inputFile) => generateMarkdownForFile(inputFile));
