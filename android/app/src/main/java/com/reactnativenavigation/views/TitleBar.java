@@ -85,6 +85,7 @@ public class TitleBar extends Toolbar {
         colorOverflowButton(params);
         setBackground(params);
         centerTitle(params);
+        setTopPadding(params);
     }
 
     public void setVisibility(boolean titleBarHidden) {
@@ -132,6 +133,10 @@ public class TitleBar extends Toolbar {
                 }
             }
         });
+    }
+
+    private void setTopPadding(final StyleParams params) {
+        setPadding(0, params.titleBarTopPadding, 0,0);
     }
 
     private void colorOverflowButton(StyleParams params) {
