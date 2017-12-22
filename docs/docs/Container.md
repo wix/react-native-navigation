@@ -9,5 +9,3 @@
 | passProps | <code>Object</code> | props |
 
 
-* * *
-

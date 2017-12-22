@@ -9,5 +9,3 @@
 | right | <code>Container</code> | 
 
 
-* * *
-

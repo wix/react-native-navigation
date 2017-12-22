@@ -11,5 +11,3 @@
 | animateHide | <code>boolean</code> | 
 
 
-* * *
-

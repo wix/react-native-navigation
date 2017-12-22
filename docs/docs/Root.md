@@ -10,5 +10,3 @@
 | bottomTabs | <code>BottomTabs</code> | 
 
 
-* * *
-

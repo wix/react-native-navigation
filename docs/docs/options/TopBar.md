@@ -15,5 +15,3 @@
 | transparent | <code>boolean</code> | 
 
 
-* * *
-

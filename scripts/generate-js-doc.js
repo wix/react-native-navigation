@@ -8,10 +8,10 @@ const OUTPUT_DIR = './docs/docs/';
 const OPTION_PARTIALS = ['./docs/templates/header.hbs', './docs/templates/sig-name.hbs'];
 const PARTIALS = ['./docs/templates/scope.hbs', './docs/templates/docs.hbs'];
 
-const generateMarkdownForFile = ({ file, outputDir, partial }) => {
+const generateMarkdownForFile = ({ file, outputDir, partial, separator }) => {
   const templateData = jsdoc2md.getTemplateDataSync({ files: file });
   const classNames = getClassesInFile(templateData);
-  classNames.forEach((className) => createDocFileForClass({ className, templateData, outputDir, partial }));
+  classNames.forEach((className) => createDocFileForClass({ className, templateData, outputDir, partial, separator }));
 };
 
 function getClassesInFile(templateData) {
@@ -24,12 +24,12 @@ function getClassesInFile(templateData) {
   return classNames;
 }
 
-function createDocFileForClass({ className, templateData, outputDir, partial = [] }) {
+function createDocFileForClass({ className, templateData, outputDir, partial = [], separator = true }) {
   const template = `{{#class name="${className}"}}{{>docs}}{{/class}}`;
   const options = {
     data: templateData,
     template,
-    separators: true,
+    separators: separator,
     partial: [...PARTIALS, ...partial]
   };
   console.log(`rendering ${className}`);
@@ -44,7 +44,8 @@ function inputFiles() {
       return {
         file: OPTIONS_DIR + file,
         outputDir: OUTPUT_DIR + 'options/',
-        partial: OPTION_PARTIALS
+        partial: OPTION_PARTIALS,
+        separator: false
       };
     }),
     ...fs.readdirSync(PARAMS_DIR)

@@ -14,5 +14,3 @@
 | disabled | <code>boolean</code> | 
 
 
-* * *
-

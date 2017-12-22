@@ -11,5 +11,3 @@
 | leftButtons | <code>Button</code> | 
 
 
-* * *
-
