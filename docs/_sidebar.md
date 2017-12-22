@@ -7,10 +7,10 @@
 - Params
  - [Root](/docs/Root)
  - [Container](/docs/Container)
- - [TopBar](/docs/TopBar)
+ - [SideMenu](/docs/SideMenu)
  - [BottomTabs](/docs/BottomTabs)
 - Options
  - [NavigationOptions](/docs/options/NavigationOptions)
- - [BottomTabs](/docs/options/BottomTabs)
- - [Button](/docs/options/Button)
  - [TopBar](/docs/options/TopBar)
+ - [Button](/docs/options/Button)
+ - [BottomTabs](/docs/options/BottomTabs)

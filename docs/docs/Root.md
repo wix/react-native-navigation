@@ -1,6 +1,5 @@
-<a name="Root"></a>
+<h1>Root</h1>
 
-## Root
 **Properties**
 
 | Name | Type |

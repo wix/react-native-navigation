@@ -1,6 +1,5 @@
-<a name="BottomTabs"></a>
+<h1>BottomTabs</h1>
 
-## BottomTabs
 **Properties**
 
 | Name | Type |

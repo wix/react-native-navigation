@@ -1,6 +1,5 @@
-<a name="SideMenu"></a>
+<h1>SideMenu</h1>
 
-## SideMenu
 **Properties**
 
 | Name | Type |
