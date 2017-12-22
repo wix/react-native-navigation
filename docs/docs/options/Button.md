@@ -1,6 +1,5 @@
-<a name="Button"></a>
+<h1>Button</h1>
 
-## Button
 **Properties**
 
 | Name | Type |

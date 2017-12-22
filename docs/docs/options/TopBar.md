@@ -1,6 +1,5 @@
-<a name="TopBar"></a>
+<h1>TopBar</h1>
 
-## TopBar
 **Properties**
 
 | Name | Type |

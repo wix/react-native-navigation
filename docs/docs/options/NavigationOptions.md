@@ -1,6 +1,5 @@
-<a name="NavigationOptions"></a>
+<h1>NavigationOptions</h1>
 
-## NavigationOptions
 **Properties**
 
 | Name | Type |
