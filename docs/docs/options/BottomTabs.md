@@ -10,4 +10,3 @@
 | hidden | <code>boolean</code> | 
 | animateHide | <code>boolean</code> | 
 
-

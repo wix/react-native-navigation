@@ -10,4 +10,3 @@
 | rightButtons | <code>Button</code> | 
 | leftButtons | <code>Button</code> | 
 
-

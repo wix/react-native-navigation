@@ -8,4 +8,3 @@
 | sideMenu | <code>SideMenu</code> | 
 | bottomTabs | <code>BottomTabs</code> | 
 
-

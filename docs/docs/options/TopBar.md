@@ -14,4 +14,3 @@
 | hideOnScroll | <code>boolean</code> | 
 | transparent | <code>boolean</code> | 
 
-

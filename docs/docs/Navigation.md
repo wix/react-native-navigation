@@ -17,6 +17,8 @@
     * [.events()](#Navigation+events)
 
 
+* * *
+
 <a name="Navigation+registerContainer"></a>
 
 ### navigation.registerContainer(containerName, getContainerFunc)
@@ -29,6 +31,8 @@ Every screen component in your app must be registered with a unique name. The co
 | getContainerFunc | <code>function</code> | generator function, typically `() => require('./myContainer')` |
 
 
+* * *
+
 <a name="Navigation+setRoot"></a>
 
 ### navigation.setRoot(root)
@@ -40,6 +44,8 @@ Reset the navigation stack to a new screen (the stack root is changed).
 | root | <code>Root</code> | 
 
 
+* * *
+
 <a name="Navigation+setDefaultOptions"></a>
 
 ### navigation.setDefaultOptions(options)
@@ -50,6 +56,8 @@ Set default options to all screens. Useful for declaring a consistent style acro
 | --- | --- |
 | options | <code>NavigationOptions</code> | 
 
+
+* * *
 
 <a name="Navigation+setOptions"></a>
 
@@ -63,6 +71,8 @@ Change a containers navigation options
 | options | <code>NavigationOptions</code> |  |
 
 
+* * *
+
 <a name="Navigation+showModal"></a>
 
 ### navigation.showModal(params)
@@ -73,6 +83,8 @@ Show a screen as a modal.
 | --- | --- |
 | params | <code>Object</code> | 
 
+
+* * *
 
 <a name="Navigation+dismissModal"></a>
 
@@ -85,11 +97,15 @@ Dismiss a modal by containerId. The dismissed modal can be anywhere in the stack
 | containerId | <code>String</code> | The container's id. |
 
 
+* * *
+
 <a name="Navigation+dismissAllModals"></a>
 
 ### navigation.dismissAllModals()
 Dismiss all Modals
 
+
+* * *
 
 <a name="Navigation+push"></a>
 
@@ -103,6 +119,8 @@ Push a new screen into this screen's navigation stack.
 | params | <code>\*</code> |  |
 
 
+* * *
+
 <a name="Navigation+pop"></a>
 
 ### navigation.pop(containerId, params)
@@ -115,6 +133,8 @@ Pop a container from the stack, regardless of it's position.
 | params | <code>\*</code> |  |
 
 
+* * *
+
 <a name="Navigation+popTo"></a>
 
 ### navigation.popTo(containerId)
@@ -125,6 +145,8 @@ Pop the stack to a given container
 | --- | --- | --- |
 | containerId | <code>String</code> | The container's id. |
 
+
+* * *
 
 <a name="Navigation+popToRoot"></a>
 
@@ -137,9 +159,10 @@ Pop the container's stack to root.
 | containerId | <code>\*</code> | 
 
 
+* * *
+
 <a name="Navigation+events"></a>
 
 ### navigation.events()
 Obtain the events registery instance
-
 

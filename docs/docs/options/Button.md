@@ -13,4 +13,3 @@
 | disableIconTint | <code>boolean</code> | 
 | disabled | <code>boolean</code> | 
 
-
