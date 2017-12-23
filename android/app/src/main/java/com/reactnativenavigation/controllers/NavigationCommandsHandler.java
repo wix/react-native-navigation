@@ -32,22 +32,17 @@ public class NavigationCommandsHandler {
         return ActivityParamsParser.parse(intent.getBundleExtra(NavigationCommandsHandler.ACTIVITY_PARAMS_BUNDLE));
     }
 
-    /**
-     * start a new activity with CLEAR_TASK | NEW_TASK
-     *
-     * @param params ActivityParams as bundle
-     */
-
-    public static void startApp(Bundle params) {
+    public static void startApp(Bundle params, Promise promise) {
         Intent intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
         IntentDataHandler.onStartApp(intent);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ACTIVITY_PARAMS_BUNDLE, params);
         intent.putExtra("animationType", params.getString("animationType"));
+        NavigationActivity.setStartAppPromise(promise);
         NavigationApplication.instance.startActivity(intent);
     }
 
-    public static void push(Bundle screenParams) {
+    public static void push(Bundle screenParams, final Promise onPushComplete) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
@@ -57,7 +52,7 @@ public class NavigationCommandsHandler {
         NavigationApplication.instance.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                currentActivity.push(params);
+                currentActivity.push(params, onPushComplete);
             }
         });
     }

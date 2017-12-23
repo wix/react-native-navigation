@@ -53,7 +53,7 @@ this.props.navigator.setStyle({
   navBarBackgroundColor: '#f7f7f7', // change the background color of the nav bar (remembered across pushes)
   navBarCustomView: 'example.CustomTopBar', // registered component name
   navBarComponentAlignment: 'center', // center/fill
-  navBarCustomViewInitialProps: {}, // Serializable JSON passed as props
+  navBarCustomViewInitialProps: {}, // navBar custom component props
   navBarButtonColor: '#007aff', // Change color of nav bar buttons (eg. the back button) (remembered across pushes)
 
   navBarHidden: false, // make the nav bar hidden
@@ -101,11 +101,13 @@ this.props.navigator.setStyle({
   navBarButtonFontFamily: 'sans-serif-thin', // Change the font family of textual buttons
   topBarElevationShadowEnabled: false, // default: true. Disables TopBar elevation shadow on Lolipop and above
   statusBarColor: '#000000', // change the color of the status bar.
+  drawUnderStatusBar: false, // default: false, will draw the screen underneath the statusbar. Useful togheter with statusBarColor: transparent
   collapsingToolBarImage: "http://lorempixel.com/400/200/", // Collapsing Toolbar image.
   collapsingToolBarImage: require('../../img/topbar.jpg'), // Collapsing Toolbar image. Either use a url or require a local image.
   collapsingToolBarCollapsedColor: '#0f2362', // Collapsing Toolbar scrim color.
   navBarTextFontBold: false, // Optional. Set the title to bold.
   navBarHeight: 70, // Optional, set the navBar height in pixels.
+  navBarTopPadding: 24, // Optional, set navBar top padding in pixels. Useful when StatusBar.translucent=true on Android Lollipop and above.
   topTabsHeight: 70, // Optional, set topTabs height in pixels.
   topBarBorderColor: 'red', Optional, set a flat border under the TopBar.
   topBarBorderWidth: 5.5, // Optional, set the width of the border.
@@ -116,7 +118,7 @@ this.props.navigator.setStyle({
 If you set any styles related to the Status Bar, make sure that in Xcode > project > Info.plist, the property `View controller-based status bar appearance` is set to `YES`.
 
 ## Custom fonts
-If you'd like to use a custom font, you'll first have to your project.
+If you'd like to use a custom font, you'll first have to edit your project.
 
 * Android - add the `.ttf` or `.otf` files to `src/main/assets/fonts/`
 

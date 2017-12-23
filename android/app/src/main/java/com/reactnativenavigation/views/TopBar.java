@@ -213,6 +213,7 @@ public class TopBar extends AppBarLayout {
         topTabs.setTopTabsTextColor(style);
         topTabs.setSelectedTabIndicatorStyle(style);
         topTabs.setScrollable(style);
+        topTabs.setTopTabsTextFontFamily(style);
     }
 
     public void showContextualMenu(final ContextualMenuParams params, StyleParams styleParams, Callback onButtonClicked) {
@@ -261,7 +262,16 @@ public class TopBar extends AppBarLayout {
     }
 
     public void setVisible(boolean visible, boolean animate) {
-        titleBar.setVisibility(!visible);
-        visibilityAnimator.setVisible(visible, animate);
+        if (visible) {
+            titleBar.setVisibility(false);
+            visibilityAnimator.setVisible(true, animate, null);
+        } else {
+            visibilityAnimator.setVisible(false, animate, new Runnable() {
+                @Override
+                public void run() {
+                    titleBar.setVisibility(true);
+                }
+            });
+        }
     }
 }

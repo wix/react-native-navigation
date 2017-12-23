@@ -4,6 +4,7 @@ import {PixelRatio} from 'react-native';
 class TopTabs extends React.Component {
   static navigatorStyle = {
     topTabTextColor: '#ffffff',
+    topTabTextFontFamily: 'BioRhyme-Bold',
     selectedTopTabTextColor: '#ff505c',
 
     // Icons
