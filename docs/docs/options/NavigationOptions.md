@@ -4,9 +4,9 @@
 
 | Name | Type |
 | --- | --- |
-| topBar | <code>TopBar</code> | 
-| bottomTabs | <code>BottomTabs</code> | 
-| orientation | <code>String</code> | 
-| rightButtons | <code>Button</code> | 
-| leftButtons | <code>Button</code> | 
+| topBar | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/options/TopBar">TopBar</a> | 
+| bottomTabs | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/options/BottomTabs">BottomTabs</a> | 
+| orientation | <code>string</code> | 
+| rightButtons | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/options/Button">Button[]</a> | 
+| leftButtons | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/options/Button">Button[]</a> | 
 

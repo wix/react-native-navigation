@@ -4,7 +4,7 @@
 
 | Name | Type |
 | --- | --- |
-| id | <code>String</code> | 
+| id | <code>string</code> | 
 | testID | <code>string</code> | 
 | title | <code>string</code> | 
 | buttonColor | <code>string</code> | 

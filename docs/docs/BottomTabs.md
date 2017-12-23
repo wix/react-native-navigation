@@ -4,5 +4,5 @@
 
 | Name | Type |
 | --- | --- |
-| tabs | <code>Array.&lt;Container&gt;</code> | 
+| tabs | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Container">Container[]</a> | 
 

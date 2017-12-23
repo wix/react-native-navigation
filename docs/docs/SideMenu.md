@@ -4,6 +4,6 @@
 
 | Name | Type |
 | --- | --- |
-| left | <code>Container</code> | 
-| right | <code>Container</code> | 
+| left | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Container">Container</a> | 
+| right | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Container">Container</a> | 
 

@@ -7,7 +7,14 @@ const OPTIONS_DIR = BASE_DIR + 'options/';
 const CONTAINERS_DIR = BASE_DIR + 'containers/';
 const OUTPUT_DIR = './docs/docs/';
 const PARAMS_PARTIALS = ['./docs/templates/header.hbs', './docs/templates/sig-name.hbs'];
-const PARTIALS = ['./docs/templates/scope.hbs', './docs/templates/docs.hbs'];
+const PARTIALS = [
+  './docs/templates/scope.hbs',
+  './docs/templates/docs.hbs',
+  './docs/templates/param-table-name.hbs',
+  '/docs/templates/linked-type-list.hbs',
+  './docs/templates/link.hbs',
+  './docs/templates/params-table.hbs'
+];
 
 const generateMarkdownForFile = ({ file, outputDir, partial, separator }) => {
   const templateData = jsdoc2md.getTemplateDataSync({ files: file });
@@ -32,6 +39,7 @@ function createDocFileForClass({ className, templateData, outputDir, partial = [
     template,
     separators: separator,
     'heading-depth': 1,
+    helper: ['./docs/linkify.js', './docs/stringify.js'],
     partial: [...PARTIALS, ...partial]
   };
   console.log(`rendering ${className}`);

@@ -41,7 +41,7 @@ Reset the navigation stack to a new screen (the stack root is changed).
 
 | Param | Type |
 | --- | --- |
-| root | <code>Root</code> | 
+| root | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Root">Root</a> | 
 
 
 * * *
@@ -54,7 +54,7 @@ Set default options to all screens. Useful for declaring a consistent style acro
 
 | Param | Type |
 | --- | --- |
-| options | <code>NavigationOptions</code> | 
+| options | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/options/NavigationOptions">NavigationOptions</a> | 
 
 
 * * *
@@ -68,7 +68,7 @@ Change a containers navigation options
 | Param | Type | Description |
 | --- | --- | --- |
 | containerId | <code>string</code> | The container's id. |
-| options | <code>NavigationOptions</code> |  |
+| options | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/options/NavigationOptions">NavigationOptions</a> |  |
 
 
 * * *
@@ -81,7 +81,7 @@ Show a screen as a modal.
 
 | Param | Type |
 | --- | --- |
-| params | <code>Object</code> | 
+| params | <code>object</code> | 
 
 
 * * *
@@ -94,7 +94,7 @@ Dismiss a modal by containerId. The dismissed modal can be anywhere in the stack
 
 | Param | Type | Description |
 | --- | --- | --- |
-| containerId | <code>String</code> | The container's id. |
+| containerId | <code>string</code> | The container's id. |
 
 
 * * *
@@ -115,8 +115,8 @@ Push a new screen into this screen's navigation stack.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| containerId | <code>String</code> | The container's id. |
-| params | <code>\*</code> |  |
+| containerId | <code>string</code> | The container's id. |
+| params | <code>*</code> |  |
 
 
 * * *
@@ -129,8 +129,8 @@ Pop a container from the stack, regardless of it's position.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| containerId | <code>String</code> | The container's id. |
-| params | <code>\*</code> |  |
+| containerId | <code>string</code> | The container's id. |
+| params | <code>*</code> |  |
 
 
 * * *
@@ -143,7 +143,7 @@ Pop the stack to a given container
 
 | Param | Type | Description |
 | --- | --- | --- |
-| containerId | <code>String</code> | The container's id. |
+| containerId | <code>string</code> | The container's id. |
 
 
 * * *
@@ -156,7 +156,7 @@ Pop the container's stack to root.
 
 | Param | Type |
 | --- | --- |
-| containerId | <code>\*</code> | 
+| containerId | <code>*</code> | 
 
 
 * * *

@@ -4,7 +4,7 @@
 
 | Name | Type |
 | --- | --- |
-| container | <code>Container</code> | 
-| sideMenu | <code>SideMenu</code> | 
-| bottomTabs | <code>BottomTabs</code> | 
+| container | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Container">Container</a> | 
+| sideMenu | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/SideMenu">SideMenu</a> | 
+| bottomTabs | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/BottomTabs">BottomTabs</a> | 
 
