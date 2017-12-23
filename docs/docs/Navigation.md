@@ -1,6 +1,6 @@
 <a name="Navigation"></a>
 
-## Navigation
+# Navigation
 
 * [Navigation](#Navigation)
     * [.registerContainer(containerName, getContainerFunc)](#Navigation+registerContainer)
@@ -21,7 +21,7 @@
 
 <a name="Navigation+registerContainer"></a>
 
-### navigation.registerContainer(containerName, getContainerFunc)
+## navigation.registerContainer(containerName, getContainerFunc)
 Every screen component in your app must be registered with a unique name. The component itself is a traditional React component extending React.Component.
 
 
@@ -35,7 +35,7 @@ Every screen component in your app must be registered with a unique name. The co
 
 <a name="Navigation+setRoot"></a>
 
-### navigation.setRoot(root)
+## navigation.setRoot(root)
 Reset the navigation stack to a new screen (the stack root is changed).
 
 
@@ -48,7 +48,7 @@ Reset the navigation stack to a new screen (the stack root is changed).
 
 <a name="Navigation+setDefaultOptions"></a>
 
-### navigation.setDefaultOptions(options)
+## navigation.setDefaultOptions(options)
 Set default options to all screens. Useful for declaring a consistent style across the app.
 
 
@@ -61,7 +61,7 @@ Set default options to all screens. Useful for declaring a consistent style acro
 
 <a name="Navigation+setOptions"></a>
 
-### navigation.setOptions(containerId, options)
+## navigation.setOptions(containerId, options)
 Change a containers navigation options
 
 
@@ -75,7 +75,7 @@ Change a containers navigation options
 
 <a name="Navigation+showModal"></a>
 
-### navigation.showModal(params)
+## navigation.showModal(params)
 Show a screen as a modal.
 
 
@@ -88,7 +88,7 @@ Show a screen as a modal.
 
 <a name="Navigation+dismissModal"></a>
 
-### navigation.dismissModal(containerId)
+## navigation.dismissModal(containerId)
 Dismiss a modal by containerId. The dismissed modal can be anywhere in the stack.
 
 
@@ -101,7 +101,7 @@ Dismiss a modal by containerId. The dismissed modal can be anywhere in the stack
 
 <a name="Navigation+dismissAllModals"></a>
 
-### navigation.dismissAllModals()
+## navigation.dismissAllModals()
 Dismiss all Modals
 
 
@@ -109,7 +109,7 @@ Dismiss all Modals
 
 <a name="Navigation+push"></a>
 
-### navigation.push(containerId, params)
+## navigation.push(containerId, params)
 Push a new screen into this screen's navigation stack.
 
 
@@ -123,7 +123,7 @@ Push a new screen into this screen's navigation stack.
 
 <a name="Navigation+pop"></a>
 
-### navigation.pop(containerId, params)
+## navigation.pop(containerId, params)
 Pop a container from the stack, regardless of it's position.
 
 
@@ -137,7 +137,7 @@ Pop a container from the stack, regardless of it's position.
 
 <a name="Navigation+popTo"></a>
 
-### navigation.popTo(containerId)
+## navigation.popTo(containerId)
 Pop the stack to a given container
 
 
@@ -150,7 +150,7 @@ Pop the stack to a given container
 
 <a name="Navigation+popToRoot"></a>
 
-### navigation.popToRoot(containerId)
+## navigation.popToRoot(containerId)
 Pop the container's stack to root.
 
 
@@ -163,6 +163,6 @@ Pop the container's stack to root.
 
 <a name="Navigation+events"></a>
 
-### navigation.events()
+## navigation.events()
 Obtain the events registery instance
 

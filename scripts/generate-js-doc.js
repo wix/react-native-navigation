@@ -31,6 +31,7 @@ function createDocFileForClass({ className, templateData, outputDir, partial = [
     data: templateData,
     template,
     separators: separator,
+    'heading-depth': 1,
     partial: [...PARTIALS, ...partial]
   };
   console.log(`rendering ${className}`);
