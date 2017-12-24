@@ -55,7 +55,7 @@ this.props.navigator.setStyle({
   navBarComponentAlignment: 'center', // center/fill
   navBarCustomViewInitialProps: {}, // navBar custom component props
   navBarButtonColor: '#007aff', // Change color of nav bar buttons (eg. the back button) (remembered across pushes)
-
+  topBarElevationShadowEnabled: false, // (Android - default: true, iOS - default: false). Disables TopBar elevation shadow on Lolipop and above
   navBarHidden: false, // make the nav bar hidden
   navBarHideOnScroll: false, // make the nav bar hidden only after the user starts to scroll
   navBarTranslucent: false, // make the nav bar semi-translucent, works best with drawUnderNavBar:true
@@ -94,12 +94,16 @@ this.props.navigator.setStyle({
   navBarRightButtonFontSize: 17, // Change font size of right nav bar button
   navBarRightButtonColor: 'blue', // Change color of right nav bar button
   navBarRightButtonFontWeight: '600', // Change font weight of right nav bar button
+
+  topBarShadowColor: 'blue' // Sets shadow of the navbar, Works only when topBarElevationShadowEnabled: true
+  topBarShadowOpacity: 0.5, // Sets shadow opacity on the navbar, Works only when topBarElevationShadowEnabled: true
+  topBarShadowOffset: 12, // Sets shadow offset on the navbar, Works only when topBarElevationShadowEnabled: true
+  topBarShadowRadius: 3 // Sets shadow radius on the navbar, Works only when topBarElevationShadowEnabled: true
   
   // Android only
   navigationBarColor: '#000000', // change the background color of the bottom native navigation bar.
   navBarTitleTextCentered: true, // default: false. centers the title.
   navBarButtonFontFamily: 'sans-serif-thin', // Change the font family of textual buttons
-  topBarElevationShadowEnabled: false, // default: true. Disables TopBar elevation shadow on Lolipop and above
   statusBarColor: '#000000', // change the color of the status bar.
   drawUnderStatusBar: false, // default: false, will draw the screen underneath the statusbar. Useful togheter with statusBarColor: transparent
   collapsingToolBarImage: "http://lorempixel.com/400/200/", // Collapsing Toolbar image.
