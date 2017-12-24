@@ -42,8 +42,8 @@ class TextScreen extends Component {
 
   onButtonPress() {
     Navigation.setOptions(this.props.containerId, {
-      bottomTabs: {
-        tabBadge: `TeSt`
+      bottomTab: {
+        badge: `TeSt`
       }
     });
   }

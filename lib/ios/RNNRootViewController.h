@@ -23,5 +23,6 @@
 
 -(void)applyNavigationButtons;
 -(BOOL)isAnimated;
+-(void)applyTabBarItem;
 
 @end

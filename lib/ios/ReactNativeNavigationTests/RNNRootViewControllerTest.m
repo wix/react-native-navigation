@@ -174,7 +174,7 @@
 
 -(void)testTabBadge {
 	NSString* tabBadgeInput = @"5";
-	self.options.bottomTabs.tabBadge = tabBadgeInput;
+	self.options.tabItem.badge = tabBadgeInput;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
 	UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"A Tab" image:nil tag:1];
