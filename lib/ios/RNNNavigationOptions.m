@@ -27,19 +27,11 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
 	self.topBar = [[RNNTopBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"topBar"]];
 	self.bottomTabs = [[RNNTabBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTabs"]];
-<<<<<<< HEAD
-<<<<<<< HEAD
 	self.sideMenu = [[RNNSideMenuOptions alloc] initWithDict:[navigationOptions objectForKey:@"sideMenu"]];
 	self.backgroundImage = [RCTConvert UIImage:[navigationOptions objectForKey:@"backgroundImage"]];
 	self.rootBackgroundImage = [RCTConvert UIImage:[navigationOptions objectForKey:@"rootBackgroundImage"]];
-
-=======
-	self.tabItem = [[RNNUITabBarItem alloc] initWithDictionary:[navigationOptions objectForKey:@"tabItem"]];
-=======
 	self.tabItem = [[RNNTabItemOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTab"]];
->>>>>>> refactored bottomTab item
-	
->>>>>>> tabBarItem support
+    
 	return self;
 }
 
@@ -49,17 +41,10 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 			[self.topBar mergeWith:[otherOptions objectForKey:key]];
 		} else if ([key isEqualToString:@"bottomTabs"]) {
 			[self.bottomTabs mergeWith:[otherOptions objectForKey:key]];
-<<<<<<< HEAD
-<<<<<<< HEAD
 		} else if ([key isEqualToString:@"sideMenu"]) {
 			[self.sideMenu mergeWith:[otherOptions objectForKey:@"sideMenu"]];
-=======
-		} else if ([key isEqualToString:@"tabItem"]) {
-=======
 		} else if ([key isEqualToString:@"bottomTab"]) {
->>>>>>> refactored bottomTab item
 			[self.tabItem mergeWith:[otherOptions objectForKey:key]];
->>>>>>> tabBarItem support
 		} else {
 			[self setValue:[otherOptions objectForKey:key] forKey:key];
 		}
