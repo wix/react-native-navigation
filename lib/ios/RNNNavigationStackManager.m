@@ -48,7 +48,7 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
 		if (_completionBlock) {
-			_completionBlock(self.toVC.containerId);
+			_completionBlock();
 			_completionBlock = nil;
 		}
 	}];

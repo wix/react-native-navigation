@@ -24,7 +24,8 @@
 	UIViewController *topVC = [self topPresentedVC];
 	[topVC presentViewController:self.toVC animated:YES completion:^{
 		if (_completionBlock) {
-			_completionBlock([_store containerKeyForInstance:self.toVC]);
+			_completionBlock();
+			_completionBlock = nil;
 		}
 	}];
 }
