@@ -26,8 +26,9 @@ public class TopBar extends AppBarLayout {
 
     public TopBar(final Context context, Container container) {
         super(context);
-        titleBar = new Toolbar(context);
         this.container = container;
+        titleBar = new Toolbar(context);
+        topTabs = new TopTabs(getContext());
         addView(titleBar);
     }
 
@@ -56,6 +57,10 @@ public class TopBar extends AppBarLayout {
 			titleTextView.setTypeface(typeface);
 		}
 	}
+
+    public void setTopTabFontFamily(int tabIndex, Typeface fontFamily) {
+        topTabs.setFontFamily(tabIndex, fontFamily);
+    }
 
 	public void setButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
 		setLeftButtons(leftButtons);
@@ -129,7 +134,6 @@ public class TopBar extends AppBarLayout {
     }
 
     private void initTopTabs() {
-        topTabs = new TopTabs(getContext());
         addView(topTabs);
     }
 }

@@ -48,7 +48,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void setDefaultOptions(final ReadableMap options) {
-        final NavigationOptions defaultOptions = NavigationOptions.parse(JSONParser.parse(options));
+        final NavigationOptions defaultOptions = NavigationOptions.parse(activity(), JSONParser.parse(options));
         handle(new Runnable() {
             @Override
             public void run() {
@@ -59,7 +59,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void setOptions(final String onContainerId, final ReadableMap options) {
-		final NavigationOptions navOptions = NavigationOptions.parse(JSONParser.parse(options));
+		final NavigationOptions navOptions = NavigationOptions.parse(activity(), JSONParser.parse(options));
 		handle(new Runnable() {
 			@Override
 			public void run() {

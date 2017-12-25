@@ -74,4 +74,8 @@ public class TopTabController extends ViewController implements NavigationOption
     String getTabTitle() {
         return options.topTabOptions.title;
     }
+
+    public void setTabIndex(int i) {
+        options.topTabOptions.tabIndex = i;
+    }
 }
