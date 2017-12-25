@@ -9,4 +9,5 @@
 | icon | <code>object</code> | 
 | visible | <code>boolean</code> | 
 | badge | <code>string</code> | 
+| testID | <code>string</code> | 
 
