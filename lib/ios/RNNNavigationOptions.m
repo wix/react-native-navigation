@@ -201,6 +201,11 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		if (self.bottomTabs.currentTabIndex) {
 			[viewController.tabBarController setSelectedIndex:[self.bottomTabs.currentTabIndex unsignedIntegerValue]];
 		}
+		
+		if (self.bottomTabs.currentTabId) {
+			[(RNNTabBarController*)viewController.tabBarController setSelectedIndexByContainerID:self.bottomTabs.currentTabId];
+		}
+		
 		if (self.bottomTabs.hidden) {
 			[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:[self.bottomTabs.hidden boolValue] animated:[self.bottomTabs.animateHide boolValue]];
 		}
@@ -217,9 +222,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 			}
 		}
 		
-		if (self.bottomTabs.currentTabID) {
-			[(RNNTabBarController*)viewController.tabBarController setSelectedIndexByContainerID:self.tabBar.currentTabID];
-		}
+		[self.bottomTabs resetOptions];
 	}
 	
 	if (self.statusBarBlur) {
