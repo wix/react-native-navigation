@@ -5,9 +5,9 @@
 | Name | Type |
 | --- | --- |
 | title | <code>string</code> | 
-| backgroundColor | <code>color</code> | 
-| textColor | <code>color</code> | 
-| buttonColor | <code>color</code> | 
+| backgroundColor | <code>string</code> | 
+| textColor | <code>string</code> | 
+| buttonColor | <code>string</code> | 
 | textFontSize | <code>number</code> | 
 | textFontFamily | <code>string</code> | 
 | testID | <code>string</code> | 
