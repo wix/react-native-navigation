@@ -8,9 +8,9 @@
  - [Root](/docs/Root)
  - [Container](/docs/Container)
  - [SideMenu](/docs/SideMenu)
- - [BottomTabs](/docs/BottomTabs)
 - Options
  - [NavigationOptions](/docs/options/NavigationOptions)
  - [TopBar](/docs/options/TopBar)
  - [Button](/docs/options/Button)
  - [BottomTabs](/docs/options/BottomTabs)
+ - [BottomTab](/docs/options/BottomTab)
