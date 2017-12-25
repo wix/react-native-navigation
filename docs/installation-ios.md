@@ -21,3 +21,5 @@
     ```
 
 Its content must be replaced with the content of this [reference](https://github.com/wix/react-native-navigation/blob/master/example/ios/example/AppDelegate.m)
+
+Replace `@"index.ios"` with `@"index"` if you are using `index.js` as your entry point instead of `index.ios.js` and `index.android.js` (it is the default since React Native 0.49).
