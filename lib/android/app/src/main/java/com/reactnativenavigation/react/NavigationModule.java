@@ -15,6 +15,7 @@ import com.reactnativenavigation.parse.LayoutNode;
 import com.reactnativenavigation.parse.LayoutNodeParser;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.OverlayOptions;
+import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
@@ -48,7 +49,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void setDefaultOptions(final ReadableMap options) {
-        final NavigationOptions defaultOptions = NavigationOptions.parse(JSONParser.parse(options));
+        final NavigationOptions defaultOptions = NavigationOptions.parse(new TypefaceLoader(activity()), JSONParser.parse(options));
         handle(new Runnable() {
             @Override
             public void run() {
@@ -59,7 +60,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void setOptions(final String onContainerId, final ReadableMap options) {
-		final NavigationOptions navOptions = NavigationOptions.parse(JSONParser.parse(options));
+		final NavigationOptions navOptions = NavigationOptions.parse(new TypefaceLoader(activity()), JSONParser.parse(options));
 		handle(new Runnable() {
 			@Override
 			public void run() {

@@ -6,6 +6,7 @@ import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
+import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.views.TopBar;
 
@@ -23,10 +24,11 @@ public class OptionsPresenter {
         animator = new StackAnimator(topBar.getContext());
     }
 
-	public void applyOptions(NavigationOptions options) {
+    public void applyOptions(NavigationOptions options) {
         applyTopBarOptions(options.topBarOptions);
         applyButtons(options.leftButtons, options.rightButtons);
-	}
+        applyTopTabOptions(options.topTabOptions);
+    }
 
     private void applyTopBarOptions(TopBarOptions options) {
         topBar.setTitle(options.title);
@@ -34,8 +36,8 @@ public class OptionsPresenter {
         topBar.setTitleTextColor(options.textColor);
         topBar.setTitleFontSize(options.textFontSize);
 
-        TypefaceLoader typefaceLoader = new TypefaceLoader();
-        topBar.setTitleTypeface(typefaceLoader.getTypeFace(topBar.getContext(), options.textFontFamily));
+        TypefaceLoader typefaceLoader = new TypefaceLoader(topBar.getContext());
+        topBar.setTitleTypeface(typefaceLoader.getTypeFace(options.textFontFamily));
         if (options.hidden == NavigationOptions.BooleanOptions.True) {
             hideTopBar(options.animateHide);
         }
@@ -68,5 +70,11 @@ public class OptionsPresenter {
 
     private void applyButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
         topBar.setButtons(leftButtons, rightButtons);
+    }
+
+    private void applyTopTabOptions(TopTabOptions topTabOptions) {
+        if (topTabOptions.fontFamily != null) {
+            topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
+        }
     }
 }

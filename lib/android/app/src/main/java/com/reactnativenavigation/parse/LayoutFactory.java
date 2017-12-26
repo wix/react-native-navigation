@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.react.ReactContainerViewCreator;
+import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.viewcontrollers.SideMenuController;
@@ -22,11 +23,13 @@ public class LayoutFactory {
 	private final Activity activity;
 	private final ReactInstanceManager reactInstanceManager;
     private NavigationOptions defaultOptions;
+    private final TypefaceLoader typefaceManager;
 
     public LayoutFactory(Activity activity, final ReactInstanceManager reactInstanceManager, NavigationOptions defaultOptions) {
 		this.activity = activity;
 		this.reactInstanceManager = reactInstanceManager;
         this.defaultOptions = defaultOptions;
+        typefaceManager = new TypefaceLoader(activity);
     }
 
 	public ViewController create(final LayoutNode node) {
@@ -92,7 +95,7 @@ public class LayoutFactory {
 	private ViewController createContainer(LayoutNode node) {
 		String id = node.id;
 		String name = node.data.optString("name");
-		NavigationOptions navigationOptions = NavigationOptions.parse(node.data.optJSONObject("navigationOptions"), defaultOptions);
+		NavigationOptions navigationOptions = NavigationOptions.parse(typefaceManager, node.data.optJSONObject("navigationOptions"), defaultOptions);
 		return new ContainerViewController(activity,
                 id,
                 name,
@@ -128,8 +131,10 @@ public class LayoutFactory {
 
     private ViewController createTopTabs(LayoutNode node) {
         final List<TopTabController> tabs = new ArrayList<>();
-        for (LayoutNode child : node.children) {
-            tabs.add((TopTabController) create(child));
+        for (int i = 0; i < node.children.size(); i++) {
+            TopTabController tabController = (TopTabController) create(node.children.get(i));
+            tabController.setTabIndex(i);
+            tabs.add(tabController);
         }
         return new TopTabsController(activity, node.id, tabs);
     }
@@ -137,7 +142,7 @@ public class LayoutFactory {
     private ViewController createTopTab(LayoutNode node) {
         String id = node.id;
         String name = node.data.optString("name");
-        NavigationOptions navigationOptions = NavigationOptions.parse(node.data.optJSONObject("navigationOptions"), defaultOptions);
+        NavigationOptions navigationOptions = NavigationOptions.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);
         return new TopTabController(activity,
                 id,
                 name,

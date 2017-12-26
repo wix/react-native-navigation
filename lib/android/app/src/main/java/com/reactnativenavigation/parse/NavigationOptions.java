@@ -2,6 +2,8 @@ package com.reactnativenavigation.parse;
 
 import android.support.annotation.NonNull;
 
+import com.reactnativenavigation.utils.TypefaceLoader;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -22,18 +24,18 @@ public class NavigationOptions implements DEFAULT_VALUES {
 	}
 
     @NonNull
-    public static NavigationOptions parse(JSONObject json) {
-        return parse(json, new NavigationOptions());
+    public static NavigationOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
+        return parse(typefaceManager, json, new NavigationOptions());
     }
 
 	@NonNull
-	public static NavigationOptions parse(JSONObject json, @NonNull NavigationOptions defaultOptions) {
+	public static NavigationOptions parse(TypefaceLoader typefaceManager, JSONObject json, @NonNull NavigationOptions defaultOptions) {
 		NavigationOptions result = new NavigationOptions();
 		if (json == null) return result;
 
 		result.topBarOptions = TopBarOptions.parse(json.optJSONObject("topBar"));
 		result.topTabsOptions = TopTabsOptions.parse(json.optJSONObject("topTabs"));
-        result.topTabOptions = TopTabOptions.parse(json.optJSONObject("topTab"));
+        result.topTabOptions = TopTabOptions.parse(typefaceManager, json.optJSONObject("topTab"));
 		result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
 		result.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
         result.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"));
@@ -42,7 +44,7 @@ public class NavigationOptions implements DEFAULT_VALUES {
 	}
 
     @NonNull public TopBarOptions topBarOptions = new TopBarOptions();
-    @NonNull private TopTabsOptions topTabsOptions = new TopTabsOptions();
+    @NonNull public TopTabsOptions topTabsOptions = new TopTabsOptions();
     @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
     @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
     public ArrayList<Button> leftButtons;
