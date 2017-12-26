@@ -72,6 +72,17 @@
 	}
 	```
 
+	Also, add the following
+
+   ```java
+   @Override
+   public String getJSMainModuleName() {
+   	return "index";
+   }
+   ```
+
+   if you are using `index.js` as your entry point instead of `index.ios.js` and `index.android.js` (it is the default since React Native 0.49).
+
 	Make sure that `isDebug` and `createAdditionalReactPackages` methods are implemented.
 
 6. Update `AndroidManifest.xml` and set **android:name** value to `.MainApplication`
@@ -81,4 +92,3 @@
 		...
 	/>
 	```
-
