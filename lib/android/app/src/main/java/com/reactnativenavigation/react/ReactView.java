@@ -26,9 +26,6 @@ public class ReactView extends ReactRootView implements ContainerViewController.
     private final String containerName;
     private boolean isAttachedToReactInstance = false;
 
-    private ScrollView scrollView;
-    private ViewTreeObserver.OnScrollChangedListener scrollChangedListener;
-
     public ReactView(final Context context, ReactInstanceManager reactInstanceManager, String containerId, String containerName) {
         super(context);
         this.reactInstanceManager = reactInstanceManager;
@@ -70,25 +67,5 @@ public class ReactView extends ReactRootView implements ContainerViewController.
     @Override
     public void sendContainerStop() {
         new NavigationEvent(reactInstanceManager.getCurrentReactContext()).containerDidDisappear(containerId);
-    }
-
-    @Override
-    public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        super.addView(child, index, params);
-        if (child instanceof ScrollView) {
-            scrollView = (ScrollView) child;
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    public void setScrollListener(ScrollListener scrollListener) {
-        if (scrollView != null) {
-            if (scrollListener != null) {
-                scrollChangedListener = () -> scrollListener.onScroll(scrollView.getScrollY());
-                scrollView.getViewTreeObserver().addOnScrollChangedListener(scrollChangedListener);
-            } else {
-                scrollView.getViewTreeObserver().removeOnScrollChangedListener(scrollChangedListener);
-            }
-        }
     }
 }
