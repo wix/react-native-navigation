@@ -7,7 +7,6 @@ import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
-import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.ArrayList;
@@ -36,8 +35,7 @@ public class OptionsPresenter {
         topBar.setTitleTextColor(options.textColor);
         topBar.setTitleFontSize(options.textFontSize);
 
-        TypefaceLoader typefaceLoader = new TypefaceLoader(topBar.getContext());
-        topBar.setTitleTypeface(typefaceLoader.getTypeFace(options.textFontFamily));
+        topBar.setTitleTypeface(options.textFontFamily);
         if (options.hidden == NavigationOptions.BooleanOptions.True) {
             hideTopBar(options.animateHide);
         }

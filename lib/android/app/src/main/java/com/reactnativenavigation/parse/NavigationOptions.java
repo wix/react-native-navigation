@@ -33,7 +33,7 @@ public class NavigationOptions implements DEFAULT_VALUES {
 		NavigationOptions result = new NavigationOptions();
 		if (json == null) return result;
 
-		result.topBarOptions = TopBarOptions.parse(json.optJSONObject("topBar"));
+		result.topBarOptions = TopBarOptions.parse(typefaceManager, json.optJSONObject("topBar"));
 		result.topTabsOptions = TopTabsOptions.parse(json.optJSONObject("topTabs"));
         result.topTabOptions = TopTabOptions.parse(typefaceManager, json.optJSONObject("topTab"));
 		result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
