@@ -12,6 +12,7 @@
 		26714EAC1EB0E9D3009F4D52 /* RCCCustomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26714EAB1EB0E9D3009F4D52 /* RCCCustomTitleView.m */; };
 		26AFF3F51D7EEE2400CBA211 /* RCCTitleViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 26AFF3F41D7EEE2400CBA211 /* RCCTitleViewHelper.m */; };
 		2DCD499A1F33AAC30035123A /* RCCCustomBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD49981F33AAC30035123A /* RCCCustomBarButtonItem.m */; };
+		2DDE72091FB27E730017290C /* RCTConvert+UIBarButtonSystemItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDE72071FB27E720017290C /* RCTConvert+UIBarButtonSystemItem.m */; };
 		CC84A19E1C1A0C4E00B3A6A2 /* RCCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1941C1A0C4E00B3A6A2 /* RCCManager.m */; };
 		CC84A19F1C1A0C4E00B3A6A2 /* RCCManagerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1961C1A0C4E00B3A6A2 /* RCCManagerModule.m */; };
 		CC84A1A01C1A0C4E00B3A6A2 /* RCCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1981C1A0C4E00B3A6A2 /* RCCNavigationController.m */; };
@@ -61,6 +62,8 @@
 		26AFF3F41D7EEE2400CBA211 /* RCCTitleViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCCTitleViewHelper.m; path = Helpers/RCCTitleViewHelper.m; sourceTree = "<group>"; };
 		2DCD49981F33AAC30035123A /* RCCCustomBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCCustomBarButtonItem.m; sourceTree = "<group>"; };
 		2DCD49991F33AAC30035123A /* RCCCustomBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCCustomBarButtonItem.h; sourceTree = "<group>"; };
+		2DDE72071FB27E720017290C /* RCTConvert+UIBarButtonSystemItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+UIBarButtonSystemItem.m"; sourceTree = "<group>"; };
+		2DDE72081FB27E730017290C /* RCTConvert+UIBarButtonSystemItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+UIBarButtonSystemItem.h"; sourceTree = "<group>"; };
 		CC84A1931C1A0C4E00B3A6A2 /* RCCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCManager.h; sourceTree = "<group>"; };
 		CC84A1941C1A0C4E00B3A6A2 /* RCCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = RCCManager.m; sourceTree = "<group>"; tabWidth = 2; };
 		CC84A1951C1A0C4E00B3A6A2 /* RCCManagerModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCManagerModule.h; sourceTree = "<group>"; };
@@ -241,6 +244,8 @@
 		D8D779951D04B7180050CFEA /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				2DDE72081FB27E730017290C /* RCTConvert+UIBarButtonSystemItem.h */,
+				2DDE72071FB27E720017290C /* RCTConvert+UIBarButtonSystemItem.m */,
 				2611087E1E6C495400BF5D98 /* UIViewController+Rotation.h */,
 				2611087F1E6C495400BF5D98 /* UIViewController+Rotation.m */,
 				D8D779961D04B7180050CFEA /* RCTHelpers.h */,
@@ -335,6 +340,7 @@
 				D85082E41CBCF54200FDB961 /* SidebarAnimation.m in Sources */,
 				D8E11C571CBD1F670018B644 /* RCCDrawerController.m in Sources */,
 				260804DB1CE0D9D20094DBA1 /* RCCToolBar.m in Sources */,
+				2DDE72091FB27E730017290C /* RCTConvert+UIBarButtonSystemItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

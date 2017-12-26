@@ -131,12 +131,12 @@ function dismissInAppNotification(params = {}) {
   return platformSpecific.dismissInAppNotification(params);
 }
 
-function startTabBasedApp(params) {
-  return platformSpecific.startTabBasedApp(params);
+async function startTabBasedApp(params) {
+  return await platformSpecific.startTabBasedApp(params);
 }
 
-function startSingleScreenApp(params) {
-  return platformSpecific.startSingleScreenApp(params);
+async function startSingleScreenApp(params) {
+  return await platformSpecific.startSingleScreenApp(params);
 }
 
 function setEventHandler(navigatorEventID, eventHandler) {
