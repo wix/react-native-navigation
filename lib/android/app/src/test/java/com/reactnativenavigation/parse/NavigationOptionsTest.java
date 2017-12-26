@@ -1,14 +1,16 @@
 package com.reactnativenavigation.parse;
 
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
-import android.test.mock.MockContext;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.True;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -20,13 +22,20 @@ public class NavigationOptionsTest extends BaseTest {
     private static final int TOP_BAR_TEXT_COLOR = 0xff123456;
     private static final int TOP_BAR_FONT_SIZE = 18;
     private static final String TOP_BAR_FONT_FAMILY = "HelveticaNeue-CondensedBold";
+    private static final Typeface TOP_BAR_TYPEFACE = Typeface.create("HelveticaNeue-CondensedBold", Typeface.BOLD);
     private static final NavigationOptions.BooleanOptions TOP_BAR_HIDDEN = True;
     private static final NavigationOptions.BooleanOptions BOTTOM_TABS_ANIMATE_HIDE = True;
     private static final NavigationOptions.BooleanOptions BOTTOM_TABS_HIDDEN = True;
     private static final int BOTTOM_TABS_BADGE = 3;
     private static final String BOTTOM_TABS_CURRENT_TAB_ID = "ContainerId";
     private static final int BOTTOM_TABS_CURRENT_TAB_INDEX = 1;
-    private TypefaceLoader mockLoader = new TypefaceLoader(new MockContext());
+    private TypefaceLoader mockLoader;
+
+    @Override
+    public void beforeEach() {
+        mockLoader = Mockito.mock(TypefaceLoaderMock.class);
+        Mockito.doReturn(TOP_BAR_TYPEFACE).when(mockLoader).getTypeFace(TOP_BAR_FONT_FAMILY);
+    }
 
     @Test
 	public void parsesNullAsDefaultEmptyOptions() throws Exception {
@@ -47,7 +56,7 @@ public class NavigationOptionsTest extends BaseTest {
         assertThat(result.topBarOptions.backgroundColor).isEqualTo(TOP_BAR_BACKGROUND_COLOR);
         assertThat(result.topBarOptions.textColor).isEqualTo(TOP_BAR_TEXT_COLOR);
         assertThat(result.topBarOptions.textFontSize).isEqualTo(TOP_BAR_FONT_SIZE);
-        assertThat(result.topBarOptions.textFontFamily).isEqualTo(TOP_BAR_FONT_FAMILY);
+        assertThat(result.topBarOptions.textFontFamily).isEqualTo(TOP_BAR_TYPEFACE);
         assertThat(result.topBarOptions.hidden).isEqualTo(TOP_BAR_HIDDEN);
         assertThat(result.bottomTabsOptions.animateHide).isEqualTo(BOTTOM_TABS_ANIMATE_HIDE);
         assertThat(result.bottomTabsOptions.hidden).isEqualTo(BOTTOM_TABS_HIDDEN);

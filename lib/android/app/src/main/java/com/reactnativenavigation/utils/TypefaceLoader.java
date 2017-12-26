@@ -25,13 +25,13 @@ public class TypefaceLoader {
 		if (TextUtils.isEmpty(fontFamilyName)) return null;
 		if (typefaceCache.containsKey(fontFamilyName)) return typefaceCache.get(fontFamilyName);
 
-		Typeface result = load(context, fontFamilyName);
+		Typeface result = load(fontFamilyName);
 		typefaceCache.put(fontFamilyName, result);
 		return result;
 	}
 
-	private Typeface load(Context context, String fontFamilyName) {
-		Typeface typeface = getTypefaceFromAssets(context, fontFamilyName);
+	private Typeface load(String fontFamilyName) {
+		Typeface typeface = getTypefaceFromAssets(fontFamilyName);
 		if (typeface != null) return typeface;
 
 		int style = getStyle(fontFamilyName);
@@ -49,7 +49,7 @@ public class TypefaceLoader {
 	}
 
 	@Nullable
-	Typeface getTypefaceFromAssets(Context context, String fontFamilyName) {
+    public Typeface getTypefaceFromAssets(String fontFamilyName) {
 		try {
 			if (context != null) {
 				AssetManager assets = context.getAssets();

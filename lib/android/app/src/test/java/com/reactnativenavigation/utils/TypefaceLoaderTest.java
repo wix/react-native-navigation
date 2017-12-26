@@ -17,7 +17,7 @@ public class TypefaceLoaderTest extends BaseTest {
 	public void loadTypefaceNoAssets() {
 		Context context = new MockContext();
 		TypefaceLoader mockedLoader = Mockito.spy(new TypefaceLoader(context));
-		Mockito.doReturn(null).when(mockedLoader).getTypefaceFromAssets(context, "Helvetica-Bold");
+		Mockito.doReturn(null).when(mockedLoader).getTypefaceFromAssets("Helvetica-Bold");
 
 		Typeface typeface = mockedLoader.getTypeFace("Helvetica-Bold");
 		assertThat(typeface).isNotNull();
@@ -28,7 +28,7 @@ public class TypefaceLoaderTest extends BaseTest {
 	public void loadTypefaceWithAssets() {
         Context context = new MockContext();
         TypefaceLoader mockedLoader = Mockito.spy(new TypefaceLoader(context));
-		Mockito.doReturn(Typeface.create("Helvetica-Italic", Typeface.ITALIC)).when(mockedLoader).getTypefaceFromAssets(context, "Helvetica-Italic");
+		Mockito.doReturn(Typeface.create("Helvetica-Italic", Typeface.ITALIC)).when(mockedLoader).getTypefaceFromAssets("Helvetica-Italic");
 
 		Typeface typeface = mockedLoader.getTypeFace("Helvetica-Italic");
 		assertThat(typeface).isNotNull();
@@ -39,7 +39,7 @@ public class TypefaceLoaderTest extends BaseTest {
 	public void loadTypefaceWrongName() {
         Context context = new MockContext();
         TypefaceLoader mockedLoader = Mockito.spy(new TypefaceLoader(context));
-		Mockito.doReturn(null).when(mockedLoader).getTypefaceFromAssets(context, "Some-name");
+		Mockito.doReturn(null).when(mockedLoader).getTypefaceFromAssets("Some-name");
 
 		Typeface typeface = mockedLoader.getTypeFace("Some-name");
 		assertThat(typeface).isNotNull();
@@ -50,7 +50,7 @@ public class TypefaceLoaderTest extends BaseTest {
 	public void loadTypefaceNull() {
         Context context = new MockContext();
         TypefaceLoader mockedLoader = Mockito.spy(new TypefaceLoader(context));
-		Mockito.doReturn(null).when(mockedLoader).getTypefaceFromAssets(context, null);
+		Mockito.doReturn(null).when(mockedLoader).getTypefaceFromAssets(null);
 
 		Typeface typeface = mockedLoader.getTypeFace(null);
 		assertThat(typeface).isNull();
