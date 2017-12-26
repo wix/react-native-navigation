@@ -87,6 +87,10 @@
 	[[_bridge moduleForClass:[RNNEventEmitter class]] sendOnAppLaunched];
 }
 
+-(void)onBridgeWillReload {
+	UIApplication.sharedApplication.delegate.window.rootViewController =  nil;
+}
+
 # pragma mark - private
 
 -(void)createBridgeLoadJsAndThenInitDependencyGraph {
@@ -101,6 +105,10 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(onJavaScriptWillLoad)
 												 name:RCTJavaScriptWillStartLoadingNotification
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(onBridgeWillReload)
+												 name:RCTBridgeWillReloadNotification
 											   object:nil];
 }
 
