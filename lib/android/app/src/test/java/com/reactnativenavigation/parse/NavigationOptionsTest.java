@@ -1,8 +1,10 @@
 package com.reactnativenavigation.parse;
 
 import android.support.annotation.NonNull;
+import android.test.mock.MockContext;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,10 +26,11 @@ public class NavigationOptionsTest extends BaseTest {
     private static final int BOTTOM_TABS_BADGE = 3;
     private static final String BOTTOM_TABS_CURRENT_TAB_ID = "ContainerId";
     private static final int BOTTOM_TABS_CURRENT_TAB_INDEX = 1;
+    private TypefaceLoader mockLoader = new TypefaceLoader(new MockContext());
 
     @Test
 	public void parsesNullAsDefaultEmptyOptions() throws Exception {
-		assertThat(NavigationOptions.parse(null)).isNotNull();
+		assertThat(NavigationOptions.parse(mockLoader, null)).isNotNull();
 	}
 
 	@Test
@@ -35,7 +38,7 @@ public class NavigationOptionsTest extends BaseTest {
 		JSONObject json = new JSONObject()
                 .put("topBar", createTopBar())
                 .put("bottomTabs", createTabBar());
-		NavigationOptions result = NavigationOptions.parse(json);
+		NavigationOptions result = NavigationOptions.parse(mockLoader, json);
         assertResult(result);
 	}
 
@@ -100,7 +103,7 @@ public class NavigationOptionsTest extends BaseTest {
         JSONObject json = new JSONObject();
         json.put("topBar", createTopBar());
         json.put("bottomTabs", createTabBar());
-        NavigationOptions defaultOptions = NavigationOptions.parse(json);
+        NavigationOptions defaultOptions = NavigationOptions.parse(mockLoader, json);
         NavigationOptions options = new NavigationOptions();
 
         options.mergeWith(defaultOptions);
@@ -112,12 +115,12 @@ public class NavigationOptionsTest extends BaseTest {
         JSONObject defaultJson = new JSONObject()
             .put("topBar", createOtherTopBar())
             .put("bottomTabs", createOtherTabBar());
-        NavigationOptions defaultOptions = NavigationOptions.parse(defaultJson);
+        NavigationOptions defaultOptions = NavigationOptions.parse(mockLoader, defaultJson);
 
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar())
                 .put("bottomTabs", createTabBar());
-        NavigationOptions options = NavigationOptions.parse(json);
+        NavigationOptions options = NavigationOptions.parse(mockLoader, json);
         options.withDefaultOptions(defaultOptions);
         assertResult(options);
     }

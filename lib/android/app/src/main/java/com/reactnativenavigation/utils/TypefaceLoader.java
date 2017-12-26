@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -13,14 +14,17 @@ import java.util.Map;
 
 public class TypefaceLoader {
 	private static final Map<String, Typeface> typefaceCache = new HashMap<>();
+    private Context context;
 
-	public Typeface getTypeFace(Context context, String fontFamilyName) {
-		if (fontFamilyName == null) {
-			return null;
-		}
-		if (typefaceCache.containsKey(fontFamilyName)) {
-			return typefaceCache.get(fontFamilyName);
-		}
+    public TypefaceLoader(Context context) {
+        this.context = context;
+    }
+
+    @Nullable
+	public Typeface getTypeFace(String fontFamilyName) {
+		if (TextUtils.isEmpty(fontFamilyName)) return null;
+		if (typefaceCache.containsKey(fontFamilyName)) return typefaceCache.get(fontFamilyName);
+
 		Typeface result = load(context, fontFamilyName);
 		typefaceCache.put(fontFamilyName, result);
 		return result;
