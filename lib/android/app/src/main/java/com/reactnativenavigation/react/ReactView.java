@@ -17,12 +17,17 @@ import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 @SuppressLint("ViewConstructor")
 public class ReactView extends ReactRootView implements ContainerViewController.IReactView {
 
+    public interface ScrollListener {
+        void onScroll(int scrollY);
+    }
+
     private final ReactInstanceManager reactInstanceManager;
     private final String containerId;
     private final String containerName;
     private boolean isAttachedToReactInstance = false;
 
     private ScrollView scrollView;
+    private ViewTreeObserver.OnScrollChangedListener scrollChangedListener;
 
     public ReactView(final Context context, ReactInstanceManager reactInstanceManager, String containerId, String containerName) {
         super(context);
@@ -76,9 +81,14 @@ public class ReactView extends ReactRootView implements ContainerViewController.
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    public void setScrollListener(OnScrollChangeListener scrollListener) {
+    public void setScrollListener(ScrollListener scrollListener) {
         if (scrollView != null) {
-            scrollView.setOnScrollChangeListener(scrollListener);
+            if (scrollListener != null) {
+                scrollChangedListener = () -> scrollListener.onScroll(scrollView.getScrollY());
+                scrollView.getViewTreeObserver().addOnScrollChangedListener(scrollChangedListener);
+            } else {
+                scrollView.getViewTreeObserver().removeOnScrollChangedListener(scrollChangedListener);
+            }
         }
     }
 }

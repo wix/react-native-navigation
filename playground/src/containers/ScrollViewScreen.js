@@ -57,6 +57,8 @@ module.exports = ScrollViewScreen;
 const styles = StyleSheet.create({
   contentContainer: {
     alignItems: 'center',
+    backgroundColor: 'green',
+    paddingTop: 200,
     height: 1200
   }
 });

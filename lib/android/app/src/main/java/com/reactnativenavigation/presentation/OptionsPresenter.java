@@ -2,6 +2,8 @@ package com.reactnativenavigation.presentation;
 
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.NavigationOptions;
@@ -19,6 +21,8 @@ public class OptionsPresenter {
     private final StackAnimator animator;
     private View contentView;
     private TopBar topBar;
+
+    private int previousScroll;
 
     public OptionsPresenter(TopBar topBar, View contentView) {
         this.topBar = topBar;
@@ -46,19 +50,39 @@ public class OptionsPresenter {
             showTopBar(options.animateHide);
         }
         if (options.collapse == True) {
-            ((ReactView) contentView).setScrollListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                int dif = scrollY - oldScrollY;
-                Log.i("NIGA", "dif = " + dif);
-                if (dif > 50) {
-                    hideTopBar(True);
-                    Log.i("NIGA", "HIDE");
-                } else  if (dif < -50){
-                    showTopBar(True);
-                    Log.i("NIGA", "SHOW");
+            ((ReactView) contentView).setScrollListener(scrollY -> {
+                int diff = scrollY - previousScroll;
+                previousScroll = scrollY;
+                int nextHeight = topBar.getMeasuredHeight() - diff;
+                if (diff < 0) {
+                    int minHeight = topBar.getTitleBar().getMinimumHeight();
+                    if (topBar.getVisibility() == View.GONE) {
+                        topBar.setVisibility(View.VISIBLE);
+                    } else if (nextHeight < minHeight) {
+                        ViewGroup.LayoutParams topBarLayoutParams = topBar.getLayoutParams();
+                        topBarLayoutParams.height = nextHeight;
+                        topBar.setLayoutParams(topBarLayoutParams);
+                    } else if (topBar.getMeasuredHeight() != minHeight) {
+                        ViewGroup.LayoutParams topBarLayoutParams = topBar.getLayoutParams();
+                        topBarLayoutParams.height = minHeight;
+                        topBar.setLayoutParams(topBarLayoutParams);
+                    }
+                } else {
+                    if (nextHeight < 0 && topBar.getVisibility() == View.VISIBLE) {
+                        topBar.setVisibility(View.GONE);
+                    } else if (nextHeight > 0) {
+                        ViewGroup.LayoutParams topBarLayoutParams = topBar.getLayoutParams();
+                        topBarLayoutParams.height = nextHeight;
+                        topBar.setLayoutParams(topBarLayoutParams);
+                    }
                 }
             });
         } else {
             ((ReactView) contentView).setScrollListener(null);
+            topBar.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams topBarLayoutParams = topBar.getLayoutParams();
+            topBarLayoutParams.height = topBar.getTitleBar().getMinimumHeight();
+            topBar.setLayoutParams(topBarLayoutParams);
         }
     }
 

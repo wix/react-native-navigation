@@ -155,7 +155,7 @@ public class StackAnimator {
 
 			}
 		});
-		set.playTogether(containerHeightAnim, containerTransitionAnim, topbarAnim);
+		set.playTogether(topbarAnim);
 		set.start();
 	}
 
@@ -204,7 +204,7 @@ public class StackAnimator {
 
 			}
 		});
-		set.playTogether(containerHeightAnim, containerTransitionAnim, topbarAnim);
+		set.playTogether(topbarAnim);
 		set.start();
 	}
 }

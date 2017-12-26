@@ -5,18 +5,16 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RestrictTo;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController.IReactView;
 
 @SuppressLint("ViewConstructor")
-public class ContainerLayout extends LinearLayout implements ReactContainer {
+public class ContainerLayout extends RelativeLayout implements ReactContainer {
 
     private TopBar topBar;
     private IReactView reactView;
@@ -25,6 +23,8 @@ public class ContainerLayout extends LinearLayout implements ReactContainer {
     public ContainerLayout(Context context, IReactView reactView) {
         super(context);
         this.topBar = new TopBar(context);
+        topBar.setId(View.generateViewId());
+        topBar.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         this.reactView = reactView;
         optionsPresenter = new OptionsPresenter(topBar, reactView.asView());
         initViews();
@@ -32,9 +32,12 @@ public class ContainerLayout extends LinearLayout implements ReactContainer {
 
     @TargetApi(Build.VERSION_CODES.M)
     private void initViews() {
-        setOrientation(VERTICAL);
-        addView(topBar);
+//        setOrientation(VERTICAL);
         addView(reactView.asView());
+        addView(topBar);
+        LayoutParams layoutParams = (LayoutParams) reactView.asView().getLayoutParams();
+//        layoutParams.addRule(BELOW, topBar.getId());
+        reactView.asView().setLayoutParams(layoutParams);
     }
 
     @Override
