@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import java.util.Collection;
 
 public class TopTabsControllerMock extends ParentController {
-    public TopTabsControllerMock(Activity activity, String id) {
+    TopTabsControllerMock(Activity activity, String id) {
         super(activity, id);
     }
 

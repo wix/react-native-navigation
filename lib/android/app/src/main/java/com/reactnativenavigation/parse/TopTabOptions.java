@@ -1,6 +1,5 @@
 package com.reactnativenavigation.parse;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 
@@ -13,12 +12,12 @@ public class TopTabOptions implements DEFAULT_VALUES {
     @Nullable public Typeface fontFamily;
     public int tabIndex;
 
-    public static TopTabOptions parse(Context context, JSONObject json) {
+    public static TopTabOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
         TopTabOptions result = new TopTabOptions();
         if (json == null) return result;
 
         result.title = json.optString("title", NO_VALUE);
-        result.fontFamily = new TypefaceLoader().getTypeFace(context, json.optString("titleFontFamily"));
+        result.fontFamily = typefaceManager.getTypeFace(json.optString("titleFontFamily"));
         return result;
     }
 

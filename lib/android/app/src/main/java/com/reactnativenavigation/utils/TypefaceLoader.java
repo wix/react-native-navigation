@@ -14,9 +14,14 @@ import java.util.Map;
 
 public class TypefaceLoader {
 	private static final Map<String, Typeface> typefaceCache = new HashMap<>();
+    private Context context;
 
-	@Nullable
-	public Typeface getTypeFace(Context context, String fontFamilyName) {
+    public TypefaceLoader(Context context) {
+        this.context = context;
+    }
+
+    @Nullable
+	public Typeface getTypeFace(String fontFamilyName) {
 		if (TextUtils.isEmpty(fontFamilyName)) return null;
 		if (typefaceCache.containsKey(fontFamilyName)) return typefaceCache.get(fontFamilyName);
 

@@ -36,8 +36,8 @@ public class OptionsPresenter {
         topBar.setTitleTextColor(options.textColor);
         topBar.setTitleFontSize(options.textFontSize);
 
-        TypefaceLoader typefaceLoader = new TypefaceLoader();
-        topBar.setTitleTypeface(typefaceLoader.getTypeFace(topBar.getContext(), options.textFontFamily));
+        TypefaceLoader typefaceLoader = new TypefaceLoader(topBar.getContext());
+        topBar.setTitleTypeface(typefaceLoader.getTypeFace(options.textFontFamily));
         if (options.hidden == NavigationOptions.BooleanOptions.True) {
             hideTopBar(options.animateHide);
         }
