@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController.IReactView;
@@ -20,13 +21,13 @@ public class ContainerLayout extends RelativeLayout implements ReactContainer {
     private IReactView reactView;
     private final OptionsPresenter optionsPresenter;
 
-    public ContainerLayout(Context context, IReactView reactView) {
+    public ContainerLayout(Context context, IReactView reactView, EventDispatcher eventDispatcher) {
         super(context);
         this.topBar = new TopBar(context);
         topBar.setId(View.generateViewId());
         topBar.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         this.reactView = reactView;
-        optionsPresenter = new OptionsPresenter(topBar, reactView.asView());
+        optionsPresenter = new OptionsPresenter(topBar, reactView.asView(), eventDispatcher);
         initViews();
     }
 

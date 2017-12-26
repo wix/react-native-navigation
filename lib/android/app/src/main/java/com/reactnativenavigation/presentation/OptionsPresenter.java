@@ -3,18 +3,19 @@ package com.reactnativenavigation.presentation;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
-import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.views.TopBar;
 
-import static com.reactnativenavigation.parse.NavigationOptions.*;
-import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.*;
+import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions;
+import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.False;
+import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.True;
 
 public class OptionsPresenter {
 
@@ -22,12 +23,16 @@ public class OptionsPresenter {
     private View contentView;
     private TopBar topBar;
 
+    private EventDispatcher eventDispatcher;
+    //TODO:
+    private ScrollEventListener scrollEventListener;
     private int previousScroll;
 
-    public OptionsPresenter(TopBar topBar, View contentView) {
+    public OptionsPresenter(TopBar topBar, View contentView, EventDispatcher eventDispatcher) {
         this.topBar = topBar;
         this.contentView = contentView;
         animator = new StackAnimator(topBar.getContext());
+        this.eventDispatcher = eventDispatcher;
     }
 
     public void applyOptions(NavigationOptions options) {
@@ -50,7 +55,8 @@ public class OptionsPresenter {
             showTopBar(options.animateHide);
         }
         if (options.collapse == True) {
-            ((ReactView) contentView).setScrollListener(scrollY -> {
+            scrollEventListener = (new ScrollEventListener(scrollY -> {
+                Log.i("NIGA", "scrollY = " + scrollY);
                 int diff = scrollY - previousScroll;
                 previousScroll = scrollY;
                 int nextHeight = topBar.getMeasuredHeight() - diff;
@@ -76,13 +82,16 @@ public class OptionsPresenter {
                         topBar.setLayoutParams(topBarLayoutParams);
                     }
                 }
-            });
+            }));
+            eventDispatcher.addListener(scrollEventListener);
         } else {
-            ((ReactView) contentView).setScrollListener(null);
-            topBar.setVisibility(View.VISIBLE);
-            ViewGroup.LayoutParams topBarLayoutParams = topBar.getLayoutParams();
-            topBarLayoutParams.height = topBar.getTitleBar().getMinimumHeight();
-            topBar.setLayoutParams(topBarLayoutParams);
+            if (eventDispatcher != null) {
+                eventDispatcher.removeListener(scrollEventListener);
+                topBar.setVisibility(View.VISIBLE);
+                ViewGroup.LayoutParams topBarLayoutParams = topBar.getLayoutParams();
+                topBarLayoutParams.height = topBar.getTitleBar().getMinimumHeight();
+                topBar.setLayoutParams(topBarLayoutParams);
+            }
         }
     }
 
