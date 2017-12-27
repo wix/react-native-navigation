@@ -1,6 +1,8 @@
 package com.reactnativenavigation.presentation;
 
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.NavigationOptions;
@@ -9,6 +11,7 @@ import com.reactnativenavigation.parse.TopTabsOptions;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.views.TopBar;
 
+import static android.widget.RelativeLayout.BELOW;
 import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions;
 import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.False;
 import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.True;
@@ -49,6 +52,16 @@ public class OptionsPresenter {
             topBar.enableCollapse();
         } else if (options.collapse == False) {
             topBar.disableCollapse();
+        }
+
+        if (options.drawUnder == True) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
+            layoutParams.removeRule(BELOW);
+            contentView.setLayoutParams(layoutParams);
+        } else if (options.drawUnder == False) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
+            layoutParams.addRule(BELOW, topBar.getId());
+            contentView.setLayoutParams(layoutParams);
         }
     }
 

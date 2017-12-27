@@ -19,6 +19,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
         options.hidden = NavigationOptions.BooleanOptions.parse(json.optString("hidden"));
         options.animateHide = NavigationOptions.BooleanOptions.parse(json.optString("animateHide"));
         options.collapse = NavigationOptions.BooleanOptions.parse(json.optString("hideOnScroll"));
+        options.drawUnder = NavigationOptions.BooleanOptions.parse(json.optString("drawUnder"));
 
         return options;
     }
@@ -33,6 +34,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
     public NavigationOptions.BooleanOptions hidden = NavigationOptions.BooleanOptions.False;
     public NavigationOptions.BooleanOptions animateHide = NavigationOptions.BooleanOptions.False;
     public NavigationOptions.BooleanOptions collapse = NavigationOptions.BooleanOptions.False;
+    public NavigationOptions.BooleanOptions drawUnder = NavigationOptions.BooleanOptions.False;
 
     void mergeWith(final TopBarOptions other) {
         if (!NO_VALUE.equals(other.title)) title = other.title;
@@ -53,6 +55,9 @@ public class TopBarOptions implements DEFAULT_VALUES {
         if (other.collapse != NavigationOptions.BooleanOptions.NoValue) {
             collapse = other.collapse;
         }
+        if (other.drawUnder != NavigationOptions.BooleanOptions.NoValue) {
+            drawUnder = other.drawUnder;
+        }
     }
 
     void mergeWithDefault(TopBarOptions defaultOptions) {
@@ -72,5 +77,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
             animateHide = defaultOptions.animateHide;
         if (collapse == NavigationOptions.BooleanOptions.NoValue)
             collapse = defaultOptions.collapse;
+        if (drawUnder == NavigationOptions.BooleanOptions.NoValue)
+            drawUnder = defaultOptions.drawUnder;
     }
 }

@@ -10,6 +10,7 @@ class ScrollViewScreen extends Component {
   static get navigationOptions() {
     return {
       topBar: {
+        drawUnder: true,
         translucent: false
       }
     };
@@ -44,6 +45,7 @@ class ScrollViewScreen extends Component {
   componentDidUpdate(state) {
     Navigation.setOptions(this.props.containerId, {
       topBar: {
+        drawUnder: true,
         hideOnScroll: this.state.topBarHideOnScroll
       }
     });

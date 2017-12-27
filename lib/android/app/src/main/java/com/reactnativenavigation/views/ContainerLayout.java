@@ -36,7 +36,7 @@ public class ContainerLayout extends RelativeLayout implements ReactContainer {
     @TargetApi(Build.VERSION_CODES.M)
     private void initViews() {
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//        layoutParams.addRule(BELOW, topBar.getId());
+        layoutParams.addRule(BELOW, topBar.getId());
         addView(reactView.asView(), layoutParams);
         addView(topBar);
     }
