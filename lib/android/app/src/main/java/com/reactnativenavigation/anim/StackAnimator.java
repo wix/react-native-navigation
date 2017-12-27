@@ -132,6 +132,7 @@ public class StackAnimator {
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                //TODO: needs refactoring
                 if (container != null) {
                     ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
                     layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -168,6 +169,7 @@ public class StackAnimator {
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                //TODO: needs refactoring
                 if (container != null) {
                     ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
                     layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;

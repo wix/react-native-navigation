@@ -107,7 +107,6 @@ public class TopBar extends AppBarLayout {
                 int diff = scrollY - oldScrollY;
                 float interpolation = interpolator.getInterpolation((float) diff / getMeasuredHeight());
                 float nextTranslation = getTranslationY() - getMeasuredHeight() * interpolation;
-                Log.i("NIGA", "translation = " + getTranslationY() + " next translation = " + nextTranslation);
                 if (diff < 0) {
                     if (getVisibility() == View.GONE) {
                         setVisibility(View.VISIBLE);
@@ -125,8 +124,8 @@ public class TopBar extends AppBarLayout {
 
             @Override
             public void onDrag(boolean started) {
+                //TODO: needs refactoring
                 if (!started) {
-                    Log.i("NIGA", "end translation = " + getTranslationY());
                     if (getTranslationY() > (-getMeasuredHeight() / 2) && getTranslationY() < 0) {
                         new StackAnimator(getContext()).animateShowTopBar(TopBar.this, null, getTranslationY());
                     } else if (getTranslationY() < (-getMeasuredHeight() / 2) && getTranslationY() > -getMeasuredHeight()) {
