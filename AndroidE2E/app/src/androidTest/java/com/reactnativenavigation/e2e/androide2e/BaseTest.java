@@ -98,7 +98,7 @@ public abstract class BaseTest {
 	}
 
 	public void swipeOpenLeftSideMenu() {
-		device().swipe(5, 152, 500, 152, 15);
+		device().swipe(5, 102, 500, 152, 15);
 	}
 
 	public boolean isDebug() throws Exception {
