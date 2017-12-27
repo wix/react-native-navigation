@@ -13,6 +13,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
 
@@ -23,7 +24,6 @@ public class TopBar extends AppBarLayout {
 
     private EventDispatcher eventDispatcher;
     private ScrollEventListener scrollEventListener;
-    private int previousScroll;
 
     public TopBar(Context context) {
         this(context, null);
@@ -101,27 +101,39 @@ public class TopBar extends AppBarLayout {
 
     public void enableCollapse() {
         final DecelerateInterpolator interpolator = new DecelerateInterpolator();
-        scrollEventListener = (new ScrollEventListener(scrollY -> {
-            int diff = scrollY - previousScroll;
-            previousScroll = scrollY;
-            float interpolation = interpolator.getInterpolation((float) diff / getMeasuredHeight());
-            float nextTranslation = getTranslationY() - getMeasuredHeight() * interpolation;
-            Log.i("NIGA", "next transl = " + nextTranslation);
-            if (diff < 0) {
-                int minHeight = getTitleBar().getMinimumHeight();
-                if (getVisibility() == View.GONE) {
-                    setVisibility(View.VISIBLE);
-                } else if (nextTranslation < 0) {
-                    setTranslationY(nextTranslation);
-                } else if (getMeasuredHeight() != 0) {
-                    setTranslationY(0);
+        scrollEventListener = (new ScrollEventListener(new ScrollEventListener.OnVerticalScrollListener() {
+            @Override
+            public void onVerticalScroll(int scrollY, int oldScrollY) {
+                int diff = scrollY - oldScrollY;
+                float interpolation = interpolator.getInterpolation((float) diff / getMeasuredHeight());
+                float nextTranslation = getTranslationY() - getMeasuredHeight() * interpolation;
+                Log.i("NIGA", "translation = " + getTranslationY() + " next translation = " + nextTranslation);
+                if (diff < 0) {
+                    if (getVisibility() == View.GONE) {
+                        setVisibility(View.VISIBLE);
+                    } else if (nextTranslation <= 0) {
+                        setTranslationY(nextTranslation);
+                    }
+                } else {
+                    if (nextTranslation < -getMeasuredHeight() && getVisibility() == View.VISIBLE) {
+                        setVisibility(View.GONE);
+                    } else if (nextTranslation > -getMeasuredHeight()) {
+                        setTranslationY(nextTranslation);
+                    }
                 }
-            } else {
-                if (nextTranslation < -getMeasuredHeight() && getVisibility() == View.VISIBLE) {
-                    setVisibility(View.GONE);
-                } else if (nextTranslation > -getMeasuredHeight()) {
-                    setTranslationY(nextTranslation);
+            }
+
+            @Override
+            public void onDrag(boolean started) {
+                if (!started) {
+                    Log.i("NIGA", "end translation = " + getTranslationY());
+                    if (getTranslationY() > (-getMeasuredHeight() / 2) && getTranslationY() < 0) {
+                        new StackAnimator(getContext()).animateShowTopBar(TopBar.this, null, getTranslationY());
+                    } else if (getTranslationY() < (-getMeasuredHeight() / 2) && getTranslationY() > -getMeasuredHeight()) {
+                        new StackAnimator(getContext()).animateHideTopBar(TopBar.this, null, getTranslationY());
+                    }
                 }
+
             }
         }));
         if (eventDispatcher != null) {

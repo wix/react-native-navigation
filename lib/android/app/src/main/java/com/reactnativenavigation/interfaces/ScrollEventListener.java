@@ -1,5 +1,7 @@
 package com.reactnativenavigation.interfaces;
 
+import android.util.Log;
+
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcherListener;
 import com.facebook.react.views.scroll.ScrollEvent;
@@ -11,7 +13,9 @@ public class ScrollEventListener implements EventDispatcherListener {
     private int prevScrollY = -1;
 
     public interface OnVerticalScrollListener {
-        void onVerticalScroll(int scrollY);
+        void onVerticalScroll(int scrollY, int oldScrollY);
+
+        void onDrag(boolean started);
     }
 
     public ScrollEventListener(OnVerticalScrollListener verticalScrollListener) {
@@ -29,11 +33,14 @@ public class ScrollEventListener implements EventDispatcherListener {
         try {
             if ("topScroll".equals(event.getEventName())) {
                 int scrollY = (int) ReflectionUtils.getDeclaredField(event, "mScrollY");
+                verticalScrollListener.onVerticalScroll(scrollY, prevScrollY);
                 if (scrollY != prevScrollY) {
-                    //Log.i("ScrollEventListener", "handleScrollEvent: " + " [scrollY: " + scrollY + "]");
                     prevScrollY = scrollY;
                 }
-                verticalScrollListener.onVerticalScroll(scrollY);
+            } else if ("topScrollBeginDrag".equals(event.getEventName())) {
+                verticalScrollListener.onDrag(true);
+            } else if ("topScrollEndDrag".equals(event.getEventName())) {
+                verticalScrollListener.onDrag(false);
             }
         } catch (Exception e) {
             e.printStackTrace();
