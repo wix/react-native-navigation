@@ -11,7 +11,7 @@ public class TopTabsAdapter extends PagerAdapter implements ViewPager.OnPageChan
     private List<TopTabController> tabs;
     private int currentPage = 0;
 
-    TopTabsAdapter(List<TopTabController> tabs) {
+    public TopTabsAdapter(List<TopTabController> tabs) {
         this.tabs = tabs;
     }
 

@@ -60,4 +60,8 @@ public class TopTabsLayout extends LinearLayout implements Container {
     public void switchToTab(int index) {
         viewPager.setCurrentItem(index);
     }
+
+    public int getCurrentItem() {
+        return viewPager.getCurrentItem();
+    }
 }

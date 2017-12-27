@@ -10,6 +10,7 @@ import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.TopTabsLayout;
+import com.reactnativenavigation.views.TopTabsLayoutCreator;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,14 +19,14 @@ public class TopTabsController extends ParentController implements NavigationOpt
 
     private List<TopTabController> tabs;
     private TopTabsLayout topTabsLayout;
-    private TopTabsAdapter adapter;
+    private TopTabsLayoutCreator viewCreator;
     private NavigationOptions navigationOptions;
 
-    public TopTabsController(Activity activity, String id, List<TopTabController> tabs, NavigationOptions navigationOptions) {
+    public TopTabsController(Activity activity, String id, List<TopTabController> tabs, TopTabsLayoutCreator viewCreator, NavigationOptions navigationOptions) {
         super(activity, id);
-        this.tabs = tabs;
-        this.adapter = new TopTabsAdapter(tabs);
+        this.viewCreator = viewCreator;
         this.navigationOptions = navigationOptions;
+        this.tabs = tabs;
         for (ViewController tab : tabs) {
             tab.setParentController(this);
         }
@@ -34,7 +35,7 @@ public class TopTabsController extends ParentController implements NavigationOpt
     @NonNull
     @Override
     protected ViewGroup createView() {
-        topTabsLayout = new TopTabsLayout(getActivity(), tabs, adapter);
+        topTabsLayout = viewCreator.create();
         return topTabsLayout;
     }
 
@@ -70,6 +71,6 @@ public class TopTabsController extends ParentController implements NavigationOpt
     }
 
     private void performOnCurrentTab(Task<TopTabController> task) {
-        task.run(tabs.get(adapter.getCurrentItem()));
+        task.run(tabs.get(topTabsLayout.getCurrentItem()));
     }
 }
