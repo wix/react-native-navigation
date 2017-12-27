@@ -94,6 +94,10 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.topBar.textFontSize floatValue]];
 			}
 			viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
+			if (@available(iOS 11.0, *)){
+				viewController.navigationController.navigationBar.largeTitleTextAttributes = navigationBarTitleTextAttributes;
+			}
+			
 		}
 		
 		
@@ -201,6 +205,11 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		if (self.bottomTabs.currentTabIndex) {
 			[viewController.tabBarController setSelectedIndex:[self.bottomTabs.currentTabIndex unsignedIntegerValue]];
 		}
+		
+		if (self.bottomTabs.currentTabId) {
+			[(RNNTabBarController*)viewController.tabBarController setSelectedIndexByContainerID:self.bottomTabs.currentTabId];
+		}
+		
 		if (self.bottomTabs.hidden) {
 			[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:[self.bottomTabs.hidden boolValue] animated:[self.bottomTabs.animateHide boolValue]];
 		}
@@ -216,6 +225,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 				viewController.edgesForExtendedLayout &= ~UIRectEdgeBottom;
 			}
 		}
+		
+		[self.bottomTabs resetOptions];
 	}
 	
 	if (self.statusBarBlur) {

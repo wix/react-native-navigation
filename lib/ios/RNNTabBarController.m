@@ -1,5 +1,6 @@
 
 #import "RNNTabBarController.h"
+#import "RNNRootViewController.h"
 #define kTabBarHiddenDuration 0.3
 
 @implementation RNNTabBarController
@@ -18,6 +19,18 @@
 	[UIView animateWithDuration:duration animations:^{
 		self.tabBar.frame = frame;
 	}];
+}
+
+- (void)setSelectedIndexByContainerID:(NSString *)containerID {
+	for (id child in self.childViewControllers) {
+		RNNRootViewController* vc = child;
+		if ([child isKindOfClass:[UINavigationController class]]) {
+			vc = ((UINavigationController *)child).childViewControllers.firstObject;
+		}
+		if ([vc.containerId isEqualToString:containerID]) {
+			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
+		}
+	}
 }
 
 @end

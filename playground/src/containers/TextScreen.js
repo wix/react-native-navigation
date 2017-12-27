@@ -6,6 +6,8 @@ const { View, Text, Button } = require('react-native');
 const Navigation = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
+let globalFirstContainerID;
+
 class TextScreen extends Component {
   static get navigationOptions() {
     return {
@@ -13,6 +15,11 @@ class TextScreen extends Component {
         testID: testIDs.BOTTOM_TABS_ELEMENT
       }
     };
+  }
+
+  constructor(props) {
+    super(props);
+    globalFirstContainerID = (props.text === 'This is tab 1') ? props.containerId : globalFirstContainerID;
   }
 
   render() {
@@ -23,6 +30,7 @@ class TextScreen extends Component {
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
         <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onButtonPress()} />
         <Button title={'Switch To Tab 2'} testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
+        <Button title={'Switch To Tab 1 by containerID'} testID={testIDs.SWITCH_FIRST_TAB_BUTTON} onPress={() => this.onClickSwitchToTabByContainerID()} />
         <Button title="Hide Tab Bar" testID={testIDs.HIDE_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(true)} />
         <Button title="Show Tab Bar" testID={testIDs.SHOW_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(false)} />
         <Button title="Show Left Side Menu" testID={testIDs.SHOW_LEFT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('left')} />
@@ -54,6 +62,14 @@ class TextScreen extends Component {
         currentTabIndex: 1,
         hidden: true,
         animateHide: true
+      }
+    });
+  }
+
+  onClickSwitchToTabByContainerID() {
+    Navigation.setOptions(this.props.containerId, {
+      bottomTabs: {
+        currentTabId: globalFirstContainerID
       }
     });
   }

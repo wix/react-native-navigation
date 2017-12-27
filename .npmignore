@@ -6,7 +6,7 @@ playground/
 scripts/
 .travis.yml
 wallaby.js
-
+package-lock.json
 
 #################
 # from .gitignore:

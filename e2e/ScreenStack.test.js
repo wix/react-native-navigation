@@ -50,4 +50,13 @@ describe('screen stack', () => {
     await expect(elementByLabel('This is tab 1')).toBeNotVisible();
     await expect(elementByLabel('This is tab 2')).toBeVisible();
   });
+
+  it('switch to tab by cotnainerId', async () => {
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await expect(elementByLabel('This is tab 1')).toBeVisible();
+    await elementById(testIDs.SWITCH_SECOND_TAB_BUTTON).tap();
+    await expect(elementByLabel('This is tab 2')).toBeVisible();
+    await elementById(testIDs.SWITCH_FIRST_TAB_BUTTON).tap();
+    await expect(elementByLabel('This is tab 1')).toBeVisible();
+  });
 });

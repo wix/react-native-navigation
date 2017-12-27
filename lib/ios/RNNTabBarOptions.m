@@ -13,8 +13,14 @@
 	self.animateHide = [tabBarOptions valueForKey:@"animateHide"];
 	self.currentTabIndex = [tabBarOptions valueForKey:@"currentTabIndex"];
 	self.testID = [tabBarOptions valueForKey:@"testID"];
+	self.currentTabId = [tabBarOptions valueForKey:@"currentTabId"];
 	
 	return self;
+}
+
+- (void)resetOptions {
+	self.currentTabId = nil;
+	self.currentTabIndex = nil;
 }
 
 -(void)mergeWith:(NSDictionary *)otherOptions {
