@@ -81,7 +81,7 @@ class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
         if (!params.color.hasColor()) {
             return;
         }
-        if (params.hasDefaultIcon()) {
+        if (params.hasDefaultIcon() && !params.hasCustomIcon()) {
             setColor(params.color.getColor());
         } else if (params.hasCustomIcon()) {
             ViewUtils.tintDrawable(params.icon, params.color.getColor(), true);
@@ -90,7 +90,7 @@ class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
 
     @Override
     public void setColor(int color) {
-        if (params.hasDefaultIcon()) {
+        if (params.hasDefaultIcon() && !params.hasCustomIcon()) {
             super.setColor(color);
         } else {
             ViewUtils.tintDrawable(params.icon, color, true );
