@@ -24,6 +24,7 @@
 	self.animateHide = [topBarOptions valueForKey:@"animateHide"];
 	self.largeTitle = [topBarOptions valueForKey:@"largeTitle"];
 	self.testID = [topBarOptions valueForKey:@"testID"];
+	self.drawUnder = [topBarOptions valueForKey:@"drawUnder"];
 	
 	return self;
 }

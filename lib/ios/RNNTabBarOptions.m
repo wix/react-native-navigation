@@ -14,6 +14,7 @@
 	self.currentTabIndex = [tabBarOptions valueForKey:@"currentTabIndex"];
 	self.testID = [tabBarOptions valueForKey:@"testID"];
 	self.currentTabId = [tabBarOptions valueForKey:@"currentTabId"];
+	self.drawUnder = [tabBarOptions valueForKey:@"drawUnder"];
 	
 	return self;
 }
