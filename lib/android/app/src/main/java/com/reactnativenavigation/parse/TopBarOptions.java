@@ -44,12 +44,10 @@ public class TopBarOptions implements DEFAULT_VALUES {
 			textFontSize = other.textFontSize;
 		if (other.textFontFamily != null)
 			textFontFamily = other.textFontFamily;
-		if (other.hidden != NavigationOptions.BooleanOptions.NoValue) {
+		if (other.hidden != NavigationOptions.BooleanOptions.NoValue)
 			hidden = other.hidden;
-		}
-		if (other.animateHide != NavigationOptions.BooleanOptions.NoValue) {
+		if (other.animateHide != NavigationOptions.BooleanOptions.NoValue)
 			animateHide = other.animateHide;
-		}
 	}
 
     void mergeWithDefault(TopBarOptions defaultOptions) {

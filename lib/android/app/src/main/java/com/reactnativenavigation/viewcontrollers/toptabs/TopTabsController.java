@@ -19,11 +19,13 @@ public class TopTabsController extends ParentController implements NavigationOpt
     private List<TopTabController> tabs;
     private TopTabsLayout topTabsLayout;
     private TopTabsAdapter adapter;
+    private NavigationOptions navigationOptions;
 
-    public TopTabsController(Activity activity, String id, List<TopTabController> tabs) {
+    public TopTabsController(Activity activity, String id, List<TopTabController> tabs, NavigationOptions navigationOptions) {
         super(activity, id);
         this.tabs = tabs;
         this.adapter = new TopTabsAdapter(tabs);
+        this.navigationOptions = navigationOptions;
         for (ViewController tab : tabs) {
             tab.setParentController(this);
         }
@@ -44,6 +46,7 @@ public class TopTabsController extends ParentController implements NavigationOpt
 
     @Override
     public void onViewAppeared() {
+        applyOptions(navigationOptions);
         performOnCurrentTab(TopTabController::onViewAppeared);
     }
 

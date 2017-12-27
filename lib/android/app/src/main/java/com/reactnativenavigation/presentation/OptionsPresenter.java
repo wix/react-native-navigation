@@ -7,6 +7,7 @@ import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
+import com.reactnativenavigation.parse.TopTabsOptions;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class OptionsPresenter {
     public void applyOptions(NavigationOptions options) {
         applyTopBarOptions(options.topBarOptions);
         applyButtons(options.leftButtons, options.rightButtons);
+        applyTopTabsOptions(options.topTabsOptions);
         applyTopTabOptions(options.topTabOptions);
     }
 
@@ -68,6 +70,10 @@ public class OptionsPresenter {
 
     private void applyButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
         topBar.setButtons(leftButtons, rightButtons);
+    }
+
+    private void applyTopTabsOptions(TopTabsOptions options) {
+        topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
     }
 
     private void applyTopTabOptions(TopTabOptions topTabOptions) {

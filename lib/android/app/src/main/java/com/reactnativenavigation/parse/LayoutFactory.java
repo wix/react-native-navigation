@@ -136,7 +136,8 @@ public class LayoutFactory {
             tabController.setTabIndex(i);
             tabs.add(tabController);
         }
-        return new TopTabsController(activity, node.id, tabs);
+        NavigationOptions navigationOptions = NavigationOptions.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);
+        return new TopTabsController(activity, node.id, tabs, navigationOptions);
     }
 
     private ViewController createTopTab(LayoutNode node) {
