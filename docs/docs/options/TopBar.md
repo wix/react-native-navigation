@@ -19,4 +19,5 @@
 | blur | <code>boolean</code> | 
 | noBorder | <code>boolean</code> | 
 | largeTitle | <code>boolean</code> | 
+| drawUnder | <code>boolean</code> | 
 

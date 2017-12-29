@@ -5,9 +5,10 @@ import android.graphics.Typeface;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.reactnativenavigation.parse.Color;
+import com.reactnativenavigation.parse.Number;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.views.style.Color;
 
 class TopTabsStyleHelper {
     private TopTabs topTabs;
@@ -16,18 +17,25 @@ class TopTabsStyleHelper {
         this.topTabs = topTabs;
     }
 
+    void applyTopTabsFontSize(Number fontSize) {
+        if (!fontSize.hasValue()) return;
+        for (int i = 0; i < topTabs.getTabCount(); i++) {
+            applyOnTabTitle(i, (title) -> title.setTextSize(fontSize.get()));
+        }
+    }
+
     void applyTopTabsColors(Color selected, Color unselected) {
-        if (!selected.hasColor() && !unselected.hasColor()) return;
+        if (!selected.hasValue() && !unselected.hasValue()) return;
 
         ColorStateList originalColors = topTabs.getTabTextColors();
         int selectedTabColor = originalColors != null ? originalColors.getColorForState(topTabs.getSelectedTabColors(), -1) : -1;
         int tabTextColor = originalColors != null ? originalColors.getColorForState(topTabs.getDefaultTabColors(), -1) : -1;
 
-        if (selected.hasColor()) {
+        if (selected.hasValue()) {
             tabTextColor = selected.get();
         }
 
-        if (unselected.hasColor()) {
+        if (unselected.hasValue()) {
             selectedTabColor = unselected.get();
         }
 

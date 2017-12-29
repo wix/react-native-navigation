@@ -203,7 +203,8 @@ class WelcomeScreen extends Component {
       navigationOptions: {
         topTabs: {
           selectedTabColor: '#12766b',
-          unselectedTabColor: 'red'
+          unselectedTabColor: 'red',
+          fontSize: 6
         }
       }
     });

@@ -1,8 +1,5 @@
 package com.reactnativenavigation.parse;
 
-import com.reactnativenavigation.views.style.Color;
-import com.reactnativenavigation.views.style.NullColor;
-
 import org.json.JSONObject;
 
 public class ColorParser {

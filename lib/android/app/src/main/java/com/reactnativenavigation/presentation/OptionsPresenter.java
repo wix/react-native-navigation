@@ -74,6 +74,7 @@ public class OptionsPresenter {
 
     private void applyTopTabsOptions(TopTabsOptions options) {
         topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
+        topBar.applyTopTabsFontSize(options.fontSize);
     }
 
     private void applyTopTabOptions(TopTabOptions topTabOptions) {

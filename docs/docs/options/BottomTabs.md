@@ -9,4 +9,5 @@
 | hidden | <code>boolean</code> | 
 | animateHide | <code>boolean</code> | 
 | testID | <code>string</code> | 
+| drawUnder | <code>boolean</code> | 
 

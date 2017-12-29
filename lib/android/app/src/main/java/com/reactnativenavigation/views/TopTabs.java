@@ -4,7 +4,8 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.design.widget.TabLayout;
 
-import com.reactnativenavigation.views.style.Color;
+import com.reactnativenavigation.parse.Color;
+import com.reactnativenavigation.parse.Number;
 
 public class TopTabs extends TabLayout {
     private final TopTabsStyleHelper styleHelper;
@@ -28,5 +29,9 @@ public class TopTabs extends TabLayout {
 
     public void applyTopTabsColors(Color selectedTabColor, Color unselectedTabColor) {
         styleHelper.applyTopTabsColors(selectedTabColor, unselectedTabColor);
+    }
+
+    public void applyTopTabsFontSize(Number fontSize) {
+        styleHelper.applyTopTabsFontSize(fontSize);
     }
 }

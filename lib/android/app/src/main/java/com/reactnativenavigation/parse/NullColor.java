@@ -1,16 +1,16 @@
-package com.reactnativenavigation.views.style;
+package com.reactnativenavigation.parse;
 
 public class NullColor extends Color {
 
-    public NullColor() {
+    NullColor() {
         super(0);
     }
 
-    public boolean hasColor() {
+    @Override
+    public boolean hasValue() {
         return false;
     }
 
-    @SuppressWarnings("MagicNumber")
     @Override
     public String toString() {
         return "Null Color";

@@ -11,6 +11,7 @@
 - Options
  - [NavigationOptions](/docs/options/NavigationOptions)
  - [TopBar](/docs/options/TopBar)
+ - [TopTabs](/docs/options/TopTabs)
  - [TopTab](/docs/options/TopTab)
  - [Button](/docs/options/Button)
  - [BottomTabs](/docs/options/BottomTabs)

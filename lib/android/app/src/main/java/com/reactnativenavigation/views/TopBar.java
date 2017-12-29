@@ -14,8 +14,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Button;
+import com.reactnativenavigation.parse.Number;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
-import com.reactnativenavigation.views.style.Color;
+import com.reactnativenavigation.parse.Color;
 
 import java.util.ArrayList;
 
@@ -65,6 +66,10 @@ public class TopBar extends AppBarLayout {
 
     public void applyTopTabsColors(Color selectedTabColor, Color unselectedTabColor) {
         topTabs.applyTopTabsColors(selectedTabColor, unselectedTabColor);
+    }
+
+    public void applyTopTabsFontSize(Number fontSize) {
+        topTabs.applyTopTabsFontSize(fontSize);
     }
 
 	public void setButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {

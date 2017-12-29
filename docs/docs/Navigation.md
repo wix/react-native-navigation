@@ -10,7 +10,7 @@
     * [.showModal(params)](#Navigation+showModal)
     * [.dismissModal(containerId)](#Navigation+dismissModal)
     * [.dismissAllModals()](#Navigation+dismissAllModals)
-    * [.push(containerId, params)](#Navigation+push)
+    * [.push(containerId, container)](#Navigation+push)
     * [.pop(containerId, params)](#Navigation+pop)
     * [.popTo(containerId)](#Navigation+popTo)
     * [.popToRoot(containerId)](#Navigation+popToRoot)
@@ -109,14 +109,14 @@ Dismiss all Modals
 
 <a name="Navigation+push"></a>
 
-## navigation.push(containerId, params)
+## navigation.push(containerId, container)
 Push a new screen into this screen's navigation stack.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
 | containerId | <code>string</code> | The container's id. |
-| params | <code>*</code> |  |
+| container | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Container">Container</a> |  |
 
 
 * * *
