@@ -350,6 +350,7 @@
   if ([performAction isEqualToString:@"setTabBarHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
+    self.tabBarHidden = hidden;
     
     CGRect nextFrame = self.tabBar.frame;
     nextFrame.origin.y = UIScreen.mainScreen.bounds.size.height - (hidden ? 0 : self.tabBar.frame.size.height);
