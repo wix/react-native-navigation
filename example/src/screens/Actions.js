@@ -124,19 +124,19 @@ class Actions extends React.Component {
       this.props.navigator.setButtons({
         fab: {
           collapsedId: 'share',
-          collapsedIcon: require('../../img/edit@1x.png'),
+          collapsedIcon: require('../../img/edit.png'),
           expendedId: 'clear',
-          expendedIcon: require('../../img/edit@1x.png'),
+          expendedIcon: require('../../img/edit.png'),
           backgroundColor: '#ff505c',
           actions: [
             {
               id: 'mail',
-              icon: require('../../img/edit@1x.png'),
+              icon: require('../../img/edit.png'),
               backgroundColor: '#03A9F4'
             },
             {
               id: 'delete',
-              icon: require('../../img/delete@1x.png'),
+              icon: require('../../img/delete.png'),
               backgroundColor: '#4CAF50'
             }
           ]
