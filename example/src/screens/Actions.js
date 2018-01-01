@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import {StyleSheet, ScrollView} from 'react-native';
 import Row from '../components/Row';
 
 class Actions extends React.Component {
@@ -23,7 +23,7 @@ class Actions extends React.Component {
 
   setTitle = () => {
     this.props.navigator.setTitle({
-      title: 'New Title!',
+      title: 'New Title!'
     });
   };
 
@@ -41,7 +41,7 @@ class Actions extends React.Component {
 
     this.props.navigator.toggleTabs({
       to,
-      animated: true,
+      animated: true
     });
     this._toggleTabs = to;
   };
@@ -49,13 +49,13 @@ class Actions extends React.Component {
   setTabBadge = () => {
     this.props.navigator.setTabBadge({
       tabIndex: 1,
-      badge: Math.floor(Math.random() * 20) + 1,
+      badge: Math.floor(Math.random() * 20) + 1
     });
   };
 
   switchToTab = () => {
     this.props.navigator.switchToTab({
-      tabIndex: 0,
+      tabIndex: 0
     });
   };
 
@@ -64,14 +64,14 @@ class Actions extends React.Component {
 
     this.props.navigator.toggleNavBar({
       to,
-      animated: true,
+      animated: true
     });
     this._toggleNavBar = to;
   };
 
   showSnackbar = () => {
     this.props.navigator.showSnackbar({
-      text: 'Woo Snacks!',
+      text: 'Woo Snacks!'
     });
   };
 
@@ -80,10 +80,10 @@ class Actions extends React.Component {
       this.props.navigator.showContextualMenu({
         rightButtons: [{
           title: 'Edit',
-          icon: require('../../img/edit.png'),
+          icon: require('../../img/edit.png')
         }, {
           title: 'Delete',
-          icon: require('../../img/delete.png'),
+          icon: require('../../img/delete.png')
         }],
         onButtonPressed: (index) => console.log(`Button ${index} tapped`)
       });
@@ -107,9 +107,9 @@ class Actions extends React.Component {
     this.props.navigator.setButtons({
       rightButtons: [{
         title,
-        id: 'topRight',
+        id: 'topRight'
       }],
-      animated: true,
+      animated: true
     });
     this._rightButton = title;
   };
@@ -117,31 +117,31 @@ class Actions extends React.Component {
   toggleFAB = () => {
     if (this._fab) {
       this.props.navigator.setButtons({
-        fab: {},
+        fab: {}
       });
       this._fab = false;
     } else {
       this.props.navigator.setButtons({
         fab: {
           collapsedId: 'share',
-          collapsedIcon: require('../../img/edit@1x.png'),
+          collapsedIcon: require('../../img/edit.png'),
           expendedId: 'clear',
-          expendedIcon: require('../../img/edit@1x.png'),
+          expendedIcon: require('../../img/edit.png'),
           backgroundColor: '#ff505c',
           actions: [
             {
               id: 'mail',
-              icon: require('../../img/edit@1x.png'),
+              icon: require('../../img/edit.png'),
               backgroundColor: '#03A9F4'
             },
             {
               id: 'delete',
-              icon: require('../../img/delete@1x.png'),
+              icon: require('../../img/delete.png'),
               backgroundColor: '#4CAF50'
             }
           ]
         },
-        animated: true,
+        animated: true
       });
       this._fab = true;
     }
@@ -166,7 +166,7 @@ class Actions extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {}
 });
 
 export default Actions;

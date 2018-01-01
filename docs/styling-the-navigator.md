@@ -113,7 +113,7 @@ this.props.navigator.setStyle({
   navBarHeight: 70, // Optional, set the navBar height in pixels.
   navBarTopPadding: 24, // Optional, set navBar top padding in pixels. Useful when StatusBar.translucent=true on Android Lollipop and above.
   topTabsHeight: 70, // Optional, set topTabs height in pixels.
-  topBarBorderColor: 'red', Optional, set a flat border under the TopBar.
+  topBarBorderColor: 'red', // Optional, set a flat border under the TopBar.
   topBarBorderWidth: 5.5, // Optional, set the width of the border.
 }
 ```
