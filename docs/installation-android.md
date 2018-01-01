@@ -1,6 +1,6 @@
 # Android Installation
 
-!> Make sure you are using **react-native** version >= 0.43. We also recommend using npm version >= 3
+!> Make sure you are using **react-native** version >= 0.51. We also recommend using npm version >= 3
 
 1. Install `react-native-navigation` latest stable version.
 
