@@ -15,19 +15,18 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	return self;
 }
 
--(void)push:(UIViewController *)newTop onTop:(NSString *)containerId completion:(RNNTransitionCompletionBlock)completion {
+-(void)push:(UIViewController<RNNRootViewProtocol> *)newTop onTop:(NSString *)containerId completion:(RNNTransitionCompletionBlock)completion {
 	UIViewController *vc = [_store findContainerForId:containerId];
 	[self preparePush:newTop onTopVC:vc completion:completion];
 	[self waitForContentToAppearAndThen:@selector(pushAfterLoad:)];
 }
 
--(void)preparePush:(UIViewController *)newTop onTopVC:(UIViewController*)vc completion:(RNNTransitionCompletionBlock)completion {
-	self.toVC = (RNNRootViewController*)newTop;
+-(void)preparePush:(UIViewController<RNNRootViewProtocol> *)newTop onTopVC:(UIViewController*)vc completion:(RNNTransitionCompletionBlock)completion {
+	self.toVC = newTop;
 	self.fromVC = vc;
 	
 	if (self.toVC.isAnimated) {
-		RNNRootViewController* newTopRootView = (RNNRootViewController*)newTop;
-		vc.navigationController.delegate = newTopRootView;
+		vc.navigationController.delegate = newTop;
 	} else {
 		vc.navigationController.delegate = nil;
 		self.fromVC.navigationController.interactivePopGestureRecognizer.delegate = nil;

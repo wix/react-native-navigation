@@ -57,6 +57,7 @@
 		268692831E5054F800E2C612 /* RNNStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 268692811E5054F800E2C612 /* RNNStore.m */; };
 		26916C981E4B9E7700D13680 /* RNNReactRootViewCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 26916C961E4B9E7700D13680 /* RNNReactRootViewCreator.h */; };
 		26916C991E4B9E7700D13680 /* RNNReactRootViewCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */; };
+		507F44201FFA8A8800D9425B /* RNNRootViewProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 507F441F1FFA8A8800D9425B /* RNNRootViewProtocol.h */; };
 		50CB3B691FDE911400AA153B /* RNNSideMenuOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */; };
 		50CB3B6A1FDE911400AA153B /* RNNSideMenuOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CB3B681FDE911400AA153B /* RNNSideMenuOptions.m */; };
 		50EB93411FE14A3E00BD8EEE /* RNNTabItemOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50EB933F1FE14A3E00BD8EEE /* RNNTabItemOptions.h */; };
@@ -207,6 +208,7 @@
 		26916C941E4B9CCC00D13680 /* RNNRootViewCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNRootViewCreator.h; sourceTree = "<group>"; };
 		26916C961E4B9E7700D13680 /* RNNReactRootViewCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNReactRootViewCreator.h; sourceTree = "<group>"; };
 		26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNReactRootViewCreator.m; sourceTree = "<group>"; };
+		507F441F1FFA8A8800D9425B /* RNNRootViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNRootViewProtocol.h; sourceTree = "<group>"; };
 		50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSideMenuOptions.h; sourceTree = "<group>"; };
 		50CB3B681FDE911400AA153B /* RNNSideMenuOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuOptions.m; sourceTree = "<group>"; };
 		50EB933F1FE14A3E00BD8EEE /* RNNTabItemOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTabItemOptions.h; sourceTree = "<group>"; };
@@ -438,6 +440,7 @@
 				A7626C001FC5796200492FB8 /* RNNTabBarOptions.m */,
 				50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */,
 				50CB3B681FDE911400AA153B /* RNNSideMenuOptions.m */,
+				507F441F1FFA8A8800D9425B /* RNNRootViewProtocol.h */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -607,6 +610,7 @@
 				268692821E5054F800E2C612 /* RNNStore.h in Headers */,
 				E8AEDB3C1F55A1C2000F5A6A /* RNNElementView.h in Headers */,
 				E8E518321F83B3E0000467AC /* RNNUtils.h in Headers */,
+				507F44201FFA8A8800D9425B /* RNNRootViewProtocol.h in Headers */,
 				263905CA1E4C6F440023D7D3 /* SidebarLuvocracyAnimation.h in Headers */,
 				263905B11E4C6F440023D7D3 /* MMDrawerController.h in Headers */,
 				50EB93411FE14A3E00BD8EEE /* RNNTabItemOptions.h in Headers */,

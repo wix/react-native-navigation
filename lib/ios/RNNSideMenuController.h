@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "RNNSideMenuChildVC.h"
 #import "MMDrawerController.h"
+#import "RNNRootViewProtocol.h"
 
-@interface RNNSideMenuController : UIViewController
+@interface RNNSideMenuController : UIViewController <RNNRootViewProtocol>
 
 @property (readonly) RNNSideMenuChildVC *center;
 @property (readonly) RNNSideMenuChildVC *left;

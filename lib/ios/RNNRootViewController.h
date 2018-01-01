@@ -6,8 +6,10 @@
 #import "RNNEventEmitter.h"
 #import "RNNNavigationOptions.h"
 #import "RNNAnimator.h"
+#import "RNNRootViewProtocol.h"
 
-@interface RNNRootViewController : UIViewController	<UINavigationControllerDelegate>
+@interface RNNRootViewController : UIViewController	<RNNRootViewProtocol>
+
 @property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
 @property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
@@ -22,7 +24,6 @@
 
 
 -(void)applyNavigationButtons;
--(BOOL)isAnimated;
 -(void)applyTabBarItem;
 
 @end

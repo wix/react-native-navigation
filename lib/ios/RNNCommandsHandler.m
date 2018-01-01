@@ -56,9 +56,11 @@
 
 -(void) push:(NSString*)containerId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	UIViewController *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
+	
+	UIViewController<RNNRootViewProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
 	UIViewController *fromVc = [_store findContainerForId:containerId];
 	[_bridge.uiManager setAvailableSize:fromVc.view.bounds.size forRootView:newVc.view];
+
 	[_navigationStackManager push:newVc onTop:containerId completion:completion];
 }
 

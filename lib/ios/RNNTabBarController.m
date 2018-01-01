@@ -33,4 +33,8 @@
 	}
 }
 
+- (BOOL)isAnimated {
+	return NO;
+}
+
 @end
