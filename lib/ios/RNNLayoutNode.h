@@ -14,6 +14,8 @@
 -(BOOL)isContainer;
 -(BOOL)isContainerStack;
 -(BOOL)isTabs;
+-(BOOL)isTopTabs;
+-(BOOL)isTopTab;
 -(BOOL)isSideMenuRoot;
 -(BOOL)isSideMenuLeft;
 -(BOOL)isSideMenuRight;

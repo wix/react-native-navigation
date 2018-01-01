@@ -106,14 +106,16 @@
 
 }
 
-
-
 -(void)applyNavigationButtons{
 	[self.navigationButtons applyLeftButtons:self.navigationOptions.leftButtons rightButtons:self.navigationOptions.rightButtons];
 }
 
 -(void)applyTabBarItem {
 	[self.navigationOptions applyTabBarItemOptions:self];
+}
+
+-(void)applyTopTabsOptions {
+	[self.navigationOptions applyTopTab:self];
 }
 
 /**

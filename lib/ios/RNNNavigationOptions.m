@@ -4,6 +4,7 @@
 #import "RNNTabBarController.h"
 #import "RNNTopBarOptions.h"
 #import "RNNSideMenuController.h"
+#import "RNNRootViewController.h"
 
 const NSInteger BLUR_STATUS_TAG = 78264801;
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
@@ -26,6 +27,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.leftButtons = [navigationOptions objectForKey:@"leftButtons"];
 	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
 	self.topBar = [[RNNTopBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"topBar"]];
+	self.topTab = [[RNNTopTabOptions alloc] initWithDict:[navigationOptions objectForKey:@"topTab"]];
 	self.bottomTabs = [[RNNTabBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTabs"]];
 	self.sideMenu = [[RNNSideMenuOptions alloc] initWithDict:[navigationOptions objectForKey:@"sideMenu"]];
 	self.backgroundImage = [RCTConvert UIImage:[navigationOptions objectForKey:@"backgroundImage"]];
@@ -41,6 +43,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 			[self.topBar mergeWith:[otherOptions objectForKey:key]];
 		} else if ([key isEqualToString:@"bottomTabs"]) {
 			[self.bottomTabs mergeWith:[otherOptions objectForKey:key]];
+		} else if ([key isEqualToString:@"topTab"]) {
+			[self.topTab mergeWith:[otherOptions objectForKey:key]];
 		} else if ([key isEqualToString:@"sideMenu"]) {
 			[self.sideMenu mergeWith:[otherOptions objectForKey:@"sideMenu"]];
 		} else if ([key isEqualToString:@"bottomTab"]) {
@@ -291,6 +295,15 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	}
 	
 	[self applyTabBarItemOptions:viewController];
+	[self applyTopTab:viewController];
+}
+
+- (void)applyTopTab:(RNNRootViewController*)viewController {
+	if (self.topTab) {
+		if (self.topTab.title) {
+			[viewController.topTabsViewController viewController:viewController changedTitle:self.topTab.title];
+		}
+	}
 }
 
 - (void)applyTabBarItemOptions:(UIViewController*)viewController {

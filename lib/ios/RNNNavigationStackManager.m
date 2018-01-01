@@ -25,7 +25,7 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	self.toVC = (RNNRootViewController*)newTop;
 	self.fromVC = vc;
 	
-	if (self.toVC.isAnimated) {
+	if ([self.toVC isKindOfClass:[RNNRootViewController class]] && self.toVC.isAnimated) {
 		RNNRootViewController* newTopRootView = (RNNRootViewController*)newTop;
 		vc.navigationController.delegate = newTopRootView;
 	} else {

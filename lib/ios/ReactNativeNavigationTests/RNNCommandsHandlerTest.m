@@ -10,7 +10,6 @@
 
 @property (nonatomic, strong) RNNStore* store;
 @property (nonatomic, strong) RNNCommandsHandler* uut;
-@property (nonatomic, strong) RCTBridge* bridge;
 
 @end
 
@@ -20,8 +19,7 @@
 	[super setUp];
 //	[self.store setReadyToReceiveCommands:true];
 	self.store = [[RNNStore alloc] init];
-	self.bridge = nil;
-	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:nil andBridge:self.bridge];
+	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:nil];
 }
 
 
@@ -40,7 +38,7 @@
 -(NSArray*) getPublicMethodNamesForObject:(NSObject*)obj{
 	NSMutableArray* skipMethods = [NSMutableArray new];
 
-	[skipMethods addObject:@"initWithStore:controllerFactory:andBridge:"];
+	[skipMethods addObject:@"initWithStore:controllerFactory:"];
 	[skipMethods addObject:@"assertReady"];
 	[skipMethods addObject:@".cxx_destruct"];
 

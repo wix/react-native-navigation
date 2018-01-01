@@ -25,6 +25,14 @@
 {
 	return [self.type isEqualToString:@"BottomTabs"];
 }
+-(BOOL)isTopTabs
+{
+	return [self.type isEqualToString:@"TopTabs"];
+}
+-(BOOL)isTopTab
+{
+	return [self.type isEqualToString:@"TopTab"];
+}
 -(BOOL)isSideMenuRoot
 {
 	return [self.type isEqualToString:@"SideMenuRoot"];
