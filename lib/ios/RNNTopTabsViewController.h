@@ -1,8 +1,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <React/RCTUIManager.h>
+#import "RNNRootViewProtocol.h"
 
-@interface RNNTopTabsViewController : UIViewController
+@interface RNNTopTabsViewController : UIViewController <RNNRootViewProtocol>
 
 @property (nonatomic, retain) UIView* contentView;
 

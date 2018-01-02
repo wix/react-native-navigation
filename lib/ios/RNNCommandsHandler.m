@@ -56,9 +56,6 @@
 	[self assertReady];
 	
 	UIViewController<RNNRootViewProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
-	UIViewController *fromVc = [_store findContainerForId:containerId];
-	[_bridge.uiManager setAvailableSize:fromVc.view.bounds.size forRootView:newVc.view];
-
 	[_navigationStackManager push:newVc onTop:containerId completion:completion];
 }
 

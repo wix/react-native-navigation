@@ -125,7 +125,7 @@
 	return vc;
 }
 
--(RNNTopTabsViewController*)createTopTabs:(RNNLayoutNode*)node {
+- (UIViewController<RNNRootViewProtocol> *)createTopTabs:(RNNLayoutNode*)node {
 	RNNTopTabsViewController* vc = [[RNNTopTabsViewController alloc] init];
 	
 	NSMutableArray* controllers = [NSMutableArray new];

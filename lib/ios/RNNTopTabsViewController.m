@@ -72,4 +72,8 @@
     [super viewDidLoad];
 }
 
+- (BOOL)isAnimated {
+	return NO;
+}
+
 @end
