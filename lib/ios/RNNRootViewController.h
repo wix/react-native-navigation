@@ -7,8 +7,9 @@
 #import "RNNNavigationOptions.h"
 #import "RNNAnimator.h"
 #import "RNNTopTabsViewController.h"
+#import "RNNRootViewProtocol.h"
 
-@interface RNNRootViewController : UIViewController	<UINavigationControllerDelegate>
+@interface RNNRootViewController : UIViewController	<RNNRootViewProtocol>
 
 @property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
 @property (nonatomic, strong) RNNAnimator* animator;

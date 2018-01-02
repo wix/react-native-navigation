@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
+#import "RNNRootViewProtocol.h"
 
-@interface RNNNavigationController : UINavigationController
+@interface RNNNavigationController : UINavigationController <RNNRootViewProtocol>
 
 @end

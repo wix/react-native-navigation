@@ -7,4 +7,8 @@
 	return self.viewControllers.lastObject.supportedInterfaceOrientations;
 }
 
+- (BOOL)isAnimated {
+	return NO;
+}
+
 @end
