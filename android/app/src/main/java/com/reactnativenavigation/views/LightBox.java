@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.params.LightBoxParams;
 import com.reactnativenavigation.screens.Screen;
@@ -34,7 +35,7 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
     public LightBox(AppCompatActivity activity, Runnable onDismissListener, LightBoxParams params) {
         super(activity, R.style.LightBox);
         this.onDismissListener = onDismissListener;
-        this.cancelable =!params.overrideBackPress; 
+        this.cancelable = !params.overrideBackPress;
         setOnDismissListener(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         createContent(activity, params);
@@ -52,7 +53,6 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         lightBox.setAlpha(0);
         content = new ContentView(context, params.screenId, params.navigationParams);
         content.setAlpha(0);
-        content.setId(ViewUtils.generateViewId());
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, content.getId());
         lightBox.setBackgroundColor(params.backgroundColor.getColor());
@@ -107,7 +107,11 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
     }
 
     public void destroy() {
-        content.unmountReactView();
+        if (content != null) {
+            content.unmountReactView();
+            lightBox.removeAllViews();
+            content = null;
+        }
         dismiss();
     }
 
