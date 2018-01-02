@@ -377,6 +377,14 @@ RCT_EXPORT_METHOD(
     {
         return [self getVisibleViewControllerFor:vc.presentedViewController];
     }
+    else if ([vc isKindOfClass:[TheSidebarController class]]) {
+        TheSidebarController *drawerController = (TheSidebarController*) vc;
+        return [self getVisibleViewControllerFor:drawerController.contentViewController];
+    }
+    else if ([vc isKindOfClass:[MMDrawerController class]]) {
+        MMDrawerController *drawerController = (MMDrawerController*) vc;
+        return [self getVisibleViewControllerFor:drawerController.centerViewController];
+    }
     else
     {
         return vc;

@@ -69,6 +69,7 @@ public class StyleParamsParser {
         result.titleBarHeight = getInt("titleBarHeight", getDefaultTitleBarHeight());
         result.backButtonHidden = getBoolean("backButtonHidden", getDefaultBackButtonHidden());
         result.topTabsHidden = getBoolean("topTabsHidden", getDefaultTopTabsHidden());
+        result.titleBarTopPadding = getInt("titleBarTopPadding", getTitleBarTopPadding());
 
         result.topTabTextColor = getColor("topTabTextColor", getDefaultTopTabTextColor());
         result.topTabTextFontFamily = getFont("topTabTextFontFamily", getDefaultTopTabTextFontFamily());
@@ -326,6 +327,10 @@ public class StyleParamsParser {
 
     private int getDefaultTitleBarHeight() {
         return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarHeight;
+    }
+
+    private int getTitleBarTopPadding() {
+        return AppStyle.appStyle == null ? 0 : AppStyle.appStyle.titleBarTopPadding;
     }
 
     private boolean getBoolean(String key, boolean defaultValue) {
