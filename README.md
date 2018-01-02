@@ -13,7 +13,7 @@ We are rebuilding react-native-navigation
 ## Why Rebuild react-native-navigation?
 
 ### A New & Improved Core Architecture
-react-native-navigation has a few issues which are unsolvable in its current architecture. These issues stem from the same problem: you cannot specify on which screen you wish to make an action. Whenever you want to push a screen, show a modal or any other action, the action defaults to originate from your current screen. In most cases this is fine, but becoms problematic in specific edge cases. For example: <br>
+react-native-navigation has a few issues which are unsolvable in its current architecture. These issues stem from the same problem: you cannot specify on which screen you wish to make an action. Whenever you want to push a screen, show a modal or any other action, the action defaults to originate from your current screen. In most cases this is fine, but becomes problematic in specific edge cases. For example: <br>
 * What if you want to update your navbar icons and the user pops the screen? Your icons might update on the wrong screen.
 * What if you want to push a screen as a result of a redux action?
 
