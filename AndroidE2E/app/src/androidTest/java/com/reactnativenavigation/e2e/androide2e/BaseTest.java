@@ -1,26 +1,17 @@
 package com.reactnativenavigation.e2e.androide2e;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.By;
-import android.support.test.uiautomator.BySelector;
-import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiScrollable;
-import android.support.test.uiautomator.UiSelector;
-import android.support.test.uiautomator.Until;
+import android.content.pm.*;
+import android.graphics.*;
+import android.support.test.runner.*;
+import android.support.test.uiautomator.*;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.*;
+import org.junit.runner.*;
 
-import java.io.File;
+import java.io.*;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static android.support.test.InstrumentationRegistry.*;
+import static org.assertj.core.api.Java6Assertions.*;
 
 @RunWith(AndroidJUnit4.class)
 public abstract class BaseTest {
@@ -38,6 +29,7 @@ public abstract class BaseTest {
 	@After
 	public void afterEach() throws Exception {
 		device().executeShellCommand("am force-stop " + PACKAGE_NAME);
+		device().executeShellCommand("am kill " + PACKAGE_NAME);
 	}
 
 	public UiDevice device() {
@@ -97,8 +89,16 @@ public abstract class BaseTest {
 		return bitmap;
 	}
 
-	public void swipeOpenLeftSideMenu() {
-		device().swipe(5, 102, 500, 152, 15);
+	public void swipeOpenFromLeft() {
+		int w = device().getDisplayWidth();
+		int h = device().getDisplayHeight();
+		device().swipe(5, h / 2, w / 2, h / 2, 10);
+	}
+
+	public void swipeOpenFromRight() {
+		int w = device().getDisplayWidth();
+		int h = device().getDisplayHeight();
+		device().swipe(w - 5, h / 2, w / 2, h / 2, 10);
 	}
 
 	public boolean isDebug() throws Exception {

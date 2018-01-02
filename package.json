@@ -54,7 +54,7 @@
     "eslint-config-xo": "0.18.x",
     "eslint-config-xo-react": "0.13.x",
     "eslint-plugin-react": "7.x.x",
-    "jest": "21.x.x",
+    "jest": "22.x.x",
     "jsdoc": "3.x.x",
     "jsdoc-to-markdown": "3.x.x",
     "mocha": "4.x.x",

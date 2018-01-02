@@ -10,7 +10,7 @@ public class TopTabsTest extends BaseTest {
     public void tabsCanBeSwiped() throws Exception {
         elementByText("PUSH TOP TABS SCREEN").click();
         assertExists(By.text("This is top tab 1"));
-        device().swipe(400, 400, 10, 400, 2);
+        swipeOpenFromRight();
         assertExists(By.text("This is top tab 2"));
     }
 }
