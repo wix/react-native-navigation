@@ -183,7 +183,7 @@
     }
   }
   else
-  {//load the splash from the DEfault image or from LaunchImage in the xcassets
+  {//load the splash from the Default image or from LaunchImage in the xcassets
     CGFloat screenHeight = screenBounds.size.height;
     
     NSString* imageName = @"Default";
@@ -208,6 +208,8 @@
         imageName = [imageName stringByAppendingString:@"-800-667h"];
       else if (screenHeight == 736)
         imageName = [imageName stringByAppendingString:@"-800-Portrait-736h"];
+      else if (screenHeight == 768)
+        imageName = [imageName stringByAppendingString:@"-Landscape"]; 
       else if (screenHeight == 812)
         imageName = [imageName stringByAppendingString:@"-1100-Portrait-2436h"];
       else if (screenHeight == 1024)
