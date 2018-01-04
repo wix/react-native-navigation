@@ -381,13 +381,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
   [self.navigationController.navigationBar setTitleTextAttributes:titleTextAttributes];
   
-  if (self.navigationItem.titleView && [self.navigationItem.titleView isKindOfClass:[RCCTitleView class]]) {
-    
-    RCCTitleView *titleView = (RCCTitleView *)self.navigationItem.titleView;
-    RCCTitleViewHelper *helper = [[RCCTitleViewHelper alloc] init:viewController navigationController:viewController.navigationController title:titleView.titleLabel.text subtitle:titleView.subtitleLabel.text titleImageData:nil isSetSubtitle:NO];
-    [helper setup:self.navigatorStyle];
-  }
-  
   NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarButton"];
   NSMutableDictionary *leftNavButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarLeftButton"];
   NSMutableDictionary *rightNavButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarRightButton"];
@@ -446,6 +439,20 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     viewController.navigationController.navigationBar.tintColor = nil;
   }
   
+  BOOL topBarElevationShadowEnabled = self.navigatorStyle[@"topBarElevationShadowEnabled"] != (id)[NSNull null] ? [RCTConvert CGFloat:self.navigatorStyle[@"topBarElevationShadowEnabled"]] : NO;
+
+  if (topBarElevationShadowEnabled) {
+    CGFloat shadowOpacity = self.navigatorStyle[@"topBarShadowOpacity"] != 0 ? [RCTConvert CGFloat:self.navigatorStyle[@"topBarShadowOpacity"]] : 0.2;
+    CGFloat shadowOffset = self.navigatorStyle[@"topBarShadowOffset"] != 0 ? [RCTConvert CGFloat:self.navigatorStyle[@"topBarShadowOffset"]] : 3.0;
+    CGFloat shadowRadius = self.navigatorStyle[@"topBarShadowRadius"] != 0 ? [RCTConvert CGFloat:self.navigatorStyle[@"topBarShadowRadius"]] : 2.0;
+    UIColor *shadowColor = self.navigatorStyle[@"topBarShadowColor"] != (id)[NSNull null] ? [RCTConvert UIColor:self.navigatorStyle[@"topBarShadowColor"]] : UIColor.blackColor;
+
+    viewController.navigationController.navigationBar.layer.shadowOpacity = shadowOpacity;
+    viewController.navigationController.navigationBar.layer.shadowColor = shadowColor.CGColor;
+    viewController.navigationController.navigationBar.layer.shadowOffset = CGSizeMake(0, shadowOffset);
+    viewController.navigationController.navigationBar.layer.shadowRadius = shadowRadius;
+  }
+
   BOOL viewControllerBasedStatusBar = false;
   
   NSObject *viewControllerBasedStatusBarAppearance = [[NSBundle mainBundle] infoDictionary][@"UIViewControllerBasedStatusBarAppearance"];
@@ -803,7 +810,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 - (BOOL)hidesBottomBarWhenPushed
 {
   if (!self._hidesBottomBarWhenPushed) return NO;
-  return (self.navigationController.topViewController == self);
+  return (self.navigationController.topViewController == self) && ![(RCCTabBarController*)self.tabBarController tabBarHidden];
 }
 
 - (BOOL)prefersStatusBarHidden
