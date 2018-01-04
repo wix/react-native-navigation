@@ -1,17 +1,29 @@
 #import "RNNSideMenuOptions.h"
+#import "RNNSideMenuController.h"
 
 @implementation RNNSideMenuOptions
 
--(instancetype)init {
-	return [self initWithDict:@{}];
-}
-
--(instancetype)initWithDict:(NSDictionary *)sideMenuOptions {
-	self = [super init];
-	
-	[self mergeWith:sideMenuOptions];
-	
-	return self;
+- (void)applyOn:(UIViewController *)viewController {
+	RNNSideMenuController* sideMenuController = (RNNSideMenuController*)UIApplication.sharedApplication.delegate.window.rootViewController;
+	if ([sideMenuController isKindOfClass:[RNNSideMenuController class]]) {
+		if (self.leftSideVisible) {
+			if (self.leftSideVisible.boolValue) {
+				[sideMenuController showSideMenu:MMDrawerSideLeft animated:YES];
+			} else {
+				[sideMenuController hideSideMenu:MMDrawerSideLeft animated:YES];
+			}
+		}
+		
+		if (self.rightSideVisible) {
+			if (self.rightSideVisible.boolValue) {
+				[sideMenuController showSideMenu:MMDrawerSideRight animated:YES];
+			} else {
+				[sideMenuController hideSideMenu:MMDrawerSideRight animated:YES];
+			}
+		}
+		
+		[self resetOptions];
+	}
 }
 
 -(void)mergeWith:(NSDictionary *)otherOptions {

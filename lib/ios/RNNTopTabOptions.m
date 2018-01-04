@@ -1,17 +1,12 @@
 #import "RNNTopTabOptions.h"
+#import "RNNRootViewController.h"
 
 @implementation RNNTopTabOptions
 
--(instancetype)init {
-	return [self initWithDict:@{}];
-}
-
--(instancetype)initWithDict:(NSDictionary *)tabBarOptions {
-	self = [super init];
-	
-	self.title = [tabBarOptions valueForKey:@"title"];
-	
-	return self;
+- (void)applyOn:(RNNRootViewController*)viewController {
+	if (self.title) {
+		[viewController.topTabsViewController viewController:viewController changedTitle:self.title];
+	}
 }
 
 -(void)mergeWith:(NSDictionary *)otherOptions {

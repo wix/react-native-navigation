@@ -25,10 +25,9 @@
 		   animator:(RNNAnimator*)animator;
 
 
--(void)applyNavigationButtons;
 -(void)applyTabBarItem;
 -(void)applyTopTabsOptions;
 
--(BOOL)isAnimated;
+-(BOOL)isCustomTransitioned;
 
 @end

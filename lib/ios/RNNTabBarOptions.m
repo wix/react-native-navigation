@@ -1,22 +1,35 @@
 #import "RNNTabBarOptions.h"
+#import "RNNTabBarController.h"
+extern const NSInteger BLUR_TOPBAR_TAG;
 
 @implementation RNNTabBarOptions
 
--(instancetype)init {
-	return [self initWithDict:@{}];
-}
-
--(instancetype)initWithDict:(NSDictionary *)tabBarOptions {
-	self = [super init];
+- (void)applyOn:(UIViewController *)viewController {
+	if (self.currentTabIndex) {
+		[viewController.tabBarController setSelectedIndex:[self.currentTabIndex unsignedIntegerValue]];
+	}
 	
-	self.hidden = [tabBarOptions valueForKey:@"hidden"];
-	self.animateHide = [tabBarOptions valueForKey:@"animateHide"];
-	self.currentTabIndex = [tabBarOptions valueForKey:@"currentTabIndex"];
-	self.testID = [tabBarOptions valueForKey:@"testID"];
-	self.currentTabId = [tabBarOptions valueForKey:@"currentTabId"];
-	self.drawUnder = [tabBarOptions valueForKey:@"drawUnder"];
+	if (self.currentTabId) {
+		[(RNNTabBarController*)viewController.tabBarController setSelectedIndexByContainerID:self.currentTabId];
+	}
 	
-	return self;
+	if (self.hidden) {
+		[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:[self.hidden boolValue] animated:[self.animateHide boolValue]];
+	}
+	
+	if (self.testID) {
+		viewController.tabBarController.tabBar.accessibilityIdentifier = self.testID;
+	}
+	
+	if (self.drawUnder) {
+		if ([self.drawUnder boolValue]) {
+			viewController.edgesForExtendedLayout |= UIRectEdgeBottom;
+		} else {
+			viewController.edgesForExtendedLayout &= ~UIRectEdgeBottom;
+		}
+	}
+	
+	[self resetOptions];
 }
 
 - (void)resetOptions {

@@ -1,9 +1,9 @@
-#import <Foundation/Foundation.h>
+#import "RNNOptions.h"
 
-extern const NSInteger BLUR_TOPBAR_TAG;
+@interface RNNTopBarOptions : RNNOptions
 
-@interface RNNTopBarOptions : NSObject
-
+@property (nonatomic, strong) NSArray* leftButtons;
+@property (nonatomic, strong) NSArray* rightButtons;
 @property (nonatomic, strong) NSNumber* backgroundColor;
 @property (nonatomic, strong) NSNumber* textColor;
 @property (nonatomic, strong) NSString* title;
@@ -20,9 +20,5 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) NSNumber* animateHide;
 @property (nonatomic, strong) NSNumber* largeTitle;
 @property (nonatomic, strong) NSString* testID;
-
--(instancetype)init;
--(instancetype)initWithDict:(NSDictionary *)topBarOptions;
--(void)mergeWith:(NSDictionary*)otherOptions;
 
 @end

@@ -5,14 +5,33 @@
 -(instancetype)initWithDict:(NSDictionary *)tabItemDict {
 	self = [super init];
 	
-	self.title = tabItemDict[@"title"];
+	[self mergeWith:tabItemDict];
 	self.tag = [tabItemDict[@"tag"] integerValue];
-	self.badge = tabItemDict[@"badge"];
-	self.testID = tabItemDict[@"testID"];
-	self.visible = tabItemDict[@"visible"];
-	self.icon = tabItemDict[@"icon"];
 	
 	return self;
+}
+
+- (void)applyOn:(UIViewController *)viewController {
+	if (self.title || self.icon) {
+		UITabBarItem* tabItem = [[UITabBarItem alloc] initWithTitle:self.title image:[RCTConvert UIImage:self.icon] tag:self.tag];
+		tabItem.accessibilityIdentifier = self.testID;
+		[viewController.navigationController setTabBarItem:tabItem];
+	}
+	
+	if (self.badge) {
+		NSString *badge = [RCTConvert NSString:self.badge];
+		if (viewController.navigationController) {
+			viewController.navigationController.tabBarItem.badgeValue = badge;
+		} else {
+			viewController.tabBarItem.badgeValue = badge;
+		}
+	}
+	
+	if (self.visible) {
+		[viewController.tabBarController setSelectedIndex:[viewController.tabBarController.viewControllers indexOfObject:viewController]];
+	}
+	
+	[self resetOptions];
 }
 
 -(void)mergeWith:(NSDictionary *)otherOptions {
