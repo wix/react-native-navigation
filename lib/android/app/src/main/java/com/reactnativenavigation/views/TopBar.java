@@ -11,17 +11,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.Number;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.anim.StackAnimator;
-import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
@@ -34,8 +29,10 @@ public class TopBar extends AppBarLayout {
     private final Toolbar titleBar;
     private Container container;
     private TopTabs topTabs;
+
     private EventDispatcher eventDispatcher;
     private ScrollEventListener scrollEventListener;
+    private boolean dragStarted;
 
     public TopBar(Context context, Container container, EventDispatcher eventDispatcher) {
         super(context);
@@ -165,6 +162,7 @@ public class TopBar extends AppBarLayout {
             @Override
             public void onVerticalScroll(int scrollY, int oldScrollY) {
                 if (scrollY < 0) return;
+                if (!dragStarted) return;
 
                 int measuredHeight = getMeasuredHeight();
                 int diff = scrollY - oldScrollY;
@@ -173,7 +171,7 @@ public class TopBar extends AppBarLayout {
                 }
                 float nextTranslation = getTranslationY() - diff;
                 if (diff < 0) {
-                    if (getVisibility() == View.GONE) {
+                    if (getVisibility() == View.GONE && nextTranslation > -measuredHeight) {
                         setVisibility(View.VISIBLE);
                         setTranslationY(nextTranslation);
                     } else if (nextTranslation <= 0 && nextTranslation >= -measuredHeight) {
@@ -182,6 +180,7 @@ public class TopBar extends AppBarLayout {
                 } else {
                     if (nextTranslation < -measuredHeight && getVisibility() == View.VISIBLE) {
                         setVisibility(View.GONE);
+                        setTranslationY(-measuredHeight);
                     } else if (nextTranslation > -measuredHeight && nextTranslation <= 0) {
                         setTranslationY(nextTranslation);
                     }
@@ -189,13 +188,15 @@ public class TopBar extends AppBarLayout {
             }
 
             @Override
-            public void onDragEnd() {
-                //TODO: needs refactoring
+            public void onDrag(boolean started, double velocity) {
+                dragStarted = started;
                 UiThread.post(() -> {
-                    if (getTranslationY() > (-getMeasuredHeight() / 2) && getTranslationY() < 0) {
-                        new StackAnimator(getContext()).animateShowTopBar(TopBar.this, null, getTranslationY());
-                    } else if (getTranslationY() < (-getMeasuredHeight() / 2) && getTranslationY() > -getMeasuredHeight()) {
-                        new StackAnimator(getContext()).animateHideTopBar(TopBar.this, null, getTranslationY());
+                    if (!dragStarted) {
+                        if (velocity > 0) {
+                            new StackAnimator(getContext()).animateShowTopBar(TopBar.this, null, getTranslationY());
+                        } else {
+                            new StackAnimator(getContext()).animateHideTopBar(TopBar.this, null, getTranslationY());
+                        }
                     }
                 });
             }

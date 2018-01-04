@@ -108,7 +108,9 @@ public class StackAnimator {
 	private float getWindowHeight(Context context) {
 		DisplayMetrics metrics = new DisplayMetrics();
 		WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-		windowManager.getDefaultDisplay().getMetrics(metrics);
+		if (windowManager != null) {
+			windowManager.getDefaultDisplay().getMetrics(metrics);
+		}
 		return metrics.heightPixels;
 	}
 
