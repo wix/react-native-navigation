@@ -12,3 +12,6 @@ If you prefer Mobx over Redux, show your interest in this [thread](https://githu
 
 ### MobX (w/ Provider) boilerplate
 Check out [this link](https://github.com/kanzitelli/react-native-navigation-mobx-boilerplate) to find a small boilerplate for RNN + MobX (w/ Provider).
+
+### redux-persist
+Boilerplate for integrating redux-persist can be found [here](https://stackoverflow.com/questions/47732500/react-native-navigation-and-redux-persist).
