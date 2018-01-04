@@ -136,7 +136,7 @@ public class TitleBar extends Toolbar {
     }
 
     private void setTopPadding(final StyleParams params) {
-        setPadding(0, params.titleBarTopPadding, 0,0);
+        setPadding(0, (int) ViewUtils.convertDpToPixel(params.titleBarTopPadding), 0,0);
     }
 
     private void colorOverflowButton(StyleParams params) {
