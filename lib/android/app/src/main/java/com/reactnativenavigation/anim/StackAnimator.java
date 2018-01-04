@@ -121,8 +121,7 @@ public class StackAnimator {
         topbarAnim.setInterpolator(DECELERATE_INTERPOLATOR);
         topbarAnim.setDuration(DURATION_TOPBAR);
 
-		AnimatorSet set = new AnimatorSet();
-		set.addListener(new Animator.AnimatorListener() {
+		topbarAnim.addListener(new Animator.AnimatorListener() {
 			@Override
 			public void onAnimationStart(Animator animation) {
 				topBar.setVisibility(View.VISIBLE);
@@ -157,8 +156,7 @@ public class StackAnimator {
         topbarAnim.setInterpolator(ACCELERATE_INTERPOLATOR);
         topbarAnim.setDuration(DURATION_TOPBAR);
 
-		AnimatorSet set = new AnimatorSet();
-		set.addListener(new Animator.AnimatorListener() {
+		topbarAnim.addListener(new Animator.AnimatorListener() {
 			@Override
 			public void onAnimationStart(Animator animation) {
 			}
