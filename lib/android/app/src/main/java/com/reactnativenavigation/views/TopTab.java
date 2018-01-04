@@ -42,4 +42,9 @@ public class TopTab extends FrameLayout implements IReactView {
 	public void sendContainerStop() {
 		reactView.sendContainerStop();
 	}
+
+    @Override
+    public void sendOnNavigationButtonPressed(String buttonId) {
+        reactView.sendOnNavigationButtonPressed(buttonId);
+    }
 }

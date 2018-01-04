@@ -10,6 +10,7 @@ import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabController;
+import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
 
 import java.util.List;
@@ -22,11 +23,10 @@ public class TopTabsLayout extends LinearLayout implements Container {
     private TopTabsViewPager viewPager;
     private final OptionsPresenter optionsPresenter;
 
-    public TopTabsLayout(Context context, List<TopTabController> tabs) {
+    public TopTabsLayout(Context context, List<TopTabController> tabs, TopTabsAdapter adapter) {
         super(context);
-        topBar = new TopBar(context);
-        this.tabs = tabs;
-        viewPager = new TopTabsViewPager(context, tabs);
+        topBar = new TopBar(context, this, null);
+        viewPager = new TopTabsViewPager(context, tabs, adapter);
         optionsPresenter = new OptionsPresenter(topBar, viewPager);
         initViews();
     }
@@ -41,6 +41,11 @@ public class TopTabsLayout extends LinearLayout implements Container {
     @Override
     public void applyOptions(NavigationOptions options) {
         optionsPresenter.applyOptions(options);
+    }
+
+    @Override
+    public void sendOnNavigationButtonPressed(String id) {
+        viewPager.sendOnNavigationButtonPressed(id);
     }
 
     @Override
@@ -61,5 +66,9 @@ public class TopTabsLayout extends LinearLayout implements Container {
 
     public void switchToTab(int index) {
         viewPager.setCurrentItem(index);
+    }
+
+    public int getCurrentItem() {
+        return viewPager.getCurrentItem();
     }
 }

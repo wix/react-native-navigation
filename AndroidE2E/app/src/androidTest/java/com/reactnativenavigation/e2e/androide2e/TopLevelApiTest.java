@@ -25,7 +25,7 @@ public class TopLevelApiTest extends BaseTest {
 	public void switchToTabsWithSideMenu() throws Exception {
 		elementByText("SWITCH TO APP WITH SIDE MENUS").click();
 		assertExists(By.textStartsWith("This is a side menu center screen tab 1"));
-		swipeOpenLeftSideMenu();
+		swipeOpenFromLeft();
 		assertExists(By.text("This is a left side menu screen"));
 	}
 }

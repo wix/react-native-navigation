@@ -174,7 +174,7 @@
 
 -(void)testTabBadge {
 	NSString* tabBadgeInput = @"5";
-	self.options.bottomTabs.tabBadge = tabBadgeInput;
+	self.options.tabItem.badge = tabBadgeInput;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
 	UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"A Tab" image:nil tag:1];
@@ -511,6 +511,22 @@
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	XCTAssertNotNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
+}
+
+-(void)testBackgroundImage {
+	UIImage* backgroundImage = [[UIImage alloc] init];
+	self.options.backgroundImage = backgroundImage;
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:backgroundImage]);
+}
+
+-(void)testRootBackgroundImage {
+	UIImage* rootBackgroundImage = [[UIImage alloc] init];
+	self.options.rootBackgroundImage = rootBackgroundImage;
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	XCTAssertTrue([[(UIImageView*)self.uut.navigationController.view.subviews[0] image] isEqual:rootBackgroundImage]);
 }
 
 -(void)testTopBarDrawUnder_true {

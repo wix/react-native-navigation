@@ -8,10 +8,13 @@ import com.reactnativenavigation.mocks.TopTabLayoutMock;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController.IReactView;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabController;
+import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
 import com.reactnativenavigation.views.TopTabsLayout;
+import com.reactnativenavigation.views.TopTabsLayoutCreator;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,8 @@ public class TopTabsViewControllerTest extends BaseTest {
     private List<TopTabLayoutMock> tabs = new ArrayList<>(SIZE);
     private List<TopTabController> tabControllers = new ArrayList<>(SIZE);
     private List<NavigationOptions> tabOptions = new ArrayList<>(SIZE);
+    private NavigationOptions navigationOptions;
+    private TopTabsLayout topTabsLayout;
 
     @Override
     public void beforeEach() {
@@ -36,7 +41,12 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabs.clear();
         Activity activity = newActivity();
         createTabs(activity);
-        uut = new TopTabsController(activity, "containerId", tabControllers);
+        navigationOptions = new NavigationOptions();
+        topTabsLayout = spy(new TopTabsLayout(activity, tabControllers, new TopTabsAdapter(tabControllers)));
+
+        TopTabsLayoutCreator layoutCreator = Mockito.mock(TopTabsLayoutCreator.class);
+        Mockito.when(layoutCreator.create()).thenReturn(topTabsLayout);
+        uut = new TopTabsController(activity, "containerId", tabControllers, layoutCreator, navigationOptions);
     }
 
     private void createTabs(Activity activity) {
@@ -114,6 +124,13 @@ public class TopTabsViewControllerTest extends BaseTest {
         verify(tabControllers.get(1), times(1)).applyOptions(tabOptions.get(1));
         uut.switchToTab(0);
         verify(tabControllers.get(0), times(2)).applyOptions(tabOptions.get(0));
+    }
+
+    @Test
+    public void appliesOptionsOnLayoutWhenVisible() throws Exception {
+        uut.ensureViewIsCreated();
+        uut.onViewAppeared();
+        verify(topTabsLayout, times(1)).applyOptions(navigationOptions);
     }
 
     private IReactView tab(TopTabsLayout topTabs, final int index) {

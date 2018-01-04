@@ -11,11 +11,17 @@
 	
 	self.hidden = [tabBarOptions valueForKey:@"hidden"];
 	self.animateHide = [tabBarOptions valueForKey:@"animateHide"];
-	self.tabBadge = [tabBarOptions valueForKey:@"tabBadge"];
 	self.currentTabIndex = [tabBarOptions valueForKey:@"currentTabIndex"];
 	self.testID = [tabBarOptions valueForKey:@"testID"];
+	self.currentTabId = [tabBarOptions valueForKey:@"currentTabId"];
+	self.drawUnder = [tabBarOptions valueForKey:@"drawUnder"];
 	
 	return self;
+}
+
+- (void)resetOptions {
+	self.currentTabId = nil;
+	self.currentTabIndex = nil;
 }
 
 -(void)mergeWith:(NSDictionary *)otherOptions {

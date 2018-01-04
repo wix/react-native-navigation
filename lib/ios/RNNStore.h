@@ -3,7 +3,7 @@
 #import <UIKit/UIKit.h>
 #import "RNNRootViewController.h"
 
-typedef void (^RNNTransitionCompletionBlock)(id result);
+typedef void (^RNNTransitionCompletionBlock)(void);
 
 @interface RNNStore : NSObject
 

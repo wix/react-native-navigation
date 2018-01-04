@@ -1,24 +1,20 @@
 package com.reactnativenavigation.presentation;
 
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
+import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
-import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.views.TopBar;
 
-import static android.widget.RelativeLayout.BELOW;
-import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions;
-import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.False;
-import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.True;
+import java.util.ArrayList;
 
 public class OptionsPresenter {
 
-    private final StackAnimator animator;
+	private final StackAnimator animator;
     private View contentView;
     private TopBar topBar;
 
@@ -30,7 +26,9 @@ public class OptionsPresenter {
 
     public void applyOptions(NavigationOptions options) {
         applyTopBarOptions(options.topBarOptions);
+        applyButtons(options.leftButtons, options.rightButtons);
         applyTopTabsOptions(options.topTabsOptions);
+        applyTopTabOptions(options.topTabOptions);
     }
 
     private void applyTopBarOptions(TopBarOptions options) {
@@ -39,55 +37,49 @@ public class OptionsPresenter {
         topBar.setTitleTextColor(options.textColor);
         topBar.setTitleFontSize(options.textFontSize);
 
-        TypefaceLoader typefaceLoader = new TypefaceLoader();
-        topBar.setTitleTypeface(typefaceLoader.getTypeFace(topBar.getContext(), options.textFontFamily));
-
-        if (options.hidden == True) {
+        topBar.setTitleTypeface(options.textFontFamily);
+        if (options.hidden == NavigationOptions.BooleanOptions.True) {
             hideTopBar(options.animateHide);
-        } else if (options.hidden == False) {
+        }
+        if (options.hidden == NavigationOptions.BooleanOptions.False) {
             showTopBar(options.animateHide);
         }
-
-        if (options.collapse == True) {
-            topBar.enableCollapse();
-        } else if (options.collapse == False) {
-            topBar.disableCollapse();
-        }
-
-        if (options.drawUnder == True) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
-            layoutParams.removeRule(BELOW);
-            contentView.setLayoutParams(layoutParams);
-        } else if (options.drawUnder == False) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
-            layoutParams.addRule(BELOW, topBar.getId());
-            contentView.setLayoutParams(layoutParams);
-        }
     }
 
-    private void showTopBar(BooleanOptions animated) {
-        if (topBar.getVisibility() == View.VISIBLE) {
-            return;
-        }
-        if (animated == True) {
-            animator.animateShowTopBar(topBar, contentView);
-        } else {
-            topBar.setVisibility(View.VISIBLE);
-        }
+	private void showTopBar(NavigationOptions.BooleanOptions animated) {
+		if (topBar.getVisibility() == View.VISIBLE) {
+			return;
+		}
+		if (animated == NavigationOptions.BooleanOptions.True) {
+			animator.animateShowTopBar(topBar, contentView);
+		} else {
+			topBar.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private void hideTopBar(NavigationOptions.BooleanOptions animated) {
+		if (topBar.getVisibility() == View.GONE) {
+			return;
+		}
+		if (animated == NavigationOptions.BooleanOptions.True) {
+			animator.animateHideTopBar(topBar, contentView);
+		} else {
+			topBar.setVisibility(View.GONE);
+		}
+	}
+
+    private void applyButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
+        topBar.setButtons(leftButtons, rightButtons);
     }
 
-    private void hideTopBar(BooleanOptions animated) {
-        if (topBar.getVisibility() == View.GONE) {
-            return;
-        }
-        if (animated == True) {
-            animator.animateHideTopBar(topBar, contentView);
-        } else {
-            topBar.setVisibility(View.GONE);
-        }
+    private void applyTopTabsOptions(TopTabsOptions options) {
+        topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
+        topBar.applyTopTabsFontSize(options.fontSize);
     }
 
-    private void applyTopTabsOptions(TopTabsOptions topTabsOptions) {
-        // TODO: -guyca
+    private void applyTopTabOptions(TopTabOptions topTabOptions) {
+        if (topTabOptions.fontFamily != null) {
+            topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
+        }
     }
 }

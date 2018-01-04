@@ -2,3 +2,17 @@
  - [Installation - iOS](/docs/installation-ios)
  - [Installation - Android](/docs/installation-android)
  - [Usage](/docs/usage)
+- API
+ - [Top Level](/docs/Navigation)
+- Params
+ - [Root](/docs/Root)
+ - [Container](/docs/Container)
+ - [SideMenu](/docs/SideMenu)
+- Options
+ - [NavigationOptions](/docs/options/NavigationOptions)
+ - [TopBar](/docs/options/TopBar)
+ - [TopTabs](/docs/options/TopTabs)
+ - [TopTab](/docs/options/TopTab)
+ - [Button](/docs/options/Button)
+ - [BottomTabs](/docs/options/BottomTabs)
+ - [BottomTab](/docs/options/BottomTab)

@@ -6,12 +6,16 @@
 #import "RNNEventEmitter.h"
 #import "RNNNavigationOptions.h"
 #import "RNNAnimator.h"
+#import "RNNTopTabsViewController.h"
+#import "RNNRootViewProtocol.h"
 
-@interface RNNRootViewController : UIViewController	<UINavigationControllerDelegate>
+@interface RNNRootViewController : UIViewController	<RNNRootViewProtocol>
+
 @property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
 @property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic, strong) NSString* containerId;
+@property (nonatomic, strong) RNNTopTabsViewController* topTabsViewController;
 
 -(instancetype)initWithName:(NSString*)name
 				withOptions:(RNNNavigationOptions*)options
@@ -22,6 +26,9 @@
 
 
 -(void)applyNavigationButtons;
+-(void)applyTabBarItem;
+-(void)applyTopTabsOptions;
+
 -(BOOL)isAnimated;
 
 @end

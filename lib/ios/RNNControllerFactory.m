@@ -7,11 +7,13 @@
 #import "RNNNavigationOptions.h"
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
+#import "RNNTopTabsViewController.h"
 
 @implementation RNNControllerFactory {
 	id<RNNRootViewCreator> _creator;
 	RNNStore *_store;
 	RNNEventEmitter *_eventEmitter;
+	RCTBridge *_bridge;
 }
 
 # pragma mark public
@@ -19,28 +21,30 @@
 
 - (instancetype)initWithRootViewCreator:(id <RNNRootViewCreator>)creator
 								  store:(RNNStore *)store
-						   eventEmitter:(RNNEventEmitter*)eventEmitter {
+						   eventEmitter:(RNNEventEmitter*)eventEmitter
+							  andBridge:(RCTBridge *)bridge {
 	
 	self = [super init];
 	_creator = creator;
 	_store = store;
 	_eventEmitter = eventEmitter;
+	_bridge = bridge;
 	
 	return self;
 }
 
-- (UIViewController*)createLayoutAndSaveToStore:(NSDictionary*)layout {
+- (UIViewController<RNNRootViewProtocol> *)createLayoutAndSaveToStore:(NSDictionary*)layout {
 	return [self fromTree:layout];
 }
 
 # pragma mark private
 
-- (UIViewController*)fromTree:(NSDictionary*)json {
+- (UIViewController<RNNRootViewProtocol> *)fromTree:(NSDictionary*)json {
 	RNNLayoutNode* node = [RNNLayoutNode create:json];
 	
-	UIViewController* result;
+	UIViewController<RNNRootViewProtocol> *result;
 	
-	if ( node.isContainer) {
+	if ( node.isContainer || node.isTopTab) {
 		result = [self createContainer:node];
 	}
 	
@@ -50,6 +54,10 @@
 	
 	else if (node.isTabs) {
 		result = [self createTabs:node];
+	}
+	
+	else if (node.isTopTabs) {
+		result = [self createTopTabs:node];
 	}
 	
 	else if (node.isSideMenuRoot) {
@@ -76,16 +84,20 @@
 	return result;
 }
 
-- (RNNRootViewController*)createContainer:(RNNLayoutNode*)node {
+- (UIViewController<RNNRootViewProtocol> *)createContainer:(RNNLayoutNode*)node {
 	NSString* name = node.data[@"name"];
 	NSDictionary* customTransition = node.data[@"customTransition"];
 	RNNAnimator* animator = [[RNNAnimator alloc] initWithAnimationsDictionary:customTransition];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"navigationOptions"]];
 	NSString* containerId = node.nodeId;
-	return [[RNNRootViewController alloc] initWithName:name withOptions:options withContainerId:containerId rootViewCreator:_creator eventEmitter:_eventEmitter animator:animator];
+	RNNRootViewController* container = [[RNNRootViewController alloc] initWithName:name withOptions:options withContainerId:containerId rootViewCreator:_creator eventEmitter:_eventEmitter animator:animator];
+	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
+	[_bridge.uiManager setAvailableSize:availableSize forRootView:container.view];
+	
+	return container;
 }
 
-- (RNNNavigationController*)createContainerStack:(RNNLayoutNode*)node {
+- (UIViewController<RNNRootViewProtocol> *)createContainerStack:(RNNLayoutNode*)node {
 	RNNNavigationController* vc = [[RNNNavigationController alloc] init];
 	
 	NSMutableArray* controllers = [NSMutableArray new];
@@ -97,15 +109,15 @@
 	return vc;
 }
 
--(RNNTabBarController*)createTabs:(RNNLayoutNode*)node {
+-(UIViewController<RNNRootViewProtocol> *)createTabs:(RNNLayoutNode*)node {
 	RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
-		UIViewController* childVc = [self fromTree:child];
+		UIViewController* childVc = (UIViewController*)[self fromTree:child];
+		RNNRootViewController* rootView = (RNNRootViewController *)childVc.childViewControllers.firstObject;
+		[rootView applyTabBarItem];
 		
-		UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"A Tab" image:nil tag:1];
-		[childVc setTabBarItem:item];
 		[controllers addObject:childVc];
 	}
 	[vc setViewControllers:controllers];
@@ -113,7 +125,23 @@
 	return vc;
 }
 
-- (UIViewController*)createSideMenu:(RNNLayoutNode*)node {
+- (UIViewController<RNNRootViewProtocol> *)createTopTabs:(RNNLayoutNode*)node {
+	RNNTopTabsViewController* vc = [[RNNTopTabsViewController alloc] init];
+	
+	NSMutableArray* controllers = [NSMutableArray new];
+	for (NSDictionary *child in node.children) {
+		RNNRootViewController* childVc = (RNNRootViewController*)[self fromTree:child];
+		childVc.topTabsViewController = vc;
+		[controllers addObject:childVc];
+		[_bridge.uiManager setAvailableSize:vc.contentView.bounds.size forRootView:childVc.view];
+	}
+	
+	[vc setViewControllers:controllers];
+	
+	return vc;
+}
+
+- (UIViewController<RNNRootViewProtocol> *)createSideMenu:(RNNLayoutNode*)node {
 	NSMutableArray* childrenVCs = [NSMutableArray new];
 	
 	
@@ -126,8 +154,8 @@
 }
 
 
-- (UIViewController*)createSideMenuChild:(RNNLayoutNode*)node type:(RNNSideMenuChildType)type {
-	UIViewController* child = [self fromTree:node.children[0]];
+- (UIViewController<RNNRootViewProtocol> *)createSideMenuChild:(RNNLayoutNode*)node type:(RNNSideMenuChildType)type {
+	UIViewController* child = (UIViewController*)[self fromTree:node.children[0]];
 	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithChild: child type:type];
 	
 	return sideMenuChild;

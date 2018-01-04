@@ -1,7 +1,8 @@
 const React = require('react');
 const { PureComponent } = require('react');
-
-const { View, Text } = require('react-native');
+const testIDs = require('../testIDs');
+const { View, Text, Button } = require('react-native');
+const Navigation = require('react-native-navigation');
 
 class TopTabOptionsScreen extends PureComponent {
   static get navigationOptions() {
@@ -15,13 +16,32 @@ class TopTabOptionsScreen extends PureComponent {
     };
   }
 
+  constructor(props) {
+    super(props);
+    this.onClickDynamicOptions = this.onClickDynamicOptions.bind(this);
+  }
+
   render() {
     return (
       <View style={styles.root}>
         <Text style={styles.h1}>{this.props.text || 'Top Tab Screen'}</Text>
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
+        <Button title="Dynamic Options" testID={testIDs.DYNAMIC_OPTIONS_BUTTON} onPress={this.onClickDynamicOptions} />
       </View>
     );
+  }
+
+  onClickDynamicOptions() {
+    Navigation.setOptions(this.props.containerId, {
+      topBar: {
+        title: 'Dynamic Title',
+        textColor: '#00FFFF',
+        largeTitle: false,
+        buttonColor: 'red',
+        textFontSize: 20,
+        textFontFamily: 'HelveticaNeue-CondensedBold'
+      }
+    });
   }
 }
 

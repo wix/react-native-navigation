@@ -35,4 +35,9 @@ public class TopTabLayoutMock extends View implements ContainerViewController.IR
     public void sendContainerStop() {
 
     }
+
+    @Override
+    public void sendOnNavigationButtonPressed(String buttonId) {
+
+    }
 }

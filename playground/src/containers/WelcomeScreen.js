@@ -53,6 +53,12 @@ class WelcomeScreen extends Component {
             passProps: {
               text: 'This is tab 1',
               myFunction: () => 'Hello from a function!'
+            },
+            navigationOptions: {
+              bottomTab: {
+                title: 'Tab 1',
+                testID: testIDs.FIRST_TAB_BAR_BUTTON
+              }
             }
           }
         },
@@ -61,6 +67,12 @@ class WelcomeScreen extends Component {
             name: 'navigation.playground.TextScreen',
             passProps: {
               text: 'This is tab 2'
+            },
+            navigationOptions: {
+              bottomTab: {
+                title: 'Tab 2',
+                testID: testIDs.SECOND_TAB_BAR_BUTTON
+              }
             }
           }
         }
@@ -170,7 +182,8 @@ class WelcomeScreen extends Component {
           },
           navigationOptions: {
             topTab: {
-              title: 'Tab 2'
+              title: 'Tab 2',
+              titleFontFamily: 'Dosis-Regular'
             }
           }
         },
@@ -186,7 +199,14 @@ class WelcomeScreen extends Component {
             }
           }
         }
-      ]
+      ],
+      navigationOptions: {
+        topTabs: {
+          selectedTabColor: '#12766b',
+          unselectedTabColor: 'red',
+          fontSize: 6
+        }
+      }
     });
   }
 

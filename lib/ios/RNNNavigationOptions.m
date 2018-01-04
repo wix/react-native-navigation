@@ -4,6 +4,7 @@
 #import "RNNTabBarController.h"
 #import "RNNTopBarOptions.h"
 #import "RNNSideMenuController.h"
+#import "RNNRootViewController.h"
 
 const NSInteger BLUR_STATUS_TAG = 78264801;
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
@@ -26,9 +27,13 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.leftButtons = [navigationOptions objectForKey:@"leftButtons"];
 	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
 	self.topBar = [[RNNTopBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"topBar"]];
+	self.topTab = [[RNNTopTabOptions alloc] initWithDict:[navigationOptions objectForKey:@"topTab"]];
 	self.bottomTabs = [[RNNTabBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTabs"]];
 	self.sideMenu = [[RNNSideMenuOptions alloc] initWithDict:[navigationOptions objectForKey:@"sideMenu"]];
-	
+	self.backgroundImage = [RCTConvert UIImage:[navigationOptions objectForKey:@"backgroundImage"]];
+	self.rootBackgroundImage = [RCTConvert UIImage:[navigationOptions objectForKey:@"rootBackgroundImage"]];
+	self.tabItem = [[RNNTabItemOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTab"]];
+    
 	return self;
 }
 
@@ -38,8 +43,12 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 			[self.topBar mergeWith:[otherOptions objectForKey:key]];
 		} else if ([key isEqualToString:@"bottomTabs"]) {
 			[self.bottomTabs mergeWith:[otherOptions objectForKey:key]];
+		} else if ([key isEqualToString:@"topTab"]) {
+			[self.topTab mergeWith:[otherOptions objectForKey:key]];
 		} else if ([key isEqualToString:@"sideMenu"]) {
 			[self.sideMenu mergeWith:[otherOptions objectForKey:@"sideMenu"]];
+		} else if ([key isEqualToString:@"bottomTab"]) {
+			[self.tabItem mergeWith:[otherOptions objectForKey:key]];
 		} else {
 			[self setValue:[otherOptions objectForKey:key] forKey:key];
 		}
@@ -89,6 +98,10 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.topBar.textFontSize floatValue]];
 			}
 			viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
+			if (@available(iOS 11.0, *)){
+				viewController.navigationController.navigationBar.largeTitleTextAttributes = navigationBarTitleTextAttributes;
+			}
+			
 		}
 		
 		
@@ -193,17 +206,14 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	}
 	
 	if (self.bottomTabs) {
-		if (self.bottomTabs.tabBadge) {
-			NSString *badge = [RCTConvert NSString:self.bottomTabs.tabBadge];
-			if (viewController.navigationController) {
-				viewController.navigationController.tabBarItem.badgeValue = badge;
-			} else {
-				viewController.tabBarItem.badgeValue = badge;
-			}
-		}
 		if (self.bottomTabs.currentTabIndex) {
 			[viewController.tabBarController setSelectedIndex:[self.bottomTabs.currentTabIndex unsignedIntegerValue]];
 		}
+		
+		if (self.bottomTabs.currentTabId) {
+			[(RNNTabBarController*)viewController.tabBarController setSelectedIndexByContainerID:self.bottomTabs.currentTabId];
+		}
+		
 		if (self.bottomTabs.hidden) {
 			[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:[self.bottomTabs.hidden boolValue] animated:[self.bottomTabs.animateHide boolValue]];
 		}
@@ -219,6 +229,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 				viewController.edgesForExtendedLayout &= ~UIRectEdgeBottom;
 			}
 		}
+		
+		[self.bottomTabs resetOptions];
 	}
 	
 	if (self.statusBarBlur) {
@@ -256,6 +268,66 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		}
 		
 		[self.sideMenu resetOptions];
+	}
+	
+	if (self.backgroundImage) {
+		UIImageView* backgroundImageView = (viewController.view.subviews.count > 0) ? viewController.view.subviews[0] : nil;
+		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
+			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
+			[viewController.view insertSubview:backgroundImageView atIndex:0];
+		}
+		
+		backgroundImageView.layer.masksToBounds = YES;
+		backgroundImageView.image = self.backgroundImage;
+		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+	}
+	
+	if (self.rootBackgroundImage) {
+		UIImageView* backgroundImageView = (viewController.navigationController.view.subviews.count > 0) ? viewController.navigationController.view.subviews[0] : nil;
+		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
+			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
+			[viewController.navigationController.view insertSubview:backgroundImageView atIndex:0];
+		}
+		
+		backgroundImageView.layer.masksToBounds = YES;
+		backgroundImageView.image = self.rootBackgroundImage;
+		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+	}
+	
+	[self applyTabBarItemOptions:viewController];
+	[self applyTopTab:viewController];
+}
+
+- (void)applyTopTab:(RNNRootViewController*)viewController {
+	if (self.topTab) {
+		if (self.topTab.title) {
+			[viewController.topTabsViewController viewController:viewController changedTitle:self.topTab.title];
+		}
+	}
+}
+
+- (void)applyTabBarItemOptions:(UIViewController*)viewController {
+	if (self.tabItem) {
+		if (self.tabItem.title || self.tabItem.icon) {
+			UITabBarItem* tabItem = [[UITabBarItem alloc] initWithTitle:self.tabItem.title image:[RCTConvert UIImage:self.tabItem.icon] tag:self.tabItem.tag];
+			tabItem.accessibilityIdentifier = self.tabItem.testID;
+			[viewController.navigationController setTabBarItem:tabItem];
+		}
+		
+		if (self.tabItem.badge) {
+			NSString *badge = [RCTConvert NSString:self.tabItem.badge];
+			if (viewController.navigationController) {
+				viewController.navigationController.tabBarItem.badgeValue = badge;
+			} else {
+				viewController.tabBarItem.badgeValue = badge;
+			}
+		}
+		
+		if (self.tabItem.visible) {
+			[viewController.tabBarController setSelectedIndex:[viewController.tabBarController.viewControllers indexOfObject:viewController]];
+		}
+		
+		[self.tabItem resetOptions];
 	}
 }
 

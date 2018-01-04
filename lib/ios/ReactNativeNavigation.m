@@ -69,8 +69,8 @@
 	RNNEventEmitter *eventEmitter = [[RNNEventEmitter alloc] init];
 	
 	id<RNNRootViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge];
-	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator store:_store eventEmitter:eventEmitter];
-	_commandsHandler = [[RNNCommandsHandler alloc] initWithStore:_store controllerFactory:controllerFactory andBridge:bridge];
+	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator store:_store eventEmitter:eventEmitter andBridge:bridge];
+	_commandsHandler = [[RNNCommandsHandler alloc] initWithStore:_store controllerFactory:controllerFactory];
 	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
 	
 	return @[bridgeModule,eventEmitter];
@@ -87,6 +87,10 @@
 	[[_bridge moduleForClass:[RNNEventEmitter class]] sendOnAppLaunched];
 }
 
+-(void)onBridgeWillReload {
+	UIApplication.sharedApplication.delegate.window.rootViewController =  nil;
+}
+
 # pragma mark - private
 
 -(void)createBridgeLoadJsAndThenInitDependencyGraph {
@@ -101,6 +105,10 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(onJavaScriptWillLoad)
 												 name:RCTJavaScriptWillStartLoadingNotification
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(onBridgeWillReload)
+												 name:RCTBridgeWillReloadNotification
 											   object:nil];
 }
 

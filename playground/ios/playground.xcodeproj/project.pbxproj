@@ -218,6 +218,34 @@
 			remoteGlobalIDString = 2D2A28881D9B049200D4039D;
 			remoteInfo = "RCTWebSocket-tvOS";
 		};
+		E8CB6AA71FF10BC4007C82EF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B8F2FCA1E840F3600110AEC /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 139D7ECE1E25DB7D00323FB7;
+			remoteInfo = "third-party";
+		};
+		E8CB6AA91FF10BC4007C82EF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B8F2FCA1E840F3600110AEC /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D383D3C1EBD27B6005632C8;
+			remoteInfo = "third-party-tvOS";
+		};
+		E8CB6AAB1FF10BC4007C82EF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B8F2FCA1E840F3600110AEC /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 139D7E881E25C6D100323FB7;
+			remoteInfo = "double-conversion";
+		};
+		E8CB6AAD1FF10BC4007C82EF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B8F2FCA1E840F3600110AEC /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D383D621EBD27B9005632C8;
+			remoteInfo = "double-conversion-tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -301,6 +329,10 @@
 				7B8F2FE01E840F3600110AEC /* libcxxreact.a */,
 				7B8F2FE21E840F3600110AEC /* libjschelpers.a */,
 				7B8F2FE41E840F3600110AEC /* libjschelpers.a */,
+				E8CB6AA81FF10BC4007C82EF /* libthird-party.a */,
+				E8CB6AAA1FF10BC4007C82EF /* libthird-party.a */,
+				E8CB6AAC1FF10BC4007C82EF /* libdouble-conversion.a */,
+				E8CB6AAE1FF10BC4007C82EF /* libdouble-conversion.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -724,6 +756,34 @@
 			remoteRef = 7B8F30471E8412E100110AEC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		E8CB6AA81FF10BC4007C82EF /* libthird-party.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libthird-party.a";
+			remoteRef = E8CB6AA71FF10BC4007C82EF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E8CB6AAA1FF10BC4007C82EF /* libthird-party.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libthird-party.a";
+			remoteRef = E8CB6AA91FF10BC4007C82EF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E8CB6AAC1FF10BC4007C82EF /* libdouble-conversion.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libdouble-conversion.a";
+			remoteRef = E8CB6AAB1FF10BC4007C82EF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E8CB6AAE1FF10BC4007C82EF /* libdouble-conversion.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libdouble-conversion.a";
+			remoteRef = E8CB6AAD1FF10BC4007C82EF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -751,7 +811,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../../node_modules/react-native/packager/react-native-xcode.sh ./playground/index.ios.js";
+			shellScript = "export NODE_BINARY=node\n../../node_modules/react-native/scripts/react-native-xcode.sh ./playground/index.ios.js";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -13,7 +13,7 @@ We are rebuilding react-native-navigation
 ## Why Rebuild react-native-navigation?
 
 ### A New & Improved Core Architecture
-react-native-navigation has a few issues which are unsolvable in its current architecture. These issues stem from the same problem: you cannot specify on which screen you wish to make an action. Whenever you want to push a screen, show a modal or any other action, the action defaults to originate from your current screen. In most cases this is fine, but becoms problematic in specific edge cases. For example: <br>
+react-native-navigation has a few issues which are unsolvable in its current architecture. These issues stem from the same problem: you cannot specify on which screen you wish to make an action. Whenever you want to push a screen, show a modal or any other action, the action defaults to originate from your current screen. In most cases this is fine, but becomes problematic in specific edge cases. For example: <br>
 * What if you want to update your navbar icons and the user pops the screen? Your icons might update on the wrong screen.
 * What if you want to push a screen as a result of a redux action?
 
@@ -103,14 +103,13 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 
 |       buttons        | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
-| id    |   ✅      |      [Contribute](/docs/docs/CONTRIBUTING.md)    |@Johan-dutoit|
-| testID   |     ✅   |    [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit|
-| color             |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @Johan-dutoit|
-| icon          |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       | @Johan-dutoit|
-| disableTint        |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit|
-| fontSize        |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit |
-| fontWeight        |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit |
-| fontWeight        |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | @Johan-dutoit |
+| id    |   ✅      |     @Johan-dutoit  |@Johan-dutoit|
+| testID   |     ✅   |   [Contribute](/docs/docs/CONTRIBUTING.md)  | @Johan-dutoit|
+| color             |    ✅     |     @Johan-dutoit     | @Johan-dutoit|
+| icon          |   ✅     |    @Johan-dutoit     | @Johan-dutoit|
+| disableTint        |    ✅       |    @Johan-dutoit    | @Johan-dutoit|
+| fontSize        |    ✅       |    @Johan-dutoit    | @Johan-dutoit |
+| fontWeight        |    ✅       |    [Contribute](/docs/docs/CONTRIBUTING.md)   |  [Contribute](/docs/docs/CONTRIBUTING.md) |
 
 |       statusBar        | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
@@ -125,8 +124,8 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | screenBackgroundColor        |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       |  Wix|
 | orientation       |    ✅     |   [Contribute](/docs/docs/CONTRIBUTING.md)          | Wix|
 | disabledBackGesture        |    ✅     |    / iOS specific     |
-| screenBackgroundImageName        |   [Contribute](/docs/docs/CONTRIBUTING.md)      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
-| rootBackgroundImageName              |    [Contribute](/docs/docs/CONTRIBUTING.md)     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
+| screenBackgroundImageName        |   ✅      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
+| rootBackgroundImageName              |    ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
 | sideMenuVisible          |        [Contribute](/docs/docs/CONTRIBUTING.md)   | [Contribute](/docs/docs/CONTRIBUTING.md) |
 
 
@@ -193,8 +192,8 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | statusBarHideWithTopBar        |  ✅   |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
 | statusBarHidden       |  ✅   |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | WIX |
 | disabledBackGesture       |   ✅  |   ✅  |    / iOS specific     |
-| screenBackgroundImageName         |   ✅  |   [Contribute](/docs/docs/CONTRIBUTING.md)      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
-| rootBackgroundImageName            |  ✅   |    [Contribute](/docs/docs/CONTRIBUTING.md)     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
+| screenBackgroundImageName         |   ✅  |   ✅      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
+| rootBackgroundImageName            |  ✅   |    ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
 | setButtons          |   ✅     |    ✅    | [Contribute](/docs/docs/CONTRIBUTING.md) | @Johan-dutoit|
 | title            |   ✅     |        	✅    | 	✅| Wix|
 | toggleDrawer        |   ✅     |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md) |

@@ -33,4 +33,8 @@
 	return self;
 }
 
+- (BOOL)isAnimated {
+	return NO;
+}
+
 @end

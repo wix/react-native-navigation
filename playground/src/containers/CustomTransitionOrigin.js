@@ -13,7 +13,8 @@ class CustomTransitionOrigin extends Component {
       topBar: {
         textFontFamily: 'HelveticaNeue-Italic',
         textFontSize: 16,
-        largeTitle: false
+        largeTitle: false,
+        translucent: true
       }
     };
   }

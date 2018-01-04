@@ -2,7 +2,11 @@ package com.reactnativenavigation.parse;
 
 import android.support.annotation.NonNull;
 
+import com.reactnativenavigation.utils.TypefaceLoader;
+
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class NavigationOptions implements DEFAULT_VALUES {
 
@@ -20,33 +24,45 @@ public class NavigationOptions implements DEFAULT_VALUES {
 	}
 
     @NonNull
-    public static NavigationOptions parse(JSONObject json) {
-        return parse(json, new NavigationOptions());
+    public static NavigationOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
+        return parse(typefaceManager, json, new NavigationOptions());
     }
 
 	@NonNull
-	public static NavigationOptions parse(JSONObject json, @NonNull NavigationOptions defaultOptions) {
+	public static NavigationOptions parse(TypefaceLoader typefaceManager, JSONObject json, @NonNull NavigationOptions defaultOptions) {
 		NavigationOptions result = new NavigationOptions();
 		if (json == null) return result;
 
-		result.topBarOptions = TopBarOptions.parse(json.optJSONObject("topBar"));
+		result.topBarOptions = TopBarOptions.parse(typefaceManager, json.optJSONObject("topBar"));
 		result.topTabsOptions = TopTabsOptions.parse(json.optJSONObject("topTabs"));
-        result.topTabOptions = TopTabOptions.parse(json.optJSONObject("topTab"));
+        result.topTabOptions = TopTabOptions.parse(typefaceManager, json.optJSONObject("topTab"));
 		result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
+		result.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
+        result.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"));
 
 		return result.withDefaultOptions(defaultOptions);
 	}
 
-	public TopBarOptions topBarOptions = new TopBarOptions();
-    public TopTabsOptions topTabsOptions = new TopTabsOptions();
-    public TopTabOptions topTabOptions = new TopTabOptions();
-    public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
+    @NonNull public TopBarOptions topBarOptions = new TopBarOptions();
+    @NonNull public TopTabsOptions topTabsOptions = new TopTabsOptions();
+    @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
+    @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
+    public ArrayList<Button> leftButtons;
+    public ArrayList<Button> rightButtons;
 
 	public void mergeWith(final NavigationOptions other) {
         topBarOptions.mergeWith(other.topBarOptions);
         topTabsOptions.mergeWith(other.topTabsOptions);
         bottomTabsOptions.mergeWith(other.bottomTabsOptions);
-	}
+
+        if(other.leftButtons != null) {
+            leftButtons = other.leftButtons;
+        }
+
+        if(other.rightButtons != null) {
+            rightButtons = other.rightButtons;
+        }
+    }
 
     NavigationOptions withDefaultOptions(final NavigationOptions other) {
         topBarOptions.mergeWithDefault(other.topBarOptions);

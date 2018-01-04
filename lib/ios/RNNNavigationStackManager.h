@@ -5,12 +5,12 @@
 @interface RNNNavigationStackManager : NSObject
 
 @property (nonatomic, strong) UIViewController* fromVC;
-@property (nonatomic, strong) RNNRootViewController* toVC;
+@property (nonatomic, strong) UIViewController<RNNRootViewProtocol>* toVC;
 @property (nonatomic) int loadCount;
 -(instancetype)initWithStore:(RNNStore*)store;
 
 
--(void)push:(UIViewController*)newTop onTop:(NSString*)containerId completion:(RNNTransitionCompletionBlock)completion;
+-(void)push:(UIViewController<RNNRootViewProtocol>*)newTop onTop:(NSString*)containerId completion:(RNNTransitionCompletionBlock)completion;
 -(void)pop:(NSString*)containerId withAnimationData:(NSDictionary*)animationData;
 -(void)popTo:(NSString*)containerId;
 -(void)popToRoot:(NSString*)containerId;
