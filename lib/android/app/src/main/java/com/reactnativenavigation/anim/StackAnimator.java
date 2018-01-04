@@ -129,9 +129,12 @@ public class StackAnimator {
 
 			@Override
 			public void onAnimationEnd(Animator animation) {
-                ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
-				layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-				container.setLayoutParams(layoutParams);
+				//TODO: needs refactoring
+				if (container != null) {
+					ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
+					layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+					container.setLayoutParams(layoutParams);
+				}
 			}
 
 			@Override
@@ -163,13 +166,14 @@ public class StackAnimator {
 
 			@Override
 			public void onAnimationEnd(Animator animation) {
-                ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
-				layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-				container.setLayoutParams(layoutParams);
-				container.setTranslationY(0);
+				//TODO: needs refactoring
+				if (container != null) {
+					ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
+					layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+					container.setLayoutParams(layoutParams);
+				}
 
 				topBar.setVisibility(View.GONE);
-				topBar.setTranslationY(0);
 			}
 
 			@Override
