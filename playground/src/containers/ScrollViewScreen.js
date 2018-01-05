@@ -39,10 +39,10 @@ class ScrollViewScreen extends Component {
   onClickToggleTopBarHideOnScroll() {
     this.setState({
       topBarHideOnScroll: !this.state.topBarHideOnScroll
-    })
+    });
   }
 
-  componentDidUpdate(state) {
+  componentDidUpdate() {
     Navigation.setOptions(this.props.containerId, {
       topBar: {
         drawUnder: true,
@@ -51,8 +51,6 @@ class ScrollViewScreen extends Component {
     });
   }
 }
-
-
 
 module.exports = ScrollViewScreen;
 

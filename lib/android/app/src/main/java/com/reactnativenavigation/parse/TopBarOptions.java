@@ -35,10 +35,10 @@ public class TopBarOptions implements DEFAULT_VALUES {
     public int textColor = NO_COLOR_VALUE;
     public float textFontSize = NO_FLOAT_VALUE;
     @Nullable public Typeface textFontFamily;
-    public NavigationOptions.BooleanOptions hidden = NavigationOptions.BooleanOptions.False;
-    public NavigationOptions.BooleanOptions animateHide = NavigationOptions.BooleanOptions.False;
-    public NavigationOptions.BooleanOptions collapse = NavigationOptions.BooleanOptions.False;
-    public NavigationOptions.BooleanOptions drawUnder = NavigationOptions.BooleanOptions.False;
+    public NavigationOptions.BooleanOptions hidden = NavigationOptions.BooleanOptions.NoValue;
+    public NavigationOptions.BooleanOptions animateHide = NavigationOptions.BooleanOptions.NoValue;
+    public NavigationOptions.BooleanOptions collapse = NavigationOptions.BooleanOptions.NoValue;
+    public NavigationOptions.BooleanOptions drawUnder = NavigationOptions.BooleanOptions.NoValue;
 
     void mergeWith(final TopBarOptions other) {
         if (!NO_VALUE.equals(other.title)) title = other.title;

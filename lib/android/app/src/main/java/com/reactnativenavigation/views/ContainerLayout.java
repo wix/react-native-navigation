@@ -25,7 +25,6 @@ public class ContainerLayout extends RelativeLayout implements ReactContainer {
 
         this.topBar = new TopBar(context, this, eventDispatcher);
         topBar.setId(View.generateViewId());
-        topBar.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         this.reactView = reactView;
         optionsPresenter = new OptionsPresenter(topBar, reactView.asView());
@@ -36,7 +35,7 @@ public class ContainerLayout extends RelativeLayout implements ReactContainer {
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.addRule(BELOW, topBar.getId());
         addView(reactView.asView(), layoutParams);
-        addView(topBar);
+        addView(topBar, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
 	@Override

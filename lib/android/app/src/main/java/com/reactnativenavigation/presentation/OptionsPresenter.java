@@ -1,6 +1,7 @@
 package com.reactnativenavigation.presentation;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.anim.StackAnimator;
@@ -50,19 +51,31 @@ public class OptionsPresenter {
             showTopBar(options.animateHide);
         }
         if (options.drawUnder == True) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
-            layoutParams.removeRule(BELOW);
-            contentView.setLayoutParams(layoutParams);
+            removeRule();
         } else if (options.drawUnder == False) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
-            layoutParams.addRule(BELOW, topBar.getId());
-            contentView.setLayoutParams(layoutParams);
+            addRule();
         }
 
         if (options.collapse == True) {
             topBar.enableCollapse();
         } else if (options.collapse == False) {
             topBar.disableCollapse();
+        }
+    }
+
+    private void removeRule() {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
+        if (layoutParams != null) {
+            layoutParams.removeRule(BELOW);
+            contentView.setLayoutParams(layoutParams);
+        }
+    }
+
+    private void addRule() {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
+        if (layoutParams != null) {
+            layoutParams.addRule(BELOW, topBar.getId());
+            contentView.setLayoutParams(layoutParams);
         }
     }
 

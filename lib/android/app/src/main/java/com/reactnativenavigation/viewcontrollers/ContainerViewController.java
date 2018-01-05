@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
+import android.util.Log;
 import android.view.View;
 
 import com.reactnativenavigation.parse.NavigationOptions;
