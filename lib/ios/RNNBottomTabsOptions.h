@@ -1,6 +1,6 @@
 #import "RNNOptions.h"
 
-@interface RNNTabBarOptions : RNNOptions
+@interface RNNBottomTabsOptions : RNNOptions
 
 @property (nonatomic, strong) NSNumber* hidden;
 @property (nonatomic, strong) NSNumber* animateHide;

@@ -1,9 +1,10 @@
 #import <Foundation/Foundation.h>
 #import "RNNTopBarOptions.h"
-#import "RNNTabBarOptions.h"
+#import "RNNBottomTabsOptions.h"
+#import "RNNBottomTabOptions.h"
 #import "RNNSideMenuOptions.h"
-#import "RNNTabItemOptions.h"
 #import "RNNTopTabOptions.h"
+#import "RNNTopTabsOptions.h"
 
 extern const NSInteger BLUR_STATUS_TAG;
 extern const NSInteger BLUR_TOPBAR_TAG;
@@ -12,8 +13,9 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @interface RNNNavigationOptions : RNNOptions
 
 @property (nonatomic, strong) RNNTopBarOptions* topBar;
-@property (nonatomic, strong) RNNTabBarOptions* bottomTabs;
-@property (nonatomic, strong) RNNTabItemOptions* bottomTab;
+@property (nonatomic, strong) RNNBottomTabsOptions* bottomTabs;
+@property (nonatomic, strong) RNNBottomTabOptions* bottomTab;
+@property (nonatomic, strong) RNNTopTabsOptions* topTabs;
 @property (nonatomic, strong) RNNTopTabOptions* topTab;
 @property (nonatomic, strong) RNNSideMenuOptions* sideMenu;
 

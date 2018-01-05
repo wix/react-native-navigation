@@ -25,11 +25,11 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.orientation = [navigationOptions objectForKey:@"orientation"];
 	self.topBar = [[RNNTopBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"topBar"]];
 	self.topTab = [[RNNTopTabOptions alloc] initWithDict:[navigationOptions objectForKey:@"topTab"]];
-	self.bottomTabs = [[RNNTabBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTabs"]];
+	self.bottomTabs = [[RNNBottomTabsOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTabs"]];
 	self.sideMenu = [[RNNSideMenuOptions alloc] initWithDict:[navigationOptions objectForKey:@"sideMenu"]];
 	self.backgroundImage = [RCTConvert UIImage:[navigationOptions objectForKey:@"backgroundImage"]];
 	self.rootBackgroundImage = [RCTConvert UIImage:[navigationOptions objectForKey:@"rootBackgroundImage"]];
-	self.bottomTab = [[RNNTabItemOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTab"]];
+	self.bottomTab = [[RNNBottomTabOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTab"]];
     
 	return self;
 }

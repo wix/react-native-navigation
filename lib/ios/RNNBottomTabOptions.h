@@ -1,6 +1,6 @@
 #import "RNNOptions.h"
 
-@interface RNNTabItemOptions : RNNOptions
+@interface RNNBottomTabOptions : RNNOptions
 
 @property (nonatomic) NSUInteger tag;
 @property (nonatomic, strong) NSString* title;

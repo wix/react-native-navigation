@@ -1,6 +1,6 @@
-#import "RNNTabItemOptions.h"
+#import "RNNBottomTabOptions.h"
 
-@implementation RNNTabItemOptions
+@implementation RNNBottomTabOptions
 
 -(instancetype)initWithDict:(NSDictionary *)tabItemDict {
 	self = [super init];

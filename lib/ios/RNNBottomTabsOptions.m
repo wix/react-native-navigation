@@ -1,8 +1,8 @@
-#import "RNNTabBarOptions.h"
+#import "RNNBottomTabsOptions.h"
 #import "RNNTabBarController.h"
 extern const NSInteger BLUR_TOPBAR_TAG;
 
-@implementation RNNTabBarOptions
+@implementation RNNBottomTabsOptions
 
 - (void)applyOn:(UIViewController *)viewController {
 	if (self.currentTabIndex) {
