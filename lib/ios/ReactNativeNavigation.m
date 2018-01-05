@@ -1,28 +1,19 @@
-
 #import "ReactNativeNavigation.h"
 
+#import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 
-#import "RNNEventEmitter.h"
+#import "RNNBridgeManager.h"
 #import "RNNSplashScreen.h"
-#import "RNNBridgeModule.h"
-#import "RNNRootViewCreator.h"
-#import "RNNReactRootViewCreator.h"
 
-@interface ReactNativeNavigation() <RCTBridgeDelegate>
+@interface ReactNativeNavigation()
+
+@property (nonatomic, strong) RNNBridgeManager *bridgeManager;
 
 @end
 
-@implementation ReactNativeNavigation {
-	NSURL* _jsCodeLocation;
-	NSDictionary* _launchOptions;
-	RCTBridge* _bridge;
-	
-	RNNStore* _store;
-	
-	RNNCommandsHandler* _commandsHandler;
-}
+@implementation ReactNativeNavigation
 
 # pragma mark - public API
 
@@ -32,7 +23,7 @@
 
 # pragma mark - instance
 
-+(instancetype) sharedInstance {
++ (instancetype) sharedInstance {
 	static ReactNativeNavigation *instance = nil;
 	static dispatch_once_t onceToken = 0;
 	dispatch_once(&onceToken,^{
@@ -45,71 +36,8 @@
 }
 
 -(void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions {
-	_jsCodeLocation = jsCodeLocation;
-	_launchOptions = launchOptions;
-	_store = [RNNStore new];
-	
+	self.bridgeManager = [[RNNBridgeManager alloc] initWithJsCodeLocation:jsCodeLocation launchOptions:launchOptions];
 	[RNNSplashScreen show];
-	
-	[self registerForJsEvents];
-	
-	[self createBridgeLoadJsAndThenInitDependencyGraph];
-}
-
-# pragma mark - RCTBridgeDelegate
-
--(NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
-	return _jsCodeLocation;
-}
-
-/**
- * here we initialize all of our dependency graph
- */
--(NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge {
-	RNNEventEmitter *eventEmitter = [[RNNEventEmitter alloc] init];
-	
-	id<RNNRootViewCreator> rootViewCreator = [[RNNReactRootViewCreator alloc] initWithBridge:bridge];
-	RNNControllerFactory *controllerFactory = [[RNNControllerFactory alloc] initWithRootViewCreator:rootViewCreator store:_store eventEmitter:eventEmitter andBridge:bridge];
-	_commandsHandler = [[RNNCommandsHandler alloc] initWithStore:_store controllerFactory:controllerFactory];
-	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
-	
-	return @[bridgeModule,eventEmitter];
-}
-
-# pragma mark - js events
-
--(void)onJavaScriptWillLoad {
-	[_store clean];
-}
-
--(void)onJavaScriptLoaded {
-	[_store setReadyToReceiveCommands:true];
-	[[_bridge moduleForClass:[RNNEventEmitter class]] sendOnAppLaunched];
-}
-
--(void)onBridgeWillReload {
-	UIApplication.sharedApplication.delegate.window.rootViewController =  nil;
-}
-
-# pragma mark - private
-
--(void)createBridgeLoadJsAndThenInitDependencyGraph {
-	_bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:_launchOptions];
-}
-
--(void)registerForJsEvents {
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(onJavaScriptLoaded)
-												 name:RCTJavaScriptDidLoadNotification
-											   object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(onJavaScriptWillLoad)
-												 name:RCTJavaScriptWillStartLoadingNotification
-											   object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(onBridgeWillReload)
-												 name:RCTBridgeWillReloadNotification
-											   object:nil];
 }
 
 @end
