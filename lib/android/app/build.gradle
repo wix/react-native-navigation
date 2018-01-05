@@ -30,7 +30,6 @@ android {
             }
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
-                showStandardStreams true
             }
             afterSuite { desc, result ->
                 if (!desc.parent) { // will match the outermost suite
