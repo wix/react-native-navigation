@@ -10,7 +10,7 @@ class ScrollViewScreen extends Component {
   static get navigationOptions() {
     return {
       topBar: {
-        title: "Collapse",
+        title: 'Collapse',
         textColor: 'black',
         textFontSize: 16,
         drawUnder: true,
