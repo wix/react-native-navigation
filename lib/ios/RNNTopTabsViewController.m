@@ -15,7 +15,7 @@
 
 - (instancetype)init {
 	self = [super init];
-		
+	
 	[self.view setBackgroundColor:[UIColor whiteColor]];
 	self.edgesForExtendedLayout = UIRectEdgeNone;
 	
@@ -72,7 +72,7 @@
     [super viewDidLoad];
 }
 
-- (BOOL)isAnimated {
+- (BOOL)isCustomTransitioned {
 	return NO;
 }
 

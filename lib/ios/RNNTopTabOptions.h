@@ -1,14 +1,9 @@
-#import <Foundation/Foundation.h>
+#import "RNNOptions.h"
 
-extern const NSInteger BLUR_TOPBAR_TAG;
-
-@interface RNNTopTabOptions : NSObject
+@interface RNNTopTabOptions : RNNOptions
 
 @property (nonatomic, strong) NSString* title;
-
--(instancetype)init;
--(instancetype)initWithDict:(NSDictionary *)topBarOptions;
--(void)mergeWith:(NSDictionary*)otherOptions;
+@property (nonatomic, strong) NSString* titleFontFamily;
 
 @end
 

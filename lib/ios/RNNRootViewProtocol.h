@@ -1,9 +1,10 @@
+#import "RNNNavigationOptions.h"
 
 @protocol RNNRootViewProtocol <NSObject, UINavigationControllerDelegate>
 
 @required
 
-- (BOOL)isAnimated;
+- (BOOL)isCustomTransitioned;
 
 @end
 

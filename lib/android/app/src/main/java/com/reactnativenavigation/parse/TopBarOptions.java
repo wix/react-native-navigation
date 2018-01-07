@@ -9,6 +9,8 @@ import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class TopBarOptions implements DEFAULT_VALUES {
 
 	public static TopBarOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
@@ -22,6 +24,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
 		options.textFontFamily = typefaceManager.getTypeFace(json.optString("textFontFamily", NO_VALUE));
 		options.hidden = NavigationOptions.BooleanOptions.parse(json.optString("hidden"));
 		options.animateHide = NavigationOptions.BooleanOptions.parse(json.optString("animateHide"));
+		options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
+		options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"));
 
 		return options;
 	}
@@ -33,6 +37,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
 	@Nullable public Typeface textFontFamily;
 	public NavigationOptions.BooleanOptions hidden = NavigationOptions.BooleanOptions.False;
 	public NavigationOptions.BooleanOptions animateHide = NavigationOptions.BooleanOptions.False;
+	public ArrayList<Button> leftButtons;
+	public ArrayList<Button> rightButtons;
 
 	void mergeWith(final TopBarOptions other) {
 		if (!NO_VALUE.equals(other.title)) title = other.title;
@@ -48,6 +54,10 @@ public class TopBarOptions implements DEFAULT_VALUES {
 			hidden = other.hidden;
 		if (other.animateHide != NavigationOptions.BooleanOptions.NoValue)
 			animateHide = other.animateHide;
+		if(other.leftButtons != null)
+			leftButtons = other.leftButtons;
+		if(other.rightButtons != null)
+			rightButtons = other.rightButtons;
 	}
 
     void mergeWithDefault(TopBarOptions defaultOptions) {
@@ -65,5 +75,9 @@ public class TopBarOptions implements DEFAULT_VALUES {
             hidden = defaultOptions.hidden;
         if (animateHide == NavigationOptions.BooleanOptions.NoValue)
             animateHide = defaultOptions.animateHide;
+		if(leftButtons == null)
+			leftButtons = defaultOptions.leftButtons;
+		if(rightButtons == null)
+			rightButtons = defaultOptions.rightButtons;
     }
 }

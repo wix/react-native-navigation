@@ -174,7 +174,7 @@
 
 -(void)testTabBadge {
 	NSString* tabBadgeInput = @"5";
-	self.options.tabItem.badge = tabBadgeInput;
+	self.options.bottomTab.badge = tabBadgeInput;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
 	UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"A Tab" image:nil tag:1];
@@ -355,7 +355,7 @@
 }
 
 -(void)testRightButtonsWithTitle_withoutStyle {
-	self.options.rightButtons = @[@{@"id": @"testId", @"title": @"test"}];
+	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -370,7 +370,7 @@
 -(void)testRightButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
 	
-	self.options.rightButtons = @[@{@"id": @"testId", @"title": @"test", @"disabled": @true, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test", @"disabled": @true, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -386,7 +386,7 @@
 
 
 -(void)testLeftButtonsWithTitle_withoutStyle {
-	self.options.leftButtons = @[@{@"id": @"testId", @"title": @"test"}];
+	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -401,7 +401,7 @@
 -(void)testLeftButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
 	
-	self.options.leftButtons = @[@{@"id": @"testId", @"title": @"test", @"disabled": @true, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test", @"disabled": @true, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	

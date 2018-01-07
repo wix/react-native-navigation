@@ -26,7 +26,7 @@ public class OptionsPresenter {
 
     public void applyOptions(NavigationOptions options) {
         applyTopBarOptions(options.topBarOptions);
-        applyButtons(options.leftButtons, options.rightButtons);
+        applyButtons(options.topBarOptions.leftButtons, options.topBarOptions.rightButtons);
         applyTopTabsOptions(options.topTabsOptions);
         applyTopTabOptions(options.topTabOptions);
     }

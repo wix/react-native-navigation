@@ -1,8 +1,6 @@
-#import <Foundation/Foundation.h>
+#import "RNNOptions.h"
 
-extern const NSInteger BLUR_TOPBAR_TAG;
-
-@interface RNNTabBarOptions : NSObject
+@interface RNNBottomTabsOptions : RNNOptions
 
 @property (nonatomic, strong) NSNumber* hidden;
 @property (nonatomic, strong) NSNumber* animateHide;
@@ -10,10 +8,5 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 @property (nonatomic, strong) NSString* testID;
 @property (nonatomic, strong) NSNumber* drawUnder;
 @property (nonatomic, strong) NSString* currentTabId;
-
--(instancetype)init;
--(instancetype)initWithDict:(NSDictionary *)topBarOptions;
--(void)mergeWith:(NSDictionary*)otherOptions;
-- (void)resetOptions;
 
 @end
