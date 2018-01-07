@@ -9,6 +9,8 @@ import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class TopBarOptions implements DEFAULT_VALUES {
 
 	public static TopBarOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
@@ -24,6 +26,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
         options.animateHide = NavigationOptions.BooleanOptions.parse(json.optString("animateHide"));
         options.collapse = NavigationOptions.BooleanOptions.parse(json.optString("hideOnScroll"));
         options.drawUnder = NavigationOptions.BooleanOptions.parse(json.optString("drawUnder"));
+		options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
+		options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"));
 
 		return options;
 	}
@@ -39,6 +43,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
     public NavigationOptions.BooleanOptions animateHide = NavigationOptions.BooleanOptions.NoValue;
     public NavigationOptions.BooleanOptions collapse = NavigationOptions.BooleanOptions.NoValue;
     public NavigationOptions.BooleanOptions drawUnder = NavigationOptions.BooleanOptions.NoValue;
+	public ArrayList<Button> leftButtons;
+	public ArrayList<Button> rightButtons;
 
     void mergeWith(final TopBarOptions other) {
         if (!NO_VALUE.equals(other.title)) title = other.title;
@@ -62,7 +68,11 @@ public class TopBarOptions implements DEFAULT_VALUES {
         if (other.drawUnder != NavigationOptions.BooleanOptions.NoValue) {
             drawUnder = other.drawUnder;
         }
-    }
+		if(other.leftButtons != null)
+			leftButtons = other.leftButtons;
+		if(other.rightButtons != null)
+			rightButtons = other.rightButtons;
+	}
 
     void mergeWithDefault(TopBarOptions defaultOptions) {
         if (NO_VALUE.equals(title))
@@ -83,5 +93,9 @@ public class TopBarOptions implements DEFAULT_VALUES {
             collapse = defaultOptions.collapse;
         if (drawUnder == NavigationOptions.BooleanOptions.NoValue)
             drawUnder = defaultOptions.drawUnder;
+		if(leftButtons == null)
+			leftButtons = defaultOptions.leftButtons;
+		if(rightButtons == null)
+			rightButtons = defaultOptions.rightButtons;
     }
 }

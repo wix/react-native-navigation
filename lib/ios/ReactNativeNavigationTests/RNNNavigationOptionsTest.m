@@ -19,9 +19,8 @@
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:@{@"topBar": @{@"backgroundColor" : @(0xff0000ff)}}];
 	XCTAssertTrue(options.topBar.backgroundColor);
 }
--(void)testReturnsNilWhenStyleDoesNotExist{
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:@{@"topBar": @{@"someColor" : @(0xff0000ff)}}];
-	XCTAssertNil(options.topBar.backgroundColor);
+-(void)testThrowsWhenStyleDoesNotExist{
+	XCTAssertThrows([[RNNNavigationOptions alloc] initWithDict:@{@"topBar": @{@"someColor" : @(0xff0000ff)}}]);
 }
 
 -(void)testChangeRNNNavigationOptionsDynamically{
@@ -36,4 +35,5 @@
 	NSDictionary* dynamicOptions = @{@"topBar": @{@"titleeeee" : @"hello"}};
 	XCTAssertThrows([options mergeWith:dynamicOptions]);
 }
+
 @end

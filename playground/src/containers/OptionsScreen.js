@@ -20,22 +20,22 @@ class OptionsScreen extends Component {
         hidden: false,
         textFontSize: 16,
         textFontFamily: 'HelveticaNeue-Italic',
-        testID: testIDs.TOP_BAR_ELEMENT
-      },
-      rightButtons: [{
-        id: BUTTON_ONE,
-        testID: BUTTON_ONE,
-        title: 'One',
-        buttonFontSize: 28,
-        buttonColor: 'red'
-      }],
-      leftButtons: [{
-        id: BUTTON_LEFT,
-        testID: BUTTON_LEFT,
-        icon: require('../../img/navicon_add.png'),
-        title: 'Left',
-        buttonColor: 'purple'
-      }]
+        testID: testIDs.TOP_BAR_ELEMENT,
+        rightButtons: [{
+          id: BUTTON_ONE,
+          testID: BUTTON_ONE,
+          title: 'One',
+          buttonFontSize: 28,
+          buttonColor: 'red'
+        }],
+        leftButtons: [{
+          id: BUTTON_LEFT,
+          testID: BUTTON_LEFT,
+          icon: require('../../img/navicon_add.png'),
+          title: 'Left',
+          buttonColor: 'purple'
+        }]
+      }
     };
   }
 
@@ -71,35 +71,39 @@ class OptionsScreen extends Component {
   onNavigationButtonPressed(id) {
     if (id === BUTTON_ONE) {
       Navigation.setOptions(this.props.containerId, {
-        rightButtons: [{
-          id: BUTTON_TWO,
-          testID: BUTTON_TWO,
-          title: 'Two',
-          icon: require('../../img/navicon_add.png'),
-          disableIconTint: true,
-          // disabled: true,
-          showAsAction: 'ifRoom',
-          buttonColor: 'green',
-          buttonFontSize: 28,
-          buttonFontWeight: '800'
-        }],
-        leftButtons: []
+        topBar: {
+          rightButtons: [{
+            id: BUTTON_TWO,
+            testID: BUTTON_TWO,
+            title: 'Two',
+            icon: require('../../img/navicon_add.png'),
+            disableIconTint: true,
+            // disabled: true,
+            showAsAction: 'ifRoom',
+            buttonColor: 'green',
+            buttonFontSize: 28,
+            buttonFontWeight: '800'
+          }],
+          leftButtons: []
+        }
       });
     } else if (id === BUTTON_TWO) {
       Navigation.setOptions(this.props.containerId, {
-        rightButtons: [{
-          id: BUTTON_ONE,
-          testID: BUTTON_ONE,
-          title: 'One',
-          buttonColor: 'red'
-        }],
-        leftButtons: [{
-          id: BUTTON_LEFT,
-          testID: BUTTON_LEFT,
-          icon: require('../../img/navicon_add.png'),
-          title: 'Left',
-          buttonColor: 'purple'
-        }]
+        topBar: {
+          rightButtons: [{
+            id: BUTTON_ONE,
+            testID: BUTTON_ONE,
+            title: 'One',
+            buttonColor: 'red'
+          }],
+          leftButtons: [{
+            id: BUTTON_LEFT,
+            testID: BUTTON_LEFT,
+            icon: require('../../img/navicon_add.png'),
+            title: 'Left',
+            buttonColor: 'purple'
+          }]
+        }
       });
     } else if (id === BUTTON_LEFT) {
       Navigation.pop(this.props.containerId);

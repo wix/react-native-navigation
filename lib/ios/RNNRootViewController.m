@@ -2,12 +2,10 @@
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
-#import "RNNNavigationButtons.h"
 
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* containerName;
 @property (nonatomic) BOOL _statusBarHidden;
-@property (nonatomic, strong) RNNNavigationButtons* navigationButtons;
 
 @end
 
@@ -33,21 +31,20 @@
 											   object:nil];
 	self.navigationController.modalPresentationStyle = UIModalPresentationCustom;
 	self.navigationController.delegate = self;
-	self.navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self];
+
 	return self;
 }
 	
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.navigationOptions applyOn:self];
-	[self applyNavigationButtons];
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 }
 
--(BOOL)isAnimated {
+-(BOOL)isCustomTransitioned {
 	return self.animator;
 }
 
@@ -106,16 +103,12 @@
 
 }
 
--(void)applyNavigationButtons{
-	[self.navigationButtons applyLeftButtons:self.navigationOptions.leftButtons rightButtons:self.navigationOptions.rightButtons];
-}
-
 -(void)applyTabBarItem {
-	[self.navigationOptions applyTabBarItemOptions:self];
+	[self.navigationOptions.bottomTab applyOn:self];
 }
 
 -(void)applyTopTabsOptions {
-	[self.navigationOptions applyTopTab:self];
+	[self.navigationOptions.topTab applyOn:self];
 }
 
 /**

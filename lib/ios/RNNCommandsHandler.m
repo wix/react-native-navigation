@@ -46,7 +46,6 @@
 		[CATransaction setCompletionBlock:completion];
 		
 		[rootVc.navigationOptions applyOn:vc];
-		[rootVc applyNavigationButtons];
 		
 		[CATransaction commit];
 	}

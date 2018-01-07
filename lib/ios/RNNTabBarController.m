@@ -33,7 +33,7 @@
 	}
 }
 
-- (BOOL)isAnimated {
+- (BOOL)isCustomTransitioned {
 	return NO;
 }
 

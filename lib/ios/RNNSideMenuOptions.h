@@ -1,14 +1,8 @@
-#import <Foundation/Foundation.h>
+#import "RNNOptions.h"
 
-@interface RNNSideMenuOptions : NSObject
+@interface RNNSideMenuOptions : RNNOptions
 
 @property (nonatomic, strong) NSNumber* leftSideVisible;
 @property (nonatomic, strong) NSNumber* rightSideVisible;
-
--(instancetype)init;
--(instancetype)initWithDict:(NSDictionary *)sideMenuOptions;
--(void)mergeWith:(NSDictionary*)otherOptions;
-
--(void)resetOptions;
 
 @end
