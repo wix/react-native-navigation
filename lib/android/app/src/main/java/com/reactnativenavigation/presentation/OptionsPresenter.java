@@ -68,12 +68,20 @@ public class OptionsPresenter {
         if (layoutParams != null) {
             layoutParams.removeRule(BELOW);
             contentView.setLayoutParams(layoutParams);
+        } else {
+            layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            layoutParams.removeRule(BELOW);
+            contentView.setLayoutParams(layoutParams);
         }
     }
 
     private void addRule() {
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
         if (layoutParams != null) {
+            layoutParams.addRule(BELOW, topBar.getId());
+            contentView.setLayoutParams(layoutParams);
+        } else {
+            layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             layoutParams.addRule(BELOW, topBar.getId());
             contentView.setLayoutParams(layoutParams);
         }
