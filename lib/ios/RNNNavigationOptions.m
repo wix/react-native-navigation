@@ -46,12 +46,17 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 -(void)applyOn:(UIViewController*)viewController {
+	[_defaultOptions applyOn:viewController];
+	
 	[self.topBar applyOn:viewController];
 	[self.bottomTabs applyOn:viewController];
 	[self.topTab applyOn:viewController];
 	[self.bottomTab applyOn:viewController];
 	[self.sideMenu applyOn:viewController];
-	
+	[self applyOtherOptionsOn:viewController];
+}
+
+- (void)applyOtherOptionsOn:(UIViewController*)viewController {
 	if (self.popGesture) {
 		viewController.navigationController.interactivePopGestureRecognizer.enabled = [self.popGesture boolValue];
 	}
