@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
@@ -20,14 +20,14 @@ import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.T
 
 public class OptionsPresenter {
 
-    private final StackAnimator animator;
+    private final NavigationAnimator animator;
     private View contentView;
     private TopBar topBar;
 
     public OptionsPresenter(TopBar topBar, View contentView) {
         this.topBar = topBar;
         this.contentView = contentView;
-        animator = new StackAnimator(topBar.getContext());
+        animator = new NavigationAnimator(topBar.getContext());
     }
 
     public void applyOptions(NavigationOptions options) {

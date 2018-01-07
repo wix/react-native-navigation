@@ -1,15 +1,14 @@
 package com.reactnativenavigation.mocks;
 
-import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.anim.NavigationAnimator;
 
 import org.robolectric.RuntimeEnvironment;
 
-public class TestStackAnimator extends StackAnimator {
+public class TestNavigationAnimator extends NavigationAnimator {
 
-	public TestStackAnimator() {
+	public TestNavigationAnimator() {
 		super(RuntimeEnvironment.application);
 	}
 

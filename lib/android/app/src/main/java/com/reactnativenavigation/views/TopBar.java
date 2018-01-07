@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.Number;
 import com.facebook.react.uimanager.events.EventDispatcher;
-import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
@@ -193,9 +193,9 @@ public class TopBar extends AppBarLayout {
                 UiThread.post(() -> {
                     if (!dragStarted) {
                         if (velocity > 0) {
-                            new StackAnimator(getContext()).animateShowTopBar(TopBar.this, null, getTranslationY());
+                            new NavigationAnimator(getContext()).animateShowTopBar(TopBar.this, null, getTranslationY(), null, 100);
                         } else {
-                            new StackAnimator(getContext()).animateHideTopBar(TopBar.this, null, getTranslationY());
+                            new NavigationAnimator(getContext()).animateHideTopBar(TopBar.this, null, getTranslationY(), null, 100);
                         }
                     }
                 });
