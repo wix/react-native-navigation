@@ -13,16 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopbarCollapsingBehavior;
 import com.reactnativenavigation.parse.Button;
+import com.reactnativenavigation.parse.Color;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.Number;
-import com.facebook.react.uimanager.events.EventDispatcher;
-import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
-import com.reactnativenavigation.parse.Color;
 
 import java.util.ArrayList;
 
@@ -34,6 +32,14 @@ public class TopBar extends AppBarLayout {
 
     private TopBarAnimator animator;
     private TopbarCollapsingBehavior collapsingBehavior;
+
+    public TopBar(Context context) {
+        this(context, null, null);
+    }
+
+    public TopBar(Context context, Container container) {
+        this(context, container, null);
+    }
 
     public TopBar(Context context, Container container, EventDispatcher eventDispatcher) {
         super(context);

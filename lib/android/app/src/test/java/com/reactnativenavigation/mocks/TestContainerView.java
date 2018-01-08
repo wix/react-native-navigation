@@ -13,7 +13,7 @@ public class TestContainerView extends View implements ReactContainer {
 
     public TestContainerView(final Context context) {
         super(context);
-        topBar = new TopBar(context, this, null);
+        topBar = new TopBar(context, this);
 
     }
 

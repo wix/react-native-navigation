@@ -18,7 +18,7 @@ public class TestContainerLayout extends RelativeLayout implements ReactContaine
 
     public TestContainerLayout(final Context context) {
         super(context);
-        topBar = new TopBar(context, this, null);
+        topBar = new TopBar(context, this);
         contentView = new View(context);
         addView(topBar);
         addView(contentView);

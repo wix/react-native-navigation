@@ -29,7 +29,7 @@ public class TopTabsLayout extends RelativeLayout implements Container {
     public TopTabsLayout(Context context, List<TopTabController> tabs, TopTabsAdapter adapter) {
         super(context);
         this.tabs = tabs;
-        topBar = new TopBar(context, this, null);
+        topBar = new TopBar(context, this);
         topBar.setId(View.generateViewId());
         viewPager = new TopTabsViewPager(context, tabs, adapter);
         optionsPresenter = new OptionsPresenter(this);
