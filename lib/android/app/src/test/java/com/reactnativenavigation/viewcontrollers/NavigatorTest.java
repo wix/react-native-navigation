@@ -282,4 +282,13 @@ public class NavigatorTest extends BaseTest {
 			}
 		});
 	}
+
+	@Test
+    public void pushIntoModal() throws Exception {
+        StackController stackController = newStack();
+        stackController.push(child1);
+        uut.showModal(stackController, new MockPromise());
+        uut.push(stackController.getId(), child2);
+        assertIsChildById(stackController.getView(), child2.getView());
+    }
 }

@@ -109,4 +109,11 @@ public class ModalsTest extends BaseTest {
 		elementByText("DISMISS ALL MODALS").click();
 		assertMainShown();
 	}
+
+	@Test
+    public void pushIntoModal() throws Exception {
+        elementByText("SHOW MODAL").click();
+        elementByText("PUSH SCREEN").click();
+        assertExists(By.text("Pushed from modal"));
+    }
 }

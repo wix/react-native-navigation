@@ -59,8 +59,14 @@ public class ModalStack {
 		return null;
 	}
 
-	private static class Modal {
-		private final ViewController viewController;
+	@Nullable
+    ViewController findControllerById(String id) {
+        Modal modal = findModalByContainerId(id);
+        return modal != null ? modal.viewController : null;
+    }
+
+    private static class Modal {
+		public final ViewController viewController;
 		private final Dialog dialog;
 
 		Modal(final ViewController viewController) {

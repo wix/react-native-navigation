@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -173,4 +174,11 @@ public class Navigator extends ParentController {
 			promise.reject(new Throwable("Nothing to pop"));
 		}
 	}
+
+    @Nullable
+    @Override
+    public ViewController findControllerById(String id) {
+        ViewController controllerById = super.findControllerById(id);
+        return controllerById != null ? controllerById : modalStack.findControllerById(id);
+    }
 }

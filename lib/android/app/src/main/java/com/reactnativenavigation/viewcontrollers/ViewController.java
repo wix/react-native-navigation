@@ -56,16 +56,20 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		this.parentController = parentController;
 	}
 
-    void performOnParentStack(Task<StackController> task) {
+    boolean performOnParentStack(Task<StackController> task) {
 	    if (parentController instanceof StackController) {
             task.run((StackController) parentController);
+            return true;
         }
+        if (this instanceof StackController) {
+	        task.run((StackController) this);
+            return true;
+        }
+        return false;
     }
 
     void performOnParentStack(Task<StackController> accept, Runnable  reject) {
-        if (parentController instanceof StackController) {
-            accept.run((StackController) parentController);
-        } else {
+        if (!performOnParentStack(accept)) {
             reject.run();
         }
     }
