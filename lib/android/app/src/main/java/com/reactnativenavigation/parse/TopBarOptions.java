@@ -24,7 +24,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
         options.textFontFamily = typefaceManager.getTypeFace(json.optString("textFontFamily", NO_VALUE));
         options.hidden = NavigationOptions.BooleanOptions.parse(json.optString("hidden"));
         options.animateHide = NavigationOptions.BooleanOptions.parse(json.optString("animateHide"));
-        options.collapse = NavigationOptions.BooleanOptions.parse(json.optString("hideOnScroll"));
+        options.hideOnScroll = NavigationOptions.BooleanOptions.parse(json.optString("hideOnScroll"));
         options.drawUnder = NavigationOptions.BooleanOptions.parse(json.optString("drawUnder"));
 		options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
 		options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"));
@@ -41,7 +41,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
     @Nullable public Typeface textFontFamily;
     public NavigationOptions.BooleanOptions hidden = NavigationOptions.BooleanOptions.NoValue;
     public NavigationOptions.BooleanOptions animateHide = NavigationOptions.BooleanOptions.NoValue;
-    public NavigationOptions.BooleanOptions collapse = NavigationOptions.BooleanOptions.NoValue;
+    public NavigationOptions.BooleanOptions hideOnScroll = NavigationOptions.BooleanOptions.NoValue;
     public NavigationOptions.BooleanOptions drawUnder = NavigationOptions.BooleanOptions.NoValue;
 	public ArrayList<Button> leftButtons;
 	public ArrayList<Button> rightButtons;
@@ -62,8 +62,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
         if (other.animateHide != NavigationOptions.BooleanOptions.NoValue) {
             animateHide = other.animateHide;
         }
-        if (other.collapse != NavigationOptions.BooleanOptions.NoValue) {
-            collapse = other.collapse;
+        if (other.hideOnScroll != NavigationOptions.BooleanOptions.NoValue) {
+            hideOnScroll = other.hideOnScroll;
         }
         if (other.drawUnder != NavigationOptions.BooleanOptions.NoValue) {
             drawUnder = other.drawUnder;
@@ -89,8 +89,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
             hidden = defaultOptions.hidden;
         if (animateHide == NavigationOptions.BooleanOptions.NoValue)
             animateHide = defaultOptions.animateHide;
-        if (collapse == NavigationOptions.BooleanOptions.NoValue)
-            collapse = defaultOptions.collapse;
+        if (hideOnScroll == NavigationOptions.BooleanOptions.NoValue)
+            hideOnScroll = defaultOptions.hideOnScroll;
         if (drawUnder == NavigationOptions.BooleanOptions.NoValue)
             drawUnder = defaultOptions.drawUnder;
 		if(leftButtons == null)

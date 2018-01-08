@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.reactnativenavigation.anim.NavigationAnimator;
+import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
@@ -20,14 +20,14 @@ import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.T
 
 public class OptionsPresenter {
 
-    private final NavigationAnimator animator;
+    private final TopBarAnimator topBarAnimator;
     private View contentView;
     private TopBar topBar;
 
     public OptionsPresenter(TopBar topBar, View contentView) {
         this.topBar = topBar;
         this.contentView = contentView;
-        animator = new NavigationAnimator(topBar.getContext());
+        topBarAnimator = new TopBarAnimator();
     }
 
     public void applyOptions(NavigationOptions options) {
@@ -56,9 +56,9 @@ public class OptionsPresenter {
             addRule();
         }
 
-        if (options.collapse == True) {
+        if (options.hideOnScroll == True) {
             topBar.enableCollapse();
-        } else if (options.collapse == False) {
+        } else if (options.hideOnScroll == False) {
             topBar.disableCollapse();
         }
     }
@@ -92,7 +92,7 @@ public class OptionsPresenter {
             return;
         }
         if (animated == NavigationOptions.BooleanOptions.True) {
-            animator.animateShowTopBar(topBar, contentView);
+            topBarAnimator.animateShowTopBar(topBar, contentView);
         } else {
             topBar.setVisibility(View.VISIBLE);
         }
@@ -103,7 +103,7 @@ public class OptionsPresenter {
             return;
         }
         if (animated == NavigationOptions.BooleanOptions.True) {
-            animator.animateHideTopBar(topBar, contentView);
+            topBarAnimator.animateHideTopBar(topBar, contentView);
         } else {
             topBar.setVisibility(View.GONE);
         }

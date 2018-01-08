@@ -40,7 +40,7 @@ public class StackController extends ParentController {
 
 		//TODO animatePush only when needed
 		if (previousTop != null) {
-			animator.animatePush(enteringView, new NavigationAnimator.StackAnimationListener() {
+			animator.animatePush(enteringView, new NavigationAnimator.NavigationAnimationListener() {
 				@Override
 				public void onAnimationEnd() {
 					getView().removeView(previousTop.getView());
@@ -80,7 +80,7 @@ public class StackController extends ParentController {
 		getView().addView(enteringView, getView().getChildCount() - 1);
 
 		if (animate) {
-			animator.animatePop(exitingView, new NavigationAnimator.StackAnimationListener() {
+			animator.animatePop(exitingView, new NavigationAnimator.NavigationAnimationListener() {
 				@Override
 				public void onAnimationEnd() {
 					finishPopping(exitingView, poppedTop, promise);
