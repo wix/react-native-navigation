@@ -86,15 +86,15 @@ public class ContainerLayout extends RelativeLayout implements ReactContainer {
 
     @Override
     public void drawUnderTopBar() {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reactView.asView().getLayoutParams();
         layoutParams.removeRule(BELOW);
-        setLayoutParams(layoutParams);
+        reactView.asView().setLayoutParams(layoutParams);
     }
 
     @Override
     public void drawBelowTopBar() {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reactView.asView().getLayoutParams();
         layoutParams.addRule(BELOW, topBar.getId());
-        setLayoutParams(layoutParams);
+        reactView.asView().setLayoutParams(layoutParams);
     }
 }

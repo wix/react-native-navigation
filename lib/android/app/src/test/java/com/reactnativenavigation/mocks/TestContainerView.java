@@ -53,4 +53,19 @@ public class TestContainerView extends View implements ReactContainer {
     public TopBar getTopBar() {
         return topBar;
     }
+
+    @Override
+    public View getContentView() {
+        return null;
+    }
+
+    @Override
+    public void drawUnderTopBar() {
+
+    }
+
+    @Override
+    public void drawBelowTopBar() {
+
+    }
 }
