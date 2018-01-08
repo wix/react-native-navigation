@@ -1,7 +1,9 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.facebook.react.bridge.Promise;
@@ -65,13 +67,14 @@ public class ModalStack {
         return modal != null ? modal.viewController : null;
     }
 
-    private static class Modal {
+    private static class Modal implements DialogInterface.OnKeyListener {
 		public final ViewController viewController;
 		private final Dialog dialog;
 
 		Modal(final ViewController viewController) {
 			this.viewController = viewController;
 			dialog = new Dialog(viewController.getActivity(), R.style.Modal);
+			dialog.setOnKeyListener(this);
 		}
 
 		void show() {
@@ -92,5 +95,18 @@ public class ModalStack {
 			View decorView = viewController.getActivity().getWindow().getDecorView();
 			viewController.getView().measure(makeMeasureSpec(decorView.getMeasuredWidth(), EXACTLY), makeMeasureSpec(decorView.getMeasuredHeight(), EXACTLY));
 		}
-	}
+
+        @Override
+        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                if (event.getAction() == KeyEvent.ACTION_UP) {
+                    if (viewController.handleBack()) {
+                        return true;
+                    }
+                    dialog.dismiss();
+                }
+            }
+            return false;
+        }
+    }
 }

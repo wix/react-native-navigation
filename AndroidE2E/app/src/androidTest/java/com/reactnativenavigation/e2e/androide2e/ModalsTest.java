@@ -114,6 +114,15 @@ public class ModalsTest extends BaseTest {
     public void pushIntoModal() throws Exception {
         elementByText("SHOW MODAL").click();
         elementByText("PUSH SCREEN").click();
-        assertExists(By.text("Pushed from modal"));
+        assertExists(By.text("Pushed Screen"));
+    }
+
+    @Test
+    public void backPopsModalStack() throws Exception {
+        elementByText("SHOW MODAL").click();
+        elementByText("PUSH SCREEN").click();
+        elementByText("PUSH").click();
+        device().pressBack();
+        assertExists(By.text("Pushed Screen"));
     }
 }

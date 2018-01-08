@@ -36,7 +36,7 @@ public class Navigator extends ParentController {
 	@NonNull
 	@Override
 	public Collection<ViewController> getChildControllers() {
-		return root == null ? Collections.<ViewController>emptyList() : Collections.singletonList(root);
+		return root == null ? Collections.emptyList() : Collections.singletonList(root);
 	}
 
 	@Override
