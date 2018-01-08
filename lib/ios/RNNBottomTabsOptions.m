@@ -1,6 +1,5 @@
 #import "RNNBottomTabsOptions.h"
 #import "RNNTabBarController.h"
-extern const NSInteger BLUR_TOPBAR_TAG;
 
 @implementation RNNBottomTabsOptions
 

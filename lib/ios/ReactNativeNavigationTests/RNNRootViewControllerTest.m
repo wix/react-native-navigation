@@ -7,6 +7,8 @@
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
 #import "RNNUIBarButtonItem.h"
+#import "RNNTopBarOptions.h"
+#import "RNNScreenOptions.h"
 
 @interface RNNRootViewControllerTest : XCTestCase
 
@@ -55,7 +57,7 @@
 }
 
 - (void)testStatusBarHidden_true {
-	self.options.statusBarHidden = @(1);
+	self.options.screen.statusBarHidden = @(1);
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -63,7 +65,7 @@
 }
 
 - (void)testStatusBarHideWithTopBar_false {
-	self.options.statusBarHideWithTopBar = @(0);
+	self.options.screen.statusBarHideWithTopBar = @(0);
 	self.options.topBar.hidden = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
@@ -72,7 +74,7 @@
 }
 
 - (void)testStatusBarHideWithTopBar_true {
-	self.options.statusBarHideWithTopBar = @(1);
+	self.options.screen.statusBarHideWithTopBar = @(1);
 	self.options.topBar.hidden = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
@@ -82,7 +84,7 @@
 
 
 - (void)testStatusBarHidden_false {
-	self.options.statusBarHidden = @(0);
+	self.options.screen.statusBarHidden = @(0);
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -116,7 +118,7 @@
 
 -(void)testScreenBackgroundColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.screenBackgroundColor = inputColor;
+	self.options.screen.screenBackgroundColor = inputColor;
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	XCTAssertTrue([self.uut.view.backgroundColor isEqual:expectedColor]);
@@ -124,7 +126,7 @@
 
 -(void)testPopGestureEnabled_true{
 	NSNumber* popGestureEnabled = @(1);
-	self.options.popGesture = popGestureEnabled;
+	self.options.screen.popGesture = popGestureEnabled;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue(self.uut.navigationController.interactivePopGestureRecognizer.enabled);
@@ -132,7 +134,7 @@
 
 -(void)testPopGestureEnabled_false{
 	NSNumber* popGestureEnabled = @(0);
-	self.options.popGesture = popGestureEnabled;
+	self.options.screen.popGesture = popGestureEnabled;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	XCTAssertFalse(self.uut.navigationController.interactivePopGestureRecognizer.enabled);
@@ -268,7 +270,7 @@
 
 -(void)testOrientation_portrait {
 	NSArray* supportedOrientations = @[@"portrait"];
-	self.options.orientation = supportedOrientations;
+	self.options.screen.orientation = supportedOrientations;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskPortrait;
@@ -277,7 +279,7 @@
 
 -(void)testOrientation_portraitString {
 	NSString* supportedOrientation = @"portrait";
-	self.options.orientation = supportedOrientation;
+	self.options.screen.orientation = supportedOrientation;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait);
@@ -286,7 +288,7 @@
 
 -(void)testOrientation_portraitAndLandscape {
 	NSArray* supportedOrientations = @[@"portrait", @"landscape"];
-	self.options.orientation = supportedOrientations;
+	self.options.screen.orientation = supportedOrientations;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscape);
@@ -295,7 +297,7 @@
 
 -(void)testOrientation_all {
 	NSArray* supportedOrientations = @[@"all"];
-	self.options.orientation = supportedOrientations;
+	self.options.screen.orientation = supportedOrientations;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskAll;
@@ -304,7 +306,7 @@
 
 -(void)testOrientation_default {
 	NSString* supportedOrientations = @"default";
-	self.options.orientation = supportedOrientations;
+	self.options.screen.orientation = supportedOrientations;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
@@ -314,7 +316,7 @@
 
 -(void)testOrientationTabsController_portrait {
 	NSArray* supportedOrientations = @[@"portrait"];
-	self.options.orientation = supportedOrientations;
+	self.options.screen.orientation = supportedOrientations;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
 	
@@ -328,7 +330,7 @@
 
 -(void)testOrientationTabsController_portraitAndLandscape {
 	NSArray* supportedOrientations = @[@"portrait", @"landscape"];
-	self.options.orientation = supportedOrientations;
+	self.options.screen.orientation = supportedOrientations;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
 	
@@ -342,7 +344,7 @@
 
 -(void)testOrientationTabsController_all {
 	NSArray* supportedOrientations = @[@"all"];
-	self.options.orientation = supportedOrientations;
+	self.options.screen.orientation = supportedOrientations;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
 	
@@ -433,7 +435,7 @@
 
 -(void)testStatusBarBlurOn {
 	NSNumber* statusBarBlurInput = @(1);
-	self.options.statusBarBlur = statusBarBlurInput;
+	self.options.screen.statusBarBlur = statusBarBlurInput;
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	XCTAssertNotNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
@@ -441,7 +443,7 @@
 
 -(void)testStatusBarBlurOff {
 	NSNumber* statusBarBlurInput = @(0);
-	self.options.statusBarBlur = statusBarBlurInput;
+	self.options.screen.statusBarBlur = statusBarBlurInput;
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	XCTAssertNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
@@ -515,7 +517,7 @@
 
 -(void)testBackgroundImage {
 	UIImage* backgroundImage = [[UIImage alloc] init];
-	self.options.backgroundImage = backgroundImage;
+	self.options.screen.backgroundImage = backgroundImage;
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:backgroundImage]);
@@ -523,7 +525,7 @@
 
 -(void)testRootBackgroundImage {
 	UIImage* rootBackgroundImage = [[UIImage alloc] init];
-	self.options.rootBackgroundImage = rootBackgroundImage;
+	self.options.screen.rootBackgroundImage = rootBackgroundImage;
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue([[(UIImageView*)self.uut.navigationController.view.subviews[0] image] isEqual:rootBackgroundImage]);

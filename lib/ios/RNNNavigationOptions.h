@@ -5,10 +5,7 @@
 #import "RNNSideMenuOptions.h"
 #import "RNNTopTabOptions.h"
 #import "RNNTopTabsOptions.h"
-
-extern const NSInteger BLUR_STATUS_TAG;
-extern const NSInteger BLUR_TOPBAR_TAG;
-extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
+#import "RNNScreenOptions.h"
 
 @interface RNNNavigationOptions : RNNOptions
 
@@ -18,22 +15,9 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) RNNTopTabsOptions* topTabs;
 @property (nonatomic, strong) RNNTopTabOptions* topTab;
 @property (nonatomic, strong) RNNSideMenuOptions* sideMenu;
+@property (nonatomic, strong) RNNScreenOptions* screen;
 
 @property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
-
-@property (nonatomic, strong) NSNumber* statusBarHidden;
-@property (nonatomic, strong) NSNumber* screenBackgroundColor;
-@property (nonatomic, strong) NSMutableDictionary* originalTopBarImages;
-@property (nonatomic, strong) NSString* backButtonTransition;
-@property (nonatomic, strong) id orientation;
-@property (nonatomic, strong) NSNumber* statusBarBlur;
-@property (nonatomic, strong) NSNumber* statusBarHideWithTopBar;
-@property (nonatomic, strong) NSNumber* popGesture;
-@property (nonatomic, strong) UIImage* backgroundImage;
-@property (nonatomic, strong) UIImage* rootBackgroundImage;
-
-
-- (UIInterfaceOrientationMask)supportedOrientations;
 
 
 @end

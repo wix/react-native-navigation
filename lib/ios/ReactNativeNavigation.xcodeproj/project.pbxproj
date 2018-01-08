@@ -63,6 +63,8 @@
 		504AFE751FFFF0540076E904 /* RNNTopTabsOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 504AFE731FFFF0540076E904 /* RNNTopTabsOptions.m */; };
 		504AFE761FFFF1E00076E904 /* RNNNavigationOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = E83BAD691F27362500A9F3DD /* RNNNavigationOptions.h */; };
 		504AFE771FFFF1E20076E904 /* RNNTopBarOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */; };
+		504AFE8620025CE50076E904 /* RNNScreenOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 504AFE8420025CE50076E904 /* RNNScreenOptions.h */; };
+		504AFE8720025CE50076E904 /* RNNScreenOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 504AFE8520025CE50076E904 /* RNNScreenOptions.m */; };
 		507F43C51FF4F17C00D9425B /* RNNTopTabsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 507F43C31FF4F17C00D9425B /* RNNTopTabsViewController.h */; };
 		507F43C61FF4F17C00D9425B /* RNNTopTabsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 507F43C41FF4F17C00D9425B /* RNNTopTabsViewController.m */; };
 		507F43C91FF4F9CC00D9425B /* RNNTopTabOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 507F43C71FF4F9CC00D9425B /* RNNTopTabOptions.h */; };
@@ -225,6 +227,8 @@
 		504AFE631FFE53070076E904 /* RNNOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNOptions.m; sourceTree = "<group>"; };
 		504AFE721FFFF0540076E904 /* RNNTopTabsOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopTabsOptions.h; sourceTree = "<group>"; };
 		504AFE731FFFF0540076E904 /* RNNTopTabsOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTopTabsOptions.m; sourceTree = "<group>"; };
+		504AFE8420025CE50076E904 /* RNNScreenOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNScreenOptions.h; sourceTree = "<group>"; };
+		504AFE8520025CE50076E904 /* RNNScreenOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNScreenOptions.m; sourceTree = "<group>"; };
 		507F43C31FF4F17C00D9425B /* RNNTopTabsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopTabsViewController.h; sourceTree = "<group>"; };
 		507F43C41FF4F17C00D9425B /* RNNTopTabsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTopTabsViewController.m; sourceTree = "<group>"; };
 		507F43C71FF4F9CC00D9425B /* RNNTopTabOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopTabOptions.h; sourceTree = "<group>"; };
@@ -442,6 +446,8 @@
 				504AFE731FFFF0540076E904 /* RNNTopTabsOptions.m */,
 				50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */,
 				50CB3B681FDE911400AA153B /* RNNSideMenuOptions.m */,
+				504AFE8420025CE50076E904 /* RNNScreenOptions.h */,
+				504AFE8520025CE50076E904 /* RNNScreenOptions.m */,
 			);
 			name = Options;
 			sourceTree = "<group>";
@@ -655,6 +661,7 @@
 				263905E61E4CAC950023D7D3 /* RNNSideMenuChildVC.h in Headers */,
 				263905C41E4C6F440023D7D3 /* SidebarFacebookAnimation.h in Headers */,
 				50F5DFC51F407AA0001A00BC /* RNNNavigationController.h in Headers */,
+				504AFE8620025CE50076E904 /* RNNScreenOptions.h in Headers */,
 				21B85E5F1F44482A00B314B5 /* RNNNavigationButtons.h in Headers */,
 				7BEF0D181E437684003E96B0 /* RNNRootViewController.h in Headers */,
 				E8A5CD5A1F48CCC300E89D0D /* RNNNavigationController.h in Headers */,
@@ -831,6 +838,7 @@
 				263905CD1E4C6F440023D7D3 /* SidebarWunderlistAnimation.m in Sources */,
 				263905CF1E4C6F440023D7D3 /* TheSidebarController.m in Sources */,
 				E8A430121F9CB87B00B61A20 /* RNNAnimatedView.m in Sources */,
+				504AFE8720025CE50076E904 /* RNNScreenOptions.m in Sources */,
 				507F43F51FF4FCFE00D9425B /* HMSegmentedControl.m in Sources */,
 				507F43C61FF4F17C00D9425B /* RNNTopTabsViewController.m in Sources */,
 				50EB93421FE14A3E00BD8EEE /* RNNBottomTabOptions.m in Sources */,

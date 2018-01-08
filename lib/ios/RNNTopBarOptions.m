@@ -1,7 +1,8 @@
 #import "RNNTopBarOptions.h"
 #import "RNNNavigationButtons.h"
 
-extern const NSInteger BLUR_TOPBAR_TAG;
+const NSInteger BLUR_TOPBAR_TAG = 78264802;
+const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @interface RNNTopBarOptions ()
 

@@ -49,16 +49,16 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-	if ([self.navigationOptions.statusBarHidden boolValue]) {
+	if ([self.navigationOptions.screen.statusBarHidden boolValue]) {
 		return YES;
-	} else if ([self.navigationOptions.statusBarHideWithTopBar boolValue]) {
+	} else if ([self.navigationOptions.screen.statusBarHideWithTopBar boolValue]) {
 		return self.navigationController.isNavigationBarHidden;
 	}
 	return NO;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-	return self.navigationOptions.supportedOrientations;
+	return self.navigationOptions.screen.supportedOrientations;
 }
 
 - (BOOL)hidesBottomBarWhenPushed
@@ -81,7 +81,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
 	RNNRootViewController* vc =  (RNNRootViewController*)viewController;
-	if (![vc.navigationOptions.backButtonTransition isEqualToString:@"custom"]){
+	if (![vc.navigationOptions.screen.backButtonTransition isEqualToString:@"custom"]){
 		navigationController.delegate = nil;
 	}
 }

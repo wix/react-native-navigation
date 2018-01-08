@@ -1,4 +1,3 @@
-
 #import "RNNOptions.h"
 
 @implementation RNNOptions
