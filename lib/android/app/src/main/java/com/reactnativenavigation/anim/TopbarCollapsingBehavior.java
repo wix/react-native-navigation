@@ -19,6 +19,7 @@ public class TopbarCollapsingBehavior {
     public TopbarCollapsingBehavior(EventDispatcher eventDispatcher, TopBar topBar) {
         this.eventDispatcher = eventDispatcher;
         this.topBar = topBar;
+        this.animator = new TopBarAnimator();
     }
 
     public void enableCollapsing() {
