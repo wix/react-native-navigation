@@ -11,14 +11,15 @@ import android.widget.RelativeLayout;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController.IReactView;
 
 @SuppressLint("ViewConstructor")
 public class ContainerLayout extends RelativeLayout implements ReactContainer {
 
-	private TopBar topBar;
-	private IReactView reactView;
-	private final OptionsPresenter optionsPresenter;
+    private TopBar topBar;
+    private IReactView reactView;
+    private final OptionsPresenter optionsPresenter;
 
     public ContainerLayout(Context context, IReactView reactView, EventDispatcher eventDispatcher) {
         super(context);
@@ -27,9 +28,9 @@ public class ContainerLayout extends RelativeLayout implements ReactContainer {
         topBar.setId(View.generateViewId());
 
         this.reactView = reactView;
-        optionsPresenter = new OptionsPresenter(topBar, reactView.asView());
+        optionsPresenter = new OptionsPresenter(this);
         initViews();
-	}
+    }
 
     private void initViews() {
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -38,44 +39,62 @@ public class ContainerLayout extends RelativeLayout implements ReactContainer {
         addView(topBar, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
-	@Override
-	public boolean isReady() {
-		return reactView.isReady();
-	}
+    @Override
+    public boolean isReady() {
+        return reactView.isReady();
+    }
 
-	@Override
-	public View asView() {
-		return this;
-	}
+    @Override
+    public View asView() {
+        return this;
+    }
 
-	@Override
-	public void destroy() {
-		reactView.destroy();
-	}
+    @Override
+    public void destroy() {
+        reactView.destroy();
+    }
 
-	@Override
-	public void sendContainerStart() {
-		reactView.sendContainerStart();
-	}
+    @Override
+    public void sendContainerStart() {
+        reactView.sendContainerStart();
+    }
 
-	@Override
-	public void sendContainerStop() {
-		reactView.sendContainerStop();
-	}
+    @Override
+    public void sendContainerStop() {
+        reactView.sendContainerStop();
+    }
 
     @Override
     public void applyOptions(NavigationOptions options) {
         optionsPresenter.applyOptions(options);
     }
 
-	@Override
+    @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
         reactView.sendOnNavigationButtonPressed(buttonId);
     }
 
     @Override
-    @RestrictTo(RestrictTo.Scope.TESTS)
     public TopBar getTopBar() {
         return topBar;
+    }
+
+    @Override
+    public View getContentView() {
+        return reactView.asView();
+    }
+
+    @Override
+    public void drawUnderTopBar() {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+        layoutParams.removeRule(BELOW);
+        setLayoutParams(layoutParams);
+    }
+
+    @Override
+    public void drawBelowTopBar() {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+        layoutParams.addRule(BELOW, topBar.getId());
+        setLayoutParams(layoutParams);
     }
 }

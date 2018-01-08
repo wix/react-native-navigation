@@ -32,7 +32,7 @@ public class TopTabsLayout extends RelativeLayout implements Container {
         topBar = new TopBar(context, this, null);
         topBar.setId(View.generateViewId());
         viewPager = new TopTabsViewPager(context, tabs, adapter);
-        optionsPresenter = new OptionsPresenter(topBar, viewPager);
+        optionsPresenter = new OptionsPresenter(this);
         initViews();
     }
 
@@ -55,9 +55,23 @@ public class TopTabsLayout extends RelativeLayout implements Container {
     }
 
     @Override
-    @RestrictTo(RestrictTo.Scope.TESTS)
     public TopBar getTopBar() {
         return topBar;
+    }
+
+    @Override
+    public View getContentView() {
+        return viewPager;
+    }
+
+    @Override
+    public void drawUnderTopBar() {
+        //TODO: implement later
+    }
+
+    @Override
+    public void drawBelowTopBar() {
+        //TODO: implement later
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

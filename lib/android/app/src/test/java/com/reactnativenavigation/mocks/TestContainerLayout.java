@@ -2,6 +2,7 @@ package com.reactnativenavigation.mocks;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.parse.NavigationOptions;
@@ -12,19 +13,39 @@ import com.reactnativenavigation.views.TopBar;
 public class TestContainerLayout extends RelativeLayout implements ReactContainer {
 
     private final TopBar topBar;
+    private final View contentView;
     private final OptionsPresenter optionsPresenter;
 
     public TestContainerLayout(final Context context) {
         super(context);
         topBar = new TopBar(context, this, null);
-        View content = new View(context);
+        contentView = new View(context);
         addView(topBar);
-        addView(content);
-        optionsPresenter = new OptionsPresenter(topBar, content);
+        addView(contentView);
+        optionsPresenter = new OptionsPresenter(this);
     }
 
     public TopBar getTopBar() {
         return topBar;
+    }
+
+    @Override
+    public View getContentView() {
+        return contentView;
+    }
+
+    @Override
+    public void drawUnderTopBar() {
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.removeRule(BELOW);
+        contentView.setLayoutParams(layoutParams);
+    }
+
+    @Override
+    public void drawBelowTopBar() {
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.addRule(BELOW, topBar.getId());
+        contentView.setLayoutParams(layoutParams);
     }
 
     @Override

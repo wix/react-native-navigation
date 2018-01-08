@@ -10,6 +10,9 @@ import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
+import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.reactnativenavigation.views.Container;
+import com.reactnativenavigation.views.ReactContainer;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.ArrayList;
@@ -22,11 +25,13 @@ public class OptionsPresenter {
 
     private final TopBarAnimator topBarAnimator;
     private View contentView;
+    private Container reactContainer;
     private TopBar topBar;
 
-    public OptionsPresenter(TopBar topBar, View contentView) {
-        this.topBar = topBar;
-        this.contentView = contentView;
+    public OptionsPresenter(Container reactContainer) {
+        this.reactContainer = reactContainer;
+        this.topBar = reactContainer.getTopBar();
+        this.contentView = reactContainer.getContentView();
         topBarAnimator = new TopBarAnimator();
     }
 
@@ -51,39 +56,15 @@ public class OptionsPresenter {
             showTopBar(options.animateHide);
         }
         if (options.drawUnder == True) {
-            removeRule();
+            reactContainer.drawUnderTopBar();
         } else if (options.drawUnder == False) {
-            addRule();
+            reactContainer.drawBelowTopBar();
         }
 
         if (options.hideOnScroll == True) {
             topBar.enableCollapse();
         } else if (options.hideOnScroll == False) {
             topBar.disableCollapse();
-        }
-    }
-
-    private void removeRule() {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
-        if (layoutParams != null) {
-            layoutParams.removeRule(BELOW);
-            contentView.setLayoutParams(layoutParams);
-        } else {
-            layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layoutParams.removeRule(BELOW);
-            contentView.setLayoutParams(layoutParams);
-        }
-    }
-
-    private void addRule() {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
-        if (layoutParams != null) {
-            layoutParams.addRule(BELOW, topBar.getId());
-            contentView.setLayoutParams(layoutParams);
-        } else {
-            layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layoutParams.addRule(BELOW, topBar.getId());
-            contentView.setLayoutParams(layoutParams);
         }
     }
 
