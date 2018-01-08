@@ -14,6 +14,9 @@ import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController.IReactView;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 @SuppressLint("ViewConstructor")
 public class ContainerLayout extends RelativeLayout implements ReactContainer {
 
@@ -33,10 +36,10 @@ public class ContainerLayout extends RelativeLayout implements ReactContainer {
     }
 
     private void initViews() {
-        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        LayoutParams layoutParams = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         layoutParams.addRule(BELOW, topBar.getId());
         addView(reactView.asView(), layoutParams);
-        addView(topBar, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        addView(topBar, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
     }
 
     @Override

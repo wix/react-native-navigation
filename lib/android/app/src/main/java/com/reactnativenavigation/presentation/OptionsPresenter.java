@@ -23,7 +23,6 @@ import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.T
 
 public class OptionsPresenter {
 
-    private final TopBarAnimator topBarAnimator;
     private View contentView;
     private Container reactContainer;
     private TopBar topBar;
@@ -32,7 +31,6 @@ public class OptionsPresenter {
         this.reactContainer = reactContainer;
         this.topBar = reactContainer.getTopBar();
         this.contentView = reactContainer.getContentView();
-        topBarAnimator = new TopBarAnimator();
     }
 
     public void applyOptions(NavigationOptions options) {
@@ -69,25 +67,11 @@ public class OptionsPresenter {
     }
 
     private void showTopBar(NavigationOptions.BooleanOptions animated) {
-        if (topBar.getVisibility() == View.VISIBLE) {
-            return;
-        }
-        if (animated == NavigationOptions.BooleanOptions.True) {
-            topBarAnimator.animateShowTopBar(topBar, contentView);
-        } else {
-            topBar.setVisibility(View.VISIBLE);
-        }
+        topBar.show(animated, contentView);
     }
 
     private void hideTopBar(NavigationOptions.BooleanOptions animated) {
-        if (topBar.getVisibility() == View.GONE) {
-            return;
-        }
-        if (animated == NavigationOptions.BooleanOptions.True) {
-            topBarAnimator.animateHideTopBar(topBar, contentView);
-        } else {
-            topBar.setVisibility(View.GONE);
-        }
+        topBar.hide(animated, contentView);
     }
 
     private void applyButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {

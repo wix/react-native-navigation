@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.anim.TopBarAnimator;
+import com.reactnativenavigation.anim.TopbarCollapsingBehavior;
 import com.reactnativenavigation.parse.Button;
+import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.Number;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
@@ -30,14 +32,12 @@ public class TopBar extends AppBarLayout {
     private Container container;
     private TopTabs topTabs;
 
-    private EventDispatcher eventDispatcher;
-    private ScrollEventListener scrollEventListener;
-    private boolean dragStarted;
     private TopBarAnimator animator;
+    private TopbarCollapsingBehavior collapsingBehavior;
 
     public TopBar(Context context, Container container, EventDispatcher eventDispatcher) {
         super(context);
-        this.eventDispatcher = eventDispatcher;
+        collapsingBehavior = new TopbarCollapsingBehavior(eventDispatcher, this);
         this.container = container;
         titleBar = new Toolbar(context);
         topTabs = new TopTabs(getContext());
@@ -160,59 +160,32 @@ public class TopBar extends AppBarLayout {
     }
 
     public void enableCollapse() {
-        scrollEventListener = (new ScrollEventListener(new ScrollEventListener.OnVerticalScrollListener() {
-            @Override
-            public void onVerticalScroll(int scrollY, int oldScrollY) {
-                if (scrollY < 0) return;
-                if (!dragStarted) return;
-
-                int measuredHeight = getMeasuredHeight();
-                int diff = scrollY - oldScrollY;
-                if (Math.abs(diff) > measuredHeight) {
-                    diff = (Math.abs(diff) / diff) * measuredHeight;
-                }
-                float nextTranslation = getTranslationY() - diff;
-                if (diff < 0) {
-                    if (getVisibility() == View.GONE && nextTranslation > -measuredHeight) {
-                        setVisibility(View.VISIBLE);
-                        setTranslationY(nextTranslation);
-                    } else if (nextTranslation <= 0 && nextTranslation >= -measuredHeight) {
-                        setTranslationY(nextTranslation);
-                    }
-                } else {
-                    if (nextTranslation < -measuredHeight && getVisibility() == View.VISIBLE) {
-                        setVisibility(View.GONE);
-                        setTranslationY(-measuredHeight);
-                    } else if (nextTranslation > -measuredHeight && nextTranslation <= 0) {
-                        setTranslationY(nextTranslation);
-                    }
-                }
-            }
-
-            @Override
-            public void onDrag(boolean started, double velocity) {
-                dragStarted = started;
-                UiThread.post(() -> {
-                    if (!dragStarted) {
-                        if (velocity > 0) {
-                            animator.animateShowTopBar(TopBar.this, null, getTranslationY(), null, 100);
-                        } else {
-                            animator.animateHideTopBar(TopBar.this, null, getTranslationY(), null, 100);
-                        }
-                    }
-                });
-            }
-        }));
-        if (eventDispatcher != null) {
-            eventDispatcher.addListener(scrollEventListener);
-        }
+        collapsingBehavior.enableCollapsing();
     }
 
     public void disableCollapse() {
-        if (eventDispatcher != null) {
-            eventDispatcher.removeListener(scrollEventListener);
+        collapsingBehavior.disableCollapsing();
+    }
+
+    public void show(NavigationOptions.BooleanOptions animated, View contentView) {
+        if (getVisibility() == View.VISIBLE) {
+            return;
         }
-        setVisibility(View.VISIBLE);
-        setTranslationY(0);
+        if (animated == NavigationOptions.BooleanOptions.True) {
+            animator.animateShowTopBar(this, contentView);
+        } else {
+            setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hide(NavigationOptions.BooleanOptions animated, View contentView) {
+        if (getVisibility() == View.GONE) {
+            return;
+        }
+        if (animated == NavigationOptions.BooleanOptions.True) {
+            animator.animateHideTopBar(this, contentView);
+        } else {
+            setVisibility(View.GONE);
+        }
     }
 }
