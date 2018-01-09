@@ -94,7 +94,7 @@ public class NavigatorTest extends BaseTest {
 		StackController stack2 = newStack();
 		stack1.push(child1);
 		stack2.push(child2);
-		bottomTabsController.setTabs(Arrays.<ViewController>asList(stack1, stack2));
+		bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
 		uut.setRoot(bottomTabsController);
 
 		SimpleViewController newChild = new SimpleViewController(activity, "new child");
@@ -121,7 +121,7 @@ public class NavigatorTest extends BaseTest {
 		stack2.push(child2);
 		stack2.push(child3);
 		stack2.push(child4);
-		bottomTabsController.setTabs(Arrays.<ViewController>asList(stack1, stack2));
+		bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
 		uut.setRoot(bottomTabsController);
 
 		uut.pop("child4");
@@ -138,7 +138,7 @@ public class NavigatorTest extends BaseTest {
 		stack2.push(child2);
 		stack2.push(child3);
 		stack2.push(child4);
-		bottomTabsController.setTabs(Arrays.<ViewController>asList(stack1, stack2));
+		bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
 		uut.setRoot(bottomTabsController);
 
 		uut.popSpecific(child2.getId());
@@ -156,7 +156,7 @@ public class NavigatorTest extends BaseTest {
 		stack2.push(child3);
 		stack2.push(child4);
 		stack2.push(child5);
-		bottomTabsController.setTabs(Arrays.<ViewController>asList(stack1, stack2));
+		bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
 		uut.setRoot(bottomTabsController);
 
 		uut.popTo(child2.getId());
@@ -175,7 +175,7 @@ public class NavigatorTest extends BaseTest {
 		stack2.push(child4);
 		stack2.push(child5);
 
-		bottomTabsController.setTabs(Arrays.<ViewController>asList(stack1, stack2));
+		bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
 		uut.setRoot(bottomTabsController);
 
 		uut.popToRoot(child3.getId());
@@ -272,7 +272,7 @@ public class NavigatorTest extends BaseTest {
 		stack2.push(child2);
 		stack2.push(child3);
 		stack2.push(child4);
-		bottomTabsController.setTabs(Arrays.<ViewController>asList(stack1, stack2));
+		bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
 		uut.setRoot(bottomTabsController);
 
 		uut.pop("child4", new MockPromise() {
@@ -282,4 +282,13 @@ public class NavigatorTest extends BaseTest {
 			}
 		});
 	}
+
+	@Test
+    public void pushIntoModal() throws Exception {
+        StackController stackController = newStack();
+        stackController.push(child1);
+        uut.showModal(stackController, new MockPromise());
+        uut.push(stackController.getId(), child2);
+        assertIsChildById(stackController.getView(), child2.getView());
+    }
 }

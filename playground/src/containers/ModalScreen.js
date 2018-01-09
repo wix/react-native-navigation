@@ -24,6 +24,7 @@ class ModalScreen extends Component {
     this.onClickDismissAllPreviousModals = this.onClickDismissAllPreviousModals.bind(this);
     this.onClickDismissFirstInStack = this.onClickDismissFirstInStack.bind(this);
     this.onClickDismissAllModals = this.onClickDismissAllModals.bind(this);
+    this.onClickPushScreen = this.onClickPushScreen.bind(this);
   }
 
   render() {
@@ -35,6 +36,7 @@ class ModalScreen extends Component {
         <Button title="Dismiss Modal" testID={testIDs.DISMISS_MODAL_BUTTON} onPress={this.onClickDismissModal} />
         <Button title="Dismiss Unknown Modal" testID={testIDs.DISMISS_UNKNOWN_MODAL_BUTTON} onPress={this.onClickDismissUnknownModal} />
         <Button title="Dismiss All Modals" testID={testIDs.DISMISS_ALL_MODALS_BUTTON} onPress={this.onClickDismissAllModals} />
+        <Button title="Push screen" testID={testIDs.PUSH_BUTTON} onPress={this.onClickPushScreen} />
         {this.getPreviousModalId() ? (<Button title="Dismiss Previous Modal" testID={testIDs.DISMISS_PREVIOUS_MODAL_BUTTON} onPress={this.onClickDismissPreviousModal} />) : undefined}
         {this.props.previousModalIds ? (<Button title="Dismiss ALL Previous Modals" testID={testIDs.DISMISS_ALL_PREVIOUS_MODAL_BUTTON} onPress={this.onClickDismissAllPreviousModals} />) : undefined}
         {this.props.previousModalIds ? (<Button title="Dismiss First In Stack" testID={testIDs.DISMISS_FIRST_MODAL_BUTTON} onPress={this.onClickDismissFirstInStack} />) : undefined}
@@ -77,6 +79,15 @@ class ModalScreen extends Component {
 
   onClickDismissAllModals() {
     Navigation.dismissAllModals();
+  }
+
+  onClickPushScreen() {
+    Navigation.push(this.props.containerId, {
+      name: `navigation.playground.PushedScreen`,
+      passProps: {
+        text: 'Pushed from modal'
+      }
+    });
   }
 
   getModalPosition() {
