@@ -25,7 +25,7 @@ public class SlidingOverlaysQueue implements SlidingOverlay.SlidingListener{
                 }
                 else {
                     SlidingOverlay currentOverlay = queue.peek();
-                    if (currentOverlay.isVisible()) {
+                    if (currentOverlay != null && currentOverlay.isVisible()) {
                         if (autoDismissTimer != null) {
                             autoDismissTimer.cancel();
                             autoDismissTimer = null;
@@ -60,7 +60,7 @@ public class SlidingOverlaysQueue implements SlidingOverlay.SlidingListener{
 
     @Override
     public void onSlidingOverlayShown() {
-        Integer autoDismissTimerSec = queue.peek().getAutoDismissTimerSec();
+        Integer autoDismissTimerSec = queue.peek() == null ? null : queue.peek().getAutoDismissTimerSec();
 
         if (autoDismissTimerSec != null || pendingHide || queue.size() > 1) {
             int autoDismissDuration = autoDismissTimerSec != null
@@ -75,7 +75,9 @@ public class SlidingOverlaysQueue implements SlidingOverlay.SlidingListener{
                     NavigationApplication.instance.runOnMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            queue.peek().hide();
+                            if(queue.peek() != null) {
+                                queue.peek().hide();
+                            }
                         }
                     });
                 }

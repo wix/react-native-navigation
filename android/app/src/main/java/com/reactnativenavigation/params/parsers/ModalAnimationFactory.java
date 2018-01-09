@@ -11,6 +11,8 @@ public class ModalAnimationFactory {
                 return R.style.ModalFadeAnimation;
             case "slide-horizontal":
                 return R.style.ModalSlideHorizontal;
+            case "screen":
+                return R.style.ModalScreenAnimations;
             default:
                 return R.style.ModalDefaultAnimations;
         }

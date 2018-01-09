@@ -121,13 +121,13 @@ var Controllers = {
     registerController: function (appKey, getControllerFunc) {
       _controllerRegistry[appKey] = getControllerFunc();
     },
-    setRootController: function (appKey, animationType = 'none', passProps = {}) {
+    setRootController: async function (appKey, animationType = 'none', passProps = {}) {
       var controller = _controllerRegistry[appKey];
       if (controller === undefined) return;
       var layout = controller.render();
       _validateDrawerProps(layout);
       _processProperties(_.get(layout, 'props.appStyle', {}));
-      RCCManager.setRootController(layout, animationType, passProps);
+      return await RCCManager.setRootController(layout, animationType, passProps);
     }
   },
 
@@ -244,6 +244,7 @@ var Controllers = {
         return RCCManager.TabBarControllerIOS(id, "setTabBarHidden", params);
       },
       setBadge: function (params) {
+        _processProperties(params);
         return RCCManager.TabBarControllerIOS(id, "setBadge", params);
       },
       switchTo: function (params) {
@@ -327,4 +328,3 @@ var Controllers = {
 };
 
 module.exports = Controllers;
-

@@ -3,6 +3,7 @@ package com.reactnativenavigation.params.parsers;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.params.ScreenParams;
@@ -55,7 +56,7 @@ public class ScreenParamsParser extends Parser {
         result.animateScreenTransitions = new AnimationParser(params).parse();
         result.sharedElementsTransitions = getSharedElementsTransitions(params);
 
-        result.animationType = params.getString(ANIMATION_TYPE, "slide-up");
+        result.animationType = params.getString(ANIMATION_TYPE, AppStyle.appStyle.screenAnimationType);
 
         return result;
     }

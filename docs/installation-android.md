@@ -1,6 +1,6 @@
 # Android Installation
 
-!> Make sure you are using **react-native** version >= 0.43. We also recommend using npm version >= 3
+!> Make sure you are using **react-native** version >= 0.51. We also recommend using npm version >= 3
 
 1. Install `react-native-navigation` latest stable version.
 
@@ -72,6 +72,17 @@
 	}
 	```
 
+	Also, add the following
+
+   ```java
+   @Override
+   public String getJSMainModuleName() {
+   	return "index";
+   }
+   ```
+
+   if you are using `index.js` as your entry point instead of `index.ios.js` and `index.android.js` (it is the default since React Native 0.49).
+
 	Make sure that `isDebug` and `createAdditionalReactPackages` methods are implemented.
 
 6. Update `AndroidManifest.xml` and set **android:name** value to `.MainApplication`
@@ -81,4 +92,3 @@
 		...
 	/>
 	```
-
