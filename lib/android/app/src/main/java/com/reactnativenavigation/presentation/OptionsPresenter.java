@@ -38,10 +38,10 @@ public class OptionsPresenter {
 
         topBar.setTitleTypeface(options.textFontFamily);
         if (options.hidden == NavigationOptions.BooleanOptions.True) {
-            hideTopBar(options.animateHide);
+            topBar.hide(options.animateHide);
         }
         if (options.hidden == NavigationOptions.BooleanOptions.False) {
-            showTopBar(options.animateHide);
+            topBar.show(options.animateHide);
         }
         if (options.drawBehind == True) {
             reactContainer.drawBehindTopBar();
@@ -54,14 +54,6 @@ public class OptionsPresenter {
         } else if (options.hideOnScroll == False) {
             topBar.disableCollapse();
         }
-    }
-
-    private void showTopBar(NavigationOptions.BooleanOptions animated) {
-        topBar.show(animated);
-    }
-
-    private void hideTopBar(NavigationOptions.BooleanOptions animated) {
-        topBar.hide(animated);
     }
 
     private void applyButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
