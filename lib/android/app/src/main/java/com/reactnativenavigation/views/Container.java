@@ -15,7 +15,7 @@ public interface Container {
 
     View getContentView();
 
-    void drawUnderTopBar();
+    void drawBehindTopBar();
 
     void drawBelowTopBar();
 }

@@ -1,36 +1,26 @@
 package com.reactnativenavigation.presentation;
 
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-
-import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
 import com.reactnativenavigation.views.Container;
-import com.reactnativenavigation.views.ReactContainer;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.ArrayList;
 
-import static android.widget.RelativeLayout.BELOW;
 import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.False;
 import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.True;
 
 public class OptionsPresenter {
 
-    private View contentView;
     private Container reactContainer;
     private TopBar topBar;
 
     public OptionsPresenter(Container reactContainer) {
         this.reactContainer = reactContainer;
         this.topBar = reactContainer.getTopBar();
-        this.contentView = reactContainer.getContentView();
     }
 
     public void applyOptions(NavigationOptions options) {
@@ -53,9 +43,9 @@ public class OptionsPresenter {
         if (options.hidden == NavigationOptions.BooleanOptions.False) {
             showTopBar(options.animateHide);
         }
-        if (options.drawUnder == True) {
-            reactContainer.drawUnderTopBar();
-        } else if (options.drawUnder == False) {
+        if (options.drawBehind == True) {
+            reactContainer.drawBehindTopBar();
+        } else if (options.drawBehind == False) {
             reactContainer.drawBelowTopBar();
         }
 
@@ -67,11 +57,11 @@ public class OptionsPresenter {
     }
 
     private void showTopBar(NavigationOptions.BooleanOptions animated) {
-        topBar.show(animated, contentView);
+        topBar.show(animated);
     }
 
     private void hideTopBar(NavigationOptions.BooleanOptions animated) {
-        topBar.hide(animated, contentView);
+        topBar.hide(animated);
     }
 
     private void applyButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {

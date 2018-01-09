@@ -65,13 +65,13 @@ public class TopTabsLayout extends RelativeLayout implements Container {
     }
 
     @Override
-    public void drawUnderTopBar() {
-        //TODO: implement later
+    public void drawBehindTopBar() {
+
     }
 
     @Override
     public void drawBelowTopBar() {
-        //TODO: implement later
+
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

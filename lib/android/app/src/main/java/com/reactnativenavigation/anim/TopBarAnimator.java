@@ -18,16 +18,21 @@ public class TopBarAnimator {
     private DecelerateInterpolator decelerateInterpolator;
     private AccelerateInterpolator accelerateInterpolator;
 
-    public TopBarAnimator() {
+    private TopBar topBar;
+    private View contentView;
+
+    public TopBarAnimator(TopBar topBar, View contentView) {
         decelerateInterpolator = new DecelerateInterpolator();
         accelerateInterpolator = new AccelerateInterpolator();
+        this.topBar = topBar;
+        this.contentView = contentView;
     }
 
-    public void animateShowTopBar(final TopBar topBar, final View contentView) {
-        animateShowTopBar(topBar, contentView, -1 * topBar.getMeasuredHeight(), decelerateInterpolator, DURATION_TOPBAR);
+    public void show() {
+        show(-1 * topBar.getMeasuredHeight(), decelerateInterpolator, DURATION_TOPBAR);
     }
 
-    public void animateShowTopBar(final TopBar topBar, final View container, float startTranslation, TimeInterpolator interpolator, int duration) {
+    public void show(float startTranslation, TimeInterpolator interpolator, int duration) {
         ObjectAnimator topbarAnim = ObjectAnimator.ofFloat(topBar, View.TRANSLATION_Y, startTranslation, 0);
         topbarAnim.setInterpolator(interpolator);
         topbarAnim.setDuration(duration);
@@ -41,21 +46,21 @@ public class TopBarAnimator {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (container != null) {
-                    ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
+                if (contentView != null) {
+                    ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
                     layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                    container.setLayoutParams(layoutParams);
+                    contentView.setLayoutParams(layoutParams);
                 }
             }
         });
         topbarAnim.start();
     }
 
-    public void animateHideTopBar(final TopBar topBar, final View contentView) {
-        animateHideTopBar(topBar, contentView, 0, accelerateInterpolator, DURATION_TOPBAR);
+    public void hide() {
+        hide(0, accelerateInterpolator, DURATION_TOPBAR);
     }
 
-    public void animateHideTopBar(final TopBar topBar, final View container, float startTranslation, TimeInterpolator interpolator, int duration) {
+    public void hide(float startTranslation, TimeInterpolator interpolator, int duration) {
         ObjectAnimator topbarAnim = ObjectAnimator.ofFloat(topBar, View.TRANSLATION_Y, startTranslation, -1 * topBar.getMeasuredHeight());
         topbarAnim.setInterpolator(interpolator);
         topbarAnim.setDuration(duration);
@@ -63,10 +68,10 @@ public class TopBarAnimator {
         topbarAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (container != null) {
-                    ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
+                if (contentView != null) {
+                    ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
                     layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                    container.setLayoutParams(layoutParams);
+                    contentView.setLayoutParams(layoutParams);
                 }
 
                 topBar.setVisibility(View.GONE);

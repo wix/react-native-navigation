@@ -60,7 +60,7 @@ public class TestContainerView extends View implements ReactContainer {
     }
 
     @Override
-    public void drawUnderTopBar() {
+    public void drawBehindTopBar() {
 
     }
 

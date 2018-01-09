@@ -60,7 +60,7 @@ public class NavigationOptionsTest extends BaseTest {
         assertThat(result.topBarOptions.textFontSize).isEqualTo(TOP_BAR_FONT_SIZE);
         assertThat(result.topBarOptions.textFontFamily).isEqualTo(TOP_BAR_TYPEFACE);
         assertThat(result.topBarOptions.hidden).isEqualTo(TOP_BAR_HIDDEN);
-        assertThat(result.topBarOptions.drawUnder).isEqualTo(TOP_BAR_DRAW_UNDER);
+        assertThat(result.topBarOptions.drawBehind).isEqualTo(TOP_BAR_DRAW_UNDER);
         assertThat(result.topBarOptions.hideOnScroll).isEqualTo(TOP_BAR_HIDE_ON_SCROLL);
         assertThat(result.bottomTabsOptions.animateHide).isEqualTo(BOTTOM_TABS_ANIMATE_HIDE);
         assertThat(result.bottomTabsOptions.hidden).isEqualTo(BOTTOM_TABS_HIDDEN);
@@ -88,7 +88,7 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("textFontSize", TOP_BAR_FONT_SIZE)
                 .put("textFontFamily", TOP_BAR_FONT_FAMILY)
                 .put("hidden", TOP_BAR_HIDDEN)
-                .put("drawUnder", TOP_BAR_DRAW_UNDER)
+                .put("drawBehind", TOP_BAR_DRAW_UNDER)
                 .put("hideOnScroll", TOP_BAR_HIDE_ON_SCROLL);
     }
 

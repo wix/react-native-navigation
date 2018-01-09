@@ -142,13 +142,13 @@ public class OptionsApplyingTest extends BaseTest {
     public void appliesDrawUnder() throws Exception {
         assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = "the title";
-        initialNavigationOptions.topBarOptions.drawUnder = NavigationOptions.BooleanOptions.False;
+        initialNavigationOptions.topBarOptions.drawBehind = NavigationOptions.BooleanOptions.False;
         uut.onViewAppeared();
         RelativeLayout.LayoutParams uutLayoutParams = (RelativeLayout.LayoutParams) ((ViewGroup) uut.getContainer().asView()).getChildAt(1).getLayoutParams();
         assertThat(uutLayoutParams.getRule(BELOW)).isNotEqualTo(0);
 
         NavigationOptions opts = new NavigationOptions();
-        opts.topBarOptions.drawUnder = NavigationOptions.BooleanOptions.True;
+        opts.topBarOptions.drawBehind = NavigationOptions.BooleanOptions.True;
         uut.mergeNavigationOptions(opts);
 
         uutLayoutParams = (RelativeLayout.LayoutParams) ((ViewGroup) uut.getContainer().asView()).getChildAt(1).getLayoutParams();

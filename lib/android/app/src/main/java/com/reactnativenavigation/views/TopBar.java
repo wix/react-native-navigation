@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.anim.TopBarAnimator;
-import com.reactnativenavigation.anim.TopbarCollapsingBehavior;
+import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.Color;
 import com.reactnativenavigation.parse.NavigationOptions;
@@ -31,7 +31,7 @@ public class TopBar extends AppBarLayout {
     private TopTabs topTabs;
 
     private TopBarAnimator animator;
-    private TopbarCollapsingBehavior collapsingBehavior;
+    private TopBarCollapseBehavior collapsingBehavior;
 
     public TopBar(Context context) {
         this(context, null, null);
@@ -43,11 +43,11 @@ public class TopBar extends AppBarLayout {
 
     public TopBar(Context context, Container container, EventDispatcher eventDispatcher) {
         super(context);
-        collapsingBehavior = new TopbarCollapsingBehavior(eventDispatcher, this);
+        collapsingBehavior = new TopBarCollapseBehavior(eventDispatcher, this);
         this.container = container;
         titleBar = new Toolbar(context);
         topTabs = new TopTabs(getContext());
-        animator = new TopBarAnimator();
+        animator = new TopBarAnimator(this, container != null ? container.getContentView() : null);
         addView(titleBar);
     }
 
@@ -166,30 +166,30 @@ public class TopBar extends AppBarLayout {
     }
 
     public void enableCollapse() {
-        collapsingBehavior.enableCollapsing();
+        collapsingBehavior.enableCollapse();
     }
 
     public void disableCollapse() {
-        collapsingBehavior.disableCollapsing();
+        collapsingBehavior.disableCollapse();
     }
 
-    public void show(NavigationOptions.BooleanOptions animated, View contentView) {
+    public void show(NavigationOptions.BooleanOptions animated) {
         if (getVisibility() == View.VISIBLE) {
             return;
         }
         if (animated == NavigationOptions.BooleanOptions.True) {
-            animator.animateShowTopBar(this, contentView);
+            animator.show();
         } else {
             setVisibility(View.VISIBLE);
         }
     }
 
-    public void hide(NavigationOptions.BooleanOptions animated, View contentView) {
+    public void hide(NavigationOptions.BooleanOptions animated) {
         if (getVisibility() == View.GONE) {
             return;
         }
         if (animated == NavigationOptions.BooleanOptions.True) {
-            animator.animateHideTopBar(this, contentView);
+            animator.hide();
         } else {
             setVisibility(View.GONE);
         }

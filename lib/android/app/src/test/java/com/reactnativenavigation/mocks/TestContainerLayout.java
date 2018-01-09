@@ -35,7 +35,7 @@ public class TestContainerLayout extends RelativeLayout implements ReactContaine
     }
 
     @Override
-    public void drawUnderTopBar() {
+    public void drawBehindTopBar() {
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.removeRule(BELOW);
         contentView.setLayoutParams(layoutParams);

@@ -13,9 +13,9 @@ import java.util.ArrayList;
 
 public class TopBarOptions implements DEFAULT_VALUES {
 
-	public static TopBarOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
-		TopBarOptions options = new TopBarOptions();
-		if (json == null) return options;
+    public static TopBarOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
+        TopBarOptions options = new TopBarOptions();
+        if (json == null) return options;
 
         options.title = json.optString("title", NO_VALUE);
         options.backgroundColor = json.optInt("backgroundColor", NO_COLOR_VALUE);
@@ -25,26 +25,24 @@ public class TopBarOptions implements DEFAULT_VALUES {
         options.hidden = NavigationOptions.BooleanOptions.parse(json.optString("hidden"));
         options.animateHide = NavigationOptions.BooleanOptions.parse(json.optString("animateHide"));
         options.hideOnScroll = NavigationOptions.BooleanOptions.parse(json.optString("hideOnScroll"));
-        options.drawUnder = NavigationOptions.BooleanOptions.parse(json.optString("drawUnder"));
-		options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
-		options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"));
+        options.drawBehind = NavigationOptions.BooleanOptions.parse(json.optString("drawBehind"));
+        options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
+        options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"));
 
-		return options;
-	}
+        return options;
+    }
 
     public String title = NO_VALUE;
-    @ColorInt
-    public int backgroundColor = NO_COLOR_VALUE;
-    @ColorInt
-    public int textColor = NO_COLOR_VALUE;
+    @ColorInt public int backgroundColor = NO_COLOR_VALUE;
+    @ColorInt public int textColor = NO_COLOR_VALUE;
     public float textFontSize = NO_FLOAT_VALUE;
     @Nullable public Typeface textFontFamily;
     public NavigationOptions.BooleanOptions hidden = NavigationOptions.BooleanOptions.NoValue;
     public NavigationOptions.BooleanOptions animateHide = NavigationOptions.BooleanOptions.NoValue;
     public NavigationOptions.BooleanOptions hideOnScroll = NavigationOptions.BooleanOptions.NoValue;
-    public NavigationOptions.BooleanOptions drawUnder = NavigationOptions.BooleanOptions.NoValue;
-	public ArrayList<Button> leftButtons;
-	public ArrayList<Button> rightButtons;
+    public NavigationOptions.BooleanOptions drawBehind = NavigationOptions.BooleanOptions.NoValue;
+    public ArrayList<Button> leftButtons;
+    public ArrayList<Button> rightButtons;
 
     void mergeWith(final TopBarOptions other) {
         if (!NO_VALUE.equals(other.title)) title = other.title;
@@ -65,14 +63,14 @@ public class TopBarOptions implements DEFAULT_VALUES {
         if (other.hideOnScroll != NavigationOptions.BooleanOptions.NoValue) {
             hideOnScroll = other.hideOnScroll;
         }
-        if (other.drawUnder != NavigationOptions.BooleanOptions.NoValue) {
-            drawUnder = other.drawUnder;
+        if (other.drawBehind != NavigationOptions.BooleanOptions.NoValue) {
+            drawBehind = other.drawBehind;
         }
-		if(other.leftButtons != null)
-			leftButtons = other.leftButtons;
-		if(other.rightButtons != null)
-			rightButtons = other.rightButtons;
-	}
+        if (other.leftButtons != null)
+            leftButtons = other.leftButtons;
+        if (other.rightButtons != null)
+            rightButtons = other.rightButtons;
+    }
 
     void mergeWithDefault(TopBarOptions defaultOptions) {
         if (NO_VALUE.equals(title))
@@ -91,11 +89,11 @@ public class TopBarOptions implements DEFAULT_VALUES {
             animateHide = defaultOptions.animateHide;
         if (hideOnScroll == NavigationOptions.BooleanOptions.NoValue)
             hideOnScroll = defaultOptions.hideOnScroll;
-        if (drawUnder == NavigationOptions.BooleanOptions.NoValue)
-            drawUnder = defaultOptions.drawUnder;
-		if(leftButtons == null)
-			leftButtons = defaultOptions.leftButtons;
-		if(rightButtons == null)
-			rightButtons = defaultOptions.rightButtons;
+        if (drawBehind == NavigationOptions.BooleanOptions.NoValue)
+            drawBehind = defaultOptions.drawBehind;
+        if (leftButtons == null)
+            leftButtons = defaultOptions.leftButtons;
+        if (rightButtons == null)
+            rightButtons = defaultOptions.rightButtons;
     }
 }
