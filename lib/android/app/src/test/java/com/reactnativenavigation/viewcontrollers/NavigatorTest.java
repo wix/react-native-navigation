@@ -7,7 +7,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleContainerViewController;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.mocks.TestStackAnimator;
+import com.reactnativenavigation.mocks.TestNavigationAnimator;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.utils.CompatUtils;
 
@@ -218,7 +218,7 @@ public class NavigatorTest extends BaseTest {
 
 	@NonNull
 	private StackController newStack() {
-		return new StackController(activity, "stack" + CompatUtils.generateViewId(), new TestStackAnimator());
+		return new StackController(activity, "stack" + CompatUtils.generateViewId(), new TestNavigationAnimator());
 	}
 
 	@Test

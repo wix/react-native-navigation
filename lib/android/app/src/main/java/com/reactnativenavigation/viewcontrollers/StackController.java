@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Promise;
-import com.reactnativenavigation.anim.StackAnimator;
+import com.reactnativenavigation.anim.NavigationAnimator;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -15,13 +15,13 @@ import java.util.Iterator;
 public class StackController extends ParentController {
 
 	private final IdStack<ViewController> stack = new IdStack<>();
-	private final StackAnimator animator;
+	private final NavigationAnimator animator;
 
 	public StackController(final Activity activity, String id) {
-		this(activity, id, new StackAnimator(activity));
+		this(activity, id, new NavigationAnimator(activity));
 	}
 
-	public StackController(final Activity activity, String id, StackAnimator animator) {
+	public StackController(final Activity activity, String id, NavigationAnimator animator) {
 		super(activity, id);
 		this.animator = animator;
 	}
@@ -40,7 +40,7 @@ public class StackController extends ParentController {
 
 		//TODO animatePush only when needed
 		if (previousTop != null) {
-			animator.animatePush(enteringView, new StackAnimator.StackAnimationListener() {
+			animator.animatePush(enteringView, new NavigationAnimator.NavigationAnimationListener() {
 				@Override
 				public void onAnimationEnd() {
 					getView().removeView(previousTop.getView());
@@ -80,7 +80,7 @@ public class StackController extends ParentController {
 		getView().addView(enteringView, getView().getChildCount() - 1);
 
 		if (animate) {
-			animator.animatePop(exitingView, new StackAnimator.StackAnimationListener() {
+			animator.animatePop(exitingView, new NavigationAnimator.NavigationAnimationListener() {
 				@Override
 				public void onAnimationEnd() {
 					finishPopping(exitingView, poppedTop, promise);

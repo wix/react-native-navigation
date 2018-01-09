@@ -10,6 +10,10 @@ class ScrollViewScreen extends Component {
   static get navigationOptions() {
     return {
       topBar: {
+        title: 'Collapse',
+        textColor: 'black',
+        textFontSize: 16,
+        drawUnder: true,
         translucent: false
       }
     };
@@ -36,9 +40,16 @@ class ScrollViewScreen extends Component {
   }
 
   onClickToggleTopBarHideOnScroll() {
+    this.setState({
+      topBarHideOnScroll: !this.state.topBarHideOnScroll
+    });
+  }
+
+  componentDidUpdate() {
     Navigation.setOptions(this.props.containerId, {
       topBar: {
-        hideOnScroll: !this.state.topBarHideOnScroll
+        drawUnder: true,
+        hideOnScroll: this.state.topBarHideOnScroll
       }
     });
   }
@@ -49,6 +60,8 @@ module.exports = ScrollViewScreen;
 const styles = StyleSheet.create({
   contentContainer: {
     alignItems: 'center',
+    backgroundColor: 'green',
+    paddingTop: 200,
     height: 1200
   }
 });

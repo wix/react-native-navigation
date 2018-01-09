@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.mocks.TestStackAnimator;
+import com.reactnativenavigation.mocks.TestNavigationAnimator;
 
 import org.assertj.core.api.iterable.Extractor;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class StackControllerTest extends BaseTest {
 	public void beforeEach() {
 		super.beforeEach();
 		activity = newActivity();
-		uut = new StackController(activity, "uut", new TestStackAnimator());
+		uut = new StackController(activity, "uut", new TestNavigationAnimator());
 		child1 = new SimpleViewController(activity, "child1");
 		child2 = new SimpleViewController(activity, "child2");
 		child3 = new SimpleViewController(activity, "child3");
@@ -80,7 +80,7 @@ public class StackControllerTest extends BaseTest {
 		uut.push(child1);
 		assertThat(child1.getParentStackController()).isEqualTo(uut);
 
-		StackController anotherNavController = new StackController(activity, "another", new TestStackAnimator());
+		StackController anotherNavController = new StackController(activity, "another", new TestNavigationAnimator());
 		anotherNavController.push(child2);
 		assertThat(child2.getParentStackController()).isEqualTo(anotherNavController);
 	}
@@ -227,7 +227,7 @@ public class StackControllerTest extends BaseTest {
 
 	@Test
 	public void findControllerById_Deeply() throws Exception {
-		StackController stack = new StackController(activity, "stack2", new TestStackAnimator());
+		StackController stack = new StackController(activity, "stack2", new TestNavigationAnimator());
 		stack.push(child2);
 		uut.push(stack);
 		assertThat(uut.findControllerById(child2.getId())).isEqualTo(child2);

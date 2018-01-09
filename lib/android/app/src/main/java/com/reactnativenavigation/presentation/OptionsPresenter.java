@@ -1,27 +1,26 @@
 package com.reactnativenavigation.presentation;
 
-import android.view.View;
-
-import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
+import com.reactnativenavigation.views.Container;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.ArrayList;
 
+import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.False;
+import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.True;
+
 public class OptionsPresenter {
 
-	private final StackAnimator animator;
-    private View contentView;
+    private Container reactContainer;
     private TopBar topBar;
 
-    public OptionsPresenter(TopBar topBar, View contentView) {
-        this.topBar = topBar;
-        this.contentView = contentView;
-        animator = new StackAnimator(topBar.getContext());
+    public OptionsPresenter(Container reactContainer) {
+        this.reactContainer = reactContainer;
+        this.topBar = reactContainer.getTopBar();
     }
 
     public void applyOptions(NavigationOptions options) {
@@ -39,34 +38,23 @@ public class OptionsPresenter {
 
         topBar.setTitleTypeface(options.textFontFamily);
         if (options.hidden == NavigationOptions.BooleanOptions.True) {
-            hideTopBar(options.animateHide);
+            topBar.hide(options.animateHide);
         }
         if (options.hidden == NavigationOptions.BooleanOptions.False) {
-            showTopBar(options.animateHide);
+            topBar.show(options.animateHide);
+        }
+        if (options.drawBehind == True) {
+            reactContainer.drawBehindTopBar();
+        } else if (options.drawBehind == False) {
+            reactContainer.drawBelowTopBar();
+        }
+
+        if (options.hideOnScroll == True) {
+            topBar.enableCollapse();
+        } else if (options.hideOnScroll == False) {
+            topBar.disableCollapse();
         }
     }
-
-	private void showTopBar(NavigationOptions.BooleanOptions animated) {
-		if (topBar.getVisibility() == View.VISIBLE) {
-			return;
-		}
-		if (animated == NavigationOptions.BooleanOptions.True) {
-			animator.animateShowTopBar(topBar, contentView);
-		} else {
-			topBar.setVisibility(View.VISIBLE);
-		}
-	}
-
-	private void hideTopBar(NavigationOptions.BooleanOptions animated) {
-		if (topBar.getVisibility() == View.GONE) {
-			return;
-		}
-		if (animated == NavigationOptions.BooleanOptions.True) {
-			animator.animateHideTopBar(topBar, contentView);
-		} else {
-			topBar.setVisibility(View.GONE);
-		}
-	}
 
     private void applyButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
         topBar.setButtons(leftButtons, rightButtons);
