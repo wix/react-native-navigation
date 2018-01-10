@@ -197,8 +197,10 @@ class OptionsScreen extends Component {
       }
     });
 
-    Navigation.push(this.props.containerId, {
-      name: 'navigation.playground.PushedScreen'
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.PushedScreen'
+      }
     });
   }
 }
