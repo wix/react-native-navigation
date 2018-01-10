@@ -4,18 +4,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.views.TopBar;
 
 @SuppressWarnings("ResourceType")
 public class NavigationAnimator {

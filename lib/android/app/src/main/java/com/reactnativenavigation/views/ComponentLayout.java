@@ -13,7 +13,7 @@ import com.reactnativenavigation.viewcontrollers.ComponentViewController.*;
 import static android.view.ViewGroup.LayoutParams.*;
 
 @SuppressLint("ViewConstructor")
-public class ComponentLayout extends RelativeLayout implements ReactComponent {
+public class ComponentLayout extends RelativeLayout implements ReactComponent, TitleBarButton.OnClickListener {
 
     private TopBar topBar;
     private IReactView reactView;
@@ -22,7 +22,7 @@ public class ComponentLayout extends RelativeLayout implements ReactComponent {
 	public ComponentLayout(Context context, IReactView reactView, EventDispatcher eventDispatcher) {
 		super(context);
 		this.reactView = reactView;
-		this.topBar = new TopBar(context, this, eventDispatcher);
+		this.topBar = new TopBar(context, reactView.asView(), this, eventDispatcher);
         optionsPresenter = new OptionsPresenter(this);
         initViews();
     }
@@ -75,11 +75,6 @@ public class ComponentLayout extends RelativeLayout implements ReactComponent {
     }
 
     @Override
-    public View getContentView() {
-        return reactView.asView();
-    }
-
-    @Override
     public void drawBehindTopBar() {
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reactView.asView().getLayoutParams();
         layoutParams.removeRule(BELOW);
@@ -91,5 +86,10 @@ public class ComponentLayout extends RelativeLayout implements ReactComponent {
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reactView.asView().getLayoutParams();
         layoutParams.addRule(BELOW, topBar.getId());
         reactView.asView().setLayoutParams(layoutParams);
+    }
+
+    @Override
+    public void onPress(String buttonId) {
+        reactView.sendOnNavigationButtonPressed(buttonId);
     }
 }

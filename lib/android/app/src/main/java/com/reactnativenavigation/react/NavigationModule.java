@@ -19,7 +19,6 @@ import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.overlay.OverlayFactory;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
 	private static final String NAME = "RNNBridgeModule";
@@ -102,18 +101,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void showOverlay(final String type, final ReadableMap data, final Promise promise) {
-		if (OverlayFactory.Overlay.create(type) == OverlayFactory.Overlay.CustomDialog) {
-			final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(data));
-			handle(() -> {
-                ViewController viewController = newLayoutFactory().create(layoutTree);
-                navigator().showOverlay(type, OverlayOptions.create(viewController), promise);
-            });
-		} else {
-			final OverlayOptions overlayOptions = OverlayOptions.parse(JSONParser.parse(data));
-			handle(() -> navigator().showOverlay(type, overlayOptions, promise));
-		}
-
-
+        final OverlayOptions overlayOptions = OverlayOptions.parse(JSONParser.parse(data));
+        handle(() -> navigator().showOverlay(type, overlayOptions, promise));
 	}
 
 	@ReactMethod

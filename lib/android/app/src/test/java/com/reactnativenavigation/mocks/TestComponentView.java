@@ -6,13 +6,13 @@ import android.view.*;
 import com.reactnativenavigation.parse.*;
 import com.reactnativenavigation.views.*;
 
-public class TestComponentView extends View implements ReactComponent {
+public class TestComponentView extends View implements ReactComponent, TitleBarButton.OnClickListener {
 
     private TopBar topBar;
 
     public TestComponentView(final Context context) {
         super(context);
-        topBar = new TopBar(context, this, null);
+        topBar = new TopBar(context, this, this, null);
 
     }
 
@@ -54,17 +54,17 @@ public class TestComponentView extends View implements ReactComponent {
     }
 
     @Override
-    public View getContentView() {
-        return null;
-    }
-
-    @Override
     public void drawBehindTopBar() {
 
     }
 
     @Override
     public void drawBelowTopBar() {
+
+    }
+
+    @Override
+    public void onPress(String buttonId) {
 
     }
 }

@@ -15,7 +15,7 @@ import com.reactnativenavigation.viewcontrollers.toptabs.*;
 import java.util.*;
 
 @SuppressLint("ViewConstructor")
-public class TopTabsLayout extends RelativeLayout implements Component {
+public class TopTabsLayout extends RelativeLayout implements Component, TitleBarButton.OnClickListener {
 
     private TopBar topBar;
     private List<TopTabController> tabs;
@@ -25,9 +25,9 @@ public class TopTabsLayout extends RelativeLayout implements Component {
     public TopTabsLayout(Context context, List<TopTabController> tabs, TopTabsAdapter adapter) {
         super(context);
         this.tabs = tabs;
-        topBar = new TopBar(context, this, null);
-        topBar.setId(View.generateViewId());
         viewPager = new TopTabsViewPager(context, tabs, adapter);
+        topBar = new TopBar(context, viewPager, this, null);
+        topBar.setId(View.generateViewId());
         optionsPresenter = new OptionsPresenter(this);
         initViews();
     }
@@ -46,18 +46,8 @@ public class TopTabsLayout extends RelativeLayout implements Component {
     }
 
     @Override
-    public void sendOnNavigationButtonPressed(String id) {
-        viewPager.sendOnNavigationButtonPressed(id);
-    }
-
-    @Override
     public TopBar getTopBar() {
         return topBar;
-    }
-
-    @Override
-    public View getContentView() {
-        return viewPager;
     }
 
     @Override
@@ -86,5 +76,10 @@ public class TopTabsLayout extends RelativeLayout implements Component {
 
     public int getCurrentItem() {
         return viewPager.getCurrentItem();
+    }
+
+    @Override
+    public void onPress(String buttonId) {
+        viewPager.sendOnNavigationButtonPressed(buttonId);
     }
 }

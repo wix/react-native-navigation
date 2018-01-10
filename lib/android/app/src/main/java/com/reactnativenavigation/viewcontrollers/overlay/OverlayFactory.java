@@ -1,8 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.overlay;
 
 
-import android.content.Context;
-
 import com.reactnativenavigation.parse.OverlayOptions;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
@@ -10,8 +8,7 @@ public class OverlayFactory {
 
 	public enum Overlay {
 		AlertDialog("alert", new AlertOverlay()),
-		Snackbar("snackbar", new SnackbarOverlay()),
-		CustomDialog("custom", new CustomOverlay());
+		Snackbar("snackbar", new SnackbarOverlay());
 
 		private String name;
 		private OverlayInterface overlayInstance;

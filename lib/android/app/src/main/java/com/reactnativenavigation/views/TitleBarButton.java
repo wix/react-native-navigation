@@ -22,13 +22,17 @@ import com.reactnativenavigation.utils.UiUtils;
 import java.util.ArrayList;
 
 public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
+    public interface OnClickListener {
+        void onPress(String buttonId);
+    }
+
 	private Toolbar toolbar;
 	private final Button button;
-	private Component component;
 	private Drawable icon;
+    private OnClickListener onPressListener;
 
-	TitleBarButton(Component component, Toolbar toolbar, Button button) {
-		this.component = component;
+    TitleBarButton(Toolbar toolbar, Button button, OnClickListener onPressListener) {
+        this.onPressListener = onPressListener;
 		this.toolbar = toolbar;
 		this.button = button;
 	}
@@ -118,12 +122,12 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 	}
 
 	private void setNavigationClickListener() {
-		toolbar.setNavigationOnClickListener(view -> component.sendOnNavigationButtonPressed(button.id));
+		toolbar.setNavigationOnClickListener(view -> onPressListener.onPress(button.id));
 	}
 
 	@Override
 	public boolean onMenuItemClick(MenuItem menuItem) {
-		this.component.sendOnNavigationButtonPressed(button.id);
+		onPressListener.onPress(button.id);
 		return true;
 	}
 

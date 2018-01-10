@@ -8,7 +8,7 @@ import com.reactnativenavigation.parse.*;
 import com.reactnativenavigation.presentation.*;
 import com.reactnativenavigation.views.*;
 
-public class TestComponentLayout extends RelativeLayout implements ReactComponent {
+public class TestComponentLayout extends RelativeLayout implements ReactComponent, TitleBarButton.OnClickListener {
 
     private final TopBar topBar;
     private final View contentView;
@@ -16,8 +16,8 @@ public class TestComponentLayout extends RelativeLayout implements ReactComponen
 
     public TestComponentLayout(final Context context) {
         super(context);
-        topBar = new TopBar(context, this, null);
         contentView = new View(context);
+        topBar = new TopBar(context, contentView, this, null);
         addView(topBar);
         addView(contentView);
         optionsPresenter = new OptionsPresenter(this);
@@ -25,11 +25,6 @@ public class TestComponentLayout extends RelativeLayout implements ReactComponen
 
     public TopBar getTopBar() {
         return topBar;
-    }
-
-    @Override
-    public View getContentView() {
-        return contentView;
     }
 
     @Override
@@ -75,6 +70,11 @@ public class TestComponentLayout extends RelativeLayout implements ReactComponen
 
     @Override
     public void sendOnNavigationButtonPressed(String id) {
+
+    }
+
+    @Override
+    public void onPress(String buttonId) {
 
     }
 }
