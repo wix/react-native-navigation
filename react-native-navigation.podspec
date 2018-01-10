@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.version = package[:version]
   s.license = { type: "MIT" }
   s.homepage = "https://github.com/wix/react-native-navigation"
-  s.authors = package[:author][:name]
+  s.authors = package[:author]
   s.summary = package[:description]
   s.source = { git: package[:repository][:url] }
   s.source_files = "ios/*.{h,m}"
