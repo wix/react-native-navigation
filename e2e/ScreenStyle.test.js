@@ -110,4 +110,20 @@ describe('screen style', () => {
     await expect(elementById(testIDs.FIRST_TAB_BAR_BUTTON)).toBeVisible();
     await expect(elementById(testIDs.SECOND_TAB_BAR_BUTTON)).toBeVisible();
   });
+
+  it('default options should apply to all screens in stack', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.PUSH_DEFAULT_OPTIONS_BUTTON).tap();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
+  });
+
+  it('default options should not override static options', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.PUSH_DEFAULT_OPTIONS_BUTTON).tap();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
+    await elementById(testIDs.POP_BUTTON).tap();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
+  });
 });

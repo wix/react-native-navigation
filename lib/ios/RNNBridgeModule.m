@@ -30,6 +30,12 @@ RCT_EXPORT_METHOD(setOptions:(NSString*)componentId options:(NSDictionary*)optio
 	}];
 }
 
+RCT_EXPORT_METHOD(setDefaultOptions:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler setDefaultOptions:options completion:^{
+		resolve(nil);
+	}];
+}
+
 RCT_EXPORT_METHOD(push:(NSString*)componentId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
 	[_commandsHandler push:componentId layout:layout completion:^{
 		resolve(componentId);
