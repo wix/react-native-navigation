@@ -161,6 +161,17 @@
 	return sideMenuChild;
 }
 
-
+- (UIViewController *)createOverlay:(NSString*)componentId options:(NSDictionary*)options {
+	UIViewController *vc = [[UIViewController alloc] init];
+	RCTRootView* rootView = (RCTRootView*)[_creator createRootView:componentId rootViewId:@"overlay"];
+	rootView.passThroughTouches = [options[@"passThroughTouches"] boolValue];
+	rootView.backgroundColor = [UIColor clearColor];
+	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
+	rootView.frame = CGRectMake(0, 0, availableSize.width, availableSize.height);
+	vc.view = rootView;
+	[_bridge.uiManager setAvailableSize:availableSize forRootView:vc.view];
+	
+	return vc;
+}
 
 @end

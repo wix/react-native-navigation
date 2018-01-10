@@ -76,6 +76,8 @@
 		507F44201FFA8A8800D9425B /* RNNRootViewProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 507F441F1FFA8A8800D9425B /* RNNRootViewProtocol.h */; };
 		50CB3B691FDE911400AA153B /* RNNSideMenuOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */; };
 		50CB3B6A1FDE911400AA153B /* RNNSideMenuOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CB3B681FDE911400AA153B /* RNNSideMenuOptions.m */; };
+		50D031342005149000386B3D /* RNNOverlayManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 50D031322005149000386B3D /* RNNOverlayManager.h */; };
+		50D031352005149000386B3D /* RNNOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D031332005149000386B3D /* RNNOverlayManager.m */; };
 		50EB93421FE14A3E00BD8EEE /* RNNBottomTabOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EB93401FE14A3E00BD8EEE /* RNNBottomTabOptions.m */; };
 		50F5DFC11F407A8C001A00BC /* RNNTabBarController.h in Headers */ = {isa = PBXBuildFile; fileRef = 50F5DFBF1F407A8C001A00BC /* RNNTabBarController.h */; };
 		50F5DFC21F407A8C001A00BC /* RNNTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F5DFC01F407A8C001A00BC /* RNNTabBarController.m */; };
@@ -240,6 +242,8 @@
 		507F441F1FFA8A8800D9425B /* RNNRootViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNRootViewProtocol.h; sourceTree = "<group>"; };
 		50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSideMenuOptions.h; sourceTree = "<group>"; };
 		50CB3B681FDE911400AA153B /* RNNSideMenuOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuOptions.m; sourceTree = "<group>"; };
+		50D031322005149000386B3D /* RNNOverlayManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNOverlayManager.h; sourceTree = "<group>"; };
+		50D031332005149000386B3D /* RNNOverlayManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayManager.m; sourceTree = "<group>"; };
 		50EB933F1FE14A3E00BD8EEE /* RNNBottomTabOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBottomTabOptions.h; sourceTree = "<group>"; };
 		50EB93401FE14A3E00BD8EEE /* RNNBottomTabOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabOptions.m; sourceTree = "<group>"; };
 		50F5DFBF1F407A8C001A00BC /* RNNTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTabBarController.h; sourceTree = "<group>"; };
@@ -459,16 +463,26 @@
 			name = HMSegmentControl;
 			sourceTree = "<group>";
 		};
+		50D031312005146C00386B3D /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				261F0E621E6EC94900989DE2 /* RNNModalManager.h */,
+				261F0E631E6EC94900989DE2 /* RNNModalManager.m */,
+				261F0E681E6F028A00989DE2 /* RNNNavigationStackManager.h */,
+				261F0E691E6F028A00989DE2 /* RNNNavigationStackManager.m */,
+				50D031322005149000386B3D /* RNNOverlayManager.h */,
+				50D031332005149000386B3D /* RNNOverlayManager.m */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
 		7B1E4C4B1E2D173700C3A525 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				E8AEDB471F584175000F5A6A /* Components */,
 				E8AEDB461F58414D000F5A6A /* Animations */,
 				504AFE611FFE52EF0076E904 /* Options */,
-				261F0E621E6EC94900989DE2 /* RNNModalManager.h */,
-				261F0E631E6EC94900989DE2 /* RNNModalManager.m */,
-				261F0E681E6F028A00989DE2 /* RNNNavigationStackManager.h */,
-				261F0E691E6F028A00989DE2 /* RNNNavigationStackManager.m */,
+				50D031312005146C00386B3D /* Managers */,
 				26916C941E4B9CCC00D13680 /* RNNRootViewCreator.h */,
 				26916C961E4B9E7700D13680 /* RNNReactRootViewCreator.h */,
 				26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */,
@@ -668,6 +682,7 @@
 				E8DA24401F97459B00CD552B /* RNNElementFinder.h in Headers */,
 				263905BE1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.h in Headers */,
 				263905CE1E4C6F440023D7D3 /* TheSidebarController.h in Headers */,
+				50D031342005149000386B3D /* RNNOverlayManager.h in Headers */,
 				7B1126A71E2D2B6C00F9B03B /* RNNEventEmitter.h in Headers */,
 				E8A430111F9CB87B00B61A20 /* RNNAnimatedView.h in Headers */,
 				268692821E5054F800E2C612 /* RNNStore.h in Headers */,
@@ -850,6 +865,7 @@
 				268692831E5054F800E2C612 /* RNNStore.m in Sources */,
 				7BC9346E1E26886E00EFA125 /* RNNControllerFactory.m in Sources */,
 				507F43F91FF525B500D9425B /* RNNSegmentedControl.m in Sources */,
+				50D031352005149000386B3D /* RNNOverlayManager.m in Sources */,
 				E8E5182F1F83A48B000467AC /* RNNTransitionStateHolder.m in Sources */,
 				263905B61E4C6F440023D7D3 /* MMExampleDrawerVisualStateManager.m in Sources */,
 				E8E518331F83B3E0000467AC /* RNNUtils.m in Sources */,

@@ -16,6 +16,7 @@ class OptionsScreen extends Component {
       topBar: {
         title: 'Static Title',
         textColor: 'black',
+        drawUnder: false,
         largeTitle: false,
         hidden: false,
         textFontSize: 16,
@@ -48,6 +49,7 @@ class OptionsScreen extends Component {
     this.onClickTopBarTransparent = this.onClickTopBarTransparent.bind(this);
     this.onClickTopBarOpaque = this.onClickTopBarOpaque.bind(this);
     this.onClickCustomTranstition = this.onClickCustomTranstition.bind(this);
+    this.onClickShowOverlay = this.onClickShowOverlay.bind(this);
   }
 
   render() {
@@ -63,7 +65,9 @@ class OptionsScreen extends Component {
         <Button title="Custom Transition" onPress={this.onClickCustomTranstition} />
         <Button title="Show custom alert" testID={testIDs.SHOW_CUSTOM_ALERT_BUTTON} onPress={this.onClickAlert} />
         <Button title="Show snackbar" testID={testIDs.SHOW_SNACKBAR_BUTTON} onPress={this.onClickSnackbar} />
-        <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
+        <Button title="Show overlay" testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
+        <Button title="Show touch through overlay" testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
+        <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
   }
@@ -186,6 +190,14 @@ class OptionsScreen extends Component {
         textColor: 'blue'
       }
     });
+  }
+
+  onClickShowOverlay(passThroughTouches) {
+    Navigation.showOverlay({
+      component: {
+        name: 'navigation.playground.CustomDialog'
+      }
+    }, { passThroughTouches });
   }
 }
 
