@@ -9,6 +9,10 @@ import com.facebook.react.shell.MainReactPackage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Default implementation of {@link ReactNativeHost} that includes {@link NavigationPackage}
+ * and user-defined additional packages.
+ */
 public class NavigationReactNativeHost extends ReactNativeHost {
 
 	private final boolean isDebug;
@@ -27,6 +31,8 @@ public class NavigationReactNativeHost extends ReactNativeHost {
 
 	@Override
 	protected List<ReactPackage> getPackages() {
+		// Please note that users may provide their own implementations of ReactNativeHost. Any additional
+		// package requirements should be documented in the changelog.
 		List<ReactPackage> packages = new ArrayList<>();
 		packages.add(new MainReactPackage());
 		packages.add(new NavigationPackage(this));
