@@ -2,94 +2,104 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
+import android.util.Log;
 import android.view.View;
 
 import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.presentation.NavigationOptionsListener;
+import com.reactnativenavigation.views.ReactContainer;
+import com.reactnativenavigation.views.TopBar;
 
-public class ContainerViewController extends ViewController {
+public class ContainerViewController extends ViewController implements NavigationOptionsListener {
 
-	public interface ContainerViewCreator {
+    public interface ReactViewCreator {
 
-		ContainerView create(Activity activity, String containerId, String containerName);
-	}
+        IReactView create(Activity activity, String containerId, String containerName);
+    }
 
-	public interface ContainerView {
+    public interface IReactView {
 
-		boolean isReady();
+        boolean isReady();
 
-		View asView();
+        View asView();
 
-		void destroy();
+        void destroy();
 
-		void sendContainerStart();
+        void sendContainerStart();
 
-		void sendContainerStop();
+        void sendContainerStop();
 
-	}
+        void sendOnNavigationButtonPressed(String buttonId);
+    }
 
-	private final String containerName;
+    private final String containerName;
 
-	private final ContainerViewCreator viewCreator;
-	private final NavigationOptions navigationOptions;
-	private ContainerView containerView;
+    private final ReactViewCreator viewCreator;
+    private NavigationOptions navigationOptions;
+    private ReactContainer container;
 
-	public ContainerViewController(final Activity activity,
-	                               final String id,
-	                               final String containerName,
-	                               final ContainerViewCreator viewCreator,
-	                               final NavigationOptions initialNavigationOptions) {
-		super(activity, id);
-		this.containerName = containerName;
-		this.viewCreator = viewCreator;
-		this.navigationOptions = initialNavigationOptions;
-	}
+    public ContainerViewController(final Activity activity,
+                                   final String id,
+                                   final String containerName,
+                                   final ReactViewCreator viewCreator,
+                                   final NavigationOptions initialNavigationOptions) {
+        super(activity, id);
+        this.containerName = containerName;
+        this.viewCreator = viewCreator;
+        this.navigationOptions = initialNavigationOptions;
+    }
 
-	@Override
-	public void destroy() {
-		super.destroy();
-		if (containerView != null) containerView.destroy();
-		containerView = null;
-	}
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    TopBar getTopBar() {
+        return container.getTopBar();
+    }
 
-	@Override
-	public void onViewAppeared() {
-		super.onViewAppeared();
-		ensureViewIsCreated();
-		applyNavigationOptions();
-		containerView.sendContainerStart();
-	}
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    ReactContainer getContainer() {
+        return container;
+    }
 
-	@Override
-	public void onViewDisappear() {
-		super.onViewDisappear();
-		containerView.sendContainerStop();
-	}
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (container != null) container.destroy();
+        container = null;
+    }
 
-	@Override
-	protected boolean isViewShown() {
-		return super.isViewShown() && containerView.isReady();
-	}
+    @Override
+    public void onViewAppeared() {
+        super.onViewAppeared();
+        ensureViewIsCreated();
+        container.applyOptions(navigationOptions);
+        container.sendContainerStart();
+    }
 
-	@NonNull
-	@Override
-	protected View createView() {
-		containerView = viewCreator.create(getActivity(), getId(), containerName);
-		return containerView.asView();
-	}
+    @Override
+    public void onViewDisappear() {
+        super.onViewDisappear();
+        container.sendContainerStop();
+    }
 
-	public void mergeNavigationOptions(final NavigationOptions options) {
-		navigationOptions.mergeWith(options);
-		applyNavigationOptions();
-	}
+    @Override
+    protected boolean isViewShown() {
+        return super.isViewShown() && container.isReady();
+    }
 
-	private void applyNavigationOptions() {
-		if (getParentStackController() != null) {
-			getParentStackController().getTopBar().setTitle(navigationOptions.title);
-			getParentStackController().getTopBar().setBackgroundColor(navigationOptions.topBarBackgroundColor);
-		}
-	}
+    @NonNull
+    @Override
+    protected View createView() {
+        container = (ReactContainer) viewCreator.create(getActivity(), getId(), containerName);
+        return container.asView();
+    }
 
-	public NavigationOptions getNavigationOptions() {
-		return navigationOptions;
-	}
+    @Override
+    public void mergeNavigationOptions(NavigationOptions options) {
+        navigationOptions.mergeWith(options);
+        container.applyOptions(navigationOptions);
+    }
+
+    NavigationOptions getNavigationOptions() {
+        return navigationOptions;
+    }
 }

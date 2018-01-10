@@ -1,17 +1,8 @@
-require('babel-polyfill'); // eslint-disable-line import/no-extraneous-dependencies
 const detox = require('detox');
+const config = require('../package.json').detox;
 
 before(async () => {
-  const detoxConfig = {
-    configurations: {
-      ios: {
-        binaryPath: process.env.detoxAppBuildPath,
-        type: 'ios.simulator',
-        name: 'iPhone 7'
-      }
-    }
-  };
-  await detox.init(detoxConfig);
+  await detox.init(config, { launchApp: false });
 });
 
 after(async () => {

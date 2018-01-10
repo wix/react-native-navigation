@@ -3,12 +3,16 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
+import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.StringUtils;
+import com.reactnativenavigation.utils.Task;
 
 public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutListener {
 
@@ -16,7 +20,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	private final String id;
 
 	private View view;
-	private StackController parentStackController;
+	private ParentController parentController;
 	private boolean isShown = false;
 
 	public ViewController(Activity activity, String id) {
@@ -24,9 +28,9 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		this.id = id;
 	}
 
-	@NonNull
 	protected abstract View createView();
 
+	@VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
 	public void ensureViewIsCreated() {
 		getView();
 	}
@@ -39,14 +43,36 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		return activity;
 	}
 
+    protected ViewController getParentController() {
+	    return parentController;
+    }
+
 	@Nullable
-	public StackController getParentStackController() {
-		return parentStackController;
+    ParentController getParentStackController() {
+		return parentController;
 	}
 
-	void setParentStackController(final StackController parentStackController) {
-		this.parentStackController = parentStackController;
+	public void setParentController(final ParentController parentController) {
+		this.parentController = parentController;
 	}
+
+    boolean performOnParentStack(Task<StackController> task) {
+	    if (parentController instanceof StackController) {
+            task.run((StackController) parentController);
+            return true;
+        }
+        if (this instanceof StackController) {
+	        task.run((StackController) this);
+            return true;
+        }
+        return false;
+    }
+
+    void performOnParentStack(Task<StackController> accept, Runnable  reject) {
+        if (!performOnParentStack(accept)) {
+            reject.run();
+        }
+    }
 
 	@NonNull
 	public View getView() {
@@ -62,7 +88,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		return id;
 	}
 
-	public boolean isSameId(final String id) {
+	boolean isSameId(final String id) {
 		return StringUtils.isEqual(this.id, id);
 	}
 
@@ -72,12 +98,16 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	}
 
 	public void onViewAppeared() {
-		//
-	}
+        isShown = true;
+    }
 
 	public void onViewDisappear() {
-		//
-	}
+        isShown = false;
+    }
+
+    public void applyOptions(NavigationOptions options) {
+
+    }
 
 	public void destroy() {
 		if (isShown) {
@@ -87,7 +117,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		if (view != null) {
 			view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 			if (view.getParent() instanceof ViewGroup) {
-				((ViewGroup) view.getParent()).removeView(view);
+				((ViewManager) view.getParent()).removeView(view);
 			}
 			view = null;
 		}

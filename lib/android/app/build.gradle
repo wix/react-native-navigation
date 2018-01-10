@@ -3,10 +3,10 @@ apply from: '../prepare-robolectric.gradle'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion "27.0.1"
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -42,22 +42,33 @@ android {
             }
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+allprojects { p ->
+    p.afterEvaluate {
+        p.android.compileOptions.sourceCompatibility JavaVersion.VERSION_1_8
+        p.android.compileOptions.targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile "com.android.support:support-v4:25.3.1"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:design:25.4.0'
+    implementation 'com.android.support:appcompat-v7:25.4.0'
+    implementation "com.android.support:support-v4:25.4.0"
 
     // node_modules
     //noinspection GradleDynamicVersion
-    compile 'com.facebook.react:react-native:+'
+    implementation 'com.facebook.react:react-native:+'
 
     // tests
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.3'
-    testCompile 'org.assertj:assertj-core:2.5.0'
-    testCompile 'com.squareup.assertj:assertj-android:1.1.1'
-    testCompile 'org.mockito:mockito-core:2.7.5'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:3.5.1'
+    testImplementation 'org.assertj:assertj-core:3.8.0'
+    testImplementation 'com.squareup.assertj:assertj-android:1.1.1'
+    testImplementation 'org.mockito:mockito-core:2.13.0'
 }

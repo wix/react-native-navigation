@@ -4,11 +4,18 @@ const { Component } = require('react');
 const { StyleSheet, ScrollView, View, Button } = require('react-native');
 
 const Navigation = require('react-native-navigation');
+const testIDs = require('../testIDs');
 
 class ScrollViewScreen extends Component {
   static get navigationOptions() {
     return {
-      topBarTranslucent: false
+      topBar: {
+        title: 'Collapse',
+        textColor: 'black',
+        textFontSize: 16,
+        drawUnder: true,
+        translucent: false
+      }
     };
   }
 
@@ -22,17 +29,28 @@ class ScrollViewScreen extends Component {
 
   render() {
     return (
-      <ScrollView testID="scrollView" contentContainerStyle={styles.contentContainer}>
-        <View>
-          <Button title="Toggle Top Bar Hide On Scroll" onPress={this.onClickToggleTopBarHideOnScroll} />
-        </View>
-      </ScrollView>
+      <View>
+        <ScrollView testID={testIDs.SCROLLVIEW_ELEMENT} contentContainerStyle={styles.contentContainer}>
+          <View>
+            <Button title="Toggle Top Bar Hide On Scroll" testID={testIDs.TOGGLE_TOP_BAR_HIDE_ON_SCROLL} onPress={this.onClickToggleTopBarHideOnScroll} />
+          </View>
+        </ScrollView>
+      </View>
     );
   }
 
   onClickToggleTopBarHideOnScroll() {
-    Navigation.setOptions(this.props.containerId, {
+    this.setState({
       topBarHideOnScroll: !this.state.topBarHideOnScroll
+    });
+  }
+
+  componentDidUpdate() {
+    Navigation.setOptions(this.props.containerId, {
+      topBar: {
+        drawUnder: true,
+        hideOnScroll: this.state.topBarHideOnScroll
+      }
     });
   }
 }
@@ -41,9 +59,10 @@ module.exports = ScrollViewScreen;
 
 const styles = StyleSheet.create({
   contentContainer: {
-    paddingVertical: 20,
     alignItems: 'center',
-    height: 1000
+    backgroundColor: 'green',
+    paddingTop: 200,
+    height: 1200
   }
 });
 

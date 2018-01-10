@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.mocks.TestStackAnimator;
+import com.reactnativenavigation.mocks.TestNavigationAnimator;
 
 import org.junit.Test;
 
@@ -70,7 +70,7 @@ public class ParentControllerTest extends BaseTest {
 
 	@Test
 	public void findControllerById_Recursive() throws Exception {
-		StackController stackController = new StackController(activity, "stack", new TestStackAnimator());
+		StackController stackController = new StackController(activity, "stack", new TestNavigationAnimator());
 		SimpleViewController child1 = new SimpleViewController(activity, "child1");
 		SimpleViewController child2 = new SimpleViewController(activity, "child2");
 		stackController.push(child1);

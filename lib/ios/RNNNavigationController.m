@@ -7,4 +7,8 @@
 	return self.viewControllers.lastObject.supportedInterfaceOrientations;
 }
 
+- (BOOL)isCustomTransitioned {
+	return NO;
+}
+
 @end

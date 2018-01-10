@@ -33,4 +33,8 @@
 	return self;
 }
 
+- (BOOL)isCustomTransitioned {
+	return NO;
+}
+
 @end

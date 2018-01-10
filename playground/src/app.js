@@ -3,7 +3,6 @@ const { registerContainers } = require('./containers');
 
 function start() {
   registerContainers();
-
   Navigation.events().onAppLaunched(() => {
     Navigation.setRoot({
       container: {

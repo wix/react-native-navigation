@@ -4,9 +4,9 @@ import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.viewcontrollers.ContainerViewController;
-import com.reactnativenavigation.viewcontrollers.ContainerViewController.ContainerViewCreator;
+import com.reactnativenavigation.viewcontrollers.ContainerViewController.ReactViewCreator;
 
-public class ReactContainerViewCreator implements ContainerViewCreator {
+public class ReactContainerViewCreator implements ReactViewCreator {
 	private ReactInstanceManager reactInstanceManager;
 
 	public ReactContainerViewCreator(final ReactInstanceManager reactInstanceManager) {
@@ -14,7 +14,7 @@ public class ReactContainerViewCreator implements ContainerViewCreator {
 	}
 
 	@Override
-	public ContainerViewController.ContainerView create(final Activity activity, final String containerId, final String containerName) {
-		return new ReactContainerView(activity, reactInstanceManager, containerId, containerName);
+	public ContainerViewController.IReactView create(final Activity activity, final String containerId, final String containerName) {
+		return new ReactView(activity, reactInstanceManager, containerId, containerName);
 	}
 }

@@ -2,9 +2,14 @@
 #import <React/RCTConvert.h>
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
+#import "RNNTopBarOptions.h"
+#import "RNNSideMenuController.h"
+#import "RNNRootViewController.h"
+#import "RNNNavigationButtons.h"
 
 const NSInteger BLUR_STATUS_TAG = 78264801;
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
+const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @implementation RNNNavigationOptions
 
@@ -14,117 +19,46 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 -(instancetype)initWithDict:(NSDictionary *)navigationOptions {
 	self = [super init];
-	self.topBarBackgroundColor = [navigationOptions objectForKey:@"topBarBackgroundColor"];
 	self.statusBarHidden = [navigationOptions objectForKey:@"statusBarHidden"];
-	self.title = [navigationOptions objectForKey:@"title"];
-	self.topBarTextColor = [navigationOptions objectForKey:@"topBarTextColor"];
 	self.screenBackgroundColor = [navigationOptions objectForKey:@"screenBackgroundColor"];
-	self.topBarTextFontFamily = [navigationOptions objectForKey:@"topBarTextFontFamily"];
-	self.topBarHidden = [navigationOptions objectForKey:@"topBarHidden"];
-	self.topBarHideOnScroll = [navigationOptions objectForKey:@"topBarHideOnScroll"];
-	self.topBarButtonColor = [navigationOptions objectForKey:@"topBarButtonColor"];
-	self.topBarTranslucent = [navigationOptions objectForKey:@"topBarTranslucent"];
-	self.tabBadge = [navigationOptions objectForKey:@"tabBadge"];
-	self.topBarTextFontSize = [navigationOptions objectForKey:@"topBarTextFontSize"];
+	self.backButtonTransition = [navigationOptions objectForKey:@"backButtonTransition"];
 	self.orientation = [navigationOptions objectForKey:@"orientation"];
-	self.leftButtons = [navigationOptions objectForKey:@"leftButtons"];
-	self.rightButtons = [navigationOptions objectForKey:@"rightButtons"];
-	self.topBarNoBorder = [navigationOptions objectForKey:@"topBarNoBorder"];
-	self.tabBarHidden = [navigationOptions objectForKey:@"tabBarHidden"];
-	self.topBarBlur = [navigationOptions objectForKey:@"topBarBlur"];
-
+	self.topBar = [[RNNTopBarOptions alloc] initWithDict:[navigationOptions objectForKey:@"topBar"]];
+	self.topTab = [[RNNTopTabOptions alloc] initWithDict:[navigationOptions objectForKey:@"topTab"]];
+	self.bottomTabs = [[RNNBottomTabsOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTabs"]];
+	self.sideMenu = [[RNNSideMenuOptions alloc] initWithDict:[navigationOptions objectForKey:@"sideMenu"]];
+	self.backgroundImage = [RCTConvert UIImage:[navigationOptions objectForKey:@"backgroundImage"]];
+	self.rootBackgroundImage = [RCTConvert UIImage:[navigationOptions objectForKey:@"rootBackgroundImage"]];
+	self.bottomTab = [[RNNBottomTabOptions alloc] initWithDict:[navigationOptions objectForKey:@"bottomTab"]];
+    
 	return self;
 }
 
 -(void)mergeWith:(NSDictionary *)otherOptions {
 	for (id key in otherOptions) {
-		[self setValue:[otherOptions objectForKey:key] forKey:key];
+		if ([[self valueForKey:key] isKindOfClass:[RNNOptions class]]) {
+			RNNOptions* options = [self valueForKey:key];
+			[options mergeWith:[otherOptions objectForKey:key]];
+		} else {
+			[self setValue:[otherOptions objectForKey:key] forKey:key];
+		}
 	}
 }
 
 -(void)applyOn:(UIViewController*)viewController {
-	if (self.topBarBackgroundColor) {
-		UIColor* backgroundColor = [RCTConvert UIColor:self.topBarBackgroundColor];
-		viewController.navigationController.navigationBar.barTintColor = backgroundColor;
-	} else {
-		viewController.navigationController.navigationBar.barTintColor = nil;
-	}
+	[self.topBar applyOn:viewController];
+	[self.bottomTabs applyOn:viewController];
+	[self.topTab applyOn:viewController];
+	[self.bottomTab applyOn:viewController];
+	[self.sideMenu applyOn:viewController];
 	
-	if (self.title) {
-		viewController.navigationItem.title = self.title;
-	}
-	
-	if (self.topBarTextFontFamily || self.topBarTextColor || self.topBarTextFontSize){
-		NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
-		if (self.topBarTextColor) {
-			navigationBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:self.topBarTextColor];
-		}
-		if (self.topBarTextFontFamily){
-			if(self.topBarTextFontSize) {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.topBarTextFontFamily size:[self.topBarTextFontSize floatValue]];
-			} else {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.topBarTextFontFamily size:20];
-			}
-		} else if (self.topBarTextFontSize) {
-			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.topBarTextFontSize floatValue]];
-		}
-		viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
+	if (self.popGesture) {
+		viewController.navigationController.interactivePopGestureRecognizer.enabled = [self.popGesture boolValue];
 	}
 	
 	if (self.screenBackgroundColor) {
 		UIColor* screenColor = [RCTConvert UIColor:self.screenBackgroundColor];
 		viewController.view.backgroundColor = screenColor;
-	}
-	
-	if (self.topBarHidden){
-		if ([self.topBarHidden boolValue]) {
-			[viewController.navigationController setNavigationBarHidden:YES animated:YES];
-		} else {
-			[viewController.navigationController setNavigationBarHidden:NO animated:YES];
-		}
-	}
-	
-	if (self.topBarHideOnScroll) {
-		BOOL topBarHideOnScrollBool = [self.topBarHideOnScroll boolValue];
-		if (topBarHideOnScrollBool) {
-			viewController.navigationController.hidesBarsOnSwipe = YES;
-		} else {
-			viewController.navigationController.hidesBarsOnSwipe = NO;
-		}
-	}
-	
-	if (self.topBarButtonColor) {
-		UIColor* buttonColor = [RCTConvert UIColor:self.topBarButtonColor];
-		viewController.navigationController.navigationBar.tintColor = buttonColor;
-	} else {
-		viewController.navigationController.navigationBar.tintColor = nil;
-	}
-	
-	if (self.tabBadge) {
-		NSString *badge = [RCTConvert NSString:self.tabBadge];
-		if (viewController.navigationController) {
-			viewController.navigationController.tabBarItem.badgeValue = badge;
-		} else {
-			viewController.tabBarItem.badgeValue = badge;
-		}
-	}
-	
-	if (self.topBarTranslucent) {
-		if ([self.topBarTranslucent boolValue]) {
-			viewController.navigationController.navigationBar.translucent = YES;
-		} else {
-			viewController.navigationController.navigationBar.translucent = NO;
-		}
-	}
-	
-	if (self.topBarNoBorder) {
-		if ([self.topBarNoBorder boolValue]) {
-			viewController.navigationController.navigationBar
-			.shadowImage = [[UIImage alloc] init];
-		} else {
-			viewController.navigationController.navigationBar
-			.shadowImage = nil;
-		}
 	}
 	
 	if (self.statusBarBlur) {
@@ -143,28 +77,28 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 		}
 	}
 	
-	if (self.topBarBlur && [self.topBarBlur boolValue]) {
-		
-		if (![viewController.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]) {
-			
-			[viewController.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-			viewController.navigationController.navigationBar.shadowImage = [UIImage new];
-			UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-			CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-			blur.frame = CGRectMake(0, -1 * statusBarFrame.size.height, viewController.navigationController.navigationBar.frame.size.width, viewController.navigationController.navigationBar.frame.size.height + statusBarFrame.size.height);
-			blur.userInteractionEnabled = NO;
-			blur.tag = BLUR_TOPBAR_TAG;
-			[viewController.navigationController.navigationBar insertSubview:blur atIndex:0];
-			[viewController.navigationController.navigationBar sendSubviewToBack:blur];
+	if (self.backgroundImage) {
+		UIImageView* backgroundImageView = (viewController.view.subviews.count > 0) ? viewController.view.subviews[0] : nil;
+		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
+			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
+			[viewController.view insertSubview:backgroundImageView atIndex:0];
 		}
 		
-	} else {
-		UIView *blur = [viewController.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG];
-		if (blur) {
-			[viewController.navigationController.navigationBar setBackgroundImage: nil forBarMetrics:UIBarMetricsDefault];
-			viewController.navigationController.navigationBar.shadowImage = nil;
-			[blur removeFromSuperview];
+		backgroundImageView.layer.masksToBounds = YES;
+		backgroundImageView.image = self.backgroundImage;
+		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+	}
+	
+	if (self.rootBackgroundImage) {
+		UIImageView* backgroundImageView = (viewController.navigationController.view.subviews.count > 0) ? viewController.navigationController.view.subviews[0] : nil;
+		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
+			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
+			[viewController.navigationController.view insertSubview:backgroundImageView atIndex:0];
 		}
+		
+		backgroundImageView.layer.masksToBounds = YES;
+		backgroundImageView.image = self.rootBackgroundImage;
+		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
 }
 
@@ -193,6 +127,5 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	
 	return supportedOrientationsMask;
 }
-
 
 @end

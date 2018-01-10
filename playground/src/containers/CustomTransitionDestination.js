@@ -1,0 +1,94 @@
+const React = require('react');
+const { Component } = require('react');
+const { View, TouchableOpacity, Image, Text } = require('react-native');
+const Navigation = require('react-native-navigation');
+
+class CustomTransitionDestination extends Component {
+  constructor(props) {
+    super(props);
+    this.pop = this.pop.bind(this);
+    this.push = this.push.bind(this);
+  }
+
+  static get navigationOptions() {
+    return {
+      backButtonTransition: 'custom',
+      topBar: {
+        title: 'ye babyyyyyy',
+        textFontFamily: 'HelveticaNeue-Italic',
+        largeTitle: true
+      }
+    };
+  }
+  push() {
+    Navigation.push(this.props.containerId, {
+      name: 'navigation.playground.OptionsScreen'
+    });
+  }
+  pop() {
+    Navigation.pop(this.props.containerId, { customTransition: {
+      animations: [{ type: 'sharedElement', fromId: 'title2', toId: 'title1', startDelay: 0, springVelocity: 0.2, duration: 0.5 },
+            { type: 'sharedElement', toId: 'image1', fromId: 'customDestinationImage', startDelay: 0, springVelocity: 0.2, duration: 0.5 },
+            { type: 'sharedElement', toId: 'image2', fromId: 'customDestinationImage2', startDelay: 0, duration: 0.8 },
+            { fromId: 'image4', startY: 50, startX: 50, startAlpha: 0, startDelay: 0, duration: 0.8, springVelocity: 0.5 },
+            { fromId: 'customDestinationParagraph', endY: 50, endX: 50, endAlpha: 0, startAlpha: 1, startDelay: 0, duration: 0.8 }
+      ],
+      duration: 0.8
+    } });
+  }
+  render() {
+    return (
+      <View style={styles.root}>
+        <View>
+          <Navigation.Element resizeMode={'contain'} elementId={'customDestinationImage'}>
+            <Image resizeMode={'contain'} style={{ width: 300, height: 300 }} source={require('../../img/400.jpeg')} />
+          </Navigation.Element>
+          <Navigation.Element elementId={'customDestinationImage2'}>
+            <Image style={{ width: 100, height: 100 }} source={require('../../img/2048.jpeg')} />
+          </Navigation.Element>
+        </View>
+
+        <TouchableOpacity testID={'shared_image2'} onPress={this.pop}>
+          <Navigation.Element elementId={'title2'}>
+            <Text style={styles.h1}>{`Custom Transition Screen`}</Text>
+          </Navigation.Element>
+        </TouchableOpacity>
+        <Navigation.Element elementId={'customDestinationParagraph'}>
+          <Text style={styles.p}>{`Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+           sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+           Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+           nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit 
+           in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+          cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum`}
+          </Text>
+
+        </Navigation.Element>
+      </View>
+    );
+  }
+}
+module.exports = CustomTransitionDestination;
+
+const styles = {
+  root: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5fcff'
+  },
+  h1: {
+    fontSize: 24,
+    textAlign: 'left',
+    margin: 10
+  },
+  p: {
+    fontSize: 14,
+    margin: 10,
+    textAlign: 'left'
+  },
+  footer: {
+    fontSize: 10,
+    color: '#888',
+    marginTop: 10
+  }
+};

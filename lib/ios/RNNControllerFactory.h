@@ -4,13 +4,15 @@
 #import "RNNRootViewCreator.h"
 #import "RNNStore.h"
 #import "RNNEventEmitter.h"
+#import "RNNRootViewProtocol.h"
 
 @interface RNNControllerFactory : NSObject
 
 -(instancetype)initWithRootViewCreator:(id <RNNRootViewCreator>)creator
 								 store:(RNNStore*)store
-						  eventEmitter:(RNNEventEmitter*)eventEmitter;
+						  eventEmitter:(RNNEventEmitter*)eventEmitter
+							 andBridge:(RCTBridge*)bridge;
 
--(UIViewController*)createLayoutAndSaveToStore:(NSDictionary*)layout;
+-(UIViewController<RNNRootViewProtocol> *)createLayoutAndSaveToStore:(NSDictionary*)layout;
 
 @end

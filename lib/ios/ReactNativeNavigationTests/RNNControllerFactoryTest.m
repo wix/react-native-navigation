@@ -21,7 +21,7 @@
 	[super setUp];
 	self.creator = nil;
 	self.store = [RNNStore new];
-	self.factory = [[RNNControllerFactory alloc] initWithRootViewCreator:self.creator store:self.store eventEmitter:nil];
+	self.factory = [[RNNControllerFactory alloc] initWithRootViewCreator:self.creator store:self.store eventEmitter:nil andBridge:nil];
 }
 
 - (void)tearDown {

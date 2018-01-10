@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const exec = require('shell-utils').exec;
 
-const release = _.includes(process.argv, 'release');
+const release = _.includes(process.argv, '--release');
 
 function run() {
   const conf = release ? `Release` : `Debug`;
@@ -14,6 +14,7 @@ function run() {
             -sdk iphonesimulator
             -configuration ${conf}
             -derivedDataPath ./DerivedData/playground
+            -quiet
             ONLY_ACTIVE_ARCH=YES`);
 
   exec.execSync(`cd ./playground/ios &&

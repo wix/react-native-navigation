@@ -3,7 +3,11 @@ package com.reactnativenavigation.react;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 
@@ -32,8 +36,11 @@ public class NavigationEvent {
 	}
 
 	public void sendOnNavigationButtonPressed(String id, String buttonId) {
-		//TODO!
-		//emit(onNavigationButtonPressed, id);
+		WritableMap map = Arguments.createMap();
+		map.putString("containerId", id);
+		map.putString("buttonId", buttonId);
+
+		emit(onNavigationButtonPressed, map);
 	}
 
 	private void emit(String eventName) {

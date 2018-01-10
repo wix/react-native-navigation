@@ -6,6 +6,7 @@ import android.provider.Settings;
 import android.support.test.uiautomator.By;
 import android.view.KeyEvent;
 
+import org.junit.Assume;
 import org.junit.Test;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
@@ -60,12 +61,15 @@ public class ApplicationLifecycleTest extends BaseTest {
 
 	@Test
 	public void pressingMenuOpensDevMenu() throws Exception {
+		Assume.assumeTrue(isDebug());
 		device().pressKeyCode(KeyEvent.KEYCODE_MENU);
 		assertExists(By.text("Debug JS Remotely"));
 	}
 
 	@Test
 	public void pressingRTwiceInSuccessionReloadsReactNative() throws Exception {
+		Assume.assumeTrue(isDebug());
+
 		elementByText("PUSH").click();
 		assertExists(By.text("Pushed Screen"));
 
@@ -77,6 +81,8 @@ public class ApplicationLifecycleTest extends BaseTest {
 
 	@Test
 	public void pressingRTwiceWithDelayDoesNothing() throws Exception {
+		Assume.assumeTrue(isDebug());
+
 		elementByText("PUSH").click();
 		assertExists(By.text("Pushed Screen"));
 
@@ -88,6 +94,8 @@ public class ApplicationLifecycleTest extends BaseTest {
 
 	@Test
 	public void sendingReloadBroadcastReloadsReactNative() throws Exception {
+		Assume.assumeTrue(isDebug());
+
 		elementByText("PUSH").click();
 		assertExists(By.text("Pushed Screen"));
 

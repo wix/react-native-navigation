@@ -4,15 +4,14 @@
 #import "RCTHelpers.h"
 
 @interface RNNNavigationButtons()
+
 @property (weak, nonatomic) RNNRootViewController* viewController;
+@property (strong, nonatomic) NSArray* rightButtons;
+@property (strong, nonatomic) NSArray* leftButtons;
 
 @end
 
 @implementation RNNNavigationButtons
-
--(instancetype)init {
-	return [super init];
-}
 
 -(instancetype)initWithViewController:(RNNRootViewController*)viewController {
 	self = [super init];
@@ -23,11 +22,11 @@
 }
 
 -(void)applyLeftButtons:(NSArray*)leftButtons rightButtons:(NSArray*)rightButtons {
-	if(leftButtons) {
+	if (leftButtons) {
 		[self setButtons:leftButtons side:@"left" animated:NO];
 	}
 	
-	if(rightButtons) {
+	if (rightButtons) {
 		[self setButtons:rightButtons side:@"right" animated:NO];
 	}
 }
@@ -41,14 +40,14 @@
 		}
 	}
 	
-	if ([side isEqualToString:@"left"])
-	{
-		[self.viewController.navigationItem setLeftBarButtonItems:barButtonItems animated:animated];
+	if ([side isEqualToString:@"left"]) {
+		self.leftButtons = barButtonItems;
+		[self.viewController.navigationItem setLeftBarButtonItems:self.leftButtons animated:animated];
 	}
 	
-	if ([side isEqualToString:@"right"])
-	{
-		[self.viewController.navigationItem setRightBarButtonItems:barButtonItems animated:animated];
+	if ([side isEqualToString:@"right"]) {
+		self.rightButtons = barButtonItems;
+		[self.viewController.navigationItem setRightBarButtonItems:self.rightButtons animated:animated];
 	}
 }
 
@@ -56,7 +55,7 @@
 	NSString* buttonId = dictionary[@"id"];
 	NSString* title = dictionary[@"title"];
 	
-	if(!buttonId){
+	if (!buttonId) {
 		@throw [NSException exceptionWithName:@"NSInvalidArgumentException" reason:[@"button id is not specified " stringByAppendingString:title] userInfo:nil];
 	}
 	
@@ -104,8 +103,8 @@
 	return barButtonItem;
 }
 
--(void)onButtonPress:(RNNUIBarButtonItem*)barButtonItem
-{
+-(void)onButtonPress:(RNNUIBarButtonItem*)barButtonItem {
 	[self.viewController.eventEmitter sendOnNavigationButtonPressed:self.viewController.containerId buttonId:barButtonItem.buttonId];
 }
+
 @end

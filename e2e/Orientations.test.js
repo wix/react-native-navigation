@@ -1,46 +1,59 @@
 
 const Utils = require('./Utils');
+const testIDs = require('../playground/src/testIDs');
 
-const elementByLabel = Utils.elementByLabel;
+const { elementById } = Utils;
 
 describe('orientation', () => {
   beforeEach(async () => {
     await device.relaunchApp();
   });
 
-  it('orientation should not change from landscape', async () => {
-    await elementByLabel('Orientation').tap();
+  afterEach(async () => {
     await device.setOrientation('landscape');
-    await elementByLabel('Push landscape only screen').tap();
     await device.setOrientation('portrait');
-    await expect(element(by.id('currentOrientation'))).toHaveText('Landscape');
   });
 
-  it('orientation should not change from portrait', async () => {
-    await elementByLabel('Orientation').tap();
-    await device.setOrientation('portrait');
-    await elementByLabel('Push portrait only screen').tap();
-    await device.setOrientation('landscape');
+  it('default allows all', async () => {
+    await elementById(testIDs.ORIENTATION_BUTTON).tap();
+    await elementById(testIDs.DEFAULT_ORIENTATION_BUTTON).tap();
     await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
-  });
-
-  it('orientation should change to portrait and landscape', async () => {
-    await elementByLabel('Orientation').tap();
-    await device.setOrientation('portrait');
-    await elementByLabel('Push landscape and portrait').tap();
     await device.setOrientation('landscape');
     await expect(element(by.id('currentOrientation'))).toHaveText('Landscape');
     await device.setOrientation('portrait');
     await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await elementById(testIDs.DISMISS_BUTTON).tap();
   });
 
-  it('orientation default should change to portrait and landscape', async () => {
-    await elementByLabel('Orientation').tap();
-    await device.setOrientation('portrait');
-    await elementByLabel('Push default').tap();
+  it('landscape and portrait array', async () => {
+    await elementById(testIDs.ORIENTATION_BUTTON).tap();
+    await elementById(testIDs.LANDSCAPE_PORTRAIT_ORIENTATION_BUTTON).tap();
+    await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
     await device.setOrientation('landscape');
     await expect(element(by.id('currentOrientation'))).toHaveText('Landscape');
     await device.setOrientation('portrait');
     await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await elementById(testIDs.DISMISS_BUTTON).tap();
+  });
+
+  it('portrait only', async () => {
+    await elementById(testIDs.ORIENTATION_BUTTON).tap();
+    await elementById(testIDs.PORTRAIT_ORIENTATION_BUTTON).tap();
+    await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await device.setOrientation('landscape');
+    await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await device.setOrientation('portrait');
+    await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await elementById(testIDs.DISMISS_BUTTON).tap();
+  });
+
+  it('landscape only', async () => {
+    await elementById(testIDs.ORIENTATION_BUTTON).tap();
+    await elementById(testIDs.LANDSCAPE_ORIENTATION_BUTTON).tap();
+    await device.setOrientation('landscape');
+    await expect(element(by.id('currentOrientation'))).toHaveText('Landscape');
+    await device.setOrientation('portrait');
+    await expect(element(by.id('currentOrientation'))).toHaveText('Landscape');
+    await elementById(testIDs.DISMISS_BUTTON).tap();
   });
 });
