@@ -23,6 +23,8 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	private ParentController parentController;
 	private boolean isShown = false;
 
+    private boolean isDestroyed;
+
 	public ViewController(Activity activity, String id) {
 		this.activity = activity;
 		this.id = id;
@@ -77,7 +79,8 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	@NonNull
 	public View getView() {
 		if (view == null) {
-			view = createView();
+		    if (isDestroyed) throw new RuntimeException("Tried to create view after it has already been destroyed");
+            view = createView();
 			view.setId(CompatUtils.generateViewId());
 			view.getViewTreeObserver().addOnGlobalLayoutListener(this);
 		}
@@ -120,6 +123,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 				((ViewManager) view.getParent()).removeView(view);
 			}
 			view = null;
+            isDestroyed = true;
 		}
 	}
 
@@ -135,6 +139,6 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	}
 
 	protected boolean isViewShown() {
-		return getView().isShown();
+        return getView().isShown();
 	}
 }

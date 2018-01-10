@@ -1,20 +1,24 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Activity;
+import android.view.View;
+import android.view.ViewParent;
+import android.widget.LinearLayout;
 
-import com.reactnativenavigation.*;
-import com.reactnativenavigation.mocks.*;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.SimpleViewController;
 
-import org.assertj.android.api.*;
-import org.junit.*;
-import org.robolectric.*;
+import org.assertj.android.api.Assertions;
+import org.junit.Test;
+import org.robolectric.Shadows;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
 
-import static org.assertj.core.api.Java6Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class ViewControllerTest extends BaseTest {
 
