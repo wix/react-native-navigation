@@ -14,7 +14,7 @@ Latest stable version is `1.1.x` and is published to npm under tag `latest`. It 
 <br><br>We are currently redesigning and rewriting this project under branch `v2`.
 <br>As a result, new features and pull requests on the current stable version will take more time to process.
 
-### tldr;
+### tl;dr
 
 React Native Navigation provides 100% native platform navigation on both iOS and Android for React Native apps. The JavaScript API is simple and cross-platform - just install it in your app and give your users the native feel they deserve. Using redux? No problem: React Native Navigation comes with optional redux support out of the box. Ready to get started? Check out the [docs](https://wix.github.io/react-native-navigation/).
 
