@@ -98,7 +98,7 @@ public class BottomTabsController extends ParentController
 	}
 
 	@Override
-	public void mergeNavigationOptions(Options options) {
+	public void mergeOptions(Options options) {
 		if (options.bottomTabsOptions != null) {
 			if (options.bottomTabsOptions.currentTabIndex != NO_INT_VALUE) {
 				selectTabAtIndex(options.bottomTabsOptions.currentTabIndex);

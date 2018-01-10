@@ -44,7 +44,7 @@ public class TopTabControllerTest extends BaseTest {
     public void styleIsAppliedOnParentControllerWhenOptionsAreSetDynamically() throws Exception {
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
-        uut.mergeNavigationOptions(new Options());
+        uut.mergeOptions(new Options());
         verify(parentController, times(2)).applyOptions(initialOptions);
     }
 

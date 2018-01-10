@@ -86,7 +86,7 @@ public class ComponentViewController extends ViewController implements Navigatio
     }
 
     @Override
-    public void mergeNavigationOptions(Options options) {
+    public void mergeOptions(Options options) {
         this.options.mergeWith(options);
         component.applyOptions(this.options);
     }

@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.*;
+import android.view.View;
 
 import com.reactnativenavigation.*;
 import com.reactnativenavigation.mocks.*;
@@ -142,11 +143,13 @@ public class StackControllerTest extends BaseTest {
     public void popReplacesViewWithPrevious() throws Exception {
         uut.push(child1);
         uut.push(child2);
-        assertIsChildById(uut.getView(), child2.getView());
-        assertNotChildOf(uut.getView(), child1.getView());
+        final View child2View = child2.getView();
+        final View child1View = child1.getView();
+        assertIsChildById(uut.getView(), child2View);
+        assertNotChildOf(uut.getView(), child1View);
         uut.pop();
-        assertNotChildOf(uut.getView(), child2.getView());
-        assertIsChildById(uut.getView(), child1.getView());
+        assertNotChildOf(uut.getView(), child2View);
+        assertIsChildById(uut.getView(), child1View);
     }
 
     @Test

@@ -62,7 +62,7 @@ public class TopTabsController extends ParentController implements NavigationOpt
     }
 
     @Override
-    public void mergeNavigationOptions(Options options) {
+    public void mergeOptions(Options options) {
 
     }
 

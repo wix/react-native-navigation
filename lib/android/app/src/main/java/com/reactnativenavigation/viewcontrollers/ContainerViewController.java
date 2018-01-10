@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.view.View;
 
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
-import com.reactnativenavigation.views.ReactContainer;
+import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.TopBar;
 
 public class ContainerViewController extends ViewController implements NavigationOptionsListener {
@@ -25,80 +25,80 @@ public class ContainerViewController extends ViewController implements Navigatio
 
         void destroy();
 
-        void sendContainerStart();
+        void sendComponentStart();
 
-        void sendContainerStop();
+        void sendComponentStop();
 
         void sendOnNavigationButtonPressed(String buttonId);
     }
 
-    private final String containerName;
+    private final String componentName;
 
     private final ReactViewCreator viewCreator;
-    private NavigationOptions navigationOptions;
-    private ReactContainer container;
+    private Options options;
+    private ReactComponent component;
 
     public ContainerViewController(final Activity activity,
                                    final String id,
-                                   final String containerName,
+                                   final String componentName,
                                    final ReactViewCreator viewCreator,
-                                   final NavigationOptions initialNavigationOptions) {
+                                   final Options initialOptions) {
         super(activity, id);
-        this.containerName = containerName;
+        this.componentName = componentName;
         this.viewCreator = viewCreator;
-        this.navigationOptions = initialNavigationOptions;
+        this.options = initialOptions;
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     TopBar getTopBar() {
-        return container.getTopBar();
+        return component.getTopBar();
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    ReactContainer getContainer() {
-        return container;
+    ReactComponent getComponent() {
+        return component;
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        if (container != null) container.destroy();
-        container = null;
+        if (component != null) component.destroy();
+        component = null;
     }
 
     @Override
     public void onViewAppeared() {
         super.onViewAppeared();
         ensureViewIsCreated();
-        container.applyOptions(navigationOptions);
-        container.sendContainerStart();
+        component.applyOptions(options);
+        component.sendComponentStart();
     }
 
     @Override
     public void onViewDisappear() {
         super.onViewDisappear();
-        container.sendContainerStop();
+        component.sendComponentStop();
     }
 
     @Override
     protected boolean isViewShown() {
-        return super.isViewShown() && container.isReady();
+        return super.isViewShown() && component.isReady();
     }
 
     @NonNull
     @Override
     protected View createView() {
-        container = (ReactContainer) viewCreator.create(getActivity(), getId(), containerName);
-        return container.asView();
+        component = (ReactComponent) viewCreator.create(getActivity(), getId(), componentName);
+        return component.asView();
     }
 
     @Override
-    public void mergeNavigationOptions(NavigationOptions options) {
-        navigationOptions.mergeWith(options);
-        container.applyOptions(navigationOptions);
+    public void mergeOptions(Options options) {
+        this.options.mergeWith(options);
+        component.applyOptions(this.options);
     }
 
-    NavigationOptions getNavigationOptions() {
-        return navigationOptions;
+    Options getOptions() {
+        return options;
     }
 }

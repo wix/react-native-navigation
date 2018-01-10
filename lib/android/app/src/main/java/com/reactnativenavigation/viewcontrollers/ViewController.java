@@ -139,6 +139,6 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	}
 
 	protected boolean isViewShown() {
-        return getView().isShown();
+        return !isDestroyed && getView().isShown();
 	}
 }

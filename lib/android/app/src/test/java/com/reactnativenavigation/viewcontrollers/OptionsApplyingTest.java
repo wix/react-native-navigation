@@ -61,7 +61,7 @@ public class OptionsApplyingTest extends BaseTest {
         assertThat(uut.getOptions().topBarOptions.title).isEmpty();
         Options options = new Options();
         options.topBarOptions.title = "new title";
-        uut.mergeNavigationOptions(options);
+        uut.mergeOptions(options);
         assertThat(uut.getOptions().topBarOptions.title).isEqualTo("new title");
         assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
     }
@@ -73,7 +73,7 @@ public class OptionsApplyingTest extends BaseTest {
 
         Options opts = new Options();
         opts.topBarOptions.title = "the new title";
-        uut.mergeNavigationOptions(opts);
+        uut.mergeOptions(opts);
 
         assertThat(uut.getTopBar().getTitle()).isEqualTo("the new title");
     }
@@ -86,7 +86,7 @@ public class OptionsApplyingTest extends BaseTest {
 
         Options opts = new Options();
         opts.topBarOptions.backgroundColor = Color.RED;
-        uut.mergeNavigationOptions(opts);
+        uut.mergeOptions(opts);
 
         assertThat(((ColorDrawable) uut.getTopBar().getTitleBar().getBackground()).getColor()).isEqualTo(Color.RED);
     }
@@ -101,7 +101,7 @@ public class OptionsApplyingTest extends BaseTest {
         Options opts = new Options();
         opts.topBarOptions.title = "the title";
         opts.topBarOptions.textColor = Color.RED;
-        uut.mergeNavigationOptions(opts);
+        uut.mergeOptions(opts);
 
         assertThat(uut.getTopBar().getTitleTextView()).isNotEqualTo(null);
         assertThat(uut.getTopBar().getTitleTextView().getCurrentTextColor()).isEqualTo(Color.RED);
@@ -117,7 +117,7 @@ public class OptionsApplyingTest extends BaseTest {
         Options opts = new Options();
         opts.topBarOptions.title = "the title";
         opts.topBarOptions.textFontSize = 18;
-        uut.mergeNavigationOptions(opts);
+        uut.mergeOptions(opts);
 
         assertThat(uut.getTopBar().getTitleTextView()).isNotEqualTo(null);
         assertThat(uut.getTopBar().getTitleTextView().getTextSize()).isEqualTo(18);
@@ -132,7 +132,7 @@ public class OptionsApplyingTest extends BaseTest {
 
         Options opts = new Options();
         opts.topBarOptions.hidden = Options.BooleanOptions.True;
-        uut.mergeNavigationOptions(opts);
+        uut.mergeOptions(opts);
 
         assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
     }
@@ -148,7 +148,7 @@ public class OptionsApplyingTest extends BaseTest {
 
         Options opts = new Options();
         opts.topBarOptions.drawBehind = Options.BooleanOptions.True;
-        uut.mergeNavigationOptions(opts);
+        uut.mergeOptions(opts);
 
         uutLayoutParams = (RelativeLayout.LayoutParams) ((ViewGroup) uut.getComponent().asView()).getChildAt(1).getLayoutParams();
         assertThat(uutLayoutParams.getRule(BELOW)).isEqualTo(0);

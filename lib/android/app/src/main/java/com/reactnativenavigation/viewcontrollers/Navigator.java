@@ -81,10 +81,10 @@ public class Navigator extends ParentController {
 	public void setOptions(final String componentId, Options options) {
 		ViewController target = findControllerById(componentId);
 		if (target instanceof NavigationOptionsListener) {
-			((NavigationOptionsListener) target).mergeNavigationOptions(options);
+			((NavigationOptionsListener) target).mergeOptions(options);
 		}
 		if (root instanceof NavigationOptionsListener) {
-			((NavigationOptionsListener) root).mergeNavigationOptions(options);
+			((NavigationOptionsListener) root).mergeOptions(options);
 		}
 	}
 
