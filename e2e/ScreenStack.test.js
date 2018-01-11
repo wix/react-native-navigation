@@ -77,7 +77,7 @@ describe('screen stack', () => {
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
   });
 
-  it('overlay pass touches - true', async () => {
+  it('overlay pass touches - false', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.SHOW_OVERLAY_BUTTON).tap();
     await expect(elementById(testIDs.DIALOG_HEADER)).toBeVisible();
