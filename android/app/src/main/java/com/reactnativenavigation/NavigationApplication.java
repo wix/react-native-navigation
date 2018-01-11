@@ -11,6 +11,7 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.reactnativenavigation.bridge.EventEmitter;
 import com.reactnativenavigation.controllers.ActivityCallbacks;
 import com.reactnativenavigation.react.NavigationReactGateway;
@@ -90,6 +91,13 @@ public abstract class NavigationApplication extends Application implements React
 
     public EventEmitter getEventEmitter() {
         return eventEmitter;
+    }
+
+    public UIManagerModule getUiManagerModule() {
+        return getReactGateway()
+                .getReactInstanceManager()
+                .getCurrentReactContext()
+                .getNativeModule(UIManagerModule.class);
     }
 
     /**
