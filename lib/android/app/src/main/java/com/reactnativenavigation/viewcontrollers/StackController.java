@@ -26,10 +26,6 @@ public class StackController extends ParentController {
 		this.animator = animator;
 	}
 
-	public void push(final ViewController child) {
-		push(child, null);
-	}
-
 	public void push(final ViewController child, final Promise promise) {
 		final ViewController previousTop = peek();
 
@@ -56,10 +52,6 @@ public class StackController extends ParentController {
 
 	void pop(Promise promise) {
 		pop(true, promise);
-	}
-
-	void pop() {
-		pop(true, null);
 	}
 
 	private void pop(boolean animate, final Promise promise) {

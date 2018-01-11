@@ -6,6 +6,7 @@ import android.view.ViewParent;
 import android.widget.LinearLayout;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
 
 import org.assertj.android.api.Assertions;
@@ -58,7 +59,7 @@ public class ViewControllerTest extends BaseTest {
     public void holdsAReferenceToStackControllerOrNull() throws Exception {
         assertThat(uut.getParentStackController()).isNull();
         StackController nav = new StackController(activity, "stack");
-        nav.push(uut);
+        nav.push(uut, new MockPromise());
         assertThat(uut.getParentStackController()).isEqualTo(nav);
     }
 

@@ -49,7 +49,7 @@ public class OptionsApplyingTest extends BaseTest {
         assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = "the title";
         StackController stackController = new StackController(activity, "stackId");
-        stackController.push(uut);
+        stackController.push(uut, new MockPromise());
         assertThat(uut.getTopBar().getTitle()).isEmpty();
 
         uut.onViewAppeared();
