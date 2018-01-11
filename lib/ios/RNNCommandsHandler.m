@@ -125,15 +125,15 @@
 	[CATransaction commit];
 }
 
--(void)showOverlay:(NSString *)componentId options:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion {
+-(void)showOverlay:(NSDictionary *)layout options:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	UIViewController* overlayVC = [_controllerFactory createOverlay:componentId options:options];
+	UIViewController* overlayVC = [_controllerFactory createOverlay:layout options:options];
 	[_overlayManager showOverlay:overlayVC completion:completion];
 }
 
--(void)dismissOverlay:(RNNTransitionCompletionBlock)completion {
+- (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	[_overlayManager dismissOverlay:completion];
+	[_overlayManager dismissOverlay:componentId completion:completion];
 }
 
 #pragma mark - private

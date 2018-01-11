@@ -15,6 +15,6 @@
 
 -(UIViewController<RNNRootViewProtocol> *)createLayoutAndSaveToStore:(NSDictionary*)layout;
 
-- (UIViewController *)createOverlay:(NSString*)componentId options:(NSDictionary*)options;
+-(UIViewController *)createOverlay:(NSDictionary*)layout options:(NSDictionary*)options;
 
 @end

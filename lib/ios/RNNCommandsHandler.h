@@ -26,8 +26,8 @@
 
 -(void) dismissAllModalsWithCompletion:(RNNTransitionCompletionBlock)completion;
 
--(void) showOverlay:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
+-(void)showOverlay:(NSDictionary *)layout options:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion;
 
--(void) dismissOverlay:(RNNTransitionCompletionBlock)completion;
+-(void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;
 
 @end

@@ -4,7 +4,7 @@
 
 @interface RNNOverlayManager : NSObject
 
--(void)showOverlay:(UIViewController*)viewController completion:(RNNTransitionCompletionBlock)completion;
--(void)dismissOverlay:(RNNTransitionCompletionBlock)completion;
+- (void)showOverlay:(UIViewController*)viewController completion:(RNNTransitionCompletionBlock)completion;
+- (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;
 
 @end
