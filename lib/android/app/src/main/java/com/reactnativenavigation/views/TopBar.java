@@ -13,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopBarCollapseBehavior;
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.Color;
 import com.reactnativenavigation.parse.Number;
@@ -25,17 +25,17 @@ import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
 import java.util.ArrayList;
 
 @SuppressLint("ViewConstructor")
-public class TopBar extends AppBarLayout {
+public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
     private final Toolbar titleBar;
     private TitleBarButton.OnClickListener onClickListener;
     private final TopBarCollapseBehavior collapsingBehavior;
     private final TopBarAnimator animator;
     private TopTabs topTabs;
 
-    public TopBar(final Context context, View contentView, TitleBarButton.OnClickListener onClickListener, EventDispatcher eventDispatcher) {
+    public TopBar(final Context context, View contentView, ScrollEventListener scrollEventListener, TitleBarButton.OnClickListener onClickListener) {
         super(context);
         this.onClickListener = onClickListener;
-        collapsingBehavior = new TopBarCollapseBehavior(eventDispatcher, this);
+        collapsingBehavior = new TopBarCollapseBehavior(this, scrollEventListener);
         titleBar = new Toolbar(context);
         topTabs = new TopTabs(getContext());
         this.animator = new TopBarAnimator(this, contentView);

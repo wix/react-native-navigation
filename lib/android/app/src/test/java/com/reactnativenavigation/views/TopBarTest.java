@@ -9,7 +9,7 @@ import static org.assertj.core.api.Java6Assertions.*;
 public class TopBarTest extends BaseTest {
     @Test
     public void title() throws Exception {
-        TopBar topBar = new TopBar(newActivity(), null, buttonId -> {}, null);
+        TopBar topBar = new TopBar(newActivity(), null, null, buttonId -> {});
         assertThat(topBar.getTitle()).isEmpty();
 
         topBar.setTitle("new title");

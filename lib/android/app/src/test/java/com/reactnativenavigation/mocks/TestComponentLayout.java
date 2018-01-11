@@ -4,6 +4,7 @@ import android.content.*;
 import android.view.*;
 import android.widget.*;
 
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.*;
 import com.reactnativenavigation.presentation.*;
 import com.reactnativenavigation.views.*;
@@ -17,7 +18,7 @@ public class TestComponentLayout extends RelativeLayout implements ReactComponen
     public TestComponentLayout(final Context context) {
         super(context);
         contentView = new View(context);
-        topBar = new TopBar(context, contentView, this, null);
+        topBar = new TopBar(context, contentView, null, this);
         addView(topBar);
         addView(contentView);
         optionsPresenter = new OptionsPresenter(this);
@@ -71,6 +72,11 @@ public class TestComponentLayout extends RelativeLayout implements ReactComponen
     @Override
     public void sendOnNavigationButtonPressed(String id) {
 
+    }
+
+    @Override
+    public ScrollEventListener getScrollEventListener() {
+        return null;
     }
 
     @Override
