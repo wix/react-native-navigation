@@ -89,6 +89,7 @@
 	NSDictionary* customTransition = node.data[@"customTransition"];
 	RNNAnimator* animator = [[RNNAnimator alloc] initWithAnimationsDictionary:customTransition];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
+	options.defaultOptions = _defaultOptions;
 	NSString* componentId = node.nodeId;
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter animator:animator];
 	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;

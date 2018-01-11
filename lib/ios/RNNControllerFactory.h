@@ -17,4 +17,7 @@
 
 -(UIViewController *)createOverlay:(NSDictionary*)layout options:(NSDictionary*)options;
 
+@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
+
+
 @end

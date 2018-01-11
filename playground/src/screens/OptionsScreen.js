@@ -50,6 +50,7 @@ class OptionsScreen extends Component {
     this.onClickTopBarOpaque = this.onClickTopBarOpaque.bind(this);
     this.onClickCustomTranstition = this.onClickCustomTranstition.bind(this);
     this.onClickShowOverlay = this.onClickShowOverlay.bind(this);
+    this.onClickPushDefaultOptionsScreen = this.onClickPushDefaultOptionsScreen.bind(this);
   }
 
   render() {
@@ -67,6 +68,7 @@ class OptionsScreen extends Component {
         <Button title="Show snackbar" testID={testIDs.SHOW_SNACKBAR_BUTTON} onPress={this.onClickSnackbar} />
         <Button title="Show overlay" testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
         <Button title="Show touch through overlay" testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
+        <Button title="Push Default Options Screen" testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
@@ -198,6 +200,20 @@ class OptionsScreen extends Component {
         name: 'navigation.playground.CustomDialog'
       }
     }, { passThroughTouches });
+  }
+
+  onClickPushDefaultOptionsScreen() {
+    Navigation.setDefaultOptions({
+      topBar: {
+        hidden: true
+      }
+    });
+
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.PushedScreen'
+      }
+    });
   }
 }
 

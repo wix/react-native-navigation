@@ -54,6 +54,12 @@
 	}
 }
 
+-(void) setDefaultOptions:(NSDictionary*)optionsDict completion:(RNNTransitionCompletionBlock)completion {
+	[self assertReady];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:optionsDict];
+	[_controllerFactory setDefaultOptions:options];
+}
+
 -(void) push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
