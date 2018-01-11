@@ -209,45 +209,53 @@ class WelcomeScreen extends Component {
 
   onClickPushTopTabsScreen() {
     Navigation.push(this.props.componentId, {
-      topTabs: [
-        {
-          name: 'navigation.playground.TopTabOptionsScreen',
-          passProps: {
-            title: 'Tab 1',
-            text: 'This is top tab 1'
+      topTabs: {
+        children: [
+          {
+            component: {
+              name: 'navigation.playground.TopTabOptionsScreen',
+              passProps: {
+                title: 'Tab 1',
+                text: 'This is top tab 1'
+              },
+              options: {
+                topTab: {
+                  title: 'Tab 1'
+                }
+              }
+            }
           },
-          options: {
-            topTab: {
-              title: 'Tab 1'
+          {
+            component: {
+              name: 'navigation.playground.TopTabScreen',
+              passProps: {
+                title: 'Tab 2',
+                text: 'This is top tab 2'
+              },
+              options: {
+                topTab: {
+                  title: 'Tab 2',
+                  titleFontFamily: 'HelveticaNeue-Italic'
+                }
+              }
+            }
+          },
+          {
+            component: {
+              name: 'navigation.playground.TopTabScreen',
+              passProps: {
+                title: 'Tab 3',
+                text: 'This is top tab 3'
+              },
+              options: {
+                topTab: {
+                  title: 'Tab 3'
+                }
+              }
             }
           }
-        },
-        {
-          name: 'navigation.playground.TopTabScreen',
-          passProps: {
-            title: 'Tab 2',
-            text: 'This is top tab 2'
-          },
-          options: {
-            topTab: {
-              title: 'Tab 2',
-              titleFontFamily: 'HelveticaNeue-Italic'
-            }
-          }
-        },
-        {
-          name: 'navigation.playground.TopTabScreen',
-          passProps: {
-            title: 'Tab 3',
-            text: 'This is top tab 3'
-          },
-          options: {
-            topTab: {
-              title: 'Tab 3'
-            }
-          }
-        }
-      ],
+        ]
+      },
       options: {
         topTabs: {
           selectedTabColor: '#12766b',
