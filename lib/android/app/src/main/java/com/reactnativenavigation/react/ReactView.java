@@ -7,6 +7,10 @@ import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.EventDispatcher;
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 
 @SuppressLint("ViewConstructor")
@@ -64,4 +68,14 @@ public class ReactView extends ReactRootView implements ComponentViewController.
 	public void sendOnNavigationButtonPressed(String buttonId) {
 		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).sendOnNavigationButtonPressed(componentId, buttonId);
 	}
+
+    @Override
+    public ScrollEventListener getScrollEventListener() {
+        return new ScrollEventListener(getEventDispatcher());
+    }
+
+    public EventDispatcher getEventDispatcher() {
+        ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
+        return reactContext == null ? null : reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+    }
 }

@@ -3,6 +3,7 @@ package com.reactnativenavigation.mocks;
 import android.content.*;
 import android.view.*;
 
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.viewcontrollers.*;
 
 public class TopTabLayoutMock extends View implements ComponentViewController.IReactView {
@@ -39,5 +40,10 @@ public class TopTabLayoutMock extends View implements ComponentViewController.IR
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
 
+    }
+
+    @Override
+    public ScrollEventListener getScrollEventListener() {
+        return null;
     }
 }

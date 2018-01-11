@@ -4,6 +4,7 @@ import android.app.*;
 import android.support.annotation.*;
 import android.view.*;
 
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.*;
 import com.reactnativenavigation.presentation.*;
 import com.reactnativenavigation.views.*;
@@ -28,6 +29,8 @@ public class ComponentViewController extends ViewController implements Navigatio
         void sendComponentStop();
 
         void sendOnNavigationButtonPressed(String buttonId);
+
+        ScrollEventListener getScrollEventListener();
     }
 
     private final String componentName;
