@@ -12,6 +12,8 @@
 
 -(void) setOptions:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
 
+-(void) setDefaultOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
+
 -(void) push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
 
 -(void) pop:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;

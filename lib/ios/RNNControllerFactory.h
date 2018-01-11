@@ -15,4 +15,6 @@
 
 -(UIViewController<RNNRootViewProtocol> *)createLayoutAndSaveToStore:(NSDictionary*)layout;
 
+@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
+
 @end
