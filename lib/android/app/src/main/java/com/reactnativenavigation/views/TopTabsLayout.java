@@ -26,7 +26,7 @@ public class TopTabsLayout extends RelativeLayout implements Component, TitleBar
         super(context);
         this.tabs = tabs;
         viewPager = new TopTabsViewPager(context, tabs, adapter);
-        topBar = new TopBar(context, viewPager, this, null);
+        topBar = new TopBar(context, viewPager, null, this);
         topBar.setId(View.generateViewId());
         optionsPresenter = new OptionsPresenter(this);
         initViews();
