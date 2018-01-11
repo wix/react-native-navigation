@@ -1,11 +1,10 @@
 package com.reactnativenavigation.e2e.androide2e;
 
-import android.support.test.uiautomator.By;
-import android.support.test.uiautomator.Until;
+import android.support.test.uiautomator.*;
 
-import org.junit.Test;
+import org.junit.*;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.*;
 
 public class NavigationOptionsTest extends BaseTest {
 
@@ -26,10 +25,8 @@ public class NavigationOptionsTest extends BaseTest {
     @Test
     public void testTopBarHidden() throws Exception {
         elementByText("PUSH OPTIONS SCREEN").click();
-        int topWithNavigation = elementByText("HIDE TOP BAR").getVisibleBounds().top;
         elementByText("HIDE TOP BAR").click();
-        int topWithoutNavigation = elementByText("HIDE TOP BAR").getVisibleBounds().top;
-        assertThat(topWithoutNavigation).isLessThan(topWithNavigation);
+        assertThat(elementByText("Static Title").exists()).isFalse();
         elementByText("SHOW TOP BAR").click();
         assertExists(By.text("Static Title"));
     }

@@ -1,7 +1,7 @@
 package com.reactnativenavigation.presentation;
 
 import com.reactnativenavigation.parse.Button;
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
@@ -10,8 +10,8 @@ import com.reactnativenavigation.views.TopBar;
 
 import java.util.ArrayList;
 
-import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.False;
-import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.True;
+import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
+import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
 public class OptionsPresenter {
 
@@ -23,7 +23,7 @@ public class OptionsPresenter {
         this.topBar = reactComponent.getTopBar();
     }
 
-    public void applyOptions(NavigationOptions options) {
+    public void applyOptions(Options options) {
         applyTopBarOptions(options.topBarOptions);
         applyButtons(options.topBarOptions.leftButtons, options.topBarOptions.rightButtons);
         applyTopTabsOptions(options.topTabsOptions);
@@ -37,10 +37,10 @@ public class OptionsPresenter {
         topBar.setTitleFontSize(options.textFontSize);
 
         topBar.setTitleTypeface(options.textFontFamily);
-        if (options.hidden == NavigationOptions.BooleanOptions.True) {
+        if (options.hidden == Options.BooleanOptions.True) {
             topBar.hide(options.animateHide);
         }
-        if (options.hidden == NavigationOptions.BooleanOptions.False) {
+        if (options.hidden == Options.BooleanOptions.False) {
             topBar.show(options.animateHide);
         }
         if (options.drawBehind == True) {

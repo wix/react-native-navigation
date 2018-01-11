@@ -6,7 +6,7 @@ import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
 
-public class NavigationOptions implements DEFAULT_VALUES {
+public class Options implements DEFAULT_VALUES {
 
     public enum BooleanOptions {
 		True,
@@ -22,13 +22,13 @@ public class NavigationOptions implements DEFAULT_VALUES {
 	}
 
     @NonNull
-    public static NavigationOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
-        return parse(typefaceManager, json, new NavigationOptions());
+    public static Options parse(TypefaceLoader typefaceManager, JSONObject json) {
+        return parse(typefaceManager, json, new Options());
     }
 
 	@NonNull
-	public static NavigationOptions parse(TypefaceLoader typefaceManager, JSONObject json, @NonNull NavigationOptions defaultOptions) {
-		NavigationOptions result = new NavigationOptions();
+	public static Options parse(TypefaceLoader typefaceManager, JSONObject json, @NonNull Options defaultOptions) {
+		Options result = new Options();
 		if (json == null) return result;
 
 		result.topBarOptions = TopBarOptions.parse(typefaceManager, json.optJSONObject("topBar"));
@@ -44,13 +44,13 @@ public class NavigationOptions implements DEFAULT_VALUES {
     @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
     @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
 
-	public void mergeWith(final NavigationOptions other) {
+	public void mergeWith(final Options other) {
         topBarOptions.mergeWith(other.topBarOptions);
         topTabsOptions.mergeWith(other.topTabsOptions);
         bottomTabsOptions.mergeWith(other.bottomTabsOptions);
     }
 
-    NavigationOptions withDefaultOptions(final NavigationOptions other) {
+    Options withDefaultOptions(final Options other) {
         topBarOptions.mergeWithDefault(other.topBarOptions);
         topTabsOptions.mergeWithDefault(other.topTabsOptions);
         bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);

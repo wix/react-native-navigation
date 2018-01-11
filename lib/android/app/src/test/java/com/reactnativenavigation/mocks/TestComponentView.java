@@ -1,21 +1,20 @@
 package com.reactnativenavigation.mocks;
 
-import android.content.Context;
-import android.view.View;
+import android.content.*;
+import android.view.*;
 
-import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.views.ReactComponent;
-import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.parse.*;
+import com.reactnativenavigation.views.*;
 
-public class TestComponentView extends View implements ReactComponent {
+public class TestComponentView extends View implements ReactComponent, TitleBarButton.OnClickListener {
 
     private TopBar topBar;
 
-	public TestComponentView(final Context context) {
-		super(context);
-		topBar = new TopBar(context, this);
+    public TestComponentView(final Context context) {
+        super(context);
+        topBar = new TopBar(context, this, this, null);
 
-	}
+    }
 
     @Override
     public boolean isReady() {
@@ -31,16 +30,16 @@ public class TestComponentView extends View implements ReactComponent {
     public void destroy() {
     }
 
-	@Override
-	public void sendComponentStart() {
-	}
-
-	@Override
-	public void sendComponentStop() {
-	}
+    @Override
+    public void sendComponentStart() {
+    }
 
     @Override
-    public void applyOptions(NavigationOptions options) {
+    public void sendComponentStop() {
+    }
+
+    @Override
+    public void applyOptions(Options options) {
 
     }
 
@@ -55,17 +54,17 @@ public class TestComponentView extends View implements ReactComponent {
     }
 
     @Override
-    public View getContentView() {
-        return null;
-    }
-
-    @Override
     public void drawBehindTopBar() {
 
     }
 
     @Override
     public void drawBelowTopBar() {
+
+    }
+
+    @Override
+    public void onPress(String buttonId) {
 
     }
 }

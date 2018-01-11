@@ -1,30 +1,28 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.Activity;
+import android.app.*;
 
-import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.TopTabLayoutMock;
-import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabController;
+import com.reactnativenavigation.*;
+import com.reactnativenavigation.mocks.*;
+import com.reactnativenavigation.parse.*;
+import com.reactnativenavigation.viewcontrollers.toptabs.*;
 
-import org.junit.Test;
+import org.junit.*;
 
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class TopTabControllerTest extends BaseTest {
     private TopTabController uut;
     private TopTabLayoutMock view;
     private ParentController parentController;
-    private NavigationOptions initialOptions;
+    private Options initialOptions;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
         Activity activity = newActivity();
         view = spy(new TopTabLayoutMock(activity));
-        initialOptions = new NavigationOptions();
+        initialOptions = new Options();
         uut = new TopTabController(activity,
                 "componentId",
                 "componentName",
@@ -46,7 +44,7 @@ public class TopTabControllerTest extends BaseTest {
     public void styleIsAppliedOnParentControllerWhenOptionsAreSetDynamically() throws Exception {
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
-        uut.mergeNavigationOptions(new NavigationOptions());
+        uut.mergeOptions(new Options());
         verify(parentController, times(2)).applyOptions(initialOptions);
     }
 

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
@@ -22,6 +22,8 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	private View view;
 	private ParentController parentController;
 	private boolean isShown = false;
+
+    private boolean isDestroyed;
 
 	public ViewController(Activity activity, String id) {
 		this.activity = activity;
@@ -77,7 +79,8 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	@NonNull
 	public View getView() {
 		if (view == null) {
-			view = createView();
+		    if (isDestroyed) throw new RuntimeException("Tried to create view after it has already been destroyed");
+            view = createView();
 			view.setId(CompatUtils.generateViewId());
 			view.getViewTreeObserver().addOnGlobalLayoutListener(this);
 		}
@@ -105,7 +108,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
         isShown = false;
     }
 
-    public void applyOptions(NavigationOptions options) {
+    public void applyOptions(Options options) {
 
     }
 
@@ -120,6 +123,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 				((ViewManager) view.getParent()).removeView(view);
 			}
 			view = null;
+            isDestroyed = true;
 		}
 	}
 
@@ -135,6 +139,6 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 	}
 
 	protected boolean isViewShown() {
-		return getView().isShown();
+        return !isDestroyed && getView().isShown();
 	}
 }

@@ -3,7 +3,7 @@ package com.reactnativenavigation.viewcontrollers.toptabs;
 import android.app.Activity;
 import android.view.View;
 
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
@@ -13,11 +13,11 @@ public class TopTabController extends ViewController implements NavigationOption
 
     private final String componentName;
     private ComponentViewController.ReactViewCreator viewCreator;
-    private final NavigationOptions options;
+    private final Options options;
     private TopTab topTab;
     private boolean isSelectedTab;
 
-    public TopTabController(Activity activity, String id, String name, ComponentViewController.ReactViewCreator viewCreator, NavigationOptions initialOptions) {
+    public TopTabController(Activity activity, String id, String name, ComponentViewController.ReactViewCreator viewCreator, Options initialOptions) {
         super(activity, id);
         this.componentName = name;
         this.viewCreator = viewCreator;
@@ -33,7 +33,7 @@ public class TopTabController extends ViewController implements NavigationOption
     }
 
     @Override
-    public void applyOptions(NavigationOptions options) {
+    public void applyOptions(Options options) {
         getParentController().applyOptions(options);
     }
 
@@ -66,7 +66,7 @@ public class TopTabController extends ViewController implements NavigationOption
     }
 
     @Override
-    public void mergeNavigationOptions(NavigationOptions options) {
+    public void mergeOptions(Options options) {
         this.options.mergeWith(options);
         applyOptions(this.options);
     }

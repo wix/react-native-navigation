@@ -1,18 +1,20 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.*;
-import android.support.annotation.*;
-import android.view.*;
+import android.app.Activity;
+import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
+import android.view.View;
 
-import com.reactnativenavigation.parse.*;
-import com.reactnativenavigation.presentation.*;
-import com.reactnativenavigation.views.*;
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.NavigationOptionsListener;
+import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.TopBar;
 
-public class ComponentViewController extends ViewController implements NavigationOptionsListener {
+public class ContainerViewController extends ViewController implements NavigationOptionsListener {
 
     public interface ReactViewCreator {
 
-        IReactView create(Activity activity, String componentId, String componentName);
+        IReactView create(Activity activity, String containerId, String containerName);
     }
 
     public interface IReactView {
@@ -36,20 +38,25 @@ public class ComponentViewController extends ViewController implements Navigatio
     private Options options;
     private ReactComponent component;
 
-    public ComponentViewController(final Activity activity,
+    public ContainerViewController(final Activity activity,
                                    final String id,
                                    final String componentName,
                                    final ReactViewCreator viewCreator,
-                                   final Options initialNavigationOptions) {
+                                   final Options initialOptions) {
         super(activity, id);
         this.componentName = componentName;
         this.viewCreator = viewCreator;
-        this.options = initialNavigationOptions;
+        this.options = initialOptions;
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     TopBar getTopBar() {
         return component.getTopBar();
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    ReactComponent getComponent() {
+        return component;
     }
 
     @Override
@@ -93,9 +100,5 @@ public class ComponentViewController extends ViewController implements Navigatio
 
     Options getOptions() {
         return options;
-    }
-
-    ReactComponent getComponent() {
-        return component;
     }
 }

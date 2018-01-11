@@ -1,27 +1,21 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.Activity;
-import android.view.ViewGroup;
+import android.app.*;
+import android.view.*;
 
-import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.TopTabLayoutMock;
-import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.viewcontrollers.ComponentViewController.IReactView;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabController;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
-import com.reactnativenavigation.views.TopTabsLayout;
-import com.reactnativenavigation.views.TopTabsLayoutCreator;
+import com.reactnativenavigation.*;
+import com.reactnativenavigation.mocks.*;
+import com.reactnativenavigation.parse.*;
+import com.reactnativenavigation.viewcontrollers.ComponentViewController.*;
+import com.reactnativenavigation.viewcontrollers.toptabs.*;
+import com.reactnativenavigation.views.*;
 
-import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.*;
+import org.mockito.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class TopTabsViewControllerTest extends BaseTest {
 
@@ -30,8 +24,8 @@ public class TopTabsViewControllerTest extends BaseTest {
     private TopTabsController uut;
     private List<TopTabLayoutMock> tabs = new ArrayList<>(SIZE);
     private List<TopTabController> tabControllers = new ArrayList<>(SIZE);
-    private List<NavigationOptions> tabOptions = new ArrayList<>(SIZE);
-    private NavigationOptions options;
+    private List<Options> tabOptions = new ArrayList<>(SIZE);
+    private Options options;
     private TopTabsLayout topTabsLayout;
 
     @Override
@@ -41,7 +35,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabs.clear();
         Activity activity = newActivity();
         createTabs(activity);
-        options = new NavigationOptions();
+        options = new Options();
         topTabsLayout = spy(new TopTabsLayout(activity, tabControllers, new TopTabsAdapter(tabControllers)));
 
         TopTabsLayoutCreator layoutCreator = Mockito.mock(TopTabsLayoutCreator.class);
@@ -53,7 +47,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         for (int i = 0; i < SIZE; i++) {
             TopTabLayoutMock reactView = spy(new TopTabLayoutMock(activity));
             tabs.add(reactView);
-            tabOptions.add(new NavigationOptions());
+            tabOptions.add(new Options());
             tabControllers.add(spy(new TopTabController(activity,
                     "idTab" + i,
                     "tab" + i,

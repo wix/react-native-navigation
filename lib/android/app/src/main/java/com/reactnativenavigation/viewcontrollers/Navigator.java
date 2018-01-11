@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Promise;
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OverlayOptions;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.OverlayPresenter;
@@ -21,7 +21,7 @@ public class Navigator extends ParentController {
 	private final ModalStack modalStack = new ModalStack();
 	private ViewController root;
 	private OverlayPresenter overlayPresenter;
-    private NavigationOptions defaultOptions = new NavigationOptions();
+    private Options defaultOptions = new Options();
 
     public Navigator(final Activity activity) {
 		super(activity, "navigator" + CompatUtils.generateViewId());
@@ -70,21 +70,21 @@ public class Navigator extends ParentController {
 		}
 	}
 
-    public void setDefaultOptions(NavigationOptions defaultOptions) {
+    public void setDefaultOptions(Options defaultOptions) {
         this.defaultOptions = defaultOptions;
     }
 
-    public NavigationOptions getDefaultOptions() {
+    public Options getDefaultOptions() {
         return defaultOptions;
     }
 
-	public void setOptions(final String componentId, NavigationOptions options) {
+	public void setOptions(final String componentId, Options options) {
 		ViewController target = findControllerById(componentId);
 		if (target instanceof NavigationOptionsListener) {
-			((NavigationOptionsListener) target).mergeNavigationOptions(options);
+			((NavigationOptionsListener) target).mergeOptions(options);
 		}
 		if (root instanceof NavigationOptionsListener) {
-			((NavigationOptionsListener) root).mergeNavigationOptions(options);
+			((NavigationOptionsListener) root).mergeOptions(options);
 		}
 	}
 

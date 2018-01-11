@@ -82,7 +82,7 @@ class ModalScreen extends Component {
   }
 
   onClickPushScreen() {
-    Navigation.push(this.props.containerId, {
+    Navigation.push(this.props.componentId, {
       component: {
         name: `navigation.playground.PushedScreen`,
         passProps: {

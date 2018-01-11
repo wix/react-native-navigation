@@ -89,17 +89,17 @@ public abstract class BaseTest {
         return bitmap;
     }
 
-	public void swipeOpenFromLeft() {
-		int w = device().getDisplayWidth();
-		int h = device().getDisplayHeight();
-		device().swipe(5, h / 2, w / 2, h / 2, 20);
-	}
+    public void swipeOpenFromLeft() {
+        int w = device().getDisplayWidth();
+        int h = device().getDisplayHeight();
+        device().swipe(5, h / 2, w / 2, h / 2, 20);
+    }
 
-	public void swipeOpenFromRight() {
-		int w = device().getDisplayWidth();
-		int h = device().getDisplayHeight();
-		device().swipe(w - 5, h / 2, w / 2, h / 2, 20);
-	}
+    public void swipeOpenFromRight() {
+        int w = device().getDisplayWidth();
+        int h = device().getDisplayHeight();
+        device().swipe(w - 5, h / 2, w / 2, h / 2, 20);
+    }
 
     public void swipeUp() {
         int w = device().getDisplayWidth();

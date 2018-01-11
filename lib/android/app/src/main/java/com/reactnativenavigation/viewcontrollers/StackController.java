@@ -38,17 +38,13 @@ public class StackController extends ParentController {
 		View enteringView = child.getView();
 		getView().addView(enteringView);
 
-		//TODO animatePush only when needed
 		if (previousTop != null) {
-			animator.animatePush(enteringView, new NavigationAnimator.NavigationAnimationListener() {
-				@Override
-				public void onAnimationEnd() {
-					getView().removeView(previousTop.getView());
-					if (promise != null) {
-						promise.resolve(child.getId());
-					}
-				}
-			});
+			animator.animatePush(enteringView, () -> {
+                getView().removeView(previousTop.getView());
+                if (promise != null) {
+                    promise.resolve(child.getId());
+                }
+            });
 		} else if (promise != null) {
 			promise.resolve(child.getId());
 		}
@@ -80,12 +76,7 @@ public class StackController extends ParentController {
 		getView().addView(enteringView, getView().getChildCount() - 1);
 
 		if (animate) {
-			animator.animatePop(exitingView, new NavigationAnimator.NavigationAnimationListener() {
-				@Override
-				public void onAnimationEnd() {
-					finishPopping(exitingView, poppedTop, promise);
-				}
-			});
+			animator.animatePop(exitingView, () -> finishPopping(exitingView, poppedTop, promise));
 		} else {
 			finishPopping(exitingView, poppedTop, promise);
 		}

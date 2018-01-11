@@ -18,26 +18,27 @@ import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.Color;
-import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.Number;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
-import com.reactnativenavigation.parse.Color;
 
 import java.util.ArrayList;
 
 @SuppressLint("ViewConstructor")
 public class TopBar extends AppBarLayout {
-	private final Toolbar titleBar;
-    private Component component;
+    private final Toolbar titleBar;
+    private TitleBarButton.OnClickListener onClickListener;
+    private final TopBarCollapseBehavior collapsingBehavior;
+    private final TopBarAnimator animator;
     private TopTabs topTabs;
 
-    public TopBar(final Context context, Component component) {
+    public TopBar(final Context context, View contentView, TitleBarButton.OnClickListener onClickListener, EventDispatcher eventDispatcher) {
         super(context);
+        this.onClickListener = onClickListener;
         collapsingBehavior = new TopBarCollapseBehavior(eventDispatcher, this);
-        this.component = component;
         titleBar = new Toolbar(context);
         topTabs = new TopTabs(getContext());
-        animator = new TopBarAnimator(this, component != null ? component.getContentView() : null);
+        this.animator = new TopBarAnimator(this, contentView);
         addView(titleBar);
     }
 
@@ -121,10 +122,10 @@ public class TopBar extends AppBarLayout {
         setLeftButton(leftButton);
     }
 
-	private void setLeftButton(final Button button) {
-		TitleBarButton leftBarButton = new TitleBarButton(component, this.titleBar, button);
-		leftBarButton.applyNavigationIcon(getContext());
-	}
+    private void setLeftButton(final Button button) {
+        TitleBarButton leftBarButton = new TitleBarButton(this.titleBar, button, onClickListener);
+        leftBarButton.applyNavigationIcon(getContext());
+    }
 
     private void setRightButtons(ArrayList<Button> rightButtons) {
         if (rightButtons == null || rightButtons.size() == 0) {
@@ -134,11 +135,11 @@ public class TopBar extends AppBarLayout {
         Menu menu = getTitleBar().getMenu();
         menu.clear();
 
-		for (int i = 0; i < rightButtons.size(); i++){
-	   		Button button = rightButtons.get(i);
-			TitleBarButton titleBarButton = new TitleBarButton(component, this.titleBar, button);
-			titleBarButton.addToMenu(getContext(), menu);
-       }
+        for (int i = 0; i < rightButtons.size(); i++) {
+            Button button = rightButtons.get(i);
+            TitleBarButton titleBarButton = new TitleBarButton(this.titleBar, button, onClickListener);
+            titleBarButton.addToMenu(getContext(), menu);
+        }
     }
 
     public Toolbar getTitleBar() {
@@ -163,22 +164,22 @@ public class TopBar extends AppBarLayout {
         collapsingBehavior.disableCollapse();
     }
 
-    public void show(NavigationOptions.BooleanOptions animated) {
+    public void show(Options.BooleanOptions animated) {
         if (getVisibility() == View.VISIBLE) {
             return;
         }
-        if (animated == NavigationOptions.BooleanOptions.True) {
+        if (animated == Options.BooleanOptions.True) {
             animator.show();
         } else {
             setVisibility(View.VISIBLE);
         }
     }
 
-    public void hide(NavigationOptions.BooleanOptions animated) {
+    public void hide(Options.BooleanOptions animated) {
         if (getVisibility() == View.GONE) {
             return;
         }
-        if (animated == NavigationOptions.BooleanOptions.True) {
+        if (animated == Options.BooleanOptions.True) {
             animator.hide();
         } else {
             setVisibility(View.GONE);

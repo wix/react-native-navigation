@@ -1,9 +1,9 @@
 package com.reactnativenavigation.mocks;
 
-import android.content.Context;
-import android.view.View;
+import android.content.*;
+import android.view.*;
 
-import com.reactnativenavigation.viewcontrollers.ComponentViewController;
+import com.reactnativenavigation.viewcontrollers.*;
 
 public class TopTabLayoutMock extends View implements ComponentViewController.IReactView {
 

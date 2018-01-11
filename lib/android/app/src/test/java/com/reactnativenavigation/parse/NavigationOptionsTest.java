@@ -1,19 +1,18 @@
 package com.reactnativenavigation.parse;
 
-import android.graphics.Typeface;
-import android.support.annotation.NonNull;
+import android.graphics.*;
+import android.support.annotation.*;
 
-import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.TypefaceLoaderMock;
-import com.reactnativenavigation.utils.TypefaceLoader;
+import com.reactnativenavigation.*;
+import com.reactnativenavigation.mocks.*;
+import com.reactnativenavigation.utils.*;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.junit.Test;
-import org.mockito.Mockito;
+import org.json.*;
+import org.junit.*;
+import org.mockito.*;
 
-import static com.reactnativenavigation.parse.NavigationOptions.BooleanOptions.True;
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static com.reactnativenavigation.parse.Options.BooleanOptions.*;
+import static org.assertj.core.api.Java6Assertions.*;
 
 public class NavigationOptionsTest extends BaseTest {
 
@@ -23,11 +22,11 @@ public class NavigationOptionsTest extends BaseTest {
     private static final int TOP_BAR_FONT_SIZE = 18;
     private static final String TOP_BAR_FONT_FAMILY = "HelveticaNeue-CondensedBold";
     private static final Typeface TOP_BAR_TYPEFACE = Typeface.create("HelveticaNeue-CondensedBold", Typeface.BOLD);
-    private static final NavigationOptions.BooleanOptions TOP_BAR_HIDDEN = True;
-    private static final NavigationOptions.BooleanOptions TOP_BAR_DRAW_BEHIND = True;
-    private static final NavigationOptions.BooleanOptions TOP_BAR_HIDE_ON_SCROLL = True;
-    private static final NavigationOptions.BooleanOptions BOTTOM_TABS_ANIMATE_HIDE = True;
-    private static final NavigationOptions.BooleanOptions BOTTOM_TABS_HIDDEN = True;
+    private static final Options.BooleanOptions TOP_BAR_HIDDEN = True;
+    private static final Options.BooleanOptions TOP_BAR_DRAW_BEHIND = True;
+    private static final Options.BooleanOptions TOP_BAR_HIDE_ON_SCROLL = True;
+    private static final Options.BooleanOptions BOTTOM_TABS_ANIMATE_HIDE = True;
+    private static final Options.BooleanOptions BOTTOM_TABS_HIDDEN = True;
     private static final int BOTTOM_TABS_BADGE = 3;
     private static final String BOTTOM_TABS_CURRENT_TAB_ID = "ComponentId";
     private static final int BOTTOM_TABS_CURRENT_TAB_INDEX = 1;
@@ -41,7 +40,7 @@ public class NavigationOptionsTest extends BaseTest {
 
     @Test
     public void parsesNullAsDefaultEmptyOptions() throws Exception {
-        assertThat(NavigationOptions.parse(mockLoader, null)).isNotNull();
+        assertThat(Options.parse(mockLoader, null)).isNotNull();
     }
 
     @Test
@@ -49,11 +48,11 @@ public class NavigationOptionsTest extends BaseTest {
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar())
                 .put("bottomTabs", createTabBar());
-        NavigationOptions result = NavigationOptions.parse(mockLoader, json);
+        Options result = Options.parse(mockLoader, json);
         assertResult(result);
     }
 
-    private void assertResult(NavigationOptions result) {
+    private void assertResult(Options result) {
         assertThat(result.topBarOptions.title).isEqualTo(TITLE);
         assertThat(result.topBarOptions.backgroundColor).isEqualTo(TOP_BAR_BACKGROUND_COLOR);
         assertThat(result.topBarOptions.textColor).isEqualTo(TOP_BAR_TEXT_COLOR);
@@ -118,8 +117,8 @@ public class NavigationOptionsTest extends BaseTest {
         JSONObject json = new JSONObject();
         json.put("topBar", createTopBar());
         json.put("bottomTabs", createTabBar());
-        NavigationOptions defaultOptions = NavigationOptions.parse(mockLoader, json);
-        NavigationOptions options = new NavigationOptions();
+        Options defaultOptions = Options.parse(mockLoader, json);
+        Options options = new Options();
 
         options.mergeWith(defaultOptions);
         assertResult(options);
@@ -130,19 +129,19 @@ public class NavigationOptionsTest extends BaseTest {
         JSONObject defaultJson = new JSONObject()
                 .put("topBar", createOtherTopBar())
                 .put("bottomTabs", createOtherTabBar());
-        NavigationOptions defaultOptions = NavigationOptions.parse(mockLoader, defaultJson);
+        Options defaultOptions = Options.parse(mockLoader, defaultJson);
 
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar())
                 .put("bottomTabs", createTabBar());
-        NavigationOptions options = NavigationOptions.parse(mockLoader, json);
+        Options options = Options.parse(mockLoader, json);
         options.withDefaultOptions(defaultOptions);
         assertResult(options);
     }
 
     @Test
     public void defaultEmptyOptions() throws Exception {
-        NavigationOptions uut = new NavigationOptions();
+        Options uut = new Options();
         assertThat(uut.topBarOptions.title).isEmpty();
     }
 }

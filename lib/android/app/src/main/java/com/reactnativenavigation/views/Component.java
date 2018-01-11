@@ -1,19 +1,11 @@
 package com.reactnativenavigation.views;
 
-import android.support.annotation.RestrictTo;
-import android.view.View;
-
-import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.viewcontrollers.ComponentViewController;
+import com.reactnativenavigation.parse.Options;
 
 public interface Component {
-    void applyOptions(NavigationOptions options);
-
-    void sendOnNavigationButtonPressed(String id);
+    void applyOptions(Options options);
 
     TopBar getTopBar();
-
-    View getContentView();
 
     void drawBehindTopBar();
 

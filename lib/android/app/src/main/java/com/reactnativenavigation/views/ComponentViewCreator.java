@@ -1,10 +1,11 @@
 package com.reactnativenavigation.views;
 
-import android.app.Activity;
+import android.app.*;
 
-import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.react.ReactComponentViewCreator;
-import com.reactnativenavigation.viewcontrollers.ComponentViewController;
+import com.facebook.react.*;
+import com.facebook.react.uimanager.*;
+import com.reactnativenavigation.react.*;
+import com.reactnativenavigation.viewcontrollers.*;
 
 public class ComponentViewCreator implements ComponentViewController.ReactViewCreator {
 
@@ -17,6 +18,6 @@ public class ComponentViewCreator implements ComponentViewController.ReactViewCr
 	@Override
 	public ComponentViewController.IReactView create(Activity activity, String componentId, String componentName) {
         ComponentViewController.IReactView reactView = new ReactComponentViewCreator(instanceManager).create(activity, componentId, componentName);
-        return new ComponentLayout(activity, reactView);
+        return new ComponentLayout(activity, reactView, instanceManager.getCurrentReactContext().getNativeModule(UIManagerModule.class).getEventDispatcher());
 	}
 }

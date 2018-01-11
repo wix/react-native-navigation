@@ -15,20 +15,24 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Button;
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.ImageUtils;
 import com.reactnativenavigation.utils.UiUtils;
 
 import java.util.ArrayList;
 
 public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
+    public interface OnClickListener {
+        void onPress(String buttonId);
+    }
+
 	private Toolbar toolbar;
 	private final Button button;
-	private Component component;
 	private Drawable icon;
+    private OnClickListener onPressListener;
 
-	TitleBarButton(Component component, Toolbar toolbar, Button button) {
-		this.component = component;
+    TitleBarButton(Toolbar toolbar, Button button, OnClickListener onPressListener) {
+        this.onPressListener = onPressListener;
 		this.toolbar = toolbar;
 		this.button = button;
 	}
@@ -36,7 +40,7 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 	void addToMenu(Context context, final Menu menu) {
 		MenuItem menuItem = menu.add(button.title);
 		menuItem.setShowAsAction(button.showAsAction);
-		menuItem.setEnabled(button.disabled != NavigationOptions.BooleanOptions.True);
+		menuItem.setEnabled(button.disabled != Options.BooleanOptions.True);
 		menuItem.setOnMenuItemClickListener(this);
 
 		if (hasIcon()) {
@@ -92,12 +96,12 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 	}
 
 	private void setIconColor() {
-		if (button.disabled == NavigationOptions.BooleanOptions.False || button.disabled == NavigationOptions.BooleanOptions.NoValue) {
+		if (button.disabled == Options.BooleanOptions.False || button.disabled == Options.BooleanOptions.NoValue) {
 			UiUtils.tintDrawable(icon, button.buttonColor);
 			return;
 		}
 
-		if (button.disableIconTint == NavigationOptions.BooleanOptions.True) {
+		if (button.disableIconTint == Options.BooleanOptions.True) {
 			UiUtils.tintDrawable(icon, button.buttonColor);
 		} else {
 			UiUtils.tintDrawable(icon, Color.LTGRAY);
@@ -118,12 +122,12 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 	}
 
 	private void setNavigationClickListener() {
-		toolbar.setNavigationOnClickListener(view -> component.sendOnNavigationButtonPressed(button.id));
+		toolbar.setNavigationOnClickListener(view -> onPressListener.onPress(button.id));
 	}
 
 	@Override
 	public boolean onMenuItemClick(MenuItem menuItem) {
-		this.component.sendOnNavigationButtonPressed(button.id);
+		onPressListener.onPress(button.id);
 		return true;
 	}
 

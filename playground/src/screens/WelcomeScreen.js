@@ -183,8 +183,14 @@ class WelcomeScreen extends Component {
 
   async onClickShowModal() {
     await Navigation.showModal({
-      component: {
-        name: 'navigation.playground.ModalScreen'
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'navigation.playground.ModalScreen'
+            }
+          }
+        ]
       }
     });
   }

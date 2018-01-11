@@ -1,25 +1,23 @@
 package com.reactnativenavigation.mocks;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.content.*;
+import android.view.*;
+import android.widget.*;
 
-import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.views.ReactComponent;
-import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.parse.*;
+import com.reactnativenavigation.presentation.*;
+import com.reactnativenavigation.views.*;
 
-public class TestComponentLayout extends RelativeLayout implements ReactComponent {
+public class TestComponentLayout extends RelativeLayout implements ReactComponent, TitleBarButton.OnClickListener {
 
     private final TopBar topBar;
     private final View contentView;
     private final OptionsPresenter optionsPresenter;
 
     public TestComponentLayout(final Context context) {
-		super(context);
-        topBar = new TopBar(context, this);
+        super(context);
         contentView = new View(context);
+        topBar = new TopBar(context, contentView, this, null);
         addView(topBar);
         addView(contentView);
         optionsPresenter = new OptionsPresenter(this);
@@ -27,11 +25,6 @@ public class TestComponentLayout extends RelativeLayout implements ReactComponen
 
     public TopBar getTopBar() {
         return topBar;
-    }
-
-    @Override
-    public View getContentView() {
-        return contentView;
     }
 
     @Override
@@ -71,12 +64,17 @@ public class TestComponentLayout extends RelativeLayout implements ReactComponen
     }
 
     @Override
-    public void applyOptions(NavigationOptions options) {
+    public void applyOptions(Options options) {
         optionsPresenter.applyOptions(options);
     }
 
     @Override
     public void sendOnNavigationButtonPressed(String id) {
+
+    }
+
+    @Override
+    public void onPress(String buttonId) {
 
     }
 }
