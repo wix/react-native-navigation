@@ -13,8 +13,8 @@ import static com.facebook.react.modules.core.DeviceEventManagerModule.RCTDevice
 
 public class NavigationEvent {
 	private static final String onAppLaunched = "RNN.appLaunched";
-	private static final String containerDidAppear = "RNN.containerDidAppear";
-	private static final String containerDidDisappear = "RNN.containerDidDisappear";
+	private static final String componentDidAppear = "RNN.componentDidAppear";
+	private static final String componentDidDisappear = "RNN.componentDidDisappear";
 	private static final String onNavigationButtonPressed = "RNN.navigationButtonPressed";
 
 	private final RCTDeviceEventEmitter emitter;
@@ -27,17 +27,17 @@ public class NavigationEvent {
 		emit(onAppLaunched);
 	}
 
-	public void containerDidDisappear(String id) {
-		emit(containerDidDisappear, id);
+	public void componentDidDisappear(String id) {
+		emit(componentDidDisappear, id);
 	}
 
-	public void containerDidAppear(String id) {
-		emit(containerDidAppear, id);
+	public void componentDidAppear(String id) {
+		emit(componentDidAppear, id);
 	}
 
 	public void sendOnNavigationButtonPressed(String id, String buttonId) {
 		WritableMap map = Arguments.createMap();
-		map.putString("containerId", id);
+		map.putString("componentId", id);
 		map.putString("buttonId", buttonId);
 
 		emit(onNavigationButtonPressed, map);

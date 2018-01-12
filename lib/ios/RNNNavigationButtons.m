@@ -104,7 +104,7 @@
 }
 
 -(void)onButtonPress:(RNNUIBarButtonItem*)barButtonItem {
-	[self.viewController.eventEmitter sendOnNavigationButtonPressed:self.viewController.containerId buttonId:barButtonItem.buttonId];
+	[self.viewController.eventEmitter sendOnNavigationButtonPressed:self.viewController.componentId buttonId:barButtonItem.buttonId];
 }
 
 @end

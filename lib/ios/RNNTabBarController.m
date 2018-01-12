@@ -21,13 +21,13 @@
 	}];
 }
 
-- (void)setSelectedIndexByContainerID:(NSString *)containerID {
+- (void)setSelectedIndexByComponentID:(NSString *)componentID {
 	for (id child in self.childViewControllers) {
 		RNNRootViewController* vc = child;
 		if ([child isKindOfClass:[UINavigationController class]]) {
 			vc = ((UINavigationController *)child).childViewControllers.firstObject;
 		}
-		if ([vc.containerId isEqualToString:containerID]) {
+		if ([vc.componentId isEqualToString:componentID]) {
 			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
 		}
 	}

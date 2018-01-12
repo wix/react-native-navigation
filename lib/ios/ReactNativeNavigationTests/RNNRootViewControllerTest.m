@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) id<RNNRootViewCreator> creator;
 @property (nonatomic, strong) NSString* pageName;
-@property (nonatomic, strong) NSString* containerId;
+@property (nonatomic, strong) NSString* componentId;
 @property (nonatomic, strong) id emitter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNRootViewController* uut;
@@ -24,10 +24,10 @@
 	[super setUp];
 	self.creator = [[RNNTestRootViewCreator alloc] init];
 	self.pageName = @"somename";
-	self.containerId = @"cntId";
+	self.componentId = @"cntId";
 	self.emitter = nil;
 	self.options = [RNNNavigationOptions new];
-	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withContainerId:self.containerId rootViewCreator:self.creator eventEmitter:self.emitter animator:nil];
+	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withComponentId:self.componentId rootViewCreator:self.creator eventEmitter:self.emitter animator:nil];
 }
 
 -(void)testTopBarBackgroundColor_validColor{

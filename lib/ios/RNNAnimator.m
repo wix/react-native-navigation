@@ -59,7 +59,7 @@
 
 -(NSArray*)prepareSharedElementTransition:(NSArray*)RNNSharedElementsToVC
 						andfromVCElements:(NSArray*)RNNSharedElementsFromVC
-						withContainerView:(UIView*)containerView
+						withComponentView:(UIView*)componentView
 {
 	NSMutableArray* transitions = [NSMutableArray new];
 	for (NSDictionary* transition in self.animations) {
@@ -69,8 +69,8 @@
 		RNNViewLocation* animatedViewLocations = [[RNNViewLocation alloc] initWithTransition:transitionStateHolder andVC:self.fromVC];
 		RNNAnimatedView* animatedView = [[RNNAnimatedView alloc] initWithTransition:transitionStateHolder andLocation:animatedViewLocations andIsBackButton:self.backButton];
 		transitionStateHolder.locations = animatedViewLocations;
-		[containerView addSubview:animatedView];
-		[containerView bringSubviewToFront:animatedView];
+		[componentView addSubview:animatedView];
+		[componentView bringSubviewToFront:animatedView];
 		transitionStateHolder.animatedView = animatedView;
 		[transitions addObject:transitionStateHolder];
 		if (transitionStateHolder.isSharedElementTransition){
@@ -147,18 +147,18 @@
 {
 	UIViewController* toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 	UIViewController* fromVC  = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-	UIView* containerView = [transitionContext containerView];
+	UIView* componentView = [transitionContext containerView];
 	self.fromVC = fromVC;
 	self.toVC = toVC;
 	toVC.view.frame = fromVC.view.frame;
 	UIView* fromSnapshot = [fromVC.view snapshotViewAfterScreenUpdates:true];
 	fromSnapshot.frame = fromVC.view.frame;
-	[containerView addSubview:fromSnapshot];
-	[containerView addSubview:toVC.view];
+	[componentView addSubview:fromSnapshot];
+	[componentView addSubview:toVC.view];
 	toVC.view.alpha = 0;
 	NSArray* onlyForTesting = @[];
 	NSArray* onlyForTesting2 = @[];
-	NSArray* transitions = [self prepareSharedElementTransition:onlyForTesting andfromVCElements:onlyForTesting2 withContainerView:containerView];
+	NSArray* transitions = [self prepareSharedElementTransition:onlyForTesting andfromVCElements:onlyForTesting2 withComponentView:componentView];
 	[self animateComplition:transitions fromVCSnapshot:fromSnapshot andTransitioningContext:transitionContext];
 	[self animateTransitions:transitions];
 }

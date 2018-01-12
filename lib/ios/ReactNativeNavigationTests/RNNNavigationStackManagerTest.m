@@ -44,9 +44,9 @@
 	NSArray *vcArray = @[self.vc1, self.vc2, self.vc3];
 	[self.nvc setViewControllers:vcArray];
 	
-	[self.store setContainer:self.vc1 containerId:@"vc1"];
-	[self.store setContainer:self.vc2 containerId:@"vc2"];
-	[self.store setContainer:self.vc3 containerId:@"vc3"];
+	[self.store setComponent:self.vc1 componentId:@"vc1"];
+	[self.store setComponent:self.vc2 componentId:@"vc2"];
+	[self.store setComponent:self.vc3 componentId:@"vc3"];
 	
 	
 }
@@ -54,18 +54,18 @@
 
 - (void)testPop_removeTopVCFromStore {
 	[self.uut pop:@"vc3" withAnimationData:(NSDictionary*)nil];
-	XCTAssertNil([self.store findContainerForId:@"vc3"]);
-	XCTAssertNotNil([self.store findContainerForId:@"vc2"]);
-	XCTAssertNotNil([self.store findContainerForId:@"vc1"]);
+	XCTAssertNil([self.store findComponentForId:@"vc3"]);
+	XCTAssertNotNil([self.store findComponentForId:@"vc2"]);
+	XCTAssertNotNil([self.store findComponentForId:@"vc1"]);
 }
 
 - (void)testPopToSpecificVC_removeAllPopedVCFromStore {
 	self.nvc.willReturnVCs = @[self.vc2, self.vc3];
 	[self.uut popTo:@"vc1"];
 	
-	XCTAssertNil([self.store findContainerForId:@"vc2"]);
-	XCTAssertNil([self.store findContainerForId:@"vc3"]);
-	XCTAssertNotNil([self.store findContainerForId:@"vc1"]);
+	XCTAssertNil([self.store findComponentForId:@"vc2"]);
+	XCTAssertNil([self.store findComponentForId:@"vc3"]);
+	XCTAssertNotNil([self.store findComponentForId:@"vc1"]);
 	
 }
 
@@ -73,9 +73,9 @@
 	self.nvc.willReturnVCs = @[self.vc2, self.vc3];
 	[self.uut popToRoot:@"vc3"];
 	
-	XCTAssertNil([self.store findContainerForId:@"vc2"]);
-	XCTAssertNil([self.store findContainerForId:@"vc3"]);
-	XCTAssertNotNil([self.store findContainerForId:@"vc1"]);
+	XCTAssertNil([self.store findComponentForId:@"vc2"]);
+	XCTAssertNil([self.store findComponentForId:@"vc3"]);
+	XCTAssertNotNil([self.store findComponentForId:@"vc1"]);
 
 }
 

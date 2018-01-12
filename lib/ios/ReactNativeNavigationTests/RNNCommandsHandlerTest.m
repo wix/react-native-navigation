@@ -66,7 +66,7 @@
 	[initialOptions.topBar setTitle:@"the title"];
 	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithName:@"name"
 																withOptions:initialOptions
-															withContainerId:@"containerId"
+															withComponentId:@"componentId"
 															rootViewCreator:[[RNNTestRootViewCreator alloc] init]
 															   eventEmitter:nil
 																   animator:nil];
@@ -75,12 +75,12 @@
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
 
 	[self.store setReadyToReceiveCommands:true];
-	[self.store setContainer:vc containerId:@"containerId"];
+	[self.store setComponent:vc componentId:@"componentId"];
 	
 	NSDictionary* dictFromJs = @{@"topBar": @{@"backgroundColor" :@(0xFFFF0000)}};
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 
-	[self.uut setOptions:@"containerId" options:dictFromJs completion:^{
+	[self.uut setOptions:@"componentId" options:dictFromJs completion:^{
 		XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
 		XCTAssertTrue([nav.navigationBar.barTintColor isEqual:expectedColor]);
 	}];

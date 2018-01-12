@@ -6,7 +6,7 @@
 @end
 
 @implementation RNNStore {
-	NSMapTable* _containerStore;
+	NSMapTable* _componentStore;
 	NSMutableArray* _pendingModalIdsToDismiss;
 	BOOL _isReadyToReceiveCommands;
 }
@@ -14,32 +14,32 @@
 -(instancetype)init {
 	self = [super init];
 	_isReadyToReceiveCommands = false;
-	_containerStore = [NSMapTable strongToWeakObjectsMapTable];
+	_componentStore = [NSMapTable strongToWeakObjectsMapTable];
 	_pendingModalIdsToDismiss = [NSMutableArray new];
 	return self;
 }
 
--(UIViewController *)findContainerForId:(NSString *)containerId {
-	return [_containerStore objectForKey:containerId];
+-(UIViewController *)findComponentForId:(NSString *)componentId {
+	return [_componentStore objectForKey:componentId];
 }
 
-- (void)setContainer:(UIViewController*)viewController containerId:(NSString*)containerId {
-	UIViewController *existingVewController = [self findContainerForId:containerId];
+- (void)setComponent:(UIViewController*)viewController componentId:(NSString*)componentId {
+	UIViewController *existingVewController = [self findComponentForId:componentId];
 	if (existingVewController) {
-		@throw [NSException exceptionWithName:@"MultipleContainerId" reason:[@"Container id already exists " stringByAppendingString:containerId] userInfo:nil];
+		@throw [NSException exceptionWithName:@"MultipleComponentId" reason:[@"Component id already exists " stringByAppendingString:componentId] userInfo:nil];
 	}
 	
-	[_containerStore setObject:viewController forKey:containerId];
+	[_componentStore setObject:viewController forKey:componentId];
 }
 
-- (void)removeContainer:(NSString*)containerId {
-	[_containerStore removeObjectForKey:containerId];
+- (void)removeComponent:(NSString*)componentId {
+	[_componentStore removeObjectForKey:componentId];
 }
 
-- (void)removeContainerByViewControllerInstance:(UIViewController*)containerInstance {
-	NSString *foundKey = [self containerKeyForInstance:containerInstance];
+- (void)removeComponentByViewControllerInstance:(UIViewController*)componentInstance {
+	NSString *foundKey = [self componentKeyForInstance:componentInstance];
 	if (foundKey) {
-		[self removeContainer:foundKey];
+		[self removeComponent:foundKey];
 	}
 }
 
@@ -58,12 +58,12 @@
 -(void)clean {
 	_isReadyToReceiveCommands = false;
 	[_pendingModalIdsToDismiss removeAllObjects];
-	[_containerStore removeAllObjects];
+	[_componentStore removeAllObjects];
 }
 
--(NSString*)containerKeyForInstance:(UIViewController*)instance {
-	for (NSString *key in _containerStore) {
-		UIViewController *value = [_containerStore objectForKey:key];
+-(NSString*)componentKeyForInstance:(UIViewController*)instance {
+	for (NSString *key in _componentStore) {
+		UIViewController *value = [_componentStore objectForKey:key];
 		if (value == instance) {
 			return key;
 		}

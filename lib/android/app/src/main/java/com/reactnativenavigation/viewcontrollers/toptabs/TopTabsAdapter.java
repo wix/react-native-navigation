@@ -31,7 +31,7 @@ public class TopTabsAdapter extends PagerAdapter implements ViewPager.OnPageChan
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup component, int position) {
         return tabs.get(position).getView();
     }
 

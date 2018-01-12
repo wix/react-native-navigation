@@ -7,12 +7,12 @@ typedef void (^RNNTransitionCompletionBlock)(void);
 
 @interface RNNStore : NSObject
 
--(UIViewController*) findContainerForId:(NSString*)containerId;
--(void) setContainer:(UIViewController*)viewController containerId:(NSString*)containerId;
--(void) removeContainer:(NSString*)containerId;
--(void) removeContainerByViewControllerInstance:(UIViewController*)containerInstance;
+-(UIViewController*) findComponentForId:(NSString*)componentId;
+-(void) setComponent:(UIViewController*)viewController componentId:(NSString*)componentId;
+-(void) removeComponent:(NSString*)componentId;
+-(void) removeComponentByViewControllerInstance:(UIViewController*)componentInstance;
 
--(NSString*)containerKeyForInstance:(UIViewController*)instance;
+-(NSString*)componentKeyForInstance:(UIViewController*)instance;
 
 -(void) setReadyToReceiveCommands:(BOOL)isReady;
 -(BOOL) isReadyToReceiveCommands;

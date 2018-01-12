@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.utils.CompatUtils;
 
@@ -98,7 +98,7 @@ public class BottomTabsController extends ParentController
 	}
 
 	@Override
-	public void mergeNavigationOptions(NavigationOptions options) {
+	public void mergeOptions(Options options) {
 		if (options.bottomTabsOptions != null) {
 			if (options.bottomTabsOptions.currentTabIndex != NO_INT_VALUE) {
 				selectTabAtIndex(options.bottomTabsOptions.currentTabIndex);

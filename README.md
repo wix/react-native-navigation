@@ -36,14 +36,14 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 
 ## v2 Roadmap
 
-### Current Priorities 
+### Current Priorities
 
 1) buttons in Android
 2) showOverlay in iOS
 3) showOverlay in Android
 4) async commands
-5) currentTab 
-6) change navigationOptions to be nested
+5) currentTab
+6) change Options to be nested
 7) topTabs in both platforms, with API implications
 
 ### Top API
@@ -132,7 +132,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | sideMenuVisible          |        [Contribute](/docs/docs/CONTRIBUTING.md)   | [Contribute](/docs/docs/CONTRIBUTING.md) |
 
 
-## v1 vs v2 Feature Comparison  
+## v1 vs v2 Feature Comparison
 v2 currently supports most of react-native-navigation’s basic functionality but it is still behind v1.
 Here is the full comparison of features between v1 and v2 (will be updated regularly):
 ### Top Level API
@@ -206,5 +206,5 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | customTransition(shared element)       |     :x:  |     WIP @bogobogo     | [Contribute](/docs/docs/CONTRIBUTING.md)|
 | splitViewScreen       |     :x:  |    [Contribute](/docs/docs/CONTRIBUTING.md)      | [Contribute](/docs/docs/CONTRIBUTING.md)|
 
-Element transitions, adding buttons and styles are not yet implemented. [Contribute](/docs/docs/CONTRIBUTING.md)  
+Element transitions, adding buttons and styles are not yet implemented. [Contribute](/docs/docs/CONTRIBUTING.md)
 

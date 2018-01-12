@@ -5,7 +5,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.reactnativenavigation.viewcontrollers.ContainerViewController.IReactView;
+import com.reactnativenavigation.interfaces.ScrollEventListener;
+import com.reactnativenavigation.viewcontrollers.ComponentViewController.IReactView;
 
 @SuppressLint("ViewConstructor")
 public class TopTab extends FrameLayout implements IReactView {
@@ -34,17 +35,22 @@ public class TopTab extends FrameLayout implements IReactView {
 	}
 
 	@Override
-	public void sendContainerStart() {
-		reactView.sendContainerStart();
+	public void sendComponentStart() {
+		reactView.sendComponentStart();
 	}
 
 	@Override
-	public void sendContainerStop() {
-		reactView.sendContainerStop();
+	public void sendComponentStop() {
+		reactView.sendComponentStop();
 	}
 
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
         reactView.sendOnNavigationButtonPressed(buttonId);
+    }
+
+    @Override
+    public ScrollEventListener getScrollEventListener() {
+        return reactView.getScrollEventListener();
     }
 }

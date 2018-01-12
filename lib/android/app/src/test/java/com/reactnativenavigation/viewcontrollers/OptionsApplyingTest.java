@@ -1,38 +1,37 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.Activity;
+import android.app.*;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.graphics.drawable.*;
+import android.view.*;
+import android.widget.*;
 
-import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.TestContainerLayout;
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.*;
+import com.reactnativenavigation.mocks.*;
+import com.reactnativenavigation.parse.*;
 
-import org.junit.Test;
+import org.junit.*;
 
-import static android.widget.RelativeLayout.BELOW;
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.spy;
+import static android.widget.RelativeLayout.*;
+import static org.assertj.core.api.Java6Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class OptionsApplyingTest extends BaseTest {
     private Activity activity;
-    private ContainerViewController uut;
-    private ContainerViewController.IReactView view;
-    private NavigationOptions initialNavigationOptions;
+    private ComponentViewController uut;
+    private ComponentViewController.IReactView view;
+    private Options initialNavigationOptions;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
-        initialNavigationOptions = new NavigationOptions();
-        view = spy(new TestContainerLayout(activity));
-        uut = new ContainerViewController(activity,
-                "containerId1",
-                "containerName",
-                (activity1, containerId, containerName) -> view,
+        initialNavigationOptions = new Options();
+        view = spy(new TestComponentLayout(activity));
+        uut = new ComponentViewController(activity,
+                "componentId1",
+                "componentName",
+                (activity1, componentId, componentName) -> view,
                 initialNavigationOptions
         );
         uut.ensureViewIsCreated();
@@ -47,10 +46,10 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void initialOptionsAppliedOnAppear() throws Exception {
-        assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
+        assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = "the title";
         StackController stackController = new StackController(activity, "stackId");
-        stackController.push(uut);
+        stackController.push(uut, new MockPromise());
         assertThat(uut.getTopBar().getTitle()).isEmpty();
 
         uut.onViewAppeared();
@@ -59,12 +58,12 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void mergeNavigationOptionsUpdatesCurrentOptions() throws Exception {
-        assertThat(uut.getNavigationOptions().topBarOptions.title).isEmpty();
-        NavigationOptions options = new NavigationOptions();
+        assertThat(uut.getOptions().topBarOptions.title).isEmpty();
+        Options options = new Options();
         options.topBarOptions.title = "new title";
-        uut.mergeNavigationOptions(options);
-        assertThat(uut.getNavigationOptions().topBarOptions.title).isEqualTo("new title");
-        assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
+        uut.mergeOptions(options);
+        assertThat(uut.getOptions().topBarOptions.title).isEqualTo("new title");
+        assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
     }
 
     @Test
@@ -72,9 +71,9 @@ public class OptionsApplyingTest extends BaseTest {
         uut.onViewAppeared();
         assertThat(uut.getTopBar().getTitle()).isEmpty();
 
-        NavigationOptions opts = new NavigationOptions();
+        Options opts = new Options();
         opts.topBarOptions.title = "the new title";
-        uut.mergeNavigationOptions(opts);
+        uut.mergeOptions(opts);
 
         assertThat(uut.getTopBar().getTitle()).isEqualTo("the new title");
     }
@@ -85,24 +84,24 @@ public class OptionsApplyingTest extends BaseTest {
         //TODO: FIX TEST
         assertThat(((ColorDrawable) uut.getTopBar().getTitleBar().getBackground()).getColor()).isNotEqualTo(Color.RED);
 
-        NavigationOptions opts = new NavigationOptions();
+        Options opts = new Options();
         opts.topBarOptions.backgroundColor = Color.RED;
-        uut.mergeNavigationOptions(opts);
+        uut.mergeOptions(opts);
 
         assertThat(((ColorDrawable) uut.getTopBar().getTitleBar().getBackground()).getColor()).isEqualTo(Color.RED);
     }
 
     @Test
     public void appliesTopBarTextColor() throws Exception {
-        assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
+        assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = "the title";
         uut.onViewAppeared();
         assertThat(uut.getTopBar().getTitleTextView().getCurrentTextColor()).isNotEqualTo(Color.RED);
 
-        NavigationOptions opts = new NavigationOptions();
+        Options opts = new Options();
         opts.topBarOptions.title = "the title";
         opts.topBarOptions.textColor = Color.RED;
-        uut.mergeNavigationOptions(opts);
+        uut.mergeOptions(opts);
 
         assertThat(uut.getTopBar().getTitleTextView()).isNotEqualTo(null);
         assertThat(uut.getTopBar().getTitleTextView().getCurrentTextColor()).isEqualTo(Color.RED);
@@ -110,15 +109,15 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBarTextSize() throws Exception {
-        assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
+        assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = "the title";
         uut.onViewAppeared();
         assertThat(uut.getTopBar().getTitleTextView().getTextSize()).isNotEqualTo(18);
 
-        NavigationOptions opts = new NavigationOptions();
+        Options opts = new Options();
         opts.topBarOptions.title = "the title";
         opts.topBarOptions.textFontSize = 18;
-        uut.mergeNavigationOptions(opts);
+        uut.mergeOptions(opts);
 
         assertThat(uut.getTopBar().getTitleTextView()).isNotEqualTo(null);
         assertThat(uut.getTopBar().getTitleTextView().getTextSize()).isEqualTo(18);
@@ -126,32 +125,32 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBarHidden() throws Exception {
-        assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
+        assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = "the title";
         uut.onViewAppeared();
         assertThat(uut.getTopBar().getVisibility()).isNotEqualTo(View.GONE);
 
-        NavigationOptions opts = new NavigationOptions();
-        opts.topBarOptions.hidden = NavigationOptions.BooleanOptions.True;
-        uut.mergeNavigationOptions(opts);
+        Options opts = new Options();
+        opts.topBarOptions.hidden = Options.BooleanOptions.True;
+        uut.mergeOptions(opts);
 
         assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
     }
 
     @Test
     public void appliesDrawUnder() throws Exception {
-        assertThat(uut.getNavigationOptions()).isSameAs(initialNavigationOptions);
+        assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = "the title";
-        initialNavigationOptions.topBarOptions.drawBehind = NavigationOptions.BooleanOptions.False;
+        initialNavigationOptions.topBarOptions.drawBehind = Options.BooleanOptions.False;
         uut.onViewAppeared();
-        RelativeLayout.LayoutParams uutLayoutParams = (RelativeLayout.LayoutParams) ((ViewGroup) uut.getContainer().asView()).getChildAt(1).getLayoutParams();
+        RelativeLayout.LayoutParams uutLayoutParams = (RelativeLayout.LayoutParams) ((ViewGroup) uut.getComponent().asView()).getChildAt(1).getLayoutParams();
         assertThat(uutLayoutParams.getRule(BELOW)).isNotEqualTo(0);
 
-        NavigationOptions opts = new NavigationOptions();
-        opts.topBarOptions.drawBehind = NavigationOptions.BooleanOptions.True;
-        uut.mergeNavigationOptions(opts);
+        Options opts = new Options();
+        opts.topBarOptions.drawBehind = Options.BooleanOptions.True;
+        uut.mergeOptions(opts);
 
-        uutLayoutParams = (RelativeLayout.LayoutParams) ((ViewGroup) uut.getContainer().asView()).getChildAt(1).getLayoutParams();
+        uutLayoutParams = (RelativeLayout.LayoutParams) ((ViewGroup) uut.getComponent().asView()).getChildAt(1).getLayoutParams();
         assertThat(uutLayoutParams.getRule(BELOW)).isEqualTo(0);
     }
 }

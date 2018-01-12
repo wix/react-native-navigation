@@ -15,8 +15,8 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	return self;
 }
 
--(void)push:(UIViewController<RNNRootViewProtocol> *)newTop onTop:(NSString *)containerId completion:(RNNTransitionCompletionBlock)completion {
-	UIViewController *vc = [_store findContainerForId:containerId];
+-(void)push:(UIViewController<RNNRootViewProtocol> *)newTop onTop:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion {
+	UIViewController *vc = [_store findComponentForId:componentId];
 	[self preparePush:newTop onTopVC:vc completion:completion];
 	[self waitForContentToAppearAndThen:@selector(pushAfterLoad:)];
 }
@@ -60,8 +60,8 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	self.fromVC = nil;
 }
 
--(void)pop:(NSString *)containerId withAnimationData:(NSDictionary *)animationData {
-	UIViewController* vc = [_store findContainerForId:containerId];
+-(void)pop:(NSString *)componentId withAnimationData:(NSDictionary *)animationData {
+	UIViewController* vc = [_store findComponentForId:componentId];
 	UINavigationController* nvc = [vc navigationController];
 	if ([nvc topViewController] == vc) {
 		if (animationData) {
@@ -78,11 +78,11 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 		[vcs removeObject:vc];
 		[nvc setViewControllers:vcs animated:YES];
 	}
-	[_store removeContainer:containerId];
+	[_store removeComponent:componentId];
 }
 
--(void)popTo:(NSString*)containerId {
-	UIViewController *vc = [_store findContainerForId:containerId];
+-(void)popTo:(NSString*)componentId {
+	UIViewController *vc = [_store findComponentForId:componentId];
 	
 	if (vc) {
 		UINavigationController *nvc = [vc navigationController];
@@ -93,8 +93,8 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	}
 }
 
--(void) popToRoot:(NSString*)containerId {
-	UIViewController* vc = [_store findContainerForId:containerId];
+-(void) popToRoot:(NSString*)componentId {
+	UIViewController* vc = [_store findComponentForId:componentId];
 	UINavigationController* nvc = [vc navigationController];
 	NSArray* poppedVCs = [nvc popToRootViewControllerAnimated:YES];
 	[self removePopedViewControllers:poppedVCs];
@@ -102,7 +102,7 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 
 -(void)removePopedViewControllers:(NSArray*)viewControllers {
 	for (UIViewController *popedVC in viewControllers) {
-		[_store removeContainerByViewControllerInstance:popedVC];
+		[_store removeComponentByViewControllerInstance:popedVC];
 	}
 }
 

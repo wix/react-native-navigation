@@ -1,10 +1,12 @@
+throw new Error('temporarily disabled, until newAPI is complete');
+/*
 const jsdoc2md = require('jsdoc-to-markdown');
 const fs = require('fs');
 const path = require('path');
 
 const BASE_DIR = './lib/src/params/';
 const OPTIONS_DIR = BASE_DIR + 'options/';
-const CONTAINERS_DIR = BASE_DIR + 'containers/';
+const CONTAINERS_DIR = BASE_DIR + 'components/';
 const OUTPUT_DIR = './docs/docs/';
 const PARAMS_PARTIALS = ['./docs/templates/header.hbs', './docs/templates/sig-name.hbs'];
 const PARTIALS = [
@@ -59,23 +61,23 @@ function inputFiles() {
       };
     }),
     ...fs.readdirSync(CONTAINERS_DIR)
-        .map((file) => {
-          return {
-            file: CONTAINERS_DIR + file,
-            outputDir: OUTPUT_DIR,
-            partial: PARAMS_PARTIALS,
-            separator: false
-          };
-        }),
+      .map((file) => {
+        return {
+          file: CONTAINERS_DIR + file,
+          outputDir: OUTPUT_DIR,
+          partial: PARAMS_PARTIALS,
+          separator: false
+        };
+      }),
     ...fs.readdirSync(BASE_DIR)
-        .filter((file) => fs.statSync(BASE_DIR + file).isFile())
-        .map((file) => {
-          return {
-            file: BASE_DIR + file,
-            outputDir: OUTPUT_DIR
-          };
-        })
+      .filter((file) => fs.statSync(BASE_DIR + file).isFile())
+      .map((file) => {
+        return {
+          file: BASE_DIR + file,
+          outputDir: OUTPUT_DIR
+        };
+      })
   ];
 }
 
-inputFiles().forEach((inputFile) => generateMarkdownForFile(inputFile));
+inputFiles().forEach((inputFile) => generateMarkdownForFile(inputFile)); */

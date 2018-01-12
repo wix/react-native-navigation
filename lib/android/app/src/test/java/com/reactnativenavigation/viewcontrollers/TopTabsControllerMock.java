@@ -1,10 +1,10 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.view.ViewGroup;
+import android.app.*;
+import android.support.annotation.*;
+import android.view.*;
 
-import java.util.Collection;
+import java.util.*;
 
 public class TopTabsControllerMock extends ParentController {
     TopTabsControllerMock(Activity activity, String id) {

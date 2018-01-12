@@ -1,25 +1,21 @@
 package com.reactnativenavigation.views;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.support.annotation.RestrictTo;
-import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.annotation.*;
+import android.content.*;
+import android.support.annotation.*;
+import android.support.v4.view.*;
+import android.view.*;
+import android.widget.*;
 
-import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.utils.Task;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabController;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
+import com.reactnativenavigation.parse.*;
+import com.reactnativenavigation.presentation.*;
+import com.reactnativenavigation.utils.*;
+import com.reactnativenavigation.viewcontrollers.toptabs.*;
 
-import java.util.List;
+import java.util.*;
 
 @SuppressLint("ViewConstructor")
-public class TopTabsLayout extends RelativeLayout implements Container {
+public class TopTabsLayout extends RelativeLayout implements Component, TitleBarButton.OnClickListener {
 
     private TopBar topBar;
     private List<TopTabController> tabs;
@@ -29,9 +25,9 @@ public class TopTabsLayout extends RelativeLayout implements Container {
     public TopTabsLayout(Context context, List<TopTabController> tabs, TopTabsAdapter adapter) {
         super(context);
         this.tabs = tabs;
-        topBar = new TopBar(context, this);
-        topBar.setId(View.generateViewId());
         viewPager = new TopTabsViewPager(context, tabs, adapter);
+        topBar = new TopBar(context, viewPager, null, this);
+        topBar.setId(View.generateViewId());
         optionsPresenter = new OptionsPresenter(this);
         initViews();
     }
@@ -45,23 +41,13 @@ public class TopTabsLayout extends RelativeLayout implements Container {
     }
 
     @Override
-    public void applyOptions(NavigationOptions options) {
+    public void applyOptions(Options options) {
         optionsPresenter.applyOptions(options);
-    }
-
-    @Override
-    public void sendOnNavigationButtonPressed(String id) {
-        viewPager.sendOnNavigationButtonPressed(id);
     }
 
     @Override
     public TopBar getTopBar() {
         return topBar;
-    }
-
-    @Override
-    public View getContentView() {
-        return viewPager;
     }
 
     @Override
@@ -90,5 +76,10 @@ public class TopTabsLayout extends RelativeLayout implements Container {
 
     public int getCurrentItem() {
         return viewPager.getCurrentItem();
+    }
+
+    @Override
+    public void onPress(String buttonId) {
+        viewPager.sendOnNavigationButtonPressed(buttonId);
     }
 }

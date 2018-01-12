@@ -8,12 +8,12 @@ describe('screen style', () => {
     await device.relaunchApp();
   });
 
-  it('declare a navigationOptions on container component', async () => {
+  it('declare a options on component component', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(element(by.label('Static Title'))).toBeVisible();
   });
 
-  it('change title on container component', async () => {
+  it('change title on component component', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(element(by.label('Static Title'))).toBeVisible();
     await elementById(testIDs.DYNAMIC_OPTIONS_BUTTON).tap();
@@ -109,5 +109,21 @@ describe('screen style', () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementById(testIDs.FIRST_TAB_BAR_BUTTON)).toBeVisible();
     await expect(elementById(testIDs.SECOND_TAB_BAR_BUTTON)).toBeVisible();
+  });
+
+  it('default options should apply to all screens in stack', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.PUSH_DEFAULT_OPTIONS_BUTTON).tap();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
+  });
+
+  it('default options should not override static options', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.PUSH_DEFAULT_OPTIONS_BUTTON).tap();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
+    await elementById(testIDs.POP_BUTTON).tap();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 });

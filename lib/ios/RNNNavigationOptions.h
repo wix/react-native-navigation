@@ -19,6 +19,8 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) RNNTopTabOptions* topTab;
 @property (nonatomic, strong) RNNSideMenuOptions* sideMenu;
 
+@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
+
 @property (nonatomic, strong) NSNumber* statusBarHidden;
 @property (nonatomic, strong) NSNumber* screenBackgroundColor;
 @property (nonatomic, strong) NSMutableDictionary* originalTopBarImages;

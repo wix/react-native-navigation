@@ -3,22 +3,22 @@ require('react-native');
 const renderer = require('react-test-renderer');
 
 describe('remx support', () => {
-  let MyConnectedContainer;
+  let MyConnectedComponent;
   let store;
 
   beforeEach(() => {
-    MyConnectedContainer = require('./MyContainer');
+    MyConnectedComponent = require('./MyComponent');
     store = require('./MyStore');
   });
 
   it('renders normally', () => {
-    const tree = renderer.create(<MyConnectedContainer />);
+    const tree = renderer.create(<MyConnectedComponent />);
     expect(tree.toJSON().children).toEqual(['no name']);
   });
 
   it('rerenders as a result of an underlying state change (by selector)', () => {
     const renderCountIncrement = jest.fn();
-    const tree = renderer.create(<MyConnectedContainer renderCountIncrement={renderCountIncrement} />);
+    const tree = renderer.create(<MyConnectedComponent renderCountIncrement={renderCountIncrement} />);
 
     expect(tree.toJSON().children).toEqual(['no name']);
     expect(renderCountIncrement).toHaveBeenCalledTimes(1);
@@ -32,7 +32,7 @@ describe('remx support', () => {
 
   it('rerenders as a result of an underlying state change with a new key', () => {
     const renderCountIncrement = jest.fn();
-    const tree = renderer.create(<MyConnectedContainer printAge={true} renderCountIncrement={renderCountIncrement} />);
+    const tree = renderer.create(<MyConnectedComponent printAge={true} renderCountIncrement={renderCountIncrement} />);
 
     expect(tree.toJSON().children).toEqual(null);
     expect(renderCountIncrement).toHaveBeenCalledTimes(1);

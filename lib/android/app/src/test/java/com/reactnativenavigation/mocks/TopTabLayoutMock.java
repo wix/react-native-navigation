@@ -1,11 +1,12 @@
 package com.reactnativenavigation.mocks;
 
-import android.content.Context;
-import android.view.View;
+import android.content.*;
+import android.view.*;
 
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.reactnativenavigation.interfaces.ScrollEventListener;
+import com.reactnativenavigation.viewcontrollers.*;
 
-public class TopTabLayoutMock extends View implements ContainerViewController.IReactView {
+public class TopTabLayoutMock extends View implements ComponentViewController.IReactView {
 
     public TopTabLayoutMock(Context context) {
         super(context);
@@ -27,17 +28,22 @@ public class TopTabLayoutMock extends View implements ContainerViewController.IR
     }
 
     @Override
-    public void sendContainerStart() {
+    public void sendComponentStart() {
 
     }
 
     @Override
-    public void sendContainerStop() {
+    public void sendComponentStop() {
 
     }
 
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
 
+    }
+
+    @Override
+    public ScrollEventListener getScrollEventListener() {
+        return null;
     }
 }

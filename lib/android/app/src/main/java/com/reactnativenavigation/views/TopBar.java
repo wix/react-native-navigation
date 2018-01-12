@@ -13,41 +13,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopBarCollapseBehavior;
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.Color;
-import com.reactnativenavigation.parse.NavigationOptions;
 import com.reactnativenavigation.parse.Number;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
 
 import java.util.ArrayList;
 
 @SuppressLint("ViewConstructor")
-public class TopBar extends AppBarLayout {
+public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
     private final Toolbar titleBar;
-    private Container container;
+    private TitleBarButton.OnClickListener onClickListener;
+    private final TopBarCollapseBehavior collapsingBehavior;
+    private final TopBarAnimator animator;
     private TopTabs topTabs;
 
-    private TopBarAnimator animator;
-    private TopBarCollapseBehavior collapsingBehavior;
-
-    public TopBar(Context context) {
-        this(context, null, null);
-    }
-
-    public TopBar(Context context, Container container) {
-        this(context, container, null);
-    }
-
-    public TopBar(Context context, Container container, EventDispatcher eventDispatcher) {
+    public TopBar(final Context context, View contentView, ScrollEventListener scrollEventListener, TitleBarButton.OnClickListener onClickListener) {
         super(context);
-        collapsingBehavior = new TopBarCollapseBehavior(eventDispatcher, this);
-        this.container = container;
+        this.onClickListener = onClickListener;
+        collapsingBehavior = new TopBarCollapseBehavior(this, scrollEventListener);
         titleBar = new Toolbar(context);
         topTabs = new TopTabs(getContext());
-        animator = new TopBarAnimator(this, container != null ? container.getContentView() : null);
+        this.animator = new TopBarAnimator(this, contentView);
         addView(titleBar);
     }
 
@@ -132,7 +123,7 @@ public class TopBar extends AppBarLayout {
     }
 
     private void setLeftButton(final Button button) {
-        TitleBarButton leftBarButton = new TitleBarButton(container, this.titleBar, button);
+        TitleBarButton leftBarButton = new TitleBarButton(this.titleBar, button, onClickListener);
         leftBarButton.applyNavigationIcon(getContext());
     }
 
@@ -146,7 +137,7 @@ public class TopBar extends AppBarLayout {
 
         for (int i = 0; i < rightButtons.size(); i++) {
             Button button = rightButtons.get(i);
-            TitleBarButton titleBarButton = new TitleBarButton(container, this.titleBar, button);
+            TitleBarButton titleBarButton = new TitleBarButton(this.titleBar, button, onClickListener);
             titleBarButton.addToMenu(getContext(), menu);
         }
     }
@@ -173,22 +164,22 @@ public class TopBar extends AppBarLayout {
         collapsingBehavior.disableCollapse();
     }
 
-    public void show(NavigationOptions.BooleanOptions animated) {
+    public void show(Options.BooleanOptions animated) {
         if (getVisibility() == View.VISIBLE) {
             return;
         }
-        if (animated == NavigationOptions.BooleanOptions.True) {
+        if (animated == Options.BooleanOptions.True) {
             animator.show();
         } else {
             setVisibility(View.VISIBLE);
         }
     }
 
-    public void hide(NavigationOptions.BooleanOptions animated) {
+    public void hide(Options.BooleanOptions animated) {
         if (getVisibility() == View.GONE) {
             return;
         }
-        if (animated == NavigationOptions.BooleanOptions.True) {
+        if (animated == Options.BooleanOptions.True) {
             animator.hide();
         } else {
             setVisibility(View.GONE);

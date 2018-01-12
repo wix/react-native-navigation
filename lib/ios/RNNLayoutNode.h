@@ -11,11 +11,10 @@
 
 +(instancetype)create:(NSDictionary *)json;
 
--(BOOL)isContainer;
--(BOOL)isContainerStack;
+-(BOOL)isComponent;
+-(BOOL)isStack;
 -(BOOL)isTabs;
 -(BOOL)isTopTabs;
--(BOOL)isTopTab;
 -(BOOL)isSideMenuRoot;
 -(BOOL)isSideMenuLeft;
 -(BOOL)isSideMenuRight;

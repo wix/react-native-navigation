@@ -36,8 +36,8 @@
 	[self waitForContentToAppearAndThen:@selector(showModalAfterLoad:)];
 }
 
--(void)dismissModal:(NSString *)containerId {
-	[[_store pendingModalIdsToDismiss] addObject:containerId];
+-(void)dismissModal:(NSString *)componentId {
+	[[_store pendingModalIdsToDismiss] addObject:componentId];
 	[self removePendingNextModalIfOnTop];
 }
 
@@ -51,9 +51,9 @@
 
 
 -(void)removePendingNextModalIfOnTop {
-	NSString *containerId = [[_store pendingModalIdsToDismiss] lastObject];
+	NSString *componentId = [[_store pendingModalIdsToDismiss] lastObject];
 	
-	UIViewController *modalToDismiss = [_store findContainerForId:containerId];
+	UIViewController *modalToDismiss = [_store findComponentForId:componentId];
 	
 	if(!modalToDismiss) {
 		return;
@@ -63,7 +63,7 @@
 	
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
 		[modalToDismiss dismissViewControllerAnimated:YES completion:^{
-			[[_store pendingModalIdsToDismiss] removeObject:containerId];
+			[[_store pendingModalIdsToDismiss] removeObject:componentId];
 			[self removePendingNextModalIfOnTop];
 		}];
 	}

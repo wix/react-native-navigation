@@ -33,33 +33,33 @@
 }
 
 
-- (void)testCreateLayout_ContainerLayout {
+- (void)testCreateLayout_ComponentLayout {
 	
 	id ans = [self.factory createLayoutAndSaveToStore:
 			  @{@"id": @"cntId",
-				@"type": @"Container",
+				@"type": @"Component",
 				@"data": @{},
 				@"children": @[]}];
 	XCTAssertTrue([ans isMemberOfClass:[RNNRootViewController class]]);
 }
 
-- (void)testCreateLayout_ContainerStackLayout {
+- (void)testCreateLayout_ComponentStackLayout {
 	id ans = [self.factory createLayoutAndSaveToStore:
 			  @{@"id": @"cntId",
-				@"type": @"ContainerStack",
+				@"type": @"Stack",
 				@"data": @{},
 				@"children": @[]}];
 	XCTAssertTrue([ans isMemberOfClass:[RNNNavigationController class]]);
 }
 
-- (void)testCreateLayout_ContainerStackLayoutRecursive {
+- (void)testCreateLayout_ComponentStackLayoutRecursive {
 	RNNNavigationController* ans = (RNNNavigationController*) [self.factory createLayoutAndSaveToStore:
 															 @{@"id": @"cntId",
-															   @"type": @"ContainerStack",
+															   @"type": @"Stack",
 															   @"data": @{},
 															   @"children": @[
 																	   @{@"id": @"cntId_2",
-																		 @"type": @"Container",
+																		 @"type": @"Component",
 																		 @"data": @{},
 																		 @"children": @[]}]}];
 	
@@ -76,11 +76,11 @@
 														  @"data": @{},
 														  @"children": @[
 																  @{@"id": @"cntId_2",
-																	@"type": @"ContainerStack",
+																	@"type": @"Stack",
 																	@"data": @{},
 																	@"children": @[
 																			@{@"id": @"cntId_3",
-																			  @"type": @"Container",
+																			  @"type": @"Component",
 																			  @"data": @{},
 																			  @"children": @[]}]}]}];
 	
@@ -96,7 +96,7 @@
 }
 
 
-- (void)testCreateLayout_ContainerSideMenuLayoutCenterLeftRight {
+- (void)testCreateLayout_ComponentSideMenuLayoutCenterLeftRight {
 	RNNSideMenuController *ans = (RNNSideMenuController*) [self.factory createLayoutAndSaveToStore:
 														   @{@"id": @"cntId",
 															 @"type": @"SideMenuRoot",
@@ -107,7 +107,7 @@
 																	   @"data": @{},
 																	   @"children": @[
 																			   @{@"id": @"cntId_3",
-																				 @"type": @"Container",
+																				 @"type": @"Component",
 																				 @"data": @{},
 																				 @"children": @[]}]},
 																	 @{@"id": @"cntI_4",
@@ -115,7 +115,7 @@
 																	   @"data": @{},
 																	   @"children": @[
 																			   @{@"id": @"cntId_5",
-																				 @"type": @"Container",
+																				 @"type": @"Component",
 																				 @"data": @{},
 																				 @"children": @[]}]},
 																	 @{@"id": @"cntI_6",
@@ -123,7 +123,7 @@
 																	   @"data": @{},
 																	   @"children": @[
 																			   @{@"id": @"cntId_7",
-																				 @"type": @"Container",
+																				 @"type": @"Component",
 																				 @"data": @{},
 																				 @"children": @[]}]}]}];
 	XCTAssertTrue([ans isMemberOfClass:[RNNSideMenuController class]]);
@@ -145,15 +145,15 @@
 
 
 
-- (void)testCreateLayout_addContainerToStore {
-	NSString *containerId = @"cntId";
+- (void)testCreateLayout_addComponentToStore {
+	NSString *componentId = @"cntId";
 	UIViewController *ans = [self.factory createLayoutAndSaveToStore:
-							 @{@"id": containerId,
-							   @"type": @"Container",
+							 @{@"id": componentId,
+							   @"type": @"Component",
 							   @"data": @{},
 							   @"children": @[]}];
 	
-	UIViewController *storeAns = [self.store findContainerForId:containerId];
+	UIViewController *storeAns = [self.store findComponentForId:componentId];
 	XCTAssertEqualObjects(ans, storeAns);
 }
 

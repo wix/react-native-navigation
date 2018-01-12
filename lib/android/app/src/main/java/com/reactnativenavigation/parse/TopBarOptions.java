@@ -22,10 +22,10 @@ public class TopBarOptions implements DEFAULT_VALUES {
         options.textColor = json.optInt("textColor", NO_COLOR_VALUE);
         options.textFontSize = (float) json.optDouble("textFontSize", NO_FLOAT_VALUE);
         options.textFontFamily = typefaceManager.getTypeFace(json.optString("textFontFamily", NO_VALUE));
-        options.hidden = NavigationOptions.BooleanOptions.parse(json.optString("hidden"));
-        options.animateHide = NavigationOptions.BooleanOptions.parse(json.optString("animateHide"));
-        options.hideOnScroll = NavigationOptions.BooleanOptions.parse(json.optString("hideOnScroll"));
-        options.drawBehind = NavigationOptions.BooleanOptions.parse(json.optString("drawBehind"));
+        options.hidden = Options.BooleanOptions.parse(json.optString("hidden"));
+        options.animateHide = Options.BooleanOptions.parse(json.optString("animateHide"));
+        options.hideOnScroll = Options.BooleanOptions.parse(json.optString("hideOnScroll"));
+        options.drawBehind = Options.BooleanOptions.parse(json.optString("drawBehind"));
         options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
         options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"));
 
@@ -37,10 +37,10 @@ public class TopBarOptions implements DEFAULT_VALUES {
     @ColorInt public int textColor = NO_COLOR_VALUE;
     public float textFontSize = NO_FLOAT_VALUE;
     @Nullable public Typeface textFontFamily;
-    public NavigationOptions.BooleanOptions hidden = NavigationOptions.BooleanOptions.NoValue;
-    public NavigationOptions.BooleanOptions animateHide = NavigationOptions.BooleanOptions.NoValue;
-    public NavigationOptions.BooleanOptions hideOnScroll = NavigationOptions.BooleanOptions.NoValue;
-    public NavigationOptions.BooleanOptions drawBehind = NavigationOptions.BooleanOptions.NoValue;
+    public Options.BooleanOptions hidden = Options.BooleanOptions.NoValue;
+    public Options.BooleanOptions animateHide = Options.BooleanOptions.NoValue;
+    public Options.BooleanOptions hideOnScroll = Options.BooleanOptions.NoValue;
+    public Options.BooleanOptions drawBehind = Options.BooleanOptions.NoValue;
     public ArrayList<Button> leftButtons;
     public ArrayList<Button> rightButtons;
 
@@ -54,16 +54,16 @@ public class TopBarOptions implements DEFAULT_VALUES {
             textFontSize = other.textFontSize;
         if (other.textFontFamily != null)
             textFontFamily = other.textFontFamily;
-        if (other.hidden != NavigationOptions.BooleanOptions.NoValue) {
+        if (other.hidden != Options.BooleanOptions.NoValue) {
             hidden = other.hidden;
         }
-        if (other.animateHide != NavigationOptions.BooleanOptions.NoValue) {
+        if (other.animateHide != Options.BooleanOptions.NoValue) {
             animateHide = other.animateHide;
         }
-        if (other.hideOnScroll != NavigationOptions.BooleanOptions.NoValue) {
+        if (other.hideOnScroll != Options.BooleanOptions.NoValue) {
             hideOnScroll = other.hideOnScroll;
         }
-        if (other.drawBehind != NavigationOptions.BooleanOptions.NoValue) {
+        if (other.drawBehind != Options.BooleanOptions.NoValue) {
             drawBehind = other.drawBehind;
         }
         if (other.leftButtons != null)
@@ -83,13 +83,13 @@ public class TopBarOptions implements DEFAULT_VALUES {
             textFontSize = defaultOptions.textFontSize;
         if (textFontFamily == null)
             textFontFamily = defaultOptions.textFontFamily;
-        if (hidden == NavigationOptions.BooleanOptions.NoValue)
+        if (hidden == Options.BooleanOptions.NoValue)
             hidden = defaultOptions.hidden;
-        if (animateHide == NavigationOptions.BooleanOptions.NoValue)
+        if (animateHide == Options.BooleanOptions.NoValue)
             animateHide = defaultOptions.animateHide;
-        if (hideOnScroll == NavigationOptions.BooleanOptions.NoValue)
+        if (hideOnScroll == Options.BooleanOptions.NoValue)
             hideOnScroll = defaultOptions.hideOnScroll;
-        if (drawBehind == NavigationOptions.BooleanOptions.NoValue)
+        if (drawBehind == Options.BooleanOptions.NoValue)
             drawBehind = defaultOptions.drawBehind;
         if (leftButtons == null)
             leftButtons = defaultOptions.leftButtons;

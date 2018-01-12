@@ -10,7 +10,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	}
 	
 	if (self.currentTabId) {
-		[(RNNTabBarController*)viewController.tabBarController setSelectedIndexByContainerID:self.currentTabId];
+		[(RNNTabBarController*)viewController.tabBarController setSelectedIndexByComponentID:self.currentTabId];
 	}
 	
 	if (self.hidden) {

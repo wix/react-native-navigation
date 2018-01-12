@@ -1,17 +1,17 @@
 package com.reactnativenavigation.utils;
 
-import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.*;
 
-import org.junit.Test;
+import org.junit.*;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.*;
 
 public class CompatUtilsTest extends BaseTest {
 
-	@Test
-	public void generateViewId() throws Exception {
-		assertThat(CompatUtils.generateViewId())
-				.isPositive()
-				.isNotEqualTo(CompatUtils.generateViewId());
-	}
+    @Test
+    public void generateViewId() throws Exception {
+        assertThat(CompatUtils.generateViewId())
+                .isPositive()
+                .isNotEqualTo(CompatUtils.generateViewId());
+    }
 }

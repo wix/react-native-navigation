@@ -5,6 +5,6 @@
 @interface RNNTabBarController : UITabBarController <RNNRootViewProtocol>
 
 - (void)setTabBarHidden:(BOOL)hidden animated:(BOOL)animated;
-- (void)setSelectedIndexByContainerID:(NSString *)containerID;
+- (void)setSelectedIndexByComponentID:(NSString *)componentID;
 
 @end

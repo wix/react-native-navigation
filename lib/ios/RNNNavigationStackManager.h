@@ -10,9 +10,9 @@
 -(instancetype)initWithStore:(RNNStore*)store;
 
 
--(void)push:(UIViewController<RNNRootViewProtocol>*)newTop onTop:(NSString*)containerId completion:(RNNTransitionCompletionBlock)completion;
--(void)pop:(NSString*)containerId withAnimationData:(NSDictionary*)animationData;
--(void)popTo:(NSString*)containerId;
--(void)popToRoot:(NSString*)containerId;
+-(void)push:(UIViewController<RNNRootViewProtocol>*)newTop onTop:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;
+-(void)pop:(NSString*)componentId withAnimationData:(NSDictionary*)animationData;
+-(void)popTo:(NSString*)componentId;
+-(void)popToRoot:(NSString*)componentId;
 
 @end

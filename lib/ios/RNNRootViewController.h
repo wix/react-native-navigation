@@ -11,15 +11,15 @@
 
 @interface RNNRootViewController : UIViewController	<RNNRootViewProtocol>
 
-@property (nonatomic, strong) RNNNavigationOptions* navigationOptions;
+@property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
-@property (nonatomic, strong) NSString* containerId;
+@property (nonatomic, strong) NSString* componentId;
 @property (nonatomic, strong) RNNTopTabsViewController* topTabsViewController;
 
 -(instancetype)initWithName:(NSString*)name
 				withOptions:(RNNNavigationOptions*)options
-			withContainerId:(NSString*)containerId
+			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter
 		   animator:(RNNAnimator*)animator;
