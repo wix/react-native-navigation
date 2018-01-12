@@ -18,7 +18,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
         if (json == null) return options;
 
         options.title = json.optString("title", NO_VALUE);
-        options.backgroundColor = json.optInt("backgroundColor", NO_COLOR_VALUE);
+        options.backgroundColor = ColorParser.parse(json, "backgroundColor");
         options.textColor = json.optInt("textColor", NO_COLOR_VALUE);
         options.textFontSize = (float) json.optDouble("textFontSize", NO_FLOAT_VALUE);
         options.textFontFamily = typefaceManager.getTypeFace(json.optString("textFontFamily", NO_VALUE));
@@ -33,7 +33,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
     }
 
     public String title = NO_VALUE;
-    @ColorInt public int backgroundColor = NO_COLOR_VALUE;
+    public Color backgroundColor = new NullColor();
     @ColorInt public int textColor = NO_COLOR_VALUE;
     public float textFontSize = NO_FLOAT_VALUE;
     @Nullable public Typeface textFontFamily;
@@ -46,7 +46,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
 
     void mergeWith(final TopBarOptions other) {
         if (!NO_VALUE.equals(other.title)) title = other.title;
-        if (other.backgroundColor != NO_COLOR_VALUE)
+        if (other.backgroundColor.hasValue())
             backgroundColor = other.backgroundColor;
         if (other.textColor != NO_COLOR_VALUE)
             textColor = other.textColor;
@@ -75,7 +75,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
     void mergeWithDefault(TopBarOptions defaultOptions) {
         if (NO_VALUE.equals(title))
             title = defaultOptions.title;
-        if (backgroundColor == NO_COLOR_VALUE)
+        if (!backgroundColor.hasValue())
             backgroundColor = defaultOptions.backgroundColor;
         if (textColor == NO_COLOR_VALUE)
             textColor = defaultOptions.textColor;

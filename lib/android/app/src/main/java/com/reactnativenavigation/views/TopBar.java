@@ -89,9 +89,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return findTextView(titleBar);
     }
 
-    @Override
-    public void setBackgroundColor(@ColorInt int color) {
-        titleBar.setBackgroundColor(color);
+    public void setBackgroundColor(Color color) {
+        if (color.hasValue()) titleBar.setBackgroundColor(color.get());
     }
 
     @Nullable

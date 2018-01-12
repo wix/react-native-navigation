@@ -9,7 +9,7 @@ const Navigation = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
 class PushedScreen extends Component {
-  static get navigationOptions() {
+  static get options() {
     return {
       topBar: {
         testID: testIDs.TOP_BAR_ELEMENT
