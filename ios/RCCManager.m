@@ -164,22 +164,33 @@
 -(void)showSplashScreen
 {
   CGRect screenBounds = [UIScreen mainScreen].bounds;
-  UIView *splashView = nil;
+  UIViewController *splashViewController = nil;
   
   NSString* launchStoryBoard = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UILaunchStoryboardName"];
   if (launchStoryBoard != nil)
   {//load the splash from the storyboard that's defined in the info.plist as the LaunchScreen
     @try
     {
-      splashView = [[NSBundle mainBundle] loadNibNamed:launchStoryBoard owner:self options:nil][0];
+      UIView * splashView = [[NSBundle mainBundle] loadNibNamed:launchStoryBoard owner:self options:nil][0];
       if (splashView != nil)
       {
         splashView.frame = CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height);
+        
+        splashViewController = [[UIViewController alloc] init];
+        splashViewController.view = splashView;
       }
     }
     @catch(NSException *e)
     {
-      splashView = nil;
+      @try
+      {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:launchStoryBoard bundle:[NSBundle mainBundle]];
+        splashViewController = [storyboard instantiateInitialViewController];
+      }
+      @catch(NSException *e)
+      {
+        splashViewController = nil;
+      }
     }
   }
   else
@@ -218,17 +229,14 @@
     
     if (image != nil)
     {
-      splashView = [[UIImageView alloc] initWithImage:image];
+      splashViewController = [[UIViewController alloc] init];
+      splashViewController.view = [[UIImageView alloc] initWithImage:image];
     }
   }
   
-  if (splashView != nil)
-  {
-    UIViewController *splashVC = [[UIViewController alloc] init];
-    splashVC.view = splashView;
-    
+  if (splashViewController != nil) {
     id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
-    appDelegate.window.rootViewController = splashVC;
+    appDelegate.window.rootViewController = splashViewController;
     [appDelegate.window makeKeyAndVisible];
   }
 }
