@@ -78,8 +78,8 @@ RCT_EXPORT_METHOD(dismissAllModals:(RCTPromiseResolveBlock)resolve rejecter:(RCT
 	}];
 }
 
-RCT_EXPORT_METHOD(showOverlay:(NSDictionary*)layout options:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler showOverlay:layout options:options completion:^{
+RCT_EXPORT_METHOD(showOverlay:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler showOverlay:layout completion:^{
 		resolve(layout[@"id"]);
 	}];
 }

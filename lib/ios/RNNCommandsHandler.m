@@ -131,9 +131,9 @@
 	[CATransaction commit];
 }
 
--(void)showOverlay:(NSDictionary *)layout options:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion {
+-(void)showOverlay:(NSDictionary *)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	UIViewController* overlayVC = [_controllerFactory createOverlay:layout options:options];
+	UIViewController* overlayVC = [_controllerFactory createOverlay:layout];
 	[_overlayManager showOverlay:overlayVC completion:completion];
 }
 

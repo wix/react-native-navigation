@@ -197,9 +197,10 @@ class OptionsScreen extends Component {
   onClickShowOverlay(passThroughTouches) {
     Navigation.showOverlay({
       component: {
-        name: 'navigation.playground.CustomDialog'
+        name: 'navigation.playground.CustomDialog',
+        options: { passThroughTouches }
       }
-    }, { passThroughTouches });
+    });
   }
 
   onClickPushDefaultOptionsScreen() {
