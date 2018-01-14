@@ -200,5 +200,9 @@
     return [self textAttributesFromDictionary:dictionary withPrefix:prefix baseFont:[UIFont systemFontOfSize:[UIFont systemFontSize]]];
 }
 
++ (NSString *)getTimestampString {
+    long long milliseconds = (long long)([[NSDate date] timeIntervalSince1970] * 1000.0);
+    return [NSString stringWithFormat:@"%lld", milliseconds];
+}
 
 @end

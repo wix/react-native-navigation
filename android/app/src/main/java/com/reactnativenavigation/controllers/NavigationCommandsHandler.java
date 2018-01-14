@@ -3,8 +3,10 @@ package com.reactnativenavigation.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
@@ -30,22 +32,17 @@ public class NavigationCommandsHandler {
         return ActivityParamsParser.parse(intent.getBundleExtra(NavigationCommandsHandler.ACTIVITY_PARAMS_BUNDLE));
     }
 
-    /**
-     * start a new activity with CLEAR_TASK | NEW_TASK
-     *
-     * @param params ActivityParams as bundle
-     */
-
-    public static void startApp(Bundle params) {
+    public static void startApp(Bundle params, Promise promise) {
         Intent intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
         IntentDataHandler.onStartApp(intent);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ACTIVITY_PARAMS_BUNDLE, params);
         intent.putExtra("animationType", params.getString("animationType"));
+        NavigationActivity.setStartAppPromise(promise);
         NavigationApplication.instance.startActivity(intent);
     }
 
-    public static void push(Bundle screenParams) {
+    public static void push(Bundle screenParams, final Promise onPushComplete) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
@@ -55,7 +52,7 @@ public class NavigationCommandsHandler {
         NavigationApplication.instance.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                currentActivity.push(params);
+                currentActivity.push(params, onPushComplete);
             }
         });
     }
@@ -261,7 +258,7 @@ public class NavigationCommandsHandler {
         });
     }
 
-    public static void dismissTopModal() {
+    public static void dismissTopModal(final ScreenParams params) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
@@ -270,7 +267,7 @@ public class NavigationCommandsHandler {
         NavigationApplication.instance.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                currentActivity.dismissTopModal();
+                currentActivity.dismissTopModal(params);
             }
         });
     }
@@ -313,6 +310,20 @@ public class NavigationCommandsHandler {
             @Override
             public void run() {
                 currentActivity.setSideMenuVisible(animated, visible, side);
+            }
+        });
+    }
+
+    public static void setSideMenuEnabled(final boolean enabled, final Side side) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.setSideMenuEnabled(enabled, side);
             }
         });
     }
@@ -520,5 +531,30 @@ public class NavigationCommandsHandler {
             return;
         }
         promise.resolve(OrientationHelper.getOrientation(currentActivity));
+    }
+
+    public static void isAppLaunched(Promise promise) {
+        final boolean isAppLaunched = SplashActivity.isResumed || NavigationActivity.currentActivity != null;
+        promise.resolve(isAppLaunched);
+    }
+
+    public static void isRootLaunched(Promise promise) {
+        promise.resolve(NavigationActivity.currentActivity != null);
+    }
+
+    public static void getCurrentlyVisibleScreenId(final Promise promise) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            promise.resolve("");
+            return;
+        }
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                WritableMap map = Arguments.createMap();
+                map.putString("screenId", currentActivity.getCurrentlyVisibleScreenId());
+                promise.resolve(map);
+            }
+        });
     }
 }

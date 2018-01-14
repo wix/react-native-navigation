@@ -11,6 +11,7 @@ import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ScreenParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.utils.Constants;
 
 import java.util.List;
 
@@ -42,20 +43,36 @@ public class BottomTabs extends AHBottomNavigation {
             setBackgroundColor(params.bottomTabsColor);
         }
         if (params.bottomTabsButtonColor.hasColor()) {
-            setInactiveColor(params.bottomTabsButtonColor.getColor());
+            if (getInactiveColor() != params.bottomTabsButtonColor.getColor()) {
+                setInactiveColor(params.bottomTabsButtonColor.getColor());
+            }
         }
         if (params.selectedBottomTabsButtonColor.hasColor()) {
-            setAccentColor(params.selectedBottomTabsButtonColor.getColor());
+            if (getAccentColor() != params.selectedBottomTabsButtonColor.getColor()) {
+                setAccentColor(params.selectedBottomTabsButtonColor.getColor());
+            }
         }
 
         setVisibility(params.bottomTabsHidden, true);
     }
 
     public void setTabButton(ScreenParams params, Integer index) {
-        if (params.tabIcon != null) {
+        if (params.tabIcon != null || params.tabLabel != null) {
             AHBottomNavigationItem item = this.getItem(index);
-            item.setDrawable(params.tabIcon);
-            refresh();
+            boolean tabNeedsRefresh = false;
+
+            if (params.tabIcon != null) {
+                item.setDrawable(params.tabIcon);
+                tabNeedsRefresh = true;
+            }
+            if (params.tabLabel != null) {
+                item.setTitle(params.tabLabel);
+                tabNeedsRefresh = true;
+            }
+
+            if (tabNeedsRefresh) {
+                this.refresh();
+            }
         }
     }
 
@@ -71,7 +88,7 @@ public class BottomTabs extends AHBottomNavigation {
 
     private boolean hasTabsWithLabels() {
         for (int i = 0; i < getItemsCount(); i++) {
-            String title = getItem(0).getTitle(getContext());
+            String title = getItem(i).getTitle(getContext());
             if (!TextUtils.isEmpty(title)) {
                 return true;
             }
@@ -79,18 +96,28 @@ public class BottomTabs extends AHBottomNavigation {
         return false;
     }
 
+    public void setVisibilityByInitialScreen(StyleParams styleParams) {
+        setVisibility(styleParams.bottomTabsHidden, false);
+    }
+
     public void setVisibility(boolean hidden, boolean animated) {
         if (visibilityAnimator != null) {
-            visibilityAnimator.setVisible(!hidden, animated);
+            visibilityAnimator.setVisible(!hidden, animated, null);
         } else {
             setVisibility(hidden);
         }
     }
 
+    public void setCurrentItemWithoutInvokingTabSelectedListener(Integer index) {
+        setCurrentItem(index, false);
+    }
+
     private void setBackgroundColor(StyleParams.Color bottomTabsColor) {
         if (bottomTabsColor.hasColor()) {
-            setDefaultBackgroundColor(bottomTabsColor.getColor());
-        } else {
+            if (bottomTabsColor.getColor() != getDefaultBackgroundColor()) {
+                setDefaultBackgroundColor(bottomTabsColor.getColor());
+            }
+        } else if (Color.WHITE != getDefaultBackgroundColor()){
             setDefaultBackgroundColor(Color.WHITE);
         }
     }
@@ -100,14 +127,9 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     private void createVisibilityAnimator() {
-        ViewUtils.runOnPreDraw(this, new Runnable() {
-            @Override
-            public void run() {
-                visibilityAnimator = new VisibilityAnimator(BottomTabs.this,
-                        VisibilityAnimator.HideDirection.Down,
-                        getHeight());
-            }
-        });
+        visibilityAnimator = new VisibilityAnimator(BottomTabs.this,
+                VisibilityAnimator.HideDirection.Down,
+                Constants.BOTTOM_TABS_HEIGHT);
     }
 
     private void setStyle() {

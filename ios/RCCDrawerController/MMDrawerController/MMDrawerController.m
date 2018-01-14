@@ -369,13 +369,14 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         }
     }
     else {
-        [self setAnimatingDrawer:animated];
         UIViewController * sideDrawerViewController = [self sideDrawerViewControllerForSide:drawerSide];
-        if (self.openSide != drawerSide) {
-            [self prepareToPresentDrawer:drawerSide animated:animated];
-        }
-        
+
         if(sideDrawerViewController){
+            [self setAnimatingDrawer:animated];
+            if (self.openSide != drawerSide) {
+                [self prepareToPresentDrawer:drawerSide animated:animated];
+            }
+            
             CGRect newFrame;
             CGRect oldFrame = self.centerContainerView.frame;
             if(drawerSide == MMDrawerSideLeft){

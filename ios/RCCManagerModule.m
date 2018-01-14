@@ -9,6 +9,7 @@
 #import "RCCTabBarController.h"
 #import "RCCTheSideBarManagerViewController.h"
 #import "RCCNotification.h"
+#import "RCTHelpers.h"
 
 #define kSlideDownAnimationDuration 0.35
 
@@ -141,6 +142,8 @@ RCT_EXPORT_MODULE(RCCManager);
 
 -(void)dismissAllModalPresenters:(NSMutableArray*)allPresentedViewControllers resolver:(RCTPromiseResolveBlock)resolve
 {
+    UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+    
     if (allPresentedViewControllers.count > 0)
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^
@@ -150,7 +153,7 @@ RCT_EXPORT_MODULE(RCCManager);
                            {
                                counter++;
                                
-                               [[RCCManager sharedIntance] unregisterController:viewController];
+                               
                                if (viewController.presentedViewController != nil)
                                {
                                    dispatch_semaphore_t dismiss_sema = dispatch_semaphore_create(0);
@@ -159,6 +162,10 @@ RCT_EXPORT_MODULE(RCCManager);
                                                   {
                                                       [viewController dismissViewControllerAnimated:NO completion:^()
                                                        {
+                                                           if (rootViewController != viewController) {
+                                                               [[RCCManager sharedIntance] unregisterController:viewController];
+                                                           }
+                                                           
                                                            if (counter == allPresentedViewControllers.count && allPresentedViewControllers.count > 0)
                                                            {
                                                                [allPresentedViewControllers removeAllObjects];
@@ -198,35 +205,46 @@ RCT_EXPORT_MODULE(RCCManager);
 #pragma mark - RCT exported methods
 
 RCT_EXPORT_METHOD(
-                  setRootController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps)
+                  setRootController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     if ([[RCCManager sharedInstance] getBridge].loading) {
-        [self deferSetRootControllerWhileBridgeLoading:layout animationType:animationType globalProps:globalProps];
+        [self deferSetRootControllerWhileBridgeLoading:layout animationType:animationType globalProps:globalProps resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject];
         return;
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self performSetRootController:layout animationType:animationType globalProps:globalProps];
+        resolve(nil);
     });
 }
 
 /**
  * on RN31 there's a timing issue, we must wait for the bridge to finish loading
  */
--(void)deferSetRootControllerWhileBridgeLoading:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps
+-(void)deferSetRootControllerWhileBridgeLoading:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self setRootController:layout animationType:animationType globalProps:globalProps];
+        [self setRootController:layout animationType:animationType globalProps:globalProps resolver:resolve rejecter:reject];
     });
 }
 
 -(void)performSetRootController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps
 {
+    
+    NSMutableDictionary *modifiedGloablProps = [globalProps mutableCopy];
+    modifiedGloablProps[GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_INITIAL_SCREEN;
+    
     // first clear the registry to remove any refernece to the previous controllers
     [[RCCManager sharedInstance] clearModuleRegistry];
+    [[RCCManager sharedInstance] setAppStyle:nil];
+    
+    NSDictionary *appStyle = layout[@"props"][@"appStyle"];
+    if (appStyle) {
+        [[RCCManager sharedIntance] setAppStyle:appStyle];
+    }
     
     // create the new controller
-    UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:globalProps bridge:[[RCCManager sharedInstance] getBridge]];
+    UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:modifiedGloablProps bridge:[[RCCManager sharedInstance] getBridge]];
     if (controller == nil) return;
     
     id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
@@ -318,7 +336,11 @@ RCT_EXPORT_METHOD(
 RCT_EXPORT_METHOD(
                   showController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:globalProps bridge:[[RCCManager sharedInstance] getBridge]];
+
+    NSMutableDictionary *modifiedGlobalProps = [globalProps mutableCopy];
+    modifiedGlobalProps[GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_SHOW_MODAL;
+    
+    UIViewController *controller = [RCCViewController controllerWithLayout:layout globalProps:modifiedGlobalProps bridge:[[RCCManager sharedInstance] getBridge]];
     if (controller == nil)
     {
         [RCCManagerModule handleRCTPromiseRejectBlock:reject
@@ -342,6 +364,43 @@ RCT_EXPORT_METHOD(
                                                                     completion:^(){ resolve(nil); }];
 }
 
+- (UIViewController *) getVisibleViewControllerFor:(UIViewController *)vc
+{
+    if ([vc isKindOfClass:[UINavigationController class]])
+    {
+        return [self getVisibleViewControllerFor:[((UINavigationController*)vc) visibleViewController]];
+    }
+    else if ([vc isKindOfClass:[UITabBarController class]])
+    {
+        return [self getVisibleViewControllerFor:[((UITabBarController*)vc) selectedViewController]];
+    }
+    else if (vc.presentedViewController)
+    {
+        return [self getVisibleViewControllerFor:vc.presentedViewController];
+    }
+    else if ([vc isKindOfClass:[TheSidebarController class]]) {
+        TheSidebarController *drawerController = (TheSidebarController*) vc;
+        return [self getVisibleViewControllerFor:drawerController.contentViewController];
+    }
+    else if ([vc isKindOfClass:[MMDrawerController class]]) {
+        MMDrawerController *drawerController = (MMDrawerController*) vc;
+        return [self getVisibleViewControllerFor:drawerController.centerViewController];
+    }
+    else
+    {
+        return vc;
+    }
+}
+
+RCT_EXPORT_METHOD(getCurrentlyVisibleScreenId:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    UIViewController *rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+    UIViewController *visibleVC = [self getVisibleViewControllerFor:rootVC];
+    NSString *controllerId = [[RCCManager sharedIntance] getIdForController:visibleVC];
+    id result = (controllerId != nil) ? @{@"screenId": controllerId} : nil;
+    resolve(result);
+}
+
 -(BOOL)viewControllerIsModal:(UIViewController*)viewController
 {
     BOOL viewControllerIsModal = (viewController.presentingViewController.presentedViewController == viewController)
@@ -363,7 +422,7 @@ RCT_EXPORT_METHOD(
     }
     else
     {
-      resolve(nil);
+        resolve(nil);
     }
 }
 

@@ -21,6 +21,8 @@ public interface Layout extends ScreenStackContainer {
 
     boolean onBackPressed();
 
+    boolean handleBackInJs();
+
     void setTopBarVisible(String screenInstanceId, boolean hidden, boolean animated);
 
     void setTitleBarTitle(String screenInstanceId, String title);
@@ -36,6 +38,8 @@ public interface Layout extends ScreenStackContainer {
     void toggleSideMenuVisible(boolean animated, Side side);
 
     void setSideMenuVisible(boolean animated, boolean visible, Side side);
+
+    void setSideMenuEnabled(boolean enabled, Side side);
 
     void showSnackbar(SnackbarParams params);
 
@@ -64,4 +68,6 @@ public interface Layout extends ScreenStackContainer {
     void selectTopTabByScreen(String screenInstanceId);
 
     void updateScreenStyle(String screenInstanceId, Bundle styleParams);
+
+    String getCurrentlyVisibleScreenId();
 }

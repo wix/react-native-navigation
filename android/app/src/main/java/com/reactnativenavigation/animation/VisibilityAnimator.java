@@ -3,17 +3,17 @@ package com.reactnativenavigation.animation;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.support.annotation.Nullable;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.View;
 
 public class VisibilityAnimator {
 
+    private final LinearOutSlowInInterpolator interpolator = new LinearOutSlowInInterpolator();
+    private ObjectAnimator animator;
+
     public enum HideDirection {
         Up, Down
-    }
-
-    private enum VisibilityState {
-        Hidden, AnimateHide, Shown, AnimateShow
     }
 
     private static final int SHOW_END_VALUE = 0;
@@ -21,62 +21,59 @@ public class VisibilityAnimator {
 
     private final View view;
     private final int hiddenEndValue;
-    private VisibilityState visibilityState = VisibilityState.Shown;
 
     public VisibilityAnimator(View view, HideDirection hideDirection, int height) {
         this.view = view;
         this.hiddenEndValue = hideDirection == HideDirection.Up ? -height : height;
     }
 
-    public void setVisible(boolean visible, boolean animate) {
-        if (visible && isHiding()) {
-            show(animate);
-        } else if (!visible && isShowing()) {
-            hide(animate);
+    public void setVisible(boolean visible, boolean animate, @Nullable Runnable onAnimationEnd) {
+        cancelAnimator();
+        if (visible) {
+            show(animate, onAnimationEnd);
+        } else {
+            hide(animate, onAnimationEnd);
         }
     }
 
-    private void show(boolean animate) {
+    private void cancelAnimator() {
+        if (animator != null && animator.isRunning()) {
+            view.clearAnimation();
+            animator.cancel();
+        }
+    }
+
+    private void show(boolean animate, @Nullable Runnable onAnimationEnd) {
         if (animate) {
-            ObjectAnimator animator = createAnimator(true);
+            animator = createAnimator(true, onAnimationEnd);
             animator.start();
         } else {
-            visibilityState = VisibilityState.Shown;
+            view.setTranslationY(SHOW_END_VALUE);
             view.setVisibility(View.VISIBLE);
+            if (onAnimationEnd != null) onAnimationEnd.run();
         }
     }
 
-    private void hide(boolean animate) {
+    private void hide(boolean animate, @Nullable Runnable onAnimationEnd) {
         if (animate) {
-            ObjectAnimator animator = createAnimator(false);
+            animator = createAnimator(false, onAnimationEnd);
             animator.start();
         } else {
-            visibilityState = VisibilityState.Hidden;
+            view.setTranslationY(hiddenEndValue);
             view.setVisibility(View.GONE);
+            if (onAnimationEnd != null) onAnimationEnd.run();
         }
     }
 
-    private boolean isShowing() {
-        return visibilityState == VisibilityState.Shown || visibilityState == VisibilityState.AnimateShow;
-    }
-
-    private boolean isHiding() {
-        return visibilityState == VisibilityState.Hidden || visibilityState == VisibilityState.AnimateHide;
-    }
-
-    private ObjectAnimator createAnimator(final boolean show) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, show ? SHOW_END_VALUE : hiddenEndValue);
+    private ObjectAnimator createAnimator(final boolean show, @Nullable final Runnable onAnimationEnd) {
+        view.setVisibility(View.VISIBLE);
+        final ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, show ? SHOW_END_VALUE : hiddenEndValue);
         animator.setDuration(DURATION);
-        animator.setInterpolator(new LinearOutSlowInInterpolator());
+        animator.setInterpolator(interpolator);
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationStart(Animator animation) {
-                visibilityState = show ? VisibilityState.AnimateShow : VisibilityState.AnimateHide;
-            }
-
-            @Override
             public void onAnimationEnd(Animator animation) {
-                visibilityState = show ? VisibilityState.Shown : VisibilityState.Hidden;
+                if (onAnimationEnd != null) onAnimationEnd.run();
             }
         });
         return animator;

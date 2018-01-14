@@ -1,5 +1,7 @@
 package com.reactnativenavigation.controllers;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -9,8 +11,21 @@ import android.view.View;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.ReactDevPermission;
+import com.reactnativenavigation.utils.CompatUtils;
 
 public abstract class SplashActivity extends AppCompatActivity {
+    public static boolean isResumed = false;
+
+    public static void start(Activity activity) {
+        Intent intent = activity.getPackageManager().getLaunchIntentForPackage(activity.getPackageName());
+        if (intent == null) return;
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,9 +37,18 @@ public abstract class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        isResumed = true;
 
         if (NavigationApplication.instance.getReactGateway().hasStartedCreatingContext()) {
-            finish();
+            if (CompatUtils.isSplashOpenedOverNavigationActivity(this, getIntent())) {
+                finish();
+                return;
+            }
+            NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
+            if (NavigationApplication.instance.clearHostOnActivityDestroy()) {
+                overridePendingTransition(0, 0);
+                finish();
+            }
             return;
         }
 
@@ -34,12 +58,18 @@ public abstract class SplashActivity extends AppCompatActivity {
         }
 
         if (NavigationApplication.instance.isReactContextInitialized()) {
-            finish();
+            NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
             return;
         }
 
         // TODO I'm starting to think this entire flow is incorrect and should be done in Application
         NavigationApplication.instance.startReactContextOnceInBackgroundAndExecuteJS();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isResumed = false;
     }
 
     private void setSplashLayout() {

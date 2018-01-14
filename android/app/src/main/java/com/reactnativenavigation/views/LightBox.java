@@ -8,11 +8,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.R;
@@ -28,14 +30,22 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
     private Runnable onDismissListener;
     private ContentView content;
     private RelativeLayout lightBox;
+    private boolean cancelable;
 
     public LightBox(AppCompatActivity activity, Runnable onDismissListener, LightBoxParams params) {
         super(activity, R.style.LightBox);
         this.onDismissListener = onDismissListener;
+        this.cancelable = !params.overrideBackPress;
         setOnDismissListener(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         createContent(activity, params);
+        setCancelable(cancelable);
         getWindow().setWindowAnimations(android.R.style.Animation);
+        getWindow().setSoftInputMode(params.adjustSoftInput);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
     }
 
     private void createContent(final Context context, LightBoxParams params) {
@@ -43,11 +53,19 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         lightBox.setAlpha(0);
         content = new ContentView(context, params.screenId, params.navigationParams);
         content.setAlpha(0);
-        content.setId(ViewUtils.generateViewId());
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT, content.getId());
         lightBox.setBackgroundColor(params.backgroundColor.getColor());
         lightBox.addView(content, lp);
+
+        if (params.tapBackgroundToDismiss) {
+            lightBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hide();
+                }
+            });
+        }
 
         content.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
@@ -77,13 +95,23 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         animateHide();
     }
 
+    @Override public void onBackPressed() {
+        if (cancelable) {
+            hide();
+        }
+    }
+
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         onDismissListener.run();
     }
 
     public void destroy() {
-        content.unmountReactView();
+        if (content != null) {
+            content.unmountReactView();
+            lightBox.removeAllViews();
+            content = null;
+        }
         dismiss();
     }
 
@@ -118,7 +146,7 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         allAnimators.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                dismiss();
+                destroy();
             }
         });
         allAnimators.start();

@@ -35,6 +35,17 @@
     [RCCTabBarController sendScreenTabChangedEvent:viewController body:body];
     
     [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:@"bottomTabSelected" body:body];
+    if ([viewController isKindOfClass:[UINavigationController class]]) {
+      UINavigationController *navigationController = (UINavigationController*)viewController;
+      UIViewController *topViewController = navigationController.topViewController;
+      
+      if ([topViewController isKindOfClass:[RCCViewController class]]) {
+        RCCViewController *topRCCViewController = (RCCViewController*)topViewController;
+        topRCCViewController.commandType = COMMAND_TYPE_BOTTOME_TAB_SELECTED;
+        topRCCViewController.timestamp = [RCTHelpers getTimestampString];
+      }
+    }
+    
   } else {
     [RCCTabBarController sendScreenTabPressedEvent:viewController body:nil];
   }
@@ -71,6 +82,8 @@
   
   UIColor *buttonColor = nil;
   UIColor *selectedButtonColor = nil;
+  UIColor *labelColor = nil;
+  UIColor *selectedLabelColor = nil;
   NSDictionary *tabsStyle = props[@"style"];
   if (tabsStyle)
   {
@@ -82,7 +95,6 @@
       buttonColor = color;
       selectedButtonColor = color;
     }
-    
     NSString *tabBarSelectedButtonColor = tabsStyle[@"tabBarSelectedButtonColor"];
     if (tabBarSelectedButtonColor)
     {
@@ -90,7 +102,17 @@
       self.tabBar.tintColor = color;
       selectedButtonColor = color;
     }
-    
+    NSString *tabBarLabelColor = tabsStyle[@"tabBarLabelColor"];
+    if(tabBarLabelColor) {
+      UIColor *color = tabBarLabelColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarLabelColor] : nil;
+      labelColor = color;
+    }
+    NSString *tabBarSelectedLabelColor = tabsStyle[@"tabBarSelectedLabelColor"];
+    if(tabBarLabelColor) {
+      UIColor *color = tabBarSelectedLabelColor != (id)[NSNull null] ? [RCTConvert UIColor:
+                                                                        tabBarSelectedLabelColor] : nil;
+      selectedLabelColor = color;
+    }
     NSString *tabBarBackgroundColor = tabsStyle[@"tabBarBackgroundColor"];
     if (tabBarBackgroundColor)
     {
@@ -102,6 +124,12 @@
     if (tabBarTranslucent)
     {
       self.tabBar.translucent = [tabBarTranslucent boolValue] ? YES : NO;
+    }
+
+    NSString *tabBarHideShadow = tabsStyle[@"tabBarHideShadow"];
+    if (tabBarHideShadow)
+    {
+      self.tabBar.clipsToBounds = [tabBarHideShadow boolValue] ? YES : NO;
     }
   }
   
@@ -161,18 +189,16 @@
       
       viewController.tabBarItem.imageInsets = UIEdgeInsetsMake(top, left, bottom, right);
     }
-    
     NSMutableDictionary *unselectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarText" baseFont:[UIFont systemFontOfSize:10]];
-    if (!unselectedAttributes[NSForegroundColorAttributeName] && buttonColor) {
-      unselectedAttributes[NSForegroundColorAttributeName] = buttonColor;
+    if (!unselectedAttributes[NSForegroundColorAttributeName] && labelColor) {
+      unselectedAttributes[NSForegroundColorAttributeName] = labelColor;
     }
     
-    [viewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal]
-    ;
+    [viewController.tabBarItem setTitleTextAttributes:unselectedAttributes forState:UIControlStateNormal];
     
     NSMutableDictionary *selectedAttributes = [RCTHelpers textAttributesFromDictionary:tabsStyle withPrefix:@"tabBarSelectedText" baseFont:[UIFont systemFontOfSize:10]];
-    if (!selectedAttributes[NSForegroundColorAttributeName] && selectedButtonColor) {
-      selectedAttributes[NSForegroundColorAttributeName] = selectedButtonColor;
+    if (!selectedAttributes[NSForegroundColorAttributeName] && selectedLabelColor) {
+      selectedAttributes[NSForegroundColorAttributeName] = selectedLabelColor;
     }
     
     [viewController.tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
@@ -192,6 +218,13 @@
   
   // replace the tabs
   self.viewControllers = viewControllers;
+
+  NSNumber *initialTab = tabsStyle[@"initialTabIndex"];
+  if (initialTab)
+  {
+    NSInteger initialTabIndex = initialTab.integerValue;
+    [self setSelectedIndex:initialTabIndex];
+  }
   
   [self setRotation:props];
   
@@ -230,6 +263,12 @@
       }
       else
       {
+        NSString *badgeColor = actionParams[@"badgeColor"];
+        UIColor *color = badgeColor != (id)[NSNull null] ? [RCTConvert UIColor:badgeColor] : nil;
+        
+        if ([viewController.tabBarItem respondsToSelector:@selector(badgeColor)]) {
+          viewController.tabBarItem.badgeColor = color;
+        }
         viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
       }
     }
@@ -290,8 +329,8 @@
         iconImage = [RCTConvert UIImage:icon];
         iconImage = [[self image:iconImage withColor:self.tabBar.tintColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         viewController.tabBarItem.image = iconImage;
-      
       }
+      
       UIImage *iconImageSelected = nil;
       id selectedIcon = actionParams[@"selectedIcon"];
       if (selectedIcon && selectedIcon != (id)[NSNull null])
@@ -299,12 +338,23 @@
         iconImageSelected = [RCTConvert UIImage:selectedIcon];
         viewController.tabBarItem.selectedImage = iconImageSelected;
       }
+      
+      id label = actionParams[@"label"];
+      if (label && label != (id)[NSNull null])
+      {
+        viewController.tabBarItem.title = label;
+      }
     }
   }
   
   if ([performAction isEqualToString:@"setTabBarHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
+    self.tabBarHidden = hidden;
+    
+    CGRect nextFrame = self.tabBar.frame;
+    nextFrame.origin.y = UIScreen.mainScreen.bounds.size.height - (hidden ? 0 : self.tabBar.frame.size.height);
+    
     [UIView animateWithDuration: ([actionParams[@"animated"] boolValue] ? 0.45 : 0)
                           delay: 0
          usingSpringWithDamping: 0.75
@@ -312,7 +362,7 @@
                         options: (hidden ? UIViewAnimationOptionCurveEaseIn : UIViewAnimationOptionCurveEaseOut)
                      animations:^()
      {
-       self.tabBar.transform = hidden ? CGAffineTransformMakeTranslation(0, self.tabBar.frame.size.height) : CGAffineTransformIdentity;
+         [self.tabBar setFrame:nextFrame];
      }
                      completion:^(BOOL finished)
      {

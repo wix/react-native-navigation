@@ -5,14 +5,14 @@ import PropRegistry from './PropRegistry';
 
 const NativeReactModule = NativeModules.NavigationReactModule;
 
-function startApp(activityParams) {
+async function startApp(activityParams) {
   savePassProps(activityParams);
-  NativeReactModule.startApp(activityParams);
+  return await NativeReactModule.startApp(activityParams);
 }
 
 function push(screenParams) {
   savePassProps(screenParams);
-  NativeReactModule.push(screenParams);
+  return NativeReactModule.push(screenParams);
 }
 
 function pop(screenParams) {
@@ -62,8 +62,8 @@ function dismissLightBox() {
   NativeReactModule.dismissLightBox();
 }
 
-function dismissTopModal() {
-  NativeReactModule.dismissTopModal();
+function dismissTopModal(params) {
+  NativeReactModule.dismissTopModal(params);
 }
 
 function dismissAllModals() {
@@ -121,6 +121,10 @@ function setSideMenuVisible(animated, visible, side) {
   NativeReactModule.setSideMenuVisible(animated, visible, side);
 }
 
+function setSideMenuEnabled(enabled, side) {
+  NativeReactModule.setSideMenuEnabled(enabled, side);
+}
+
 function selectTopTabByTabIndex(screenInstanceId, index) {
   NativeReactModule.selectTopTabByTabIndex(screenInstanceId, index);
 }
@@ -173,6 +177,18 @@ function setScreenStyle(screenInstanceId, style) {
   NativeReactModule.setScreenStyle(screenInstanceId, style);
 }
 
+async function isAppLaunched() {
+  return await NativeReactModule.isAppLaunched();
+}
+
+async function isRootLaunched() {
+  return await NativeReactModule.isRootLaunched();
+}
+
+async function getCurrentlyVisibleScreenId() {
+  return await NativeReactModule.getCurrentlyVisibleScreenId();
+}
+
 module.exports = {
   startApp,
   push,
@@ -195,6 +211,7 @@ module.exports = {
   dismissInAppNotification,
   toggleSideMenuVisible,
   setSideMenuVisible,
+  setSideMenuEnabled,
   selectBottomTabByNavigatorId,
   selectBottomTabByTabIndex,
   setBottomTabBadgeByNavigatorId,
@@ -205,5 +222,8 @@ module.exports = {
   dismissSnackbar,
   showContextualMenu,
   dismissContextualMenu,
-  setScreenStyle
+  setScreenStyle,
+  isAppLaunched,
+  isRootLaunched,
+  getCurrentlyVisibleScreenId
 };

@@ -10,13 +10,24 @@ Push a new screen into this screen's navigation stack.
 this.props.navigator.push({
   screen: 'example.ScreenThree', // unique ID registered with Navigation.registerScreen
   title: undefined, // navigation bar title of the pushed screen (optional)
-  titleImage: require('../../img/my_image.png'), //navigation bar title image instead of the title text of the pushed screen (optional)
+  titleImage: require('../../img/my_image.png'), // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
   passProps: {}, // Object that will be passed as props to the pushed screen (optional)
   animated: true, // does the push have transition animation or does it happen immediately (optional)
+  animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the push have different transition animation (optional)
   backButtonTitle: undefined, // override the back button title (optional)
   backButtonHidden: false, // hide the back button altogether (optional)
   navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
-  navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
+  navigatorButtons: {}, // override the nav buttons for the pushed screen (optional)
+  // enable peek and pop - commited screen will have `isPreview` prop set as true.
+  previewView: undefined, // react ref or node id (optional)
+  previewHeight: undefined, // set preview height, defaults to full height (optional)
+  previewCommit: true, // commit to push preview controller to the navigation stack (optional)
+  previewActions: [{ // action presses can be detected with the `PreviewActionPress` event on the commited screen.
+    id: '', // action id (required)
+    title: '', // action title (required)
+    style: undefined, // 'selected' or 'destructive' (optional)
+    actions: [], // list of sub-actions
+  }],
 });
 ```
 
@@ -26,7 +37,8 @@ Pop the top screen from this screen's navigation stack.
 
 ```js
 this.props.navigator.pop({
-  animated: true // does the pop have transition animation or does it happen immediately (optional)
+  animated: true, // does the pop have transition animation or does it happen immediately (optional)
+  animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
 });
 ```
 
@@ -36,7 +48,8 @@ Pop all the screens until the root from this screen's navigation stack.
 
 ```js
 this.props.navigator.popToRoot({
-  animated: true // does the pop have transition animation or does it happen immediately (optional)
+  animated: true, // does the popToRoot have transition animation or does it happen immediately (optional)
+  animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the popToRoot have different transition animation (optional)
 });
 ```
 
@@ -49,7 +62,8 @@ this.props.navigator.resetTo({
   screen: 'example.ScreenThree', // unique ID registered with Navigation.registerScreen
   title: undefined, // navigation bar title of the pushed screen (optional)
   passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
-  animated: true, // does the push have transition animation or does it happen immediately (optional)
+  animated: true, // does the resetTo have transition animation or does it happen immediately (optional)
+  animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the resetTo have different transition animation (optional)
   navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
   navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
 });
@@ -100,7 +114,8 @@ this.props.navigator.showLightBox({
  style: {
    backgroundBlur: "dark", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
    backgroundColor: "#ff000080" // tint color for the background, you can specify alpha here (optional)
- }
+ },
+ adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
 });
 ```
 
@@ -110,6 +125,18 @@ Dismiss the current lightbox.
 
 ```js
 this.props.navigator.dismissLightBox();
+```
+
+## showInAppNotification(params = {})
+
+Show in-app notification. This generally looks like a pop-up window that can appear at the top of the screen.
+
+```js
+this.props.navigator.showInAppNotification({
+ screen: "example.InAppNotification", // unique ID registered with Navigation.registerScreen
+ passProps: {}, // simple serializable object that will pass as props to the in-app notification (optional)
+ autoDismissTimerSec: 1 // auto dismiss notification in seconds
+});
 ```
 
 ## handleDeepLink(params = {})
@@ -173,6 +200,17 @@ this.props.navigator.toggleDrawer({
 });
 ```
 
+## setDrawerEnabled(params = {})
+
+Enables or disables the side menu drawer assuming you have one in your app. Both drawers are enabled by default.
+
+```js
+this.props.navigator.setDrawerEnabled({
+  side: 'left', // the side of the drawer since you can have two, 'left' / 'right'
+  enabled: false // should the drawer be enabled or disabled (locked closed)
+});
+```
+
 ## toggleTabs(params = {})
 
 Toggle whether the tabs are displayed or not (only in tab-based apps).
@@ -191,7 +229,8 @@ Set the badge on a tab (any string or numeric value).
 ```js
 this.props.navigator.setTabBadge({
   tabIndex: 0, // (optional) if missing, the badge will be added to this screen's tab
-  badge: 17 // badge value, null to remove badge
+  badge: 17, // badge value, null to remove badge
+  badgeColor: '#006400', // (optional) if missing, the badge will use the default color
 });
 ```
 ## setTabButton(params = {})
@@ -203,6 +242,7 @@ this.props.navigator.setTabButton({
   tabIndex: 0, // (optional) if missing, the icon will be added to this screen's tab
   icon: require('../img/one.png'), // local image asset for the tab icon unselected state (optional)
   selectedIcon: require('../img/one_selected.png'), // local image asset for the tab icon selected state (optional, iOS only)
+  label: 'New Label' // tab label that appears under the icon (optional)
 });
 ```
 
@@ -230,14 +270,25 @@ this.props.navigator.toggleNavBar({
 ## setOnNavigatorEvent(callback)
 
 Set a handler for navigator events (like nav button press). This would normally go in your component constructor.
+Can not be used in conjuction with `addOnNavigatorEvent`.
 
 ```js
 // this.onNavigatorEvent will be our handler
 this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 ```
 
+## addOnNavigatorEvent(callback)
+
+Add a handler for navigator events (like nav button press). This would normally go in your component constructor.
+If you choose to use `addOnNavigatorEvent` instead of `setOnNavigatorEvent` you will be able to add multiple handlers.
+Bear in mind that you can't use both `addOnNavigatorEvent` and `setOnNavigatorEvent`.
+`addOnNavigatorEvent` returns a function, that once called will remove the registered handler.
+
 # Screen Visibility
-Listen to screen visibility events in onNavigatorEvent handler:
+
+`const isVisible = await this.props.navigator.screenIsCurrentlyVisible()`
+
+## Listen visibility events in onNavigatorEvent handler
 
 ```js
 export default class ExampleScreen extends Component {
@@ -255,6 +306,36 @@ export default class ExampleScreen extends Component {
         break;
       case 'didDisappear':
         break;
+      case 'willCommitPreview':
+        break;
+    }
+  }
+}
+```
+
+## Listen to visibility events globally
+
+```js
+import {ScreenVisibilityListener as RNNScreenVisibilityListener} from 'react-native-navigation';
+
+export class ScreenVisibilityListener {
+
+  constructor() {
+    this.listener = new RNNScreenVisibilityListener({
+      didAppear: ({screen, startTime, endTime, commandType}) => {
+        console.log('screenVisibility', `Screen ${screen} displayed in ${endTime - startTime} millis after [${commandType}]`);
+      }
+    });
+  }
+
+  register() {
+    this.listener.register();
+  }
+
+  unregister() {
+    if (this.listener) {
+      this.listener.unregister();
+      this.listener = null;
     }
   }
 }
@@ -274,6 +355,18 @@ export default class ExampleScreen extends Component {
 	if (event.id === 'bottomTabSelected') {
 	  console.log('Tab selected!');
 	}
+	if (event.id === 'bottomTabReselected') {
+	  console.log('Tab reselected!');
+	}
   }
 }
 ```
+
+# Peek and pop (3D touch)
+
+react-native-navigation supports the [Peek and pop](
+https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/Adopting3DTouchOniPhone/#//apple_ref/doc/uid/TP40016543-CH1-SW3) feature by setting a react view reference as a `previewView` parameter when doing a push, more options are available in the `push` section.
+
+You can define actions and listen for interactions on the pushed screen with the `PreviewActionPress` event.
+
+Previewed screens will have the prop `isPreview` that can be used to render different things when the screen is in the "Peek" state and will then recieve a navigator event of `willCommitPreview` when in the "Pop" state.

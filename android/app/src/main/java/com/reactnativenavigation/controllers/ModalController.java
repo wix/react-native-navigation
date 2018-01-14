@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ModalDismissedEvent;
 import com.reactnativenavigation.layouts.ScreenStackContainer;
@@ -41,9 +42,9 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
         stack.add(modal);
     }
 
-    void dismissTopModal() {
+    void dismissTopModal(ScreenParams params) {
         if (isShowing()) {
-            stack.pop().dismiss();
+            stack.pop().dismiss(params);
         }
     }
 
@@ -58,8 +59,8 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
         return !stack.empty();
     }
 
-    public void push(ScreenParams params) {
-        stack.peek().push(params);
+    public void push(ScreenParams params, Promise onPushComplete) {
+        stack.peek().push(params, onPushComplete);
     }
 
     @Override
@@ -182,5 +183,13 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
         for (Modal modal : stack) {
             modal.selectTopTabByScreen(screenInstanceId);
         }
+    }
+
+    String getCurrentlyVisibleScreenId() {
+        return stack.peek().getCurrentlyVisibleScreenId();
+    }
+
+    String getCurrentlyVisibleEventId() {
+        return stack.peek().getCurrentlyVisibleEventId();
     }
 }
