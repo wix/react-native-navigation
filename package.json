@@ -66,8 +66,7 @@
     "remx": "2.x.x",
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
-    "xo": "0.18.x",
-    "react-native-interactable": "^0.1.7"
+    "xo": "0.18.x"
   },
   "babel": {
     "env": {

@@ -11,7 +11,6 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		504448FE200799EB0088B34C /* libInteractable.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 504448D7200799E40088B34C /* libInteractable.a */; };
 		7B8F30491E84151300110AEC /* libcxxreact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B8F2FDE1E840F3600110AEC /* libcxxreact.a */; };
 		7B8F304A1E84151300110AEC /* libjschelpers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B8F2FE21E840F3600110AEC /* libjschelpers.a */; };
 		7B8F304B1E84151300110AEC /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B8F2FFA1E8411A800110AEC /* libRCTActionSheet.a */; };
@@ -30,13 +29,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		504448D6200799E40088B34C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 504448D2200799E30088B34C /* Interactable.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CC0127971E3ACC3900B23C9F;
-			remoteInfo = Interactable;
-		};
 		7B49FF081E950AF400DEB3EA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7B8F2FC41E840F1A00110AEC /* ReactNativeNavigation.xcodeproj */;
@@ -264,7 +256,6 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		504448D2200799E30088B34C /* Interactable.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Interactable.xcodeproj; path = "../../node_modules/react-native-interactable/lib/ios/Interactable.xcodeproj"; sourceTree = "<group>"; };
 		7B8F2FC41E840F1A00110AEC /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = ../../lib/ios/ReactNativeNavigation.xcodeproj; sourceTree = "<group>"; };
 		7B8F2FCA1E840F3600110AEC /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		7B8F2FE51E840F6700110AEC /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -284,7 +275,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				504448FE200799EB0088B34C /* libInteractable.a in Frameworks */,
 				7B8F30491E84151300110AEC /* libcxxreact.a in Frameworks */,
 				7B8F304A1E84151300110AEC /* libjschelpers.a in Frameworks */,
 				7B8F304B1E84151300110AEC /* libRCTActionSheet.a in Frameworks */,
@@ -317,21 +307,6 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			path = playground;
-			sourceTree = "<group>";
-		};
-		504448D3200799E30088B34C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				504448D7200799E40088B34C /* libInteractable.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		504448FD200799EB0088B34C /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		7B8F2FC51E840F1A00110AEC /* Products */ = {
@@ -452,7 +427,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				504448D2200799E30088B34C /* Interactable.xcodeproj */,
 				7B8F2FC41E840F1A00110AEC /* ReactNativeNavigation.xcodeproj */,
 				7B8F2FCA1E840F3600110AEC /* React.xcodeproj */,
 				7B8F2FE51E840F6700110AEC /* RCTAnimation.xcodeproj */,
@@ -475,7 +449,6 @@
 				13B07FAE1A68108700A75B9A /* playground */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
-				504448FD200799EB0088B34C /* Frameworks */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -538,10 +511,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 504448D3200799E30088B34C /* Products */;
-					ProjectRef = 504448D2200799E30088B34C /* Interactable.xcodeproj */;
-				},
-				{
 					ProductGroup = 7B8F2FF61E8411A700110AEC /* Products */;
 					ProjectRef = 7B8F2FF51E8411A700110AEC /* RCTActionSheet.xcodeproj */;
 				},
@@ -598,13 +567,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		504448D7200799E40088B34C /* libInteractable.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libInteractable.a;
-			remoteRef = 504448D6200799E40088B34C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		7B49FF091E950AF400DEB3EA /* ReactNativeNavigationTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;

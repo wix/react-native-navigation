@@ -1,38 +1,20 @@
 const React = require('react');
 const { PureComponent } = require('react');
 
-const { Text, Button } = require('react-native');
+const { View, Text, Button } = require('react-native');
 const Navigation = require('react-native-navigation');
 
 const testIDs = require('../testIDs');
 
-const Interactable = require('react-native-interactable');
-
 class CustomDialog extends PureComponent {
+
   render() {
     return (
-      <Interactable.View
-        ref={(ref) => this.setState({ instance: ref })}
-        style={styles.root}
-        verticalOnly={true}
-        initialPosition={{ x: 0, y: 100 }}
-        snapPoints={[{ y: 100, id: 'dismissId' }, { y: 0 }]}
-        onSnap={(e) => this.onDrawerSnap(e)}
-      >
+      <View style={styles.root}>
         <Text style={styles.h1} testID={testIDs.DIALOG_HEADER}>Test view</Text>
         <Button title="OK" testID={testIDs.OK_BUTTON} onPress={() => this.onCLickOk()} />
-      </Interactable.View>
+      </View>
     );
-  }
-
-  didAppear() {
-    this.state.instance.snapTo({ index: 1 });
-  }
-
-  onDrawerSnap(event) {
-    if (event.nativeEvent.id === 'dismissId') {
-      Navigation.dismissOverlay(this.props.componentId);
-    }
   }
 
   onCLickOk() {
