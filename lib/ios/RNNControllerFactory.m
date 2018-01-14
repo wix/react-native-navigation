@@ -166,7 +166,7 @@
 	UIViewController *vc = [self fromTree:layout];
 	NSDictionary* options = layout[@"data"][@"options"];
 	RCTRootView* rootView = (RCTRootView*)vc.view;
-	rootView.passThroughTouches = [options[@"passThroughTouches"] boolValue];
+	rootView.passThroughTouches = [options[@"interceptTouches"] boolValue];
 	rootView.backgroundColor = [UIColor clearColor];
 	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
 	rootView.frame = CGRectMake(0, 0, availableSize.width, availableSize.height);
