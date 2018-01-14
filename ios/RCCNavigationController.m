@@ -13,6 +13,7 @@
 #import "RCCCustomBarButtonItem.h"
 #import "UIViewController+Rotation.h"
 #import "RCTHelpers.h"
+#import "RCTConvert+UIBarButtonSystemItem.h"
 
 @implementation RCCNavigationController
 {
@@ -40,7 +41,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   
   RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component passProps:passProps navigatorStyle:navigatorStyle globalProps:globalProps bridge:bridge];
   if (!viewController) return nil;
-  viewController.controllerId = props[@"id"];
+  viewController.controllerId = passProps[@"screenInstanceID"];
   
   NSArray *leftButtons = props[@"leftButtons"];
   if (leftButtons)
@@ -171,6 +172,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       if ([self.topViewController isKindOfClass:[RCCViewController class]])
       {
         RCCViewController *topViewController = ((RCCViewController*)self.topViewController);
+        topViewController.previewController = nil;
+        [topViewController.navigationController unregisterForPreviewingWithContext:topViewController.previewContext];
         viewController.previewActions = previewActions;
         viewController.previewCommit = actionParams[@"previewCommit"] ? [actionParams[@"previewCommit"] boolValue] : YES;
         NSNumber *previewHeight = actionParams[@"previewHeight"];
@@ -183,7 +186,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
             [bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
               UIView *view = viewRegistry[previewViewID];
               topViewController.previewView = view;
-              [topViewController registerForPreviewingWithDelegate:(id)topViewController sourceView:view];
+              topViewController.previewContext = [topViewController registerForPreviewingWithDelegate:(id)topViewController sourceView:view];
             }];
           });
           topViewController.previewController = viewController;
@@ -256,7 +259,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     if (!component) return;
     
     NSMutableDictionary *passProps = [actionParams[@"passProps"] mutableCopy];
-    passProps[@"commantType"] = @"resetTo";
+    passProps[@"commandType"] = @"resetTo";
     NSDictionary *navigatorStyle = actionParams[@"style"];
     
     RCCViewController *viewController = [[RCCViewController alloc] initWithComponent:component passProps:passProps navigatorStyle:navigatorStyle globalProps:nil bridge:bridge];
@@ -379,6 +382,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     id icon = button[@"icon"];
     if (icon) iconImage = [RCTConvert UIImage:icon];
     NSString *__nullable component = button[@"component"];
+    NSString *__nullable systemItemName = button[@"systemItem"];
+    UIBarButtonSystemItem systemItem = [RCTConvert UIBarButtonSystemItem:systemItemName];
 
     UIBarButtonItem *barButtonItem;
     if (iconImage)
@@ -392,11 +397,15 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       NSMutableDictionary *buttonTextAttributes = [RCTHelpers textAttributesFromDictionary:button withPrefix:@"button"];
       if (buttonTextAttributes.allKeys.count > 0) {
         [barButtonItem setTitleTextAttributes:buttonTextAttributes forState:UIControlStateNormal];
+        [barButtonItem setTitleTextAttributes:buttonTextAttributes forState:UIControlStateHighlighted];
       }
     }
     else if (component) {
       RCTBridge *bridge = [[RCCManager sharedInstance] getBridge];
       barButtonItem = [[RCCCustomBarButtonItem alloc] initWithComponentName:component passProps:button[@"passProps"] bridge:bridge];
+    }
+    else if (systemItemName) {
+      barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:self action:@selector(onButtonPress:)];
     }
     else continue;
     objc_setAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY, button[@"onPress"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
