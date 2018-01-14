@@ -57,12 +57,7 @@ public class BottomTabsControllerTest extends BaseTest {
         List<ViewController> tabs = createTabs();
         uut.setTabs(tabs);
         assertThat(uut.getView().getChildCount()).isEqualTo(6);
-        assertThat(uut.getChildControllers()).extracting(new Extractor<ViewController, Integer>() {
-            @Override
-            public Integer extract(final ViewController input) {
-                return input.getView().getVisibility();
-            }
-        }).containsExactly(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE);
+        assertThat(uut.getChildControllers()).extracting((Extractor<ViewController, Integer>) input -> input.getView().getVisibility()).containsExactly(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE);
     }
 
     @Test
@@ -73,12 +68,7 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.selectTabAtIndex(3);
 
         assertThat(uut.getSelectedIndex()).isEqualTo(3);
-        assertThat(uut.getChildControllers()).extracting(new Extractor<ViewController, Integer>() {
-            @Override
-            public Integer extract(final ViewController input) {
-                return input.getView().getVisibility();
-            }
-        }).containsExactly(View.GONE, View.GONE, View.GONE, View.VISIBLE, View.GONE);
+        assertThat(uut.getChildControllers()).extracting((Extractor<ViewController, Integer>) input -> input.getView().getVisibility()).containsExactly(View.GONE, View.GONE, View.GONE, View.VISIBLE, View.GONE);
     }
 
     @Test
@@ -86,9 +76,9 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(uut.findControllerById("123")).isNull();
         assertThat(uut.findControllerById(uut.getId())).isEqualTo(uut);
         StackController inner = new StackController(activity, "inner");
-        inner.push(child1);
+        inner.push(child1, new MockPromise());
         assertThat(uut.findControllerById(child1.getId())).isNull();
-        uut.setTabs(Arrays.<ViewController>asList(inner));
+        uut.setTabs(Collections.singletonList(inner));
         assertThat(uut.findControllerById(child1.getId())).isEqualTo(child1);
     }
 
