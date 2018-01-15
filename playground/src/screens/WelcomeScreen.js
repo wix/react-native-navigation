@@ -168,7 +168,12 @@ class WelcomeScreen extends Component {
   async onClickPush() {
     await Navigation.push(this.props.componentId, {
       component: {
-        name: 'navigation.playground.PushedScreen'
+        name: 'navigation.playground.PushedScreen',
+        options: {
+          topBar: {
+            title: 'pushed'
+          }
+        }
       }
     });
   }

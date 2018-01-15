@@ -41,12 +41,18 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		return false;
 	}
 
+    public void applyOptions(Options options) {
+
+    }
+
 	public Activity getActivity() {
 		return activity;
 	}
 
-    protected ViewController getParentController() {
-	    return parentController;
+	protected void applyOnParentStack(Task<ParentController> task) {
+        if (parentController != null) {
+            task.run(parentController);
+        }
     }
 
 	@Nullable
@@ -106,10 +112,6 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 
 	public void onViewDisappear() {
         isShown = false;
-    }
-
-    public void applyOptions(Options options) {
-
     }
 
 	public void destroy() {

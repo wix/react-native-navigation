@@ -50,11 +50,6 @@ public class ComponentViewController extends ViewController implements Navigatio
         this.options = initialNavigationOptions;
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    TopBar getTopBar() {
-        return component.getTopBar();
-    }
-
     @Override
     public void destroy() {
         super.destroy();
@@ -66,7 +61,10 @@ public class ComponentViewController extends ViewController implements Navigatio
     public void onViewAppeared() {
         super.onViewAppeared();
         ensureViewIsCreated();
-        component.applyOptions(options);
+        applyOnParentStack(parentController -> {
+            parentController.clearOptions();
+            parentController.applyOptions(options, component);
+        });
         component.sendComponentStart();
     }
 
@@ -92,6 +90,7 @@ public class ComponentViewController extends ViewController implements Navigatio
     public void mergeOptions(Options options) {
         this.options.mergeWith(options);
         component.applyOptions(this.options);
+        applyOnParentStack(parentController -> parentController.applyOptions(options, component));
     }
 
     Options getOptions() {

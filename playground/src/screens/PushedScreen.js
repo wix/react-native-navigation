@@ -49,6 +49,11 @@ class PushedScreen extends Component {
         passProps: {
           stackPosition: this.getStackPosition() + 1,
           previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
+        },
+        options: {
+          topBar: {
+            title: `Pushed ${this.getStackPosition() + 1}`
+          }
         }
       }
     });

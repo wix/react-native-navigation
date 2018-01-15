@@ -3,6 +3,7 @@ package com.reactnativenavigation.parse;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
+import com.reactnativenavigation.utils.NoOpPromise;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
@@ -102,7 +103,7 @@ public class LayoutFactory {
 	private ViewController createStack(LayoutNode node) {
 		StackController stackController = new StackController(activity, node.id);
 		for (LayoutNode child : node.children) {
-			stackController.push(create(child), null);
+			stackController.animatePush(create(child), new NoOpPromise());
 		}
 		return stackController;
 	}

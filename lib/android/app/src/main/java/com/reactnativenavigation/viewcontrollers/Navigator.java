@@ -12,13 +12,15 @@ import com.reactnativenavigation.parse.OverlayOptions;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.OverlayPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.NoOpPromise;
 
 import java.util.Collection;
 import java.util.Collections;
 
 public class Navigator extends ParentController {
 
-	private final ModalStack modalStack = new ModalStack();
+    private static final NoOpPromise NO_OP = new NoOpPromise();
+    private final ModalStack modalStack = new ModalStack();
 	private ViewController root;
 	private OverlayPresenter overlayPresenter;
     private Options defaultOptions = new Options();
@@ -27,7 +29,7 @@ public class Navigator extends ParentController {
 		super(activity, "navigator" + CompatUtils.generateViewId());
 	}
 
-	@NonNull
+    @NonNull
 	@Override
 	protected ViewGroup createView() {
 		return new FrameLayout(getActivity());
@@ -46,16 +48,8 @@ public class Navigator extends ParentController {
 
 	@Override
 	public void destroy() {
-		modalStack.dismissAll(null);
+		modalStack.dismissAll(NO_OP);
 		super.destroy();
-	}
-
-	/*
-	 * Navigation methods
-	 */
-
-	void setRoot(final ViewController viewController) {
-		setRoot(viewController, null);
 	}
 
 	public void setRoot(final ViewController viewController, Promise promise) {
@@ -65,9 +59,7 @@ public class Navigator extends ParentController {
 
 		root = viewController;
 		getView().addView(viewController.getView());
-		if (promise != null) {
-			promise.resolve(viewController.getId());
-		}
+        promise.resolve(viewController.getId());
 	}
 
     public void setDefaultOptions(Options defaultOptions) {
@@ -88,19 +80,11 @@ public class Navigator extends ParentController {
 		}
 	}
 
-	public void push(final String fromId, final ViewController viewController) {
-		push(fromId, viewController, null);
-	}
-
 	public void push(final String fromId, final ViewController viewController, Promise promise) {
 		ViewController from = findControllerById(fromId);
 		if (from != null) {
-		    from.performOnParentStack(stack -> stack.push(viewController, promise));
+		    from.performOnParentStack(stack -> stack.animatePush(viewController, promise));
 		}
-	}
-
-	void pop(final String fromId) {
-		pop(fromId, null);
 	}
 
 	void pop(final String fromId, Promise promise) {
@@ -108,10 +92,6 @@ public class Navigator extends ParentController {
 		if (from != null) {
 		    from.performOnParentStack(stack -> stack.pop(promise));
 		}
-	}
-
-	void popSpecific(final String id) {
-		popSpecific(id, null);
 	}
 
 	public void popSpecific(final String id, Promise promise) {
@@ -123,19 +103,11 @@ public class Navigator extends ParentController {
 		}
 	}
 
-	void popToRoot(final String id) {
-		popToRoot(id, null);
-	}
-
 	public void popToRoot(final String id, Promise promise) {
 		ViewController from = findControllerById(id);
 		if (from != null) {
 		    from.performOnParentStack(stack -> stack.popToRoot(promise));
 		}
-	}
-
-	void popTo(final String componentId) {
-		popTo(componentId, null);
 	}
 
 	public void popTo(final String componentId, Promise promise) {
@@ -170,9 +142,7 @@ public class Navigator extends ParentController {
 	}
 
 	static void rejectPromise(Promise promise) {
-		if (promise != null) {
-			promise.reject(new Throwable("Nothing to pop"));
-		}
+        promise.reject(new Throwable("Nothing to pop"));
 	}
 
     @Nullable
