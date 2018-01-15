@@ -4,18 +4,18 @@ const renderer = require('react-test-renderer');
 const { Provider } = require('react-redux');
 
 describe('redux support', () => {
-  let MyConnectedContainer;
+  let MyConnectedComponent;
   let store;
 
   beforeEach(() => {
-    MyConnectedContainer = require('./MyContainer');
+    MyConnectedComponent = require('./MyComponent');
     store = require('./MyStore');
   });
 
   it('renders normally', () => {
     const tree = renderer.create(
       <Provider store={store.reduxStore}>
-        <MyConnectedContainer />
+        <MyConnectedComponent />
       </Provider>
     );
     expect(tree.toJSON().children).toEqual(['no name']);
@@ -25,7 +25,7 @@ describe('redux support', () => {
     const renderCountIncrement = jest.fn();
     const tree = renderer.create(
       <Provider store={store.reduxStore}>
-        <MyConnectedContainer renderCountIncrement={renderCountIncrement} />
+        <MyConnectedComponent renderCountIncrement={renderCountIncrement} />
       </Provider>
     );
 
@@ -43,7 +43,7 @@ describe('redux support', () => {
     const renderCountIncrement = jest.fn();
     const tree = renderer.create(
       <Provider store={store.reduxStore}>
-        <MyConnectedContainer printAge={true} renderCountIncrement={renderCountIncrement} />
+        <MyConnectedComponent printAge={true} renderCountIncrement={renderCountIncrement} />
       </Provider>
     );
 

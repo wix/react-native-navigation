@@ -30,7 +30,7 @@
 	
 	UIView *view = [[RNNReactRootView alloc] initWithBridge:_bridge
 										 moduleName:name
-								  initialProperties:@{@"containerId": rootViewId}];
+								  initialProperties:@{@"componentId": rootViewId}];
 	return view;
 }
 

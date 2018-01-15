@@ -1,34 +1,52 @@
 #import "RNNEventEmitter.h"
 
-@implementation RNNEventEmitter
+@implementation RNNEventEmitter {
+  NSInteger _appLaunchedListenerCount;
+  BOOL _appLaunchedEventDeferred;
+}
 
 RCT_EXPORT_MODULE();
 
 static NSString* const onAppLaunched	= @"RNN.appLaunched";
-static NSString* const containerDidAppear	= @"RNN.containerDidAppear";
-static NSString* const containerDidDisappear	= @"RNN.containerDidDisappear";
+static NSString* const componentDidAppear	= @"RNN.componentDidAppear";
+static NSString* const componentDidDisappear	= @"RNN.componentDidDisappear";
 static NSString* const onNavigationButtonPressed	= @"RNN.navigationButtonPressed";
 
 -(NSArray<NSString *> *)supportedEvents {
-	return @[onAppLaunched, containerDidAppear, containerDidDisappear, onNavigationButtonPressed];
+	return @[onAppLaunched, componentDidAppear, componentDidDisappear, onNavigationButtonPressed];
 }
 
 # pragma mark public
 
 -(void)sendOnAppLaunched {
-	[self send:onAppLaunched body:nil];
+	if (_appLaunchedListenerCount > 0) {
+		[self send:onAppLaunched body:nil];
+	} else {
+		_appLaunchedEventDeferred = TRUE;
+	}
 }
 
--(void)sendContainerDidAppear:(NSString *)containerId {
-	[self send:containerDidAppear body:containerId];
+-(void)sendComponentDidAppear:(NSString *)componentId {
+	[self send:componentDidAppear body:componentId];
 }
 
--(void)sendContainerDidDisappear:(NSString *)containerId {
-	[self send:containerDidDisappear body:containerId];
+-(void)sendComponentDidDisappear:(NSString *)componentId {
+	[self send:componentDidDisappear body:componentId];
 }
 
--(void)sendOnNavigationButtonPressed:(NSString *)containerId buttonId:(NSString*)buttonId {
-	[self send:onNavigationButtonPressed body:@{@"containerId":containerId , @"buttonId": buttonId }];
+-(void)sendOnNavigationButtonPressed:(NSString *)componentId buttonId:(NSString*)buttonId {
+	[self send:onNavigationButtonPressed body:@{@"componentId":componentId , @"buttonId": buttonId }];
+}
+
+- (void)addListener:(NSString *)eventName {
+	[super addListener:eventName];
+	if ([eventName isEqualToString:onAppLaunched]) {
+		_appLaunchedListenerCount++;
+		if (_appLaunchedEventDeferred) {
+			_appLaunchedEventDeferred = FALSE;
+			[self sendOnAppLaunched];
+		}
+	}
 }
 
 # pragma mark private

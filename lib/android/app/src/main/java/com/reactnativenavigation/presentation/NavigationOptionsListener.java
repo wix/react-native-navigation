@@ -1,8 +1,8 @@
 package com.reactnativenavigation.presentation;
 
 
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.Options;
 
 public interface NavigationOptionsListener {
-	void mergeNavigationOptions(NavigationOptions options);
+	void mergeOptions(Options options);
 }

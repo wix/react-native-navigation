@@ -3,10 +3,10 @@ package com.reactnativenavigation.views;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.react.ReactContainerViewCreator;
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.reactnativenavigation.react.ReactComponentViewCreator;
+import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 
-public class TopTabCreator implements ContainerViewController.ReactViewCreator {
+public class TopTabCreator implements ComponentViewController.ReactViewCreator {
 
 
     private ReactInstanceManager instanceManager;
@@ -16,8 +16,8 @@ public class TopTabCreator implements ContainerViewController.ReactViewCreator {
     }
 
 	@Override
-	public ContainerViewController.IReactView create(Activity activity, String containerId, String containerName) {
-        ContainerViewController.IReactView reactView = new ReactContainerViewCreator(instanceManager).create(activity, containerId, containerName);
+	public ComponentViewController.IReactView create(Activity activity, String componentId, String componentName) {
+        ComponentViewController.IReactView reactView = new ReactComponentViewCreator(instanceManager).create(activity, componentId, componentName);
         return new TopTab(activity, reactView);
 	}
 }

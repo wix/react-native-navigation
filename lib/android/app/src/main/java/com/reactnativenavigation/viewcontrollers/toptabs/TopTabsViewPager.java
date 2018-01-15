@@ -5,7 +5,7 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
 import java.util.List;
@@ -39,6 +39,6 @@ public class TopTabsViewPager extends ViewPager {
     }
 
     public void sendOnNavigationButtonPressed(String id) {
-        ((ContainerViewController.IReactView) tabs.get(getCurrentItem()).getView()).sendOnNavigationButtonPressed(id);
+        ((ComponentViewController.IReactView) tabs.get(getCurrentItem()).getView()).sendOnNavigationButtonPressed(id);
     }
 }

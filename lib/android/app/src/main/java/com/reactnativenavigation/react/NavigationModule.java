@@ -13,13 +13,12 @@ import com.reactnativenavigation.parse.JSONParser;
 import com.reactnativenavigation.parse.LayoutFactory;
 import com.reactnativenavigation.parse.LayoutNode;
 import com.reactnativenavigation.parse.LayoutNodeParser;
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OverlayOptions;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.overlay.OverlayFactory;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
 	private static final String NAME = "RNNBridgeModule";
@@ -47,38 +46,38 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void setDefaultOptions(final ReadableMap options) {
-        final NavigationOptions defaultOptions = NavigationOptions.parse(new TypefaceLoader(activity()), JSONParser.parse(options));
+        final Options defaultOptions = Options.parse(new TypefaceLoader(activity()), JSONParser.parse(options));
         handle(() -> navigator().setDefaultOptions(defaultOptions));
     }
 
 	@ReactMethod
-	public void setOptions(final String onContainerId, final ReadableMap options) {
-		final NavigationOptions navOptions = NavigationOptions.parse(new TypefaceLoader(activity()), JSONParser.parse(options));
-		handle(() -> navigator().setOptions(onContainerId, navOptions));
+	public void setOptions(final String onComponentId, final ReadableMap options) {
+		final Options navOptions = Options.parse(new TypefaceLoader(activity()), JSONParser.parse(options));
+		handle(() -> navigator().setOptions(onComponentId, navOptions));
 	}
 
 	@ReactMethod
-	public void push(final String onContainerId, final ReadableMap rawLayoutTree, final Promise promise) {
+	public void push(final String onComponentId, final ReadableMap rawLayoutTree, final Promise promise) {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
-            navigator().push(onContainerId, viewController, promise);
+            navigator().push(onComponentId, viewController, promise);
         });
 	}
 
 	@ReactMethod
-	public void pop(final String onContainerId, final ReadableMap options, final Promise promise) {
-		handle(() -> navigator().popSpecific(onContainerId, promise));
+	public void pop(final String onComponentId, final ReadableMap options, final Promise promise) {
+		handle(() -> navigator().popSpecific(onComponentId, promise));
 	}
 
 	@ReactMethod
-	public void popTo(final String containerId, final Promise promise) {
-		handle(() -> navigator().popTo(containerId, promise));
+	public void popTo(final String componentId, final Promise promise) {
+		handle(() -> navigator().popTo(componentId, promise));
 	}
 
 	@ReactMethod
-	public void popToRoot(final String containerId, final Promise promise) {
-		handle(() -> navigator().popToRoot(containerId, promise));
+	public void popToRoot(final String componentId, final Promise promise) {
+		handle(() -> navigator().popToRoot(componentId, promise));
 	}
 
 	@ReactMethod
@@ -91,8 +90,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void dismissModal(final String containerId, final Promise promise) {
-		handle(() -> navigator().dismissModal(containerId, promise));
+	public void dismissModal(final String componentId, final Promise promise) {
+		handle(() -> navigator().dismissModal(componentId, promise));
 	}
 
 	@ReactMethod
@@ -102,18 +101,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void showOverlay(final String type, final ReadableMap data, final Promise promise) {
-		if (OverlayFactory.Overlay.create(type) == OverlayFactory.Overlay.CustomDialog) {
-			final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(data));
-			handle(() -> {
-                ViewController viewController = newLayoutFactory().create(layoutTree);
-                navigator().showOverlay(type, OverlayOptions.create(viewController), promise);
-            });
-		} else {
-			final OverlayOptions overlayOptions = OverlayOptions.parse(JSONParser.parse(data));
-			handle(() -> navigator().showOverlay(type, overlayOptions, promise));
-		}
-
-
+        final OverlayOptions overlayOptions = OverlayOptions.parse(JSONParser.parse(data));
+        handle(() -> navigator().showOverlay(type, overlayOptions, promise));
 	}
 
 	@ReactMethod

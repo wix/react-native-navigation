@@ -27,11 +27,11 @@ public class OverlayOptions {
 		return options;
 	}
 
-	public static OverlayOptions create(ViewController containerView) {
+	public static OverlayOptions create(ViewController componentView) {
 		OverlayOptions options = new OverlayOptions();
-		if (containerView == null) return options;
+		if (componentView == null) return options;
 
-		options.customView = containerView;
+		options.customView = componentView;
 		return options;
 	}
 

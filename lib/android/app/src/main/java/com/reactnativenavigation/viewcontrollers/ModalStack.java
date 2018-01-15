@@ -1,7 +1,9 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.facebook.react.bridge.Promise;
@@ -26,13 +28,13 @@ public class ModalStack {
 		}
 	}
 
-	public void dismissModal(final String containerId, Promise promise) {
-		Modal modal = findModalByContainerId(containerId);
+	public void dismissModal(final String componentId, Promise promise) {
+		Modal modal = findModalByComponentId(componentId);
 		if (modal != null) {
 			modal.dismiss();
 			modals.remove(modal);
 			if (promise != null) {
-				promise.resolve(containerId);
+				promise.resolve(componentId);
 			}
 		} else {
 			Navigator.rejectPromise(promise);
@@ -50,22 +52,29 @@ public class ModalStack {
 	}
 
 	@Nullable
-	private Modal findModalByContainerId(String containerId) {
+	private Modal findModalByComponentId(String componentId) {
 		for (Modal modal : modals) {
-			if (modal.containsDeepContainerId(containerId)) {
+			if (modal.containsDeepComponentId(componentId)) {
 				return modal;
 			}
 		}
 		return null;
 	}
 
-	private static class Modal {
-		private final ViewController viewController;
+	@Nullable
+    ViewController findControllerById(String id) {
+        Modal modal = findModalByComponentId(id);
+        return modal != null ? modal.viewController : null;
+    }
+
+    private static class Modal implements DialogInterface.OnKeyListener {
+		public final ViewController viewController;
 		private final Dialog dialog;
 
 		Modal(final ViewController viewController) {
 			this.viewController = viewController;
 			dialog = new Dialog(viewController.getActivity(), R.style.Modal);
+			dialog.setOnKeyListener(this);
 		}
 
 		void show() {
@@ -78,13 +87,26 @@ public class ModalStack {
 			dialog.dismiss();
 		}
 
-		boolean containsDeepContainerId(String containerId) {
-			return viewController.findControllerById(containerId) != null;
+		boolean containsDeepComponentId(String componentId) {
+			return viewController.findControllerById(componentId) != null;
 		}
 
 		private void preMeasureView() {
 			View decorView = viewController.getActivity().getWindow().getDecorView();
 			viewController.getView().measure(makeMeasureSpec(decorView.getMeasuredWidth(), EXACTLY), makeMeasureSpec(decorView.getMeasuredHeight(), EXACTLY));
 		}
-	}
+
+        @Override
+        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                if (event.getAction() == KeyEvent.ACTION_UP) {
+                    if (viewController.handleBack()) {
+                        return true;
+                    }
+                    dialog.dismiss();
+                }
+            }
+            return false;
+        }
+    }
 }

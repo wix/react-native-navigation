@@ -1,32 +1,31 @@
 package com.reactnativenavigation.presentation;
 
-import android.view.View;
-
-import com.reactnativenavigation.anim.StackAnimator;
 import com.reactnativenavigation.parse.Button;
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
+import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.ArrayList;
 
+import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
+import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
+
 public class OptionsPresenter {
 
-	private final StackAnimator animator;
-    private View contentView;
+    private Component reactComponent;
     private TopBar topBar;
 
-    public OptionsPresenter(TopBar topBar, View contentView) {
-        this.topBar = topBar;
-        this.contentView = contentView;
-        animator = new StackAnimator(topBar.getContext());
+    public OptionsPresenter(Component reactComponent) {
+        this.reactComponent = reactComponent;
+        this.topBar = reactComponent.getTopBar();
     }
 
-    public void applyOptions(NavigationOptions options) {
+    public void applyOptions(Options options) {
         applyTopBarOptions(options.topBarOptions);
-        applyButtons(options.leftButtons, options.rightButtons);
+        applyButtons(options.topBarOptions.leftButtons, options.topBarOptions.rightButtons);
         applyTopTabsOptions(options.topTabsOptions);
         applyTopTabOptions(options.topTabOptions);
     }
@@ -38,35 +37,24 @@ public class OptionsPresenter {
         topBar.setTitleFontSize(options.textFontSize);
 
         topBar.setTitleTypeface(options.textFontFamily);
-        if (options.hidden == NavigationOptions.BooleanOptions.True) {
-            hideTopBar(options.animateHide);
+        if (options.hidden == Options.BooleanOptions.True) {
+            topBar.hide(options.animateHide);
         }
-        if (options.hidden == NavigationOptions.BooleanOptions.False) {
-            showTopBar(options.animateHide);
+        if (options.hidden == Options.BooleanOptions.False) {
+            topBar.show(options.animateHide);
+        }
+        if (options.drawBehind == True) {
+            reactComponent.drawBehindTopBar();
+        } else if (options.drawBehind == False) {
+            reactComponent.drawBelowTopBar();
+        }
+
+        if (options.hideOnScroll == True) {
+            topBar.enableCollapse();
+        } else if (options.hideOnScroll == False) {
+            topBar.disableCollapse();
         }
     }
-
-	private void showTopBar(NavigationOptions.BooleanOptions animated) {
-		if (topBar.getVisibility() == View.VISIBLE) {
-			return;
-		}
-		if (animated == NavigationOptions.BooleanOptions.True) {
-			animator.animateShowTopBar(topBar, contentView);
-		} else {
-			topBar.setVisibility(View.VISIBLE);
-		}
-	}
-
-	private void hideTopBar(NavigationOptions.BooleanOptions animated) {
-		if (topBar.getVisibility() == View.GONE) {
-			return;
-		}
-		if (animated == NavigationOptions.BooleanOptions.True) {
-			animator.animateHideTopBar(topBar, contentView);
-		} else {
-			topBar.setVisibility(View.GONE);
-		}
-	}
 
     private void applyButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
         topBar.setButtons(leftButtons, rightButtons);

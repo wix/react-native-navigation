@@ -3,17 +3,15 @@ package com.reactnativenavigation.parse;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.react.ReactContainerViewCreator;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.BottomTabsController;
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.SideMenuController;
 import com.reactnativenavigation.viewcontrollers.StackController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.overlay.DialogViewController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
-import com.reactnativenavigation.views.ContainerViewCreator;
+import com.reactnativenavigation.views.ComponentViewCreator;
 import com.reactnativenavigation.views.TopTabsLayoutCreator;
 
 import java.util.ArrayList;
@@ -23,10 +21,10 @@ public class LayoutFactory {
 
 	private final Activity activity;
 	private final ReactInstanceManager reactInstanceManager;
-    private NavigationOptions defaultOptions;
+    private Options defaultOptions;
     private final TypefaceLoader typefaceManager;
 
-    public LayoutFactory(Activity activity, final ReactInstanceManager reactInstanceManager, NavigationOptions defaultOptions) {
+    public LayoutFactory(Activity activity, final ReactInstanceManager reactInstanceManager, Options defaultOptions) {
 		this.activity = activity;
 		this.reactInstanceManager = reactInstanceManager;
         this.defaultOptions = defaultOptions;
@@ -35,10 +33,10 @@ public class LayoutFactory {
 
 	public ViewController create(final LayoutNode node) {
 		switch (node.type) {
-			case Container:
-				return createContainer(node);
-			case ContainerStack:
-				return createContainerStack(node);
+			case Component:
+				return createComponent(node);
+			case Stack:
+				return createStack(node);
 			case BottomTabs:
 				return createBottomTabs(node);
 			case SideMenuRoot:
@@ -49,12 +47,8 @@ public class LayoutFactory {
 				return createSideMenuLeft(node);
 			case SideMenuRight:
 				return createSideMenuRight(node);
-			case CustomDialog:
-				return createDialogContainer(node);
             case TopTabs:
                 return createTopTabs(node);
-            case TopTab:
-                return createTopTab(node);
 			default:
 				throw new IllegalArgumentException("Invalid node type: " + node.type);
 		}
@@ -93,19 +87,19 @@ public class LayoutFactory {
 		return create(node.children.get(0));
 	}
 
-	private ViewController createContainer(LayoutNode node) {
+	private ViewController createComponent(LayoutNode node) {
 		String id = node.id;
 		String name = node.data.optString("name");
-		NavigationOptions navigationOptions = NavigationOptions.parse(typefaceManager, node.data.optJSONObject("navigationOptions"), defaultOptions);
-		return new ContainerViewController(activity,
+		Options options = Options.parse(typefaceManager, node.data.optJSONObject("options"), defaultOptions);
+		return new ComponentViewController(activity,
                 id,
                 name,
-                new ContainerViewCreator(reactInstanceManager),
-                navigationOptions
+                new ComponentViewCreator(reactInstanceManager),
+                options
         );
 	}
 
-	private ViewController createContainerStack(LayoutNode node) {
+	private ViewController createStack(LayoutNode node) {
 		StackController stackController = new StackController(activity, node.id);
 		for (LayoutNode child : node.children) {
 			stackController.push(create(child), null);
@@ -114,20 +108,13 @@ public class LayoutFactory {
 	}
 
 	private ViewController createBottomTabs(LayoutNode node) {
-		final BottomTabsController tabsContainer = new BottomTabsController(activity, node.id);
+		final BottomTabsController tabsComponent = new BottomTabsController(activity, node.id);
 		List<ViewController> tabs = new ArrayList<>();
 		for (int i = 0; i < node.children.size(); i++) {
 			tabs.add(create(node.children.get(i)));
 		}
-		tabsContainer.setTabs(tabs);
-		return tabsContainer;
-	}
-
-	private ViewController createDialogContainer(LayoutNode node) {
-		String id = node.id;
-		String name = node.data.optString("name");
-		ReactContainerViewCreator creator = new ReactContainerViewCreator(reactInstanceManager);
-		return new DialogViewController(activity, id, name, creator);
+		tabsComponent.setTabs(tabs);
+		return tabsComponent;
 	}
 
     private ViewController createTopTabs(LayoutNode node) {
@@ -137,19 +124,7 @@ public class LayoutFactory {
             tabController.setTabIndex(i);
             tabs.add(tabController);
         }
-        NavigationOptions navigationOptions = NavigationOptions.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);
-        return new TopTabsController(activity, node.id, tabs, new TopTabsLayoutCreator(activity, tabs), navigationOptions);
-    }
-
-    private ViewController createTopTab(LayoutNode node) {
-        String id = node.id;
-        String name = node.data.optString("name");
-        NavigationOptions navigationOptions = NavigationOptions.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);
-        return new TopTabController(activity,
-                id,
-                name,
-                new ReactContainerViewCreator(reactInstanceManager),
-                navigationOptions
-        );
+        Options options = Options.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);
+        return new TopTabsController(activity, node.id, tabs, new TopTabsLayoutCreator(activity, tabs), options);
     }
 }

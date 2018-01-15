@@ -2,11 +2,12 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Promise;
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OverlayOptions;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.OverlayPresenter;
@@ -20,7 +21,7 @@ public class Navigator extends ParentController {
 	private final ModalStack modalStack = new ModalStack();
 	private ViewController root;
 	private OverlayPresenter overlayPresenter;
-    private NavigationOptions defaultOptions = new NavigationOptions();
+    private Options defaultOptions = new Options();
 
     public Navigator(final Activity activity) {
 		super(activity, "navigator" + CompatUtils.generateViewId());
@@ -35,7 +36,7 @@ public class Navigator extends ParentController {
 	@NonNull
 	@Override
 	public Collection<ViewController> getChildControllers() {
-		return root == null ? Collections.<ViewController>emptyList() : Collections.singletonList(root);
+		return root == null ? Collections.emptyList() : Collections.singletonList(root);
 	}
 
 	@Override
@@ -69,21 +70,21 @@ public class Navigator extends ParentController {
 		}
 	}
 
-    public void setDefaultOptions(NavigationOptions defaultOptions) {
+    public void setDefaultOptions(Options defaultOptions) {
         this.defaultOptions = defaultOptions;
     }
 
-    public NavigationOptions getDefaultOptions() {
+    public Options getDefaultOptions() {
         return defaultOptions;
     }
 
-	public void setOptions(final String containerId, NavigationOptions options) {
-		ViewController target = findControllerById(containerId);
+	public void setOptions(final String componentId, Options options) {
+		ViewController target = findControllerById(componentId);
 		if (target instanceof NavigationOptionsListener) {
-			((NavigationOptionsListener) target).mergeNavigationOptions(options);
+			((NavigationOptionsListener) target).mergeOptions(options);
 		}
 		if (root instanceof NavigationOptionsListener) {
-			((NavigationOptionsListener) root).mergeNavigationOptions(options);
+			((NavigationOptionsListener) root).mergeOptions(options);
 		}
 	}
 
@@ -133,12 +134,12 @@ public class Navigator extends ParentController {
 		}
 	}
 
-	void popTo(final String containerId) {
-		popTo(containerId, null);
+	void popTo(final String componentId) {
+		popTo(componentId, null);
 	}
 
-	public void popTo(final String containerId, Promise promise) {
-		ViewController target = findControllerById(containerId);
+	public void popTo(final String componentId, Promise promise) {
+		ViewController target = findControllerById(componentId);
 		if (target != null) {
 		    target.performOnParentStack(stack -> stack.popTo(target, promise), () -> rejectPromise(promise));
 		} else {
@@ -150,8 +151,8 @@ public class Navigator extends ParentController {
 		modalStack.showModal(viewController, promise);
 	}
 
-	public void dismissModal(final String containerId, Promise promise) {
-		modalStack.dismissModal(containerId, promise);
+	public void dismissModal(final String componentId, Promise promise) {
+		modalStack.dismissModal(componentId, promise);
 	}
 
 	public void dismissAllModals(Promise promise) {
@@ -173,4 +174,11 @@ public class Navigator extends ParentController {
 			promise.reject(new Throwable("Nothing to pop"));
 		}
 	}
+
+    @Nullable
+    @Override
+    public ViewController findControllerById(String id) {
+        ViewController controllerById = super.findControllerById(id);
+        return controllerById != null ? controllerById : modalStack.findControllerById(id);
+    }
 }

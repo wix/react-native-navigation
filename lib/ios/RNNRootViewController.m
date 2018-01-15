@@ -2,12 +2,10 @@
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
-#import "RNNNavigationButtons.h"
 
 @interface RNNRootViewController()
-@property (nonatomic, strong) NSString* containerName;
+@property (nonatomic, strong) NSString* componentName;
 @property (nonatomic) BOOL _statusBarHidden;
-@property (nonatomic, strong) RNNNavigationButtons* navigationButtons;
 
 @end
 
@@ -15,17 +13,17 @@
 
 -(instancetype)initWithName:(NSString*)name
 				withOptions:(RNNNavigationOptions*)options
-			withContainerId:(NSString*)containerId
+			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter
 				   animator:(RNNAnimator *)animator {
 	self = [super init];
-	self.containerId = containerId;
-	self.containerName = name;
-	self.navigationOptions = options;
+	self.componentId = componentId;
+	self.componentName = name;
+	self.options = options;
 	self.eventEmitter = eventEmitter;
 	self.animator = animator;
-	self.view = [creator createRootView:self.containerName rootViewId:self.containerId];
+	self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(onJsReload)
@@ -33,58 +31,57 @@
 											   object:nil];
 	self.navigationController.modalPresentationStyle = UIModalPresentationCustom;
 	self.navigationController.delegate = self;
-	self.navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:self];
+
 	return self;
 }
 	
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
-	[self.navigationOptions applyOn:self];
-	[self applyNavigationButtons];
+	[self.options applyOn:self];
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 }
 
--(BOOL)isAnimated {
-	return self.animator;
+-(BOOL)isCustomTransitioned {
+	return self.animator != nil;
 }
 
 - (BOOL)prefersStatusBarHidden {
-	if ([self.navigationOptions.statusBarHidden boolValue]) {
+	if ([self.options.statusBarHidden boolValue]) {
 		return YES;
-	} else if ([self.navigationOptions.statusBarHideWithTopBar boolValue]) {
+	} else if ([self.options.statusBarHideWithTopBar boolValue]) {
 		return self.navigationController.isNavigationBarHidden;
 	}
 	return NO;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-	return self.navigationOptions.supportedOrientations;
+	return self.options.supportedOrientations;
 }
 
 - (BOOL)hidesBottomBarWhenPushed
 {
-	if (self.navigationOptions.bottomTabs && self.navigationOptions.bottomTabs.hidden) {
-		return [self.navigationOptions.bottomTabs.hidden boolValue];
+	if (self.options.bottomTabs && self.options.bottomTabs.hidden) {
+		return [self.options.bottomTabs.hidden boolValue];
 	}
 	return NO;
 }
 
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	[self.eventEmitter sendContainerDidAppear:self.containerId];
+	[self.eventEmitter sendComponentDidAppear:self.componentId];
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
-	[self.eventEmitter sendContainerDidDisappear:self.containerId];
+	[self.eventEmitter sendComponentDidDisappear:self.componentId];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
 	RNNRootViewController* vc =  (RNNRootViewController*)viewController;
-	if (![vc.navigationOptions.backButtonTransition isEqualToString:@"custom"]){
+	if (![vc.options.backButtonTransition isEqualToString:@"custom"]){
 		navigationController.delegate = nil;
 	}
 }
@@ -106,16 +103,12 @@
 
 }
 
--(void)applyNavigationButtons{
-	[self.navigationButtons applyLeftButtons:self.navigationOptions.leftButtons rightButtons:self.navigationOptions.rightButtons];
-}
-
 -(void)applyTabBarItem {
-	[self.navigationOptions applyTabBarItemOptions:self];
+	[self.options.bottomTab applyOn:self];
 }
 
 -(void)applyTopTabsOptions {
-	[self.navigationOptions applyTopTab:self];
+	[self.options.topTab applyOn:self];
 }
 
 /**

@@ -90,7 +90,7 @@
 	return YES;
 }
 - (void)animationEnded:(BOOL)transitionCompleted {
-	
+
 }
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
@@ -104,8 +104,8 @@
 	self.transitionContext = transitionContext;
 	UIViewController* toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 	UIViewController* fromVC  = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-	UIView* containerView = [transitionContext containerView];
-	
+	UIView* componentView = [transitionContext containerView];
+
 	toVC.view.frame = fromVC.view.frame;
 	UIView* topViewContent = [self.topView subviews][0];
 	UIImage* image = [[self.topView subviews][0] image];
@@ -122,8 +122,8 @@
 	[self.bottomView setHidden:YES];
 	UIView* toSnapshot = [toVC.view snapshotViewAfterScreenUpdates:true];
 	toSnapshot.frame = fromVC.view.frame;
-	[containerView insertSubview:(UIView *)toSnapshot atIndex:1];
-	[containerView addSubview:self.imageSnapshot];
+	[componentView insertSubview:(UIView *)toSnapshot atIndex:1];
+	[componentView addSubview:self.imageSnapshot];
 	toSnapshot.alpha = 0.0;
 	[self.topView setHidden:YES];
 	[UIView animateKeyframesWithDuration:(NSTimeInterval)[self transitionDuration:transitionContext]
@@ -141,13 +141,13 @@
 								  [self.imageSnapshot removeFromSuperview];
 								  self.totalTranslate = 0;
 								  if (![transitionContext transitionWasCancelled]) {
-									  [containerView addSubview: toVC.view];
+									  [componentView addSubview: toVC.view];
 									  [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-									  
+
 								  }
 								  if ([transitionContext transitionWasCancelled]) {
 									  [self.topView setHidden:NO];
-									  [containerView addSubview: fromVC.view];
+									  [componentView addSubview: fromVC.view];
 									  [transitionContext completeTransition:NO];
 								  }
 							  }];
@@ -157,15 +157,15 @@
 								  animationControllerForOperation:(UINavigationControllerOperation)operation
 											   fromViewController:(UIViewController*)fromVC
 												 toViewController:(UIViewController*)toVC {
-	
+
 		if (operation == UINavigationControllerOperationPop) {
 			return self;
 		} else {
 			return nil;
 		}
-	
+
 	return nil;
-	
+
 }
 - (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
 						 interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController {

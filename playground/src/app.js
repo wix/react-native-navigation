@@ -1,12 +1,18 @@
 const Navigation = require('react-native-navigation');
-const { registerContainers } = require('./containers');
+const { registerScreens } = require('./screens');
 
 function start() {
-  registerContainers();
+  registerScreens();
   Navigation.events().onAppLaunched(() => {
     Navigation.setRoot({
-      container: {
-        name: 'navigation.playground.WelcomeScreen'
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'navigation.playground.WelcomeScreen'
+            }
+          }
+        ]
       }
     });
   });

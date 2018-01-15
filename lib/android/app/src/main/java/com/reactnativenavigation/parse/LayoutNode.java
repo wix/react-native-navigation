@@ -7,16 +7,14 @@ import java.util.List;
 
 public class LayoutNode {
 	public enum Type {
-		Container,
-		ContainerStack,
+		Component,
+		Stack,
 		BottomTabs,
 		SideMenuRoot,
 		SideMenuCenter,
 		SideMenuLeft,
 		SideMenuRight,
-		CustomDialog,
-        TopTabs,
-        TopTab
+        TopTabs
 	}
 
 	public final String id;
@@ -37,6 +35,6 @@ public class LayoutNode {
 	}
 
     JSONObject getNavigationOptions() {
-	    return data.optJSONObject("navigationOptions");
+	    return data.optJSONObject("options");
     }
 }

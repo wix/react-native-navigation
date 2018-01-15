@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) id<RNNRootViewCreator> creator;
 @property (nonatomic, strong) NSString* pageName;
-@property (nonatomic, strong) NSString* containerId;
+@property (nonatomic, strong) NSString* componentId;
 @property (nonatomic, strong) id emitter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNRootViewController* uut;
@@ -24,10 +24,10 @@
 	[super setUp];
 	self.creator = [[RNNTestRootViewCreator alloc] init];
 	self.pageName = @"somename";
-	self.containerId = @"cntId";
+	self.componentId = @"cntId";
 	self.emitter = nil;
 	self.options = [RNNNavigationOptions new];
-	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withContainerId:self.containerId rootViewCreator:self.creator eventEmitter:self.emitter animator:nil];
+	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withComponentId:self.componentId rootViewCreator:self.creator eventEmitter:self.emitter animator:nil];
 }
 
 -(void)testTopBarBackgroundColor_validColor{
@@ -174,7 +174,7 @@
 
 -(void)testTabBadge {
 	NSString* tabBadgeInput = @"5";
-	self.options.tabItem.badge = tabBadgeInput;
+	self.options.bottomTab.badge = tabBadgeInput;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
 	UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"A Tab" image:nil tag:1];
@@ -355,7 +355,7 @@
 }
 
 -(void)testRightButtonsWithTitle_withoutStyle {
-	self.options.rightButtons = @[@{@"id": @"testId", @"title": @"test"}];
+	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -370,7 +370,7 @@
 -(void)testRightButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
 	
-	self.options.rightButtons = @[@{@"id": @"testId", @"title": @"test", @"disabled": @true, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test", @"disabled": @true, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -386,7 +386,7 @@
 
 
 -(void)testLeftButtonsWithTitle_withoutStyle {
-	self.options.leftButtons = @[@{@"id": @"testId", @"title": @"test"}];
+	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -401,7 +401,7 @@
 -(void)testLeftButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
 	
-	self.options.leftButtons = @[@{@"id": @"testId", @"title": @"test", @"disabled": @true, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test", @"disabled": @true, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	

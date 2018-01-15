@@ -8,10 +8,10 @@
 
 -(void)sendOnAppLaunched;
 
--(void)sendContainerDidAppear:(NSString*)containerId;
+-(void)sendComponentDidAppear:(NSString*)componentId;
 
--(void)sendContainerDidDisappear:(NSString*)containerId;
+-(void)sendComponentDidDisappear:(NSString*)componentId;
 
--(void)sendOnNavigationButtonPressed:(NSString*)containerId buttonId:(NSString*)buttonId;
+-(void)sendOnNavigationButtonPressed:(NSString*)componentId buttonId:(NSString*)buttonId;
 
 @end

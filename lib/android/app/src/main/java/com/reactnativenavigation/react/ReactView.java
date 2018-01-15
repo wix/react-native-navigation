@@ -7,21 +7,25 @@ import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.EventDispatcher;
+import com.reactnativenavigation.interfaces.ScrollEventListener;
+import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 
 @SuppressLint("ViewConstructor")
-public class ReactView extends ReactRootView implements ContainerViewController.IReactView {
+public class ReactView extends ReactRootView implements ComponentViewController.IReactView {
 
 	private final ReactInstanceManager reactInstanceManager;
-	private final String containerId;
-	private final String containerName;
+	private final String componentId;
+	private final String componentName;
 	private boolean isAttachedToReactInstance = false;
 
-	public ReactView(final Context context, ReactInstanceManager reactInstanceManager, String containerId, String containerName) {
+	public ReactView(final Context context, ReactInstanceManager reactInstanceManager, String componentId, String componentName) {
 		super(context);
 		this.reactInstanceManager = reactInstanceManager;
-		this.containerId = containerId;
-		this.containerName = containerName;
+		this.componentId = componentId;
+		this.componentName = componentName;
 		start();
 	}
 
@@ -31,8 +35,8 @@ public class ReactView extends ReactRootView implements ContainerViewController.
             isAttachedToReactInstance = true;
         });
 		final Bundle opts = new Bundle();
-		opts.putString("containerId", containerId);
-		startReactApplication(reactInstanceManager, containerName, opts);
+		opts.putString("componentId", componentId);
+		startReactApplication(reactInstanceManager, componentName, opts);
 	}
 
 	@Override
@@ -51,17 +55,27 @@ public class ReactView extends ReactRootView implements ContainerViewController.
 	}
 
 	@Override
-	public void sendContainerStart() {
-		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).containerDidAppear(containerId);
+	public void sendComponentStart() {
+		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).componentDidAppear(componentId);
 	}
 
 	@Override
-	public void sendContainerStop() {
-		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).containerDidDisappear(containerId);
+	public void sendComponentStop() {
+		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).componentDidDisappear(componentId);
 	}
 
     @Override
 	public void sendOnNavigationButtonPressed(String buttonId) {
-		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).sendOnNavigationButtonPressed(containerId, buttonId);
+		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).sendOnNavigationButtonPressed(componentId, buttonId);
 	}
+
+    @Override
+    public ScrollEventListener getScrollEventListener() {
+        return new ScrollEventListener(getEventDispatcher());
+    }
+
+    public EventDispatcher getEventDispatcher() {
+        ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
+        return reactContext == null ? null : reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+    }
 }

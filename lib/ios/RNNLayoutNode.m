@@ -13,13 +13,13 @@
 	return node;
 }
 
--(BOOL)isContainer
+-(BOOL)isComponent
 {
-	return [self.type isEqualToString:@"Container"];
+	return [self.type isEqualToString:@"Component"];
 }
--(BOOL)isContainerStack
+-(BOOL)isStack
 {
-	return [self.type isEqualToString:@"ContainerStack"];
+	return [self.type isEqualToString:@"Stack"];
 }
 -(BOOL)isTabs
 {
@@ -28,10 +28,6 @@
 -(BOOL)isTopTabs
 {
 	return [self.type isEqualToString:@"TopTabs"];
-}
--(BOOL)isTopTab
-{
-	return [self.type isEqualToString:@"TopTab"];
 }
 -(BOOL)isSideMenuRoot
 {

@@ -1,60 +1,73 @@
 package com.reactnativenavigation.views;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.support.annotation.RestrictTo;
-import android.support.v4.view.ViewPager;
-import android.widget.LinearLayout;
+import android.annotation.*;
+import android.content.*;
+import android.support.annotation.*;
+import android.support.v4.view.*;
+import android.view.*;
+import android.widget.*;
 
-import com.reactnativenavigation.parse.NavigationOptions;
-import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabController;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
+import com.reactnativenavigation.parse.*;
+import com.reactnativenavigation.presentation.*;
+import com.reactnativenavigation.utils.*;
+import com.reactnativenavigation.viewcontrollers.toptabs.*;
 
-import java.util.List;
+import java.util.*;
 
 @SuppressLint("ViewConstructor")
-public class TopTabsLayout extends LinearLayout implements Container {
+public class TopTabsLayout extends RelativeLayout implements Component, TitleBarButton.OnClickListener {
 
     private TopBar topBar;
+    private List<TopTabController> tabs;
     private TopTabsViewPager viewPager;
     private final OptionsPresenter optionsPresenter;
 
     public TopTabsLayout(Context context, List<TopTabController> tabs, TopTabsAdapter adapter) {
         super(context);
-        topBar = new TopBar(context, this);
+        this.tabs = tabs;
         viewPager = new TopTabsViewPager(context, tabs, adapter);
-        optionsPresenter = new OptionsPresenter(topBar, viewPager);
+        topBar = new TopBar(context, viewPager, null, this);
+        topBar.setId(View.generateViewId());
+        optionsPresenter = new OptionsPresenter(this);
         initViews();
     }
 
     private void initViews() {
-        setOrientation(VERTICAL);
-        addView(topBar);
-        addView(viewPager);
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.addRule(BELOW, topBar.getId());
+        addView(topBar, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        addView(viewPager, layoutParams);
         topBar.setupTopTabsWithViewPager(viewPager);
     }
 
     @Override
-    public void applyOptions(NavigationOptions options) {
+    public void applyOptions(Options options) {
         optionsPresenter.applyOptions(options);
     }
 
     @Override
-    public void sendOnNavigationButtonPressed(String id) {
-        viewPager.sendOnNavigationButtonPressed(id);
+    public TopBar getTopBar() {
+        return topBar;
     }
 
     @Override
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    public TopBar getTopBar() {
-        return topBar;
+    public void drawBehindTopBar() {
+
+    }
+
+    @Override
+    public void drawBelowTopBar() {
+
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     public ViewPager getViewPager() {
         return viewPager;
+    }
+
+
+    public void performOnCurrentTab(Task<TopTabController> task) {
+        task.run(tabs.get(viewPager.getCurrentItem()));
     }
 
     public void switchToTab(int index) {
@@ -63,5 +76,10 @@ public class TopTabsLayout extends LinearLayout implements Container {
 
     public int getCurrentItem() {
         return viewPager.getCurrentItem();
+    }
+
+    @Override
+    public void onPress(String buttonId) {
+        viewPager.sendOnNavigationButtonPressed(buttonId);
     }
 }

@@ -4,24 +4,24 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.reactnativenavigation.viewcontrollers.ContainerViewController;
+import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
 
 public class DialogViewController extends ViewController {
 
-	private ContainerViewController.ReactViewCreator viewCreator;
-	private String containerName;
+	private ComponentViewController.ReactViewCreator viewCreator;
+	private String componentName;
 
-	public DialogViewController(Activity activity, String id, String containerName, ContainerViewController.ReactViewCreator viewCreator) {
+	public DialogViewController(Activity activity, String id, String componentName, ComponentViewController.ReactViewCreator viewCreator) {
 		super(activity, id);
 		this.viewCreator = viewCreator;
-		this.containerName = containerName;
+		this.componentName = componentName;
 	}
 
 	@NonNull
 	@Override
 	protected View createView() {
-		return viewCreator.create(getActivity(), getId(), containerName).asView();
+		return viewCreator.create(getActivity(), getId(), componentName).asView();
 	}
 }

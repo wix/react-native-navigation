@@ -7,7 +7,7 @@
 	return self.viewControllers.lastObject.supportedInterfaceOrientations;
 }
 
-- (BOOL)isAnimated {
+- (BOOL)isCustomTransitioned {
 	return NO;
 }
 

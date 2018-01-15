@@ -1,19 +1,18 @@
 package com.reactnativenavigation.views;
 
-import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.*;
 
-import org.junit.Test;
+import org.junit.*;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.*;
 
 public class TopBarTest extends BaseTest {
-	@Test
-	public void title() throws Exception {
-		//TODO:  fix null
-		TopBar topBar = new TopBar(newActivity(), null);
-		assertThat(topBar.getTitle()).isEmpty();
+    @Test
+    public void title() throws Exception {
+        TopBar topBar = new TopBar(newActivity(), null, null, buttonId -> {});
+        assertThat(topBar.getTitle()).isEmpty();
 
-		topBar.setTitle("new title");
-		assertThat(topBar.getTitle()).isEqualTo("new title");
-	}
+        topBar.setTitle("new title");
+        assertThat(topBar.getTitle()).isEqualTo("new title");
+    }
 }

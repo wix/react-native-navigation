@@ -1,133 +1,132 @@
 package com.reactnativenavigation.e2e.androide2e;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.provider.Settings;
-import android.support.test.uiautomator.By;
-import android.view.KeyEvent;
+import android.content.*;
+import android.net.*;
+import android.provider.*;
+import android.support.test.uiautomator.*;
+import android.view.*;
 
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.*;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.InstrumentationRegistry.*;
 
 public class ApplicationLifecycleTest extends BaseTest {
 
-	@Test
-	public void relaunchFromBackground() throws Exception {
-		elementByText("PUSH").click();
-		assertExists(By.text("Pushed Screen"));
+    @Test
+    public void relaunchFromBackground() throws Exception {
+        elementByText("PUSH").click();
+        assertExists(By.text("Pushed Screen"));
 
-		device().pressHome();
-		device().pressRecentApps();
-		elementByText("Playground").click();
+        device().pressHome();
+        device().pressRecentApps();
+        elementByText("Playground").click();
 
-		assertExists(By.text("Pushed Screen"));
-	}
+        assertExists(By.text("Pushed Screen"));
+    }
 
-	@Test
-	public void relaunchAfterClose() throws Exception {
-		elementByText("PUSH").click();
-		assertExists(By.text("Pushed Screen"));
+    @Test
+    public void relaunchAfterClose() throws Exception {
+        elementByText("PUSH").click();
+        assertExists(By.text("Pushed Screen"));
 
-		device().pressBack();
+        device().pressBack();
 
-		launchTheApp();
-		assertMainShown();
-	}
+        launchTheApp();
+        assertMainShown();
+    }
 
-	@Test
-	public void deviceOrientationDoesNotDestroyActivity() throws Exception {
-		elementByText("PUSH").click();
-		assertExists(By.text("Pushed Screen"));
+    @Test
+    public void deviceOrientationDoesNotDestroyActivity() throws Exception {
+        elementByText("PUSH").click();
+        assertExists(By.text("Pushed Screen"));
 
-		device().setOrientationLeft();
-		Thread.sleep(100);
+        device().setOrientationLeft();
+        Thread.sleep(100);
 
-		assertExists(By.text("Pushed Screen"));
-	}
+        assertExists(By.text("Pushed Screen"));
+    }
 
-	@Test
-	public void relaunchAfterActivityKilledBySystem() throws Exception {
-		elementByText("PUSH").click();
-		assertExists(By.text("Pushed Screen"));
+    @Test
+    public void relaunchAfterActivityKilledBySystem() throws Exception {
+        elementByText("PUSH").click();
+        assertExists(By.text("Pushed Screen"));
 
-		killAppSaveInstanceState_ByTogglingPermissions();
+        killAppSaveInstanceState_ByTogglingPermissions();
 
-		device().pressRecentApps();
-		elementByText("Playground").click();
-		assertMainShown();
-	}
+        device().pressRecentApps();
+        elementByText("Playground").click();
+        assertMainShown();
+    }
 
-	@Test
-	public void pressingMenuOpensDevMenu() throws Exception {
-		Assume.assumeTrue(isDebug());
-		device().pressKeyCode(KeyEvent.KEYCODE_MENU);
-		assertExists(By.text("Debug JS Remotely"));
-	}
+    @Test
+    public void pressingMenuOpensDevMenu() throws Exception {
+        Assume.assumeTrue(isDebug());
+        device().pressKeyCode(KeyEvent.KEYCODE_MENU);
+        assertExists(By.text("Debug JS Remotely"));
+    }
 
-	@Test
-	public void pressingRTwiceInSuccessionReloadsReactNative() throws Exception {
-		Assume.assumeTrue(isDebug());
+    @Test
+    public void pressingRTwiceInSuccessionReloadsReactNative() throws Exception {
+        Assume.assumeTrue(isDebug());
 
-		elementByText("PUSH").click();
-		assertExists(By.text("Pushed Screen"));
+        elementByText("PUSH").click();
+        assertExists(By.text("Pushed Screen"));
 
-		device().pressKeyCode(KeyEvent.KEYCODE_R);
-		device().pressKeyCode(KeyEvent.KEYCODE_R);
-		device().waitForIdle();
-		assertMainShown();
-	}
+        device().pressKeyCode(KeyEvent.KEYCODE_R);
+        device().pressKeyCode(KeyEvent.KEYCODE_R);
+        device().waitForIdle();
+        assertMainShown();
+    }
 
-	@Test
-	public void pressingRTwiceWithDelayDoesNothing() throws Exception {
-		Assume.assumeTrue(isDebug());
+    @Test
+    public void pressingRTwiceWithDelayDoesNothing() throws Exception {
+        Assume.assumeTrue(isDebug());
 
-		elementByText("PUSH").click();
-		assertExists(By.text("Pushed Screen"));
+        elementByText("PUSH").click();
+        assertExists(By.text("Pushed Screen"));
 
-		device().pressKeyCode(KeyEvent.KEYCODE_R);
-		Thread.sleep(1500);
-		device().pressKeyCode(KeyEvent.KEYCODE_R);
-		assertExists(By.text("Pushed Screen"));
-	}
+        device().pressKeyCode(KeyEvent.KEYCODE_R);
+        Thread.sleep(1500);
+        device().pressKeyCode(KeyEvent.KEYCODE_R);
+        assertExists(By.text("Pushed Screen"));
+    }
 
-	@Test
-	public void sendingReloadBroadcastReloadsReactNative() throws Exception {
-		Assume.assumeTrue(isDebug());
+    @Test
+    public void sendingReloadBroadcastReloadsReactNative() throws Exception {
+        Assume.assumeTrue(isDebug());
 
-		elementByText("PUSH").click();
-		assertExists(By.text("Pushed Screen"));
+        elementByText("PUSH").click();
+        assertExists(By.text("Pushed Screen"));
 
-		device().executeShellCommand("am broadcast -a com.reactnativenavigation.broadcast.RELOAD");
-		device().waitForIdle();
-		assertMainShown();
-	}
+        device().executeShellCommand("am broadcast -a com.reactnativenavigation.broadcast.RELOAD");
+        device().waitForIdle();
+        assertMainShown();
+    }
 
-	private void killAppSaveInstanceState_ByTogglingPermissions() throws Exception {
-		device().pressHome();
+    private void killAppSaveInstanceState_ByTogglingPermissions() throws Exception {
+        device().pressHome();
 
-		device().waitForIdle();
-		launchAppInfoSettings();
-		device().waitForIdle();
+        device().waitForIdle();
+        launchAppInfoSettings();
+        device().waitForIdle();
 
-		elementByText("Permissions").click();
-		elementByText("Storage").click();
-		elementByText("Storage").click();
-		device().pressBack();
-		device().pressBack();
-		device().pressHome();
-		device().waitForIdle();
-	}
+        elementByText("Permissions").click();
+        elementByText("Storage").click();
+        elementByText("Storage").click();
+        device().pressBack();
+        device().pressBack();
+        device().pressHome();
+        device().waitForIdle();
+    }
 
-	private void launchAppInfoSettings() {
-		Intent intent = new Intent();
-		intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		Uri uri = Uri.fromParts("package", PACKAGE_NAME, null);
-		intent.setData(uri);
-		getInstrumentation().getTargetContext().startActivity(intent);
-	}
+    private void launchAppInfoSettings() {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Uri uri = Uri.fromParts("package", PACKAGE_NAME, null);
+        intent.setData(uri);
+        getInstrumentation().getTargetContext().startActivity(intent);
+    }
 }

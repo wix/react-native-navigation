@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.parse.NavigationOptions;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.viewcontrollers.ParentController;
@@ -20,12 +20,12 @@ public class TopTabsController extends ParentController implements NavigationOpt
     private List<TopTabController> tabs;
     private TopTabsLayout topTabsLayout;
     private TopTabsLayoutCreator viewCreator;
-    private NavigationOptions navigationOptions;
+    private Options options;
 
-    public TopTabsController(Activity activity, String id, List<TopTabController> tabs, TopTabsLayoutCreator viewCreator, NavigationOptions navigationOptions) {
+    public TopTabsController(Activity activity, String id, List<TopTabController> tabs, TopTabsLayoutCreator viewCreator, Options options) {
         super(activity, id);
         this.viewCreator = viewCreator;
-        this.navigationOptions = navigationOptions;
+        this.options = options;
         this.tabs = tabs;
         for (ViewController tab : tabs) {
             tab.setParentController(this);
@@ -47,7 +47,7 @@ public class TopTabsController extends ParentController implements NavigationOpt
 
     @Override
     public void onViewAppeared() {
-        applyOptions(navigationOptions);
+        applyOptions(options);
         performOnCurrentTab(TopTabController::onViewAppeared);
     }
 
@@ -57,12 +57,12 @@ public class TopTabsController extends ParentController implements NavigationOpt
     }
 
     @Override
-    public void applyOptions(NavigationOptions options) {
+    public void applyOptions(Options options) {
         topTabsLayout.applyOptions(options);
     }
 
     @Override
-    public void mergeNavigationOptions(NavigationOptions options) {
+    public void mergeOptions(Options options) {
 
     }
 

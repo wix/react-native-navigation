@@ -1,8 +1,8 @@
 package com.reactnativenavigation.e2e.androide2e;
 
-import android.support.test.uiautomator.By;
+import android.support.test.uiautomator.*;
 
-import org.junit.Test;
+import org.junit.*;
 
 public class BackHandlerTest extends BaseTest {
     @Test

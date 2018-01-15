@@ -8,7 +8,7 @@
 
 -(instancetype)initWithStore:(RNNStore*)store;
 -(void)showModal:(UIViewController*)viewController completion:(RNNTransitionCompletionBlock)completion;
--(void)dismissModal:(NSString*)containerId;
+-(void)dismissModal:(NSString*)componentId;
 -(void)dismissAllModals;
 
 @end

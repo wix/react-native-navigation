@@ -24,33 +24,39 @@ RCT_EXPORT_METHOD(setRoot:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock
 	}];
 }
 
-RCT_EXPORT_METHOD(setOptions:(NSString*)containerId options:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler setOptions:containerId options:options completion:^{
-		resolve(containerId);
+RCT_EXPORT_METHOD(setOptions:(NSString*)componentId options:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler setOptions:componentId options:options completion:^{
+		resolve(componentId);
 	}];
 }
 
-RCT_EXPORT_METHOD(push:(NSString*)containerId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler push:containerId layout:layout completion:^{
-		resolve(containerId);
+RCT_EXPORT_METHOD(setDefaultOptions:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler setDefaultOptions:options completion:^{
+		resolve(nil);
 	}];
 }
 
-RCT_EXPORT_METHOD(pop:(NSString*)containerId options:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler pop:containerId options:(NSDictionary*)options completion:^{
-		resolve(containerId);
+RCT_EXPORT_METHOD(push:(NSString*)componentId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler push:componentId layout:layout completion:^{
+		resolve(componentId);
 	}];
 }
 
-RCT_EXPORT_METHOD(popTo:(NSString*)containerId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler popTo:containerId completion:^{
-		resolve(containerId);
+RCT_EXPORT_METHOD(pop:(NSString*)componentId options:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler pop:componentId options:(NSDictionary*)options completion:^{
+		resolve(componentId);
 	}];
 }
 
-RCT_EXPORT_METHOD(popToRoot:(NSString*)containerId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler popToRoot:containerId completion:^{
-		resolve(containerId);
+RCT_EXPORT_METHOD(popTo:(NSString*)componentId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler popTo:componentId completion:^{
+		resolve(componentId);
+	}];
+}
+
+RCT_EXPORT_METHOD(popToRoot:(NSString*)componentId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler popToRoot:componentId completion:^{
+		resolve(componentId);
 	}];
 }
 
@@ -60,9 +66,9 @@ RCT_EXPORT_METHOD(showModal:(NSDictionary*)layout resolver:(RCTPromiseResolveBlo
 	}];
 }
 
-RCT_EXPORT_METHOD(dismissModal:(NSString*)containerId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler dismissModal:containerId completion:^{
-		resolve(containerId);
+RCT_EXPORT_METHOD(dismissModal:(NSString*)componentId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler dismissModal:componentId completion:^{
+		resolve(componentId);
 	}];
 }
 

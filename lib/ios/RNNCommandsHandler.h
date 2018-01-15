@@ -10,19 +10,21 @@
 
 -(void) setRoot:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
 
--(void) setOptions:(NSString*)containerId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
+-(void) setOptions:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
 
--(void) push:(NSString*)containerId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
+-(void) setDefaultOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
 
--(void) pop:(NSString*)containerId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
+-(void) push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
 
--(void) popTo:(NSString*)containerId completion:(RNNTransitionCompletionBlock)completion;
+-(void) pop:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
 
--(void) popToRoot:(NSString*)containerId completion:(RNNTransitionCompletionBlock)completion;
+-(void) popTo:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;
+
+-(void) popToRoot:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;
 
 -(void) showModal:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
 
--(void) dismissModal:(NSString*)containerId completion:(RNNTransitionCompletionBlock)completion;
+-(void) dismissModal:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;
 
 -(void) dismissAllModalsWithCompletion:(RNNTransitionCompletionBlock)completion;
 

@@ -1,7 +1,7 @@
 package com.reactnativenavigation.parse;
 
 
-import com.reactnativenavigation.parse.NavigationOptions.BooleanOptions;
+import com.reactnativenavigation.parse.Options.BooleanOptions;
 
 import org.json.JSONObject;
 

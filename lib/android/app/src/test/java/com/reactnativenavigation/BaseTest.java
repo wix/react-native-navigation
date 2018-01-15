@@ -14,31 +14,31 @@ import static org.assertj.core.api.Java6Assertions.*;
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 27, application = TestApplication.class)
 public abstract class BaseTest {
-	@Before
-	public void beforeEach() {
-		//
-	}
+    @Before
+    public void beforeEach() {
+        //
+    }
 
-	@After
-	public void afterEach() {
-		//
-	}
+    @After
+    public void afterEach() {
+        //
+    }
 
-	public Activity newActivity() {
-		return Robolectric.setupActivity(AppCompatActivity.class);
-	}
+    public Activity newActivity() {
+        return Robolectric.setupActivity(AppCompatActivity.class);
+    }
 
-	public void assertIsChildById(ViewGroup parent, View child) {
-		assertThat(parent).isNotNull();
-		assertThat(child).isNotNull();
-		assertThat(child.getId()).isNotZero().isPositive();
-		assertThat(parent.findViewById(child.getId())).isNotNull().isEqualTo(child);
-	}
+    public void assertIsChildById(ViewGroup parent, View child) {
+        assertThat(parent).isNotNull();
+        assertThat(child).isNotNull();
+        assertThat(child.getId()).isNotZero().isPositive();
+        assertThat(parent.findViewById(child.getId())).isNotNull().isEqualTo(child);
+    }
 
-	public void assertNotChildOf(ViewGroup parent, View child) {
-		assertThat(parent).isNotNull();
-		assertThat(child).isNotNull();
-		assertThat(child.getId()).isNotZero().isPositive();
-		assertThat(parent.findViewById(child.getId())).isNull();
-	}
+    public void assertNotChildOf(ViewGroup parent, View child) {
+        assertThat(parent).isNotNull();
+        assertThat(child).isNotNull();
+        assertThat(child.getId()).isNotZero().isPositive();
+        assertThat(parent.findViewById(child.getId())).isNull();
+    }
 }

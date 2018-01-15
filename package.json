@@ -176,6 +176,7 @@
       "react/jsx-no-bind": 0,
       "react/jsx-handler-names": 0,
       "react/forbid-component-props": 0,
+      "react/jsx-curly-brace-presence": 0,
       "capitalized-comments": 0,
       "no-use-before-define": [
         2,

@@ -17,86 +17,86 @@
 }
 
 
-- (void)testFindContainerForId_setAndGetsimpleContainerId {
-	NSString *containerId1 = @"cntId1";
-	NSString *containerId2 = @"cntId2";
+- (void)testFindComponentForId_setAndGetsimpleComponentId {
+	NSString *componentId1 = @"cntId1";
+	NSString *componentId2 = @"cntId2";
 	
 	UIViewController *vc1 = [UIViewController new];
 	UIViewController *vc2 = [UIViewController new];
 	
-	[self.store setContainer:vc1 containerId:containerId1];
-	[self.store setContainer:vc2 containerId:containerId2];
+	[self.store setComponent:vc1 componentId:componentId1];
+	[self.store setComponent:vc2 componentId:componentId2];
 	
-	UIViewController *ans = [self.store findContainerForId:containerId1];
+	UIViewController *ans = [self.store findComponentForId:componentId1];
 	
 	XCTAssertEqualObjects(vc1, ans);
 	XCTAssertNotEqualObjects(vc2, ans);
 }
 
-- (void)testSetContainer_setNilContainerId {
-	NSString *containerId1 = nil;
+- (void)testSetComponent_setNilComponentId {
+	NSString *componentId1 = nil;
 	UIViewController *vc1 = [UIViewController new];
-	[self.store setContainer:vc1 containerId:containerId1];
-	XCTAssertNil([self.store findContainerForId:containerId1]);
+	[self.store setComponent:vc1 componentId:componentId1];
+	XCTAssertNil([self.store findComponentForId:componentId1]);
 	
 }
 
-- (void)testSetContainer_setDoubleContainerId {
-	NSString *containerId1 = @"cntId1";
+- (void)testSetComponent_setDoubleComponentId {
+	NSString *componentId1 = @"cntId1";
 	
 	UIViewController *vc1 = [UIViewController new];
 	UIViewController *vc2 = [UIViewController new];
 	
-	[self.store setContainer:vc1 containerId:containerId1];
+	[self.store setComponent:vc1 componentId:componentId1];
 	
-	UIViewController *ans = [self.store findContainerForId:containerId1];
+	UIViewController *ans = [self.store findComponentForId:componentId1];
 	XCTAssertEqualObjects(vc1, ans);
-	XCTAssertThrows([self.store setContainer:vc2 containerId:containerId1]);
+	XCTAssertThrows([self.store setComponent:vc2 componentId:componentId1]);
 }
 
-- (void)testRemoveContainer_removeExistContainer {
-	NSString *containerId1 = @"cntId1";
+- (void)testRemoveComponent_removeExistComponent {
+	NSString *componentId1 = @"cntId1";
 	UIViewController *vc1 = [UIViewController new];
 	
-	[self.store setContainer:vc1 containerId:containerId1];
+	[self.store setComponent:vc1 componentId:componentId1];
 	
-	UIViewController *ans = [self.store findContainerForId:containerId1];
+	UIViewController *ans = [self.store findComponentForId:componentId1];
 	XCTAssertEqualObjects(vc1, ans);
 	
-	[self.store removeContainer:containerId1];
-	XCTAssertNil([self.store findContainerForId:containerId1]);
+	[self.store removeComponent:componentId1];
+	XCTAssertNil([self.store findComponentForId:componentId1]);
 }
 
 -(void)testPopWillRemoveVcFromStore {
 	NSString *vcId = @"cnt_vc_2";
 	
-	[self setContainerAndRelease:vcId];
+	[self setComponentAndRelease:vcId];
 	
 	
-	XCTAssertNil([self.store findContainerForId:vcId]);
+	XCTAssertNil([self.store findComponentForId:vcId]);
 }
 
 
--(void)testRemoveContainerByInstance {
-	NSString *containerId1 = @"cntId1";
+-(void)testRemoveComponentByInstance {
+	NSString *componentId1 = @"cntId1";
 	UIViewController *vc1 = [UIViewController new];
 	
-	[self.store setContainer:vc1 containerId:containerId1];
-	[self.store removeContainerByViewControllerInstance:vc1];
+	[self.store setComponent:vc1 componentId:componentId1];
+	[self.store removeComponentByViewControllerInstance:vc1];
 	
-	XCTAssertNil([self.store findContainerForId:@"cntId1"]);
+	XCTAssertNil([self.store findComponentForId:@"cntId1"]);
 }
 
 
 #pragma mark - private
 
 
--(void)setContainerAndRelease:(NSString*)vcId {
+-(void)setComponentAndRelease:(NSString*)vcId {
 	@autoreleasepool {
 		UIViewController *vc2 = [UIViewController new];
-		[self.store setContainer:vc2 containerId:vcId];
+		[self.store setComponent:vc2 componentId:vcId];
 		
-		XCTAssertNotNil([self.store findContainerForId:vcId]);
+		XCTAssertNotNil([self.store findComponentForId:vcId]);
 	}
 }
 
