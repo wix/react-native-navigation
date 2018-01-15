@@ -181,7 +181,13 @@ class Navigator {
     if (this.navigatorEventHandler) {
       this.navigatorEventHandler(event);
     }
-    this.navigatorEventHandlers.forEach(handler => handler(event));
+    this.navigatorEventHandlers.forEach(handler => {
+      try {
+        handler(event);
+      } catch (exception) {
+        console.warn(exception);
+      }
+    });
   }
 
   handleDeepLink(params = {}) {
