@@ -97,11 +97,11 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private TextView findTextView(ViewGroup root) {
         for (int i = 0; i < root.getChildCount(); i++) {
             View view = root.getChildAt(i);
+            if (view instanceof ViewGroup) {
+                view = findTextView((ViewGroup) view);
+            }
             if (view instanceof TextView) {
                 return (TextView) view;
-            }
-            if (view instanceof ViewGroup) {
-                return findTextView((ViewGroup) view);
             }
         }
         return null;

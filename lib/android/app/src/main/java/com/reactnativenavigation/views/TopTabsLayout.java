@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
 
@@ -21,7 +21,7 @@ public class TopTabsLayout extends RelativeLayout implements Component, TitleBar
     private TopBar topBar;
     private TopTabsViewPager viewPager;
 
-    public TopTabsLayout(Context context, List<TopTabController> tabs, TopTabsAdapter adapter) {
+    public TopTabsLayout(Context context, List<ViewController> tabs, TopTabsAdapter adapter) {
         super(context);
         viewPager = new TopTabsViewPager(context, tabs, adapter);
         topBar = new TopBar(context, this);

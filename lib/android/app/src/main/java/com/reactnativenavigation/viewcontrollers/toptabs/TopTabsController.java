@@ -17,12 +17,12 @@ import java.util.List;
 
 public class TopTabsController extends ParentController implements NavigationOptionsListener {
 
-    private List<TopTabController> tabs;
+    private List<ViewController> tabs;
     private TopTabsLayout topTabsLayout;
     private TopTabsLayoutCreator viewCreator;
     private Options options;
 
-    public TopTabsController(Activity activity, String id, List<TopTabController> tabs, TopTabsLayoutCreator viewCreator, Options options) {
+    public TopTabsController(Activity activity, String id, List<ViewController> tabs, TopTabsLayoutCreator viewCreator, Options options) {
         super(activity, id);
         this.viewCreator = viewCreator;
         this.options = options;
@@ -48,12 +48,12 @@ public class TopTabsController extends ParentController implements NavigationOpt
     @Override
     public void onViewAppeared() {
         applyOptions(options);
-        performOnCurrentTab(TopTabController::onViewAppeared);
+        performOnCurrentTab(ViewController::onViewAppeared);
     }
 
     @Override
     public void onViewDisappear() {
-        performOnCurrentTab(TopTabController::onViewDisappear);
+        performOnCurrentTab(ViewController::onViewDisappear);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class TopTabsController extends ParentController implements NavigationOpt
         topTabsLayout.switchToTab(index);
     }
 
-    private void performOnCurrentTab(Task<TopTabController> task) {
+    private void performOnCurrentTab(Task<ViewController> task) {
         task.run(tabs.get(topTabsLayout.getCurrentItem()));
     }
 }

@@ -45,6 +45,10 @@ public class Options implements DEFAULT_VALUES {
     @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
     @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
 
+    void setTopTabIndex(int i) {
+        topTabOptions.tabIndex = i;
+    }
+
 	public void mergeWith(final Options other) {
         topBarOptions.mergeWith(other.topBarOptions);
         topTabsOptions.mergeWith(other.topTabsOptions);

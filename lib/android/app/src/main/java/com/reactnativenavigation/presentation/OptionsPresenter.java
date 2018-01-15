@@ -29,10 +29,6 @@ public class OptionsPresenter {
         applyTopTabOptions(options.topTabOptions);
     }
 
-    private void clear() {
-        topBar.clear();
-    }
-
     private void applyTopBarOptions(TopBarOptions options) {
         if (options.title.hasValue()) topBar.setTitle(options.title.get());
         topBar.setBackgroundColor(options.backgroundColor);

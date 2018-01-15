@@ -13,7 +13,6 @@ public class TopTabController extends ViewController implements NavigationOption
 
     private final String componentName;
     private ComponentViewController.ReactViewCreator viewCreator;
-    private final Options options;
     private TopTab topTab;
     private boolean isSelectedTab;
 
