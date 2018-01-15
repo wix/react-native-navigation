@@ -2,7 +2,6 @@ package com.reactnativenavigation.parse;
 
 
 import android.graphics.Typeface;
-import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 
 import com.reactnativenavigation.utils.TypefaceLoader;
@@ -17,11 +16,11 @@ public class TopBarOptions implements DEFAULT_VALUES {
         TopBarOptions options = new TopBarOptions();
         if (json == null) return options;
 
-        options.title = json.optString("title", NO_VALUE);
-        options.backgroundColor = json.optInt("backgroundColor", NO_COLOR_VALUE);
-        options.textColor = json.optInt("textColor", NO_COLOR_VALUE);
-        options.textFontSize = (float) json.optDouble("textFontSize", NO_FLOAT_VALUE);
-        options.textFontFamily = typefaceManager.getTypeFace(json.optString("textFontFamily", NO_VALUE));
+        options.title = TextParser.parse(json, "title");
+        options.backgroundColor = ColorParser.parse(json, "backgroundColor");
+        options.textColor = ColorParser.parse(json, "textColor");
+        options.textFontSize = FractionParser.parse(json, "textFontSize");
+        options.textFontFamily = typefaceManager.getTypeFace(json.optString("textFontFamily", ""));
         options.hidden = Options.BooleanOptions.parse(json.optString("hidden"));
         options.animateHide = Options.BooleanOptions.parse(json.optString("animateHide"));
         options.hideOnScroll = Options.BooleanOptions.parse(json.optString("hideOnScroll"));
@@ -32,10 +31,10 @@ public class TopBarOptions implements DEFAULT_VALUES {
         return options;
     }
 
-    public String title = NO_VALUE;
-    @ColorInt public int backgroundColor = NO_COLOR_VALUE;
-    @ColorInt public int textColor = NO_COLOR_VALUE;
-    public float textFontSize = NO_FLOAT_VALUE;
+    public Text title = new NullText();
+    public Color backgroundColor = new NullColor();
+    public Color textColor = new NullColor();
+    public Fraction textFontSize = new NullFraction();
     @Nullable public Typeface textFontFamily;
     public Options.BooleanOptions hidden = Options.BooleanOptions.NoValue;
     public Options.BooleanOptions animateHide = Options.BooleanOptions.NoValue;
@@ -45,12 +44,12 @@ public class TopBarOptions implements DEFAULT_VALUES {
     public ArrayList<Button> rightButtons;
 
     void mergeWith(final TopBarOptions other) {
-        if (!NO_VALUE.equals(other.title)) title = other.title;
-        if (other.backgroundColor != NO_COLOR_VALUE)
+        if (other.title != null) title = other.title;
+        if (other.backgroundColor.hasValue())
             backgroundColor = other.backgroundColor;
-        if (other.textColor != NO_COLOR_VALUE)
+        if (other.textColor.hasValue())
             textColor = other.textColor;
-        if (other.textFontSize != NO_FLOAT_VALUE)
+        if (other.textFontSize.hasValue())
             textFontSize = other.textFontSize;
         if (other.textFontFamily != null)
             textFontFamily = other.textFontFamily;
@@ -73,13 +72,13 @@ public class TopBarOptions implements DEFAULT_VALUES {
     }
 
     void mergeWithDefault(TopBarOptions defaultOptions) {
-        if (NO_VALUE.equals(title))
+        if (title == null)
             title = defaultOptions.title;
-        if (backgroundColor == NO_COLOR_VALUE)
+        if (!backgroundColor.hasValue())
             backgroundColor = defaultOptions.backgroundColor;
-        if (textColor == NO_COLOR_VALUE)
+        if (!textColor.hasValue())
             textColor = defaultOptions.textColor;
-        if (textFontSize == NO_FLOAT_VALUE)
+        if (!textFontSize.hasValue())
             textFontSize = defaultOptions.textFontSize;
         if (textFontFamily == null)
             textFontFamily = defaultOptions.textFontFamily;

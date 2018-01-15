@@ -36,7 +36,6 @@ public class ComponentViewController extends ViewController implements Navigatio
     private final String componentName;
 
     private final ReactViewCreator viewCreator;
-    private Options options;
     private ReactComponent component;
 
     public ComponentViewController(final Activity activity,
@@ -47,12 +46,7 @@ public class ComponentViewController extends ViewController implements Navigatio
         super(activity, id);
         this.componentName = componentName;
         this.viewCreator = viewCreator;
-        this.options = initialNavigationOptions;
-    }
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    TopBar getTopBar() {
-        return component.getTopBar();
+        options = initialNavigationOptions;
     }
 
     @Override
@@ -66,7 +60,10 @@ public class ComponentViewController extends ViewController implements Navigatio
     public void onViewAppeared() {
         super.onViewAppeared();
         ensureViewIsCreated();
-        component.applyOptions(options);
+        applyOnParentStack(parentController -> {
+            parentController.clearOptions();
+            parentController.applyOptions(options, component);
+        });
         component.sendComponentStart();
     }
 
@@ -92,6 +89,7 @@ public class ComponentViewController extends ViewController implements Navigatio
     public void mergeOptions(Options options) {
         this.options.mergeWith(options);
         component.applyOptions(this.options);
+        applyOnParentStack(parentController -> parentController.applyOptions(this.options, component));
     }
 
     Options getOptions() {

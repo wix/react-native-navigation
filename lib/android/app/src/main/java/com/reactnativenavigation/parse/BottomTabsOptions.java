@@ -11,7 +11,7 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
 		BottomTabsOptions options = new BottomTabsOptions();
 		if (json == null) return options;
 
-		options.currentTabId = json.optString("currentTabId", NO_VALUE);
+		options.currentTabId = TextParser.parse(json, "currentTabId");
 		options.currentTabIndex = json.optInt("currentTabIndex", NO_INT_VALUE);
 		options.tabBadge = json.optInt("tabBadge", NO_INT_VALUE);
 		options.hidden = BooleanOptions.parse(json.optString("hidden"));
@@ -20,14 +20,14 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
 		return options;
 	}
 
-	public int tabBadge = NO_INT_VALUE;
-	public BooleanOptions hidden = BooleanOptions.False;
-	public BooleanOptions animateHide = BooleanOptions.False;
+	int tabBadge = NO_INT_VALUE;
+	BooleanOptions hidden = BooleanOptions.False;
+	BooleanOptions animateHide = BooleanOptions.False;
 	public int currentTabIndex = NO_INT_VALUE;
-	public String currentTabId = NO_VALUE;
+	public Text currentTabId = new NullText();
 
 	void mergeWith(final BottomTabsOptions other) {
-		if (!NO_VALUE.equals(other.currentTabId)) {
+		if (other.currentTabId.hasValue()) {
 			currentTabId = other.currentTabId;
 		}
 		if (NO_INT_VALUE != other.currentTabIndex) {
@@ -45,7 +45,7 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
 	}
 
     void mergeWithDefault(final BottomTabsOptions defaultOptions) {
-        if (NO_VALUE.equals(currentTabId)) {
+        if (!currentTabId.hasValue()) {
             currentTabId = defaultOptions.currentTabId;
         }
         if (NO_INT_VALUE == currentTabIndex) {

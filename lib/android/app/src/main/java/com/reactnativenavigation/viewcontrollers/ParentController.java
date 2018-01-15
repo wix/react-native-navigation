@@ -5,9 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.views.ReactComponent;
+
 import java.util.Collection;
 
-public abstract class ParentController extends ViewController {
+public abstract class ParentController<T extends ViewGroup> extends ViewController {
 
 	public ParentController(final Activity activity, final String id) {
 		super(activity, id);
@@ -15,15 +18,15 @@ public abstract class ParentController extends ViewController {
 
 	@NonNull
 	@Override
-	public ViewGroup getView() {
-		return (ViewGroup) super.getView();
+	public T getView() {
+		return (T) super.getView();
 	}
 
 	@NonNull
 	@Override
-	protected abstract ViewGroup createView();
+	protected abstract T createView();
 
-	@NonNull
+    @NonNull
 	public abstract Collection<? extends ViewController> getChildControllers();
 
 	@Nullable
@@ -40,6 +43,10 @@ public abstract class ParentController extends ViewController {
 		return null;
 	}
 
+    public void applyOptions(Options options, ReactComponent childComponent) {
+
+    }
+
 	@Override
 	public void destroy() {
 		super.destroy();
@@ -47,4 +54,8 @@ public abstract class ParentController extends ViewController {
 			child.destroy();
 		}
 	}
+
+    void clearOptions() {
+
+    }
 }

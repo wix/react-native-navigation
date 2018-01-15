@@ -23,7 +23,7 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     private TopTabsController uut;
     private List<TopTabLayoutMock> tabs = new ArrayList<>(SIZE);
-    private List<TopTabController> tabControllers = new ArrayList<>(SIZE);
+    private List<ViewController> tabControllers = new ArrayList<>(SIZE);
     private List<Options> tabOptions = new ArrayList<>(SIZE);
     private Options options;
     private TopTabsLayout topTabsLayout;
@@ -34,7 +34,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabControllers.clear();
         tabs.clear();
         Activity activity = newActivity();
-        createTabs(activity);
+        tabControllers = createTabs(activity);
         options = new Options();
         topTabsLayout = spy(new TopTabsLayout(activity, tabControllers, new TopTabsAdapter(tabControllers)));
 
@@ -43,18 +43,23 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut = new TopTabsController(activity, "componentId", tabControllers, layoutCreator, options);
     }
 
-    private void createTabs(Activity activity) {
+    private List<ViewController> createTabs(Activity activity) {
+        List<ViewController> result = new ArrayList<>(SIZE);
+        tabOptions = new ArrayList<>();
         for (int i = 0; i < SIZE; i++) {
             TopTabLayoutMock reactView = spy(new TopTabLayoutMock(activity));
             tabs.add(reactView);
-            tabOptions.add(new Options());
-            tabControllers.add(spy(new TopTabController(activity,
+            Options options = new Options();
+            options.topTabOptions.title = new Text("Tab " + i);
+            tabOptions.add(options);
+            result.add(spy(new TopTabController(activity,
                     "idTab" + i,
                     "tab" + i,
                     (activity1, componentId, componentName) -> reactView,
-                    tabOptions.get(i))
+                    options)
             ));
         }
+        return result;
     }
 
     @Test

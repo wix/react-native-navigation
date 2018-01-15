@@ -5,19 +5,22 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.viewcontrollers.ViewController;
+
 import java.util.List;
 
 public class TopTabsAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
-    private List<TopTabController> tabs;
+    private List<ViewController> tabs;
     private int currentPage = 0;
 
-    public TopTabsAdapter(List<TopTabController> tabs) {
+    public TopTabsAdapter(List<ViewController> tabs) {
         this.tabs = tabs;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return tabs.get(position).getTabTitle();
+        return getTabOptions(position).topTabOptions.title.get("");
     }
 
     @Override
@@ -52,7 +55,7 @@ public class TopTabsAdapter extends PagerAdapter implements ViewPager.OnPageChan
 
     }
 
-    int getCurrentItem() {
-        return currentPage;
+    private Options getTabOptions(int position) {
+        return tabs.get(position).options;
     }
 }

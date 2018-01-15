@@ -13,7 +13,6 @@ public class TopTabController extends ViewController implements NavigationOption
 
     private final String componentName;
     private ComponentViewController.ReactViewCreator viewCreator;
-    private final Options options;
     private TopTab topTab;
     private boolean isSelectedTab;
 
@@ -34,7 +33,7 @@ public class TopTabController extends ViewController implements NavigationOption
 
     @Override
     public void applyOptions(Options options) {
-        getParentController().applyOptions(options);
+        applyOnParentStack(parentController -> parentController.applyOptions(options));
     }
 
     @Override
@@ -72,7 +71,7 @@ public class TopTabController extends ViewController implements NavigationOption
     }
 
     String getTabTitle() {
-        return options.topTabOptions.title;
+        return options.topTabOptions.title.get("");
     }
 
     public void setTabIndex(int i) {

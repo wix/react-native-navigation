@@ -63,11 +63,11 @@ public class TopBarAnimator {
     }
 
     void hide(float startTranslation, TimeInterpolator interpolator, int duration) {
-        ObjectAnimator topbarAnim = ObjectAnimator.ofFloat(topBar, View.TRANSLATION_Y, startTranslation, -1 * topBar.getMeasuredHeight());
-        topbarAnim.setInterpolator(interpolator);
-        topbarAnim.setDuration(duration);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(topBar, View.TRANSLATION_Y, startTranslation, -1 * topBar.getMeasuredHeight());
+        animator.setInterpolator(interpolator);
+        animator.setDuration(duration);
 
-        topbarAnim.addListener(new AnimatorListenerAdapter() {
+        animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (contentView != null) {
@@ -79,6 +79,6 @@ public class TopBarAnimator {
                 topBar.setVisibility(View.GONE);
             }
         });
-        topbarAnim.start();
+        animator.start();
     }
 }

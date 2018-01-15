@@ -3,6 +3,7 @@ package com.reactnativenavigation.parse;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
+import com.reactnativenavigation.utils.NoOpPromise;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
@@ -102,7 +103,7 @@ public class LayoutFactory {
 	private ViewController createStack(LayoutNode node) {
 		StackController stackController = new StackController(activity, node.id);
 		for (LayoutNode child : node.children) {
-			stackController.push(create(child), null);
+			stackController.animatePush(create(child), new NoOpPromise());
 		}
 		return stackController;
 	}
@@ -118,10 +119,11 @@ public class LayoutFactory {
 	}
 
     private ViewController createTopTabs(LayoutNode node) {
-        final List<TopTabController> tabs = new ArrayList<>();
+        final List<ViewController> tabs = new ArrayList<>();
         for (int i = 0; i < node.children.size(); i++) {
-            TopTabController tabController = (TopTabController) create(node.children.get(i));
-            tabController.setTabIndex(i);
+            ViewController tabController = create(node.children.get(i));
+            Options options = Options.parse(typefaceManager, node.children.get(i).getNavigationOptions(), defaultOptions);
+            options.setTopTabIndex(i);
             tabs.add(tabController);
         }
         Options options = Options.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);

@@ -16,13 +16,13 @@ import com.reactnativenavigation.utils.Task;
 
 public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutListener {
 
+    public Options options;
+
 	private final Activity activity;
 	private final String id;
-
 	private View view;
 	private ParentController parentController;
 	private boolean isShown = false;
-
     private boolean isDestroyed;
 
 	public ViewController(Activity activity, String id) {
@@ -32,7 +32,8 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 
 	protected abstract View createView();
 
-	@VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
+	@SuppressWarnings("WeakerAccess")
+    @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
 	public void ensureViewIsCreated() {
 		getView();
 	}
@@ -41,12 +42,18 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		return false;
 	}
 
+    public void applyOptions(Options options) {
+
+    }
+
 	public Activity getActivity() {
 		return activity;
 	}
 
-    protected ViewController getParentController() {
-	    return parentController;
+	protected void applyOnParentStack(Task<ParentController> task) {
+        if (parentController != null) {
+            task.run(parentController);
+        }
     }
 
 	@Nullable
@@ -106,10 +113,6 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 
 	public void onViewDisappear() {
         isShown = false;
-    }
-
-    public void applyOptions(Options options) {
-
     }
 
 	public void destroy() {

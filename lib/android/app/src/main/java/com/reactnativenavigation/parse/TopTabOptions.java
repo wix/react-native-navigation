@@ -8,7 +8,7 @@ import com.reactnativenavigation.utils.TypefaceLoader;
 import org.json.JSONObject;
 
 public class TopTabOptions implements DEFAULT_VALUES {
-    public String title = NO_VALUE;
+    public Text title = new NullText();
     @Nullable public Typeface fontFamily;
     public int tabIndex;
 
@@ -16,7 +16,7 @@ public class TopTabOptions implements DEFAULT_VALUES {
         TopTabOptions result = new TopTabOptions();
         if (json == null) return result;
 
-        result.title = json.optString("title", NO_VALUE);
+        result.title = TextParser.parse(json, "title");
         result.fontFamily = typefaceManager.getTypeFace(json.optString("titleFontFamily"));
         return result;
     }
