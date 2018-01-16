@@ -57,39 +57,33 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 			return;
 		}
 
-		ImageUtils.tryLoadIcon(context, button.icon.get(), new ImageUtils.ImageLoadingListener() {
+		ImageUtils.loadIcon(context, button.icon.get(), new ImageUtils.ImageLoadingListener() {
 			@Override
 			public void onComplete(@NonNull Drawable drawable) {
 				icon = drawable;
-				UiUtils.runOnMainThread(() -> {
-                    setIconColor();
-                    setNavigationClickListener();
-                    toolbar.setNavigationIcon(icon);
-                });
+                setIconColor();
+                setNavigationClickListener();
+                toolbar.setNavigationIcon(icon);
 			}
 
 			@Override
 			public void onError(Throwable error) {
-				//TODO: handle
 				error.printStackTrace();
 			}
 		});
 	}
 
 	private void applyIcon(Context context, final MenuItem menuItem) {
-		ImageUtils.tryLoadIcon(context, button.icon.get(), new ImageUtils.ImageLoadingListener() {
+		ImageUtils.loadIcon(context, button.icon.get(), new ImageUtils.ImageLoadingListener() {
 			@Override
 			public void onComplete(@NonNull Drawable drawable) {
 				icon = drawable;
-				UiUtils.runOnMainThread(() -> {
-                    menuItem.setIcon(icon);
-                    setIconColor();
-                });
+                menuItem.setIcon(icon);
+                setIconColor();
 			}
 
 			@Override
 			public void onError(Throwable error) {
-				//TODO: handle
 				error.printStackTrace();
 			}
 		});
