@@ -99,6 +99,9 @@ this.props.navigator.setStyle({
   topBarShadowOpacity: 0.5, // Sets shadow opacity on the navbar, Works only when topBarElevationShadowEnabled: true
   topBarShadowOffset: 12, // Sets shadow offset on the navbar, Works only when topBarElevationShadowEnabled: true
   topBarShadowRadius: 3 // Sets shadow radius on the navbar, Works only when topBarElevationShadowEnabled: true
+
+  preferredContentSize: { width: 500, height: 500 } // Sets the preferred size for the view controller’s view.
+  modalPresentationStyle: 'formSheet' // Sets the presentation style for modally presented view controllers. Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen' and 'fullScreen'. 
   
   // Android only
   navigationBarColor: '#000000', // change the background color of the bottom native navigation bar.
