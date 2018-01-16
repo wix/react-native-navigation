@@ -724,6 +724,15 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   } else {
     self._statusBarHidden = NO;
   }
+  
+  NSDictionary *preferredContentSize = self.navigatorStyle[@"preferredContentSize"];
+  if (preferredContentSize) {
+    NSNumber *width = preferredContentSize[@"width"];
+    NSNumber *height = preferredContentSize[@"height"];
+    if (width && height) {
+      self.preferredContentSize = CGSizeMake([width floatValue], [height floatValue]);
+    }
+  }
 }
 
 - (BOOL)hidesBottomBarWhenPushed
