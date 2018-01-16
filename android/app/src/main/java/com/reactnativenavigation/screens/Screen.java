@@ -216,7 +216,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
     }
 
     public void setTitleBarTitle(String title) {
-       topBar.setTitle(title, styleParams);
+        topBar.setTitle(title, styleParams);
     }
 
     public void setTitleBarSubtitle(String subtitle) {
