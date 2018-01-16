@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.toptabs;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
@@ -48,6 +49,7 @@ public class TopTabsController extends ParentController implements NavigationOpt
     @Override
     public void onViewAppeared() {
         applyOptions(options);
+        applyOnParentController(parentController -> parentController.setupTopTabsWithViewPager((ViewPager) getView()));
         performOnCurrentTab(ViewController::onViewAppeared);
     }
 

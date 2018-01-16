@@ -50,7 +50,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		return activity;
 	}
 
-	protected void applyOnParentStack(Task<ParentController> task) {
+	protected void applyOnParentController(Task<ParentController> task) {
         if (parentController != null) {
             task.run(parentController);
         }

@@ -2,40 +2,39 @@ package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.viewcontrollers.ComponentViewController.IReactView;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsViewPager;
 
 import java.util.List;
 
-@SuppressLint("ViewConstructor")
-public class TopTabsLayout extends RelativeLayout implements Component, TitleBarButton.OnClickListener {
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.widget.RelativeLayout.BELOW;
 
-    private TopBar topBar;
-    private TopTabsViewPager viewPager;
+@SuppressLint("ViewConstructor")
+public class TopTabsLayout extends ViewPager implements Component, TitleBarButton.OnClickListener {
+
+    private static final int OFFSCREEN_PAGE_LIMIT = 99;
+    private List<ViewController> tabs;
 
     public TopTabsLayout(Context context, List<ViewController> tabs, TopTabsAdapter adapter) {
         super(context);
-        viewPager = new TopTabsViewPager(context, tabs, adapter);
-        topBar = new TopBar(context, this);
-        topBar.setId(View.generateViewId());
-
-        initViews();
+        this.tabs = tabs;
+        initTabs(adapter);
     }
 
-    private void initViews() {
-        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams.addRule(BELOW, topBar.getId());
-        addView(topBar, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        addView(viewPager, layoutParams);
-        topBar.setupTopTabsWithViewPager(viewPager);
+    private void initTabs(TopTabsAdapter adapter) {
+        setOffscreenPageLimit(OFFSCREEN_PAGE_LIMIT);
+        for (ViewController tab : tabs) {
+            addView(tab.getView(), new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        }
+        setAdapter(adapter);
+        addOnPageChangeListener(adapter);
     }
 
     @Override
@@ -45,29 +44,30 @@ public class TopTabsLayout extends RelativeLayout implements Component, TitleBar
 
     @Override
     public void drawBehindTopBar() {
-
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+        layoutParams.removeRule(BELOW);
+        setLayoutParams(layoutParams);
     }
 
     @Override
     public void drawBelowTopBar(TopBar topBar) {
-
-    }
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    public ViewPager getViewPager() {
-        return viewPager;
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+        layoutParams.addRule(BELOW, topBar.getId());
+        setLayoutParams(layoutParams);
     }
 
     public void switchToTab(int index) {
-        viewPager.setCurrentItem(index);
-    }
-
-    public int getCurrentItem() {
-        return viewPager.getCurrentItem();
+        setCurrentItem(index);
     }
 
     @Override
     public void onPress(String buttonId) {
-        viewPager.sendOnNavigationButtonPressed(buttonId);
+        ((IReactView) tabs.get(getCurrentItem()).getView()).sendOnNavigationButtonPressed(buttonId);
+    }
+
+    public void destroy() {
+        for (ViewController tab : tabs) {
+            tab.destroy();
+        }
     }
 }

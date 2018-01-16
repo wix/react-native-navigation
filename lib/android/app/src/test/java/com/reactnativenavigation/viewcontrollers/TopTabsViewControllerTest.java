@@ -133,6 +133,6 @@ public class TopTabsViewControllerTest extends BaseTest {
     }
 
     private IReactView tab(TopTabsLayout topTabs, final int index) {
-        return (IReactView) ((ViewGroup) topTabs.getViewPager().getChildAt(index)).getChildAt(0);
+        return (IReactView) ((ViewGroup) topTabs.getChildAt(index)).getChildAt(0);
     }
 }

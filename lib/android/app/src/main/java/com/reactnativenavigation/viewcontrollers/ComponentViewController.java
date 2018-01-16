@@ -60,7 +60,7 @@ public class ComponentViewController extends ViewController implements Navigatio
     public void onViewAppeared() {
         super.onViewAppeared();
         ensureViewIsCreated();
-        applyOnParentStack(parentController -> {
+        applyOnParentController(parentController -> {
             parentController.clearOptions();
             parentController.applyOptions(options, component);
         });
@@ -89,7 +89,7 @@ public class ComponentViewController extends ViewController implements Navigatio
     public void mergeOptions(Options options) {
         this.options.mergeWith(options);
         component.applyOptions(this.options);
-        applyOnParentStack(parentController -> parentController.applyOptions(this.options, component));
+        applyOnParentController(parentController -> parentController.applyOptions(this.options, component));
     }
 
     Options getOptions() {

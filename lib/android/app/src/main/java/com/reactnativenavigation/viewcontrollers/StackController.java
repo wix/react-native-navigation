@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.facebook.react.bridge.Promise;
@@ -61,7 +62,7 @@ public class StackController extends ParentController <StackLayout> {
 		}
 	}
 
-    public void pop(final Promise promise) {
+    void pop(final Promise promise) {
         if (!canPop()) {
             Navigator.rejectPromise(promise);
             return;
@@ -77,7 +78,7 @@ public class StackController extends ParentController <StackLayout> {
         finishPopping(exitingView, poppedTop, promise);
     }
 
-	public void animatePop(final Promise promise) {
+	private void animatePop(final Promise promise) {
 		if (!canPop()) {
 			Navigator.rejectPromise(promise);
 			return;
@@ -177,4 +178,9 @@ public class StackController extends ParentController <StackLayout> {
 	public Collection<ViewController> getChildControllers() {
 		return stack.values();
 	}
+
+    @Override
+    public void setupTopTabsWithViewPager(ViewPager viewPager) {
+        stackLayout.setupTopTabsWithViewPager(viewPager);
+    }
 }

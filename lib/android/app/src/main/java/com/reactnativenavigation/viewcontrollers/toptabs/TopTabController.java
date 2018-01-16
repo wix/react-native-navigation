@@ -33,7 +33,7 @@ public class TopTabController extends ViewController implements NavigationOption
 
     @Override
     public void applyOptions(Options options) {
-        applyOnParentStack(parentController -> parentController.applyOptions(options));
+        applyOnParentController(parentController -> parentController.applyOptions(options));
     }
 
     @Override
