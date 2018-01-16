@@ -23,8 +23,8 @@ public class OptionsPresenter {
     }
 
     public void applyOptions(Options options) {
-        applyTopBarOptions(options.topBarOptions);
         applyButtons(options.topBarOptions.leftButtons, options.topBarOptions.rightButtons);
+        applyTopBarOptions(options.topBarOptions);
         applyTopTabsOptions(options.topTabsOptions);
         applyTopTabOptions(options.topTabOptions);
     }

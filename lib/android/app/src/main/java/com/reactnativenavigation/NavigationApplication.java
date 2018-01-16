@@ -13,11 +13,13 @@ import java.util.List;
 public abstract class NavigationApplication extends Application implements ReactApplication {
 
 	private ReactGateway reactGateway;
+	public static NavigationApplication instance;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		reactGateway = new ReactGateway(this, isDebug(), createAdditionalReactPackages());
+        instance = this;
+        reactGateway = new ReactGateway(this, isDebug(), createAdditionalReactPackages());
 	}
 
 	public ReactGateway getReactGateway() {
