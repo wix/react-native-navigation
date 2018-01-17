@@ -98,7 +98,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		}
 	}
 	
-	void (^disableTopBarTransparent)() = ^void(){
+	void (^disableTopBarTransparent)(void) = ^ {
 		UIView *transparentView = [viewController.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
 		if (transparentView){
 			[transparentView removeFromSuperview];

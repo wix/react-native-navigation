@@ -1,8 +1,8 @@
 package com.reactnativenavigation.parse;
 
-public class NullNumber extends Number {
-    NullNumber() {
-        super(0);
+public class NullText extends Text {
+    public NullText() {
+        super("");
     }
 
     @Override

@@ -12,9 +12,7 @@ class ScrollViewScreen extends Component {
       topBar: {
         title: 'Collapse',
         textColor: 'black',
-        textFontSize: 16,
-        drawUnder: true,
-        translucent: false
+        textFontSize: 16
       }
     };
   }

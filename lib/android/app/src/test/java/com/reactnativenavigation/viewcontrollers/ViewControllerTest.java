@@ -59,7 +59,7 @@ public class ViewControllerTest extends BaseTest {
     public void holdsAReferenceToStackControllerOrNull() throws Exception {
         assertThat(uut.getParentStackController()).isNull();
         StackController nav = new StackController(activity, "stack");
-        nav.push(uut, new MockPromise());
+        nav.animatePush(uut, new MockPromise());
         assertThat(uut.getParentStackController()).isEqualTo(nav);
     }
 

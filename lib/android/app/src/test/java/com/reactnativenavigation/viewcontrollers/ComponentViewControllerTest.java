@@ -1,18 +1,23 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.*;
+import android.app.Activity;
 
-import com.reactnativenavigation.*;
-import com.reactnativenavigation.mocks.*;
-import com.reactnativenavigation.parse.*;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.TestComponentLayout;
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.views.StackLayout;
 
-import org.junit.*;
+import org.junit.Test;
 
-import static org.assertj.core.api.Java6Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ComponentViewControllerTest extends BaseTest {
     private ComponentViewController uut;
+    private ParentController<StackLayout> parentController;
     private ComponentViewController.IReactView view;
 
     @Override
@@ -20,12 +25,10 @@ public class ComponentViewControllerTest extends BaseTest {
         super.beforeEach();
         Activity activity = newActivity();
         view = spy(new TestComponentLayout(activity));
-        uut = new ComponentViewController(activity, "componentId1", "componentName", new ComponentViewController.ReactViewCreator() {
-            @Override
-            public ComponentViewController.IReactView create(final Activity activity1, final String componentId, final String componentName) {
-                return view;
-            }
-        }, new Options());
+        parentController = new StackController(activity, "stack");
+        uut = new ComponentViewController(activity, "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options());
+        uut.setParentController(parentController);
+        parentController.ensureViewIsCreated();
     }
 
     @Test

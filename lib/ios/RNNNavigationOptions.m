@@ -30,7 +30,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.backgroundImage = [RCTConvert UIImage:[options objectForKey:@"backgroundImage"]];
 	self.rootBackgroundImage = [RCTConvert UIImage:[options objectForKey:@"rootBackgroundImage"]];
 	self.bottomTab = [[RNNBottomTabOptions alloc] initWithDict:[options objectForKey:@"bottomTab"]];
-    
+	self.overlay = [[RNNOverlayOptions alloc] initWithDict:[options objectForKey:@"overlay"]];
+	
 	return self;
 }
 
@@ -53,6 +54,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	[self.topTab applyOn:viewController];
 	[self.bottomTab applyOn:viewController];
 	[self.sideMenu applyOn:viewController];
+	[self.overlay applyOn:viewController];
 	[self applyOtherOptionsOn:viewController];
 }
 

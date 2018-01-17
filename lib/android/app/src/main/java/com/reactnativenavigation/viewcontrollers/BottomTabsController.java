@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.Text;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.utils.CompatUtils;
 
@@ -23,7 +24,6 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.RelativeLayout.ABOVE;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 import static com.reactnativenavigation.parse.DEFAULT_VALUES.NO_INT_VALUE;
-import static com.reactnativenavigation.parse.DEFAULT_VALUES.NO_VALUE;
 
 public class BottomTabsController extends ParentController
 		implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationOptionsListener {
@@ -60,7 +60,7 @@ public class BottomTabsController extends ParentController
 		return true;
 	}
 
-	public void selectTabAtIndex(final int newIndex) {
+	void selectTabAtIndex(final int newIndex) {
 		tabs.get(selectedIndex).getView().setVisibility(View.GONE);
 		selectedIndex = newIndex;
 		tabs.get(selectedIndex).getView().setVisibility(View.VISIBLE);
@@ -87,7 +87,7 @@ public class BottomTabsController extends ParentController
 		getView().addView(tab.getView(), params);
 	}
 
-	public int getSelectedIndex() {
+	int getSelectedIndex() {
 		return selectedIndex;
 	}
 
@@ -99,25 +99,23 @@ public class BottomTabsController extends ParentController
 
 	@Override
 	public void mergeOptions(Options options) {
-		if (options.bottomTabsOptions != null) {
-			if (options.bottomTabsOptions.currentTabIndex != NO_INT_VALUE) {
-				selectTabAtIndex(options.bottomTabsOptions.currentTabIndex);
-			}
-			if (!NO_VALUE.equals(options.bottomTabsOptions.currentTabId)) {
-				String id = options.bottomTabsOptions.currentTabId;
-				for (ViewController controller : tabs) {
-					if (controller.getId().equals(id)) {
-						selectTabAtIndex(tabs.indexOf(controller));
-					}
-					if (controller instanceof StackController) {
-						if (hasControlWithId((StackController) controller, id)) {
-							selectTabAtIndex(tabs.indexOf(controller));
-						}
-					}
-				}
-			}
-		}
-	}
+        if (options.bottomTabsOptions.currentTabIndex != NO_INT_VALUE) {
+            selectTabAtIndex(options.bottomTabsOptions.currentTabIndex);
+        }
+        if (options.bottomTabsOptions.currentTabId.hasValue()) {
+            Text id = options.bottomTabsOptions.currentTabId;
+            for (ViewController controller : tabs) {
+                if (controller.getId().equals(id.get())) {
+                    selectTabAtIndex(tabs.indexOf(controller));
+                }
+                if (controller instanceof StackController) {
+                    if (hasControlWithId((StackController) controller, id.get())) {
+                        selectTabAtIndex(tabs.indexOf(controller));
+                    }
+                }
+            }
+        }
+    }
 
 	private boolean hasControlWithId(StackController controller, String id) {
 		for (ViewController child : controller.getChildControllers()) {

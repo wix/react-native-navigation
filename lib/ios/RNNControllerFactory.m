@@ -162,6 +162,15 @@
 	return sideMenuChild;
 }
 
-
+- (UIViewController *)createOverlay:(NSDictionary*)layout {
+	UIViewController *vc = [self fromTree:layout];
+	RCTRootView* rootView = (RCTRootView*)vc.view;
+	rootView.backgroundColor = [UIColor clearColor];
+	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
+	rootView.frame = CGRectMake(0, 0, availableSize.width, availableSize.height);
+	[_bridge.uiManager setAvailableSize:availableSize forRootView:vc.view];
+	
+	return vc;
+}
 
 @end

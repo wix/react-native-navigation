@@ -78,5 +78,17 @@ RCT_EXPORT_METHOD(dismissAllModals:(RCTPromiseResolveBlock)resolve rejecter:(RCT
 	}];
 }
 
+RCT_EXPORT_METHOD(showOverlay:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler showOverlay:layout completion:^{
+		resolve(layout[@"id"]);
+	}];
+}
+
+RCT_EXPORT_METHOD(dismissOverlay:(NSString*)componentId resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler dismissOverlay:componentId completion:^{
+		resolve(@(1));
+	}];
+}
+
 @end
 

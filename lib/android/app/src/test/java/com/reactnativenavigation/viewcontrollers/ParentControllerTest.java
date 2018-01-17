@@ -65,11 +65,11 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void findControllerById_Recursive() throws Exception {
-        StackController stackController = new StackController(activity, "stack", new TestNavigationAnimator());
+        StackController stackController = new StackController(activity, "stack");
         SimpleViewController child1 = new SimpleViewController(activity, "child1");
         SimpleViewController child2 = new SimpleViewController(activity, "child2");
-        stackController.push(child1, new MockPromise());
-        stackController.push(child2, new MockPromise());
+        stackController.animatePush(child1, new MockPromise());
+        stackController.animatePush(child2, new MockPromise());
         children.add(stackController);
 
         assertThat(uut.findControllerById("child2")).isEqualTo(child2);

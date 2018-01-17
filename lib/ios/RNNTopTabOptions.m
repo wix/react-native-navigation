@@ -9,10 +9,5 @@
 	}
 }
 
--(void)mergeWith:(NSDictionary *)otherOptions {
-	for (id key in otherOptions) {
-		[self setValue:[otherOptions objectForKey:key] forKey:key];
-	}
-}
 @end
 

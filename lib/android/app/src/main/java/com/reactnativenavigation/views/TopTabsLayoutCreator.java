@@ -2,16 +2,16 @@ package com.reactnativenavigation.views;
 
 import android.content.Context;
 
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 
 import java.util.List;
 
 public class TopTabsLayoutCreator {
     private Context context;
-    private List<TopTabController> tabs;
+    private List<ViewController> tabs;
 
-    public TopTabsLayoutCreator(Context context, List<TopTabController> tabs) {
+    public TopTabsLayoutCreator(Context context, List<ViewController> tabs) {
         this.context = context;
         this.tabs = tabs;
     }

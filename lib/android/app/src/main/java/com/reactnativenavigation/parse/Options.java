@@ -1,6 +1,7 @@
 package com.reactnativenavigation.parse;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.reactnativenavigation.utils.TypefaceLoader;
 
@@ -14,7 +15,7 @@ public class Options implements DEFAULT_VALUES {
 		NoValue;
 
 		static BooleanOptions parse(String value) {
-			if (value != null && !value.equals("")) {
+			if (!TextUtils.isEmpty(value)) {
 				return Boolean.valueOf(value) ? True : False;
 			}
 			return NoValue;
@@ -43,6 +44,10 @@ public class Options implements DEFAULT_VALUES {
     @NonNull public TopTabsOptions topTabsOptions = new TopTabsOptions();
     @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
     @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
+
+    void setTopTabIndex(int i) {
+        topTabOptions.tabIndex = i;
+    }
 
 	public void mergeWith(final Options other) {
         topBarOptions.mergeWith(other.topBarOptions);

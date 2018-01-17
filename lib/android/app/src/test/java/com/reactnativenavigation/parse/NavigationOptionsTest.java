@@ -53,10 +53,10 @@ public class NavigationOptionsTest extends BaseTest {
     }
 
     private void assertResult(Options result) {
-        assertThat(result.topBarOptions.title).isEqualTo(TITLE);
-        assertThat(result.topBarOptions.backgroundColor).isEqualTo(TOP_BAR_BACKGROUND_COLOR);
-        assertThat(result.topBarOptions.textColor).isEqualTo(TOP_BAR_TEXT_COLOR);
-        assertThat(result.topBarOptions.textFontSize).isEqualTo(TOP_BAR_FONT_SIZE);
+        assertThat(result.topBarOptions.title.get()).isEqualTo(TITLE);
+        assertThat(result.topBarOptions.backgroundColor.get()).isEqualTo(TOP_BAR_BACKGROUND_COLOR);
+        assertThat(result.topBarOptions.textColor.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
+        assertThat(result.topBarOptions.textFontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
         assertThat(result.topBarOptions.textFontFamily).isEqualTo(TOP_BAR_TYPEFACE);
         assertThat(result.topBarOptions.hidden).isEqualTo(TOP_BAR_HIDDEN);
         assertThat(result.topBarOptions.drawBehind).isEqualTo(TOP_BAR_DRAW_BEHIND);
@@ -64,7 +64,7 @@ public class NavigationOptionsTest extends BaseTest {
         assertThat(result.bottomTabsOptions.animateHide).isEqualTo(BOTTOM_TABS_ANIMATE_HIDE);
         assertThat(result.bottomTabsOptions.hidden).isEqualTo(BOTTOM_TABS_HIDDEN);
         assertThat(result.bottomTabsOptions.tabBadge).isEqualTo(BOTTOM_TABS_BADGE);
-        assertThat(result.bottomTabsOptions.currentTabId).isEqualTo(BOTTOM_TABS_CURRENT_TAB_ID);
+        assertThat(result.bottomTabsOptions.currentTabId.get()).isEqualTo(BOTTOM_TABS_CURRENT_TAB_ID);
         assertThat(result.bottomTabsOptions.currentTabIndex).isEqualTo(BOTTOM_TABS_CURRENT_TAB_INDEX);
     }
 
@@ -81,7 +81,7 @@ public class NavigationOptionsTest extends BaseTest {
     @NonNull
     private JSONObject createTopBar() throws JSONException {
         return new JSONObject()
-                .put("title", TITLE)
+                .put("title", "the title")
                 .put("backgroundColor", TOP_BAR_BACKGROUND_COLOR)
                 .put("textColor", TOP_BAR_TEXT_COLOR)
                 .put("textFontSize", TOP_BAR_FONT_SIZE)
@@ -94,7 +94,7 @@ public class NavigationOptionsTest extends BaseTest {
     @NonNull
     private JSONObject createOtherTopBar() throws JSONException {
         return new JSONObject()
-                .put("title", TITLE)
+                .put("title", "the title")
                 .put("backgroundColor", TOP_BAR_BACKGROUND_COLOR)
                 .put("textColor", TOP_BAR_TEXT_COLOR)
                 .put("textFontSize", TOP_BAR_FONT_SIZE)
@@ -142,6 +142,6 @@ public class NavigationOptionsTest extends BaseTest {
     @Test
     public void defaultEmptyOptions() throws Exception {
         Options uut = new Options();
-        assertThat(uut.topBarOptions.title).isEmpty();
+        assertThat(uut.topBarOptions.title.get("")).isEmpty();
     }
 }

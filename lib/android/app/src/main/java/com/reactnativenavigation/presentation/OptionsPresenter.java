@@ -5,7 +5,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
-import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.ArrayList;
@@ -14,39 +14,38 @@ import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
 import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
 public class OptionsPresenter {
-
-    private Component reactComponent;
     private TopBar topBar;
+    private ReactComponent component;
 
-    public OptionsPresenter(Component reactComponent) {
-        this.reactComponent = reactComponent;
-        this.topBar = reactComponent.getTopBar();
+    public OptionsPresenter(TopBar topBar, ReactComponent component) {
+        this.topBar = topBar;
+        this.component = component;
     }
 
     public void applyOptions(Options options) {
-        applyTopBarOptions(options.topBarOptions);
         applyButtons(options.topBarOptions.leftButtons, options.topBarOptions.rightButtons);
+        applyTopBarOptions(options.topBarOptions);
         applyTopTabsOptions(options.topTabsOptions);
         applyTopTabOptions(options.topTabOptions);
     }
 
     private void applyTopBarOptions(TopBarOptions options) {
-        topBar.setTitle(options.title);
+        if (options.title.hasValue()) topBar.setTitle(options.title.get());
         topBar.setBackgroundColor(options.backgroundColor);
         topBar.setTitleTextColor(options.textColor);
         topBar.setTitleFontSize(options.textFontSize);
 
         topBar.setTitleTypeface(options.textFontFamily);
-        if (options.hidden == Options.BooleanOptions.True) {
+        if (options.hidden == True) {
             topBar.hide(options.animateHide);
         }
-        if (options.hidden == Options.BooleanOptions.False) {
+        if (options.hidden == False) {
             topBar.show(options.animateHide);
         }
         if (options.drawBehind == True) {
-            reactComponent.drawBehindTopBar();
+            component.drawBehindTopBar();
         } else if (options.drawBehind == False) {
-            reactComponent.drawBelowTopBar();
+            component.drawBelowTopBar(topBar);
         }
 
         if (options.hideOnScroll == True) {

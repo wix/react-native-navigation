@@ -8,7 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.reactnativenavigation.NavigationApplication;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -21,46 +25,45 @@ public class ImageUtils {
 		void onError(Throwable error);
 	}
 
-	public static void tryLoadIcon(final Context context, final String uri, final ImageLoadingListener listener) {
-		if (uri == null) {
-			if (listener != null) {
-				listener.onError(new IllegalArgumentException("Uri is null"));
-			}
-			return;
-		}
-		runWorkerThread(new Runnable() {
-			@Override
-			public void run() {
-				loadIcon(context, uri, listener);
-			}
-		});
-	}
+	public static void loadIcon(final Context context, final String uri, final ImageLoadingListener listener) {
+        try {
+            StrictMode.ThreadPolicy threadPolicy = adjustThreadPolicyDebug();
+            
+            InputStream is = openStream(context, uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(is);
+            Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
+            listener.onComplete(drawable);
 
-	private static void loadIcon(Context context, String uri, final ImageLoadingListener listener) {
-		try {
-			InputStream is = null;
-			if (uri.contains("http")) {
-				URL url = new URL(uri);
-				is = url.openStream();
-			} else {
-				is = context.getContentResolver().openInputStream(Uri.parse(uri));
-			}
+            restoreThreadPolicyDebug(threadPolicy);
+        } catch (IOException e) {
+            listener.onError(e);
+        }
+    }
 
-			Bitmap bitmap = BitmapFactory.decodeStream(is);
-			Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
-			if (listener != null) {
-				listener.onComplete(drawable);
-			}
-		} catch (IOException e) {
-			if (listener != null) {
-				listener.onError(e);
-			} else {
-				e.printStackTrace();
-			}
-		}
-	}
+    private static StrictMode.ThreadPolicy adjustThreadPolicyDebug() {
+        StrictMode.ThreadPolicy threadPolicy = null;
+        if (NavigationApplication.instance.isDebug()) {
+            threadPolicy = StrictMode.getThreadPolicy();
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitNetwork().build());
+        }
+        return threadPolicy;
+    }
 
-	private static void runWorkerThread(Runnable runnable) {
-		new Thread(runnable).start();
-	}
+    private static void restoreThreadPolicyDebug(@Nullable StrictMode.ThreadPolicy threadPolicy) {
+        if (NavigationApplication.instance.isDebug() && threadPolicy != null) {
+            StrictMode.setThreadPolicy(threadPolicy);
+        }
+    }
+
+    private static InputStream openStream(Context context, String uri) throws IOException {
+        return uri.contains("http") ? remoteUrl(uri) : localFile(context, uri);
+    }
+
+    private static InputStream remoteUrl(String uri) throws IOException {
+        return new URL(uri).openStream();
+    }
+
+    private static InputStream localFile(Context context, String uri) throws FileNotFoundException {
+        return context.getContentResolver().openInputStream(Uri.parse(uri));
+    }
 }

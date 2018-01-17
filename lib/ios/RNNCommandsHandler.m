@@ -1,6 +1,7 @@
 #import "RNNCommandsHandler.h"
 #import "RNNModalManager.h"
 #import "RNNNavigationStackManager.h"
+#import "RNNOverlayManager.h"
 #import "RNNNavigationOptions.h"
 #import "RNNRootViewController.h"
 #import "React/RCTUIManager.h"
@@ -10,6 +11,7 @@
 	RNNStore *_store;
 	RNNNavigationStackManager* _navigationStackManager;
 	RNNModalManager* _modalManager;
+	RNNOverlayManager* _overlayManager;
 }
 
 -(instancetype) initWithStore:(RNNStore*)store controllerFactory:(RNNControllerFactory*)controllerFactory {
@@ -18,6 +20,7 @@
 	_controllerFactory = controllerFactory;
 	_navigationStackManager = [[RNNNavigationStackManager alloc] initWithStore:_store];
 	_modalManager = [[RNNModalManager alloc] initWithStore:_store];
+	_overlayManager = [[RNNOverlayManager alloc] init];
 	return self;
 }
 
@@ -126,6 +129,17 @@
 	[_modalManager dismissAllModals];
 	
 	[CATransaction commit];
+}
+
+-(void)showOverlay:(NSDictionary *)layout completion:(RNNTransitionCompletionBlock)completion {
+	[self assertReady];
+	UIViewController* overlayVC = [_controllerFactory createOverlay:layout];
+	[_overlayManager showOverlay:overlayVC completion:completion];
+}
+
+- (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion {
+	[self assertReady];
+	[_overlayManager dismissOverlay:componentId completion:completion];
 }
 
 #pragma mark - private

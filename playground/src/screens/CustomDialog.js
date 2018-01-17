@@ -4,28 +4,34 @@ const { PureComponent } = require('react');
 const { View, Text, Button } = require('react-native');
 const Navigation = require('react-native-navigation');
 
+const testIDs = require('../testIDs');
+
 class CustomDialog extends PureComponent {
 
   render() {
     return (
       <View style={styles.root}>
-        <Text style={styles.h1}>Test view</Text>
-        <Button title="OK" onPress={this.onCLickOk} />
+        <Text style={styles.h1} testID={testIDs.DIALOG_HEADER}>Test view</Text>
+        <Button title="OK" testID={testIDs.OK_BUTTON} onPress={() => this.onCLickOk()} />
       </View>
     );
   }
 
   onCLickOk() {
-    Navigation.dismissOverlay();
+    Navigation.dismissOverlay(this.props.componentId);
   }
 }
 
 const styles = {
   root: {
-    flex: 1,
     backgroundColor: 'green',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    height: 100,
+    bottom: 0,
+    position: 'absolute',
+    left: 0,
+    right: 0
   },
   h1: {
     fontSize: 24,
