@@ -1,5 +1,7 @@
 package com.reactnativenavigation.react;
 
+import android.app.Application;
+
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
@@ -10,13 +12,17 @@ import java.util.List;
 
 public class ReactGateway {
 
-	private final NavigationReactNativeHost reactNativeHost;
+	private final ReactNativeHost reactNativeHost;
 	private final NavigationReactInitializer initializer;
 	private final JsDevReloadHandler jsDevReloadHandler;
 
-	public ReactGateway(final NavigationApplication application, final boolean isDebug, final List<ReactPackage> additionalReactPackages) {
+	public ReactGateway(final Application application, final boolean isDebug, final List<ReactPackage> additionalReactPackages) {
+		this(application, isDebug, new NavigationReactNativeHost(application, isDebug, additionalReactPackages));
+	}
+
+	public ReactGateway(final Application application, final boolean isDebug, final ReactNativeHost reactNativeHost) {
 		SoLoader.init(application, false);
-		reactNativeHost = new NavigationReactNativeHost(application, isDebug, additionalReactPackages);
+		this.reactNativeHost = reactNativeHost;
 		initializer = new NavigationReactInitializer(reactNativeHost.getReactInstanceManager(), isDebug);
 		jsDevReloadHandler = new JsDevReloadHandler(reactNativeHost.getReactInstanceManager());
 	}
