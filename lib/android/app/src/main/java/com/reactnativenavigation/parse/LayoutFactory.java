@@ -10,7 +10,6 @@ import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.SideMenuController;
 import com.reactnativenavigation.viewcontrollers.StackController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.viewcontrollers.toptabs.TopTabController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
 import com.reactnativenavigation.views.ComponentViewCreator;
 import com.reactnativenavigation.views.TopTabsLayoutCreator;
@@ -91,7 +90,7 @@ public class LayoutFactory {
 	private ViewController createComponent(LayoutNode node) {
 		String id = node.id;
 		String name = node.data.optString("name");
-		Options options = Options.parse(typefaceManager, node.data.optJSONObject("options"), defaultOptions);
+		Options options = Options.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);
 		return new ComponentViewController(activity,
                 id,
                 name,

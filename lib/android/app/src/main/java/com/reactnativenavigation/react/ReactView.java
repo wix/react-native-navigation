@@ -3,11 +3,13 @@ package com.reactnativenavigation.react;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
@@ -20,12 +22,14 @@ public class ReactView extends ReactRootView implements ComponentViewController.
 	private final String componentId;
 	private final String componentName;
 	private boolean isAttachedToReactInstance = false;
+    private final JSTouchDispatcher jsTouchDispatcher;
 
-	public ReactView(final Context context, ReactInstanceManager reactInstanceManager, String componentId, String componentName) {
+    public ReactView(final Context context, ReactInstanceManager reactInstanceManager, String componentId, String componentName) {
 		super(context);
 		this.reactInstanceManager = reactInstanceManager;
 		this.componentId = componentId;
 		this.componentName = componentName;
+		jsTouchDispatcher = new JSTouchDispatcher(this);
 		start();
 	}
 
@@ -72,6 +76,11 @@ public class ReactView extends ReactRootView implements ComponentViewController.
     @Override
     public ScrollEventListener getScrollEventListener() {
         return new ScrollEventListener(getEventDispatcher());
+    }
+
+    @Override
+    public void dispatchTouchEventToJs(MotionEvent event) {
+        jsTouchDispatcher.handleTouchEvent(event, getEventDispatcher());
     }
 
     public EventDispatcher getEventDispatcher() {

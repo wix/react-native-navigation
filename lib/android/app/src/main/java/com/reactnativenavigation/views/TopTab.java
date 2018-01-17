@@ -2,6 +2,7 @@ package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -52,5 +53,10 @@ public class TopTab extends FrameLayout implements IReactView {
     @Override
     public ScrollEventListener getScrollEventListener() {
         return reactView.getScrollEventListener();
+    }
+
+    @Override
+    public void dispatchTouchEventToJs(MotionEvent event) {
+        reactView.dispatchTouchEventToJs(event);
     }
 }
