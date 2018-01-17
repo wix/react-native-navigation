@@ -1,6 +1,7 @@
 package com.reactnativenavigation.mocks;
 
 import android.content.Context;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -70,6 +71,11 @@ public class TestComponentLayout extends RelativeLayout implements ReactComponen
     @Override
     public ScrollEventListener getScrollEventListener() {
         return null;
+    }
+
+    @Override
+    public void dispatchTouchEventToJs(MotionEvent event) {
+
     }
 
     @Override

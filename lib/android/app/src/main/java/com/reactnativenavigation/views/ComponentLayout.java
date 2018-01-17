@@ -2,16 +2,15 @@ package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController.IReactView;
+import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.widget.RelativeLayout.BELOW;
@@ -20,13 +19,13 @@ import static android.widget.RelativeLayout.BELOW;
 public class ComponentLayout extends FrameLayout implements ReactComponent, TitleBarButton.OnClickListener {
 
     private IReactView reactView;
-    private boolean interceptTouchOutside;
-    private Rect hitRect = new Rect();
+    private final OverlayTouchDelegate touchDelegate;
 
     public ComponentLayout(Context context, IReactView reactView) {
 		super(context);
 		this.reactView = reactView;
         addView(reactView.asView(), MATCH_PARENT, MATCH_PARENT);
+        touchDelegate = new OverlayTouchDelegate(reactView);
     }
 
     @Override
@@ -56,7 +55,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
 
     @Override
     public void applyOptions(Options options) {
-        interceptTouchOutside = options.overlayOptions.interceptTouchOutside == Options.BooleanOptions.True;
+        touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside == Options.BooleanOptions.True);
     }
 
     @Override
@@ -95,19 +94,6 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (!interceptTouchOutside) return super.onInterceptTouchEvent(ev);
-
-        switch (ev.getActionMasked()) {
-            case MotionEvent.ACTION_UP:
-                return super.onInterceptTouchEvent(ev);
-            default:
-                ((ViewGroup) reactView.asView()).getChildAt(0).getHitRect(hitRect);
-                reactView.dispatchTouchEventToJs(ev);
-                return interceptIfTouchOutsideOfRootChild(ev);
-        }
-    }
-
-    private boolean interceptIfTouchOutsideOfRootChild(MotionEvent ev) {
-        return !hitRect.contains((int) ev.getRawX(), (int) ev.getRawY());
+        return touchDelegate.onInterceptTouchEvent(ev) || super.onInterceptTouchEvent(ev);
     }
 }

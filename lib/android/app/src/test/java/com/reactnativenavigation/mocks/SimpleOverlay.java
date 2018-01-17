@@ -1,25 +1,30 @@
 package com.reactnativenavigation.mocks;
 
-import android.content.*;
-import android.view.*;
+import android.content.Context;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.viewcontrollers.*;
+import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 
-public class TopTabLayoutMock extends View implements ComponentViewController.IReactView {
-
-    public TopTabLayoutMock(Context context) {
+public class SimpleOverlay extends RelativeLayout implements ComponentViewController.IReactView {
+    public SimpleOverlay(Context context) {
         super(context);
     }
 
     @Override
     public boolean isReady() {
-        return false;
+        return true;
     }
 
     @Override
     public View asView() {
-        return this;
+        FrameLayout root = new FrameLayout(getContext());
+        FrameLayout overlay = new FrameLayout(getContext());
+        root.addView(overlay);
+        return root;
     }
 
     @Override
