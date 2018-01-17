@@ -135,7 +135,7 @@ public class Navigator extends ParentController {
 	}
 
 	public void dismissOverlay(final String componentId) {
-		overlayManager.dismiss(componentId);
+		overlayManager.dismiss((ViewGroup) root.getView(), componentId);
 	}
 
 	static void rejectPromise(Promise promise) {
