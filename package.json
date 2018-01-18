@@ -50,7 +50,7 @@
     "prop-types": "15.x.x"
   },
   "devDependencies": {
-    "detox": "6.x.x",
+    "detox": "7.0.0-alpha.0",
     "eslint-config-xo": "0.18.x",
     "eslint-config-xo-react": "0.13.x",
     "eslint-plugin-react": "7.x.x",
@@ -118,6 +118,18 @@
         "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -project playground/ios/playground.xcodeproj -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet",
         "type": "ios.simulator",
         "name": "iPhone SE"
+      },
+      "android.emu.debug": {
+        "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
+        "build": "cd playground/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ../..",
+        "type": "android.emulator",
+        "name": "Nexus_5X_API_26"
+      },
+      "android.emu.release": {
+        "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
+        "build": "cd playground/android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ../..",
+        "type": "android.emulator",
+        "name": "Nexus_5X_API_26"
       }
     }
   },

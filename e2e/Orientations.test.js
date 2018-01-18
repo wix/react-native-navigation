@@ -17,11 +17,11 @@ describe('orientation', () => {
   it('default allows all', async () => {
     await elementById(testIDs.ORIENTATION_BUTTON).tap();
     await elementById(testIDs.DEFAULT_ORIENTATION_BUTTON).tap();
-    await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await expect(elementById(testIDs.PORTRAIT_ELEMENT)).toBeVisible();
     await device.setOrientation('landscape');
-    await expect(element(by.id('currentOrientation'))).toHaveText('Landscape');
+    await expect(elementById(testIDs.LANDSCAPE_ELEMENT)).toBeVisible();
     await device.setOrientation('portrait');
-    await expect(element(by.id('currentOrientation'))).toHaveText('Portrait');
+    await expect(elementById(testIDs.PORTRAIT_ELEMENT)).toBeVisible();
     await elementById(testIDs.DISMISS_BUTTON).tap();
   });
 
