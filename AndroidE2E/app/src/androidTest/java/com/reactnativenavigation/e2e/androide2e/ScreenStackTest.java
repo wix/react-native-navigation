@@ -45,4 +45,13 @@ public class ScreenStackTest extends BaseTest {
         elementByText("POP TO ROOT").click();
         assertMainShown();
     }
+
+    @Test
+    public void pushStackWithMultipleChildren() throws Exception {
+        elementByText("SHOW MODAL").click();
+        elementByText("SHOW MODAL WITH STACK").click();
+        assertExists(By.text("Screen 2"));
+        device().pressBack();
+        assertExists(By.text("Screen 1"));
+    }
 }
