@@ -4,9 +4,9 @@
 @implementation RNNOverlayOptions
 
 - (void)applyOn:(UIViewController *)viewController {
-	if (self.interceptTouches) {
+	if (self.interceptTouchOutside) {
 		RCTRootView* rootView = (RCTRootView*)viewController.view;
-		rootView.passThroughTouches = ![self.interceptTouches boolValue];
+		rootView.passThroughTouches = ![self.interceptTouchOutside boolValue];
 	}
 }
 
