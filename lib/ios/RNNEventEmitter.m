@@ -52,7 +52,10 @@ static NSString* const onNavigationButtonPressed	= @"RNN.navigationButtonPressed
 # pragma mark private
 
 -(void)send:(NSString *)eventName body:(id)body {
-	[self sendEventWithName:eventName body:body];
+	// TODO This is a quick and dirty fix to issues/#1514.
+	if ([self bridge] != nil) {
+		[self sendEventWithName:eventName body:body];
+	}
 }
 
 @end
