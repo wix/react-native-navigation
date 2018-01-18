@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
@@ -58,11 +59,11 @@ public class SideMenu extends DrawerLayout {
     }
 
     public void setVisible(boolean visible, boolean animated, Side side) {
-        if (!isShown() && visible) {
+        if (visible) {
             openDrawer(animated, side);
         }
 
-        if (isShown() && !visible) {
+        if (!visible) {
             closeDrawer(animated, side);
         }
     }
@@ -121,18 +122,28 @@ public class SideMenu extends DrawerLayout {
         ContentView sideMenuView = new ContentView(getContext(), params.screenId, params.navigationParams);
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         lp.gravity = params.side.gravity;
-        setSideMenuWidth(sideMenuView);
+        setSideMenuWidth(sideMenuView, params);
         addView(sideMenuView, lp);
         return sideMenuView;
     }
 
-    private void setSideMenuWidth(final ContentView sideMenuView) {
+    private void setSideMenuWidth(final ContentView sideMenuView, @Nullable final SideMenuParams params) {
         sideMenuView.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
-                ViewGroup.LayoutParams lp = sideMenuView.getLayoutParams();
-                lp.width = sideMenuView.getChildAt(0).getWidth();
-                sideMenuView.setLayoutParams(lp);
+                final ViewGroup.LayoutParams lp = sideMenuView.getLayoutParams();
+                if (params != null && params.fixedWidth > 0) {
+                    lp.width = params.fixedWidth;
+                    sideMenuView.setLayoutParams(lp);
+                } else {
+                    NavigationApplication.instance.getUiManagerModule().measure(sideMenuView.getId(), new Callback() {
+                        @Override
+                        public void invoke(Object... args) {
+                            lp.width = sideMenuView.getChildAt(0).getWidth();
+                            sideMenuView.setLayoutParams(lp);
+                        }
+                    });
+                }
             }
         });
     }

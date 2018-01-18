@@ -54,7 +54,7 @@ public class MainApplication extends NavigationApplication {
 public class MyApplication extends NavigationApplication {
     @Override
     public void onCreate() {
-        registerActivityLifecycleCallbacks(new LifecycleCallbacks() {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -312,13 +312,12 @@ In most cases, `Navigation.startSingleScreenApp()` or `Navigation.startTabBasedA
 ```js
 import {Navigation, NativeEventsReceiver} from 'react-native-navigation';
 
-Promise.resolve(Navigation.isAppLaunched())
+Navigation.isAppLaunched()
   .then(appLaunched => {
     if (appLaunched) {
       startApp(); // App is launched -> show UI
-    } else {
-      new NativeEventsReceiver().appLaunched(startApp); // App hasn't been launched yet -> show the UI only when needed.
     }
+    new NativeEventsReceiver().appLaunched(startApp); // App hasn't been launched yet -> show the UI only when needed.
   });
 
 function startApp() {

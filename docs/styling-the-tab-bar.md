@@ -38,7 +38,7 @@ Navigation.startTabBasedApp({
     tabBarButtonColor: '#ffffff',
     tabBarSelectedButtonColor: '#63d7cc',
     tabBarTranslucent: false,
-    tabFontFamily: 'Avenir-Medium.ttf'  // for asset file or use existing font family name
+    tabFontFamily: 'Avenir-Medium'  // existing font family name or asset file without extension which can be '.ttf' or '.otf' (searched only if '.ttf' asset not found)
   },
 ...
 }

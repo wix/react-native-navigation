@@ -6,9 +6,11 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.view.Gravity;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Callback;
@@ -34,13 +36,17 @@ public class TopBar extends AppBarLayout {
     protected TopTabs topTabs;
     private VisibilityAnimator visibilityAnimator;
     @Nullable
-    private ContentView reactView;
+    private Pair<String, ContentView> reactView;
+    private ViewOutlineProvider outlineProvider;
 
     public TopBar(Context context) {
         super(context);
         setId(ViewUtils.generateViewId());
         createTopBarVisibilityAnimator();
         createLayout();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            outlineProvider = getOutlineProvider();
+        }
     }
 
     private void createTopBarVisibilityAnimator() {
@@ -62,9 +68,10 @@ public class TopBar extends AppBarLayout {
     public void addTitleBarAndSetButtons(List<TitleBarButtonParams> rightButtons,
                                          TitleBarLeftButtonParams leftButton,
                                          LeftButtonOnClickListener leftButtonOnClickListener,
-                                         String navigatorEventId, boolean overrideBackPressInJs) {
+                                         String navigatorEventId, boolean overrideBackPressInJs,
+                                         StyleParams styleParams) {
         titleBar = createTitleBar();
-        addTitleBar();
+        addTitleBar(styleParams);
         addButtons(rightButtons, leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
     }
 
@@ -72,8 +79,14 @@ public class TopBar extends AppBarLayout {
         return new TitleBar(getContext());
     }
 
-    protected void addTitleBar() {
-        titleBarAndContextualMenuContainer.addView(titleBar, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+    protected void addTitleBar(StyleParams styleParams) {
+        final int titleBarHeight = styleParams.titleBarHeight > 0
+            ? (int) ViewUtils.convertDpToPixel(styleParams.titleBarHeight)
+            : MATCH_PARENT;
+
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(MATCH_PARENT, titleBarHeight);
+
+        titleBarAndContextualMenuContainer.addView(titleBar, lp);
     }
 
     private void addButtons(List<TitleBarButtonParams> rightButtons, TitleBarLeftButtonParams leftButton, LeftButtonOnClickListener leftButtonOnClickListener, String navigatorEventId, boolean overrideBackPressInJs) {
@@ -85,19 +98,37 @@ public class TopBar extends AppBarLayout {
         titleBar.setTitle(title, styleParams);
     }
 
-    public void setSubtitle(String subtitle) {
-        titleBar.setSubtitle(subtitle);
+    public void setSubtitle(String subtitle, StyleParams styleParams) {
+        titleBar.setSubtitle(subtitle, styleParams);
     }
 
     public void setReactView(@NonNull StyleParams styleParams) {
         if (styleParams.hasTopBarCustomComponent()) {
-            reactView = createReactView(styleParams);
-            if ("fill".equals(styleParams.topBarReactViewAlignment)) {
-                addReactViewFill(reactView);
-            } else {
-                addCenteredReactView(reactView);
+            if (isReactViewAlreadySetAndUnchanged(styleParams)) {
+                return;
             }
+            unmountReactView();
+            reactView = new Pair<>(styleParams.topBarReactView, createReactView(styleParams));
+            int height = styleParams.hasCustomTitleBarHeight() ? (int) ViewUtils.convertDpToPixel(styleParams.titleBarHeight) : ViewUtils.getToolBarHeight();
+            if ("fill".equals(styleParams.topBarReactViewAlignment)) {
+                addReactViewFill(reactView.second, height);
+            } else {
+                addCenteredReactView(reactView.second, height);
+            }
+        } else {
+            unmountReactView();
         }
+    }
+
+    private void unmountReactView() {
+        if (reactView == null) return;
+        titleBar.removeView(reactView.second);
+        reactView.second.unmountReactView();
+        reactView = null;
+    }
+
+    private boolean isReactViewAlreadySetAndUnchanged(@NonNull StyleParams styleParams) {
+        return reactView != null && styleParams.topBarReactView.equals(reactView.first);
     }
 
     private ContentView createReactView(StyleParams styleParams) {
@@ -108,13 +139,13 @@ public class TopBar extends AppBarLayout {
         );
     }
 
-    private void addReactViewFill(ContentView view) {
-        view.setLayoutParams(new LayoutParams(MATCH_PARENT, ViewUtils.getToolBarHeight()));
+    private void addReactViewFill(ContentView view, int height) {
+        view.setLayoutParams(new LayoutParams(MATCH_PARENT, height));
         titleBar.addView(view);
     }
 
-    private void addCenteredReactView(final ContentView view) {
-        titleBar.addView(view, new LayoutParams(WRAP_CONTENT, ViewUtils.getToolBarHeight()));
+    private void addCenteredReactView(final ContentView view, int height) {
+        titleBar.addView(view, new LayoutParams(WRAP_CONTENT, height));
         view.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
@@ -130,7 +161,9 @@ public class TopBar extends AppBarLayout {
     }
 
     public void setStyle(StyleParams styleParams) {
-        if (styleParams.topBarColor.hasColor()) {
+        if (styleParams.topBarBorderColor.hasColor()) {
+            setBackground(new TopBarBorder(styleParams));
+        } else if (styleParams.topBarColor.hasColor()) {
             setBackgroundColor(styleParams.topBarColor.getColor());
         }
         if (styleParams.topBarTransparent) {
@@ -139,19 +172,17 @@ public class TopBar extends AppBarLayout {
         titleBar.setStyle(styleParams);
         setReactView(styleParams);
         setTopTabsStyle(styleParams);
-        if (!styleParams.topBarElevationShadowEnabled) {
-            disableElevationShadow();
-        }
+        setElevationEnabled(styleParams.topBarElevationShadowEnabled);
     }
 
     private void setTransparent() {
         setBackgroundColor(Color.TRANSPARENT);
-        disableElevationShadow();
+        setElevationEnabled(false);
     }
 
-    private void disableElevationShadow() {
+    private void setElevationEnabled (boolean enabled) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setOutlineProvider(null);
+            setOutlineProvider(enabled ? outlineProvider : null);
         }
     }
 
@@ -159,9 +190,14 @@ public class TopBar extends AppBarLayout {
         titleBar.setRightButtons(titleBarButtons, navigatorEventId);
     }
 
-    public TopTabs initTabs() {
+    public TopTabs initTabs(StyleParams styleParams) {
         topTabs = new TopTabs(getContext());
-        addView(topTabs, new ViewGroup.LayoutParams(MATCH_PARENT, (int) ViewUtils.convertDpToPixel(48)));
+
+        final int topTabsHeight = styleParams.topTabsHeight > 0
+            ? (int) ViewUtils.convertDpToPixel(styleParams.topTabsHeight)
+            : MATCH_PARENT;
+
+        addView(topTabs, new ViewGroup.LayoutParams(MATCH_PARENT, topTabsHeight));
         return topTabs;
     }
 
@@ -180,6 +216,7 @@ public class TopBar extends AppBarLayout {
         topTabs.setTopTabsTextColor(style);
         topTabs.setSelectedTabIndicatorStyle(style);
         topTabs.setScrollable(style);
+        topTabs.setTopTabsTextFontFamily(style);
     }
 
     public void showContextualMenu(final ContextualMenuParams params, StyleParams styleParams, Callback onButtonClicked) {
@@ -217,8 +254,10 @@ public class TopBar extends AppBarLayout {
 
     public void destroy() {
         if (reactView != null) {
-            reactView.unmountReactView();
+            reactView.second.unmountReactView();
+            reactView = null;
         }
+        titleBar.destroy();
     }
 
     public void onViewPagerScreenChanged(BaseScreenParams screenParams) {
@@ -226,7 +265,16 @@ public class TopBar extends AppBarLayout {
     }
 
     public void setVisible(boolean visible, boolean animate) {
-        titleBar.setVisibility(!visible);
-        visibilityAnimator.setVisible(visible, animate);
+        if (visible) {
+            titleBar.setVisibility(false);
+            visibilityAnimator.setVisible(true, animate, null);
+        } else {
+            visibilityAnimator.setVisible(false, animate, new Runnable() {
+                @Override
+                public void run() {
+                    titleBar.setVisibility(true);
+                }
+            });
+        }
     }
 }

@@ -5,5 +5,5 @@
     <translate
         android:fromYDelta="100%"
         android:toYDelta="0"
-        android:duration="250"/>
+        android:duration="@integer/config_activityDefaultDur"/>
 </set>

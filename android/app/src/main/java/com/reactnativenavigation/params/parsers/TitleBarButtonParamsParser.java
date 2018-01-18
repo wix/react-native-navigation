@@ -32,6 +32,8 @@ public class TitleBarButtonParamsParser extends Parser {
         result.hint = bundle.getString("hint", "");
         result.eventId = bundle.getString("id");
         result.disableIconTint = bundle.getBoolean("disableIconTint", false);
+        result.componentName = bundle.getString("component");
+        result.componentProps = bundle.getBundle("passProps");
         return result;
     }
 

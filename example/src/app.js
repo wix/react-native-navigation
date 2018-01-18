@@ -34,13 +34,8 @@ Navigation.startTabBasedApp({
   animationType: Platform.OS === 'ios' ? 'slide-down' : 'fade',
   tabsStyle: {
     tabBarBackgroundColor: '#003a66',
-    navBarButtonColor: '#ffffff',
     tabBarButtonColor: '#ffffff',
-    navBarTextColor: '#ffffff',
     tabBarSelectedButtonColor: '#ff505c',
-    navigationBarColor: '#003a66',
-    navBarBackgroundColor: '#003a66',
-    statusBarColor: '#002b4c',
     tabFontFamily: 'BioRhyme-Bold',
   },
   appStyle: {

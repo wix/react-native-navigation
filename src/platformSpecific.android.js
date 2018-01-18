@@ -5,14 +5,14 @@ import PropRegistry from './PropRegistry';
 
 const NativeReactModule = NativeModules.NavigationReactModule;
 
-function startApp(activityParams) {
+async function startApp(activityParams) {
   savePassProps(activityParams);
-  NativeReactModule.startApp(activityParams);
+  return await NativeReactModule.startApp(activityParams);
 }
 
 function push(screenParams) {
   savePassProps(screenParams);
-  NativeReactModule.push(screenParams);
+  return NativeReactModule.push(screenParams);
 }
 
 function pop(screenParams) {
@@ -62,8 +62,8 @@ function dismissLightBox() {
   NativeReactModule.dismissLightBox();
 }
 
-function dismissTopModal() {
-  NativeReactModule.dismissTopModal();
+function dismissTopModal(params) {
+  NativeReactModule.dismissTopModal(params);
 }
 
 function dismissAllModals() {
@@ -181,6 +181,10 @@ async function isAppLaunched() {
   return await NativeReactModule.isAppLaunched();
 }
 
+async function isRootLaunched() {
+  return await NativeReactModule.isRootLaunched();
+}
+
 async function getCurrentlyVisibleScreenId() {
   return await NativeReactModule.getCurrentlyVisibleScreenId();
 }
@@ -220,5 +224,6 @@ module.exports = {
   dismissContextualMenu,
   setScreenStyle,
   isAppLaunched,
+  isRootLaunched,
   getCurrentlyVisibleScreenId
 };
