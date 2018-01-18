@@ -44,6 +44,20 @@ public class StackController extends ParentController <StackLayout> {
         stackLayout.clearOptions();
     }
 
+    public void push(ViewController child, final Promise promise) {
+        final ViewController toRemove = stack.peek();
+
+        child.setParentController(this);
+        stack.push(child.getId(), child);
+        View enteringView = child.getView();
+        getView().addView(enteringView);
+
+        if (toRemove != null) {
+            getView().removeView(toRemove.getView());
+        }
+        promise.resolve(child.getId());
+    }
+
     public void animatePush(final ViewController child, final Promise promise) {
 		final ViewController toRemove = stack.peek();
 

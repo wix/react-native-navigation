@@ -101,9 +101,13 @@ public class LayoutFactory {
 
 	private ViewController createStack(LayoutNode node) {
 		StackController stackController = new StackController(activity, node.id);
-		for (LayoutNode child : node.children) {
-			stackController.animatePush(create(child), new NoOpPromise());
-		}
+        for (int i = 0; i < node.children.size(); i++) {
+            if (i < node.children.size() - 1) {
+                stackController.push(create(node.children.get(i)), new NoOpPromise());
+            } else {
+                stackController.animatePush(create(node.children.get(i)), new NoOpPromise());
+            }
+        }
 		return stackController;
 	}
 
