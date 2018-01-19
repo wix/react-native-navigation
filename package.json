@@ -1,7 +1,8 @@
 {
   "name": "react-native-navigation",
   "version": "1.1.314",
-  "description": "React Native Navigation - truly native navigation for iOS and Android",
+  "description":
+    "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
   "author": "Tal Kol <talkol@gmail.com>",
@@ -53,16 +54,13 @@
     "jest-react-native": "18.x.x",
     "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.6",
-    "react-native": "0.43.0",
+    "react-native": "0.52.0",
     "react-test-renderer": "15.4.2",
     "semver": "5.x.x"
   },
   "jest": {
     "preset": "jest-react-native",
-    "testPathDirs": [
-      "node_modules",
-      "src2"
-    ],
+    "testPathDirs": ["node_modules", "src2"],
     "resetMocks": true,
     "resetModules": true
   }
