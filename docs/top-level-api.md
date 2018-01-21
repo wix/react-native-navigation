@@ -15,7 +15,12 @@ Every screen component in your app must be registered with a unique name. The co
 Navigation.registerComponent('example.FirstTabScreen', () => FirstTabScreen);
 
 // using redux, pass your store and the Provider object from react-redux
-Navigation.registerComponent('example.FirstTabScreen', () => FirstTabScreen, store, Provider);
+Navigation.registerComponent(
+  'example.FirstTabScreen',
+  () => FirstTabScreen,
+  store,
+  Provider
+);
 ```
 
 ## startTabBasedApp(params)
@@ -102,28 +107,32 @@ Navigation.startSingleScreenApp({
     navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
     navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
   },
-  drawer: { // optional, add this if you want a side menu drawer in your app
-    left: { // optional, define if you want a drawer from the left
+  drawer: {
+    // optional, add this if you want a side menu drawer in your app
+    left: {
+      // optional, define if you want a drawer from the left
       screen: 'example.FirstSideMenu', // unique ID registered with Navigation.registerScreen
       passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
-      disableOpenGesture: false // can the drawer be opened with a swipe instead of button (optional, Android only)
-      fixedWidth: 500, // a fixed width you want your left drawer to have (optional)
+      disableOpenGesture: false, // can the drawer be opened with a swipe instead of button (optional, Android only)
+      fixedWidth: 500 // a fixed width you want your left drawer to have (optional)
     },
-    right: { // optional, define if you want a drawer from the right
+    right: {
+      // optional, define if you want a drawer from the right
       screen: 'example.SecondSideMenu', // unique ID registered with Navigation.registerScreen
-      passProps: {} // simple serializable object that will pass as props to all top screens (optional)
-      disableOpenGesture: false // can the drawer be opened with a swipe instead of button (optional, Android only)
-      fixedWidth: 500, // a fixed width you want your right drawer to have (optional)
+      passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
+      disableOpenGesture: false, // can the drawer be opened with a swipe instead of button (optional, Android only)
+      fixedWidth: 500 // a fixed width you want your right drawer to have (optional)
     },
-    style: { // ( iOS only )
-      drawerShadow: true, // optional, add this if you want a side menu drawer shadow
-      contentOverlayColor: 'rgba(0,0,0,0.25)', // optional, add this if you want a overlay color when drawer is open
+    style: {
+      // ( iOS only )
+      drawerShadow: true, // optional, add this if you want a side menu drawer shadow
+      contentOverlayColor: 'rgba(0,0,0,0.25)', // optional, add this if you want a overlay color when drawer is open
       leftDrawerWidth: 50, // optional, add this if you want a define left drawer width (50=percent)
       rightDrawerWidth: 50 // optional, add this if you want a define right drawer width (50=percent)
     },
     type: 'MMDrawer', // optional, iOS only, types: 'TheSideBar', 'MMDrawer' default: 'MMDrawer'
     animationType: 'door', //optional, iOS only, for MMDrawer: 'door', 'parallax', 'slide', 'slide-and-scale'
-                                        // for TheSideBar: 'airbnb', 'facebook', 'luvocracy','wunder-list'
+    // for TheSideBar: 'airbnb', 'facebook', 'luvocracy','wunder-list'
     disableOpenGesture: false // optional, can the drawer, both right and left, be opened with a swipe instead of button
   },
   passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
@@ -137,8 +146,8 @@ Show a screen as a modal.
 
 ```js
 Navigation.showModal({
-  screen: "example.ModalScreen", // unique ID registered with Navigation.registerScreen
-  title: "Modal", // title of the screen as appears in the nav bar (optional)
+  screen: 'example.ModalScreen', // unique ID registered with Navigation.registerScreen
+  title: 'Modal', // title of the screen as appears in the nav bar (optional)
   passProps: {}, // simple serializable object that will pass as props to the modal (optional)
   navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
   navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
@@ -172,11 +181,11 @@ Show a screen as a lightbox.
 
 ```js
 Navigation.showLightBox({
-  screen: "example.LightBoxScreen", // unique ID registered with Navigation.registerScreen
+  screen: 'example.LightBoxScreen', // unique ID registered with Navigation.registerScreen
   passProps: {}, // simple serializable object that will pass as props to the lightbox (optional)
   style: {
-    backgroundBlur: "dark", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
-    backgroundColor: "#ff000080", // tint color for the background, you can specify alpha here (optional)
+    backgroundBlur: 'dark', // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
+    backgroundColor: '#ff000080', // tint color for the background, you can specify alpha here (optional)
     tapBackgroundToDismiss: true // dismisses LightBox on background taps (optional)
   }
 });
@@ -195,10 +204,10 @@ Navigation.dismissLightBox();
 Trigger a deep link within the app. See [deep links](https://wix.github.io/react-native-navigation/#/deep-links) for more details about how screens can listen for deep link events.
 
 ```js
-  Navigation.handleDeepLink({
-    link: 'link/in/any/format',
-    payload: '' // (optional) Extra payload with deep link
-  });
+Navigation.handleDeepLink({
+  link: 'link/in/any/format',
+  payload: '' // (optional) Extra payload with deep link
+});
 ```
 
 ## registerScreen(screenID, generator)
@@ -210,6 +219,7 @@ Navigation.registerScreen('example.AdvancedScreen', () => AdvancedScreen);
 ```
 
 ## getCurrentlyVisibleScreenId()
+
 In some cases you might need the id of the currently visible screen. This method returns the unique id of the currently visible screen:
 `const visibleScreenInstanceId = await Navigation.getCurrentlyVisibleScreenId()`
 In order to have any use of this method, you'd need to map instanceId to screens your self.

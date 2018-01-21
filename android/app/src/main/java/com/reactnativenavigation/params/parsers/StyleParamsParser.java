@@ -131,6 +131,14 @@ public class StyleParamsParser {
         result.titleBarHeight = -1;
         result.screenAnimationType = "slide-up";
         result.drawUnderStatusBar = false;
+
+        result.bottomTabsColor = getDefaultBottomTabsColor();
+        result.bottomTabsButtonColor = getDefaultBottomTabsButtonColor();
+        result.selectedBottomTabsButtonColor = getDefaultSelectedBottomTabsButtonColor();
+
+        result.bottomTabBadgeTextColor = getBottomTabBadgeTextColor();
+        result.bottomTabBadgeBackgroundColor = getBottomTabBadgeBackgroundColor();
+
         return result;
     }
 
