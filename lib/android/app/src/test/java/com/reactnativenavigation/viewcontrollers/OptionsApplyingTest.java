@@ -50,6 +50,7 @@ public class OptionsApplyingTest extends BaseTest {
     public void applyNavigationOptionsHandlesNoParentStack() throws Exception {
         uut.setParentController(null);
         assertThat(uut.getParentStackController()).isNull();
+        uut.ensureViewIsCreated();
         uut.onViewAppeared();
         assertThat(uut.getParentStackController()).isNull();
     }
@@ -79,6 +80,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void reappliesOptionsOnMerge() throws Exception {
+        uut.ensureViewIsCreated();
         uut.onViewAppeared();
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
 
@@ -91,6 +93,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBackBackgroundColor() throws Exception {
+        uut.ensureViewIsCreated();
         uut.onViewAppeared();
 
         Options opts = new Options();
@@ -122,6 +125,7 @@ public class OptionsApplyingTest extends BaseTest {
     public void appliesTopBarTextSize() throws Exception {
         assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
+        uut.ensureViewIsCreated();
         uut.onViewAppeared();
 
         Options opts = new Options();
@@ -137,6 +141,7 @@ public class OptionsApplyingTest extends BaseTest {
     public void appliesTopBarHidden() throws Exception {
         assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
+        uut.ensureViewIsCreated();
         uut.onViewAppeared();
         assertThat(stackController.getTopBar().getVisibility()).isNotEqualTo(View.GONE);
 
@@ -152,6 +157,7 @@ public class OptionsApplyingTest extends BaseTest {
         assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
         initialNavigationOptions.topBarOptions.drawBehind = Options.BooleanOptions.False;
+        uut.ensureViewIsCreated();
         uut.onViewAppeared();
         stackController.animatePush(uut, new MockPromise() {
             @Override
