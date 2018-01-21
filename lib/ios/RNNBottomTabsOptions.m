@@ -29,6 +29,19 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		}
 	}
 	
+	if (self.itemColor) {
+		viewController.tabBarController.tabBar.tintColor = [UIColor redColor];
+	}
+	
+	if (self.unselectedItemColor) {
+		viewController.tabBarController.tabBar.unselectedItemTintColor = [UIColor greenColor];
+	}
+	
+	if (self.backgroundColor) {
+		viewController.tabBarController.tabBar.barTintColor = [UIColor grayColor];
+	}
+	
+	
 	[self resetOptions];
 }
 
