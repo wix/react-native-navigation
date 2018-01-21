@@ -38,9 +38,9 @@
 	self.uut = [[RNNNavigationStackManager alloc] initWithStore:self.store];
 	
 	self.nvc = [[MockUINavigationController alloc] init];
-	self.vc1 = [UIViewController new];
-	self.vc2 = [UIViewController new];
-	self.vc3 = [UIViewController new];
+	self.vc1 = [RNNRootViewController new];
+	self.vc2 = [RNNRootViewController new];
+	self.vc3 = [RNNRootViewController new];
 	NSArray *vcArray = @[self.vc1, self.vc2, self.vc3];
 	[self.nvc setViewControllers:vcArray];
 	

@@ -54,6 +54,9 @@ class ModalScreen extends Component {
         passProps: {
           modalPosition: this.getModalPosition() + 1,
           previousModalIds: _.concat([], this.props.previousModalIds || [], this.props.componentId)
+        },
+        options: {
+          animated: false
         }
       }
     });

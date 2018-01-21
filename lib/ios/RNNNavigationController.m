@@ -11,4 +11,9 @@
 	return NO;
 }
 
+- (BOOL)isAnimated {
+	UIViewController<RNNRootViewProtocol>* rootVC = (UIViewController<RNNRootViewProtocol>*) self.topViewController;
+	return rootVC.isAnimated;
+}
+
 @end

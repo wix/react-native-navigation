@@ -52,7 +52,7 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 		}
 	}];
 	
-	[[self.fromVC navigationController] pushViewController:self.toVC animated:YES];
+	[[self.fromVC navigationController] pushViewController:self.toVC animated:self.toVC.isAnimated];
 	[CATransaction commit];
 	
 	self.toVC = nil;
@@ -61,17 +61,17 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 }
 
 -(void)pop:(NSString *)componentId withAnimationData:(NSDictionary *)animationData {
-	UIViewController* vc = [_store findComponentForId:componentId];
+	UIViewController<RNNRootViewProtocol>* vc = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
 	UINavigationController* nvc = [vc navigationController];
 	if ([nvc topViewController] == vc) {
 		if (animationData) {
 			RNNRootViewController* RNNVC = (RNNRootViewController*)vc;
 			nvc.delegate = RNNVC;
 			[RNNVC.animator setupTransition:animationData];
-			[nvc popViewControllerAnimated:YES];
+			[nvc popViewControllerAnimated:vc.isAnimated];
 		} else {
 			nvc.delegate = nil;
-			[nvc popViewControllerAnimated:YES];
+			[nvc popViewControllerAnimated:vc.isAnimated];
 		}
 	} else {
 		NSMutableArray * vcs = nvc.viewControllers.mutableCopy;

@@ -5,6 +5,7 @@
 @required
 
 - (BOOL)isCustomTransitioned;
+- (BOOL)isAnimated;
 
 @end
 

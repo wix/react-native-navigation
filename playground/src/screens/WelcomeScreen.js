@@ -213,7 +213,10 @@ class WelcomeScreen extends Component {
   onClickPushOptionsScreen() {
     Navigation.push(this.props.componentId, {
       component: {
-        name: 'navigation.playground.OptionsScreen'
+        name: 'navigation.playground.OptionsScreen',
+        options: {
+          animated: false
+        }
       }
     });
   }

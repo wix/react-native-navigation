@@ -48,6 +48,10 @@
 	return self.animator != nil;
 }
 
+- (BOOL)isAnimated {
+	return self.options.animated ? [self.options.animated boolValue] : YES;
+}
+
 - (BOOL)prefersStatusBarHidden {
 	if ([self.options.statusBarHidden boolValue]) {
 		return YES;

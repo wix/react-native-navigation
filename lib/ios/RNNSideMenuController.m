@@ -76,4 +76,8 @@
 	return NO;
 }
 
+- (BOOL)isAnimated {
+	return YES;
+}
+
 @end
