@@ -2,8 +2,6 @@ package com.reactnativenavigation.viewcontrollers.toptabs;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
-import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
@@ -16,10 +14,9 @@ import com.reactnativenavigation.views.TopTabsViewPager;
 import java.util.Collection;
 import java.util.List;
 
-public class TopTabsController extends ParentController implements NavigationOptionsListener {
+public class TopTabsController extends ParentController<TopTabsViewPager> implements NavigationOptionsListener {
 
     private List<ViewController> tabs;
-    private TopTabsViewPager topTabsViewPager;
     private TopTabsLayoutCreator viewCreator;
     private Options options;
 
@@ -35,9 +32,9 @@ public class TopTabsController extends ParentController implements NavigationOpt
 
     @NonNull
     @Override
-    protected ViewGroup createView() {
-        topTabsViewPager = viewCreator.create();
-        return topTabsViewPager;
+    protected TopTabsViewPager createView() {
+        view = viewCreator.create();
+        return (TopTabsViewPager) view;
     }
 
     @NonNull
@@ -49,7 +46,7 @@ public class TopTabsController extends ParentController implements NavigationOpt
     @Override
     public void onViewAppeared() {
         applyOptions(options);
-        applyOnParentController(parentController -> parentController.setupTopTabsWithViewPager((ViewPager) getView()));
+        applyOnParentController(parentController -> ((ParentController) parentController).setupTopTabsWithViewPager(getView()));
         performOnCurrentTab(ViewController::onViewAppeared);
     }
 
@@ -60,7 +57,7 @@ public class TopTabsController extends ParentController implements NavigationOpt
 
     @Override
     public void applyOptions(Options options) {
-        topTabsViewPager.applyOptions(options);
+        getView().applyOptions(options);
     }
 
     @Override
@@ -69,10 +66,10 @@ public class TopTabsController extends ParentController implements NavigationOpt
     }
 
     public void switchToTab(int index) {
-        topTabsViewPager.switchToTab(index);
+        getView().switchToTab(index);
     }
 
     private void performOnCurrentTab(Task<ViewController> task) {
-        task.run(tabs.get(topTabsViewPager.getCurrentItem()));
+        task.run(tabs.get(getView().getCurrentItem()));
     }
 }

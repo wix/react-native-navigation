@@ -156,8 +156,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         addView(topTabs);
     }
 
-    public void enableCollapse() {
-        collapsingBehavior.enableCollapse();
+    public void enableCollapse(ScrollEventListener scrollEventListener) {
+        collapsingBehavior.enableCollapse(scrollEventListener);
     }
 
     public void disableCollapse() {
@@ -190,5 +190,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setTitle(null);
         titleBar.setNavigationIcon(null);
         titleBar.getMenu().clear();
+        removeView(topTabs);
     }
 }

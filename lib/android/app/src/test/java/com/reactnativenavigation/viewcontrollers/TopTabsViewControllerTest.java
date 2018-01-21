@@ -1,63 +1,91 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.*;
-import android.view.*;
+import android.app.Activity;
+import android.support.annotation.NonNull;
+import android.view.ViewGroup;
 
-import com.reactnativenavigation.*;
-import com.reactnativenavigation.mocks.*;
-import com.reactnativenavigation.parse.*;
-import com.reactnativenavigation.viewcontrollers.ComponentViewController.*;
-import com.reactnativenavigation.viewcontrollers.toptabs.*;
-import com.reactnativenavigation.views.*;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.TopTabLayoutMock;
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.viewcontrollers.ComponentViewController.IReactView;
+import com.reactnativenavigation.viewcontrollers.toptabs.TopTabController;
+import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
+import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
+import com.reactnativenavigation.views.TopTabsLayoutCreator;
+import com.reactnativenavigation.views.TopTabsViewPager;
 
-import org.junit.*;
-import org.mockito.*;
+import org.junit.Test;
+import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class TopTabsViewControllerTest extends BaseTest {
 
     private static final int SIZE = 2;
 
+    private StackController parentController;
     private TopTabsController uut;
-    private List<TopTabLayoutMock> tabs = new ArrayList<>(SIZE);
+    private List<TopTabLayoutMock> tabViews = new ArrayList<>(SIZE);
     private List<ViewController> tabControllers = new ArrayList<>(SIZE);
     private List<Options> tabOptions = new ArrayList<>(SIZE);
-    private Options options;
-    private TopTabsLayout topTabsLayout;
+    private final Options options = new Options();
+    private TopTabsViewPager topTabsLayout;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
-        tabControllers.clear();
-        tabs.clear();
-        Activity activity = newActivity();
-        tabControllers = createTabs(activity);
-        options = new Options();
-        topTabsLayout = spy(new TopTabsLayout(activity, tabControllers, new TopTabsAdapter(tabControllers)));
 
+        final Activity activity = newActivity();
+        tabOptions = createOptions();
+        tabControllers = createTabsControllers(activity);
+        tabViews = getTabViews();
+
+        topTabsLayout = spy(new TopTabsViewPager(activity, tabControllers, new TopTabsAdapter(tabControllers)));
         TopTabsLayoutCreator layoutCreator = Mockito.mock(TopTabsLayoutCreator.class);
         Mockito.when(layoutCreator.create()).thenReturn(topTabsLayout);
-        uut = new TopTabsController(activity, "componentId", tabControllers, layoutCreator, options);
+        uut = spy(new TopTabsController(activity, "componentId", tabControllers, layoutCreator, options));
+
+        parentController = new StackController(activity, "stackId");
+        //        uut.setParentController(parentController);
+        //        parentController.push(uut, new MockPromise());
     }
 
-    private List<ViewController> createTabs(Activity activity) {
-        List<ViewController> result = new ArrayList<>(SIZE);
-        tabOptions = new ArrayList<>();
+    @NonNull
+    private ArrayList<Options> createOptions() {
+        ArrayList result = new ArrayList();
         for (int i = 0; i < SIZE; i++) {
-            TopTabLayoutMock reactView = spy(new TopTabLayoutMock(activity));
-            tabs.add(reactView);
-            Options options = new Options();
+            final Options options = new Options();
             options.topTabOptions.title = new Text("Tab " + i);
-            tabOptions.add(options);
-            result.add(spy(new TopTabController(activity,
-                    "idTab" + i,
-                    "tab" + i,
-                    (activity1, componentId, componentName) -> reactView,
-                    options)
-            ));
+            result.add(options);
+        }
+        return result;
+    }
+
+    private List<TopTabLayoutMock> getTabViews() {
+        List<TopTabLayoutMock> tabs = new ArrayList();
+        for (ViewController tabController : tabControllers) {
+            tabs.add((TopTabLayoutMock) tabController.getView().getChildAt(0));
+        }
+        return tabs;
+    }
+
+    private List<ViewController> createTabsControllers(Activity activity) {
+        List<ViewController> result = new ArrayList<>(SIZE);
+        for (int i = 0; i < SIZE; i++) {
+            result.add(
+                    spy(new TopTabController(activity,
+                            "idTab" + i,
+                            "tab" + i,
+                            (activity1, componentId, componentName) -> spy(new TopTabLayoutMock(activity)),
+                            tabOptions.get(i))
+                    ));
         }
         return result;
     }
@@ -73,7 +101,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     @Test
     public void componentViewDestroyedOnDestroy() throws Exception {
         uut.ensureViewIsCreated();
-        TopTabsLayout topTabs = (TopTabsLayout) uut.getView();
+        TopTabsViewPager topTabs = (TopTabsViewPager) uut.getView();
         for (int i = 0; i < SIZE; i++) {
             verify(tab(topTabs, i), times(0)).destroy();
         }
@@ -85,10 +113,18 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     @Test
     public void lifecycleMethodsSentWhenSelectedTabChanges() throws Exception {
+//        parentController.ensureViewIsCreated();
         uut.ensureViewIsCreated();
-        TopTabLayoutMock initialTab = tabs.get(0);
-        TopTabLayoutMock selectedTab = tabs.get(1);
+        tabControllers.get(0).ensureViewIsCreated();
+        tabControllers.get(1).ensureViewIsCreated();
+
+        tabControllers.get(0).onViewAppeared();
+
         uut.onViewAppeared();
+
+        TopTabLayoutMock initialTab = tabViews.get(0);
+        TopTabLayoutMock selectedTab = tabViews.get(1);
+
         uut.switchToTab(1);
         verify(initialTab, times(1)).sendComponentStop();
         verify(selectedTab, times(1)).sendComponentStart();
@@ -101,10 +137,10 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut.onViewAppeared();
         uut.switchToTab(1);
         uut.switchToTab(0);
-        verify(tabs.get(0), times(1)).sendComponentStop();
-        verify(tabs.get(0), times(2)).sendComponentStart();
-        verify(tabs.get(1), times(1)).sendComponentStart();
-        verify(tabs.get(1), times(1)).sendComponentStop();
+        verify(tabViews.get(0), times(1)).sendComponentStop();
+        verify(tabViews.get(0), times(2)).sendComponentStart();
+        verify(tabViews.get(1), times(1)).sendComponentStart();
+        verify(tabViews.get(1), times(1)).sendComponentStop();
     }
 
     @Test
@@ -127,12 +163,20 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     @Test
     public void appliesOptionsOnLayoutWhenVisible() throws Exception {
+        tabControllers.get(0).ensureViewIsCreated();
+        parentController.ensureViewIsCreated();
         uut.ensureViewIsCreated();
+
+        parentController.onViewAppeared();
         uut.onViewAppeared();
+
+        //        tabControllers.get(0).onViewAppeared();
+
         verify(topTabsLayout, times(1)).applyOptions(options);
+        verify(uut, times(1)).applyOnParentController(any());
     }
 
-    private IReactView tab(TopTabsLayout topTabs, final int index) {
+    private IReactView tab(TopTabsViewPager topTabs, final int index) {
         return (IReactView) ((ViewGroup) topTabs.getChildAt(index)).getChildAt(0);
     }
 }

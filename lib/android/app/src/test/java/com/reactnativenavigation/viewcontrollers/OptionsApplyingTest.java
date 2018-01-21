@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.TestComponentLayout;
+import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Fraction;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
@@ -18,6 +19,7 @@ import org.junit.Test;
 
 import javax.annotation.Nullable;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.widget.RelativeLayout.BELOW;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.spy;
@@ -34,7 +36,8 @@ public class OptionsApplyingTest extends BaseTest {
         super.beforeEach();
         activity = newActivity();
         initialNavigationOptions = new Options();
-        view = spy(new TestComponentLayout(activity));
+        view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
+        view.asView().setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         uut = new ComponentViewController(activity,
                 "componentId1",
                 "componentName",

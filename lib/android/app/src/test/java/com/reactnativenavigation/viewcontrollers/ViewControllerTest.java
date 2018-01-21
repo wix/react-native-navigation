@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewParent;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.reactnativenavigation.BaseTest;
@@ -45,10 +46,10 @@ public class ViewControllerTest extends BaseTest {
 
     @Test
     public void canOverrideViewCreation() throws Exception {
-        final View otherView = new View(activity);
+        final FrameLayout otherView = new FrameLayout(activity);
         ViewController myController = new ViewController(activity, "vc") {
             @Override
-            protected View createView() {
+            protected FrameLayout createView() {
                 return otherView;
             }
         };

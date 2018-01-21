@@ -1,15 +1,17 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.*;
-import android.support.annotation.*;
-import android.view.*;
+import android.app.Activity;
+import android.support.annotation.NonNull;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.parse.*;
-import com.reactnativenavigation.presentation.*;
-import com.reactnativenavigation.views.*;
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.NavigationOptionsListener;
+import com.reactnativenavigation.views.ComponentLayout;
+import com.reactnativenavigation.views.ReactComponent;
 
-public class ComponentViewController extends ViewController implements NavigationOptionsListener {
+public class ComponentViewController extends ViewController<ComponentLayout> implements NavigationOptionsListener {
 
     public interface ReactViewCreator {
 
@@ -82,9 +84,9 @@ public class ComponentViewController extends ViewController implements Navigatio
 
     @NonNull
     @Override
-    protected View createView() {
+    protected ComponentLayout createView() {
         component = (ReactComponent) viewCreator.create(getActivity(), getId(), componentName);
-        return component.asView();
+        return (ComponentLayout) component.asView();
     }
 
     @Override

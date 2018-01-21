@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
@@ -14,14 +13,14 @@ import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
 
-public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutListener {
+public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener {
 
     public Options options;
 
 	private final Activity activity;
 	private final String id;
-	private View view;
-	private ParentController parentController;
+	protected T view;
+	private ParentController<T> parentController;
 	private boolean isShown = false;
     private boolean isDestroyed;
 
@@ -30,7 +29,7 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		this.id = id;
 	}
 
-	protected abstract View createView();
+	protected abstract T createView();
 
 	@SuppressWarnings("WeakerAccess")
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
@@ -50,9 +49,9 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
 		return activity;
 	}
 
-	protected void applyOnParentController(Task<ParentController> task) {
-        if (parentController != null) {
-            task.run(parentController);
+	protected void applyOnParentController(Task<StackController> task) {
+        if (parentController instanceof StackController) {
+            task.run((StackController) parentController);
         }
     }
 
@@ -77,14 +76,14 @@ public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutL
         return false;
     }
 
-    void performOnParentStack(Task<StackController> accept, Runnable  reject) {
+    void performOnParentStack(Task accept, Runnable  reject) {
         if (!performOnParentStack(accept)) {
             reject.run();
         }
     }
 
 	@NonNull
-	public View getView() {
+	public T getView() {
 		if (view == null) {
 		    if (isDestroyed) throw new RuntimeException("Tried to create view after it has already been destroyed");
             view = createView();

@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.toptabs;
 
 import android.app.Activity;
-import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
@@ -9,7 +8,7 @@ import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.TopTab;
 
-public class TopTabController extends ViewController implements NavigationOptionsListener {
+public class TopTabController extends ViewController<TopTab> implements NavigationOptionsListener {
 
     private final String componentName;
     private ComponentViewController.ReactViewCreator viewCreator;
@@ -49,7 +48,7 @@ public class TopTabController extends ViewController implements NavigationOption
     }
 
     @Override
-    public View createView() {
+    public TopTab createView() {
         topTab = new TopTab(
                 getActivity(),
                 viewCreator.create(getActivity(), getId(), componentName)

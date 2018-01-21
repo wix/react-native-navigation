@@ -1,21 +1,19 @@
 package com.reactnativenavigation.mocks;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
-import com.reactnativenavigation.views.ComponentLayout;
-import com.reactnativenavigation.views.TitleBarButton;
 
-public class TestComponentLayout extends ComponentLayout implements TitleBarButton.OnClickListener {
+public class TestReactView extends FrameLayout implements ComponentViewController.IReactView {
 
-    public TestComponentLayout(final Context context, ComponentViewController.IReactView reactView) {
-        super(context, reactView);
+    public TestReactView(@NonNull Context context) {
+        super(context);
     }
-
 
     @Override
     public boolean isReady() {
@@ -29,23 +27,21 @@ public class TestComponentLayout extends ComponentLayout implements TitleBarButt
 
     @Override
     public void destroy() {
+
     }
 
     @Override
     public void sendComponentStart() {
+
     }
 
     @Override
     public void sendComponentStop() {
-    }
-
-    @Override
-    public void applyOptions(Options options) {
 
     }
 
     @Override
-    public void sendOnNavigationButtonPressed(String id) {
+    public void sendOnNavigationButtonPressed(String buttonId) {
 
     }
 
@@ -56,11 +52,6 @@ public class TestComponentLayout extends ComponentLayout implements TitleBarButt
 
     @Override
     public void dispatchTouchEventToJs(MotionEvent event) {
-
-    }
-
-    @Override
-    public void onPress(String buttonId) {
 
     }
 }

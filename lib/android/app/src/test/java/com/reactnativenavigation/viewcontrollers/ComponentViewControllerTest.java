@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TestComponentLayout;
+import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.views.StackLayout;
 
@@ -24,7 +25,7 @@ public class ComponentViewControllerTest extends BaseTest {
     public void beforeEach() {
         super.beforeEach();
         Activity activity = newActivity();
-        view = spy(new TestComponentLayout(activity));
+        view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
         parentController = new StackController(activity, "stack");
         uut = new ComponentViewController(activity, "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options());
         uut.setParentController(parentController);
