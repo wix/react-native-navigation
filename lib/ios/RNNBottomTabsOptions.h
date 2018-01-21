@@ -9,8 +9,8 @@
 @property (nonatomic, strong) NSNumber* drawUnder;
 @property (nonatomic, strong) NSString* currentTabId;
 
-@property (nonatomic, strong) NSString* unselectedItemColor;
-@property (nonatomic, strong) NSString* itemColor;
+@property (nonatomic, strong) NSString* unselectedTabColor;
+@property (nonatomic, strong) NSString* selectedTabColor;
 @property (nonatomic, strong) NSString* backgroundColor;
 
 @end

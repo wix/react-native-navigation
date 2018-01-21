@@ -29,11 +29,11 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		}
 	}
 	
-	if (self.itemColor) {
+	if (self.selectedTabColor) {
 		viewController.tabBarController.tabBar.tintColor = [UIColor redColor];
 	}
 	
-	if (self.unselectedItemColor) {
+	if (self.unselectedTabColor) {
 		viewController.tabBarController.tabBar.unselectedItemTintColor = [UIColor greenColor];
 	}
 	
