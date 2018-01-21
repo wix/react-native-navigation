@@ -232,6 +232,9 @@ class WelcomeScreen extends Component {
               options: {
                 topTab: {
                   title: 'Tab 1'
+                },
+                topBar: {
+                  title: 'Tab 1'
                 }
               }
             }

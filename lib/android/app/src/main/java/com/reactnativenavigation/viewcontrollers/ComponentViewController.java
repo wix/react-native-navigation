@@ -61,7 +61,6 @@ public class ComponentViewController extends ViewController implements Navigatio
     @Override
     public void onViewAppeared() {
         super.onViewAppeared();
-        ensureViewIsCreated();
         component.applyOptions(options);
         applyOnParentController(parentController -> {
             parentController.clearOptions();
