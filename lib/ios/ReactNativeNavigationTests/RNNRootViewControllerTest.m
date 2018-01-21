@@ -630,7 +630,7 @@
 
 -(void)testTabBarTextFontFamily_validFont{
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.bottomTabs.textFontFamily = inputFont;
+	self.options.bottomTabs.fontFamily = inputFont;
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:10];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
@@ -638,7 +638,7 @@
 }
 
 -(void)testTabBarTextFontSize_withoutTextFontFamily_withoutTextColor {
-	self.options.bottomTabs.textFontSize = @(15);
+	self.options.bottomTabs.fontSize = @(15);
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
@@ -646,7 +646,7 @@
 }
 
 -(void)testTabBarTextFontSize_withoutTextFontFamily_withTextColor {
-	self.options.bottomTabs.textFontSize = @(15);
+	self.options.bottomTabs.fontSize = @(15);
 	self.options.bottomTabs.textColor = @(0xFFFF0000);
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
@@ -658,9 +658,9 @@
 
 -(void)testTabBarTextFontSize_withTextFontFamily_withTextColor {
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.bottomTabs.textFontSize = @(15);
+	self.options.bottomTabs.fontSize = @(15);
 	self.options.bottomTabs.textColor = @(0xFFFF0000);
-	self.options.bottomTabs.textFontFamily = inputFont;
+	self.options.bottomTabs.fontFamily = inputFont;
 	[self.uut embedInTabBarController];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
@@ -671,8 +671,8 @@
 
 -(void)testTabBarTextFontSize_withTextFontFamily_withoutTextColor {
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.bottomTabs.textFontSize = @(15);
-	self.options.bottomTabs.textFontFamily = inputFont;
+	self.options.bottomTabs.fontSize = @(15);
+	self.options.bottomTabs.fontFamily = inputFont;
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
