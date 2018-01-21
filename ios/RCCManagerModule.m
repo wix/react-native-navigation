@@ -10,6 +10,7 @@
 #import "RCCTheSideBarManagerViewController.h"
 #import "RCCNotification.h"
 #import "RCTHelpers.h"
+#import "RNNSwizzles.h"
 
 #define kSlideDownAnimationDuration 0.35
 
@@ -241,6 +242,11 @@ RCT_EXPORT_METHOD(
     NSDictionary *appStyle = layout[@"props"][@"appStyle"];
     if (appStyle) {
         [[RCCManager sharedIntance] setAppStyle:appStyle];
+		
+		if([appStyle[@"autoAdjustScrollViewInsets"] boolValue] == YES)
+		{
+			[RNNSwizzles applySwizzles];
+		}
     }
     
     // create the new controller

@@ -13,6 +13,7 @@
 		26AFF3F51D7EEE2400CBA211 /* RCCTitleViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 26AFF3F41D7EEE2400CBA211 /* RCCTitleViewHelper.m */; };
 		2DCD499A1F33AAC30035123A /* RCCCustomBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD49981F33AAC30035123A /* RCCCustomBarButtonItem.m */; };
 		2DDE72091FB27E730017290C /* RCTConvert+UIBarButtonSystemItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDE72071FB27E720017290C /* RCTConvert+UIBarButtonSystemItem.m */; };
+		390AD487200F566100A8250D /* RNNSwizzles.m in Sources */ = {isa = PBXBuildFile; fileRef = 390AD486200F566100A8250D /* RNNSwizzles.m */; };
 		CC84A19E1C1A0C4E00B3A6A2 /* RCCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1941C1A0C4E00B3A6A2 /* RCCManager.m */; };
 		CC84A19F1C1A0C4E00B3A6A2 /* RCCManagerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1961C1A0C4E00B3A6A2 /* RCCManagerModule.m */; };
 		CC84A1A01C1A0C4E00B3A6A2 /* RCCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A1981C1A0C4E00B3A6A2 /* RCCNavigationController.m */; };
@@ -64,6 +65,8 @@
 		2DCD49991F33AAC30035123A /* RCCCustomBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCCustomBarButtonItem.h; sourceTree = "<group>"; };
 		2DDE72071FB27E720017290C /* RCTConvert+UIBarButtonSystemItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+UIBarButtonSystemItem.m"; sourceTree = "<group>"; };
 		2DDE72081FB27E730017290C /* RCTConvert+UIBarButtonSystemItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+UIBarButtonSystemItem.h"; sourceTree = "<group>"; };
+		390AD485200F566100A8250D /* RNNSwizzles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSwizzles.h; sourceTree = "<group>"; };
+		390AD486200F566100A8250D /* RNNSwizzles.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSwizzles.m; sourceTree = "<group>"; };
 		CC84A1931C1A0C4E00B3A6A2 /* RCCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCManager.h; sourceTree = "<group>"; };
 		CC84A1941C1A0C4E00B3A6A2 /* RCCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = RCCManager.m; sourceTree = "<group>"; tabWidth = 2; };
 		CC84A1951C1A0C4E00B3A6A2 /* RCCManagerModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCManagerModule.h; sourceTree = "<group>"; };
@@ -73,7 +76,7 @@
 		CC84A1991C1A0C4E00B3A6A2 /* RCCTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCTabBarController.h; sourceTree = "<group>"; };
 		CC84A19A1C1A0C4E00B3A6A2 /* RCCTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = RCCTabBarController.m; sourceTree = "<group>"; tabWidth = 2; };
 		CC84A19B1C1A0C4E00B3A6A2 /* RCCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCViewController.h; sourceTree = "<group>"; };
-		CC84A19C1C1A0C4E00B3A6A2 /* RCCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = RCCViewController.m; sourceTree = "<group>"; tabWidth = 2; };
+		CC84A19C1C1A0C4E00B3A6A2 /* RCCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RCCViewController.m; sourceTree = "<group>"; tabWidth = 4; };
 		D800E8171CFED1DB004A187F /* RCCExternalViewControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCExternalViewControllerProtocol.h; sourceTree = "<group>"; };
 		D83514F41D29719A00D53758 /* RCCNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCNotification.h; sourceTree = "<group>"; };
 		D83514F51D29719A00D53758 /* RCCNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCNotification.m; sourceTree = "<group>"; };
@@ -229,6 +232,8 @@
 				D800E8171CFED1DB004A187F /* RCCExternalViewControllerProtocol.h */,
 				D83514F41D29719A00D53758 /* RCCNotification.h */,
 				D83514F51D29719A00D53758 /* RCCNotification.m */,
+				390AD485200F566100A8250D /* RNNSwizzles.h */,
+				390AD486200F566100A8250D /* RNNSwizzles.m */,
 				D8AFADBE1BEE6F3F00A4592D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -316,6 +321,7 @@
 				2DCD499A1F33AAC30035123A /* RCCCustomBarButtonItem.m in Sources */,
 				D83514F61D29719A00D53758 /* RCCNotification.m in Sources */,
 				CC84A19F1C1A0C4E00B3A6A2 /* RCCManagerModule.m in Sources */,
+				390AD487200F566100A8250D /* RNNSwizzles.m in Sources */,
 				26AFF3F51D7EEE2400CBA211 /* RCCTitleViewHelper.m in Sources */,
 				D8D779981D04B7180050CFEA /* RCTHelpers.m in Sources */,
 				D85082E81CBCF54200FDB961 /* SidebarLuvocracyAnimation.m in Sources */,

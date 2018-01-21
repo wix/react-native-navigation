@@ -291,21 +291,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   }];
 }
 
-// fix iOS11 safeArea - https://github.com/facebook/react-native/issues/15681
-// rnn issue - https://github.com/wix/react-native-navigation/issues/1858
-- (void)_traverseAndFixScrollViewSafeArea:(UIView *)view {
-#ifdef __IPHONE_11_0
-  if ([view isKindOfClass:UIScrollView.class] && [view respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]) {
-    [((UIScrollView*)view) setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
-  }
-  
-  [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-    [self _traverseAndFixScrollViewSafeArea:obj];
-  }];
-#endif
-  
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
@@ -317,7 +302,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-  [self _traverseAndFixScrollViewSafeArea:self.view];
   [self sendGlobalScreenEvent:@"willAppear" endTimestampString:[self getTimestampString] shouldReset:NO];
   [self sendScreenChangedEvent:@"willAppear"];
   [self setStyleOnAppear];
@@ -807,6 +791,15 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     self._statusBarHidden = YES;
   } else {
     self._statusBarHidden = NO;
+  }
+  
+  NSDictionary *preferredContentSize = self.navigatorStyle[@"preferredContentSize"];
+  if (preferredContentSize) {
+    NSNumber *width = preferredContentSize[@"width"];
+    NSNumber *height = preferredContentSize[@"height"];
+    if (width && height) {
+      self.preferredContentSize = CGSizeMake([width floatValue], [height floatValue]);
+    }
   }
 }
 
