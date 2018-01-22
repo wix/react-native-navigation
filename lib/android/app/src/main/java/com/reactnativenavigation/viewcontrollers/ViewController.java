@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
@@ -23,7 +24,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private final String id;
     protected T view;
     @Nullable private ParentController<T> parentController;
-    private boolean isShown = false;
+    private boolean isShown;
     private boolean isDestroyed;
 
     public ViewController(Activity activity, String id) {
