@@ -13,7 +13,6 @@ public class ComponentViewController extends ViewController<ComponentLayout> imp
     private final String componentName;
 
     private final ReactViewCreator viewCreator;
-    private ReactComponent component;
 
     public ComponentViewController(final Activity activity,
                                    final String id,
@@ -28,45 +27,47 @@ public class ComponentViewController extends ViewController<ComponentLayout> imp
 
     @Override
     public void destroy() {
+        if (view != null) {
+
+            view.destroy();
+        }
         super.destroy();
-        if (component != null) component.destroy();
-        component = null;
     }
 
     @Override
     public void onViewAppeared() {
         super.onViewAppeared();
-        component.applyOptions(options);
+        view.applyOptions(options);
         applyOnParentController(parentController -> {
             parentController.clearOptions();
-            parentController.applyOptions(options, component);
+            parentController.applyOptions(options, view);
         });
-        component.sendComponentStart();
+        view.sendComponentStart();
     }
 
     @Override
     public void onViewDisappear() {
         super.onViewDisappear();
-        component.sendComponentStop();
+        view.sendComponentStop();
     }
 
     @Override
     protected boolean isViewShown() {
-        return super.isViewShown() && component.isReady();
+        return super.isViewShown() && view.isReady();
     }
 
     @NonNull
     @Override
     protected ComponentLayout createView() {
-        component = (ReactComponent) viewCreator.create(getActivity(), getId(), componentName);
-        return (ComponentLayout) component.asView();
+        view = (ComponentLayout) viewCreator.create(getActivity(), getId(), componentName);
+        return (ComponentLayout) view.asView();
     }
 
     @Override
     public void mergeOptions(Options options) {
         this.options.mergeWith(options);
-        component.applyOptions(this.options);
-        applyOnParentController(parentController -> parentController.applyOptions(this.options, component));
+        view.applyOptions(this.options);
+        applyOnParentController(parentController -> parentController.applyOptions(this.options, view));
     }
 
     Options getOptions() {
@@ -74,6 +75,6 @@ public class ComponentViewController extends ViewController<ComponentLayout> imp
     }
 
     ReactComponent getComponent() {
-        return component;
+        return view;
     }
 }
