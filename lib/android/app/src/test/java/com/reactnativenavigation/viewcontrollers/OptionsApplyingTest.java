@@ -52,10 +52,10 @@ public class OptionsApplyingTest extends BaseTest {
     @Test
     public void applyNavigationOptionsHandlesNoParentStack() throws Exception {
         uut.setParentController(null);
-        assertThat(uut.getParentStackController()).isNull();
+        assertThat(uut.getParentController()).isNull();
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
-        assertThat(uut.getParentStackController()).isNull();
+        assertThat(uut.getParentController()).isNull();
     }
 
     @Test

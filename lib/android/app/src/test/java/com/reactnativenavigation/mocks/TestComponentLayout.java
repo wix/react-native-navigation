@@ -12,8 +12,11 @@ import com.reactnativenavigation.views.TitleBarButton;
 
 public class TestComponentLayout extends ComponentLayout implements TitleBarButton.OnClickListener {
 
+    private ComponentViewController.IReactView reactView;
+
     public TestComponentLayout(final Context context, ComponentViewController.IReactView reactView) {
         super(context, reactView);
+        this.reactView = reactView;
     }
 
 
@@ -33,10 +36,12 @@ public class TestComponentLayout extends ComponentLayout implements TitleBarButt
 
     @Override
     public void sendComponentStart() {
+        reactView.sendComponentStart();
     }
 
     @Override
     public void sendComponentStop() {
+        reactView.sendComponentStop();
     }
 
     @Override

@@ -4,9 +4,11 @@ import android.content.*;
 import android.view.*;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.viewcontrollers.*;
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.TopBar;
 
-public class TopTabLayoutMock extends View implements ComponentViewController.IReactView {
+public class TopTabLayoutMock extends View implements ReactComponent {
 
     public TopTabLayoutMock(Context context) {
         super(context);
@@ -49,6 +51,21 @@ public class TopTabLayoutMock extends View implements ComponentViewController.IR
 
     @Override
     public void dispatchTouchEventToJs(MotionEvent event) {
+
+    }
+
+    @Override
+    public void applyOptions(Options options) {
+
+    }
+
+    @Override
+    public void drawBehindTopBar() {
+
+    }
+
+    @Override
+    public void drawBelowTopBar(TopBar topBar) {
 
     }
 }
