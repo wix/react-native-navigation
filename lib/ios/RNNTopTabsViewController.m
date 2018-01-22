@@ -5,7 +5,7 @@
 
 @interface RNNTopTabsViewController () {
 	NSArray* _viewControllers;
-	UIViewController* _currentViewController;
+	UIViewController<RNNRootViewProtocol>* _currentViewController;
 	RNNSegmentedControl* _segmentedControl;
 }
 
@@ -47,7 +47,7 @@
 }
 
 - (void)setSelectedViewControllerIndex:(NSUInteger)index {
-	UIViewController *toVC = _viewControllers[index];
+	UIViewController<RNNRootViewProtocol> *toVC = _viewControllers[index];
 	[_contentView addSubview:toVC.view];
 	[_currentViewController.view removeFromSuperview];
 	_currentViewController = toVC;
@@ -74,6 +74,10 @@
 
 - (BOOL)isCustomTransitioned {
 	return NO;
+}
+
+- (NSString *)componentId {
+	return _currentViewController.componentId;
 }
 
 @end

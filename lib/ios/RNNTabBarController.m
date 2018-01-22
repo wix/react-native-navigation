@@ -37,4 +37,8 @@
 	return NO;
 }
 
+- (NSString *)componentId {
+	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).componentId;
+}
+
 @end
