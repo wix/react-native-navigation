@@ -13,10 +13,10 @@ import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.viewcontrollers.ComponentViewController;
+import com.reactnativenavigation.viewcontrollers.IReactView;
 
 @SuppressLint("ViewConstructor")
-public class ReactView extends ReactRootView implements ComponentViewController.IReactView {
+public class ReactView extends ReactRootView implements IReactView {
 
 	private final ReactInstanceManager reactInstanceManager;
 	private final String componentId;

@@ -6,15 +6,15 @@ import android.view.View;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.viewcontrollers.ComponentViewController;
+import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.TitleBarButton;
 
 public class TestComponentLayout extends ComponentLayout implements TitleBarButton.OnClickListener {
 
-    private ComponentViewController.IReactView reactView;
+    private IReactView reactView;
 
-    public TestComponentLayout(final Context context, ComponentViewController.IReactView reactView) {
+    public TestComponentLayout(final Context context, IReactView reactView) {
         super(context, reactView);
         this.reactView = reactView;
     }

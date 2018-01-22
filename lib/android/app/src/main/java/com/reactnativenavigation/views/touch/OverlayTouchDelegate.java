@@ -5,7 +5,7 @@ import android.support.annotation.VisibleForTesting;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.viewcontrollers.ComponentViewController.IReactView;
+import com.reactnativenavigation.viewcontrollers.IReactView;
 
 public class OverlayTouchDelegate {
     private final Rect hitRect = new Rect();

@@ -2,40 +2,13 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.view.MotionEvent;
-import android.view.View;
 
-import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.ReactComponent;
 
 public class ComponentViewController extends ViewController<ComponentLayout> implements NavigationOptionsListener {
-
-    public interface ReactViewCreator {
-
-        IReactView create(Activity activity, String componentId, String componentName);
-    }
-
-    public interface IReactView {
-
-        boolean isReady();
-
-        View asView();
-
-        void destroy();
-
-        void sendComponentStart();
-
-        void sendComponentStop();
-
-        void sendOnNavigationButtonPressed(String buttonId);
-
-        ScrollEventListener getScrollEventListener();
-
-        void dispatchTouchEventToJs(MotionEvent event);
-    }
 
     private final String componentName;
 

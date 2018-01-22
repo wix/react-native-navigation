@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.viewcontrollers.ComponentViewController;
+import com.reactnativenavigation.viewcontrollers.IReactView;
 
-public class TestReactView extends FrameLayout implements ComponentViewController.IReactView {
+public class TestReactView extends FrameLayout implements IReactView {
 
     public TestReactView(@NonNull Context context) {
         super(context);

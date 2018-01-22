@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class ComponentViewControllerTest extends BaseTest {
     private ComponentViewController uut;
     private ParentController<StackLayout> parentController;
-    private ComponentViewController.IReactView view;
+    private IReactView view;
 
     @Override
     public void beforeEach() {

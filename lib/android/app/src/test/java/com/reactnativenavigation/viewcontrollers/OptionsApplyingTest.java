@@ -28,7 +28,7 @@ public class OptionsApplyingTest extends BaseTest {
     private Activity activity;
     private StackController stackController;
     private ComponentViewController uut;
-    private ComponentViewController.IReactView view;
+    private IReactView view;
     private Options initialNavigationOptions;
 
     @Override

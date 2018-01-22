@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.viewcontrollers.ComponentViewController.IReactView;
+import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
