@@ -12,9 +12,10 @@ static NSString* const componentDidAppear	= @"RNN.componentDidAppear";
 static NSString* const componentDidDisappear	= @"RNN.componentDidDisappear";
 static NSString* const onNavigationButtonPressed	= @"RNN.navigationButtonPressed";
 static NSString* const navigationCommands	= @"RNN.navigationCommands";
+static NSString* const componentLifecycle	= @"RNN.componentLifecycle";
 
 -(NSArray<NSString *> *)supportedEvents {
-	return @[onAppLaunched, componentDidAppear, componentDidDisappear, onNavigationButtonPressed, navigationCommands];
+	return @[onAppLaunched, componentDidAppear, componentDidDisappear, onNavigationButtonPressed, navigationCommands, componentLifecycle];
 }
 
 # pragma mark public
@@ -29,6 +30,10 @@ static NSString* const navigationCommands	= @"RNN.navigationCommands";
 
 -(void)sendNavigationEvent:(RNNNavigationEvent *)navigationEvent {
 	[self send:navigationCommands body:navigationEvent.body];
+}
+
+-(void)sendLifecycleEvent:(RNNComponentLifecycleEvent *)navigationEvent {
+	[self send:componentLifecycle body:navigationEvent.body];
 }
 
 -(void)sendComponentDidAppear:(NSString *)componentId {
