@@ -167,6 +167,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 @property (nonatomic, copy) MMDrawerGestureCompletionBlock gestureStart;
 @property (nonatomic, copy) MMDrawerGestureCompletionBlock gestureCompletion;
 @property (nonatomic, assign, getter = isAnimatingDrawer) BOOL animatingDrawer;
+@property (nonatomic, strong) UIGestureRecognizer *pan;
 
 @end
 
@@ -871,6 +872,14 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     }
 }
 
+-(bool)hasPan
+{
+    for (UIGestureRecognizer *recognizer in self.view.gestureRecognizers) {
+        if(recognizer == _pan) { return YES; }
+    }    
+    return NO;
+}
+
 #pragma mark - Setters
 -(void)setRightDrawerViewController:(UIViewController *)rightDrawerViewController{
     [self setDrawerViewController:rightDrawerViewController forSide:MMDrawerSideRight];
@@ -907,6 +916,12 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         _rightDrawerViewController = viewController;
         autoResizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
     }
+    
+   if(_leftDrawerViewController == nil && _rightDrawerViewController == nil) {
+        if([self hasPan]) { [self.view removeGestureRecognizer:_pan]; }
+    } else {
+        if(![self hasPan]) { [self.view addGestureRecognizer:_pan]; }
+    }    
     
     if(viewController){
         [self addChildViewController:viewController];
@@ -1321,9 +1336,9 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
 
 #pragma mark - Helpers
 -(void)setupGestureRecognizers{
-    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureCallback:)];
-    [pan setDelegate:self];
-    [self.view addGestureRecognizer:pan];
+    _pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureCallback:)];
+    [_pan setDelegate:self];
+    [self.view addGestureRecognizer:_pan];
     
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureCallback:)];
     [tap setDelegate:self];
