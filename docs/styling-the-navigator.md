@@ -99,6 +99,9 @@ this.props.navigator.setStyle({
   topBarShadowOpacity: 0.5, // Sets shadow opacity on the navbar, Works only when topBarElevationShadowEnabled: true
   topBarShadowOffset: 12, // Sets shadow offset on the navbar, Works only when topBarElevationShadowEnabled: true
   topBarShadowRadius: 3 // Sets shadow radius on the navbar, Works only when topBarElevationShadowEnabled: true
+
+  preferredContentSize: { width: 500, height: 500 } // Sets the preferred size for the view controller’s view.
+  modalPresentationStyle: 'formSheet' // Sets the presentation style for modally presented view controllers. Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext' and 'fullScreen'. 
   
   // Android only
   navigationBarColor: '#000000', // change the background color of the bottom native navigation bar.
@@ -111,7 +114,7 @@ this.props.navigator.setStyle({
   collapsingToolBarCollapsedColor: '#0f2362', // Collapsing Toolbar scrim color.
   navBarTextFontBold: false, // Optional. Set the title to bold.
   navBarHeight: 70, // Optional, set the navBar height in pixels.
-  navBarTopPadding: 24, // Optional, set navBar top padding in pixels. Useful when StatusBar.translucent=true on Android Lollipop and above.
+  navBarTopPadding: 24, // Optional, set navBar top padding in dp. Useful when StatusBar.translucent=true on Android Lollipop and above.
   topTabsHeight: 70, // Optional, set topTabs height in pixels.
   topBarBorderColor: 'red', // Optional, set a flat border under the TopBar.
   topBarBorderWidth: 5.5, // Optional, set the width of the border.
