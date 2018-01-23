@@ -1,7 +1,6 @@
 const React = require('react');
 const { PureComponent } = require('react');
 const { View, Text } = require('react-native');
-const Navigation = require('react-native-navigation');
 
 class TopTabScreen extends PureComponent {
   static get options() {
