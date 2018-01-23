@@ -4,19 +4,30 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.utils.DeviceScreen;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.views.ReactComponent;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener {
+
+    public interface ViewVisibilityListener {
+        /**
+         * @return true if the event is consumed, false otherwise
+         */
+        boolean onViewAppeared(View view);
+
+        /**
+         * @return true if the event is consumed, false otherwise
+         */
+        boolean onViewDisappear(View view);
+    }
 
     public Options options;
 
@@ -26,6 +37,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     @Nullable private ParentController<T> parentController;
     private boolean isShown;
     private boolean isDestroyed;
+    private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
 
     public ViewController(Activity activity, String id) {
         this.activity = activity;
@@ -33,6 +45,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     protected abstract T createView();
+
+    public void setViewVisibilityListener(ViewVisibilityListener viewVisibilityListener) {
+        this.viewVisibilityListener = viewVisibilityListener;
+    }
 
     @SuppressWarnings("WeakerAccess")
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
@@ -111,7 +127,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public void onViewAppeared() {
         isShown = true;
-        applyOnParentController(parentController -> parentController.applyOptions(options, (ReactComponent) getView()));
+        applyOnParentController(parentController -> {
+            parentController.clearOptions();
+            parentController.applyOptions(options, (ReactComponent) getView());
+        });
     }
 
     public void onViewDisappear() {
@@ -122,6 +141,9 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (isShown) {
             isShown = false;
             onViewDisappear();
+            if (view instanceof Destroyable) {
+                ((Destroyable) view).destroy();
+            }
         }
         if (view != null) {
             view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -136,34 +158,19 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     @Override
     public void onGlobalLayout() {
         if (!isShown && isViewShown()) {
-            isShown = true;
-            onViewAppeared();
+            if (!viewVisibilityListener.onViewAppeared(view)) {
+                isShown = true;
+                onViewAppeared();
+            }
         } else if (isShown && !isViewShown()) {
-            isShown = false;
-            onViewDisappear();
+            if (!viewVisibilityListener.onViewDisappear(view)) {
+                isShown = false;
+                onViewDisappear();
+            }
         }
-//        UiUtils.runOnPreDrawOnce(view, () -> {
-//            Log.i("ViewController", "onGlobalLayout: " + title() + " isShown: " + isShown + " isViewShown(): " + isViewShown());
-//            if (!isShown && isViewShown()) {
-//                isShown = true;
-//                onViewAppeared();
-//            } else if (isShown && !isViewShown()) {
-//                isShown = false;
-//                onViewDisappear();
-//            }
-//        });
     }
 
     protected boolean isViewShown() {
-        return !isDestroyed && getView().isShown() && isViewInScreenBounds();
-    }
-
-    private boolean isViewInScreenBounds() {
-        return view.getX() >= 0 && view.getX() < DeviceScreen.width(view.getResources());
-    }
-
-    private String title() {
-        if (options == null) return "";
-        return options.topBarOptions.title.get("");
+        return !isDestroyed && getView().isShown();
     }
 }

@@ -52,7 +52,6 @@ public class TopTabsViewControllerTest extends BaseTest {
 
         parentController = spy(new StackController(activity, "stackId"));
         uut.setParentController(parentController);
-//        parentController.push(uut, new MockPromise());
     }
 
     @NonNull
@@ -161,10 +160,10 @@ public class TopTabsViewControllerTest extends BaseTest {
 
         uut.onViewAppeared();
         verify(uut, times(1)).applyOptions(tabOptions.get(0), tabView(0));
-//        uut.switchToTab(1);
-//        verify(uut, times(1)).applyOptions(tabOptions.get(1));
-//        uut.switchToTab(0);
-//        verify(uut, times(2)).applyOptions(tabOptions.get(0));
+        uut.switchToTab(1);
+        verify(uut, times(1)).applyOptions(tabOptions.get(1), tabView(1));
+        uut.switchToTab(0);
+        verify(uut, times(2)).applyOptions(tabOptions.get(0), tabView(0));
     }
 
     private TestReactView getActualTabView(int index) {

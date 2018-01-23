@@ -84,4 +84,14 @@ public class ParentControllerTest extends BaseTest {
         uut.destroy();
         verify(child1, times(1)).destroy();
     }
+
+    @Test
+    public void optionsAreClearedWhenChildIsAppeared() throws Exception {
+        StackController stackController = spy(new StackController(activity, "stack"));
+        SimpleViewController child1 = new SimpleViewController(activity, "child1");
+        stackController.animatePush(child1, new MockPromise());
+
+        child1.onViewAppeared();
+        verify(stackController, times(1)).clearOptions();
+    }
 }

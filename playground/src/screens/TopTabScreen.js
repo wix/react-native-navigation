@@ -14,15 +14,6 @@ class TopTabScreen extends PureComponent {
     };
   }
 
-  constructor(props) {
-    super(props);
-    Navigation.setOptions(this.props.componentId, {
-      topBar: {
-        title: this.props.title
-      }
-    });
-  }
-
   render() {
     return (
       <View style={styles.root}>

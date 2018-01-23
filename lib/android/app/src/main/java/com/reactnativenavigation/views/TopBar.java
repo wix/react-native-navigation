@@ -37,6 +37,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         this.onClickListener = onClickListener;
         collapsingBehavior = new TopBarCollapseBehavior(this);
         titleBar = new Toolbar(context);
+        titleBar.getMenu();
         topTabs = new TopTabs(getContext());
         this.animator = new TopBarAnimator(this);
         addView(titleBar);

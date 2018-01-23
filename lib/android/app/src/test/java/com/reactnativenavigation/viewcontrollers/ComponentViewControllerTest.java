@@ -40,6 +40,7 @@ public class ComponentViewControllerTest extends BaseTest {
     public void componentViewDestroyedOnDestroy() throws Exception {
         uut.ensureViewIsCreated();
         verify(view, times(0)).destroy();
+        uut.onViewAppeared();
         uut.destroy();
         verify(view, times(1)).destroy();
     }

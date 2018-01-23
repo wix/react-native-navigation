@@ -5,13 +5,11 @@ import android.view.View;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 
-public interface IReactView {
+public interface IReactView extends Destroyable {
 
     boolean isReady();
 
     View asView();
-
-    void destroy();
 
     void sendComponentStart();
 

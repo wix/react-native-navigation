@@ -2,12 +2,14 @@ package com.reactnativenavigation.viewcontrollers.toptabs;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.ViewVisibilityListenerAdapter;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.TopTabsLayoutCreator;
 import com.reactnativenavigation.views.TopTabsViewPager;
@@ -28,6 +30,12 @@ public class TopTabsController extends ParentController<TopTabsViewPager> implem
         this.tabs = tabs;
         for (ViewController tab : tabs) {
             tab.setParentController(this);
+            tab.setViewVisibilityListener(new ViewVisibilityListenerAdapter() {
+                @Override
+                public boolean onViewAppeared(View view) {
+                    return getView().isCurrentView(view);
+                }
+            });
         }
     }
 
@@ -47,9 +55,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> implem
     @Override
     public void onViewAppeared() {
         applyOptions(options);
-        applyOnParentController(parentController -> {
-            ((ParentController) parentController).setupTopTabsWithViewPager(getView());
-        });
+        applyOnParentController(parentController -> ((ParentController) parentController).setupTopTabsWithViewPager(getView()));
         performOnCurrentTab(ViewController::onViewAppeared);
     }
 

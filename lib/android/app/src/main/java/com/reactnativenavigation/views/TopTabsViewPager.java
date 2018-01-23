@@ -3,6 +3,7 @@ package com.reactnativenavigation.views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
@@ -69,5 +70,14 @@ public class TopTabsViewPager extends ViewPager implements Component, TitleBarBu
         for (ViewController tab : tabs) {
             tab.destroy();
         }
+    }
+
+    public boolean isCurrentView(View view) {
+        for (ViewController tab : tabs) {
+            if (tab.getView() == view) {
+                return true;
+            }
+        }
+        return false;
     }
 }

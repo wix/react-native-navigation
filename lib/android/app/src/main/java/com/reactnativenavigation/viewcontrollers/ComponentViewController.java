@@ -26,29 +26,16 @@ public class ComponentViewController extends ViewController<ComponentLayout> imp
     }
 
     @Override
-    public void destroy() {
-        if (view != null) {
-
-            view.destroy();
-        }
-        super.destroy();
-    }
-
-    @Override
     public void onViewAppeared() {
         super.onViewAppeared();
         view.applyOptions(options);
-        applyOnParentController(parentController -> {
-            parentController.clearOptions();
-            parentController.applyOptions(options, view);
-        });
         view.sendComponentStart();
     }
 
     @Override
     public void onViewDisappear() {
-        super.onViewDisappear();
         view.sendComponentStop();
+        super.onViewDisappear();
     }
 
     @Override
