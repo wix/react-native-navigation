@@ -38,7 +38,7 @@ class ModalScreen extends Component {
         <Button title="Dismiss Unknown Modal" testID={testIDs.DISMISS_UNKNOWN_MODAL_BUTTON} onPress={this.onClickDismissUnknownModal} />
         <Button title="Dismiss All Modals" testID={testIDs.DISMISS_ALL_MODALS_BUTTON} onPress={this.onClickDismissAllModals} />
         <Button title="Push screen" testID={testIDs.PUSH_BUTTON} onPress={this.onClickPushScreen} />
-        <Button title="Show Modal With Stack" testID={testIDs.PUSH_BUTTON} onPress={this.onShowModalWithDeepStack} />
+        <Button title="Show Modal With Stack" testID={testIDs.MODAL_WITH_STACK_BUTTON} onPress={this.onShowModalWithDeepStack} />
         {this.getPreviousModalId() ? (<Button title="Dismiss Previous Modal" testID={testIDs.DISMISS_PREVIOUS_MODAL_BUTTON} onPress={this.onClickDismissPreviousModal} />) : undefined}
         {this.props.previousModalIds ? (<Button title="Dismiss ALL Previous Modals" testID={testIDs.DISMISS_ALL_PREVIOUS_MODAL_BUTTON} onPress={this.onClickDismissAllPreviousModals} />) : undefined}
         {this.props.previousModalIds ? (<Button title="Dismiss First In Stack" testID={testIDs.DISMISS_FIRST_MODAL_BUTTON} onPress={this.onClickDismissFirstInStack} />) : undefined}

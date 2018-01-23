@@ -16,7 +16,7 @@ public class TopTabsLayoutCreator {
         this.tabs = tabs;
     }
 
-    public TopTabsLayout create() {
-        return new TopTabsLayout(context, tabs, new TopTabsAdapter(tabs));
+    public TopTabsViewPager create() {
+        return new TopTabsViewPager(context, tabs, new TopTabsAdapter(tabs));
     }
 }

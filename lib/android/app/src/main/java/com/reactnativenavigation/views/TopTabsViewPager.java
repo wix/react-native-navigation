@@ -3,11 +3,12 @@ package com.reactnativenavigation.views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.viewcontrollers.ComponentViewController.IReactView;
+import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 
@@ -17,12 +18,12 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.widget.RelativeLayout.BELOW;
 
 @SuppressLint("ViewConstructor")
-public class TopTabsLayout extends ViewPager implements Component, TitleBarButton.OnClickListener {
+public class TopTabsViewPager extends ViewPager implements Component, TitleBarButton.OnClickListener {
 
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
     private List<ViewController> tabs;
 
-    public TopTabsLayout(Context context, List<ViewController> tabs, TopTabsAdapter adapter) {
+    public TopTabsViewPager(Context context, List<ViewController> tabs, TopTabsAdapter adapter) {
         super(context);
         this.tabs = tabs;
         initTabs(adapter);
@@ -69,5 +70,14 @@ public class TopTabsLayout extends ViewPager implements Component, TitleBarButto
         for (ViewController tab : tabs) {
             tab.destroy();
         }
+    }
+
+    public boolean isCurrentView(View view) {
+        for (ViewController tab : tabs) {
+            if (tab.getView() == view) {
+                return true;
+            }
+        }
+        return false;
     }
 }
