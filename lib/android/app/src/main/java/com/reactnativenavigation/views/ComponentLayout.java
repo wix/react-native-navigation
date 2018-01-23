@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.viewcontrollers.ComponentViewController.IReactView;
+import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -75,14 +75,14 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
 
     @Override
     public void drawBehindTopBar() {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reactView.asView().getLayoutParams();
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
         layoutParams.removeRule(BELOW);
         reactView.asView().setLayoutParams(layoutParams);
     }
 
     @Override
     public void drawBelowTopBar(TopBar topBar) {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reactView.asView().getLayoutParams();
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
         layoutParams.addRule(BELOW, topBar.getId());
         reactView.asView().setLayoutParams(layoutParams);
     }

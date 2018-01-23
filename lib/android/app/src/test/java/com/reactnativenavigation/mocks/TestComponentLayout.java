@@ -3,38 +3,22 @@ package com.reactnativenavigation.mocks;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.TitleBarButton;
-import com.reactnativenavigation.views.TopBar;
 
-public class TestComponentLayout extends RelativeLayout implements ReactComponent, TitleBarButton.OnClickListener {
+public class TestComponentLayout extends ComponentLayout implements TitleBarButton.OnClickListener {
 
-    private final View contentView;
+    private IReactView reactView;
 
-    public TestComponentLayout(final Context context) {
-        super(context);
-        contentView = new View(context);
-        addView(contentView);
+    public TestComponentLayout(final Context context, IReactView reactView) {
+        super(context, reactView);
+        this.reactView = reactView;
     }
 
-    @Override
-    public void drawBehindTopBar() {
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams.removeRule(BELOW);
-        contentView.setLayoutParams(layoutParams);
-    }
-
-    @Override
-    public void drawBelowTopBar(TopBar topBar) {
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams.addRule(BELOW, topBar.getId());
-        contentView.setLayoutParams(layoutParams);
-    }
 
     @Override
     public boolean isReady() {
@@ -52,10 +36,12 @@ public class TestComponentLayout extends RelativeLayout implements ReactComponen
 
     @Override
     public void sendComponentStart() {
+        reactView.sendComponentStart();
     }
 
     @Override
     public void sendComponentStop() {
+        reactView.sendComponentStop();
     }
 
     @Override

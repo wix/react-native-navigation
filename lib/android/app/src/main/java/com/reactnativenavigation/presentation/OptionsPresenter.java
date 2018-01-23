@@ -49,7 +49,7 @@ public class OptionsPresenter {
         }
 
         if (options.hideOnScroll == True) {
-            topBar.enableCollapse();
+            topBar.enableCollapse(component.getScrollEventListener());
         } else if (options.hideOnScroll == False) {
             topBar.disableCollapse();
         }

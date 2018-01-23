@@ -13,135 +13,164 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.views.ReactComponent;
 
-public abstract class ViewController implements ViewTreeObserver.OnGlobalLayoutListener {
+public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener {
+
+    public interface ViewVisibilityListener {
+        /**
+         * @return true if the event is consumed, false otherwise
+         */
+        boolean onViewAppeared(View view);
+
+        /**
+         * @return true if the event is consumed, false otherwise
+         */
+        boolean onViewDisappear(View view);
+    }
 
     public Options options;
 
-	private final Activity activity;
-	private final String id;
-	private View view;
-	private ParentController parentController;
-	private boolean isShown = false;
+    private final Activity activity;
+    private final String id;
+    protected T view;
+    @Nullable private ParentController<T> parentController;
+    private boolean isShown;
     private boolean isDestroyed;
+    private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
 
-	public ViewController(Activity activity, String id) {
-		this.activity = activity;
-		this.id = id;
-	}
+    public ViewController(Activity activity, String id) {
+        this.activity = activity;
+        this.id = id;
+    }
 
-	protected abstract View createView();
+    protected abstract T createView();
 
-	@SuppressWarnings("WeakerAccess")
+    public void setViewVisibilityListener(ViewVisibilityListener viewVisibilityListener) {
+        this.viewVisibilityListener = viewVisibilityListener;
+    }
+
+    @SuppressWarnings("WeakerAccess")
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
-	public void ensureViewIsCreated() {
-		getView();
-	}
+    public void ensureViewIsCreated() {
+        getView();
+    }
 
-	public boolean handleBack() {
-		return false;
-	}
+    public boolean handleBack() {
+        return false;
+    }
 
     public void applyOptions(Options options) {
 
     }
 
-	public Activity getActivity() {
-		return activity;
-	}
-
-	protected void applyOnParentController(Task<ParentController> task) {
-        if (parentController != null) {
-            task.run(parentController);
-        }
+    public Activity getActivity() {
+        return activity;
     }
 
-	@Nullable
-    ParentController getParentStackController() {
-		return parentController;
-	}
+    protected void applyOnParentController(Task<ParentController> task) {
+        if (parentController != null) task.run(parentController);
+    }
 
-	public void setParentController(final ParentController parentController) {
-		this.parentController = parentController;
-	}
+    @Nullable
+    ParentController getParentController() {
+        return parentController;
+    }
+
+    public void setParentController(@NonNull final ParentController parentController) {
+        this.parentController = parentController;
+    }
 
     boolean performOnParentStack(Task<StackController> task) {
-	    if (parentController instanceof StackController) {
+        if (parentController instanceof StackController) {
             task.run((StackController) parentController);
             return true;
         }
         if (this instanceof StackController) {
-	        task.run((StackController) this);
+            task.run((StackController) this);
             return true;
         }
         return false;
     }
 
-    void performOnParentStack(Task<StackController> accept, Runnable  reject) {
+    void performOnParentStack(Task accept, Runnable reject) {
         if (!performOnParentStack(accept)) {
             reject.run();
         }
     }
 
-	@NonNull
-	public View getView() {
-		if (view == null) {
-		    if (isDestroyed) throw new RuntimeException("Tried to create view after it has already been destroyed");
+    @NonNull
+    public T getView() {
+        if (view == null) {
+            if (isDestroyed) {
+                throw new RuntimeException("Tried to create view after it has already been destroyed");
+            }
             view = createView();
-			view.setId(CompatUtils.generateViewId());
-			view.getViewTreeObserver().addOnGlobalLayoutListener(this);
-		}
-		return view;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	boolean isSameId(final String id) {
-		return StringUtils.isEqual(this.id, id);
-	}
-
-	@Nullable
-	public ViewController findControllerById(String id) {
-		return isSameId(id) ? this : null;
-	}
-
-	public void onViewAppeared() {
-        isShown = true;
+            view.setId(CompatUtils.generateViewId());
+            view.getViewTreeObserver().addOnGlobalLayoutListener(this);
+        }
+        return view;
     }
 
-	public void onViewDisappear() {
+    public String getId() {
+        return id;
+    }
+
+    boolean isSameId(final String id) {
+        return StringUtils.isEqual(this.id, id);
+    }
+
+    @Nullable
+    public ViewController findControllerById(String id) {
+        return isSameId(id) ? this : null;
+    }
+
+    public void onViewAppeared() {
+        isShown = true;
+        applyOnParentController(parentController -> {
+            parentController.clearOptions();
+            parentController.applyOptions(options, (ReactComponent) getView());
+        });
+    }
+
+    public void onViewDisappear() {
         isShown = false;
     }
 
-	public void destroy() {
-		if (isShown) {
-			isShown = false;
-			onViewDisappear();
-		}
-		if (view != null) {
-			view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-			if (view.getParent() instanceof ViewGroup) {
-				((ViewManager) view.getParent()).removeView(view);
-			}
-			view = null;
+    public void destroy() {
+        if (isShown) {
+            isShown = false;
+            onViewDisappear();
+            if (view instanceof Destroyable) {
+                ((Destroyable) view).destroy();
+            }
+        }
+        if (view != null) {
+            view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            if (view.getParent() instanceof ViewGroup) {
+                ((ViewManager) view.getParent()).removeView(view);
+            }
+            view = null;
             isDestroyed = true;
-		}
-	}
+        }
+    }
 
-	@Override
-	public void onGlobalLayout() {
-		if (!isShown && isViewShown()) {
-			isShown = true;
-			onViewAppeared();
-		} else if (isShown && !isViewShown()) {
-			isShown = false;
-			onViewDisappear();
-		}
-	}
+    @Override
+    public void onGlobalLayout() {
+        if (!isShown && isViewShown()) {
+            if (!viewVisibilityListener.onViewAppeared(view)) {
+                isShown = true;
+                onViewAppeared();
+            }
+        } else if (isShown && !isViewShown()) {
+            if (!viewVisibilityListener.onViewDisappear(view)) {
+                isShown = false;
+                onViewDisappear();
+            }
+        }
+    }
 
-	protected boolean isViewShown() {
+    protected boolean isViewShown() {
         return !isDestroyed && getView().isShown();
-	}
+    }
 }
