@@ -4,6 +4,9 @@
 #import <React/RCTEventEmitter.h>
 #import <React/RCTBridgeModule.h>
 
+#import "RNNNavigationEvent.h"
+#import "RNNComponentLifecycleEvent.h"
+
 @interface RNNEventEmitter : RCTEventEmitter <RCTBridgeModule>
 
 -(void)sendOnAppLaunched;
@@ -13,5 +16,9 @@
 -(void)sendComponentDidDisappear:(NSString*)componentId;
 
 -(void)sendOnNavigationButtonPressed:(NSString*)componentId buttonId:(NSString*)buttonId;
+
+-(void)sendNavigationEvent:(RNNNavigationEvent*)navigationEvent;
+
+-(void)sendLifecycleEvent:(RNNComponentLifecycleEvent *)navigationEvent;
 
 @end

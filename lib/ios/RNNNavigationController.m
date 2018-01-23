@@ -11,4 +11,8 @@
 	return NO;
 }
 
+- (NSString *)componentId {
+	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController).componentId;
+}
+
 @end

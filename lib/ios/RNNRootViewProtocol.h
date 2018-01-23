@@ -5,6 +5,7 @@
 @required
 
 - (BOOL)isCustomTransitioned;
+- (NSString *)componentId;
 
 @end
 

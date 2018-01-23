@@ -76,4 +76,8 @@
 	return NO;
 }
 
+- (NSString *)componentId {
+	return _center.componentId;
+}
+
 @end
