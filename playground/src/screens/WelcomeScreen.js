@@ -1,6 +1,6 @@
 const React = require('react');
 const { Component } = require('react');
-const { View, Text, Button } = require('react-native');
+const { View, Text, Button, Platform } = require('react-native');
 
 const testIDs = require('../testIDs');
 
@@ -36,8 +36,8 @@ class WelcomeScreen extends Component {
         <Button title="Static Lifecycle Events" testID={testIDs.PUSH_STATIC_LIFECYCLE_BUTTON} onPress={this.onClickShowStaticLifecycleOverlay} />
         <Button title="Push" testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
         <Button title="Push Options Screen" testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
-        <Button title="Push Top Tabs screen" testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />
-        <Button title="Back Handler" testID={testIDs.BACK_HANDLER_BUTTON} onPress={this.onClickBackHandler} />
+        {Platform.OS === 'android' && <Button title="Push Top Tabs screen" testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />}
+        {Platform.OS === 'android' && <Button title="Back Handler" testID={testIDs.BACK_HANDLER_BUTTON} onPress={this.onClickBackHandler} />}
         <Button title="Show Modal" testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
         <Button title="Show Redbox" testID={testIDs.SHOW_REDBOX_BUTTON} onPress={this.onClickShowRedbox} />
         <Button title="Orientation" testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
