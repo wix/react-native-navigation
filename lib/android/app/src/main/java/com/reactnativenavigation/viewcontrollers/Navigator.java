@@ -131,11 +131,11 @@ public class Navigator extends ParentController {
 	}
 
 	public void showOverlay(ViewController overlay) {
-        overlayManager.show(root.getView(), overlay);
+        overlayManager.show(getView(), overlay);
 	}
 
 	public void dismissOverlay(final String componentId) {
-		overlayManager.dismiss(root.getView(), componentId);
+		overlayManager.dismiss(getView(), componentId);
 	}
 
 	static void rejectPromise(Promise promise) {
