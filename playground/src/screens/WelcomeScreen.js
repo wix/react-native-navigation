@@ -235,6 +235,9 @@ class WelcomeScreen extends Component {
               options: {
                 topTab: {
                   title: 'Tab 1'
+                },
+                topBar: {
+                  title: 'One'
                 }
               }
             }
@@ -250,6 +253,9 @@ class WelcomeScreen extends Component {
                 topTab: {
                   title: 'Tab 2',
                   titleFontFamily: 'HelveticaNeue-Italic'
+                },
+                topBar: {
+                  title: 'Two'
                 }
               }
             }
@@ -264,6 +270,9 @@ class WelcomeScreen extends Component {
               options: {
                 topTab: {
                   title: 'Tab 3'
+                },
+                topBar: {
+                  title: 'Three'
                 }
               }
             }

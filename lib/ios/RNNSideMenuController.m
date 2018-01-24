@@ -80,4 +80,8 @@
 	return YES;
 }
 
+- (NSString *)componentId {
+	return _center.componentId;
+}
+
 @end

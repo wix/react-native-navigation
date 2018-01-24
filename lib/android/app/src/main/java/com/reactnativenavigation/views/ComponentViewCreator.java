@@ -4,9 +4,10 @@ import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.react.ReactComponentViewCreator;
-import com.reactnativenavigation.viewcontrollers.ComponentViewController;
+import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 
-public class ComponentViewCreator implements ComponentViewController.ReactViewCreator {
+public class ComponentViewCreator implements ReactViewCreator {
 
     private ReactInstanceManager instanceManager;
 
@@ -15,8 +16,8 @@ public class ComponentViewCreator implements ComponentViewController.ReactViewCr
 	}
 
 	@Override
-	public ComponentViewController.IReactView create(Activity activity, String componentId, String componentName) {
-        ComponentViewController.IReactView reactView = new ReactComponentViewCreator(instanceManager).create(activity, componentId, componentName);
+	public IReactView create(Activity activity, String componentId, String componentName) {
+        IReactView reactView = new ReactComponentViewCreator(instanceManager).create(activity, componentId, componentName);
         return new ComponentLayout(activity, reactView);
 	}
 }

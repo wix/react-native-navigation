@@ -16,4 +16,8 @@
 	return rootVC.isAnimated;
 }
 
+- (NSString *)componentId {
+	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController).componentId;
+}
+
 @end

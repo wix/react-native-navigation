@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.TestComponentLayout;
+import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Fraction;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
@@ -18,6 +19,7 @@ import org.junit.Test;
 
 import javax.annotation.Nullable;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.widget.RelativeLayout.BELOW;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.spy;
@@ -26,7 +28,7 @@ public class OptionsApplyingTest extends BaseTest {
     private Activity activity;
     private StackController stackController;
     private ComponentViewController uut;
-    private ComponentViewController.IReactView view;
+    private IReactView view;
     private Options initialNavigationOptions;
 
     @Override
@@ -34,7 +36,8 @@ public class OptionsApplyingTest extends BaseTest {
         super.beforeEach();
         activity = newActivity();
         initialNavigationOptions = new Options();
-        view = spy(new TestComponentLayout(activity));
+        view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
+        view.asView().setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         uut = new ComponentViewController(activity,
                 "componentId1",
                 "componentName",
@@ -49,9 +52,10 @@ public class OptionsApplyingTest extends BaseTest {
     @Test
     public void applyNavigationOptionsHandlesNoParentStack() throws Exception {
         uut.setParentController(null);
-        assertThat(uut.getParentStackController()).isNull();
+        assertThat(uut.getParentController()).isNull();
+        uut.ensureViewIsCreated();
         uut.onViewAppeared();
-        assertThat(uut.getParentStackController()).isNull();
+        assertThat(uut.getParentController()).isNull();
     }
 
     @Test
@@ -79,6 +83,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void reappliesOptionsOnMerge() throws Exception {
+        uut.ensureViewIsCreated();
         uut.onViewAppeared();
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
 
@@ -91,6 +96,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBackBackgroundColor() throws Exception {
+        uut.ensureViewIsCreated();
         uut.onViewAppeared();
 
         Options opts = new Options();
@@ -122,6 +128,7 @@ public class OptionsApplyingTest extends BaseTest {
     public void appliesTopBarTextSize() throws Exception {
         assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
+        uut.ensureViewIsCreated();
         uut.onViewAppeared();
 
         Options opts = new Options();
@@ -137,6 +144,7 @@ public class OptionsApplyingTest extends BaseTest {
     public void appliesTopBarHidden() throws Exception {
         assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
+        uut.ensureViewIsCreated();
         uut.onViewAppeared();
         assertThat(stackController.getTopBar().getVisibility()).isNotEqualTo(View.GONE);
 
@@ -152,6 +160,7 @@ public class OptionsApplyingTest extends BaseTest {
         assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
         initialNavigationOptions.topBarOptions.drawBehind = Options.BooleanOptions.False;
+        uut.ensureViewIsCreated();
         uut.onViewAppeared();
         stackController.animatePush(uut, new MockPromise() {
             @Override

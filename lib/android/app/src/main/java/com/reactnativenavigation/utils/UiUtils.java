@@ -13,15 +13,15 @@ import android.view.WindowManager;
 
 public class UiUtils {
 	public static void runOnPreDrawOnce(final View view, final Runnable task) {
-		view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-			@Override
-			public boolean onPreDraw() {
-				view.getViewTreeObserver().removeOnPreDrawListener(this);
-				task.run();
-				return true;
-			}
-		});
-	}
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                view.getViewTreeObserver().removeOnPreDrawListener(this);
+                task.run();
+                return true;
+            }
+        });
+    }
 
 	public static void tintDrawable(Drawable drawable, int tint) {
 		drawable.setColorFilter(new PorterDuffColorFilter(tint, PorterDuff.Mode.SRC_IN));

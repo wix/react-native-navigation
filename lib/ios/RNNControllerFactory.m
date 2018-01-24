@@ -12,7 +12,6 @@
 @implementation RNNControllerFactory {
 	id<RNNRootViewCreator> _creator;
 	RNNStore *_store;
-	RNNEventEmitter *_eventEmitter;
 	RCTBridge *_bridge;
 }
 
@@ -162,8 +161,8 @@
 	return sideMenuChild;
 }
 
-- (UIViewController *)createOverlay:(NSDictionary*)layout {
-	UIViewController *vc = [self fromTree:layout];
+- (UIViewController<RNNRootViewProtocol> *)createOverlay:(NSDictionary*)layout {
+	UIViewController<RNNRootViewProtocol> *vc = [self fromTree:layout];
 	RCTRootView* rootView = (RCTRootView*)vc.view;
 	rootView.backgroundColor = [UIColor clearColor];
 	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;

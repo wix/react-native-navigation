@@ -82,21 +82,21 @@ public class Navigator extends ParentController {
 	public void push(final String fromId, final ViewController viewController, Promise promise) {
 		ViewController from = findControllerById(fromId);
 		if (from != null) {
-		    from.performOnParentStack(stack -> stack.animatePush(viewController, promise));
+		    from.performOnParentStack(stack -> ((StackController) stack).animatePush(viewController, promise));
 		}
 	}
 
 	void pop(final String fromId, Promise promise) {
 		ViewController from = findControllerById(fromId);
 		if (from != null) {
-		    from.performOnParentStack(stack -> stack.pop(promise));
+		    from.performOnParentStack(stack -> ((StackController) stack).pop(promise));
 		}
 	}
 
 	public void popSpecific(final String id, Promise promise) {
 		ViewController from = findControllerById(id);
 		if (from != null) {
-		    from.performOnParentStack(stack -> stack.popSpecific(from, promise), () -> rejectPromise(promise));
+		    from.performOnParentStack(stack -> ((StackController) stack).popSpecific(from, promise), () -> rejectPromise(promise));
 		} else {
 			rejectPromise(promise);
 		}
@@ -105,14 +105,14 @@ public class Navigator extends ParentController {
 	public void popToRoot(final String id, Promise promise) {
 		ViewController from = findControllerById(id);
 		if (from != null) {
-		    from.performOnParentStack(stack -> stack.popToRoot(promise));
+		    from.performOnParentStack(stack -> ((StackController) stack).popToRoot(promise));
 		}
 	}
 
 	public void popTo(final String componentId, Promise promise) {
 		ViewController target = findControllerById(componentId);
 		if (target != null) {
-		    target.performOnParentStack(stack -> stack.popTo(target, promise), () -> rejectPromise(promise));
+		    target.performOnParentStack(stack -> ((StackController) stack).popTo(target, promise), () -> rejectPromise(promise));
 		} else {
 			rejectPromise(promise);
 		}
@@ -131,11 +131,11 @@ public class Navigator extends ParentController {
 	}
 
 	public void showOverlay(ViewController overlay) {
-        overlayManager.show((ViewGroup) root.getView(), overlay);
+        overlayManager.show(root.getView(), overlay);
 	}
 
 	public void dismissOverlay(final String componentId) {
-		overlayManager.dismiss((ViewGroup) root.getView(), componentId);
+		overlayManager.dismiss(root.getView(), componentId);
 	}
 
 	static void rejectPromise(Promise promise) {

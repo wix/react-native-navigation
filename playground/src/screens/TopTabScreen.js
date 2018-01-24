@@ -1,7 +1,6 @@
 const React = require('react');
 const { PureComponent } = require('react');
 const { View, Text } = require('react-native');
-const Navigation = require('react-native-navigation');
 
 class TopTabScreen extends PureComponent {
   static get options() {
@@ -12,15 +11,6 @@ class TopTabScreen extends PureComponent {
         textFontFamily: 'HelveticaNeue-Italic'
       }
     };
-  }
-
-  constructor(props) {
-    super(props);
-    Navigation.setOptions(this.props.componentId, {
-      topBar: {
-        title: this.props.title
-      }
-    });
   }
 
   render() {

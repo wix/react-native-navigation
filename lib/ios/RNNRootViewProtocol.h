@@ -7,6 +7,8 @@
 - (BOOL)isCustomTransitioned;
 - (BOOL)isAnimated;
 
+- (NSString *)componentId;
+
 @end
 
 
