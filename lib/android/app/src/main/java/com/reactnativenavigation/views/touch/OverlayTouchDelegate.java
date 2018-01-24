@@ -5,9 +5,11 @@ import android.support.annotation.VisibleForTesting;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 
 public class OverlayTouchDelegate {
+    private enum TouchLocation {Outside, Inside}
     private final Rect hitRect = new Rect();
     private IReactView reactView;
     private boolean interceptTouchOutside;
@@ -17,22 +19,33 @@ public class OverlayTouchDelegate {
     }
 
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        return interceptTouchOutside && isDown(event) && handleDown(event);
-    }
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                return handleDown(event);
+            default:
+                reactView.dispatchTouchEventToJs(event);
+                return false;
 
-    private boolean isDown(MotionEvent event) {
-        return event.getActionMasked() == MotionEvent.ACTION_DOWN;
+        }
     }
 
     @VisibleForTesting
     public boolean handleDown(MotionEvent event) {
-        ((ViewGroup) reactView.asView()).getChildAt(0).getHitRect(hitRect);
-        reactView.dispatchTouchEventToJs(event);
-        return isTouchOutside(event);
+        TouchLocation location = getTouchLocation(event);
+        if (location == TouchLocation.Inside) {
+            reactView.dispatchTouchEventToJs(event);
+        }
+        if (interceptTouchOutside) {
+            return location == TouchLocation.Inside;
+        }
+        return location == TouchLocation.Outside;
     }
 
-    private boolean isTouchOutside(MotionEvent ev) {
-        return !hitRect.contains((int) ev.getRawX(), (int) ev.getRawY());
+    private TouchLocation getTouchLocation(MotionEvent ev) {
+        ((ViewGroup) reactView.asView()).getChildAt(0).getHitRect(hitRect);
+        return hitRect.contains((int) ev.getRawX(), (int) ev.getRawY() - UiUtils.getStatusBarHeight(reactView.asView().getContext())) ?
+                TouchLocation.Inside :
+                TouchLocation.Outside;
     }
 
     public void setInterceptTouchOutside(boolean interceptTouchOutside) {

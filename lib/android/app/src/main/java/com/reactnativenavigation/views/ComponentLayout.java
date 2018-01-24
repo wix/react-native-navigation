@@ -94,6 +94,6 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return touchDelegate.onInterceptTouchEvent(ev) || super.onInterceptTouchEvent(ev);
+        return touchDelegate.onInterceptTouchEvent(ev);
     }
 }

@@ -8,6 +8,7 @@ import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,11 +19,13 @@ public class TouchDelegateTest extends BaseTest {
     private final int y = 10;
     private final MotionEvent downEvent = MotionEvent.obtain(0, 0, MotionEvent.ACTION_DOWN, x, y, 0);
     private final MotionEvent upEvent = MotionEvent.obtain(0, 0, MotionEvent.ACTION_UP, x, y, 0);
+    private SimpleOverlay reactView;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
-        uut = spy(new OverlayTouchDelegate(new SimpleOverlay(newActivity())));
+        reactView = spy(new SimpleOverlay(newActivity()));
+        uut = spy(new OverlayTouchDelegate(reactView));
     }
 
     @Test
@@ -40,8 +43,15 @@ public class TouchDelegateTest extends BaseTest {
     }
 
     @Test
-    public void downIsHandledOnlyIfInterceptTouchOutsideIsTrue() throws Exception {
-        uut.onInterceptTouchEvent(downEvent);
-        verify(uut, times(0)).handleDown(downEvent);
+    public void nonDownEventsDontIntercept() throws Exception {
+        uut.setInterceptTouchOutside(true);
+        assertThat(uut.onInterceptTouchEvent(upEvent)).isFalse();
+    }
+
+    @Test
+    public void nonDownEventsDispatchTouchEventsToJs() throws Exception {
+        uut.setInterceptTouchOutside(true);
+        uut.onInterceptTouchEvent(upEvent);
+        verify(reactView, times(1)).dispatchTouchEventToJs(upEvent);
     }
 }
