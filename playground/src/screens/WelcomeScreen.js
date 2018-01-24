@@ -23,15 +23,17 @@ class WelcomeScreen extends Component {
     this.onClickPushOrientationMenuScreen = this.onClickPushOrientationMenuScreen.bind(this);
     this.onClickBackHandler = this.onClickBackHandler.bind(this);
     this.onClickPushTopTabsScreen = this.onClickPushTopTabsScreen.bind(this);
+    this.onClickShowStaticLifecycleOverlay = this.onClickShowStaticLifecycleOverlay.bind(this);
   }
 
   render() {
     return (
-      <View style={styles.root}>
+      <View style={styles.root} key={'root'}>
         <Text testID={testIDs.WELCOME_SCREEN_HEADER} style={styles.h1}>{`React Native Navigation!`}</Text>
         <Button title="Switch to tab based app" testID={testIDs.TAB_BASED_APP_BUTTON} onPress={this.onClickSwitchToTabs} />
         <Button title="Switch to app with side menus" testID={testIDs.TAB_BASED_APP_SIDE_BUTTON} onPress={this.onClickSwitchToSideMenus} />
         <Button title="Push Lifecycle Screen" testID={testIDs.PUSH_LIFECYCLE_BUTTON} onPress={this.onClickLifecycleScreen} />
+        <Button title="Static Lifecycle Events" testID={testIDs.PUSH_STATIC_LIFECYCLE_BUTTON} onPress={this.onClickShowStaticLifecycleOverlay} />
         <Button title="Push" testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
         <Button title="Push Options Screen" testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
         <Button title="Push Top Tabs screen" testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />
@@ -192,6 +194,14 @@ class WelcomeScreen extends Component {
     });
   }
 
+  onClickShowStaticLifecycleOverlay() {
+    Navigation.showOverlay({
+      component: {
+        name: 'navigation.playground.StaticLifecycleOverlay'
+      }
+    });
+  }
+
   async onClickShowModal() {
     await Navigation.showModal({
       stack: {
@@ -312,7 +322,8 @@ const styles = {
   root: {
     flexGrow: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'white'
   },
   h1: {
     fontSize: 24,

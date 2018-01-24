@@ -66,8 +66,8 @@ class OptionsScreen extends Component {
         <Button title="Custom Transition" onPress={this.onClickCustomTranstition} />
         <Button title="Show custom alert" testID={testIDs.SHOW_CUSTOM_ALERT_BUTTON} onPress={this.onClickAlert} />
         <Button title="Show snackbar" testID={testIDs.SHOW_SNACKBAR_BUTTON} onPress={this.onClickSnackbar} />
-        <Button title="Show overlay" testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
-        <Button title="Show touch through overlay" testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
+        <Button title="Show overlay inter" testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
+        <Button title="Show touch through overlay notInter" testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
         <Button title="Push Default Options Screen" testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>

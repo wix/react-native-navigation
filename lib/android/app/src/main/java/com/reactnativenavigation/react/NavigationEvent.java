@@ -1,13 +1,11 @@
 package com.reactnativenavigation.react;
 
+import android.support.annotation.NonNull;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import static com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 
@@ -16,6 +14,7 @@ public class NavigationEvent {
 	private static final String componentDidAppear = "RNN.componentDidAppear";
 	private static final String componentDidDisappear = "RNN.componentDidDisappear";
 	private static final String onNavigationButtonPressed = "RNN.navigationButtonPressed";
+    private static final String componentLifecycle = "RNN.componentLifecycle";
 
 	private final RCTDeviceEventEmitter emitter;
 
@@ -27,15 +26,26 @@ public class NavigationEvent {
 		emit(onAppLaunched);
 	}
 
-	public void componentDidDisappear(String id) {
+	public void componentDidDisappear(String id, String componentName) {
 		emit(componentDidDisappear, id);
+		emit(componentLifecycle, getLifecycleEventData(id, componentName, "didDisappear"));
 	}
 
-	public void componentDidAppear(String id) {
+	public void componentDidAppear(String id, String componentName) {
 		emit(componentDidAppear, id);
+        emit(componentLifecycle, getLifecycleEventData(id, componentName, "didAppear"));
 	}
 
-	public void sendOnNavigationButtonPressed(String id, String buttonId) {
+    @NonNull
+    private WritableMap getLifecycleEventData(String id, String componentName, String didAppear) {
+        WritableMap map = Arguments.createMap();
+        map.putString("componentId", id);
+        map.putString("componentName", componentName);
+        map.putString("event", didAppear);
+        return map;
+    }
+
+    public void sendOnNavigationButtonPressed(String id, String buttonId) {
 		WritableMap map = Arguments.createMap();
 		map.putString("componentId", id);
 		map.putString("buttonId", buttonId);

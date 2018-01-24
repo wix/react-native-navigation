@@ -3,6 +3,7 @@ const WelcomeScreen = require('./WelcomeScreen');
 const TextScreen = require('./TextScreen');
 const PushedScreen = require('./PushedScreen');
 const LifecycleScreen = require('./LifecycleScreen');
+const StaticLifecycleOverlay = require('./StaticLifecycleOverlay');
 const ModalScreen = require('./ModalScreen');
 const OptionsScreen = require('./OptionsScreen');
 const OrientationSelectScreen = require('./OrientationSelectScreen');
@@ -23,6 +24,7 @@ function registerScreens() {
   Navigation.registerComponent(`navigation.playground.WelcomeScreen`, () => WelcomeScreen);
   Navigation.registerComponent(`navigation.playground.ModalScreen`, () => ModalScreen);
   Navigation.registerComponent(`navigation.playground.LifecycleScreen`, () => LifecycleScreen);
+  Navigation.registerComponent(`navigation.playground.StaticLifecycleOverlay`, () => StaticLifecycleOverlay);
   Navigation.registerComponent(`navigation.playground.TextScreen`, () => TextScreen);
   Navigation.registerComponent(`navigation.playground.PushedScreen`, () => PushedScreen);
   Navigation.registerComponent(`navigation.playground.OptionsScreen`, () => OptionsScreen);
