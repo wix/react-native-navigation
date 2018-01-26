@@ -329,8 +329,8 @@
         iconImage = [RCTConvert UIImage:icon];
         iconImage = [[self image:iconImage withColor:self.tabBar.tintColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         viewController.tabBarItem.image = iconImage;
-      
       }
+      
       UIImage *iconImageSelected = nil;
       id selectedIcon = actionParams[@"selectedIcon"];
       if (selectedIcon && selectedIcon != (id)[NSNull null])
@@ -338,12 +338,19 @@
         iconImageSelected = [RCTConvert UIImage:selectedIcon];
         viewController.tabBarItem.selectedImage = iconImageSelected;
       }
+      
+      id label = actionParams[@"label"];
+      if (label && label != (id)[NSNull null])
+      {
+        viewController.tabBarItem.title = label;
+      }
     }
   }
   
   if ([performAction isEqualToString:@"setTabBarHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
+    self.tabBarHidden = hidden;
     
     CGRect nextFrame = self.tabBar.frame;
     nextFrame.origin.y = UIScreen.mainScreen.bounds.size.height - (hidden ? 0 : self.tabBar.frame.size.height);

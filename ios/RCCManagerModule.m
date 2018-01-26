@@ -10,6 +10,7 @@
 #import "RCCTheSideBarManagerViewController.h"
 #import "RCCNotification.h"
 #import "RCTHelpers.h"
+#import "RNNSwizzles.h"
 
 #define kSlideDownAnimationDuration 0.35
 
@@ -142,6 +143,8 @@ RCT_EXPORT_MODULE(RCCManager);
 
 -(void)dismissAllModalPresenters:(NSMutableArray*)allPresentedViewControllers resolver:(RCTPromiseResolveBlock)resolve
 {
+    UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+    
     if (allPresentedViewControllers.count > 0)
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^
@@ -151,7 +154,7 @@ RCT_EXPORT_MODULE(RCCManager);
                            {
                                counter++;
                                
-                               [[RCCManager sharedIntance] unregisterController:viewController];
+                               
                                if (viewController.presentedViewController != nil)
                                {
                                    dispatch_semaphore_t dismiss_sema = dispatch_semaphore_create(0);
@@ -160,6 +163,10 @@ RCT_EXPORT_MODULE(RCCManager);
                                                   {
                                                       [viewController dismissViewControllerAnimated:NO completion:^()
                                                        {
+                                                           if (rootViewController != viewController) {
+                                                               [[RCCManager sharedIntance] unregisterController:viewController];
+                                                           }
+                                                           
                                                            if (counter == allPresentedViewControllers.count && allPresentedViewControllers.count > 0)
                                                            {
                                                                [allPresentedViewControllers removeAllObjects];
@@ -199,25 +206,26 @@ RCT_EXPORT_MODULE(RCCManager);
 #pragma mark - RCT exported methods
 
 RCT_EXPORT_METHOD(
-                  setRootController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps)
+                  setRootController:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     if ([[RCCManager sharedInstance] getBridge].loading) {
-        [self deferSetRootControllerWhileBridgeLoading:layout animationType:animationType globalProps:globalProps];
+        [self deferSetRootControllerWhileBridgeLoading:layout animationType:animationType globalProps:globalProps resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject];
         return;
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self performSetRootController:layout animationType:animationType globalProps:globalProps];
+        resolve(nil);
     });
 }
 
 /**
  * on RN31 there's a timing issue, we must wait for the bridge to finish loading
  */
--(void)deferSetRootControllerWhileBridgeLoading:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps
+-(void)deferSetRootControllerWhileBridgeLoading:(NSDictionary*)layout animationType:(NSString*)animationType globalProps:(NSDictionary*)globalProps resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self setRootController:layout animationType:animationType globalProps:globalProps];
+        [self setRootController:layout animationType:animationType globalProps:globalProps resolver:resolve rejecter:reject];
     });
 }
 
@@ -234,6 +242,11 @@ RCT_EXPORT_METHOD(
     NSDictionary *appStyle = layout[@"props"][@"appStyle"];
     if (appStyle) {
         [[RCCManager sharedIntance] setAppStyle:appStyle];
+		
+		if([appStyle[@"autoAdjustScrollViewInsets"] boolValue] == YES)
+		{
+			[RNNSwizzles applySwizzles];
+		}
     }
     
     // create the new controller
@@ -371,6 +384,14 @@ RCT_EXPORT_METHOD(
     {
         return [self getVisibleViewControllerFor:vc.presentedViewController];
     }
+    else if ([vc isKindOfClass:[TheSidebarController class]]) {
+        TheSidebarController *drawerController = (TheSidebarController*) vc;
+        return [self getVisibleViewControllerFor:drawerController.contentViewController];
+    }
+    else if ([vc isKindOfClass:[MMDrawerController class]]) {
+        MMDrawerController *drawerController = (MMDrawerController*) vc;
+        return [self getVisibleViewControllerFor:drawerController.centerViewController];
+    }
     else
     {
         return vc;
@@ -407,7 +428,7 @@ RCT_EXPORT_METHOD(
     }
     else
     {
-      resolve(nil);
+        resolve(nil);
     }
 }
 
