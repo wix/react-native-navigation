@@ -458,7 +458,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
                 modalController.destroy();
 
                 Object devSupportManager = ReflectionUtils.getDeclaredField(getReactGateway().getReactInstanceManager(), "mDevSupportManager");
-                if (ReflectionUtils.getDeclaredField(devSupportManager, "mRedBoxDialog") != null) {
+                if (ReflectionUtils.getDeclaredField(devSupportManager, "mRedBoxDialog") != null) { // RN >= 0.52
                     ReflectionUtils.setField(devSupportManager, "mRedBoxDialog", null);
                 }
             }

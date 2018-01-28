@@ -21,50 +21,54 @@ class JsDevReloadListenerReplacer {
     }
 
     void replace() {
-        Object originalHandler = getOriginalHandler();
+        Object originalHelper = getOriginalHelper();
 
         Object devSupportManager = ReflectionUtils.getDeclaredField(reactInstanceManager, "mDevSupportManager");
 
         Object proxy = Proxy.newProxyInstance(
-                originalHandler.getClass().getClassLoader(),
-                originalHandler.getClass().getInterfaces(),
-                new DevCommandsHandlerProxy(originalHandler, listener));
+                originalHelper.getClass().getClassLoader(),
+                originalHelper.getClass().getInterfaces(),
+                new DevHelperProxy(originalHelper, listener));
 
-        if (ReflectionUtils.getDeclaredField(reactInstanceManager, "mDevInterface") == null) {
+        if (ReflectionUtils.getDeclaredField(reactInstanceManager, "mDevInterface") == null) { // RN >= 0.52
             ReflectionUtils.setField(devSupportManager, "mReactInstanceManagerHelper", proxy);
-        } else {
+        } else {                                                                                         // RN <= 0.51
             ReflectionUtils.setField(reactInstanceManager, "mDevInterface", proxy);
             ReflectionUtils.setField(devSupportManager, "mReactInstanceCommandsHandler", proxy);
         }
     }
 
 
-    private Object getOriginalHandler() {
+    private Object getOriginalHelper() {
         Object devInterface = ReflectionUtils.getDeclaredField(reactInstanceManager, "mDevInterface");
-        if (devInterface == null) {
+
+        if (devInterface == null) { // RN >= 0.52
             Object devSupportManager = ReflectionUtils.getDeclaredField(reactInstanceManager, "mDevSupportManager");
-            devInterface = ReflectionUtils.getDeclaredField(devSupportManager, "mReactInstanceManagerHelper");
+            return ReflectionUtils.getDeclaredField(devSupportManager, "mReactInstanceManagerHelper");
         }
-        return devInterface;
+
+        return devInterface;        // RN <= 0.51
     }
 
 
-    private static class DevCommandsHandlerProxy implements InvocationHandler {
-        private Object originalReactHandler;
+    private static class DevHelperProxy implements InvocationHandler {
+        private Object originalReactHelper;
         private final Listener listener;
 
-        DevCommandsHandlerProxy(Object originalReactHandler, Listener listener) {
-            this.originalReactHandler = originalReactHandler;
+        DevHelperProxy(Object originalReactHelper, Listener listener) {
+            this.originalReactHelper = originalReactHelper;
             this.listener = listener;
         }
 
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args)
-                throws Throwable {
-            if (method.getName().equals("onJSBundleLoadedFromServer") || method.getName().equals("onReloadWithJSDebugger")) {
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            String methodName = method.getName();
+
+            if (methodName.equals("onJSBundleLoadedFromServer") || methodName.equals("onReloadWithJSDebugger")) {
                 listener.onJsDevReload();
             }
-            return method.invoke(originalReactHandler, args);
+
+            return method.invoke(originalReactHelper, args);
         }
     }
 }
