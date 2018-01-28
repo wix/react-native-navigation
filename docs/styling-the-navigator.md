@@ -95,10 +95,6 @@ this.props.navigator.setStyle({
   navBarRightButtonColor: 'blue', // Change color of right nav bar button
   navBarRightButtonFontWeight: '600', // Change font weight of right nav bar button
 
-  navBarLargeTextColor: '#000000', // change the text color of large titles
-  navBarLargeTextFontSize: 34, // change the font size of large titles
-  navBarLargeTextFontFamily: 'font-name', // Changes the large title font
-
   topBarShadowColor: 'blue' // Sets shadow of the navbar, Works only when topBarElevationShadowEnabled: true
   topBarShadowOpacity: 0.5, // Sets shadow opacity on the navbar, Works only when topBarElevationShadowEnabled: true
   topBarShadowOffset: 12, // Sets shadow offset on the navbar, Works only when topBarElevationShadowEnabled: true

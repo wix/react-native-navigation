@@ -362,19 +362,8 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     viewController.navigationController.navigationBar.barTintColor = nil;
   }
   
-  NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle
-                                                                           withPrefix:@"navBarText"
-                                                                             baseFont:[UIFont boldSystemFontOfSize:17]];
+  NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
   [self.navigationController.navigationBar setTitleTextAttributes:titleTextAttributes];
-
-  if ([self.navigationController.navigationBar respondsToSelector:@selector(setLargeTitleTextAttributes:)]) {
-    // As defined in Apple's UI Design Resources: https://developer.apple.com/design/resources/
-    UIFont *largeBaseFont = [UIFont boldSystemFontOfSize:34];
-    NSMutableDictionary *largeTitleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle
-                                                                                  withPrefix:@"navBarLargeText"
-                                                                                    baseFont:largeBaseFont];
-    [self.navigationController.navigationBar setLargeTitleTextAttributes:largeTitleTextAttributes];
-  }
   
   NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarButton"];
   NSMutableDictionary *leftNavButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarLeftButton"];
