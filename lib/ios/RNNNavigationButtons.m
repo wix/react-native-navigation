@@ -94,6 +94,11 @@
 		[barButtonItem setImage:[barButtonItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 	}
 	
+	id tintColor = dictionary[@"tintColor"];
+	if (tintColor) {
+		[barButtonItem setTintColor:[RCTConvert UIColor: tintColor]];
+	}
+	
 	NSString *testID = dictionary[@"testID"];
 	if (testID)
 	{
