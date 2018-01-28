@@ -131,6 +131,10 @@ function dismissInAppNotification(params = {}) {
   return platformSpecific.dismissInAppNotification(params);
 }
 
+async function getInitialProps() {
+  return await platformSpecific.getInitialProps();
+}
+
 async function startTabBasedApp(params) {
   try {
     return await platformSpecific.startTabBasedApp(params);
@@ -200,5 +204,6 @@ export default {
   clearEventHandler: clearEventHandler,
   handleDeepLink: handleDeepLink,
   isAppLaunched: isAppLaunched,
-  isRootLaunched: isRootLaunched
+  isRootLaunched: isRootLaunched,
+  getInitialProps: getInitialProps
 };

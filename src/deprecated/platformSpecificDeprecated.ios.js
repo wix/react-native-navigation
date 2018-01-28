@@ -586,6 +586,10 @@ function dismissLightBox(params) {
   Modal.dismissLightBox();
 }
 
+async function getInitialProps() {
+  return await ControllerRegistry.getInitialProps();
+}
+
 function showInAppNotification(params) {
   if (!params.screen) {
     console.error('showInAppNotification(params): params.screen is required');
@@ -721,5 +725,6 @@ export default {
   navigatorToggleNavBar,
   showContextualMenu,
   dismissContextualMenu,
-  getCurrentlyVisibleScreenId
+  getCurrentlyVisibleScreenId,
+  getInitialProps
 };
