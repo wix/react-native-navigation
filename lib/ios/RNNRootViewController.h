@@ -12,17 +12,16 @@
 @interface RNNRootViewController : UIViewController	<RNNRootViewProtocol>
 
 @property (nonatomic, strong) RNNNavigationOptions* options;
-@property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic, strong) NSString* componentId;
 @property (nonatomic, strong) RNNTopTabsViewController* topTabsViewController;
+@property (nonatomic, strong) RNNAnimator* animator;
 
 -(instancetype)initWithName:(NSString*)name
 				withOptions:(RNNNavigationOptions*)options
 			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter
-		   animator:(RNNAnimator*)animator;
+			   eventEmitter:(RNNEventEmitter*)eventEmitter;
 
 
 -(void)applyTabBarItem;

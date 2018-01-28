@@ -15,14 +15,13 @@
 				withOptions:(RNNNavigationOptions*)options
 			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter
-				   animator:(RNNAnimator *)animator {
+			   eventEmitter:(RNNEventEmitter*)eventEmitter {
 	self = [super init];
 	self.componentId = componentId;
 	self.componentName = name;
 	self.options = options;
 	self.eventEmitter = eventEmitter;
-	self.animator = animator;
+	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -67,7 +66,7 @@
 }
 
 -(BOOL)isCustomTransitioned {
-	return self.animator != nil;
+	return self.options.customTransition != nil;
 }
 
 - (BOOL)isAnimated {
