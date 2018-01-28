@@ -31,7 +31,6 @@ Start a Single page app with two side menus:
 
 ```js
 Navigation.setRoot({
-  
   sideMenu: {
     left: {
       component: {
