@@ -129,7 +129,6 @@ navigationController:(UINavigationController*)navigationController
     UIImage *titleImage = [RCTConvert UIImage:self.titleImageData];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:titleImage];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
-    imageView.autoresizingMask = self.titleView.autoresizingMask;
     
     self.viewController.navigationItem.titleView = imageView;
 }
