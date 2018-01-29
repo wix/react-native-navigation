@@ -115,7 +115,7 @@ navigationController:(UINavigationController*)navigationController
 
 -(BOOL)isTitleOnly
 {
-    return self.title && !self.subtitle && !self.titleImageData;
+    return self.title && !self.subtitle && ![self isTitleImage];
 }
 
 
