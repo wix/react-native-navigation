@@ -81,7 +81,6 @@ navigationController:(UINavigationController*)navigationController
     
     self.titleView = [[RCCTitleView alloc] initWithFrame:navigationBarBounds];
     self.titleView.backgroundColor = [UIColor clearColor];
-    self.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     self.titleView.clipsToBounds = YES;
     
     self.viewController.navigationItem.title = self.title;
