@@ -5,7 +5,7 @@ const { Component } = require('react');
 
 const { View, Text, Button } = require('react-native');
 
-const Navigation = require('react-native-navigation');
+const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
 class ModalScreen extends Component {
@@ -25,6 +25,7 @@ class ModalScreen extends Component {
     this.onClickDismissFirstInStack = this.onClickDismissFirstInStack.bind(this);
     this.onClickDismissAllModals = this.onClickDismissAllModals.bind(this);
     this.onClickPushScreen = this.onClickPushScreen.bind(this);
+    this.onShowModalWithDeepStack = this.onShowModalWithDeepStack.bind(this);
   }
 
   render() {
@@ -32,14 +33,18 @@ class ModalScreen extends Component {
       <View style={styles.root}>
         <Text style={styles.h1} testID={testIDs.MODAL_SCREEN}>{`Modal Screen`}</Text>
         <Text style={styles.footer}>{`Modal Stack Position: ${this.getModalPosition()}`}</Text>
-        <Button title="Show Modal" testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
-        <Button title="Dismiss Modal" testID={testIDs.DISMISS_MODAL_BUTTON} onPress={this.onClickDismissModal} />
-        <Button title="Dismiss Unknown Modal" testID={testIDs.DISMISS_UNKNOWN_MODAL_BUTTON} onPress={this.onClickDismissUnknownModal} />
-        <Button title="Dismiss All Modals" testID={testIDs.DISMISS_ALL_MODALS_BUTTON} onPress={this.onClickDismissAllModals} />
-        <Button title="Push screen" testID={testIDs.PUSH_BUTTON} onPress={this.onClickPushScreen} />
-        {this.getPreviousModalId() ? (<Button title="Dismiss Previous Modal" testID={testIDs.DISMISS_PREVIOUS_MODAL_BUTTON} onPress={this.onClickDismissPreviousModal} />) : undefined}
-        {this.props.previousModalIds ? (<Button title="Dismiss ALL Previous Modals" testID={testIDs.DISMISS_ALL_PREVIOUS_MODAL_BUTTON} onPress={this.onClickDismissAllPreviousModals} />) : undefined}
-        {this.props.previousModalIds ? (<Button title="Dismiss First In Stack" testID={testIDs.DISMISS_FIRST_MODAL_BUTTON} onPress={this.onClickDismissFirstInStack} />) : undefined}
+        <Button title='Show Modal' testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
+        <Button title='Dismiss Modal' testID={testIDs.DISMISS_MODAL_BUTTON} onPress={this.onClickDismissModal} />
+        <Button title='Dismiss Unknown Modal' testID={testIDs.DISMISS_UNKNOWN_MODAL_BUTTON} onPress={this.onClickDismissUnknownModal} />
+        <Button title='Dismiss All Modals' testID={testIDs.DISMISS_ALL_MODALS_BUTTON} onPress={this.onClickDismissAllModals} />
+        <Button title='Push screen' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPushScreen} />
+        <Button title='Show Modal With Stack' testID={testIDs.MODAL_WITH_STACK_BUTTON} onPress={this.onShowModalWithDeepStack} />
+        {this.getPreviousModalId() ? (<Button title='Dismiss Previous Modal' testID={testIDs.DISMISS_PREVIOUS_MODAL_BUTTON}
+          onPress={this.onClickDismissPreviousModal} />) : undefined}
+        {this.props.previousModalIds ? (<Button title='Dismiss ALL Previous Modals' testID={testIDs.DISMISS_ALL_PREVIOUS_MODAL_BUTTON}
+          onPress={this.onClickDismissAllPreviousModals} />) : undefined}
+        {this.props.previousModalIds ? (<Button title='Dismiss First In Stack' testID={testIDs.DISMISS_FIRST_MODAL_BUTTON}
+          onPress={this.onClickDismissFirstInStack} />) : undefined}
         <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
       </View>
     );
@@ -52,6 +57,9 @@ class ModalScreen extends Component {
         passProps: {
           modalPosition: this.getModalPosition() + 1,
           previousModalIds: _.concat([], this.props.previousModalIds || [], this.props.componentId)
+        },
+        options: {
+          animated: false
         }
       }
     });
@@ -88,6 +96,31 @@ class ModalScreen extends Component {
         passProps: {
           text: 'Pushed from modal'
         }
+      }
+    });
+  }
+
+  onShowModalWithDeepStack() {
+    Navigation.showModal({
+      stack: {
+        children: [
+          {
+            component: {
+              name: `navigation.playground.TextScreen`,
+              passProps: {
+                text: 'Screen 1'
+              }
+            }
+          },
+          {
+            component: {
+              name: `navigation.playground.TextScreen`,
+              passProps: {
+                text: 'Screen 2'
+              }
+            }
+          }
+        ]
       }
     });
   }

@@ -1,4 +1,4 @@
-const Navigation = require('react-native-navigation');
+const { Navigation } = require('react-native-navigation');
 const { registerScreens } = require('./screens');
 
 function start() {

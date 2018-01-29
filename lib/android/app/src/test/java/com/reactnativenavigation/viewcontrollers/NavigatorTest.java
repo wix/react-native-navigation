@@ -204,7 +204,7 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void setOptions_CallsApplyNavigationOptions() {
-        ComponentViewController componentVc = new SimpleComponentViewController(activity, "theId");
+        ComponentViewController componentVc = new SimpleComponentViewController(activity, "theId", new Options());
         componentVc.setParentController(parentController);
         assertThat(componentVc.getOptions().topBarOptions.title.get("")).isEmpty();
         uut.setRoot(componentVc, new MockPromise());

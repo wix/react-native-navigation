@@ -14,7 +14,6 @@ import com.reactnativenavigation.parse.LayoutFactory;
 import com.reactnativenavigation.parse.LayoutNode;
 import com.reactnativenavigation.parse.LayoutNodeParser;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.OverlayOptions;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.viewcontrollers.Navigator;
@@ -100,14 +99,17 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void showOverlay(final String type, final ReadableMap data, final Promise promise) {
-        final OverlayOptions overlayOptions = OverlayOptions.parse(JSONParser.parse(data));
-        handle(() -> navigator().showOverlay(type, overlayOptions, promise));
+	public void showOverlay(final ReadableMap rawLayoutTree) {
+        final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
+        handle(() -> {
+            final ViewController viewController = newLayoutFactory().create(layoutTree);
+            navigator().showOverlay(viewController);
+        });
 	}
 
 	@ReactMethod
-	public void dismissOverlay() {
-		handle(() -> navigator().dismissOverlay());
+	public void dismissOverlay(final String componentId) {
+		handle(() -> navigator().dismissOverlay(componentId));
 	}
 
 	private NavigationActivity activity() {

@@ -11,13 +11,13 @@
 @interface RNNSideMenuChildVC ()
 
 @property (readwrite) RNNSideMenuChildType type;
-@property (readwrite) UIViewController *child;
+@property (readwrite) UIViewController<RNNRootViewProtocol> *child;
 
 @end
 
 @implementation RNNSideMenuChildVC
 
--(instancetype) initWithChild:(UIViewController*)child type:(RNNSideMenuChildType)type {
+-(instancetype) initWithChild:(UIViewController<RNNRootViewProtocol>*)child type:(RNNSideMenuChildType)type {
 	self = [super init];
 	
 	self.child = child;
@@ -35,6 +35,14 @@
 
 - (BOOL)isCustomTransitioned {
 	return NO;
+}
+
+- (BOOL)isAnimated {
+	return YES;
+}
+
+- (NSString *)componentId {
+	return _child.componentId;
 }
 
 @end

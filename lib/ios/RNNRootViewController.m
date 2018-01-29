@@ -38,14 +38,40 @@
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.options applyOn:self];
+	[self sendLifecycleEvent:kDidMount];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	[self.eventEmitter sendComponentDidAppear:self.componentId];
+	[self sendLifecycleEvent:kDidAppear];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	[self sendLifecycleEvent:kWillUnmount];
+}
+
+-(void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+	[self.eventEmitter sendComponentDidDisappear:self.componentId];
+	[self sendLifecycleEvent:kDidDisappear];
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 }
 
+- (void)sendLifecycleEvent:(LifecycleEvent)event {
+	[self.eventEmitter sendLifecycleEvent:[RNNComponentLifecycleEvent create:event componentName:self.componentName componentId:self.componentId]];
+}
+
 -(BOOL)isCustomTransitioned {
 	return self.animator != nil;
+}
+
+- (BOOL)isAnimated {
+	return self.options.animated ? [self.options.animated boolValue] : YES;
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -67,16 +93,6 @@
 		return [self.options.bottomTabs.hidden boolValue];
 	}
 	return NO;
-}
-
--(void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	[self.eventEmitter sendComponentDidAppear:self.componentId];
-}
-
--(void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-	[self.eventEmitter sendComponentDidDisappear:self.componentId];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{

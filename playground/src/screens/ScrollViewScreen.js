@@ -3,7 +3,7 @@ const { Component } = require('react');
 
 const { StyleSheet, ScrollView, View, Button } = require('react-native');
 
-const Navigation = require('react-native-navigation');
+const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
 class ScrollViewScreen extends Component {
@@ -30,7 +30,7 @@ class ScrollViewScreen extends Component {
       <View>
         <ScrollView testID={testIDs.SCROLLVIEW_ELEMENT} contentContainerStyle={styles.contentContainer}>
           <View>
-            <Button title="Toggle Top Bar Hide On Scroll" testID={testIDs.TOGGLE_TOP_BAR_HIDE_ON_SCROLL} onPress={this.onClickToggleTopBarHideOnScroll} />
+            <Button title='Toggle Top Bar Hide On Scroll' testID={testIDs.TOGGLE_TOP_BAR_HIDE_ON_SCROLL} onPress={this.onClickToggleTopBarHideOnScroll} />
           </View>
         </ScrollView>
       </View>
@@ -63,4 +63,3 @@ const styles = StyleSheet.create({
     height: 1200
   }
 });
-

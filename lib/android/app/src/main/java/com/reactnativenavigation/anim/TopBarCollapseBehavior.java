@@ -16,8 +16,9 @@ public class TopBarCollapseBehavior implements ScrollEventListener.OnScrollListe
         this.animator = new TopBarAnimator(topBar);
     }
 
-    public void enableCollapse() {
-        scrollEventListener.register(topBar, this, this);
+    public void enableCollapse(ScrollEventListener scrollEventListener) {
+        this.scrollEventListener = scrollEventListener;
+        this.scrollEventListener.register(topBar, this, this);
     }
 
     public void disableCollapse() {

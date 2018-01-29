@@ -8,9 +8,8 @@ import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.OverlayOptions;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
-import com.reactnativenavigation.presentation.OverlayPresenter;
+import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.NoOpPromise;
 
@@ -22,7 +21,7 @@ public class Navigator extends ParentController {
     private static final NoOpPromise NO_OP = new NoOpPromise();
     private final ModalStack modalStack = new ModalStack();
 	private ViewController root;
-	private OverlayPresenter overlayPresenter;
+    private OverlayManager overlayManager = new OverlayManager();
     private Options defaultOptions = new Options();
 
     public Navigator(final Activity activity) {
@@ -83,21 +82,21 @@ public class Navigator extends ParentController {
 	public void push(final String fromId, final ViewController viewController, Promise promise) {
 		ViewController from = findControllerById(fromId);
 		if (from != null) {
-		    from.performOnParentStack(stack -> stack.animatePush(viewController, promise));
+		    from.performOnParentStack(stack -> ((StackController) stack).animatePush(viewController, promise));
 		}
 	}
 
 	void pop(final String fromId, Promise promise) {
 		ViewController from = findControllerById(fromId);
 		if (from != null) {
-		    from.performOnParentStack(stack -> stack.pop(promise));
+		    from.performOnParentStack(stack -> ((StackController) stack).pop(promise));
 		}
 	}
 
 	public void popSpecific(final String id, Promise promise) {
 		ViewController from = findControllerById(id);
 		if (from != null) {
-		    from.performOnParentStack(stack -> stack.popSpecific(from, promise), () -> rejectPromise(promise));
+		    from.performOnParentStack(stack -> ((StackController) stack).popSpecific(from, promise), () -> rejectPromise(promise));
 		} else {
 			rejectPromise(promise);
 		}
@@ -106,14 +105,14 @@ public class Navigator extends ParentController {
 	public void popToRoot(final String id, Promise promise) {
 		ViewController from = findControllerById(id);
 		if (from != null) {
-		    from.performOnParentStack(stack -> stack.popToRoot(promise));
+		    from.performOnParentStack(stack -> ((StackController) stack).popToRoot(promise));
 		}
 	}
 
 	public void popTo(final String componentId, Promise promise) {
 		ViewController target = findControllerById(componentId);
 		if (target != null) {
-		    target.performOnParentStack(stack -> stack.popTo(target, promise), () -> rejectPromise(promise));
+		    target.performOnParentStack(stack -> ((StackController) stack).popTo(target, promise), () -> rejectPromise(promise));
 		} else {
 			rejectPromise(promise);
 		}
@@ -131,14 +130,12 @@ public class Navigator extends ParentController {
 		modalStack.dismissAll(promise);
 	}
 
-	public void showOverlay(String type, OverlayOptions options, Promise promise) {
-		overlayPresenter = new OverlayPresenter(root, type, options);
-		overlayPresenter.show();
-		promise.resolve(true);
+	public void showOverlay(ViewController overlay) {
+        overlayManager.show(getView(), overlay);
 	}
 
-	public void dismissOverlay() {
-		overlayPresenter.dismiss();
+	public void dismissOverlay(final String componentId) {
+		overlayManager.dismiss(getView(), componentId);
 	}
 
 	static void rejectPromise(Promise promise) {

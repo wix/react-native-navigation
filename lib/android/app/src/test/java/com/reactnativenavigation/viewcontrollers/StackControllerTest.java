@@ -80,13 +80,13 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void pushAssignsRefToSelfOnPushedController() throws Exception {
-        assertThat(child1.getParentStackController()).isNull();
+        assertThat(child1.getParentController()).isNull();
         uut.animatePush(child1, new MockPromise());
-        assertThat(child1.getParentStackController()).isEqualTo(uut);
+        assertThat(child1.getParentController()).isEqualTo(uut);
 
         StackController anotherNavController = new StackController(activity, "another");
         anotherNavController.animatePush(child2, new MockPromise());
-        assertThat(child2.getParentStackController()).isEqualTo(anotherNavController);
+        assertThat(child2.getParentController()).isEqualTo(anotherNavController);
     }
 
     @Test

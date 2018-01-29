@@ -29,7 +29,58 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		}
 	}
 	
+	if (self.backgroundColor) {
+		viewController.tabBarController.tabBar.barTintColor = [RCTConvert UIColor:self.backgroundColor];
+	}
+	
+	if (self.translucent) {
+		viewController.tabBarController.tabBar.translucent = [self.translucent boolValue];
+	}
+	
+	if (self.hideShadow) {
+		viewController.tabBarController.tabBar.clipsToBounds = [self.hideShadow boolValue];
+	}
+	
+	if (self.tabBarTextFont || self.textColor) {
+		NSMutableDictionary* tabBarTitleTextAttributes = [NSMutableDictionary new];
+		if (self.textColor) {
+			tabBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:self.textColor];
+		}
+		
+		if (self.tabBarTextFont) {
+			tabBarTitleTextAttributes[NSFontAttributeName] = self.tabBarTextFont;
+		}
+		
+		for (UITabBarItem* item in viewController.tabBarController.tabBar.items) {
+			[item setTitleTextAttributes:tabBarTitleTextAttributes forState:UIControlStateNormal];
+		}
+	}
+	
+	if (self.selectedTextColor){
+		for (UITabBarItem* item in viewController.tabBarController.tabBar.items) {
+			NSMutableDictionary* tabBarTitleTextAttributes = [NSMutableDictionary new];
+			tabBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:self.selectedTextColor];
+			[item setTitleTextAttributes:tabBarTitleTextAttributes forState:UIControlStateSelected];
+		}
+	}
+	
 	[self resetOptions];
+}
+
+-(UIFont *)tabBarTextFont {
+	if (self.fontFamily) {
+		return [UIFont fontWithName:self.fontFamily size:self.tabBarTextFontSizeValue];
+	}
+	else if (self.fontSize) {
+		return [UIFont systemFontOfSize:self.tabBarTextFontSizeValue];
+	}
+	else {
+		return nil;
+	}
+}
+
+-(CGFloat)tabBarTextFontSizeValue {
+	return self.fontSize ? [self.fontSize floatValue] : 10;
 }
 
 - (void)resetOptions {

@@ -22,7 +22,7 @@
 -(void)showModalAfterLoad:(NSDictionary*)notif {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
 	UIViewController *topVC = [self topPresentedVC];
-	[topVC presentViewController:self.toVC animated:YES completion:^{
+	[topVC presentViewController:self.toVC animated:self.toVC.isAnimated completion:^{
 		if (_completionBlock) {
 			_completionBlock();
 			_completionBlock = nil;
@@ -31,7 +31,7 @@
 }
 
 -(void)showModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {
-	self.toVC = viewController;
+	self.toVC = (UIViewController<RNNRootViewProtocol>*)viewController;
 	_completionBlock = completion;
 	[self waitForContentToAppearAndThen:@selector(showModalAfterLoad:)];
 }
@@ -53,7 +53,7 @@
 -(void)removePendingNextModalIfOnTop {
 	NSString *componentId = [[_store pendingModalIdsToDismiss] lastObject];
 	
-	UIViewController *modalToDismiss = [_store findComponentForId:componentId];
+	UIViewController<RNNRootViewProtocol> *modalToDismiss = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
 	
 	if(!modalToDismiss) {
 		return;
@@ -62,7 +62,7 @@
 	UIViewController* topPresentedVC = [self topPresentedVC];
 	
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
-		[modalToDismiss dismissViewControllerAnimated:YES completion:^{
+		[modalToDismiss dismissViewControllerAnimated:modalToDismiss.isAnimated completion:^{
 			[[_store pendingModalIdsToDismiss] removeObject:componentId];
 			[self removePendingNextModalIfOnTop];
 		}];

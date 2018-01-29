@@ -36,6 +36,7 @@ public class Options implements DEFAULT_VALUES {
 		result.topTabsOptions = TopTabsOptions.parse(json.optJSONObject("topTabs"));
         result.topTabOptions = TopTabOptions.parse(typefaceManager, json.optJSONObject("topTab"));
 		result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
+        result.overlayOptions = OverlayOptions.parse(json.optJSONObject("overlay"));
 
 		return result.withDefaultOptions(defaultOptions);
 	}
@@ -44,6 +45,7 @@ public class Options implements DEFAULT_VALUES {
     @NonNull public TopTabsOptions topTabsOptions = new TopTabsOptions();
     @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
     @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
+    @NonNull public OverlayOptions overlayOptions = new OverlayOptions();
 
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;

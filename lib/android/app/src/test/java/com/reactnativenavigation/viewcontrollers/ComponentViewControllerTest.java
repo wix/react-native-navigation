@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TestComponentLayout;
+import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.views.StackLayout;
 
@@ -17,15 +18,14 @@ import static org.mockito.Mockito.when;
 
 public class ComponentViewControllerTest extends BaseTest {
     private ComponentViewController uut;
-    private ParentController<StackLayout> parentController;
-    private ComponentViewController.IReactView view;
+    private IReactView view;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
         Activity activity = newActivity();
-        view = spy(new TestComponentLayout(activity));
-        parentController = new StackController(activity, "stack");
+        view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
+        ParentController<StackLayout> parentController = new StackController(activity, "stack");
         uut = new ComponentViewController(activity, "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options());
         uut.setParentController(parentController);
         parentController.ensureViewIsCreated();
@@ -40,6 +40,7 @@ public class ComponentViewControllerTest extends BaseTest {
     public void componentViewDestroyedOnDestroy() throws Exception {
         uut.ensureViewIsCreated();
         verify(view, times(0)).destroy();
+        uut.onViewAppeared();
         uut.destroy();
         verify(view, times(1)).destroy();
     }

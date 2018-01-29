@@ -1,7 +1,7 @@
 const React = require('react');
 const { PureComponent } = require('react');
 
-const { View, Text, Button } = require('react-native');
+const { Text, Button, View, Alert, Platform } = require('react-native');
 const Navigation = require('react-native-navigation');
 
 const testIDs = require('../testIDs');
@@ -12,11 +12,16 @@ class CustomDialog extends PureComponent {
     return (
       <View style={styles.root}>
         <Text style={styles.h1} testID={testIDs.DIALOG_HEADER}>Test view</Text>
-        <Button title="OK" testID={testIDs.OK_BUTTON} onPress={() => this.onCLickOk()} />
+        <Button title='OK' testID={testIDs.OK_BUTTON} onPress={() => this.onCLickOk()} />
       </View>
     );
   }
 
+  didDisappear() {
+    if (Platform.OS === 'android') {
+      Alert.alert('Overlay disappeared');
+    }
+  }
   onCLickOk() {
     Navigation.dismissOverlay(this.props.componentId);
   }

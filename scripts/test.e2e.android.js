@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* tslint:disable: no-console */
 const _ = require('lodash');
 const exec = require('shell-utils').exec;
 

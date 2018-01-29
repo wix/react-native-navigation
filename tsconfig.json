@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig-strict.json",
+  "compilerOptions": {
+    "outDir": "./lib/dist",
+    "allowJs": false,
+    "target": "esnext",
+    "module": "commonjs",
+    "jsx": "react-native",
+    "declaration": true
+  },
+  "include": [
+    "./lib/src/**/*"
+  ]
+}
