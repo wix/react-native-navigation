@@ -12,18 +12,18 @@ How to initiate your app.
 ```js
 Navigation.events().onAppLaunched(() => {
   Navigation.setRoot({
-    container: {
+    component: {
       name: 'navigation.playground.WelcomeScreen'
     }
   });
 });
 ```
 
-### registerContainer(screenID, generator)
+### registerComponent(screenID, generator)
 Every screen component in your app must be registered with a unique name. The component itself is a traditional React component extending React.Component.
 
 ```js
-Navigation.registerContainer(`navigation.playground.WelcomeScreen`, () => WelcomeScreen);
+Navigation.registerComponent(`navigation.playground.WelcomeScreen`, () => WelcomeScreen);
 ```
 
 ### setRoot({params})
@@ -31,20 +31,22 @@ Start a Single page app with two side menus:
 
 ```js
 Navigation.setRoot({
-  container: {
-    name: 'navigation.playground.WelcomeScreen'
-  },
   sideMenu: {
     left: {
-      container: {
+      component: {
         name: 'navigation.playground.TextScreen',
         passProps: {
           text: 'This is a left side menu screen'
         }
       }
     },
+    center: {
+      component: {
+        name: 'navigation.playground.WelcomeScreen'
+      },
+    },
     right: {
-      container: {
+      component: {
         name: 'navigation.playground.TextScreen',
         passProps: {
           text: 'This is a right side menu screen'
@@ -58,25 +60,27 @@ Start a tab based app:
 
 ```js
 Navigation.setRoot({
-  bottomTabs: [
-    {
-      container: {
-        name: 'navigation.playground.TextScreen',
-        passProps: {
-          text: 'This is tab 1',
-          myFunction: () => 'Hello from a function!'
-        }
-      }
-    },
-    {
-      container: {
-        name: 'navigation.playground.TextScreen',
-        passProps: {
-          text: 'This is tab 2'
-        }
-      }
-    }
-  ]
+  bottomTabs: {
+    children: [
+      {
+        component: {
+          name: 'navigation.playground.TextScreen',
+          passProps: {
+            text: 'This is tab 1',
+            myFunction: () => 'Hello from a function!',
+          },
+        },
+      },
+      {
+        component: {
+          name: 'navigation.playground.TextScreen',
+          passProps: {
+            text: 'This is tab 2',
+          },
+        },
+      },
+    ],
+  },
 });
 ```
 ## Screen API
