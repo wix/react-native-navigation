@@ -2,7 +2,7 @@ const React = require('react');
 const { Component } = require('react');
 const { View, Text, Button } = require('react-native');
 
-const Navigation = require('react-native-navigation');
+const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
 class OrientationSelectScreen extends Component {
@@ -11,10 +11,10 @@ class OrientationSelectScreen extends Component {
     return (
       <View style={styles.root}>
         <Text style={styles.h1}>{`Orientation Menu`}</Text>
-        <Button title="default" testID={testIDs.DEFAULT_ORIENTATION_BUTTON} onPress={() => this.onClickOrientationScreen('default')} />
-        <Button title="landscape and portrait" testID={testIDs.LANDSCAPE_PORTRAIT_ORIENTATION_BUTTON} onPress={() => this.onClickOrientationScreen(['landscape', 'portrait'])} />
-        <Button title="portrait only" testID={testIDs.PORTRAIT_ORIENTATION_BUTTON} onPress={() => this.onClickOrientationScreen('portrait')} />
-        <Button title="landscape only" testID={testIDs.LANDSCAPE_ORIENTATION_BUTTON} onPress={() => this.onClickOrientationScreen(['landscape'])} />
+        <Button title='default' testID={testIDs.DEFAULT_ORIENTATION_BUTTON} onPress={() => this.onClickOrientationScreen('default')} />
+        <Button title='landscape and portrait' testID={testIDs.LANDSCAPE_PORTRAIT_ORIENTATION_BUTTON} onPress={() => this.onClickOrientationScreen(['landscape', 'portrait'])} />
+        <Button title='portrait only' testID={testIDs.PORTRAIT_ORIENTATION_BUTTON} onPress={() => this.onClickOrientationScreen('portrait')} />
+        <Button title='landscape only' testID={testIDs.LANDSCAPE_ORIENTATION_BUTTON} onPress={() => this.onClickOrientationScreen(['landscape'])} />
       </View>
     );
   }

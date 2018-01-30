@@ -1,7 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 const { View, TouchableOpacity, Image, Text } = require('react-native');
-const Navigation = require('react-native-navigation');
+const { Navigation } = require('react-native-navigation');
 
 class CustomTransitionDestination extends Component {
   constructor(props) {

@@ -34,8 +34,8 @@ class BackHandlerScreen extends Component {
       <View style={styles.root}>
         <Text style={styles.h1}>{`Back Handler Screen`}</Text>
         <Text style={styles.h2}>{this.state.backPress}</Text>
-        <Button title="add back handler" onPress={this.addBackHandler} />
-        <Button title="remove back handler" onPress={this.removeBackHandler} />
+        <Button title='add back handler' onPress={this.addBackHandler} />
+        <Button title='remove back handler' onPress={this.removeBackHandler} />
       </View>
     );
   }

@@ -92,8 +92,9 @@ No PR will be accepted without adequate test coverage.
 | `lib` | The project itself composed of: |
 | `lib/android` | android sources and unit tests |
 | `lib/ios` | iOS sources and unit tests |
-| `lib/src` | javascript sources and unit tests |
-| `lib/src/index.js` | the entry point for `import Navigation from 'react-native-navigation'` |
+| `lib/src` | TypeScript sources and unit tests |
+| `lib/dist` | compiled javascript sources and unit tests |
+| `lib/dist/index.js` | the entry point for `import Navigation from 'react-native-navigation'` |
 | `e2e` | [detox](https://github.com/wix/detox) iOS e2e tests (in the future, once detox supports it, we will have android e2e here as well) |
 | `AndroidE2E` | Android e2e tests using native uiautomator (until detox for android is ready) |
 | `playground` | The end-user project all e2e tests run against. Contains its own `src`, `android` and `ios`. Does not have its own package.json, depends on the local `<root>/lib` in order not to go through npm. |
@@ -105,13 +106,13 @@ No PR will be accepted without adequate test coverage.
 | Command | Description |
 | ------- | ----------- |
 | `npm install` | installs dependencies |
+| `npm run build` | compiles TypeScript sources `./lib/src` into javascript `./lib/dist` |
 | `npm run clean` | cleans all build directories, stops packager, fixes flakiness by removing watchman cache, etc. |
 | `npm run start` | starts the react-native packager for local debugging |
 | `npm run xcode` | for convenience, opens xcode in this project |
 | `npm run install-android`  |  builds playground debug/release version and installs on running android devices/emulators. <br> **Options:** `-- --release` |
 | `npm run uninstall-android` | uninstalls playground from running android devices/simulators |
 | `npm run test-js` | runs javascript tests and coverage report |
-| `npm run test-watch` | runs javascript tests in watch mode (can also use the provided wallaby config) |
 | `npm run test-unit-ios` | runs ios unit tests in debug/release <br> **Options:** `-- --release` |
 | `npm run test-unit-android` | runs android unit tests in debug/release <br> **Options:** `-- --release` |
 | `npm run test-e2e-ios` | runs the ios e2e suite (with detox) in debug/release <br> **Options:** `-- --release`|

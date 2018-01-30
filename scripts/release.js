@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* tslint:disable: no-console */
 const exec = require('shell-utils').exec;
 const semver = require('semver');
 const fs = require('fs');

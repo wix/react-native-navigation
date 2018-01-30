@@ -23,23 +23,25 @@
     "type": "git",
     "url": "https://github.com/wix/react-native-navigation.git"
   },
-  "main": "lib/src/index.js",
+  "main": "lib/dist/index.js",
   "scripts": {
-    "build": ":",
+    "build": "rm -rf ./lib/dist && tsc",
     "xcode": "open playground/ios/playground.xcodeproj",
     "install-android": "node ./scripts/install-android.js",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
     "clean": "node ./scripts/clean.js",
+    "prestart": "npm run build",
     "start": "node ./scripts/start.js",
+    "pretest-js": "npm run build",
     "test-js": "node ./scripts/test-js.js",
     "test-unit-android": "node ./scripts/test.unit.android.js",
     "test-unit-ios": "node ./scripts/test.unit.ios.js",
+    "pretest-e2e-android": "npm run build",
     "test-e2e-android": "node ./scripts/test.e2e.android.js",
+    "pretest-e2e-ios": "npm run build",
     "test-e2e-ios": "node ./scripts/test.e2e.ios.js",
     "test-all": "node ./scripts/test.all.js",
-    "test-watch": "jest --coverage --watch",
-    "release": "node ./scripts/release.js",
-    "gen-doc": "node ./scripts/generate-js-doc.js"
+    "release": "node ./scripts/release.js"
   },
   "peerDependencies": {
     "react": "*",
@@ -47,16 +49,18 @@
   },
   "dependencies": {
     "lodash": "4.x.x",
-    "prop-types": "15.x.x"
+    "prop-types": "15.x.x",
+    "tslib": "1.x.x",
+    "@types/react": "16.x.x",
+    "@types/react-native": "0.49.x",
+    "@types/lodash": "4.x.x",
+    "@types/prop-types": "15.x.x",
+    "@types/react-test-renderer": "16.x.x",
+    "@types/jest": "22.x.x"
   },
   "devDependencies": {
-    "detox": "6.x.x",
-    "eslint-config-xo": "0.18.x",
-    "eslint-config-xo-react": "0.13.x",
-    "eslint-plugin-react": "7.x.x",
+    "detox": "7.x.x",
     "jest": "22.x.x",
-    "jsdoc": "3.x.x",
-    "jsdoc-to-markdown": "3.x.x",
     "mocha": "4.x.x",
     "react": "16.0.0-beta.5",
     "react-native": "0.49.x",
@@ -66,7 +70,8 @@
     "remx": "2.x.x",
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
-    "xo": "0.18.x"
+    "tslint": "5.x.x",
+    "typescript": "2.x.x"
   },
   "babel": {
     "env": {
@@ -81,15 +86,15 @@
     "preset": "react-native",
     "roots": [
       "<rootDir>/node_modules/",
-      "<rootDir>/lib/src/",
+      "<rootDir>/lib/dist/",
       "<rootDir>/integration/"
     ],
     "collectCoverageFrom": [
-      "lib/src/**/*.js",
+      "lib/dist/**/*.js",
       "integration/**/*.js",
-      "!lib/src/index.js",
-      "!lib/src/Navigation.js",
-      "!lib/src/adapters/**/*"
+      "!lib/dist/index.js",
+      "!lib/dist/Navigation.js",
+      "!lib/dist/adapters/**/*"
     ],
     "resetMocks": true,
     "resetModules": true,
@@ -119,82 +124,6 @@
         "type": "ios.simulator",
         "name": "iPhone SE"
       }
-    }
-  },
-  "xo": {
-    "extends": "xo-react",
-    "space": true,
-    "env": [
-      "node",
-      "jest",
-      "es6"
-    ],
-    "globals": [
-      "alert"
-    ],
-    "overrides": [
-      {
-        "files": "e2e/**/*",
-        "env": [
-          "mocha"
-        ],
-        "globals": [
-          "before",
-          "after",
-          "beforeEach",
-          "afterEach",
-          "expect",
-          "element",
-          "by",
-          "device"
-        ]
-      }
-    ],
-    "settings": {
-      "import/core-modules": [
-        "react-native-navigation"
-      ]
-    },
-    "rules": {
-      "unicorn/filename-case": 0,
-      "unicorn/number-literal-case": 0,
-      "import/order": 0,
-      "import/named": 0,
-      "import/no-unassigned-import": 0,
-      "import/no-unresolved": [
-        2,
-        {
-          "ignore": [
-            "react-native-navigation"
-          ]
-        }
-      ],
-      "react/jsx-tag-spacing": 0,
-      "react/jsx-sort-props": 0,
-      "react/jsx-boolean-value": 0,
-      "react/prop-types": 0,
-      "react/jsx-no-bind": 0,
-      "react/jsx-handler-names": 0,
-      "react/forbid-component-props": 0,
-      "react/jsx-curly-brace-presence": 0,
-      "capitalized-comments": 0,
-      "no-use-before-define": [
-        2,
-        {
-          "functions": false,
-          "variables": false
-        }
-      ],
-      "promise/param-names": 0,
-      "no-return-assign": 0,
-      "arrow-parens": [
-        2,
-        "always"
-      ],
-      "object-curly-spacing": [
-        2,
-        "always"
-      ]
     }
   }
 }

@@ -1,4 +1,4 @@
-const Navigation = require('react-native-navigation');
+const { Navigation } = require('react-native-navigation');
 const WelcomeScreen = require('./WelcomeScreen');
 const TextScreen = require('./TextScreen');
 const PushedScreen = require('./PushedScreen');

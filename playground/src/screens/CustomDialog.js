@@ -12,7 +12,7 @@ class CustomDialog extends PureComponent {
     return (
       <View style={styles.root}>
         <Text style={styles.h1} testID={testIDs.DIALOG_HEADER}>Test view</Text>
-        <Button title="OK" testID={testIDs.OK_BUTTON} onPress={() => this.onCLickOk()} />
+        <Button title='OK' testID={testIDs.OK_BUTTON} onPress={() => this.onCLickOk()} />
       </View>
     );
   }

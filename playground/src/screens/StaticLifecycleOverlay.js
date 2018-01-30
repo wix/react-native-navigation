@@ -11,7 +11,6 @@ class StaticLifecycleOverlay extends Component {
       events: []
     };
     Navigation.events().componentLifecycle(({ event, componentName, componentId }) => {
-      console.log('guyca', `${event} ${componentName} [${componentId}]`);
       this.setState({
         events: [...this.state.events, { event, componentName, componentId }]
       });

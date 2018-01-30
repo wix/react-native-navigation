@@ -1,7 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 const { View, Text, Image, TouchableOpacity } = require('react-native');
-const Navigation = require('react-native-navigation');
+const { Navigation } = require('react-native-navigation');
 
 class CustomTransitionOrigin extends Component {
   constructor(props) {
@@ -21,27 +21,27 @@ class CustomTransitionOrigin extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <Navigation.Element elementId="title1">
+        <Navigation.Element elementId='title1'>
           <Text style={styles.h1}>Custom Transition Screen</Text>
         </Navigation.Element>
         <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-          <TouchableOpacity testID="shared_image1" activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
-            <Navigation.Element resizeMode="cover" elementId="image1">
-              <Image resizeMode="cover" style={styles.gyroImage} source={require('../../img/400.jpeg')} />
+          <TouchableOpacity testID='shared_image1' activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
+            <Navigation.Element resizeMode='cover' elementId='image1'>
+              <Image resizeMode='cover' style={styles.gyroImage} source={require('../../img/400.jpeg')} />
             </Navigation.Element>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
-            <Navigation.Element elementId="image2">
+            <Navigation.Element elementId='image2'>
               <Image style={styles.gyroImage} source={require('../../img/2048.jpeg')} />
             </Navigation.Element>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
-            <Navigation.Element elementId="image3">
+            <Navigation.Element elementId='image3'>
               <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
             </Navigation.Element>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
-            <Navigation.Element elementId="image4">
+            <Navigation.Element elementId='image4'>
               <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
             </Navigation.Element>
           </TouchableOpacity>
@@ -95,4 +95,3 @@ const styles = {
     height: 100
   }
 };
-
