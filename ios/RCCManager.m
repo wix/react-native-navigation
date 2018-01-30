@@ -46,6 +46,10 @@
   return self;
 }
 
+- (NSArray *)getInitialProps {
+  return [[NSProcessInfo processInfo] arguments];
+}
+
 -(void)clearModuleRegistry
 {
   [self.modulesRegistry removeAllObjects];
