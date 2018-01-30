@@ -429,6 +429,12 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [barButtonItem setImage:[barButtonItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     }
     
+    id buttonColor = button[@"buttonColor"];
+    if (buttonColor) {
+      UIColor *color = [RCTConvert UIColor:buttonColor];
+      barButtonItem.tintColor = color;
+    }
+
     if ([viewController isKindOfClass:[RCCViewController class]]) {
       RCCViewController *rccViewController = ((RCCViewController*)viewController);
       NSDictionary *navigatorStyle = rccViewController.navigatorStyle;
