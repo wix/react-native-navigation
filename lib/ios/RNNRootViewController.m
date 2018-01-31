@@ -2,7 +2,7 @@
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
-#import "RCCCustomTitleView.h"
+#import "RNNCustomTitleView.h"
 
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* componentName;
@@ -41,6 +41,7 @@
 	[super viewWillAppear:animated];
 	[self.options applyOn:self];
 	[self setCustomNavigationTitleView];
+	[self setCustomNavigationBarView];
 	[self sendLifecycleEvent:kDidMount];
 }
 
@@ -66,11 +67,20 @@
 }
 
 - (void)setCustomNavigationTitleView {
-	if (self.options.topBar.customViewName) {
-		UIView *reactView = [_creator createRootView:self.options.topBar.customViewName rootViewId:self.options.topBar.customViewName];
+	if (self.options.topBar.customTitleViewName) {
+		UIView *reactView = [_creator createRootView:self.options.topBar.customTitleViewName rootViewId:self.options.topBar.customTitleViewName];
 		
-		RCCCustomTitleView *titleView = [[RCCCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:nil];
+		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:nil];
 		self.navigationItem.titleView = titleView;
+	}
+}
+
+- (void)setCustomNavigationBarView {
+	if (self.options.topBar.customViewName) {
+		UIView *reactView = [_creator createRootView:self.options.topBar.customViewName rootViewId:@"navBar"];
+		
+		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:nil];
+		[self.navigationController.navigationBar addSubview:titleView];
 	}
 }
 

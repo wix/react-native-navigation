@@ -1,14 +1,15 @@
-import React, {Component} from 'react';
-import {
+const React = require('react');
+const { Component } = require('react');
+const {
   StyleSheet,
   View,
   TouchableOpacity,
   Text,
   Alert,
   Platform
-} from 'react-native';
+} = require('react-native');
 
-export default class CustomTopBar extends Component {
+class CustomTopBar extends Component {
 
   constructor(props) {
     super(props);
@@ -25,6 +26,8 @@ export default class CustomTopBar extends Component {
     );
   }
 }
+
+module.exports = CustomTopBar;
 
 const styles = StyleSheet.create({
   container: {

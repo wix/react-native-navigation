@@ -1,19 +1,11 @@
-//
-//  RCCTitleView.m
-//  ReactNativeNavigation
-//
-//  Created by Ran Greenberg on 26/04/2017.
-//  Copyright © 2017 artal. All rights reserved.
-//
+#import "RNNCustomTitleView.h"
 
-#import "RCCCustomTitleView.h"
-
-@interface RCCCustomTitleView ()
+@interface RNNCustomTitleView ()
 @property (nonatomic, strong) UIView *subView;
 @property (nonatomic, strong) NSString *subViewAlign;
 @end
 
-@implementation RCCCustomTitleView
+@implementation RNNCustomTitleView
 
 
 -(instancetype)initWithFrame:(CGRect)frame subView:(UIView*)subView alignment:(NSString*)alignment {
