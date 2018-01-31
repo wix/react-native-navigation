@@ -2,11 +2,12 @@
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
+#import "RCCCustomTitleView.h"
 
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* componentName;
 @property (nonatomic) BOOL _statusBarHidden;
-
+@property (nonatomic) id<RNNRootViewCreator> creator;
 @end
 
 @implementation RNNRootViewController
@@ -22,6 +23,7 @@
 	self.options = options;
 	self.eventEmitter = eventEmitter;
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
+	self.creator = creator;
 	self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -37,6 +39,7 @@
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.options applyOn:self];
+	[self setCustomNavigationTitleView];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -55,6 +58,15 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+}
+
+- (void)setCustomNavigationTitleView {
+	if (self.options.topBar.customViewName) {
+		UIView *reactView = [_creator createRootView:self.options.topBar.customViewName rootViewId:self.options.topBar.customViewName];
+		
+		RCCCustomTitleView *titleView = [[RCCCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:nil];
+		self.navigationItem.titleView = titleView;
+	}
 }
 
 -(BOOL)isCustomTransitioned {
