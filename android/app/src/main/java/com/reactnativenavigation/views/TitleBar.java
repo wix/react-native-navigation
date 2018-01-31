@@ -142,7 +142,7 @@ public class TitleBar extends Toolbar {
     }
 
     private void centerSubTitle(final StyleParams params) {
-        final View subTitleView = getSubTitleView();
+        final TextView subTitleView = getSubtitleView();
         if (subTitleView == null) {
             return;
         }
