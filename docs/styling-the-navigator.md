@@ -108,6 +108,7 @@ this.props.navigator.setStyle({
   // Android only
   navigationBarColor: '#000000', // change the background color of the bottom native navigation bar.
   navBarTitleTextCentered: true, // default: false. centers the title.
+  navBarSubTitleTextCentered: true, // (Android - default: false, iOS - default: depending on navBarTitleTextCentered). centers the subTitle.
   navBarButtonFontFamily: 'sans-serif-thin', // Change the font family of textual buttons
   statusBarColor: '#000000', // change the color of the status bar.
   drawUnderStatusBar: false, // default: false, will draw the screen underneath the statusbar. Useful togheter with statusBarColor: transparent
