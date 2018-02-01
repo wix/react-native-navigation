@@ -693,6 +693,10 @@ function _saveNavigatorButtonsPassProps(buttons = []) {
   })
 }
 
+async function getLaunchArgs() {
+  return await ControllerRegistry.getLaunchArgs();
+}
+
 export default {
   startTabBasedApp,
   startSingleScreenApp,
@@ -721,5 +725,6 @@ export default {
   navigatorToggleNavBar,
   showContextualMenu,
   dismissContextualMenu,
-  getCurrentlyVisibleScreenId
+  getCurrentlyVisibleScreenId,
+  getLaunchArgs
 };
