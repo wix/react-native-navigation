@@ -480,9 +480,9 @@ RCT_EXPORT_METHOD(
     [RCCManagerModule cancelAllRCCViewControllerReactTouches];
 }
 
-RCT_EXPORT_METHOD(getInitialProps:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(getLaunchArgs:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    resolve([[RCCManager sharedInstance] getInitialProps]);
+    resolve([[RCCManager sharedInstance] getLaunchArgs]);
 }
 
 @end

@@ -46,8 +46,16 @@
   return self;
 }
 
-- (NSArray *)getInitialProps {
-  return [[NSProcessInfo processInfo] arguments];
+- (NSDictionary *)getLaunchArgs {
+  NSMutableDictionary* mutableArguments = [[NSMutableDictionary alloc] init];
+  NSArray* arguments = [[NSProcessInfo processInfo] arguments];
+  for (int i = 0; i < [arguments count]; i+=2) {
+    NSString* key = [arguments objectAtIndex:i];
+    NSString* value = [arguments objectAtIndex:i+1];
+    [mutableArguments setObject:value forKey:key];
+  }
+  
+  return mutableArguments;
 }
 
 -(void)clearModuleRegistry
