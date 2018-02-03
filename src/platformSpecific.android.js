@@ -189,6 +189,10 @@ async function getCurrentlyVisibleScreenId() {
   return await NativeReactModule.getCurrentlyVisibleScreenId();
 }
 
+async function getLaunchArgs() {
+  return await NativeReactModule.getLaunchArgs();
+}
+
 module.exports = {
   startApp,
   push,
@@ -225,5 +229,6 @@ module.exports = {
   setScreenStyle,
   isAppLaunched,
   isRootLaunched,
-  getCurrentlyVisibleScreenId
+  getCurrentlyVisibleScreenId,
+  getLaunchArgs
 };
