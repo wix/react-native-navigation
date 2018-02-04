@@ -74,6 +74,11 @@ RCT_EXPORT_MODULE(RCCManager);
     return dispatch_get_main_queue();
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;
+}
+
 #pragma mark - helper methods
 
 +(UIViewController*)modalPresenterViewControllers:(NSMutableArray*)returnAllPresenters
