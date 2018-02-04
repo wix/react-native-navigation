@@ -23,6 +23,7 @@
 	self.options = options;
 	self.eventEmitter = eventEmitter;
 	self.animator = animator;
+	self.creator = creator;
 	self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
