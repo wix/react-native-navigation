@@ -20,7 +20,7 @@ static id (*__SWZ_initWithEventDispatcher_orig)(id self, SEL _cmd, id eventDispa
 	id returnValue = __SWZ_initWithEventDispatcher_orig(self, _cmd, eventDispatcher);
 	
 	if (@available(iOS 11.0, *)) {
-		[(UIScrollView*)[returnValue valueForKey:@"scrollView"] setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentAutomatic];
+		[(UIScrollView*)[returnValue valueForKey:@"scrollView"] setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentAlways];
 	}
 	
 	return returnValue;
