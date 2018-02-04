@@ -34,6 +34,7 @@ public class OptionsPresenter {
         topBar.setBackgroundColor(options.backgroundColor);
         topBar.setTitleTextColor(options.textColor);
         topBar.setTitleFontSize(options.textFontSize);
+        if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
 
         topBar.setTitleTypeface(options.textFontFamily);
         if (options.hidden == True) {

@@ -63,10 +63,9 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
 	void selectTabAtIndex(final int newIndex) {
-		tabs.get(selectedIndex).getView().setVisibility(View.GONE);
-		tabs.get(selectedIndex).onViewDisappear();
+		getView().removeView(tabs.get(selectedIndex).getView());
 		selectedIndex = newIndex;
-		tabs.get(selectedIndex).getView().setVisibility(View.VISIBLE);
+		getView().addView(tabs.get(selectedIndex).getView());
 	}
 
 	public void setTabs(final List<ViewController> tabs) {

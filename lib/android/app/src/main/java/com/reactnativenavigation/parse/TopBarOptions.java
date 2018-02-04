@@ -27,11 +27,13 @@ public class TopBarOptions implements DEFAULT_VALUES {
         options.drawBehind = Options.BooleanOptions.parse(json.optString("drawBehind"));
         options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
         options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"));
+        options.testId = TextParser.parse(json, "testID");
 
         return options;
     }
 
     public Text title = new NullText();
+    public Text testId = new NullText();
     public Color backgroundColor = new NullColor();
     public Color textColor = new NullColor();
     public Fraction textFontSize = new NullFraction();
