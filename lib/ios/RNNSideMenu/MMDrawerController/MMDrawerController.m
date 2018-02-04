@@ -233,6 +233,8 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     
     // set defualt panVelocityXAnimationThreshold
     [self setPanVelocityXAnimationThreshold:MMDrawerPanVelocityXAnimationThreshold];
+	
+	_rightSideEnabled = _leftSideEnabled = YES;
 }
 
 #pragma mark - State Restoration
@@ -1126,6 +1128,11 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
                 visibleSide = MMDrawerSideRight;
                 percentVisible = ABS(xOffset)/self.maximumRightDrawerWidth;
             }
+			
+			if ((!_leftSideEnabled && visibleSide == MMDrawerSideLeft) || (!_rightSideEnabled && visibleSide == MMDrawerSideRight)) {
+				return;
+			}
+			
             UIViewController * visibleSideDrawerViewController = [self sideDrawerViewControllerForSide:visibleSide];
             
             if(self.openSide != visibleSide){

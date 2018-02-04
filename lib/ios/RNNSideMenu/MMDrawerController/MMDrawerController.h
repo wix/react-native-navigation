@@ -228,6 +228,10 @@ typedef void (^MMDrawerControllerDrawerVisualStateBlock)(MMDrawerController * dr
  */
 @property (nonatomic, strong) UIColor * shadowColor;
 
+@property (nonatomic, assign) BOOL leftSideEnabled;
+
+@property (nonatomic, assign) BOOL rightSideEnabled;
+
 /**
  The flag determining if a custom background view should appear beneath the status bar, forcing the child content to be drawn lower than the status bar.
  
