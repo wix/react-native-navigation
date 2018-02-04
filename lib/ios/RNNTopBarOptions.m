@@ -1,6 +1,6 @@
 #import "RNNTopBarOptions.h"
 #import "RNNNavigationButtons.h"
-#import "RCCCustomTitleView.h"
+#import "RNNCustomTitleView.h"
 
 extern const NSInteger BLUR_TOPBAR_TAG;
 
@@ -156,8 +156,6 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
 		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons];
 	}
-	
-//	viewController.navigationItem.titleView = [RCCCustomTitleView alloc] initWithFrame:<#(CGRect)#> subView:<#(UIView *)#> alignment:<#(NSString *)#>
 }
 
 -(void)storeOriginalTopBarImages:(UIViewController*)viewController {

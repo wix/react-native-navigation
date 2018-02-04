@@ -43,7 +43,7 @@ describe('screen stack', () => {
     await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
-  it.only('switch to tab', async () => {
+  it('switch to tab', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementByLabel('This is tab 1')).toBeVisible();
     await elementById(testIDs.SWITCH_SECOND_TAB_BUTTON).tap();
