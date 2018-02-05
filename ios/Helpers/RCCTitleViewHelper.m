@@ -221,7 +221,8 @@ navigationController:(UINavigationController*)navigationController
         UIColor *color = navBarTextColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarTextColor] : nil;
         titleLabel.textColor = color;
     }
-    
+
+    [titleLabel sizeToFit];
     [self.titleView addSubview:titleLabel];
     
     return titleLabel;
