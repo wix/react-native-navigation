@@ -9,10 +9,7 @@
 #import "RNNAnimatedView.h"
 
 @interface  RNNAnimator()
-@property (nonatomic, strong)NSArray* animations;
-@property (nonatomic)double duration;
-@property (nonatomic)double springDamping;
-@property (nonatomic)double springVelocity;
+@property (nonatomic, strong) RNNTransitionOptions* transitionOptions;
 @property (nonatomic, strong) RNNInteractivePopAnimator* interactivePopAnimator;
 @property (nonatomic) BOOL backButton;
 @property (nonatomic, strong) UIViewController* fromVC;
@@ -21,10 +18,10 @@
 
 @implementation RNNAnimator
 
-- (instancetype)initWithAnimationsDictionary:(NSDictionary *)animationsDic {
+-(instancetype)initWithTransitionOptions:(RNNTransitionOptions *)transitionOptions {
 	self = [super init];
-	if (animationsDic) {
-		[self setupTransition:animationsDic];
+	if (transitionOptions) {
+		[self setupTransition:transitionOptions];
 	} else {
 		return nil;
 	}
@@ -32,26 +29,10 @@
 	return self;
 }
 
--(void)setupTransition:(NSDictionary*)data{
-	if ([data objectForKey:@"animations"]) {
-		self.animations= [data objectForKey:@"animations"];
-	} else {
+-(void)setupTransition:(RNNTransitionOptions *)transitionOptions {
+	self.transitionOptions = transitionOptions;
+	if (!transitionOptions.animations) {
 		[[NSException exceptionWithName:NSInvalidArgumentException reason:@"No animations" userInfo:nil] raise];
-	}
-	if ([data objectForKey:@"duration"]) {
-		self.duration = [[data objectForKey:@"duration"] doubleValue];
-	} else {
-		self.duration = 0.7;
-	}
-	if ([data objectForKey:@"springDamping"]) {
-		self.springDamping = [[data objectForKey:@"springDamping"] doubleValue];
-	} else {
-		self.springDamping = 0.85;
-	}
-	if ([data objectForKey:@"springVelocity"]) {
-		self.springVelocity= [[data objectForKey:@"springVelocity"] doubleValue];
-	} else {
-		self.springVelocity = 0.8;
 	}
 	
 	self.backButton = false;
@@ -59,10 +40,9 @@
 
 -(NSArray*)prepareSharedElementTransition:(NSArray*)RNNSharedElementsToVC
 						andfromVCElements:(NSArray*)RNNSharedElementsFromVC
-						withComponentView:(UIView*)componentView
-{
+						withComponentView:(UIView*)componentView {
 	NSMutableArray* transitions = [NSMutableArray new];
-	for (NSDictionary* transition in self.animations) {
+	for (NSDictionary* transition in self.transitionOptions.animations) {
 		RNNTransitionStateHolder* transitionStateHolder = [[RNNTransitionStateHolder alloc] initWithTransition:transition];
 		RNNElementFinder* elementFinder = [[RNNElementFinder alloc] initWithToVC:self.toVC andfromVC:self.fromVC];
 		[elementFinder findElementsInTransition:transitionStateHolder];
@@ -73,7 +53,7 @@
 		[componentView bringSubviewToFront:animatedView];
 		transitionStateHolder.animatedView = animatedView;
 		[transitions addObject:transitionStateHolder];
-		if (transitionStateHolder.isSharedElementTransition){
+		if (transitionStateHolder.isSharedElementTransition) {
 			[transitionStateHolder.toElement setHidden: YES];
 		}
 		[transitionStateHolder.fromElement setHidden:YES];
@@ -112,7 +92,7 @@
 
 
 -(void)animateComplition:(NSArray*)transitions fromVCSnapshot:(UIView*)fromSnapshot andTransitioningContext:(id<UIViewControllerContextTransitioning>)transitionContext {
-	[UIView animateWithDuration:[self transitionDuration:transitionContext ] delay:0 usingSpringWithDamping:self.springDamping initialSpringVelocity:self.springVelocity options:UIViewAnimationOptionCurveEaseOut  animations:^{
+	[UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:[self.transitionOptions.springDamping doubleValue] initialSpringVelocity:[self.transitionOptions.springVelocity doubleValue] options:UIViewAnimationOptionCurveEaseOut  animations:^{
 				self.toVC.view.alpha = 1;
 			} completion:^(BOOL finished) {
 				for (RNNTransitionStateHolder* transition in transitions ) {
@@ -139,12 +119,11 @@
 			}];
 }
 
-- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
-{
-	return self.duration;
+- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext {
+	return [self.transitionOptions.duration doubleValue];
 }
-- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
-{
+
+- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
 	UIViewController* toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 	UIViewController* fromVC  = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
 	UIView* componentView = [transitionContext containerView];
@@ -162,7 +141,5 @@
 	[self animateComplition:transitions fromVCSnapshot:fromSnapshot andTransitioningContext:transitionContext];
 	[self animateTransitions:transitions];
 }
+
 @end
-
-
-

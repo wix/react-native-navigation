@@ -77,15 +77,18 @@
 		[_controllerFactory.eventEmitter sendNavigationEvent:[RNNNavigationEvent create:kPop fromComponent:nil toComponent:componentId]];
 		completion();
 	}];
+	
 	NSDictionary* animationData = options[@"customTransition"];
-	if (animationData){
-		if ([animationData objectForKey:@"animations"]) {
-			[_navigationStackManager pop:componentId withAnimationData:animationData];
+	RNNTransitionOptions* transitionOptions = [[RNNTransitionOptions alloc] initWithDict:animationData];
+	
+	if (transitionOptions){
+		if (transitionOptions.animations) {
+			[_navigationStackManager pop:componentId withTransitionOptions:transitionOptions];
 		} else {
 			[[NSException exceptionWithName:NSInvalidArgumentException reason:@"unsupported transitionAnimation" userInfo:nil] raise];
 		}
 	} else {
-		[_navigationStackManager pop:componentId withAnimationData:nil];
+		[_navigationStackManager pop:componentId withTransitionOptions:nil];
 	}
 	[CATransaction commit];
 }
