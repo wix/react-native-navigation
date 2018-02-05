@@ -60,14 +60,14 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	self.fromVC = nil;
 }
 
--(void)pop:(NSString *)componentId withAnimationData:(NSDictionary *)animationData {
+-(void)pop:(NSString *)componentId withTransitionOptions:(RNNTransitionOptions *)transitionOptions {
 	UIViewController<RNNRootViewProtocol>* vc = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
 	UINavigationController* nvc = [vc navigationController];
 	if ([nvc topViewController] == vc) {
-		if (animationData) {
+		if (transitionOptions) {
 			RNNRootViewController* RNNVC = (RNNRootViewController*)vc;
 			nvc.delegate = RNNVC;
-			[RNNVC.animator setupTransition:animationData];
+			RNNVC.animator = [[RNNAnimator alloc] initWithTransitionOptions:transitionOptions];
 			[nvc popViewControllerAnimated:vc.isAnimated];
 		} else {
 			nvc.delegate = nil;
