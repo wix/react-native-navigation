@@ -130,6 +130,7 @@ public class StyleParamsParser {
         result.topTabTextFontFamily = new StyleParams.Font();
         result.titleBarHeight = -1;
         result.screenAnimationType = "slide-up";
+        result.drawUnderStatusBar = false;
         return result;
     }
 
