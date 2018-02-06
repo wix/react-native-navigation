@@ -39,9 +39,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
 
-    public ViewController(Activity activity, String id) {
+    public ViewController(Activity activity, String id, Options initialOptions) {
         this.activity = activity;
         this.id = id;
+        options = initialOptions;
     }
 
     protected abstract T createView();

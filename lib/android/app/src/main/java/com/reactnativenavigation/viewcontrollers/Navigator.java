@@ -25,7 +25,7 @@ public class Navigator extends ParentController {
     private Options defaultOptions = new Options();
 
     public Navigator(final Activity activity) {
-		super(activity, "navigator" + CompatUtils.generateViewId());
+		super(activity, "navigator" + CompatUtils.generateViewId(), new Options());
 	}
 
     @NonNull

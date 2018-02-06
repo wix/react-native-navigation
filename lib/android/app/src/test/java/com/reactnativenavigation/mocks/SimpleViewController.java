@@ -15,9 +15,8 @@ import com.reactnativenavigation.views.TopBar;
 
 public class SimpleViewController extends ViewController<FrameLayout> {
 
-    public SimpleViewController(final Activity activity, String id) {
-        super(activity, id);
-        options = new Options();
+    public SimpleViewController(final Activity activity, String id, Options options) {
+        super(activity, id, options);
     }
 
     @Override

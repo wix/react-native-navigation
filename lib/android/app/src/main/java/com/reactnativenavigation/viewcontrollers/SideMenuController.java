@@ -7,6 +7,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.parse.Options;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -19,8 +21,8 @@ public class SideMenuController extends ParentController {
 	private ViewController leftController;
 	private ViewController rightController;
 
-	public SideMenuController(final Activity activity, final String id) {
-		super(activity, id);
+	public SideMenuController(final Activity activity, final String id, Options initialOptions) {
+		super(activity, id, initialOptions);
 	}
 
 	@NonNull

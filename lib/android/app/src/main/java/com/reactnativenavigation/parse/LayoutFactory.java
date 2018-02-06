@@ -3,6 +3,7 @@ package com.reactnativenavigation.parse;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
+import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.NoOpPromise;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.BottomTabsController;
@@ -55,7 +56,8 @@ public class LayoutFactory {
 	}
 
     private ViewController createSideMenuRoot(LayoutNode node) {
-		SideMenuController sideMenuLayout = new SideMenuController(activity, node.id);
+        final Options options = Options.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);
+		SideMenuController sideMenuLayout = new SideMenuController(activity, node.id, options);
 		for (LayoutNode child : node.children) {
 			ViewController childLayout = create(child);
 			switch (child.type) {
@@ -100,7 +102,8 @@ public class LayoutFactory {
 	}
 
 	private ViewController createStack(LayoutNode node) {
-		StackController stackController = new StackController(activity, node.id);
+        final Options options = Options.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);
+		StackController stackController = new StackController(activity, node.id, options);
         for (int i = 0; i < node.children.size(); i++) {
             if (i < node.children.size() - 1) {
                 stackController.push(create(node.children.get(i)), new NoOpPromise());
@@ -112,10 +115,11 @@ public class LayoutFactory {
 	}
 
 	private ViewController createBottomTabs(LayoutNode node) {
-		final BottomTabsController tabsComponent = new BottomTabsController(activity, node.id);
+        final Options options = Options.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);
+		final BottomTabsController tabsComponent = new BottomTabsController(activity, new ImageLoader(), node.id, options);
 		List<ViewController> tabs = new ArrayList<>();
 		for (int i = 0; i < node.children.size(); i++) {
-			tabs.add(create(node.children.get(i)));
+            tabs.add(create(node.children.get(i)));
 		}
 		tabsComponent.setTabs(tabs);
 		return tabsComponent;

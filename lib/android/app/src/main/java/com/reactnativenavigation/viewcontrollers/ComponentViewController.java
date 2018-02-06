@@ -18,11 +18,10 @@ public class ComponentViewController extends ViewController<ComponentLayout> imp
                                    final String id,
                                    final String componentName,
                                    final ReactViewCreator viewCreator,
-                                   final Options initialNavigationOptions) {
-        super(activity, id);
+                                   final Options initialOptions) {
+        super(activity, id, initialOptions);
         this.componentName = componentName;
         this.viewCreator = viewCreator;
-        options = initialNavigationOptions;
     }
 
     @Override

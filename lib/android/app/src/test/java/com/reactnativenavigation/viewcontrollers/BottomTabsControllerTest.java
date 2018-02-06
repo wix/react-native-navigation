@@ -1,21 +1,31 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.*;
-import android.support.annotation.*;
-import android.support.design.widget.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Activity;
+import android.support.annotation.NonNull;
+import android.view.View;
+import android.widget.RelativeLayout;
 
-import com.reactnativenavigation.*;
-import com.reactnativenavigation.mocks.*;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.ImageLoaderMock;
+import com.reactnativenavigation.mocks.MockPromise;
+import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.utils.ImageLoader;
+import com.reactnativenavigation.utils.OptionHelper;
+import com.reactnativenavigation.views.BottomTabs;
 
-import org.assertj.core.api.iterable.*;
-import org.junit.*;
+import org.assertj.core.api.iterable.Extractor;
+import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import static org.assertj.core.api.Java6Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class BottomTabsControllerTest extends BaseTest {
 
@@ -26,29 +36,31 @@ public class BottomTabsControllerTest extends BaseTest {
     private ViewController child3;
     private ViewController child4;
     private ViewController child5;
+    private Options tabOptions = OptionHelper.createBottomTabOptions();
+    private ImageLoader imageLoaderMock = ImageLoaderMock.mock();
 
     @Override
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
-        uut = new BottomTabsController(activity, "uut");
-        child1 = new SimpleViewController(activity, "child1");
-        child2 = new SimpleViewController(activity, "child2");
-        child3 = new SimpleViewController(activity, "child3");
-        child4 = new SimpleViewController(activity, "child4");
-        child5 = new SimpleViewController(activity, "child5");
+        uut = new BottomTabsController(activity, imageLoaderMock, "uut", new Options());
+        child1 = new SimpleViewController(activity, "child1", tabOptions);
+        child2 = new SimpleViewController(activity, "child2", tabOptions);
+        child3 = new SimpleViewController(activity, "child3", tabOptions);
+        child4 = new SimpleViewController(activity, "child4", tabOptions);
+        child5 = new SimpleViewController(activity, "child5", tabOptions);
     }
 
     @Test
     public void containsRelativeLayoutView() throws Exception {
         assertThat(uut.getView()).isInstanceOf(RelativeLayout.class);
-        assertThat(uut.getView().getChildAt(0)).isInstanceOf(BottomNavigationView.class);
+        assertThat(uut.getView().getChildAt(0)).isInstanceOf(BottomTabs.class);
     }
 
     @Test(expected = RuntimeException.class)
     public void setTabs_ThrowWhenMoreThan5() throws Exception {
         List<ViewController> tabs = createTabs();
-        tabs.add(new SimpleViewController(activity, "6"));
+        tabs.add(new SimpleViewController(activity, "6", tabOptions));
         uut.setTabs(tabs);
     }
 
@@ -75,7 +87,7 @@ public class BottomTabsControllerTest extends BaseTest {
     public void findControllerById_ReturnsSelfOrChildren() throws Exception {
         assertThat(uut.findControllerById("123")).isNull();
         assertThat(uut.findControllerById(uut.getId())).isEqualTo(uut);
-        StackController inner = new StackController(activity, "inner");
+        StackController inner = new StackController(activity, "inner", tabOptions);
         inner.animatePush(child1, new MockPromise());
         assertThat(uut.findControllerById(child1.getId())).isNull();
         uut.setTabs(Collections.singletonList(inner));

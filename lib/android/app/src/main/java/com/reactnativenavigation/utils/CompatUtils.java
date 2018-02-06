@@ -9,7 +9,7 @@ public class CompatUtils {
 	private static final AtomicInteger viewId = new AtomicInteger(1);
 
 	public static int generateViewId() {
-		if (Build.VERSION.SDK_INT >= 17) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 			return View.generateViewId();
 		} else {
 			while (true) {
