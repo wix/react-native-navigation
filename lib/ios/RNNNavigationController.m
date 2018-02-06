@@ -1,6 +1,5 @@
 
 #import "RNNNavigationController.h"
-#import "RNNRootViewController.h"
 
 @implementation RNNNavigationController
 
@@ -18,7 +17,7 @@
 }
 
 - (void)setOptions:(RNNNavigationOptions *)options {
-	((RNNRootViewController*)self.topViewController).options = options;
+	((UIViewController<RNNRootViewProtocol>*)self.topViewController).options = options;
 }
 
 - (NSString *)componentId {
