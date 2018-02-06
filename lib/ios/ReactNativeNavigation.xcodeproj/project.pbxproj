@@ -61,6 +61,8 @@
 		2DCD9196200014A900EDC75D /* RNNBridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD9194200014A900EDC75D /* RNNBridgeManager.m */; };
 		390AD477200F499D00A8250D /* RNNSwizzles.h in Headers */ = {isa = PBXBuildFile; fileRef = 390AD475200F499D00A8250D /* RNNSwizzles.h */; };
 		390AD478200F499D00A8250D /* RNNSwizzles.m in Sources */ = {isa = PBXBuildFile; fileRef = 390AD476200F499D00A8250D /* RNNSwizzles.m */; };
+		5016E8EF20209690009D4F7C /* RNNCustomTitleView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5016E8ED2020968F009D4F7C /* RNNCustomTitleView.h */; };
+		5016E8F020209690009D4F7C /* RNNCustomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5016E8EE2020968F009D4F7C /* RNNCustomTitleView.m */; };
 		5032774E2015E86D00ECD75D /* RNNNavigationEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 5032774C2015E86D00ECD75D /* RNNNavigationEvent.h */; };
 		5032774F2015E86D00ECD75D /* RNNNavigationEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5032774D2015E86D00ECD75D /* RNNNavigationEvent.m */; };
 		503277602016302900ECD75D /* RNNComponentLifecycleEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 5032775E2016302900ECD75D /* RNNComponentLifecycleEvent.h */; };
@@ -238,6 +240,8 @@
 		2DCD9194200014A900EDC75D /* RNNBridgeManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBridgeManager.m; sourceTree = "<group>"; };
 		390AD475200F499D00A8250D /* RNNSwizzles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSwizzles.h; sourceTree = "<group>"; };
 		390AD476200F499D00A8250D /* RNNSwizzles.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSwizzles.m; sourceTree = "<group>"; };
+		5016E8ED2020968F009D4F7C /* RNNCustomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNCustomTitleView.h; sourceTree = "<group>"; };
+		5016E8EE2020968F009D4F7C /* RNNCustomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNCustomTitleView.m; sourceTree = "<group>"; };
 		5032774C2015E86D00ECD75D /* RNNNavigationEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNNavigationEvent.h; sourceTree = "<group>"; };
 		5032774D2015E86D00ECD75D /* RNNNavigationEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationEvent.m; sourceTree = "<group>"; };
 		5032775E2016302900ECD75D /* RNNComponentLifecycleEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNComponentLifecycleEvent.h; sourceTree = "<group>"; };
@@ -657,6 +661,8 @@
 		E8AEDB471F584175000F5A6A /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5016E8ED2020968F009D4F7C /* RNNCustomTitleView.h */,
+				5016E8EE2020968F009D4F7C /* RNNCustomTitleView.m */,
 				E8A5CD601F49114F00E89D0D /* RNNElement.h */,
 				E8A5CD611F49114F00E89D0D /* RNNElement.m */,
 				E8AEDB3A1F55A1C2000F5A6A /* RNNElementView.h */,
@@ -694,6 +700,7 @@
 				50F5DFC11F407A8C001A00BC /* RNNTabBarController.h in Headers */,
 				50CB3B691FDE911400AA153B /* RNNSideMenuOptions.h in Headers */,
 				263905BD1E4C6F440023D7D3 /* RCCDrawerProtocol.h in Headers */,
+				5016E8EF20209690009D4F7C /* RNNCustomTitleView.h in Headers */,
 				263905C21E4C6F440023D7D3 /* SidebarAnimation.h in Headers */,
 				E8E518361F83B94A000467AC /* RNNViewLocation.h in Headers */,
 				263905B51E4C6F440023D7D3 /* MMExampleDrawerVisualStateManager.h in Headers */,
@@ -856,6 +863,7 @@
 				E8A5CD531F464F0400E89D0D /* RNNAnimator.m in Sources */,
 				50CB3B6A1FDE911400AA153B /* RNNSideMenuOptions.m in Sources */,
 				261F0E6B1E6F028A00989DE2 /* RNNNavigationStackManager.m in Sources */,
+				5016E8F020209690009D4F7C /* RNNCustomTitleView.m in Sources */,
 				E8DA24411F97459B00CD552B /* RNNElementFinder.m in Sources */,
 				263905BF1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.m in Sources */,
 				7B1126A01E2D263F00F9B03B /* RNNEventEmitter.m in Sources */,
