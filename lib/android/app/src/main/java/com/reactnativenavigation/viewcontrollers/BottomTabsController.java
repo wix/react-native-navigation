@@ -64,9 +64,9 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
 	void selectTabAtIndex(final int newIndex) {
-		tabs.get(selectedIndex).getView().setVisibility(View.GONE);
+		getView().removeView(tabs.get(selectedIndex).getView());
 		selectedIndex = newIndex;
-		tabs.get(selectedIndex).getView().setVisibility(View.VISIBLE);
+		getView().addView(tabs.get(selectedIndex).getView());
 	}
 
 	public void setTabs(final List<ViewController> tabs) {
@@ -102,8 +102,6 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         params.addRule(ABOVE, bottomTabs.getId());
-        tab.getView().setVisibility(View.GONE);
-        getView().addView(tab.getView(), params);
 	}
 
     private void setIconColor(Drawable drawable, BottomTabsOptions options) {
