@@ -9,6 +9,7 @@ const testIDs = require('../testIDs');
 const BUTTON_ONE = 'buttonOne';
 const BUTTON_TWO = 'buttonTwo';
 const BUTTON_LEFT = 'buttonLeft';
+const FAB = 'fab';
 
 class OptionsScreen extends Component {
   static get options() {
@@ -51,6 +52,7 @@ class OptionsScreen extends Component {
     this.onClickCustomTranstition = this.onClickCustomTranstition.bind(this);
     this.onClickShowOverlay = this.onClickShowOverlay.bind(this);
     this.onClickPushDefaultOptionsScreen = this.onClickPushDefaultOptionsScreen.bind(this);
+    this.onClickFab = this.onClickFab.bind(this);
   }
 
   render() {
@@ -64,8 +66,7 @@ class OptionsScreen extends Component {
         <Button title='Top Bar Opaque' onPress={this.onClickTopBarOpaque} />
         <Button title='scrollView Screen' testID={testIDs.SCROLLVIEW_SCREEN_BUTTON} onPress={this.onClickScrollViewScreen} />
         <Button title='Custom Transition' onPress={this.onClickCustomTranstition} />
-        <Button title='Show custom alert' testID={testIDs.SHOW_CUSTOM_ALERT_BUTTON} onPress={this.onClickAlert} />
-        <Button title='Show snackbar' testID={testIDs.SHOW_SNACKBAR_BUTTON} onPress={this.onClickSnackbar} />
+        <Button title='Show fab' testID={testIDs.SHOW_CUSTOM_ALERT_BUTTON} onPress={this.onClickFab} />
         <Button title='Show overlay' testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
         <Button title='Show touch through overlay' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
         <Button title='Push Default Options Screen' testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
@@ -113,6 +114,12 @@ class OptionsScreen extends Component {
       });
     } else if (id === BUTTON_LEFT) {
       Navigation.pop(this.props.componentId);
+    } else if (id === FAB) {
+      Navigation.setOptions(this.props.componentId, {
+        fab: {
+          hidden: true
+        }
+      })
     }
   }
 
@@ -177,19 +184,13 @@ class OptionsScreen extends Component {
     });
   }
 
-  onClickAlert() {
-    Navigation.showOverlay('custom', 'navigation.playground.CustomDialog');
-  }
-
-  onClickSnackbar() {
-    Navigation.showOverlay('snackbar', {
-      text: 'Test!',
-      // textColor: 'red',
-      // backgroundColor: 'green',
-      duration: 'long',
-      button: {
-        text: 'Action',
-        textColor: 'blue'
+  onClickFab() {
+    Navigation.setOptions(this.props.componentId, {
+      fab: {
+        id: FAB,
+        backgroundColor: 'blue',
+        clickColor: 'blueviolet',
+        rippleColor: 'aquamarine'
       }
     });
   }
