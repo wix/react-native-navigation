@@ -221,8 +221,9 @@ class WelcomeScreen extends Component {
   async onClickPush() {
     await Navigation.push(this.props.componentId, {
       component: {
-        name: 'navigation.playground.PushedScreen',
+        name: 'RNNCustomViewController',
         options: {
+          isCustom: true,
           topBar: {
             title: 'pushed'
           }

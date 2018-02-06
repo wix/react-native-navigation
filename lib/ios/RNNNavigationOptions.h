@@ -34,6 +34,7 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) NSNumber* statusBarBlur;
 @property (nonatomic, strong) NSNumber* statusBarHideWithTopBar;
 @property (nonatomic, strong) NSNumber* popGesture;
+@property (nonatomic, strong) NSNumber* isCustom;
 @property (nonatomic, strong) UIImage* backgroundImage;
 @property (nonatomic, strong) UIImage* rootBackgroundImage;
 

@@ -23,7 +23,12 @@
 	self.eventEmitter = eventEmitter;
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	self.creator = creator;
-	self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
+
+	if ([self.options.isCustom boolValue]) {
+		[self addExternalVC:name];
+	} else {
+		self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
+	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(onJsReload)
@@ -90,6 +95,10 @@
 	return self.options.animated ? [self.options.animated boolValue] : YES;
 }
 
+- (BOOL)isCustomViewController {
+	return [self.options.isCustom boolValue];
+}
+
 - (BOOL)prefersStatusBarHidden {
 	if ([self.options.statusBarHidden boolValue]) {
 		return YES;
@@ -141,6 +150,27 @@
 
 -(void)applyTopTabsOptions {
 	[self.options.topTab applyOn:self];
+}
+
+-(void)addExternalVC:(NSString*)className {
+	if (className != nil) {
+		Class class = NSClassFromString(className);
+		if (class != NULL) {
+			id obj = [[class alloc] init];
+			if (obj != nil && [obj isKindOfClass:[UIViewController class]]) {
+				UIViewController *viewController = (UIViewController*)obj;
+				[self addChildViewController:viewController];
+				self.view = [[UIView alloc] init];
+				[self.view addSubview:viewController.view];
+			}
+			else {
+				NSLog(@"addExternalVC: could not create instance. Make sure that your class is a UIViewController whihc confirms to RCCExternalViewControllerProtocol");
+			}
+		}
+		else {
+			NSLog(@"addExternalVC: could not create class from string. Check that the proper class name wass passed in ExternalNativeScreenClass");
+		}
+	}
 }
 
 /**

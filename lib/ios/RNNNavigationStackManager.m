@@ -18,7 +18,11 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 -(void)push:(UIViewController<RNNRootViewProtocol> *)newTop onTop:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion {
 	UIViewController *vc = [_store findComponentForId:componentId];
 	[self preparePush:newTop onTopVC:vc completion:completion];
-	[self waitForContentToAppearAndThen:@selector(pushAfterLoad:)];
+	if ([newTop isCustomViewController]) {
+		[self pushAfterLoad:nil];
+	} else {
+		[self waitForContentToAppearAndThen:@selector(pushAfterLoad:)];
+	}
 }
 
 -(void)preparePush:(UIViewController<RNNRootViewProtocol> *)newTop onTopVC:(UIViewController*)vc completion:(RNNTransitionCompletionBlock)completion {
