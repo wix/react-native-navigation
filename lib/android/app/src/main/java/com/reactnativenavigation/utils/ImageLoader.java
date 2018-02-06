@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public class ImageUtils {
+public class ImageLoader {
 
 	public interface ImageLoadingListener {
 		void onComplete(@NonNull Drawable drawable);
@@ -25,7 +25,7 @@ public class ImageUtils {
 		void onError(Throwable error);
 	}
 
-	public static void loadIcon(final Context context, final String uri, final ImageLoadingListener listener) {
+	public void loadIcon(final Context context, final String uri, final ImageLoadingListener listener) {
         try {
             StrictMode.ThreadPolicy threadPolicy = adjustThreadPolicyDebug();
             
@@ -40,7 +40,7 @@ public class ImageUtils {
         }
     }
 
-    private static StrictMode.ThreadPolicy adjustThreadPolicyDebug() {
+    private StrictMode.ThreadPolicy adjustThreadPolicyDebug() {
         StrictMode.ThreadPolicy threadPolicy = null;
         if (NavigationApplication.instance.isDebug()) {
             threadPolicy = StrictMode.getThreadPolicy();
@@ -49,7 +49,7 @@ public class ImageUtils {
         return threadPolicy;
     }
 
-    private static void restoreThreadPolicyDebug(@Nullable StrictMode.ThreadPolicy threadPolicy) {
+    private void restoreThreadPolicyDebug(@Nullable StrictMode.ThreadPolicy threadPolicy) {
         if (NavigationApplication.instance.isDebug() && threadPolicy != null) {
             StrictMode.setThreadPolicy(threadPolicy);
         }

@@ -21,4 +21,7 @@
 @property (nonatomic, strong) NSNumber* largeTitle;
 @property (nonatomic, strong) NSString* testID;
 
+@property (nonatomic, strong) NSString* customTitleViewName;
+@property (nonatomic, strong) NSString* customViewName;
+
 @end

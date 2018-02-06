@@ -2,10 +2,15 @@ import * as _ from 'lodash';
 import { OptionsProcessor } from './OptionsProcessor';
 import { LayoutType, isLayoutType } from './LayoutType';
 
+export interface Data {
+  name?: string;
+  options?: any;
+  passProps?: any;
+}
 export interface LayoutNode {
   id?: string;
   type: LayoutType;
-  data: object;
+  data: Data;
   children: LayoutNode[];
 }
 
@@ -24,6 +29,7 @@ export class LayoutTreeCrawler {
     if (node.type === LayoutType.Component) {
       this._handleComponent(node);
     }
+    OptionsProcessor.processOptions(node.data.options);
     _.forEach(node.children, this.crawl);
   }
 
@@ -31,7 +37,6 @@ export class LayoutTreeCrawler {
     this._assertComponentDataName(node);
     this._savePropsToStore(node);
     this._applyStaticOptions(node);
-    OptionsProcessor.processOptions(node.data.options);
   }
 
   _savePropsToStore(node) {

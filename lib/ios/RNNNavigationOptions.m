@@ -32,6 +32,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.bottomTab = [[RNNBottomTabOptions alloc] initWithDict:[options objectForKey:@"bottomTab"]];
 	self.overlay = [[RNNOverlayOptions alloc] initWithDict:[options objectForKey:@"overlay"]];
 	self.animated = [options objectForKey:@"animated"];
+	self.customTransition = [[RNNTransitionOptions alloc] initWithDict:[options objectForKey:@"customTransition"]];
 	
 	return self;
 }

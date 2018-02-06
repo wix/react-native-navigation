@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.parse.Options;
 
 import org.assertj.android.api.Assertions;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class ViewControllerTest extends BaseTest {
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
-        uut = new SimpleViewController(activity, "uut");
+        uut = new SimpleViewController(activity, "uut", new Options());
     }
 
     @Test
@@ -47,7 +48,7 @@ public class ViewControllerTest extends BaseTest {
     @Test
     public void canOverrideViewCreation() throws Exception {
         final FrameLayout otherView = new FrameLayout(activity);
-        ViewController myController = new ViewController(activity, "vc") {
+        ViewController myController = new ViewController(activity, "vc", new Options()) {
             @Override
             protected FrameLayout createView() {
                 return otherView;
@@ -59,7 +60,7 @@ public class ViewControllerTest extends BaseTest {
     @Test
     public void holdsAReferenceToStackControllerOrNull() throws Exception {
         assertThat(uut.getParentController()).isNull();
-        StackController nav = new StackController(activity, "stack");
+        StackController nav = new StackController(activity, "stack", new Options());
         nav.animatePush(uut, new MockPromise());
         assertThat(uut.getParentController()).isEqualTo(nav);
     }
@@ -143,7 +144,7 @@ public class ViewControllerTest extends BaseTest {
 
     @Test
     public void onDestroy_RemovesGlobalLayoutListener() throws Exception {
-        new SimpleViewController(activity, "ensureNotNull").destroy();
+        new SimpleViewController(activity, "ensureNotNull", new Options()).destroy();
 
         ViewController spy = spy(uut);
         View view = spy.getView();

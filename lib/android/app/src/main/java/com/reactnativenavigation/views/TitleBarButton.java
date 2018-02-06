@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.utils.ImageUtils;
+import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 			return;
 		}
 
-		ImageUtils.loadIcon(context, button.icon.get(), new ImageUtils.ImageLoadingListener() {
+		new ImageLoader().loadIcon(context, button.icon.get(), new ImageLoader.ImageLoadingListener() {
 			@Override
 			public void onComplete(@NonNull Drawable drawable) {
 				icon = drawable;
@@ -74,7 +74,7 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 	}
 
 	private void applyIcon(Context context, final MenuItem menuItem) {
-		ImageUtils.loadIcon(context, button.icon.get(), new ImageUtils.ImageLoadingListener() {
+        new ImageLoader().loadIcon(context, button.icon.get(), new ImageLoader.ImageLoadingListener() {
 			@Override
 			public void onComplete(@NonNull Drawable drawable) {
 				icon = drawable;

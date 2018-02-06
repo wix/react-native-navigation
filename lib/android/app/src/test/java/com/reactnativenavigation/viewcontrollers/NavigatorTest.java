@@ -1,21 +1,30 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.*;
-import android.support.annotation.*;
+import android.app.Activity;
+import android.support.annotation.NonNull;
 
-import com.reactnativenavigation.*;
-import com.reactnativenavigation.mocks.*;
-import com.reactnativenavigation.parse.*;
-import com.reactnativenavigation.utils.*;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.ImageLoaderMock;
+import com.reactnativenavigation.mocks.MockPromise;
+import com.reactnativenavigation.mocks.SimpleComponentViewController;
+import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.ImageLoader;
+import com.reactnativenavigation.utils.OptionHelper;
 
-import org.junit.*;
+import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
 
 import javax.annotation.Nullable;
 
-import static org.assertj.core.api.Java6Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class NavigatorTest extends BaseTest {
     private Activity activity;
@@ -26,20 +35,22 @@ public class NavigatorTest extends BaseTest {
     private ViewController child3;
     private ViewController child4;
     private ViewController child5;
-
+    private Options tabOptions = OptionHelper.createBottomTabOptions();
+    private ImageLoader imageLoaderMock;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
+        imageLoaderMock = ImageLoaderMock.mock();
         activity = newActivity();
         uut = new Navigator(activity);
-        parentController = new StackController(activity, "stack");
+        parentController = new StackController(activity, "stack", new Options());
         parentController.ensureViewIsCreated();
-        child1 = new SimpleViewController(activity, "child1");
-        child2 = new SimpleViewController(activity, "child2");
-        child3 = new SimpleViewController(activity, "child3");
-        child4 = new SimpleViewController(activity, "child4");
-        child5 = new SimpleViewController(activity, "child5");
+        child1 = new SimpleViewController(activity, "child1", tabOptions);
+        child2 = new SimpleViewController(activity, "child2", tabOptions);
+        child3 = new SimpleViewController(activity, "child3", tabOptions);
+        child4 = new SimpleViewController(activity, "child4", tabOptions);
+        child5 = new SimpleViewController(activity, "child5", tabOptions);
     }
 
     @Test
@@ -94,7 +105,7 @@ public class NavigatorTest extends BaseTest {
         bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
         uut.setRoot(bottomTabsController, new MockPromise());
 
-        SimpleViewController newChild = new SimpleViewController(activity, "new child");
+        SimpleViewController newChild = new SimpleViewController(activity, "new child", tabOptions);
         uut.push(child2.getId(), newChild, new MockPromise());
 
         assertThat(stack1.getChildControllers()).doesNotContain(newChild);
@@ -223,12 +234,12 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private BottomTabsController newTabs() {
-        return new BottomTabsController(activity, "tabsController");
+        return new BottomTabsController(activity, imageLoaderMock, "tabsController", new Options());
     }
 
     @NonNull
     private StackController newStack() {
-        return new StackController(activity, "stack" + CompatUtils.generateViewId());
+        return new StackController(activity, "stack" + CompatUtils.generateViewId(), tabOptions);
     }
 
     @Test

@@ -1,5 +1,6 @@
 #import "RNNTopBarOptions.h"
 #import "RNNNavigationButtons.h"
+#import "RNNCustomTitleView.h"
 
 extern const NSInteger BLUR_TOPBAR_TAG;
 

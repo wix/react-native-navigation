@@ -2,11 +2,12 @@
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
+#import "RNNCustomTitleView.h"
 
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* componentName;
 @property (nonatomic) BOOL _statusBarHidden;
-
+@property (nonatomic) id<RNNRootViewCreator> creator;
 @end
 
 @implementation RNNRootViewController
@@ -15,14 +16,14 @@
 				withOptions:(RNNNavigationOptions*)options
 			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter
-				   animator:(RNNAnimator *)animator {
+			   eventEmitter:(RNNEventEmitter*)eventEmitter {
 	self = [super init];
 	self.componentId = componentId;
 	self.componentName = name;
 	self.options = options;
 	self.eventEmitter = eventEmitter;
-	self.animator = animator;
+	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
+	self.creator = creator;
 	self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -38,36 +39,48 @@
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.options applyOn:self];
-	[self sendLifecycleEvent:kDidMount];
+	[self setCustomNavigationTitleView];
+	[self setCustomNavigationBarView];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[self.eventEmitter sendComponentDidAppear:self.componentId];
-	[self sendLifecycleEvent:kDidAppear];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-	[self sendLifecycleEvent:kWillUnmount];
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	[self.eventEmitter sendComponentDidDisappear:self.componentId];
-	[self sendLifecycleEvent:kDidDisappear];
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 }
 
-- (void)sendLifecycleEvent:(LifecycleEvent)event {
-	[self.eventEmitter sendLifecycleEvent:[RNNComponentLifecycleEvent create:event componentName:self.componentName componentId:self.componentId]];
+- (void)setCustomNavigationTitleView {
+	if (self.options.topBar.customTitleViewName) {
+		UIView *reactView = [_creator createRootView:self.options.topBar.customTitleViewName rootViewId:self.options.topBar.customTitleViewName];
+		
+		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:nil];
+		self.navigationItem.titleView = titleView;
+	}
+}
+
+- (void)setCustomNavigationBarView {
+	if (self.options.topBar.customViewName) {
+		UIView *reactView = [_creator createRootView:self.options.topBar.customViewName rootViewId:@"navBar"];
+		
+		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:nil];
+		[self.navigationController.navigationBar addSubview:titleView];
+	}
 }
 
 -(BOOL)isCustomTransitioned {
-	return self.animator != nil;
+	return self.options.customTransition != nil;
 }
 
 - (BOOL)isAnimated {

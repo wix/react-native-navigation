@@ -2,6 +2,9 @@
 
 @protocol RNNRootViewProtocol <NSObject, UINavigationControllerDelegate>
 
+@optional
+- (void)setOptions:(RNNNavigationOptions*)options;
+
 @required
 
 - (BOOL)isCustomTransitioned;

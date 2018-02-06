@@ -7,6 +7,7 @@ import android.widget.*;
 
 import com.reactnativenavigation.*;
 import com.reactnativenavigation.mocks.*;
+import com.reactnativenavigation.parse.Options;
 
 import org.junit.*;
 
@@ -26,7 +27,7 @@ public class ParentControllerTest extends BaseTest {
         super.beforeEach();
         activity = newActivity();
         children = new ArrayList<>();
-        uut = new ParentController(activity, "uut") {
+        uut = new ParentController(activity, "uut", new Options()) {
 
             @NonNull
             @Override
@@ -54,8 +55,8 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void findControllerById_ChildById() throws Exception {
-        SimpleViewController child1 = new SimpleViewController(activity, "child1");
-        SimpleViewController child2 = new SimpleViewController(activity, "child2");
+        SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
+        SimpleViewController child2 = new SimpleViewController(activity, "child2", new Options());
         children.add(child1);
         children.add(child2);
 
@@ -65,9 +66,9 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void findControllerById_Recursive() throws Exception {
-        StackController stackController = new StackController(activity, "stack");
-        SimpleViewController child1 = new SimpleViewController(activity, "child1");
-        SimpleViewController child2 = new SimpleViewController(activity, "child2");
+        StackController stackController = new StackController(activity, "stack", new Options());
+        SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
+        SimpleViewController child2 = new SimpleViewController(activity, "child2", new Options());
         stackController.animatePush(child1, new MockPromise());
         stackController.animatePush(child2, new MockPromise());
         children.add(stackController);
@@ -77,7 +78,7 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void destroy_DestroysChildren() throws Exception {
-        ViewController child1 = spy(new SimpleViewController(activity, "child1"));
+        ViewController child1 = spy(new SimpleViewController(activity, "child1", new Options()));
         children.add(child1);
 
         verify(child1, times(0)).destroy();
@@ -87,8 +88,8 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void optionsAreClearedWhenChildIsAppeared() throws Exception {
-        StackController stackController = spy(new StackController(activity, "stack"));
-        SimpleViewController child1 = new SimpleViewController(activity, "child1");
+        StackController stackController = spy(new StackController(activity, "stack", new Options()));
+        SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
         stackController.animatePush(child1, new MockPromise());
 
         child1.onViewAppeared();
