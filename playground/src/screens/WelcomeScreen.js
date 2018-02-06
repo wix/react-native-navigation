@@ -93,14 +93,15 @@ class WelcomeScreen extends Component {
               }
             }
           }
-        ]
-      },
-      options: {
-        bottomTabs: {
-          tabColor: 'red',
-          selectedTabColor: 'blue',
-          fontFamily: 'HelveticaNeue-Italic',
-          fontSize: 13
+        ],
+        options: {
+          bottomTabs: {
+            tabColor: 'red',
+            selectedTabColor: 'blue',
+            fontFamily: 'HelveticaNeue-Italic',
+            fontSize: 13,
+            testID: testIDs.BOTTOM_TABS_ELEMENT
+          }
         }
       }
     });

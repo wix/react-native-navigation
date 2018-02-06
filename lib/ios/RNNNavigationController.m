@@ -1,5 +1,6 @@
 
 #import "RNNNavigationController.h"
+#import "RNNRootViewController.h"
 
 @implementation RNNNavigationController
 
@@ -14,6 +15,10 @@
 - (BOOL)isAnimated {
 	UIViewController<RNNRootViewProtocol>* rootVC = (UIViewController<RNNRootViewProtocol>*) self.topViewController;
 	return rootVC.isAnimated;
+}
+
+- (void)setOptions:(RNNNavigationOptions *)options {
+	((RNNRootViewController*)self.topViewController).options = options;
 }
 
 - (NSString *)componentId {
