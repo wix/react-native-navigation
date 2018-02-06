@@ -44,7 +44,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	@Override
 	protected ViewGroup createView() {
 		RelativeLayout root = new RelativeLayout(getActivity());
-		bottomTabs = new BottomTabs(getActivity());
+		bottomTabs = new BottomTabs(getActivity(), options.bottomTabsOptions);
         bottomTabs.setOnTabSelectedListener(this);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
 		lp.addRule(ALIGN_PARENT_BOTTOM);
