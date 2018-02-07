@@ -38,6 +38,7 @@
     "test-unit-ios": "node ./scripts/test.unit.ios.js",
     "pretest-e2e-android": "npm run build",
     "test-e2e-android": "node ./scripts/test.e2e.android.js",
+    "test-e2e-android-detox": "node ./scripts/test.e2e.android.detox.js",
     "pretest-e2e-ios": "npm run build",
     "test-e2e-ios": "node ./scripts/test.e2e.ios.js",
     "test-all": "node ./scripts/test.all.js",
