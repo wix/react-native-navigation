@@ -46,14 +46,6 @@ describe('screen style', () => {
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
-  xit('makes topBar transparent and opaque', async () => {
-    await elementByLabel('BOTTOM_TABS_ELEMENT').tap();
-    await elementByLabel('Top Bar Transparent').tap();
-    await expect(element(by.type('_UIVisualEffectBackdropView'))).toBeNotVisible();
-    await elementByLabel('Top Bar Opaque').tap();
-    await expect(element(by.type('_UIVisualEffectBackdropView')).atIndex(1)).toBeVisible();
-  });
-
   xit('set Tab Bar badge on a current Tab', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await elementById(testIDs.SET_TAB_BADGE_BUTTON).tap();
@@ -100,12 +92,12 @@ describe('screen style', () => {
     await expect(elementById('buttonOne')).toBeVisible();
   });
 
-  xit('set left buttons', async () => {
+  it('set left buttons', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementById('buttonLeft')).toBeVisible();
   });
 
-  xit('tab bar items visibility', async () => {
+  it('tab bar items visibility', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementById(testIDs.FIRST_TAB_BAR_BUTTON)).toBeVisible();
     await expect(elementById(testIDs.SECOND_TAB_BAR_BUTTON)).toBeVisible();
