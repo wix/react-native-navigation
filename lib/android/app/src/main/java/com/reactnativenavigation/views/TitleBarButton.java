@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
-import com.reactnativenavigation.utils.ArraryUtils;
+import com.reactnativenavigation.utils.ArrayUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
@@ -162,7 +162,7 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
             for (TextView view : buttons) {
                 if (button.title.hasValue() && button.title.get().equals(view.getText())) {
                     view.setTag(testId.get());
-                } else if (button.icon.hasValue() && ArraryUtils.containes(view.getCompoundDrawables(), icon)) {
+                } else if (button.icon.hasValue() && ArrayUtils.contains(view.getCompoundDrawables(), icon)) {
                     view.setTag(testId.get());
                 }
             }
