@@ -19,7 +19,8 @@ public class Button {
 	@ColorInt public int buttonColor;
 	public int buttonFontSize;
 	public Text buttonFontWeight;
-	public Text icon;
+	public Text icon = new NullText();
+	public Text testId;
 
 	private static Button parseJson(JSONObject json)  {
 		Button button = new Button();
@@ -31,6 +32,7 @@ public class Button {
 		button.buttonColor = json.optInt("buttonColor", NO_INT_VALUE);
 		button.buttonFontSize = json.optInt("buttonFontSize", NO_INT_VALUE);
 		button.buttonFontWeight = TextParser.parse(json, "buttonFontWeight");
+        button.testId = TextParser.parse(json, "testID");
 
 		if (json.has("icon")) {
 			button.icon = TextParser.parse(json.optJSONObject("icon"), "uri");

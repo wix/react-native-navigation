@@ -326,6 +326,15 @@ public class StackControllerTest extends BaseTest {
         });
     }
 
+    @Test
+    public void stackCanBePushed() throws Exception {
+        StackController parent = new StackController(activity, "someStack", new Options());
+        parent.ensureViewIsCreated();
+        parent.push(uut, new MockPromise());
+        uut.onViewAppeared();
+        assertThat(parent.getView().getChildAt(1)).isEqualTo(uut.getView());
+    }
+
     private void assertContainsOnlyId(String... ids) {
         assertThat(uut.size()).isEqualTo(ids.length);
         assertThat(uut.getChildControllers()).extracting((Extractor<ViewController, String>) ViewController::getId).containsOnly(ids);

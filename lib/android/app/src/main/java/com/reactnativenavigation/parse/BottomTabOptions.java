@@ -13,11 +13,13 @@ public class BottomTabOptions implements DEFAULT_VALUES {
             throw new RuntimeException("BottomTab must have an icon");
         }
         options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
+        options.testId = TextParser.parse(json, "testID");
         return options;
     }
 
     public Text title = new NullText();
     public Text icon = new NullText();
+    public Text testId = new NullText();
 
     void mergeWith(final BottomTabOptions other) {
         if (other.title.hasValue()) {
