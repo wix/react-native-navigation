@@ -86,11 +86,11 @@ describe('screen stack', () => {
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
-  it('push stack with multiple children', async () => {
+  xit('push stack with multiple children', async () => {
     await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await elementById(testIDs.MODAL_WITH_STACK_BUTTON).tap();
     await expect(elementByLabel('Screen 2')).toBeVisible();
-    await Utils.tapBackIos();
+    await elementById(testIDs.POP_BUTTON).tap();
     await expect(elementByLabel('Screen 1')).toBeVisible();
   });
 });

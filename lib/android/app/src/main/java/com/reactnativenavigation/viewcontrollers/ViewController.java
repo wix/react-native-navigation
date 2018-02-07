@@ -69,6 +69,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return activity;
     }
 
+//    public void setVisibility(int visible) {
+//        getView().setVisibility(visible);
+//
+//    }
     protected void applyOnParentController(Task<ParentController> task) {
         if (parentController != null) task.run(parentController);
     }
