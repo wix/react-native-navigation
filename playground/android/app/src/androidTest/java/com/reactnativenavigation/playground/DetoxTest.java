@@ -10,10 +10,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/**
- * Created by simonracz on 28/05/2017.
- */
-
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class DetoxTest {
