@@ -160,6 +160,30 @@ var Controllers = {
           }
         };
       },
+      replace: function (params) {
+        var unsubscribes = [];
+        if (params['style']) {
+          params['style'] = Object.assign({}, params['style']);
+          _processProperties(params['style']);
+        }
+        if (params['titleImage']) {
+          params['titleImage'] = resolveAssetSource(params['titleImage']);
+        }
+        if (params['leftButtons']) {
+          var unsubscribe = _processButtons(params['leftButtons']);
+          unsubscribes.push(unsubscribe);
+        }
+        if (params['rightButtons']) {
+          var unsubscribe = _processButtons(params['rightButtons']);
+          unsubscribes.push(unsubscribe);
+        }
+        RCCManager.NavigationControllerIOS(id, "replace", params);
+        return function() {
+          for (var i = 0 ; i < unsubscribes.length ; i++) {
+            if (unsubscribes[i]) { unsubscribes[i](); }
+          }
+        };
+      },
       pop: function (params) {
         RCCManager.NavigationControllerIOS(id, "pop", params);
       },

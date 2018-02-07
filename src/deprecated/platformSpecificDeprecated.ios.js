@@ -290,6 +290,65 @@ function navigatorPush(navigator, params) {
   });
 }
 
+function navigatorReplace(navigator, params) {
+  if (!params.screen) {
+    console.error('Navigator.replace(params): params.screen is required');
+    return;
+  }
+  let previewViewID;
+  const screenInstanceID = _.uniqueId('screenInstanceID');
+  if (params.previewView instanceof Component) {
+    previewViewID = findNodeHandle(params.previewView)
+  } else if (typeof params.previewView === 'number') {
+    previewViewID = params.previewView;
+  } else if (params.previewView) {
+    console.error('Navigator.replace(params): params.previewView is not a valid react view');
+  }
+  const {
+    navigatorStyle,
+    navigatorButtons,
+    navigatorEventID
+  } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
+  _saveNavigatorButtonsProps(navigatorButtons);
+  _saveNavBarComponentProps(navigatorStyle);
+  const passProps = Object.assign({}, params.passProps);
+  passProps.navigatorID = navigator.navigatorID;
+  passProps.screenInstanceID = screenInstanceID;
+  passProps.navigatorEventID = navigatorEventID;
+  passProps.previewViewID = previewViewID;
+  passProps.isPreview = !!previewViewID;
+
+  params.navigationParams = {
+    screenInstanceID,
+    navigatorStyle,
+    navigatorButtons,
+    navigatorEventID,
+    navigatorID: navigator.navigatorID
+  };
+
+  savePassProps(params);
+
+  Controllers.NavigationControllerIOS(navigator.navigatorID).replace({
+    title: params.title,
+    subtitle: params.subtitle,
+    titleImage: params.titleImage,
+    component: params.screen,
+    animated: params.animated,
+    animationType: params.animationType,
+    passProps: passProps,
+    style: navigatorStyle,
+    backButtonTitle: params.backButtonTitle,
+    backButtonHidden: params.backButtonHidden,
+    leftButtons: navigatorButtons.leftButtons,
+    rightButtons: navigatorButtons.rightButtons,
+    previewViewID: previewViewID,
+    previewActions: params.previewActions,
+    previewHeight: params.previewHeight,
+    previewCommit: params.previewCommit,
+    timestamp: Date.now()
+  });
+}
+
 function navigatorPop(navigator, params) {
   Controllers.NavigationControllerIOS(navigator.navigatorID).pop({
     animated: params.animated,
@@ -701,6 +760,7 @@ export default {
   startTabBasedApp,
   startSingleScreenApp,
   navigatorPush,
+  navigatorReplace,
   navigatorPop,
   navigatorPopToRoot,
   navigatorResetTo,

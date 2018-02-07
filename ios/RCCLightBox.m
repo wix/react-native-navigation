@@ -164,13 +164,24 @@ const NSInteger kLightBoxTag = 0x101010;
          }];
     }
     
-    self.reactView.transform = CGAffineTransformMakeTranslation(0, 100);
+    NSDictionary *style = self.params[@"style"];
+    if (self.params != nil && style != nil)
+    {
+        if (style[@"animationIn"] != nil && [style[@"animationIn"] isEqualToString:@"slideLeftIn"]) {
+            self.reactView.transform = CGAffineTransformMakeTranslation(100, 0);
+        } else if (style[@"animationIn"] != nil && [style[@"animationIn"] isEqualToString:@"slideRightIn"]) {
+            self.reactView.transform = CGAffineTransformMakeTranslation(-100, 0);
+        } else {
+            self.reactView.transform = CGAffineTransformMakeTranslation(0, 100);
+        }
+    }
+    
     self.reactView.alpha = 0;
     [UIView animateWithDuration:0.6 delay:0.2 usingSpringWithDamping:0.65 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^()
-    {
-        self.reactView.transform = CGAffineTransformIdentity;
-        self.reactView.alpha = 1;
-    } completion:nil];
+     {
+         self.reactView.transform = CGAffineTransformIdentity;
+         self.reactView.alpha = 1;
+     } completion:nil];
 }
 
 -(void)dismissAnimated
@@ -178,17 +189,27 @@ const NSInteger kLightBoxTag = 0x101010;
     BOOL hasOverlayViews = (self.visualEffectView != nil || self.overlayColorView != nil);
     
     [UIView animateWithDuration:0.2 animations:^()
-    {
-        self.reactView.transform = CGAffineTransformMakeTranslation(0, 80);
-        self.reactView.alpha = 0;
-    }
+     {
+         NSDictionary *style = self.params[@"style"];
+         if (self.params != nil && style != nil)
+         {
+             if (style[@"animationOut"] != nil && [style[@"animationOut"] isEqualToString:@"slideLeftOut"]) {
+                 self.reactView.transform = CGAffineTransformMakeTranslation(-100, 0);
+             } else if (style[@"animationOut"] != nil && [style[@"animationOut"] isEqualToString:@"slideRightOut"]) {
+                 self.reactView.transform = CGAffineTransformMakeTranslation(100, 0);
+             } else {
+                 self.reactView.transform = CGAffineTransformMakeTranslation(0, 80);
+             }
+         }
+         self.reactView.alpha = 0;
+     }
                      completion:^(BOOL finished)
-    {
-        if (!hasOverlayViews)
-        {
-            [self removeFromSuperview];
-        }
-    }];
+     {
+         if (!hasOverlayViews)
+         {
+             [self removeFromSuperview];
+         }
+     }];
     
     if (hasOverlayViews)
     {
