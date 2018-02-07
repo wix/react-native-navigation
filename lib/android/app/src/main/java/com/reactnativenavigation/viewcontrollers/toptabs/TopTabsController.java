@@ -21,12 +21,10 @@ public class TopTabsController extends ParentController<TopTabsViewPager> implem
 
     private List<ViewController> tabs;
     private TopTabsLayoutCreator viewCreator;
-    private Options options;
 
     public TopTabsController(Activity activity, String id, List<ViewController> tabs, TopTabsLayoutCreator viewCreator, Options options) {
-        super(activity, id);
+        super(activity, id, options);
         this.viewCreator = viewCreator;
-        this.options = options;
         this.tabs = tabs;
         for (ViewController tab : tabs) {
             tab.setParentController(this);

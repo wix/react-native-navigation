@@ -44,7 +44,7 @@ public class OptionsApplyingTest extends BaseTest {
                 (activity1, componentId, componentName) -> view,
                 initialNavigationOptions
         );
-        stackController = new StackController(activity, "stack");
+        stackController = new StackController(activity, "stack", new Options());
         stackController.ensureViewIsCreated();
         uut.setParentController(stackController);
     }
@@ -62,7 +62,7 @@ public class OptionsApplyingTest extends BaseTest {
     public void initialOptionsAppliedOnAppear() throws Exception {
         assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
-        StackController stackController = new StackController(activity, "stackId");
+        StackController stackController = new StackController(activity, "stackId", new Options());
         stackController.animatePush(uut, new MockPromise() {});
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
 

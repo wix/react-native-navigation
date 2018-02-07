@@ -50,7 +50,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut = spy(new TopTabsController(activity, "componentId", tabControllers, layoutCreator, options));
         tabControllers.forEach(viewController -> viewController.setParentController(uut));
 
-        parentController = spy(new StackController(activity, "stackId"));
+        parentController = spy(new StackController(activity, "stackId", new Options()));
         uut.setParentController(parentController);
     }
 

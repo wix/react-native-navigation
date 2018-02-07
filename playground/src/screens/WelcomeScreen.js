@@ -59,22 +59,17 @@ class WelcomeScreen extends Component {
                     passProps: {
                       text: 'This is tab 1',
                       myFunction: () => 'Hello from a function!'
-                    },
-                    options: {
-                      bottomTab: {
-                        title: 'Tab 1',
-                        testID: testIDs.FIRST_TAB_BAR_BUTTON
-                      },
-                      bottomTabs: {
-                        textColor: '#12766b',
-                        selectedTextColor: 'red',
-                        fontFamily: 'HelveticaNeue-Italic',
-                        fontSize: 13
-                      }
                     }
                   }
                 }
-              ]
+              ],
+              options: {
+                bottomTab: {
+                  title: 'Tab 1',
+                  icon: require('../images/one.png'),
+                  testID: testIDs.FIRST_TAB_BAR_BUTTON
+                }
+              }
             }
           },
           {
@@ -85,19 +80,29 @@ class WelcomeScreen extends Component {
                     name: 'navigation.playground.TextScreen',
                     passProps: {
                       text: 'This is tab 2'
-                    },
-                    options: {
-                      bottomTab: {
-                        title: 'Tab 2',
-                        testID: testIDs.SECOND_TAB_BAR_BUTTON
-                      }
                     }
                   }
                 }
-              ]
+              ],
+              options: {
+                bottomTab: {
+                  title: 'Tab 2',
+                  icon: require('../images/two.png'),
+                  testID: testIDs.SECOND_TAB_BAR_BUTTON
+                }
+              }
             }
           }
-        ]
+        ],
+        options: {
+          bottomTabs: {
+            tabColor: 'red',
+            selectedTabColor: 'blue',
+            fontFamily: 'HelveticaNeue-Italic',
+            fontSize: 13,
+            testID: testIDs.BOTTOM_TABS_ELEMENT
+          }
+        }
       }
     });
   }
@@ -127,7 +132,14 @@ class WelcomeScreen extends Component {
                         }
                       }
                     }
-                  ]
+                  ],
+                  options: {
+                    bottomTab: {
+                      title: 'Tab 1',
+                      icon: require('../images/one.png'),
+                      testID: testIDs.FIRST_TAB_BAR_BUTTON
+                    }
+                  }
                 }
               },
               {
@@ -141,7 +153,14 @@ class WelcomeScreen extends Component {
                         }
                       }
                     }
-                  ]
+                  ],
+                  options: {
+                    bottomTab: {
+                      title: 'Tab 2',
+                      icon: require('../images/two.png'),
+                      testID: testIDs.SECOND_TAB_BAR_BUTTON
+                    }
+                  }
                 }
               },
               {
@@ -155,10 +174,25 @@ class WelcomeScreen extends Component {
                         }
                       }
                     }
-                  ]
+                  ],
+                  options: {
+                    bottomTab: {
+                      title: 'Tab 3',
+                      icon: require('../images/three.png'),
+                      testID: testIDs.SECOND_TAB_BAR_BUTTON
+                    }
+                  }
                 }
               }
-            ]
+            ],
+            options: {
+              bottomTabs: {
+                tabColor: 'red',
+                selectedTabColor: 'blue',
+                fontFamily: 'HelveticaNeue-Italic',
+                fontSize: 13
+              }
+            }
           }
         },
         right: {

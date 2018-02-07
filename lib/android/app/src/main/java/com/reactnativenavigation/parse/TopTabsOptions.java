@@ -14,7 +14,7 @@ public class TopTabsOptions implements DEFAULT_VALUES {
     public static TopTabsOptions parse(@Nullable JSONObject json) {
         TopTabsOptions result = new TopTabsOptions();
         if (json == null) return result;
-        result.selectedTabColor = ColorParser.parse(json, "selectedTabColor");
+        result.selectedTabColor = ColorParser.parse(json, "selectedColor");
         result.unselectedTabColor = ColorParser.parse(json, "unselectedTabColor");
         result.fontSize = NumberParser.parse(json, "fontSize");
         return result;

@@ -25,7 +25,7 @@ public class ComponentViewControllerTest extends BaseTest {
         super.beforeEach();
         Activity activity = newActivity();
         view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
-        ParentController<StackLayout> parentController = new StackController(activity, "stack");
+        ParentController<StackLayout> parentController = new StackController(activity, "stack", new Options());
         uut = new ComponentViewController(activity, "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options());
         uut.setParentController(parentController);
         parentController.ensureViewIsCreated();

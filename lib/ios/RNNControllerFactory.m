@@ -85,12 +85,10 @@
 
 - (UIViewController<RNNRootViewProtocol> *)createComponent:(RNNLayoutNode*)node {
 	NSString* name = node.data[@"name"];
-	NSDictionary* customTransition = node.data[@"customTransition"];
-	RNNAnimator* animator = [[RNNAnimator alloc] initWithAnimationsDictionary:customTransition];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
 	options.defaultOptions = _defaultOptions;
 	NSString* componentId = node.nodeId;
-	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter animator:animator];
+	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter];
 	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
 	[_bridge.uiManager setAvailableSize:availableSize forRootView:component.view];
 	
@@ -99,18 +97,20 @@
 
 - (UIViewController<RNNRootViewProtocol> *)createStack:(RNNLayoutNode*)node {
 	RNNNavigationController* vc = [[RNNNavigationController alloc] init];
-	
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary* child in node.children) {
 		[controllers addObject:[self fromTree:child]];
 	}
 	[vc setViewControllers:controllers];
+	[vc setOptions:options];
 	
 	return vc;
 }
 
 -(UIViewController<RNNRootViewProtocol> *)createTabs:(RNNLayoutNode*)node {
 	RNNTabBarController* vc = [[RNNTabBarController alloc] init];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
 	
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
@@ -121,6 +121,7 @@
 		[controllers addObject:childVc];
 	}
 	[vc setViewControllers:controllers];
+	[vc setOptions:options];
 	
 	return vc;
 }

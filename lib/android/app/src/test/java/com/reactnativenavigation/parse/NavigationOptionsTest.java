@@ -27,7 +27,7 @@ public class NavigationOptionsTest extends BaseTest {
     private static final Options.BooleanOptions TOP_BAR_HIDE_ON_SCROLL = True;
     private static final Options.BooleanOptions BOTTOM_TABS_ANIMATE_HIDE = True;
     private static final Options.BooleanOptions BOTTOM_TABS_HIDDEN = True;
-    private static final int BOTTOM_TABS_BADGE = 3;
+    private static final String BOTTOM_TABS_BADGE = "3";
     private static final String BOTTOM_TABS_CURRENT_TAB_ID = "ComponentId";
     private static final int BOTTOM_TABS_CURRENT_TAB_INDEX = 1;
     private TypefaceLoader mockLoader;
@@ -47,7 +47,7 @@ public class NavigationOptionsTest extends BaseTest {
     public void parsesJson() throws Exception {
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar())
-                .put("bottomTabs", createTabBar());
+                .put("bottomTabs", createBottomTabs());
         Options result = Options.parse(mockLoader, json);
         assertResult(result);
     }
@@ -62,20 +62,18 @@ public class NavigationOptionsTest extends BaseTest {
         assertThat(result.topBarOptions.drawBehind).isEqualTo(TOP_BAR_DRAW_BEHIND);
         assertThat(result.topBarOptions.hideOnScroll).isEqualTo(TOP_BAR_HIDE_ON_SCROLL);
         assertThat(result.bottomTabsOptions.animateHide).isEqualTo(BOTTOM_TABS_ANIMATE_HIDE);
-        assertThat(result.bottomTabsOptions.hidden).isEqualTo(BOTTOM_TABS_HIDDEN);
-        assertThat(result.bottomTabsOptions.tabBadge).isEqualTo(BOTTOM_TABS_BADGE);
+        assertThat(result.bottomTabsOptions.visible).isEqualTo(BOTTOM_TABS_HIDDEN);
         assertThat(result.bottomTabsOptions.currentTabId.get()).isEqualTo(BOTTOM_TABS_CURRENT_TAB_ID);
         assertThat(result.bottomTabsOptions.currentTabIndex).isEqualTo(BOTTOM_TABS_CURRENT_TAB_INDEX);
     }
 
     @NonNull
-    private JSONObject createTabBar() throws JSONException {
+    private JSONObject createBottomTabs() throws JSONException {
         return new JSONObject()
                 .put("currentTabId", BOTTOM_TABS_CURRENT_TAB_ID)
                 .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX)
-                .put("hidden", BOTTOM_TABS_HIDDEN)
-                .put("animateHide", BOTTOM_TABS_ANIMATE_HIDE)
-                .put("tabBadge", BOTTOM_TABS_BADGE);
+                .put("visible", BOTTOM_TABS_HIDDEN)
+                .put("animateHide", BOTTOM_TABS_ANIMATE_HIDE);
     }
 
     @NonNull
@@ -99,7 +97,7 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("textColor", TOP_BAR_TEXT_COLOR)
                 .put("textFontSize", TOP_BAR_FONT_SIZE)
                 .put("textFontFamily", TOP_BAR_FONT_FAMILY)
-                .put("hidden", TOP_BAR_HIDDEN);
+                .put("visible", TOP_BAR_HIDDEN);
     }
 
     @NonNull
@@ -107,7 +105,7 @@ public class NavigationOptionsTest extends BaseTest {
         return new JSONObject()
                 .put("currentTabId", BOTTOM_TABS_CURRENT_TAB_ID)
                 .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX)
-                .put("hidden", BOTTOM_TABS_HIDDEN)
+                .put("visible", BOTTOM_TABS_HIDDEN)
                 .put("animateHide", BOTTOM_TABS_ANIMATE_HIDE)
                 .put("tabBadge", BOTTOM_TABS_BADGE);
     }
@@ -116,7 +114,7 @@ public class NavigationOptionsTest extends BaseTest {
     public void mergeDefaultOptions() throws Exception {
         JSONObject json = new JSONObject();
         json.put("topBar", createTopBar());
-        json.put("bottomTabs", createTabBar());
+        json.put("bottomTabs", createBottomTabs());
         Options defaultOptions = Options.parse(mockLoader, json);
         Options options = new Options();
 
@@ -133,7 +131,7 @@ public class NavigationOptionsTest extends BaseTest {
 
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar())
-                .put("bottomTabs", createTabBar());
+                .put("bottomTabs", createBottomTabs());
         Options options = Options.parse(mockLoader, json);
         options.withDefaultOptions(defaultOptions);
         assertResult(options);

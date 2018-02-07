@@ -13,8 +13,8 @@ import java.util.Collection;
 
 public abstract class ParentController<T extends ViewGroup> extends ViewController {
 
-	public ParentController(final Activity activity, final String id) {
-		super(activity, id);
+	public ParentController(final Activity activity, final String id, Options initialOptions) {
+		super(activity, id, initialOptions);
 	}
 
 	@NonNull

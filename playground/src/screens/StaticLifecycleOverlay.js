@@ -1,7 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 const { View, Text } = require('react-native');
-const Navigation = require('react-native-navigation');
+const { Navigation } = require('react-native-navigation');
 
 class StaticLifecycleOverlay extends Component {
   constructor(props) {

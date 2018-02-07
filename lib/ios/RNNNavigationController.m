@@ -16,6 +16,10 @@
 	return rootVC.isAnimated;
 }
 
+- (void)setOptions:(RNNNavigationOptions *)options {
+	((UIViewController<RNNRootViewProtocol>*)self.topViewController).options = options;
+}
+
 - (NSString *)componentId {
 	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController).componentId;
 }

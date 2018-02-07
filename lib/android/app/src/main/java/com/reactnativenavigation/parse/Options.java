@@ -35,7 +35,8 @@ public class Options implements DEFAULT_VALUES {
 		result.topBarOptions = TopBarOptions.parse(typefaceManager, json.optJSONObject("topBar"));
 		result.topTabsOptions = TopTabsOptions.parse(json.optJSONObject("topTabs"));
         result.topTabOptions = TopTabOptions.parse(typefaceManager, json.optJSONObject("topTab"));
-		result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
+        result.bottomTabOptions = BottomTabOptions.parse(json.optJSONObject("bottomTab"));
+        result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
         result.overlayOptions = OverlayOptions.parse(json.optJSONObject("overlay"));
 
 		return result.withDefaultOptions(defaultOptions);
@@ -44,6 +45,7 @@ public class Options implements DEFAULT_VALUES {
     @NonNull public TopBarOptions topBarOptions = new TopBarOptions();
     @NonNull public TopTabsOptions topTabsOptions = new TopTabsOptions();
     @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
+    @NonNull public BottomTabOptions bottomTabOptions = new BottomTabOptions();
     @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
     @NonNull public OverlayOptions overlayOptions = new OverlayOptions();
 
@@ -54,12 +56,14 @@ public class Options implements DEFAULT_VALUES {
 	public void mergeWith(final Options other) {
         topBarOptions.mergeWith(other.topBarOptions);
         topTabsOptions.mergeWith(other.topTabsOptions);
+        bottomTabOptions.mergeWith(other.bottomTabOptions);
         bottomTabsOptions.mergeWith(other.bottomTabsOptions);
     }
 
     Options withDefaultOptions(final Options other) {
         topBarOptions.mergeWithDefault(other.topBarOptions);
         topTabsOptions.mergeWithDefault(other.topTabsOptions);
+        bottomTabOptions.mergeWithDefault(other.bottomTabOptions);
         bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
         return this;
     }
