@@ -14,7 +14,6 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
         options.color = ColorParser.parse(json, "tabColor");
         options.selectedColor = ColorParser.parse(json, "selectedTabColor");
         options.currentTabId = TextParser.parse(json, "currentTabId");
-		options.testID = TextParser.parse(json, "testID");
 		options.currentTabIndex = json.optInt("currentTabIndex", NO_INT_VALUE);
 		options.visible = BooleanOptions.parse(json.optString("visible"));
 		options.animateHide = BooleanOptions.parse(json.optString("animateHide"));
