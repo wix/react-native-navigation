@@ -60,14 +60,8 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         if (wasSelected) return false;
         selectTabAtIndex(index);
         return true;
-    }
-
-	void selectTabAtIndex(final int newIndex) {
-		getView().removeView(tabs.get(selectedIndex).getView());
-		selectedIndex = newIndex;
-		getView().addView(tabs.get(selectedIndex).getView());
 	}
-
+	
 	public void setTabs(final List<ViewController> tabs) {
 		if (tabs.size() > 5) {
 			throw new RuntimeException("Too many tabs!");
