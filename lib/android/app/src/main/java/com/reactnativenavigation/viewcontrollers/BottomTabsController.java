@@ -76,12 +76,12 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 		this.tabs = tabs;
 		getView();
 		for (int i = 0; i < tabs.size(); i++) {
-			createTab(tabs.get(i), tabs.get(i).options.bottomTabOptions, tabs.get(i).options.bottomTabsOptions);
+			createTab(i, tabs.get(i), tabs.get(i).options.bottomTabOptions, tabs.get(i).options.bottomTabsOptions);
 		}
 		selectTabAtIndex(0);
 	}
 
-	private void createTab(ViewController tab, final BottomTabOptions tabOptions, final BottomTabsOptions bottomTabsOptions) {
+	private void createTab(int index, ViewController tab, final BottomTabOptions tabOptions, final BottomTabsOptions bottomTabsOptions) {
 	    if (!tabOptions.icon.hasValue()) {
             throw new RuntimeException("BottomTab must have an icon");
         }
@@ -91,6 +91,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
                 setIconColor(drawable, bottomTabsOptions);
                 AHBottomNavigationItem item = new AHBottomNavigationItem(tabOptions.title.get(""), drawable);
                 bottomTabs.addItem(item);
+                bottomTabs.post(() -> bottomTabs.setTabTag(index, tabOptions.testId));
             }
 
             @Override

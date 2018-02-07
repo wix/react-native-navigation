@@ -19,4 +19,10 @@ public class BottomTabs extends AHBottomNavigation {
     private void setTestId(Text testId) {
         if (testId.hasValue()) setTag(testId.get());
     }
+
+    public void setTabTag(int index, Text testId) {
+        if (!testId.hasValue()) return;
+        if (testId.hasValue()) getViewAtPosition(index).setTag(testId.get());
+        if (testId.hasValue()) getViewAtPosition(index).setContentDescription(testId.get());
+    }
 }
