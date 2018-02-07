@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
@@ -32,7 +31,6 @@ import static com.reactnativenavigation.parse.DEFAULT_VALUES.NO_INT_VALUE;
 public class BottomTabsController extends ParentController implements AHBottomNavigation.OnTabSelectedListener, NavigationOptionsListener {
 	private BottomTabs bottomTabs;
 	private List<ViewController> tabs = new ArrayList<>();
-	private int selectedIndex = 0;
     private ImageLoader imageLoader;
 
     public BottomTabsController(final Activity activity, ImageLoader imageLoader, final String id, Options initialOptions) {
@@ -54,20 +52,15 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
 	@Override
 	public boolean handleBack() {
-		return !tabs.isEmpty() && tabs.get(selectedIndex).handleBack();
+		return !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack();
 	}
 
     @Override
     public boolean onTabSelected(int index, boolean wasSelected) {
+        if (wasSelected) return false;
         selectTabAtIndex(index);
         return true;
     }
-
-	void selectTabAtIndex(final int newIndex) {
-		getView().removeView(tabs.get(selectedIndex).getView());
-		selectedIndex = newIndex;
-		getView().addView(tabs.get(selectedIndex).getView());
-	}
 
 	public void setTabs(final List<ViewController> tabs) {
 		if (tabs.size() > 5) {
@@ -76,12 +69,12 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 		this.tabs = tabs;
 		getView();
 		for (int i = 0; i < tabs.size(); i++) {
-			createTab(i, tabs.get(i), tabs.get(i).options.bottomTabOptions, tabs.get(i).options.bottomTabsOptions);
+			createTab(i, tabs.get(i).options.bottomTabOptions, tabs.get(i).options.bottomTabsOptions);
 		}
 		selectTabAtIndex(0);
 	}
 
-	private void createTab(int index, ViewController tab, final BottomTabOptions tabOptions, final BottomTabsOptions bottomTabsOptions) {
+	private void createTab(int index, final BottomTabOptions tabOptions, final BottomTabsOptions bottomTabsOptions) {
 	    if (!tabOptions.icon.hasValue()) {
             throw new RuntimeException("BottomTab must have an icon");
         }
@@ -109,7 +102,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
     int getSelectedIndex() {
-		return selectedIndex;
+		return bottomTabs.getCurrentItem();
 	}
 
 	@NonNull
@@ -138,7 +131,18 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         }
     }
 
-	private boolean hasControlWithId(StackController controller, String id) {
+    void selectTabAtIndex(final int newIndex) {
+        getView().removeView(getCurrentView());
+        bottomTabs.setCurrentItem(newIndex, false);
+        getView().addView(getCurrentView());
+    }
+
+    @NonNull
+    private ViewGroup getCurrentView() {
+        return tabs.get(bottomTabs.getCurrentItem()).getView();
+    }
+
+    private boolean hasControlWithId(StackController controller, String id) {
 		for (ViewController child : controller.getChildControllers()) {
 			if (id.equals(child.getId())) {
 				return true;

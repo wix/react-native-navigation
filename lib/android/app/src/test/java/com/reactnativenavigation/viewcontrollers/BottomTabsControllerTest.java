@@ -2,7 +2,6 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.BaseTest;
@@ -14,7 +13,6 @@ import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.views.BottomTabs;
 
-import org.assertj.core.api.iterable.Extractor;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -65,11 +63,11 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void setTabs_AddAllViewsAsGoneExceptFirst() throws Exception {
+    public void setTabs_AddAllViews() throws Exception {
         List<ViewController> tabs = createTabs();
         uut.setTabs(tabs);
-        assertThat(uut.getView().getChildCount()).isEqualTo(6);
-        assertThat(uut.getChildControllers()).extracting((Extractor<ViewController, Integer>) input -> input.getView().getVisibility()).containsExactly(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE);
+        assertThat(uut.getView().getChildCount()).isEqualTo(2);
+        assertThat(((ViewController) ((List) uut.getChildControllers()).get(0)).getView().getParent()).isNotNull();
     }
 
     @Test
@@ -80,7 +78,7 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.selectTabAtIndex(3);
 
         assertThat(uut.getSelectedIndex()).isEqualTo(3);
-        assertThat(uut.getChildControllers()).extracting((Extractor<ViewController, Integer>) input -> input.getView().getVisibility()).containsExactly(View.GONE, View.GONE, View.GONE, View.VISIBLE, View.GONE);
+        assertThat(((ViewController) ((List) uut.getChildControllers()).get(0)).getView().getParent()).isNull();
     }
 
     @Test
