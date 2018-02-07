@@ -36,8 +36,8 @@ class LifecycleScreen extends Component {
       <View style={styles.root}>
         <Text style={styles.h1}>{`Lifecycle Screen`}</Text>
         <Text style={styles.h1}>{this.state.text}</Text>
-        <Button title="Push to test didDisappear" testID={testIDs.PUSH_TO_TEST_DID_DISAPPEAR_BUTTON} onPress={this.onClickPush} />
-        <Button title="Pop" testID={testIDs.POP_BUTTON} onPress={() => this.onClickPop()} />
+        <Button title='Push to test didDisappear' testID={testIDs.PUSH_TO_TEST_DID_DISAPPEAR_BUTTON} onPress={this.onClickPush} />
+        <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={() => this.onClickPop()} />
         <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
       </View>
     );

@@ -57,18 +57,18 @@ class OptionsScreen extends Component {
     return (
       <View style={styles.root}>
         <Text style={styles.h1} testID={testIDs.OPTIONS_SCREEN_HEADER}>{`Options Screen`}</Text>
-        <Button title="Dynamic Options" testID={testIDs.DYNAMIC_OPTIONS_BUTTON} onPress={this.onClickDynamicOptions} />
-        <Button title="Show Top Bar" testID={testIDs.SHOW_TOP_BAR_BUTTON} onPress={this.onClickShowTopBar} />
-        <Button title="Hide Top Bar" testID={testIDs.HIDE_TOP_BAR_BUTTON} onPress={this.onClickHideTopBar} />
-        <Button title="Top Bar Transparent" onPress={this.onClickTopBarTransparent} />
-        <Button title="Top Bar Opaque" onPress={this.onClickTopBarOpaque} />
-        <Button title="scrollView Screen" testID={testIDs.SCROLLVIEW_SCREEN_BUTTON} onPress={this.onClickScrollViewScreen} />
-        <Button title="Custom Transition" testID={testIDs.CUSTOM_TRANSITION_BUTTON} onPress={this.onClickCustomTranstition} />
-        <Button title="Show custom alert" testID={testIDs.SHOW_CUSTOM_ALERT_BUTTON} onPress={this.onClickAlert} />
-        <Button title="Show snackbar" testID={testIDs.SHOW_SNACKBAR_BUTTON} onPress={this.onClickSnackbar} />
-        <Button title="Show overlay" testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
-        <Button title="Show touch through overlay notInter" testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
-        <Button title="Push Default Options Screen" testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
+        <Button title='Dynamic Options' testID={testIDs.DYNAMIC_OPTIONS_BUTTON} onPress={this.onClickDynamicOptions} />
+        <Button title='Show Top Bar' testID={testIDs.SHOW_TOP_BAR_BUTTON} onPress={this.onClickShowTopBar} />
+        <Button title='Hide Top Bar' testID={testIDs.HIDE_TOP_BAR_BUTTON} onPress={this.onClickHideTopBar} />
+        <Button title='Top Bar Transparent' onPress={this.onClickTopBarTransparent} />
+        <Button title='Top Bar Opaque' onPress={this.onClickTopBarOpaque} />
+        <Button title='scrollView Screen' testID={testIDs.SCROLLVIEW_SCREEN_BUTTON} onPress={this.onClickScrollViewScreen} />
+        <Button title='Custom Transition' testID={testIDs.CUSTOM_TRANSITION_BUTTON} onPress={this.onClickCustomTranstition} />
+        <Button title='Show custom alert' testID={testIDs.SHOW_CUSTOM_ALERT_BUTTON} onPress={this.onClickAlert} />
+        <Button title='Show snackbar' testID={testIDs.SHOW_SNACKBAR_BUTTON} onPress={this.onClickSnackbar} />
+        <Button title='Show overlay' testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
+        <Button title='Show touch through overlay notInter' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
+        <Button title='Push Default Options Screen' testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );

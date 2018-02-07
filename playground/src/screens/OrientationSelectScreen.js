@@ -46,4 +46,3 @@ const styles = {
     margin: 10
   }
 };
-
