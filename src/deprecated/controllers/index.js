@@ -129,8 +129,8 @@ var Controllers = {
       _processProperties(_.get(layout, 'props.appStyle', {}));
       return await RCCManager.setRootController(layout, animationType, passProps);
     },
-    getInitialProps: async function() {
-      return await RCCManager.getInitialProps();
+    getLaunchArgs: async function() {
+      return await RCCManager.getLaunchArgs();
     }
   },
 

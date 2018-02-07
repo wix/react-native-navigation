@@ -694,7 +694,7 @@ function _saveNavigatorButtonsPassProps(buttons = []) {
 }
 
 async function getLaunchArgs() {
-  return await ControllerRegistry.getInitialProps();
+  return await ControllerRegistry.getLaunchArgs();
 }
 
 export default {
