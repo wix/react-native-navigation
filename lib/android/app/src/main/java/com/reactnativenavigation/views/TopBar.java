@@ -51,7 +51,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return titleBar.getTitle() != null ? titleBar.getTitle().toString() : "";
     }
 
-    public void setTestId(String setTestId) {
+    public void setTestId(String testId) {
         setTag(testId);
     }
 
