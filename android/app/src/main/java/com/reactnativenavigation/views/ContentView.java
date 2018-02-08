@@ -81,21 +81,16 @@ public class ContentView extends ReactRootView {
         detectContentViewVisible(child);
     }
 
-    private void detectContentViewVisible(final View child) {
+    private void detectContentViewVisible(View child) {
         if (onDisplayListener != null) {
-            post(new Runnable() {
+            ViewUtils.runOnPreDraw(child, new Runnable() {
                 @Override
                 public void run() {
-                    ViewUtils.runOnPreDraw(child, new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!isContentVisible) {
-                                isContentVisible = true;
-                                onDisplayListener.onDisplay();
-                                onDisplayListener = null;
-                            }
-                        }
-                    });
+                    if (!isContentVisible) {
+                        isContentVisible = true;
+                        onDisplayListener.onDisplay();
+                        onDisplayListener = null;
+                    }
                 }
             });
         }
