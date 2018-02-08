@@ -54,6 +54,7 @@
 -(RNNUIBarButtonItem*)buildButton: (NSDictionary*)dictionary {
 	NSString* buttonId = dictionary[@"id"];
 	NSString* title = dictionary[@"title"];
+	NSString* component = dictionary[@"component"];
 	
 	if (!buttonId) {
 		@throw [NSException exceptionWithName:@"NSInvalidArgumentException" reason:[@"button id is not specified " stringByAppendingString:title] userInfo:nil];
@@ -66,7 +67,10 @@
 	}
 	
 	RNNUIBarButtonItem *barButtonItem;
-	if (iconImage) {
+	if (component) {
+		RCTRootView *view = (RCTRootView*)[self.viewController.creator createRootView:component rootViewId:buttonId];
+		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withCustomView:view];
+	} else if (iconImage) {
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withIcon:iconImage];
 	} else if (title) {
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withTitle:title];

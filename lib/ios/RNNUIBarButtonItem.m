@@ -16,4 +16,20 @@
 	return self;
 }
 
+-(instancetype)init:(NSString*)buttonId withCustomView:(RCTRootView *)reactView {
+	self = [super initWithCustomView:reactView];
+	
+	reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
+	reactView.delegate = self;
+	reactView.backgroundColor = [UIColor clearColor];
+	self.buttonId = buttonId;
+	return self;
+}
+
+- (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
+	CGSize size = rootView.intrinsicContentSize;
+	rootView.frame = CGRectMake(0, 0, size.width, size.height);
+	self.width = size.width;
+}
+
 @end

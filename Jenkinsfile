@@ -37,3 +37,4 @@ npm run test-e2e-android -- --release'''
     }
   }
 }
+

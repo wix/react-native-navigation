@@ -1,19 +1,22 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.*;
+import android.app.Activity;
 import android.view.View;
 
-import com.reactnativenavigation.*;
-import com.reactnativenavigation.mocks.*;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.MockPromise;
+import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 
-import org.assertj.core.api.iterable.*;
-import org.junit.*;
+import org.assertj.core.api.iterable.Extractor;
+import org.junit.Test;
 
 import javax.annotation.Nullable;
 
-import static org.assertj.core.api.Java6Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class StackControllerTest extends BaseTest {
 

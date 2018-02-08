@@ -15,6 +15,7 @@
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic, strong) NSString* componentId;
 @property (nonatomic, strong) RNNTopTabsViewController* topTabsViewController;
+@property (nonatomic) id<RNNRootViewCreator> creator;
 @property (nonatomic, strong) RNNAnimator* animator;
 
 -(instancetype)initWithName:(NSString*)name
