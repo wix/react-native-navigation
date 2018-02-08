@@ -20,7 +20,11 @@ import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
 public class FabMenu extends FloatingActionMenu {
 
-    HashSet<Fab> fabs = new HashSet<>();
+    public interface FabClickListener {
+        void onFabClicked(String id);
+    }
+
+    private HashSet<Fab> fabs = new HashSet<>();
 
     public FabMenu(Context context) {
         super(context);
@@ -32,14 +36,14 @@ public class FabMenu extends FloatingActionMenu {
         setLayoutParams(layoutParams);
     }
 
-    public FabMenu(Context context, FabMenuOptions options, OnClickListener clickListener) {
+    public FabMenu(Context context, FabMenuOptions options, FabClickListener clickListener) {
         this(context);
+        onFinishInflate();
         applyOptions(options, clickListener);
-
         setOnMenuButtonClickListener(v -> toggle(true));
     }
 
-    public void applyOptions(FabMenuOptions options, OnClickListener clickListener) {
+    public void applyOptions(FabMenuOptions options, FabClickListener clickListener) {
         if (options.hidden == True) {
             hideMenu(true);
         } else {
@@ -59,13 +63,15 @@ public class FabMenu extends FloatingActionMenu {
             applyIcon(options.icon.get());
         }
 
-//        for (Fab fabStored : fabs) {
-//            removeMenuButton(fabStored);
-//        }
-//        fabs.clear();
+        for (Fab fabStored : fabs) {
+            removeMenuButton(fabStored);
+        }
+        fabs.clear();
         for (FabOptions fabOption : options.fabsArray) {
             Fab fab = new Fab(getContext(), fabOption);
-            fab.setOnClickListener(clickListener);
+            if (clickListener != null) {
+                fab.setOnClickListener(v -> clickListener.onFabClicked(fabOption.id.get()));
+            }
             fab.setButtonSize(FloatingActionButton.SIZE_MINI);
 
             fabs.add(fab);
@@ -75,16 +81,5 @@ public class FabMenu extends FloatingActionMenu {
 
     public void applyIcon(String icon) {
         //can not apply icon for now
-//        new ImageLoader().loadIcon(getContext(), icon, new ImageLoader.ImageLoadingListener() {
-//            @Override
-//            public void onComplete(@NonNull Drawable drawable) {
-//                //can not apply icon for now
-//            }
-//
-//            @Override
-//            public void onError(Throwable error) {
-//                error.printStackTrace();
-//            }
-//        });
     }
 }

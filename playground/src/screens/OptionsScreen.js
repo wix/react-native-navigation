@@ -76,6 +76,7 @@ class OptionsScreen extends Component {
   }
 
   onNavigationButtonPressed(id) {
+    console.log('NIGA', id);
     if (id === BUTTON_ONE) {
       Navigation.setOptions(this.props.componentId, {
         topBar: {
@@ -114,12 +115,6 @@ class OptionsScreen extends Component {
       });
     } else if (id === BUTTON_LEFT) {
       Navigation.pop(this.props.componentId);
-    } else if (id === FAB) {
-      Navigation.setOptions(this.props.componentId, {
-        fab: {
-          hidden: true
-        }
-      })
     }
   }
 

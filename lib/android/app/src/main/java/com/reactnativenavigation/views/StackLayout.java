@@ -55,7 +55,7 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
             }
         }
         if (options.fabMenuOptions.id.hasValue()) {
-            OnClickListener clickListener = v -> component.sendOnNavigationButtonPressed(options.fabMenuOptions.id.get());
+            FabMenu.FabClickListener clickListener = component::sendOnNavigationButtonPressed;
             if (fabMenu == null) {
                 fabMenu = new FabMenu(getContext(), options.fabMenuOptions, clickListener);
                 addView(fabMenu);
