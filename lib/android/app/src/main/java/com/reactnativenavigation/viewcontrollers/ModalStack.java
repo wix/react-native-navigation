@@ -1,27 +1,26 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.support.annotation.Nullable;
-import android.view.KeyEvent;
-import android.view.View;
 
 import com.facebook.react.bridge.Promise;
-import com.reactnativenavigation.R;
+import com.reactnativenavigation.viewcontrollers.modal.Modal;
+import com.reactnativenavigation.viewcontrollers.modal.ModalCreator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.view.View.MeasureSpec.EXACTLY;
-import static android.view.View.MeasureSpec.makeMeasureSpec;
-
 public class ModalStack {
 
 	private List<Modal> modals = new ArrayList<>();
+    private ModalCreator creator;
 
-	public void showModal(final ViewController viewController, Promise promise) {
-		Modal modal = new Modal(viewController);
-		modals.add(modal);
+    public ModalStack(ModalCreator creator) {
+        this.creator = creator;
+    }
+
+    public void showModal(final ViewController viewController, Promise promise) {
+        Modal modal = creator.create(viewController);
+        modals.add(modal);
 		modal.show();
 		if (promise != null) {
 			promise.resolve(viewController.getId());
@@ -52,7 +51,7 @@ public class ModalStack {
 	}
 
 	@Nullable
-	private Modal findModalByComponentId(String componentId) {
+	public Modal findModalByComponentId(String componentId) {
 		for (Modal modal : modals) {
 			if (modal.containsDeepComponentId(componentId)) {
 				return modal;
@@ -64,49 +63,6 @@ public class ModalStack {
 	@Nullable
     ViewController findControllerById(String id) {
         Modal modal = findModalByComponentId(id);
-        return modal != null ? modal.viewController : null;
-    }
-
-    private static class Modal implements DialogInterface.OnKeyListener {
-		public final ViewController viewController;
-		private final Dialog dialog;
-
-		Modal(final ViewController viewController) {
-			this.viewController = viewController;
-			dialog = new Dialog(viewController.getActivity(), R.style.Modal);
-			dialog.setOnKeyListener(this);
-		}
-
-		void show() {
-			preMeasureView();
-			dialog.setContentView(viewController.getView());
-			dialog.show();
-		}
-
-		void dismiss() {
-			dialog.dismiss();
-		}
-
-		boolean containsDeepComponentId(String componentId) {
-			return viewController.findControllerById(componentId) != null;
-		}
-
-		private void preMeasureView() {
-			View decorView = viewController.getActivity().getWindow().getDecorView();
-			viewController.getView().measure(makeMeasureSpec(decorView.getMeasuredWidth(), EXACTLY), makeMeasureSpec(decorView.getMeasuredHeight(), EXACTLY));
-		}
-
-        @Override
-        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                if (event.getAction() == KeyEvent.ACTION_UP) {
-                    if (viewController.handleBack()) {
-                        return true;
-                    }
-                    dialog.dismiss();
-                }
-            }
-            return false;
-        }
+        return modal != null ? modal.viewController.findControllerById(id) : null;
     }
 }
