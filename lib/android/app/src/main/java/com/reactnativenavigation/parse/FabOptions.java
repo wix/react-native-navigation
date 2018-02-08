@@ -1,7 +1,11 @@
 package com.reactnativenavigation.parse;
 
 
+import android.widget.RelativeLayout;
+
 import org.json.JSONObject;
+
+import static com.reactnativenavigation.parse.Options.BooleanOptions.NoValue;
 
 public class FabOptions implements DEFAULT_VALUES {
 
@@ -17,6 +21,8 @@ public class FabOptions implements DEFAULT_VALUES {
         if (json.has("icon")) {
             options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
         }
+        options.alignHorizontally = TextParser.parse(json, "alignHorizontally");
+        options.alignVertically = TextParser.parse(json, "alignVertically");
 
         return options;
     }
@@ -26,7 +32,9 @@ public class FabOptions implements DEFAULT_VALUES {
     public Color clickColor = new NullColor();
     public Color rippleColor = new NullColor();
     public Text icon = new NullText();
-    public Options.BooleanOptions hidden = Options.BooleanOptions.NoValue;
+    public Options.BooleanOptions hidden = NoValue;
+    public Text alignHorizontally = new NullText();
+    public Text alignVertically = new NullText();
 
     void mergeWith(final FabOptions other) {
         if (other.id.hasValue()) {
@@ -41,11 +49,17 @@ public class FabOptions implements DEFAULT_VALUES {
         if (other.rippleColor.hasValue()) {
             rippleColor = other.rippleColor;
         }
-        if (other.hidden != Options.BooleanOptions.NoValue) {
+        if (other.hidden != NoValue) {
             hidden = other.hidden;
         }
         if (other.icon.hasValue()) {
             icon = other.icon;
+        }
+        if (other.alignVertically.hasValue()) {
+            alignVertically = other.alignVertically;
+        }
+        if (other.alignHorizontally.hasValue()) {
+            alignHorizontally = other.alignHorizontally;
         }
     }
 
@@ -62,11 +76,17 @@ public class FabOptions implements DEFAULT_VALUES {
         if (!rippleColor.hasValue()) {
             rippleColor = defaultOptions.rippleColor;
         }
-        if (hidden == Options.BooleanOptions.NoValue) {
+        if (hidden == NoValue) {
             hidden = defaultOptions.hidden;
         }
         if (!icon.hasValue()) {
             icon = defaultOptions.icon;
+        }
+        if (!alignHorizontally.hasValue()) {
+            alignHorizontally = defaultOptions.alignHorizontally;
+        }
+        if (!alignVertically.hasValue()) {
+            alignVertically = defaultOptions.alignVertically;
         }
     }
 }

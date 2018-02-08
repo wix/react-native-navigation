@@ -14,7 +14,9 @@ import java.util.HashSet;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
+import static android.widget.RelativeLayout.ALIGN_PARENT_LEFT;
 import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
+import static android.widget.RelativeLayout.ALIGN_PARENT_TOP;
 import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
 import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
@@ -34,6 +36,8 @@ public class FabMenu extends FloatingActionMenu {
         layoutParams.addRule(ALIGN_PARENT_RIGHT);
         layoutParams.bottomMargin = (int) context.getResources().getDimension(R.dimen.margin);
         layoutParams.rightMargin = (int) context.getResources().getDimension(R.dimen.margin);
+        layoutParams.leftMargin = (int) context.getResources().getDimension(R.dimen.margin);
+        layoutParams.topMargin = (int) context.getResources().getDimension(R.dimen.margin);
         setLayoutParams(layoutParams);
     }
 
@@ -78,6 +82,30 @@ public class FabMenu extends FloatingActionMenu {
 
             fabs.add(fab);
             addMenuButton(fab);
+        }
+        if (options.alignHorizontally.hasValue()) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+            if ("right".equals(options.alignHorizontally.get())) {
+                layoutParams.removeRule(ALIGN_PARENT_LEFT);
+                layoutParams.addRule(ALIGN_PARENT_RIGHT);
+            }
+            if ("left".equals(options.alignHorizontally.get())) {
+                layoutParams.removeRule(ALIGN_PARENT_RIGHT);
+                layoutParams.addRule(ALIGN_PARENT_LEFT);
+            }
+            setLayoutParams(layoutParams);
+        }
+        if (options.alignVertically.hasValue()) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+            if ("top".equals(options.alignVertically.get())) {
+                layoutParams.removeRule(ALIGN_PARENT_BOTTOM);
+                layoutParams.addRule(ALIGN_PARENT_TOP);
+            }
+            if ("bottom".equals(options.alignVertically.get())) {
+                layoutParams.removeRule(ALIGN_PARENT_TOP);
+                layoutParams.addRule(ALIGN_PARENT_BOTTOM);
+            }
+            setLayoutParams(layoutParams);
         }
     }
 

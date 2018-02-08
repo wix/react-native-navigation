@@ -26,6 +26,8 @@ public class FabMenuOptions implements DEFAULT_VALUES {
                 options.fabsArray.add(FabOptions.parse(fabsArray.optJSONObject(i)));
             }
         }
+        options.alignHorizontally = TextParser.parse(json, "alignHorizontally");
+        options.alignVertically = TextParser.parse(json, "alignVertically");
 
         return options;
     }
@@ -37,6 +39,8 @@ public class FabMenuOptions implements DEFAULT_VALUES {
     public Text icon = new NullText();
     public Options.BooleanOptions hidden = Options.BooleanOptions.NoValue;
     public ArrayList<FabOptions> fabsArray = new ArrayList<>();
+    public Text alignHorizontally = new NullText();
+    public Text alignVertically = new NullText();
 
     void mergeWith(final FabMenuOptions other) {
         if (other.id.hasValue()) {
@@ -59,6 +63,12 @@ public class FabMenuOptions implements DEFAULT_VALUES {
         }
         if (other.fabsArray.size() > 0) {
             fabsArray = other.fabsArray;
+        }
+        if (other.alignVertically.hasValue()) {
+            alignVertically = other.alignVertically;
+        }
+        if (other.alignHorizontally.hasValue()) {
+            alignHorizontally = other.alignHorizontally;
         }
     }
 
@@ -83,6 +93,12 @@ public class FabMenuOptions implements DEFAULT_VALUES {
         }
         if (fabsArray.size() == 0) {
             fabsArray = defaultOptions.fabsArray;
+        }
+        if (!alignHorizontally.hasValue()) {
+            alignHorizontally = defaultOptions.alignHorizontally;
+        }
+        if (!alignVertically.hasValue()) {
+            alignVertically = defaultOptions.alignVertically;
         }
     }
 }

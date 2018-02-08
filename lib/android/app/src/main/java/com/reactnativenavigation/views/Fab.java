@@ -12,7 +12,9 @@ import com.reactnativenavigation.utils.ImageLoader;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
+import static android.widget.RelativeLayout.ALIGN_PARENT_LEFT;
 import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
+import static android.widget.RelativeLayout.ALIGN_PARENT_TOP;
 import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
 import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
@@ -38,14 +40,12 @@ public class Fab extends FloatingActionButton {
 
     public void applyOptions(FabOptions options) {
         id = options.id.get();
-
         if (options.hidden == True) {
             hide(true);
         }
         if (options.hidden == False) {
             show(true);
         }
-
         if (options.backgroundColor.hasValue()) {
             setColorNormal(options.backgroundColor.get());
         }
@@ -58,6 +58,31 @@ public class Fab extends FloatingActionButton {
         if (options.icon.hasValue()) {
             applyIcon(options.icon.get());
         }
+        if (options.alignHorizontally.hasValue()) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+            if ("right".equals(options.alignHorizontally.get())) {
+                layoutParams.removeRule(ALIGN_PARENT_LEFT);
+                layoutParams.addRule(ALIGN_PARENT_RIGHT);
+            }
+            if ("left".equals(options.alignHorizontally.get())) {
+                layoutParams.removeRule(ALIGN_PARENT_RIGHT);
+                layoutParams.addRule(ALIGN_PARENT_LEFT);
+            }
+            setLayoutParams(layoutParams);
+        }
+        if (options.alignVertically.hasValue()) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+            if ("top".equals(options.alignVertically.get())) {
+                layoutParams.removeRule(ALIGN_PARENT_BOTTOM);
+                layoutParams.addRule(ALIGN_PARENT_TOP);
+            }
+            if ("bottom".equals(options.alignVertically.get())) {
+                layoutParams.removeRule(ALIGN_PARENT_TOP);
+                layoutParams.addRule(ALIGN_PARENT_BOTTOM);
+            }
+            setLayoutParams(layoutParams);
+        }
+
     }
 
     public void applyIcon(String icon) {

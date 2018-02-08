@@ -52,6 +52,7 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
             } else {
                 fab.bringToFront();
                 fab.applyOptions(options.fabOptions);
+                fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.fabOptions.id.get()));
             }
         } else {
             removeFab();

@@ -19,6 +19,8 @@ public class NavigationOptionsTest extends BaseTest {
 
     private static final String TITLE = "the title";
     private static final String FAB_ID = "FAB";
+    private static final String FAB_ALIGN_HORIZONTALLY = "right";
+    private static final String FAB_ALIGN_VERTICALLY = "bottom";
     private static final int TOP_BAR_BACKGROUND_COLOR = 0xff123456;
     private static final int FAB_BACKGROUND_COLOR = Color.BLUE;
     private static final int FAB_CLICK_COLOR = Color.RED;
@@ -79,10 +81,14 @@ public class NavigationOptionsTest extends BaseTest {
         assertThat(result.fabOptions.rippleColor.get()).isEqualTo(FAB_RIPPLE_COLOR);
         assertThat(result.fabOptions.hidden).isEqualTo(FAB_HIDDEN);
         assertThat(result.fabOptions.id.get()).isEqualTo(FAB_ID);
+        assertThat(result.fabOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
+        assertThat(result.fabOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
         assertThat(result.fabMenuOptions.backgroundColor.get()).isEqualTo(FAB_BACKGROUND_COLOR);
         assertThat(result.fabMenuOptions.clickColor.get()).isEqualTo(FAB_CLICK_COLOR);
         assertThat(result.fabMenuOptions.rippleColor.get()).isEqualTo(FAB_RIPPLE_COLOR);
         assertThat(result.fabMenuOptions.hidden).isEqualTo(FAB_HIDDEN);
+        assertThat(result.fabMenuOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
+        assertThat(result.fabMenuOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
     }
 
     @NonNull
@@ -114,6 +120,8 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("backgroundColor", FAB_BACKGROUND_COLOR)
                 .put("clickColor", FAB_CLICK_COLOR)
                 .put("rippleColor", FAB_RIPPLE_COLOR)
+                .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
+                .put("alignVertically", FAB_ALIGN_VERTICALLY)
                 .put("hidden", FAB_HIDDEN);
     }
 
@@ -124,6 +132,8 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("backgroundColor", FAB_BACKGROUND_COLOR)
                 .put("clickColor", FAB_CLICK_COLOR)
                 .put("rippleColor", FAB_RIPPLE_COLOR)
+                .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
+                .put("alignVertically", FAB_ALIGN_VERTICALLY)
                 .put("hidden", FAB_HIDDEN);
     }
 
@@ -134,6 +144,8 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("backgroundColor", FAB_BACKGROUND_COLOR)
                 .put("clickColor", FAB_CLICK_COLOR)
                 .put("rippleColor", FAB_RIPPLE_COLOR)
+                .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
+                .put("alignVertically", FAB_ALIGN_VERTICALLY)
                 .put("hidden", FAB_HIDDEN);
     }
 
@@ -144,6 +156,8 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("backgroundColor", FAB_BACKGROUND_COLOR)
                 .put("clickColor", FAB_CLICK_COLOR)
                 .put("rippleColor", FAB_RIPPLE_COLOR)
+                .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
+                .put("alignVertically", FAB_ALIGN_VERTICALLY)
                 .put("hidden", FAB_HIDDEN);
     }
 
