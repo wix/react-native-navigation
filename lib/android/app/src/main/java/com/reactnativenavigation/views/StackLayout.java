@@ -85,7 +85,9 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
 
     private void removeFabMenu() {
         if (fabMenu != null) {
-            fabMenu.hideMenu(true);
+            if (fabMenu.isShown()) {
+                fabMenu.hideMenu(true);
+            }
             removeView(fabMenu);
             fabMenu = null;
         }
@@ -93,7 +95,9 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
 
     private void removeFab() {
         if (fab != null) {
-            fab.hide(true);
+            if (fab.isShown()) {
+                fab.hide(true);
+            }
             removeView(fab);
             fab = null;
         }
