@@ -76,7 +76,11 @@ public class StackController extends ParentController <StackLayout> {
 		}
 	}
 
-    void pop(final Promise promise) {
+	void pop(final Promise promise) {
+        pop(promise, false);
+    }
+
+    private void pop(final Promise promise, boolean animate) {
         if (!canPop()) {
             Navigator.rejectPromise(promise);
             return;
@@ -89,24 +93,14 @@ public class StackController extends ParentController <StackLayout> {
         final View exitingView = poppedTop.getView();
         getView().addView(enteringView, getView().getChildCount() - 1);
 
-        finishPopping(exitingView, poppedTop, promise);
-    }
+        stackLayout.onPop();
 
-	private void animatePop(final Promise promise) {
-		if (!canPop()) {
-			Navigator.rejectPromise(promise);
-			return;
+        if(animate) {
+			animator.animatePop(exitingView, () -> finishPopping(exitingView, poppedTop, promise));
+		} else {
+			finishPopping(exitingView, poppedTop, promise);
 		}
-
-		final ViewController poppedTop = stack.pop();
-		ViewController newTop = stack.peek();
-
-		View enteringView = newTop.getView();
-		final View exitingView = poppedTop.getView();
-		getView().addView(enteringView, getView().getChildCount() - 1);
-
-        animator.animatePop(exitingView, () -> finishPopping(exitingView, poppedTop, promise));
-	}
+    }
 
     boolean canPop() {
         return stack.size() > 1;
@@ -120,7 +114,7 @@ public class StackController extends ParentController <StackLayout> {
 
 	void popSpecific(final ViewController childController, Promise promise) {
 		if (stack.isTop(childController.getId())) {
-			animatePop(promise);
+			pop(promise, true);
 		} else {
 			stack.remove(childController.getId());
 			childController.destroy();
@@ -140,7 +134,7 @@ public class StackController extends ParentController <StackLayout> {
 			String nextControlId = iterator.next();
 			boolean animate = nextControlId.equals(viewController.getId());
 			if (animate) {
-			    animatePop(promise);
+			    pop(promise, true);
             } else {
 			    pop(NO_OP);
             }
@@ -152,7 +146,7 @@ public class StackController extends ParentController <StackLayout> {
 		while (canPop()) {
 			boolean animate = stack.size() == 2; // First element is root
             if (animate) {
-                animatePop(promise);
+                pop(promise, true);
             } else {
                 pop(NO_OP);
             }
@@ -174,7 +168,7 @@ public class StackController extends ParentController <StackLayout> {
 	@Override
 	public boolean handleBack() {
 		if (canPop()) {
-			animatePop(NO_OP);
+			pop(NO_OP);
 			return true;
 		}
         return false;

@@ -32,11 +32,12 @@ public class Fab extends FloatingActionButton {
 
     public Fab(Context context, FabOptions options) {
         this(context);
-        id = options.id.get();
         applyOptions(options);
     }
 
     public void applyOptions(FabOptions options) {
+        id = options.id.get();
+
         if (options.hidden == True) {
             hide(true);
         } else {

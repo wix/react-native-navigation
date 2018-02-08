@@ -37,6 +37,26 @@ class OptionsScreen extends Component {
           title: 'Left',
           buttonColor: 'purple'
         }]
+      },
+      fabMenu: {
+        id: FAB,
+        backgroundColor: 'orange',
+        clickColor: 'orange',
+        rippleColor: 'red',
+        fabs: [
+          {
+            id: "fab1",
+            backgroundColor: 'blue',
+            clickColor: 'blue',
+            rippleColor: 'aquamarine',
+          },
+          {
+            id: "fab2",
+            backgroundColor: 'blueviolet',
+            clickColor: 'blueviolet',
+            rippleColor: 'aquamarine',
+          }
+        ]
       }
     };
   }
@@ -76,7 +96,6 @@ class OptionsScreen extends Component {
   }
 
   onNavigationButtonPressed(id) {
-    console.log('NIGA', id);
     if (id === BUTTON_ONE) {
       Navigation.setOptions(this.props.componentId, {
         topBar: {
@@ -180,28 +199,9 @@ class OptionsScreen extends Component {
   }
 
   onClickFab() {
-    Navigation.setOptions(this.props.componentId, {
-      fabMenu: {
-        id: FAB,
-        backgroundColor: 'orange',
-        clickColor: 'orange',
-        rippleColor: 'red',
-        fabs: [
-          {
-            id: "fab1",
-            backgroundColor: 'blue',
-            clickColor: 'blue',
-            rippleColor: 'aquamarine',
-          },
-          {
-            id: "fab2",
-            backgroundColor: 'blueviolet',
-            clickColor: 'blueviolet',
-            rippleColor: 'aquamarine',
-          }
-        ]
-      }
-    });
+    // Navigation.setOptions(this.props.componentId, {
+
+    // });
   }
 
   onClickShowOverlay(interceptTouchOutside) {
