@@ -4,7 +4,7 @@ const testIDs = require('../playground/src/testIDs');
 
 const { elementById } = Utils;
 
-describe('orientation', () => {
+xdescribe('orientation', () => {
   beforeEach(async () => {
     await device.relaunchApp();
   });
