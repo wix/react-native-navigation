@@ -50,9 +50,11 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
                 fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.fabOptions.id.get()));
                 addView(fab);
             } else {
-                fabMenu.bringToFront();
+                fab.bringToFront();
                 fab.applyOptions(options.fabOptions);
             }
+        } else {
+            removeFab();
         }
         if (options.fabMenuOptions.id.hasValue()) {
             FabMenu.FabClickListener clickListener = component::sendOnNavigationButtonPressed;
@@ -63,6 +65,8 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
                 fabMenu.bringToFront();
                 fabMenu.applyOptions(options.fabMenuOptions, clickListener);
             }
+        } else {
+            removeFabMenu();
         }
     }
 
@@ -79,13 +83,9 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
         topBar.setupTopTabsWithViewPager(viewPager);
     }
 
-    public void onPop() {
-        removeFab();
-        removeFabMenu();
-    }
-
     private void removeFabMenu() {
         if (fabMenu != null) {
+            fabMenu.hideMenu(true);
             removeView(fabMenu);
             fabMenu = null;
         }
@@ -93,6 +93,7 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
 
     private void removeFab() {
         if (fab != null) {
+            fab.hide(true);
             removeView(fab);
             fab = null;
         }

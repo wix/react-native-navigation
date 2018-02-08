@@ -17,7 +17,7 @@ import com.reactnativenavigation.views.TopBar;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class StackController extends ParentController <StackLayout> {
+public class StackController extends ParentController<StackLayout> {
 
     private static final NoOpPromise NO_OP = new NoOpPromise();
     private final IdStack<ViewController> stack = new IdStack<>();
@@ -25,7 +25,7 @@ public class StackController extends ParentController <StackLayout> {
     private StackLayout stackLayout;
 
     public StackController(final Activity activity, String id, Options initialOptions) {
-		super(activity, id, initialOptions);
+        super(activity, id, initialOptions);
         animator = new NavigationAnimator(activity);
     }
 
@@ -59,28 +59,24 @@ public class StackController extends ParentController <StackLayout> {
     }
 
     public void animatePush(final ViewController child, final Promise promise) {
-		final ViewController toRemove = stack.peek();
+        final ViewController toRemove = stack.peek();
 
-		child.setParentController(this);
-		stack.push(child.getId(), child);
-		View enteringView = child.getView();
-		getView().addView(enteringView);
+        child.setParentController(this);
+        stack.push(child.getId(), child);
+        View enteringView = child.getView();
+        getView().addView(enteringView);
 
-		if (toRemove != null) {
+        if (toRemove != null) {
             animator.animatePush(enteringView, () -> {
                 getView().removeView(toRemove.getView());
                 promise.resolve(child.getId());
             });
-		} else {
-			promise.resolve(child.getId());
-		}
-	}
-
-	void pop(final Promise promise) {
-        pop(promise, false);
+        } else {
+            promise.resolve(child.getId());
+        }
     }
 
-    private void pop(final Promise promise, boolean animate) {
+    void pop(final Promise promise) {
         if (!canPop()) {
             Navigator.rejectPromise(promise);
             return;
@@ -93,86 +89,96 @@ public class StackController extends ParentController <StackLayout> {
         final View exitingView = poppedTop.getView();
         getView().addView(enteringView, getView().getChildCount() - 1);
 
-        stackLayout.onPop();
+        finishPopping(exitingView, poppedTop, promise);
+    }
 
-        if(animate) {
-			animator.animatePop(exitingView, () -> finishPopping(exitingView, poppedTop, promise));
-		} else {
-			finishPopping(exitingView, poppedTop, promise);
-		}
+    private void animatePop(final Promise promise) {
+        if (!canPop()) {
+            Navigator.rejectPromise(promise);
+            return;
+        }
+
+        final ViewController poppedTop = stack.pop();
+        ViewController newTop = stack.peek();
+
+        View enteringView = newTop.getView();
+        final View exitingView = poppedTop.getView();
+        getView().addView(enteringView, getView().getChildCount() - 1);
+
+        animator.animatePop(exitingView, () -> finishPopping(exitingView, poppedTop, promise));
     }
 
     boolean canPop() {
         return stack.size() > 1;
     }
 
-	private void finishPopping(View exitingView, ViewController poppedTop, Promise promise) {
-		getView().removeView(exitingView);
-		poppedTop.destroy();
+    private void finishPopping(View exitingView, ViewController poppedTop, Promise promise) {
+        getView().removeView(exitingView);
+        poppedTop.destroy();
         promise.resolve(poppedTop.getId());
-	}
+    }
 
-	void popSpecific(final ViewController childController, Promise promise) {
-		if (stack.isTop(childController.getId())) {
-			pop(promise, true);
-		} else {
-			stack.remove(childController.getId());
-			childController.destroy();
+    void popSpecific(final ViewController childController, Promise promise) {
+        if (stack.isTop(childController.getId())) {
+            animatePop(promise);
+        } else {
+            stack.remove(childController.getId());
+            childController.destroy();
             promise.resolve(childController.getId());
-		}
-	}
+        }
+    }
 
-	void popTo(final ViewController viewController, Promise promise) {
-		if (!stack.containsId(viewController.getId())) {
-			Navigator.rejectPromise(promise);
-			return;
-		}
+    void popTo(final ViewController viewController, Promise promise) {
+        if (!stack.containsId(viewController.getId())) {
+            Navigator.rejectPromise(promise);
+            return;
+        }
 
-		Iterator<String> iterator = stack.iterator();
-		String currentControlId = iterator.next();
-		while (!viewController.getId().equals(currentControlId)) {
-			String nextControlId = iterator.next();
-			boolean animate = nextControlId.equals(viewController.getId());
-			if (animate) {
-			    pop(promise, true);
-            } else {
-			    pop(NO_OP);
-            }
-			currentControlId = nextControlId;
-		}
-	}
-
-	void popToRoot(Promise promise) {
-		while (canPop()) {
-			boolean animate = stack.size() == 2; // First element is root
+        Iterator<String> iterator = stack.iterator();
+        String currentControlId = iterator.next();
+        while (!viewController.getId().equals(currentControlId)) {
+            String nextControlId = iterator.next();
+            boolean animate = nextControlId.equals(viewController.getId());
             if (animate) {
-                pop(promise, true);
+                animatePop(promise);
             } else {
                 pop(NO_OP);
             }
-		}
-	}
+            currentControlId = nextControlId;
+        }
+    }
 
-	ViewController peek() {
-		return stack.peek();
-	}
+    void popToRoot(Promise promise) {
+        while (canPop()) {
+            boolean animate = stack.size() == 2; // First element is root
+            if (animate) {
+                animatePop(promise);
+            } else {
+                pop(NO_OP);
+            }
+        }
+    }
 
-	public int size() {
-		return stack.size();
-	}
+    ViewController peek() {
+        return stack.peek();
+    }
 
-	public boolean isEmpty() {
-		return stack.isEmpty();
-	}
+    public int size() {
+        return stack.size();
+    }
 
-	@Override
-	public boolean handleBack() {
-		if (canPop()) {
-			pop(NO_OP);
-			return true;
-		}
+    public boolean isEmpty() {
+        return stack.isEmpty();
+    }
+
+    @Override
+    public boolean handleBack() {
+        if (canPop()) {
+            pop(NO_OP);
+            return true;
+        }
         return false;
-	}
+    }
 
     @NonNull
     @Override
@@ -181,11 +187,11 @@ public class StackController extends ParentController <StackLayout> {
         return stackLayout;
     }
 
-	@NonNull
-	@Override
-	public Collection<ViewController> getChildControllers() {
-		return stack.values();
-	}
+    @NonNull
+    @Override
+    public Collection<ViewController> getChildControllers() {
+        return stack.values();
+    }
 
     @Override
     public void setupTopTabsWithViewPager(ViewPager viewPager) {
