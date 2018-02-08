@@ -45,13 +45,13 @@ class OptionsScreen extends Component {
         rippleColor: 'red',
         fabs: [
           {
-            id: "fab1",
+            id: 'fab1',
             backgroundColor: 'blue',
             clickColor: 'blue',
             rippleColor: 'aquamarine',
           },
           {
-            id: "fab2",
+            id: 'fab2',
             backgroundColor: 'blueviolet',
             clickColor: 'blueviolet',
             rippleColor: 'aquamarine',
