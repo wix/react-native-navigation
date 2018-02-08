@@ -21,12 +21,10 @@ import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 public class OptionsPresenter {
     private TopBar topBar;
     private ReactComponent component;
-    private Fab fab;
 
-    public OptionsPresenter(TopBar topBar, ReactComponent component, Fab fab) {
+    public OptionsPresenter(TopBar topBar, ReactComponent component) {
         this.topBar = topBar;
         this.component = component;
-        this.fab = fab;
     }
 
     public void applyOptions(Options options) {
@@ -34,7 +32,6 @@ public class OptionsPresenter {
         applyTopBarOptions(options.topBarOptions);
         applyTopTabsOptions(options.topTabsOptions);
         applyTopTabOptions(options.topTabOptions);
-        applyFabOptions(options.fabOptions);
     }
 
     private void applyTopBarOptions(TopBarOptions options) {
@@ -75,35 +72,6 @@ public class OptionsPresenter {
     private void applyTopTabOptions(TopTabOptions topTabOptions) {
         if (topTabOptions.fontFamily != null) {
             topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
-        }
-    }
-
-    private void applyFabOptions(FabOptions options) {
-        if (options.id.hasValue()) {
-            fab.bringToFront();
-            if (options.hidden == True) {
-                fab.hide(true);
-            } else {
-                fab.show(true);
-            }
-
-            fab.setOnClickListener(v -> {
-                component.sendOnNavigationButtonPressed(options.id.get());
-            });
-
-            if (options.backgroundColor.hasValue()) {
-                fab.setColorNormal(options.backgroundColor.get());
-            }
-            if (options.clickColor.hasValue()) {
-                fab.setColorPressed(options.clickColor.get());
-            }
-            if (options.rippleColor.hasValue()) {
-                fab.setColorRipple(options.rippleColor.get());
-            }
-            if (options.icon.hasValue()) {
-                fab.applyIcon(options.icon.get());
-            }
-
         }
     }
 }

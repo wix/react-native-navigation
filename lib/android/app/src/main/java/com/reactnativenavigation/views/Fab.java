@@ -3,27 +3,58 @@ package com.reactnativenavigation.views;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
 import com.github.clans.fab.FloatingActionButton;
-import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.R;
+import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.utils.ImageLoader;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
+import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
 
 public class Fab extends FloatingActionButton {
+
+    private String id = "";
 
     public Fab(Context context) {
         super(context);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         layoutParams.addRule(ALIGN_PARENT_BOTTOM);
         layoutParams.addRule(ALIGN_PARENT_RIGHT);
+        layoutParams.bottomMargin = (int) context.getResources().getDimension(R.dimen.margin);
+        layoutParams.rightMargin = (int) context.getResources().getDimension(R.dimen.margin);
         setLayoutParams(layoutParams);
-        setVisibility(INVISIBLE);
+    }
+
+    public Fab(Context context, FabOptions options) {
+        this(context);
+        id = options.id.get();
+        applyOptions(options);
+    }
+
+    public void applyOptions(FabOptions options) {
+        if (options.hidden == True) {
+            hide(true);
+        } else {
+            show(true);
+        }
+
+        if (options.backgroundColor.hasValue()) {
+            setColorNormal(options.backgroundColor.get());
+        }
+        if (options.clickColor.hasValue()) {
+            setColorPressed(options.clickColor.get());
+        }
+        if (options.rippleColor.hasValue()) {
+            setColorRipple(options.rippleColor.get());
+        }
+        if (options.icon.hasValue()) {
+            applyIcon(options.icon.get());
+        }
     }
 
     public void applyIcon(String icon) {
@@ -38,5 +69,20 @@ public class Fab extends FloatingActionButton {
                 error.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Fab fab = (Fab) o;
+
+        return id.equals(fab.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

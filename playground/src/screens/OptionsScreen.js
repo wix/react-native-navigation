@@ -186,11 +186,25 @@ class OptionsScreen extends Component {
 
   onClickFab() {
     Navigation.setOptions(this.props.componentId, {
-      fab: {
+      fabMenu: {
         id: FAB,
-        backgroundColor: 'blue',
-        clickColor: 'blueviolet',
-        rippleColor: 'aquamarine'
+        backgroundColor: 'orange',
+        clickColor: 'orange',
+        rippleColor: 'red',
+        fabs: [
+          {
+            id: "fab1",
+            backgroundColor: 'blue',
+            clickColor: 'blue',
+            rippleColor: 'aquamarine',
+          },
+          {
+            id: "fab2",
+            backgroundColor: 'blueviolet',
+            clickColor: 'blueviolet',
+            rippleColor: 'aquamarine',
+          }
+        ]
       }
     });
   }
