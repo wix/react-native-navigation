@@ -7,7 +7,6 @@
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* componentName;
 @property (nonatomic) BOOL _statusBarHidden;
-@property (nonatomic) id<RNNRootViewCreator> creator;
 @end
 
 @implementation RNNRootViewController
