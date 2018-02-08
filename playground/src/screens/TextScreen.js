@@ -20,6 +20,7 @@ class TextScreen extends Component {
   constructor(props) {
     super(props);
     globalFirstComponentID = (props.text === 'This is tab 1') ? props.componentId : globalFirstComponentID;
+    this.onClickPop = this.onClickPop.bind(this);
   }
 
   render() {
@@ -35,8 +36,13 @@ class TextScreen extends Component {
         <Button title='Show Tab Bar' testID={testIDs.SHOW_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(false)} />
         <Button title='Show Left Side Menu' testID={testIDs.SHOW_LEFT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('left')} />
         <Button title='Show Right Side Menu' testID={testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('right')} />
+        <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
       </View>
     );
+  }
+
+  async onClickPop() {
+    await Navigation.pop(this.props.componentId);
   }
 
   renderTextFromFunctionInProps() {

@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 public class NavigatorTest extends BaseTest {
     private Activity activity;
     private Navigator uut;
-    private ParentController parentController;
+    private StackController parentController;
     private SimpleViewController child1;
     private ViewController child2;
     private ViewController child3;
@@ -44,7 +44,7 @@ public class NavigatorTest extends BaseTest {
         imageLoaderMock = ImageLoaderMock.mock();
         activity = newActivity();
         uut = new Navigator(activity);
-        parentController = new StackController(activity, "stack", new Options());
+        parentController = spy(new StackController(activity, "stack", new Options()));
         parentController.ensureViewIsCreated();
         child1 = new SimpleViewController(activity, "child1", tabOptions);
         child2 = new SimpleViewController(activity, "child2", tabOptions);
@@ -311,5 +311,28 @@ public class NavigatorTest extends BaseTest {
         uut.showModal(stackController, new MockPromise());
         uut.push(stackController.getId(), child2, new MockPromise());
         assertIsChildById(stackController.getView(), child2.getView());
+    }
+
+    @Test
+    public void pushedStackCanBePopped() throws Exception {
+        StackController parent = new StackController(activity, "someStack", new Options());
+        parent.ensureViewIsCreated();
+        uut.setRoot(parent, new MockPromise());
+        parent.push(parentController, new MockPromise());
+
+        parentController.push(child1, new MockPromise());
+        parentController.push(child2, new MockPromise());
+        assertThat(parentController.getChildControllers().size()).isEqualTo(2);
+        child1.ensureViewIsCreated();
+        child2.ensureViewIsCreated();
+
+        MockPromise promise = new MockPromise() {
+            @Override
+            public void resolve(@Nullable Object value) {
+                assertThat(parentController.getChildControllers().size()).isEqualTo(1);
+            }
+        };
+        uut.popSpecific("child2", promise);
+        verify(parentController, times(1)).popSpecific(child2, promise);
     }
 }
