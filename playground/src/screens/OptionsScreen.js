@@ -86,7 +86,7 @@ class OptionsScreen extends Component {
         <Button title='Top Bar Opaque' onPress={this.onClickTopBarOpaque} />
         <Button title='scrollView Screen' testID={testIDs.SCROLLVIEW_SCREEN_BUTTON} onPress={this.onClickScrollViewScreen} />
         <Button title='Custom Transition' onPress={this.onClickCustomTranstition} />
-        <Button title='Show fab' testID={testIDs.SHOW_CUSTOM_ALERT_BUTTON} onPress={this.onClickFab} />
+        <Button title='Hide fab' testID={testIDs.HIDE_FAB} onPress={this.onClickFab} />
         <Button title='Show overlay' testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
         <Button title='Show touch through overlay' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
         <Button title='Push Default Options Screen' testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
@@ -199,9 +199,12 @@ class OptionsScreen extends Component {
   }
 
   onClickFab() {
-    // Navigation.setOptions(this.props.componentId, {
-
-    // });
+    Navigation.setOptions(this.props.componentId, {
+      fabMenu: {
+        id: FAB,
+        hidden: true
+      }
+    });
   }
 
   onClickShowOverlay(interceptTouchOutside) {
