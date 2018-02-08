@@ -17,7 +17,7 @@ import com.reactnativenavigation.views.TopBar;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class StackController extends ParentController<StackLayout> {
+public class StackController extends ParentController <StackLayout> {
 
     private static final NoOpPromise NO_OP = new NoOpPromise();
     private final IdStack<ViewController> stack = new IdStack<>();
@@ -174,7 +174,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public boolean handleBack() {
         if (canPop()) {
-            pop(NO_OP);
+            animatePop(NO_OP);
             return true;
         }
         return false;
