@@ -13,6 +13,7 @@ import com.reactnativenavigation.utils.ImageLoader;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
+import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
 import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
 
@@ -40,7 +41,8 @@ public class Fab extends FloatingActionButton {
 
         if (options.hidden == True) {
             hide(true);
-        } else {
+        }
+        if (options.hidden == False) {
             show(true);
         }
 

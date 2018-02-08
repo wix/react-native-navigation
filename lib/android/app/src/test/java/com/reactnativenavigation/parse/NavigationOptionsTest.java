@@ -1,6 +1,7 @@
 package com.reactnativenavigation.parse;
 
 import android.graphics.*;
+import android.graphics.Color;
 import android.support.annotation.*;
 
 import com.reactnativenavigation.*;
@@ -17,7 +18,12 @@ import static org.assertj.core.api.Java6Assertions.*;
 public class NavigationOptionsTest extends BaseTest {
 
     private static final String TITLE = "the title";
+    private static final String FAB_ID = "FAB";
     private static final int TOP_BAR_BACKGROUND_COLOR = 0xff123456;
+    private static final int FAB_BACKGROUND_COLOR = Color.BLUE;
+    private static final int FAB_CLICK_COLOR = Color.RED;
+    private static final int FAB_RIPPLE_COLOR = Color.GREEN;
+    private static final Options.BooleanOptions FAB_HIDDEN = True;
     private static final int TOP_BAR_TEXT_COLOR = 0xff123456;
     private static final int TOP_BAR_FONT_SIZE = 18;
     private static final String TOP_BAR_FONT_FAMILY = "HelveticaNeue-CondensedBold";
@@ -47,6 +53,8 @@ public class NavigationOptionsTest extends BaseTest {
     public void parsesJson() throws Exception {
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar())
+                .put("fab", createFab())
+                .put("fabMenu", createFabMenu())
                 .put("bottomTabs", createBottomTabs());
         Options result = Options.parse(mockLoader, json);
         assertResult(result);
@@ -65,6 +73,16 @@ public class NavigationOptionsTest extends BaseTest {
         assertThat(result.bottomTabsOptions.visible).isEqualTo(BOTTOM_TABS_HIDDEN);
         assertThat(result.bottomTabsOptions.currentTabId.get()).isEqualTo(BOTTOM_TABS_CURRENT_TAB_ID);
         assertThat(result.bottomTabsOptions.currentTabIndex).isEqualTo(BOTTOM_TABS_CURRENT_TAB_INDEX);
+        assertThat(result.fabOptions.id.get()).isEqualTo(FAB_ID);
+        assertThat(result.fabOptions.backgroundColor.get()).isEqualTo(FAB_BACKGROUND_COLOR);
+        assertThat(result.fabOptions.clickColor.get()).isEqualTo(FAB_CLICK_COLOR);
+        assertThat(result.fabOptions.rippleColor.get()).isEqualTo(FAB_RIPPLE_COLOR);
+        assertThat(result.fabOptions.hidden).isEqualTo(FAB_HIDDEN);
+        assertThat(result.fabOptions.id.get()).isEqualTo(FAB_ID);
+        assertThat(result.fabMenuOptions.backgroundColor.get()).isEqualTo(FAB_BACKGROUND_COLOR);
+        assertThat(result.fabMenuOptions.clickColor.get()).isEqualTo(FAB_CLICK_COLOR);
+        assertThat(result.fabMenuOptions.rippleColor.get()).isEqualTo(FAB_RIPPLE_COLOR);
+        assertThat(result.fabMenuOptions.hidden).isEqualTo(FAB_HIDDEN);
     }
 
     @NonNull
@@ -87,6 +105,46 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("hidden", TOP_BAR_HIDDEN)
                 .put("drawBehind", TOP_BAR_DRAW_BEHIND)
                 .put("hideOnScroll", TOP_BAR_HIDE_ON_SCROLL);
+    }
+
+    @NonNull
+    private JSONObject createFab() throws JSONException {
+        return new JSONObject()
+                .put("id", FAB_ID)
+                .put("backgroundColor", FAB_BACKGROUND_COLOR)
+                .put("clickColor", FAB_CLICK_COLOR)
+                .put("rippleColor", FAB_RIPPLE_COLOR)
+                .put("hidden", FAB_HIDDEN);
+    }
+
+    @NonNull
+    private JSONObject createOtherFab() throws JSONException {
+        return new JSONObject()
+                .put("id", "FAB")
+                .put("backgroundColor", FAB_BACKGROUND_COLOR)
+                .put("clickColor", FAB_CLICK_COLOR)
+                .put("rippleColor", FAB_RIPPLE_COLOR)
+                .put("hidden", FAB_HIDDEN);
+    }
+
+    @NonNull
+    private JSONObject createFabMenu() throws JSONException {
+        return new JSONObject()
+                .put("id", FAB_ID)
+                .put("backgroundColor", FAB_BACKGROUND_COLOR)
+                .put("clickColor", FAB_CLICK_COLOR)
+                .put("rippleColor", FAB_RIPPLE_COLOR)
+                .put("hidden", FAB_HIDDEN);
+    }
+
+    @NonNull
+    private JSONObject createOtherFabMenu() throws JSONException {
+        return new JSONObject()
+                .put("id", "FAB")
+                .put("backgroundColor", FAB_BACKGROUND_COLOR)
+                .put("clickColor", FAB_CLICK_COLOR)
+                .put("rippleColor", FAB_RIPPLE_COLOR)
+                .put("hidden", FAB_HIDDEN);
     }
 
     @NonNull
@@ -114,6 +172,8 @@ public class NavigationOptionsTest extends BaseTest {
     public void mergeDefaultOptions() throws Exception {
         JSONObject json = new JSONObject();
         json.put("topBar", createTopBar());
+        json.put("fab", createFab());
+        json.put("fabMenu", createFabMenu());
         json.put("bottomTabs", createBottomTabs());
         Options defaultOptions = Options.parse(mockLoader, json);
         Options options = new Options();
@@ -126,6 +186,8 @@ public class NavigationOptionsTest extends BaseTest {
     public void mergedDefaultOptionsDontOverrideGivenOptions() throws Exception {
         JSONObject defaultJson = new JSONObject()
                 .put("topBar", createOtherTopBar())
+                .put("fab", createOtherFab())
+                .put("fabMenu", createOtherFabMenu())
                 .put("bottomTabs", createOtherTabBar());
         Options defaultOptions = Options.parse(mockLoader, defaultJson);
 

@@ -15,6 +15,7 @@ import java.util.HashSet;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
+import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
 import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
 
@@ -46,7 +47,8 @@ public class FabMenu extends FloatingActionMenu {
     public void applyOptions(FabMenuOptions options, FabClickListener clickListener) {
         if (options.hidden == True) {
             hideMenu(true);
-        } else {
+        }
+        if (options.hidden == False) {
             showMenu(true);
         }
 

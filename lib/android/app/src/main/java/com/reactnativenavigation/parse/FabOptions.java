@@ -26,7 +26,7 @@ public class FabOptions implements DEFAULT_VALUES {
     public Color clickColor = new NullColor();
     public Color rippleColor = new NullColor();
     public Text icon = new NullText();
-    public Options.BooleanOptions hidden = Options.BooleanOptions.False;
+    public Options.BooleanOptions hidden = Options.BooleanOptions.NoValue;
 
     void mergeWith(final FabOptions other) {
         if (other.id.hasValue()) {

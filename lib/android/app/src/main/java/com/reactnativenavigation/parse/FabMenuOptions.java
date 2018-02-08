@@ -35,7 +35,7 @@ public class FabMenuOptions implements DEFAULT_VALUES {
     public Color clickColor = new NullColor();
     public Color rippleColor = new NullColor();
     public Text icon = new NullText();
-    public Options.BooleanOptions hidden = Options.BooleanOptions.False;
+    public Options.BooleanOptions hidden = Options.BooleanOptions.NoValue;
     public ArrayList<FabOptions> fabsArray = new ArrayList<>();
 
     void mergeWith(final FabMenuOptions other) {
