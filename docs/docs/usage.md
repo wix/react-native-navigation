@@ -4,7 +4,7 @@
 
 ### Navigation
 ```js
-import Navigation from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
 ```
 ### Events - On App Launched
 How to initiate your app.
@@ -83,24 +83,57 @@ Navigation.setRoot({
   },
 });
 ```
+
+Start a stack based app (with options):
+
+```js
+Navigation.setRoot({
+  stack: {
+    options: {
+      topBar: {
+        hidden: true,
+      },
+    },
+    children: [
+      {
+        component: {
+          name: 'navigation.playground.TextScreen',
+          passProps: {
+            text: 'This is tab 1',
+            myFunction: () => 'Hello from a function!',
+          },
+        },
+      },
+      {
+        component: {
+          name: 'navigation.playground.TextScreen',
+          passProps: {
+            text: 'This is tab 2',
+          },
+        },
+      },
+    ],
+  },
+});
+```
 ## Screen API
 
 ### push(params)
 Push a new screen into this screen's navigation stack.
 
 ```js
-Navigation.push(this.props.containerId, {
+Navigation.push(this.props.componentId, {
   name: 'navigation.playground.PushedScreen',
   passProps: {}
 });
 ```
-### pop(containerId)
+### pop(componentId)
 Pop the top screen from this screen's navigation stack.
 
 ```js
-Navigation.pop(this.props.containerId);
+Navigation.pop(this.props.componentId);
 ```
-### popTo(containerId)
+### popTo(componentId)
 ```js
 Navigation.popTo(previousScreenId);
 ```
@@ -108,14 +141,14 @@ Navigation.popTo(previousScreenId);
 Pop all the screens until the root from this screen's navigation stack
 
 ```js
-Navigation.popToRoot(this.props.containerId);
+Navigation.popToRoot(this.props.componentId);
 ```
 ### showModal(params = {})
 Show a screen as a modal.
 
 ```js
 Navigation.showModal({
-  container: {
+  component: {
     name: 'navigation.playground.ModalScreen',
     passProps: {
         key: 'value'
@@ -123,11 +156,11 @@ Navigation.showModal({
   }
 });
 ```
-### dismissModal(containerId)
+### dismissModal(componentId)
 Dismiss modal.
 
 ```js
-Navigation.dismissModal(this.props.containerId);
+Navigation.dismissModal(this.props.componentId);
 ```
 ### dismissAllModals()
 Dismiss all the current modals at the same time.
