@@ -17,9 +17,9 @@ These issues originate from the same problem: you cannot specify on which screen
 There are ways to solve some of these problems in v1 but they are not straightforward. We want to change that.
 
 #### New API
-To solve this problem in v2, every screen receives as a prop it’s containerId. Whenever you want to perform an action from that screen you need to pass the containerId to the function:
+To solve this problem in v2, every screen receives as a prop it’s componentId. Whenever you want to perform an action from that screen you need to pass the componentId to the function:
 ```js
-Navigator.pop(this.props.containerId)
+Navigator.pop(this.props.componentId)
 ```
 ### Built for Contributors
 Currently, it requires a lot of work to accept pull requests. We need to manually make sure that everything works before we approve them because v1 is not thoroughly tested. <br>
@@ -179,18 +179,18 @@ How to initiate your app.
 ```js
 Navigation.events().onAppLaunched(() => {
     Navigation.setRoot({
-      container: {
+      component: {
         name: 'navigation.playground.WelcomeScreen'
       }
     });
   });
 ```
 
-#### registerContainer(screenID, generator)
+#### registerComponent(screenID, generator)
 Every screen component in your app must be registered with a unique name. The component itself is a traditional React component extending React.Component.
 
 ```js
-Navigation.registerContainer(`navigation.playground.WelcomeScreen`, () => WelcomeScreen);
+Navigation.registerComponent(`navigation.playground.WelcomeScreen`, () => WelcomeScreen);
 ```
 
 #### setRoot({params})
@@ -198,12 +198,12 @@ Start a Single page app with two side menus:
 
 ```js
 Navigation.setRoot({
-      container: {
+      component: {
         name: 'navigation.playground.WelcomeScreen'
       },
       sideMenu: {
         left: {
-          container: {
+          component: {
             name: 'navigation.playground.TextScreen',
             passProps: {
               text: 'This is a left side menu screen'
@@ -211,7 +211,7 @@ Navigation.setRoot({
           }
         },
         right: {
-          container: {
+          component: {
             name: 'navigation.playground.TextScreen',
             passProps: {
               text: 'This is a right side menu screen'
@@ -227,7 +227,7 @@ Start a tab based app:
 Navigation.setRoot({
       tabs: [
         {
-          container: {
+          component: {
             name: 'navigation.playground.TextScreen',
             passProps: {
               text: 'This is tab 1',
@@ -236,7 +236,7 @@ Navigation.setRoot({
           }
         },
         {
-          container: {
+          component: {
             name: 'navigation.playground.TextScreen',
             passProps: {
               text: 'This is tab 2'
@@ -252,34 +252,34 @@ Navigation.setRoot({
 Push a new screen into this screen's navigation stack.
 
 ```js
-Navigation.push(this.props.containerId, {
+Navigation.push(this.props.componentId, {
       name: 'navigation.playground.PushedScreen',
       passProps: {}
     });
 ```
-#### pop(containerId)
+#### pop(componentId)
 Pop the top screen from this screen's navigation stack.
 
 ```js
-Navigation.pop(this.props.containerId);
+Navigation.pop(this.props.componentId);
 ```
 #### popTo(params)
 
 ```js
-Navigation.popTo(this.props.containerId, this.props.previousScreenIds[0]);
+Navigation.popTo(this.props.componentId, this.props.previousScreenIds[0]);
 ```
 #### popToRoot()
 Pop all the screens until the root from this screen's navigation stack
 
 ```js
-Navigation.popToRoot(this.props.containerId);
+Navigation.popToRoot(this.props.componentId);
 ```
 #### showModal(params = {})
 Show a screen as a modal.
 
 ```js
 Navigation.showModal({
-      container: {
+      component: {
         name: 'navigation.playground.ModalScreen',
         passProps: {
             key: 'value'
@@ -287,11 +287,11 @@ Navigation.showModal({
       }
     });
 ```
-#### dismissModal(containerId)
+#### dismissModal(componentId)
 Dismiss modal.
 
 ```js
-Navigation.dismissModal(this.props.containerId);
+Navigation.dismissModal(this.props.componentId);
 ```
 #### dismissAllModals()
 Dismiss all the current modals at the same time.
