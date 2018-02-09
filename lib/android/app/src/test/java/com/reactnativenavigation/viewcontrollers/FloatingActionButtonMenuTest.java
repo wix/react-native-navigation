@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
@@ -10,7 +11,6 @@ import com.reactnativenavigation.parse.FabMenuOptions;
 import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
-import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.StackLayout;
 
@@ -20,9 +20,11 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class FloatingActionButtonMenuTest extends BaseTest {
 
+    private final static int CHILD_FAB_COUNT = 3;
+
     private StackController stackController;
-    private SimpleViewController childFab;
-    private SimpleViewController childNoFab;
+    private SimpleViewController controllerFab;
+    private SimpleViewController controllerNoFab;
 
     @Override
     public void beforeEach() {
@@ -30,8 +32,8 @@ public class FloatingActionButtonMenuTest extends BaseTest {
         Activity activity = newActivity();
         stackController = new StackController(activity, "stackController", new Options());
         Options options = getOptionsWithFab();
-        childFab = new SimpleViewController(activity, "child1", options);
-        childNoFab = new SimpleViewController(activity, "child2", new Options());
+        controllerFab = new SimpleViewController(activity, "child1", options);
+        controllerNoFab = new SimpleViewController(activity, "child2", new Options());
     }
 
     @NonNull
@@ -39,6 +41,11 @@ public class FloatingActionButtonMenuTest extends BaseTest {
         Options options = new Options();
         FabMenuOptions fabOptions = new FabMenuOptions();
         fabOptions.id = new Text("FAB");
+        for (int i = 0; i < CHILD_FAB_COUNT; i++) {
+            FabOptions childOptions = new FabOptions();
+            childOptions.id = new Text("fab" + i);
+            fabOptions.fabsArray.add(childOptions);
+        }
         options.fabMenuOptions = fabOptions;
         return options;
     }
@@ -53,42 +60,61 @@ public class FloatingActionButtonMenuTest extends BaseTest {
         return false;
     }
 
+    private boolean containsFabChildren() {
+        StackLayout stackLayout = stackController.getStackLayout();
+        for (int i = 0; i < stackLayout.getChildCount(); i++) {
+            View child = stackLayout.getChildAt(i);
+            if (child instanceof FabMenu) {
+                return ((FabMenu) child).getChildCount() == CHILD_FAB_COUNT + 2;
+            }
+        }
+        return false;
+    }
+
     @Test
     public void showOnPush() throws Exception {
-        stackController.push(childFab, new MockPromise());
-        childFab.onViewAppeared();
+        stackController.push(controllerFab, new MockPromise());
+        controllerFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
     }
 
     @Test
     public void hideOnPush() throws Exception {
-        stackController.push(childFab, new MockPromise());
-        childFab.onViewAppeared();
+        stackController.push(controllerFab, new MockPromise());
+        controllerFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
-        stackController.push(childNoFab, new MockPromise());
-        childNoFab.onViewAppeared();
+        stackController.push(controllerNoFab, new MockPromise());
+        controllerNoFab.onViewAppeared();
         assertThat(hasFab()).isFalse();
     }
 
     @Test
     public void hideOnPop() throws Exception {
-        stackController.push(childNoFab, new MockPromise());
-        stackController.push(childFab, new MockPromise());
-        childFab.onViewAppeared();
+        stackController.push(controllerNoFab, new MockPromise());
+        stackController.push(controllerFab, new MockPromise());
+        controllerFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
         stackController.pop(new MockPromise());
-        childNoFab.onViewAppeared();
+        controllerNoFab.onViewAppeared();
         assertThat(hasFab()).isFalse();
     }
 
     @Test
     public void showOnPop() throws Exception {
-        stackController.push(childFab, new MockPromise());
-        stackController.push(childNoFab, new MockPromise());
-        childNoFab.onViewAppeared();
+        stackController.push(controllerFab, new MockPromise());
+        stackController.push(controllerNoFab, new MockPromise());
+        controllerNoFab.onViewAppeared();
         assertThat(hasFab()).isFalse();
         stackController.pop(new MockPromise());
-        childFab.onViewAppeared();
+        controllerFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
+    }
+
+    @Test
+    public void hasChildren() throws Exception {
+        stackController.push(controllerFab, new MockPromise());
+        controllerFab.onViewAppeared();
+        assertThat(hasFab()).isTrue();
+        assertThat(containsFabChildren()).isTrue();
     }
 }
