@@ -34,6 +34,9 @@ public class StackController extends ParentController <StackLayout> {
         return stackLayout.getTopBar();
     }
 
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    StackLayout getStackLayout() {return stackLayout;}
+
     @Override
     public void applyOptions(Options options, ReactComponent component) {
         stackLayout.applyOptions(options, component);
