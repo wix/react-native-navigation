@@ -78,7 +78,6 @@ public class FabMenu extends FloatingActionMenu {
             if (clickListener != null) {
                 fab.setOnClickListener(v -> clickListener.onFabClicked(fabOption.id.get()));
             }
-            fab.setButtonSize(FloatingActionButton.SIZE_MINI);
 
             fabs.add(fab);
             addMenuButton(fab);

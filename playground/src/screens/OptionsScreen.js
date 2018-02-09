@@ -55,6 +55,7 @@ class OptionsScreen extends Component {
             id: 'fab2',
             backgroundColor: 'blueviolet',
             clickColor: 'blueviolet',
+            size: 'mini',
             rippleColor: 'aquamarine',
           }
         ]

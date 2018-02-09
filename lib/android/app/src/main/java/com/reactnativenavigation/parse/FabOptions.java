@@ -1,8 +1,6 @@
 package com.reactnativenavigation.parse;
 
 
-import android.widget.RelativeLayout;
-
 import org.json.JSONObject;
 
 import static com.reactnativenavigation.parse.Options.BooleanOptions.NoValue;
@@ -23,6 +21,7 @@ public class FabOptions implements DEFAULT_VALUES {
         }
         options.alignHorizontally = TextParser.parse(json, "alignHorizontally");
         options.alignVertically = TextParser.parse(json, "alignVertically");
+        options.size = TextParser.parse(json, "size");
 
         return options;
     }
@@ -35,6 +34,7 @@ public class FabOptions implements DEFAULT_VALUES {
     public Options.BooleanOptions hidden = NoValue;
     public Text alignHorizontally = new NullText();
     public Text alignVertically = new NullText();
+    public Text size = new NullText();
 
     void mergeWith(final FabOptions other) {
         if (other.id.hasValue()) {
@@ -60,6 +60,9 @@ public class FabOptions implements DEFAULT_VALUES {
         }
         if (other.alignHorizontally.hasValue()) {
             alignHorizontally = other.alignHorizontally;
+        }
+        if (other.size.hasValue()) {
+            size = other.size;
         }
     }
 
@@ -87,6 +90,9 @@ public class FabOptions implements DEFAULT_VALUES {
         }
         if (!alignVertically.hasValue()) {
             alignVertically = defaultOptions.alignVertically;
+        }
+        if (!size.hasValue()) {
+            size = defaultOptions.size;
         }
     }
 }

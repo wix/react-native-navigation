@@ -82,7 +82,9 @@ public class Fab extends FloatingActionButton {
             }
             setLayoutParams(layoutParams);
         }
-
+        if (options.size.hasValue()) {
+            setButtonSize("mini".equals(options.size.get()) ? SIZE_MINI : SIZE_NORMAL);
+        }
     }
 
     public void applyIcon(String icon) {
