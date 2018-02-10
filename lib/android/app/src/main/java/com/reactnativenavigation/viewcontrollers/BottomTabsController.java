@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -13,10 +14,12 @@ import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.ReactComponent;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,7 +53,13 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 		return root;
 	}
 
-	@Override
+    @Override
+    public void applyOptions(Options options, ReactComponent childComponent) {
+        int tabIndex = findTabContainingComponent(childComponent);
+        if (tabIndex >= 0) new BottomTabOptionsPresenter(bottomTabs).present(options, tabIndex);
+    }
+
+    @Override
 	public boolean handleBack() {
 		return !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack();
 	}
@@ -69,6 +78,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 		this.tabs = tabs;
 		getView();
 		for (int i = 0; i < tabs.size(); i++) {
+		    tabs.get(i).setParentController(this);
 			createTab(i, tabs.get(i).options.bottomTabOptions, tabs.get(i).options.bottomTabsOptions);
 		}
 		selectTabAtIndex(0);
@@ -113,6 +123,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
 	@Override
 	public void mergeOptions(Options options) {
+        this.options.mergeWith(options);
         if (options.bottomTabsOptions.currentTabIndex != NO_INT_VALUE) {
             selectTabAtIndex(options.bottomTabsOptions.currentTabIndex);
         }
@@ -153,4 +164,14 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 		}
 		return false;
 	}
+
+	@IntRange(from = -1)
+    private int findTabContainingComponent(ReactComponent component) {
+        for (int i = 0; i < tabs.size(); i++) {
+            if (tabs.get(i).containsComponent(component)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

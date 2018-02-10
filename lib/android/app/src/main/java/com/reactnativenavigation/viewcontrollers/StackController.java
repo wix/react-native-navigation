@@ -37,6 +37,7 @@ public class StackController extends ParentController <StackLayout> {
     @Override
     public void applyOptions(Options options, ReactComponent component) {
         stackLayout.applyOptions(options, component);
+        applyOnParentController(parentController -> ((ParentController) parentController).applyOptions(options, component));
     }
 
     @Override
