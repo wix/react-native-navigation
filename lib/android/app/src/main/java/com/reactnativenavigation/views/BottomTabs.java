@@ -25,4 +25,8 @@ public class BottomTabs extends AHBottomNavigation {
         if (testId.hasValue()) getViewAtPosition(index).setTag(testId.get());
         if (testId.hasValue()) getViewAtPosition(index).setContentDescription(testId.get());
     }
+
+    public void setBadge(int bottomTabIndex, Text badge) {
+        setNotification(badge.get(), bottomTabIndex);
+    }
 }

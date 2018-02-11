@@ -63,6 +63,15 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
+    public void setTab_controllerIsSetAsParent() throws Exception {
+        List<ViewController> tabs = createTabs();
+        uut.setTabs(tabs);
+        for (ViewController tab : tabs) {
+            assertThat(tab.getParentController()).isEqualTo(uut);
+        }
+    }
+
+    @Test
     public void setTabs_AddAllViews() throws Exception {
         List<ViewController> tabs = createTabs();
         uut.setTabs(tabs);

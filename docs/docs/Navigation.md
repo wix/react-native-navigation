@@ -3,32 +3,32 @@
 # Navigation
 
 * [Navigation](#Navigation)
-    * [.registerContainer(containerName, getContainerFunc)](#Navigation+registerContainer)
+    * [.registerComponent(componentName, getComponentFunc)](#Navigation+registerComponent)
     * [.setRoot(root)](#Navigation+setRoot)
     * [.setDefaultOptions(options)](#Navigation+setDefaultOptions)
-    * [.setOptions(containerId, options)](#Navigation+setOptions)
+    * [.setOptions(componentId, options)](#Navigation+setOptions)
     * [.showModal(params)](#Navigation+showModal)
-    * [.dismissModal(containerId)](#Navigation+dismissModal)
+    * [.dismissModal(componentId)](#Navigation+dismissModal)
     * [.dismissAllModals()](#Navigation+dismissAllModals)
-    * [.push(containerId, container)](#Navigation+push)
-    * [.pop(containerId, params)](#Navigation+pop)
-    * [.popTo(containerId)](#Navigation+popTo)
-    * [.popToRoot(containerId)](#Navigation+popToRoot)
+    * [.push(componentId, component)](#Navigation+push)
+    * [.pop(componentId, params)](#Navigation+pop)
+    * [.popTo(componentId)](#Navigation+popTo)
+    * [.popToRoot(componentId)](#Navigation+popToRoot)
     * [.events()](#Navigation+events)
 
 
 * * *
 
-<a name="Navigation+registerContainer"></a>
+<a name="Navigation+registerComponent"></a>
 
-## navigation.registerContainer(containerName, getContainerFunc)
+## navigation.registerComponent(componentName, getComponentFunc)
 Every screen component in your app must be registered with a unique name. The component itself is a traditional React component extending React.Component.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| containerName | <code>string</code> | Unique container name |
-| getContainerFunc | <code>function</code> | generator function, typically `() => require('./myContainer')` |
+| componentName | <code>string</code> | Unique component name |
+| getComponentFunc | <code>function</code> | generator function, typically `() => require('./myComponent')` |
 
 
 * * *
@@ -41,7 +41,7 @@ Reset the navigation stack to a new screen (the stack root is changed).
 
 | Param | Type |
 | --- | --- |
-| root | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Root">Root</a> | 
+| root | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Root">Root</a> |
 
 
 * * *
@@ -54,20 +54,20 @@ Set default options to all screens. Useful for declaring a consistent style acro
 
 | Param | Type |
 | --- | --- |
-| options | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/options/NavigationOptions">NavigationOptions</a> | 
+| options | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/options/NavigationOptions">NavigationOptions</a> |
 
 
 * * *
 
 <a name="Navigation+setOptions"></a>
 
-## navigation.setOptions(containerId, options)
-Change a containers navigation options
+## navigation.setOptions(componentId, options)
+Change a components navigation options
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| containerId | <code>string</code> | The container's id. |
+| componentId | <code>string</code> | The component's id. |
 | options | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/options/NavigationOptions">NavigationOptions</a> |  |
 
 
@@ -81,20 +81,20 @@ Show a screen as a modal.
 
 | Param | Type |
 | --- | --- |
-| params | <code>object</code> | 
+| params | <code>object</code> |
 
 
 * * *
 
 <a name="Navigation+dismissModal"></a>
 
-## navigation.dismissModal(containerId)
-Dismiss a modal by containerId. The dismissed modal can be anywhere in the stack.
+## navigation.dismissModal(componentId)
+Dismiss a modal by componentId. The dismissed modal can be anywhere in the stack.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| containerId | <code>string</code> | The container's id. |
+| componentId | <code>string</code> | The component's id. |
 
 
 * * *
@@ -109,27 +109,27 @@ Dismiss all Modals
 
 <a name="Navigation+push"></a>
 
-## navigation.push(containerId, container)
+## navigation.push(componentId, component)
 Push a new screen into this screen's navigation stack.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| containerId | <code>string</code> | The container's id. |
-| container | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Container">Container</a> |  |
+| componentId | <code>string</code> | The component's id. |
+| component | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Component">Component</a> |  |
 
 
 * * *
 
 <a name="Navigation+pop"></a>
 
-## navigation.pop(containerId, params)
-Pop a container from the stack, regardless of it's position.
+## navigation.pop(componentId, params)
+Pop a component from the stack, regardless of it's position.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| containerId | <code>string</code> | The container's id. |
+| componentId | <code>string</code> | The component's id. |
 | params | <code>*</code> |  |
 
 
@@ -137,26 +137,26 @@ Pop a container from the stack, regardless of it's position.
 
 <a name="Navigation+popTo"></a>
 
-## navigation.popTo(containerId)
-Pop the stack to a given container
+## navigation.popTo(componentId)
+Pop the stack to a given component
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| containerId | <code>string</code> | The container's id. |
+| componentId | <code>string</code> | The component's id. |
 
 
 * * *
 
 <a name="Navigation+popToRoot"></a>
 
-## navigation.popToRoot(containerId)
-Pop the container's stack to root.
+## navigation.popToRoot(componentId)
+Pop the component's stack to root.
 
 
 | Param | Type |
 | --- | --- |
-| containerId | <code>*</code> | 
+| componentId | <code>*</code> |
 
 
 * * *
@@ -165,4 +165,3 @@ Pop the container's stack to root.
 
 ## navigation.events()
 Obtain the events registery instance
-
