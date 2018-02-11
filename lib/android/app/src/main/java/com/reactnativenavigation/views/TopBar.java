@@ -51,6 +51,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return titleBar.getTitle() != null ? titleBar.getTitle().toString() : "";
     }
 
+    public void setTestId(String testId) {
+        setTag(testId);
+    }
+
     public void setTitleTextColor(Color color) {
         if (color.hasValue()) titleBar.setTitleTextColor(color.get());
     }

@@ -6,10 +6,10 @@ import { ComponentRegistry } from './components/ComponentRegistry';
 import { Commands } from './commands/Commands';
 import { LayoutTreeParser } from './commands/LayoutTreeParser';
 import { LayoutTreeCrawler } from './commands/LayoutTreeCrawler';
-import { PrivateEventsListener } from './events/PrivateEventsListener';
 import { PublicEventsRegistry } from './events/PublicEventsRegistry';
 import { ComponentProvider } from 'react-native';
 import { Element } from './adapters/Element';
+import { PrivateEventsListener } from './events/PrivateEventsListener';
 
 export class Navigation {
   public readonly Element;
@@ -23,7 +23,6 @@ export class Navigation {
   private readonly nativeCommandsSender;
   private readonly commands;
   private readonly publicEventsRegistry;
-  private readonly privateEventsListener;
 
   constructor() {
     this.Element = Element;
@@ -37,9 +36,8 @@ export class Navigation {
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler);
     this.publicEventsRegistry = new PublicEventsRegistry(this.nativeEventsReceiver);
-    this.privateEventsListener = new PrivateEventsListener(this.nativeEventsReceiver, this.store);
 
-    this.privateEventsListener.listenAndHandlePrivateEvents();
+    new PrivateEventsListener(this.nativeEventsReceiver, this.store).listenAndHandlePrivateEvents();
   }
 
   /**
