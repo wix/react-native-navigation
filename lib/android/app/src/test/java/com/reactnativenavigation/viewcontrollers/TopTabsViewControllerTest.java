@@ -21,6 +21,8 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -148,7 +150,8 @@ public class TopTabsViewControllerTest extends BaseTest {
         verify(tabControllers.get(0), times(1)).onViewAppeared();
         verify(tabControllers.get(1), times(0)).onViewAppeared();
 
-        verify(uut, times(1)).applyOptions(tabOptions.get(0), ((ComponentViewController) tabControllers.get(0)).getComponent());
+        ReactComponent comp = ((ComponentViewController) tabControllers.get(0)).getComponent();
+        verify(uut, times(1)).applyOptions(any(Options.class), eq(comp));
     }
 
     @Test
@@ -178,7 +181,7 @@ public class TopTabsViewControllerTest extends BaseTest {
 
         uut.onViewAppeared();
 
-        verify(topTabsLayout, times(1)).applyOptions(options);
+        verify(topTabsLayout, times(1)).applyOptions(any(Options.class));
     }
 
     private IReactView tab(TopTabsViewPager topTabs, final int index) {

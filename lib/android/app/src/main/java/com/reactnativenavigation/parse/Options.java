@@ -1,5 +1,6 @@
 package com.reactnativenavigation.parse;
 
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -53,11 +54,14 @@ public class Options implements DEFAULT_VALUES {
         topTabOptions.tabIndex = i;
     }
 
-	public void mergeWith(final Options other) {
-        topBarOptions.mergeWith(other.topBarOptions);
-        topTabsOptions.mergeWith(other.topTabsOptions);
-        bottomTabOptions.mergeWith(other.bottomTabOptions);
-        bottomTabsOptions.mergeWith(other.bottomTabsOptions);
+    @CheckResult
+	public Options mergeWith(final Options other) {
+        Options result = new Options();
+        result.topBarOptions.mergeWith(other.topBarOptions);
+        result.topTabsOptions.mergeWith(other.topTabsOptions);
+        result.bottomTabOptions.mergeWith(other.bottomTabOptions);
+        result.bottomTabsOptions.mergeWith(other.bottomTabsOptions);
+        return result;
     }
 
     Options withDefaultOptions(final Options other) {

@@ -14,7 +14,7 @@ import org.mockito.*;
 import static com.reactnativenavigation.parse.Options.BooleanOptions.*;
 import static org.assertj.core.api.Java6Assertions.*;
 
-public class NavigationOptionsTest extends BaseTest {
+public class OptionsTest extends BaseTest {
 
     private static final String TITLE = "the title";
     private static final int TOP_BAR_BACKGROUND_COLOR = 0xff123456;
@@ -46,7 +46,7 @@ public class NavigationOptionsTest extends BaseTest {
     @Test
     public void parsesJson() throws Exception {
         JSONObject json = new JSONObject()
-                .put("topBar", createTopBar())
+                .put("topBar", createTopBar(TOP_BAR_HIDDEN))
                 .put("bottomTabs", createBottomTabs());
         Options result = Options.parse(mockLoader, json);
         assertResult(result);
@@ -77,14 +77,14 @@ public class NavigationOptionsTest extends BaseTest {
     }
 
     @NonNull
-    private JSONObject createTopBar() throws JSONException {
+    private JSONObject createTopBar(Options.BooleanOptions hidden) throws JSONException {
         return new JSONObject()
                 .put("title", "the title")
                 .put("backgroundColor", TOP_BAR_BACKGROUND_COLOR)
                 .put("textColor", TOP_BAR_TEXT_COLOR)
                 .put("textFontSize", TOP_BAR_FONT_SIZE)
                 .put("textFontFamily", TOP_BAR_FONT_FAMILY)
-                .put("hidden", TOP_BAR_HIDDEN)
+                .put("hidden", hidden)
                 .put("drawBehind", TOP_BAR_DRAW_BEHIND)
                 .put("hideOnScroll", TOP_BAR_HIDE_ON_SCROLL);
     }
@@ -111,15 +111,30 @@ public class NavigationOptionsTest extends BaseTest {
     }
 
     @Test
+    public void mergeDoesNotMutate() throws Exception {
+        JSONObject json1 = new JSONObject();
+        json1.put("topBar", createTopBar(Options.BooleanOptions.True));
+        Options options1 = Options.parse(mockLoader, json1);
+
+
+        JSONObject json2 = new JSONObject();
+        json2.put("topBar", createTopBar(Options.BooleanOptions.False));
+        Options options2 = Options.parse(mockLoader, json2);
+
+        Options merged = options1.mergeWith(options2);
+        assertThat(options1.topBarOptions.hidden).isEqualTo(Options.BooleanOptions.True);
+        assertThat(merged.topBarOptions.hidden).isEqualTo(False);
+    }
+
+    @Test
     public void mergeDefaultOptions() throws Exception {
         JSONObject json = new JSONObject();
-        json.put("topBar", createTopBar());
+        json.put("topBar", createTopBar(TOP_BAR_HIDDEN));
         json.put("bottomTabs", createBottomTabs());
         Options defaultOptions = Options.parse(mockLoader, json);
         Options options = new Options();
 
-        options.mergeWith(defaultOptions);
-        assertResult(options);
+        assertResult(options.mergeWith(defaultOptions));
     }
 
     @Test
@@ -130,7 +145,7 @@ public class NavigationOptionsTest extends BaseTest {
         Options defaultOptions = Options.parse(mockLoader, defaultJson);
 
         JSONObject json = new JSONObject()
-                .put("topBar", createTopBar())
+                .put("topBar", createTopBar(TOP_BAR_HIDDEN))
                 .put("bottomTabs", createBottomTabs());
         Options options = Options.parse(mockLoader, json);
         options.withDefaultOptions(defaultOptions);
