@@ -8,7 +8,7 @@
 @property (nonatomic, strong) NSNumber* textColor;
 @property (nonatomic, strong) NSString* title;
 @property (nonatomic, strong) NSString* textFontFamily;
-@property (nonatomic, strong) NSNumber* hidden;
+@property (nonatomic, strong) NSNumber* visible;
 @property (nonatomic, strong) NSNumber* hideOnScroll;
 @property (nonatomic, strong) NSNumber* buttonColor;
 @property (nonatomic, strong) NSNumber* translucent;

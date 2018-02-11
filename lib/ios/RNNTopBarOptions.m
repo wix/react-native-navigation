@@ -62,8 +62,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	}
 	
 	
-	if (self.hidden){
-		[viewController.navigationController setNavigationBarHidden:[self.hidden boolValue] animated:[self.animateHide boolValue]];
+	if (self.visible) {
+		[viewController.navigationController setNavigationBarHidden:![self.visible boolValue] animated:[self.animateHide boolValue]];
 	}
 	
 	if (self.hideOnScroll) {

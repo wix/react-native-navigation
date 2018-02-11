@@ -79,7 +79,7 @@
 
 - (void)testStatusBarHideWithTopBar_false {
 	self.options.statusBarHideWithTopBar = @(0);
-	self.options.topBar.hidden = @(1);
+	self.options.topBar.visible = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -88,7 +88,7 @@
 
 - (void)testStatusBarHideWithTopBar_true {
 	self.options.statusBarHideWithTopBar = @(1);
-	self.options.topBar.hidden = @(1);
+	self.options.topBar.visible = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
@@ -471,7 +471,7 @@
 
 
 - (void)testTabBarHidden_true {
-	self.options.bottomTabs.hidden = @(1);
+	self.options.bottomTabs.visible = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
@@ -479,7 +479,7 @@
 }
 
 - (void)testTabBarHidden_false {
-	self.options.bottomTabs.hidden = @(0);
+	self.options.bottomTabs.visible = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 

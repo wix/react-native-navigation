@@ -18,7 +18,7 @@ class OptionsScreen extends Component {
         textColor: 'black',
         drawUnder: false,
         largeTitle: false,
-        hidden: false,
+        visible: true,
         textFontSize: 16,
         textFontFamily: 'HelveticaNeue-Italic',
         testID: testIDs.TOP_BAR_ELEMENT,
@@ -162,7 +162,7 @@ class OptionsScreen extends Component {
   onClickShowTopBar() {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
-        hidden: false,
+        visible: true,
         animateHide: true
       }
     });
@@ -171,7 +171,7 @@ class OptionsScreen extends Component {
   onClickHideTopBar() {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
-        hidden: true,
+        visible: false,
         animateHide: true
       }
     });
@@ -210,7 +210,7 @@ class OptionsScreen extends Component {
   onClickPushDefaultOptionsScreen() {
     Navigation.setDefaultOptions({
       topBar: {
-        hidden: true
+        visible: false
       }
     });
 
