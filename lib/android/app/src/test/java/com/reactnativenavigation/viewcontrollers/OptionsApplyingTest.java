@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.BaseTest;
@@ -165,7 +164,7 @@ public class OptionsApplyingTest extends BaseTest {
         stackController.animatePush(uut, new MockPromise() {
             @Override
             public void resolve(@Nullable Object value) {
-                RelativeLayout.LayoutParams uutLayoutParams = (RelativeLayout.LayoutParams) ((ViewGroup) uut.getComponent().asView()).getChildAt(0).getLayoutParams();
+                RelativeLayout.LayoutParams uutLayoutParams = (RelativeLayout.LayoutParams) uut.getComponent().asView().getLayoutParams();
                 assertThat(uutLayoutParams.getRule(BELOW)).isNotEqualTo(0);
 
                 Options opts = new Options();

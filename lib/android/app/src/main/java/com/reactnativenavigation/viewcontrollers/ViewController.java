@@ -126,11 +126,15 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return isSameId(id) ? this : null;
     }
 
+    public boolean containsComponent(ReactComponent component) {
+        return getView().equals(component);
+    }
+
     public void onViewAppeared() {
         isShown = true;
         applyOnParentController(parentController -> {
             parentController.clearOptions();
-            parentController.applyOptions(options, (ReactComponent) getView());
+            if (getView() instanceof ReactComponent) parentController.applyOptions(options, (ReactComponent) getView());
         });
     }
 

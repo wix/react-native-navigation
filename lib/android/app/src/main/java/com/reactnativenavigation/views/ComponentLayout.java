@@ -77,14 +77,14 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
     public void drawBehindTopBar() {
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
         layoutParams.removeRule(BELOW);
-        reactView.asView().setLayoutParams(layoutParams);
+        setLayoutParams(layoutParams);
     }
 
     @Override
     public void drawBelowTopBar(TopBar topBar) {
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
         layoutParams.addRule(BELOW, topBar.getId());
-        reactView.asView().setLayoutParams(layoutParams);
+        setLayoutParams(layoutParams);
     }
 
     @Override

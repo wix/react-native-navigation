@@ -17,6 +17,7 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
 		options.currentTabIndex = json.optInt("currentTabIndex", NO_INT_VALUE);
 		options.visible = BooleanOptions.parse(json.optString("visible"));
 		options.animateHide = BooleanOptions.parse(json.optString("animateHide"));
+        options.testId = TextParser.parse(json, "testID");
 
 		return options;
 	}
@@ -27,6 +28,7 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
 	BooleanOptions animateHide = BooleanOptions.False;
 	public int currentTabIndex = NO_INT_VALUE;
 	public Text currentTabId = new NullText();
+    public Text testId = new NullText();
 
 	void mergeWith(final BottomTabsOptions other) {
 		if (other.currentTabId.hasValue()) {

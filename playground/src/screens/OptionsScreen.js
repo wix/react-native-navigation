@@ -87,8 +87,14 @@ class OptionsScreen extends Component {
         <Button title='Top Bar Transparent' onPress={this.onClickTopBarTransparent} />
         <Button title='Top Bar Opaque' onPress={this.onClickTopBarOpaque} />
         <Button title='scrollView Screen' testID={testIDs.SCROLLVIEW_SCREEN_BUTTON} onPress={this.onClickScrollViewScreen} />
+<<<<<<< HEAD
         <Button title='Custom Transition' onPress={this.onClickCustomTranstition} />
         <Button title='Hide fab' testID={testIDs.HIDE_FAB} onPress={this.onClickFab} />
+=======
+        <Button title='Custom Transition' testID={testIDs.CUSTOM_TRANSITION_BUTTON} onPress={this.onClickCustomTranstition} />
+        <Button title='Show custom alert' testID={testIDs.SHOW_CUSTOM_ALERT_BUTTON} onPress={this.onClickAlert} />
+        <Button title='Show snackbar' testID={testIDs.SHOW_SNACKBAR_BUTTON} onPress={this.onClickSnackbar} />
+>>>>>>> 10cb917decd80ad9b3de6c3df2a836a5981db824
         <Button title='Show overlay' testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
         <Button title='Show touch through overlay' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
         <Button title='Push Default Options Screen' testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />

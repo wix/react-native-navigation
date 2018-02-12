@@ -10,14 +10,14 @@ describe('screen style', () => {
 
   it('declare a options on component component', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
-    await expect(element(by.label('Static Title'))).toBeVisible();
+    await expect(elementByLabel('Static Title')).toBeVisible();
   });
 
   it('change title on component component', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
-    await expect(element(by.label('Static Title'))).toBeVisible();
+    await expect(elementByLabel('Static Title')).toBeVisible();
     await elementById(testIDs.DYNAMIC_OPTIONS_BUTTON).tap();
-    await expect(element(by.label('Dynamic Title'))).toBeVisible();
+    await expect(elementByLabel('Dynamic Title')).toBeVisible();
   });
 
   it('set dynamic options with valid options will do something and not crash', async () => {
@@ -44,14 +44,6 @@ describe('screen style', () => {
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
     await element(by.id(testIDs.SCROLLVIEW_ELEMENT)).swipe('down', 'fast');
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
-  });
-
-  it('makes topBar transparent and opaque', async () => {
-    await elementByLabel('Push Options Screen').tap();
-    await elementByLabel('Top Bar Transparent').tap();
-    await expect(element(by.type('_UIVisualEffectBackdropView'))).toBeNotVisible();
-    await elementByLabel('Top Bar Opaque').tap();
-    await expect(element(by.type('_UIVisualEffectBackdropView')).atIndex(1)).toBeVisible();
   });
 
   it('set Tab Bar badge on a current Tab', async () => {
