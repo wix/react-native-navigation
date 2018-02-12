@@ -3,7 +3,7 @@
 scriptdir="$(dirname "${BASH_SOURCE[0]}")"
 
 export ANDROID_HOME=$HOME/android-sdk
-export PATH=$PATH:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/bin:$ANDROID_HOME/platform-tools
 
 mkdir $ANDROID_HOME
 
@@ -15,6 +15,4 @@ echo "Downloading Android SDK"
 curl --location https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip | tar -x -z -C $ANDROID_HOME
 
 echo "Accepting Android Licenses"
-ls $ANDROID_HOME/tools/bin
-ls $ANDROID_HOME
-yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+yes | sdkmanager --licenses
