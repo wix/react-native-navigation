@@ -14,7 +14,6 @@ touch ~/.android/repositories.cfg
 echo "Downloading Android SDK"
 curl https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip > android-sdk.zip
 unzip android-sdk.zip -d $ANDROID_HOME
-ls $ANDROID_HOME
 
 echo "Accepting Android Licenses"
 yes | sdkmanager --licenses
