@@ -15,6 +15,7 @@ import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.TopTabsLayoutCreator;
 import com.reactnativenavigation.views.TopTabsViewPager;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -62,7 +63,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         for (int i = 0; i < SIZE; i++) {
             final Options options = new Options();
             options.topTabOptions.title = new Text("Tab " + i);
-            options.topBarOptions.title = new Text("Title " + i);
+            options.topBarOptions.title = new Text(createTabTopBarTitle(i));
             result.add(options);
         }
         return result;
@@ -162,11 +163,19 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabControllers.get(1).ensureViewIsCreated();
 
         uut.onViewAppeared();
-        verify(uut, times(1)).applyOptions(tabOptions.get(0), tabView(0));
+        ReactComponent currentTab = tabView(0);
+        verify(uut, times(1)).applyOptions(any(Options.class), eq(currentTab));
+        Assertions.assertThat(uut.options.topBarOptions.title.get()).isEqualTo(createTabTopBarTitle(0));
+
         uut.switchToTab(1);
-        verify(uut, times(1)).applyOptions(tabOptions.get(1), tabView(1));
+        currentTab = tabView(1);
+        verify(uut, times(1)).applyOptions(any(Options.class), eq(currentTab));
+        Assertions.assertThat(uut.options.topBarOptions.title.get()).isEqualTo(createTabTopBarTitle(1));
+
         uut.switchToTab(0);
-        verify(uut, times(2)).applyOptions(tabOptions.get(0), tabView(0));
+        currentTab = tabView(0);
+        verify(uut, times(2)).applyOptions(any(Options.class), eq(currentTab));
+        Assertions.assertThat(uut.options.topBarOptions.title.get()).isEqualTo(createTabTopBarTitle(0));
     }
 
     private TestReactView getActualTabView(int index) {
@@ -186,5 +195,9 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     private IReactView tab(TopTabsViewPager topTabs, final int index) {
         return (IReactView) ((ViewGroup) topTabs.getChildAt(index)).getChildAt(0);
+    }
+
+    private String createTabTopBarTitle(int i) {
+        return "Title " + i;
     }
 }

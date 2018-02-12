@@ -55,10 +55,16 @@ public class Options implements DEFAULT_VALUES {
     }
 
     @CheckResult
+    public Options copy() {
+        return new Options().mergeWith(this);
+    }
+
+    @CheckResult
 	public Options mergeWith(final Options other) {
         Options result = new Options();
         result.topBarOptions.mergeWith(other.topBarOptions);
         result.topTabsOptions.mergeWith(other.topTabsOptions);
+        result.topTabOptions.mergeWith(other.topTabOptions);
         result.bottomTabOptions.mergeWith(other.bottomTabOptions);
         result.bottomTabsOptions.mergeWith(other.bottomTabsOptions);
         return result;
@@ -66,6 +72,7 @@ public class Options implements DEFAULT_VALUES {
 
     Options withDefaultOptions(final Options other) {
         topBarOptions.mergeWithDefault(other.topBarOptions);
+        topTabOptions.mergeWithDefault(other.topTabOptions);
         topTabsOptions.mergeWithDefault(other.topTabsOptions);
         bottomTabOptions.mergeWithDefault(other.bottomTabOptions);
         bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);

@@ -1,23 +1,32 @@
 package com.reactnativenavigation.viewcontrollers;
 
-import android.app.*;
-import android.support.annotation.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Activity;
+import android.support.annotation.NonNull;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
-import com.reactnativenavigation.*;
-import com.reactnativenavigation.mocks.*;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.MockPromise;
+import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.views.ReactComponent;
 
-import org.junit.*;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-import static org.assertj.core.api.Java6Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class ParentControllerTest extends BaseTest {
 
+    public static final String INITIAL_TITLE = "initial title";
     private Activity activity;
     private List<ViewController> children;
     private ParentController uut;
@@ -27,12 +36,19 @@ public class ParentControllerTest extends BaseTest {
         super.beforeEach();
         activity = newActivity();
         children = new ArrayList<>();
-        uut = new ParentController(activity, "uut", new Options()) {
+        Options initialOptions = new Options();
+        initialOptions.topBarOptions.title = new Text(INITIAL_TITLE);
+        uut = spy(new ParentController(activity, "uut", initialOptions) {
 
             @NonNull
             @Override
             protected ViewGroup createView() {
-                return new FrameLayout(activity);
+                FrameLayout layout = new FrameLayout(activity);
+                for (ViewController child : children) {
+                    child.setParentController(this);
+                    layout.addView(child.getView());
+                }
+                return layout;
             }
 
             @NonNull
@@ -40,7 +56,7 @@ public class ParentControllerTest extends BaseTest {
             public Collection<ViewController> getChildControllers() {
                 return children;
             }
-        };
+        });
     }
 
     @Test
@@ -94,5 +110,36 @@ public class ParentControllerTest extends BaseTest {
 
         child1.onViewAppeared();
         verify(stackController, times(1)).clearOptions();
+    }
+
+    @Test
+    public void mergeOptions_optionsAreMergedWhenChildAppears() throws Exception {
+        Options options = new Options();
+        options.topBarOptions.title = new Text("new title");
+        ViewController child1 = spy(new SimpleViewController(activity, "child1", options));
+        children.add(child1);
+        uut.ensureViewIsCreated();
+
+        child1.ensureViewIsCreated();
+        child1.onViewAppeared();
+        ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
+        ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
+        verify(uut, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
+        assertThat(optionsCaptor.getValue().topBarOptions.title.get()).isEqualTo("new title");
+        assertThat(viewCaptor.getValue()).isEqualTo(child1.getView());
+    }
+
+    @Test
+    public void mergeOptions_initialParentOptionsAreNotMutatedWhenChildAppears() throws Exception {
+        Options options = new Options();
+        options.topBarOptions.title = new Text("new title");
+        ViewController child1 = spy(new SimpleViewController(activity, "child1", options));
+        children.add(child1);
+
+        uut.ensureViewIsCreated();
+
+        child1.ensureViewIsCreated();
+        child1.onViewAppeared();
+        assertThat(uut.initialOptions.topBarOptions.title.get()).isEqualTo(INITIAL_TITLE);
     }
 }

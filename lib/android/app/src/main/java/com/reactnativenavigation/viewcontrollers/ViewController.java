@@ -30,6 +30,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         boolean onViewDisappear(View view);
     }
 
+    Options initialOptions;
     public Options options;
 
     private final Activity activity;
@@ -43,7 +44,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     public ViewController(Activity activity, String id, Options initialOptions) {
         this.activity = activity;
         this.id = id;
-        options = initialOptions;
+        this.initialOptions = initialOptions;
+        options = initialOptions.copy();
     }
 
     protected abstract T createView();

@@ -59,8 +59,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void initialOptionsAppliedOnAppear() throws Exception {
-        assertThat(uut.options).isSameAs(initialNavigationOptions);
-        initialNavigationOptions.topBarOptions.title = new Text("the title");
+        uut.options.topBarOptions.title = new Text("the title");
         StackController stackController = new StackController(activity, "stackId", new Options());
         stackController.animatePush(uut, new MockPromise() {});
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
@@ -106,7 +105,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBarTextColor() throws Exception {
-        assertThat(uut.options).isSameAs(initialNavigationOptions);
+        assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
         stackController.animatePush(uut, new MockPromise() {
             @Override
             public void resolve(@Nullable Object value) {
@@ -123,7 +122,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBarTextSize() throws Exception {
-        assertThat(uut.options).isSameAs(initialNavigationOptions);
+        assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
@@ -139,7 +138,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBarHidden() throws Exception {
-        assertThat(uut.options).isSameAs(initialNavigationOptions);
+        assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
@@ -154,9 +153,8 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesDrawUnder() throws Exception {
-        assertThat(uut.options).isSameAs(initialNavigationOptions);
-        initialNavigationOptions.topBarOptions.title = new Text("the title");
-        initialNavigationOptions.topBarOptions.drawBehind = Options.BooleanOptions.False;
+        uut.options.topBarOptions.title = new Text("the title");
+        uut.options.topBarOptions.drawBehind = Options.BooleanOptions.False;
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
         stackController.animatePush(uut, new MockPromise() {
