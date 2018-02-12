@@ -22,6 +22,7 @@ public class FabOptions implements DEFAULT_VALUES {
         options.alignHorizontally = TextParser.parse(json, "alignHorizontally");
         options.alignVertically = TextParser.parse(json, "alignVertically");
         options.size = TextParser.parse(json, "size");
+        options.hideOnScroll = Options.BooleanOptions.parse(json.optString("hideOnScroll"));
 
         return options;
     }
@@ -35,6 +36,7 @@ public class FabOptions implements DEFAULT_VALUES {
     public Text alignHorizontally = new NullText();
     public Text alignVertically = new NullText();
     public Text size = new NullText();
+    public Options.BooleanOptions hideOnScroll = NoValue;
 
     void mergeWith(final FabOptions other) {
         if (other.id.hasValue()) {
@@ -63,6 +65,9 @@ public class FabOptions implements DEFAULT_VALUES {
         }
         if (other.size.hasValue()) {
             size = other.size;
+        }
+        if (other.hideOnScroll != NoValue) {
+            hideOnScroll = other.hideOnScroll;
         }
     }
 
@@ -93,6 +98,9 @@ public class FabOptions implements DEFAULT_VALUES {
         }
         if (!size.hasValue()) {
             size = defaultOptions.size;
+        }
+        if (hideOnScroll == NoValue) {
+            hideOnScroll = defaultOptions.hideOnScroll;
         }
     }
 }

@@ -96,7 +96,12 @@ public class Fab extends FloatingActionButton implements FabAnimator {
         if (options.size.hasValue()) {
             setButtonSize("mini".equals(options.size.get()) ? SIZE_MINI : SIZE_NORMAL);
         }
-        enableCollapse(scrollEventListener);
+        if (options.hideOnScroll == True) {
+            enableCollapse(scrollEventListener);
+        }
+        if (options.hideOnScroll == False) {
+            disableCollapse();
+        }
     }
 
     public void applyIcon(String icon) {

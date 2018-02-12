@@ -20,7 +20,8 @@ class ScrollViewScreen extends Component {
         id: FAB,
         backgroundColor: 'blue',
         clickColor: 'blue',
-        rippleColor: 'aquamarine'
+        rippleColor: 'aquamarine',
+        hideOnScroll: true
       }
     };
   }
@@ -56,6 +57,9 @@ class ScrollViewScreen extends Component {
       topBar: {
         drawUnder: true,
         hideOnScroll: this.state.topBarHideOnScroll
+      },
+      fab: {
+        hideOnScroll: !this.state.topBarHideOnScroll
       }
     });
   }

@@ -1,6 +1,8 @@
 package com.reactnativenavigation.anim;
 
 
+import android.support.annotation.NonNull;
+
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 
 public class FabCollapseBehaviour implements ScrollEventListener.OnScrollListener, ScrollEventListener.OnDragListener {
@@ -12,7 +14,7 @@ public class FabCollapseBehaviour implements ScrollEventListener.OnScrollListene
         this.fabAnimator = fabAnimator;
     }
 
-    public void enableCollapse(ScrollEventListener scrollEventListener) {
+    public void enableCollapse(@NonNull ScrollEventListener scrollEventListener) {
         this.scrollEventListener = scrollEventListener;
         this.scrollEventListener.register(null, this, this);
     }
