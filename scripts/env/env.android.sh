@@ -15,4 +15,6 @@ echo "Downloading Android SDK"
 curl --location https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip | tar -x -z -C $ANDROID_HOME
 
 echo "Accepting Android Licenses"
-yes | $ANDROID_HOME/bin/sdkmanager --licenses
+ls $ANDROID_HOME
+ls $ANDROID_HOME/bin
+yes | sdkmanager --licenses
