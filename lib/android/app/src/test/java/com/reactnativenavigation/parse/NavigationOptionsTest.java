@@ -26,6 +26,7 @@ public class NavigationOptionsTest extends BaseTest {
     private static final int FAB_CLICK_COLOR = Color.RED;
     private static final int FAB_RIPPLE_COLOR = Color.GREEN;
     private static final Options.BooleanOptions FAB_HIDDEN = True;
+    private static final Options.BooleanOptions FAB_HIDE_ON_SCROLL = True;
     private static final int TOP_BAR_TEXT_COLOR = 0xff123456;
     private static final int TOP_BAR_FONT_SIZE = 18;
     private static final String TOP_BAR_FONT_FAMILY = "HelveticaNeue-CondensedBold";
@@ -80,6 +81,7 @@ public class NavigationOptionsTest extends BaseTest {
         assertThat(result.fabOptions.clickColor.get()).isEqualTo(FAB_CLICK_COLOR);
         assertThat(result.fabOptions.rippleColor.get()).isEqualTo(FAB_RIPPLE_COLOR);
         assertThat(result.fabOptions.hidden).isEqualTo(FAB_HIDDEN);
+        assertThat(result.fabOptions.hideOnScroll).isEqualTo(FAB_HIDE_ON_SCROLL);
         assertThat(result.fabOptions.id.get()).isEqualTo(FAB_ID);
         assertThat(result.fabOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
         assertThat(result.fabOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
@@ -87,6 +89,7 @@ public class NavigationOptionsTest extends BaseTest {
         assertThat(result.fabMenuOptions.clickColor.get()).isEqualTo(FAB_CLICK_COLOR);
         assertThat(result.fabMenuOptions.rippleColor.get()).isEqualTo(FAB_RIPPLE_COLOR);
         assertThat(result.fabMenuOptions.hidden).isEqualTo(FAB_HIDDEN);
+        assertThat(result.fabMenuOptions.hideOnScroll).isEqualTo(FAB_HIDE_ON_SCROLL);
         assertThat(result.fabMenuOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
         assertThat(result.fabMenuOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
     }
@@ -122,6 +125,7 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("rippleColor", FAB_RIPPLE_COLOR)
                 .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
                 .put("alignVertically", FAB_ALIGN_VERTICALLY)
+                .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
                 .put("hidden", FAB_HIDDEN);
     }
 
@@ -134,6 +138,7 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("rippleColor", FAB_RIPPLE_COLOR)
                 .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
                 .put("alignVertically", FAB_ALIGN_VERTICALLY)
+                .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
                 .put("hidden", FAB_HIDDEN);
     }
 
@@ -146,6 +151,7 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("rippleColor", FAB_RIPPLE_COLOR)
                 .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
                 .put("alignVertically", FAB_ALIGN_VERTICALLY)
+                .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
                 .put("hidden", FAB_HIDDEN);
     }
 
@@ -158,6 +164,7 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("rippleColor", FAB_RIPPLE_COLOR)
                 .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
                 .put("alignVertically", FAB_ALIGN_VERTICALLY)
+                .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
                 .put("hidden", FAB_HIDDEN);
     }
 
