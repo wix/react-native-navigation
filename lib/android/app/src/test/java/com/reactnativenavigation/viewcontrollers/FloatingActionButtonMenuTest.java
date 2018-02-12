@@ -7,7 +7,6 @@ import android.view.View;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.parse.FabMenuOptions;
 import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
@@ -39,7 +38,7 @@ public class FloatingActionButtonMenuTest extends BaseTest {
     @NonNull
     private Options getOptionsWithFab() {
         Options options = new Options();
-        FabMenuOptions fabOptions = new FabMenuOptions();
+        FabOptions fabOptions = new FabOptions();
         fabOptions.id = new Text("FAB");
         for (int i = 0; i < CHILD_FAB_COUNT; i++) {
             FabOptions childOptions = new FabOptions();

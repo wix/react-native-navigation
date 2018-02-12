@@ -1,16 +1,13 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.RelativeLayout;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.anim.FabAnimator;
 import com.reactnativenavigation.anim.FabCollapseBehaviour;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.parse.FabMenuOptions;
 import com.reactnativenavigation.parse.FabOptions;
 
 import java.util.HashSet;
@@ -48,14 +45,14 @@ public class FabMenu extends FloatingActionMenu implements FabAnimator {
         collapseBehaviour = new FabCollapseBehaviour(this);
     }
 
-    public FabMenu(Context context, FabMenuOptions options, FabClickListener clickListener, ScrollEventListener scrollEventListener) {
+    public FabMenu(Context context, FabOptions options, FabClickListener clickListener, ScrollEventListener scrollEventListener) {
         this(context);
         onFinishInflate();
         applyOptions(options, clickListener, scrollEventListener);
         setOnMenuButtonClickListener(v -> toggle(true));
     }
 
-    public void applyOptions(FabMenuOptions options, FabClickListener clickListener, ScrollEventListener scrollEventListener) {
+    public void applyOptions(FabOptions options, FabClickListener clickListener, ScrollEventListener scrollEventListener) {
         if (options.hidden == True) {
             hideMenu(true);
         }

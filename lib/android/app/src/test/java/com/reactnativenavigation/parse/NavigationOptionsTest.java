@@ -82,16 +82,16 @@ public class NavigationOptionsTest extends BaseTest {
         assertThat(result.fabOptions.rippleColor.get()).isEqualTo(FAB_RIPPLE_COLOR);
         assertThat(result.fabOptions.hidden).isEqualTo(FAB_HIDDEN);
         assertThat(result.fabOptions.hideOnScroll).isEqualTo(FAB_HIDE_ON_SCROLL);
-        assertThat(result.fabOptions.id.get()).isEqualTo(FAB_ID);
         assertThat(result.fabOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
         assertThat(result.fabOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
+        assertThat(result.fabMenuOptions.id.get()).isEqualTo(FAB_ID);
+        assertThat(result.fabMenuOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
+        assertThat(result.fabMenuOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
         assertThat(result.fabMenuOptions.backgroundColor.get()).isEqualTo(FAB_BACKGROUND_COLOR);
         assertThat(result.fabMenuOptions.clickColor.get()).isEqualTo(FAB_CLICK_COLOR);
         assertThat(result.fabMenuOptions.rippleColor.get()).isEqualTo(FAB_RIPPLE_COLOR);
         assertThat(result.fabMenuOptions.hidden).isEqualTo(FAB_HIDDEN);
         assertThat(result.fabMenuOptions.hideOnScroll).isEqualTo(FAB_HIDE_ON_SCROLL);
-        assertThat(result.fabMenuOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
-        assertThat(result.fabMenuOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
     }
 
     @NonNull

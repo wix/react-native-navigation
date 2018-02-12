@@ -39,7 +39,7 @@ public class Options implements DEFAULT_VALUES {
         result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
         result.overlayOptions = OverlayOptions.parse(json.optJSONObject("overlay"));
         result.fabOptions = FabOptions.parse(json.optJSONObject("fab"));
-        result.fabMenuOptions = FabMenuOptions.parse(json.optJSONObject("fabMenu"));
+        result.fabMenuOptions = FabOptions.parse(json.optJSONObject("fabMenu"));
 
         return result.withDefaultOptions(defaultOptions);
     }
@@ -51,7 +51,7 @@ public class Options implements DEFAULT_VALUES {
     @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
     @NonNull public OverlayOptions overlayOptions = new OverlayOptions();
     @NonNull public FabOptions fabOptions = new FabOptions();
-    @NonNull public FabMenuOptions fabMenuOptions = new FabMenuOptions();
+    @NonNull public FabOptions fabMenuOptions = new FabOptions();
 
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;

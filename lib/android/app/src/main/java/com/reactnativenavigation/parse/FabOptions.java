@@ -1,7 +1,10 @@
 package com.reactnativenavigation.parse;
 
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import static com.reactnativenavigation.parse.Options.BooleanOptions.NoValue;
 
@@ -19,10 +22,16 @@ public class FabOptions implements DEFAULT_VALUES {
         if (json.has("icon")) {
             options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
         }
+        if (json.has("fabs")) {
+            JSONArray fabsArray = json.optJSONArray("fabs");
+            for (int i = 0; i < fabsArray.length(); i++) {
+                options.fabsArray.add(FabOptions.parse(fabsArray.optJSONObject(i)));
+            }
+        }
         options.alignHorizontally = TextParser.parse(json, "alignHorizontally");
         options.alignVertically = TextParser.parse(json, "alignVertically");
-        options.size = TextParser.parse(json, "size");
         options.hideOnScroll = Options.BooleanOptions.parse(json.optString("hideOnScroll"));
+        options.size = TextParser.parse(json, "size");
 
         return options;
     }
@@ -32,11 +41,12 @@ public class FabOptions implements DEFAULT_VALUES {
     public Color clickColor = new NullColor();
     public Color rippleColor = new NullColor();
     public Text icon = new NullText();
-    public Options.BooleanOptions hidden = NoValue;
+    public Options.BooleanOptions hidden = Options.BooleanOptions.NoValue;
+    public ArrayList<FabOptions> fabsArray = new ArrayList<>();
     public Text alignHorizontally = new NullText();
     public Text alignVertically = new NullText();
-    public Text size = new NullText();
     public Options.BooleanOptions hideOnScroll = NoValue;
+    public Text size = new NullText();
 
     void mergeWith(final FabOptions other) {
         if (other.id.hasValue()) {
@@ -51,11 +61,14 @@ public class FabOptions implements DEFAULT_VALUES {
         if (other.rippleColor.hasValue()) {
             rippleColor = other.rippleColor;
         }
-        if (other.hidden != NoValue) {
+        if (other.hidden != Options.BooleanOptions.NoValue) {
             hidden = other.hidden;
         }
         if (other.icon.hasValue()) {
             icon = other.icon;
+        }
+        if (other.fabsArray.size() > 0) {
+            fabsArray = other.fabsArray;
         }
         if (other.alignVertically.hasValue()) {
             alignVertically = other.alignVertically;
@@ -63,11 +76,11 @@ public class FabOptions implements DEFAULT_VALUES {
         if (other.alignHorizontally.hasValue()) {
             alignHorizontally = other.alignHorizontally;
         }
-        if (other.size.hasValue()) {
-            size = other.size;
-        }
         if (other.hideOnScroll != NoValue) {
             hideOnScroll = other.hideOnScroll;
+        }
+        if (other.size.hasValue()) {
+            size = other.size;
         }
     }
 
@@ -84,11 +97,14 @@ public class FabOptions implements DEFAULT_VALUES {
         if (!rippleColor.hasValue()) {
             rippleColor = defaultOptions.rippleColor;
         }
-        if (hidden == NoValue) {
+        if (hidden == Options.BooleanOptions.NoValue) {
             hidden = defaultOptions.hidden;
         }
         if (!icon.hasValue()) {
             icon = defaultOptions.icon;
+        }
+        if (fabsArray.size() == 0) {
+            fabsArray = defaultOptions.fabsArray;
         }
         if (!alignHorizontally.hasValue()) {
             alignHorizontally = defaultOptions.alignHorizontally;
@@ -96,11 +112,11 @@ public class FabOptions implements DEFAULT_VALUES {
         if (!alignVertically.hasValue()) {
             alignVertically = defaultOptions.alignVertically;
         }
-        if (!size.hasValue()) {
-            size = defaultOptions.size;
-        }
         if (hideOnScroll == NoValue) {
             hideOnScroll = defaultOptions.hideOnScroll;
+        }
+        if (!size.hasValue()) {
+            size = defaultOptions.size;
         }
     }
 }
