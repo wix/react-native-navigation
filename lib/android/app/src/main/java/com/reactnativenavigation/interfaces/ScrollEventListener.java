@@ -79,6 +79,7 @@ public class ScrollEventListener implements EventDispatcherListener {
     private void onVerticalScroll(int scrollY, int oldScrollY) {
         if (scrollY < 0) return;
         if (!dragStarted) return;
+        if (view == null) return;
 
         final int scrollDiff = calcScrollDiff(scrollY, oldScrollY, view.getMeasuredHeight());
         final float translationY = view.getTranslationY() - scrollDiff;

@@ -6,6 +6,8 @@ const { StyleSheet, ScrollView, View, Button } = require('react-native');
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
+const FAB = 'fab';
+
 class ScrollViewScreen extends Component {
   static get options() {
     return {
@@ -13,6 +15,12 @@ class ScrollViewScreen extends Component {
         title: 'Collapse',
         textColor: 'black',
         textFontSize: 16
+      },
+      fab: {
+        id: FAB,
+        backgroundColor: 'blue',
+        clickColor: 'blue',
+        rippleColor: 'aquamarine'
       }
     };
   }

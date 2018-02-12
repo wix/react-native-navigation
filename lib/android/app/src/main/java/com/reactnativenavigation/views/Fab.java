@@ -7,6 +7,9 @@ import android.widget.RelativeLayout;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.reactnativenavigation.R;
+import com.reactnativenavigation.anim.FabAnimator;
+import com.reactnativenavigation.anim.FabCollapseBehaviour;
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.utils.ImageLoader;
 
@@ -19,9 +22,11 @@ import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
 import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
 
-public class Fab extends FloatingActionButton {
+public class Fab extends FloatingActionButton implements FabAnimator {
 
     private String id = "";
+    private FabCollapseBehaviour collapseBehaviour;
+    private ScrollEventListener scrollEventListener;
 
     public Fab(Context context) {
         super(context);
@@ -31,14 +36,20 @@ public class Fab extends FloatingActionButton {
         layoutParams.bottomMargin = (int) context.getResources().getDimension(R.dimen.margin);
         layoutParams.rightMargin = (int) context.getResources().getDimension(R.dimen.margin);
         setLayoutParams(layoutParams);
+
+        collapseBehaviour = new FabCollapseBehaviour(this);
     }
 
     public Fab(Context context, FabOptions options) {
-        this(context);
-        applyOptions(options);
+        this(context, options, null);
     }
 
-    public void applyOptions(FabOptions options) {
+    public Fab(Context context, FabOptions options, ScrollEventListener scrollEventListener) {
+        this(context);
+        applyOptions(options, scrollEventListener);
+    }
+
+    public void applyOptions(FabOptions options, ScrollEventListener scrollEventListener) {
         id = options.id.get();
         if (options.hidden == True) {
             hide(true);
@@ -85,6 +96,7 @@ public class Fab extends FloatingActionButton {
         if (options.size.hasValue()) {
             setButtonSize("mini".equals(options.size.get()) ? SIZE_MINI : SIZE_NORMAL);
         }
+        enableCollapse(scrollEventListener);
     }
 
     public void applyIcon(String icon) {
@@ -114,5 +126,34 @@ public class Fab extends FloatingActionButton {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    @Override
+    public void show() {
+        show(true);
+    }
+
+    @Override
+    public void hide() {
+        hide(true);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        disableCollapse();
+        super.onDetachedFromWindow();
+    }
+
+    public void enableCollapse(ScrollEventListener scrollEventListener) {
+        if (scrollEventListener != null) {
+            this.scrollEventListener = scrollEventListener;
+            collapseBehaviour.enableCollapse(scrollEventListener);
+        }
+    }
+
+    public void disableCollapse() {
+        if (scrollEventListener != null) {
+            collapseBehaviour.disableCollapse();
+        }
     }
 }

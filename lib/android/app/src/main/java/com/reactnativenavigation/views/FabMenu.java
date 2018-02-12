@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.reactnativenavigation.R;
+import com.reactnativenavigation.anim.FabAnimator;
 import com.reactnativenavigation.parse.FabMenuOptions;
 import com.reactnativenavigation.parse.FabOptions;
 
@@ -21,7 +22,7 @@ import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
 import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
 
-public class FabMenu extends FloatingActionMenu {
+public class FabMenu extends FloatingActionMenu implements FabAnimator {
 
     public interface FabClickListener {
         void onFabClicked(String id);
@@ -110,5 +111,15 @@ public class FabMenu extends FloatingActionMenu {
 
     public void applyIcon(String icon) {
         //can not apply icon for now
+    }
+
+    @Override
+    public void show() {
+        showMenu(true);
+    }
+
+    @Override
+    public void hide() {
+        hideMenu(true);
     }
 }

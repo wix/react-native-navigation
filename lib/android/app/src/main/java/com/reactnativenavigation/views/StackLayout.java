@@ -46,12 +46,12 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
     private void applyFabOptions(Options options, ReactComponent component) {
         if (options.fabOptions.id.hasValue()) {
             if (fab == null) {
-                fab = new Fab(getContext(), options.fabOptions);
+                fab = new Fab(getContext(), options.fabOptions, component.getScrollEventListener());
                 fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.fabOptions.id.get()));
                 addView(fab);
             } else {
                 fab.bringToFront();
-                fab.applyOptions(options.fabOptions);
+                fab.applyOptions(options.fabOptions, component.getScrollEventListener());
                 fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.fabOptions.id.get()));
             }
         } else {
