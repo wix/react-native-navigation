@@ -28,11 +28,11 @@ public class FabOptionsPresenter {
         if (options.fabMenuOptions.id.hasValue()) {
             FabMenu.FabClickListener clickListener = component::sendOnNavigationButtonPressed;
             if (fabMenu == null) {
-                fabMenu = new FabMenu(stackLayout.getContext(), options.fabMenuOptions, clickListener);
+                fabMenu = new FabMenu(stackLayout.getContext(), options.fabMenuOptions, clickListener, component.getScrollEventListener());
                 stackLayout.addView(fabMenu);
             } else {
                 fabMenu.bringToFront();
-                fabMenu.applyOptions(options.fabMenuOptions, clickListener);
+                fabMenu.applyOptions(options.fabMenuOptions, clickListener, component.getScrollEventListener());
             }
         } else {
             removeFabMenu();

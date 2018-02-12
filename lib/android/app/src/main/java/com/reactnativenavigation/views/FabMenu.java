@@ -8,6 +8,8 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.anim.FabAnimator;
+import com.reactnativenavigation.anim.FabCollapseBehaviour;
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.FabMenuOptions;
 import com.reactnativenavigation.parse.FabOptions;
 
@@ -30,6 +32,8 @@ public class FabMenu extends FloatingActionMenu implements FabAnimator {
 
     private HashSet<Fab> fabs = new HashSet<>();
 
+    private FabCollapseBehaviour collapseBehaviour;
+
     public FabMenu(Context context) {
         super(context);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
@@ -40,16 +44,18 @@ public class FabMenu extends FloatingActionMenu implements FabAnimator {
         layoutParams.leftMargin = (int) context.getResources().getDimension(R.dimen.margin);
         layoutParams.topMargin = (int) context.getResources().getDimension(R.dimen.margin);
         setLayoutParams(layoutParams);
+
+        collapseBehaviour = new FabCollapseBehaviour(this);
     }
 
-    public FabMenu(Context context, FabMenuOptions options, FabClickListener clickListener) {
+    public FabMenu(Context context, FabMenuOptions options, FabClickListener clickListener, ScrollEventListener scrollEventListener) {
         this(context);
         onFinishInflate();
-        applyOptions(options, clickListener);
+        applyOptions(options, clickListener, scrollEventListener);
         setOnMenuButtonClickListener(v -> toggle(true));
     }
 
-    public void applyOptions(FabMenuOptions options, FabClickListener clickListener) {
+    public void applyOptions(FabMenuOptions options, FabClickListener clickListener, ScrollEventListener scrollEventListener) {
         if (options.hidden == True) {
             hideMenu(true);
         }
@@ -107,6 +113,12 @@ public class FabMenu extends FloatingActionMenu implements FabAnimator {
             }
             setLayoutParams(layoutParams);
         }
+        if (options.hideOnScroll == True) {
+            enableCollapse(scrollEventListener);
+        }
+        if (options.hideOnScroll == False) {
+            disableCollapse();
+        }
     }
 
     public void applyIcon(String icon) {
@@ -121,5 +133,13 @@ public class FabMenu extends FloatingActionMenu implements FabAnimator {
     @Override
     public void hide() {
         hideMenu(true);
+    }
+
+    public void enableCollapse(ScrollEventListener scrollEventListener) {
+        collapseBehaviour.enableCollapse(scrollEventListener);
+    }
+
+    public void disableCollapse() {
+        collapseBehaviour.disableCollapse();
     }
 }

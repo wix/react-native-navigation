@@ -20,7 +20,9 @@ public class FabCollapseBehaviour implements ScrollEventListener.OnScrollListene
     }
 
     public void disableCollapse() {
-        scrollEventListener.unregister();
+        if (scrollEventListener != null) {
+            scrollEventListener.unregister();
+        }
     }
 
     @Override

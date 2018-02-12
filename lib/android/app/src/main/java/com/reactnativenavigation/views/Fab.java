@@ -26,7 +26,6 @@ public class Fab extends FloatingActionButton implements FabAnimator {
 
     private String id = "";
     private FabCollapseBehaviour collapseBehaviour;
-    private ScrollEventListener scrollEventListener;
 
     public Fab(Context context) {
         super(context);
@@ -143,22 +142,11 @@ public class Fab extends FloatingActionButton implements FabAnimator {
         hide(true);
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        disableCollapse();
-        super.onDetachedFromWindow();
-    }
-
-    public void enableCollapse(ScrollEventListener scrollEventListener) {
-        if (scrollEventListener != null) {
-            this.scrollEventListener = scrollEventListener;
-            collapseBehaviour.enableCollapse(scrollEventListener);
-        }
+    public void enableCollapse(@NonNull ScrollEventListener scrollEventListener) {
+        collapseBehaviour.enableCollapse(scrollEventListener);
     }
 
     public void disableCollapse() {
-        if (scrollEventListener != null) {
-            collapseBehaviour.disableCollapse();
-        }
+        collapseBehaviour.disableCollapse();
     }
 }
