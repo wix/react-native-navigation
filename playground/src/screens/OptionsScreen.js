@@ -44,7 +44,7 @@ class OptionsScreen extends Component {
         clickColor: 'orange',
         rippleColor: 'red',
         alignHorizontally: 'left',
-        fabs: [
+        actions: [
           {
             id: 'fab1',
             backgroundColor: 'blue',

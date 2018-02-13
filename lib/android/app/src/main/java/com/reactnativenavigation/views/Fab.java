@@ -27,7 +27,7 @@ public class Fab extends FloatingActionButton implements FabAnimator {
     private String id = "";
     private FabCollapseBehaviour collapseBehaviour;
 
-    public Fab(Context context) {
+    public Fab(Context context, String id) {
         super(context);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         layoutParams.addRule(ALIGN_PARENT_BOTTOM);
@@ -37,70 +37,8 @@ public class Fab extends FloatingActionButton implements FabAnimator {
         setLayoutParams(layoutParams);
 
         collapseBehaviour = new FabCollapseBehaviour(this);
-    }
 
-    public Fab(Context context, FabOptions options) {
-        this(context, options, null);
-    }
-
-    public Fab(Context context, FabOptions options, ScrollEventListener scrollEventListener) {
-        this(context);
-        applyOptions(options, scrollEventListener);
-    }
-
-    public void applyOptions(FabOptions options, ScrollEventListener scrollEventListener) {
-        id = options.id.get();
-        if (options.visible == True) {
-            show(true);
-        }
-        if (options.visible == False) {
-            hide(true);
-        }
-        if (options.backgroundColor.hasValue()) {
-            setColorNormal(options.backgroundColor.get());
-        }
-        if (options.clickColor.hasValue()) {
-            setColorPressed(options.clickColor.get());
-        }
-        if (options.rippleColor.hasValue()) {
-            setColorRipple(options.rippleColor.get());
-        }
-        if (options.icon.hasValue()) {
-            applyIcon(options.icon.get());
-        }
-        if (options.alignHorizontally.hasValue()) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-            if ("right".equals(options.alignHorizontally.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_LEFT);
-                layoutParams.addRule(ALIGN_PARENT_RIGHT);
-            }
-            if ("left".equals(options.alignHorizontally.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_RIGHT);
-                layoutParams.addRule(ALIGN_PARENT_LEFT);
-            }
-            setLayoutParams(layoutParams);
-        }
-        if (options.alignVertically.hasValue()) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-            if ("top".equals(options.alignVertically.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_BOTTOM);
-                layoutParams.addRule(ALIGN_PARENT_TOP);
-            }
-            if ("bottom".equals(options.alignVertically.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_TOP);
-                layoutParams.addRule(ALIGN_PARENT_BOTTOM);
-            }
-            setLayoutParams(layoutParams);
-        }
-        if (options.size.hasValue()) {
-            setButtonSize("mini".equals(options.size.get()) ? SIZE_MINI : SIZE_NORMAL);
-        }
-        if (options.hideOnScroll == True) {
-            enableCollapse(scrollEventListener);
-        }
-        if (options.hideOnScroll == False) {
-            disableCollapse();
-        }
+        this.id = id;
     }
 
     public void applyIcon(String icon) {

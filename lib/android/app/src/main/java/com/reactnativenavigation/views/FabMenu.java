@@ -43,79 +43,8 @@ public class FabMenu extends FloatingActionMenu implements FabAnimator {
         setLayoutParams(layoutParams);
 
         collapseBehaviour = new FabCollapseBehaviour(this);
-    }
-
-    public FabMenu(Context context, FabOptions options, FabClickListener clickListener, ScrollEventListener scrollEventListener) {
-        this(context);
         onFinishInflate();
-        applyOptions(options, clickListener, scrollEventListener);
         setOnMenuButtonClickListener(v -> toggle(true));
-    }
-
-    public void applyOptions(FabOptions options, FabClickListener clickListener, ScrollEventListener scrollEventListener) {
-        if (options.visible == True) {
-            showMenu(true);
-        }
-        if (options.visible == False) {
-            hideMenu(true);
-        }
-
-        if (options.backgroundColor.hasValue()) {
-            setMenuButtonColorNormal(options.backgroundColor.get());
-        }
-        if (options.clickColor.hasValue()) {
-            setMenuButtonColorPressed(options.clickColor.get());
-        }
-        if (options.rippleColor.hasValue()) {
-            setMenuButtonColorRipple(options.rippleColor.get());
-        }
-        if (options.icon.hasValue()) {
-            applyIcon(options.icon.get());
-        }
-
-        for (Fab fabStored : actions) {
-            removeMenuButton(fabStored);
-        }
-        actions.clear();
-        for (FabOptions fabOption : options.actionsArray) {
-            Fab fab = new Fab(getContext(), fabOption);
-            if (clickListener != null) {
-                fab.setOnClickListener(v -> clickListener.onFabClicked(fabOption.id.get()));
-            }
-
-            actions.add(fab);
-            addMenuButton(fab);
-        }
-        if (options.alignHorizontally.hasValue()) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-            if ("right".equals(options.alignHorizontally.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_LEFT);
-                layoutParams.addRule(ALIGN_PARENT_RIGHT);
-            }
-            if ("left".equals(options.alignHorizontally.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_RIGHT);
-                layoutParams.addRule(ALIGN_PARENT_LEFT);
-            }
-            setLayoutParams(layoutParams);
-        }
-        if (options.alignVertically.hasValue()) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-            if ("top".equals(options.alignVertically.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_BOTTOM);
-                layoutParams.addRule(ALIGN_PARENT_TOP);
-            }
-            if ("bottom".equals(options.alignVertically.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_TOP);
-                layoutParams.addRule(ALIGN_PARENT_BOTTOM);
-            }
-            setLayoutParams(layoutParams);
-        }
-        if (options.hideOnScroll == True) {
-            enableCollapse(scrollEventListener);
-        }
-        if (options.hideOnScroll == False) {
-            disableCollapse();
-        }
     }
 
     public void applyIcon(String icon) {
@@ -138,5 +67,9 @@ public class FabMenu extends FloatingActionMenu implements FabAnimator {
 
     public void disableCollapse() {
         collapseBehaviour.disableCollapse();
+    }
+
+    public HashSet<Fab> getActions() {
+        return actions;
     }
 }
