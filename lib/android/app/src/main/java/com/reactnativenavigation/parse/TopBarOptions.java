@@ -21,8 +21,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
         options.textColor = ColorParser.parse(json, "textColor");
         options.textFontSize = FractionParser.parse(json, "textFontSize");
         options.textFontFamily = typefaceManager.getTypeFace(json.optString("textFontFamily", ""));
-        options.hidden = Options.BooleanOptions.parse(json.optString("hidden"));
-        options.animateHide = Options.BooleanOptions.parse(json.optString("animateHide"));
+        options.hidden = Options.BooleanOptions.parse(json.optString("hidden", "false"));
+        options.animateHide = Options.BooleanOptions.parse(json.optString("animateHide", "true"));
         options.hideOnScroll = Options.BooleanOptions.parse(json.optString("hideOnScroll"));
         options.drawBehind = Options.BooleanOptions.parse(json.optString("drawBehind"));
         options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
@@ -38,8 +38,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
     public Color textColor = new NullColor();
     public Fraction textFontSize = new NullFraction();
     @Nullable public Typeface textFontFamily;
-    public Options.BooleanOptions hidden = Options.BooleanOptions.NoValue;
-    public Options.BooleanOptions animateHide = Options.BooleanOptions.NoValue;
+    public Options.BooleanOptions hidden = Options.BooleanOptions.False;
+    public Options.BooleanOptions animateHide = Options.BooleanOptions.True;
     public Options.BooleanOptions hideOnScroll = Options.BooleanOptions.NoValue;
     public Options.BooleanOptions drawBehind = Options.BooleanOptions.NoValue;
     public ArrayList<Button> leftButtons;

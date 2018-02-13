@@ -157,4 +157,11 @@ public class OptionsTest extends BaseTest {
         Options uut = new Options();
         assertThat(uut.topBarOptions.title.get("")).isEmpty();
     }
+
+    @Test
+    public void topBar_defaultOptions() throws Exception {
+        Options uut = new Options();
+        assertThat(uut.topBarOptions.hidden).isEqualTo(Options.BooleanOptions.False);
+        assertThat(uut.topBarOptions.animateHide).isEqualTo(Options.BooleanOptions.True);
+    }
 }
