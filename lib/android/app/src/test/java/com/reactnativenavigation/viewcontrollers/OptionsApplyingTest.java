@@ -13,6 +13,7 @@ import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Fraction;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.parse.params.Bool;
 
 import org.junit.Test;
 
@@ -59,8 +60,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void initialOptionsAppliedOnAppear() throws Exception {
-        assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
-        initialNavigationOptions.topBarOptions.title = new Text("the title");
+        uut.options.topBarOptions.title = new Text("the title");
         StackController stackController = new StackController(activity, "stackId", new Options());
         stackController.animatePush(uut, new MockPromise() {});
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
@@ -72,12 +72,11 @@ public class OptionsApplyingTest extends BaseTest {
     @Test
     public void mergeNavigationOptionsUpdatesCurrentOptions() throws Exception {
         uut.ensureViewIsCreated();
-        assertThat(uut.getOptions().topBarOptions.title.get("")).isEmpty();
+        assertThat(uut.options.topBarOptions.title.get("")).isEmpty();
         Options options = new Options();
         options.topBarOptions.title = new Text("new title");
         uut.mergeOptions(options);
-        assertThat(uut.getOptions().topBarOptions.title.get()).isEqualTo("new title");
-        assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
+        assertThat(uut.options.topBarOptions.title.get()).isEqualTo("new title");
     }
 
     @Test
@@ -107,8 +106,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBarTextColor() throws Exception {
-        assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
-        initialNavigationOptions.topBarOptions.title = new Text("the title");
+        assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
         stackController.animatePush(uut, new MockPromise() {
             @Override
             public void resolve(@Nullable Object value) {
@@ -125,7 +123,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBarTextSize() throws Exception {
-        assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
+        assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
@@ -141,14 +139,14 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBarHidden() throws Exception {
-        assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
+        assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
         assertThat(stackController.getTopBar().getVisibility()).isNotEqualTo(View.GONE);
 
         Options opts = new Options();
-        opts.topBarOptions.hidden = Options.BooleanOptions.True;
+        opts.topBarOptions.hidden = new Bool(true);
         uut.mergeOptions(opts);
 
         assertThat(stackController.getTopBar().getVisibility()).isEqualTo(View.GONE);
@@ -156,19 +154,18 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesDrawUnder() throws Exception {
-        assertThat(uut.getOptions()).isSameAs(initialNavigationOptions);
-        initialNavigationOptions.topBarOptions.title = new Text("the title");
-        initialNavigationOptions.topBarOptions.drawBehind = Options.BooleanOptions.False;
+        uut.options.topBarOptions.title = new Text("the title");
+        uut.options.topBarOptions.drawBehind = new Bool(false);
         uut.ensureViewIsCreated();
-        uut.onViewAppeared();
         stackController.animatePush(uut, new MockPromise() {
             @Override
             public void resolve(@Nullable Object value) {
+                uut.onViewAppeared();
                 RelativeLayout.LayoutParams uutLayoutParams = (RelativeLayout.LayoutParams) uut.getComponent().asView().getLayoutParams();
                 assertThat(uutLayoutParams.getRule(BELOW)).isNotEqualTo(0);
 
                 Options opts = new Options();
-                opts.topBarOptions.drawBehind = Options.BooleanOptions.True;
+                opts.topBarOptions.drawBehind = new Bool(true);
                 uut.mergeOptions(opts);
 
                 uutLayoutParams = (RelativeLayout.LayoutParams) (uut.getComponent().asView()).getLayoutParams();

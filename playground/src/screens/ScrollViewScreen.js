@@ -1,7 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 
-const { StyleSheet, ScrollView, View, Button } = require('react-native');
+const { StyleSheet, ScrollView, View, Button, Platform } = require('react-native');
 
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
@@ -11,6 +11,11 @@ class ScrollViewScreen extends Component {
     return {
       topBar: {
         title: 'Collapse',
+        ...Platform.select({
+          android: {
+            drawBehind: true
+          }
+        }),
         textColor: 'black',
         textFontSize: 16
       }
@@ -46,7 +51,6 @@ class ScrollViewScreen extends Component {
   componentDidUpdate() {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
-        drawUnder: true,
         hideOnScroll: this.state.topBarHideOnScroll
       }
     });

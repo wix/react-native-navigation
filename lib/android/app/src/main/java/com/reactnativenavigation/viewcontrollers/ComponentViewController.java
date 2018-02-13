@@ -27,7 +27,6 @@ public class ComponentViewController extends ViewController<ComponentLayout> imp
     @Override
     public void onViewAppeared() {
         super.onViewAppeared();
-        view.applyOptions(options);
         view.sendComponentStart();
     }
 
@@ -35,6 +34,11 @@ public class ComponentViewController extends ViewController<ComponentLayout> imp
     public void onViewDisappear() {
         view.sendComponentStop();
         super.onViewDisappear();
+    }
+
+    @Override
+    public void applyOptions(Options options) {
+        view.applyOptions(options);
     }
 
     @Override
@@ -51,13 +55,9 @@ public class ComponentViewController extends ViewController<ComponentLayout> imp
 
     @Override
     public void mergeOptions(Options options) {
-        this.options.mergeWith(options);
+        this.options = this.options.mergeWith(options);
         view.applyOptions(this.options);
         applyOnParentController(parentController -> parentController.applyOptions(this.options, view));
-    }
-
-    Options getOptions() {
-        return options;
     }
 
     ReactComponent getComponent() {

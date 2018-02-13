@@ -69,7 +69,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> implem
 
     @Override
     public void applyOptions(Options options, ReactComponent childComponent) {
-        applyOnParentController(parentController -> ((ParentController) parentController).applyOptions(options, childComponent));
+        super.applyOptions(options, childComponent);
     }
 
     @Override

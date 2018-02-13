@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -29,6 +30,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         boolean onViewDisappear(View view);
     }
 
+    Options initialOptions;
     public Options options;
 
     private final Activity activity;
@@ -42,7 +44,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     public ViewController(Activity activity, String id, Options initialOptions) {
         this.activity = activity;
         this.id = id;
-        options = initialOptions;
+        this.initialOptions = initialOptions;
+        options = initialOptions.copy();
     }
 
     protected abstract T createView();
@@ -132,6 +135,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     public void onViewAppeared() {
         isShown = true;
+        applyOptions(options);
         applyOnParentController(parentController -> {
             parentController.clearOptions();
             if (getView() instanceof ReactComponent) parentController.applyOptions(options, (ReactComponent) getView());
@@ -142,6 +146,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         isShown = false;
     }
 
+    @CallSuper
     public void destroy() {
         if (isShown) {
             isShown = false;

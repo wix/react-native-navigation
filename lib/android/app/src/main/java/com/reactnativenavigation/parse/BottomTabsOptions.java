@@ -1,7 +1,8 @@
 package com.reactnativenavigation.parse;
 
-
-import com.reactnativenavigation.parse.Options.BooleanOptions;
+import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.parsers.BoolParser;
 
 import org.json.JSONObject;
 
@@ -15,17 +16,17 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
         options.selectedColor = ColorParser.parse(json, "selectedTabColor");
         options.currentTabId = TextParser.parse(json, "currentTabId");
 		options.currentTabIndex = json.optInt("currentTabIndex", NO_INT_VALUE);
-		options.visible = BooleanOptions.parse(json.optString("visible"));
-		options.animateHide = BooleanOptions.parse(json.optString("animateHide"));
+		options.visible = BoolParser.parse(json,"visible");
+		options.animateHide = BoolParser.parse(json,"animateHide");
         options.testId = TextParser.parse(json, "testID");
 
 		return options;
 	}
 
     public Color color = new NullColor();
-    public Color selectedColor = new NullColor();
-	BooleanOptions visible = BooleanOptions.False;
-	BooleanOptions animateHide = BooleanOptions.False;
+    private Color selectedColor = new NullColor();
+	Bool visible = new NullBool();
+	Bool animateHide = new NullBool();
 	public int currentTabIndex = NO_INT_VALUE;
 	public Text currentTabId = new NullText();
     public Text testId = new NullText();
@@ -37,10 +38,10 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
 		if (NO_INT_VALUE != other.currentTabIndex) {
             currentTabIndex = other.currentTabIndex;
 		}
-		if (other.visible != BooleanOptions.NoValue) {
+		if (other.visible.hasValue()) {
 			visible = other.visible;
 		}
-		if (other.animateHide != BooleanOptions.NoValue) {
+		if (other.animateHide.hasValue()) {
 			animateHide = other.animateHide;
 		}
         if (other.color.hasValue()) {
@@ -58,10 +59,10 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
         if (NO_INT_VALUE == currentTabIndex) {
             currentTabIndex = defaultOptions.currentTabIndex;
         }
-        if (visible == BooleanOptions.NoValue) {
+        if (!visible.hasValue()) {
             visible = defaultOptions.visible;
         }
-        if (animateHide == BooleanOptions.NoValue) {
+        if (!animateHide.hasValue()) {
             animateHide = defaultOptions.animateHide;
         }
         if (!color.hasValue()) {
