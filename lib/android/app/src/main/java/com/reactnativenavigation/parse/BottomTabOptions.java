@@ -9,10 +9,10 @@ public class BottomTabOptions implements DEFAULT_VALUES {
         if (json == null) return options;
 
         options.title = TextParser.parse(json, "title");
-        if (!json.has("icon")) {
-            throw new RuntimeException("BottomTab must have an icon");
+        if (json.has("icon")) {
+            options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
         }
-        options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
+        options.badge = TextParser.parse(json, "badge");
         options.testId = TextParser.parse(json, "testID");
         return options;
     }
@@ -20,6 +20,7 @@ public class BottomTabOptions implements DEFAULT_VALUES {
     public Text title = new NullText();
     public Text icon = new NullText();
     public Text testId = new NullText();
+    public Text badge = new NullText();
 
     void mergeWith(final BottomTabOptions other) {
         if (other.title.hasValue()) {
@@ -27,6 +28,9 @@ public class BottomTabOptions implements DEFAULT_VALUES {
         }
         if (other.icon.hasValue()) {
             icon = other.icon;
+        }
+        if (other.badge.hasValue()) {
+            badge = other.badge;
         }
     }
 
@@ -36,6 +40,9 @@ public class BottomTabOptions implements DEFAULT_VALUES {
         }
         if (!icon.hasValue()) {
             icon = defaultOptions.icon;
+        }
+        if (!badge.hasValue()) {
+            badge = defaultOptions.badge;
         }
     }
 }

@@ -8,21 +8,21 @@ export class Lifecycle {
     this.onNavigationButtonPressed = this.onNavigationButtonPressed.bind(this);
   }
 
-  componentDidAppear(id) {
+  private componentDidAppear(id) {
     const ref = this.store.getRefForComponentId(id);
     if (ref && ref.didAppear) {
       ref.didAppear();
     }
   }
 
-  componentDidDisappear(id) {
+  private componentDidDisappear(id) {
     const ref = this.store.getRefForComponentId(id);
     if (ref && ref.didDisappear) {
       ref.didDisappear();
     }
   }
 
-  onNavigationButtonPressed(params) {
+  private onNavigationButtonPressed(params) {
     const ref = this.store.getRefForComponentId(params.componentId);
     if (ref && ref.onNavigationButtonPressed) {
       ref.onNavigationButtonPressed(params.buttonId);

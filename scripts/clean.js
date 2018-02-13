@@ -14,4 +14,5 @@ function run() {
   exec.execSync(`rm -rf playground/android/app/build`);
   exec.execSync(`rm -rf AndroidE2E/android/build`);
   exec.execSync(`rm -rf AndroidE2E/android/app/build`);
+  exec.execSync(`rm -rf lib/dist`);
 }

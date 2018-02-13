@@ -44,6 +44,17 @@ public abstract class ParentController<T extends ViewGroup> extends ViewControll
 		return null;
 	}
 
+	@Override
+    public boolean containsComponent(ReactComponent component) {
+        if (super.containsComponent(component)) {
+            return true;
+        }
+        for (ViewController child : getChildControllers()) {
+            if (child.containsComponent(component)) return true;
+        }
+        return false;
+    }
+
     public void applyOptions(Options options, ReactComponent childComponent) {
 
     }

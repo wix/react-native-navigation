@@ -6,7 +6,7 @@
  - [Top Level](/docs/Navigation)
 - Params
  - [Root](/docs/Root)
- - [Container](/docs/Container)
+ - [Component](/docs/Component)
  - [SideMenu](/docs/SideMenu)
 - Options
  - [NavigationOptions](/docs/options/NavigationOptions)

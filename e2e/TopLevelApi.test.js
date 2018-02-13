@@ -35,9 +35,9 @@ describe('top level api', () => {
   it('unmount is called on pop', async () => {
     await elementById(testIDs.PUSH_LIFECYCLE_BUTTON).tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
-    await Utils.tapBackIos();
+    await elementById(testIDs.POP_BUTTON).tap();
     await expect(elementByLabel('componentWillUnmount')).toBeVisible();
-    await element(by.traits(['button']).and(by.label('OK'))).atIndex(0).tap();
+    await elementByLabel('OK').atIndex(0).tap();
     await expect(elementByLabel('didDisappear')).toBeVisible();
   });
 });

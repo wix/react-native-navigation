@@ -25,6 +25,10 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+
+        testBuildType System.getProperty('testBuildType', 'debug')  //this will later be used to control the test apk build type
+        missingDimensionStrategy "minReactNative", "minReactNative46" //read note
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         release {
@@ -47,4 +51,9 @@ dependencies {
     implementation 'com.android.support:design:25.4.0'
     implementation "com.android.support:appcompat-v7:25.4.0"
     implementation project(':react-native-navigation')
+
+    androidTestImplementation(project(path: ":detox"))
+    androidTestImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.1'
 }
