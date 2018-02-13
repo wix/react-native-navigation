@@ -1,6 +1,7 @@
 package com.reactnativenavigation.presentation;
 
 
+import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
@@ -26,11 +27,8 @@ public class FabOptionsPresenter {
     private Fab fab;
     private FabMenu fabMenu;
 
-    public FabOptionsPresenter(ViewGroup viewGroup) {
+    public void applyOptions(Options options, @NonNull ReactComponent component, @NonNull ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
-    }
-
-    public void applyOptions(Options options, ReactComponent component) {
         this.component = component;
         applyFabOptions(options.fabOptions);
         applyFabMenuOptions(options.fabMenuOptions);

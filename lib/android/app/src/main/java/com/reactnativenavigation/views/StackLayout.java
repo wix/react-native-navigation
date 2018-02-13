@@ -20,15 +20,12 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class StackLayout extends RelativeLayout implements TitleBarButton.OnClickListener {
 
     private final TopBar topBar;
-    private FabOptionsPresenter fabOptionsPresenter;
-
 
     public StackLayout(Context context) {
         super(context);
         topBar = new TopBar(context, this);
         topBar.setId(CompatUtils.generateViewId());
         createLayout();
-        fabOptionsPresenter = new FabOptionsPresenter(this);
     }
 
     void createLayout() {
@@ -42,7 +39,6 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
 
     public void applyOptions(Options options, ReactComponent component) {
         new OptionsPresenter(topBar, component).applyOptions(options);
-        fabOptionsPresenter.applyOptions(options, component);
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
