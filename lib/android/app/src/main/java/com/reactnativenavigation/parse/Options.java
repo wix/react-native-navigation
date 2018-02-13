@@ -2,26 +2,12 @@ package com.reactnativenavigation.parse;
 
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
 
 public class Options implements DEFAULT_VALUES {
-
-    public enum BooleanOptions {
-		True,
-		False,
-		NoValue;
-
-		static BooleanOptions parse(String value) {
-			if (!TextUtils.isEmpty(value)) {
-				return Boolean.valueOf(value) ? True : False;
-			}
-			return NoValue;
-		}
-	}
 
     @NonNull
     public static Options parse(TypefaceLoader typefaceManager, JSONObject json) {
@@ -56,12 +42,18 @@ public class Options implements DEFAULT_VALUES {
 
     @CheckResult
     public Options copy() {
-        return new Options().mergeWith(this);
+        Options result = new Options();
+        result.topBarOptions.mergeWith(topBarOptions);
+        result.topTabsOptions.mergeWith(topTabsOptions);
+        result.topTabOptions.mergeWith(topTabOptions);
+        result.bottomTabOptions.mergeWith(bottomTabOptions);
+        result.bottomTabsOptions.mergeWith(bottomTabsOptions);
+        return result;
     }
 
     @CheckResult
 	public Options mergeWith(final Options other) {
-        Options result = new Options();
+        Options result = copy();
         result.topBarOptions.mergeWith(other.topBarOptions);
         result.topTabsOptions.mergeWith(other.topTabsOptions);
         result.topTabOptions.mergeWith(other.topTabOptions);

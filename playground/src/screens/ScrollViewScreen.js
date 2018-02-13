@@ -11,6 +11,7 @@ class ScrollViewScreen extends Component {
     return {
       topBar: {
         title: 'Collapse',
+        drawBehind: true,
         textColor: 'black',
         textFontSize: 16
       }
@@ -46,7 +47,6 @@ class ScrollViewScreen extends Component {
   componentDidUpdate() {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
-        drawUnder: true,
         hideOnScroll: this.state.topBarHideOnScroll
       }
     });
