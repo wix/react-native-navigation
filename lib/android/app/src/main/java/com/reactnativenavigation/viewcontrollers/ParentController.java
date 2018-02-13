@@ -75,7 +75,7 @@ public abstract class ParentController<T extends ViewGroup> extends ViewControll
 	}
 
     void clearOptions() {
-
+        options = initialOptions.copy();
     }
 
     public void setupTopTabsWithViewPager(ViewPager viewPager) {
