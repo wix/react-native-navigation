@@ -42,6 +42,7 @@ public class StackController extends ParentController <StackLayout> {
 
     @Override
     void clearOptions() {
+        super.clearOptions();
         stackLayout.clearOptions();
     }
 
