@@ -57,6 +57,9 @@ static NSString* const navigationCommands	= @"RNN.navigationCommands";
 # pragma mark private
 
 -(void)send:(NSString *)eventName body:(id)body {
+    if ([eventName isEqualToString:componentDidDisappear] && self.bridge == nil) {
+        return;
+    }
 	[self sendEventWithName:eventName body:body];
 }
 

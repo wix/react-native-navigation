@@ -1,6 +1,6 @@
 {
-  "name": "react-native-navigation",
-  "version": "2.0.0",
+  "name": "@nfl/react-native-navigation",
+  "version": "2.0.0-pre.7da04a30",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -41,7 +41,8 @@
     "pretest-e2e-ios": "npm run build",
     "test-e2e-ios": "node ./scripts/test.e2e.ios.js",
     "test-all": "node ./scripts/test.all.js",
-    "release": "node ./scripts/release.js"
+    "release": "node ./scripts/release.js",
+    "prepublish": "npm run build"
   },
   "peerDependencies": {
     "react": "*",
