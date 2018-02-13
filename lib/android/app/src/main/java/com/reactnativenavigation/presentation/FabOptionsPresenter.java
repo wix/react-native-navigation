@@ -26,12 +26,12 @@ public class FabOptionsPresenter {
     private Fab fab;
     private FabMenu fabMenu;
 
-    public FabOptionsPresenter(ViewGroup viewGroup, ReactComponent component) {
+    public FabOptionsPresenter(ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
-        this.component = component;
     }
 
-    public void applyOptions(Options options) {
+    public void applyOptions(Options options, ReactComponent component) {
+        this.component = component;
         applyFabOptions(options.fabOptions);
         applyFabMenuOptions(options.fabMenuOptions);
     }

@@ -28,6 +28,7 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
         topBar = new TopBar(context, this);
         topBar.setId(CompatUtils.generateViewId());
         createLayout();
+        fabOptionsPresenter = new FabOptionsPresenter(this);
     }
 
     void createLayout() {
@@ -41,10 +42,7 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
 
     public void applyOptions(Options options, ReactComponent component) {
         new OptionsPresenter(topBar, component).applyOptions(options);
-        if (fabOptionsPresenter == null) {
-            fabOptionsPresenter = new FabOptionsPresenter(this, component);
-        }
-        fabOptionsPresenter.applyOptions(options);
+        fabOptionsPresenter.applyOptions(options, component);
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
