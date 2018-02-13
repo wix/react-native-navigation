@@ -1,6 +1,8 @@
 package com.reactnativenavigation.presentation;
 
 
+import android.view.ViewGroup;
+
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.FabMenu;
@@ -8,14 +10,14 @@ import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
 
 public class FabOptionsPresenter {
-    private StackLayout stackLayout;
+    private ViewGroup viewGroup;
     private ReactComponent component;
 
     private Fab fab;
     private FabMenu fabMenu;
 
-    public FabOptionsPresenter(StackLayout stackLayout, ReactComponent component) {
-        this.stackLayout = stackLayout;
+    public FabOptionsPresenter(ViewGroup viewGroup, ReactComponent component) {
+        this.viewGroup = viewGroup;
         this.component = component;
     }
 
@@ -28,8 +30,8 @@ public class FabOptionsPresenter {
         if (options.fabMenuOptions.id.hasValue()) {
             FabMenu.FabClickListener clickListener = component::sendOnNavigationButtonPressed;
             if (fabMenu == null) {
-                fabMenu = new FabMenu(stackLayout.getContext(), options.fabMenuOptions, clickListener, component.getScrollEventListener());
-                stackLayout.addView(fabMenu);
+                fabMenu = new FabMenu(viewGroup.getContext(), options.fabMenuOptions, clickListener, component.getScrollEventListener());
+                viewGroup.addView(fabMenu);
             } else {
                 fabMenu.bringToFront();
                 fabMenu.applyOptions(options.fabMenuOptions, clickListener, component.getScrollEventListener());
@@ -42,9 +44,9 @@ public class FabOptionsPresenter {
     private void applyFabOptions(Options options) {
         if (options.fabOptions.id.hasValue()) {
             if (fab == null) {
-                fab = new Fab(stackLayout.getContext(), options.fabOptions, component.getScrollEventListener());
+                fab = new Fab(viewGroup.getContext(), options.fabOptions, component.getScrollEventListener());
                 fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.fabOptions.id.get()));
-                stackLayout.addView(fab);
+                viewGroup.addView(fab);
             } else {
                 fab.bringToFront();
                 fab.applyOptions(options.fabOptions, component.getScrollEventListener());
@@ -60,7 +62,7 @@ public class FabOptionsPresenter {
             if (fabMenu.isShown()) {
                 fabMenu.hideMenu(true);
             }
-            stackLayout.removeView(fabMenu);
+            viewGroup.removeView(fabMenu);
             fabMenu = null;
         }
     }
@@ -70,7 +72,7 @@ public class FabOptionsPresenter {
             if (fab.isShown()) {
                 fab.hide(true);
             }
-            stackLayout.removeView(fab);
+            viewGroup.removeView(fab);
             fab = null;
         }
     }

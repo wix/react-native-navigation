@@ -50,11 +50,11 @@ public class Fab extends FloatingActionButton implements FabAnimator {
 
     public void applyOptions(FabOptions options, ScrollEventListener scrollEventListener) {
         id = options.id.get();
-        if (options.hidden == True) {
-            hide(true);
-        }
-        if (options.hidden == False) {
+        if (options.visible == True) {
             show(true);
+        }
+        if (options.visible == False) {
+            hide(true);
         }
         if (options.backgroundColor.hasValue()) {
             setColorNormal(options.backgroundColor.get());

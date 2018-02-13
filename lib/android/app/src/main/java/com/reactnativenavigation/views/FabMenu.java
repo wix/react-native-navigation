@@ -27,7 +27,7 @@ public class FabMenu extends FloatingActionMenu implements FabAnimator {
         void onFabClicked(String id);
     }
 
-    private HashSet<Fab> fabs = new HashSet<>();
+    private HashSet<Fab> actions = new HashSet<>();
 
     private FabCollapseBehaviour collapseBehaviour;
 
@@ -53,11 +53,11 @@ public class FabMenu extends FloatingActionMenu implements FabAnimator {
     }
 
     public void applyOptions(FabOptions options, FabClickListener clickListener, ScrollEventListener scrollEventListener) {
-        if (options.hidden == True) {
-            hideMenu(true);
-        }
-        if (options.hidden == False) {
+        if (options.visible == True) {
             showMenu(true);
+        }
+        if (options.visible == False) {
+            hideMenu(true);
         }
 
         if (options.backgroundColor.hasValue()) {
@@ -73,17 +73,17 @@ public class FabMenu extends FloatingActionMenu implements FabAnimator {
             applyIcon(options.icon.get());
         }
 
-        for (Fab fabStored : fabs) {
+        for (Fab fabStored : actions) {
             removeMenuButton(fabStored);
         }
-        fabs.clear();
-        for (FabOptions fabOption : options.fabsArray) {
+        actions.clear();
+        for (FabOptions fabOption : options.actionsArray) {
             Fab fab = new Fab(getContext(), fabOption);
             if (clickListener != null) {
                 fab.setOnClickListener(v -> clickListener.onFabClicked(fabOption.id.get()));
             }
 
-            fabs.add(fab);
+            actions.add(fab);
             addMenuButton(fab);
         }
         if (options.alignHorizontally.hasValue()) {

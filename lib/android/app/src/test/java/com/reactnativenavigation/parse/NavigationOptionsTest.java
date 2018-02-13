@@ -31,7 +31,7 @@ public class NavigationOptionsTest extends BaseTest {
     private static final int TOP_BAR_FONT_SIZE = 18;
     private static final String TOP_BAR_FONT_FAMILY = "HelveticaNeue-CondensedBold";
     private static final Typeface TOP_BAR_TYPEFACE = Typeface.create("HelveticaNeue-CondensedBold", Typeface.BOLD);
-    private static final Options.BooleanOptions TOP_BAR_HIDDEN = True;
+    private static final Options.BooleanOptions TOP_BAR_VISIBLE = True;
     private static final Options.BooleanOptions TOP_BAR_DRAW_BEHIND = True;
     private static final Options.BooleanOptions TOP_BAR_HIDE_ON_SCROLL = True;
     private static final Options.BooleanOptions BOTTOM_TABS_ANIMATE_HIDE = True;
@@ -69,7 +69,7 @@ public class NavigationOptionsTest extends BaseTest {
         assertThat(result.topBarOptions.textColor.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
         assertThat(result.topBarOptions.textFontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
         assertThat(result.topBarOptions.textFontFamily).isEqualTo(TOP_BAR_TYPEFACE);
-        assertThat(result.topBarOptions.hidden).isEqualTo(TOP_BAR_HIDDEN);
+        assertThat(result.topBarOptions.hidden).isEqualTo(TOP_BAR_VISIBLE);
         assertThat(result.topBarOptions.drawBehind).isEqualTo(TOP_BAR_DRAW_BEHIND);
         assertThat(result.topBarOptions.hideOnScroll).isEqualTo(TOP_BAR_HIDE_ON_SCROLL);
         assertThat(result.bottomTabsOptions.animateHide).isEqualTo(BOTTOM_TABS_ANIMATE_HIDE);
@@ -80,7 +80,7 @@ public class NavigationOptionsTest extends BaseTest {
         assertThat(result.fabOptions.backgroundColor.get()).isEqualTo(FAB_BACKGROUND_COLOR);
         assertThat(result.fabOptions.clickColor.get()).isEqualTo(FAB_CLICK_COLOR);
         assertThat(result.fabOptions.rippleColor.get()).isEqualTo(FAB_RIPPLE_COLOR);
-        assertThat(result.fabOptions.hidden).isEqualTo(FAB_HIDDEN);
+        assertThat(result.fabOptions.visible).isEqualTo(FAB_HIDDEN);
         assertThat(result.fabOptions.hideOnScroll).isEqualTo(FAB_HIDE_ON_SCROLL);
         assertThat(result.fabOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
         assertThat(result.fabOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
@@ -90,7 +90,7 @@ public class NavigationOptionsTest extends BaseTest {
         assertThat(result.fabMenuOptions.backgroundColor.get()).isEqualTo(FAB_BACKGROUND_COLOR);
         assertThat(result.fabMenuOptions.clickColor.get()).isEqualTo(FAB_CLICK_COLOR);
         assertThat(result.fabMenuOptions.rippleColor.get()).isEqualTo(FAB_RIPPLE_COLOR);
-        assertThat(result.fabMenuOptions.hidden).isEqualTo(FAB_HIDDEN);
+        assertThat(result.fabMenuOptions.visible).isEqualTo(FAB_HIDDEN);
         assertThat(result.fabMenuOptions.hideOnScroll).isEqualTo(FAB_HIDE_ON_SCROLL);
     }
 
@@ -111,7 +111,7 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("textColor", TOP_BAR_TEXT_COLOR)
                 .put("textFontSize", TOP_BAR_FONT_SIZE)
                 .put("textFontFamily", TOP_BAR_FONT_FAMILY)
-                .put("hidden", TOP_BAR_HIDDEN)
+                .put("visible", TOP_BAR_VISIBLE)
                 .put("drawBehind", TOP_BAR_DRAW_BEHIND)
                 .put("hideOnScroll", TOP_BAR_HIDE_ON_SCROLL);
     }
@@ -126,7 +126,7 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
                 .put("alignVertically", FAB_ALIGN_VERTICALLY)
                 .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
-                .put("hidden", FAB_HIDDEN);
+                .put("visible", FAB_HIDDEN);
     }
 
     @NonNull
@@ -139,7 +139,7 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
                 .put("alignVertically", FAB_ALIGN_VERTICALLY)
                 .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
-                .put("hidden", FAB_HIDDEN);
+                .put("visible", FAB_HIDDEN);
     }
 
     @NonNull
@@ -152,7 +152,7 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
                 .put("alignVertically", FAB_ALIGN_VERTICALLY)
                 .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
-                .put("hidden", FAB_HIDDEN);
+                .put("visible", FAB_HIDDEN);
     }
 
     @NonNull
@@ -165,7 +165,7 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
                 .put("alignVertically", FAB_ALIGN_VERTICALLY)
                 .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
-                .put("hidden", FAB_HIDDEN);
+                .put("visible", FAB_HIDDEN);
     }
 
     @NonNull
@@ -176,7 +176,7 @@ public class NavigationOptionsTest extends BaseTest {
                 .put("textColor", TOP_BAR_TEXT_COLOR)
                 .put("textFontSize", TOP_BAR_FONT_SIZE)
                 .put("textFontFamily", TOP_BAR_FONT_FAMILY)
-                .put("visible", TOP_BAR_HIDDEN);
+                .put("visible", TOP_BAR_VISIBLE);
     }
 
     @NonNull

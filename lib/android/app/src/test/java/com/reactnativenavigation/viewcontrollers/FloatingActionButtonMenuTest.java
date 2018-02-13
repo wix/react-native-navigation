@@ -43,7 +43,7 @@ public class FloatingActionButtonMenuTest extends BaseTest {
         for (int i = 0; i < CHILD_FAB_COUNT; i++) {
             FabOptions childOptions = new FabOptions();
             childOptions.id = new Text("fab" + i);
-            fabOptions.fabsArray.add(childOptions);
+            fabOptions.actionsArray.add(childOptions);
         }
         options.fabMenuOptions = fabOptions;
         return options;

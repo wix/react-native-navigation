@@ -18,14 +18,14 @@ public class FabOptions implements DEFAULT_VALUES {
         options.backgroundColor = ColorParser.parse(json, "backgroundColor");
         options.clickColor = ColorParser.parse(json, "clickColor");
         options.rippleColor = ColorParser.parse(json, "rippleColor");
-        options.hidden = Options.BooleanOptions.parse(json.optString("hidden"));
+        options.visible = Options.BooleanOptions.parse(json.optString("visible"));
         if (json.has("icon")) {
             options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
         }
-        if (json.has("fabs")) {
-            JSONArray fabsArray = json.optJSONArray("fabs");
+        if (json.has("actions")) {
+            JSONArray fabsArray = json.optJSONArray("actions");
             for (int i = 0; i < fabsArray.length(); i++) {
-                options.fabsArray.add(FabOptions.parse(fabsArray.optJSONObject(i)));
+                options.actionsArray.add(FabOptions.parse(fabsArray.optJSONObject(i)));
             }
         }
         options.alignHorizontally = TextParser.parse(json, "alignHorizontally");
@@ -41,8 +41,8 @@ public class FabOptions implements DEFAULT_VALUES {
     public Color clickColor = new NullColor();
     public Color rippleColor = new NullColor();
     public Text icon = new NullText();
-    public Options.BooleanOptions hidden = Options.BooleanOptions.NoValue;
-    public ArrayList<FabOptions> fabsArray = new ArrayList<>();
+    public Options.BooleanOptions visible = Options.BooleanOptions.NoValue;
+    public ArrayList<FabOptions> actionsArray = new ArrayList<>();
     public Text alignHorizontally = new NullText();
     public Text alignVertically = new NullText();
     public Options.BooleanOptions hideOnScroll = NoValue;
@@ -61,14 +61,14 @@ public class FabOptions implements DEFAULT_VALUES {
         if (other.rippleColor.hasValue()) {
             rippleColor = other.rippleColor;
         }
-        if (other.hidden != Options.BooleanOptions.NoValue) {
-            hidden = other.hidden;
+        if (other.visible != Options.BooleanOptions.NoValue) {
+            visible = other.visible;
         }
         if (other.icon.hasValue()) {
             icon = other.icon;
         }
-        if (other.fabsArray.size() > 0) {
-            fabsArray = other.fabsArray;
+        if (other.actionsArray.size() > 0) {
+            actionsArray = other.actionsArray;
         }
         if (other.alignVertically.hasValue()) {
             alignVertically = other.alignVertically;
@@ -97,14 +97,14 @@ public class FabOptions implements DEFAULT_VALUES {
         if (!rippleColor.hasValue()) {
             rippleColor = defaultOptions.rippleColor;
         }
-        if (hidden == Options.BooleanOptions.NoValue) {
-            hidden = defaultOptions.hidden;
+        if (visible == Options.BooleanOptions.NoValue) {
+            visible = defaultOptions.visible;
         }
         if (!icon.hasValue()) {
             icon = defaultOptions.icon;
         }
-        if (fabsArray.size() == 0) {
-            fabsArray = defaultOptions.fabsArray;
+        if (actionsArray.size() == 0) {
+            actionsArray = defaultOptions.actionsArray;
         }
         if (!alignHorizontally.hasValue()) {
             alignHorizontally = defaultOptions.alignHorizontally;

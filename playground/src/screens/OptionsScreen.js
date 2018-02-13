@@ -204,7 +204,7 @@ class OptionsScreen extends Component {
     Navigation.setOptions(this.props.componentId, {
       fabMenu: {
         id: FAB,
-        hidden: true
+        visible: false
       }
     });
   }

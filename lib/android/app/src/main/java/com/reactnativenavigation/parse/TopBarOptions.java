@@ -21,7 +21,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
         options.textColor = ColorParser.parse(json, "textColor");
         options.textFontSize = FractionParser.parse(json, "textFontSize");
         options.textFontFamily = typefaceManager.getTypeFace(json.optString("textFontFamily", ""));
-        options.hidden = Options.BooleanOptions.parse(json.optString("hidden"));
+        options.hidden = Options.BooleanOptions.parse(json.optString("visible"));
         options.animateHide = Options.BooleanOptions.parse(json.optString("animateHide"));
         options.hideOnScroll = Options.BooleanOptions.parse(json.optString("hideOnScroll"));
         options.drawBehind = Options.BooleanOptions.parse(json.optString("drawBehind"));
