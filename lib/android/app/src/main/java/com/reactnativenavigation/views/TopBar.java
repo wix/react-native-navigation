@@ -20,7 +20,7 @@ import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.Color;
 import com.reactnativenavigation.parse.Fraction;
 import com.reactnativenavigation.parse.Number;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Bool;
 
 import java.util.ArrayList;
 
@@ -169,22 +169,22 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         collapsingBehavior.disableCollapse();
     }
 
-    public void show(Options.BooleanOptions animated) {
+    public void show(Bool animated) {
         if (getVisibility() == View.VISIBLE) {
             return;
         }
-        if (animated == Options.BooleanOptions.True) {
+        if (animated.isTrue()) {
             animator.show();
         } else {
             setVisibility(View.VISIBLE);
         }
     }
 
-    public void hide(Options.BooleanOptions animated) {
+    public void hide(Bool animated) {
         if (getVisibility() == View.GONE) {
             return;
         }
-        if (animated == Options.BooleanOptions.True) {
+        if (animated.isTrue()) {
             animator.hide();
         } else {
             setVisibility(View.GONE);

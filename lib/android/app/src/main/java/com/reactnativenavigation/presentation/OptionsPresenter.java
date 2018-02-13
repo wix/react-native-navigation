@@ -10,9 +10,6 @@ import com.reactnativenavigation.views.TopBar;
 
 import java.util.ArrayList;
 
-import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
-import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
-
 public class OptionsPresenter {
     private TopBar topBar;
     private ReactComponent component;
@@ -37,21 +34,21 @@ public class OptionsPresenter {
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
 
         topBar.setTitleTypeface(options.textFontFamily);
-        if (options.hidden == True) {
+        if (options.hidden.isTrue()) {
             topBar.hide(options.animateHide);
         }
-        if (options.hidden == False) {
+        if (options.hidden.isFalseOrUndefined()) {
             topBar.show(options.animateHide);
         }
-        if (options.drawBehind == True) {
+        if (options.drawBehind.isTrue()) {
             component.drawBehindTopBar();
-        } else if (options.drawBehind == False) {
+        } else if (options.drawBehind.isFalseOrUndefined()) {
             component.drawBelowTopBar(topBar);
         }
 
-        if (options.hideOnScroll == True) {
+        if (options.hideOnScroll.isTrue()) {
             topBar.enableCollapse(component.getScrollEventListener());
-        } else if (options.hideOnScroll == False) {
+        } else if (options.hideOnScroll.isTrue()) {
             topBar.disableCollapse();
         }
     }

@@ -25,6 +25,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
 		super(context);
 		this.reactView = reactView;
         addView(reactView.asView(), MATCH_PARENT, MATCH_PARENT);
+        setContentDescription("ComponentLayout");
         touchDelegate = new OverlayTouchDelegate(reactView);
     }
 
@@ -55,7 +56,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
 
     @Override
     public void applyOptions(Options options) {
-        touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside == Options.BooleanOptions.True);
+        touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside.isTrue());
     }
 
     @Override
@@ -75,16 +76,20 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
 
     @Override
     public void drawBehindTopBar() {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-        layoutParams.removeRule(BELOW);
-        setLayoutParams(layoutParams);
+        if (getParent() instanceof RelativeLayout) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+            layoutParams.removeRule(BELOW);
+            setLayoutParams(layoutParams);
+        }
     }
 
     @Override
     public void drawBelowTopBar(TopBar topBar) {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-        layoutParams.addRule(BELOW, topBar.getId());
-        setLayoutParams(layoutParams);
+        if (getParent() instanceof RelativeLayout) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+            layoutParams.addRule(BELOW, topBar.getId());
+            setLayoutParams(layoutParams);
+        }
     }
 
     @Override

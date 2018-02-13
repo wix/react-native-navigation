@@ -21,11 +21,13 @@ public class TopTabOptions implements DEFAULT_VALUES {
         return result;
     }
 
-    void mergeWith(TopTabOptions topTabsOptions) {
-
+    void mergeWith(TopTabOptions other) {
+        if (other.title.hasValue()) title = other.title;
+        if (other.fontFamily != null) fontFamily = other.fontFamily;
+        if (other.tabIndex >= 0) tabIndex = other.tabIndex;
     }
 
-    void mergeWithDefault(TopTabOptions topTabsOptions) {
-
+    void mergeWithDefault(TopTabOptions other) {
+        if (fontFamily == null) fontFamily = other.fontFamily;
     }
 }
