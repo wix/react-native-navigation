@@ -1,6 +1,6 @@
 {
   "name": "@nfl/react-native-navigation",
-  "version": "2.0.0-pre.7da04a30",
+  "version": "2.0.0-pre.d5f4771e",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
@@ -51,15 +51,15 @@
     "react-native": "*"
   },
   "dependencies": {
-    "lodash": "4.x.x",
-    "prop-types": "15.x.x",
-    "tslib": "1.x.x",
-    "@types/react": "16.x.x",
-    "@types/react-native": "0.49.x",
+    "@types/jest": "22.x.x",
     "@types/lodash": "4.x.x",
     "@types/prop-types": "15.x.x",
+    "@types/react": "16.x.x",
+    "@types/react-native": "0.49.x",
     "@types/react-test-renderer": "16.x.x",
-    "@types/jest": "22.x.x"
+    "lodash": "4.x.x",
+    "prop-types": "15.x.x",
+    "tslib": "1.x.x"
   },
   "devDependencies": {
     "detox": "7.x.x",
