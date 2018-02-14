@@ -12,7 +12,8 @@ mkdir -p ~/.android
 touch ~/.android/repositories.cfg
 
 echo "Downloading Android SDK"
-curl --location https://dl.google.com/android/repository/sdk-tools-darwin-3859397.zip | tar -x -z -C $ANDROID_HOME
+curl https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip > android-sdk.zip
+unzip android-sdk.zip -d $ANDROID_HOME
 
 echo "Accepting Android Licenses"
-yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+yes | sdkmanager --licenses

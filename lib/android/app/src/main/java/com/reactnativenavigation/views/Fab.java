@@ -3,23 +3,12 @@ package com.reactnativenavigation.views;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.widget.RelativeLayout;
 
 import com.github.clans.fab.FloatingActionButton;
-import com.reactnativenavigation.R;
 import com.reactnativenavigation.anim.FabAnimator;
 import com.reactnativenavigation.anim.FabCollapseBehaviour;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.utils.ImageLoader;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
-import static android.widget.RelativeLayout.ALIGN_PARENT_LEFT;
-import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
-import static android.widget.RelativeLayout.ALIGN_PARENT_TOP;
-import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
-import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
 
 public class Fab extends FloatingActionButton implements FabAnimator {

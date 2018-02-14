@@ -6,7 +6,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.R;
@@ -22,8 +21,6 @@ import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
 import static android.widget.RelativeLayout.ALIGN_PARENT_TOP;
 import static com.github.clans.fab.FloatingActionButton.SIZE_MINI;
 import static com.github.clans.fab.FloatingActionButton.SIZE_NORMAL;
-import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
-import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
 public class FabOptionsPresenter {
     private ViewGroup viewGroup;
@@ -165,10 +162,10 @@ public class FabOptionsPresenter {
     }
 
     private void applyFabOptions(Fab fab, FabOptions options) {
-        if (options.visible == True) {
+        if (options.visible.isTrueOrUndefined()) {
             fab.show(true);
         }
-        if (options.visible == False) {
+        if (options.visible.isFalse()) {
             fab.hide(true);
         }
         if (options.backgroundColor.hasValue()) {
@@ -186,19 +183,19 @@ public class FabOptionsPresenter {
         if (options.size.hasValue()) {
             fab.setButtonSize("mini".equals(options.size.get()) ? SIZE_MINI : SIZE_NORMAL);
         }
-        if (options.hideOnScroll == True) {
+        if (options.hideOnScroll.isTrue()) {
             fab.enableCollapse(component.getScrollEventListener());
         }
-        if (options.hideOnScroll == False) {
+        if (options.hideOnScroll.isFalseOrUndefined()) {
             fab.disableCollapse();
         }
     }
 
     private void applyFabMenuOptions(FabMenu fabMenu, FabOptions options) {
-        if (options.visible == True) {
+        if (options.visible.isTrueOrUndefined()) {
             fabMenu.showMenu(true);
         }
-        if (options.visible == False) {
+        if (options.visible.isFalse()) {
             fabMenu.hideMenu(true);
         }
 
@@ -227,10 +224,10 @@ public class FabOptionsPresenter {
             fabMenu.getActions().add(fab);
             fabMenu.addMenuButton(fab);
         }
-        if (options.hideOnScroll == True) {
+        if (options.hideOnScroll.isTrue()) {
             fabMenu.enableCollapse(component.getScrollEventListener());
         }
-        if (options.hideOnScroll == False) {
+        if (options.hideOnScroll.isFalseOrUndefined()) {
             fabMenu.disableCollapse();
         }
     }

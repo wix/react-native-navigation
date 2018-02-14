@@ -1,12 +1,14 @@
 package com.reactnativenavigation.parse;
 
 
+import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.parsers.BoolParser;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import static com.reactnativenavigation.parse.Options.BooleanOptions.NoValue;
 
 public class FabOptions implements DEFAULT_VALUES {
 
@@ -18,7 +20,7 @@ public class FabOptions implements DEFAULT_VALUES {
         options.backgroundColor = ColorParser.parse(json, "backgroundColor");
         options.clickColor = ColorParser.parse(json, "clickColor");
         options.rippleColor = ColorParser.parse(json, "rippleColor");
-        options.visible = Options.BooleanOptions.parse(json.optString("visible"));
+        options.visible = BoolParser.parse(json, "visible");
         if (json.has("icon")) {
             options.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
         }
@@ -30,7 +32,7 @@ public class FabOptions implements DEFAULT_VALUES {
         }
         options.alignHorizontally = TextParser.parse(json, "alignHorizontally");
         options.alignVertically = TextParser.parse(json, "alignVertically");
-        options.hideOnScroll = Options.BooleanOptions.parse(json.optString("hideOnScroll"));
+        options.hideOnScroll = BoolParser.parse(json, "hideOnScroll");
         options.size = TextParser.parse(json, "size");
 
         return options;
@@ -41,11 +43,11 @@ public class FabOptions implements DEFAULT_VALUES {
     public Color clickColor = new NullColor();
     public Color rippleColor = new NullColor();
     public Text icon = new NullText();
-    public Options.BooleanOptions visible = Options.BooleanOptions.NoValue;
+    public Bool visible = new NullBool();
     public ArrayList<FabOptions> actionsArray = new ArrayList<>();
     public Text alignHorizontally = new NullText();
     public Text alignVertically = new NullText();
-    public Options.BooleanOptions hideOnScroll = NoValue;
+    public Bool hideOnScroll = new NullBool();
     public Text size = new NullText();
 
     void mergeWith(final FabOptions other) {
@@ -61,7 +63,7 @@ public class FabOptions implements DEFAULT_VALUES {
         if (other.rippleColor.hasValue()) {
             rippleColor = other.rippleColor;
         }
-        if (other.visible != Options.BooleanOptions.NoValue) {
+        if (other.visible.hasValue()) {
             visible = other.visible;
         }
         if (other.icon.hasValue()) {
@@ -76,7 +78,7 @@ public class FabOptions implements DEFAULT_VALUES {
         if (other.alignHorizontally.hasValue()) {
             alignHorizontally = other.alignHorizontally;
         }
-        if (other.hideOnScroll != NoValue) {
+        if (other.hideOnScroll.hasValue()) {
             hideOnScroll = other.hideOnScroll;
         }
         if (other.size.hasValue()) {
@@ -97,7 +99,7 @@ public class FabOptions implements DEFAULT_VALUES {
         if (!rippleColor.hasValue()) {
             rippleColor = defaultOptions.rippleColor;
         }
-        if (visible == Options.BooleanOptions.NoValue) {
+        if (!visible.hasValue()) {
             visible = defaultOptions.visible;
         }
         if (!icon.hasValue()) {
@@ -112,7 +114,7 @@ public class FabOptions implements DEFAULT_VALUES {
         if (!alignVertically.hasValue()) {
             alignVertically = defaultOptions.alignVertically;
         }
-        if (hideOnScroll == NoValue) {
+        if (!hideOnScroll.hasValue()) {
             hideOnScroll = defaultOptions.hideOnScroll;
         }
         if (!size.hasValue()) {

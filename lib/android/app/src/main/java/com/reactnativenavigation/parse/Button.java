@@ -3,6 +3,9 @@ package com.reactnativenavigation.parse;
 import android.support.annotation.ColorInt;
 import android.view.MenuItem;
 
+import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.parsers.BoolParser;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,12 +16,12 @@ import static com.reactnativenavigation.parse.Options.NO_INT_VALUE;
 public class Button {
 	public String id;
 	public Text title;
-	public Options.BooleanOptions disabled;
-	public Options.BooleanOptions disableIconTint;
+	public Bool disabled;
+	public Bool disableIconTint;
 	public int showAsAction;
 	@ColorInt public int buttonColor;
 	public int buttonFontSize;
-	public Text buttonFontWeight;
+	private Text buttonFontWeight;
 	public Text icon = new NullText();
 	public Text testId;
 
@@ -26,8 +29,8 @@ public class Button {
 		Button button = new Button();
 		button.id = json.optString("id");
 		button.title = TextParser.parse(json, "title");
-		button.disabled = Options.BooleanOptions.parse(json.optString("disabled", ""));
-		button.disableIconTint = Options.BooleanOptions.parse(json.optString("disableIconTint", ""));
+		button.disabled = BoolParser.parse(json,"disabled");
+		button.disableIconTint = BoolParser.parse(json,"disableIconTint");
 		button.showAsAction = parseShowAsAction(json);
 		button.buttonColor = json.optInt("buttonColor", NO_INT_VALUE);
 		button.buttonFontSize = json.optInt("buttonFontSize", NO_INT_VALUE);

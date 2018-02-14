@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Button;
-import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
 import com.reactnativenavigation.utils.ArrayUtils;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -46,7 +45,7 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 	void addToMenu(Context context, final Menu menu) {
 		MenuItem menuItem = menu.add(button.title.get(""));
 		menuItem.setShowAsAction(button.showAsAction);
-		menuItem.setEnabled(button.disabled != Options.BooleanOptions.True);
+		menuItem.setEnabled(button.disabled.isFalseOrUndefined());
 		menuItem.setOnMenuItemClickListener(this);
 
 		if (hasIcon()) {
@@ -109,12 +108,12 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 	}
 
 	private void setIconColor() {
-		if (button.disabled == Options.BooleanOptions.False || button.disabled == Options.BooleanOptions.NoValue) {
+		if (button.disabled.isFalseOrUndefined()) {
 			UiUtils.tintDrawable(icon, button.buttonColor);
 			return;
 		}
 
-		if (button.disableIconTint == Options.BooleanOptions.True) {
+		if (button.disableIconTint.isTrue()) {
 			UiUtils.tintDrawable(icon, button.buttonColor);
 		} else {
 			UiUtils.tintDrawable(icon, Color.LTGRAY);

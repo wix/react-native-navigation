@@ -39,13 +39,14 @@ public class StackController extends ParentController <StackLayout> {
 
     @Override
     public void applyOptions(Options options, ReactComponent component) {
-        stackLayout.applyOptions(options, component);
+        super.applyOptions(options, component);
+        stackLayout.applyOptions(this.options, component);
         fabOptionsPresenter.applyOptions(options, component, stackLayout);
-        applyOnParentController(parentController -> ((ParentController) parentController).applyOptions(options, component));
     }
 
     @Override
     void clearOptions() {
+        super.clearOptions();
         stackLayout.clearOptions();
     }
 

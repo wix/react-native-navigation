@@ -55,6 +55,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
     @Override
     public void applyOptions(Options options, ReactComponent childComponent) {
+        super.applyOptions(options, childComponent);
         int tabIndex = findTabContainingComponent(childComponent);
         if (tabIndex >= 0) new BottomTabOptionsPresenter(bottomTabs).present(options, tabIndex);
     }
@@ -123,7 +124,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
 	@Override
 	public void mergeOptions(Options options) {
-        this.options.mergeWith(options);
+        this.options = this.options.mergeWith(options);
         if (options.bottomTabsOptions.currentTabIndex != NO_INT_VALUE) {
             selectTabAtIndex(options.bottomTabsOptions.currentTabIndex);
         }
