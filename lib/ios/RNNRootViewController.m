@@ -101,8 +101,8 @@
 
 - (BOOL)hidesBottomBarWhenPushed
 {
-	if (self.options.bottomTabs && self.options.bottomTabs.hidden) {
-		return [self.options.bottomTabs.hidden boolValue];
+	if (self.options.bottomTabs && self.options.bottomTabs.visible) {
+		return ![self.options.bottomTabs.visible boolValue];
 	}
 	return NO;
 }
