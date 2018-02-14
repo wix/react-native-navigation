@@ -86,11 +86,9 @@
 	barButtonItem.target = self;
 	barButtonItem.action = @selector(onButtonPress:);
 	
-	NSNumber *disabled = dictionary[@"disabled"];
-	BOOL disabledBool = disabled ? [disabled boolValue] : NO;
-	if (disabledBool) {
-		[barButtonItem setEnabled:NO];
-	}
+	NSNumber *enabled = dictionary[@"enabled"];
+	BOOL enabledBool = enabled ? [enabled boolValue] : YES;
+	[barButtonItem setEnabled:enabledBool];
 	
 	NSNumber *disableIconTintString = dictionary[@"disableIconTint"];
 	BOOL disableIconTint = disableIconTintString ? [disableIconTintString boolValue] : NO;

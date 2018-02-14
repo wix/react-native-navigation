@@ -21,8 +21,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		viewController.tabBarController.tabBar.accessibilityIdentifier = self.testID;
 	}
 	
-	if (self.drawUnder) {
-		if ([self.drawUnder boolValue]) {
+	if (self.drawBehind) {
+		if ([self.drawBehind boolValue]) {
 			viewController.edgesForExtendedLayout |= UIRectEdgeBottom;
 		} else {
 			viewController.edgesForExtendedLayout &= ~UIRectEdgeBottom;

@@ -130,8 +130,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		viewController.navigationController.navigationBar.translucent = [self.translucent boolValue];
 	}
 	
-	if (self.drawUnder) {
-		if ([self.drawUnder boolValue]) {
+	if (self.drawBehind) {
+		if ([self.drawBehind boolValue]) {
 			viewController.edgesForExtendedLayout |= UIRectEdgeTop;
 		} else {
 			viewController.edgesForExtendedLayout &= ~UIRectEdgeTop;

@@ -11,11 +11,7 @@ class ScrollViewScreen extends Component {
     return {
       topBar: {
         title: 'Collapse',
-        ...Platform.select({
-          android: {
-            drawBehind: true
-          }
-        }),
+        drawBehind: true,
         textColor: 'black',
         textFontSize: 16
       }

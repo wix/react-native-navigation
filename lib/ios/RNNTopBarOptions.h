@@ -13,7 +13,7 @@
 @property (nonatomic, strong) NSNumber* buttonColor;
 @property (nonatomic, strong) NSNumber* translucent;
 @property (nonatomic, strong) NSNumber* transparent;
-@property (nonatomic, strong) NSNumber* drawUnder;
+@property (nonatomic, strong) NSNumber* drawBehind;
 @property (nonatomic, strong) NSNumber* textFontSize;
 @property (nonatomic, strong) NSNumber* noBorder;
 @property (nonatomic, strong) NSNumber* blur;
