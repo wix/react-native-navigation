@@ -12,10 +12,6 @@ import java.util.HashSet;
 
 public class FabMenu extends FloatingActionMenu implements FabAnimator {
 
-    public interface FabClickListener {
-        void onFabClicked(String id);
-    }
-
     private HashSet<Fab> actions = new HashSet<>();
 
     private FabCollapseBehaviour collapseBehaviour;

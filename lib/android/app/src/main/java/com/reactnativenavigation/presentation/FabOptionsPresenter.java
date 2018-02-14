@@ -193,10 +193,10 @@ public class FabOptionsPresenter {
 
     private void applyFabMenuOptions(FabMenu fabMenu, FabOptions options) {
         if (options.visible.isTrueOrUndefined()) {
-            fabMenu.showMenu(true);
+            fabMenu.showMenuButton(true);
         }
         if (options.visible.isFalse()) {
-            fabMenu.hideMenu(true);
+            fabMenu.hideMenuButton(true);
         }
 
         if (options.backgroundColor.hasValue()) {
