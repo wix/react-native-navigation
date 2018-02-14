@@ -29,15 +29,7 @@ public class Fab extends FloatingActionButton implements FabAnimator {
 
     public Fab(Context context, String id) {
         super(context);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-        layoutParams.addRule(ALIGN_PARENT_BOTTOM);
-        layoutParams.addRule(ALIGN_PARENT_RIGHT);
-        layoutParams.bottomMargin = (int) context.getResources().getDimension(R.dimen.margin);
-        layoutParams.rightMargin = (int) context.getResources().getDimension(R.dimen.margin);
-        setLayoutParams(layoutParams);
-
         collapseBehaviour = new FabCollapseBehaviour(this);
-
         this.id = id;
     }
 

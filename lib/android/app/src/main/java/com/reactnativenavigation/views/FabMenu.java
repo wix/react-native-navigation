@@ -33,15 +33,6 @@ public class FabMenu extends FloatingActionMenu implements FabAnimator {
 
     public FabMenu(Context context) {
         super(context);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-        layoutParams.addRule(ALIGN_PARENT_BOTTOM);
-        layoutParams.addRule(ALIGN_PARENT_RIGHT);
-        layoutParams.bottomMargin = (int) context.getResources().getDimension(R.dimen.margin);
-        layoutParams.rightMargin = (int) context.getResources().getDimension(R.dimen.margin);
-        layoutParams.leftMargin = (int) context.getResources().getDimension(R.dimen.margin);
-        layoutParams.topMargin = (int) context.getResources().getDimension(R.dimen.margin);
-        setLayoutParams(layoutParams);
-
         collapseBehaviour = new FabCollapseBehaviour(this);
         onFinishInflate();
         setOnMenuButtonClickListener(v -> toggle(true));

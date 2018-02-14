@@ -2,9 +2,14 @@ package com.reactnativenavigation.presentation;
 
 
 import android.support.annotation.NonNull;
+import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.reactnativenavigation.R;
 import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.views.Fab;
@@ -38,9 +43,11 @@ public class FabOptionsPresenter {
         if (options.id.hasValue()) {
             if (fabMenu == null) {
                 fabMenu = new FabMenu(viewGroup.getContext());
+                setParams(fabMenu, options);
                 applyFabMenuOptions(fabMenu, options);
                 viewGroup.addView(fabMenu);
             } else {
+                setParams(fabMenu, options);
                 fabMenu.bringToFront();
                 applyFabMenuOptions(fabMenu, options);
             }
@@ -53,10 +60,12 @@ public class FabOptionsPresenter {
         if (options.id.hasValue()) {
             if (fab == null) {
                 fab = new Fab(viewGroup.getContext(), options.id.get());
+                setParams(fab, options);
                 applyFabOptions(fab, options);
                 fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
                 viewGroup.addView(fab);
             } else {
+                setParams(fab, options);
                 fab.bringToFront();
                 applyFabOptions(fab, options);
                 fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
@@ -86,6 +95,75 @@ public class FabOptionsPresenter {
         }
     }
 
+    private void setParams(View fab, FabOptions options) {
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (viewGroup instanceof RelativeLayout) {
+            RelativeLayout.LayoutParams layoutParamsRelative = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParamsRelative.bottomMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            layoutParamsRelative.rightMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            layoutParamsRelative.leftMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            layoutParamsRelative.topMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            if (options.alignHorizontally.hasValue()) {
+                if ("right".equals(options.alignHorizontally.get())) {
+                    layoutParamsRelative.removeRule(ALIGN_PARENT_LEFT);
+                    layoutParamsRelative.addRule(ALIGN_PARENT_RIGHT);
+                }
+                if ("left".equals(options.alignHorizontally.get())) {
+                    layoutParamsRelative.removeRule(ALIGN_PARENT_RIGHT);
+                    layoutParamsRelative.addRule(ALIGN_PARENT_LEFT);
+                }
+            } else {
+                layoutParamsRelative.addRule(ALIGN_PARENT_RIGHT);
+            }
+            if (options.alignVertically.hasValue()) {
+                if ("top".equals(options.alignVertically.get())) {
+                    layoutParamsRelative.removeRule(ALIGN_PARENT_BOTTOM);
+                    layoutParamsRelative.addRule(ALIGN_PARENT_TOP);
+                }
+                if ("bottom".equals(options.alignVertically.get())) {
+                    layoutParamsRelative.removeRule(ALIGN_PARENT_TOP);
+                    layoutParamsRelative.addRule(ALIGN_PARENT_BOTTOM);
+                }
+            } else {
+                layoutParamsRelative.addRule(ALIGN_PARENT_BOTTOM);
+            }
+            layoutParams = layoutParamsRelative;
+        }
+        if (viewGroup instanceof FrameLayout) {
+            FrameLayout.LayoutParams layoutParamsFrame = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParamsFrame.bottomMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            layoutParamsFrame.rightMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            layoutParamsFrame.leftMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            layoutParamsFrame.topMargin = (int) viewGroup.getContext().getResources().getDimension(R.dimen.margin);
+            if (options.alignHorizontally.hasValue()) {
+                if ("right".equals(options.alignHorizontally.get())) {
+                    removeGravityParam(layoutParamsFrame, Gravity.LEFT);
+                    setGravityParam(layoutParamsFrame, Gravity.RIGHT);
+                }
+                if ("left".equals(options.alignHorizontally.get())) {
+                    removeGravityParam(layoutParamsFrame, Gravity.RIGHT);
+                    setGravityParam(layoutParamsFrame, Gravity.LEFT);
+                }
+            } else {
+                setGravityParam(layoutParamsFrame, Gravity.RIGHT);
+            }
+            if (options.alignVertically.hasValue()) {
+                if ("top".equals(options.alignVertically.get())) {
+                    removeGravityParam(layoutParamsFrame, Gravity.BOTTOM);
+                    setGravityParam(layoutParamsFrame, Gravity.TOP);
+                }
+                if ("bottom".equals(options.alignVertically.get())) {
+                    removeGravityParam(layoutParamsFrame, Gravity.TOP);
+                    setGravityParam(layoutParamsFrame, Gravity.BOTTOM);
+                }
+            } else {
+                setGravityParam(layoutParamsFrame, Gravity.BOTTOM);
+            }
+            layoutParams = layoutParamsFrame;
+        }
+        fab.setLayoutParams(layoutParams);
+    }
+
     private void applyFabOptions(Fab fab, FabOptions options) {
         if (options.visible == True) {
             fab.show(true);
@@ -104,30 +182,6 @@ public class FabOptionsPresenter {
         }
         if (options.icon.hasValue()) {
             fab.applyIcon(options.icon.get());
-        }
-        if (options.alignHorizontally.hasValue()) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) fab.getLayoutParams();
-            if ("right".equals(options.alignHorizontally.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_LEFT);
-                layoutParams.addRule(ALIGN_PARENT_RIGHT);
-            }
-            if ("left".equals(options.alignHorizontally.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_RIGHT);
-                layoutParams.addRule(ALIGN_PARENT_LEFT);
-            }
-            fab.setLayoutParams(layoutParams);
-        }
-        if (options.alignVertically.hasValue()) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) fab.getLayoutParams();
-            if ("top".equals(options.alignVertically.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_BOTTOM);
-                layoutParams.addRule(ALIGN_PARENT_TOP);
-            }
-            if ("bottom".equals(options.alignVertically.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_TOP);
-                layoutParams.addRule(ALIGN_PARENT_BOTTOM);
-            }
-            fab.setLayoutParams(layoutParams);
         }
         if (options.size.hasValue()) {
             fab.setButtonSize("mini".equals(options.size.get()) ? SIZE_MINI : SIZE_NORMAL);
@@ -173,35 +227,21 @@ public class FabOptionsPresenter {
             fabMenu.getActions().add(fab);
             fabMenu.addMenuButton(fab);
         }
-        if (options.alignHorizontally.hasValue()) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) fabMenu.getLayoutParams();
-            if ("right".equals(options.alignHorizontally.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_LEFT);
-                layoutParams.addRule(ALIGN_PARENT_RIGHT);
-            }
-            if ("left".equals(options.alignHorizontally.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_RIGHT);
-                layoutParams.addRule(ALIGN_PARENT_LEFT);
-            }
-            fabMenu.setLayoutParams(layoutParams);
-        }
-        if (options.alignVertically.hasValue()) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) fabMenu.getLayoutParams();
-            if ("top".equals(options.alignVertically.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_BOTTOM);
-                layoutParams.addRule(ALIGN_PARENT_TOP);
-            }
-            if ("bottom".equals(options.alignVertically.get())) {
-                layoutParams.removeRule(ALIGN_PARENT_TOP);
-                layoutParams.addRule(ALIGN_PARENT_BOTTOM);
-            }
-            fabMenu.setLayoutParams(layoutParams);
-        }
         if (options.hideOnScroll == True) {
             fabMenu.enableCollapse(component.getScrollEventListener());
         }
         if (options.hideOnScroll == False) {
             fabMenu.disableCollapse();
+        }
+    }
+
+    private void setGravityParam(FrameLayout.LayoutParams params, int gravityParam) {
+        params.gravity = params.gravity | gravityParam;
+    }
+
+    private void removeGravityParam(FrameLayout.LayoutParams params, int gravityParam) {
+        if ((params.gravity & gravityParam) == gravityParam) {
+            params.gravity = params.gravity & ~gravityParam;
         }
     }
 }

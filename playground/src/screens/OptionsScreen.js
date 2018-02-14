@@ -1,7 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Button } = require('react-native');
+const { View, Text, Button, PlatformIOS } = require('react-native');
 
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
@@ -88,7 +88,9 @@ class OptionsScreen extends Component {
         <Button title='Top Bar Opaque' onPress={this.onClickTopBarOpaque} />
         <Button title='scrollView Screen' testID={testIDs.SCROLLVIEW_SCREEN_BUTTON} onPress={this.onClickScrollViewScreen} />
         <Button title='Custom Transition' onPress={this.onClickCustomTranstition} />
-        <Button title='Hide fab' testID={testIDs.HIDE_FAB} onPress={this.onClickFab} />
+        {!PlatformIOS ?
+          <Button title='Hide fab' testID={testIDs.HIDE_FAB} onPress={this.onClickFab} />
+          : null}
         <Button title='Show overlay' testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
         <Button title='Show touch through overlay' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
         <Button title='Push Default Options Screen' testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
