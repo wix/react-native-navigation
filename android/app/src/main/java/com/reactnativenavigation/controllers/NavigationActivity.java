@@ -39,6 +39,7 @@ import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.screens.NavigationType;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.OrientationHelper;
+import com.reactnativenavigation.utils.ReflectionUtils;
 import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
@@ -455,6 +456,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
             public void run() {
                 layout.destroy();
                 modalController.destroy();
+
+                Object devSupportManager = ReflectionUtils.getDeclaredField(getReactGateway().getReactInstanceManager(), "mDevSupportManager");
+                if (ReflectionUtils.getDeclaredField(devSupportManager, "mRedBoxDialog") != null) { // RN >= 0.52
+                    ReflectionUtils.setField(devSupportManager, "mRedBoxDialog", null);
+                }
             }
         });
     }

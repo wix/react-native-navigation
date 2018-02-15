@@ -74,6 +74,11 @@ RCT_EXPORT_MODULE(RCCManager);
     return dispatch_get_main_queue();
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;
+}
+
 #pragma mark - helper methods
 
 +(UIViewController*)modalPresenterViewControllers:(NSMutableArray*)returnAllPresenters
@@ -478,6 +483,11 @@ RCT_EXPORT_METHOD(
                   cancelAllReactTouches)
 {
     [RCCManagerModule cancelAllRCCViewControllerReactTouches];
+}
+
+RCT_EXPORT_METHOD(getLaunchArgs:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    resolve([[RCCManager sharedInstance] getLaunchArgs]);
 }
 
 @end

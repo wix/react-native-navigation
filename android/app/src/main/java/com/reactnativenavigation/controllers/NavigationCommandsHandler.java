@@ -1,28 +1,17 @@
 package com.reactnativenavigation.controllers;
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.content.*;
+import android.os.*;
 
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.WritableMap;
-import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.params.ActivityParams;
-import com.reactnativenavigation.params.ContextualMenuParams;
-import com.reactnativenavigation.params.FabParams;
-import com.reactnativenavigation.params.LightBoxParams;
-import com.reactnativenavigation.params.ScreenParams;
-import com.reactnativenavigation.params.SlidingOverlayParams;
-import com.reactnativenavigation.params.SnackbarParams;
-import com.reactnativenavigation.params.TitleBarButtonParams;
-import com.reactnativenavigation.params.TitleBarLeftButtonParams;
-import com.reactnativenavigation.params.parsers.ActivityParamsParser;
-import com.reactnativenavigation.params.parsers.ScreenParamsParser;
-import com.reactnativenavigation.utils.OrientationHelper;
-import com.reactnativenavigation.views.SideMenu.Side;
+import com.facebook.react.bridge.*;
+import com.reactnativenavigation.*;
+import com.reactnativenavigation.params.*;
+import com.reactnativenavigation.params.parsers.*;
+import com.reactnativenavigation.react.*;
+import com.reactnativenavigation.utils.*;
+import com.reactnativenavigation.views.SideMenu.*;
 
-import java.util.List;
+import java.util.*;
 
 public class NavigationCommandsHandler {
 
@@ -556,5 +545,10 @@ public class NavigationCommandsHandler {
                 promise.resolve(map);
             }
         });
+    }
+
+    public static void getLaunchArgs(Promise promise) {
+        Bundle bundle = LaunchArgs.instance.get();
+        promise.resolve(Arguments.fromBundle(bundle));
     }
 }

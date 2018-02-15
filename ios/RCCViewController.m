@@ -364,6 +364,12 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   
   NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
   [self.navigationController.navigationBar setTitleTextAttributes:titleTextAttributes];
+
+  if (self.navigationItem.titleView && [self.navigationItem.titleView isKindOfClass:[RCCTitleView class]]) {
+    RCCTitleView *titleView = (RCCTitleView *)self.navigationItem.titleView;
+    RCCTitleViewHelper *helper = [[RCCTitleViewHelper alloc] init:viewController navigationController:viewController.navigationController title:titleView.titleLabel.text subtitle:titleView.subtitleLabel.text titleImageData:nil isSetSubtitle:NO];
+    [helper setup:self.navigatorStyle];
+  }
   
   NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarButton"];
   NSMutableDictionary *leftNavButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarLeftButton"];
@@ -654,6 +660,25 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
       self.navigationItem.titleView.clipsToBounds = YES;
     }
   }
+
+  #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
+  if (@available(iOS 11.0, *)) {
+    if ([self.navigationController.navigationBar respondsToSelector:@selector(setPrefersLargeTitles:)]) {
+      NSNumber *prefersLargeTitles = self.navigatorStyle[@"largeTitle"];
+      if (prefersLargeTitles) {
+        if ([prefersLargeTitles boolValue]) {
+          self.navigationController.navigationBar.prefersLargeTitles = YES;
+          self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
+        } else {
+          self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+        }
+      } else {
+        self.navigationController.navigationBar.prefersLargeTitles = NO;
+        self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+      }
+    }
+  }
+  #endif
 }
 
 
