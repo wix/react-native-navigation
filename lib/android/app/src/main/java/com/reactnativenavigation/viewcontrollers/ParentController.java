@@ -59,7 +59,6 @@ public abstract class ParentController<T extends ViewGroup> extends ViewControll
     @CallSuper
     public void applyOptions(Options options, ReactComponent childComponent) {
         mergeChildOptions(options);
-        applyOnParentController(parentController -> ((ParentController) parentController).applyOptions(this.options, childComponent));
     }
 
     private void mergeChildOptions(Options options) {

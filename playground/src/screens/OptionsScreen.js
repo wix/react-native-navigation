@@ -1,7 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Button } = require('react-native');
+const { View, Text, Button, Platform } = require('react-native');
 
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
@@ -16,7 +16,10 @@ class OptionsScreen extends Component {
       topBar: {
         title: 'Static Title',
         textColor: 'black',
-        drawBehind: false,
+        ...Platform.select({
+          android: { drawBehind: true },
+          ios: { drawBehind: false, }
+        }),
         largeTitle: false,
         visible: true,
         textFontSize: 16,

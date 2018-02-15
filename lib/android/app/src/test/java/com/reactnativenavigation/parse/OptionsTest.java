@@ -166,4 +166,26 @@ public class OptionsTest extends BaseTest {
         assertThat(uut.topBarOptions.visible.isFalseOrUndefined()).isTrue();
         assertThat(uut.topBarOptions.animateHide.isTrueOrUndefined()).isTrue();
     }
+
+    @Test
+    public void clear_topBarOptions() throws Exception {
+        Options uut = new Options();
+        uut.topBarOptions.title = new Text("some title");
+        uut.clearTopBarOptions();
+        assertThat(uut.topBarOptions.title.hasValue()).isFalse();
+    }
+
+    @Test
+    public void clear_bottomTabsOptions() throws Exception {
+        Options uut = new Options();
+        uut.bottomTabsOptions.color = new Color(android.graphics.Color.RED);
+        uut.clearBottomTabsOptions();
+        assertThat(uut.bottomTabsOptions.color.hasValue()).isFalse();
+    }
+
+//    topBarOptions.mergeWithDefault(other.topBarOptions);
+//        topTabOptions.mergeWithDefault(other.topTabOptions);
+//        topTabsOptions.mergeWithDefault(other.topTabsOptions);
+//        bottomTabOptions.mergeWithDefault(other.bottomTabOptions);
+//        bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.views.ReactComponent;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +42,15 @@ public class SideMenuController extends ParentController {
 		return children;
 	}
 
-	public void setCenterController(ViewController centerController) {
+    @Override
+    public void applyOptions(Options options, ReactComponent childComponent) {
+        super.applyOptions(options, childComponent);
+        applyOnParentController(parentController ->
+                ((ParentController) parentController).applyOptions(this.options, childComponent)
+        );
+    }
+
+    public void setCenterController(ViewController centerController) {
 		this.centerController = centerController;
 		View childView = centerController.getView();
 		getView().addView(childView);
