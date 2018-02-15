@@ -16,8 +16,14 @@
 
 -(void)mergeWith:(NSDictionary *)otherOptions {
 	for (id key in otherOptions) {
-		[self setValue:[otherOptions objectForKey:key] forKey:key];
+		if ([self hasProperty:key]) {
+			[self setValue:[otherOptions objectForKey:key] forKey:key];
+		}
 	}
+}
+
+-(BOOL)hasProperty:(NSString*)propName {
+	return [self respondsToSelector:NSSelectorFromString(propName)];
 }
 
 @end

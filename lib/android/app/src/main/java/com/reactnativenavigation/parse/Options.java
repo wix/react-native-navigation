@@ -80,4 +80,14 @@ public class Options implements DEFAULT_VALUES {
         fabMenuOptions.mergeWithDefault(other.fabMenuOptions);
         return this;
     }
+
+    public Options clearTopBarOptions() {
+        topBarOptions = new TopBarOptions();
+        return this;
+    }
+
+    public Options clearBottomTabsOptions() {
+        bottomTabsOptions = new BottomTabsOptions();
+        return this;
+    }
 }

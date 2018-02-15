@@ -58,6 +58,9 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         super.applyOptions(options, childComponent);
         int tabIndex = findTabContainingComponent(childComponent);
         if (tabIndex >= 0) new BottomTabOptionsPresenter(bottomTabs).present(options, tabIndex);
+        applyOnParentController(parentController ->
+                ((ParentController) parentController).applyOptions(this.options.copy().clearBottomTabsOptions(), childComponent)
+        );
     }
 
     @Override

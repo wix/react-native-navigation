@@ -32,8 +32,8 @@ class TextScreen extends Component {
         <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onButtonPress()} />
         <Button title={'Switch To Tab 2'} testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
         <Button title={'Switch To Tab 1 by componentID'} testID={testIDs.SWITCH_FIRST_TAB_BUTTON} onPress={() => this.onClickSwitchToTabByComponentID()} />
-        <Button title='Hide Tab Bar' testID={testIDs.HIDE_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(true)} />
-        <Button title='Show Tab Bar' testID={testIDs.SHOW_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(false)} />
+        <Button title='Hide Tab Bar' testID={testIDs.HIDE_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(false)} />
+        <Button title='Show Tab Bar' testID={testIDs.SHOW_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(true)} />
         <Button title='Show Left Side Menu' testID={testIDs.SHOW_LEFT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('left')} />
         <Button title='Show Right Side Menu' testID={testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('right')} />
         <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
@@ -66,7 +66,7 @@ class TextScreen extends Component {
     Navigation.setOptions(this.props.componentId, {
       bottomTabs: {
         currentTabIndex: 1,
-        hidden: true,
+        visible: false,
         animateHide: true
       }
     });
@@ -80,10 +80,10 @@ class TextScreen extends Component {
     });
   }
 
-  hideTabBar(hidden) {
+  hideTabBar(visible) {
     Navigation.setOptions(this.props.componentId, {
       bottomTabs: {
-        hidden
+        visible
       }
     });
   }

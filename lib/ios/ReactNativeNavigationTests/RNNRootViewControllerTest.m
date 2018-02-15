@@ -79,7 +79,7 @@
 
 - (void)testStatusBarHideWithTopBar_false {
 	self.options.statusBarHideWithTopBar = @(0);
-	self.options.topBar.hidden = @(1);
+	self.options.topBar.visible = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -88,7 +88,7 @@
 
 - (void)testStatusBarHideWithTopBar_true {
 	self.options.statusBarHideWithTopBar = @(1);
-	self.options.topBar.hidden = @(1);
+	self.options.topBar.visible = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
@@ -385,7 +385,7 @@
 -(void)testRightButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
 	
-	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test", @"disabled": @true, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -416,7 +416,7 @@
 -(void)testLeftButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
 	
-	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test", @"disabled": @true, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -471,7 +471,7 @@
 
 
 - (void)testTabBarHidden_true {
-	self.options.bottomTabs.hidden = @(1);
+	self.options.bottomTabs.visible = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
@@ -479,7 +479,7 @@
 }
 
 - (void)testTabBarHidden_false {
-	self.options.bottomTabs.hidden = @(0);
+	self.options.bottomTabs.visible = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
@@ -545,7 +545,7 @@
 }
 
 -(void)testTopBarDrawUnder_true {
-	self.options.topBar.drawUnder = @(1);
+	self.options.topBar.drawBehind = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -553,7 +553,7 @@
 }
 
 -(void)testTopBarDrawUnder_false {
-	self.options.topBar.drawUnder = @(0);
+	self.options.topBar.drawBehind = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -561,7 +561,7 @@
 }
 
 -(void)testBottomTabsDrawUnder_true {
-	self.options.bottomTabs.drawUnder = @(1);
+	self.options.bottomTabs.drawBehind = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -569,7 +569,7 @@
 }
 
 -(void)testBottomTabsDrawUnder_false {
-	self.options.bottomTabs.drawUnder = @(0);
+	self.options.bottomTabs.drawBehind = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	

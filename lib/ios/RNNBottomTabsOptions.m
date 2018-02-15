@@ -13,16 +13,16 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		[(RNNTabBarController*)viewController.tabBarController setSelectedIndexByComponentID:self.currentTabId];
 	}
 	
-	if (self.hidden) {
-		[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:[self.hidden boolValue] animated:[self.animateHide boolValue]];
+	if (self.visible) {
+		[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:![self.visible boolValue] animated:[self.animateHide boolValue]];
 	}
 	
 	if (self.testID) {
 		viewController.tabBarController.tabBar.accessibilityIdentifier = self.testID;
 	}
 	
-	if (self.drawUnder) {
-		if ([self.drawUnder boolValue]) {
+	if (self.drawBehind) {
+		if ([self.drawBehind boolValue]) {
 			viewController.edgesForExtendedLayout |= UIRectEdgeBottom;
 		} else {
 			viewController.edgesForExtendedLayout &= ~UIRectEdgeBottom;

@@ -1,7 +1,6 @@
 package com.reactnativenavigation.parse;
 
 import android.graphics.*;
-import android.graphics.Color;
 import android.support.annotation.*;
 
 import com.reactnativenavigation.*;
@@ -22,16 +21,16 @@ public class OptionsTest extends BaseTest {
     private static final String FAB_ALIGN_HORIZONTALLY = "right";
     private static final String FAB_ALIGN_VERTICALLY = "bottom";
     private static final int TOP_BAR_BACKGROUND_COLOR = 0xff123456;
-    private static final int FAB_BACKGROUND_COLOR = Color.BLUE;
-    private static final int FAB_CLICK_COLOR = Color.RED;
-    private static final int FAB_RIPPLE_COLOR = Color.GREEN;
+    private static final int FAB_BACKGROUND_COLOR = android.graphics.Color.BLUE;
+    private static final int FAB_CLICK_COLOR = android.graphics.Color.RED;
+    private static final int FAB_RIPPLE_COLOR = android.graphics.Color.GREEN;
     private static final Boolean FAB_VISIBLE = true;
     private static final Boolean FAB_HIDE_ON_SCROLL = true;
     private static final int TOP_BAR_TEXT_COLOR = 0xff123456;
     private static final int TOP_BAR_FONT_SIZE = 18;
     private static final String TOP_BAR_FONT_FAMILY = "HelveticaNeue-CondensedBold";
     private static final Typeface TOP_BAR_TYPEFACE = Typeface.create("HelveticaNeue-CondensedBold", Typeface.BOLD);
-    private static final Bool TOP_BAR_HIDDEN = new Bool(true);
+    private static final Bool TOP_BAR_VISIBLE = new Bool(true);
     private static final Bool TOP_BAR_DRAW_BEHIND = new Bool(true);
     private static final Bool TOP_BAR_HIDE_ON_SCROLL = new Bool(true);
     private static final Bool BOTTOM_TABS_ANIMATE_HIDE = new Bool(true);
@@ -55,7 +54,7 @@ public class OptionsTest extends BaseTest {
     @Test
     public void parsesJson() throws Exception {
         JSONObject json = new JSONObject()
-                .put("topBar", createTopBar(TOP_BAR_HIDDEN.get()))
+                .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("fab", createFab())
                 .put("fabMenu", createFabMenu())
                 .put("bottomTabs", createBottomTabs());
@@ -69,7 +68,7 @@ public class OptionsTest extends BaseTest {
         assertThat(result.topBarOptions.textColor.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
         assertThat(result.topBarOptions.textFontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
         assertThat(result.topBarOptions.textFontFamily).isEqualTo(TOP_BAR_TYPEFACE);
-        assertThat(result.topBarOptions.hidden.get()).isEqualTo(TOP_BAR_HIDDEN.get());
+        assertThat(result.topBarOptions.visible.get()).isEqualTo(TOP_BAR_VISIBLE.get());
         assertThat(result.topBarOptions.drawBehind.get()).isEqualTo(TOP_BAR_DRAW_BEHIND.get());
         assertThat(result.topBarOptions.hideOnScroll.get()).isEqualTo(TOP_BAR_HIDE_ON_SCROLL.get());
         assertThat(result.bottomTabsOptions.animateHide.get()).isEqualTo(BOTTOM_TABS_ANIMATE_HIDE.get());
@@ -104,14 +103,14 @@ public class OptionsTest extends BaseTest {
     }
 
     @NonNull
-    private JSONObject createTopBar(boolean hidden) throws JSONException {
+    private JSONObject createTopBar(boolean visible) throws JSONException {
         return new JSONObject()
                 .put("title", "the title")
                 .put("backgroundColor", TOP_BAR_BACKGROUND_COLOR)
                 .put("textColor", TOP_BAR_TEXT_COLOR)
                 .put("textFontSize", TOP_BAR_FONT_SIZE)
                 .put("textFontFamily", TOP_BAR_FONT_FAMILY)
-                .put("hidden", hidden)
+                .put("visible", visible)
                 .put("drawBehind", TOP_BAR_DRAW_BEHIND.get())
                 .put("hideOnScroll", TOP_BAR_HIDE_ON_SCROLL.get());
     }
@@ -176,7 +175,7 @@ public class OptionsTest extends BaseTest {
                 .put("textColor", TOP_BAR_TEXT_COLOR)
                 .put("textFontSize", TOP_BAR_FONT_SIZE)
                 .put("textFontFamily", TOP_BAR_FONT_FAMILY)
-                .put("hidden", TOP_BAR_HIDDEN);
+                .put("visible", TOP_BAR_VISIBLE);
     }
 
     @NonNull
@@ -196,25 +195,23 @@ public class OptionsTest extends BaseTest {
         Options options1 = Options.parse(mockLoader, json1);
         options1.topBarOptions.title = new Text("some title");
 
-
         JSONObject json2 = new JSONObject();
         json2.put("topBar", createTopBar(false));
         Options options2 = Options.parse(mockLoader, json2);
         options2.topBarOptions.title = new NullText();
 
         Options merged = options1.mergeWith(options2);
-        assertThat(options1.topBarOptions.hidden.get()).isTrue();
-        assertThat(merged.topBarOptions.hidden.get()).isFalse();
+        assertThat(options1.topBarOptions.visible.get()).isTrue();
+        assertThat(merged.topBarOptions.visible.get()).isFalse();
         assertThat(merged.topBarOptions.title.get()).isEqualTo("some title");
     }
 
     @Test
     public void mergeDefaultOptions() throws Exception {
         JSONObject json = new JSONObject();
-        json.put("topBar", createTopBar(TOP_BAR_HIDDEN.get()));
+        json.put("topBar", createTopBar(TOP_BAR_VISIBLE.get()));
         json.put("fab", createFab());
         json.put("fabMenu", createFabMenu());
-        json.put("topBar", createTopBar(TOP_BAR_HIDDEN.get()));
         json.put("bottomTabs", createBottomTabs());
         Options defaultOptions = Options.parse(mockLoader, json);
         Options options = new Options();
@@ -232,7 +229,7 @@ public class OptionsTest extends BaseTest {
         Options defaultOptions = Options.parse(mockLoader, defaultJson);
 
         JSONObject json = new JSONObject()
-                .put("topBar", createTopBar(TOP_BAR_HIDDEN.get()))
+                .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("bottomTabs", createBottomTabs());
         Options options = Options.parse(mockLoader, json);
         options.withDefaultOptions(defaultOptions);
@@ -248,7 +245,29 @@ public class OptionsTest extends BaseTest {
     @Test
     public void topBar_defaultOptions() throws Exception {
         Options uut = new Options();
-        assertThat(uut.topBarOptions.hidden.isFalseOrUndefined()).isTrue();
+        assertThat(uut.topBarOptions.visible.isFalseOrUndefined()).isTrue();
         assertThat(uut.topBarOptions.animateHide.isTrueOrUndefined()).isTrue();
     }
+
+    @Test
+    public void clear_topBarOptions() throws Exception {
+        Options uut = new Options();
+        uut.topBarOptions.title = new Text("some title");
+        uut.clearTopBarOptions();
+        assertThat(uut.topBarOptions.title.hasValue()).isFalse();
+    }
+
+    @Test
+    public void clear_bottomTabsOptions() throws Exception {
+        Options uut = new Options();
+        uut.bottomTabsOptions.color = new Color(android.graphics.Color.RED);
+        uut.clearBottomTabsOptions();
+        assertThat(uut.bottomTabsOptions.color.hasValue()).isFalse();
+    }
+
+//    topBarOptions.mergeWithDefault(other.topBarOptions);
+//        topTabOptions.mergeWithDefault(other.topTabOptions);
+//        topTabsOptions.mergeWithDefault(other.topTabsOptions);
+//        bottomTabOptions.mergeWithDefault(other.bottomTabOptions);
+//        bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
 }
