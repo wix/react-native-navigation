@@ -8,12 +8,15 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.parse.Color;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.ReactComponent;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -116,6 +119,25 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(uut.handleBack()).isTrue();
 
         verify(spy, times(1)).handleBack();
+    }
+
+    @Test
+    public void applyOptions_bottomTabsOptionsAreClearedAfterApply() throws Exception {
+        List<ViewController> tabs = createTabs();
+        child1.options.bottomTabsOptions.color = new Color(android.graphics.Color.RED);
+        uut.setTabs(tabs);
+        uut.ensureViewIsCreated();
+
+        StackController stack = spy(new StackController(activity, "stack", new Options()));
+        stack.ensureViewIsCreated();
+        stack.push(uut, new MockPromise());
+
+        child1.onViewAppeared();
+        ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
+        ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
+        verify(stack, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
+        assertThat(viewCaptor.getValue()).isEqualTo(child1.getView());
+        assertThat(optionsCaptor.getValue().bottomTabsOptions.color.hasValue()).isFalse();
     }
 
     @NonNull

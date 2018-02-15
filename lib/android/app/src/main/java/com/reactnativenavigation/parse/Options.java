@@ -70,4 +70,14 @@ public class Options implements DEFAULT_VALUES {
         bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
         return this;
     }
+
+    public Options clearTopBarOptions() {
+        topBarOptions = new TopBarOptions();
+        return this;
+    }
+
+    public Options clearBottomTabsOptions() {
+        bottomTabsOptions = new BottomTabsOptions();
+        return this;
+    }
 }
