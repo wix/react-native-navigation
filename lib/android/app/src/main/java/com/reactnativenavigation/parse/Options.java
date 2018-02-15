@@ -48,6 +48,7 @@ public class Options implements DEFAULT_VALUES {
         result.topTabOptions.mergeWith(topTabOptions);
         result.bottomTabOptions.mergeWith(bottomTabOptions);
         result.bottomTabsOptions.mergeWith(bottomTabsOptions);
+        result.overlayOptions = overlayOptions;
         return result;
     }
 

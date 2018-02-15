@@ -32,6 +32,9 @@ public class BottomTabOptions implements DEFAULT_VALUES {
         if (other.badge.hasValue()) {
             badge = other.badge;
         }
+        if (other.testId.hasValue()) {
+            testId = other.testId;
+        }
     }
 
     void mergeWithDefault(final BottomTabOptions defaultOptions) {

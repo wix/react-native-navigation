@@ -24,6 +24,9 @@ import com.reactnativenavigation.parse.params.Bool;
 
 import java.util.ArrayList;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 @SuppressLint("ViewConstructor")
 public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
     private final Toolbar titleBar;
@@ -31,8 +34,9 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private final TopBarCollapseBehavior collapsingBehavior;
     private final TopBarAnimator animator;
     private TopTabs topTabs;
+    private StackLayout parentView;
 
-    public TopBar(final Context context, TitleBarButton.OnClickListener onClickListener) {
+    public TopBar(final Context context, TitleBarButton.OnClickListener onClickListener, StackLayout parentView) {
         super(context);
         this.onClickListener = onClickListener;
         collapsingBehavior = new TopBarCollapseBehavior(this);
@@ -40,6 +44,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.getMenu();
         topTabs = new TopTabs(getContext());
         this.animator = new TopBarAnimator(this);
+        this.parentView = parentView;
         addView(titleBar);
     }
 
@@ -188,6 +193,16 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
             animator.hide();
         } else {
             setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == View.GONE) {
+            this.parentView.removeView(this);
+        } else if (visibility == View.VISIBLE && this.getParent() == null) {
+            this.parentView.addView(this, MATCH_PARENT, WRAP_CONTENT);
         }
     }
 
