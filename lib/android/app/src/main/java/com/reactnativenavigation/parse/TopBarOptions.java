@@ -24,7 +24,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
         options.textColor = ColorParser.parse(json, "textColor");
         options.textFontSize = FractionParser.parse(json, "textFontSize");
         options.textFontFamily = typefaceManager.getTypeFace(json.optString("textFontFamily", ""));
-        options.hidden = BoolParser.parse(json, "hidden");
+        options.visible = BoolParser.parse(json, "visible");
         options.animateHide = BoolParser.parse(json,"animateHide");
         options.hideOnScroll = BoolParser.parse(json,"hideOnScroll");
         options.drawBehind = BoolParser.parse(json,"drawBehind");
@@ -41,7 +41,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
     public Color textColor = new NullColor();
     public Fraction textFontSize = new NullFraction();
     @Nullable public Typeface textFontFamily;
-    public Bool hidden = new NullBool();
+    public Bool visible = new NullBool();
     public Bool animateHide = new NullBool();
     public Bool hideOnScroll = new NullBool();
     public Bool drawBehind = new NullBool();
@@ -59,8 +59,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
             textFontSize = other.textFontSize;
         if (other.textFontFamily != null)
             textFontFamily = other.textFontFamily;
-        if (other.hidden.hasValue()) {
-            hidden = other.hidden;
+        if (other.visible.hasValue()) {
+            visible = other.visible;
         }
         if (other.animateHide.hasValue()) {
             animateHide = other.animateHide;
@@ -88,8 +88,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
             textFontSize = defaultOptions.textFontSize;
         if (textFontFamily == null)
             textFontFamily = defaultOptions.textFontFamily;
-        if (!hidden.hasValue())
-            hidden = defaultOptions.hidden;
+        if (!visible.hasValue())
+            visible = defaultOptions.visible;
         if (!animateHide.hasValue())
             animateHide = defaultOptions.animateHide;
         if (!hideOnScroll.hasValue())

@@ -48,6 +48,7 @@ public class Options implements DEFAULT_VALUES {
         result.topTabOptions.mergeWith(topTabOptions);
         result.bottomTabOptions.mergeWith(bottomTabOptions);
         result.bottomTabsOptions.mergeWith(bottomTabsOptions);
+        result.overlayOptions = overlayOptions;
         return result;
     }
 
@@ -68,6 +69,16 @@ public class Options implements DEFAULT_VALUES {
         topTabsOptions.mergeWithDefault(other.topTabsOptions);
         bottomTabOptions.mergeWithDefault(other.bottomTabOptions);
         bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
+        return this;
+    }
+
+    public Options clearTopBarOptions() {
+        topBarOptions = new TopBarOptions();
+        return this;
+    }
+
+    public Options clearBottomTabsOptions() {
+        bottomTabsOptions = new BottomTabsOptions();
         return this;
     }
 }

@@ -20,6 +20,6 @@ public class Bool extends Param<Boolean> {
     }
 
     public boolean isFalse() {
-        return hasValue() && get();
+        return hasValue() && !get();
     }
 }

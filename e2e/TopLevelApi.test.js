@@ -18,7 +18,7 @@ describe('top level api', () => {
     await expect(elementByLabel('Hello from a function!')).toBeVisible();
   });
 
-  it('switch to tabs with side menus', async () => {
+  it(':ios: switch to tabs with side menus', async () => {
     await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
     await elementById(testIDs.CENTERED_TEXT_HEADER).swipe('right');
     await expect(elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON)).toBeVisible();
@@ -28,7 +28,6 @@ describe('top level api', () => {
     await elementById(testIDs.PUSH_LIFECYCLE_BUTTON).tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
     await elementById(testIDs.PUSH_TO_TEST_DID_DISAPPEAR_BUTTON).tap();
-    await expect(elementByLabel('Alert')).toBeVisible();
     await expect(elementByLabel('didDisappear')).toBeVisible();
   });
 

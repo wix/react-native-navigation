@@ -34,10 +34,10 @@ public class OptionsPresenter {
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
 
         topBar.setTitleTypeface(options.textFontFamily);
-        if (options.hidden.isTrue()) {
+        if (options.visible.isFalse()) {
             topBar.hide(options.animateHide);
         }
-        if (options.hidden.isFalseOrUndefined()) {
+        if (options.visible.isTrueOrUndefined()) {
             topBar.show(options.animateHide);
         }
         if (options.drawBehind.isTrue()) {
