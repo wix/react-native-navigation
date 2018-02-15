@@ -80,4 +80,19 @@ public class Options implements DEFAULT_VALUES {
         bottomTabsOptions = new BottomTabsOptions();
         return this;
     }
+
+    public Options clearTopTabOptions() {
+        topTabOptions = new TopTabOptions();
+        return this;
+    }
+
+    public Options clearTopTabsOptions() {
+        topTabsOptions = new TopTabsOptions();
+        return this;
+    }
+
+    public Options clearBottomTabOptions() {
+        bottomTabOptions = new BottomTabOptions();
+        return this;
+    }
 }

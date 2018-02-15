@@ -7,9 +7,12 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.views.ReactComponent;
 
 import org.assertj.core.api.iterable.Extractor;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import javax.annotation.Nullable;
 
@@ -336,6 +339,25 @@ public class StackControllerTest extends BaseTest {
         parent.push(uut, new MockPromise());
         uut.onViewAppeared();
         assertThat(parent.getView().getChildAt(1)).isEqualTo(uut.getView());
+    }
+
+    @Test
+    public void applyOptions_applyOnlyOnFirstStack() throws Exception {
+        StackController parent = spy(new StackController(activity, "someStack", new Options()));
+        parent.ensureViewIsCreated();
+        parent.push(uut, new MockPromise());
+
+        Options childOptions = new Options();
+        childOptions.topBarOptions.title = new Text("Something");
+        child1.options = childOptions;
+        uut.push(child1, new MockPromise());
+        child1.ensureViewIsCreated();
+        child1.onViewAppeared();
+
+        ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
+        ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
+        verify(parent, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
+        assertThat(optionsCaptor.getValue().topBarOptions.title.hasValue()).isFalse();
     }
 
     private void assertContainsOnlyId(String... ids) {

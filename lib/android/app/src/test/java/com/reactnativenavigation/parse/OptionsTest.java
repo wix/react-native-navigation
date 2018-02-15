@@ -183,9 +183,20 @@ public class OptionsTest extends BaseTest {
         assertThat(uut.bottomTabsOptions.color.hasValue()).isFalse();
     }
 
-//    topBarOptions.mergeWithDefault(other.topBarOptions);
-//        topTabOptions.mergeWithDefault(other.topTabOptions);
-//        topTabsOptions.mergeWithDefault(other.topTabsOptions);
-//        bottomTabOptions.mergeWithDefault(other.bottomTabOptions);
-//        bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
+    @Test
+    public void clear_topTabsOptions() throws Exception {
+        Options uut = new Options();
+        uut.topTabsOptions.fontSize = new Number(666);
+        uut.clearTopTabsOptions();
+        assertThat(uut.topTabsOptions.fontSize.hasValue()).isFalse();
+    }
+
+
+    @Test
+    public void clear_topTabOptions() throws Exception {
+        Options uut = new Options();
+        uut.topTabOptions.title = new Text("some title");
+        uut.clearTopTabOptions();
+        assertThat(uut.topTabOptions.title.hasValue()).isFalse();
+    }
 }
