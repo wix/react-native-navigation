@@ -18,7 +18,7 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
 
     public StackLayout(Context context) {
         super(context);
-        topBar = new TopBar(context, this);
+        topBar = new TopBar(context, this, this);
         topBar.setId(CompatUtils.generateViewId());
         createLayout();
         setContentDescription("StackLayout");
