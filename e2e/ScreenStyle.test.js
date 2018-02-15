@@ -35,14 +35,14 @@ describe('screen style', () => {
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
-  it('hides topBar onScroll down and shows it on scroll up', async () => {
+  it(':ios: hides topBar onScroll down and shows it on scroll up', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.SCROLLVIEW_SCREEN_BUTTON).tap();
     await elementById(testIDs.TOGGLE_TOP_BAR_HIDE_ON_SCROLL).tap();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
-    await element(by.id(testIDs.SCROLLVIEW_ELEMENT)).swipe('up', 'fast');
+    await element(by.id(testIDs.SCROLLVIEW_ELEMENT)).swipe('up', 'slow');
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
-    await element(by.id(testIDs.SCROLLVIEW_ELEMENT)).swipe('down', 'fast');
+    await element(by.id(testIDs.SCROLLVIEW_ELEMENT)).swipe('down', 'slow');
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
@@ -52,14 +52,14 @@ describe('screen style', () => {
     await expect(element(by.text('TeSt'))).toBeVisible();
   });
 
-  it('hide Tab Bar', async () => {
+  it(':ios: hide Tab Bar', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
     await elementById(testIDs.HIDE_BOTTOM_TABS_BUTTON).tap();
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeNotVisible();
   });
 
-  it('show Tab Bar', async () => {
+  it(':ios: show Tab Bar', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await elementById(testIDs.HIDE_BOTTOM_TABS_BUTTON).tap();
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeNotVisible();
@@ -67,7 +67,7 @@ describe('screen style', () => {
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
   });
 
-  it('side menu visibility - left', async () => {
+  it(':ios: side menu visibility - left', async () => {
     await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
     await elementById(testIDs.SHOW_LEFT_SIDE_MENU_BUTTON).tap();
     await expect(elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON)).toBeVisible();
@@ -75,7 +75,7 @@ describe('screen style', () => {
     await expect(elementById(testIDs.CENTERED_TEXT_HEADER)).toBeVisible();
   });
 
-  it('side menu visibility - right', async () => {
+  it(':ios: side menu visibility - right', async () => {
     await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
     await elementById(testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON).tap();
     await expect(elementById(testIDs.HIDE_RIGHT_SIDE_MENU_BUTTON)).toBeVisible();
@@ -83,7 +83,7 @@ describe('screen style', () => {
     await expect(elementById(testIDs.CENTERED_TEXT_HEADER)).toBeVisible();
   });
 
-  it('set right buttons', async () => {
+  it(':ios: set right buttons', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementById('buttonOne')).toBeVisible();
     await elementById('buttonOne').tap();

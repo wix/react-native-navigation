@@ -15,7 +15,8 @@ class ScrollViewScreen extends Component {
         title: 'Collapse',
         drawBehind: true,
         textColor: 'black',
-        textFontSize: 16
+        textFontSize: 16,
+        testID: testIDs.TOP_BAR_ELEMENT
       },
       fab: {
         id: FAB,

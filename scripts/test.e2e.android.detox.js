@@ -8,5 +8,5 @@ run();
 function run() {
   const conf = release ? `release` : `debug`;
   exec.execSync(`detox build --configuration android.emu.${conf}`);
-  exec.execSync(`detox test --configuration android.emu.${conf} ${process.env.CI ? '--cleanup' : ''}`);
+  exec.execSync(`detox test --configuration android.emu.${conf} ${process.env.CI ? '--cleanup' : ''}  --platform android`);
 }
