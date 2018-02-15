@@ -17,7 +17,7 @@ if (Platform.OS === 'android') {
         }
       }
     });
-  }
+  };
 }
 
 function start() {
