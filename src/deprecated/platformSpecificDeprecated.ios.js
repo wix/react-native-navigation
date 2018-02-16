@@ -66,10 +66,10 @@ async function startTabBasedApp(params) {
           <DrawerControllerIOS id={navigatorID}
             componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
             styleLeft={leftNavigatorStyle}
-            passPropsLeft={{navigatorID: navigatorID}}
+            passPropsLeft={{navigatorID: navigatorID, navigatorEventID: `${navigatorID}_left_events`}}
             componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
             styleRight={rightNavigatorStyle}
-            passPropsRight={{navigatorID: navigatorID}}
+            passPropsRight={{navigatorID: navigatorID, navigatorEventID: `${navigatorID}_right_events`}}
             disableOpenGesture={params.drawer.disableOpenGesture}
             type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
             animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
@@ -161,9 +161,9 @@ async function startSingleScreenApp(params) {
         return (
           <DrawerControllerIOS id={navigatorID}
                                componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
-                               passPropsLeft={{navigatorID: navigatorID}}
+                               passPropsLeft={{navigatorID: navigatorID, navigatorEventID: `${navigatorID}_left_events`}}
                                componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
-                               passPropsRight={{navigatorID: navigatorID}}
+                               passPropsRight={{navigatorID: navigatorID, navigatorEventID: `${navigatorID}_right_events`}}
                                disableOpenGesture={params.drawer.disableOpenGesture}
                                type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
                                animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
