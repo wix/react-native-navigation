@@ -10,8 +10,8 @@ import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.params.NavigationParams;
+import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ContentView;
@@ -35,14 +35,19 @@ public class CollapsingTopBarReactHeader extends ContentView implements Collapsi
         this.onHiddenListener = onHiddenListener;
     }
 
-    public CollapsingTopBarReactHeader(Context context, CollapsingTopBarParams params, NavigationParams navigationParams, ScrollListener scrollListener, Screen.OnDisplayListener onDisplayListener) {
-        super(context, params.reactViewId, navigationParams);
+    public CollapsingTopBarReactHeader(Context context, StyleParams params, NavigationParams navigationParams, ScrollListener scrollListener, Screen.OnDisplayListener onDisplayListener) {
+        super(context, params.collapsingTopBarParams.reactViewId, navigationParams, params.collapsingTopBarComponentInitialProps);
         listener = scrollListener;
         this.onDisplayListener = onDisplayListener;
         ViewConfiguration vc = ViewConfiguration.get(context);
         mTouchSlop = vc.getScaledTouchSlop();
         setViewMeasurer(new CollapsingReactHeaderMeasurer(this));
         setOnDisplayListener(this);
+    }
+
+    public void setStyle(StyleParams styleParams) {
+        // If the setAppProperties method cannot be found, please update React Native
+        setAppProperties(styleParams.collapsingTopBarComponentInitialProps);
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
@@ -47,6 +48,21 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         viewCollapser = new ViewCollapser(this);
     }
 
+    @Override
+    public void setStyle(StyleParams styleParams) {
+        super.setStyle(styleParams);
+
+        if (header != null &&
+            header.getScreenId() != null &&
+            !header.getScreenId().equals(styleParams.collapsingTopBarParams.reactViewId)) {
+            // The user provided a new collapsing top bar react view
+            createReactHeader(styleParams);
+        } else if (header != null) {
+            // Only update the style
+            header.setStyle(styleParams);
+        }
+    }
+
     private void calculateFinalCollapsedTranslation() {
         ViewUtils.runOnPreDraw(this, new Runnable() {
             @Override
@@ -75,8 +91,13 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         }
     }
 
-    private void createReactHeader(CollapsingTopBarParams params) {
-        if (params.hasReactView()) {
+    private void createReactHeader(StyleParams params) {
+        if (header != null) {
+            header.unmountReactApplication();
+            titleBarAndContextualMenuContainer.removeView(header);
+        }
+
+        if (params.collapsingTopBarParams.hasReactView()) {
             header = new CollapsingTopBarReactHeader(getContext(),
                     params,
                     new NavigationParams(Bundle.EMPTY),
@@ -108,7 +129,7 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
     @Override
     protected TitleBar createTitleBar() {
         if (params.hasBackgroundImage() || params.hasReactView()) {
-            createReactHeader(params);
+            createReactHeader(styleParams);
             return new CollapsingTitleBar(getContext(),
                     getCollapsedHeight(),
                     scrollListener,
