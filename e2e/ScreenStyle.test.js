@@ -118,4 +118,9 @@ describe('screen style', () => {
     await elementById(testIDs.POP_BUTTON).tap();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
+
+  it('supports user-provided id', async () => {
+    await elementById(testIDs.PROVIDED_ID).tap();
+    await expect(elementByLabel('User provided id')).toBeVisible();
+  });
 });

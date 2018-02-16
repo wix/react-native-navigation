@@ -19,6 +19,12 @@ describe('LayoutTreeCrawler', () => {
     expect(node.children[0].id).toEqual('BottomTabs+UNIQUE_ID');
   });
 
+  it('does not generate unique id when already provided', () => {
+    const node = { id: 'user defined id', type: LayoutType.Stack };
+    uut.crawl(node);
+    expect(node.id).toEqual('user defined id');
+  });
+
   it('crawls a layout tree and ensures data exists', () => {
     const node: any = { type: LayoutType.Stack, children: [{ type: LayoutType.BottomTabs }] };
     uut.crawl(node);

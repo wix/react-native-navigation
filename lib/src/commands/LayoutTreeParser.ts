@@ -24,6 +24,7 @@ export class LayoutTreeParser {
 
   _topTabs(api): LayoutNode {
     return {
+      id: api.id,
       type: LayoutType.TopTabs,
       data: { options: api.options },
       children: _.map(api.children, this.parse)
@@ -32,6 +33,7 @@ export class LayoutTreeParser {
 
   _sideMenu(api): LayoutNode {
     return {
+      id: api.id,
       type: LayoutType.SideMenuRoot,
       data: { options: api.options },
       children: this._sideMenuChildren(api)
@@ -45,18 +47,21 @@ export class LayoutTreeParser {
     const children: LayoutNode[] = [];
     if (api.left) {
       children.push({
+        id: api.left.id,
         type: LayoutType.SideMenuLeft,
         data: {},
         children: [this.parse(api.left)]
       });
     }
     children.push({
+      id: api.center.id,
       type: LayoutType.SideMenuCenter,
       data: {},
       children: [this.parse(api.center)]
     });
     if (api.right) {
       children.push({
+        id: api.right.id,
         type: LayoutType.SideMenuRight,
         data: {},
         children: [this.parse(api.right)]
@@ -67,6 +72,7 @@ export class LayoutTreeParser {
 
   _bottomTabs(api): LayoutNode {
     return {
+      id: api.id,
       type: LayoutType.BottomTabs,
       data: { options: api.options },
       children: _.map(api.children, this.parse)
@@ -75,6 +81,7 @@ export class LayoutTreeParser {
 
   _stack(api): LayoutNode {
     return {
+      id: api.id,
       type: LayoutType.Stack,
       data: { name: api.name, options: api.options },
       children: _.map(api.children, this.parse)
@@ -83,6 +90,7 @@ export class LayoutTreeParser {
 
   _component(api): LayoutNode {
     return {
+      id: api.id,
       type: LayoutType.Component,
       data: { name: api.name, options: api.options, passProps: api.passProps },
       children: []
