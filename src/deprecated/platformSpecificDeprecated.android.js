@@ -514,6 +514,8 @@ function showLightBox(params) {
     }
   }
   params.tapBackgroundToDismiss = _.get(params, 'style.tapBackgroundToDismiss') || false;
+  params.animationIn = _.get(params, 'style.animationIn') || '';
+  params.animationOut = _.get(params, 'style.animationOut') || '';
   newPlatformSpecific.showLightBox(params);
 }
 

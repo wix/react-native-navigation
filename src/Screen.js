@@ -10,6 +10,7 @@ import Navigation from './Navigation';
 
 const NavigationSpecific = {
   push: platformSpecific.navigatorPush,
+  replace: platformSpecific.navigatorReplace,
   pop: platformSpecific.navigatorPop,
   popToRoot: platformSpecific.navigatorPopToRoot,
   resetTo: platformSpecific.navigatorResetTo
@@ -27,6 +28,10 @@ class Navigator {
 
   push(params = {}) {
     return NavigationSpecific.push(this, params);
+  }
+
+  replace(params = {}) {
+    return NavigationSpecific.replace(this, params);
   }
 
   pop(params = {}) {
@@ -159,7 +164,7 @@ class Navigator {
     this._registerNavigatorEvent();
 
     return () => this._removeOnNavigatorEvent(callback)
-    
+
   }
 
   _registerNavigatorEvent() {

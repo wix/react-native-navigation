@@ -7,4 +7,6 @@ public class LightBoxParams {
     public boolean tapBackgroundToDismiss;
     public boolean overrideBackPress;
     public int adjustSoftInput;
+    public String animationIn; // slideLeftIn, slideRightIn
+    public String animationOut; // slideLeftOut, slideRightOut
 }

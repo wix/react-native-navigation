@@ -31,11 +31,16 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
     private ContentView content;
     private RelativeLayout lightBox;
     private boolean cancelable;
+    private String showAnimationType = "slideUpIn";
+    private String hideAnimationType = "slideDownOut";
 
     public LightBox(AppCompatActivity activity, Runnable onDismissListener, LightBoxParams params) {
         super(activity, R.style.LightBox);
         this.onDismissListener = onDismissListener;
         this.cancelable = !params.overrideBackPress;
+        this.hideAnimationType = params.animationOut;
+        this.showAnimationType = params.animationIn;
+
         setOnDismissListener(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         createContent(activity, params);
@@ -116,7 +121,13 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
     }
 
     private void animateShow() {
-        ObjectAnimator yTranslation = ObjectAnimator.ofFloat(content, View.TRANSLATION_Y, 80, 0).setDuration(400);
+        ObjectAnimator yTranslation = ObjectAnimator.ofFloat(content, View.TRANSLATION_Y, 80, 0).setDuration(400);;
+        if (showAnimationType.equals("slideLeftIn")) {
+            yTranslation = ObjectAnimator.ofFloat(content, View.TRANSLATION_X, content.getLayoutParams().width, 0).setDuration(400);
+        } else if (showAnimationType.equals("slideRightIn")) {
+            yTranslation = ObjectAnimator.ofFloat(content, View.TRANSLATION_X, -content.getLayoutParams().width, 0).setDuration(400);
+        }
+
         yTranslation.setInterpolator(new FastOutSlowInInterpolator());
         yTranslation.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -134,7 +145,14 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
 
     private void animateHide() {
         ObjectAnimator alpha = ObjectAnimator.ofFloat(content, View.ALPHA, 0);
-        ObjectAnimator yTranslation = ObjectAnimator.ofFloat(content, View.TRANSLATION_Y, 60);
+        ObjectAnimator yTranslation = ObjectAnimator.ofFloat(content, View.TRANSLATION_Y, 0);
+
+        if (hideAnimationType.equals("slideLeftOut")) {
+            yTranslation = ObjectAnimator.ofFloat(content, View.TRANSLATION_X, 0, -content.getLayoutParams().width).setDuration(400);
+        } else if (hideAnimationType.equals("slideRightOut")) {
+            yTranslation = ObjectAnimator.ofFloat(content, View.TRANSLATION_X, 0, content.getLayoutParams().width).setDuration(400);
+        }
+
         AnimatorSet contentAnimators = new AnimatorSet();
         contentAnimators.playTogether(alpha, yTranslation);
         contentAnimators.setDuration(150);
