@@ -180,6 +180,7 @@ function convertStyleParams(originalStyleObject) {
     titleBarTitleFontSize: originalStyleObject.navBarTextFontSize,
     titleBarTitleFontBold: originalStyleObject.navBarTextFontBold,
     titleBarTitleTextCentered: originalStyleObject.navBarTitleTextCentered,
+    titleBarSubTitleTextCentered: originalStyleObject.navBarSubTitleTextCentered,
     titleBarHeight: originalStyleObject.navBarHeight,
     titleBarTopPadding: originalStyleObject.navBarTopPadding,
     backButtonHidden: originalStyleObject.backButtonHidden,
