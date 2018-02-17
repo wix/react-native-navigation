@@ -120,6 +120,7 @@ public class StyleParams {
     public int titleBarTitleFontSize;
     public boolean titleBarTitleFontBold;
     public boolean titleBarTitleTextCentered;
+    public boolean titleBarSubTitleTextCentered;
     public int titleBarHeight;
     public boolean backButtonHidden;
     public Font titleBarButtonFontFamily;
