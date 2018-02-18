@@ -33,7 +33,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private final Toolbar titleBar;
     private TitleBarButton.OnClickListener onClickListener;
     private final TopBarCollapseBehavior collapsingBehavior;
-    private final TopBarAnimator animator;
+    private TopBarAnimator animator;
     private TopTabs topTabs;
     private StackLayout parentView;
 
@@ -179,7 +179,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         if (getVisibility() == View.VISIBLE) {
             return;
         }
-        if (animated.isTrue()) {
+        if (animated.isTrueOrUndefined()) {
             animator.show();
         } else {
             setVisibility(View.VISIBLE);
@@ -190,7 +190,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         if (getVisibility() == View.GONE) {
             return;
         }
-        if (animated.isTrue()) {
+        if (animated.isTrueOrUndefined()) {
             animator.hide();
         } else {
             setVisibility(View.GONE);
@@ -213,12 +213,17 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.getMenu().clear();
     }
 
+    public void clearTopTabs() {
+        topTabs.clear(this);
+    }
+
     @VisibleForTesting()
     public TopTabs getTopTabs() {
         return topTabs;
     }
 
-    public void clearTopTabs() {
-        topTabs.clear(this);
+    @VisibleForTesting
+    public void setAnimator(TopBarAnimator animator) {
+        this.animator = animator;
     }
 }
