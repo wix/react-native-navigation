@@ -46,7 +46,11 @@ public class StackLayout extends RelativeLayout implements TitleBarButton.OnClic
         topBar.clear();
     }
 
-    public void setupTopTabsWithViewPager(ViewPager viewPager) {
-        topBar.setupTopTabsWithViewPager(viewPager);
+    public void initTopTabs(ViewPager viewPager) {
+        topBar.initTopTabs(viewPager);
+    }
+
+    public void clearTopTabs() {
+        topBar.clearTopTabs();
     }
 }

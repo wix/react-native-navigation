@@ -133,6 +133,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return getView().equals(component);
     }
 
+    public void onViewWillAppear() {
+
+    }
+
     public void onViewAppeared() {
         isShown = true;
         applyOptions(options);
@@ -140,6 +144,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             parentController.clearOptions();
             if (getView() instanceof ReactComponent) parentController.applyOptions(options, (ReactComponent) getView());
         });
+    }
+
+    public void onViewWillDisappear() {
+
     }
 
     public void onViewDisappear() {

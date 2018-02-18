@@ -138,7 +138,7 @@ public class OptionsApplyingTest extends BaseTest {
     }
 
     @Test
-    public void appliesTopBarHidden() throws Exception {
+    public void appliesTopBarVisible() throws Exception {
         assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
         uut.ensureViewIsCreated();

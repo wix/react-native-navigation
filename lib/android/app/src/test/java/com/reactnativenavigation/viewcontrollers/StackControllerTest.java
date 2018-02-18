@@ -8,6 +8,7 @@ import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.views.ReactComponent;
 
 import org.assertj.core.api.iterable.Extractor;
@@ -295,6 +296,17 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void pop_callWillAppearWillDisappear() throws Exception {
+        child1 = spy(child1);
+        child2 = spy(child2);
+        uut.push(child1, new MockPromise());
+        uut.push(child2, new MockPromise());
+        uut.pop(new MockPromise());
+        verify(child1, times(1)).onViewWillAppear();
+        verify(child2, times(1)).onViewWillDisappear();
+    }
+
+    @Test
     public void popSpecific_CallsDestroyOnPoppedChild() throws Exception {
         child1 = spy(child1);
         child2 = spy(child2);
@@ -358,6 +370,15 @@ public class StackControllerTest extends BaseTest {
         ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
         verify(parent, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
         assertThat(optionsCaptor.getValue().topBarOptions.title.hasValue()).isFalse();
+    }
+
+    @Test
+    public void applyOptions_topTabsAreNotVisibleIfNoTabsAreDefined() throws Exception {
+        uut.ensureViewIsCreated();
+        uut.push(child1, new MockPromise());
+        child1.ensureViewIsCreated();
+        child1.onViewAppeared();
+        assertThat(ViewHelper.isVisible(uut.getTopBar().getTopTabs())).isFalse();
     }
 
     private void assertContainsOnlyId(String... ids) {

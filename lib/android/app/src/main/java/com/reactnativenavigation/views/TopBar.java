@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -90,6 +91,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         topTabs.applyTopTabsFontSize(fontSize);
     }
 
+    public void setTopTabsVisible(boolean visible) {
+        topTabs.setVisibility(this, visible);
+    }
+
     public void setButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
         setLeftButtons(leftButtons);
         setRightButtons(rightButtons);
@@ -156,13 +161,9 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return titleBar;
     }
 
-    public void setupTopTabsWithViewPager(ViewPager viewPager) {
-        initTopTabs();
-        topTabs.setupWithViewPager(viewPager);
-    }
-
-    private void initTopTabs() {
+    public void initTopTabs(ViewPager viewPager) {
         topTabs = new TopTabs(getContext());
+        topTabs.init(viewPager);
         addView(topTabs);
     }
 
@@ -210,6 +211,14 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setTitle(null);
         titleBar.setNavigationIcon(null);
         titleBar.getMenu().clear();
-        removeView(topTabs);
+    }
+
+    @VisibleForTesting()
+    public TopTabs getTopTabs() {
+        return topTabs;
+    }
+
+    public void clearTopTabs() {
+        topTabs.clear(this);
     }
 }

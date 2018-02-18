@@ -88,13 +88,10 @@ public class StackController extends ParentController <StackLayout> {
         }
 
         final ViewController poppedTop = stack.pop();
-        ViewController newTop = stack.peek();
+        final ViewController newTop = stack.peek();
+        popInternal(poppedTop, newTop);
 
-        View enteringView = newTop.getView();
-        final View exitingView = poppedTop.getView();
-        getView().addView(enteringView, getView().getChildCount() - 1);
-
-        finishPopping(exitingView, poppedTop, promise);
+        finishPopping(poppedTop.getView(), poppedTop, promise);
     }
 
 	private void animatePop(final Promise promise) {
@@ -104,14 +101,18 @@ public class StackController extends ParentController <StackLayout> {
 		}
 
 		final ViewController poppedTop = stack.pop();
-		ViewController newTop = stack.peek();
+        final ViewController newTop = stack.peek();
+        popInternal(poppedTop, newTop);
 
-		View enteringView = newTop.getView();
-		final View exitingView = poppedTop.getView();
-		getView().addView(enteringView, getView().getChildCount() - 1);
-
-        animator.animatePop(exitingView, () -> finishPopping(exitingView, poppedTop, promise));
+        animator.animatePop(poppedTop.getView(), () -> finishPopping(poppedTop.getView(), poppedTop, promise));
 	}
+
+    private void popInternal(ViewController poppedTop, ViewController newTop) {
+        poppedTop.onViewWillDisappear();
+        newTop.onViewWillAppear();
+        View enteringView = newTop.getView();
+        getView().addView(enteringView, getView().getChildCount() - 1);
+    }
 
     boolean canPop() {
         return stack.size() > 1;
@@ -200,6 +201,11 @@ public class StackController extends ParentController <StackLayout> {
 
     @Override
     public void setupTopTabsWithViewPager(ViewPager viewPager) {
-        stackLayout.setupTopTabsWithViewPager(viewPager);
+        stackLayout.initTopTabs(viewPager);
+    }
+
+    @Override
+    public void clearTopTabs() {
+        stackLayout.clearTopTabs();
     }
 }
