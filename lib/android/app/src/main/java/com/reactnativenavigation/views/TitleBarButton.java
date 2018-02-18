@@ -45,7 +45,7 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 	void addToMenu(Context context, final Menu menu) {
 		MenuItem menuItem = menu.add(button.title.get(""));
 		menuItem.setShowAsAction(button.showAsAction);
-		menuItem.setEnabled(button.disabled.isFalseOrUndefined());
+		menuItem.setEnabled(button.enabled.isTrueOrUndefined());
 		menuItem.setOnMenuItemClickListener(this);
 
 		if (hasIcon()) {
@@ -108,11 +108,10 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 	}
 
 	private void setIconColor() {
-		if (button.disabled.isFalseOrUndefined()) {
+		if (button.enabled.isTrueOrUndefined()) {
 			UiUtils.tintDrawable(icon, button.buttonColor);
 			return;
 		}
-
 		if (button.disableIconTint.isTrue()) {
 			UiUtils.tintDrawable(icon, button.buttonColor);
 		} else {
