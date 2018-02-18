@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.anim.NavigationAnimator;
@@ -55,7 +56,7 @@ public class StackController extends ParentController <StackLayout> {
         child.setParentController(this);
         stack.push(child.getId(), child);
         View enteringView = child.getView();
-        getView().addView(enteringView);
+        getView().addView(enteringView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
         if (toRemove != null) {
             getView().removeView(toRemove.getView());
@@ -69,7 +70,7 @@ public class StackController extends ParentController <StackLayout> {
 		child.setParentController(this);
 		stack.push(child.getId(), child);
 		View enteringView = child.getView();
-		getView().addView(enteringView);
+		getView().addView(enteringView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
 		if (toRemove != null) {
             animator.animatePush(enteringView, () -> {
