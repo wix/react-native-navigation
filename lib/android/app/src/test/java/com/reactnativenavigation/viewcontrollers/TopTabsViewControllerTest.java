@@ -210,14 +210,26 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     @Test
     public void applyOptions_tabsAreRemovedBeforeViewDisappears() throws Exception {
-        ViewController firstTab = tabControllers.get(0);
-        uut.ensureViewIsCreated();
-        parentController.ensureViewIsCreated();
-        firstTab.onViewAppeared();
+        parentController.getView().removeAllViews();
 
-        assertThat(ViewHelper.isVisible(parentController.getTopBar().getTopTabs())).isTrue();
-        parentController.pop(new MockPromise());
-        assertThat(ViewHelper.isVisible(parentController.getTopBar().getTopTabs())).isFalse();
+        StackController stackController = spy(new StackController(activity, "stack", new Options()));
+        ComponentViewController first = new ComponentViewController(
+                activity,
+                "firstScreen",
+                "comp1",
+                new TestComponentViewCreator(),
+                new Options()
+        );
+        stackController.push(first, new MockPromise());
+        stackController.push(uut, new MockPromise());
+
+        first.ensureViewIsCreated();
+        uut.ensureViewIsCreated();
+        uut.onViewAppeared();
+
+        assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isTrue();
+        stackController.pop(new MockPromise());
+        assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();
     }
 
     private IReactView tab(TopTabsViewPager topTabs, final int index) {
