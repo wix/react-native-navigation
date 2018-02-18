@@ -4,9 +4,16 @@
 
 1. Install `react-native-navigation` latest stable version.
 
-	```sh
-	yarn add react-native-navigation@latest
-	```
+	yarn
+    ```sh
+    yarn add react-native-navigation@latest
+    ```
+
+    npm
+
+    ```sh
+    npm install --save react-native-navigation@latest
+    ```
 
 2. Add the following in `android/settings.gradle`.
 
