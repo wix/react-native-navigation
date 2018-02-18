@@ -17,6 +17,8 @@ import com.reactnativenavigation.views.TopBar;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 public class StackController extends ParentController <StackLayout> {
 
     private static final NoOpPromise NO_OP = new NoOpPromise();
@@ -55,7 +57,7 @@ public class StackController extends ParentController <StackLayout> {
         child.setParentController(this);
         stack.push(child.getId(), child);
         View enteringView = child.getView();
-        getView().addView(enteringView);
+        getView().addView(enteringView, MATCH_PARENT, MATCH_PARENT);
 
         if (toRemove != null) {
             getView().removeView(toRemove.getView());
@@ -69,7 +71,7 @@ public class StackController extends ParentController <StackLayout> {
 		child.setParentController(this);
 		stack.push(child.getId(), child);
 		View enteringView = child.getView();
-		getView().addView(enteringView);
+		getView().addView(enteringView, MATCH_PARENT, MATCH_PARENT);
 
 		if (toRemove != null) {
             animator.animatePush(enteringView, () -> {
