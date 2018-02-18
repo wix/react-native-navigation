@@ -383,7 +383,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
                     EventBus.instance.post(new ScreenChangedEvent(params));
                 }
             }
-        });
+        }, onPushComplete);
     }
 
     @Override
@@ -445,13 +445,22 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     private void performOnStack(String navigatorId, Task<ScreenStack> task) {
+        performOnStack(navigatorId, task, null);
+    }
+
+    private void performOnStack(String navigatorId, Task<ScreenStack> task, @Nullable Promise onPushComplete) {
         try {
             ScreenStack screenStack = getScreenStack(navigatorId);
             task.run(screenStack);
         } catch (ScreenStackNotFoundException e) {
+            if (onPushComplete != null) {
+                onPushComplete.reject("Navigation", "Could not perform action on stack [" + navigatorId + "]." +
+                                                    "This should not have happened, it probably means a navigator action" +
+                                                    "was called from an unmounted tab.");
+            }
             Log.e("Navigation", "Could not perform action on stack [" + navigatorId + "]." +
-                                      "This should not have happened, it probably means a navigator action" +
-                                      "was called from an unmounted tab.");
+                                "This should not have happened, it probably means a navigator action" +
+                                "was called from an unmounted tab.");
         }
     }
 
