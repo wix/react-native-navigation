@@ -69,6 +69,15 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	}
 
     @Override
+    public void sendOnNavigationButtonPressed(String buttonId) {
+        getCurrentTab().sendOnNavigationButtonPressed(buttonId);
+    }
+
+    private ViewController getCurrentTab() {
+        return tabs.get(bottomTabs.getCurrentItem());
+    }
+
+    @Override
     public boolean onTabSelected(int index, boolean wasSelected) {
         if (wasSelected) return false;
         selectTabAtIndex(index);

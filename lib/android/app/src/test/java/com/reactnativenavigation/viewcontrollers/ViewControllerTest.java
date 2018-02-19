@@ -53,6 +53,11 @@ public class ViewControllerTest extends BaseTest {
             protected FrameLayout createView() {
                 return otherView;
             }
+
+            @Override
+            public void sendOnNavigationButtonPressed(String buttonId) {
+
+            }
         };
         assertThat(myController.getView()).isEqualTo(otherView);
     }

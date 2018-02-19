@@ -45,11 +45,11 @@ public class BottomTabsControllerTest extends BaseTest {
         super.beforeEach();
         activity = newActivity();
         uut = new BottomTabsController(activity, imageLoaderMock, "uut", new Options());
-        child1 = new SimpleViewController(activity, "child1", tabOptions);
-        child2 = new SimpleViewController(activity, "child2", tabOptions);
-        child3 = new SimpleViewController(activity, "child3", tabOptions);
-        child4 = new SimpleViewController(activity, "child4", tabOptions);
-        child5 = new SimpleViewController(activity, "child5", tabOptions);
+        child1 = spy(new SimpleViewController(activity, "child1", tabOptions));
+        child2 = spy(new SimpleViewController(activity, "child2", tabOptions));
+        child3 = spy(new SimpleViewController(activity, "child3", tabOptions));
+        child4 = spy(new SimpleViewController(activity, "child4", tabOptions));
+        child5 = spy(new SimpleViewController(activity, "child5", tabOptions));
     }
 
     @Test
@@ -138,6 +138,16 @@ public class BottomTabsControllerTest extends BaseTest {
         verify(stack, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
         assertThat(viewCaptor.getValue()).isEqualTo(child1.getView());
         assertThat(optionsCaptor.getValue().bottomTabsOptions.color.hasValue()).isFalse();
+    }
+
+    @Test
+    public void buttonPressInvokedOnCurrentTab() throws Exception {
+        uut.setTabs(createTabs());
+        uut.ensureViewIsCreated();
+        uut.selectTabAtIndex(1);
+
+        uut.sendOnNavigationButtonPressed("btn1");
+        verify(child2, times(1)).sendOnNavigationButtonPressed("btn1");
     }
 
     @NonNull

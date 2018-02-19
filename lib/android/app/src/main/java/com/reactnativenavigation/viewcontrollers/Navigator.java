@@ -52,6 +52,11 @@ public class Navigator extends ParentController {
         super.destroy();
     }
 
+    @Override
+    public void sendOnNavigationButtonPressed(String buttonId) {
+
+    }
+
     public void setRoot(final ViewController viewController, Promise promise) {
         if (root != null) {
             root.destroy();

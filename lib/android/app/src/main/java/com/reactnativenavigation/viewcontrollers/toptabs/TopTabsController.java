@@ -69,6 +69,11 @@ public class TopTabsController extends ParentController<TopTabsViewPager> implem
     }
 
     @Override
+    public void sendOnNavigationButtonPressed(String buttonId) {
+        performOnCurrentTab(tab -> tab.sendOnNavigationButtonPressed(buttonId));
+    }
+
+    @Override
     public void applyOptions(Options options) {
         getView().applyOptions(options);
     }

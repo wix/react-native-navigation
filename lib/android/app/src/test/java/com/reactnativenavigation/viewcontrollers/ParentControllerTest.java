@@ -51,6 +51,11 @@ public class ParentControllerTest extends BaseTest {
                 return layout;
             }
 
+            @Override
+            public void sendOnNavigationButtonPressed(String buttonId) {
+
+            }
+
             @NonNull
             @Override
             public Collection<ViewController> getChildControllers() {

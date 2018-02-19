@@ -232,6 +232,14 @@ public class TopTabsViewControllerTest extends BaseTest {
         assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();
     }
 
+    @Test
+    public void onNavigationButtonPressInvokedOnCurrentTab() throws Exception {
+        uut.ensureViewIsCreated();
+        uut.switchToTab(1);
+        uut.sendOnNavigationButtonPressed("btn1");
+        verify(tabControllers.get(1), times(1)).sendOnNavigationButtonPressed("btn1");
+    }
+
     private IReactView tab(TopTabsViewPager topTabs, final int index) {
         return (IReactView) ((ViewGroup) topTabs.getChildAt(index)).getChildAt(0);
     }

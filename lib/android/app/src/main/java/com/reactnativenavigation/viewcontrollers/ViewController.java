@@ -188,6 +188,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         }
     }
 
+    public abstract void sendOnNavigationButtonPressed(String buttonId);
+
     protected boolean isViewShown() {
         return !isDestroyed && getView().isShown();
     }

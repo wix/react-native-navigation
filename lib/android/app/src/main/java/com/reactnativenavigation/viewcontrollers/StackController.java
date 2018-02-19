@@ -188,10 +188,15 @@ public class StackController extends ParentController <StackLayout> {
         return false;
 	}
 
+    @Override
+    public void sendOnNavigationButtonPressed(String buttonId) {
+        peek().sendOnNavigationButtonPressed(buttonId);
+    }
+
     @NonNull
     @Override
     protected StackLayout createView() {
-        stackLayout = new StackLayout(getActivity());
+        stackLayout = new StackLayout(getActivity(), this::sendOnNavigationButtonPressed);
         return stackLayout;
     }
 

@@ -37,6 +37,11 @@ public class ComponentViewController extends ViewController<ComponentLayout> imp
     }
 
     @Override
+    public void sendOnNavigationButtonPressed(String buttonId) {
+        getView().sendOnNavigationButtonPressed(buttonId);
+    }
+
+    @Override
     public void applyOptions(Options options) {
         view.applyOptions(options);
     }

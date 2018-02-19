@@ -35,9 +35,9 @@ public class StackControllerTest extends BaseTest {
         super.beforeEach();
         activity = newActivity();
         uut = new StackController(activity, "uut", new Options());
-        child1 = new SimpleViewController(activity, "child1", new Options());
-        child2 = new SimpleViewController(activity, "child2", new Options());
-        child3 = new SimpleViewController(activity, "child3", new Options());
+        child1 = spy(new SimpleViewController(activity, "child1", new Options()));
+        child2 = spy(new SimpleViewController(activity, "child2", new Options()));
+        child3 = spy(new SimpleViewController(activity, "child3", new Options()));
     }
 
     @Test
@@ -379,6 +379,14 @@ public class StackControllerTest extends BaseTest {
         child1.ensureViewIsCreated();
         child1.onViewAppeared();
         assertThat(ViewHelper.isVisible(uut.getTopBar().getTopTabs())).isFalse();
+    }
+
+    @Test
+    public void buttonPressInvokedOnCurrentStack() throws Exception {
+        uut.ensureViewIsCreated();
+        uut.push(child1, new MockPromise());
+        uut.sendOnNavigationButtonPressed("btn1");
+        verify(child1, times(1)).sendOnNavigationButtonPressed("btn1");
     }
 
     private void assertContainsOnlyId(String... ids) {

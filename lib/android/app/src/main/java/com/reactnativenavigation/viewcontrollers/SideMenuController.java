@@ -32,7 +32,12 @@ public class SideMenuController extends ParentController {
         return new DrawerLayout(getActivity());
 	}
 
-	@NonNull
+    @Override
+    public void sendOnNavigationButtonPressed(String buttonId) {
+        centerController.sendOnNavigationButtonPressed(buttonId);
+    }
+
+    @NonNull
 	@Override
 	public Collection<ViewController> getChildControllers() {
 		ArrayList<ViewController> children = new ArrayList<>();
