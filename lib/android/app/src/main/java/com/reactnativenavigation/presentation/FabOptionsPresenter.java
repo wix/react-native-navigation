@@ -34,23 +34,15 @@ public class FabOptionsPresenter {
         this.component = component;
 
         if (options.id.hasValue()) {
-            if (fabMenu != null) {
-                if (fabMenu.getFabId().equals(options.id.get())) {
-                    setParams(fabMenu, options);
-                    fabMenu.bringToFront();
-                    applyFabMenuOptions(fabMenu, options);
-                } else {
-                    createFab(options);
-                }
-            } else if (fab != null) {
-                if (fab.getFabId().equals(options.id.get())) {
-                    setParams(fab, options);
-                    fab.bringToFront();
-                    applyFabOptions(fab, options);
-                    fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
-                } else {
-                    createFab(options);
-                }
+            if (fabMenu != null && fabMenu.getFabId().equals(options.id.get())) {
+                setParams(fabMenu, options);
+                fabMenu.bringToFront();
+                applyFabMenuOptions(fabMenu, options);
+            } else if (fab != null && fab.getFabId().equals(options.id.get())) {
+                setParams(fab, options);
+                fab.bringToFront();
+                applyFabOptions(fab, options);
+                fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
             } else {
                 createFab(options);
             }

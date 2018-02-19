@@ -210,6 +210,7 @@ class OptionsScreen extends Component {
       fab: {
         id: FAB,
         visible: false
+        // backgroundColor: 'green'
       }
     });
   }
