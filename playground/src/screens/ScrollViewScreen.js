@@ -6,6 +6,8 @@ const { StyleSheet, ScrollView, View, Button, Platform } = require('react-native
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
+const FAB = 'fab';
+
 class ScrollViewScreen extends Component {
   static get options() {
     return {
@@ -15,6 +17,13 @@ class ScrollViewScreen extends Component {
         textColor: 'black',
         textFontSize: 16,
         testID: testIDs.TOP_BAR_ELEMENT
+      },
+      fab: {
+        id: FAB,
+        backgroundColor: 'blue',
+        clickColor: 'blue',
+        rippleColor: 'aquamarine',
+        hideOnScroll: true
       }
     };
   }
@@ -49,6 +58,9 @@ class ScrollViewScreen extends Component {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
         hideOnScroll: this.state.topBarHideOnScroll
+      },
+      fab: {
+        hideOnScroll: !this.state.topBarHideOnScroll
       }
     });
   }

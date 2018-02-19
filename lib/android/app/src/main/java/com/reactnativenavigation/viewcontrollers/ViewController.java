@@ -11,6 +11,7 @@ import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.FabOptionsPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
@@ -40,10 +41,12 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
+    protected FabOptionsPresenter fabOptionsPresenter;
 
     public ViewController(Activity activity, String id, Options initialOptions) {
         this.activity = activity;
         this.id = id;
+        fabOptionsPresenter = new FabOptionsPresenter();
         this.initialOptions = initialOptions;
         options = initialOptions.copy();
     }

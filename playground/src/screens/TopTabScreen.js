@@ -2,6 +2,8 @@ const React = require('react');
 const { PureComponent } = require('react');
 const { View, Text } = require('react-native');
 
+const FAB = 'fab';
+
 class TopTabScreen extends PureComponent {
   static get options() {
     return {
@@ -9,6 +11,12 @@ class TopTabScreen extends PureComponent {
         textColor: 'black',
         textFontSize: 16,
         textFontFamily: 'HelveticaNeue-Italic'
+      },
+      fab: {
+        id: FAB,
+        backgroundColor: 'blue',
+        clickColor: 'blue',
+        rippleColor: 'aquamarine'
       }
     };
   }

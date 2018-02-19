@@ -4,9 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.FabOptionsPresenter;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 

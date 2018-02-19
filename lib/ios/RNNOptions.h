@@ -17,5 +17,6 @@
 - (instancetype)initWithDict:(NSDictionary*)dict;
 - (void)mergeWith:(NSDictionary*)otherOptions;
 - (void)applyOn:(UIViewController *)viewController defaultOptions:(RNNOptions*)defaultOptions;
+- (BOOL)hasProperty:(NSString*)propName;
 
 @end

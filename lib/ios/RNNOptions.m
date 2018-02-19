@@ -22,7 +22,7 @@
 	}
 }
 
--(BOOL)hasProperty:(NSString*)propName {
+- (BOOL)hasProperty:(NSString*)propName {
 	return [self respondsToSelector:NSSelectorFromString(propName)];
 }
 

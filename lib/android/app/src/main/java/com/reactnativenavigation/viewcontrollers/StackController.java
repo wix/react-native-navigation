@@ -27,7 +27,7 @@ public class StackController extends ParentController <StackLayout> {
     private StackLayout stackLayout;
 
     public StackController(final Activity activity, String id, Options initialOptions) {
-		super(activity, id, initialOptions);
+        super(activity, id, initialOptions);
         animator = new NavigationAnimator(activity);
     }
 
@@ -36,6 +36,9 @@ public class StackController extends ParentController <StackLayout> {
         return stackLayout.getTopBar();
     }
 
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    StackLayout getStackLayout() {return stackLayout;}
+
     @Override
     public void applyOptions(Options options, ReactComponent component) {
         super.applyOptions(options, component);
@@ -43,6 +46,7 @@ public class StackController extends ParentController <StackLayout> {
         applyOnParentController(parentController ->
                 ((ParentController) parentController).applyOptions(this.options.copy().clearTopBarOptions(), component)
         );
+        fabOptionsPresenter.applyOptions(options.fabOptions, component, stackLayout);
     }
 
     @Override
@@ -66,22 +70,22 @@ public class StackController extends ParentController <StackLayout> {
     }
 
     public void animatePush(final ViewController child, final Promise promise) {
-		final ViewController toRemove = stack.peek();
+        final ViewController toRemove = stack.peek();
 
 		child.setParentController(this);
 		stack.push(child.getId(), child);
 		View enteringView = child.getView();
 		getView().addView(enteringView, MATCH_PARENT, MATCH_PARENT);
 
-		if (toRemove != null) {
+        if (toRemove != null) {
             animator.animatePush(enteringView, () -> {
                 getView().removeView(toRemove.getView());
                 promise.resolve(child.getId());
             });
-		} else {
-			promise.resolve(child.getId());
-		}
-	}
+        } else {
+            promise.resolve(child.getId());
+        }
+    }
 
     void pop(final Promise promise) {
         if (!canPop()) {
