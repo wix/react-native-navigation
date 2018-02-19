@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
@@ -10,6 +11,7 @@ import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
 import com.reactnativenavigation.views.Fab;
+import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.StackLayout;
 
 import org.junit.Test;
@@ -20,14 +22,17 @@ import static org.mockito.Mockito.verify;
 
 public class FloatingActionButtonTest extends BaseTest {
 
+    private final static int CHILD_FAB_COUNT = 3;
+
     private StackController stackController;
     private SimpleViewController childFab;
     private SimpleViewController childNoFab;
+    private Activity activity;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
-        Activity activity = newActivity();
+        activity = newActivity();
         stackController = new StackController(activity, "stackController", new Options());
         Options options = getOptionsWithFab();
         childFab = new SimpleViewController(activity, "child1", options);
@@ -43,10 +48,27 @@ public class FloatingActionButtonTest extends BaseTest {
         return options;
     }
 
+    @NonNull
+    private Options getOptionsWithFabActions() {
+        Options options = new Options();
+        FabOptions fabOptions = new FabOptions();
+        fabOptions.id = new Text("FAB");
+        for (int i = 0; i < CHILD_FAB_COUNT; i++) {
+            FabOptions childOptions = new FabOptions();
+            childOptions.id = new Text("fab" + i);
+            fabOptions.actionsArray.add(childOptions);
+        }
+        options.fabOptions = fabOptions;
+        return options;
+    }
+
     private boolean hasFab() {
         StackLayout stackLayout = stackController.getStackLayout();
         for (int i = 0; i < stackLayout.getChildCount(); i++) {
             if (stackLayout.getChildAt(i) instanceof Fab) {
+                return true;
+            }
+            if (stackLayout.getChildAt(i) instanceof FabMenu) {
                 return true;
             }
         }
@@ -90,5 +112,25 @@ public class FloatingActionButtonTest extends BaseTest {
         stackController.pop(new MockPromise());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
+    }
+
+    @Test
+    public void hasChildren() throws Exception {
+        childFab = new SimpleViewController(activity, "child1", getOptionsWithFabActions());
+        stackController.push(childFab, new MockPromise());
+        childFab.onViewAppeared();
+        assertThat(hasFab()).isTrue();
+        assertThat(containsActions()).isTrue();
+    }
+
+    private boolean containsActions() {
+        StackLayout stackLayout = stackController.getStackLayout();
+        for (int i = 0; i < stackLayout.getChildCount(); i++) {
+            View child = stackLayout.getChildAt(i);
+            if (child instanceof FabMenu) {
+                return ((FabMenu) child).getChildCount() == CHILD_FAB_COUNT + 2;
+            }
+        }
+        return false;
     }
 }

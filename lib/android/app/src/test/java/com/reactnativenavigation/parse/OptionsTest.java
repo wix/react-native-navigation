@@ -56,7 +56,6 @@ public class OptionsTest extends BaseTest {
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("fab", createFab())
-                .put("fabMenu", createFabMenu())
                 .put("bottomTabs", createBottomTabs());
         Options result = Options.parse(mockLoader, json);
         assertResult(result);
@@ -83,14 +82,6 @@ public class OptionsTest extends BaseTest {
         assertThat(result.fabOptions.hideOnScroll.get()).isEqualTo(FAB_HIDE_ON_SCROLL);
         assertThat(result.fabOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
         assertThat(result.fabOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
-        assertThat(result.fabMenuOptions.id.get()).isEqualTo(FAB_ID);
-        assertThat(result.fabMenuOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
-        assertThat(result.fabMenuOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
-        assertThat(result.fabMenuOptions.backgroundColor.get()).isEqualTo(FAB_BACKGROUND_COLOR);
-        assertThat(result.fabMenuOptions.clickColor.get()).isEqualTo(FAB_CLICK_COLOR);
-        assertThat(result.fabMenuOptions.rippleColor.get()).isEqualTo(FAB_RIPPLE_COLOR);
-        assertThat(result.fabMenuOptions.visible.get()).isEqualTo(FAB_VISIBLE);
-        assertThat(result.fabMenuOptions.hideOnScroll.get()).isEqualTo(FAB_HIDE_ON_SCROLL);
     }
 
     @NonNull
@@ -130,32 +121,6 @@ public class OptionsTest extends BaseTest {
 
     @NonNull
     private JSONObject createOtherFab() throws JSONException {
-        return new JSONObject()
-                .put("id", "FAB")
-                .put("backgroundColor", FAB_BACKGROUND_COLOR)
-                .put("clickColor", FAB_CLICK_COLOR)
-                .put("rippleColor", FAB_RIPPLE_COLOR)
-                .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
-                .put("alignVertically", FAB_ALIGN_VERTICALLY)
-                .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
-                .put("visible", FAB_VISIBLE);
-    }
-
-    @NonNull
-    private JSONObject createFabMenu() throws JSONException {
-        return new JSONObject()
-                .put("id", FAB_ID)
-                .put("backgroundColor", FAB_BACKGROUND_COLOR)
-                .put("clickColor", FAB_CLICK_COLOR)
-                .put("rippleColor", FAB_RIPPLE_COLOR)
-                .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
-                .put("alignVertically", FAB_ALIGN_VERTICALLY)
-                .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
-                .put("visible", FAB_VISIBLE);
-    }
-
-    @NonNull
-    private JSONObject createOtherFabMenu() throws JSONException {
         return new JSONObject()
                 .put("id", "FAB")
                 .put("backgroundColor", FAB_BACKGROUND_COLOR)
@@ -211,7 +176,6 @@ public class OptionsTest extends BaseTest {
         JSONObject json = new JSONObject();
         json.put("topBar", createTopBar(TOP_BAR_VISIBLE.get()));
         json.put("fab", createFab());
-        json.put("fabMenu", createFabMenu());
         json.put("bottomTabs", createBottomTabs());
         Options defaultOptions = Options.parse(mockLoader, json);
         Options options = new Options();
@@ -224,7 +188,6 @@ public class OptionsTest extends BaseTest {
         JSONObject defaultJson = new JSONObject()
                 .put("topBar", createOtherTopBar())
                 .put("fab", createOtherFab())
-                .put("fabMenu", createOtherFabMenu())
                 .put("bottomTabs", createOtherTabBar());
         Options defaultOptions = Options.parse(mockLoader, defaultJson);
 
