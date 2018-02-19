@@ -24,6 +24,7 @@ class WelcomeScreen extends Component {
     this.onClickBackHandler = this.onClickBackHandler.bind(this);
     this.onClickPushTopTabsScreen = this.onClickPushTopTabsScreen.bind(this);
     this.onClickShowStaticLifecycleOverlay = this.onClickShowStaticLifecycleOverlay.bind(this);
+    this.onClickProvidedId = this.onClickProvidedId.bind(this);
   }
 
   render() {
@@ -41,6 +42,7 @@ class WelcomeScreen extends Component {
         <Button title='Show Modal' testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
         <Button title='Show Redbox' testID={testIDs.SHOW_REDBOX_BUTTON} onPress={this.onClickShowRedbox} />
         <Button title='Orientation' testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
+        <Button title='Provided Id' testID={testIDs.PROVIDED_ID} onPress={this.onClickProvidedId} />
         <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
       </View>
     );
@@ -59,6 +61,11 @@ class WelcomeScreen extends Component {
                     passProps: {
                       text: 'This is tab 1',
                       myFunction: () => 'Hello from a function!'
+                    },
+                    options: {
+                      topBar: {
+                        visible: false
+                      }
                     }
                   }
                 }
@@ -345,6 +352,26 @@ class WelcomeScreen extends Component {
     Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.OrientationSelectScreen'
+      }
+    });
+  }
+
+  onClickProvidedId() {
+    Navigation.showModal({
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'navigation.playground.TextScreen',
+              id: 'my unique id'
+            }
+          }
+        ]
+      }
+    });
+    Navigation.setOptions('my unique id', {
+      topBar: {
+        title: 'User provided id'
       }
     });
   }

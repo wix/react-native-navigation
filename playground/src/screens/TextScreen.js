@@ -13,6 +13,9 @@ class TextScreen extends Component {
     return {
       bottomTabs: {
         testID: testIDs.BOTTOM_TABS_ELEMENT
+      },
+      topBar: {
+        testID: testIDs.TOP_BAR_ELEMENT
       }
     };
   }

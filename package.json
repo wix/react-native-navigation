@@ -118,13 +118,13 @@
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
         "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground -project playground/ios/playground.xcodeproj -sdk iphonesimulator -configuration Debug -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet",
         "type": "ios.simulator",
-        "name": "iPhone SE"
+        "name": "iPhone X"
       },
       "ios.sim.release": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Release-iphonesimulator/playground.app",
         "build": "RCT_NO_LAUNCH_PACKAGER=true xcodebuild build -scheme playground_release -project playground/ios/playground.xcodeproj -sdk iphonesimulator -configuration Release -derivedDataPath playground/ios/DerivedData/playground ONLY_ACTIVE_ARCH=YES -quiet",
         "type": "ios.simulator",
-        "name": "iPhone SE"
+        "name": "iPhone X"
       },
       "android.emu.debug": {
         "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",

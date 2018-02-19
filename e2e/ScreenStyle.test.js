@@ -118,4 +118,16 @@ describe('screen style', () => {
     await elementById(testIDs.POP_BUTTON).tap();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
+
+  it('supports user-provided id', async () => {
+    await elementById(testIDs.PROVIDED_ID).tap();
+    await expect(elementByLabel('User provided id')).toBeVisible();
+  });
+
+  it('stack options should not override component options', async () => {
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
+    await elementById(testIDs.SECOND_TAB_BAR_BUTTON).tap();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
+  });
 });

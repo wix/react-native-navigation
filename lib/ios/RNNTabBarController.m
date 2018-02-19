@@ -41,8 +41,8 @@
 	return YES;
 }
 
-- (void)setOptions:(RNNNavigationOptions *)options {
-	[((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) setOptions:options];
+- (void)mergeOptions:(NSDictionary *)options {
+	[((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) mergeOptions:options];
 }
 
 - (NSString *)componentId {

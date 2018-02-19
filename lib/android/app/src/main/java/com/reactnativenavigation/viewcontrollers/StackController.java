@@ -17,6 +17,8 @@ import com.reactnativenavigation.views.TopBar;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 public class StackController extends ParentController <StackLayout> {
 
     private static final NoOpPromise NO_OP = new NoOpPromise();
@@ -42,7 +44,7 @@ public class StackController extends ParentController <StackLayout> {
         super.applyOptions(options, component);
         stackLayout.applyOptions(this.options, component);
         applyOnParentController(parentController ->
-                ((ParentController) parentController).applyOptions(this.options, component)
+                ((ParentController) parentController).applyOptions(this.options.copy().clearTopBarOptions(), component)
         );
         fabOptionsPresenter.applyOptions(options, component, stackLayout);
     }
@@ -59,7 +61,7 @@ public class StackController extends ParentController <StackLayout> {
         child.setParentController(this);
         stack.push(child.getId(), child);
         View enteringView = child.getView();
-        getView().addView(enteringView);
+        getView().addView(enteringView, MATCH_PARENT, MATCH_PARENT);
 
         if (toRemove != null) {
             getView().removeView(toRemove.getView());
@@ -70,10 +72,10 @@ public class StackController extends ParentController <StackLayout> {
     public void animatePush(final ViewController child, final Promise promise) {
         final ViewController toRemove = stack.peek();
 
-        child.setParentController(this);
-        stack.push(child.getId(), child);
-        View enteringView = child.getView();
-        getView().addView(enteringView);
+		child.setParentController(this);
+		stack.push(child.getId(), child);
+		View enteringView = child.getView();
+		getView().addView(enteringView, MATCH_PARENT, MATCH_PARENT);
 
         if (toRemove != null) {
             animator.animatePush(enteringView, () -> {
@@ -92,13 +94,10 @@ public class StackController extends ParentController <StackLayout> {
         }
 
         final ViewController poppedTop = stack.pop();
-        ViewController newTop = stack.peek();
+        final ViewController newTop = stack.peek();
+        popInternal(poppedTop, newTop);
 
-        View enteringView = newTop.getView();
-        final View exitingView = poppedTop.getView();
-        getView().addView(enteringView, getView().getChildCount() - 1);
-
-        finishPopping(exitingView, poppedTop, promise);
+        finishPopping(poppedTop.getView(), poppedTop, promise);
     }
 
 	private void animatePop(final Promise promise) {
@@ -108,14 +107,18 @@ public class StackController extends ParentController <StackLayout> {
 		}
 
 		final ViewController poppedTop = stack.pop();
-		ViewController newTop = stack.peek();
+        final ViewController newTop = stack.peek();
+        popInternal(poppedTop, newTop);
 
-		View enteringView = newTop.getView();
-		final View exitingView = poppedTop.getView();
-		getView().addView(enteringView, getView().getChildCount() - 1);
-
-        animator.animatePop(exitingView, () -> finishPopping(exitingView, poppedTop, promise));
+        animator.animatePop(poppedTop.getView(), () -> finishPopping(poppedTop.getView(), poppedTop, promise));
 	}
+
+    private void popInternal(ViewController poppedTop, ViewController newTop) {
+        poppedTop.onViewWillDisappear();
+        newTop.onViewWillAppear();
+        View enteringView = newTop.getView();
+        getView().addView(enteringView, getView().getChildCount() - 1);
+    }
 
     boolean canPop() {
         return stack.size() > 1;
@@ -204,6 +207,11 @@ public class StackController extends ParentController <StackLayout> {
 
     @Override
     public void setupTopTabsWithViewPager(ViewPager viewPager) {
-        stackLayout.setupTopTabsWithViewPager(viewPager);
+        stackLayout.initTopTabs(viewPager);
+    }
+
+    @Override
+    public void clearTopTabs() {
+        stackLayout.clearTopTabs();
     }
 }

@@ -7,9 +7,13 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.utils.ViewHelper;
+import com.reactnativenavigation.views.ReactComponent;
 
 import org.assertj.core.api.iterable.Extractor;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import javax.annotation.Nullable;
 
@@ -292,6 +296,17 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void pop_callWillAppearWillDisappear() throws Exception {
+        child1 = spy(child1);
+        child2 = spy(child2);
+        uut.push(child1, new MockPromise());
+        uut.push(child2, new MockPromise());
+        uut.pop(new MockPromise());
+        verify(child1, times(1)).onViewWillAppear();
+        verify(child2, times(1)).onViewWillDisappear();
+    }
+
+    @Test
     public void popSpecific_CallsDestroyOnPoppedChild() throws Exception {
         child1 = spy(child1);
         child2 = spy(child2);
@@ -336,6 +351,34 @@ public class StackControllerTest extends BaseTest {
         parent.push(uut, new MockPromise());
         uut.onViewAppeared();
         assertThat(parent.getView().getChildAt(1)).isEqualTo(uut.getView());
+    }
+
+    @Test
+    public void applyOptions_applyOnlyOnFirstStack() throws Exception {
+        StackController parent = spy(new StackController(activity, "someStack", new Options()));
+        parent.ensureViewIsCreated();
+        parent.push(uut, new MockPromise());
+
+        Options childOptions = new Options();
+        childOptions.topBarOptions.title = new Text("Something");
+        child1.options = childOptions;
+        uut.push(child1, new MockPromise());
+        child1.ensureViewIsCreated();
+        child1.onViewAppeared();
+
+        ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
+        ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
+        verify(parent, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
+        assertThat(optionsCaptor.getValue().topBarOptions.title.hasValue()).isFalse();
+    }
+
+    @Test
+    public void applyOptions_topTabsAreNotVisibleIfNoTabsAreDefined() throws Exception {
+        uut.ensureViewIsCreated();
+        uut.push(child1, new MockPromise());
+        child1.ensureViewIsCreated();
+        child1.onViewAppeared();
+        assertThat(ViewHelper.isVisible(uut.getTopBar().getTopTabs())).isFalse();
     }
 
     private void assertContainsOnlyId(String... ids) {

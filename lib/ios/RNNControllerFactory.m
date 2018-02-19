@@ -97,21 +97,21 @@
 
 - (UIViewController<RNNRootViewProtocol> *)createStack:(RNNLayoutNode*)node {
 	RNNNavigationController* vc = [[RNNNavigationController alloc] init];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
+	NSDictionary* options = node.data[@"options"];
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary* child in node.children) {
 		[controllers addObject:[self fromTree:child]];
 	}
 	[vc setViewControllers:controllers];
-	[vc setOptions:options];
+	[vc mergeOptions:options];
 	
 	return vc;
 }
 
 -(UIViewController<RNNRootViewProtocol> *)createTabs:(RNNLayoutNode*)node {
 	RNNTabBarController* vc = [[RNNTabBarController alloc] init];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
-	
+	NSDictionary* options = node.data[@"options"];
+
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
 		UIViewController* childVc = (UIViewController*)[self fromTree:child];
@@ -121,7 +121,7 @@
 		[controllers addObject:childVc];
 	}
 	[vc setViewControllers:controllers];
-	[vc setOptions:options];
+	[vc mergeOptions:options];
 	
 	return vc;
 }

@@ -16,7 +16,7 @@ import static com.reactnativenavigation.parse.Options.NO_INT_VALUE;
 public class Button {
 	public String id;
 	public Text title;
-	public Bool disabled;
+	public Bool enabled;
 	public Bool disableIconTint;
 	public int showAsAction;
 	@ColorInt public int buttonColor;
@@ -29,7 +29,7 @@ public class Button {
 		Button button = new Button();
 		button.id = json.optString("id");
 		button.title = TextParser.parse(json, "title");
-		button.disabled = BoolParser.parse(json,"disabled");
+		button.enabled = BoolParser.parse(json,"enabled");
 		button.disableIconTint = BoolParser.parse(json,"disableIconTint");
 		button.showAsAction = parseShowAsAction(json);
 		button.buttonColor = json.optInt("buttonColor", NO_INT_VALUE);

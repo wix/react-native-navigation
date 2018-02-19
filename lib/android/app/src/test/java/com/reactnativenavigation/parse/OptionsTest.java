@@ -34,7 +34,7 @@ public class OptionsTest extends BaseTest {
     private static final Bool TOP_BAR_DRAW_BEHIND = new Bool(true);
     private static final Bool TOP_BAR_HIDE_ON_SCROLL = new Bool(true);
     private static final Bool BOTTOM_TABS_ANIMATE_HIDE = new Bool(true);
-    private static final Bool BOTTOM_TABS_HIDDEN = new Bool(true);
+    private static final Bool BOTTOM_TABS_VISIBLE = new Bool(true);
     private static final String BOTTOM_TABS_BADGE = "3";
     private static final String BOTTOM_TABS_CURRENT_TAB_ID = "ComponentId";
     private static final int BOTTOM_TABS_CURRENT_TAB_INDEX = 1;
@@ -72,7 +72,7 @@ public class OptionsTest extends BaseTest {
         assertThat(result.topBarOptions.drawBehind.get()).isEqualTo(TOP_BAR_DRAW_BEHIND.get());
         assertThat(result.topBarOptions.hideOnScroll.get()).isEqualTo(TOP_BAR_HIDE_ON_SCROLL.get());
         assertThat(result.bottomTabsOptions.animateHide.get()).isEqualTo(BOTTOM_TABS_ANIMATE_HIDE.get());
-        assertThat(result.bottomTabsOptions.visible.get()).isEqualTo(BOTTOM_TABS_HIDDEN.get());
+        assertThat(result.bottomTabsOptions.visible.get()).isEqualTo(BOTTOM_TABS_VISIBLE.get());
         assertThat(result.bottomTabsOptions.currentTabId.get()).isEqualTo(BOTTOM_TABS_CURRENT_TAB_ID);
         assertThat(result.bottomTabsOptions.currentTabIndex).isEqualTo(BOTTOM_TABS_CURRENT_TAB_INDEX);
         assertThat(result.fabOptions.id.get()).isEqualTo(FAB_ID);
@@ -98,7 +98,7 @@ public class OptionsTest extends BaseTest {
         return new JSONObject()
                 .put("currentTabId", BOTTOM_TABS_CURRENT_TAB_ID)
                 .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX)
-                .put("visible", BOTTOM_TABS_HIDDEN.get())
+                .put("visible", BOTTOM_TABS_VISIBLE.get())
                 .put("animateHide", BOTTOM_TABS_ANIMATE_HIDE.get());
     }
 
@@ -183,7 +183,7 @@ public class OptionsTest extends BaseTest {
         return new JSONObject()
                 .put("currentTabId", BOTTOM_TABS_CURRENT_TAB_ID)
                 .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX)
-                .put("visible", BOTTOM_TABS_HIDDEN)
+                .put("visible", BOTTOM_TABS_VISIBLE)
                 .put("animateHide", BOTTOM_TABS_ANIMATE_HIDE)
                 .put("tabBadge", BOTTOM_TABS_BADGE);
     }
@@ -265,9 +265,19 @@ public class OptionsTest extends BaseTest {
         assertThat(uut.bottomTabsOptions.color.hasValue()).isFalse();
     }
 
-//    topBarOptions.mergeWithDefault(other.topBarOptions);
-//        topTabOptions.mergeWithDefault(other.topTabOptions);
-//        topTabsOptions.mergeWithDefault(other.topTabsOptions);
-//        bottomTabOptions.mergeWithDefault(other.bottomTabOptions);
-//        bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
+    @Test
+    public void clear_topTabsOptions() throws Exception {
+        Options uut = new Options();
+        uut.topTabsOptions.fontSize = new Number(666);
+        uut.clearTopTabsOptions();
+        assertThat(uut.topTabsOptions.fontSize.hasValue()).isFalse();
+    }
+
+    @Test
+    public void clear_topTabOptions() throws Exception {
+        Options uut = new Options();
+        uut.topTabOptions.title = new Text("some title");
+        uut.clearTopTabOptions();
+        assertThat(uut.topTabOptions.title.hasValue()).isFalse();
+    }
 }
