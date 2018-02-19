@@ -26,6 +26,7 @@ public class BottomTabs extends AHBottomNavigation {
         createVisibilityAnimator();
         setStyle();
         setFontFamily();
+        setFontSize();
     }
 
     public void addTabs(List<ScreenParams> params, OnTabSelectedListener onTabSelectedListener) {
@@ -155,5 +156,9 @@ public class BottomTabs extends AHBottomNavigation {
         if (AppStyle.appStyle.bottomTabFontFamily.hasFont()) {
             setTitleTypeface(AppStyle.appStyle.bottomTabFontFamily.get());
         }
+    }
+
+    private void setFontSize() {
+        setTitleTextSizeInSp(AppStyle.appStyle.bottomTabSelectedFontSize, AppStyle.appStyle.bottomTabFontSize);
     }
 }

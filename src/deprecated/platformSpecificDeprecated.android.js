@@ -214,6 +214,8 @@ function convertStyleParams(originalStyleObject) {
     bottomTabBadgeTextColor: processColor(originalStyleObject.bottomTabBadgeTextColor),
     bottomTabBadgeBackgroundColor: processColor(originalStyleObject.bottomTabBadgeBackgroundColor),
     bottomTabFontFamily: originalStyleObject.tabFontFamily,
+    bottomTabFontSize: originalStyleObject.tabFontSize,
+    bottomTabSelectedFontSize: originalStyleObject.selectedTabFontSize,
 
     navigationBarColor: processColor(originalStyleObject.navigationBarColor)
   };

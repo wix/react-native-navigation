@@ -102,6 +102,8 @@ public class StyleParamsParser {
         result.forceTitlesDisplay = getBoolean("forceTitlesDisplay", getDefaultForceTitlesDisplay());
 
         result.bottomTabFontFamily = getFont("bottomTabFontFamily", getDefaultBottomTabsFontFamily());
+        result.bottomTabFontSize = getInt("bottomTabFontSize", 10);
+        result.bottomTabSelectedFontSize = getInt("bottomTabSelectedFontSize", 10);
 
         return result;
     }
@@ -125,6 +127,8 @@ public class StyleParamsParser {
         result.titleBarHideOnScroll = false;
         result.orientation = Orientation.auto;
         result.bottomTabFontFamily = new StyleParams.Font();
+        result.bottomTabFontSize = 10;
+        result.bottomTabSelectedFontSize = 10;
         result.titleBarTitleFont = new StyleParams.Font();
         result.titleBarSubtitleFontFamily = new StyleParams.Font();
         result.titleBarButtonFontFamily = new StyleParams.Font();
