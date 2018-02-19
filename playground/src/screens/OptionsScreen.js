@@ -41,7 +41,7 @@ class OptionsScreen extends Component {
           buttonColor: 'purple'
         }]
       },
-      fabMenu: {
+      fab: {
         id: FAB,
         backgroundColor: 'orange',
         clickColor: 'orange',
@@ -207,7 +207,7 @@ class OptionsScreen extends Component {
 
   onClickFab() {
     Navigation.setOptions(this.props.componentId, {
-      fabMenu: {
+      fab: {
         id: FAB,
         visible: false
       }

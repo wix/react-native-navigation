@@ -29,54 +29,55 @@ public class FabOptionsPresenter {
     private Fab fab;
     private FabMenu fabMenu;
 
-    public void applyOptions(Options options, @NonNull ReactComponent component, @NonNull ViewGroup viewGroup) {
+    public void applyOptions(FabOptions options, @NonNull ReactComponent component, @NonNull ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
         this.component = component;
-        applyFabOptions(options.fabOptions);
-        applyFabMenuOptions(options.fabMenuOptions);
-    }
 
-    private void applyFabMenuOptions(FabOptions options) {
         if (options.id.hasValue()) {
-            if (fabMenu == null) {
-                fabMenu = new FabMenu(viewGroup.getContext());
-                setParams(fabMenu, options);
-                applyFabMenuOptions(fabMenu, options);
-                viewGroup.addView(fabMenu);
+            if (fabMenu != null) {
+                if (fabMenu.getFabId().equals(options.id.get())) {
+                    setParams(fabMenu, options);
+                    fabMenu.bringToFront();
+                    applyFabMenuOptions(fabMenu, options);
+                } else {
+                    createFab(options);
+                }
+            } else if (fab != null) {
+                if (fab.getFabId().equals(options.id.get())) {
+                    setParams(fab, options);
+                    fab.bringToFront();
+                    applyFabOptions(fab, options);
+                    fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
+                } else {
+                    createFab(options);
+                }
             } else {
-                setParams(fabMenu, options);
-                fabMenu.bringToFront();
-                applyFabMenuOptions(fabMenu, options);
+                createFab(options);
             }
         } else {
+            removeFab();
             removeFabMenu();
         }
     }
 
-    private void applyFabOptions(FabOptions options) {
-        if (options.id.hasValue()) {
-            if (fab == null) {
-                fab = new Fab(viewGroup.getContext(), options.id.get());
-                setParams(fab, options);
-                applyFabOptions(fab, options);
-                fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
-                viewGroup.addView(fab);
-            } else {
-                setParams(fab, options);
-                fab.bringToFront();
-                applyFabOptions(fab, options);
-                fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
-            }
+    private void createFab(FabOptions options) {
+        if (options.actionsArray.size() > 0) {
+            fabMenu = new FabMenu(viewGroup.getContext(), options.id.get());
+            setParams(fabMenu, options);
+            applyFabMenuOptions(fabMenu, options);
+            viewGroup.addView(fabMenu);
         } else {
-            removeFab();
+            fab = new Fab(viewGroup.getContext(), options.id.get());
+            setParams(fab, options);
+            applyFabOptions(fab, options);
+            fab.setOnClickListener(v -> component.sendOnNavigationButtonPressed(options.id.get()));
+            viewGroup.addView(fab);
         }
     }
 
     private void removeFabMenu() {
         if (fabMenu != null) {
-            if (fabMenu.isShown()) {
-                fabMenu.hideMenu(true);
-            }
+            fabMenu.hideMenuButton(true);
             viewGroup.removeView(fabMenu);
             fabMenu = null;
         }
@@ -84,9 +85,7 @@ public class FabOptionsPresenter {
 
     private void removeFab() {
         if (fab != null) {
-            if (fab.isShown()) {
-                fab.hide(true);
-            }
+            fab.hide(true);
             viewGroup.removeView(fab);
             fab = null;
         }
@@ -208,10 +207,6 @@ public class FabOptionsPresenter {
         if (options.rippleColor.hasValue()) {
             fabMenu.setMenuButtonColorRipple(options.rippleColor.get());
         }
-        if (options.icon.hasValue()) {
-            fabMenu.applyIcon(options.icon.get());
-        }
-
         for (Fab fabStored : fabMenu.getActions()) {
             fabMenu.removeMenuButton(fabStored);
         }

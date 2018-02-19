@@ -68,4 +68,8 @@ public class Fab extends FloatingActionButton implements FabAnimator {
     public void disableCollapse() {
         collapseBehaviour.disableCollapse();
     }
+
+    public String getFabId() {
+        return id;
+    }
 }

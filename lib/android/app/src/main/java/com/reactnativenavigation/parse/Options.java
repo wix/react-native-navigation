@@ -26,7 +26,6 @@ public class Options implements DEFAULT_VALUES {
         result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
         result.overlayOptions = OverlayOptions.parse(json.optJSONObject("overlay"));
         result.fabOptions = FabOptions.parse(json.optJSONObject("fab"));
-        result.fabMenuOptions = FabOptions.parse(json.optJSONObject("fabMenu"));
 
         return result.withDefaultOptions(defaultOptions);
     }
@@ -38,7 +37,6 @@ public class Options implements DEFAULT_VALUES {
     @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
     @NonNull public OverlayOptions overlayOptions = new OverlayOptions();
     @NonNull public FabOptions fabOptions = new FabOptions();
-    @NonNull public FabOptions fabMenuOptions = new FabOptions();
 
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;
@@ -54,7 +52,6 @@ public class Options implements DEFAULT_VALUES {
         result.bottomTabsOptions.mergeWith(bottomTabsOptions);
         result.overlayOptions = overlayOptions;
         result.fabOptions.mergeWith(fabOptions);
-        result.fabMenuOptions.mergeWith(fabMenuOptions);
         return result;
     }
 
@@ -67,7 +64,6 @@ public class Options implements DEFAULT_VALUES {
         result.bottomTabOptions.mergeWith(other.bottomTabOptions);
         result.bottomTabsOptions.mergeWith(other.bottomTabsOptions);
         result.fabOptions.mergeWith(other.fabOptions);
-        result.fabMenuOptions.mergeWith(other.fabMenuOptions);
         return result;
     }
 
@@ -78,7 +74,6 @@ public class Options implements DEFAULT_VALUES {
         bottomTabOptions.mergeWithDefault(other.bottomTabOptions);
         bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
         fabOptions.mergeWithDefault(other.fabOptions);
-        fabMenuOptions.mergeWithDefault(other.fabMenuOptions);
         return this;
     }
 
