@@ -159,6 +159,8 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     private void setFontSize() {
-        setTitleTextSizeInSp(AppStyle.appStyle.bottomTabSelectedFontSize, AppStyle.appStyle.bottomTabFontSize);
+        if(AppStyle.appStyle.bottomTabSelectedFontSize != null &&  AppStyle.appStyle.bottomTabFontSize != null) {
+            setTitleTextSizeInSp(AppStyle.appStyle.bottomTabSelectedFontSize, AppStyle.appStyle.bottomTabFontSize);
+        }
     }
 }

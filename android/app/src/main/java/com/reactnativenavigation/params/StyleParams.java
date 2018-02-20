@@ -152,8 +152,8 @@ public class StyleParams {
     public Color bottomTabBadgeTextColor;
     public Color bottomTabBadgeBackgroundColor;
     public Font bottomTabFontFamily;
-    public int bottomTabFontSize;
-    public int bottomTabSelectedFontSize;
+    public Integer bottomTabFontSize;
+    public Integer bottomTabSelectedFontSize;
 
     public Color navigationBarColor;
 
