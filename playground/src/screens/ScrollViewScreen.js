@@ -16,6 +16,7 @@ class ScrollViewScreen extends Component {
         drawBehind: true,
         textColor: 'black',
         textFontSize: 16,
+        visible: true,
         testID: testIDs.TOP_BAR_ELEMENT
       },
       fab: {
