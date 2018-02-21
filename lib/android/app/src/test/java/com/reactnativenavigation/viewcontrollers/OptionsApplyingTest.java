@@ -138,7 +138,7 @@ public class OptionsApplyingTest extends BaseTest {
     }
 
     @Test
-    public void appliesTopBarHidden() throws Exception {
+    public void appliesTopBarVisible() throws Exception {
         assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
         initialNavigationOptions.topBarOptions.title = new Text("the title");
         uut.ensureViewIsCreated();
@@ -147,6 +147,7 @@ public class OptionsApplyingTest extends BaseTest {
 
         Options opts = new Options();
         opts.topBarOptions.visible = new Bool(false);
+        opts.topBarOptions.animateHide = new Bool(false);
         uut.mergeOptions(opts);
 
         assertThat(stackController.getTopBar().getVisibility()).isEqualTo(View.GONE);

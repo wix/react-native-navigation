@@ -15,13 +15,21 @@ import com.reactnativenavigation.views.TopBar;
 
 public class SimpleViewController extends ViewController<FrameLayout> {
 
+    private SimpleView simpleView;
+
     public SimpleViewController(final Activity activity, String id, Options options) {
         super(activity, id, options);
     }
 
     @Override
     protected FrameLayout createView() {
-        return new SimpleView(getActivity());
+        simpleView = new SimpleView(getActivity());
+        return simpleView;
+    }
+
+    @Override
+    public void sendOnNavigationButtonPressed(String buttonId) {
+        simpleView.sendOnNavigationButtonPressed(buttonId);
     }
 
     @Override

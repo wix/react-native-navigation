@@ -17,7 +17,15 @@ import static org.assertj.core.api.Java6Assertions.*;
 public class OptionsTest extends BaseTest {
 
     private static final String TITLE = "the title";
+    private static final String FAB_ID = "FAB";
+    private static final String FAB_ALIGN_HORIZONTALLY = "right";
+    private static final String FAB_ALIGN_VERTICALLY = "bottom";
     private static final int TOP_BAR_BACKGROUND_COLOR = 0xff123456;
+    private static final int FAB_BACKGROUND_COLOR = android.graphics.Color.BLUE;
+    private static final int FAB_CLICK_COLOR = android.graphics.Color.RED;
+    private static final int FAB_RIPPLE_COLOR = android.graphics.Color.GREEN;
+    private static final Boolean FAB_VISIBLE = true;
+    private static final Boolean FAB_HIDE_ON_SCROLL = true;
     private static final int TOP_BAR_TEXT_COLOR = 0xff123456;
     private static final int TOP_BAR_FONT_SIZE = 18;
     private static final String TOP_BAR_FONT_FAMILY = "HelveticaNeue-CondensedBold";
@@ -26,10 +34,10 @@ public class OptionsTest extends BaseTest {
     private static final Bool TOP_BAR_DRAW_BEHIND = new Bool(true);
     private static final Bool TOP_BAR_HIDE_ON_SCROLL = new Bool(true);
     private static final Bool BOTTOM_TABS_ANIMATE_HIDE = new Bool(true);
-    private static final Bool BOTTOM_TABS_HIDDEN = new Bool(true);
+    private static final Bool BOTTOM_TABS_VISIBLE = new Bool(true);
     private static final String BOTTOM_TABS_BADGE = "3";
     private static final String BOTTOM_TABS_CURRENT_TAB_ID = "ComponentId";
-    private static final int BOTTOM_TABS_CURRENT_TAB_INDEX = 1;
+    private static final Number BOTTOM_TABS_CURRENT_TAB_INDEX = new Number(1);
     private TypefaceLoader mockLoader;
 
     @Override
@@ -47,6 +55,7 @@ public class OptionsTest extends BaseTest {
     public void parsesJson() throws Exception {
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
+                .put("fab", createFab())
                 .put("bottomTabs", createBottomTabs());
         Options result = Options.parse(mockLoader, json);
         assertResult(result);
@@ -62,17 +71,25 @@ public class OptionsTest extends BaseTest {
         assertThat(result.topBarOptions.drawBehind.get()).isEqualTo(TOP_BAR_DRAW_BEHIND.get());
         assertThat(result.topBarOptions.hideOnScroll.get()).isEqualTo(TOP_BAR_HIDE_ON_SCROLL.get());
         assertThat(result.bottomTabsOptions.animateHide.get()).isEqualTo(BOTTOM_TABS_ANIMATE_HIDE.get());
-        assertThat(result.bottomTabsOptions.visible.get()).isEqualTo(BOTTOM_TABS_HIDDEN.get());
+        assertThat(result.bottomTabsOptions.visible.get()).isEqualTo(BOTTOM_TABS_VISIBLE.get());
         assertThat(result.bottomTabsOptions.currentTabId.get()).isEqualTo(BOTTOM_TABS_CURRENT_TAB_ID);
-        assertThat(result.bottomTabsOptions.currentTabIndex).isEqualTo(BOTTOM_TABS_CURRENT_TAB_INDEX);
+        assertThat(result.bottomTabsOptions.currentTabIndex.get()).isEqualTo(BOTTOM_TABS_CURRENT_TAB_INDEX.get());
+        assertThat(result.fabOptions.id.get()).isEqualTo(FAB_ID);
+        assertThat(result.fabOptions.backgroundColor.get()).isEqualTo(FAB_BACKGROUND_COLOR);
+        assertThat(result.fabOptions.clickColor.get()).isEqualTo(FAB_CLICK_COLOR);
+        assertThat(result.fabOptions.rippleColor.get()).isEqualTo(FAB_RIPPLE_COLOR);
+        assertThat(result.fabOptions.visible.get()).isEqualTo(FAB_VISIBLE);
+        assertThat(result.fabOptions.hideOnScroll.get()).isEqualTo(FAB_HIDE_ON_SCROLL);
+        assertThat(result.fabOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
+        assertThat(result.fabOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
     }
 
     @NonNull
     private JSONObject createBottomTabs() throws JSONException {
         return new JSONObject()
                 .put("currentTabId", BOTTOM_TABS_CURRENT_TAB_ID)
-                .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX)
-                .put("visible", BOTTOM_TABS_HIDDEN.get())
+                .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX.get())
+                .put("visible", BOTTOM_TABS_VISIBLE.get())
                 .put("animateHide", BOTTOM_TABS_ANIMATE_HIDE.get());
     }
 
@@ -87,6 +104,32 @@ public class OptionsTest extends BaseTest {
                 .put("visible", visible)
                 .put("drawBehind", TOP_BAR_DRAW_BEHIND.get())
                 .put("hideOnScroll", TOP_BAR_HIDE_ON_SCROLL.get());
+    }
+
+    @NonNull
+    private JSONObject createFab() throws JSONException {
+        return new JSONObject()
+                .put("id", FAB_ID)
+                .put("backgroundColor", FAB_BACKGROUND_COLOR)
+                .put("clickColor", FAB_CLICK_COLOR)
+                .put("rippleColor", FAB_RIPPLE_COLOR)
+                .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
+                .put("alignVertically", FAB_ALIGN_VERTICALLY)
+                .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
+                .put("visible", FAB_VISIBLE);
+    }
+
+    @NonNull
+    private JSONObject createOtherFab() throws JSONException {
+        return new JSONObject()
+                .put("id", "FAB")
+                .put("backgroundColor", FAB_BACKGROUND_COLOR)
+                .put("clickColor", FAB_CLICK_COLOR)
+                .put("rippleColor", FAB_RIPPLE_COLOR)
+                .put("alignHorizontally", FAB_ALIGN_HORIZONTALLY)
+                .put("alignVertically", FAB_ALIGN_VERTICALLY)
+                .put("hideOnScroll", FAB_HIDE_ON_SCROLL)
+                .put("visible", FAB_VISIBLE);
     }
 
     @NonNull
@@ -105,7 +148,7 @@ public class OptionsTest extends BaseTest {
         return new JSONObject()
                 .put("currentTabId", BOTTOM_TABS_CURRENT_TAB_ID)
                 .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX)
-                .put("visible", BOTTOM_TABS_HIDDEN)
+                .put("visible", BOTTOM_TABS_VISIBLE)
                 .put("animateHide", BOTTOM_TABS_ANIMATE_HIDE)
                 .put("tabBadge", BOTTOM_TABS_BADGE);
     }
@@ -132,6 +175,7 @@ public class OptionsTest extends BaseTest {
     public void mergeDefaultOptions() throws Exception {
         JSONObject json = new JSONObject();
         json.put("topBar", createTopBar(TOP_BAR_VISIBLE.get()));
+        json.put("fab", createFab());
         json.put("bottomTabs", createBottomTabs());
         Options defaultOptions = Options.parse(mockLoader, json);
         Options options = new Options();
@@ -143,6 +187,7 @@ public class OptionsTest extends BaseTest {
     public void mergedDefaultOptionsDontOverrideGivenOptions() throws Exception {
         JSONObject defaultJson = new JSONObject()
                 .put("topBar", createOtherTopBar())
+                .put("fab", createOtherFab())
                 .put("bottomTabs", createOtherTabBar());
         Options defaultOptions = Options.parse(mockLoader, defaultJson);
 
@@ -178,14 +223,24 @@ public class OptionsTest extends BaseTest {
     @Test
     public void clear_bottomTabsOptions() throws Exception {
         Options uut = new Options();
-        uut.bottomTabsOptions.color = new Color(android.graphics.Color.RED);
+        uut.bottomTabsOptions.tabColor = new Color(android.graphics.Color.RED);
         uut.clearBottomTabsOptions();
-        assertThat(uut.bottomTabsOptions.color.hasValue()).isFalse();
+        assertThat(uut.bottomTabsOptions.tabColor.hasValue()).isFalse();
     }
 
-//    topBarOptions.mergeWithDefault(other.topBarOptions);
-//        topTabOptions.mergeWithDefault(other.topTabOptions);
-//        topTabsOptions.mergeWithDefault(other.topTabsOptions);
-//        bottomTabOptions.mergeWithDefault(other.bottomTabOptions);
-//        bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
+    @Test
+    public void clear_topTabsOptions() throws Exception {
+        Options uut = new Options();
+        uut.topTabsOptions.fontSize = new Number(666);
+        uut.clearTopTabsOptions();
+        assertThat(uut.topTabsOptions.fontSize.hasValue()).isFalse();
+    }
+
+    @Test
+    public void clear_topTabOptions() throws Exception {
+        Options uut = new Options();
+        uut.topTabOptions.title = new Text("some title");
+        uut.clearTopTabOptions();
+        assertThat(uut.topTabOptions.title.hasValue()).isFalse();
+    }
 }

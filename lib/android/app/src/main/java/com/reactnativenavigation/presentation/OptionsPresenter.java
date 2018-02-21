@@ -1,10 +1,15 @@
 package com.reactnativenavigation.presentation;
 
+import android.view.View;
+
+import com.github.clans.fab.FloatingActionButton;
 import com.reactnativenavigation.parse.Button;
+import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
+import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.TopBar;
 
@@ -60,6 +65,7 @@ public class OptionsPresenter {
     private void applyTopTabsOptions(TopTabsOptions options) {
         topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
         topBar.applyTopTabsFontSize(options.fontSize);
+        topBar.setTopTabsVisible(options.visible.isTrueOrUndefined());
     }
 
     private void applyTopTabOptions(TopTabOptions topTabOptions) {

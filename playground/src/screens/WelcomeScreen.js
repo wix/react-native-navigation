@@ -61,6 +61,11 @@ class WelcomeScreen extends Component {
                     passProps: {
                       text: 'This is tab 1',
                       myFunction: () => 'Hello from a function!'
+                    },
+                    options: {
+                      topBar: {
+                        visible: false
+                      }
                     }
                   }
                 }

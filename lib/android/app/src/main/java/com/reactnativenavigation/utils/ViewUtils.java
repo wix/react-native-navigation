@@ -26,6 +26,20 @@ public class ViewUtils {
         return null;
     }
 
+    public static <T> List<T> findChildrenByClassRecursive(ViewGroup root, Class clazz) {
+        ArrayList<T> ret = new ArrayList<>();
+        for (int i = 0; i < root.getChildCount(); i++) {
+            View view = root.getChildAt(i);
+            if (view instanceof ViewGroup) {
+                ret.addAll(findChildrenByClassRecursive((ViewGroup) view, clazz));
+            }
+            if (clazz.isAssignableFrom(view.getClass())) {
+                ret.add((T) view);
+            }
+        }
+        return ret;
+    }
+
     public static <T> List<T> findChildrenByClass(ViewGroup root, Class clazz) {
         List<T> ret = new ArrayList<>();
         for (int i = 0; i < root.getChildCount(); i++) {

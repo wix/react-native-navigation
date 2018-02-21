@@ -61,6 +61,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:25.4.0'
     implementation 'com.android.support:support-v4:25.4.0'
     implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
+    implementation 'com.github.clans:fab:1.6.4'
+
 
     // node_modules
     //noinspection GradleDynamicVersion

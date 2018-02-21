@@ -60,6 +60,10 @@
 	[super viewDidLoad];
 }
 
+- (void)mergeOptions:(NSDictionary *)options {
+	[self.options mergeWith:options];
+}
+
 - (void)setCustomNavigationTitleView {
 	if (self.options.topBar.customTitleViewName) {
 		UIView *reactView = [_creator createRootView:self.options.topBar.customTitleViewName rootViewId:self.options.topBar.customTitleViewName];
