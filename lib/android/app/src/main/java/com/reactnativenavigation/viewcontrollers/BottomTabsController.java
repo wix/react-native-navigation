@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -11,13 +10,11 @@ import android.widget.RelativeLayout;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.parse.BottomTabOptions;
-import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
 import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.utils.ImageLoader;
-import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.ReactComponent;
 
@@ -29,7 +26,6 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.RelativeLayout.ABOVE;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
-import static com.reactnativenavigation.parse.DEFAULT_VALUES.NO_INT_VALUE;
 
 public class BottomTabsController extends ParentController implements AHBottomNavigation.OnTabSelectedListener, NavigationOptionsListener {
 	private BottomTabs bottomTabs;
@@ -45,13 +41,19 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	@Override
 	protected ViewGroup createView() {
 		RelativeLayout root = new RelativeLayout(getActivity());
-		bottomTabs = new BottomTabs(getActivity(), options.bottomTabsOptions);
+		bottomTabs = new BottomTabs(getActivity());
         bottomTabs.setOnTabSelectedListener(this);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
 		lp.addRule(ALIGN_PARENT_BOTTOM);
 		root.addView(bottomTabs, lp);
 		return root;
 	}
+
+    @Override
+    public void applyOptions(Options options) {
+        super.applyOptions(options);
+        new BottomTabOptionsPresenter(bottomTabs).present(options);
+    }
 
     @Override
     public void applyOptions(Options options, ReactComponent childComponent) {
@@ -92,19 +94,18 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 		getView();
 		for (int i = 0; i < tabs.size(); i++) {
 		    tabs.get(i).setParentController(this);
-			createTab(i, tabs.get(i).options.bottomTabOptions, tabs.get(i).options.bottomTabsOptions);
+			createTab(i, tabs.get(i).options.bottomTabOptions);
 		}
 		selectTabAtIndex(0);
 	}
 
-	private void createTab(int index, final BottomTabOptions tabOptions, final BottomTabsOptions bottomTabsOptions) {
+	private void createTab(int index, final BottomTabOptions tabOptions) {
 	    if (!tabOptions.icon.hasValue()) {
             throw new RuntimeException("BottomTab must have an icon");
         }
         imageLoader.loadIcon(getActivity(), tabOptions.icon.get(), new ImageLoader.ImageLoadingListener() {
             @Override
             public void onComplete(@NonNull Drawable drawable) {
-                setIconColor(drawable, bottomTabsOptions);
                 AHBottomNavigationItem item = new AHBottomNavigationItem(tabOptions.title.get(""), drawable);
                 bottomTabs.addItem(item);
                 bottomTabs.post(() -> bottomTabs.setTabTag(index, tabOptions.testId));
@@ -120,10 +121,6 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         params.addRule(ABOVE, bottomTabs.getId());
 	}
 
-    private void setIconColor(Drawable drawable, BottomTabsOptions options) {
-        UiUtils.tintDrawable(drawable, Color.RED);
-    }
-
     int getSelectedIndex() {
 		return bottomTabs.getCurrentItem();
 	}
@@ -137,8 +134,8 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	@Override
 	public void mergeOptions(Options options) {
         this.options = this.options.mergeWith(options);
-        if (options.bottomTabsOptions.currentTabIndex != NO_INT_VALUE) {
-            selectTabAtIndex(options.bottomTabsOptions.currentTabIndex);
+        if (options.bottomTabsOptions.currentTabIndex.hasValue()) {
+            selectTabAtIndex(options.bottomTabsOptions.currentTabIndex.get());
         }
         if (options.bottomTabsOptions.currentTabId.hasValue()) {
             Text id = options.bottomTabsOptions.currentTabId;

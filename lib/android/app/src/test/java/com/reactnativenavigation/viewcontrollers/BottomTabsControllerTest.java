@@ -124,7 +124,7 @@ public class BottomTabsControllerTest extends BaseTest {
     @Test
     public void applyOptions_bottomTabsOptionsAreClearedAfterApply() throws Exception {
         List<ViewController> tabs = createTabs();
-        child1.options.bottomTabsOptions.color = new Color(android.graphics.Color.RED);
+        child1.options.bottomTabsOptions.tabColor = new Color(android.graphics.Color.RED);
         uut.setTabs(tabs);
         uut.ensureViewIsCreated();
 
@@ -137,7 +137,7 @@ public class BottomTabsControllerTest extends BaseTest {
         ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
         verify(stack, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
         assertThat(viewCaptor.getValue()).isEqualTo(child1.getView());
-        assertThat(optionsCaptor.getValue().bottomTabsOptions.color.hasValue()).isFalse();
+        assertThat(optionsCaptor.getValue().bottomTabsOptions.tabColor.hasValue()).isFalse();
     }
 
     @Test

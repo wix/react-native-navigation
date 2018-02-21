@@ -37,7 +37,7 @@ public class OptionsTest extends BaseTest {
     private static final Bool BOTTOM_TABS_VISIBLE = new Bool(true);
     private static final String BOTTOM_TABS_BADGE = "3";
     private static final String BOTTOM_TABS_CURRENT_TAB_ID = "ComponentId";
-    private static final int BOTTOM_TABS_CURRENT_TAB_INDEX = 1;
+    private static final Number BOTTOM_TABS_CURRENT_TAB_INDEX = new Number(1);
     private TypefaceLoader mockLoader;
 
     @Override
@@ -73,7 +73,7 @@ public class OptionsTest extends BaseTest {
         assertThat(result.bottomTabsOptions.animateHide.get()).isEqualTo(BOTTOM_TABS_ANIMATE_HIDE.get());
         assertThat(result.bottomTabsOptions.visible.get()).isEqualTo(BOTTOM_TABS_VISIBLE.get());
         assertThat(result.bottomTabsOptions.currentTabId.get()).isEqualTo(BOTTOM_TABS_CURRENT_TAB_ID);
-        assertThat(result.bottomTabsOptions.currentTabIndex).isEqualTo(BOTTOM_TABS_CURRENT_TAB_INDEX);
+        assertThat(result.bottomTabsOptions.currentTabIndex.get()).isEqualTo(BOTTOM_TABS_CURRENT_TAB_INDEX.get());
         assertThat(result.fabOptions.id.get()).isEqualTo(FAB_ID);
         assertThat(result.fabOptions.backgroundColor.get()).isEqualTo(FAB_BACKGROUND_COLOR);
         assertThat(result.fabOptions.clickColor.get()).isEqualTo(FAB_CLICK_COLOR);
@@ -88,7 +88,7 @@ public class OptionsTest extends BaseTest {
     private JSONObject createBottomTabs() throws JSONException {
         return new JSONObject()
                 .put("currentTabId", BOTTOM_TABS_CURRENT_TAB_ID)
-                .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX)
+                .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX.get())
                 .put("visible", BOTTOM_TABS_VISIBLE.get())
                 .put("animateHide", BOTTOM_TABS_ANIMATE_HIDE.get());
     }
@@ -223,9 +223,9 @@ public class OptionsTest extends BaseTest {
     @Test
     public void clear_bottomTabsOptions() throws Exception {
         Options uut = new Options();
-        uut.bottomTabsOptions.color = new Color(android.graphics.Color.RED);
+        uut.bottomTabsOptions.tabColor = new Color(android.graphics.Color.RED);
         uut.clearBottomTabsOptions();
-        assertThat(uut.bottomTabsOptions.color.hasValue()).isFalse();
+        assertThat(uut.bottomTabsOptions.tabColor.hasValue()).isFalse();
     }
 
     @Test
