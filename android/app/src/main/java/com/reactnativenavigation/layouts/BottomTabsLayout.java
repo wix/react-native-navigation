@@ -106,6 +106,9 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         ScreenParams screenParams = params.tabParams.get(position);
         ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenParams.getNavigatorId(), this);
         newStack.pushInitialScreen(screenParams, createScreenLayoutParams(screenParams));
+        for (ScreenParams screen : screenParams.screens) {
+            newStack.pushInitialScreen(screen, createScreenLayoutParams(screen));
+        }
         screenStacks[position] = newStack;
     }
 

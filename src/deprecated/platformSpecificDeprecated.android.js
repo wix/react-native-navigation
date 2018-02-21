@@ -11,32 +11,45 @@ const resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSou
 import * as newPlatformSpecific from './../platformSpecific';
 
 async function startSingleScreenApp(params) {
-  const screen = params.screen;
-  if (!screen.screen) {
+  const components = params.components;
+  if (!params.screen && !components) {
     console.error('startSingleScreenApp(params): screen must include a screen property');
     return;
   }
+
+  if (components) {
+    params.screen = createSingleScreen(components[0]);
+    components.shift();
+    params.screen.screens = components.map(createSingleScreen);
+  } else {
+    params.screen = createSingleScreen(params.screen);
+  }
+
+  params.sideMenu = convertDrawerParamsToSideMenuParams(params.drawer);
+  params.overrideBackPress = params.screen.overrideBackPress;
+  params.animateShow = convertAnimationType(params.animationType);
+  params.appStyle = convertStyleParams(params.appStyle);
+    if (params.appStyle) {
+      params.appStyle.orientation = getOrientation(params);
+    }
+
+  return await newPlatformSpecific.startApp(params);
+}
+
+function createSingleScreen(params) {
+  let screen = params;
   addNavigatorParams(screen);
   addNavigatorButtons(screen, params.drawer);
   addNavigationStyleParams(screen);
   screen.passProps = params.passProps;
-
   /*
    * adapt to new API
    */
   adaptTopTabs(screen, screen.navigatorID);
   screen.screenId = screen.screen;
-  params.screen = adaptNavigationStyleToScreenStyle(screen);
-  params.screen = adaptNavigationParams(screen);
-  params.appStyle = convertStyleParams(params.appStyle);
-  if (params.appStyle) {
-    params.appStyle.orientation = getOrientation(params);
-  }
-  params.sideMenu = convertDrawerParamsToSideMenuParams(params.drawer);
-  params.overrideBackPress = screen.overrideBackPress;
-  params.animateShow = convertAnimationType(params.animationType);
-
-  return await newPlatformSpecific.startApp(params);
+  screen = adaptNavigationStyleToScreenStyle(screen);
+  screen = adaptNavigationParams(screen);
+  return screen;
 }
 
 function getOrientation(params) {
@@ -297,23 +310,18 @@ async function startTabBasedApp(params) {
   params.tabs = _.cloneDeep(params.tabs);
 
   params.tabs.forEach(function(tab, idx) {
-    addNavigatorParams(tab, null, idx);
-    addNavigatorButtons(tab, params.drawer);
-    addNavigationStyleParams(tab);
-    addTabIcon(tab);
-    if (!tab.passProps) {
-      tab.passProps = params.passProps;
+    if (tab.components) {
+      const components = tab.components;
+      const screen = createBottomTabScreen(components[0], idx, params)
+      const {label, icon} = components[0];
+      components.shift();
+      console.log('guyca', `${JSON.stringify(components[0])}`);
+      screen.screens = components.map(c => createBottomTabScreen({...c, icon, label}, idx, params));
+      
+      newTabs.push(screen);
+    } else {
+      newTabs.push(createBottomTabScreen(tab, idx, params));
     }
-
-    adaptTopTabs(tab, tab.navigatorID);
-
-    tab.screenId = tab.screen;
-
-    let newtab = adaptNavigationStyleToScreenStyle(tab);
-    newtab = adaptNavigationParams(tab);
-    newtab.overrideBackPress = tab.overrideBackPress;
-    newtab.timestamp = Date.now();
-    newTabs.push(newtab);
   });
   params.tabs = newTabs;
 
@@ -326,6 +334,26 @@ async function startTabBasedApp(params) {
 
   return await newPlatformSpecific.startApp(params);
 }
+
+function createBottomTabScreen(tab, idx, params) {
+  addNavigatorParams(tab, null, idx);
+  addNavigatorButtons(tab, params.drawer);
+  addNavigationStyleParams(tab);
+  addTabIcon(tab);
+  if (!tab.passProps) {
+    tab.passProps = params.passProps;
+  }
+
+  adaptTopTabs(tab, tab.navigatorID);
+
+  tab.screenId = tab.screen;
+
+  let newtab = adaptNavigationStyleToScreenStyle(tab);
+  newtab = adaptNavigationParams(tab);
+  newtab.overrideBackPress = tab.overrideBackPress;
+  newtab.timestamp = Date.now();
+  return newtab;
+};
 
 function addTabIcon(tab) {
   if (tab.icon) {
@@ -553,7 +581,6 @@ function addNavigatorParams(screen, navigator = null, idx = '') {
 }
 
 function addNavigatorButtons(screen, sideMenuParams) {
-
   const Screen = Navigation.getRegisteredScreen(screen.screen);
   if (screen.navigatorButtons == null) {
     screen.navigatorButtons = _.cloneDeep(Screen.navigatorButtons);
