@@ -5,10 +5,12 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.TestComponentViewCreator;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
 import com.reactnativenavigation.views.ReactComponent;
@@ -16,11 +18,15 @@ import com.reactnativenavigation.views.TopTabsLayoutCreator;
 import com.reactnativenavigation.views.TopTabsViewPager;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -35,14 +41,15 @@ public class TopTabsViewControllerTest extends BaseTest {
     private List<Options> tabOptions = new ArrayList<>(SIZE);
     private final Options options = new Options();
     private TopTabsViewPager topTabsLayout;
+    private Activity activity;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
 
-        final Activity activity = newActivity();
+        activity = newActivity();
         tabOptions = createOptions();
-        tabControllers = createTabsControllers(activity);
+        tabControllers = createTabsControllers(activity, tabOptions);
 
         topTabsLayout = spy(new TopTabsViewPager(activity, tabControllers, new TopTabsAdapter(tabControllers)));
         TopTabsLayoutCreator layoutCreator = Mockito.mock(TopTabsLayoutCreator.class);
@@ -51,6 +58,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabControllers.forEach(viewController -> viewController.setParentController(uut));
 
         parentController = spy(new StackController(activity, "stackId", new Options()));
+        parentController.push(uut, new MockPromise());
         uut.setParentController(parentController);
     }
 
@@ -60,13 +68,13 @@ public class TopTabsViewControllerTest extends BaseTest {
         for (int i = 0; i < SIZE; i++) {
             final Options options = new Options();
             options.topTabOptions.title = new Text("Tab " + i);
-            options.topBarOptions.title = new Text("Title " + i);
+            options.topBarOptions.title = new Text(createTabTopBarTitle(i));
             result.add(options);
         }
         return result;
     }
 
-    private List<ViewController> createTabsControllers(Activity activity) {
+    private List<ViewController> createTabsControllers(Activity activity, List<Options> tabOptions) {
         List<ViewController> tabControllers = new ArrayList<>(SIZE);
         for (int i = 0; i < SIZE; i++) {
             ComponentViewController viewController = new ComponentViewController(
@@ -148,7 +156,8 @@ public class TopTabsViewControllerTest extends BaseTest {
         verify(tabControllers.get(0), times(1)).onViewAppeared();
         verify(tabControllers.get(1), times(0)).onViewAppeared();
 
-        verify(uut, times(1)).applyOptions(tabOptions.get(0), ((ComponentViewController) tabControllers.get(0)).getComponent());
+        ReactComponent comp = ((ComponentViewController) tabControllers.get(0)).getComponent();
+        verify(uut, times(1)).applyOptions(any(Options.class), eq(comp));
     }
 
     @Test
@@ -159,11 +168,19 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabControllers.get(1).ensureViewIsCreated();
 
         uut.onViewAppeared();
-        verify(uut, times(1)).applyOptions(tabOptions.get(0), tabView(0));
+        ReactComponent currentTab = tabView(0);
+        verify(uut, times(1)).applyOptions(any(Options.class), eq(currentTab));
+        assertThat(uut.options.topBarOptions.title.get()).isEqualTo(createTabTopBarTitle(0));
+
         uut.switchToTab(1);
-        verify(uut, times(1)).applyOptions(tabOptions.get(1), tabView(1));
+        currentTab = tabView(1);
+        verify(uut, times(1)).applyOptions(any(Options.class), eq(currentTab));
+        assertThat(uut.options.topBarOptions.title.get()).isEqualTo(createTabTopBarTitle(1));
+
         uut.switchToTab(0);
-        verify(uut, times(2)).applyOptions(tabOptions.get(0), tabView(0));
+        currentTab = tabView(0);
+        verify(uut, times(2)).applyOptions(any(Options.class), eq(currentTab));
+        assertThat(uut.options.topBarOptions.title.get()).isEqualTo(createTabTopBarTitle(0));
     }
 
     private TestReactView getActualTabView(int index) {
@@ -178,10 +195,56 @@ public class TopTabsViewControllerTest extends BaseTest {
 
         uut.onViewAppeared();
 
-        verify(topTabsLayout, times(1)).applyOptions(options);
+        verify(topTabsLayout, times(1)).applyOptions(any(Options.class));
+    }
+
+    @Test
+    public void applyOptions_applyOnlyOnFirstTopTabs() throws Exception {
+        tabOptions.get(0).topTabOptions.title = new Text("tab title");
+        tabControllers.get(0).onViewAppeared();
+        ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
+        ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
+        verify(parentController, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
+        assertThat(optionsCaptor.getValue().topTabOptions.title.hasValue()).isFalse();
+    }
+
+    @Test
+    public void applyOptions_tabsAreRemovedBeforeViewDisappears() throws Exception {
+        parentController.getView().removeAllViews();
+
+        StackController stackController = spy(new StackController(activity, "stack", new Options()));
+        ComponentViewController first = new ComponentViewController(
+                activity,
+                "firstScreen",
+                "comp1",
+                new TestComponentViewCreator(),
+                new Options()
+        );
+        stackController.push(first, new MockPromise());
+        stackController.push(uut, new MockPromise());
+
+        first.ensureViewIsCreated();
+        uut.ensureViewIsCreated();
+        uut.onViewAppeared();
+
+        assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isTrue();
+        stackController.pop(new MockPromise());
+        assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();
+    }
+
+    @Test
+    public void onNavigationButtonPressInvokedOnCurrentTab() throws Exception {
+        uut.ensureViewIsCreated();
+        uut.switchToTab(1);
+        uut.sendOnNavigationButtonPressed("btn1");
+        verify(tabControllers.get(1), times(1)).sendOnNavigationButtonPressed("btn1");
     }
 
     private IReactView tab(TopTabsViewPager topTabs, final int index) {
         return (IReactView) ((ViewGroup) topTabs.getChildAt(index)).getChildAt(0);
+    }
+
+    private String createTabTopBarTitle(int i) {
+        return "Title " + i;
     }
 }

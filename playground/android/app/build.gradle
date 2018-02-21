@@ -9,7 +9,7 @@ apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "27.0.1"
+    buildToolsVersion "27.0.3"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

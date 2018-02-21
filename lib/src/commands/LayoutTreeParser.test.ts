@@ -61,7 +61,8 @@ describe('LayoutTreeParser', () => {
 
     it('bottom tabs', () => {
       const result = uut.parse(LayoutExamples.bottomTabs);
-      expect(_.keys(result)).toEqual(['type', 'data', 'children']);
+      expect(_.keys(result)).toEqual(['id', 'type', 'data', 'children']);
+      expect(result.id).toEqual(undefined);
       expect(result.type).toEqual(LayoutType.BottomTabs);
       expect(result.data).toEqual({});
       expect(result.children.length).toEqual(3);
@@ -72,7 +73,8 @@ describe('LayoutTreeParser', () => {
 
     it('side menus', () => {
       const result = uut.parse(LayoutExamples.sideMenu);
-      expect(_.keys(result)).toEqual(['type', 'data', 'children']);
+      expect(_.keys(result)).toEqual(['id', 'type', 'data', 'children']);
+      expect(result.id).toEqual(undefined);
       expect(result.type).toEqual(LayoutType.SideMenuRoot);
       expect(result.data).toEqual({});
       expect(result.children.length).toEqual(3);
@@ -93,7 +95,8 @@ describe('LayoutTreeParser', () => {
 
     it('top tabs', () => {
       const result = uut.parse(LayoutExamples.topTabs);
-      expect(_.keys(result)).toEqual(['type', 'data', 'children']);
+      expect(_.keys(result)).toEqual(['id', 'type', 'data', 'children']);
+      expect(result.id).toEqual(undefined);
       expect(result.type).toEqual(LayoutType.TopTabs);
       expect(result.data).toEqual({ options: LayoutExamples.options });
       expect(result.children.length).toEqual(5);
@@ -123,6 +126,21 @@ describe('LayoutTreeParser', () => {
     expect(uut.parse({ bottomTabs: { options } }).data.options).toBe(options);
     expect(uut.parse({ topTabs: { options } }).data.options).toBe(options);
     expect(uut.parse({ sideMenu: { options, center: { component: {} } } }).data.options).toBe(options);
+  });
+
+  it('pass user provided id as is', () => {
+    const component = { id: 'compId' };
+    expect(uut.parse({ component }).id).toEqual('compId');
+    expect(uut.parse({ stack: { id: 'stackId' } }).id).toEqual('stackId');
+    expect(uut.parse({ stack: { children: [{ component }] } }).children[0].id).toEqual('compId');
+    expect(uut.parse({ bottomTabs: { id: 'myId' } }).id).toEqual('myId');
+    expect(uut.parse({ bottomTabs: { children: [{ component }] } }).children[0].id).toEqual('compId');
+    expect(uut.parse({ topTabs: { id: 'myId' } }).id).toEqual('myId');
+    expect(uut.parse({ topTabs: { children: [{ component }] } }).children[0].id).toEqual('compId');
+    expect(uut.parse({ sideMenu: { id: 'myId', center: { component } } }).id).toEqual('myId');
+    expect(uut.parse({ sideMenu: { center: { id: 'myId', component } } }).children[0].id).toEqual('myId');
+    expect(uut.parse({ sideMenu: { center: { component }, left: { id: 'theId', component } } }).children[0].id).toEqual('theId');
+    expect(uut.parse({ sideMenu: { center: { component }, right: { id: 'theId', component } } }).children[1].id).toEqual('theId');
   });
 });
 

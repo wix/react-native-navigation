@@ -1,7 +1,8 @@
 package com.reactnativenavigation.parse;
 
-
-import com.reactnativenavigation.parse.Options.BooleanOptions;
+import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.parsers.BoolParser;
 
 import org.json.JSONObject;
 
@@ -11,22 +12,24 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
 		BottomTabsOptions options = new BottomTabsOptions();
 		if (json == null) return options;
 
-        options.color = ColorParser.parse(json, "tabColor");
-        options.selectedColor = ColorParser.parse(json, "selectedTabColor");
+        options.backgroundColor = ColorParser.parse(json, "backgroundColor");
+        options.tabColor = ColorParser.parse(json, "tabColor");
+        options.selectedTabColor = ColorParser.parse(json, "selectedTabColor");
         options.currentTabId = TextParser.parse(json, "currentTabId");
-		options.currentTabIndex = json.optInt("currentTabIndex", NO_INT_VALUE);
-		options.visible = BooleanOptions.parse(json.optString("visible"));
-		options.animateHide = BooleanOptions.parse(json.optString("animateHide"));
+		options.currentTabIndex = NumberParser.parse(json,"currentTabIndex");
+		options.visible = BoolParser.parse(json,"visible");
+		options.animateHide = BoolParser.parse(json,"animateHide");
         options.testId = TextParser.parse(json, "testID");
 
 		return options;
 	}
 
-    public Color color = new NullColor();
-    public Color selectedColor = new NullColor();
-	BooleanOptions visible = BooleanOptions.False;
-	BooleanOptions animateHide = BooleanOptions.False;
-	public int currentTabIndex = NO_INT_VALUE;
+    public Color backgroundColor = new NullColor();
+    public Color tabColor = new NullColor();
+    public Color selectedTabColor = new NullColor();
+	Bool visible = new NullBool();
+	Bool animateHide = new NullBool();
+	public Number currentTabIndex = new NullNumber();
 	public Text currentTabId = new NullText();
     public Text testId = new NullText();
 
@@ -34,20 +37,23 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
 		if (other.currentTabId.hasValue()) {
 			currentTabId = other.currentTabId;
 		}
-		if (NO_INT_VALUE != other.currentTabIndex) {
+		if (other.currentTabIndex.hasValue()) {
             currentTabIndex = other.currentTabIndex;
 		}
-		if (other.visible != BooleanOptions.NoValue) {
+		if (other.visible.hasValue()) {
 			visible = other.visible;
 		}
-		if (other.animateHide != BooleanOptions.NoValue) {
+		if (other.animateHide.hasValue()) {
 			animateHide = other.animateHide;
 		}
-        if (other.color.hasValue()) {
-            color = other.color;
+        if (other.tabColor.hasValue()) {
+            tabColor = other.tabColor;
         }
-        if (other.selectedColor.hasValue()) {
-            selectedColor = other.selectedColor;
+        if (other.selectedTabColor.hasValue()) {
+            selectedTabColor = other.selectedTabColor;
+        }
+        if (other.backgroundColor.hasValue()) {
+		    backgroundColor = other.backgroundColor;
         }
     }
 
@@ -55,20 +61,23 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
         if (!currentTabId.hasValue()) {
             currentTabId = defaultOptions.currentTabId;
         }
-        if (NO_INT_VALUE == currentTabIndex) {
+        if (!currentTabIndex.hasValue()) {
             currentTabIndex = defaultOptions.currentTabIndex;
         }
-        if (visible == BooleanOptions.NoValue) {
+        if (!visible.hasValue()) {
             visible = defaultOptions.visible;
         }
-        if (animateHide == BooleanOptions.NoValue) {
+        if (!animateHide.hasValue()) {
             animateHide = defaultOptions.animateHide;
         }
-        if (!color.hasValue()) {
-            color = defaultOptions.color;
+        if (!tabColor.hasValue()) {
+            tabColor = defaultOptions.tabColor;
         }
-        if (!selectedColor.hasValue()) {
-            selectedColor = defaultOptions.selectedColor;
+        if (!selectedTabColor.hasValue()) {
+            selectedTabColor = defaultOptions.selectedTabColor;
+        }
+        if (!backgroundColor.hasValue()) {
+            backgroundColor = defaultOptions.backgroundColor;
         }
     }
 }

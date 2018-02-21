@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -55,8 +56,13 @@ public abstract class ParentController<T extends ViewGroup> extends ViewControll
         return false;
     }
 
+    @CallSuper
     public void applyOptions(Options options, ReactComponent childComponent) {
+        mergeChildOptions(options);
+    }
 
+    private void mergeChildOptions(Options options) {
+        this.options = this.options.mergeWith(options);
     }
 
 	@Override
@@ -67,11 +73,17 @@ public abstract class ParentController<T extends ViewGroup> extends ViewControll
 		}
 	}
 
+	@CallSuper
     void clearOptions() {
-
+	    applyOnParentController(parent -> ((ParentController) parent).clearOptions());
+        options = initialOptions.copy();
     }
 
     public void setupTopTabsWithViewPager(ViewPager viewPager) {
+
+    }
+
+    public void clearTopTabs() {
 
     }
 }

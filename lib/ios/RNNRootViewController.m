@@ -60,6 +60,10 @@
 	[super viewDidLoad];
 }
 
+- (void)mergeOptions:(NSDictionary *)options {
+	[self.options mergeWith:options];
+}
+
 - (void)setCustomNavigationTitleView {
 	if (self.options.topBar.customTitleViewName) {
 		UIView *reactView = [_creator createRootView:self.options.topBar.customTitleViewName rootViewId:self.options.topBar.customTitleViewName];
@@ -101,8 +105,8 @@
 
 - (BOOL)hidesBottomBarWhenPushed
 {
-	if (self.options.bottomTabs && self.options.bottomTabs.hidden) {
-		return [self.options.bottomTabs.hidden boolValue];
+	if (self.options.bottomTabs && self.options.bottomTabs.visible) {
+		return ![self.options.bottomTabs.visible boolValue];
 	}
 	return NO;
 }

@@ -1,17 +1,19 @@
 package com.reactnativenavigation.presentation;
 
+import android.view.View;
+
+import com.github.clans.fab.FloatingActionButton;
 import com.reactnativenavigation.parse.Button;
+import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
+import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.ArrayList;
-
-import static com.reactnativenavigation.parse.Options.BooleanOptions.False;
-import static com.reactnativenavigation.parse.Options.BooleanOptions.True;
 
 public class OptionsPresenter {
     private TopBar topBar;
@@ -37,21 +39,21 @@ public class OptionsPresenter {
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
 
         topBar.setTitleTypeface(options.textFontFamily);
-        if (options.hidden == True) {
+        if (options.visible.isFalse()) {
             topBar.hide(options.animateHide);
         }
-        if (options.hidden == False) {
+        if (options.visible.isTrueOrUndefined()) {
             topBar.show(options.animateHide);
         }
-        if (options.drawBehind == True) {
+        if (options.drawBehind.isTrue()) {
             component.drawBehindTopBar();
-        } else if (options.drawBehind == False) {
+        } else if (options.drawBehind.isFalseOrUndefined()) {
             component.drawBelowTopBar(topBar);
         }
 
-        if (options.hideOnScroll == True) {
+        if (options.hideOnScroll.isTrue()) {
             topBar.enableCollapse(component.getScrollEventListener());
-        } else if (options.hideOnScroll == False) {
+        } else if (options.hideOnScroll.isTrue()) {
             topBar.disableCollapse();
         }
     }
@@ -63,6 +65,7 @@ public class OptionsPresenter {
     private void applyTopTabsOptions(TopTabsOptions options) {
         topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
         topBar.applyTopTabsFontSize(options.fontSize);
+        topBar.setTopTabsVisible(options.visible.isTrueOrUndefined());
     }
 
     private void applyTopTabOptions(TopTabOptions topTabOptions) {

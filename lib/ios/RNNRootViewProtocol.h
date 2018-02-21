@@ -3,7 +3,7 @@
 @protocol RNNRootViewProtocol <NSObject, UINavigationControllerDelegate>
 
 @optional
-- (void)setOptions:(RNNNavigationOptions*)options;
+- (void)mergeOptions:(NSDictionary*)options;
 
 @required
 

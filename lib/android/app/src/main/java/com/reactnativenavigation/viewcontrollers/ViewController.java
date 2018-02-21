@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -10,6 +11,7 @@ import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.FabOptionsPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
@@ -29,6 +31,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         boolean onViewDisappear(View view);
     }
 
+    Options initialOptions;
     public Options options;
 
     private final Activity activity;
@@ -38,11 +41,14 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
+    protected FabOptionsPresenter fabOptionsPresenter;
 
     public ViewController(Activity activity, String id, Options initialOptions) {
         this.activity = activity;
         this.id = id;
-        options = initialOptions;
+        fabOptionsPresenter = new FabOptionsPresenter();
+        this.initialOptions = initialOptions;
+        options = initialOptions.copy();
     }
 
     protected abstract T createView();
@@ -130,18 +136,28 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return getView().equals(component);
     }
 
+    public void onViewWillAppear() {
+
+    }
+
     public void onViewAppeared() {
         isShown = true;
+        applyOptions(options);
         applyOnParentController(parentController -> {
             parentController.clearOptions();
             if (getView() instanceof ReactComponent) parentController.applyOptions(options, (ReactComponent) getView());
         });
     }
 
+    public void onViewWillDisappear() {
+
+    }
+
     public void onViewDisappear() {
         isShown = false;
     }
 
+    @CallSuper
     public void destroy() {
         if (isShown) {
             isShown = false;
@@ -174,6 +190,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             }
         }
     }
+
+    public abstract void sendOnNavigationButtonPressed(String buttonId);
 
     protected boolean isViewShown() {
         return !isDestroyed && getView().isShown();

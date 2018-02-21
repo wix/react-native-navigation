@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -20,19 +21,23 @@ import com.reactnativenavigation.parse.Button;
 import com.reactnativenavigation.parse.Color;
 import com.reactnativenavigation.parse.Fraction;
 import com.reactnativenavigation.parse.Number;
-import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Bool;
 
 import java.util.ArrayList;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressLint("ViewConstructor")
 public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
     private final Toolbar titleBar;
     private TitleBarButton.OnClickListener onClickListener;
     private final TopBarCollapseBehavior collapsingBehavior;
-    private final TopBarAnimator animator;
+    private TopBarAnimator animator;
     private TopTabs topTabs;
+    private StackLayout parentView;
 
-    public TopBar(final Context context, TitleBarButton.OnClickListener onClickListener) {
+    public TopBar(final Context context, TitleBarButton.OnClickListener onClickListener, StackLayout parentView) {
         super(context);
         this.onClickListener = onClickListener;
         collapsingBehavior = new TopBarCollapseBehavior(this);
@@ -40,6 +45,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.getMenu();
         topTabs = new TopTabs(getContext());
         this.animator = new TopBarAnimator(this);
+        this.parentView = parentView;
         addView(titleBar);
     }
 
@@ -83,6 +89,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void applyTopTabsFontSize(Number fontSize) {
         topTabs.applyTopTabsFontSize(fontSize);
+    }
+
+    public void setTopTabsVisible(boolean visible) {
+        topTabs.setVisibility(this, visible);
     }
 
     public void setButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
@@ -151,13 +161,9 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return titleBar;
     }
 
-    public void setupTopTabsWithViewPager(ViewPager viewPager) {
-        initTopTabs();
-        topTabs.setupWithViewPager(viewPager);
-    }
-
-    private void initTopTabs() {
+    public void initTopTabs(ViewPager viewPager) {
         topTabs = new TopTabs(getContext());
+        topTabs.init(viewPager);
         addView(topTabs);
     }
 
@@ -169,25 +175,35 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         collapsingBehavior.disableCollapse();
     }
 
-    public void show(Options.BooleanOptions animated) {
+    public void show(Bool animated) {
         if (getVisibility() == View.VISIBLE) {
             return;
         }
-        if (animated == Options.BooleanOptions.True) {
+        if (animated.isTrueOrUndefined()) {
             animator.show();
         } else {
             setVisibility(View.VISIBLE);
         }
     }
 
-    public void hide(Options.BooleanOptions animated) {
+    public void hide(Bool animated) {
         if (getVisibility() == View.GONE) {
             return;
         }
-        if (animated == Options.BooleanOptions.True) {
+        if (animated.isTrueOrUndefined()) {
             animator.hide();
         } else {
             setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == View.GONE) {
+            this.parentView.removeView(this);
+        } else if (visibility == View.VISIBLE && this.getParent() == null) {
+            this.parentView.addView(this, MATCH_PARENT, WRAP_CONTENT);
         }
     }
 
@@ -195,6 +211,19 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setTitle(null);
         titleBar.setNavigationIcon(null);
         titleBar.getMenu().clear();
-        removeView(topTabs);
+    }
+
+    public void clearTopTabs() {
+        topTabs.clear(this);
+    }
+
+    @VisibleForTesting()
+    public TopTabs getTopTabs() {
+        return topTabs;
+    }
+
+    @VisibleForTesting
+    public void setAnimator(TopBarAnimator animator) {
+        this.animator = animator;
     }
 }

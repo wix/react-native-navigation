@@ -67,4 +67,11 @@ public class ComponentViewControllerTest extends BaseTest {
         when(view.isReady()).thenReturn(true);
         assertThat(uut.isViewShown()).isTrue();
     }
+
+    @Test
+    public void onNavigationButtonPressInvokedOnReactComponent() throws Exception {
+        uut.ensureViewIsCreated();
+        uut.sendOnNavigationButtonPressed("btn1");
+        verify(view, times(1)).sendOnNavigationButtonPressed("btn1");
+    }
 }

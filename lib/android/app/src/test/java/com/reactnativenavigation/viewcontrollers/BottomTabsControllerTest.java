@@ -8,12 +8,15 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.parse.Color;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.ReactComponent;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,11 +45,11 @@ public class BottomTabsControllerTest extends BaseTest {
         super.beforeEach();
         activity = newActivity();
         uut = new BottomTabsController(activity, imageLoaderMock, "uut", new Options());
-        child1 = new SimpleViewController(activity, "child1", tabOptions);
-        child2 = new SimpleViewController(activity, "child2", tabOptions);
-        child3 = new SimpleViewController(activity, "child3", tabOptions);
-        child4 = new SimpleViewController(activity, "child4", tabOptions);
-        child5 = new SimpleViewController(activity, "child5", tabOptions);
+        child1 = spy(new SimpleViewController(activity, "child1", tabOptions));
+        child2 = spy(new SimpleViewController(activity, "child2", tabOptions));
+        child3 = spy(new SimpleViewController(activity, "child3", tabOptions));
+        child4 = spy(new SimpleViewController(activity, "child4", tabOptions));
+        child5 = spy(new SimpleViewController(activity, "child5", tabOptions));
     }
 
     @Test
@@ -116,6 +119,35 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(uut.handleBack()).isTrue();
 
         verify(spy, times(1)).handleBack();
+    }
+
+    @Test
+    public void applyOptions_bottomTabsOptionsAreClearedAfterApply() throws Exception {
+        List<ViewController> tabs = createTabs();
+        child1.options.bottomTabsOptions.tabColor = new Color(android.graphics.Color.RED);
+        uut.setTabs(tabs);
+        uut.ensureViewIsCreated();
+
+        StackController stack = spy(new StackController(activity, "stack", new Options()));
+        stack.ensureViewIsCreated();
+        stack.push(uut, new MockPromise());
+
+        child1.onViewAppeared();
+        ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
+        ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
+        verify(stack, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
+        assertThat(viewCaptor.getValue()).isEqualTo(child1.getView());
+        assertThat(optionsCaptor.getValue().bottomTabsOptions.tabColor.hasValue()).isFalse();
+    }
+
+    @Test
+    public void buttonPressInvokedOnCurrentTab() throws Exception {
+        uut.setTabs(createTabs());
+        uut.ensureViewIsCreated();
+        uut.selectTabAtIndex(1);
+
+        uut.sendOnNavigationButtonPressed("btn1");
+        verify(child2, times(1)).sendOnNavigationButtonPressed("btn1");
     }
 
     @NonNull
