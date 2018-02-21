@@ -31,13 +31,7 @@ function start() {
               name: 'navigation.playground.WelcomeScreen'
             }
           }
-        ],
-        options: {
-          topBar: {
-            visible: false,
-            animateHide: false
-          }
-        }
+        ]
       }
     });
   });

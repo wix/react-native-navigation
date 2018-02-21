@@ -93,11 +93,11 @@ public class StackController extends ParentController <StackLayout> {
             return;
         }
 
-        final ViewController poppedTop = stack.pop();
-        final ViewController newTop = stack.peek();
-        popInternal(poppedTop, newTop);
+        final ViewController exitingController = stack.pop();
+        final ViewController enteringController = stack.peek();
+        popInternal(exitingController, enteringController);
 
-        finishPopping(poppedTop.getView(), poppedTop, promise);
+        finishPopping(exitingController.getView(), exitingController, promise);
     }
 
 	private void animatePop(final Promise promise) {
@@ -106,18 +106,17 @@ public class StackController extends ParentController <StackLayout> {
 			return;
 		}
 
-		final ViewController poppedTop = stack.pop();
-        final ViewController newTop = stack.peek();
-        popInternal(poppedTop, newTop);
+		final ViewController exitingController = stack.pop();
+        final ViewController enteringController = stack.peek();
+        popInternal(exitingController, enteringController);
 
-        animator.animatePop(poppedTop.getView(), () -> finishPopping(poppedTop.getView(), poppedTop, promise));
+        animator.animatePop(exitingController.getView(), () -> finishPopping(exitingController.getView(), exitingController, promise));
 	}
 
-    private void popInternal(ViewController poppedTop, ViewController newTop) {
-        poppedTop.onViewWillDisappear();
-        newTop.onViewWillAppear();
-        View enteringView = newTop.getView();
-        getView().addView(enteringView, getView().getChildCount() - 1);
+    private void popInternal(ViewController exiting, ViewController entering) {
+        exiting.onViewWillDisappear();
+        entering.onViewWillAppear();
+        getView().addView(entering.getView(), getView().indexOfChild(((ComponentViewController) exiting).getView()));
     }
 
     boolean canPop() {
