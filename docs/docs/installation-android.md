@@ -52,6 +52,12 @@
 	android {
 	    compileSdkVersion 25
 	    buildToolsVersion "27.0.3"
+	    
+	    defaultConfig {
+	        minSdkVersion 19
+	        targetSdkVersion 25
+		...
+	    }
 	
 	    compileOptions {
 	        sourceCompatibility JavaVersion.VERSION_1_8
