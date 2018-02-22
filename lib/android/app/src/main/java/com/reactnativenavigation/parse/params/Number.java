@@ -1,4 +1,4 @@
-package com.reactnativenavigation.parse;
+package com.reactnativenavigation.parse.params;
 
 public class Number extends Param<Integer> {
 

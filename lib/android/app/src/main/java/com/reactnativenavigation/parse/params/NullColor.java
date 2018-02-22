@@ -1,8 +1,8 @@
-package com.reactnativenavigation.parse;
+package com.reactnativenavigation.parse.params;
 
 public class NullColor extends Color {
 
-    NullColor() {
+    public NullColor() {
         super(0);
     }
 

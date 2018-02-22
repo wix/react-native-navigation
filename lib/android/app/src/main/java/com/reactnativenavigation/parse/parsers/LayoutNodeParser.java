@@ -1,6 +1,8 @@
-package com.reactnativenavigation.parse;
+package com.reactnativenavigation.parse.parsers;
 
 import android.support.annotation.NonNull;
+
+import com.reactnativenavigation.parse.LayoutNode;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

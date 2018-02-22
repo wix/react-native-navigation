@@ -2,8 +2,14 @@ package com.reactnativenavigation.parse;
 
 
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.params.NullColor;
+import com.reactnativenavigation.parse.params.NullText;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.BoolParser;
+import com.reactnativenavigation.parse.parsers.ColorParser;
+import com.reactnativenavigation.parse.parsers.TextParser;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

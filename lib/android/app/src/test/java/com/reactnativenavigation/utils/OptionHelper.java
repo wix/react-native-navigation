@@ -1,7 +1,7 @@
 package com.reactnativenavigation.utils;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.parse.params.Text;
 
 public class OptionHelper {
     public static Options createBottomTabOptions() {

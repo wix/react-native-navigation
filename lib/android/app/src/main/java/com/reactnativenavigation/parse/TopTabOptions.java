@@ -3,6 +3,9 @@ package com.reactnativenavigation.parse;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 
+import com.reactnativenavigation.parse.params.NullText;
+import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.parse.parsers.TextParser;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;

@@ -9,7 +9,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.views.ReactComponent;
 
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.reactnativenavigation.parse;
+package com.reactnativenavigation.parse.parsers;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;

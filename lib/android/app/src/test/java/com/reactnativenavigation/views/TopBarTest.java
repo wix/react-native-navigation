@@ -5,8 +5,8 @@ import android.view.MenuItem;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.TopBarAnimator;
-import com.reactnativenavigation.parse.Button;
-import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.utils.TitleBarHelper;

@@ -11,7 +11,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.utils.ImageLoader;

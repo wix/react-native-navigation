@@ -1,7 +1,7 @@
-package com.reactnativenavigation.parse;
+package com.reactnativenavigation.parse.params;
 
 public class NullNumber extends Number {
-    NullNumber() {
+    public NullNumber() {
         super(0);
     }
 
