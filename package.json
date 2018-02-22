@@ -1,6 +1,6 @@
 {
   "name": "@nfl/react-native-navigation",
-  "version": "2.0.0-pre.004d0854",
+  "version": "2.0.0-pre.56b0aff7",
   "description": "React Native Navigation - truly native navigation for iOS and Android",
   "license": "MIT",
   "nativePackage": true,
