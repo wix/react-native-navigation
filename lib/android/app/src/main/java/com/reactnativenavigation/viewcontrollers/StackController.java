@@ -24,7 +24,6 @@ public class StackController extends ParentController <StackLayout> {
     private static final NoOpPromise NO_OP = new NoOpPromise();
     private final IdStack<ViewController> stack = new IdStack<>();
     private final NavigationAnimator animator;
-    private StackLayout stackLayout;
 
     public StackController(final Activity activity, String id, Options initialOptions) {
         super(activity, id, initialOptions);
@@ -33,26 +32,26 @@ public class StackController extends ParentController <StackLayout> {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     TopBar getTopBar() {
-        return stackLayout.getTopBar();
+        return getView().getTopBar();
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    StackLayout getStackLayout() {return stackLayout;}
+    StackLayout getStackLayout() {return getView();}
 
     @Override
     public void applyOptions(Options options, ReactComponent component) {
         super.applyOptions(options, component);
-        stackLayout.applyOptions(this.options, component);
+        getView().applyOptions(this.options, component);
         applyOnParentController(parentController ->
                 ((ParentController) parentController).applyOptions(this.options.copy().clearTopBarOptions(), component)
         );
-        fabOptionsPresenter.applyOptions(options.fabOptions, component, stackLayout);
+        fabOptionsPresenter.applyOptions(options.fabOptions, component, getView());
     }
 
     @Override
     void clearOptions() {
         super.clearOptions();
-        stackLayout.clearOptions();
+        getView().clearOptions();
     }
 
     public void push(ViewController child, final Promise promise) {
@@ -100,7 +99,7 @@ public class StackController extends ParentController <StackLayout> {
         finishPopping(exitingController.getView(), exitingController, promise);
     }
 
-	private void animatePop(final Promise promise) {
+	void animatePop(final Promise promise) {
 		if (!canPop()) {
 			Navigator.rejectPromise(promise);
 			return;
@@ -113,10 +112,11 @@ public class StackController extends ParentController <StackLayout> {
         animator.animatePop(exitingController.getView(), () -> finishPopping(exitingController.getView(), exitingController, promise));
 	}
 
-    private void popInternal(ViewController exiting, ViewController entering) {
-        exiting.onViewWillDisappear();
-        entering.onViewWillAppear();
-        getView().addView(entering.getView(), getView().indexOfChild(((ComponentViewController) exiting).getView()));
+    private void popInternal(ViewController disappearing, ViewController appearing) {
+        disappearing.onViewWillDisappear();
+        appearing.onViewWillAppear();
+        getView().onChildWillDisappear(disappearing.options, appearing.options);
+        getView().addView(appearing.getView(), getView().indexOfChild(disappearing.getView()));
     }
 
     boolean canPop() {
@@ -199,8 +199,7 @@ public class StackController extends ParentController <StackLayout> {
     @NonNull
     @Override
     protected StackLayout createView() {
-        stackLayout = new StackLayout(getActivity(), this::sendOnNavigationButtonPressed);
-        return stackLayout;
+        return new StackLayout(getActivity(), this::sendOnNavigationButtonPressed);
     }
 
 	@NonNull
@@ -211,11 +210,11 @@ public class StackController extends ParentController <StackLayout> {
 
     @Override
     public void setupTopTabsWithViewPager(ViewPager viewPager) {
-        stackLayout.initTopTabs(viewPager);
+        getView().initTopTabs(viewPager);
     }
 
     @Override
     public void clearTopTabs() {
-        stackLayout.clearTopTabs();
+        getView().clearTopTabs();
     }
 }
