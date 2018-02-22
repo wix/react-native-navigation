@@ -147,7 +147,7 @@ public class OptionsApplyingTest extends BaseTest {
 
         Options opts = new Options();
         opts.topBarOptions.visible = new Bool(false);
-        opts.topBarOptions.animateHide = new Bool(false);
+        opts.topBarOptions.animate = new Bool(false);
         uut.mergeOptions(opts);
 
         assertThat(stackController.getTopBar().getVisibility()).isEqualTo(View.GONE);
