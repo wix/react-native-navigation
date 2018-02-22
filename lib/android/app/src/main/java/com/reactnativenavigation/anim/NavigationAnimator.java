@@ -57,7 +57,7 @@ public class NavigationAnimator {
 
     public void animatePop(View view, @Nullable final NavigationAnimationListener animationListener) {
         ObjectAnimator alpha = ObjectAnimator.ofFloat(view, View.ALPHA, 1, 0);
-        alpha.setInterpolator(ACCELERATE_INTERPOLATOR);
+        ObjectAnimator translationY = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0, this.translationY);
 
         AnimatorSet set = new AnimatorSet();
         set.addListener(new AnimatorListenerAdapter() {
@@ -68,11 +68,9 @@ public class NavigationAnimator {
                 }
             }
         });
-        ObjectAnimator translationY = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0, this.translationY);
-        translationY.setInterpolator(ACCELERATE_INTERPOLATOR);
-        translationY.setDuration(DURATION);
-        alpha.setDuration(DURATION);
         set.playTogether(translationY, alpha);
+        set.setDuration(DURATION);
+        set.setInterpolator(ACCELERATE_INTERPOLATOR);
         set.start();
     }
 }

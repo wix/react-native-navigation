@@ -1,15 +1,10 @@
 package com.reactnativenavigation.presentation;
 
-import android.view.View;
-
-import com.github.clans.fab.FloatingActionButton;
 import com.reactnativenavigation.parse.Button;
-import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
-import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.TopBar;
 
@@ -22,6 +17,10 @@ public class OptionsPresenter {
     public OptionsPresenter(TopBar topBar, ReactComponent component) {
         this.topBar = topBar;
         this.component = component;
+    }
+
+    public OptionsPresenter(TopBar topBar) {
+        this.topBar = topBar;
     }
 
     public void applyOptions(Options options) {
@@ -40,10 +39,10 @@ public class OptionsPresenter {
 
         topBar.setTitleTypeface(options.textFontFamily);
         if (options.visible.isFalse()) {
-            topBar.hide(options.animateHide);
+            topBar.hide(options.animate);
         }
         if (options.visible.isTrueOrUndefined()) {
-            topBar.show(options.animateHide);
+            topBar.show(options.animate);
         }
         if (options.drawBehind.isTrue()) {
             component.drawBehindTopBar();
@@ -71,6 +70,12 @@ public class OptionsPresenter {
     private void applyTopTabOptions(TopTabOptions topTabOptions) {
         if (topTabOptions.fontFamily != null) {
             topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
+        }
+    }
+
+    public void onChildWillDisappear(Options disappearing, Options appearing) {
+        if (disappearing.topBarOptions.visible.isTrueOrUndefined() && appearing.topBarOptions.visible.isFalse()) {
+            topBar.hide(disappearing.topBarOptions.animate);
         }
     }
 }

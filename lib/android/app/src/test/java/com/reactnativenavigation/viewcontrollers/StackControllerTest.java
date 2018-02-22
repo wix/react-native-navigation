@@ -8,8 +8,10 @@ import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.StackLayout;
 
 import org.assertj.core.api.iterable.Extractor;
 import org.junit.Test;
@@ -71,6 +73,30 @@ public class StackControllerTest extends BaseTest {
                 assertContainsOnlyId(child2.getId(), child1.getId());
                 uut.pop(new MockPromise());
                 assertContainsOnlyId(child1.getId());
+            }
+        });
+    }
+
+    @Test
+    public void pop_layoutHandlesChildWillDisappear() throws Exception {
+        final StackLayout[] stackLayout = new StackLayout[1];
+        uut = new StackController(activity, "uut", new Options()) {
+            @Override
+            protected StackLayout createView() {
+                stackLayout[0] = spy(super.createView());
+                return stackLayout[0];
+            }
+        };
+        uut.push(child1, new MockPromise());
+        uut.animatePush(child2, new MockPromise() {
+            @Override
+            public void resolve(@Nullable Object value) {
+                uut.animatePop(new MockPromise() {
+                    @Override
+                    public void resolve(@Nullable Object value) {
+                        verify(stackLayout[0], times(1)).onChildWillDisappear(child2.options, child1.options);
+                    }
+                });
             }
         });
     }
@@ -304,6 +330,27 @@ public class StackControllerTest extends BaseTest {
         uut.pop(new MockPromise());
         verify(child1, times(1)).onViewWillAppear();
         verify(child2, times(1)).onViewWillDisappear();
+    }
+
+    @Test
+    public void pop_animatesTopBarIfNeeded() throws Exception {
+        uut.ensureViewIsCreated();
+        uut.getView().setTopBar(spy(uut.getTopBar()));
+
+        child1.options.topBarOptions.visible = new Bool(false);
+        child1.options.topBarOptions.animate = new Bool(false);
+        child2.options.topBarOptions.visible = new Bool(true);
+        uut.push(child1, new MockPromise());
+        child1.onViewAppeared();
+
+        assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
+        uut.push(child2, new MockPromise());
+        uut.animatePop(new MockPromise() {
+            @Override
+            public void resolve(@Nullable Object value) {
+                verify(uut.getTopBar(), times(1)).hide(child2.options.topBarOptions.animate);
+            }
+        });
     }
 
     @Test

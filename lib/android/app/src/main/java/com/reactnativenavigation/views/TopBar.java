@@ -181,7 +181,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         }
         if (animated.isTrueOrUndefined()) {
             animator.show();
-        } else {
+        } else if (!animator.isRunning()) {
             setVisibility(View.VISIBLE);
         }
     }
@@ -192,7 +192,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         }
         if (animated.isTrueOrUndefined()) {
             animator.hide();
-        } else {
+        } else if (!animator.isRunning()){
             setVisibility(View.GONE);
         }
     }

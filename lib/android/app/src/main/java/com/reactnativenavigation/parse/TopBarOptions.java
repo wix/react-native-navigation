@@ -25,7 +25,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
         options.textFontSize = FractionParser.parse(json, "textFontSize");
         options.textFontFamily = typefaceManager.getTypeFace(json.optString("textFontFamily", ""));
         options.visible = BoolParser.parse(json, "visible");
-        options.animateHide = BoolParser.parse(json,"animateHide");
+        options.animate = BoolParser.parse(json,"animate");
         options.hideOnScroll = BoolParser.parse(json,"hideOnScroll");
         options.drawBehind = BoolParser.parse(json,"drawBehind");
         options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
@@ -42,7 +42,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
     public Fraction textFontSize = new NullFraction();
     @Nullable public Typeface textFontFamily;
     public Bool visible = new NullBool();
-    public Bool animateHide = new NullBool();
+    public Bool animate = new NullBool();
     public Bool hideOnScroll = new NullBool();
     public Bool drawBehind = new NullBool();
     public ArrayList<Button> leftButtons;
@@ -62,8 +62,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
         if (other.visible.hasValue()) {
             visible = other.visible;
         }
-        if (other.animateHide.hasValue()) {
-            animateHide = other.animateHide;
+        if (other.animate.hasValue()) {
+            animate = other.animate;
         }
         if (other.hideOnScroll.hasValue()) {
             hideOnScroll = other.hideOnScroll;
@@ -90,8 +90,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
             textFontFamily = defaultOptions.textFontFamily;
         if (!visible.hasValue())
             visible = defaultOptions.visible;
-        if (!animateHide.hasValue())
-            animateHide = defaultOptions.animateHide;
+        if (!animate.hasValue())
+            animate = defaultOptions.animate;
         if (!hideOnScroll.hasValue())
             hideOnScroll = defaultOptions.hideOnScroll;
         if (!drawBehind.hasValue())

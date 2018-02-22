@@ -20,14 +20,11 @@ public class TopBarAnimator {
 
     private TopBar topBar;
     private View contentView;
+    private ObjectAnimator hideAnimator;
+    private ObjectAnimator showAnimator;
 
     public TopBarAnimator(TopBar topBar) {
         this.topBar = topBar;
-    }
-
-    public TopBarAnimator(TopBar topBar, View contentView) {
-        this.topBar = topBar;
-        this.contentView = contentView;
     }
 
     public void show() {
@@ -35,11 +32,11 @@ public class TopBarAnimator {
     }
 
     public void show(float startTranslation, TimeInterpolator interpolator, int duration) {
-        ObjectAnimator topbarAnim = ObjectAnimator.ofFloat(topBar, View.TRANSLATION_Y, startTranslation, 0);
-        topbarAnim.setInterpolator(interpolator);
-        topbarAnim.setDuration(duration);
+        showAnimator = ObjectAnimator.ofFloat(topBar, View.TRANSLATION_Y, startTranslation, 0);
+        showAnimator.setInterpolator(interpolator);
+        showAnimator.setDuration(duration);
 
-        topbarAnim.addListener(new AnimatorListenerAdapter() {
+        showAnimator.addListener(new AnimatorListenerAdapter() {
 
             @Override
             public void onAnimationStart(Animator animation) {
@@ -55,7 +52,7 @@ public class TopBarAnimator {
                 }
             }
         });
-        topbarAnim.start();
+        showAnimator.start();
     }
 
     public void hide() {
@@ -63,11 +60,11 @@ public class TopBarAnimator {
     }
 
     void hide(float startTranslation, TimeInterpolator interpolator, int duration) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(topBar, View.TRANSLATION_Y, startTranslation, -1 * topBar.getMeasuredHeight());
-        animator.setInterpolator(interpolator);
-        animator.setDuration(duration);
+        hideAnimator = ObjectAnimator.ofFloat(topBar, View.TRANSLATION_Y, startTranslation, -1 * topBar.getMeasuredHeight());
+        hideAnimator.setInterpolator(interpolator);
+        hideAnimator.setDuration(duration);
 
-        animator.addListener(new AnimatorListenerAdapter() {
+        hideAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (contentView != null) {
@@ -79,6 +76,10 @@ public class TopBarAnimator {
                 topBar.setVisibility(View.GONE);
             }
         });
-        animator.start();
+        hideAnimator.start();
+    }
+
+    public boolean isRunning() {
+        return (hideAnimator != null && hideAnimator.isRunning()) || (showAnimator != null && showAnimator.isRunning());
     }
 }

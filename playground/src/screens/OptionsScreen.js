@@ -191,7 +191,7 @@ class OptionsScreen extends Component {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
         visible: true,
-        animateHide: true
+        animate: true
       }
     });
   }
@@ -200,7 +200,7 @@ class OptionsScreen extends Component {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
         visible: false,
-        animateHide: true
+        animate: true
       }
     });
   }
