@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -25,29 +27,35 @@ import java.util.List;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.RelativeLayout.ABOVE;
-import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 
 public class BottomTabsController extends ParentController implements AHBottomNavigation.OnTabSelectedListener, NavigationOptionsListener {
-	private BottomTabs bottomTabs;
-	private List<ViewController> tabs = new ArrayList<>();
+    private FrameLayout tabContentContainer;
+    private BottomTabs bottomTabs;
+    private List<ViewController> tabs = new ArrayList<>();
     private ImageLoader imageLoader;
 
     public BottomTabsController(final Activity activity, ImageLoader imageLoader, final String id, Options initialOptions) {
-		super(activity, id, initialOptions);
+        super(activity, id, initialOptions);
         this.imageLoader = imageLoader;
     }
 
-	@NonNull
-	@Override
-	protected ViewGroup createView() {
-		RelativeLayout root = new RelativeLayout(getActivity());
-		bottomTabs = new BottomTabs(getActivity());
+    @NonNull
+    @Override
+    protected ViewGroup createView() {
+        LinearLayout root = new LinearLayout(getActivity());
+        root.setOrientation(LinearLayout.VERTICAL);
+
+        tabContentContainer = new FrameLayout(getActivity());
+        LinearLayout.LayoutParams contentParams = new LinearLayout.LayoutParams(MATCH_PARENT, 0, 1);
+        root.addView(tabContentContainer, contentParams);
+
+        bottomTabs = new BottomTabs(getActivity());
         bottomTabs.setOnTabSelectedListener(this);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-		lp.addRule(ALIGN_PARENT_BOTTOM);
-		root.addView(bottomTabs, lp);
-		return root;
-	}
+        LinearLayout.LayoutParams tabParams = new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+        root.addView(bottomTabs, tabParams);
+
+        return root;
+    }
 
     @Override
     public void applyOptions(Options options) {
@@ -66,9 +74,9 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
     @Override
-	public boolean handleBack() {
-		return !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack();
-	}
+    public boolean handleBack() {
+        return !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack();
+    }
 
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
@@ -84,23 +92,23 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         if (wasSelected) return false;
         selectTabAtIndex(index);
         return true;
-	}
-	
-	public void setTabs(final List<ViewController> tabs) {
-		if (tabs.size() > 5) {
-			throw new RuntimeException("Too many tabs!");
-		}
-		this.tabs = tabs;
-		getView();
-		for (int i = 0; i < tabs.size(); i++) {
-		    tabs.get(i).setParentController(this);
-			createTab(i, tabs.get(i).options.bottomTabOptions);
-		}
-		selectTabAtIndex(0);
-	}
+    }
 
-	private void createTab(int index, final BottomTabOptions tabOptions) {
-	    if (!tabOptions.icon.hasValue()) {
+    public void setTabs(final List<ViewController> tabs) {
+        if (tabs.size() > 5) {
+            throw new RuntimeException("Too many tabs!");
+        }
+        this.tabs = tabs;
+        getView();
+        for (int i = 0; i < tabs.size(); i++) {
+            tabs.get(i).setParentController(this);
+            createTab(i, tabs.get(i).options.bottomTabOptions);
+        }
+        selectTabAtIndex(0);
+    }
+
+    private void createTab(int index, final BottomTabOptions tabOptions) {
+        if (!tabOptions.icon.hasValue()) {
             throw new RuntimeException("BottomTab must have an icon");
         }
         imageLoader.loadIcon(getActivity(), tabOptions.icon.get(), new ImageLoader.ImageLoadingListener() {
@@ -119,20 +127,20 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         params.addRule(ABOVE, bottomTabs.getId());
-	}
+    }
 
     int getSelectedIndex() {
-		return bottomTabs.getCurrentItem();
-	}
+        return bottomTabs.getCurrentItem();
+    }
 
-	@NonNull
-	@Override
-	public Collection<ViewController> getChildControllers() {
-		return tabs;
-	}
+    @NonNull
+    @Override
+    public Collection<ViewController> getChildControllers() {
+        return tabs;
+    }
 
-	@Override
-	public void mergeOptions(Options options) {
+    @Override
+    public void mergeOptions(Options options) {
         this.options = this.options.mergeWith(options);
         if (options.bottomTabsOptions.currentTabIndex.hasValue()) {
             selectTabAtIndex(options.bottomTabsOptions.currentTabIndex.get());
@@ -153,9 +161,9 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
     void selectTabAtIndex(final int newIndex) {
-        getView().removeView(getCurrentView());
+        tabContentContainer.removeView(getCurrentView());
         bottomTabs.setCurrentItem(newIndex, false);
-        getView().addView(getCurrentView());
+        tabContentContainer.addView(getCurrentView());
     }
 
     @NonNull
@@ -164,18 +172,18 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
     private boolean hasControlWithId(StackController controller, String id) {
-		for (ViewController child : controller.getChildControllers()) {
-			if (id.equals(child.getId())) {
-				return true;
-			}
-			if (child instanceof StackController) {
-				return hasControlWithId((StackController) child, id);
-			}
-		}
-		return false;
-	}
+        for (ViewController child : controller.getChildControllers()) {
+            if (id.equals(child.getId())) {
+                return true;
+            }
+            if (child instanceof StackController) {
+                return hasControlWithId((StackController) child, id);
+            }
+        }
+        return false;
+    }
 
-	@IntRange(from = -1)
+    @IntRange(from = -1)
     private int findTabContainingComponent(ReactComponent component) {
         for (int i = 0; i < tabs.size(); i++) {
             if (tabs.get(i).containsComponent(component)) {
