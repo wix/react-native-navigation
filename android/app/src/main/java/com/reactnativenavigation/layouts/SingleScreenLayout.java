@@ -85,11 +85,18 @@ public class SingleScreenLayout extends BaseLayout {
         stack = new ScreenStack(getActivity(), parent, screenParams.getNavigatorId(), this);
         LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         pushInitialScreen(lp);
+        pushAdditionalScreens(lp);
+        stack.show(NavigationType.Push);
     }
 
     protected void pushInitialScreen(LayoutParams lp) {
         stack.pushInitialScreen(screenParams, lp);
-        stack.show(NavigationType.Push);
+    }
+
+    private void pushAdditionalScreens(LayoutParams lp) {
+        for (ScreenParams screen : screenParams.screens) {
+            stack.pushInitialScreen(screen, lp);
+        }
     }
 
     private void sendScreenChangedEventAfterInitialPush() {

@@ -10,6 +10,7 @@
 #import "RCCTheSideBarManagerViewController.h"
 #import "RCCNotification.h"
 #import "RCTHelpers.h"
+#import "RNNSwizzles.h"
 
 #define kSlideDownAnimationDuration 0.35
 
@@ -71,6 +72,11 @@ RCT_EXPORT_MODULE(RCCManager);
 - (dispatch_queue_t)methodQueue
 {
     return dispatch_get_main_queue();
+}
+
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;
 }
 
 #pragma mark - helper methods
@@ -241,6 +247,11 @@ RCT_EXPORT_METHOD(
     NSDictionary *appStyle = layout[@"props"][@"appStyle"];
     if (appStyle) {
         [[RCCManager sharedIntance] setAppStyle:appStyle];
+		
+		if([appStyle[@"autoAdjustScrollViewInsets"] boolValue] == YES)
+		{
+			[RNNSwizzles applySwizzles];
+		}
     }
     
     // create the new controller
@@ -472,6 +483,11 @@ RCT_EXPORT_METHOD(
                   cancelAllReactTouches)
 {
     [RCCManagerModule cancelAllRCCViewControllerReactTouches];
+}
+
+RCT_EXPORT_METHOD(getLaunchArgs:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    resolve([[RCCManager sharedInstance] getLaunchArgs]);
 }
 
 @end
