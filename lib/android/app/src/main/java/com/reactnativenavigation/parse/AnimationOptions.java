@@ -11,6 +11,8 @@ public class AnimationOptions {
         AnimationOptions options = new AnimationOptions();
         if (json == null) return options;
 
+        options.empty = false;
+
         options.y = ValueAnimationOptions.parse(json.optJSONObject("y"));
         options.x = ValueAnimationOptions.parse(json.optJSONObject("x"));
         options.alpha = ValueAnimationOptions.parse(json.optJSONObject("alpha"));
@@ -19,6 +21,8 @@ public class AnimationOptions {
 
         return options;
     }
+
+    private boolean empty = true;
 
     public ValueAnimationOptions y = new ValueAnimationOptions();
     public ValueAnimationOptions x = new ValueAnimationOptions();
@@ -41,5 +45,9 @@ public class AnimationOptions {
         alpha.mergeWithDefault(defaultOptions.alpha);
         scaleX.mergeWithDefault(defaultOptions.scaleX);
         scaleY.mergeWithDefault(defaultOptions.scaleY);
+    }
+
+    public boolean isEmpty() {
+        return empty;
     }
 }

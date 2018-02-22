@@ -18,30 +18,34 @@ public class ValueAnimationOptions implements DEFAULT_VALUES {
         ValueAnimationOptions options = new ValueAnimationOptions();
         if (json == null) return options;
 
+        options.empty = false;
+
         options.from = FloatParser.parse(json, "from");
         options.to = FloatParser.parse(json, "to");
         options.duration = NumberParser.parse(json, "duration");
-        options.delayStart = NumberParser.parse(json, "startDelay");
+        options.startDelay = NumberParser.parse(json, "startDelay");
         options.interpolation = InterpolationParser.parse(json, "interpolation");
 
         return options;
     }
 
+    private boolean empty = true;
+
     public FloatParam from = new NullFloatParam();
     public FloatParam to = new NullFloatParam();
     public Number duration = new NullNumber();
-    public Number delayStart = new NullNumber();
+    public Number startDelay = new NullNumber();
     public Interpolation interpolation = Interpolation.NO_VALUE;
 
     void mergeWith(final ValueAnimationOptions other) {
         if (other.from.hasValue())
             from = other.from;
         if (other.to.hasValue())
-            to= other.to;
+            to = other.to;
         if (other.duration.hasValue())
             duration = other.duration;
-        if (other.delayStart.hasValue())
-            delayStart = other.delayStart;
+        if (other.startDelay.hasValue())
+            startDelay = other.startDelay;
         if (other.interpolation != Interpolation.NO_VALUE)
             interpolation = other.interpolation;
     }
@@ -53,9 +57,13 @@ public class ValueAnimationOptions implements DEFAULT_VALUES {
             to = defaultOptions.to;
         if (!duration.hasValue())
             duration = defaultOptions.duration;
-        if (!delayStart.hasValue())
-            delayStart = defaultOptions.delayStart;
+        if (!startDelay.hasValue())
+            startDelay = defaultOptions.startDelay;
         if (interpolation == Interpolation.NO_VALUE)
             interpolation = defaultOptions.interpolation;
+    }
+
+    public boolean isEmpty() {
+        return empty;
     }
 }

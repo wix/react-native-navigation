@@ -53,6 +53,22 @@ class PushedScreen extends Component {
         options: {
           topBar: {
             title: `Pushed ${this.getStackPosition() + 1}`
+          },
+          animations: {
+            push: {
+              y: {
+                from: 1000,
+                to: 0,
+                duration: 500,
+                interpolation: 'decelerate',
+                startDelay: 100
+              },
+              alpha: {
+                from: 0,
+                to: 1,
+                duration: 500
+              }
+            }
           }
         }
       }

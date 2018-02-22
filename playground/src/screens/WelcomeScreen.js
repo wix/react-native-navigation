@@ -221,6 +221,22 @@ class WelcomeScreen extends Component {
         options: {
           topBar: {
             title: 'pushed'
+          },
+          animations: {
+            push: {
+              y: {
+                from: 1000,
+                to: 0,
+                duration: 300,
+                interpolation: 'decelerate',
+                startDelay: 100
+              },
+              alpha: {
+                from: 0,
+                to: 1,
+                duration: 300
+              }
+            }
           }
         }
       }

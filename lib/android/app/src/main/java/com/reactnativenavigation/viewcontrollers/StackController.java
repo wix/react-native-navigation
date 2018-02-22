@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 
 import com.facebook.react.bridge.Promise;
@@ -42,6 +43,8 @@ public class StackController extends ParentController <StackLayout> {
     @Override
     public void applyOptions(Options options, ReactComponent component) {
         super.applyOptions(options, component);
+        //TODO: WIP
+        animator.setOptions(options.animationsOptions);
         stackLayout.applyOptions(this.options, component);
         applyOnParentController(parentController ->
                 ((ParentController) parentController).applyOptions(this.options.copy().clearTopBarOptions(), component)
@@ -72,6 +75,8 @@ public class StackController extends ParentController <StackLayout> {
     public void animatePush(final ViewController child, final Promise promise) {
         final ViewController toRemove = stack.peek();
 
+        //TODO: WIP
+        animator.setOptions(child.initialOptions.animationsOptions);
 		child.setParentController(this);
 		stack.push(child.getId(), child);
 		View enteringView = child.getView();
