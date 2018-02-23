@@ -31,18 +31,32 @@ function start() {
             to: 0,
             duration: 500,
             interpolation: 'decelerate',
-            startDelay: 100
           },
-          alpha: {
+          // x: {
+          //   from: 1000,
+          //   to: 0,
+          //   duration: 500,
+          //   interpolation: 'decelerate',
+          //   startDelay: 100
+          // },
+          scaleY: {
             from: 0,
             to: 1,
-            duration: 500
+            duration: 1000,
+            interpolation: 'decelerate',
           }
         },
         pop : {
           y: {
             from: 0,
             to: 1000,
+            duration: 500,
+            interpolation: 'accelerate',
+            startDelay: 100
+          },
+          x: {
+            from: 0,
+            to: -1000,
             duration: 500,
             interpolation: 'accelerate',
             startDelay: 100

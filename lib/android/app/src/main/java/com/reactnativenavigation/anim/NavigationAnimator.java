@@ -134,6 +134,18 @@ public class NavigationAnimator {
             animators.add(x);
         }
 
+        if (!options.scaleY.isEmpty()) {
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, View.SCALE_Y, options.scaleY.from.get(), options.scaleY.to.get());
+            setUpAnimator(scaleY, options.scaleY);
+            animators.add(scaleY);
+        }
+
+        if (!options.scaleX.isEmpty()) {
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, View.SCALE_X, options.scaleX.from.get(), options.scaleX.to.get());
+            setUpAnimator(scaleX, options.scaleX);
+            animators.add(scaleX);
+        }
+
         animationSet.playTogether(animators);
         return animationSet;
     }

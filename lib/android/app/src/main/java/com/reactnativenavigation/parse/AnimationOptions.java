@@ -15,7 +15,7 @@ public class AnimationOptions {
         options.x = ValueAnimationOptions.parse(json.optJSONObject("x"));
         options.alpha = ValueAnimationOptions.parse(json.optJSONObject("alpha"));
         options.scaleX = ValueAnimationOptions.parse(json.optJSONObject("scaleX"));
-        options.scaleY = ValueAnimationOptions.parse(json.optJSONObject("scaleX"));
+        options.scaleY = ValueAnimationOptions.parse(json.optJSONObject("scaleY"));
 
         return options;
     }
