@@ -47,12 +47,11 @@ function start() {
           }
         },
         pop : {
-          y: {
+          rotation: {
             from: 0,
-            to: 1000,
+            to: -360,
             duration: 500,
             interpolation: 'accelerate',
-            startDelay: 100
           },
           x: {
             from: 0,
@@ -61,11 +60,11 @@ function start() {
             interpolation: 'accelerate',
             startDelay: 100
           },
-          alpha: {
-            from: 1,
-            to: 0,
-            duration: 500
-          }
+          // alpha: {
+          //   from: 1,
+          //   to: 0,
+          //   duration: 500
+          // }
         }
       }
     });
