@@ -60,7 +60,7 @@ class WelcomeScreen extends Component {
           }
         }
       }
-    })
+    });
   }
 
   render() {
