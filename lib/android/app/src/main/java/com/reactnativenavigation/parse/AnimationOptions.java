@@ -1,8 +1,6 @@
 package com.reactnativenavigation.parse;
 
 
-import com.reactnativenavigation.parse.params.Interpolation;
-
 import org.json.JSONObject;
 
 public class AnimationOptions {
@@ -31,6 +29,9 @@ public class AnimationOptions {
     public ValueAnimationOptions scaleX = new ValueAnimationOptions();
 
     void mergeWith(AnimationOptions other) {
+        if (!other.isEmpty()) {
+            empty = false;
+        }
         y.mergeWith(other.y);
         x.mergeWith(other.x);
         alpha.mergeWith(other.alpha);
@@ -40,6 +41,9 @@ public class AnimationOptions {
     }
 
     void mergeWithDefault(AnimationOptions defaultOptions) {
+        if (!defaultOptions.isEmpty()) {
+            empty = false;
+        }
         y.mergeWithDefault(defaultOptions.y);
         x.mergeWithDefault(defaultOptions.x);
         alpha.mergeWithDefault(defaultOptions.alpha);

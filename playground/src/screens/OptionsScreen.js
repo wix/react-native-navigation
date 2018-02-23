@@ -231,7 +231,8 @@ class OptionsScreen extends Component {
   onClickPushDefaultOptionsScreen() {
     Navigation.setDefaultOptions({
       topBar: {
-        visible: false
+        visible: false,
+        animate: false
       }
     });
 

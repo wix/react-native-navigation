@@ -38,6 +38,9 @@ public class ValueAnimationOptions implements DEFAULT_VALUES {
     public Interpolation interpolation = Interpolation.NO_VALUE;
 
     void mergeWith(final ValueAnimationOptions other) {
+        if (!other.isEmpty()) {
+            empty = false;
+        }
         if (other.from.hasValue())
             from = other.from;
         if (other.to.hasValue())
@@ -51,7 +54,10 @@ public class ValueAnimationOptions implements DEFAULT_VALUES {
     }
 
     void mergeWithDefault(ValueAnimationOptions defaultOptions) {
-        if (from == null)
+        if (!defaultOptions.isEmpty()) {
+            empty = false;
+        }
+        if (!from.hasValue())
             from = defaultOptions.from;
         if (!to.hasValue())
             to = defaultOptions.to;

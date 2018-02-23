@@ -28,39 +28,6 @@ class WelcomeScreen extends Component {
     this.onClickPushTopTabsScreen = this.onClickPushTopTabsScreen.bind(this);
     this.onClickShowStaticLifecycleOverlay = this.onClickShowStaticLifecycleOverlay.bind(this);
     this.onClickProvidedId = this.onClickProvidedId.bind(this);
-
-    Navigation.setDefaultOptions({
-      animations: {
-        push: {
-          y: {
-            from: 1000,
-            to: 0,
-            duration: 500,
-            interpolation: 'decelerate',
-            startDelay: 100
-          },
-          alpha: {
-            from: 0,
-            to: 1,
-            duration: 500
-          }
-        },
-        pop : {
-          y: {
-            from: 0,
-            to: 1000,
-            duration: 500,
-            interpolation: 'accelerate',
-            startDelay: 100
-          },
-          alpha: {
-            from: 0,
-            to: 1,
-            duration: 500
-          }
-        }
-      }
-    });
   }
 
   render() {
