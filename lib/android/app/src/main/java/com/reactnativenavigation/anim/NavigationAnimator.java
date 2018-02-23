@@ -7,7 +7,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -77,10 +76,12 @@ public class NavigationAnimator {
     }
 
     public void animatePop(View view, @Nullable final NavigationAnimationListener animationListener) {
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(view, View.ALPHA, 1, 0);
-        alpha.setInterpolator(ACCELERATE_INTERPOLATOR);
-
-        AnimatorSet set = new AnimatorSet();
+        AnimatorSet set;
+        if (options != null && !options.pop.isEmpty()) {
+            set = createAnimation(options.pop, view);
+        } else {
+            set = getDefaultPopAnimation(view);
+        }
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -89,12 +90,22 @@ public class NavigationAnimator {
                 }
             }
         });
+        set.start();
+    }
+
+    @NonNull
+    private AnimatorSet getDefaultPopAnimation(View view) {
+        AnimatorSet set = new AnimatorSet();
+
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(view, View.ALPHA, 1, 0);
+        alpha.setInterpolator(ACCELERATE_INTERPOLATOR);
+
         ObjectAnimator translationY = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0, this.translationY);
         translationY.setInterpolator(ACCELERATE_INTERPOLATOR);
         translationY.setDuration(DURATION);
         alpha.setDuration(DURATION);
         set.playTogether(translationY, alpha);
-        set.start();
+        return set;
     }
 
     public void setOptions(AnimationsOptions options) {
