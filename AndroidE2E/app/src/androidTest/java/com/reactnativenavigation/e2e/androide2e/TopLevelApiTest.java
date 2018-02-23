@@ -13,6 +13,7 @@ public class TopLevelApiTest extends BaseTest {
         assertExists(By.text("Hello from a function!"));
     }
 
+    @Ignore
     @Test
     public void switchToTabBasedApp_SwitchTab() throws Exception {
         elementByText("SWITCH TO TAB BASED APP").click();
