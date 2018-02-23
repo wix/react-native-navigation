@@ -41,7 +41,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
-    protected FabOptionsPresenter fabOptionsPresenter;
+    FabOptionsPresenter fabOptionsPresenter;
 
     public ViewController(Activity activity, String id, Options initialOptions) {
         this.activity = activity;

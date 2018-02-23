@@ -70,7 +70,7 @@ class TextScreen extends Component {
       bottomTabs: {
         currentTabIndex: 1,
         visible: false,
-        animateHide: true
+        animate: true
       }
     });
   }

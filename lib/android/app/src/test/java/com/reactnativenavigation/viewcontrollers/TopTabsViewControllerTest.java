@@ -24,6 +24,8 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -209,7 +211,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void applyOptions_tabsAreRemovedBeforeViewDisappears() throws Exception {
+    public void applyOptions_tabsAreRemovedAfterViewDisappears() throws Exception {
         parentController.getView().removeAllViews();
 
         StackController stackController = spy(new StackController(activity, "stack", new Options()));
@@ -228,8 +230,12 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut.onViewAppeared();
 
         assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isTrue();
-        stackController.pop(new MockPromise());
-        assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();
+        stackController.animatePop(new MockPromise() {
+            @Override
+            public void resolve(@Nullable Object value) {
+                assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();
+            }
+        });
     }
 
     @Test

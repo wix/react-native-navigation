@@ -19,6 +19,10 @@ public class OptionsPresenter {
         this.component = component;
     }
 
+    public OptionsPresenter(TopBar topBar) {
+        this.topBar = topBar;
+    }
+
     public void applyOptions(Options options) {
         applyButtons(options.topBarOptions.leftButtons, options.topBarOptions.rightButtons);
         applyTopBarOptions(options.topBarOptions);
@@ -35,10 +39,10 @@ public class OptionsPresenter {
 
         topBar.setTitleTypeface(options.textFontFamily);
         if (options.visible.isFalse()) {
-            topBar.hide(options.animateHide);
+            topBar.hide(options.animate);
         }
         if (options.visible.isTrueOrUndefined()) {
-            topBar.show(options.animateHide);
+            topBar.show(options.animate);
         }
         if (options.drawBehind.isTrue()) {
             component.drawBehindTopBar();
@@ -66,6 +70,12 @@ public class OptionsPresenter {
     private void applyTopTabOptions(TopTabOptions topTabOptions) {
         if (topTabOptions.fontFamily != null) {
             topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
+        }
+    }
+
+    public void onChildWillDisappear(Options disappearing, Options appearing) {
+        if (disappearing.topBarOptions.visible.isTrueOrUndefined() && appearing.topBarOptions.visible.isFalse()) {
+            topBar.hide(disappearing.topBarOptions.animate);
         }
     }
 }

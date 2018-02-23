@@ -60,12 +60,12 @@ public class TopTabsController extends ParentController<TopTabsViewPager> implem
     @Override
     public void onViewWillDisappear() {
         super.onViewWillDisappear();
-        applyOnParentController(parentController -> ((ParentController) parentController).clearTopTabs());
     }
 
     @Override
     public void onViewDisappear() {
         performOnCurrentTab(ViewController::onViewDisappear);
+        applyOnParentController(parentController -> ((ParentController) parentController).clearTopTabs());
     }
 
     @Override

@@ -34,7 +34,7 @@ public class OptionsTest extends BaseTest {
     private static final Bool TOP_BAR_VISIBLE = new Bool(true);
     private static final Bool TOP_BAR_DRAW_BEHIND = new Bool(true);
     private static final Bool TOP_BAR_HIDE_ON_SCROLL = new Bool(true);
-    private static final Bool BOTTOM_TABS_ANIMATE_HIDE = new Bool(true);
+    private static final Bool BOTTOM_TABS_ANIMATE = new Bool(true);
     private static final Bool BOTTOM_TABS_VISIBLE = new Bool(true);
     private static final String BOTTOM_TABS_BADGE = "3";
     private static final String BOTTOM_TABS_CURRENT_TAB_ID = "ComponentId";
@@ -71,7 +71,7 @@ public class OptionsTest extends BaseTest {
         assertThat(result.topBarOptions.visible.get()).isEqualTo(TOP_BAR_VISIBLE.get());
         assertThat(result.topBarOptions.drawBehind.get()).isEqualTo(TOP_BAR_DRAW_BEHIND.get());
         assertThat(result.topBarOptions.hideOnScroll.get()).isEqualTo(TOP_BAR_HIDE_ON_SCROLL.get());
-        assertThat(result.bottomTabsOptions.animateHide.get()).isEqualTo(BOTTOM_TABS_ANIMATE_HIDE.get());
+        assertThat(result.bottomTabsOptions.animate.get()).isEqualTo(BOTTOM_TABS_ANIMATE.get());
         assertThat(result.bottomTabsOptions.visible.get()).isEqualTo(BOTTOM_TABS_VISIBLE.get());
         assertThat(result.bottomTabsOptions.currentTabId.get()).isEqualTo(BOTTOM_TABS_CURRENT_TAB_ID);
         assertThat(result.bottomTabsOptions.currentTabIndex.get()).isEqualTo(BOTTOM_TABS_CURRENT_TAB_INDEX.get());
@@ -91,7 +91,7 @@ public class OptionsTest extends BaseTest {
                 .put("currentTabId", BOTTOM_TABS_CURRENT_TAB_ID)
                 .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX.get())
                 .put("visible", BOTTOM_TABS_VISIBLE.get())
-                .put("animateHide", BOTTOM_TABS_ANIMATE_HIDE.get());
+                .put("animate", BOTTOM_TABS_ANIMATE.get());
     }
 
     @NonNull
@@ -145,12 +145,12 @@ public class OptionsTest extends BaseTest {
     }
 
     @NonNull
-    private JSONObject createOtherTabBar() throws JSONException {
+    private JSONObject createOtherBottomTabs() throws JSONException {
         return new JSONObject()
                 .put("currentTabId", BOTTOM_TABS_CURRENT_TAB_ID)
                 .put("currentTabIndex", BOTTOM_TABS_CURRENT_TAB_INDEX)
                 .put("visible", BOTTOM_TABS_VISIBLE)
-                .put("animateHide", BOTTOM_TABS_ANIMATE_HIDE)
+                .put("animate", BOTTOM_TABS_ANIMATE.get())
                 .put("tabBadge", BOTTOM_TABS_BADGE);
     }
 
@@ -189,7 +189,7 @@ public class OptionsTest extends BaseTest {
         JSONObject defaultJson = new JSONObject()
                 .put("topBar", createOtherTopBar())
                 .put("fab", createOtherFab())
-                .put("bottomTabs", createOtherTabBar());
+                .put("bottomTabs", createOtherBottomTabs());
         Options defaultOptions = Options.parse(mockLoader, defaultJson);
 
         JSONObject json = new JSONObject()
@@ -210,7 +210,7 @@ public class OptionsTest extends BaseTest {
     public void topBar_defaultOptions() throws Exception {
         Options uut = new Options();
         assertThat(uut.topBarOptions.visible.isFalseOrUndefined()).isTrue();
-        assertThat(uut.topBarOptions.animateHide.isTrueOrUndefined()).isTrue();
+        assertThat(uut.topBarOptions.animate.isTrueOrUndefined()).isTrue();
     }
 
     @Test

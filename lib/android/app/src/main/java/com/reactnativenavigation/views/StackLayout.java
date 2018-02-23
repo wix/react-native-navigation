@@ -4,14 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.FabOptionsPresenter;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 
@@ -20,8 +15,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressLint("ViewConstructor")
 public class StackLayout extends RelativeLayout {
-
-    private final TopBar topBar;
+    private TopBar topBar;
 
     public StackLayout(Context context, TitleBarButton.OnClickListener topBarButtonClickListener) {
         super(context);
@@ -39,9 +33,8 @@ public class StackLayout extends RelativeLayout {
         new OptionsPresenter(topBar, component).applyOptions(options);
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    public TopBar getTopBar() {
-        return topBar;
+    public void onChildWillDisappear(Options disappearing, Options appearing) {
+        new OptionsPresenter(topBar).onChildWillDisappear(disappearing, appearing);
     }
 
     public void clearOptions() {
@@ -54,5 +47,15 @@ public class StackLayout extends RelativeLayout {
 
     public void clearTopTabs() {
         topBar.clearTopTabs();
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public TopBar getTopBar() {
+        return topBar;
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public void setTopBar(TopBar topBar) {
+        this.topBar = topBar;
     }
 }
