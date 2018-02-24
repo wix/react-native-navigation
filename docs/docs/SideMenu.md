@@ -5,5 +5,6 @@
 | Name | Type |
 | --- | --- |
 | left | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Component">Component</a> | 
+| center | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Component">Component</a> | 
 | right | <a href="https://wix.github.io/react-native-navigation/v2/#/docs/Component">Component</a> | 
 
