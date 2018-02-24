@@ -117,7 +117,6 @@
 		return BuildConfig.DEBUG;
 	}
 
-	@Nullable
 	@Override
 	public List<ReactPackage> createAdditionalReactPackages() {
 		return Arrays.<ReactPackage>asList(
