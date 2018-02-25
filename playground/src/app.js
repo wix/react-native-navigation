@@ -47,7 +47,7 @@ function start() {
           }
         },
         pop : {
-          rotation: {
+          rotationY: {
             from: 0,
             to: -360,
             duration: 500,

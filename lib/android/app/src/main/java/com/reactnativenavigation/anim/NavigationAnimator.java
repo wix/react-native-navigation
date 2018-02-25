@@ -22,7 +22,7 @@ import java.util.List;
 @SuppressWarnings("ResourceType")
 public class NavigationAnimator {
 
-    private AnimationsOptions options;
+    private AnimationsOptions options = new AnimationsOptions();
 
     public interface NavigationAnimationListener {
         void onAnimationEnd();
@@ -40,7 +40,7 @@ public class NavigationAnimator {
     public void animatePush(final View view, @Nullable final NavigationAnimationListener animationListener) {
         view.setVisibility(View.INVISIBLE);
         AnimatorSet set;
-        if (options != null && !options.push.isEmpty()) {
+        if (!options.push.isEmpty()) {
             set = createAnimation(options.push, view);
         } else {
             set = getDefaultPushAnimation(view);
@@ -77,7 +77,7 @@ public class NavigationAnimator {
 
     public void animatePop(View view, @Nullable final NavigationAnimationListener animationListener) {
         AnimatorSet set;
-        if (options != null && !options.pop.isEmpty()) {
+        if (!options.pop.isEmpty()) {
             set = createAnimation(options.pop, view);
         } else {
             set = getDefaultPopAnimation(view);
