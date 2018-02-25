@@ -67,7 +67,7 @@ class WelcomeScreen extends Component {
                     },
                     options: {
                       topBar: {
-                        visible: true,
+                        visible: (Platform.OS === 'android') ? true : false,
                         title: 'React Native Navigation!'
                       }
                     }

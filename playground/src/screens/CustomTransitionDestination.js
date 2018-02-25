@@ -30,11 +30,12 @@ class CustomTransitionDestination extends Component {
   pop() {
     Navigation.pop(this.props.componentId, {
       customTransition: {
-        animations: [{ type: 'sharedElement', fromId: 'title2', toId: 'title1', startDelay: 0, springVelocity: 0.2, duration: 0.5 },
-        { type: 'sharedElement', toId: 'image1', fromId: 'customDestinationImage', startDelay: 0, springVelocity: 0.2, duration: 0.5 },
-        { type: 'sharedElement', toId: 'image2', fromId: 'customDestinationImage2', startDelay: 0, duration: 0.8 },
-        { fromId: 'image4', startY: 50, startX: 50, startAlpha: 0, startDelay: 0, duration: 0.8, springVelocity: 0.5 },
-        { fromId: 'customDestinationParagraph', endY: 50, endX: 50, endAlpha: 0, startAlpha: 1, startDelay: 0, duration: 0.8 }
+        animations: [
+          { type: 'sharedElement', fromId: 'title2', toId: 'title1', startDelay: 0, springVelocity: 0.2, duration: 0.5 },
+          { type: 'sharedElement', toId: 'image1', fromId: 'customDestinationImage', startDelay: 0, springVelocity: 0.2, duration: 0.5 },
+          { type: 'sharedElement', toId: 'image2', fromId: 'customDestinationImage2', startDelay: 0, duration: 0.8 },
+          { fromId: 'image4', x: { from: 50 }, y: { from: 50 }, startAlpha: 0, startDelay: 0, duration: 0.8, springVelocity: 0.5 },
+          { fromId: 'customDestinationParagraph', y: { to: 50 }, x: { to: 50 }, endAlpha: 0, startAlpha: 1, startDelay: 0, duration: 0.8 }
         ],
         duration: 0.8
       }
