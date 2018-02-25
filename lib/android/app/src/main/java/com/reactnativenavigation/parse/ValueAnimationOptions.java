@@ -1,6 +1,8 @@
 package com.reactnativenavigation.parse;
 
 
+import android.animation.Animator;
+
 import com.reactnativenavigation.parse.params.FloatParam;
 import com.reactnativenavigation.parse.params.Interpolation;
 import com.reactnativenavigation.parse.params.NullFloatParam;
@@ -71,5 +73,14 @@ public class ValueAnimationOptions implements DEFAULT_VALUES {
 
     public boolean isEmpty() {
         return empty;
+    }
+
+
+    public void setUpAnimator(Animator animator) {
+        animator.setInterpolator(this.interpolation.getInterpolator());
+        if (this.duration.hasValue())
+            animator.setDuration(this.duration.get());
+        if (this.startDelay.hasValue())
+            animator.setStartDelay(this.startDelay.get());
     }
 }

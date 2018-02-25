@@ -1,7 +1,15 @@
 package com.reactnativenavigation.parse;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.view.View;
+
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AnimationOptions {
 
@@ -64,5 +72,53 @@ public class AnimationOptions {
 
     public boolean isEmpty() {
         return empty;
+    }
+
+    public AnimatorSet getAnimation(View view) {
+        AnimatorSet animationSet = new AnimatorSet();
+        List<Animator> animators = new ArrayList<>();
+        if (!this.alpha.isEmpty()) {
+            ObjectAnimator alpha = ObjectAnimator.ofFloat(view, View.ALPHA, this.alpha.from.get(), this.alpha.to.get());
+            this.alpha.setUpAnimator(alpha);
+            animators.add(alpha);
+        }
+        if (!this.y.isEmpty()) {
+            ObjectAnimator y = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, this.y.from.get(), this.y.to.get());
+            this.alpha.setUpAnimator(y);
+            animators.add(y);
+        }
+        if (!this.x.isEmpty()) {
+            ObjectAnimator x = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, this.x.from.get(), this.x.to.get());
+            this.x.setUpAnimator(x);
+            animators.add(x);
+        }
+        if (!this.scaleY.isEmpty()) {
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, View.SCALE_Y, this.scaleY.from.get(), this.scaleY.to.get());
+            this.scaleY.setUpAnimator(scaleY);
+            animators.add(scaleY);
+        }
+        if (!this.scaleX.isEmpty()) {
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, View.SCALE_X, this.scaleX.from.get(), this.scaleX.to.get());
+            this.scaleX.setUpAnimator(scaleX);
+            animators.add(scaleX);
+        }
+        if (!this.rotationX.isEmpty()) {
+            ObjectAnimator rotationX = ObjectAnimator.ofFloat(view, View.ROTATION_X, this.rotationX.from.get(), this.rotationX.to.get());
+            this.rotationX.setUpAnimator(rotationX);
+            animators.add(rotationX);
+        }
+        if (!this.rotationY.isEmpty()) {
+            ObjectAnimator rotationY = ObjectAnimator.ofFloat(view, View.ROTATION_Y, this.rotationY.from.get(), this.rotationY.to.get());
+            this.rotationY.setUpAnimator(rotationY);
+            animators.add(rotationY);
+        }
+        if (!this.rotation.isEmpty()) {
+            ObjectAnimator rotation = ObjectAnimator.ofFloat(view, View.ROTATION, this.rotation.from.get(), this.rotation.to.get());
+            this.rotationY.setUpAnimator(rotation);
+            animators.add(rotation);
+        }
+
+        animationSet.playTogether(animators);
+        return animationSet;
     }
 }
