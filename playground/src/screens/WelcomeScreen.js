@@ -67,7 +67,8 @@ class WelcomeScreen extends Component {
                     },
                     options: {
                       topBar: {
-                        visible: false
+                        visible: true,
+                        title: 'React Native Navigation!'
                       }
                     }
                   }
