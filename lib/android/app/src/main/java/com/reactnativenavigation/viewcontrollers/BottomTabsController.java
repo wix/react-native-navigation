@@ -12,7 +12,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.views.BottomTabs;
@@ -52,14 +52,14 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     @Override
     public void applyOptions(Options options) {
         super.applyOptions(options);
-        new BottomTabOptionsPresenter(bottomTabs).present(options);
+        new BottomTabsOptionsPresenter(bottomTabs).present(options);
     }
 
     @Override
     public void applyOptions(Options options, ReactComponent childComponent) {
         super.applyOptions(options, childComponent);
         int tabIndex = findTabContainingComponent(childComponent);
-        if (tabIndex >= 0) new BottomTabOptionsPresenter(bottomTabs).present(options, tabIndex);
+        if (tabIndex >= 0) new BottomTabsOptionsPresenter(bottomTabs).present(options, tabIndex);
         applyOnParentController(parentController ->
                 ((ParentController) parentController).applyOptions(this.options.copy().clearBottomTabsOptions().clearBottomTabOptions(), childComponent)
         );

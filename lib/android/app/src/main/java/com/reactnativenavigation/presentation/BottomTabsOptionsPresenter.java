@@ -7,10 +7,10 @@ import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.views.BottomTabs;
 
-public class BottomTabOptionsPresenter {
+public class BottomTabsOptionsPresenter {
     private BottomTabs bottomTabs;
 
-    public BottomTabOptionsPresenter(BottomTabs bottomTabs) {
+    public BottomTabsOptionsPresenter(BottomTabs bottomTabs) {
         this.bottomTabs = bottomTabs;
     }
 
