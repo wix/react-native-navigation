@@ -17,7 +17,7 @@ public class AnimationOptions {
         AnimationOptions options = new AnimationOptions();
         if (json == null) return options;
 
-        options.empty = false;
+        options.hasValue = true;
 
         options.y = ValueAnimationOptions.parse(json.optJSONObject("y"));
         options.x = ValueAnimationOptions.parse(json.optJSONObject("x"));
@@ -31,7 +31,7 @@ public class AnimationOptions {
         return options;
     }
 
-    private boolean empty = true;
+    private boolean hasValue = false;
 
     public ValueAnimationOptions y = new ValueAnimationOptions();
     public ValueAnimationOptions x = new ValueAnimationOptions();
@@ -43,8 +43,8 @@ public class AnimationOptions {
     public ValueAnimationOptions scaleX = new ValueAnimationOptions();
 
     void mergeWith(AnimationOptions other) {
-        if (!other.isEmpty()) {
-            empty = false;
+        if (other.hasValue()) {
+            hasValue = true;
         }
         y.mergeWith(other.y);
         x.mergeWith(other.x);
@@ -57,8 +57,8 @@ public class AnimationOptions {
     }
 
     void mergeWithDefault(AnimationOptions defaultOptions) {
-        if (!defaultOptions.isEmpty()) {
-            empty = false;
+        if (defaultOptions.hasValue()) {
+            hasValue = true;
         }
         y.mergeWithDefault(defaultOptions.y);
         x.mergeWithDefault(defaultOptions.x);
@@ -70,49 +70,49 @@ public class AnimationOptions {
         rotation.mergeWithDefault(defaultOptions.rotation);
     }
 
-    public boolean isEmpty() {
-        return empty;
+    public boolean hasValue() {
+        return hasValue;
     }
 
     public AnimatorSet getAnimation(View view) {
         AnimatorSet animationSet = new AnimatorSet();
         List<Animator> animators = new ArrayList<>();
-        if (!this.alpha.isEmpty()) {
+        if (this.alpha.hasValue()) {
             ObjectAnimator alpha = ObjectAnimator.ofFloat(view, View.ALPHA, this.alpha.from.get(), this.alpha.to.get());
             this.alpha.setUpAnimator(alpha);
             animators.add(alpha);
         }
-        if (!this.y.isEmpty()) {
+        if (this.y.hasValue()) {
             ObjectAnimator y = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, this.y.from.get(), this.y.to.get());
             this.alpha.setUpAnimator(y);
             animators.add(y);
         }
-        if (!this.x.isEmpty()) {
+        if (this.x.hasValue()) {
             ObjectAnimator x = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, this.x.from.get(), this.x.to.get());
             this.x.setUpAnimator(x);
             animators.add(x);
         }
-        if (!this.scaleY.isEmpty()) {
+        if (this.scaleY.hasValue()) {
             ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, View.SCALE_Y, this.scaleY.from.get(), this.scaleY.to.get());
             this.scaleY.setUpAnimator(scaleY);
             animators.add(scaleY);
         }
-        if (!this.scaleX.isEmpty()) {
+        if (this.scaleX.hasValue()) {
             ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, View.SCALE_X, this.scaleX.from.get(), this.scaleX.to.get());
             this.scaleX.setUpAnimator(scaleX);
             animators.add(scaleX);
         }
-        if (!this.rotationX.isEmpty()) {
+        if (this.rotationX.hasValue()) {
             ObjectAnimator rotationX = ObjectAnimator.ofFloat(view, View.ROTATION_X, this.rotationX.from.get(), this.rotationX.to.get());
             this.rotationX.setUpAnimator(rotationX);
             animators.add(rotationX);
         }
-        if (!this.rotationY.isEmpty()) {
+        if (this.rotationY.hasValue()) {
             ObjectAnimator rotationY = ObjectAnimator.ofFloat(view, View.ROTATION_Y, this.rotationY.from.get(), this.rotationY.to.get());
             this.rotationY.setUpAnimator(rotationY);
             animators.add(rotationY);
         }
-        if (!this.rotation.isEmpty()) {
+        if (this.rotation.hasValue()) {
             ObjectAnimator rotation = ObjectAnimator.ofFloat(view, View.ROTATION, this.rotation.from.get(), this.rotation.to.get());
             this.rotationY.setUpAnimator(rotation);
             animators.add(rotation);

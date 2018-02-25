@@ -20,7 +20,7 @@ public class ValueAnimationOptions implements DEFAULT_VALUES {
         ValueAnimationOptions options = new ValueAnimationOptions();
         if (json == null) return options;
 
-        options.empty = false;
+        options.hasValue = true;
 
         options.from = FloatParser.parse(json, "from");
         options.to = FloatParser.parse(json, "to");
@@ -31,7 +31,7 @@ public class ValueAnimationOptions implements DEFAULT_VALUES {
         return options;
     }
 
-    private boolean empty = true;
+    private boolean hasValue = false;
 
     public FloatParam from = new NullFloatParam();
     public FloatParam to = new NullFloatParam();
@@ -40,8 +40,8 @@ public class ValueAnimationOptions implements DEFAULT_VALUES {
     public Interpolation interpolation = Interpolation.NO_VALUE;
 
     void mergeWith(final ValueAnimationOptions other) {
-        if (!other.isEmpty()) {
-            empty = false;
+        if (other.hasValue()) {
+            hasValue = true;
         }
         if (other.from.hasValue())
             from = other.from;
@@ -56,8 +56,8 @@ public class ValueAnimationOptions implements DEFAULT_VALUES {
     }
 
     void mergeWithDefault(ValueAnimationOptions defaultOptions) {
-        if (!defaultOptions.isEmpty()) {
-            empty = false;
+        if (defaultOptions.hasValue()) {
+            hasValue = true;
         }
         if (!from.hasValue())
             from = defaultOptions.from;
@@ -71,8 +71,8 @@ public class ValueAnimationOptions implements DEFAULT_VALUES {
             interpolation = defaultOptions.interpolation;
     }
 
-    public boolean isEmpty() {
-        return empty;
+    public boolean hasValue() {
+        return hasValue;
     }
 
 

@@ -11,22 +11,13 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
-import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.AnimationsOptions;
-import com.reactnativenavigation.parse.ValueAnimationOptions;
 import com.reactnativenavigation.utils.UiUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("ResourceType")
 public class NavigationAnimator {
 
     private AnimationsOptions options = new AnimationsOptions();
-
-    public interface NavigationAnimationListener {
-        void onAnimationEnd();
-    }
 
     private static final int DURATION = 300;
     private static final DecelerateInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();
@@ -37,10 +28,10 @@ public class NavigationAnimator {
         translationY = UiUtils.getWindowHeight(context);
     }
 
-    public void animatePush(final View view, @Nullable final NavigationAnimationListener animationListener) {
+    public void animatePush(final View view, @Nullable final AnimationListener animationListener) {
         view.setVisibility(View.INVISIBLE);
         AnimatorSet set;
-        if (!options.push.isEmpty()) {
+        if (options.push.hasValue()) {
             set = options.push.getAnimation(view);
         } else {
             set = getDefaultPushAnimation(view);
@@ -75,9 +66,9 @@ public class NavigationAnimator {
         return set;
     }
 
-    public void animatePop(View view, @Nullable final NavigationAnimationListener animationListener) {
+    public void animatePop(View view, @Nullable final AnimationListener animationListener) {
         AnimatorSet set;
-        if (!options.pop.isEmpty()) {
+        if (options.pop.hasValue()) {
             set = options.pop.getAnimation(view);
         } else {
             set = getDefaultPopAnimation(view);
