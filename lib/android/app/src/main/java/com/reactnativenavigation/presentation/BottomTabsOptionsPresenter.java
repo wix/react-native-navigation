@@ -1,7 +1,5 @@
 package com.reactnativenavigation.presentation;
 
-import android.support.annotation.IntRange;
-
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
@@ -18,13 +16,13 @@ public class BottomTabsOptionsPresenter {
         applyBottomTabsOptions(options.bottomTabsOptions);
     }
 
-    public void present(Options options, @IntRange(from = 0) int bottomTabIndex) {
-        applyBottomTabOptions(options.bottomTabOptions, bottomTabIndex);
+    public void present(Options options, int tabIndex) {
+        applyBottomTabOptions(options.bottomTabOptions, tabIndex);
     }
 
-    private void applyBottomTabOptions(BottomTabOptions options, int bottomTabIndex) {
+    private void applyBottomTabOptions(BottomTabOptions options, int tabIndex) {
         if (options.badge.hasValue()) {
-            bottomTabs.setBadge(bottomTabIndex, options.badge);
+            bottomTabs.setBadge(tabIndex, options.badge);
         }
     }
 

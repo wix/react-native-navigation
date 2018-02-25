@@ -134,9 +134,8 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	@Override
 	public void mergeOptions(Options options) {
         this.options = this.options.mergeWith(options);
-        if (options.bottomTabsOptions.currentTabIndex.hasValue()) {
-            selectTabAtIndex(options.bottomTabsOptions.currentTabIndex.get());
-        }
+        new BottomTabsOptionsPresenter(bottomTabs).present(this.options);
+
         if (options.bottomTabsOptions.currentTabId.hasValue()) {
             Text id = options.bottomTabsOptions.currentTabId;
             for (ViewController controller : tabs) {
