@@ -3,13 +3,16 @@ package com.reactnativenavigation.presentation;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.views.BottomTabs;
 
 public class BottomTabsOptionsPresenter {
     private BottomTabs bottomTabs;
+    private BottomTabFinder bottomTabFinder;
 
-    public BottomTabsOptionsPresenter(BottomTabs bottomTabs) {
+    public BottomTabsOptionsPresenter(BottomTabs bottomTabs, BottomTabFinder bottomTabFinder) {
         this.bottomTabs = bottomTabs;
+        this.bottomTabFinder = bottomTabFinder;
     }
 
     public void present(Options options) {
@@ -41,6 +44,16 @@ public class BottomTabsOptionsPresenter {
         }
         if (options.tabColor.hasValue()) {
             bottomTabs.setInactiveColor(options.tabColor.get());
+        }
+        if (options.currentTabId.hasValue()) {
+            int tabIndex = bottomTabFinder.findByControllerId(options.currentTabId.get());
+            if (tabIndex >= 0) bottomTabs.setCurrentItem(tabIndex);
+        }
+        if (options.visible.isTrueOrUndefined()) {
+            bottomTabs.restoreBottomNavigation(options.animate.isTrueOrUndefined());
+        }
+        if (options.visible.isFalse()) {
+            bottomTabs.hideBottomNavigation(options.animate.isTrueOrUndefined());
         }
     }
 }

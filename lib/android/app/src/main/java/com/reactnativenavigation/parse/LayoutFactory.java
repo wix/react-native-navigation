@@ -6,7 +6,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.NoOpPromise;
 import com.reactnativenavigation.utils.TypefaceLoader;
-import com.reactnativenavigation.viewcontrollers.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.SideMenuController;
 import com.reactnativenavigation.viewcontrollers.StackController;

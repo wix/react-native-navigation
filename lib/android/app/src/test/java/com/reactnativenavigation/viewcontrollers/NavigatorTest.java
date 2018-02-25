@@ -13,6 +13,7 @@ import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 
 import org.junit.Test;
 
