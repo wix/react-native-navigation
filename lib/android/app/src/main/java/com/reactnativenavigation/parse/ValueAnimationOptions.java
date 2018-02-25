@@ -2,6 +2,9 @@ package com.reactnativenavigation.parse;
 
 
 import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.util.Property;
+import android.view.View;
 
 import com.reactnativenavigation.parse.params.FloatParam;
 import com.reactnativenavigation.parse.params.Interpolation;
@@ -16,12 +19,10 @@ import org.json.JSONObject;
 
 public class ValueAnimationOptions implements DEFAULT_VALUES {
 
-    public static ValueAnimationOptions parse(JSONObject json) {
+    public static ValueAnimationOptions parse(JSONObject json, Property<View, Float> property) {
         ValueAnimationOptions options = new ValueAnimationOptions();
-        if (json == null) return options;
 
-        options.hasValue = true;
-
+        options.animProp = property;
         options.from = FloatParser.parse(json, "from");
         options.to = FloatParser.parse(json, "to");
         options.duration = NumberParser.parse(json, "duration");
@@ -31,56 +32,38 @@ public class ValueAnimationOptions implements DEFAULT_VALUES {
         return options;
     }
 
-    private boolean hasValue = false;
+    private Property<View, Float> animProp;
 
-    public FloatParam from = new NullFloatParam();
-    public FloatParam to = new NullFloatParam();
-    public Number duration = new NullNumber();
-    public Number startDelay = new NullNumber();
-    public Interpolation interpolation = Interpolation.NO_VALUE;
+    private FloatParam from = new NullFloatParam();
+    private FloatParam to = new NullFloatParam();
+    private Number duration = new NullNumber();
+    private Number startDelay = new NullNumber();
+    private Interpolation interpolation = Interpolation.NO_VALUE;
 
-    void mergeWith(final ValueAnimationOptions other) {
-        if (other.hasValue()) {
-            hasValue = true;
-        }
-        if (other.from.hasValue())
-            from = other.from;
-        if (other.to.hasValue())
-            to = other.to;
-        if (other.duration.hasValue())
-            duration = other.duration;
-        if (other.startDelay.hasValue())
-            startDelay = other.startDelay;
-        if (other.interpolation != Interpolation.NO_VALUE)
-            interpolation = other.interpolation;
-    }
-
-    void mergeWithDefault(ValueAnimationOptions defaultOptions) {
-        if (defaultOptions.hasValue()) {
-            hasValue = true;
-        }
-        if (!from.hasValue())
-            from = defaultOptions.from;
-        if (!to.hasValue())
-            to = defaultOptions.to;
-        if (!duration.hasValue())
-            duration = defaultOptions.duration;
-        if (!startDelay.hasValue())
-            startDelay = defaultOptions.startDelay;
-        if (interpolation == Interpolation.NO_VALUE)
-            interpolation = defaultOptions.interpolation;
-    }
-
-    public boolean hasValue() {
-        return hasValue;
-    }
-
-
-    public void setUpAnimator(Animator animator) {
+    Animator getAnimation(View view) {
+        if (!this.from.hasValue() || !this.to.hasValue())
+            throw new IllegalArgumentException("Params 'from' and 'to' are mandatory");
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, animProp, this.from.get(), this.to.get());
         animator.setInterpolator(this.interpolation.getInterpolator());
         if (this.duration.hasValue())
             animator.setDuration(this.duration.get());
         if (this.startDelay.hasValue())
             animator.setStartDelay(this.startDelay.get());
+        return animator;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ValueAnimationOptions options = (ValueAnimationOptions) o;
+
+        return animProp.equals(options.animProp);
+    }
+
+    @Override
+    public int hashCode() {
+        return animProp.hashCode();
     }
 }

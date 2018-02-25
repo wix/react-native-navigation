@@ -60,11 +60,11 @@ function start() {
             interpolation: 'accelerate',
             startDelay: 100
           },
-          // alpha: {
-          //   from: 1,
-          //   to: 0,
-          //   duration: 500
-          // }
+          alpha: {
+            from: 1,
+            to: 0,
+            duration: 500
+          }
         }
       }
     });
