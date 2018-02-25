@@ -13,12 +13,12 @@ public class TestNavigationAnimator extends NavigationAnimator {
     }
 
     @Override
-    public void animatePush(final View enteringView, NavigationAnimationListener animationListener) {
+    public void animatePush(final View enteringView, AnimationListener animationListener) {
         if (animationListener != null) animationListener.onAnimationEnd();
     }
 
     @Override
-    public void animatePop(final View enteringView, NavigationAnimationListener animationListener) {
+    public void animatePop(final View enteringView, AnimationListener animationListener) {
         if (animationListener != null) animationListener.onAnimationEnd();
     }
 }

@@ -32,13 +32,13 @@ function start() {
             duration: 500,
             interpolation: 'decelerate',
           },
-          // x: {
-          //   from: 1000,
-          //   to: 0,
-          //   duration: 500,
-          //   interpolation: 'decelerate',
-          //   startDelay: 100
-          // },
+          x: {
+            from: 1000,
+            to: 0,
+            duration: 500,
+            interpolation: 'decelerate',
+            startDelay: 100
+          },
           scaleY: {
             from: 0,
             to: 1,
