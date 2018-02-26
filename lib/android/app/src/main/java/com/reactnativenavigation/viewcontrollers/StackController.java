@@ -46,6 +46,7 @@ public class StackController extends ParentController <StackLayout> {
                 ((ParentController) parentController).applyOptions(this.options.copy().clearTopBarOptions(), component)
         );
         fabOptionsPresenter.applyOptions(options.fabOptions, component, getView());
+        animator.setOptions(options.animationsOptions);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.reactnativenavigation.parse;
 
 import com.facebook.react.bridge.*;
 import com.reactnativenavigation.*;
+import com.reactnativenavigation.parse.parsers.JSONParser;
 
 import org.json.*;
 import org.junit.*;

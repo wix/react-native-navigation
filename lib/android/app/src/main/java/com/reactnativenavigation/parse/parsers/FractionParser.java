@@ -1,4 +1,7 @@
-package com.reactnativenavigation.parse;
+package com.reactnativenavigation.parse.parsers;
+
+import com.reactnativenavigation.parse.params.Fraction;
+import com.reactnativenavigation.parse.params.NullFraction;
 
 import org.json.JSONObject;
 

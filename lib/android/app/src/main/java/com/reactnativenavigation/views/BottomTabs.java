@@ -2,9 +2,10 @@ package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.IntRange;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
-import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CompatUtils;
 
 @SuppressLint("ViewConstructor")
@@ -23,5 +24,10 @@ public class BottomTabs extends AHBottomNavigation {
 
     public void setBadge(int bottomTabIndex, Text badge) {
         setNotification(badge.get(), bottomTabIndex);
+    }
+
+    @Override
+    public void setCurrentItem(@IntRange(from = 0) int position) {
+        super.setCurrentItem(position);
     }
 }

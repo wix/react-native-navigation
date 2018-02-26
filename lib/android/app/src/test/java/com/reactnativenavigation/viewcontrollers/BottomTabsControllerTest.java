@@ -8,10 +8,12 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.parse.Color;
+import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.ReactComponent;
 
@@ -44,7 +46,7 @@ public class BottomTabsControllerTest extends BaseTest {
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
-        uut = new BottomTabsController(activity, imageLoaderMock, "uut", new Options());
+        uut = spy(new BottomTabsController(activity, imageLoaderMock, "uut", new Options()));
         child1 = spy(new SimpleViewController(activity, "child1", tabOptions));
         child2 = spy(new SimpleViewController(activity, "child2", tabOptions));
         child3 = spy(new SimpleViewController(activity, "child3", tabOptions));
@@ -138,6 +140,18 @@ public class BottomTabsControllerTest extends BaseTest {
         verify(stack, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
         assertThat(viewCaptor.getValue()).isEqualTo(child1.getView());
         assertThat(optionsCaptor.getValue().bottomTabsOptions.tabColor.hasValue()).isFalse();
+    }
+
+    @Test
+    public void mergeOptions_currentTabIndex() throws Exception {
+        List<ViewController> tabs = createTabs();
+        uut.setTabs(tabs);
+        uut.ensureViewIsCreated();
+
+        Options options = new Options();
+        options.bottomTabsOptions.currentTabIndex = new Number(1);
+        uut.mergeOptions(options);
+        verify(uut, times(1)).selectTabAtIndex(1);
     }
 
     @Test

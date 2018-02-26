@@ -5,8 +5,18 @@ import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.params.NullColor;
+import com.reactnativenavigation.parse.params.NullFraction;
+import com.reactnativenavigation.parse.params.NullText;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.BoolParser;
+import com.reactnativenavigation.parse.parsers.ColorParser;
+import com.reactnativenavigation.parse.parsers.FractionParser;
+import com.reactnativenavigation.parse.parsers.TextParser;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;

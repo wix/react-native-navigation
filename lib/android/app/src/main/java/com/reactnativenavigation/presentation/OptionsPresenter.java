@@ -1,6 +1,6 @@
 package com.reactnativenavigation.presentation;
 
-import com.reactnativenavigation.parse.Button;
+import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;

@@ -27,7 +27,7 @@ public class LayoutNode {
 		this(id, type, new JSONObject(), new ArrayList<>());
 	}
 
-	LayoutNode(String id, Type type, JSONObject data, List<LayoutNode> children) {
+	public LayoutNode(String id, Type type, JSONObject data, List<LayoutNode> children) {
 		this.id = id;
 		this.type = type;
 		this.data = data;
