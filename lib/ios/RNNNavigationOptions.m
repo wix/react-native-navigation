@@ -23,7 +23,6 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.screenBackgroundColor = [options objectForKey:@"screenBackgroundColor"];
 	self.backButtonTransition = [options objectForKey:@"backButtonTransition"];
 	self.orientation = [options objectForKey:@"orientation"];
-	self.isCustom = [options objectForKey:@"isCustom"];
 	self.topBar = [[RNNTopBarOptions alloc] initWithDict:[options objectForKey:@"topBar"]];
 	self.topTab = [[RNNTopTabOptions alloc] initWithDict:[options objectForKey:@"topTab"]];
 	self.bottomTabs = [[RNNBottomTabsOptions alloc] initWithDict:[options objectForKey:@"bottomTabs"]];
