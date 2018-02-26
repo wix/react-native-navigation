@@ -1,10 +1,10 @@
-#import "RNNTransitionOptions.h"
+#import "RNNAnimationOptions.h"
 
 #define DEFAULT_DURATION @(0.7)
 #define DEFAULT_SPRING_VELOCITY @(0.8)
 #define DEFAULT_SPRING_DAMPING @(0.85)
 
-@implementation RNNTransitionOptions
+@implementation RNNAnimationOptions
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	if (!dict[@"animations"]) {

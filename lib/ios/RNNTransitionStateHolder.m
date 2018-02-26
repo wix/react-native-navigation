@@ -1,6 +1,5 @@
 #import "RNNTransitionStateHolder.h"
 #import "RNNUtils.h"
-#import "RNNElementFinder.h"
 
 @implementation RNNTransitionStateHolder
 
@@ -19,12 +18,7 @@
 	self.endY = [RNNUtils getDoubleOrKey:transition[@"y"] withKey:@"to" withDefault:0];
 	self.fromId = [transition objectForKey:@"fromId"];
 	self.toId = [transition objectForKey:@"toId"];
-	self.fromElement = nil;
 	self.fromElementType = nil;
-	self.fromElementResizeMode = UIViewContentModeScaleAspectFill;
-	self.toElement = nil;
-	self.animatedView = nil;
-	self.locations  = nil; 
 	self.isSharedElementTransition = [[transition objectForKey:@"type"] isEqualToString:@"sharedElement"];
 	return self;
 }

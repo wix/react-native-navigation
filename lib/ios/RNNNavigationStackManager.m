@@ -60,7 +60,7 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	self.fromVC = nil;
 }
 
--(void)pop:(NSString *)componentId withTransitionOptions:(RNNTransitionOptions *)transitionOptions {
+-(void)pop:(NSString *)componentId withTransitionOptions:(RNNAnimationOptions *)transitionOptions {
 	UIViewController<RNNRootViewProtocol>* vc = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
 	UINavigationController* nvc = [vc navigationController];
 	if ([nvc topViewController] == vc) {

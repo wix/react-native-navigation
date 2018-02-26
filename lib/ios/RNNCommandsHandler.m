@@ -77,7 +77,7 @@
 	}];
 	
 	NSDictionary* animationData = options[@"customTransition"];
-	RNNTransitionOptions* transitionOptions = [[RNNTransitionOptions alloc] initWithDict:animationData];
+	RNNAnimationOptions* transitionOptions = [[RNNAnimationOptions alloc] initWithDict:animationData];
 	
 	if (transitionOptions){
 		if (transitionOptions.animations) {
