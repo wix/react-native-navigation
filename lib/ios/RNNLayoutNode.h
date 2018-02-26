@@ -12,6 +12,7 @@
 +(instancetype)create:(NSDictionary *)json;
 
 -(BOOL)isComponent;
+-(BOOL)isNativeComponent;
 -(BOOL)isStack;
 -(BOOL)isTabs;
 -(BOOL)isTopTabs;

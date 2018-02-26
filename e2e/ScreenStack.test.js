@@ -93,4 +93,10 @@ describe('screen stack', () => {
     await elementById(testIDs.POP_BUTTON).tap();
     await expect(elementByLabel('Screen 1')).toBeVisible();
   });
+
+  it(':ios: push native component with options', async () => {
+    await elementById(testIDs.PUSH_NATIVE_COMPONENT_BUTTON).tap();
+    await expect(elementById('TestLabel')).toBeVisible();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
+  });
 });

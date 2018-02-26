@@ -7,6 +7,7 @@
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* componentName;
 @property (nonatomic) BOOL _statusBarHidden;
+@property (nonatomic) BOOL isNativeComponent;
 @end
 
 @implementation RNNRootViewController
@@ -15,7 +16,8 @@
 				withOptions:(RNNNavigationOptions*)options
 			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter {
+			   eventEmitter:(RNNEventEmitter*)eventEmitter
+		  isNativeComponent:(BOOL)isNativeComponent {
 	self = [super init];
 	self.componentId = componentId;
 	self.componentName = name;
@@ -23,8 +25,9 @@
 	self.eventEmitter = eventEmitter;
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	self.creator = creator;
-
-	if ([self.options.isCustom boolValue]) {
+	self.isNativeComponent = isNativeComponent;
+	
+	if (self.isNativeComponent) {
 		[self addExternalVC:name];
 	} else {
 		self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
@@ -96,7 +99,7 @@
 }
 
 - (BOOL)isCustomViewController {
-	return [self.options.isCustom boolValue];
+	return self.isNativeComponent;
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -161,6 +164,7 @@
 				UIViewController *viewController = (UIViewController*)obj;
 				[self addChildViewController:viewController];
 				self.view = [[UIView alloc] init];
+				self.view.backgroundColor = [UIColor whiteColor];
 				[self.view addSubview:viewController.view];
 			}
 			else {
