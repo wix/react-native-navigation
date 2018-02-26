@@ -27,6 +27,7 @@ public class Options implements DEFAULT_VALUES {
         result.overlayOptions = OverlayOptions.parse(json.optJSONObject("overlay"));
         result.fabOptions = FabOptions.parse(json.optJSONObject("fab"));
         result.animationsOptions = AnimationsOptions.parse(json.optJSONObject("animations"));
+        result.sideMenuRootOptions = SideMenuRootOptions.parse(json.optJSONObject("sideMenu"));
 
         return result.withDefaultOptions(defaultOptions);
     }
@@ -39,6 +40,7 @@ public class Options implements DEFAULT_VALUES {
     @NonNull public OverlayOptions overlayOptions = new OverlayOptions();
     @NonNull public FabOptions fabOptions = new FabOptions();
     @NonNull public AnimationsOptions animationsOptions = new AnimationsOptions();
+    @NonNull public SideMenuRootOptions sideMenuRootOptions = new SideMenuRootOptions();
 
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;
@@ -55,6 +57,7 @@ public class Options implements DEFAULT_VALUES {
         result.overlayOptions = overlayOptions;
         result.fabOptions.mergeWith(fabOptions);
         result.animationsOptions.mergeWith(animationsOptions);
+        result.sideMenuRootOptions.mergeWith(sideMenuRootOptions);
         return result;
     }
 
@@ -68,6 +71,7 @@ public class Options implements DEFAULT_VALUES {
         result.bottomTabsOptions.mergeWith(other.bottomTabsOptions);
         result.fabOptions.mergeWith(other.fabOptions);
         result.animationsOptions.mergeWith(other.animationsOptions);
+        result.sideMenuRootOptions.mergeWith(other.sideMenuRootOptions);
         return result;
     }
 
@@ -79,6 +83,7 @@ public class Options implements DEFAULT_VALUES {
         bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
         fabOptions.mergeWithDefault(other.fabOptions);
         animationsOptions.mergeWithDefault(other.animationsOptions);
+        sideMenuRootOptions.mergeWithDefault(other.sideMenuRootOptions);
         return this;
     }
 
@@ -104,6 +109,11 @@ public class Options implements DEFAULT_VALUES {
 
     public Options clearBottomTabOptions() {
         bottomTabOptions = new BottomTabOptions();
+        return this;
+    }
+
+    public Options clearSideMenuOptions() {
+        sideMenuRootOptions = new SideMenuRootOptions();
         return this;
     }
 }
