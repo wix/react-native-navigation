@@ -619,13 +619,20 @@
 	XCTAssertTrue([self.uut.tabBarController.tabBar.barTintColor isEqual:expectedColor]);
 }
 
--(void)testTabBarTextColor_validColor{
+-(void)testTabBarSelectedColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.bottomTabs.textColor = inputColor;
+	self.options.bottomTabs.tabColor = inputColor;
 	[self.uut embedInTabBarController];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
-	XCTAssertTrue([attributes[@"NSColor"] isEqual:expectedColor]);
+	XCTAssertTrue([self.uut.tabBarController.tabBar.unselectedItemTintColor isEqual:expectedColor]);
+}
+
+-(void)testTabBarUnselectedColor_validColor{
+	NSNumber* inputColor = @(0xFFFF0000);
+	self.options.bottomTabs.selectedTabColor = inputColor;
+	[self.uut embedInTabBarController];
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	XCTAssertTrue([self.uut.tabBarController.tabBar.tintColor isEqual:expectedColor]);
 }
 
 -(void)testTabBarTextFontFamily_validFont{
@@ -645,28 +652,22 @@
 	XCTAssertTrue([attributes[@"NSFont"] isEqual:expectedFont]);
 }
 
--(void)testTabBarTextFontSize_withoutTextFontFamily_withTextColor {
+-(void)testTabBarTextFontSize_withoutTextFontFamily {
 	self.options.bottomTabs.fontSize = @(15);
-	self.options.bottomTabs.textColor = @(0xFFFF0000);
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
-	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
 	XCTAssertTrue([attributes[@"NSFont"] isEqual:expectedFont]);
-	XCTAssertTrue([attributes[@"NSColor"] isEqual:expectedColor]);
 }
 
 -(void)testTabBarTextFontSize_withTextFontFamily_withTextColor {
 	NSString* inputFont = @"HelveticaNeue";
 	self.options.bottomTabs.fontSize = @(15);
-	self.options.bottomTabs.textColor = @(0xFFFF0000);
 	self.options.bottomTabs.fontFamily = inputFont;
 	[self.uut embedInTabBarController];
-	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
 	XCTAssertTrue([attributes[@"NSFont"] isEqual:expectedFont]);
-	XCTAssertTrue([attributes[@"NSColor"] isEqual:expectedColor]);
 }
 
 -(void)testTabBarTextFontSize_withTextFontFamily_withoutTextColor {
