@@ -1,16 +1,8 @@
-#import <React/RCTRedBox.h>
 #import "RNNAnimator.h"
-#import "RNNElementView.h"
-#import "RNNInteractivePopAnimator.h"
-#import "VICMAImageView.h"
-#import "RNNTransitionStateHolder.h"
-#import "RNNElementFinder.h"
-#import "RNNViewLocation.h"
-#import "RNNAnimatedView.h"
+#import "RNNTransition.h"
 
 @interface  RNNAnimator()
-@property (nonatomic, strong) RNNTransitionOptions* transitionOptions;
-@property (nonatomic, strong) RNNInteractivePopAnimator* interactivePopAnimator;
+@property (nonatomic, strong) RNNAnimationOptions* transitionOptions;
 @property (nonatomic) BOOL backButton;
 @property (nonatomic, strong) UIViewController* fromVC;
 @property (nonatomic, strong) UIViewController* toVC;
@@ -18,7 +10,7 @@
 
 @implementation RNNAnimator
 
--(instancetype)initWithTransitionOptions:(RNNTransitionOptions *)transitionOptions {
+-(instancetype)initWithTransitionOptions:(RNNAnimationOptions *)transitionOptions {
 	self = [super init];
 	if (transitionOptions) {
 		[self setupTransition:transitionOptions];
@@ -29,7 +21,7 @@
 	return self;
 }
 
--(void)setupTransition:(RNNTransitionOptions *)transitionOptions {
+-(void)setupTransition:(RNNAnimationOptions *)transitionOptions {
 	self.transitionOptions = transitionOptions;
 	if (!transitionOptions.animations) {
 		[[NSException exceptionWithName:NSInvalidArgumentException reason:@"No animations" userInfo:nil] raise];
@@ -38,78 +30,39 @@
 	self.backButton = false;
 }
 
--(NSArray*)prepareSharedElementTransition:(NSArray*)RNNSharedElementsToVC
-						andfromVCElements:(NSArray*)RNNSharedElementsFromVC
-						withComponentView:(UIView*)componentView {
+-(NSArray*)prepareSharedElementTransitionWithComponentView:(UIView*)componentView {
 	NSMutableArray* transitions = [NSMutableArray new];
 	for (NSDictionary* transition in self.transitionOptions.animations) {
 		RNNTransitionStateHolder* transitionStateHolder = [[RNNTransitionStateHolder alloc] initWithTransition:transition];
-		RNNElementFinder* elementFinder = [[RNNElementFinder alloc] initWithToVC:self.toVC andfromVC:self.fromVC];
-		[elementFinder findElementsInTransition:transitionStateHolder];
-		RNNViewLocation* animatedViewLocations = [[RNNViewLocation alloc] initWithTransition:transitionStateHolder andVC:self.fromVC];
-		RNNAnimatedView* animatedView = [[RNNAnimatedView alloc] initWithTransition:transitionStateHolder andLocation:animatedViewLocations andIsBackButton:self.backButton];
-		transitionStateHolder.locations = animatedViewLocations;
-		[componentView addSubview:animatedView];
-		[componentView bringSubviewToFront:animatedView];
-		transitionStateHolder.animatedView = animatedView;
-		[transitions addObject:transitionStateHolder];
-		if (transitionStateHolder.isSharedElementTransition) {
-			[transitionStateHolder.toElement setHidden: YES];
-		}
-		[transitionStateHolder.fromElement setHidden:YES];
+		RNNTransition* transition = [[RNNTransition alloc] initFromVC:self.fromVC toVC:self.toVC transitionOptions:transitionStateHolder isBackButton:self.backButton];
+
+		[componentView addSubview:transition.animatedView];
+		[componentView bringSubviewToFront:transition.animatedView];
+		
+		[transitions addObject:transition];
 	}
+	
 	return transitions;
 }
 
 -(void)animateTransitions:(NSArray*)transitions {
-	for (RNNTransitionStateHolder* transition in transitions ) {
-		[UIView animateWithDuration:transition.duration delay:transition.startDelay usingSpringWithDamping:transition.springDamping initialSpringVelocity:transition.springVelocity options:UIViewAnimationOptionCurveEaseOut  animations:^{
-			RNNAnimatedView* animatedView = transition.animatedView;
-			if (!self.backButton) {
-				[self setAnimatedViewFinalProperties:animatedView toElement:transition.toElement fromElement:transition.fromElement isSharedElementTransition:transition.isSharedElementTransition withTransform:transition.locations.transform withCenter:transition.locations.toCenter andAlpha:transition.endAlpha];
-			} else {
-				[self setAnimatedViewFinalProperties:animatedView toElement:transition.fromElement fromElement:transition.fromElement isSharedElementTransition:transition.isSharedElementTransition withTransform:transition.locations.transformBack withCenter:transition.locations.fromCenter andAlpha:transition.startAlpha];
-			}
+	for (RNNTransition* transition in transitions ) {
+		[UIView animateWithDuration:transition.options.duration delay:transition.options.startDelay usingSpringWithDamping:transition.options.springDamping initialSpringVelocity:transition.options.springVelocity options:UIViewAnimationOptionCurveEaseOut  animations:^{
+			[transition setAnimatedViewFinalProperties];
 		} completion:^(BOOL finished) {
 
 		}];
 	}
 }
 
--(void)setAnimatedViewFinalProperties:(RNNAnimatedView*)animatedView toElement:(RNNElementView*)toElement fromElement:(RNNElementView*)fromElement isSharedElementTransition:(BOOL)isShared withTransform:(CGAffineTransform)transform withCenter:(CGPoint)center andAlpha:(double)alpha {
-	animatedView.alpha = alpha;
-	animatedView.center = center;
-	animatedView.transform = transform;
-	if (isShared) {
-		if ([[fromElement subviews][0] isKindOfClass:[UIImageView class]]) {
-			animatedView.contentMode = UIViewContentModeScaleAspectFill;
-			if ([toElement resizeMode]){
-				animatedView.contentMode = [RNNAnimatedView contentModefromString:[toElement resizeMode]];
-			}
-		}
-	}
-}
-
-
--(void)animateComplition:(NSArray*)transitions fromVCSnapshot:(UIView*)fromSnapshot andTransitioningContext:(id<UIViewControllerContextTransitioning>)transitionContext {
+-(void)animateCompletion:(NSArray*)transitions fromVCSnapshot:(UIView*)fromSnapshot andTransitioningContext:(id<UIViewControllerContextTransitioning>)transitionContext {
 	[UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:[self.transitionOptions.springDamping doubleValue] initialSpringVelocity:[self.transitionOptions.springVelocity doubleValue] options:UIViewAnimationOptionCurveEaseOut  animations:^{
 				self.toVC.view.alpha = 1;
 			} completion:^(BOOL finished) {
-				for (RNNTransitionStateHolder* transition in transitions ) {
-					[transition.fromElement setHidden:NO];
-					if (transition.isSharedElementTransition) {
-						[transition.toElement setHidden:NO];
-					}
-					RNNAnimatedView* animtedView = transition.animatedView;
-					[animtedView removeFromSuperview];
-					
-					if (transition.interactivePop) {
-						self.interactivePopAnimator = [[RNNInteractivePopAnimator alloc] initWithTopView:transition.toElement andBottomView:transition.fromElement andOriginFrame:transition.locations.fromFrame andViewController:self.toVC];
-						UIPanGestureRecognizer* gesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.interactivePopAnimator
-																								  action:@selector(handleGesture:)];
-						[transition.toElement addGestureRecognizer:gesture];
-					}
+				for (RNNTransition* transition in transitions ) {
+					[transition transitionCompleted];
 				}
+				
 				[fromSnapshot removeFromSuperview];
 				if (![transitionContext transitionWasCancelled]) {
 					self.toVC.view.alpha = 1;
@@ -135,10 +88,9 @@
 	[componentView addSubview:fromSnapshot];
 	[componentView addSubview:toVC.view];
 	toVC.view.alpha = 0;
-	NSArray* onlyForTesting = @[];
-	NSArray* onlyForTesting2 = @[];
-	NSArray* transitions = [self prepareSharedElementTransition:onlyForTesting andfromVCElements:onlyForTesting2 withComponentView:componentView];
-	[self animateComplition:transitions fromVCSnapshot:fromSnapshot andTransitioningContext:transitionContext];
+	
+	NSArray* transitions = [self prepareSharedElementTransitionWithComponentView:componentView];
+	[self animateCompletion:transitions fromVCSnapshot:fromSnapshot andTransitioningContext:transitionContext];
 	[self animateTransitions:transitions];
 }
 

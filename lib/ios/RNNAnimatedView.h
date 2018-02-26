@@ -1,12 +1,11 @@
 #import <UIKit/UIKit.h>
-#import "RNNTransitionStateHolder.h"
 #import "RNNViewLocation.h"
 #import "VICMAImageView.h"
 
-@class RNNViewLocation;
-@class RNNTransitionStateHolder;
+
 @interface RNNAnimatedView : UIView
 
--(instancetype)initWithTransition:(RNNTransitionStateHolder*)transition andLocation:(RNNViewLocation*)location andIsBackButton:(BOOL)backButton;
+-(instancetype)initFromElement:(RNNElementView*)fromElement toElement:(RNNElementView*)toElement andLocation:(RNNViewLocation*)location andIsBackButton:(BOOL)backButton startAlpha:(CGFloat)startAlpha endAlpha:(CGFloat)endAlpha;
 +(UIViewContentMode)contentModefromString:(NSString*)resizeMode;
+
 @end
