@@ -68,7 +68,8 @@
 																withOptions:initialOptions
 															withComponentId:@"componentId"
 															rootViewCreator:[[RNNTestRootViewCreator alloc] init]
-															   eventEmitter:nil];
+															   eventEmitter:nil
+														  isNativeComponent:NO];
 	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:vc];
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);

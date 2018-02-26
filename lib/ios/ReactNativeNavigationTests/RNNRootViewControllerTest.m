@@ -42,7 +42,7 @@
 	self.componentId = @"cntId";
 	self.emitter = nil;
 	self.options = [RNNNavigationOptions new];
-	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withComponentId:self.componentId rootViewCreator:self.creator eventEmitter:self.emitter];
+	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withComponentId:self.componentId rootViewCreator:self.creator eventEmitter:self.emitter isNativeComponent:NO];
 }
 
 -(void)testTopBarBackgroundColor_validColor{
