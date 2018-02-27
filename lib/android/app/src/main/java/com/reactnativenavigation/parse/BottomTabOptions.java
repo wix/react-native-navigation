@@ -1,5 +1,9 @@
 package com.reactnativenavigation.parse;
 
+import com.reactnativenavigation.parse.params.NullText;
+import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.parse.parsers.TextParser;
+
 import org.json.JSONObject;
 
 public class BottomTabOptions implements DEFAULT_VALUES {

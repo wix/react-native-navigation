@@ -1,4 +1,7 @@
-package com.reactnativenavigation.parse;
+package com.reactnativenavigation.parse.parsers;
+
+import com.reactnativenavigation.parse.params.NullNumber;
+import com.reactnativenavigation.parse.params.Number;
 
 import org.json.JSONObject;
 

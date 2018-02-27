@@ -67,7 +67,7 @@ describe('screen style', () => {
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
   });
 
-  it(':ios: side menu visibility - left', async () => {
+  it('side menu visibility - left', async () => {
     await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
     await elementById(testIDs.SHOW_LEFT_SIDE_MENU_BUTTON).tap();
     await expect(elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON)).toBeVisible();
@@ -75,7 +75,7 @@ describe('screen style', () => {
     await expect(elementById(testIDs.CENTERED_TEXT_HEADER)).toBeVisible();
   });
 
-  it(':ios: side menu visibility - right', async () => {
+  it('side menu visibility - right', async () => {
     await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
     await elementById(testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON).tap();
     await expect(elementById(testIDs.HIDE_RIGHT_SIDE_MENU_BUTTON)).toBeVisible();

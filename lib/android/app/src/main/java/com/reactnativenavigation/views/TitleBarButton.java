@@ -16,8 +16,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.reactnativenavigation.parse.Button;
-import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ArrayUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;

@@ -5,7 +5,8 @@ import android.support.annotation.*;
 
 import com.reactnativenavigation.*;
 import com.reactnativenavigation.mocks.*;
-import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.*;
+import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.*;
 
 import org.json.*;
@@ -223,7 +224,7 @@ public class OptionsTest extends BaseTest {
     @Test
     public void clear_bottomTabsOptions() throws Exception {
         Options uut = new Options();
-        uut.bottomTabsOptions.tabColor = new Color(android.graphics.Color.RED);
+        uut.bottomTabsOptions.tabColor = new com.reactnativenavigation.parse.params.Color(android.graphics.Color.RED);
         uut.clearBottomTabsOptions();
         assertThat(uut.bottomTabsOptions.tabColor.hasValue()).isFalse();
     }

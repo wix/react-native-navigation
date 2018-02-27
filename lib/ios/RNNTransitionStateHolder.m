@@ -1,6 +1,5 @@
 #import "RNNTransitionStateHolder.h"
 #import "RNNUtils.h"
-#import "RNNElementFinder.h"
 
 @implementation RNNTransitionStateHolder
 
@@ -13,18 +12,13 @@
 	self.startAlpha = [RNNUtils getDoubleOrKey:transition withKey:@"startAlpha" withDefault:1];
 	self.endAlpha = [RNNUtils getDoubleOrKey:transition withKey:@"endAlpha" withDefault:1];
 	self.interactivePop = [RNNUtils getBoolOrKey:transition withKey:@"interactivePop" withDefault:NO];
-	self.startX = [RNNUtils getDoubleOrKey:transition withKey:@"startX" withDefault:0];
-	self.startY = [RNNUtils getDoubleOrKey:transition withKey:@"startY" withDefault:0];
-	self.endX = [RNNUtils getDoubleOrKey:transition withKey:@"endX" withDefault:0];
-	self.endY = [RNNUtils getDoubleOrKey:transition withKey:@"endY" withDefault:0];
+	self.startX = [RNNUtils getDoubleOrKey:transition[@"x"] withKey:@"from" withDefault:0];
+	self.startY = [RNNUtils getDoubleOrKey:transition[@"y"] withKey:@"from" withDefault:0];
+	self.endX = [RNNUtils getDoubleOrKey:transition[@"x"] withKey:@"to" withDefault:0];
+	self.endY = [RNNUtils getDoubleOrKey:transition[@"y"] withKey:@"to" withDefault:0];
 	self.fromId = [transition objectForKey:@"fromId"];
 	self.toId = [transition objectForKey:@"toId"];
-	self.fromElement = nil;
 	self.fromElementType = nil;
-	self.fromElementResizeMode = UIViewContentModeScaleAspectFill;
-	self.toElement = nil;
-	self.animatedView = nil;
-	self.locations  = nil; 
 	self.isSharedElementTransition = [[transition objectForKey:@"type"] isEqualToString:@"sharedElement"];
 	return self;
 }

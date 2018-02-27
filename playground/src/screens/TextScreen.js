@@ -70,7 +70,9 @@ class TextScreen extends Component {
       bottomTabs: {
         currentTabIndex: 1,
         visible: false,
-        animate: true
+        animate: true,
+        tabColor: 'blue',
+        selectedTabColor: 'red'
       }
     });
   }

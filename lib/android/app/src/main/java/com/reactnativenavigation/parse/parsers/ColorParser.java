@@ -1,4 +1,7 @@
-package com.reactnativenavigation.parse;
+package com.reactnativenavigation.parse.parsers;
+
+import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.NullColor;
 
 import org.json.JSONObject;
 

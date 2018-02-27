@@ -43,8 +43,8 @@
 	
 	UIViewController<RNNRootViewProtocol> *result;
 	
-	if ( node.isComponent) {
-		result = [self createComponent:node];
+	if (node.isComponent) {
+		result = [self createComponent:node nativeComponent:NO];
 	}
 	
 	else if (node.isStack)	{
@@ -70,8 +70,13 @@
 	else if (node.isSideMenuLeft) {
 		result = [self createSideMenuChild:node type:RNNSideMenuChildTypeLeft];
 	}
+	
 	else if (node.isSideMenuRight) {
 		result = [self createSideMenuChild:node type:RNNSideMenuChildTypeRight];
+	}
+	
+	else if ( node.isNativeComponent) {
+		result = [self createComponent:node nativeComponent:YES];
 	}
 	
 	if (!result) {
@@ -83,15 +88,16 @@
 	return result;
 }
 
-- (UIViewController<RNNRootViewProtocol> *)createComponent:(RNNLayoutNode*)node {
+- (UIViewController<RNNRootViewProtocol> *)createComponent:(RNNLayoutNode*)node nativeComponent:(BOOL)nativeComponent {
 	NSString* name = node.data[@"name"];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
 	options.defaultOptions = _defaultOptions;
 	NSString* componentId = node.nodeId;
-	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter];
-	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
-	[_bridge.uiManager setAvailableSize:availableSize forRootView:component.view];
-	
+	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter isNativeComponent:nativeComponent];
+	if (!component.isCustomViewController) {
+		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
+		[_bridge.uiManager setAvailableSize:availableSize forRootView:component.view];
+	}
 	return component;
 }
 

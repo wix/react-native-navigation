@@ -123,8 +123,10 @@ Push a new screen into this screen's navigation stack.
 
 ```js
 Navigation.push(this.props.componentId, {
-  name: 'navigation.playground.PushedScreen',
-  passProps: {}
+  component: {
+    name: 'navigation.playground.PushedScreen',
+    passProps: {}
+  }
 });
 ```
 ### pop(componentId)

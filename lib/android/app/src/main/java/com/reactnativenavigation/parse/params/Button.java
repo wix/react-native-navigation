@@ -1,11 +1,10 @@
-package com.reactnativenavigation.parse;
+package com.reactnativenavigation.parse.params;
 
 import android.support.annotation.ColorInt;
 import android.view.MenuItem;
 
-import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.parse.parsers.BoolParser;
+import com.reactnativenavigation.parse.parsers.TextParser;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,7 +44,7 @@ public class Button {
 		return button;
 	}
 
-	static ArrayList<Button> parseJsonArray(JSONArray jsonArray) {
+	public static ArrayList<Button> parseJsonArray(JSONArray jsonArray) {
 		ArrayList<Button> buttons = new ArrayList<>();
 
 		if (jsonArray == null) {

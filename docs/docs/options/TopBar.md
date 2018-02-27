@@ -12,7 +12,7 @@
 | textFontFamily | <code>string</code> | 
 | testID | <code>string</code> | 
 | hidden | <code>boolean</code> | 
-| animateHide | <code>boolean</code> | 
+| animate | <code>boolean</code> | 
 | hideOnScroll | <code>boolean</code> | 
 | transparent | <code>boolean</code> | 
 | translucent | <code>boolean</code> | 

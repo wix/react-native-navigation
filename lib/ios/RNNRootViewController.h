@@ -22,7 +22,8 @@
 				withOptions:(RNNNavigationOptions*)options
 			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter;
+			   eventEmitter:(RNNEventEmitter*)eventEmitter
+		  isNativeComponent:(BOOL)isNativeComponent;
 
 
 -(void)applyTabBarItem;

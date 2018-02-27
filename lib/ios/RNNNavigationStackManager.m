@@ -18,7 +18,11 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 -(void)push:(UIViewController<RNNRootViewProtocol> *)newTop onTop:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion {
 	UIViewController *vc = [_store findComponentForId:componentId];
 	[self preparePush:newTop onTopVC:vc completion:completion];
-	[self waitForContentToAppearAndThen:@selector(pushAfterLoad:)];
+	if ([newTop isCustomViewController]) {
+		[self pushAfterLoad:nil];
+	} else {
+		[self waitForContentToAppearAndThen:@selector(pushAfterLoad:)];
+	}
 }
 
 -(void)preparePush:(UIViewController<RNNRootViewProtocol> *)newTop onTopVC:(UIViewController*)vc completion:(RNNTransitionCompletionBlock)completion {
@@ -60,7 +64,7 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	self.fromVC = nil;
 }
 
--(void)pop:(NSString *)componentId withTransitionOptions:(RNNTransitionOptions *)transitionOptions {
+-(void)pop:(NSString *)componentId withTransitionOptions:(RNNAnimationOptions *)transitionOptions {
 	UIViewController<RNNRootViewProtocol>* vc = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
 	UINavigationController* nvc = [vc navigationController];
 	if ([nvc topViewController] == vc) {

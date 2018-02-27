@@ -23,6 +23,7 @@ class WelcomeScreen extends Component {
     this.onClickShowModal = this.onClickShowModal.bind(this);
     this.onClickLifecycleScreen = this.onClickLifecycleScreen.bind(this);
     this.onClickPushOptionsScreen = this.onClickPushOptionsScreen.bind(this);
+    this.onClickPushNativeComponent = this.onClickPushNativeComponent.bind(this);
     this.onClickPushOrientationMenuScreen = this.onClickPushOrientationMenuScreen.bind(this);
     this.onClickBackHandler = this.onClickBackHandler.bind(this);
     this.onClickPushTopTabsScreen = this.onClickPushTopTabsScreen.bind(this);
@@ -40,6 +41,7 @@ class WelcomeScreen extends Component {
         <Button title='Static Lifecycle Events' testID={testIDs.PUSH_STATIC_LIFECYCLE_BUTTON} onPress={this.onClickShowStaticLifecycleOverlay} />
         <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
         <Button title='Push Options Screen' testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
+        <Button title='Push Native Component' testID={testIDs.PUSH_NATIVE_COMPONENT_BUTTON} onPress={this.onClickPushNativeComponent} />
         {Platform.OS === 'android' && <Button title='Push Top Tabs screen' testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />}
         {Platform.OS === 'android' && <Button title='Back Handler' testID={testIDs.BACK_HANDLER_BUTTON} onPress={this.onClickBackHandler} />}
         <Button title='Show Modal' testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
@@ -67,7 +69,8 @@ class WelcomeScreen extends Component {
                     },
                     options: {
                       topBar: {
-                        visible: false
+                        visible: (Platform.OS === 'android') ? true : false,
+                        title: 'React Native Navigation!'
                       }
                     }
                   }
@@ -224,6 +227,21 @@ class WelcomeScreen extends Component {
         options: {
           topBar: {
             title: 'pushed'
+          }
+        }
+      }
+    });
+  }
+
+  async onClickPushNativeComponent() {
+    await Navigation.push(this.props.componentId, {
+      nativeComponent: {
+        name: 'RNNCustomViewController',
+        options: {
+          topBar: {
+            title: 'pushed',
+            visible: true,
+            testID: testIDs.TOP_BAR_ELEMENT
           }
         }
       }

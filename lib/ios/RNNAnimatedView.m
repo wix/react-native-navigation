@@ -3,30 +3,26 @@
 
 @implementation RNNAnimatedView
 
--(instancetype)initWithTransition:(RNNTransitionStateHolder*)transition andLocation:(RNNViewLocation*)location andIsBackButton:(BOOL)backButton {
+-(instancetype)initFromElement:(RNNElementView*)fromElement toElement:(RNNElementView*)toElement andLocation:(RNNViewLocation*)location andIsBackButton:(BOOL)backButton startAlpha:(CGFloat)startAlpha endAlpha:(CGFloat)endAlpha {
 	UIView* animatedView = nil;
 	if (backButton) {
-		if ([self elementIsImage:transition.fromElement]) {
-			animatedView = [self createImageAnimatedView:animatedView fromElement:transition.fromElement toElement:transition.toElement];
+		if ([self elementIsImage:fromElement]) {
+			animatedView = [self createImageAnimatedView:animatedView fromElement:fromElement toElement:toElement];
 		} else {
-			if (transition.toElement) {
-				animatedView = [[transition.toElement subviews][0] snapshotViewAfterScreenUpdates:NO];
+			if (toElement) {
+				animatedView = [[toElement subviews][0] snapshotViewAfterScreenUpdates:NO];
 			} else {
-				animatedView = [[transition.fromElement subviews][0] snapshotViewAfterScreenUpdates:NO];
+				animatedView = [[fromElement subviews][0] snapshotViewAfterScreenUpdates:NO];
 			}
 		}
-		[self assignStyle:animatedView withSize:location.toSize center:location.toCenter andAlpha:transition.endAlpha];
+		[self assignStyle:animatedView withSize:location.toSize center:location.toCenter andAlpha:endAlpha];
 	} else {
-		if ([self elementIsImage:transition.fromElement]) {
-			animatedView = [self createImageAnimatedView:animatedView fromElement:transition.fromElement toElement:transition.fromElement];
+		if ([self elementIsImage:fromElement]) {
+			animatedView = [self createImageAnimatedView:animatedView fromElement:fromElement toElement:fromElement];
 		} else {
-			if (transition.isFromVC) {
-				animatedView = [[transition.fromElement subviews][0] snapshotViewAfterScreenUpdates:NO];
-			} else {
-				animatedView = [[transition.fromElement subviews][0] snapshotViewAfterScreenUpdates:YES];
-			}
+			animatedView = [[fromElement subviews][0] snapshotViewAfterScreenUpdates:YES];
 		}
-		[self assignStyle:animatedView withSize:location.fromSize center:location.fromCenter andAlpha:transition.startAlpha];
+		[self assignStyle:animatedView withSize:location.fromSize center:location.fromCenter andAlpha:startAlpha];
 	}
 	return (RNNAnimatedView*)animatedView;
 }
