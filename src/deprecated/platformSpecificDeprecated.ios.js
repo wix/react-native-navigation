@@ -24,10 +24,19 @@ async function startTabBasedApp(params) {
   params.tabs.map(function(tab, index) {
     const navigatorID = controllerID + '_nav' + index;
     const screenInstanceID = _.uniqueId('screenInstanceID');
-    if (!tab.screen) {
+
+    const components = tab.components;
+    if (!tab.screen && !components) {
       console.error('startTabBasedApp(params): every tab must include a screen property, take a look at tab#' + (index + 1));
       return;
     }
+
+    if (components) {
+      params.tabs[index].components = components;
+      Object.assign(tab, components[0]);
+      components.shift();
+    }
+
     const {
       navigatorStyle,
       navigatorButtons,
@@ -81,7 +90,7 @@ async function startTabBasedApp(params) {
         );
       }
     },
-    renderBody: function() {
+    renderBody: function () {
       return (
         <TabBarControllerIOS
           id={controllerID + '_tabs'}
@@ -89,7 +98,7 @@ async function startTabBasedApp(params) {
           appStyle={params.appStyle}
           initialTabIndex={params.initialTabIndex}>
           {
-            params.tabs.map(function(tab, index) {
+            params.tabs.map(function (tab, index) {
               return (
                 <TabBarControllerIOS.Item {...tab} title={tab.label}>
                   <NavigationControllerIOS
@@ -98,11 +107,12 @@ async function startTabBasedApp(params) {
                     subtitle={tab.subtitle}
                     titleImage={tab.titleImage}
                     component={tab.screen}
+                    components={tab.components}
                     passProps={{
-                    navigatorID: tab.navigationParams.navigatorID,
-                    screenInstanceID: tab.navigationParams.screenInstanceID,
-                    navigatorEventID: tab.navigationParams.navigatorEventID,
-                  }}
+                      navigatorID: tab.navigationParams.navigatorID,
+                      screenInstanceID: tab.navigationParams.screenInstanceID,
+                      navigatorEventID: tab.navigationParams.navigatorEventID,
+                    }}
                     style={tab.navigationParams.navigatorStyle}
                     leftButtons={tab.navigationParams.navigatorButtons.leftButtons}
                     rightButtons={tab.navigationParams.navigatorButtons.rightButtons}
@@ -123,13 +133,26 @@ async function startTabBasedApp(params) {
 }
 
 async function startSingleScreenApp(params) {
-  if (!params.screen) {
+  const components = params.components;
+  let screen = params.screen;
+  if (!screen && !components) {
     console.error('startSingleScreenApp(params): params.screen is required');
     return;
   }
 
+  if (components) {
+    components.forEach(component => {
+      screen = components[0];
+      components.shift();
+      const screenInstanceID = _.uniqueId('screenInstanceID');
+      component.navigationParams = {
+        screenInstanceID
+      };
+      savePassProps(component);
+    });
+  }
+
   const controllerID = _.uniqueId('controllerID');
-  const screen = params.screen;
   if (!screen.screen) {
     console.error('startSingleScreenApp(params): screen must include a screen property');
     return;
@@ -152,6 +175,13 @@ async function startSingleScreenApp(params) {
     navigatorID
   };
 
+  const passProps = {
+    navigatorID: navigatorID,
+    screenInstanceID: screenInstanceID,
+    navigatorEventID: navigatorEventID,
+    ...screen.passProps
+  };
+
   const Controller = Controllers.createClass({
     render: function() {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
@@ -160,15 +190,15 @@ async function startSingleScreenApp(params) {
         const navigatorID = controllerID + '_drawer';
         return (
           <DrawerControllerIOS id={navigatorID}
-                               componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
-                               passPropsLeft={{navigatorID: navigatorID}}
-                               componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
-                               passPropsRight={{navigatorID: navigatorID}}
-                               disableOpenGesture={params.drawer.disableOpenGesture}
-                               type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
-                               animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
-                               style={params.drawer.style}
-                               appStyle={params.appStyle}
+            componentLeft={params.drawer.left ? params.drawer.left.screen : undefined}
+            passPropsLeft={{navigatorID: navigatorID}}
+            componentRight={params.drawer.right ? params.drawer.right.screen : undefined}
+            passPropsRight={{navigatorID: navigatorID}}
+            disableOpenGesture={params.drawer.disableOpenGesture}
+            type={params.drawer.type ? params.drawer.type : 'MMDrawer'}
+            animationType={params.drawer.animationType ? params.drawer.animationType : 'slide'}
+            style={params.drawer.style}
+            appStyle={params.appStyle}
           >
             {this.renderBody()}
           </DrawerControllerIOS>
@@ -183,11 +213,8 @@ async function startSingleScreenApp(params) {
           subtitle={params.subtitle}
           titleImage={screen.titleImage}
           component={screen.screen}
-          passProps={{
-            navigatorID: navigatorID,
-            screenInstanceID: screenInstanceID,
-            navigatorEventID: navigatorEventID
-          }}
+          components={components}
+          passProps={passProps}
           style={navigatorStyle}
           leftButtons={navigatorButtons.leftButtons}
           rightButtons={navigatorButtons.rightButtons}
@@ -348,8 +375,8 @@ function navigatorResetTo(navigator, params) {
 }
 
 function navigatorSetDrawerEnabled(navigator, params) {
-    const controllerID = navigator.navigatorID.split('_')[0];
-    Controllers.NavigationControllerIOS(controllerID + '_drawer').setDrawerEnabled(params)
+  const controllerID = navigator.navigatorID.split('_')[0];
+  Controllers.NavigationControllerIOS(controllerID + '_drawer').setDrawerEnabled(params)
 }
 
 function navigatorSetTitle(navigator, params) {
