@@ -16,7 +16,6 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.events.Event;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
 import com.reactnativenavigation.params.ActivityParams;
@@ -107,6 +106,9 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         ScreenParams screenParams = params.tabParams.get(position);
         ScreenStack newStack = new ScreenStack(getActivity(), getScreenStackParent(), screenParams.getNavigatorId(), this);
         newStack.pushInitialScreen(screenParams, createScreenLayoutParams(screenParams));
+        for (ScreenParams screen : screenParams.screens) {
+            newStack.pushInitialScreen(screen, createScreenLayoutParams(screen));
+        }
         screenStacks[position] = newStack;
     }
 
@@ -230,8 +232,6 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         for (int i = 0; i < bottomTabs.getItemsCount(); i++) {
             screenStacks[i].updateScreenStyle(screenInstanceId, styleParams);
         }
-
-        bottomTabs.setStyleFromScreen(this.getCurrentScreen().getStyleParams());
     }
 
     @Override
@@ -318,6 +318,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     @Override
     public void onModalDismissed() {
+        getCurrentScreenStack().peek().setStyle();
         getCurrentScreenStack().peek().getScreenParams().timestamp = System.currentTimeMillis();
         NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(getCurrentScreenStack().peek().getScreenParams(), NavigationType.DismissModal);
         NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(getCurrentScreenStack().peek().getScreenParams(), NavigationType.DismissModal);
@@ -363,7 +364,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     private boolean hasBackgroundColor(StyleParams params) {
         return params.screenBackgroundColor != null &&
-                params.screenBackgroundColor.hasColor();
+            params.screenBackgroundColor.hasColor();
     }
 
     private void setStyleFromScreen(StyleParams params) {
@@ -386,7 +387,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
                     EventBus.instance.post(new ScreenChangedEvent(params));
                 }
             }
-        });
+        }, onPushComplete);
     }
 
     @Override
@@ -394,7 +395,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         performOnStack(params.getNavigatorId(), new Task<ScreenStack>() {
             @Override
             public void run(ScreenStack stack) {
-                stack.pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
+            stack.pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
                     @Override
                     public void onScreenPopAnimationEnd() {
                         setBottomTabsStyleFromCurrentScreen();
@@ -448,13 +449,22 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     private void performOnStack(String navigatorId, Task<ScreenStack> task) {
+        performOnStack(navigatorId, task, null);
+    }
+
+    private void performOnStack(String navigatorId, Task<ScreenStack> task, @Nullable Promise onPushComplete) {
         try {
             ScreenStack screenStack = getScreenStack(navigatorId);
             task.run(screenStack);
         } catch (ScreenStackNotFoundException e) {
+            if (onPushComplete != null) {
+                onPushComplete.reject("Navigation", "Could not perform action on stack [" + navigatorId + "]." +
+                                                    "This should not have happened, it probably means a navigator action" +
+                                                    "was called from an unmounted tab.");
+            }
             Log.e("Navigation", "Could not perform action on stack [" + navigatorId + "]." +
-                    "This should not have happened, it probably means a navigator action" +
-                    "was called from an unmounted tab.");
+                                "This should not have happened, it probably means a navigator action" +
+                                "was called from an unmounted tab.");
         }
     }
 
@@ -482,8 +492,8 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         }
 
         final int unselectedTabIndex = currentStackIndex;
-        switchTab(position, NavigationType.BottomTabSelected);
         sendTabSelectedEventToJs(position, unselectedTabIndex);
+        switchTab(position, NavigationType.BottomTabSelected);
         return true;
     }
 
@@ -494,7 +504,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     }
 
     private void sendTabSelectedEventToJs(int selectedTabIndex, int unselectedTabIndex) {
-        String navigatorEventId = getCurrentScreenStack().peek().getNavigatorEventId();
+        String navigatorEventId = screenStacks[selectedTabIndex].peek().getNavigatorEventId();
         WritableMap data = createTabSelectedEventData(selectedTabIndex, unselectedTabIndex);
         NavigationApplication.instance.getEventEmitter().sendNavigatorEvent("bottomTabSelected", navigatorEventId, data);
 
