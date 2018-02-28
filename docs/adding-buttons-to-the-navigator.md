@@ -64,10 +64,41 @@ class FirstTabScreen extends Component {
     buttonColor: 'blue', // Set color for the button (can also be used in setButtons function to set different button style programatically)
     buttonFontSize: 14, // Set font size for the button (can also be used in setButtons function to set different button style programatically)
     buttonFontWeight: '600' // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
+    systemItem: 'compose', // Optional, iOS only. Set a system bar button item as the icon. Matches UIBarButtonSystemItem naming.
   }],
   leftButtons: [] // buttons for the left side of the nav bar (optional)
 }
 ```
+
+##### iOS System Items
+On iOS, UIKit supplies some common bar button glyphs for developers to use. The following values can be supplied as values to to `systemItem` to use them as an icon for your button.
+
+* `done`
+* `cancel`
+* `edit`
+* `save`
+* `add`
+* `flexibleSpace`
+* `fixedSpace`
+* `compose`
+* `reply`
+* `action`
+* `organize`
+* `bookmarks`
+* `search`
+* `refresh`
+* `stop`
+* `camera`
+* `trash`
+* `play`
+* `pause`
+* `rewind`
+* `fastForward`
+* `undo`
+* `redo`
+
+More information about these glyphs can be found in [Apple's Human Interface Guidelines](https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/system-icons/).
+
 
 ##### Android left button
 On Android, four button types are supported by default without the need to provide an icon. You can use them by specifying one of the following ids in your left button definition:
@@ -136,11 +167,13 @@ Navigation.startSingleScreenApp({
 Each screen can contain a single Fab which is displayed at the bottom right corner of the screen.
 
 * Simple Fab:
+
 ```js
   static navigatorButtons = {
     fab: {
       collapsedId: 'share',
       collapsedIcon: require('../../img/ic_share.png'),
+      collapsedIconColor: 'red', // optional
       backgroundColor: '#607D8B'
     }
   };
@@ -148,17 +181,21 @@ Each screen can contain a single Fab which is displayed at the bottom right corn
 
 * Fab with expanded state
 [Example](https://material-design.storage.googleapis.com/publish/material_v_9/0B8v7jImPsDi-ZmQ0UnFPZmtiSU0/components-buttons-fab-transition_speeddial_02.mp4)
+
 ```js
     fab: {
       collapsedId: 'share',
       collapsedIcon: require('../../img/ic_share.png'),
+      collapsedIconColor: 'green', // optional
       expendedId: 'clear',
       expendedIcon: require('../../img/ic_clear.png'),
+      expendedIconColor: 'red', // optional
       backgroundColor: '#3F51B5',
       actions: [
         {
           id: 'mail',
           icon: require('../../img/ic_mail.png'),
+          iconColor: 'blue', // optional
           backgroundColor: '#03A9F4'
         },
         {

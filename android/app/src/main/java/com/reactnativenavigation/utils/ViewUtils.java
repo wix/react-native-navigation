@@ -113,7 +113,7 @@ public class ViewUtils {
     public static <T> T findChildByClass(ViewGroup root, Class clazz, Matcher<T> matcher) {
         for (int i = 0; i < root.getChildCount(); i++) {
             View view = root.getChildAt(i);
-            if (clazz.isAssignableFrom(view.getClass())) {
+            if (clazz.isAssignableFrom(view.getClass()) && (matcher == null || matcher.match((T) view))) {
                 return (T) view;
             }
 
