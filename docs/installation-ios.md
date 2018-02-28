@@ -12,9 +12,11 @@
 
 3. In Xcode, in Project Navigator (left pane), click on your project (top), then click on your *target* row (on the "project and targets list", which is on the left column of the right pane) and select the `Build Phases` tab (right pane). In the `Link Binary With Libraries` section add `libReactNativeNavigation.a` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-2))
 
-4. In Xcode, in Project Navigator (left pane), click on your project (top), then click on your *project* row (on the "project and targets list") and select the `Build Settings` tab (right pane). In the `Header Search Paths` section add `$(SRCROOT)/../node_modules/react-native-navigation/ios`. Make sure on the right to mark this new path `recursive` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-3))
+4. In Xcode, in Project Navigator (left pane), click on your project (top), then click on your *target* row (on the "project and targets list", which is on the left column of the right pane) and select the `General` tab (right pane). In the `Linked Frameworks and Libraries` section add `libReactNativeNavigation.a`
 
-5. In Xcode, you will need to edit this file: `AppDelegate.m`. This function is the main entry point for your app:
+5. In Xcode, in Project Navigator (left pane), click on your project (top), then click on your *project* row (on the "project and targets list") and select the `Build Settings` tab (right pane). In the `Header Search Paths` section add `$(SRCROOT)/../node_modules/react-native-navigation/ios`. Make sure on the right to mark this new path `recursive` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-3))
+
+6. In Xcode, you will need to edit this file: `AppDelegate.m`. This function is the main entry point for your app:
 
     ```objc
     - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions { ... }
