@@ -7,7 +7,7 @@
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* componentName;
 @property (nonatomic) BOOL _statusBarHidden;
-@property (nonatomic) BOOL isNativeComponent;
+@property (nonatomic) BOOL isExternalComponent;
 @end
 
 @implementation RNNRootViewController
@@ -17,7 +17,7 @@
 			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter
-		  isNativeComponent:(BOOL)isNativeComponent {
+		  isExternalComponent:(BOOL)isExternalComponent {
 	self = [super init];
 	self.componentId = componentId;
 	self.componentName = name;
@@ -25,9 +25,9 @@
 	self.eventEmitter = eventEmitter;
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	self.creator = creator;
-	self.isNativeComponent = isNativeComponent;
+	self.isExternalComponent = isExternalComponent;
 	
-	if (self.isNativeComponent) {
+	if (self.isExternalComponent) {
 		[self addExternalVC:name];
 	} else {
 		self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
@@ -99,7 +99,7 @@
 }
 
 - (BOOL)isCustomViewController {
-	return self.isNativeComponent;
+	return self.isExternalComponent;
 }
 
 - (BOOL)prefersStatusBarHidden {
