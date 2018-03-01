@@ -1,5 +1,8 @@
 package com.reactnativenavigation.presentation;
 
+import android.app.Activity;
+
+import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.TopBarOptions;
@@ -24,10 +27,15 @@ public class OptionsPresenter {
     }
 
     public void applyOptions(Options options) {
+        applyOrientation(options.orientationOptions);
         applyButtons(options.topBarOptions.leftButtons, options.topBarOptions.rightButtons);
         applyTopBarOptions(options.topBarOptions);
         applyTopTabsOptions(options.topTabsOptions);
         applyTopTabOptions(options.topTabOptions);
+    }
+
+    public void applyOrientation(OrientationOptions options) {
+        ((Activity) topBar.getContext()).setRequestedOrientation(options.getValue());
     }
 
     private void applyTopBarOptions(TopBarOptions options) {

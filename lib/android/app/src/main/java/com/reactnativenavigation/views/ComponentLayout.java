@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.ComponentOptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
@@ -56,6 +57,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
 
     @Override
     public void applyOptions(Options options) {
+        new ComponentOptionsPresenter(this).present(options);
         touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside.isTrue());
     }
 

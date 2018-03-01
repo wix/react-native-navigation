@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
@@ -20,6 +21,7 @@ import org.mockito.ArgumentCaptor;
 import javax.annotation.Nullable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -78,9 +80,22 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void pop_appliesOptionsAfterPop() throws Exception {
+        uut.animatePush(child1, new MockPromise());
+        uut.animatePush(child2, new MockPromise() {
+            @Override
+            public void resolve(@Nullable Object value) {
+                uut.pop(new MockPromise());
+                verify(uut, times(1)).applyOptions(uut.options, eq((ReactComponent) child1.getView()));
+            }
+        });
+    }
+
+    @Test
     public void pop_layoutHandlesChildWillDisappear() throws Exception {
         final StackLayout[] stackLayout = new StackLayout[1];
         uut = new StackController(activity, "uut", new Options()) {
+            @NonNull
             @Override
             protected StackLayout createView() {
                 stackLayout[0] = spy(super.createView());
