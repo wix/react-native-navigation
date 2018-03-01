@@ -28,7 +28,7 @@ class MarkdownCreator {
 
     const result = this.handlebarsFn(context);
 
-    console.log(result);
+    // console.log(result);
     API_DIR.toString();
   }
 
