@@ -136,6 +136,14 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return getView().equals(component);
     }
 
+    public void onViewRegainedFocus() {
+        applyOptions(options);
+    }
+
+    public void onViewLostFocus() {
+
+    }
+
     public void onViewWillAppear() {
 
     }

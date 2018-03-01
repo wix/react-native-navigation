@@ -5,6 +5,7 @@ import com.reactnativenavigation.parse.params.Orientation;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class OrientationOptions {
@@ -46,5 +47,10 @@ public class OrientationOptions {
 
     public void mergeWithDefault(OrientationOptions defaultOptions) {
         if (!hasValue()) orientations = defaultOptions.orientations;
+    }
+
+    @Override
+    public String toString() {
+        return hasValue() ? Arrays.toString(orientations) : Orientation.Default.toString();
     }
 }

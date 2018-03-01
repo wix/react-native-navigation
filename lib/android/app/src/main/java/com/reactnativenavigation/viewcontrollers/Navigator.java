@@ -12,21 +12,24 @@ import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.NoOpPromise;
+import com.reactnativenavigation.viewcontrollers.modal.Modal;
 import com.reactnativenavigation.viewcontrollers.modal.ModalCreator;
+import com.reactnativenavigation.viewcontrollers.modal.ModalListener;
 
 import java.util.Collection;
 import java.util.Collections;
 
-public class Navigator extends ParentController {
+public class Navigator extends ParentController implements ModalListener {
 
     private static final NoOpPromise NO_OP = new NoOpPromise();
-    private final ModalStack modalStack = new ModalStack(new ModalCreator());
+    private final ModalStack modalStack;
     private ViewController root;
     private OverlayManager overlayManager = new OverlayManager();
     private Options defaultOptions = new Options();
 
     public Navigator(final Activity activity) {
         super(activity, "navigator" + CompatUtils.generateViewId(), new Options());
+        modalStack = new ModalStack(new ModalCreator(), this);
     }
 
     @NonNull
@@ -130,6 +133,21 @@ public class Navigator extends ParentController {
 
     public void dismissModal(final String componentId, Promise promise) {
         modalStack.dismissModal(componentId, promise);
+    }
+
+    @Override
+    public void onModalDisplay(Modal modal) {
+        if (modalStack.size() == 1) {
+            root.onViewLostFocus();
+        }
+    }
+
+
+    @Override
+    public void onModalDismiss(Modal modal) {
+        if (modalStack.isEmpty()) {
+            root.onViewRegainedFocus();
+        }
     }
 
     public void dismissAllModals(Promise promise) {

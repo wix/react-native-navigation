@@ -34,7 +34,7 @@ public class OptionsPresenter {
         applyTopTabOptions(options.topTabOptions);
     }
 
-    private void applyOrientation(OrientationOptions options) {
+    public void applyOrientation(OrientationOptions options) {
         ((Activity) topBar.getContext()).setRequestedOrientation(options.getValue());
     }
 

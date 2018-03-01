@@ -38,6 +38,11 @@ public class StackController extends ParentController <StackLayout> {
     @RestrictTo(RestrictTo.Scope.TESTS)
     StackLayout getStackLayout() {return getView();}
 
+    public void applyOptions(Options options) {
+        super.applyOptions(options);
+        getView().applyOptions(options);
+    }
+
     @Override
     public void applyOptions(Options options, ReactComponent component) {
         super.applyOptions(options, component);
