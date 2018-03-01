@@ -66,6 +66,7 @@ public class StyleParamsParser {
         result.titleBarTitleFontSize = getInt("titleBarTitleFontSize", getDefaultTitleTextFontSize());
         result.titleBarTitleFontBold = getBoolean("titleBarTitleFontBold", getDefaultTitleTextFontBold());
         result.titleBarTitleTextCentered = getBoolean("titleBarTitleTextCentered", getDefaultTitleBarTextCentered());
+        result.titleBarSubTitleTextCentered = getBoolean("titleBarSubTitleTextCentered", getDefaultTitleBarTextCentered());
         result.titleBarHeight = getInt("titleBarHeight", getDefaultTitleBarHeight());
         result.backButtonHidden = getBoolean("backButtonHidden", getDefaultBackButtonHidden());
         result.topTabsHidden = getBoolean("topTabsHidden", getDefaultTopTabsHidden());
@@ -101,6 +102,8 @@ public class StyleParamsParser {
         result.forceTitlesDisplay = getBoolean("forceTitlesDisplay", getDefaultForceTitlesDisplay());
 
         result.bottomTabFontFamily = getFont("bottomTabFontFamily", getDefaultBottomTabsFontFamily());
+        result.bottomTabFontSize = getIntegerOrNull("bottomTabFontSize");
+        result.bottomTabSelectedFontSize = getIntegerOrNull("bottomTabSelectedFontSize");
 
         return result;
     }
@@ -124,6 +127,8 @@ public class StyleParamsParser {
         result.titleBarHideOnScroll = false;
         result.orientation = Orientation.auto;
         result.bottomTabFontFamily = new StyleParams.Font();
+        result.bottomTabFontSize = 10;
+        result.bottomTabSelectedFontSize = 10;
         result.titleBarTitleFont = new StyleParams.Font();
         result.titleBarSubtitleFontFamily = new StyleParams.Font();
         result.titleBarButtonFontFamily = new StyleParams.Font();
@@ -326,6 +331,10 @@ public class StyleParamsParser {
         return AppStyle.appStyle != null && AppStyle.appStyle.titleBarTitleTextCentered;
     }
 
+    private boolean getDefaultSubTitleBarTextCentered() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.titleBarSubTitleTextCentered;
+    }
+
     private int getDefaultTitleBarHeight() {
         return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarHeight;
     }
@@ -354,6 +363,10 @@ public class StyleParamsParser {
 
     private int getInt(String key, int defaultValue) {
         return params.containsKey(key) ? params.getInt(key) : defaultValue;
+    }
+
+    private Integer getIntegerOrNull(String key) {
+        return params.containsKey(key) ? params.getInt(key) : null;
     }
 
     private Bundle getBundle(String key) {

@@ -79,6 +79,7 @@ function dismissInAppNotification(params) {
   NativeReactModule.hideSlidingOverlay(params);
 }
 
+// eslint-disable-next-line max-statements
 function savePassProps(params) {
   if (params.navigationParams && params.passProps) {
     PropRegistry.save(params.navigationParams.screenInstanceID, params.passProps);
@@ -86,6 +87,10 @@ function savePassProps(params) {
 
   if (params.screen && params.screen.passProps) {
     PropRegistry.save(params.screen.navigationParams.screenInstanceID, params.screen.passProps);
+  }
+
+  if (_.get(params, 'screen.screens')) {
+    _.forEach(params.screen.screens, savePassProps);
   }
 
   if (_.get(params, 'screen.topTabs')) {
@@ -102,6 +107,10 @@ function savePassProps(params) {
         tab.passProps = params.passProps;
       }
       savePassProps(tab);
+      
+      if (tab.screens) {
+        _.forEach(tab.screens, savePassProps);
+      }
     });
   }
 

@@ -364,12 +364,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   
   NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
   [self.navigationController.navigationBar setTitleTextAttributes:titleTextAttributes];
-
-  if (self.navigationItem.titleView && [self.navigationItem.titleView isKindOfClass:[RCCTitleView class]]) {
-    RCCTitleView *titleView = (RCCTitleView *)self.navigationItem.titleView;
-    RCCTitleViewHelper *helper = [[RCCTitleViewHelper alloc] init:viewController navigationController:viewController.navigationController title:titleView.titleLabel.text subtitle:titleView.subtitleLabel.text titleImageData:nil isSetSubtitle:NO];
-    [helper setup:self.navigatorStyle];
-  }
   
   NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarButton"];
   NSMutableDictionary *leftNavButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarLeftButton"];
@@ -648,15 +642,14 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
       
       NSDictionary *initialProps = self.navigatorStyle[@"navBarCustomViewInitialProps"];
       RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:navBarCustomView initialProperties:initialProps];
-      
-      RCCCustomTitleView *titleView = [[RCCCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.navigatorStyle[@"navBarComponentAlignment"]];
-      titleView.backgroundColor = [UIColor clearColor];
-      reactView.backgroundColor = [UIColor clearColor];
+      reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
+        
+      RCCCustomTitleView *titleView = [[RCCCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds
+                                                                        subView:reactView
+                                                                      alignment:self.navigatorStyle[@"navBarComponentAlignment"]];
       
       self.navigationItem.titleView = titleView;
-      
       self.navigationItem.titleView.backgroundColor = [UIColor clearColor];
-      self.navigationItem.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
       self.navigationItem.titleView.clipsToBounds = YES;
     }
   }
@@ -669,6 +662,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         if ([prefersLargeTitles boolValue]) {
           self.navigationController.navigationBar.prefersLargeTitles = YES;
           self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
+          self.navigationItem.titleView = nil;
         } else {
           self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
         }
@@ -679,6 +673,14 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     }
   }
   #endif
+}
+
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+  [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+  RCCCustomTitleView* customNavBar = (RCCCustomTitleView*) self.navigationItem.titleView;
+  if (customNavBar && [customNavBar isKindOfClass:[RCCCustomTitleView class]]) {
+    [customNavBar viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+  }
 }
 
 
