@@ -282,6 +282,11 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
                                                               rightButtons:rightButtons
                                                                     bridge:bridge];
 
+      NSDictionary *navigatorStyle = actionParams[@"style"];
+      [self processTitleView:viewController
+                       props:actionParams
+                       style:navigatorStyle];
+
       viewControllers = @[viewController];
     } else if (componentConfigs) {
       NSMutableArray *mutableViewControllers = [NSMutableArray arrayWithCapacity:[componentConfigs count]];
@@ -300,6 +305,10 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
                                                                  leftButtons:leftButtons
                                                                 rightButtons:rightButtons
                                                                       bridge:bridge];
+
+        [self processTitleView:viewController
+                         props:actionParams
+                         style:style];
 
         [mutableViewControllers addObject:viewController];
       }];
