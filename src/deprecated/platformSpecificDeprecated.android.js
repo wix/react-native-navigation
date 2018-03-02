@@ -273,7 +273,7 @@ function convertDrawerParamsToSideMenuParams(drawerParams) {
       result[key] = adaptNavigationParams(result[key]);
       result[key].passProps = drawer[key].passProps;
       if (drawer.disableOpenGesture) {
-        result[key].disableOpenGesture = parseInt(drawer.disableOpenGesture);
+        result[key].disableOpenGesture = drawer.disableOpenGesture;
       } else {
         let fixedWidth = drawer[key].disableOpenGesture;
         result[key].disableOpenGesture = fixedWidth ? parseInt(fixedWidth) : null;
