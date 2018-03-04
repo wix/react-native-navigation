@@ -27,23 +27,25 @@
   "scripts": {
     "build": "rm -rf ./lib/dist && tsc",
     "xcode": "open playground/ios/playground.xcodeproj",
-    "install-android": "node ./scripts/install-android.js",
+    "install-android": "node ./scripts/install-android",
     "uninstall-android": "cd playground/android && ./gradlew uninstallAll",
-    "clean": "node ./scripts/clean.js",
+    "clean": "node ./scripts/clean",
     "prestart": "npm run build",
-    "start": "node ./scripts/start.js",
+    "start": "node ./scripts/start",
     "pretest-js": "npm run build",
-    "test-js": "node ./scripts/test-js.js",
-    "test-unit-android": "node ./scripts/test.unit.android.js",
-    "test-unit-ios": "node ./scripts/test.unit.ios.js",
+    "test-js": "node ./scripts/test-js",
+    "test-unit-android": "node ./scripts/test-unit-android",
+    "test-unit-ios": "node ./scripts/test-unit-ios",
     "pretest-e2e-android": "npm run build",
-    "test-e2e-android": "node ./scripts/test.e2e.android.js",
-    "test-e2e-android-detox": "node ./scripts/test.e2e.android.detox.js",
+    "test-e2e-android": "node ./scripts/test-e2e-android",
+    "test-e2e-android-detox": "node ./scripts/test-e2e-android-detox",
     "pretest-e2e-ios": "npm run build",
-    "test-e2e-ios": "node ./scripts/test.e2e.ios.js",
-    "test-all": "node ./scripts/test.all.js",
+    "test-e2e-ios": "node ./scripts/test-e2e-ios",
+    "test-all": "node ./scripts/test-all",
     "prerelease": "npm run build",
-    "release": "node ./scripts/release.js"
+    "release": "node ./scripts/release",
+    "local-docs": "node ./scripts/local-docs",
+    "gen-docs": "./tsn.sh ./scripts/gen-docs"
   },
   "peerDependencies": {
     "react": "*",
@@ -58,7 +60,8 @@
     "@types/lodash": "4.x.x",
     "@types/prop-types": "15.x.x",
     "@types/react-test-renderer": "16.x.x",
-    "@types/jest": "22.x.x"
+    "@types/jest": "22.x.x",
+    "@types/node": "9.x.x"
   },
   "devDependencies": {
     "detox": "7.x.x",
@@ -73,7 +76,10 @@
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "tslint": "5.x.x",
-    "typescript": "2.x.x"
+    "typescript": "2.x.x",
+    "ts-node": "5.x.x",
+    "typedoc": "0.x.x",
+    "handlebars": "4.x.x"
   },
   "babel": {
     "env": {

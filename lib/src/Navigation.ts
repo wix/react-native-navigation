@@ -41,116 +41,101 @@ export class Navigation {
   }
 
   /**
-   * Every navigation component in your app must be registered with a unique name. The component itself is a traditional React component extending React.Component.
-   * @param {string} componentName Unique component name
-   * @param {function} getComponentClassFunc generator function, typically `() => require('./myComponent')`
+   * Every navigation component in your app must be registered with a unique name.
+   * The component itself is a traditional React component extending React.Component.
    */
   public registerComponent(componentName: string, getComponentClassFunc: ComponentProvider) {
     this.componentRegistry.registerComponent(componentName, getComponentClassFunc);
   }
 
   /**
-   * Reset the navigation stack to a new component (the stack root is changed).
-   * @param {Root} root
+   * Reset the app to a new layout
    */
-  public setRoot(params) {
-    return this.commands.setRoot(params);
+  public setRoot(layout): Promise<any> {
+    return this.commands.setRoot(layout);
   }
 
   /**
    * Set default options to all screens. Useful for declaring a consistent style across the app.
-   * @param {options:Options} options
    */
-  public setDefaultOptions(options) {
+  public setDefaultOptions(options): void {
     this.commands.setDefaultOptions(options);
   }
 
   /**
-   * Change a components navigation options
-   * @param {string} componentId The component's id.
-   * @param {options:Options} options
+   * Change a component's navigation options
    */
-  public setOptions(componentId, options) {
+  public setOptions(componentId: string, options): void {
     this.commands.setOptions(componentId, options);
   }
 
   /**
    * Show a screen as a modal.
-   * @param {object} params
    */
-  public showModal(params) {
-    return this.commands.showModal(params);
+  public showModal(layout): Promise<any> {
+    return this.commands.showModal(layout);
   }
 
   /**
    * Dismiss a modal by componentId. The dismissed modal can be anywhere in the stack.
-   * @param {string} componentId The component's id.
    */
-  public dismissModal(componentId) {
+  public dismissModal(componentId: string): Promise<any> {
     return this.commands.dismissModal(componentId);
   }
 
   /**
    * Dismiss all Modals
    */
-  public dismissAllModals() {
+  public dismissAllModals(): Promise<any> {
     return this.commands.dismissAllModals();
   }
 
   /**
-   * Push a new screen into this screen's navigation stack.
-   * @param {string} componentId The component's id.
-   * @param {Component} component
+   * Push a new layout into this screen's navigation stack.
    */
-  public push(componentId, component) {
-    return this.commands.push(componentId, component);
+  public push(componentId: string, layout): Promise<any> {
+    return this.commands.push(componentId, layout);
   }
 
   /**
    * Pop a component from the stack, regardless of it's position.
-   * @param {string} componentId The component's id.
-   * @param {*} params
    */
-  public pop(componentId, params) {
+  public pop(componentId: string, params): Promise<any> {
     return this.commands.pop(componentId, params);
   }
 
   /**
    * Pop the stack to a given component
-   * @param {string} componentId The component's id.
    */
-  public popTo(componentId: string) {
+  public popTo(componentId: string): Promise<any> {
     return this.commands.popTo(componentId);
   }
 
   /**
    * Pop the component's stack to root.
-   * @param {*} componentId
    */
-  public popToRoot(componentId: string) {
+  public popToRoot(componentId: string): Promise<any> {
     return this.commands.popToRoot(componentId);
   }
 
   /**
-   * Show overlay on top of the window
-   * @param {*} params
+   * Show overlay on top of the entire app
    */
-  public showOverlay(params) {
-    return this.commands.showOverlay(params);
+  public showOverlay(layout): Promise<any> {
+    return this.commands.showOverlay(layout);
   }
 
   /**
    * dismiss overlay by componentId
-   * @param {string} componentId
    */
-  public dismissOverlay(componentId: string) {
+  public dismissOverlay(componentId: string): Promise<any> {
     return this.commands.dismissOverlay(componentId);
   }
 
   /**
    * Obtain the events registry instance
    */
-  public events() {
+  public events(): PublicEventsRegistry {
     return this.publicEventsRegistry;
   }
 }

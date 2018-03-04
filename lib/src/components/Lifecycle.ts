@@ -1,8 +1,5 @@
 export class Lifecycle {
-  private store;
-
-  constructor(store) {
-    this.store = store;
+  constructor(private readonly store) {
     this.componentDidAppear = this.componentDidAppear.bind(this);
     this.componentDidDisappear = this.componentDidDisappear.bind(this);
     this.onNavigationButtonPressed = this.onNavigationButtonPressed.bind(this);
