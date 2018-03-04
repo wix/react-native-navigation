@@ -7,7 +7,8 @@ import android.support.annotation.Nullable;
 public enum Orientation {
     Portrait("portrait", Configuration.ORIENTATION_PORTRAIT, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT),
     Landscape("landscape", Configuration.ORIENTATION_LANDSCAPE, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE),
-    Default("default", Configuration.ORIENTATION_UNDEFINED, ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+    Default("default", Configuration.ORIENTATION_UNDEFINED, ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED),
+    PortraitLandscape("sensor", Configuration.ORIENTATION_UNDEFINED, ActivityInfo.SCREEN_ORIENTATION_USER);
 
     public String name;
     public int configurationCode;

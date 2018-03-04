@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class OrientationOptions {
-    Orientation[] orientations = new Orientation[0];
+    List<Orientation> orientations = new ArrayList<>();
 
     public static OrientationOptions parse(JSONObject json) {
         OrientationOptions options = new OrientationOptions();
@@ -19,7 +19,7 @@ public class OrientationOptions {
         JSONArray orientations = json.optJSONArray("orientation");
         if (orientations == null) {
             String orientation = json.optString("orientation", Orientation.Default.name);
-            options.orientations = new Orientation[]{Orientation.fromString(orientation)};
+            options.orientations.add(Orientation.fromString(orientation));
         } else {
             List<Orientation> parsed = new ArrayList<>();
             for (int i = 0; i < orientations.length(); i++) {
@@ -28,7 +28,7 @@ public class OrientationOptions {
                     parsed.add(o);
                 }
             }
-            options.orientations = parsed.toArray(new Orientation[0]);
+            options.orientations = parsed;
         }
 
         return options;
@@ -37,11 +37,15 @@ public class OrientationOptions {
     public int getValue() {
         if (!hasValue()) return Orientation.Default.orientationCode;
 
-        int result = 0;
-        for (Orientation orientation : orientations) {
-            result |= orientation.orientationCode;
+        switch (orientations.get(0)) {
+            case Landscape:
+                return orientations.contains(Orientation.Portrait) ? Orientation.PortraitLandscape.orientationCode : Orientation.Landscape.orientationCode;
+            case Portrait:
+                return orientations.contains(Orientation.Landscape) ? Orientation.PortraitLandscape.orientationCode : Orientation.Portrait.orientationCode;
+            default:
+            case Default:
+                return Orientation.Default.orientationCode;
         }
-        return result;
     }
 
     public void mergeWith(OrientationOptions other) {
@@ -49,7 +53,7 @@ public class OrientationOptions {
     }
 
     private boolean hasValue() {
-        return orientations.length > 0;
+        return !orientations.isEmpty();
     }
 
     public void mergeWithDefault(OrientationOptions defaultOptions) {
@@ -58,6 +62,6 @@ public class OrientationOptions {
 
     @Override
     public String toString() {
-        return hasValue() ? Arrays.toString(orientations) : Orientation.Default.toString();
+        return hasValue() ? Arrays.toString(orientations.toArray(new Orientation[0])) : Orientation.Default.toString();
     }
 }

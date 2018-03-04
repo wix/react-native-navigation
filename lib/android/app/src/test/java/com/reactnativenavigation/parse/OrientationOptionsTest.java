@@ -28,22 +28,34 @@ public class OrientationOptionsTest extends BaseTest {
     @Test
     public void parseOrientations() throws Exception {
         OrientationOptions options = OrientationOptions.parse(create("default", "landscape", "portrait"));
-        assertThat(options.orientations[0]).isEqualTo(Orientation.Default);
-        assertThat(options.orientations[1]).isEqualTo(Orientation.Landscape);
-        assertThat(options.orientations[2]).isEqualTo(Orientation.Portrait);
+        assertThat(options.orientations.get(0)).isEqualTo(Orientation.Default);
+        assertThat(options.orientations.get(1)).isEqualTo(Orientation.Landscape);
+        assertThat(options.orientations.get(2)).isEqualTo(Orientation.Portrait);
     }
 
     @Test
     public void parseSingleOrientation() throws Exception {
         OrientationOptions options = OrientationOptions.parse(create("landscape"));
-        assertThat(options.orientations[0]).isEqualTo(Orientation.Landscape);
+        assertThat(options.orientations.get(0)).isEqualTo(Orientation.Landscape);
+    }
+
+    @Test
+    public void landscapePortrait_regardedAsUserOrientation() throws Exception {
+        OrientationOptions options = OrientationOptions.parse(create("landscape", "portrait"));
+        assertThat(options.getValue()).isEqualTo(Orientation.PortraitLandscape.orientationCode);
+    }
+
+    @Test
+    public void portraitLandscape_regardedAsUserOrientation() throws Exception {
+        OrientationOptions options = OrientationOptions.parse(create("portrait", "landscape"));
+        assertThat(options.getValue()).isEqualTo(Orientation.PortraitLandscape.orientationCode);
     }
 
     @Test
     public void unsupportedOrientationsAreIgnored() throws Exception {
         OrientationOptions options = OrientationOptions.parse(create("default", "autoRotate"));
         assertThat(options.orientations).hasSize(1);
-        assertThat(options.orientations[0]).isEqualTo(Orientation.Default);
+        assertThat(options.orientations.get(0)).isEqualTo(Orientation.Default);
     }
 
     @Test
