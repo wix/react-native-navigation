@@ -33,6 +33,10 @@ public class TitleBar extends Toolbar {
 
     public TitleBar(Context context) {
         super(context);
+        // fixes navBar offset on the left side off Younique-ReactNative #118
+        super.setContentInsetStartWithNavigation(0);
+        super.setContentInsetEndWithActions(0);
+        super.setContentInsetsAbsolute(0,0);
     }
 
     @Override
