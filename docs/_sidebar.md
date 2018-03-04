@@ -3,4 +3,3 @@
   - [Working Locally](/docs/WorkingLocally)
   - [Usage](/docs/Usage)
 - API
-  - [Navigation](/api/Navigation)
