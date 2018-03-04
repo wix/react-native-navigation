@@ -64,6 +64,9 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
         if (other.backgroundColor.hasValue()) {
 		    backgroundColor = other.backgroundColor;
         }
+        if (other.testId.hasValue()) {
+            testId = other.testId;
+        }
     }
 
     void mergeWithDefault(final BottomTabsOptions defaultOptions) {
