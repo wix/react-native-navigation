@@ -17,11 +17,11 @@ import android.widget.TextView;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
-import com.reactnativenavigation.parse.params.Bool;
 
 import java.util.ArrayList;
 
@@ -47,6 +47,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         this.animator = new TopBarAnimator(this);
         this.parentView = parentView;
         addView(titleBar);
+        titleBar.setContentDescription("titleBar");
+        setContentDescription("TopBar");
     }
 
     public void setTitle(String title) {
