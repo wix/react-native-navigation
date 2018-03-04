@@ -1,3 +1,5 @@
+const exec = require('shell-utils').exec;
+
 module.exports = {
   elementByLabel: (label) => {
     return element(by.text(label));
@@ -11,5 +13,8 @@ module.exports = {
     } catch (err) {
       return element(by.type('_UIModernBarButton').and(by.label('Back'))).tap();
     }
+  },
+  tapDeviceBackAndroid: () => {
+    exec.execSync('adb shell input keyevent 4');
   }
 };
