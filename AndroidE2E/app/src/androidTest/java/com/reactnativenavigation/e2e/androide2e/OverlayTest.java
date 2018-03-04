@@ -12,7 +12,7 @@ public class OverlayTest extends BaseTest {
 		elementByText("PUSH OPTIONS SCREEN").click();
         elementByText("SHOW OVERLAY").click();
 		assertExists(By.text("Test view"));
-        assetDismissed();
+        assertDismissed();
 	}
 
     @Test
@@ -22,10 +22,10 @@ public class OverlayTest extends BaseTest {
 		assertExists(By.text("Test view"));
         elementByText("DYNAMIC OPTIONS").click();
         assertExists(By.text("Dynamic Title"));
-        assetDismissed();
+        assertDismissed();
 	}
 
-    private void assetDismissed() throws UiObjectNotFoundException {
+    private void assertDismissed() throws UiObjectNotFoundException {
         elementByText("OK").click();
         assertExists(By.text("Overlay disappeared"));
         elementByText("OK").click();

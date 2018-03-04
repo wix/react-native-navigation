@@ -19,7 +19,7 @@ public class Options implements DEFAULT_VALUES {
         Options result = new Options();
         if (json == null) return result;
 
-        result.orientationOptions = OrientationOptions.parse(json.optJSONArray("orientation"));
+        result.orientationOptions = OrientationOptions.parse(json);
         result.topBarOptions = TopBarOptions.parse(typefaceManager, json.optJSONObject("topBar"));
         result.topTabsOptions = TopTabsOptions.parse(json.optJSONObject("topTabs"));
         result.topTabOptions = TopTabOptions.parse(typefaceManager, json.optJSONObject("topTab"));

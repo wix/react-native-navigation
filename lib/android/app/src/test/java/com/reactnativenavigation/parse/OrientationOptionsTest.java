@@ -4,6 +4,8 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.parse.params.Orientation;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -32,6 +34,12 @@ public class OrientationOptionsTest extends BaseTest {
     }
 
     @Test
+    public void parseSingleOrientation() throws Exception {
+        OrientationOptions options = OrientationOptions.parse(create("landscape"));
+        assertThat(options.orientations[0]).isEqualTo(Orientation.Landscape);
+    }
+
+    @Test
     public void unsupportedOrientationsAreIgnored() throws Exception {
         OrientationOptions options = OrientationOptions.parse(create("default", "autoRotate"));
         assertThat(options.orientations).hasSize(1);
@@ -44,7 +52,13 @@ public class OrientationOptionsTest extends BaseTest {
         assertThat(options.getValue()).isEqualTo(Orientation.Default.orientationCode);
     }
 
-    private JSONArray create(String... orientations) {
-        return new JSONArray(Arrays.asList(orientations));
+    private JSONObject create(String... orientations) {
+        JSONObject orientation = new JSONObject();
+        try {
+            orientation.putOpt("orientation", orientations.length > 1 ? new JSONArray(Arrays.asList(orientations)) : orientations[0]);
+        } catch (JSONException e) {
+            throw new RuntimeException("Unable to create orientation object");
+        }
+        return orientation;
     }
 }

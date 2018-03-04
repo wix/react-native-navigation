@@ -3,6 +3,7 @@ package com.reactnativenavigation.parse;
 import com.reactnativenavigation.parse.params.Orientation;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,18 +12,24 @@ import java.util.List;
 public class OrientationOptions {
     Orientation[] orientations = new Orientation[0];
 
-    public static OrientationOptions parse(JSONArray orientations) {
+    public static OrientationOptions parse(JSONObject json) {
         OrientationOptions options = new OrientationOptions();
-        if (orientations == null) return options;
+        if (json == null) return options;
 
-        List<Orientation> parsed = new ArrayList<>();
-        for (int i = 0; i < orientations.length(); i++) {
-            Orientation o = Orientation.fromString(orientations.optString(i, "default"));
-            if (o != null) {
-                parsed.add(o);
+        JSONArray orientations = json.optJSONArray("orientation");
+        if (orientations == null) {
+            String orientation = json.optString("orientation", Orientation.Default.name);
+            options.orientations = new Orientation[]{Orientation.fromString(orientation)};
+        } else {
+            List<Orientation> parsed = new ArrayList<>();
+            for (int i = 0; i < orientations.length(); i++) {
+                Orientation o = Orientation.fromString(orientations.optString(i, "default"));
+                if (o != null) {
+                    parsed.add(o);
+                }
             }
+            options.orientations = parsed.toArray(new Orientation[0]);
         }
-        options.orientations = parsed.toArray(new Orientation[0]);
 
         return options;
     }

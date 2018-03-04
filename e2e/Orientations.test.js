@@ -4,7 +4,8 @@ const testIDs = require('../playground/src/testIDs');
 
 const { elementById } = Utils;
 
-describe(':ios: orientation', () => {
+describe.only('orientation', () => {
+
   beforeEach(async () => {
     await device.relaunchApp();
   });
@@ -31,7 +32,7 @@ describe(':ios: orientation', () => {
     await elementById(testIDs.DISMISS_BUTTON).tap();
   });
 
-  it('portrait only', async () => {
+  it(':ios: portrait only', async () => {
     await elementById(testIDs.ORIENTATION_BUTTON).tap();
     await elementById(testIDs.PORTRAIT_ORIENTATION_BUTTON).tap();
     await expect(elementById(testIDs.PORTRAIT_ELEMENT)).toBeVisible();
@@ -42,7 +43,7 @@ describe(':ios: orientation', () => {
     await elementById(testIDs.DISMISS_BUTTON).tap();
   });
 
-  it('landscape only', async () => {
+  it(':ios: landscape only', async () => {
     await elementById(testIDs.ORIENTATION_BUTTON).tap();
     await elementById(testIDs.LANDSCAPE_ORIENTATION_BUTTON).tap();
     await device.setOrientation('landscape');
