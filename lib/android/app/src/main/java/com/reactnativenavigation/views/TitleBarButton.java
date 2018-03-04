@@ -158,7 +158,7 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
             ActionMenuView buttonsLayout = ViewUtils.findChildByClass(toolbar, ActionMenuView.class);
             List<TextView> buttons = ViewUtils.findChildrenByClass(buttonsLayout, TextView.class);
             for (TextView view : buttons) {
-                if (button.title.hasValue() && button.title.get().equals(view.getText())) {
+                if (button.title.hasValue() && button.title.get().equals(view.getText().toString())) {
                     view.setTag(testId.get());
                 } else if (button.icon.hasValue() && ArrayUtils.contains(view.getCompoundDrawables(), icon)) {
                     view.setTag(testId.get());
