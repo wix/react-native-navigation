@@ -41,7 +41,7 @@ The layout api is completely open in terms of what you can construct with it.
 You can compose arbitrary native layout hierarchies, although some weird edge cases may not be possible or produce errors. In such cases, open an issue so that we either fix it or warn in dev time.
 
 
-For all layout types see [API](/docs/api/README).
+For all layout types see [API](/api/README).
 
 
 ### Single page app with two side menus:
@@ -137,7 +137,7 @@ Navigation.setRoot({
 
 ## Navigating The Stack
 
-For all commands see [API](/docs/api).
+For all commands see [API](/api/README).
 
 ### push
 Push a new instance of a screen (component) on top of `this` screen's navigation stack.

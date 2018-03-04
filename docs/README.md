@@ -3,6 +3,7 @@
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 [![StackExchange](https://img.shields.io/stackexchange/stackoverflow/t/react-native-navigation.svg)](https://stackoverflow.com/questions/tagged/react-native-navigation)
 
+
 #  React Native Navigation v2 (WIP)
 We are rebuilding react-native-navigation.
 
@@ -12,7 +13,7 @@ We are rebuilding react-native-navigation.
 - [v2 Roadmap](#v2-roadmap)
 - [v1 vs v2 feature comparison](#v1-vs-v2-feature-comparison)
 - [Documentation](https://wix.github.io/react-native-navigation/v2/)
-- [Contributing](/docs/docs/WorkingLocally.md)
+- [Contributing](/docs/WorkingLocally.md)
 
 ## Why Rebuild react-native-navigation?
 
@@ -58,8 +59,8 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | container     |   ✅   |  ✅   |
 | sideMenu             |    ✅  |    ✅ |
 | tabs            |    ✅  |    ✅ |
-| customViewController           |   [Contribute](/docs/docs/CONTRIBUTING.md)  |   [Contribute](/docs/docs/CONTRIBUTING.md) |
-| splitView           |   [Contribute](/docs/docs/CONTRIBUTING.md)   |   [Contribute](/docs/docs/CONTRIBUTING.md) |
+| customViewController           |   [Contribute](/docs/WorkingLocally.md)  |   [Contribute](/docs/WorkingLocally.md) |
+| splitView           |   [Contribute](/docs/WorkingLocally.md)   |   [Contribute](/docs/WorkingLocally.md) |
 
 ### Screen API
 
@@ -73,7 +74,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | dismissModal           |     ✅       |	✅|
 | showOverlay             |  ✅         |	✅ |
 | dismissOverlay             |  ✅   |	✅ |
-| customTransition            |   ✅        |	[Contribute](/docs/docs/CONTRIBUTING.md) |
+| customTransition            |   ✅        |	[Contribute](/docs/WorkingLocally.md) |
 | Screen Visibility        | ✅     |✅|
 | async commands (await push)     |  ✅        |✅   |
 
@@ -86,53 +87,53 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | textFontSize       |    ✅      |     ✅        | Wix|
 | textFontFamily     |      ✅     |     ✅        | Wix |
 | backgroundColor    |  ✅       |     ✅         | Wix|
-| buttonColor         |    ✅      |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
+| buttonColor         |    ✅      |     [Contribute](/docs/WorkingLocally.md)        | Wix|
 | hidden             |   ✅      |     ✅        | Wix|
-| hideOnScroll         |  ✅    |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
-| translucent         |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
-| transparent         |  ✅        |     [Contribute](/docs/docs/CONTRIBUTING.md)        |
-| noBorder             |    ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |  @gtchance|
-| drawUnder         |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       ||
-| blur               |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
-| custom          |     WIP @gran33     | [Contribute](/docs/docs/CONTRIBUTING.md)|
-| subtitleColor            |   [Contribute](/docs/docs/CONTRIBUTING.md)     |      [Contribute](/docs/docs/CONTRIBUTING.md)      |
-| subtitleFontFamily      |    [Contribute](/docs/docs/CONTRIBUTING.md)    |     [Contribute](/docs/docs/CONTRIBUTING.md)       |
+| hideOnScroll         |  ✅    |     [Contribute](/docs/WorkingLocally.md)        | Wix|
+| translucent         |   ✅     |     [Contribute](/docs/WorkingLocally.md)        | Wix|
+| transparent         |  ✅        |     [Contribute](/docs/WorkingLocally.md)        |
+| noBorder             |    ✅     |     [Contribute](/docs/WorkingLocally.md)        |  @gtchance|
+| drawUnder         |    ✅     |      [Contribute](/docs/WorkingLocally.md)       ||
+| blur               |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | @gtchance|
+| custom          |     WIP @gran33     | [Contribute](/docs/WorkingLocally.md)|
+| subtitleColor            |   [Contribute](/docs/WorkingLocally.md)     |      [Contribute](/docs/WorkingLocally.md)      |
+| subtitleFontFamily      |    [Contribute](/docs/WorkingLocally.md)    |     [Contribute](/docs/WorkingLocally.md)       |
 | largeTitle (iOS 11)      |    ✅     |     /iOS Specific       |
 
 |       tabBar         | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
-| drawUnder          |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
+| drawUnder          |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | |
 | hidden   |   ✅     |    ✅        | @gtchance |
-| tabBadge          |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md)| Wix|
+| tabBadge          |       ✅    | [Contribute](/docs/WorkingLocally.md)| Wix|
 | currentTab by Index          |       ✅    | ✅ | Wix |
-| currentTab by cointainerId         |       [Contribute](/docs/docs/CONTRIBUTING.md)    | ✅ | Wix |
+| currentTab by cointainerId         |       [Contribute](/docs/WorkingLocally.md)    | ✅ | Wix |
 
 |       buttons        | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
 | id    |   ✅      |     @Johan-dutoit  |@Johan-dutoit|
-| testID   |     ✅   |   [Contribute](/docs/docs/CONTRIBUTING.md)  | @Johan-dutoit|
+| testID   |     ✅   |   [Contribute](/docs/WorkingLocally.md)  | @Johan-dutoit|
 | color             |    ✅     |     @Johan-dutoit     | @Johan-dutoit|
 | icon          |   ✅     |    @Johan-dutoit     | @Johan-dutoit|
 | disableTint        |    ✅       |    @Johan-dutoit    | @Johan-dutoit|
 | fontSize        |    ✅       |    @Johan-dutoit    | @Johan-dutoit |
-| fontWeight        |    ✅       |    [Contribute](/docs/docs/CONTRIBUTING.md)   |  [Contribute](/docs/docs/CONTRIBUTING.md) |
+| fontWeight        |    ✅       |    [Contribute](/docs/WorkingLocally.md)   |  [Contribute](/docs/WorkingLocally.md) |
 
 |       statusBar        | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
 | textColorScheme    |   in development      |      / iOS specific    |
 | textColorSchemeSingleScreen   |     in development    |     / iOS specific      |
-| blur             |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
-| hideWithTopBar          |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
-| hidden         |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | WIX |
+| blur             |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | @gtchance|
+| hideWithTopBar          |   ✅     |     [Contribute](/docs/WorkingLocally.md)       | @gtchance|
+| hidden         |    ✅       |     [Contribute](/docs/WorkingLocally.md)      | WIX |
 
 |       other        | iOS  | Android | contributors|
 |--------------------|-----|----|-----|
-| screenBackgroundColor        |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       |  Wix|
-| orientation       |    ✅     |   [Contribute](/docs/docs/CONTRIBUTING.md)          | Wix|
+| screenBackgroundColor        |   ✅     |     [Contribute](/docs/WorkingLocally.md)       |  Wix|
+| orientation       |    ✅     |   [Contribute](/docs/WorkingLocally.md)          | Wix|
 | disabledBackGesture        |    ✅     |    / iOS specific     |
-| screenBackgroundImageName        |   ✅      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
-| rootBackgroundImageName              |    ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
-| sideMenuVisible          |      ✅   | [Contribute](/docs/docs/CONTRIBUTING.md) |
+| screenBackgroundImageName        |   ✅      |    [Contribute](/docs/WorkingLocally.md)        |
+| rootBackgroundImageName              |    ✅     |    [Contribute](/docs/WorkingLocally.md)       |
+| sideMenuVisible          |      ✅   | [Contribute](/docs/WorkingLocally.md) |
 
 
 ## v1 vs v2 Feature Comparison
@@ -157,15 +158,15 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 | resetTo             |   ✅     |    ✅        |	✅|
 | dismissModal        |   ✅     |     ✅       |	✅|
 | dismissAllModals    |   ✅     |      ✅      |	✅|
-| showContextualMenu      |   ✅     |     / Android specific       |[Contribute](/docs/docs/CONTRIBUTING.md) |
-| dismissContextualMenu      |   ✅     |   / Androic specific        |[Contribute](/docs/docs/CONTRIBUTING.md)  |
-| showFab      |   ✅     |    / Android specific     |  [Contribute](/docs/docs/CONTRIBUTING.md)  |
-| dismissFab      |   ✅     |    / Android specific       | [Contribute](/docs/docs/CONTRIBUTING.md) |
-| showSnackBar     |   ✅     |     / Android specific    |   [Contribute](/docs/docs/CONTRIBUTING.md) |
-| dismissSnackBar     |   ✅     |    / Android specific      |  [Contribute](/docs/docs/CONTRIBUTING.md) |
-| showLightBox        |   ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)      | [Contribute](/docs/docs/CONTRIBUTING.md)  |
-| dismissLightBox     |   ✅     |       [Contribute](/docs/docs/CONTRIBUTING.md)       | [Contribute](/docs/docs/CONTRIBUTING.md) |
-| handleDeepLink      |   ✅     |       [Contribute](/docs/docs/CONTRIBUTING.md)       | [Contribute](/docs/docs/CONTRIBUTING.md) |
+| showContextualMenu      |   ✅     |     / Android specific       |[Contribute](/docs/WorkingLocally.md) |
+| dismissContextualMenu      |   ✅     |   / Androic specific        |[Contribute](/docs/WorkingLocally.md)  |
+| showFab      |   ✅     |    / Android specific     |  [Contribute](/docs/WorkingLocally.md)  |
+| dismissFab      |   ✅     |    / Android specific       | [Contribute](/docs/WorkingLocally.md) |
+| showSnackBar     |   ✅     |     / Android specific    |   [Contribute](/docs/WorkingLocally.md) |
+| dismissSnackBar     |   ✅     |    / Android specific      |  [Contribute](/docs/WorkingLocally.md) |
+| showLightBox        |   ✅     |      [Contribute](/docs/WorkingLocally.md)      | [Contribute](/docs/WorkingLocally.md)  |
+| dismissLightBox     |   ✅     |       [Contribute](/docs/WorkingLocally.md)       | [Contribute](/docs/WorkingLocally.md) |
+| handleDeepLink      |   ✅     |       [Contribute](/docs/WorkingLocally.md)       | [Contribute](/docs/WorkingLocally.md) |
 | Screen Visibility   |   ✅     |       ✅     |✅|
 
 ### Styles
@@ -178,35 +179,35 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | topBarTextFontSize    |   ✅    |    ✅      |     ✅        | Wix|
 | topBarTextFontFamily  |  ✅     |      ✅     |     ✅        | Wix |
 | topBarBackgroundColor |  ✅     |  ✅       |     ✅         | Wix|
-| topBarButtonColor     |  ✅     |    ✅      |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
+| topBarButtonColor     |  ✅     |    ✅      |     [Contribute](/docs/WorkingLocally.md)        | Wix|
 | topBarHidden          |   ✅    |   ✅      |     ✅        | Wix|
-| topBarHideOnScroll    |  ✅     |  ✅    |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
-| topBarTranslucent     |  ✅     |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        | Wix|
-| topBarTransparent     | ✅      |   WIP @bogobogo     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |
-| topBarNoBorder        |  ✅     |    ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)        |  @gtchance|
-| drawUnderTabBar       |  ✅     |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | |
-| drawUnderTopBar       |  ✅     |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       ||
-| statusBarBlur         |  ✅     |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
-| topBarBlur            | ✅      |    ✅     |      [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
-| tabBarHidden  |   ✅  |   ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)        | @gtchance|
+| topBarHideOnScroll    |  ✅     |  ✅    |     [Contribute](/docs/WorkingLocally.md)        | Wix|
+| topBarTranslucent     |  ✅     |   ✅     |     [Contribute](/docs/WorkingLocally.md)        | Wix|
+| topBarTransparent     | ✅      |   WIP @bogobogo     |     [Contribute](/docs/WorkingLocally.md)        |
+| topBarNoBorder        |  ✅     |    ✅     |     [Contribute](/docs/WorkingLocally.md)        |  @gtchance|
+| drawUnderTabBar       |  ✅     |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | |
+| drawUnderTopBar       |  ✅     |    ✅     |      [Contribute](/docs/WorkingLocally.md)       ||
+| statusBarBlur         |  ✅     |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | @gtchance|
+| topBarBlur            | ✅      |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | @gtchance|
+| tabBarHidden  |   ✅  |   ✅     |    [Contribute](/docs/WorkingLocally.md)        | @gtchance|
 | statusBarTextColorScheme |  ✅   |   in development      |      / iOS specific    |
 | statusBarTextColorSchemeSingleScreen|  ✅   |     in development    |     / iOS specific      |
-| topBarSubtitleColor          |  ✅   |   [Contribute](/docs/docs/CONTRIBUTING.md)     |      [Contribute](/docs/docs/CONTRIBUTING.md)      |
-| topBarSubtitleFontFamily    |   ✅  |    [Contribute](/docs/docs/CONTRIBUTING.md)    |     [Contribute](/docs/docs/CONTRIBUTING.md)       |
-| screenBackgroundColor     | ✅    |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       |  Wix|
-| orientation     |  ✅   |    ✅     |   [Contribute](/docs/docs/CONTRIBUTING.md)          | Wix|
-| statusBarHideWithTopBar        |  ✅   |   ✅     |     [Contribute](/docs/docs/CONTRIBUTING.md)       | @gtchance|
-| statusBarHidden       |  ✅   |    ✅       |     [Contribute](/docs/docs/CONTRIBUTING.md)      | WIX |
+| topBarSubtitleColor          |  ✅   |   [Contribute](/docs/WorkingLocally.md)     |      [Contribute](/docs/WorkingLocally.md)      |
+| topBarSubtitleFontFamily    |   ✅  |    [Contribute](/docs/WorkingLocally.md)    |     [Contribute](/docs/WorkingLocally.md)       |
+| screenBackgroundColor     | ✅    |   ✅     |     [Contribute](/docs/WorkingLocally.md)       |  Wix|
+| orientation     |  ✅   |    ✅     |   [Contribute](/docs/WorkingLocally.md)          | Wix|
+| statusBarHideWithTopBar        |  ✅   |   ✅     |     [Contribute](/docs/WorkingLocally.md)       | @gtchance|
+| statusBarHidden       |  ✅   |    ✅       |     [Contribute](/docs/WorkingLocally.md)      | WIX |
 | disabledBackGesture       |   ✅  |   ✅  |    / iOS specific     |
-| screenBackgroundImageName         |   ✅  |   ✅      |    [Contribute](/docs/docs/CONTRIBUTING.md)        |
-| rootBackgroundImageName            |  ✅   |    ✅     |    [Contribute](/docs/docs/CONTRIBUTING.md)       |
-| setButtons          |   ✅     |    ✅    | [Contribute](/docs/docs/CONTRIBUTING.md) | @Johan-dutoit|
+| screenBackgroundImageName         |   ✅  |   ✅      |    [Contribute](/docs/WorkingLocally.md)        |
+| rootBackgroundImageName            |  ✅   |    ✅     |    [Contribute](/docs/WorkingLocally.md)       |
+| setButtons          |   ✅     |    ✅    | [Contribute](/docs/WorkingLocally.md) | @Johan-dutoit|
 | title            |   ✅     |        	✅    | 	✅| Wix|
-| toggleDrawer        |   ✅     |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md) |
-| setTabBadge         |    ✅    |       ✅    | [Contribute](/docs/docs/CONTRIBUTING.md)| Wix|
-| switchToTab         |    ✅    |       ✅   |[Contribute](/docs/docs/CONTRIBUTING.md) |
-| topBarCustomView        |   ✅     |     WIP @gran33     | [Contribute](/docs/docs/CONTRIBUTING.md)|
-| customTransition(shared element)       |     :x:  |     WIP @bogobogo     | [Contribute](/docs/docs/CONTRIBUTING.md)|
-| splitViewScreen       |     :x:  |    [Contribute](/docs/docs/CONTRIBUTING.md)      | [Contribute](/docs/docs/CONTRIBUTING.md)|
+| toggleDrawer        |   ✅     |       ✅    | [Contribute](/docs/WorkingLocally.md) |
+| setTabBadge         |    ✅    |       ✅    | [Contribute](/docs/WorkingLocally.md)| Wix|
+| switchToTab         |    ✅    |       ✅   |[Contribute](/docs/WorkingLocally.md) |
+| topBarCustomView        |   ✅     |     WIP @gran33     | [Contribute](/docs/WorkingLocally.md)|
+| customTransition(shared element)       |     :x:  |     WIP @bogobogo     | [Contribute](/docs/WorkingLocally.md)|
+| splitViewScreen       |     :x:  |    [Contribute](/docs/WorkingLocally.md)      | [Contribute](/docs/WorkingLocally.md)|
 
-Element transitions, adding buttons and styles are not yet implemented. [Contribute](/docs/docs/CONTRIBUTING.md)
+Element transitions, adding buttons and styles are not yet implemented. [Contribute](/docs/WorkingLocally.md)
