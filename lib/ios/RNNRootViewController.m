@@ -69,7 +69,7 @@
 }
 
 - (void)mergeOptions:(NSDictionary *)options {
-	[self.options mergeWith:options];
+	[self.options mergeIfEmptyWith:options];
 }
 
 - (void)setCustomNavigationTitleView {

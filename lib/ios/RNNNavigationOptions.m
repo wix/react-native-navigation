@@ -41,11 +41,24 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	for (id key in otherOptions) {
 		if ([self hasProperty:key]) {
 			if ([[self valueForKey:key] isKindOfClass:[RNNOptions class]]) {
-			RNNOptions* options = [self valueForKey:key];
-			[options mergeWith:[otherOptions objectForKey:key]];
-		} else {
-			[self setValue:[otherOptions objectForKey:key] forKey:key];
-		} 		
+				RNNOptions* options = [self valueForKey:key];
+				[options mergeWith:[otherOptions objectForKey:key]];
+			} else {
+				[self setValue:[otherOptions objectForKey:key] forKey:key];
+			}
+		}
+	}
+}
+
+-(void)mergeIfEmptyWith:(NSDictionary *)otherOptions {
+	for (id key in otherOptions) {
+		if ([self hasProperty:key]) {
+			if ([[self valueForKey:key] isKindOfClass:[RNNOptions class]]) {
+				RNNOptions* options = [self valueForKey:key];
+				[options mergeIfEmptyWith:[otherOptions objectForKey:key]];
+			} else if (![self valueForKey:key]) {
+				[self setValue:[otherOptions objectForKey:key] forKey:key];
+			}
 		}
 	}
 }

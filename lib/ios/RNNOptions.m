@@ -22,6 +22,14 @@
 	}
 }
 
+-(void)mergeIfEmptyWith:(NSDictionary *)otherOptions {
+	for (id key in otherOptions) {
+		if ([self hasProperty:key] && ![self valueForKey:key]) {
+			[self setValue:[otherOptions objectForKey:key] forKey:key];
+		}
+	}
+}
+
 - (BOOL)hasProperty:(NSString*)propName {
 	return [self respondsToSelector:NSSelectorFromString(propName)];
 }
