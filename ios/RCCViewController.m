@@ -642,12 +642,11 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
       
       NSDictionary *initialProps = self.navigatorStyle[@"navBarCustomViewInitialProps"];
       RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:navBarCustomView initialProperties:initialProps];
-      reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
-        
+
       RCCCustomTitleView *titleView = [[RCCCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds
                                                                         subView:reactView
                                                                       alignment:self.navigatorStyle[@"navBarComponentAlignment"]];
-      
+
       self.navigationItem.titleView = titleView;
       self.navigationItem.titleView.backgroundColor = [UIColor clearColor];
       self.navigationItem.titleView.clipsToBounds = YES;
