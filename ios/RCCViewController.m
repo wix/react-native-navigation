@@ -235,8 +235,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 - (void)sendGlobalScreenEvent:(NSString *)eventName endTimestampString:(NSString *)endTimestampStr shouldReset:(BOOL)shouldReset {
   
-  if (!self.commandType) return;
-  
   if ([self.view isKindOfClass:[RCTRootView class]]){
     NSString *screenName = [((RCTRootView*)self.view) moduleName];
     
@@ -642,12 +640,11 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
       
       NSDictionary *initialProps = self.navigatorStyle[@"navBarCustomViewInitialProps"];
       RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:navBarCustomView initialProperties:initialProps];
-      reactView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
-        
+
       RCCCustomTitleView *titleView = [[RCCCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds
                                                                         subView:reactView
                                                                       alignment:self.navigatorStyle[@"navBarComponentAlignment"]];
-      
+
       self.navigationItem.titleView = titleView;
       self.navigationItem.titleView.backgroundColor = [UIColor clearColor];
       self.navigationItem.titleView.clipsToBounds = YES;
