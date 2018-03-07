@@ -1,6 +1,6 @@
 /*eslint-disable*/
-import { Component } from 'react';
-import { findNodeHandle } from 'react-native';
+import {Component} from 'react';
+import {findNodeHandle} from 'react-native';
 import Navigation from './../Navigation';
 import Controllers, {Modal, Notification, ScreenUtils} from './controllers';
 const React = Controllers.hijackReact();
@@ -21,7 +21,7 @@ async function startTabBasedApp(params) {
   }
 
   const controllerID = _.uniqueId('controllerID');
-  params.tabs.map(function(tab, index) {
+  params.tabs.map(function (tab, index) {
     const navigatorID = controllerID + '_nav' + index;
     const screenInstanceID = _.uniqueId('screenInstanceID');
 
@@ -54,7 +54,7 @@ async function startTabBasedApp(params) {
   });
 
   const Controller = Controllers.createClass({
-    render: function() {
+    render: function () {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
         return this.renderBody();
       } else {
@@ -63,11 +63,11 @@ async function startTabBasedApp(params) {
         const leftScreenId = _.uniqueId('screenInstanceID');
         const rightScreenId = _.uniqueId('screenInstanceID')
 
-        const { navigatorStyle: leftNavigatorStyle } = params.drawer.left
+        const {navigatorStyle: leftNavigatorStyle} = params.drawer.left
           ? _mergeScreenSpecificSettings(params.drawer.left.screen, leftScreenId, params.drawer.left)
           : {};
 
-        const { navigatorStyle: rightNavigatorStyle } = params.drawer.right
+        const {navigatorStyle: rightNavigatorStyle} = params.drawer.right
           ? _mergeScreenSpecificSettings(params.drawer.right.screen, rightScreenId, params.drawer.right)
           : {};
 
@@ -140,25 +140,52 @@ async function startSingleScreenApp(params) {
     return;
   }
 
+  const controllerID = _.uniqueId('controllerID');
+  const navigatorID = controllerID + '_nav';
+
   if (components) {
+    screen = components[0];
+    components.shift();
+
     components.forEach(component => {
-      screen = components[0];
-      components.shift();
       const screenInstanceID = _.uniqueId('screenInstanceID');
+
+      const {
+        navigatorStyle,
+        navigatorButtons,
+        navigatorEventID
+      } = _mergeScreenSpecificSettings(component.screen, screenInstanceID, params);
+      _saveNavigatorButtonsProps(navigatorButtons);
+      _saveNavBarComponentProps(navigatorStyle);
+      const passProps = Object.assign({}, params.passProps);
+      passProps.navigatorID = navigatorID;
+      passProps.screenInstanceID = screenInstanceID;
+      passProps.navigatorEventID = navigatorEventID;
+
+
       component.navigationParams = {
-        screenInstanceID
+        screenInstanceID,
+        navigatorStyle,
+        navigatorButtons,
+        navigatorEventID,
+        navigatorID: navigatorID,
+        passProps
       };
+
+      component.subtitle = params.subtitle;
+      component.passProps = passProps;
+
       savePassProps(component);
+
     });
   }
 
-  const controllerID = _.uniqueId('controllerID');
   if (!screen.screen) {
     console.error('startSingleScreenApp(params): screen must include a screen property');
     return;
   }
 
-  const navigatorID = controllerID + '_nav';
+
   const screenInstanceID = _.uniqueId('screenInstanceID');
   const {
     navigatorStyle,
@@ -183,7 +210,7 @@ async function startSingleScreenApp(params) {
   };
 
   const Controller = Controllers.createClass({
-    render: function() {
+    render: function () {
       if (!params.drawer || (!params.drawer.left && !params.drawer.right)) {
         return this.renderBody();
       } else {
@@ -205,7 +232,7 @@ async function startSingleScreenApp(params) {
         );
       }
     },
-    renderBody: function() {
+    renderBody: function () {
       return (
         <NavigationControllerIOS
           id={navigatorID}
@@ -544,7 +571,7 @@ function showModal(params) {
   };
 
   const Controller = Controllers.createClass({
-    render: function() {
+    render: function () {
       return (
         <NavigationControllerIOS
           id={navigatorID}
@@ -555,7 +582,7 @@ function showModal(params) {
           passProps={passProps}
           style={navigatorStyle}
           leftButtons={navigatorButtons.leftButtons}
-          rightButtons={navigatorButtons.rightButtons}/>
+          rightButtons={navigatorButtons.rightButtons} />
       );
     }
   });
