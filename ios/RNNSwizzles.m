@@ -14,6 +14,36 @@
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
 static id (*__SWZ_initWithEventDispatcher_orig)(id self, SEL _cmd, id eventDispatcher);
+static void (*__SWZ_setFrame_orig)(id self, SEL _cmd, CGRect frame);
+
+static void __RNN_setFrame_orig(UIScrollView* self, SEL _cmd, CGRect frame)
+{
+	CGPoint originalOffset = self.contentOffset;
+	
+	__SWZ_setFrame_orig(self, _cmd, frame);
+	
+	UIEdgeInsets contentInset;
+	if (@available(iOS 11.0, *)) {
+		contentInset = self.adjustedContentInset;
+	} else {
+		contentInset = self.contentInset;
+	}
+	
+	CGSize contentSize = self.contentSize;
+	
+	// If contentSize has not been measured yet we can't check bounds.
+	if (CGSizeEqualToSize(contentSize, CGSizeZero))
+	{
+		self.contentOffset = originalOffset;
+	}
+	else
+	{
+		// Make sure offset don't exceed bounds. This could happen on screen rotation.
+		CGSize boundsSize = self.bounds.size;
+		self.contentOffset = CGPointMake(MAX(-contentInset.left, MIN(contentSize.width - boundsSize.width + contentInset.right, originalOffset.x)),
+										 MAX(-contentInset.top, MIN(contentSize.height - boundsSize.height + contentInset.bottom, originalOffset.y)));
+	}
+}
 
 - (id)__swz_initWithEventDispatcher:(id)eventDispatcher
 {
@@ -30,21 +60,36 @@ static id (*__SWZ_initWithEventDispatcher_orig)(id self, SEL _cmd, id eventDispa
 + (void)applySwizzles
 {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
-	Class cls = NSClassFromString(@"RCTScrollView");
-	if(cls == NULL)
-	{
-		return;
-	}
-	Method m1 = class_getInstanceMethod(cls, NSSelectorFromString(@"initWithEventDispatcher:"));
-	
-	if(m1 == NULL)
-	{
-		return;
-	}
-	
-	__SWZ_initWithEventDispatcher_orig = (void*)method_getImplementation(m1);
-	Method m2 = class_getInstanceMethod([RNNSwizzles class], NSSelectorFromString(@"__swz_initWithEventDispatcher:"));
-	method_exchangeImplementations(m1, m2);
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		Class cls = NSClassFromString(@"RCTScrollView");
+		if(cls == NULL)
+		{
+			return;
+		}
+		Method m1 = class_getInstanceMethod(cls, NSSelectorFromString(@"initWithEventDispatcher:"));
+		
+		if(m1 == NULL)
+		{
+			return;
+		}
+		
+		__SWZ_initWithEventDispatcher_orig = (void*)method_getImplementation(m1);
+		Method m2 = class_getInstanceMethod([RNNSwizzles class], NSSelectorFromString(@"__swz_initWithEventDispatcher:"));
+		method_exchangeImplementations(m1, m2);
+		
+		if (@available(iOS 11.0, *)) {
+			cls = NSClassFromString(@"RCTCustomScrollView");
+			if(cls == NULL)
+			{
+				return;
+			}
+			
+			m1 = class_getInstanceMethod(cls, @selector(setFrame:));
+			__SWZ_setFrame_orig = (void*)method_getImplementation(m1);
+			method_setImplementation(m1, (IMP)__RNN_setFrame_orig);
+		}
+	});
 #endif
 }
 

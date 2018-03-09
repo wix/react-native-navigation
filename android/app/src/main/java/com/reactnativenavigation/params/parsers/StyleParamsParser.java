@@ -102,6 +102,8 @@ public class StyleParamsParser {
         result.forceTitlesDisplay = getBoolean("forceTitlesDisplay", getDefaultForceTitlesDisplay());
 
         result.bottomTabFontFamily = getFont("bottomTabFontFamily", getDefaultBottomTabsFontFamily());
+        result.bottomTabFontSize = getIntegerOrNull("bottomTabFontSize");
+        result.bottomTabSelectedFontSize = getIntegerOrNull("bottomTabSelectedFontSize");
 
         return result;
     }
@@ -125,6 +127,8 @@ public class StyleParamsParser {
         result.titleBarHideOnScroll = false;
         result.orientation = Orientation.auto;
         result.bottomTabFontFamily = new StyleParams.Font();
+        result.bottomTabFontSize = 10;
+        result.bottomTabSelectedFontSize = 10;
         result.titleBarTitleFont = new StyleParams.Font();
         result.titleBarSubtitleFontFamily = new StyleParams.Font();
         result.titleBarButtonFontFamily = new StyleParams.Font();
@@ -359,6 +363,10 @@ public class StyleParamsParser {
 
     private int getInt(String key, int defaultValue) {
         return params.containsKey(key) ? params.getInt(key) : defaultValue;
+    }
+
+    private Integer getIntegerOrNull(String key) {
+        return params.containsKey(key) ? params.getInt(key) : null;
     }
 
     private Bundle getBundle(String key) {
