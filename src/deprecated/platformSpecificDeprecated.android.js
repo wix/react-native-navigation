@@ -446,6 +446,9 @@ function navigatorSetTabButton(navigator, params) {
 }
 
 function navigatorSetTitle(navigator, params) {
+  if (params.titleBarTitleColor) {
+    params.titleBarTitleColor = processColor(params.titleBarTitleColor);
+  }
   newPlatformSpecific.setScreenTitleBarTitle(navigator.screenInstanceID, params.title);
 }
 
