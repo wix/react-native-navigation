@@ -389,6 +389,9 @@ function navigatorSetButtons(navigator, navigatorEventID, _params) {
       if (button.buttonColor) {
         button.color = processColor(button.buttonColor);
       }
+      if (button.titleBarDisabledButtonColor) {
+        button.titleBarDisabledButtonColor = processColor(button.titleBarDisabledButtonColor);
+      }
       if (button.component) {
         const passPropsKey = _.uniqueId('customButtonComponent');
         PropRegistry.save(passPropsKey, button.passProps);
@@ -443,6 +446,9 @@ function navigatorSetTabButton(navigator, params) {
 }
 
 function navigatorSetTitle(navigator, params) {
+  if (params.titleBarTitleColor) {
+    params.titleBarTitleColor = processColor(params.titleBarTitleColor);
+  }
   newPlatformSpecific.setScreenTitleBarTitle(navigator.screenInstanceID, params.title);
 }
 
