@@ -163,7 +163,7 @@ RCT_EXPORT_MODULE(RCCManager);
                                if (viewController.presentedViewController != nil)
                                {
                                    dispatch_semaphore_t dismiss_sema = dispatch_semaphore_create(0);
-                                   
+
                                    dispatch_async(dispatch_get_main_queue(), ^
                                                   {
                                                       [viewController dismissViewControllerAnimated:NO completion:^()
@@ -171,11 +171,11 @@ RCT_EXPORT_MODULE(RCCManager);
                                                            if (rootViewController != viewController) {
                                                                [[RCCManager sharedIntance] unregisterController:viewController];
                                                            }
-                                                           
+
                                                            if (counter == allPresentedViewControllers.count && allPresentedViewControllers.count > 0)
                                                            {
                                                                [allPresentedViewControllers removeAllObjects];
-                                                               
+
                                                                if (resolve != nil)
                                                                {
                                                                    resolve(nil);
@@ -184,19 +184,23 @@ RCT_EXPORT_MODULE(RCCManager);
                                                            dispatch_semaphore_signal(dismiss_sema);
                                                        }];
                                                   });
-                                   
+
                                    dispatch_semaphore_wait(dismiss_sema, DISPATCH_TIME_FOREVER);
-                               }
-                               else if (counter == allPresentedViewControllers.count && allPresentedViewControllers.count > 0)
-                               {
-                                   [allPresentedViewControllers removeAllObjects];
-                                   
-                                   if (resolve != nil)
+                               } else {
+                                   if (rootViewController != viewController) {
+                                       [[RCCManager sharedIntance] unregisterController:viewController];
+                                   }
+                                   if (counter == allPresentedViewControllers.count && allPresentedViewControllers.count > 0)
                                    {
-                                       dispatch_async(dispatch_get_main_queue(), ^
-                                                      {
-                                                          resolve(nil);
-                                                      });
+                                       [allPresentedViewControllers removeAllObjects];
+
+                                       if (resolve != nil)
+                                       {
+                                           dispatch_async(dispatch_get_main_queue(), ^
+                                                          {
+                                                              resolve(nil);
+                                                          });
+                                       }
                                    }
                                }
                            }
