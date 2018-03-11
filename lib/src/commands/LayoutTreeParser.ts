@@ -103,7 +103,7 @@ export class LayoutTreeParser {
     return {
       id: api.id,
       type: LayoutType.ExternalComponent,
-      data: { name: api.className, options: api.options, passProps: api.passProps },
+      data: { name: api.name, options: api.options, passProps: api.passProps },
       children: []
     };
   }

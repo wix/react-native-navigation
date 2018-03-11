@@ -33,7 +33,7 @@ public class StackLayout extends RelativeLayout {
         new OptionsPresenter(topBar).applyOrientation(options.orientationOptions);
     }
 
-    public void applyOptions(Options options, ReactComponent component) {
+    public void applyOptions(Options options, Component component) {
         new OptionsPresenter(topBar, component).applyOptions(options);
     }
 

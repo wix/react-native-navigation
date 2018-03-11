@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.parse.FabOptions;
-import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.ReactComponent;

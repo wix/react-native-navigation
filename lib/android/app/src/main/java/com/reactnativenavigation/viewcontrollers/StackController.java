@@ -10,6 +10,7 @@ import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.NoOpPromise;
+import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.TopBar;
@@ -44,13 +45,15 @@ public class StackController extends ParentController <StackLayout> {
     }
 
     @Override
-    public void applyOptions(Options options, ReactComponent component) {
+    public void applyOptions(Options options, Component component) {
         super.applyOptions(options, component);
         getView().applyOptions(this.options, component);
         applyOnParentController(parentController ->
                 ((ParentController) parentController).applyOptions(this.options.copy().clearTopBarOptions(), component)
         );
-        fabOptionsPresenter.applyOptions(options.fabOptions, component, getView());
+        if (component instanceof ReactComponent) {
+            fabOptionsPresenter.applyOptions(options.fabOptions, (ReactComponent) component, getView());
+        }
         animator.setOptions(options.animationsOptions);
     }
 

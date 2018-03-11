@@ -15,7 +15,7 @@ import com.reactnativenavigation.presentation.FabOptionsPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.Component;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener {
 
@@ -132,7 +132,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return isSameId(id) ? this : null;
     }
 
-    public boolean containsComponent(ReactComponent component) {
+    public boolean containsComponent(Component component) {
         return getView().equals(component);
     }
 
@@ -153,7 +153,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         applyOptions(options);
         applyOnParentController(parentController -> {
             parentController.clearOptions();
-            if (getView() instanceof ReactComponent) parentController.applyOptions(options, (ReactComponent) getView());
+            if (getView() instanceof Component) parentController.applyOptions(options, (Component) getView());
         });
     }
 

@@ -6,28 +6,33 @@ import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.NoOpPromise;
 import com.reactnativenavigation.utils.TypefaceLoader;
-import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.SideMenuController;
 import com.reactnativenavigation.viewcontrollers.StackController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
+import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
 import com.reactnativenavigation.views.ComponentViewCreator;
 import com.reactnativenavigation.views.TopTabsLayoutCreator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class LayoutFactory {
 
 	private final Activity activity;
 	private final ReactInstanceManager reactInstanceManager;
+    private Map<String, ExternalComponentCreator> externalComponentCreators;
     private Options defaultOptions;
     private final TypefaceLoader typefaceManager;
 
-    public LayoutFactory(Activity activity, final ReactInstanceManager reactInstanceManager, Options defaultOptions) {
+    public LayoutFactory(Activity activity, final ReactInstanceManager reactInstanceManager, Map<String, ExternalComponentCreator> externalComponentCreators, Options defaultOptions) {
 		this.activity = activity;
 		this.reactInstanceManager = reactInstanceManager;
+        this.externalComponentCreators = externalComponentCreators;
         this.defaultOptions = defaultOptions;
         typefaceManager = new TypefaceLoader(activity);
     }
@@ -36,6 +41,8 @@ public class LayoutFactory {
 		switch (node.type) {
 			case Component:
 				return createComponent(node);
+            case ExternalComponent:
+                return createExternalComponent(node);
 			case Stack:
 				return createStack(node);
 			case BottomTabs:
@@ -100,6 +107,17 @@ public class LayoutFactory {
                 options
         );
 	}
+
+    private ViewController createExternalComponent(LayoutNode node) {
+        final Options options = Options.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);
+        ExternalComponent externalComponent = ExternalComponent.parse(node.data);
+        return new ExternalComponentViewController(activity,
+                node.id,
+                externalComponent,
+                externalComponentCreators.get(externalComponent.name.get()),
+                options
+        );
+    }
 
 	private ViewController createStack(LayoutNode node) {
         final Options options = Options.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);

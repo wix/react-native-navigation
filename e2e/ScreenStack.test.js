@@ -69,9 +69,9 @@ describe('screen stack', () => {
     await expect(elementByLabel('Screen 1')).toBeVisible();
   });
 
-  it(':ios: push native component with options', async () => {
-    await elementById(testIDs.PUSH_NATIVE_COMPONENT_BUTTON).tap();
-    await expect(elementById('TestLabel')).toBeVisible();
+  it('push native component with options', async () => {
+    await elementById(testIDs.PUSH_EXTERNAL_COMPONENT_BUTTON).tap();
+    await expect(elementByLabel('This is an external component')).toBeVisible();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 });

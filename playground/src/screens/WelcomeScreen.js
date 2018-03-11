@@ -41,7 +41,7 @@ class WelcomeScreen extends Component {
         <Button title='Static Lifecycle Events' testID={testIDs.PUSH_STATIC_LIFECYCLE_BUTTON} onPress={this.onClickShowStaticLifecycleOverlay} />
         <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
         <Button title='Push Options Screen' testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
-        <Button title='Push Native Component' testID={testIDs.PUSH_NATIVE_COMPONENT_BUTTON} onPress={this.onClickPushExternalComponent} />
+        <Button title='Push External Component' testID={testIDs.PUSH_EXTERNAL_COMPONENT_BUTTON} onPress={this.onClickPushExternalComponent} />
         {Platform.OS === 'android' && <Button title='Push Top Tabs screen' testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />}
         {Platform.OS === 'android' && <Button title='Back Handler' testID={testIDs.BACK_HANDLER_BUTTON} onPress={this.onClickBackHandler} />}
         <Button title='Show Modal' testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
@@ -239,7 +239,10 @@ class WelcomeScreen extends Component {
   async onClickPushExternalComponent() {
     await Navigation.push(this.props.componentId, {
       externalComponent: {
-        className: 'RNNCustomViewController',
+        name: 'RNNCustomComponent',
+        passProps: {
+          text: 'This is an external component'
+        },
         options: {
           topBar: {
             title: 'pushed',

@@ -9,16 +9,20 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.NavigationActivity;
+import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.parse.LayoutFactory;
 import com.reactnativenavigation.parse.LayoutNode;
-import com.reactnativenavigation.parse.parsers.LayoutNodeParser;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.parsers.LayoutNodeParser;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
+import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 
 import org.json.JSONObject;
+
+import java.util.Map;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
 	private static final String NAME = "RNNBridgeModule";
@@ -113,21 +117,29 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 		handle(() -> navigator().dismissOverlay(componentId));
 	}
 
-	private NavigationActivity activity() {
-		return (NavigationActivity) getCurrentActivity();
-	}
-
 	private Navigator navigator() {
 		return activity().getNavigator();
 	}
 
 	@NonNull
 	private LayoutFactory newLayoutFactory() {
-		return new LayoutFactory(activity(), reactInstanceManager, navigator().getDefaultOptions());
+		return new LayoutFactory(activity(),
+                reactInstanceManager,
+                externalComponentCreator(),
+                navigator().getDefaultOptions()
+        );
 	}
+
+	private Map<String, ExternalComponentCreator> externalComponentCreator() {
+        return ((NavigationApplication) activity().getApplication()).getExternalComponents();
+    }
 
 	private void handle(Runnable task) {
 		if (activity() == null || activity().isFinishing()) return;
 		UiThread.post(task);
 	}
+
+    private NavigationActivity activity() {
+        return (NavigationActivity) getCurrentActivity();
+    }
 }
