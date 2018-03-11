@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface RNNTransitionStateHolder : NSObject
 
@@ -9,7 +10,6 @@
 @property (nonatomic) double springVelocity;
 @property (nonatomic) double springDamping;
 @property (nonatomic) double startDelay;
-@property (nonatomic, strong) NSString* fromElementType;
 @property (nonatomic, strong) NSString* fromId;
 @property (nonatomic, strong) NSString* toId;
 @property (nonatomic) BOOL isSharedElementTransition;
@@ -19,5 +19,9 @@
 @property (nonatomic) double endX;
 
 - (instancetype)initWithTransition:(NSDictionary*)transition;
+
+- (void)setupInitialTransitionForView:(UIView *)view;
+
+- (void)completeTransitionForView:(UIView*)view;
 
 @end

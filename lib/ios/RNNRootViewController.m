@@ -3,6 +3,7 @@
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
 #import "RNNCustomTitleView.h"
+#import "RNNPushAnimation.h"
 
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* componentName;
@@ -135,10 +136,12 @@
 											   fromViewController:(UIViewController*)fromVC
 												 toViewController:(UIViewController*)toVC {
 {
-	if (operation == UINavigationControllerOperationPush) {
+	if (self.animator) {
 		return self.animator;
-	} else if (operation == UINavigationControllerOperationPop) {
-		return self.animator;
+	} else if (operation == UINavigationControllerOperationPush && self.options.animations.push) {
+		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.push];
+	} else if (operation == UINavigationControllerOperationPop && self.options.animations.pop) {
+		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.pop];
 	} else {
 		return nil;
 	}

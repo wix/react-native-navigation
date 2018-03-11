@@ -1,10 +1,16 @@
 #import "RNNTransitionStateHolder.h"
 #import "RNNUtils.h"
 
+@interface RNNTransitionStateHolder() {
+	CGRect _initialFrame;
+}
+
+@end
 @implementation RNNTransitionStateHolder
 
 -(instancetype)initWithTransition:(NSDictionary *)transition {
 	self = [super init];
+	
 	self.springDamping = [RNNUtils getDoubleOrKey:transition withKey:@"springDamping" withDefault:0.85];
 	self.springVelocity = [RNNUtils getDoubleOrKey:transition withKey:@"springVelocity" withDefault:0.8];
 	self.startDelay = [RNNUtils getDoubleOrKey:transition withKey:@"startDelay" withDefault:0];
@@ -18,9 +24,21 @@
 	self.endY = [RNNUtils getDoubleOrKey:transition[@"y"] withKey:@"to" withDefault:0];
 	self.fromId = [transition objectForKey:@"fromId"];
 	self.toId = [transition objectForKey:@"toId"];
-	self.fromElementType = nil;
 	self.isSharedElementTransition = [[transition objectForKey:@"type"] isEqualToString:@"sharedElement"];
+	
 	return self;
+}
+
+- (void)setupInitialTransitionForView:(UIView*)view {
+	_initialFrame = view.frame;
+	view.alpha = self.startAlpha;
+	view.frame = CGRectMake(_initialFrame.origin.x + self.startX, _initialFrame.origin.y + self.startY, view.frame.size.width, view.frame.size.height);
+}
+
+- (void)completeTransitionForView:(UIView*)view {
+	view.alpha = self.endAlpha;
+	view.frame = CGRectMake(_initialFrame.origin.x + self.endX, _initialFrame.origin.y + self.endY, view.frame.size.width, view.frame.size.height);
+	[view layoutSubviews];
 }
 
 @end

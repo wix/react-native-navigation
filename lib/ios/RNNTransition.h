@@ -9,6 +9,8 @@
 
 - (instancetype)initFromVC:(UIViewController*)fromVC toVC:(UIViewController*)toVC transitionOptions:(RNNTransitionStateHolder*)transitionOptions isBackButton:(BOOL)isBackButton;
 
+- (void)animate;
+
 - (void)setAnimatedViewFinalProperties;
 
 - (void)transitionCompleted;

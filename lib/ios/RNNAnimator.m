@@ -47,11 +47,7 @@
 
 -(void)animateTransitions:(NSArray*)transitions {
 	for (RNNTransition* transition in transitions ) {
-		[UIView animateWithDuration:transition.options.duration delay:transition.options.startDelay usingSpringWithDamping:transition.options.springDamping initialSpringVelocity:transition.options.springVelocity options:UIViewAnimationOptionCurveEaseOut  animations:^{
-			[transition setAnimatedViewFinalProperties];
-		} completion:^(BOOL finished) {
-
-		}];
+		[transition animate];
 	}
 }
 
