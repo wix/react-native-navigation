@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "RNNOptions.h"
 
-@interface RNNTransitionStateHolder : NSObject
+@interface RNNTransitionStateHolder : RNNOptions
 
 @property (nonatomic) double startAlpha;
 @property (nonatomic) double endAlpha;

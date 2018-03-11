@@ -25,7 +25,6 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) RNNAnimationOptions* customTransition;
 @property (nonatomic, strong) RNNTransitionsOptions* animations;
 
-@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
 @property (nonatomic, strong) NSNumber* animated;
 @property (nonatomic, strong) NSNumber* statusBarHidden;

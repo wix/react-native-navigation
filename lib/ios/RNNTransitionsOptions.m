@@ -4,11 +4,15 @@
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
-	
-	self.push = [[RNNScreenTransition alloc] initWithDict:dict[@"push"]];
-	self.pop = [[RNNScreenTransition alloc] initWithDict:dict[@"pop"]];
+
+	[self mergeWith:dict];
 	
 	return self;
+}
+
+- (void)mergeWith:(NSDictionary *)otherOptions {
+	self.push = otherOptions[@"push"] ? [[RNNScreenTransition alloc] initWithDict:otherOptions[@"push"]] : _push;
+	self.pop = otherOptions[@"pop"] ? [[RNNScreenTransition alloc] initWithDict:otherOptions[@"pop"]] : _pop;
 }
 
 @end
