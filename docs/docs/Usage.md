@@ -178,7 +178,7 @@ Navigation.dismissModal(this.props.componentId);
 
 The `didAppear` and `didDisappear` functions are lifecycle callbacks that are called by React Native Navigation on the component when it appears and disappears. 
 
-These are similar to react's `componentDidMount` and `componentWillUnmount` but are related to the actual visibility of a component to the user. While the component is `mounted` as soon as it's part of a layout, it is not always `visible` (for example when another screen is `pushed` on top of it), and therefore some performance optimization measurements are taken by React Native Navigation.
+These are similar to react's `componentDidMount` and `componentWillUnmount`, but are related to the actual visibility of a component to the user. While the component is `mounted` as soon as it's part of a layout, it is not always `visible` (for example, when another screen is `pushed` on top of it), and therefore React Native Navigation  takes some performance optimizations.
 
 They are also useful for a lot of use cases, for example starting and stopping an animation while the component is shown on-screen.
 
