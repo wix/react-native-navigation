@@ -10,7 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.react.ReactDevPermission;
+import com.reactnativenavigation.react.*;
+import com.reactnativenavigation.utils.CompatUtils;
 
 public abstract class SplashActivity extends AppCompatActivity {
     public static boolean isResumed = false;
@@ -29,6 +30,7 @@ public abstract class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LaunchArgs.instance.set(getIntent());
         setSplashLayout();
         IntentDataHandler.saveIntentData(getIntent());
     }
@@ -39,6 +41,10 @@ public abstract class SplashActivity extends AppCompatActivity {
         isResumed = true;
 
         if (NavigationApplication.instance.getReactGateway().hasStartedCreatingContext()) {
+            if (CompatUtils.isSplashOpenedOverNavigationActivity(this, getIntent())) {
+                finish();
+                return;
+            }
             NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
             if (NavigationApplication.instance.clearHostOnActivityDestroy()) {
                 overridePendingTransition(0, 0);

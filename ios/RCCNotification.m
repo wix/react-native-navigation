@@ -66,12 +66,10 @@
 
 -(UISwipeGestureRecognizerDirection)swipeDirection
 {
-    UISwipeGestureRecognizerDirection direction = UISwipeGestureRecognizerDirectionUp;
+    UISwipeGestureRecognizerDirection direction = [self isBottomPosition] ?  UISwipeGestureRecognizerDirectionDown : UISwipeGestureRecognizerDirectionUp;
     
     NSString *animationType = [self.params valueForKeyPath:@"animation.type"];
-    if ([animationType isEqualToString:@"swing"] || [animationType isEqualToString:@"slide-down"])
-        direction = UISwipeGestureRecognizerDirectionUp;
-    else if ([animationType isEqualToString:@"slide-left"])
+    if ([animationType isEqualToString:@"slide-left"])
         direction = UISwipeGestureRecognizerDirectionRight;
     else if ([animationType isEqualToString:@"slide-right"])
         direction = UISwipeGestureRecognizerDirectionLeft;
