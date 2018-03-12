@@ -170,9 +170,19 @@
       iconImageSelected = [RCTConvert UIImage:icon];
     }
     
-    viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
-    viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
-    viewController.tabBarItem.selectedImage = iconImageSelected;
+    if (!title) {
+      UITabBarItem *tabItem = [[UITabBarItem alloc] init];
+      viewController.tabBarItem = tabItem;
+      tabItem.image = iconImage;
+      tabItem.tag = 0;
+      tabItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
+      viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
+      viewController.tabBarItem.selectedImage = iconImageSelected;
+    } else {
+      viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
+      viewController.tabBarItem.accessibilityIdentifier = tabItemLayout[@"props"][@"testID"];
+      viewController.tabBarItem.selectedImage = iconImageSelected;
+    }
     
     id imageInsets = tabItemLayout[@"props"][@"iconInsets"];
     if (imageInsets && imageInsets != (id)[NSNull null])
