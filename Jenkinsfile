@@ -8,7 +8,7 @@ npm install
 npm run clean'''
       }
     }
-    stage('Run test-js') {
+    stage('Run All Tests') {
       parallel {
         stage('Run test-js') {
           steps {

@@ -174,10 +174,10 @@ public class OptionsTest extends BaseTest {
 
     @Test
     public void mergeDefaultOptions() throws Exception {
-        JSONObject json = new JSONObject();
-        json.put("topBar", createTopBar(TOP_BAR_VISIBLE.get()));
-        json.put("fab", createFab());
-        json.put("bottomTabs", createBottomTabs());
+        JSONObject json = new JSONObject()
+                .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
+                .put("fab", createFab())
+                .put("bottomTabs", createBottomTabs());
         Options defaultOptions = Options.parse(mockLoader, json);
         Options options = new Options();
 

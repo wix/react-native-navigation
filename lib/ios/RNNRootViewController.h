@@ -23,7 +23,7 @@
 			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter
-		  isNativeComponent:(BOOL)isNativeComponent;
+		  isExternalComponent:(BOOL)isExternalComponent;
 
 
 -(void)applyTabBarItem;

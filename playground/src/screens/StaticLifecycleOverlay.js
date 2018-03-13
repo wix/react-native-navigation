@@ -26,7 +26,7 @@ class StaticLifecycleOverlay extends Component {
       ));
     return (
       <View style={styles.root}>
-        <Text style={styles.h1}>{`Static Lifecycle Events`}</Text>
+        <Text style={styles.h1}>{`Static Lifecycle Events Overlay`}</Text>
         <View style={styles.events}>
           {events}
         </View>

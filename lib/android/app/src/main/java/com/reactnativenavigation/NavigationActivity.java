@@ -1,13 +1,12 @@
 package com.reactnativenavigation;
 
-import android.os.*;
-import android.support.annotation.*;
-import android.support.v7.app.*;
-import android.view.*;
-import android.widget.*;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 
-import com.facebook.react.modules.core.*;
-import com.reactnativenavigation.viewcontrollers.*;
+import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
+import com.reactnativenavigation.viewcontrollers.Navigator;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
 	private Navigator navigator;
@@ -62,9 +61,5 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
 	public Navigator getNavigator() {
 		return navigator;
-	}
-
-	public void toast(final String text) {
-		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
 	}
 }

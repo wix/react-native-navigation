@@ -22,9 +22,9 @@ describe('LayoutTreeParser', () => {
       });
     });
 
-    it('native component', () => {
-      expect(uut.parse(LayoutExamples.nativeComponent)).toEqual({
-        type: LayoutType.NativeComponent,
+    it('external component', () => {
+      expect(uut.parse(LayoutExamples.externalComponent)).toEqual({
+        type: LayoutType.ExternalComponent,
         data: { name: 'MyReactComponent', options: LayoutExamples.options, passProps: LayoutExamples.passProps },
         children: []
       });
@@ -175,9 +175,9 @@ const singleComponent = {
   }
 };
 
-const nativeComponent = {
-  nativeComponent: {
-    name: 'MyReactComponent',
+const externalComponent = {
+  externalComponent: {
+    className: 'MyReactComponent',
     options,
     passProps
   }
@@ -286,5 +286,5 @@ const LayoutExamples = {
   sideMenu,
   topTabs,
   complexLayout,
-  nativeComponent
+  externalComponent
 };

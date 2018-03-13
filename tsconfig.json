@@ -6,7 +6,15 @@
     "target": "esnext",
     "module": "commonjs",
     "jsx": "react-native",
-    "declaration": true
+    "declaration": true,
+    "types": [
+      "jest",
+      "lodash",
+      "prop-types",
+      "react",
+      "react-native",
+      "react-test-renderer"
+    ]
   },
   "include": [
     "./lib/src/**/*"

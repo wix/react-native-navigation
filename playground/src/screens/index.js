@@ -18,6 +18,7 @@ const TopTabScreen = require('./TopTabScreen');
 const TopTabOptionsScreen = require('./TopTabOptionsScreen');
 const CustomTopBar = require('./CustomTopBar');
 const Alert = require('./Alert');
+const BackHandlerModalScreen = require('./BackHandlerModalScreen');
 
 function registerScreens() {
   Navigation.registerComponent(`navigation.playground.CustomTransitionDestination`, () => CustomTransitionDestination);
@@ -39,6 +40,7 @@ function registerScreens() {
   Navigation.registerComponent('navigation.playground.TopTabOptionsScreen', () => TopTabOptionsScreen);
   Navigation.registerComponent('navigation.playground.CustomTopBar', () => CustomTopBar);
   Navigation.registerComponent('navigation.playground.alert', () => Alert);
+  Navigation.registerComponent('navigation.playground.BackHandlerModalScreen', () => BackHandlerModalScreen);
 }
 
 module.exports = {

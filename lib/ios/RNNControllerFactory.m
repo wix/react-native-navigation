@@ -75,7 +75,7 @@
 		result = [self createSideMenuChild:node type:RNNSideMenuChildTypeRight];
 	}
 	
-	else if ( node.isNativeComponent) {
+	else if (node.isExternalComponent) {
 		result = [self createComponent:node nativeComponent:YES];
 	}
 	
@@ -93,7 +93,7 @@
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
 	options.defaultOptions = _defaultOptions;
 	NSString* componentId = node.nodeId;
-	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter isNativeComponent:nativeComponent];
+	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:nativeComponent];
 	if (!component.isCustomViewController) {
 		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
 		[_bridge.uiManager setAvailableSize:availableSize forRootView:component.view];

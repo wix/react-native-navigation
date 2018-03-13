@@ -8,7 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.Component;
 
 import java.util.Collection;
 
@@ -46,7 +46,7 @@ public abstract class ParentController<T extends ViewGroup> extends ViewControll
 	}
 
 	@Override
-    public boolean containsComponent(ReactComponent component) {
+    public boolean containsComponent(Component component) {
         if (super.containsComponent(component)) {
             return true;
         }
@@ -57,7 +57,7 @@ public abstract class ParentController<T extends ViewGroup> extends ViewControll
     }
 
     @CallSuper
-    public void applyOptions(Options options, ReactComponent childComponent) {
+    public void applyOptions(Options options, Component childComponent) {
         mergeChildOptions(options);
     }
 
