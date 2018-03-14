@@ -60,8 +60,8 @@ function copyNpmRc() {
 function tagAndPublish(newVersion) {
   console.log(`new version is: ${newVersion}`);
   execSync(`npm version ${newVersion} -m "v${newVersion} [ci skip]"`);
-  execSyncSilently(`git push deploy --tags`);
   execSync(`npm publish --tag latest`);
+  execSyncSilently(`git push deploy --tags`);
 }
 
 function run() {

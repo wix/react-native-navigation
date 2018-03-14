@@ -10,11 +10,41 @@ import CustomTopBar from './CustomTopBar';
 Navigation.registerComponent('example.CustomTopBar', () => CustomTopBar);
 
 export default class CustomTopBarScreen extends Component {
+
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        title: 'Back',
+        id: 'helloBtn',
+      }
+    ],
+    rightButtons: [
+      {
+        title: 'Right',
+        id: 'helloBtn2',
+      }
+    ],
+  };
+
   componentDidMount() {
     this.props.navigator.setStyle({
       navBarCustomView: 'example.CustomTopBar',
       navBarComponentAlignment: 'center',
-      navBarCustomViewInitialProps: {title: 'Hi Custom'}
+      navBarCustomViewInitialProps: {
+        title: 'Hi Custom',
+        navigator: this.props.navigator,
+      },
+    });
+    this.props.navigator.setOnNavigatorEvent((e) => {
+      if (e.type == 'NavBarButtonPress') { // this is the event type for button presses
+        if (e.id == 'helloBtn') { // this is the same id field from the static navigatorButtons definition
+          this.props.navigator.pop();
+          // alert('Hello left btn');
+        }
+        if (e.id == 'helloBtn2') { // this is the same id field from the static navigatorButtons definition
+          alert('Hello right btn');
+        }
+      }
     });
   }
 

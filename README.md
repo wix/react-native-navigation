@@ -10,7 +10,7 @@
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 
 ## Important
-Latest stable version is `1.1.x` and is published to npm under tag `latest`. It supports react-native 0.43 through 0.51.
+Latest stable version is `1.1.x` and is published to npm under tag `latest`. It supports react-native >= 0.43.
 <br><br>We are currently redesigning and rewriting this project under branch `v2`.
 <br>As a result, new features and pull requests on the current stable version will take more time to process.
 
