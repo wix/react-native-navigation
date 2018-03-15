@@ -5,6 +5,7 @@ import android.view.MenuItem;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.TopBarAnimator;
+import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.params.Bool;
@@ -36,8 +37,8 @@ public class TopBarTest extends BaseTest {
                 Log.i("TopBarTest", "onPress: " + buttonId);
             }
         });
-        StackLayout parent = new StackLayout(newActivity(), this.onClickListener);
-        uut = new TopBar(newActivity(), this.onClickListener, parent);
+        StackLayout parent = new StackLayout(newActivity(), new TopBarButtonCreatorMock(), this.onClickListener);
+        uut = new TopBar(newActivity(), new TopBarButtonCreatorMock(), this.onClickListener, parent);
         animator = spy(new TopBarAnimator(uut));
         uut.setAnimator(animator);
         leftButton = createLeftButton();

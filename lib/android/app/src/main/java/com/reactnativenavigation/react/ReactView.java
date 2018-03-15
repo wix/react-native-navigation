@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
-import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
@@ -49,7 +48,7 @@ public class ReactView extends ReactRootView implements IReactView {
 	}
 
 	@Override
-	public View asView() {
+	public ReactView asView() {
 		return this;
 	}
 

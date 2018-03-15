@@ -25,19 +25,13 @@ public class StackController extends ParentController <StackLayout> {
     private static final NoOpPromise NO_OP = new NoOpPromise();
     private final IdStack<ViewController> stack = new IdStack<>();
     private final NavigationAnimator animator;
+    private ReactViewCreator topBarButtonCreator;
 
-    public StackController(final Activity activity, String id, Options initialOptions) {
+    public StackController(final Activity activity, ReactViewCreator topBarButtonCreator, String id, Options initialOptions) {
         super(activity, id, initialOptions);
         animator = new NavigationAnimator(activity);
+        this.topBarButtonCreator = topBarButtonCreator;
     }
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    TopBar getTopBar() {
-        return getView().getTopBar();
-    }
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    StackLayout getStackLayout() {return getView();}
 
     public void applyOptions(Options options) {
         super.applyOptions(options);
@@ -61,6 +55,12 @@ public class StackController extends ParentController <StackLayout> {
     void clearOptions() {
         super.clearOptions();
         getView().clearOptions();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+
     }
 
     public void push(ViewController child, final Promise promise) {
@@ -208,7 +208,7 @@ public class StackController extends ParentController <StackLayout> {
     @NonNull
     @Override
     protected StackLayout createView() {
-        return new StackLayout(getActivity(), this::sendOnNavigationButtonPressed);
+        return new StackLayout(getActivity(), topBarButtonCreator, this::sendOnNavigationButtonPressed);
     }
 
 	@NonNull
@@ -226,4 +226,12 @@ public class StackController extends ParentController <StackLayout> {
     public void clearTopTabs() {
         getView().clearTopTabs();
     }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    TopBar getTopBar() {
+        return getView().getTopBar();
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    StackLayout getStackLayout() {return getView();}
 }

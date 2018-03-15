@@ -1,5 +1,6 @@
 package com.reactnativenavigation.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -16,12 +17,15 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ArrayUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +38,11 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 	private Toolbar toolbar;
 	private final Button button;
 	private Drawable icon;
+    private ReactViewCreator viewCreator;
     private OnClickListener onPressListener;
 
-    TitleBarButton(Toolbar toolbar, Button button, OnClickListener onPressListener) {
+    TitleBarButton(Toolbar toolbar, ReactViewCreator viewCreator, Button button, OnClickListener onPressListener) {
+        this.viewCreator = viewCreator;
         this.onPressListener = onPressListener;
 		this.toolbar = toolbar;
 		this.button = button;
@@ -47,13 +53,22 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 		menuItem.setShowAsAction(button.showAsAction);
 		menuItem.setEnabled(button.enabled.isTrueOrUndefined());
 		menuItem.setOnMenuItemClickListener(this);
-
-		if (hasIcon()) {
-			applyIcon(context, menuItem);
-		} else {
-			setTextColor();
-			setFontSize(menuItem);
-		}
+        if (button.component.hasValue()) {
+            menuItem.setActionView(new TopBarButtonController(
+                    (Activity) context,
+                    button.id,
+                    button.component.get(),
+                    viewCreator,
+                    new Options()
+            ).getView());
+        } else {
+            if (hasIcon()) {
+                applyIcon(context, menuItem);
+            } else {
+                setTextColor();
+                setFontSize(menuItem);
+            }
+        }
 
         setTestId(button.testId);
     }
@@ -154,7 +169,7 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
     private void setTestId(Text testId) {
         if (!testId.hasValue()) return;
-        UiUtils.runOnPreDrawOnce(this.toolbar, () -> {
+        UiUtils.runOnPreDrawOnce(toolbar, () -> {
             ActionMenuView buttonsLayout = ViewUtils.findChildByClass(toolbar, ActionMenuView.class);
             List<TextView> buttons = ViewUtils.findChildrenByClass(buttonsLayout, TextView.class);
             for (TextView view : buttons) {

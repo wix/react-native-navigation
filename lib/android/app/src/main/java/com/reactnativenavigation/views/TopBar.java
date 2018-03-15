@@ -22,6 +22,7 @@ import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 
 import java.util.ArrayList;
 
@@ -31,14 +32,16 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 @SuppressLint("ViewConstructor")
 public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
     private final Toolbar titleBar;
+    private final ReactViewCreator buttonCreator;
     private TitleBarButton.OnClickListener onClickListener;
     private final TopBarCollapseBehavior collapsingBehavior;
     private TopBarAnimator animator;
     private TopTabs topTabs;
     private StackLayout parentView;
 
-    public TopBar(final Context context, TitleBarButton.OnClickListener onClickListener, StackLayout parentView) {
+    public TopBar(final Context context, ReactViewCreator buttonCreator, TitleBarButton.OnClickListener onClickListener, StackLayout parentView) {
         super(context);
+        this.buttonCreator = buttonCreator;
         this.onClickListener = onClickListener;
         collapsingBehavior = new TopBarCollapseBehavior(this);
         titleBar = new Toolbar(context);
@@ -140,7 +143,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     private void setLeftButton(final Button button) {
-        TitleBarButton leftBarButton = new TitleBarButton(this.titleBar, button, onClickListener);
+        TitleBarButton leftBarButton = new TitleBarButton(this.titleBar, buttonCreator, button, onClickListener);
         leftBarButton.applyNavigationIcon(getContext());
     }
 
@@ -149,12 +152,11 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
             return;
         }
 
-        Menu menu = getTitleBar().getMenu();
+        Menu menu = titleBar.getMenu();
         menu.clear();
 
-        for (int i = 0; i < rightButtons.size(); i++) {
-            Button button = rightButtons.get(i);
-            TitleBarButton titleBarButton = new TitleBarButton(this.titleBar, button, onClickListener);
+        for (Button rightButton : rightButtons) {
+            TitleBarButton titleBarButton = new TitleBarButton(titleBar, buttonCreator, rightButton, onClickListener);
             titleBarButton.addToMenu(getContext(), menu);
         }
     }
