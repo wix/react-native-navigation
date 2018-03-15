@@ -77,6 +77,8 @@
 		UIView *reactView = [_creator createRootView:self.options.topBar.customTitleViewName rootViewId:self.options.topBar.customTitleViewName];
 		
 		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:nil];
+        reactView.backgroundColor = UIColor.clearColor;
+        titleView.backgroundColor = UIColor.clearColor;
 		self.navigationItem.titleView = titleView;
 	}
 }
@@ -86,6 +88,8 @@
 		UIView *reactView = [_creator createRootView:self.options.topBar.customViewName rootViewId:@"navBar"];
 		
 		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:nil];
+        reactView.backgroundColor = UIColor.clearColor;
+        titleView.backgroundColor = UIColor.clearColor;
 		[self.navigationController.navigationBar addSubview:titleView];
 	}
 }
