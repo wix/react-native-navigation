@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ArrayUtils;
@@ -30,7 +29,7 @@ import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
+public class TopBarButton implements MenuItem.OnMenuItemClickListener {
     public interface OnClickListener {
         void onPress(String buttonId);
     }
@@ -41,7 +40,7 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     private ReactViewCreator viewCreator;
     private OnClickListener onPressListener;
 
-    TitleBarButton(Toolbar toolbar, ReactViewCreator viewCreator, Button button, OnClickListener onPressListener) {
+    TopBarButton(Toolbar toolbar, ReactViewCreator viewCreator, Button button, OnClickListener onPressListener) {
         this.viewCreator = viewCreator;
         this.onPressListener = onPressListener;
 		this.toolbar = toolbar;
@@ -54,13 +53,12 @@ public class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 		menuItem.setEnabled(button.enabled.isTrueOrUndefined());
 		menuItem.setOnMenuItemClickListener(this);
         if (button.component.hasValue()) {
-            menuItem.setActionView(new TopBarButtonController(
+            final TopBarButtonController buttonController = new TopBarButtonController(
                     (Activity) context,
-                    button.id,
-                    button.component.get(),
-                    viewCreator,
-                    new Options()
-            ).getView());
+                    button,
+                    viewCreator
+            );
+            menuItem.setActionView(buttonController.getView());
         } else {
             if (hasIcon()) {
                 applyIcon(context, menuItem);

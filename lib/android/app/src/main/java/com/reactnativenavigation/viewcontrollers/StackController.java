@@ -41,7 +41,7 @@ public class StackController extends ParentController <StackLayout> {
     @Override
     public void applyOptions(Options options, Component component) {
         super.applyOptions(options, component);
-        getView().applyOptions(this.options, component);
+        getView().applyOptions(this, this.options, component);
         applyOnParentController(parentController ->
                 ((ParentController) parentController).applyOptions(this.options.copy().clearTopBarOptions(), component)
         );
@@ -55,12 +55,6 @@ public class StackController extends ParentController <StackLayout> {
     void clearOptions() {
         super.clearOptions();
         getView().clearOptions();
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-
     }
 
     public void push(ViewController child, final Promise promise) {

@@ -6,10 +6,10 @@ import android.view.MenuItem;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
-import com.reactnativenavigation.parse.params.Button;
-import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.TitleBarHelper;
 
 import org.junit.Test;
@@ -27,11 +27,11 @@ public class TopBarTest extends BaseTest {
     private TopBarAnimator animator;
     private ArrayList<Button> leftButton;
     private ArrayList<Button> rightButtons;
-    private TitleBarButton.OnClickListener onClickListener;
+    private TopBarButton.OnClickListener onClickListener;
 
     @Override
     public void beforeEach() {
-        onClickListener = spy(new TitleBarButton.OnClickListener() {
+        onClickListener = spy(new TopBarButton.OnClickListener() {
             @Override
             public void onPress(String buttonId) {
                 Log.i("TopBarTest", "onPress: " + buttonId);

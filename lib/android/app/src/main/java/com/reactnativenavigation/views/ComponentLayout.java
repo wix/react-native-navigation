@@ -17,7 +17,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.widget.RelativeLayout.BELOW;
 
 @SuppressLint("ViewConstructor")
-public class ComponentLayout extends FrameLayout implements ReactComponent, TitleBarButton.OnClickListener {
+public class ComponentLayout extends FrameLayout implements ReactComponent, TopBarButton.OnClickListener {
 
     private IReactView reactView;
     private final OverlayTouchDelegate touchDelegate;

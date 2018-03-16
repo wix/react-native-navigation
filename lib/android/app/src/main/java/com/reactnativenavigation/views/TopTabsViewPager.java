@@ -18,7 +18,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.widget.RelativeLayout.BELOW;
 
 @SuppressLint("ViewConstructor")
-public class TopTabsViewPager extends ViewPager implements Component, TitleBarButton.OnClickListener {
+public class TopTabsViewPager extends ViewPager implements Component, TopBarButton.OnClickListener {
 
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
     private List<ViewController> tabs;
