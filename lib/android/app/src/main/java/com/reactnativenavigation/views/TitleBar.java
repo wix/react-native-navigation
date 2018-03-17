@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,7 +18,7 @@ import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("ViewConstructor")
 public class TitleBar extends Toolbar {
@@ -28,6 +29,8 @@ public class TitleBar extends Toolbar {
         super(context);
         this.buttonCreator = buttonCreator;
         this.onClickListener = onClickListener;
+        getMenu();
+        setContentDescription("titleBar");
     }
 
     public String getTitle() {
@@ -66,39 +69,40 @@ public class TitleBar extends Toolbar {
         getMenu().clear();
     }
 
-    void setButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
+    public void setButtons(List<Button> leftButtons, List<Button> rightButtons) {
         setLeftButtons(leftButtons);
         setRightButtons(rightButtons);
     }
 
-    private void setLeftButtons(ArrayList<Button> leftButtons) {
+    private void setLeftButtons(List<Button> leftButtons) {
         if (leftButtons == null) return;
         if (leftButtons.isEmpty()) {
             setNavigationIcon(null);
             return;
         }
-
         if (leftButtons.size() > 1) {
             Log.w("RNN", "Use a custom TopBar to have more than one left button");
         }
-
-        Button leftButton = leftButtons.get(0);
-        setLeftButton(leftButton);
+        setLeftButton(leftButtons.get(0));
     }
 
     private void setLeftButton(final Button button) {
-        TopBarButtonController buttonController = new TopBarButtonController((Activity) getContext(), button, buttonCreator, onClickListener);
+        TopBarButtonController buttonController = createButton(button);
         buttonController.applyNavigationIcon(this);
     }
 
-    private void setRightButtons(ArrayList<Button> rightButtons) {
+    public void setRightButtons(List<Button> rightButtons) {
         if (rightButtons.isEmpty()) return;
         getMenu().clear();
-
         for (Button button : rightButtons) {
-            final TopBarButtonController controller = new TopBarButtonController((Activity) getContext(), button, buttonCreator, onClickListener);
+            final TopBarButtonController controller = createButton(button);
             controller.addToMenu(this);
         }
+    }
+
+    @NonNull
+    private TopBarButtonController createButton(Button button) {
+        return new TopBarButtonController((Activity) getContext(), button, buttonCreator, onClickListener);
     }
 
     @Nullable

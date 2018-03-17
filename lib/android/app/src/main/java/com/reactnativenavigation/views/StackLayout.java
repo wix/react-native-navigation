@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 
@@ -32,8 +31,8 @@ public class StackLayout extends RelativeLayout {
         new OptionsPresenter(topBar).applyOrientation(options.orientationOptions);
     }
 
-    public void applyOptions(ParentController parentController, Options options, Component component) {
-        new OptionsPresenter(parentController, topBar, component).applyOptions(options);
+    public void applyOptions(Options options, Component component) {
+        new OptionsPresenter(topBar, component).applyOptions(options);
     }
 
     public void onChildWillDisappear(Options disappearing, Options appearing) {

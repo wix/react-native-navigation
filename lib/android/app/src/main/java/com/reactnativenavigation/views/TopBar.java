@@ -22,7 +22,7 @@ import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -38,14 +38,16 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     public TopBar(final Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener, StackLayout parentView) {
         super(context);
         collapsingBehavior = new TopBarCollapseBehavior(this);
-        titleBar = new TitleBar(context, buttonCreator, onClickListener);
-        titleBar.getMenu();
         topTabs = new TopTabs(getContext());
         animator = new TopBarAnimator(this);
         this.parentView = parentView;
+        titleBar = createTitleBar(context, buttonCreator, onClickListener);
         addView(titleBar);
-        titleBar.setContentDescription("titleBar");
         setContentDescription("TopBar");
+    }
+
+    protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener) {
+        return new TitleBar(context, buttonCreator, onClickListener);
     }
 
     public void setTitle(String title) {
@@ -88,7 +90,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         topTabs.setVisibility(this, visible);
     }
 
-    public void setButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
+    public void setButtons(List<Button> leftButtons, List<Button> rightButtons) {
         titleBar.setButtons(leftButtons, rightButtons);
     }
 

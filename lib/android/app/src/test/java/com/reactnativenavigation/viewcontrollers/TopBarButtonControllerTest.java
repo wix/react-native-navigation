@@ -19,30 +19,31 @@ import static org.mockito.Mockito.verify;
 public class TopBarButtonControllerTest extends BaseTest {
 
     private TopBarButtonController uut;
-    private StackController parentController;
+    private StackController stackController;
 
     @Override
     public void beforeEach() {
         Button button = createButton();
         final Activity activity = newActivity();
+
         TopBarButtonCreatorMock buttonCreatorMock = new TopBarButtonCreatorMock();
         uut = spy(new TopBarButtonController(activity, button, buttonCreatorMock, (buttonId) -> {}));
-        parentController = spy(new StackController(activity, buttonCreatorMock, "stack", new Options()));
-        uut.setParentController(parentController);
+        stackController = spy(new StackController(activity, buttonCreatorMock, "stack", new Options()));
+
     }
 
     @Test
-    public void buttonDoesNotClearParentOptionsOnAppear() throws Exception {
+    public void buttonDoesNotClearStackOptionsOnAppear() throws Exception {
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
-        verify(parentController, times(0)).clearOptions();
+        verify(stackController, times(0)).clearOptions();
     }
 
     @Test @Ignore
     public void destroy_buttonIsDestroyedWhenStackIsDestroyed() throws Exception {
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
-        parentController.destroy();
+        stackController.destroy();
         verify(uut, times(1)).destroy();
     }
 

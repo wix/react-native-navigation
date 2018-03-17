@@ -9,19 +9,16 @@ import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.viewcontrollers.IReactView;
-import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.ArrayList;
 
 public class OptionsPresenter {
-    private ParentController parentController;
     private TopBar topBar;
     private Component component;
 
-    public OptionsPresenter(ParentController parentController, TopBar topBar, Component component) {
-        this.parentController = parentController;
+    public OptionsPresenter(TopBar topBar, Component component) {
         this.topBar = topBar;
         this.component = component;
     }
