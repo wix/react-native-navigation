@@ -62,6 +62,14 @@ public class Button {
 		return buttons;
 	}
 
+    public boolean hasComponent() {
+        return component.hasValue();
+    }
+
+    public boolean hasIcon() {
+        return icon.hasValue();
+    }
+
 	private static int parseShowAsAction(JSONObject json) {
 	    final Text showAsAction = TextParser.parse(json, "showAsAction");
 		if (!showAsAction.hasValue()) {

@@ -11,6 +11,7 @@ import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.TitleBarHelper;
+import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 
 import org.junit.Test;
 
@@ -27,11 +28,11 @@ public class TopBarTest extends BaseTest {
     private TopBarAnimator animator;
     private ArrayList<Button> leftButton;
     private ArrayList<Button> rightButtons;
-    private TopBarButton.OnClickListener onClickListener;
+    private TopBarButtonController.OnClickListener onClickListener;
 
     @Override
     public void beforeEach() {
-        onClickListener = spy(new TopBarButton.OnClickListener() {
+        onClickListener = spy(new TopBarButtonController.OnClickListener() {
             @Override
             public void onPress(String buttonId) {
                 Log.i("TopBarTest", "onPress: " + buttonId);

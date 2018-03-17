@@ -26,7 +26,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         Button button = createButton();
         final Activity activity = newActivity();
         TopBarButtonCreatorMock buttonCreatorMock = new TopBarButtonCreatorMock();
-        uut = spy(new TopBarButtonController(activity, button, buttonCreatorMock));
+        uut = spy(new TopBarButtonController(activity, button, buttonCreatorMock, (buttonId) -> {}));
         parentController = spy(new StackController(activity, buttonCreatorMock, "stack", new Options()));
         uut.setParentController(parentController);
     }

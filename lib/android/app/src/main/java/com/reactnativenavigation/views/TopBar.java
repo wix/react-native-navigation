@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 
 import java.util.ArrayList;
 
@@ -33,13 +35,13 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
     private final Toolbar titleBar;
     private final ReactViewCreator buttonCreator;
-    private TopBarButton.OnClickListener onClickListener;
+    private TopBarButtonController.OnClickListener onClickListener;
     private final TopBarCollapseBehavior collapsingBehavior;
     private TopBarAnimator animator;
     private TopTabs topTabs;
     private StackLayout parentView;
 
-    public TopBar(final Context context, ReactViewCreator buttonCreator, TopBarButton.OnClickListener onClickListener, StackLayout parentView) {
+    public TopBar(final Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener, StackLayout parentView) {
         super(context);
         this.buttonCreator = buttonCreator;
         this.onClickListener = onClickListener;
@@ -143,8 +145,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     private void setLeftButton(final Button button) {
-        TopBarButton leftBarButton = new TopBarButton(this.titleBar, buttonCreator, button, onClickListener);
-        leftBarButton.applyNavigationIcon(getContext());
+        TopBarButtonController buttonController = new TopBarButtonController((Activity) getContext(), button, buttonCreator, onClickListener);
+        buttonController.applyNavigationIcon(titleBar);
     }
 
     private void setRightButtons(ArrayList<Button> rightButtons) {
@@ -152,9 +154,9 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         Menu menu = titleBar.getMenu();
         menu.clear();
 
-        for (Button rightButton : rightButtons) {
-            TopBarButton button = new TopBarButton(titleBar, buttonCreator, rightButton, onClickListener);
-            button.addToMenu(getContext(), menu);
+        for (Button button : rightButtons) {
+            final TopBarButtonController controller = new TopBarButtonController((Activity) getContext(), button, buttonCreator, onClickListener);
+            controller.addToMenu(titleBar);
         }
     }
 
@@ -209,7 +211,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void clear() {
-        Log.w("guyca", "clear");
         titleBar.setTitle(null);
         titleBar.setNavigationIcon(null);
         titleBar.getMenu().clear();

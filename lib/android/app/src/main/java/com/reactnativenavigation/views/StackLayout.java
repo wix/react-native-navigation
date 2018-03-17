@@ -11,6 +11,7 @@ import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -19,7 +20,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class StackLayout extends RelativeLayout {
     private TopBar topBar;
 
-    public StackLayout(Context context, ReactViewCreator topBarButtonCreator, TopBarButton.OnClickListener topBarButtonClickListener) {
+    public StackLayout(Context context, ReactViewCreator topBarButtonCreator, TopBarButtonController.OnClickListener topBarButtonClickListener) {
         super(context);
         topBar = new TopBar(context, topBarButtonCreator, topBarButtonClickListener, this);
         topBar.setId(CompatUtils.generateViewId());
