@@ -1,18 +1,14 @@
 package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.anim.TopBarAnimator;
@@ -33,9 +29,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressLint("ViewConstructor")
 public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAwareView {
-    private final Toolbar titleBar;
-    private final ReactViewCreator buttonCreator;
-    private TopBarButtonController.OnClickListener onClickListener;
+    private final TitleBar titleBar;
     private final TopBarCollapseBehavior collapsingBehavior;
     private TopBarAnimator animator;
     private TopTabs topTabs;
@@ -43,10 +37,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public TopBar(final Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener, StackLayout parentView) {
         super(context);
-        this.buttonCreator = buttonCreator;
-        this.onClickListener = onClickListener;
         collapsingBehavior = new TopBarCollapseBehavior(this);
-        titleBar = new Toolbar(context);
+        titleBar = new TitleBar(context, buttonCreator, onClickListener);
         titleBar.getMenu();
         topTabs = new TopTabs(getContext());
         animator = new TopBarAnimator(this);
@@ -61,7 +53,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public String getTitle() {
-        return titleBar.getTitle() != null ? titleBar.getTitle().toString() : "";
+        return titleBar.getTitle();
     }
 
     public void setTestId(String testId) {
@@ -69,21 +61,15 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setTitleTextColor(Color color) {
-        if (color.hasValue()) titleBar.setTitleTextColor(color.get());
+        titleBar.setTitleTextColor(color);
     }
 
     public void setTitleFontSize(Fraction size) {
-        TextView titleTextView = getTitleTextView();
-        if (titleTextView != null && size.hasValue()) {
-            titleTextView.setTextSize(size.get());
-        }
+        titleBar.setTitleFontSize(size);
     }
 
     public void setTitleTypeface(Typeface typeface) {
-        TextView titleTextView = getTitleTextView();
-        if (titleTextView != null) {
-            titleTextView.setTypeface(typeface);
-        }
+        titleBar.setTitleTypeface(typeface);
     }
 
     public void setTopTabFontFamily(int tabIndex, Typeface fontFamily) {
@@ -103,61 +89,16 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
-        setLeftButtons(leftButtons);
-        setRightButtons(rightButtons);
+        titleBar.setButtons(leftButtons, rightButtons);
     }
 
+    @RestrictTo(RestrictTo.Scope.TESTS)
     public TextView getTitleTextView() {
-        return findTextView(titleBar);
+        return titleBar.getTitleTextView();
     }
 
     public void setBackgroundColor(Color color) {
-        if (color.hasValue()) titleBar.setBackgroundColor(color.get());
-    }
-
-    @Nullable
-    private TextView findTextView(ViewGroup root) {
-        for (int i = 0; i < root.getChildCount(); i++) {
-            View view = root.getChildAt(i);
-            if (view instanceof ViewGroup) {
-                view = findTextView((ViewGroup) view);
-            }
-            if (view instanceof TextView) {
-                return (TextView) view;
-            }
-        }
-        return null;
-    }
-
-    private void setLeftButtons(ArrayList<Button> leftButtons) {
-        if (leftButtons == null) return;
-        if (leftButtons.isEmpty()) {
-            titleBar.setNavigationIcon(null);
-            return;
-        }
-
-        if (leftButtons.size() > 1) {
-            Log.w("RNN", "Use a custom TopBar to have more than one left button");
-        }
-
-        Button leftButton = leftButtons.get(0);
-        setLeftButton(leftButton);
-    }
-
-    private void setLeftButton(final Button button) {
-        TopBarButtonController buttonController = new TopBarButtonController((Activity) getContext(), button, buttonCreator, onClickListener);
-        buttonController.applyNavigationIcon(titleBar);
-    }
-
-    private void setRightButtons(ArrayList<Button> rightButtons) {
-        if (rightButtons.isEmpty()) return;
-        Menu menu = titleBar.getMenu();
-        menu.clear();
-
-        for (Button button : rightButtons) {
-            final TopBarButtonController controller = new TopBarButtonController((Activity) getContext(), button, buttonCreator, onClickListener);
-            controller.addToMenu(titleBar);
-        }
+        titleBar.setBackgroundColor(color);
     }
 
     public Toolbar getTitleBar() {
@@ -211,16 +152,14 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void clear() {
-        titleBar.setTitle(null);
-        titleBar.setNavigationIcon(null);
-        titleBar.getMenu().clear();
+        titleBar.clear();
     }
 
     public void clearTopTabs() {
         topTabs.clear(this);
     }
 
-    @VisibleForTesting()
+    @VisibleForTesting
     public TopTabs getTopTabs() {
         return topTabs;
     }
