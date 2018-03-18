@@ -212,3 +212,4 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | splitViewScreen       |     :x:  |    [Contribute](/docs/WorkingLocally.md)      | [Contribute](/docs/WorkingLocally.md)|
 
 Element transitions, adding buttons and styles are not yet implemented. [Contribute](/docs/WorkingLocally.md)
+
