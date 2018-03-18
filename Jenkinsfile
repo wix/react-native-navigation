@@ -14,8 +14,10 @@ pipeline {
       parallel {
         stage('Run test-js') {
           steps {
-            sh '''#!/bin/bash
-            npm run test-js'''
+              withCredentials([string(credentialsId: 'SECRET', variable: 'SECRET')]) {
+                sh '''#!/bin/bash
+                npm run test-js'''
+            }
           }
         }
         stage('Run iOS tests') {
