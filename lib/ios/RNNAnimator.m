@@ -12,7 +12,7 @@
 
 -(instancetype)initWithTransitionOptions:(RNNAnimationOptions *)transitionOptions {
 	self = [super init];
-	if (transitionOptions) {
+	if (transitionOptions.animations) {
 		[self setupTransition:transitionOptions];
 	} else {
 		return nil;

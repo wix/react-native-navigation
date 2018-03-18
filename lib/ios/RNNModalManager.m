@@ -21,7 +21,10 @@
 
 -(void)showModalAfterLoad:(NSDictionary*)notif {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
-	UIViewController *topVC = [self topPresentedVC];
+	RNNRootViewController *topVC = (RNNRootViewController*)[self topPresentedVC];
+	if (topVC.options.animations.showModal) {
+		self.toVC.transitioningDelegate = topVC;
+	}
 	[topVC presentViewController:self.toVC animated:self.toVC.isAnimated completion:^{
 		if (_completionBlock) {
 			_completionBlock();
@@ -61,6 +64,10 @@
 	
 	UIViewController* topPresentedVC = [self topPresentedVC];
 	
+	if (modalToDismiss.options.animations.showModal) {
+		modalToDismiss.transitioningDelegate = modalToDismiss;
+	}
+	
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
 		[modalToDismiss dismissViewControllerAnimated:modalToDismiss.isAnimated completion:^{
 			[[_store pendingModalIdsToDismiss] removeObject:componentId];
@@ -75,6 +82,11 @@
 		root = root.presentedViewController;
 	}
 	return root;
+}
+
+-(UIViewController*)topPresentedVCLeaf {
+	id root = [self topPresentedVC];
+	return [root topViewController] ? [root topViewController] : root;
 }
 
 

@@ -78,12 +78,8 @@
 	NSDictionary* animationData = options[@"customTransition"];
 	RNNAnimationOptions* transitionOptions = [[RNNAnimationOptions alloc] initWithDict:animationData];
 	
-	if (transitionOptions){
-		if (transitionOptions.animations) {
-			[_navigationStackManager pop:componentId withTransitionOptions:transitionOptions];
-		} else {
-			[[NSException exceptionWithName:NSInvalidArgumentException reason:@"unsupported transitionAnimation" userInfo:nil] raise];
-		}
+	if (transitionOptions.animations){
+		[_navigationStackManager pop:componentId withTransitionOptions:transitionOptions];
 	} else {
 		[_navigationStackManager pop:componentId withTransitionOptions:nil];
 	}

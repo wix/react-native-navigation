@@ -1,11 +1,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "RNNScreenTransition.h"
+#import "RNNModalAnimation.h"
 
-@interface RNNPushAnimation : NSObject <UIViewControllerAnimatedTransitioning>
+@interface RNNPushAnimation : RNNModalAnimation <UIViewControllerAnimatedTransitioning>
 
-@property (nonatomic, strong) RNNScreenTransition* screenTransition;
-
-- (instancetype)initWithScreenTransition:(RNNScreenTransition*)screenTransition;
+- (instancetype)initWithScreenTransition:(RNNScreenTransition *)screenTransition;
 
 @end

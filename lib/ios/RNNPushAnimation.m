@@ -18,13 +18,13 @@
 	
 	[[transitionContext containerView] addSubview:toViewController.view];
 	
-	[_screenTransition.content setupInitialTransitionForView:toViewController.view];
-	[_screenTransition.topBar setupInitialTransitionForView:toViewController.navigationController.navigationBar];
+	[self.screenTransition.content setupInitialTransitionForView:toViewController.view];
+	[self.screenTransition.topBar setupInitialTransitionForView:toViewController.navigationController.navigationBar];
 	
 	
 	[UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
-		[_screenTransition.content completeTransitionForView:toViewController.view];
-		[_screenTransition.topBar completeTransitionForView:toViewController.navigationController.navigationBar];
+		[self.screenTransition.content completeTransitionForView:toViewController.view];
+		[self.screenTransition.topBar completeTransitionForView:toViewController.navigationController.navigationBar];
 	} completion:^(BOOL finished) {
 		[transitionContext completeTransition:![transitionContext transitionWasCancelled]];
 	}];
