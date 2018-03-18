@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,12 +17,15 @@ import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("ViewConstructor")
 public class TitleBar extends Toolbar {
     private final ReactViewCreator buttonCreator;
     private final TopBarButtonController.OnClickListener onClickListener;
+    private final List<TopBarButtonController> rightButtonControllers = new ArrayList<>();
+    private TopBarButtonController leftButtonController;
 
     public TitleBar(Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener) {
         super(context);
@@ -63,9 +65,25 @@ public class TitleBar extends Toolbar {
         return findTextView(this);
     }
 
-    void clear() {
+    public void clear() {
         setTitle(null);
+        clearRightButtons();
+        clearLeftButton();
+    }
+
+    private void clearLeftButton() {
         setNavigationIcon(null);
+        if (leftButtonController != null) {
+            leftButtonController.destroy();
+            leftButtonController = null;
+        }
+    }
+
+    private void clearRightButtons() {
+        for (TopBarButtonController button : rightButtonControllers) {
+            button.destroy();
+        }
+        rightButtonControllers.clear();
         getMenu().clear();
     }
 
@@ -77,7 +95,7 @@ public class TitleBar extends Toolbar {
     private void setLeftButtons(List<Button> leftButtons) {
         if (leftButtons == null) return;
         if (leftButtons.isEmpty()) {
-            setNavigationIcon(null);
+            clearLeftButton();
             return;
         }
         if (leftButtons.size() > 1) {
@@ -87,21 +105,22 @@ public class TitleBar extends Toolbar {
     }
 
     private void setLeftButton(final Button button) {
-        TopBarButtonController buttonController = createButton(button);
-        buttonController.applyNavigationIcon(this);
+        TopBarButtonController controller = createButtonController(button);
+        leftButtonController = controller;
+        controller.applyNavigationIcon(this);
     }
 
     public void setRightButtons(List<Button> rightButtons) {
-        if (rightButtons.isEmpty()) return;
-        getMenu().clear();
+        if (rightButtons == null) return;
+        clearRightButtons();
         for (Button button : rightButtons) {
-            final TopBarButtonController controller = createButton(button);
+            TopBarButtonController controller = createButtonController(button);
+            rightButtonControllers.add(controller);
             controller.addToMenu(this);
         }
     }
 
-    @NonNull
-    private TopBarButtonController createButton(Button button) {
+    public TopBarButtonController createButtonController(Button button) {
         return new TopBarButtonController((Activity) getContext(), button, buttonCreator, onClickListener);
     }
 

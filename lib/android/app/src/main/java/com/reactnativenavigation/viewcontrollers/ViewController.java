@@ -113,7 +113,9 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
                 throw new RuntimeException("Tried to create view after it has already been destroyed");
             }
             view = createView();
-            view.setId(CompatUtils.generateViewId());
+            if (view.getId() < 0) {
+                view.setId(CompatUtils.generateViewId());
+            }
             view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         }
         return view;
