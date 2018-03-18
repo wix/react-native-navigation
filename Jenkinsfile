@@ -15,6 +15,7 @@ pipeline {
         stage('Run test-js') {
           steps {
             sh '''#!/bin/bash
+            echo $SECRET
             npm run test-js'''
           }
         }
