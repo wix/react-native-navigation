@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import "RNNCustomViewController.h"
 
 // **********************************************
 // *** DON'T MISS: THE NEXT LINE IS IMPORTANT ***
@@ -20,6 +21,10 @@
 	// **********************************************
 	NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 	[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
+	
+	[ReactNativeNavigation registerExternalComponent:@"RNNCustomComponent" callback:^UIViewController *{
+		return [[RNNCustomViewController alloc] init];
+	}];
 	
 	/*
 	// original RN bootstrap - remove this part
