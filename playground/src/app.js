@@ -23,27 +23,6 @@ if (Platform.OS === 'android') {
 function start() {
   registerScreens();
   Navigation.events().onAppLaunched(() => {
-    Navigation.setDefaultOptions({
-      animations: {
-        push: {
-          y: {
-            from: 1000,
-            to: 0,
-            duration: 500,
-            interpolation: 'decelerate',
-          }
-        },
-        pop: {
-          y: {
-            from: 0,
-            to: 1000,
-            duration: 500,
-            interpolation: 'accelerate',
-          }
-        }
-      }
-    });
-
     Navigation.setRoot({
       stack: {
         children: [
