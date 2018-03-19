@@ -104,7 +104,6 @@ public class ModalStackTest extends BaseTest {
     public void onDismiss() throws Exception {
         uut.showModal(viewController, new MockPromise());
         uut.showModal(new SimpleViewController(newActivity(), "otherComponent", new Options()), new MockPromise());
-        BaseAnimator.DURATION = 0;
         uut.dismissAll();
         verify(uut, times(2)).onModalDismiss(any());
     }

@@ -13,12 +13,11 @@ import android.view.animation.DecelerateInterpolator;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.utils.UiUtils;
 
-public class BaseAnimator {
+class BaseAnimator {
 
     AnimationsOptions options = new AnimationsOptions();
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    public static int DURATION = 300;
+    private static final int DURATION = 300;
     private static final DecelerateInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();
     private static final AccelerateInterpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
 
