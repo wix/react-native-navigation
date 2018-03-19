@@ -28,9 +28,11 @@ public class StyleParamsParser {
 
         StyleParams result = new StyleParams(params);
         result.orientation = Orientation.fromString(params.getString("orientation", getDefaultOrientation()));
+        result.screenAnimationType = params.getString("screenAnimationType", getDefaultScreenAnimationType());
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
         result.statusBarHidden = getBoolean("statusBarHidden", getDefaultStatusHidden());
-        result.statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"));
+        result.statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"), getDefaultStatusBarTextColorScheme());
+        result.drawUnderStatusBar = params.getBoolean("drawUnderStatusBar", getDefaultDrawUnderStatusBar());
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
         result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
         result.contextualMenuBackgroundColor = getColor("contextualMenuBackgroundColor", getDefaultContextualMenuBackgroundColor());
@@ -55,17 +57,23 @@ public class StyleParamsParser {
         result.topBarBorderWidth = Float.parseFloat(params.getString("topBarBorderWidth", getDefaultTopBarBorderWidth()));
 
         result.titleBarSubtitleColor = getColor("titleBarSubtitleColor", getDefaultSubtitleBarColor());
+        result.titleBarSubtitleFontSize = getInt("titleBarSubtitleFontSize", getDefaultSubtitleTextFontSize());
+        result.titleBarSubtitleFontFamily = getFont("titleBarSubtitleFontFamily", getDefaultSubtitleFontFamily());
         result.titleBarButtonColor = getColor("titleBarButtonColor", getTitleBarButtonColor());
+        result.titleBarButtonFontFamily = getFont("titleBarButtonFontFamily", getDefaultTitleBarButtonFont());
         result.titleBarDisabledButtonColor = getColor("titleBarDisabledButtonColor", getTitleBarDisabledButtonColor());
         result.titleBarTitleFont = getFont("titleBarTitleFontFamily", getDefaultTitleTextFontFamily());
         result.titleBarTitleFontSize = getInt("titleBarTitleFontSize", getDefaultTitleTextFontSize());
         result.titleBarTitleFontBold = getBoolean("titleBarTitleFontBold", getDefaultTitleTextFontBold());
         result.titleBarTitleTextCentered = getBoolean("titleBarTitleTextCentered", getDefaultTitleBarTextCentered());
+        result.titleBarSubTitleTextCentered = getBoolean("titleBarSubTitleTextCentered", getDefaultTitleBarTextCentered());
         result.titleBarHeight = getInt("titleBarHeight", getDefaultTitleBarHeight());
         result.backButtonHidden = getBoolean("backButtonHidden", getDefaultBackButtonHidden());
         result.topTabsHidden = getBoolean("topTabsHidden", getDefaultTopTabsHidden());
+        result.titleBarTopPadding = getInt("titleBarTopPadding", getTitleBarTopPadding());
 
         result.topTabTextColor = getColor("topTabTextColor", getDefaultTopTabTextColor());
+        result.topTabTextFontFamily = getFont("topTabTextFontFamily", getDefaultTopTabTextFontFamily());
         result.topTabIconColor = getColor("topTabIconColor", getDefaultTopTabIconColor());
         result.selectedTopTabIconColor = getColor("selectedTopTabIconColor", getDefaultSelectedTopTabIconColor());
         result.selectedTopTabTextColor = getColor("selectedTopTabTextColor", getDefaultSelectedTopTabTextColor());
@@ -86,8 +94,7 @@ public class StyleParamsParser {
         result.bottomTabsHiddenOnScroll = getBoolean("bottomTabsHiddenOnScroll", getDefaultBottomTabsHiddenOnScroll());
         result.bottomTabsColor = getColor("bottomTabsColor", getDefaultBottomTabsColor());
         result.bottomTabsButtonColor = getColor("bottomTabsButtonColor", getDefaultBottomTabsButtonColor());
-        result.selectedBottomTabsButtonColor =
-                getColor("bottomTabsSelectedButtonColor", getDefaultSelectedBottomTabsButtonColor());
+        result.selectedBottomTabsButtonColor = getColor("bottomTabsSelectedButtonColor", getDefaultSelectedBottomTabsButtonColor());
         result.bottomTabBadgeTextColor = getColor("bottomTabBadgeTextColor", getBottomTabBadgeTextColor());
         result.bottomTabBadgeBackgroundColor = getColor("bottomTabBadgeBackgroundColor", getBottomTabBadgeBackgroundColor());
 
@@ -95,8 +102,18 @@ public class StyleParamsParser {
         result.forceTitlesDisplay = getBoolean("forceTitlesDisplay", getDefaultForceTitlesDisplay());
 
         result.bottomTabFontFamily = getFont("bottomTabFontFamily", getDefaultBottomTabsFontFamily());
+        result.bottomTabFontSize = getIntegerOrNull("bottomTabFontSize");
+        result.bottomTabSelectedFontSize = getIntegerOrNull("bottomTabSelectedFontSize");
 
         return result;
+    }
+
+    private String getDefaultScreenAnimationType() {
+        return AppStyle.appStyle == null ? "slide-up" : AppStyle.appStyle.screenAnimationType;
+    }
+
+    private StatusBarTextColorScheme getDefaultStatusBarTextColorScheme() {
+        return AppStyle.appStyle == null ? StatusBarTextColorScheme.Undefined : AppStyle.appStyle.statusBarTextColorScheme;
     }
 
     private String getDefaultOrientation() {
@@ -110,6 +127,15 @@ public class StyleParamsParser {
         result.titleBarHideOnScroll = false;
         result.orientation = Orientation.auto;
         result.bottomTabFontFamily = new StyleParams.Font();
+        result.bottomTabFontSize = 10;
+        result.bottomTabSelectedFontSize = 10;
+        result.titleBarTitleFont = new StyleParams.Font();
+        result.titleBarSubtitleFontFamily = new StyleParams.Font();
+        result.titleBarButtonFontFamily = new StyleParams.Font();
+        result.topTabTextFontFamily = new StyleParams.Font();
+        result.titleBarHeight = -1;
+        result.screenAnimationType = "slide-up";
+        result.drawUnderStatusBar = false;
         return result;
     }
 
@@ -265,6 +291,10 @@ public class StyleParamsParser {
         return AppStyle.appStyle != null && AppStyle.appStyle.statusBarHidden;
     }
 
+    private boolean getDefaultDrawUnderStatusBar() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.drawUnderStatusBar;
+    }
+
     private StyleParams.Font getDefaultBottomTabsFontFamily() {
         return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.bottomTabFontFamily;
     }
@@ -277,6 +307,22 @@ public class StyleParamsParser {
         return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarTitleFontSize;
     }
 
+    private int getDefaultSubtitleTextFontSize() {
+        return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarSubtitleFontSize;
+    }
+
+    private StyleParams.Font getDefaultSubtitleFontFamily() {
+        return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.titleBarSubtitleFontFamily;
+    }
+
+    private StyleParams.Font getDefaultTopTabTextFontFamily() {
+        return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.topTabTextFontFamily;
+    }
+
+    private StyleParams.Font getDefaultTitleBarButtonFont() {
+        return AppStyle.appStyle == null ? new StyleParams.Font() : AppStyle.appStyle.titleBarButtonFontFamily;
+    }
+
     private boolean getDefaultTitleTextFontBold() {
         return AppStyle.appStyle != null && AppStyle.appStyle.titleBarTitleFontBold;
     }
@@ -285,8 +331,16 @@ public class StyleParamsParser {
         return AppStyle.appStyle != null && AppStyle.appStyle.titleBarTitleTextCentered;
     }
 
+    private boolean getDefaultSubTitleBarTextCentered() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.titleBarSubTitleTextCentered;
+    }
+
     private int getDefaultTitleBarHeight() {
         return AppStyle.appStyle == null ? -1 : AppStyle.appStyle.titleBarHeight;
+    }
+
+    private int getTitleBarTopPadding() {
+        return AppStyle.appStyle == null ? 0 : AppStyle.appStyle.titleBarTopPadding;
     }
 
     private boolean getBoolean(String key, boolean defaultValue) {
@@ -309,6 +363,10 @@ public class StyleParamsParser {
 
     private int getInt(String key, int defaultValue) {
         return params.containsKey(key) ? params.getInt(key) : defaultValue;
+    }
+
+    private Integer getIntegerOrNull(String key) {
+        return params.containsKey(key) ? params.getInt(key) : null;
     }
 
     private Bundle getBundle(String key) {

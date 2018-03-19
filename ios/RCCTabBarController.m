@@ -277,6 +277,12 @@
       }
       else
       {
+        NSString *badgeColor = actionParams[@"badgeColor"];
+        UIColor *color = badgeColor != (id)[NSNull null] ? [RCTConvert UIColor:badgeColor] : nil;
+        
+        if ([viewController.tabBarItem respondsToSelector:@selector(badgeColor)]) {
+          viewController.tabBarItem.badgeColor = color;
+        }
         viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
       }
     }
@@ -342,6 +348,7 @@
         }
         viewController.tabBarItem.image = iconImage;
       }
+      
       UIImage *iconImageSelected = nil;
       id selectedIcon = actionParams[@"selectedIcon"];
       if (selectedIcon && selectedIcon != (id)[NSNull null])
@@ -354,12 +361,23 @@
         }
         viewController.tabBarItem.selectedImage = iconImageSelected;
       }
+      
+      id label = actionParams[@"label"];
+      if (label && label != (id)[NSNull null])
+      {
+        viewController.tabBarItem.title = label;
+      }
     }
   }
 
   if ([performAction isEqualToString:@"setTabBarHidden"])
   {
     BOOL hidden = [actionParams[@"hidden"] boolValue];
+    self.tabBarHidden = hidden;
+    
+    CGRect nextFrame = self.tabBar.frame;
+    nextFrame.origin.y = UIScreen.mainScreen.bounds.size.height - (hidden ? 0 : self.tabBar.frame.size.height);
+    
     [UIView animateWithDuration: ([actionParams[@"animated"] boolValue] ? 0.45 : 0)
                           delay: 0
          usingSpringWithDamping: 0.75
@@ -367,7 +385,7 @@
                         options: (hidden ? UIViewAnimationOptionCurveEaseIn : UIViewAnimationOptionCurveEaseOut)
                      animations:^()
      {
-       self.tabBar.transform = hidden ? CGAffineTransformMakeTranslation(0, self.tabBar.frame.size.height) : CGAffineTransformIdentity;
+         [self.tabBar setFrame:nextFrame];
      }
                      completion:^(BOOL finished)
      {
