@@ -103,8 +103,12 @@ public class ModalStackTest extends BaseTest {
     public void onDismiss() throws Exception {
         uut.showModal(viewController, new MockPromise());
         uut.showModal(new SimpleViewController(newActivity(), "otherComponent", new Options()), new MockPromise());
-        uut.dismissAll(new MockPromise());
-        verify(uut, times(2)).onModalDismiss(any());
+        uut.dismissAll(new MockPromise() {
+            @Override
+            public void resolve(@Nullable Object value) {
+                verify(uut, times(2)).onModalDismiss(any());
+            }
+        });
     }
 
     @Test
