@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -12,11 +13,12 @@ import android.view.animation.DecelerateInterpolator;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.utils.UiUtils;
 
-class BaseAnimator {
+public class BaseAnimator {
 
     AnimationsOptions options = new AnimationsOptions();
 
-    private static final int DURATION = 300;
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public static int DURATION = 300;
     private static final DecelerateInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();
     private static final AccelerateInterpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
 

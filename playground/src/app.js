@@ -25,7 +25,7 @@ function start() {
   Navigation.events().onAppLaunched(() => {
     Navigation.setDefaultOptions({
       animations: {
-        showModal: {
+        push: {
           y: {
             from: 1000,
             to: 0,
@@ -46,7 +46,7 @@ function start() {
             interpolation: 'decelerate',
           }
         },
-        dismissModal : {
+        pop: {
           rotationY: {
             from: 0,
             to: -360,
@@ -65,7 +65,9 @@ function start() {
             to: 0,
             duration: 500
           }
-        }
+        },
+        showModal: {},
+        dismissModal: {}
       }
     });
 

@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 
 import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.utils.NoOpPromise;
@@ -14,7 +15,7 @@ import java.util.List;
 
 class ModalStack implements ModalListener {
 
-	private List<Modal> modals = new ArrayList<>();
+    private List<Modal> modals = new ArrayList<>();
     private ModalCreator creator;
     private ModalListener modalListener;
 
@@ -26,25 +27,33 @@ class ModalStack implements ModalListener {
     void showModal(final ViewController viewController, Promise promise) {
         Modal modal = creator.create(viewController, this);
         modals.add(modal);
-		modal.show();
+        modal.show();
         promise.resolve(viewController.getId());
-	}
+    }
 
-	void dismissModal(final String componentId, Promise promise) {
-		Modal modal = findModalByComponentId(componentId);
-		if (modal != null) {
-			modal.dismiss(promise);
-		} else {
-			Navigator.rejectPromise(promise);
-		}
-	}
+    void dismissModal(final String componentId, Promise promise) {
+        Modal modal = findModalByComponentId(componentId);
+        if (modal != null) {
+            modal.dismiss(promise);
+        } else {
+            Navigator.rejectPromise(promise);
+        }
+    }
 
-	void dismissAll(Promise promise) {
-		for (Modal modal : modals) {
-			modal.dismiss(size() == 1 ? promise : new NoOpPromise());
-		}
-		modals.clear();
-	}
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    void dismissAll() {
+        for (Modal modal : modals) {
+            modal.dismiss();
+        }
+        modals.clear();
+    }
+
+    void dismissAll(Promise promise) {
+        for (Modal modal : modals) {
+            modal.dismiss(size() == 1 ? promise : new NoOpPromise());
+        }
+        modals.clear();
+    }
 
     boolean isEmpty() {
         return modals.isEmpty();
@@ -54,17 +63,17 @@ class ModalStack implements ModalListener {
         return modals.size();
     }
 
-	@Nullable
+    @Nullable
     Modal findModalByComponentId(String componentId) {
-		for (Modal modal : modals) {
-			if (modal.containsDeepComponentId(componentId)) {
-				return modal;
-			}
-		}
-		return null;
-	}
+        for (Modal modal : modals) {
+            if (modal.containsDeepComponentId(componentId)) {
+                return modal;
+            }
+        }
+        return null;
+    }
 
-	@Nullable
+    @Nullable
     ViewController findControllerById(String id) {
         Modal modal = findModalByComponentId(id);
         return modal != null ? modal.viewController.findControllerById(id) : null;

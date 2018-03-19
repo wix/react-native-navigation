@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.anim.BaseAnimator;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.ModalCreatorMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
@@ -103,7 +104,8 @@ public class ModalStackTest extends BaseTest {
     public void onDismiss() throws Exception {
         uut.showModal(viewController, new MockPromise());
         uut.showModal(new SimpleViewController(newActivity(), "otherComponent", new Options()), new MockPromise());
-        uut.dismissAll(new MockPromise());
+        BaseAnimator.DURATION = 0;
+        uut.dismissAll();
         verify(uut, times(2)).onModalDismiss(any());
     }
 
