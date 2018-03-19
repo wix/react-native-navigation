@@ -39,6 +39,7 @@ import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.screens.NavigationType;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.OrientationHelper;
+import com.reactnativenavigation.utils.ReflectionUtils;
 import com.reactnativenavigation.views.SideMenu.Side;
 
 import java.util.List;
@@ -54,6 +55,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
      * Along with that, we should handle commands from the bridge using onNewIntent
      */
     static NavigationActivity currentActivity;
+    private static Promise startAppPromise;
 
     private ActivityParams activityParams;
     private ModalController modalController;
@@ -123,10 +125,18 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         currentActivity = this;
         IntentDataHandler.onResume(getIntent());
         getReactGateway().onResumeActivity(this, this);
+        resolveStartAppPromiseOnActivityResumed();
         NavigationApplication.instance.getActivityCallbacks().onActivityResumed(this);
         EventBus.instance.register(this);
         IntentDataHandler.onPostResume(getIntent());
         NavigationApplication.instance.getEventEmitter().sendActivityResumed(getCurrentlyVisibleEventId());
+    }
+
+    private void resolveStartAppPromiseOnActivityResumed() {
+        if (startAppPromise != null) {
+            startAppPromise.resolve(true);
+            startAppPromise = null;
+        }
     }
 
     @Override
@@ -149,7 +159,14 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onStop() {
         super.onStop();
+        clearStartAppPromise();
         NavigationApplication.instance.getActivityCallbacks().onActivityStopped(this);
+    }
+
+    private void clearStartAppPromise() {
+        if (startAppPromise != null) {
+            startAppPromise = null;
+        }
     }
 
     @Override
@@ -439,6 +456,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
             public void run() {
                 layout.destroy();
                 modalController.destroy();
+
+                Object devSupportManager = ReflectionUtils.getDeclaredField(getReactGateway().getReactInstanceManager(), "mDevSupportManager");
+                if (ReflectionUtils.getDeclaredField(devSupportManager, "mRedBoxDialog") != null) { // RN >= 0.52
+                    ReflectionUtils.setField(devSupportManager, "mRedBoxDialog", null);
+                }
             }
         });
     }
@@ -463,5 +485,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     public String getCurrentlyVisibleEventId() {
         return modalController.isShowing() ? modalController.getCurrentlyVisibleEventId() : layout.getCurrentScreen().getNavigatorEventId();
+    }
+
+    public static void setStartAppPromise(Promise promise) {
+        NavigationActivity.startAppPromise = promise;
     }
 }

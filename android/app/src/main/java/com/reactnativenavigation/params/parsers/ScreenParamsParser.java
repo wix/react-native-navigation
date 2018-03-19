@@ -42,6 +42,9 @@ public class ScreenParamsParser extends Parser {
         result.leftButton = ButtonParser.parseLeftButton(params);
 
         result.topTabParams = parseTopTabs(params);
+        if (hasKey(params, "screens")) {
+            result.screens = parseScreens(params.getBundle("screens"));
+        }
 
         if (hasKey(params, FRAGMENT_CREATOR_CLASS_NAME)) {
             result.fragmentCreatorClassName = params.getString(FRAGMENT_CREATOR_CLASS_NAME);
@@ -99,6 +102,15 @@ public class ScreenParamsParser extends Parser {
 
     List<ScreenParams> parseTabs(Bundle params) {
         return parseBundle(params, new ParseStrategy<ScreenParams>() {
+            @Override
+            public ScreenParams parse(Bundle screen) {
+                return ScreenParamsParser.parse(screen);
+            }
+        });
+    }
+
+    private static List<ScreenParams> parseScreens(Bundle screens) {
+        return new Parser().parseBundle(screens, new ParseStrategy<ScreenParams>() {
             @Override
             public ScreenParams parse(Bundle screen) {
                 return ScreenParamsParser.parse(screen);

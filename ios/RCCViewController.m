@@ -235,8 +235,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 - (void)sendGlobalScreenEvent:(NSString *)eventName endTimestampString:(NSString *)endTimestampStr shouldReset:(BOOL)shouldReset {
   
-  if (!self.commandType) return;
-  
   if ([self.view isKindOfClass:[RCTRootView class]]){
     NSString *screenName = [((RCTRootView*)self.view) moduleName];
     
@@ -291,21 +289,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   }];
 }
 
-// fix iOS11 safeArea - https://github.com/facebook/react-native/issues/15681
-// rnn issue - https://github.com/wix/react-native-navigation/issues/1858
-- (void)_traverseAndFixScrollViewSafeArea:(UIView *)view {
-#ifdef __IPHONE_11_0
-  if ([view isKindOfClass:UIScrollView.class] && [view respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]) {
-    [((UIScrollView*)view) setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
-  }
-  
-  [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-    [self _traverseAndFixScrollViewSafeArea:obj];
-  }];
-#endif
-  
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
@@ -317,7 +300,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-  [self _traverseAndFixScrollViewSafeArea:self.view];
   [self sendGlobalScreenEvent:@"willAppear" endTimestampString:[self getTimestampString] shouldReset:NO];
   [self sendScreenChangedEvent:@"willAppear"];
   [self setStyleOnAppear];
@@ -381,13 +363,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
   [self.navigationController.navigationBar setTitleTextAttributes:titleTextAttributes];
   
-  if (self.navigationItem.titleView && [self.navigationItem.titleView isKindOfClass:[RCCTitleView class]]) {
-    
-    RCCTitleView *titleView = (RCCTitleView *)self.navigationItem.titleView;
-    RCCTitleViewHelper *helper = [[RCCTitleViewHelper alloc] init:viewController navigationController:viewController.navigationController title:titleView.titleLabel.text subtitle:titleView.subtitleLabel.text titleImageData:nil isSetSubtitle:NO];
-    [helper setup:self.navigatorStyle];
-  }
-  
   NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarButton"];
   NSMutableDictionary *leftNavButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarLeftButton"];
   NSMutableDictionary *rightNavButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarRightButton"];
@@ -412,6 +387,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         [mergedAttributes addEntriesFromDictionary:previousAttributes];
 
         [item setTitleTextAttributes:[mergedAttributes copy] forState:UIControlStateNormal];
+        [item setTitleTextAttributes:[mergedAttributes copy] forState:UIControlStateHighlighted];
       }
     }
 
@@ -428,11 +404,13 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
       [mergedAttributes addEntriesFromDictionary:previousAttributes];
 
       [item setTitleTextAttributes:[mergedAttributes copy] forState:UIControlStateNormal];
+      [item setTitleTextAttributes:[mergedAttributes copy] forState:UIControlStateHighlighted];
     }
 
     // At the moment, this seems to be the only thing that gets the back button correctly
     [navButtonTextAttributes removeObjectForKey:NSForegroundColorAttributeName];
     [[UIBarButtonItem appearance] setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:navButtonTextAttributes forState:UIControlStateHighlighted];
   }
   
   NSString *navBarButtonColor = self.navigatorStyle[@"navBarButtonColor"];
@@ -446,6 +424,20 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     viewController.navigationController.navigationBar.tintColor = nil;
   }
   
+  BOOL topBarElevationShadowEnabled = self.navigatorStyle[@"topBarElevationShadowEnabled"] != (id)[NSNull null] ? [RCTConvert CGFloat:self.navigatorStyle[@"topBarElevationShadowEnabled"]] : NO;
+
+  if (topBarElevationShadowEnabled) {
+    CGFloat shadowOpacity = self.navigatorStyle[@"topBarShadowOpacity"] != 0 ? [RCTConvert CGFloat:self.navigatorStyle[@"topBarShadowOpacity"]] : 0.2;
+    CGFloat shadowOffset = self.navigatorStyle[@"topBarShadowOffset"] != 0 ? [RCTConvert CGFloat:self.navigatorStyle[@"topBarShadowOffset"]] : 3.0;
+    CGFloat shadowRadius = self.navigatorStyle[@"topBarShadowRadius"] != 0 ? [RCTConvert CGFloat:self.navigatorStyle[@"topBarShadowRadius"]] : 2.0;
+    UIColor *shadowColor = self.navigatorStyle[@"topBarShadowColor"] != (id)[NSNull null] ? [RCTConvert UIColor:self.navigatorStyle[@"topBarShadowColor"]] : UIColor.blackColor;
+
+    viewController.navigationController.navigationBar.layer.shadowOpacity = shadowOpacity;
+    viewController.navigationController.navigationBar.layer.shadowColor = shadowColor.CGColor;
+    viewController.navigationController.navigationBar.layer.shadowOffset = CGSizeMake(0, shadowOffset);
+    viewController.navigationController.navigationBar.layer.shadowRadius = shadowRadius;
+  }
+
   BOOL viewControllerBasedStatusBar = false;
   
   NSObject *viewControllerBasedStatusBarAppearance = [[NSBundle mainBundle] infoDictionary][@"UIViewControllerBasedStatusBarAppearance"];
@@ -648,17 +640,43 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
       
       NSDictionary *initialProps = self.navigatorStyle[@"navBarCustomViewInitialProps"];
       RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:navBarCustomView initialProperties:initialProps];
-      
-      RCCCustomTitleView *titleView = [[RCCCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.navigatorStyle[@"navBarComponentAlignment"]];
-      titleView.backgroundColor = [UIColor clearColor];
-      reactView.backgroundColor = [UIColor clearColor];
-      
+
+      RCCCustomTitleView *titleView = [[RCCCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds
+                                                                        subView:reactView
+                                                                      alignment:self.navigatorStyle[@"navBarComponentAlignment"]];
+
       self.navigationItem.titleView = titleView;
-      
       self.navigationItem.titleView.backgroundColor = [UIColor clearColor];
-      self.navigationItem.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
       self.navigationItem.titleView.clipsToBounds = YES;
     }
+  }
+
+  #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
+  if (@available(iOS 11.0, *)) {
+    if ([self.navigationController.navigationBar respondsToSelector:@selector(setPrefersLargeTitles:)]) {
+      NSNumber *prefersLargeTitles = self.navigatorStyle[@"largeTitle"];
+      if (prefersLargeTitles) {
+        if ([prefersLargeTitles boolValue]) {
+          self.navigationController.navigationBar.prefersLargeTitles = YES;
+          self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
+          self.navigationItem.titleView = nil;
+        } else {
+          self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+        }
+      } else {
+        self.navigationController.navigationBar.prefersLargeTitles = NO;
+        self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+      }
+    }
+  }
+  #endif
+}
+
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+  [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+  RCCCustomTitleView* customNavBar = (RCCCustomTitleView*) self.navigationItem.titleView;
+  if (customNavBar && [customNavBar isKindOfClass:[RCCCustomTitleView class]]) {
+    [customNavBar viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
   }
 }
 
@@ -713,6 +731,15 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     self._statusBarHidden = YES;
   } else {
     self._statusBarHidden = NO;
+  }
+  
+  NSDictionary *preferredContentSize = self.navigatorStyle[@"preferredContentSize"];
+  if (preferredContentSize) {
+    NSNumber *width = preferredContentSize[@"width"];
+    NSNumber *height = preferredContentSize[@"height"];
+    if (width && height) {
+      self.preferredContentSize = CGSizeMake([width floatValue], [height floatValue]);
+    }
   }
 }
 
