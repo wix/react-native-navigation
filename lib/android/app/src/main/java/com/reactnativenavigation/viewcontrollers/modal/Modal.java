@@ -48,11 +48,6 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
         });
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    public void dismiss() {
-        dialog.dismiss();
-    }
-
     public void dismiss(Promise promise) {
         dismissPromise = promise;
         animator.animateDismiss(viewController.getView(), new AnimatorListenerAdapter() {

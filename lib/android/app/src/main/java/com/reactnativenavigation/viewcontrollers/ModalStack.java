@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 
 import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.utils.NoOpPromise;
@@ -32,20 +31,7 @@ class ModalStack implements ModalListener {
     }
 
     void dismissModal(final String componentId, Promise promise) {
-        Modal modal = findModalByComponentId(componentId);
-        if (modal != null) {
-            modal.dismiss(promise);
-        } else {
-            Navigator.rejectPromise(promise);
-        }
-    }
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    void dismissAll() {
-        for (Modal modal : modals) {
-            modal.dismiss();
-        }
-        modals.clear();
+        applyOnModal(componentId, (modal) -> modal.dismiss(promise), () -> Navigator.rejectPromise(promise));
     }
 
     void dismissAll(Promise promise) {
@@ -83,7 +69,7 @@ class ModalStack implements ModalListener {
     public void onModalDismiss(Modal modal) {
         if (peek() == modal) {
             modals.remove(modal);
-            performOnModal(peek(), peek -> peek.viewController.onViewAppeared());
+            applyOnModal(peek(), peek -> peek.viewController.onViewAppeared(), null);
         } else {
             modals.remove(modal);
         }
@@ -99,11 +85,24 @@ class ModalStack implements ModalListener {
         return isEmpty() ? null : modals.get(modals.size() - 1);
     }
 
-    private void performOnModal(@Nullable Modal modal, Task<Modal> task) {
-        if (modal != null) task.run(modal);
-    }
-
     public boolean handleBack() {
         return !modals.isEmpty() && peek().handleBack();
+    }
+
+    private void applyOnModal(String componentId, Task<Modal> accept, Runnable reject) {
+        Modal modal = findModalByComponentId(componentId);
+        if (modal != null) {
+            if (accept != null) accept.run(modal);
+        } else {
+            if (reject != null) reject.run();
+        }
+    }
+
+    private void applyOnModal(Modal modal, Task<Modal> accept, Runnable reject) {
+        if (modal != null) {
+            if (accept != null) accept.run(modal);
+        } else {
+            if (reject != null) reject.run();
+        }
     }
 }
