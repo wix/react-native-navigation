@@ -70,11 +70,9 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (event.getAction() == KeyEvent.ACTION_UP) {
-                if (viewController.handleBack()) {
-                    return true;
-                }
-                dialog.dismiss();
+                viewController.getActivity().onBackPressed();
             }
+            return true;
         }
         return false;
     }
@@ -90,5 +88,12 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
     @Override
     public void onShow(DialogInterface dialog) {
         modalListener.onModalDisplay(this);
+    }
+
+    public boolean handleBack() {
+        if (!viewController.handleBack()) {
+            dialog.dismiss();
+        }
+        return true;
     }
 }

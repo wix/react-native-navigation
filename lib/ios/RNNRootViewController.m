@@ -3,6 +3,7 @@
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
 #import "RNNCustomTitleView.h"
+#import "RNNPushAnimation.h"
 
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* componentName;
@@ -37,7 +38,6 @@
 											 selector:@selector(onJsReload)
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
-	self.navigationController.modalPresentationStyle = UIModalPresentationCustom;
 	self.navigationController.delegate = self;
 
 	return self;
@@ -91,7 +91,7 @@
 }
 
 -(BOOL)isCustomTransitioned {
-	return self.options.customTransition != nil;
+	return self.options.customTransition.animations != nil;
 }
 
 - (BOOL)isAnimated {
@@ -135,16 +135,25 @@
 											   fromViewController:(UIViewController*)fromVC
 												 toViewController:(UIViewController*)toVC {
 {
-	if (operation == UINavigationControllerOperationPush) {
+	if (self.animator) {
 		return self.animator;
-	} else if (operation == UINavigationControllerOperationPop) {
-		return self.animator;
+	} else if (operation == UINavigationControllerOperationPush && self.options.animations.push) {
+		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.push];
+	} else if (operation == UINavigationControllerOperationPop && self.options.animations.pop) {
+		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.pop];
 	} else {
 		return nil;
 	}
 }
 	return nil;
+}
 
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.showModal isDismiss:NO];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.dismissModal isDismiss:YES];
 }
 
 -(void)applyTabBarItem {

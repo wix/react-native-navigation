@@ -1,5 +1,6 @@
 [![npm (tag)](https://img.shields.io/npm/v/react-native-navigation/alpha.svg)](https://github.com/wix/react-native-navigation/tree/v2#react-native-navigation-v2-wip)
 [![Build Status](https://travis-ci.org/wix/react-native-navigation.svg?branch=v2)](https://travis-ci.org/wix/react-native-navigation)
+[![Build Status Jenkins](http://34.201.210.182/job/react-native-navigation/job/v2/badge/icon)](http://34.201.210.182/job/react-native-navigation/job/v2)
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 [![StackExchange](https://img.shields.io/stackexchange/stackoverflow/t/react-native-navigation.svg)](https://stackoverflow.com/questions/tagged/react-native-navigation)
 

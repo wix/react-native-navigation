@@ -24,6 +24,7 @@ public class Button {
 	private Text buttonFontWeight = new NullText();
 	public Text icon = new NullText();
 	public Text testId = new NullText();
+    public Text component = new NullText();
 
 	private static Button parseJson(JSONObject json)  {
 		Button button = new Button();
@@ -36,6 +37,7 @@ public class Button {
 		button.buttonFontSize = json.optInt("buttonFontSize", NO_INT_VALUE);
 		button.buttonFontWeight = TextParser.parse(json, "buttonFontWeight");
         button.testId = TextParser.parse(json, "testID");
+        button.component = TextParser.parse(json, "component");
 
 		if (json.has("icon")) {
 			button.icon = TextParser.parse(json.optJSONObject("icon"), "uri");
@@ -59,6 +61,14 @@ public class Button {
 
 		return buttons;
 	}
+
+    public boolean hasComponent() {
+        return component.hasValue();
+    }
+
+    public boolean hasIcon() {
+        return icon.hasValue();
+    }
 
 	private static int parseShowAsAction(JSONObject json) {
 	    final Text showAsAction = TextParser.parse(json, "showAsAction");

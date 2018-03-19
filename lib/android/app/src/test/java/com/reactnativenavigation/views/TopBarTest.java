@@ -5,11 +5,13 @@ import android.view.MenuItem;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.TopBarAnimator;
-import com.reactnativenavigation.parse.params.Button;
-import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.TitleBarHelper;
+import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 
 import org.junit.Test;
 
@@ -26,18 +28,18 @@ public class TopBarTest extends BaseTest {
     private TopBarAnimator animator;
     private ArrayList<Button> leftButton;
     private ArrayList<Button> rightButtons;
-    private TitleBarButton.OnClickListener onClickListener;
+    private TopBarButtonController.OnClickListener onClickListener;
 
     @Override
     public void beforeEach() {
-        onClickListener = spy(new TitleBarButton.OnClickListener() {
+        onClickListener = spy(new TopBarButtonController.OnClickListener() {
             @Override
             public void onPress(String buttonId) {
                 Log.i("TopBarTest", "onPress: " + buttonId);
             }
         });
-        StackLayout parent = new StackLayout(newActivity(), this.onClickListener);
-        uut = new TopBar(newActivity(), this.onClickListener, parent);
+        StackLayout parent = new StackLayout(newActivity(), new TopBarButtonCreatorMock(), this.onClickListener);
+        uut = new TopBar(newActivity(), new TopBarButtonCreatorMock(), this.onClickListener, parent);
         animator = spy(new TopBarAnimator(uut));
         uut.setAnimator(animator);
         leftButton = createLeftButton();

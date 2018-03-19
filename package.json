@@ -34,13 +34,12 @@
     "start": "node ./scripts/start",
     "pretest-js": "npm run build",
     "test-js": "node ./scripts/test-js",
-    "test-unit-android": "node ./scripts/test-unit-android",
-    "test-unit-ios": "node ./scripts/test-unit-ios",
+    "test-unit-ios": "node ./scripts/test-unit --ios",
+    "test-unit-android": "node ./scripts/test-unit --android",
     "pretest-e2e-android": "npm run build",
-    "test-e2e-android": "node ./scripts/test-e2e-android",
-    "test-e2e-android-detox": "node ./scripts/test-e2e-android-detox",
+    "test-e2e-android": "node ./scripts/test-e2e --android",
     "pretest-e2e-ios": "npm run build",
-    "test-e2e-ios": "node ./scripts/test-e2e-ios",
+    "test-e2e-ios": "node ./scripts/test-e2e --ios",
     "test-all": "node ./scripts/test-all",
     "prerelease": "npm run build",
     "release": "node ./scripts/release",
@@ -134,13 +133,13 @@
       },
       "android.emu.debug": {
         "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
-        "build": "cd playground/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ../..",
+        "build": "cd playground/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug",
         "type": "android.emulator",
         "name": "Nexus_5X_API_26"
       },
       "android.emu.release": {
         "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
-        "build": "cd playground/android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ../..",
+        "build": "cd playground/android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release",
         "type": "android.emulator",
         "name": "Nexus_5X_API_26"
       }

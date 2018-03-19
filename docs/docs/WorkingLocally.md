@@ -42,8 +42,7 @@ No PR will be accepted without adequate test coverage.
 | `lib/src` | TypeScript sources and unit tests |
 | `lib/dist` | compiled javascript sources and unit tests |
 | `lib/dist/index.js` | the entry point for `import Navigation from 'react-native-navigation'` |
-| `e2e` | [detox](https://github.com/wix/detox) iOS e2e tests (in the future, once detox supports it, we will have android e2e here as well) |
-| `AndroidE2E` | Android e2e tests using native uiautomator (until detox for android is ready) |
+| `e2e` | [detox](https://github.com/wix/detox) e2e tests on both Android and iOS |
 | `playground` | The end-user project all e2e tests run against. Contains its own `src`, `android` and `ios`. Does not have its own package.json, depends on the local `<root>/lib` for faster local development (no need to `npm install` locally). |
 | `integration` | misc javascript integration tests, proving integration with other libraries like redux |
 | `scripts` | all scripts |
@@ -62,8 +61,8 @@ No PR will be accepted without adequate test coverage.
 | `npm run test-js` | runs javascript tests and coverage report |
 | `npm run test-unit-ios` | runs ios unit tests in debug/release <br> **Options:** `-- --release` |
 | `npm run test-unit-android` | runs android unit tests in debug/release <br> **Options:** `-- --release` |
-| `npm run test-e2e-ios` | runs the ios e2e suite (with detox) in debug/release <br> **Options:** `-- --release`|
-| `npm run test-e2e-android` | runs the android e2e suite (with uiautomator) in debug/release on running devices/emulators <br> **Options:** `-- [--release] [--just com.TestClass#testMethod]` |
+| `npm run test-e2e-ios` | runs the ios e2e tests using [detox](https://github.com/wix/detox) in debug/release <br> **Options:** `-- --release`|
+| `npm run test-e2e-android` | runs the android e2e tests using [detox](https://github.com/wix/detox) in debug/release <br> **Options:** `-- --release` |
 | `npm run test-all` | runs all tests in parallel |
 | `npm run gen-docs` | generates api docs |
 | `npm run local-docs` | serve the docs locally for `http://localhost:3000/` |

@@ -1,22 +1,19 @@
 package com.reactnativenavigation.parse.params;
 
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.support.annotation.Nullable;
 
 public enum Orientation {
-    Portrait("portrait", Configuration.ORIENTATION_PORTRAIT, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT),
-    Landscape("landscape", Configuration.ORIENTATION_LANDSCAPE, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE),
-    Default("default", Configuration.ORIENTATION_UNDEFINED, ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED),
-    PortraitLandscape("sensor", Configuration.ORIENTATION_UNDEFINED, ActivityInfo.SCREEN_ORIENTATION_USER);
+    Portrait("portrait", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT),
+    Landscape("landscape", ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE),
+    Default("default", ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED),
+    PortraitLandscape("sensor", ActivityInfo.SCREEN_ORIENTATION_USER);
 
     public String name;
-    public int configurationCode;
     public int orientationCode;
 
-    Orientation(String name, int configurationCode, int orientationCode) {
+    Orientation(String name, int orientationCode) {
         this.name = name;
-        this.configurationCode = configurationCode;
         this.orientationCode = orientationCode;
     }
 
@@ -28,14 +25,5 @@ public enum Orientation {
             }
         }
         return null;
-    }
-
-    public static String fromConfigurationCode(int configurationCode) {
-        for (Orientation orientation : values()) {
-            if (orientation.configurationCode == configurationCode) {
-                return orientation.name;
-            }
-        }
-        throw new RuntimeException();
     }
 }

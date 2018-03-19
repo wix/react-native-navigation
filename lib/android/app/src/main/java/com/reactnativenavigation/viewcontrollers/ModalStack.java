@@ -93,4 +93,8 @@ class ModalStack implements ModalListener {
     private void performOnModal(@Nullable Modal modal, Task<Modal> task) {
         if (modal != null) task.run(modal);
     }
+
+    public boolean handleBack() {
+        return !modals.isEmpty() && peek().handleBack();
+    }
 }

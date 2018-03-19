@@ -10,7 +10,7 @@ import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.ViewVisibilityListenerAdapter;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.TopTabsLayoutCreator;
 import com.reactnativenavigation.views.TopTabsViewPager;
 
@@ -79,7 +79,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> implem
     }
 
     @Override
-    public void applyOptions(Options options, ReactComponent childComponent) {
+    public void applyOptions(Options options, Component childComponent) {
         super.applyOptions(options, childComponent);
         applyOnParentController(parentController -> {
                 Options opt = this.options.copy();

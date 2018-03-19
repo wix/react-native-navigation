@@ -3,34 +3,32 @@ pipeline {
   stages {
     stage('Install npm packages') {
       steps {
+      ansiColor('xterm') {
         sh '''#!/bin/bash -ex
-npm install
-npm run clean'''
+        npm install
+        npm run clean'''
+        }
       }
     }
-    stage('Run test-js') {
+    stage('Run All Tests') {
       parallel {
         stage('Run test-js') {
           steps {
             sh '''#!/bin/bash
-
-npm run test-js'''
+            npm run test-js'''
           }
         }
-        stage('Run IOS tests') {
+        stage('Run iOS tests') {
           steps {
             sh '''#!/bin/bash
-
-npm run test-unit-ios -- --release
-npm run test-e2e-ios -- --release'''
+            npm run test-unit-ios -- --release
+            npm run test-e2e-ios -- --release'''
           }
         }
-        stage('Run android tests') {
+        stage('Run Android tests') {
           steps {
             sh '''#!/bin/bash
-
-npm run test-unit-android -- --release
-npm run test-e2e-android -- --release'''
+            npm run test-unit-android -- --release'''
           }
         }
       }

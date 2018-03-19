@@ -24,8 +24,13 @@
 
 -(void)mergeIfEmptyWith:(NSDictionary *)otherOptions {
 	for (id key in otherOptions) {
-		if ([self hasProperty:key] && ![self valueForKey:key]) {
-			[self setValue:[otherOptions objectForKey:key] forKey:key];
+		if ([self hasProperty:key]) {
+			if ([[self valueForKey:key] isKindOfClass:[RNNOptions class]]) {
+				RNNOptions* options = [self valueForKey:key];
+				[options mergeIfEmptyWith:[otherOptions objectForKey:key]];
+			} else if (![self valueForKey:key]) {
+				[self setValue:[otherOptions objectForKey:key] forKey:key];
+			}
 		}
 	}
 }

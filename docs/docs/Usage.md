@@ -1,10 +1,10 @@
 
 # Usage
 
-- If you don't like reading, just jump into the fully working [playground](https://github.com/wix/react-native-navigation/tree/v2/playground) project. All feature are implemented there and it's the basis for the e2e tests.
+- If you don't like reading, just jump into the fully working [playground](https://github.com/wix/react-native-navigation/tree/v2/playground) project. All features are implemented there and it's the basis for the e2e tests.
 - We fully support redux, mobx and other state management libraries. See the integration tests [here](https://github.com/wix/react-native-navigation/tree/v2/integration).
 - Navigation is written with `TypeScript` and shipped with the type definitions alongside the transpiled JS code. Use an IDE that supports it like VSCode or Webstorm to enjoy API autocompletion.
-- Take a loot at this excellent showcase app [JuneDomingo/movieapp](https://github.com/JuneDomingo/movieapp). (using v1 of React Native Navigation with redux).
+- Take a look at this excellent showcase app [JuneDomingo/movieapp](https://github.com/JuneDomingo/movieapp). (using v1 of React Native Navigation with redux).
 
 ## The Basics
 
@@ -178,13 +178,13 @@ Navigation.dismissModal(this.props.componentId);
 
 The `didAppear` and `didDisappear` functions are lifecycle callbacks that are called by React Native Navigation on the component when it appears and disappears. 
 
-These are similar to react's `componentDidMount` and `componentWillUnmount` but are related to the actual visibility of a component to the user. While the component is `mounted` as soon as it's part of a layout, it is not always `visible` (for example when another screen is `pushed` on top of it), and therefore some performance optimizations measures are taken by React Native Navigation.
+These are similar to react's `componentDidMount` and `componentWillUnmount`, but are related to the actual visibility of a component to the user. While the component is `mounted` as soon as it's part of a layout, it is not always `visible` (for example, when another screen is `pushed` on top of it), and therefore React Native Navigation  takes some performance optimizations.
 
-They are also useful for a lot of use cases, for example starting and stopping an animation while the component is shown onscreen.
+They are also useful for a lot of use cases, for example starting and stopping an animation while the component is shown on-screen.
 
 > They are implemented by iOS's viewDidAppear/viewDidDisappear and Android's ViewTreeObserver visibility detection
 
-To use them simply implement them in your component like any other react lifecycle function:
+To use them, simply implement them in your component like any other react lifecycle function:
 
 ```js
 class LifecycleScreenExample extends Component {

@@ -8,6 +8,7 @@ import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -45,7 +46,7 @@ public class NavigatorTest extends BaseTest {
         imageLoaderMock = ImageLoaderMock.mock();
         activity = newActivity();
         uut = new Navigator(activity);
-        parentController = spy(new StackController(activity, "stack", new Options()));
+        parentController = spy(new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options()));
         parentController.ensureViewIsCreated();
         child1 = new SimpleViewController(activity, "child1", tabOptions);
         child2 = new SimpleViewController(activity, "child2", tabOptions);
@@ -206,12 +207,19 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void handleBack_DelegatesToRoot() throws Exception {
-        assertThat(uut.handleBack()).isFalse();
-        ViewController spy = spy(child1);
-        uut.setRoot(spy, new MockPromise());
-        when(spy.handleBack()).thenReturn(true);
+        ViewController root = spy(child1);
+        uut.setRoot(root, new MockPromise());
+        when(root.handleBack()).thenReturn(true);
         assertThat(uut.handleBack()).isTrue();
-        verify(spy, times(1)).handleBack();
+        verify(root, times(1)).handleBack();
+    }
+
+    @Test
+    public void handleBack_modalTakePrecedenceOverRoot() throws Exception {
+        ViewController root = spy(child1);
+        uut.setRoot(root, new MockPromise());
+        uut.showModal(child2, new MockPromise());
+        verify(root, times(0)).handleBack();
     }
 
     @Test
@@ -240,7 +248,7 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private StackController newStack() {
-        return new StackController(activity, "stack" + CompatUtils.generateViewId(), tabOptions);
+        return new StackController(activity, new TopBarButtonCreatorMock(), "stack" + CompatUtils.generateViewId(), tabOptions);
     }
 
     @Test
@@ -317,7 +325,7 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void pushedStackCanBePopped() throws Exception {
-        StackController parent = new StackController(activity, "someStack", new Options());
+        StackController parent = new StackController(activity, new TopBarButtonCreatorMock(), "someStack", new Options());
         parent.ensureViewIsCreated();
         uut.setRoot(parent, new MockPromise());
         parent.push(parentController, new MockPromise());

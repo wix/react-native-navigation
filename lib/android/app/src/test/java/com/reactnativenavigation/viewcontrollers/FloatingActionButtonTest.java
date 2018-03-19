@@ -3,10 +3,12 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
@@ -17,8 +19,6 @@ import com.reactnativenavigation.views.StackLayout;
 import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 
 public class FloatingActionButtonTest extends BaseTest {
 
@@ -33,7 +33,7 @@ public class FloatingActionButtonTest extends BaseTest {
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
-        stackController = new StackController(activity, "stackController", new Options());
+        stackController = new StackController(activity, new TopBarButtonCreatorMock(), "stackController", new Options());
         Options options = getOptionsWithFab();
         childFab = new SimpleViewController(activity, "child1", options);
         childNoFab = new SimpleViewController(activity, "child2", new Options());
@@ -128,7 +128,7 @@ public class FloatingActionButtonTest extends BaseTest {
         for (int i = 0; i < stackLayout.getChildCount(); i++) {
             View child = stackLayout.getChildAt(i);
             if (child instanceof FabMenu) {
-                return ((FabMenu) child).getChildCount() == CHILD_FAB_COUNT + 2;
+                return ((ViewGroup) child).getChildCount() == CHILD_FAB_COUNT + 2;
             }
         }
         return false;

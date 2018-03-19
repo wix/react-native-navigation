@@ -14,7 +14,5 @@ module.exports = {
       return element(by.type('_UIModernBarButton').and(by.label('Back'))).tap();
     }
   },
-  tapDeviceBackAndroid: () => {
-    exec.execSync('adb shell input keyevent 4');
-  }
+  sleep: ms => new Promise(res => setTimeout(res, ms))
 };

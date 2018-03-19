@@ -107,9 +107,7 @@ describe('Commands', () => {
     });
 
     it('passProps into components', () => {
-      const passProps = {
-        fn: () => 'hello'
-      };
+      const passProps = {};
       expect(store.getPropsForComponentId('Component+UNIQUE_ID')).toEqual({});
       uut.showModal({
         component: {

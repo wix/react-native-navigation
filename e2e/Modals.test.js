@@ -1,5 +1,6 @@
 const Utils = require('./Utils');
 const testIDs = require('../playground/src/testIDs');
+const Android = require('./AndroidUtils');
 
 const { elementByLabel, elementById, tapDeviceBackAndroid } = Utils;
 
@@ -103,7 +104,7 @@ describe('modal', () => {
     await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
     await elementById(testIDs.PUSH_BUTTON).tap();
     await elementById(testIDs.PUSH_BUTTON).tap();
-    tapDeviceBackAndroid();
+    Android.pressBack();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
 });

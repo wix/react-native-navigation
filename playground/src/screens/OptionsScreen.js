@@ -8,6 +8,8 @@ const testIDs = require('../testIDs');
 
 const BUTTON_ONE = 'buttonOne';
 const BUTTON_TWO = 'buttonTwo';
+const CUSTOM_BUTTON = 'customButton';
+const CUSTOM_BUTTON2 = 'customButton2';
 const BUTTON_LEFT = 'buttonLeft';
 const FAB = 'fab';
 
@@ -26,13 +28,25 @@ class OptionsScreen extends Component {
         textFontSize: 16,
         textFontFamily: 'HelveticaNeue-Italic',
         testID: testIDs.TOP_BAR_ELEMENT,
-        rightButtons: [{
-          id: BUTTON_ONE,
-          testID: BUTTON_ONE,
-          title: 'One',
-          buttonFontSize: 28,
-          buttonColor: 'red'
-        }],
+        rightButtons: [
+          {
+            id: CUSTOM_BUTTON,
+            testID: CUSTOM_BUTTON,
+            component: 'CustomTextButton'
+          },
+          {
+            id: CUSTOM_BUTTON2,
+            testID: CUSTOM_BUTTON2,
+            component: 'CustomRoundedButton'
+          },
+          {
+            id: BUTTON_ONE,
+            testID: BUTTON_ONE,
+            title: 'One',
+            buttonFontSize: 28,
+            buttonColor: 'red'
+          }
+        ],
         leftButtons: [{
           id: BUTTON_LEFT,
           testID: BUTTON_LEFT,

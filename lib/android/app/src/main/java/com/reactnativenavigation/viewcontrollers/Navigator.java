@@ -46,7 +46,7 @@ public class Navigator extends ParentController implements ModalListener {
 
     @Override
     public boolean handleBack() {
-        return root != null && root.handleBack();
+        return modalStack.isEmpty() ? root.handleBack() : modalStack.handleBack();
     }
 
     @Override

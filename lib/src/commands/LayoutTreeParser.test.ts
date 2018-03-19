@@ -177,7 +177,7 @@ const singleComponent = {
 
 const externalComponent = {
   externalComponent: {
-    className: 'MyReactComponent',
+    name: 'MyReactComponent',
     options,
     passProps
   }

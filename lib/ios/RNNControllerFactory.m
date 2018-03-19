@@ -90,8 +90,9 @@
 
 - (UIViewController<RNNRootViewProtocol> *)createComponent:(RNNLayoutNode*)node nativeComponent:(BOOL)nativeComponent {
 	NSString* name = node.data[@"name"];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:node.data[@"options"]];
-	options.defaultOptions = _defaultOptions;
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:_defaultOptionsDict];
+	[options mergeWith:node.data[@"options"]];
+
 	NSString* componentId = node.nodeId;
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:nativeComponent];
 	if (!component.isCustomViewController) {

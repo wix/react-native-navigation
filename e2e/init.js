@@ -11,9 +11,11 @@ after(async () => {
   await detox.cleanup();
 });
 
-// Temporary solution, #2809
 function disableAndroidEmulatorAnimations() {
-  exec.execAsync(`adb shell settings put global window_animation_scale 0.0`);
-  exec.execAsync(`adb shell settings put global transition_animation_scale 0.0`);
-  exec.execAsync(`adb shell settings put global animator_duration_scale 0.0`);
+  if (device.getPlatform() === 'android') {
+    const deviceId = device._deviceId;
+    exec.execAsync(`adb -s ${deviceId} shell settings put global window_animation_scale 0.0`);
+    exec.execAsync(`adb -s ${deviceId} shell settings put global transition_animation_scale 0.0`);
+    exec.execAsync(`adb -s ${deviceId} shell settings put global animator_duration_scale 0.0`);
+  }
 }

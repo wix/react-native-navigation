@@ -9,6 +9,8 @@ import android.widget.RelativeLayout;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -17,23 +19,19 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class StackLayout extends RelativeLayout {
     private TopBar topBar;
 
-    public StackLayout(Context context, TitleBarButton.OnClickListener topBarButtonClickListener) {
+    public StackLayout(Context context, ReactViewCreator topBarButtonCreator, TopBarButtonController.OnClickListener topBarButtonClickListener) {
         super(context);
-        topBar = new TopBar(context, topBarButtonClickListener, this);
+        topBar = new TopBar(context, topBarButtonCreator, topBarButtonClickListener, this);
         topBar.setId(CompatUtils.generateViewId());
-        createLayout();
-        setContentDescription("StackLayout");
-    }
-
-    void createLayout() {
         addView(topBar, MATCH_PARENT, WRAP_CONTENT);
+        setContentDescription("StackLayout");
     }
 
     public void applyOptions(Options options) {
         new OptionsPresenter(topBar).applyOrientation(options.orientationOptions);
     }
 
-    public void applyOptions(Options options, ReactComponent component) {
+    public void applyOptions(Options options, Component component) {
         new OptionsPresenter(topBar, component).applyOptions(options);
     }
 
