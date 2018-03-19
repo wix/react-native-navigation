@@ -8,7 +8,6 @@ const ROOT = `${__dirname}/../docs`;
 run();
 
 function run() {
-
   http.createServer((req, res) => {
     console.log(req.url);
     const path = `${ROOT}${req.url === '/' ? '/index.html' : req.url}`;
