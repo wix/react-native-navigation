@@ -6,10 +6,14 @@ import android.animation.AnimatorSet;
 import android.content.Context;
 import android.view.View;
 
+import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.parse.AnimationsOptions;
+
 public class ModalAnimator extends BaseAnimator {
 
-    public ModalAnimator(Context context) {
+    public ModalAnimator(Context context, AnimationsOptions options) {
         super(context);
+        this.options = options;
     }
 
     public void animateShow(View contentView, AnimatorListenerAdapter listener) {

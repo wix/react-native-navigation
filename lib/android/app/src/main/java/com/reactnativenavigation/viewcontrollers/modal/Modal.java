@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -32,8 +31,7 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
         dialog.setOnKeyListener(this);
         dialog.setOnDismissListener(this);
         dialog.setOnShowListener(this);
-        animator = new ModalAnimator(viewController.getActivity());
-        animator.setOptions(viewController.options.animationsOptions);
+        animator = new ModalAnimator(viewController.getActivity(), viewController.options.animationsOptions);
     }
 
     public void show() {
