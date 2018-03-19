@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -105,6 +107,10 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
         return layout.getCurrentlyVisibleScreenId();
     }
 
+    String getCurrentlyVisibleEventId() {
+        return layout.getCurrentScreen().getNavigatorEventId();
+    }
+
     interface OnModalDismissedListener {
         void onModalDismissed(Modal modal);
     }
@@ -118,12 +124,19 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
         setAnimation(screenParams);
         setStatusBarStyle(screenParams.styleParams);
         setNavigationBarStyle(screenParams.styleParams);
+        setDrawUnderStatusBar(screenParams.styleParams);
     }
 
     private void setStatusBarStyle(StyleParams styleParams) {
         Window window = getWindow();
         if (window == null) return;
         StatusBar.setTextColorScheme(window.getDecorView(), styleParams.statusBarTextColorScheme);
+    }
+
+    private void setDrawUnderStatusBar(StyleParams styleParams) {
+        Window window = getWindow();
+        if (window == null) return;
+        StatusBar.displayOverScreen(window.getDecorView(), styleParams.drawUnderStatusBar);
     }
 
     private void setNavigationBarStyle(StyleParams styleParams) {
@@ -158,6 +171,12 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
         final WindowManager.LayoutParams attributes = getWindow().getAttributes();
         attributes.windowAnimations = ModalAnimationFactory.create(screenParams);
         getWindow().setAttributes(attributes);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, @NonNull KeyEvent event) {
+        NavigationApplication.instance.getActivityCallbacks().onKeyUp(keyCode, event);
+        return super.onKeyUp(keyCode, event);
     }
 
     @Override

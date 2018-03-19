@@ -102,6 +102,15 @@ var Controllers = {
           props['style'] = Object.assign({}, props['style']);
           _processProperties(props['style']);
         }
+
+        if (props['components']) {
+          props['components'].forEach(component => {
+            if (component['navigatorStyle']) {
+              component['navigatorStyle'] = Object.assign({}, component['navigatorStyle']);
+              _processProperties(component['navigatorStyle']);
+            }
+          });
+        }
         return {
           'type': type.name,
           'props': props,
@@ -121,13 +130,17 @@ var Controllers = {
     registerController: function (appKey, getControllerFunc) {
       _controllerRegistry[appKey] = getControllerFunc();
     },
-    setRootController: function (appKey, animationType = 'none', passProps = {}) {
+    setRootController: async function (appKey, animationType = 'none', passProps = {}) {
       var controller = _controllerRegistry[appKey];
       if (controller === undefined) return;
       var layout = controller.render();
       _validateDrawerProps(layout);
+      console.log('set root');
       _processProperties(_.get(layout, 'props.appStyle', {}));
-      RCCManager.setRootController(layout, animationType, passProps);
+      return await RCCManager.setRootController(layout, animationType, passProps);
+    },
+    getLaunchArgs: async function() {
+      return await RCCManager.getLaunchArgs();
     }
   },
 
@@ -328,4 +341,3 @@ var Controllers = {
 };
 
 module.exports = Controllers;
-
