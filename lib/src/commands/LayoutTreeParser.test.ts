@@ -163,7 +163,9 @@ const passProps = {
 
 const options = {
   topBar: {
-    title: 'Hello1'
+    title: {
+      text: 'Hello1'
+    }
   }
 };
 

@@ -52,7 +52,9 @@ class PushedScreen extends Component {
         },
         options: {
           topBar: {
-            title: `Pushed ${this.getStackPosition() + 1}`
+            title: {
+              text: `Pushed ${this.getStackPosition() + 1}`
+            }
           }
         }
       }

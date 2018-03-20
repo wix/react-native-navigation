@@ -13,18 +13,21 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 
 @implementation RNNTopBarOptions
 
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super initWithDict:dict];
+	self.title = [RNNTitleOptions new];
+	return self;
+}
+
 - (void)applyOn:(UIViewController*)viewController {
+	[self.title applyOn:viewController];
 	if (self.backgroundColor) {
 		UIColor* backgroundColor = [RCTConvert UIColor:self.backgroundColor];
 		viewController.navigationController.navigationBar.barTintColor = backgroundColor;
 	} else {
 		viewController.navigationController.navigationBar.barTintColor = nil;
 	}
-	
-	if (self.title) {
-		viewController.navigationItem.title = self.title;
-	}
-	
+
 	if (@available(iOS 11.0, *)) {
 		if (self.largeTitle){
 			if ([self.largeTitle boolValue]) {
@@ -40,26 +43,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	}
 	
 	
-	if (self.textFontFamily || self.textFontSize || self.textColor) {
-		NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
-		if (self.textColor) {
-			navigationBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:[self valueForKey:@"textColor"]];
-		}
-		if (self.textFontFamily){
-			if(self.textFontSize) {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.textFontFamily size:[self.textFontSize floatValue]];
-			} else {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.textFontFamily size:20];
-			}
-		} else if (self.textFontSize) {
-			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.textFontSize floatValue]];
-		}
-		viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
-		if (@available(iOS 11.0, *)){
-			viewController.navigationController.navigationBar.largeTitleTextAttributes = navigationBarTitleTextAttributes;
-		}
-		
-	}
+	
 	
 	
 	if (self.visible) {

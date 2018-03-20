@@ -81,6 +81,8 @@
 		504AFE751FFFF0540076E904 /* RNNTopTabsOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 504AFE731FFFF0540076E904 /* RNNTopTabsOptions.m */; };
 		504AFE761FFFF1E00076E904 /* RNNNavigationOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = E83BAD691F27362500A9F3DD /* RNNNavigationOptions.h */; };
 		504AFE771FFFF1E20076E904 /* RNNTopBarOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */; };
+		50570B262061473D006A1B5C /* RNNTitleOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50570B242061473D006A1B5C /* RNNTitleOptions.h */; };
+		50570B272061473D006A1B5C /* RNNTitleOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50570B252061473D006A1B5C /* RNNTitleOptions.m */; };
 		50762D08205E96C200E3D18A /* RNNModalAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 50762D06205E96C200E3D18A /* RNNModalAnimation.h */; };
 		50762D09205E96C200E3D18A /* RNNModalAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 50762D07205E96C200E3D18A /* RNNModalAnimation.m */; };
 		507E7D57201DDD3000444E6C /* RNNAnimationOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 507E7D55201DDD3000444E6C /* RNNAnimationOptions.h */; };
@@ -268,6 +270,8 @@
 		504AFE631FFE53070076E904 /* RNNOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNOptions.m; sourceTree = "<group>"; };
 		504AFE721FFFF0540076E904 /* RNNTopTabsOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTopTabsOptions.h; sourceTree = "<group>"; };
 		504AFE731FFFF0540076E904 /* RNNTopTabsOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTopTabsOptions.m; sourceTree = "<group>"; };
+		50570B242061473D006A1B5C /* RNNTitleOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTitleOptions.h; sourceTree = "<group>"; };
+		50570B252061473D006A1B5C /* RNNTitleOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTitleOptions.m; sourceTree = "<group>"; };
 		50762D06205E96C200E3D18A /* RNNModalAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNModalAnimation.h; sourceTree = "<group>"; };
 		50762D07205E96C200E3D18A /* RNNModalAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNModalAnimation.m; sourceTree = "<group>"; };
 		507E7D55201DDD3000444E6C /* RNNAnimationOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNAnimationOptions.h; sourceTree = "<group>"; };
@@ -485,6 +489,8 @@
 				E83BAD6A1F27363A00A9F3DD /* RNNNavigationOptions.m */,
 				A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */,
 				A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */,
+				50570B242061473D006A1B5C /* RNNTitleOptions.h */,
+				50570B252061473D006A1B5C /* RNNTitleOptions.m */,
 				A7626BFF1FC578AB00492FB8 /* RNNBottomTabsOptions.h */,
 				A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */,
 				50EB933F1FE14A3E00BD8EEE /* RNNBottomTabOptions.h */,
@@ -768,6 +774,7 @@
 				263905B31E4C6F440023D7D3 /* MMDrawerVisualState.h in Headers */,
 				50451D092042E20600695F00 /* RNNTransitionsOptions.h in Headers */,
 				E8A5CD621F49114F00E89D0D /* RNNElement.h in Headers */,
+				50570B262061473D006A1B5C /* RNNTitleOptions.h in Headers */,
 				504AFE741FFFF0540076E904 /* RNNTopTabsOptions.h in Headers */,
 				E8E5182E1F83A48B000467AC /* RNNTransitionStateHolder.h in Headers */,
 				507E7D57201DDD3000444E6C /* RNNAnimationOptions.h in Headers */,
@@ -902,6 +909,7 @@
 				261F0E6B1E6F028A00989DE2 /* RNNNavigationStackManager.m in Sources */,
 				5016E8F020209690009D4F7C /* RNNCustomTitleView.m in Sources */,
 				E8DA24411F97459B00CD552B /* RNNElementFinder.m in Sources */,
+				50570B272061473D006A1B5C /* RNNTitleOptions.m in Sources */,
 				263905BF1E4C6F440023D7D3 /* RCCTheSideBarManagerViewController.m in Sources */,
 				7B1126A01E2D263F00F9B03B /* RNNEventEmitter.m in Sources */,
 				A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */,

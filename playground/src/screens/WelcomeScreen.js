@@ -57,7 +57,9 @@ class WelcomeScreen extends Component {
                     options: {
                       topBar: {
                         visible: true,
-                        title: 'React Native Navigation!'
+                        title: {
+                          text: 'React Native Navigation!'
+                        }
                       }
                     }
                   }
@@ -216,7 +218,9 @@ class WelcomeScreen extends Component {
         name: 'navigation.playground.PushedScreen',
         options: {
           topBar: {
-            title: 'pushed'
+            title: {
+              text: 'pushed'
+            }
           }
         }
       }
@@ -232,7 +236,9 @@ class WelcomeScreen extends Component {
         },
         options: {
           topBar: {
-            title: 'pushed',
+            title: {
+              text: 'pushed'
+            },
             visible: true,
             testID: testIDs.TOP_BAR_ELEMENT
           }
@@ -299,10 +305,14 @@ class WelcomeScreen extends Component {
               },
               options: {
                 topTab: {
-                  title: 'Tab 1'
+                  title: {
+                    text: 'Tab 1'
+                  }
                 },
                 topBar: {
-                  title: 'One'
+                  title: {
+                    text: 'One'
+                  }
                 }
               }
             }
@@ -320,7 +330,9 @@ class WelcomeScreen extends Component {
                   titleFontFamily: 'HelveticaNeue-Italic'
                 },
                 topBar: {
-                  title: 'Two'
+                  title: {
+                    text: 'Two'
+                  }
                 }
               }
             }
@@ -337,7 +349,9 @@ class WelcomeScreen extends Component {
                   title: 'Tab 3'
                 },
                 topBar: {
-                  title: 'Three'
+                  title: {
+                    text: 'Three'
+                  }
                 }
               }
             }
