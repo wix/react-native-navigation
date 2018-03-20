@@ -42,6 +42,6 @@ const styles = StyleSheet.create({
   },
   text: {
     alignSelf: 'center',
-    color: Platform.OS === 'ios' ? 'black' : 'white'
+    color: 'black'
   }
 });

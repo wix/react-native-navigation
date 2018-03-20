@@ -10,7 +10,10 @@ class WelcomeScreen extends Component {
   static get options() {
     return {
       topBar: {
-        largeTitle: false,
+        title: {
+          largeTitle: false,
+          title: 'My Screen'
+        },
         drawBehind: true,
         visible: false,
         animate: false

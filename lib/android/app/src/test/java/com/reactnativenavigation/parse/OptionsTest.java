@@ -31,6 +31,7 @@ public class OptionsTest extends BaseTest {
     private static final int TOP_BAR_FONT_SIZE = 18;
     private static final String TOP_BAR_FONT_FAMILY = "HelveticaNeue-CondensedBold";
     private static final Typeface TOP_BAR_TYPEFACE = Typeface.create("HelveticaNeue-CondensedBold", Typeface.BOLD);
+    private static final String TITLE_ALIGNMENT = "center";
     private static final Bool TOP_BAR_VISIBLE = new Bool(true);
     private static final Bool TOP_BAR_DRAW_BEHIND = new Bool(true);
     private static final Bool TOP_BAR_HIDE_ON_SCROLL = new Bool(true);
@@ -83,6 +84,7 @@ public class OptionsTest extends BaseTest {
         assertThat(result.fabOptions.hideOnScroll.get()).isEqualTo(FAB_HIDE_ON_SCROLL);
         assertThat(result.fabOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
         assertThat(result.fabOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
+        assertThat(result.topBarOptions.title.alignment).isEqualTo(TitleOptions.Alignment.Center);
     }
 
     @NonNull
@@ -114,7 +116,8 @@ public class OptionsTest extends BaseTest {
                 .put("text", "the title")
                 .put("color", TOP_BAR_TEXT_COLOR)
                 .put("fontSize", TOP_BAR_FONT_SIZE)
-                .put("fontFamily", TOP_BAR_FONT_FAMILY);
+                .put("fontFamily", TOP_BAR_FONT_FAMILY)
+                .put("alignment", TITLE_ALIGNMENT);
     }
 
     @NonNull

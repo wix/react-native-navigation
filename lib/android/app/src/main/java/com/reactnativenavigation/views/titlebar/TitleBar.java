@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.titlebar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.reactnativenavigation.parse.TitleOptions;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 
 import java.util.ArrayList;
@@ -23,13 +25,15 @@ import java.util.List;
 @SuppressLint("ViewConstructor")
 public class TitleBar extends Toolbar {
     private final ReactViewCreator buttonCreator;
+    private TitleBarReactViewController reactViewController;
     private final TopBarButtonController.OnClickListener onClickListener;
     private final List<TopBarButtonController> rightButtonControllers = new ArrayList<>();
     private TopBarButtonController leftButtonController;
 
-    public TitleBar(Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener) {
+    public TitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewController reactViewController, TopBarButtonController.OnClickListener onClickListener) {
         super(context);
         this.buttonCreator = buttonCreator;
+        this.reactViewController = reactViewController;
         this.onClickListener = onClickListener;
         getMenu();
         setContentDescription("titleBar");
@@ -39,29 +43,34 @@ public class TitleBar extends Toolbar {
         return super.getTitle() == null ? "" : (String) super.getTitle();
     }
 
-    void setTitleTextColor(Color color) {
+    public void setTitleTextColor(Color color) {
         if (color.hasValue()) setTitleTextColor(color.get());
     }
 
-    void setBackgroundColor(Color color) {
+    public void setComponent(String componentName, TitleOptions.Alignment alignment) {
+        reactViewController.setComponent(componentName, alignment);
+        addView(reactViewController.getView(), ViewGroup.LayoutParams.WRAP_CONTENT, getHeight());
+    }
+
+    public void setBackgroundColor(Color color) {
         if (color.hasValue()) setBackgroundColor(color.get());
     }
 
-    void setTitleFontSize(Fraction size) {
+    public void setTitleFontSize(Fraction size) {
         TextView titleTextView = getTitleTextView();
         if (titleTextView != null && size.hasValue()) {
             titleTextView.setTextSize(size.get());
         }
     }
 
-    void setTitleTypeface(Typeface typeface) {
+    public void setTitleTypeface(Typeface typeface) {
         TextView titleTextView = getTitleTextView();
         if (titleTextView != null) {
             titleTextView.setTypeface(typeface);
         }
     }
 
-    TextView getTitleTextView() {
+    public TextView getTitleTextView() {
         return findTextView(this);
     }
 

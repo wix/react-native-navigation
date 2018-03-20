@@ -1,9 +1,10 @@
-package com.reactnativenavigation.react;
+package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.facebook.react.ReactInstanceManager;
+import com.reactnativenavigation.react.ReactView;
 
 @SuppressLint("ViewConstructor")
 public class TopBarReactButtonView extends ReactView {

@@ -17,6 +17,20 @@ import com.reactnativenavigation.utils.TypefaceLoader;
 import org.json.JSONObject;
 
 public class TitleOptions {
+    public enum Alignment {
+        Center, Fill, Default;
+
+        public static Alignment fromString(String alignment) {
+            switch (alignment) {
+                case "center":
+                    return Center;
+                case "fill":
+                    return Fill;
+                default:
+                    return Default;
+            }
+        }
+    }
 
     public static TitleOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
         final TitleOptions options = new TitleOptions();
@@ -29,7 +43,7 @@ public class TitleOptions {
         options.fontSize = FractionParser.parse(json, "fontSize");
         options.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
         options.component = TextParser.parse(json, "component");
-        options.alignment = TextParser.parse(json, "alignment");
+        options.alignment = Alignment.fromString(TextParser.parse(json, "alignment").get(""));
 
         return options;
     }
@@ -39,7 +53,7 @@ public class TitleOptions {
     public Fraction fontSize = new NullFraction();
     @Nullable public Typeface fontFamily;
     public Text component = new NullText();
-    public Text alignment = new NullText();
+    public Alignment alignment = Alignment.Default;
 
     void mergeWith(final TitleOptions other) {
         if (other.text.hasValue()) text = other.text;
@@ -47,7 +61,7 @@ public class TitleOptions {
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         if (other.fontFamily != null) fontFamily = other.fontFamily;
         if (other.component.hasValue()) component = other.component;
-        if (other.alignment.hasValue()) alignment = other.alignment;
+        if (other.alignment != Alignment.Default) alignment = other.alignment;
     }
 
     void mergeWithDefault(TitleOptions defaultOptions) {
@@ -56,6 +70,6 @@ public class TitleOptions {
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
         if (!component.hasValue()) component = defaultOptions.component;
-        if (alignment.hasValue()) alignment = defaultOptions.alignment;
+        if (alignment == Alignment.Default) alignment = defaultOptions.alignment;
     }
 }

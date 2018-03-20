@@ -107,12 +107,11 @@ class OptionsScreen extends Component {
         <Button title='Top Bar Opaque' onPress={this.onClickTopBarOpaque} />
         <Button title='scrollView Screen' testID={testIDs.SCROLLVIEW_SCREEN_BUTTON} onPress={this.onClickScrollViewScreen} />
         <Button title='Custom Transition' testID={testIDs.CUSTOM_TRANSITION_BUTTON} onPress={this.onClickCustomTranstition} />
-        {Platform.OS === 'android' ?
-          <Button title='Hide fab' testID={testIDs.HIDE_FAB} onPress={this.onClickFab} />
-          : null}
+        {Platform.OS === 'android' ?<Button title='Hide fab' testID={testIDs.HIDE_FAB} onPress={this.onClickFab} />: null}
         <Button title='Show overlay' testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
         <Button title='Show touch through overlay' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
         <Button title='Push Default Options Screen' testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
+        <Button title='Show TopBar react view' testID={testIDs.SHOW_TOPBAR_REACT_VIEW} onPress={this.onShowTopBarReactView} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
@@ -260,6 +259,17 @@ class OptionsScreen extends Component {
       }
     });
   }
+
+  onShowTopBarReactView = () => {
+    Navigation.setOptions(this.props.componentId, {
+      topBar: {
+        title: {
+          component: 'navigation.playground.CustomTopBar',
+          alignment: 'fill'
+        }
+      }
+    })
+  };
 }
 
 const styles = {
