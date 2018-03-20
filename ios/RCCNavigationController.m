@@ -94,7 +94,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     NSMutableDictionary *passProps = [actionParams[@"passProps"] mutableCopy];
     passProps[GLOBAL_SCREEN_ACTION_COMMAND_TYPE] = COMMAND_TYPE_PUSH;
     passProps[GLOBAL_SCREEN_ACTION_TIMESTAMP] = actionParams[GLOBAL_SCREEN_ACTION_TIMESTAMP];
-    NSDictionary *navigatorStyle = actionParams[@"style"];
+    NSDictionary *navigatorStyle = actionParams[@"style"] ? actionParams[@"style"] : actionParams[@"navigatorStyle"];
     
     NSNumber *keepStyleAcrossPush = [[RCCManager sharedInstance] getAppStyle][@"keepStyleAcrossPush"];
     BOOL keepStyleAcrossPushBool = keepStyleAcrossPush ? [keepStyleAcrossPush boolValue] : YES;
