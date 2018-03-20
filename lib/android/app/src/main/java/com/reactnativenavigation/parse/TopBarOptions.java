@@ -5,13 +5,10 @@ import android.support.annotation.Nullable;
 
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
-import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.NullBool;
-import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.BoolParser;
-import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
@@ -26,7 +23,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
         if (json == null) return options;
 
         options.title = TitleOptions.parse(typefaceManager, json.optJSONObject("title"));
-        options.backgroundColor = ColorParser.parse(json, "backgroundColor");
+        options.background = TopBarBackground.parse(json.optJSONObject("background"));
         options.visible = BoolParser.parse(json, "visible");
         options.animate = BoolParser.parse(json,"animate");
         options.hideOnScroll = BoolParser.parse(json,"hideOnScroll");
@@ -40,7 +37,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
 
     public TitleOptions title = new TitleOptions();
     public Text testId = new NullText();
-    public Color backgroundColor = new NullColor();
+    public TopBarBackground background = new TopBarBackground();
     public Bool visible = new NullBool();
     public Bool animate = new NullBool();
     public Bool hideOnScroll = new NullBool();
@@ -50,8 +47,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
 
     void mergeWith(final TopBarOptions other) {
         title.mergeWith(other.title);
+        background.mergeWith(other.background);
         if (other.testId.hasValue()) testId = other.testId;
-        if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
         if (other.visible.hasValue()) visible = other.visible;
         if (other.animate.hasValue()) animate = other.animate;
         if (other.hideOnScroll.hasValue()) hideOnScroll = other.hideOnScroll;
@@ -62,7 +59,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
 
     void mergeWithDefault(TopBarOptions defaultOptions) {
         title.mergeWithDefault(defaultOptions.title);
-        if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
+        background.mergeWithDefault(defaultOptions.background);
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!animate.hasValue()) animate = defaultOptions.animate;
         if (!hideOnScroll.hasValue()) hideOnScroll = defaultOptions.hideOnScroll;

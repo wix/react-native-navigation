@@ -64,7 +64,7 @@ public class OptionsTest extends BaseTest {
 
     private void assertResult(Options result) {
         assertThat(result.topBarOptions.title.text.get()).isEqualTo(TITLE);
-        assertThat(result.topBarOptions.backgroundColor.get()).isEqualTo(TOP_BAR_BACKGROUND_COLOR);
+        assertThat(result.topBarOptions.background.color.get()).isEqualTo(TOP_BAR_BACKGROUND_COLOR);
         assertThat(result.topBarOptions.title.color.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
         assertThat(result.topBarOptions.title.fontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
         assertThat(result.topBarOptions.title.fontFamily).isEqualTo(TOP_BAR_TYPEFACE);
@@ -98,10 +98,15 @@ public class OptionsTest extends BaseTest {
     private JSONObject createTopBar(boolean visible) throws JSONException {
         return new JSONObject()
                 .put("title", createTitle())
-                .put("backgroundColor", TOP_BAR_BACKGROUND_COLOR)
+                .put("background", createBackground())
                 .put("visible", visible)
                 .put("drawBehind", TOP_BAR_DRAW_BEHIND.get())
                 .put("hideOnScroll", TOP_BAR_HIDE_ON_SCROLL.get());
+    }
+
+    private JSONObject createBackground() throws JSONException {
+        return new JSONObject()
+                .put("color", TOP_BAR_BACKGROUND_COLOR);
     }
 
     private JSONObject createTitle() throws JSONException {
@@ -142,7 +147,7 @@ public class OptionsTest extends BaseTest {
     private JSONObject createOtherTopBar() throws JSONException {
         return new JSONObject()
                 .put("title", createTitle())
-                .put("backgroundColor", TOP_BAR_BACKGROUND_COLOR)
+                .put("background", createBackground())
                 .put("visible", TOP_BAR_VISIBLE);
     }
 

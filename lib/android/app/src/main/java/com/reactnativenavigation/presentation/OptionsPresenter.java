@@ -41,7 +41,7 @@ public class OptionsPresenter {
 
     private void applyTopBarOptions(TopBarOptions options) {
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
-        topBar.setBackgroundColor(options.backgroundColor);
+        topBar.setBackgroundColor(options.background.color);
         topBar.setTitleTextColor(options.title.color);
         topBar.setTitleFontSize(options.title.fontSize);
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
