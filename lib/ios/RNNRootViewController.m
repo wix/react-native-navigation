@@ -31,7 +31,7 @@
 	if (!self.isExternalComponent) {
 		self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
 	}
-	
+
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(onJsReload)
 												 name:RCTJavaScriptWillStartLoadingNotification
@@ -40,7 +40,7 @@
 
 	return self;
 }
-	
+
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.options applyOn:self];
@@ -73,8 +73,10 @@
 - (void)setCustomNavigationTitleView {
 	if (self.options.topBar.customTitleViewName) {
 		UIView *reactView = [_creator createRootView:self.options.topBar.customTitleViewName rootViewId:self.options.topBar.customTitleViewName];
-		
+
 		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:nil];
+		reactView.backgroundColor = UIColor.clearColor;
+		titleView.backgroundColor = UIColor.clearColor;
 		self.navigationItem.titleView = titleView;
 	}
 }
@@ -82,8 +84,10 @@
 - (void)setCustomNavigationBarView {
 	if (self.options.topBar.customViewName) {
 		UIView *reactView = [_creator createRootView:self.options.topBar.customViewName rootViewId:@"navBar"];
-		
+
 		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:nil];
+		reactView.backgroundColor = UIColor.clearColor;
+		titleView.backgroundColor = UIColor.clearColor;
 		[self.navigationController.navigationBar addSubview:titleView];
 	}
 }
