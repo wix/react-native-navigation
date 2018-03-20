@@ -44,7 +44,7 @@
 	UIViewController<RNNRootViewProtocol> *result;
 	
 	if (node.isComponent) {
-		result = [self createComponent:node nativeComponent:NO];
+		result = [self createComponent:node];
 	}
 	
 	else if (node.isStack)	{
@@ -76,7 +76,7 @@
 	}
 	
 	else if (node.isExternalComponent) {
-		result = [self createComponent:node nativeComponent:YES];
+		result = [self createExternalComponent:node];
 	}
 	
 	if (!result) {
@@ -88,19 +88,38 @@
 	return result;
 }
 
-- (UIViewController<RNNRootViewProtocol> *)createComponent:(RNNLayoutNode*)node nativeComponent:(BOOL)nativeComponent {
+- (UIViewController<RNNRootViewProtocol> *)createComponent:(RNNLayoutNode*)node {
 	NSString* name = node.data[@"name"];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:_defaultOptionsDict];
 	[options mergeWith:node.data[@"options"]];
 
 	NSString* componentId = node.nodeId;
-	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:nativeComponent];
+	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:NO];
 	if (!component.isCustomViewController) {
 		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
 		[_bridge.uiManager setAvailableSize:availableSize forRootView:component.view];
 	}
 	return component;
 }
+
+- (UIViewController<RNNRootViewProtocol> *)createExternalComponent:(RNNLayoutNode*)node {
+	NSString* name = node.data[@"name"];
+	
+	UIViewController* externalVC = [_store getExternalComponent:name];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:_defaultOptionsDict];
+	[options mergeWith:node.data[@"options"]];
+	
+	NSString* componentId = node.nodeId;
+	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:YES];
+	
+	[component addChildViewController:externalVC];
+	component.view = [[UIView alloc] init];
+	component.view.backgroundColor = [UIColor whiteColor];
+	[component.view addSubview:externalVC.view];
+	
+	return component;
+}
+
 
 - (UIViewController<RNNRootViewProtocol> *)createStack:(RNNLayoutNode*)node {
 	RNNNavigationController* vc = [[RNNNavigationController alloc] init];

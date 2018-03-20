@@ -1,6 +1,5 @@
 [![npm (tag)](https://img.shields.io/npm/v/react-native-navigation/alpha.svg)](https://github.com/wix/react-native-navigation/tree/v2#react-native-navigation-v2-wip)
-[![Build Status](https://travis-ci.org/wix/react-native-navigation.svg?branch=v2)](https://travis-ci.org/wix/react-native-navigation)
-[![Build Status Jenkins](http://34.201.210.182/job/react-native-navigation/job/v2/badge/icon)](http://34.201.210.182/job/react-native-navigation/job/v2)
+[![Build Status](http://34.201.210.182/buildStatus/icon?job=react-native-navigation-master)](http://34.201.210.182/job/react-native-navigation-master)
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 [![StackExchange](https://img.shields.io/stackexchange/stackoverflow/t/react-native-navigation.svg)](https://stackoverflow.com/questions/tagged/react-native-navigation)
 
@@ -212,3 +211,4 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | splitViewScreen       |     :x:  |    [Contribute](/docs/WorkingLocally.md)      | [Contribute](/docs/WorkingLocally.md)|
 
 Element transitions, adding buttons and styles are not yet implemented. [Contribute](/docs/WorkingLocally.md)
+
