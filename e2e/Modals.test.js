@@ -1,7 +1,8 @@
 const Utils = require('./Utils');
 const testIDs = require('../playground/src/testIDs');
+const Android = require('./AndroidUtils');
 
-const { elementByLabel, elementById } = Utils;
+const { elementByLabel, elementById, tapDeviceBackAndroid } = Utils;
 
 describe('modal', () => {
   beforeEach(async () => {
@@ -91,5 +92,19 @@ describe('modal', () => {
     await expect(elementByLabel('Modal Stack Position: 2')).toBeVisible();
     await elementById(testIDs.DISMISS_ALL_MODALS_BUTTON).tap();
     await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
+  });
+
+  it('push into modal', async () => {
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementByLabel('Pushed Screen')).toBeVisible();
+  });
+
+  it(':android: push into modal', async () => {
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    Android.pressBack();
+    await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
 });

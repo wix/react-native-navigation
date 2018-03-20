@@ -22,6 +22,14 @@ describe('LayoutTreeParser', () => {
       });
     });
 
+    it('external component', () => {
+      expect(uut.parse(LayoutExamples.externalComponent)).toEqual({
+        type: LayoutType.ExternalComponent,
+        data: { name: 'MyReactComponent', options: LayoutExamples.options, passProps: LayoutExamples.passProps },
+        children: []
+      });
+    });
+
     it('pass props', () => {
       const result = uut.parse({
         component: {
@@ -167,6 +175,14 @@ const singleComponent = {
   }
 };
 
+const externalComponent = {
+  externalComponent: {
+    name: 'MyReactComponent',
+    options,
+    passProps
+  }
+};
+
 const stackWithTopBar = {
   stack: {
     children: [
@@ -269,5 +285,6 @@ const LayoutExamples = {
   bottomTabs,
   sideMenu,
   topTabs,
-  complexLayout
+  complexLayout,
+  externalComponent
 };

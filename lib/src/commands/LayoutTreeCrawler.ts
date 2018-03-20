@@ -17,7 +17,7 @@ export interface LayoutNode {
 export class LayoutTreeCrawler {
   constructor(
     private readonly uniqueIdProvider: any,
-    private readonly store: any) {
+    public readonly store: any) {
     this.crawl = this.crawl.bind(this);
   }
 
@@ -29,7 +29,7 @@ export class LayoutTreeCrawler {
     if (node.type === LayoutType.Component) {
       this._handleComponent(node);
     }
-    OptionsProcessor.processOptions(node.data.options);
+    OptionsProcessor.processOptions(node.data.options, this.store);
     _.forEach(node.children, this.crawl);
   }
 

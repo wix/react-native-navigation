@@ -10,10 +10,11 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
-import com.reactnativenavigation.parse.Fraction;
+import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.Text;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Fraction;
+import com.reactnativenavigation.parse.params.Text;
 
 import org.junit.Test;
 
@@ -44,7 +45,7 @@ public class OptionsApplyingTest extends BaseTest {
                 (activity1, componentId, componentName) -> view,
                 initialNavigationOptions
         );
-        stackController = new StackController(activity, "stack", new Options());
+        stackController = new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options());
         stackController.ensureViewIsCreated();
         uut.setParentController(stackController);
     }
@@ -61,7 +62,7 @@ public class OptionsApplyingTest extends BaseTest {
     @Test
     public void initialOptionsAppliedOnAppear() throws Exception {
         uut.options.topBarOptions.title = new Text("the title");
-        StackController stackController = new StackController(activity, "stackId", new Options());
+        StackController stackController = new StackController(activity, new TopBarButtonCreatorMock(), "stackId", new Options());
         stackController.animatePush(uut, new MockPromise() {});
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
 
@@ -98,7 +99,7 @@ public class OptionsApplyingTest extends BaseTest {
         uut.onViewAppeared();
 
         Options opts = new Options();
-        opts.topBarOptions.backgroundColor = new com.reactnativenavigation.parse.Color(Color.RED);
+        opts.topBarOptions.backgroundColor = new com.reactnativenavigation.parse.params.Color(Color.RED);
         uut.mergeOptions(opts);
 
         assertThat(((ColorDrawable) stackController.getTopBar().getTitleBar().getBackground()).getColor()).isEqualTo(Color.RED);
@@ -112,7 +113,7 @@ public class OptionsApplyingTest extends BaseTest {
             public void resolve(@Nullable Object value) {
                 Options opts = new Options();
                 opts.topBarOptions.title = new Text("the title");
-                opts.topBarOptions.textColor = new com.reactnativenavigation.parse.Color(Color.RED);
+                opts.topBarOptions.textColor = new com.reactnativenavigation.parse.params.Color(Color.RED);
                 uut.mergeOptions(opts);
 
                 assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);
@@ -147,7 +148,7 @@ public class OptionsApplyingTest extends BaseTest {
 
         Options opts = new Options();
         opts.topBarOptions.visible = new Bool(false);
-        opts.topBarOptions.animateHide = new Bool(false);
+        opts.topBarOptions.animate = new Bool(false);
         uut.mergeOptions(opts);
 
         assertThat(stackController.getTopBar().getVisibility()).isEqualTo(View.GONE);

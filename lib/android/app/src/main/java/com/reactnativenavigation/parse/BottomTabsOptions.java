@@ -1,8 +1,17 @@
 package com.reactnativenavigation.parse;
 
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.params.NullColor;
+import com.reactnativenavigation.parse.params.NullNumber;
+import com.reactnativenavigation.parse.params.NullText;
+import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.BoolParser;
+import com.reactnativenavigation.parse.parsers.ColorParser;
+import com.reactnativenavigation.parse.parsers.NumberParser;
+import com.reactnativenavigation.parse.parsers.TextParser;
 
 import org.json.JSONObject;
 
@@ -18,7 +27,7 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
         options.currentTabId = TextParser.parse(json, "currentTabId");
 		options.currentTabIndex = NumberParser.parse(json,"currentTabIndex");
 		options.visible = BoolParser.parse(json,"visible");
-		options.animateHide = BoolParser.parse(json,"animateHide");
+		options.animate = BoolParser.parse(json,"animate");
         options.testId = TextParser.parse(json, "testID");
 
 		return options;
@@ -27,8 +36,8 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
     public Color backgroundColor = new NullColor();
     public Color tabColor = new NullColor();
     public Color selectedTabColor = new NullColor();
-	Bool visible = new NullBool();
-	Bool animateHide = new NullBool();
+	public Bool visible = new NullBool();
+	public Bool animate = new NullBool();
 	public Number currentTabIndex = new NullNumber();
 	public Text currentTabId = new NullText();
     public Text testId = new NullText();
@@ -43,8 +52,8 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
 		if (other.visible.hasValue()) {
 			visible = other.visible;
 		}
-		if (other.animateHide.hasValue()) {
-			animateHide = other.animateHide;
+		if (other.animate.hasValue()) {
+			animate = other.animate;
 		}
         if (other.tabColor.hasValue()) {
             tabColor = other.tabColor;
@@ -54,6 +63,9 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
         }
         if (other.backgroundColor.hasValue()) {
 		    backgroundColor = other.backgroundColor;
+        }
+        if (other.testId.hasValue()) {
+            testId = other.testId;
         }
     }
 
@@ -67,8 +79,8 @@ public class BottomTabsOptions implements DEFAULT_VALUES {
         if (!visible.hasValue()) {
             visible = defaultOptions.visible;
         }
-        if (!animateHide.hasValue()) {
-            animateHide = defaultOptions.animateHide;
+        if (!animate.hasValue()) {
+            animate = defaultOptions.animate;
         }
         if (!tabColor.hasValue()) {
             tabColor = defaultOptions.tabColor;

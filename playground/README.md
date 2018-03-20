@@ -1,3 +1,4 @@
 # Navigation Playground
 
-An local playground project using `react-native-navigation`.
+A local example project using `react-native-navigation`.
+The target app for all e2e tests.

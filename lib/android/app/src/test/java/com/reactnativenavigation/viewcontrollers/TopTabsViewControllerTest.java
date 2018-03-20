@@ -8,8 +8,9 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.TestComponentViewCreator;
 import com.reactnativenavigation.mocks.TestReactView;
+import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
@@ -23,6 +24,8 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -57,7 +60,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut = spy(new TopTabsController(activity, "componentId", tabControllers, layoutCreator, options));
         tabControllers.forEach(viewController -> viewController.setParentController(uut));
 
-        parentController = spy(new StackController(activity, "stackId", new Options()));
+        parentController = spy(new StackController(activity, new TopBarButtonCreatorMock(), "stackId", new Options()));
         parentController.push(uut, new MockPromise());
         uut.setParentController(parentController);
     }
@@ -209,10 +212,10 @@ public class TopTabsViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void applyOptions_tabsAreRemovedBeforeViewDisappears() throws Exception {
+    public void applyOptions_tabsAreRemovedAfterViewDisappears() throws Exception {
         parentController.getView().removeAllViews();
 
-        StackController stackController = spy(new StackController(activity, "stack", new Options()));
+        StackController stackController = spy(new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options()));
         ComponentViewController first = new ComponentViewController(
                 activity,
                 "firstScreen",
@@ -228,8 +231,12 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut.onViewAppeared();
 
         assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isTrue();
-        stackController.pop(new MockPromise());
-        assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();
+        stackController.animatePop(new MockPromise() {
+            @Override
+            public void resolve(@Nullable Object value) {
+                assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();
+            }
+        });
     }
 
     @Test

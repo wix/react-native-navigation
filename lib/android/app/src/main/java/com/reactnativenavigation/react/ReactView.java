@@ -3,8 +3,8 @@ package com.reactnativenavigation.react;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.RestrictTo;
 import android.view.MotionEvent;
-import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
@@ -49,7 +49,7 @@ public class ReactView extends ReactRootView implements IReactView {
 	}
 
 	@Override
-	public View asView() {
+	public ReactView asView() {
 		return this;
 	}
 
@@ -86,5 +86,10 @@ public class ReactView extends ReactRootView implements IReactView {
     public EventDispatcher getEventDispatcher() {
         ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
         return reactContext == null ? null : reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public String getComponentName() {
+        return componentName;
     }
 }

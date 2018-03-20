@@ -21,13 +21,13 @@ export class Commands {
 
   setDefaultOptions(options) {
     const input = _.cloneDeep(options);
-    OptionsProcessor.processOptions(input);
+    OptionsProcessor.processOptions(input, this.layoutTreeCrawler.store);
     this.nativeCommandsSender.setDefaultOptions(input);
   }
 
   setOptions(componentId, options) {
     const input = _.cloneDeep(options);
-    OptionsProcessor.processOptions(input);
+    OptionsProcessor.processOptions(input, this.layoutTreeCrawler.store);
     this.nativeCommandsSender.setOptions(componentId, input);
   }
 
@@ -48,7 +48,7 @@ export class Commands {
 
   push(onComponentId, componentData) {
     const input = _.cloneDeep(componentData);
-    OptionsProcessor.processOptions(input);
+    OptionsProcessor.processOptions(input, this.layoutTreeCrawler.store);
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);
     return this.nativeCommandsSender.push(onComponentId, layout);
@@ -68,7 +68,7 @@ export class Commands {
 
   showOverlay(componentData) {
     const input = _.cloneDeep(componentData);
-    OptionsProcessor.processOptions(input);
+    OptionsProcessor.processOptions(input, this.layoutTreeCrawler.store);
 
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);

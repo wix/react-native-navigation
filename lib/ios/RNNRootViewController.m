@@ -3,10 +3,12 @@
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
 #import "RNNCustomTitleView.h"
+#import "RNNPushAnimation.h"
 
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* componentName;
 @property (nonatomic) BOOL _statusBarHidden;
+@property (nonatomic) BOOL isExternalComponent;
 @end
 
 @implementation RNNRootViewController
@@ -15,7 +17,8 @@
 				withOptions:(RNNNavigationOptions*)options
 			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter {
+			   eventEmitter:(RNNEventEmitter*)eventEmitter
+		  isExternalComponent:(BOOL)isExternalComponent {
 	self = [super init];
 	self.componentId = componentId;
 	self.componentName = name;
@@ -23,13 +26,16 @@
 	self.eventEmitter = eventEmitter;
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	self.creator = creator;
-	self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
+	self.isExternalComponent = isExternalComponent;
+	
+	if (!self.isExternalComponent) {
+		self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
+	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(onJsReload)
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
-	self.navigationController.modalPresentationStyle = UIModalPresentationCustom;
 	self.navigationController.delegate = self;
 
 	return self;
@@ -61,7 +67,7 @@
 }
 
 - (void)mergeOptions:(NSDictionary *)options {
-	[self.options mergeWith:options];
+	[self.options mergeIfEmptyWith:options];
 }
 
 - (void)setCustomNavigationTitleView {
@@ -83,11 +89,15 @@
 }
 
 -(BOOL)isCustomTransitioned {
-	return self.options.customTransition != nil;
+	return self.options.customTransition.animations != nil;
 }
 
 - (BOOL)isAnimated {
 	return self.options.animated ? [self.options.animated boolValue] : YES;
+}
+
+- (BOOL)isCustomViewController {
+	return self.isExternalComponent;
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -123,16 +133,25 @@
 											   fromViewController:(UIViewController*)fromVC
 												 toViewController:(UIViewController*)toVC {
 {
-	if (operation == UINavigationControllerOperationPush) {
+	if (self.animator) {
 		return self.animator;
-	} else if (operation == UINavigationControllerOperationPop) {
-		return self.animator;
+	} else if (operation == UINavigationControllerOperationPush && self.options.animations.push) {
+		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.push];
+	} else if (operation == UINavigationControllerOperationPop && self.options.animations.pop) {
+		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.pop];
 	} else {
 		return nil;
 	}
 }
 	return nil;
+}
 
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.showModal isDismiss:NO];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.dismissModal isDismiss:YES];
 }
 
 -(void)applyTabBarItem {
@@ -142,6 +161,7 @@
 -(void)applyTopTabsOptions {
 	[self.options.topTab applyOn:self];
 }
+
 
 /**
  *	fix for #877, #878

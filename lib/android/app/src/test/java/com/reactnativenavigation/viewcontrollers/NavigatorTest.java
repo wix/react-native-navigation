@@ -8,11 +8,13 @@ import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.Text;
+import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 
 import org.junit.Test;
 
@@ -44,7 +46,7 @@ public class NavigatorTest extends BaseTest {
         imageLoaderMock = ImageLoaderMock.mock();
         activity = newActivity();
         uut = new Navigator(activity);
-        parentController = spy(new StackController(activity, "stack", new Options()));
+        parentController = spy(new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options()));
         parentController.ensureViewIsCreated();
         child1 = new SimpleViewController(activity, "child1", tabOptions);
         child2 = new SimpleViewController(activity, "child2", tabOptions);
@@ -205,12 +207,19 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void handleBack_DelegatesToRoot() throws Exception {
-        assertThat(uut.handleBack()).isFalse();
-        ViewController spy = spy(child1);
-        uut.setRoot(spy, new MockPromise());
-        when(spy.handleBack()).thenReturn(true);
+        ViewController root = spy(child1);
+        uut.setRoot(root, new MockPromise());
+        when(root.handleBack()).thenReturn(true);
         assertThat(uut.handleBack()).isTrue();
-        verify(spy, times(1)).handleBack();
+        verify(root, times(1)).handleBack();
+    }
+
+    @Test
+    public void handleBack_modalTakePrecedenceOverRoot() throws Exception {
+        ViewController root = spy(child1);
+        uut.setRoot(root, new MockPromise());
+        uut.showModal(child2, new MockPromise());
+        verify(root, times(0)).handleBack();
     }
 
     @Test
@@ -239,7 +248,7 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private StackController newStack() {
-        return new StackController(activity, "stack" + CompatUtils.generateViewId(), tabOptions);
+        return new StackController(activity, new TopBarButtonCreatorMock(), "stack" + CompatUtils.generateViewId(), tabOptions);
     }
 
     @Test
@@ -306,8 +315,9 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void pushIntoModal() throws Exception {
+        uut.setRoot(parentController, new MockPromise());
         StackController stackController = newStack();
-        stackController.animatePush(child1, new MockPromise());
+        stackController.push(child1, new MockPromise());
         uut.showModal(stackController, new MockPromise());
         uut.push(stackController.getId(), child2, new MockPromise());
         assertIsChildById(stackController.getView(), child2.getView());
@@ -315,7 +325,7 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void pushedStackCanBePopped() throws Exception {
-        StackController parent = new StackController(activity, "someStack", new Options());
+        StackController parent = new StackController(activity, new TopBarButtonCreatorMock(), "someStack", new Options());
         parent.ensureViewIsCreated();
         uut.setRoot(parent, new MockPromise());
         parent.push(parentController, new MockPromise());
@@ -334,5 +344,32 @@ public class NavigatorTest extends BaseTest {
         };
         uut.popSpecific("child2", promise);
         verify(parentController, times(1)).popSpecific(child2, promise);
+    }
+
+    @Test
+    public void showModal_onViewDisappearIsInvokedOnRoot() throws Exception {
+        uut.setRoot(parentController, new MockPromise());
+        uut.showModal(child1, new MockPromise() {
+            @Override
+            public void resolve(@Nullable Object value) {
+                verify(parentController, times(1)).onViewLostFocus();
+            }
+        });
+    }
+
+    @Test
+    public void dismissModal_onViewAppearedInvokedOnRoot() throws Exception {
+        uut.setRoot(parentController, new MockPromise());
+        uut.showModal(child1, new MockPromise() {
+            @Override
+            public void resolve(@Nullable Object value) {
+                uut.dismissModal("child1", new MockPromise() {
+                    @Override
+                    public void resolve(@Nullable Object value) {
+                        verify(parentController, times(1)).onViewRegainedFocus();
+                    }
+                });
+            }
+        });
     }
 }

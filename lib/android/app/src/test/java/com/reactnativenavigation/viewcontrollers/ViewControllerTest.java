@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 
 import org.assertj.android.api.Assertions;
@@ -65,7 +66,7 @@ public class ViewControllerTest extends BaseTest {
     @Test
     public void holdsAReferenceToStackControllerOrNull() throws Exception {
         assertThat(uut.getParentController()).isNull();
-        StackController nav = new StackController(activity, "stack", new Options());
+        StackController nav = new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options());
         nav.animatePush(uut, new MockPromise());
         assertThat(uut.getParentController()).isEqualTo(nav);
     }

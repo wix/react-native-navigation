@@ -1,7 +1,5 @@
 package com.reactnativenavigation.parse.params;
 
-import com.reactnativenavigation.parse.Param;
-
 public class Bool extends Param<Boolean> {
     public Bool(Boolean value) {
         super(value);

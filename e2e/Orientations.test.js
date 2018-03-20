@@ -4,9 +4,11 @@ const testIDs = require('../playground/src/testIDs');
 
 const { elementById } = Utils;
 
-describe(':ios: orientation', () => {
+describe('orientation', () => {
+
   beforeEach(async () => {
     await device.relaunchApp();
+    waitForDeviceToSettleAfterOrientationChangeAndroid = ms => new Promise(res => setTimeout(res, device.getPlatform() === 'ios' ? 0 : 150));
   });
 
   it('default allows all', async () => {
@@ -16,6 +18,7 @@ describe(':ios: orientation', () => {
     await device.setOrientation('landscape');
     await expect(elementById(testIDs.LANDSCAPE_ELEMENT)).toBeVisible();
     await device.setOrientation('portrait');
+    waitForDeviceToSettleAfterOrientationChangeAndroid();
     await expect(elementById(testIDs.PORTRAIT_ELEMENT)).toBeVisible();
     await elementById(testIDs.DISMISS_BUTTON).tap();
   });
@@ -27,11 +30,12 @@ describe(':ios: orientation', () => {
     await device.setOrientation('landscape');
     await expect(element(by.id(testIDs.LANDSCAPE_ELEMENT))).toBeVisible();
     await device.setOrientation('portrait');
+    waitForDeviceToSettleAfterOrientationChangeAndroid();
     await expect(element(by.id(testIDs.PORTRAIT_ELEMENT))).toBeVisible();
     await elementById(testIDs.DISMISS_BUTTON).tap();
   });
 
-  it('portrait only', async () => {
+  it(':ios: portrait only', async () => {
     await elementById(testIDs.ORIENTATION_BUTTON).tap();
     await elementById(testIDs.PORTRAIT_ORIENTATION_BUTTON).tap();
     await expect(elementById(testIDs.PORTRAIT_ELEMENT)).toBeVisible();
@@ -42,7 +46,7 @@ describe(':ios: orientation', () => {
     await elementById(testIDs.DISMISS_BUTTON).tap();
   });
 
-  it('landscape only', async () => {
+  it(':ios: landscape only', async () => {
     await elementById(testIDs.ORIENTATION_BUTTON).tap();
     await elementById(testIDs.LANDSCAPE_ORIENTATION_BUTTON).tap();
     await device.setOrientation('landscape');

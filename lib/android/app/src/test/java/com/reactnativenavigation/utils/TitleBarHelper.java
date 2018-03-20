@@ -6,6 +6,6 @@ import android.widget.TextView;
 
 public class TitleBarHelper {
     public static View getRightButton(Toolbar toolbar, int index) {
-        return (View) ViewUtils.findChildrenByClassRecursive(toolbar, TextView.class).get(index);
+        return (View) ViewUtils.findChildrenByClassRecursive(toolbar, TextView.class).get(toolbar.getMenu().size() - index - 1);
     }
 }

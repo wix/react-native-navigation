@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSNumber* textFontSize;
 @property (nonatomic, strong) NSNumber* noBorder;
 @property (nonatomic, strong) NSNumber* blur;
-@property (nonatomic, strong) NSNumber* animateHide;
+@property (nonatomic, strong) NSNumber* animate;
 @property (nonatomic, strong) NSNumber* largeTitle;
 @property (nonatomic, strong) NSString* testID;
 

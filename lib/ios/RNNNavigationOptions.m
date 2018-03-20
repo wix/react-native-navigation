@@ -32,7 +32,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.bottomTab = [[RNNBottomTabOptions alloc] initWithDict:[options objectForKey:@"bottomTab"]];
 	self.overlay = [[RNNOverlayOptions alloc] initWithDict:[options objectForKey:@"overlay"]];
 	self.animated = [options objectForKey:@"animated"];
-	self.customTransition = [[RNNTransitionOptions alloc] initWithDict:[options objectForKey:@"customTransition"]];
+	self.customTransition = [[RNNAnimationOptions alloc] initWithDict:[options objectForKey:@"customTransition"]];
+	self.animations = [[RNNTransitionsOptions alloc] initWithDict:[options objectForKey:@"animations"]];
 	
 	return self;
 }
@@ -41,17 +42,17 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	for (id key in otherOptions) {
 		if ([self hasProperty:key]) {
 			if ([[self valueForKey:key] isKindOfClass:[RNNOptions class]]) {
-			RNNOptions* options = [self valueForKey:key];
-			[options mergeWith:[otherOptions objectForKey:key]];
-		} else {
-			[self setValue:[otherOptions objectForKey:key] forKey:key];
-		} 		
+				RNNOptions* options = [self valueForKey:key];
+				[options mergeWith:[otherOptions objectForKey:key]];
+			} else {
+				[self setValue:[otherOptions objectForKey:key] forKey:key];
+			}
 		}
 	}
 }
 
 -(void)applyOn:(UIViewController*)viewController {
-	[_defaultOptions applyOn:viewController];
+//	[_defaultOptions applyOn:viewController];
 	
 	[self.topBar applyOn:viewController];
 	[self.bottomTabs applyOn:viewController];

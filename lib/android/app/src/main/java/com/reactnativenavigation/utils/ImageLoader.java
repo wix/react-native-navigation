@@ -10,6 +10,8 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.facebook.react.views.imagehelper.ResourceDrawableIdHelper;
+import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.NavigationApplication;
 
 import java.io.FileNotFoundException;
@@ -19,25 +21,54 @@ import java.net.URL;
 
 public class ImageLoader {
 
-	public interface ImageLoadingListener {
-		void onComplete(@NonNull Drawable drawable);
+    public interface ImageLoadingListener {
+        void onComplete(@NonNull Drawable drawable);
 
-		void onError(Throwable error);
-	}
+        void onError(Throwable error);
+    }
 
-	public void loadIcon(final Context context, final String uri, final ImageLoadingListener listener) {
+    private static final String FILE_SCHEME = "file";
+
+    public void loadIcon(final Context context, final String uri, final ImageLoadingListener listener) {
         try {
-            StrictMode.ThreadPolicy threadPolicy = adjustThreadPolicyDebug();
-            
-            InputStream is = openStream(context, uri);
-            Bitmap bitmap = BitmapFactory.decodeStream(is);
-            Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
+            Drawable drawable = getDrawable(context, uri);
             listener.onComplete(drawable);
-
-            restoreThreadPolicyDebug(threadPolicy);
         } catch (IOException e) {
             listener.onError(e);
         }
+    }
+
+    @NonNull
+    private Drawable getDrawable(Context context, String source) throws IOException {
+        if (BuildConfig.DEBUG) {
+            return readJsDevImage(context, source);
+        } else if (isLocalFile(Uri.parse(source))) {
+            return loadFile(source);
+        } else {
+            return loadResource(source);
+        }
+    }
+
+    @NonNull
+    private Drawable readJsDevImage(Context context, String source) throws IOException {
+        StrictMode.ThreadPolicy threadPolicy = adjustThreadPolicyDebug();
+        InputStream is = openStream(context, source);
+        Bitmap bitmap = BitmapFactory.decodeStream(is);
+        restoreThreadPolicyDebug(threadPolicy);
+        return new BitmapDrawable(context.getResources(), bitmap);
+    }
+
+    private boolean isLocalFile(Uri uri) {
+        return FILE_SCHEME.equals(uri.getScheme());
+    }
+
+    private Drawable loadFile(String uri) {
+        Bitmap bitmap = BitmapFactory.decodeFile(uri);
+        return new BitmapDrawable(NavigationApplication.instance.getResources(), bitmap);
+    }
+
+    private static Drawable loadResource(String iconSource) {
+        return ResourceDrawableIdHelper.getInstance().getResourceDrawable(NavigationApplication.instance, iconSource);
     }
 
     private StrictMode.ThreadPolicy adjustThreadPolicyDebug() {

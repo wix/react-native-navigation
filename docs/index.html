@@ -1,56 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>React Native Navigation - truly native navigation for iOS and Android</title>
-    <meta name="description" content="React Native Navigation - truly native navigation for iOS and Android">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="//unpkg.com/docsify/themes/vue.css">
-    <link rel="shortcut icon" href="_images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="_images/favicon.ico" type="image/x-icon">
-</head>
-<body>
-<div id="app">
-    <img src="https://raw.githubusercontent.com/wix/react-native-navigation/master/logo.png"
-         alt="react-native-navigation logo">
-</div>
-</body>
-<script>
-    window.$docsify = {
-        repo: '',
-        name: 'React Native Navigation',
-        search: 'auto',
-        themeColor: '#21B8F0',
-        loadSidebar: true,
-        loadNavbar: true,
-        maxLevel: 4,
-        subMaxLevel: 2,
-        auto2top: true,
-        ga: 'UA-XXXXX-Y',
-        plugins: [
-            function (hook) {
-                var footer = [
-                    '<hr/>',
-                    '<footer class="Test">',
-                    `<span>Caught a mistake or want to contribute to the documentation? <a href="https://github.com/wix/react-native-navigation/tree/v2/docs" target="_blank">Edit documentation on Github!</a>.</span>`,
-                    '</footer>'
-                ].join('');
 
-                hook.afterEach(function (html) {
-                    return html + footer;
-                });
-            }
-        ]
-    };
-</script>
-<script src="//unpkg.com/docsify/lib/docsify.js"></script>
-<script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
-<script src="//unpkg.com/docsify/lib/plugins/emoji.js"></script>
-<script src="//unpkg.com/docsify/lib/plugins/ga.js"></script>
-<script>
-  if (typeof navigator.serviceWorker !== 'undefined') {
-    navigator.serviceWorker.register('sw.js')
-  }
-</script>
+<head>
+  <meta charset="UTF-8">
+  <title>React Native Navigation - truly native navigation for iOS and Android</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="description" content="React Native Navigation - truly native navigation for iOS and Android">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="shortcut icon" href="_images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="_images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="//unpkg.com/docsify/themes/vue.css">
+  <link rel="stylesheet" href="//unpkg.com/docsify-copy-code/styles.css">
+</head>
+
+<body>
+  <div id="app">Please wait...</div>
+  <script src="//unpkg.com/docsify-copy-code/index.js"></script>
+  <script>
+    window.$docsify = {
+      name: 'React Native Navigation',
+      repo: 'wix/react-native-navigation',
+      themeColor: '#21B8F0',
+      search: 'auto',
+      loadSidebar: true,
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'
+      },
+      subMaxLevel: 2,
+      auto2top: true,
+      plugins: [
+        window.DocsifyCopyCodePlugin.init()
+      ]
+    }
+  </script>
+  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-typescript.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-jsx.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-java.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-c.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-objectivec.min.js"></script>
+
+  <!-- this allows us to re-run docs even when offline -->
+  <script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+      navigator.serviceWorker.register('sw.js')
+    }
+  </script>
+</body>
+
 </html>

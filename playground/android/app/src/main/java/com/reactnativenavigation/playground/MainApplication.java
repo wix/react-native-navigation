@@ -1,13 +1,19 @@
 package com.reactnativenavigation.playground;
 
-import android.support.annotation.*;
+import android.support.annotation.Nullable;
 
-import com.facebook.react.*;
-import com.reactnativenavigation.*;
+import com.facebook.react.ReactPackage;
+import com.reactnativenavigation.NavigationApplication;
 
-import java.util.*;
+import java.util.List;
 
 public class MainApplication extends NavigationApplication {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        registerExternalComponent("RNNCustomComponent", new FragmentCreator());
+    }
 
     @Override
     public boolean isDebug() {
