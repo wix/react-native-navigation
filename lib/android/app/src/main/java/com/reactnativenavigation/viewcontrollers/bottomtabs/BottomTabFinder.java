@@ -3,7 +3,7 @@ package com.reactnativenavigation.viewcontrollers.bottomtabs;
 import android.support.annotation.IntRange;
 
 import com.reactnativenavigation.viewcontrollers.ViewController;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.Component;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class BottomTabFinder {
     private List<ViewController> tabs;
 
     @IntRange(from = -1)
-    public int findByComponent(ReactComponent component) {
+    int findByComponent(Component component) {
         for (int i = 0; i < tabs.size(); i++) {
             if (tabs.get(i).containsComponent(component)) {
                 return i;

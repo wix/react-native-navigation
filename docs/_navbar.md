@@ -1,1 +1,0 @@
-- [Github](https://github.com/wix/react-native-navigation/tree/v2)

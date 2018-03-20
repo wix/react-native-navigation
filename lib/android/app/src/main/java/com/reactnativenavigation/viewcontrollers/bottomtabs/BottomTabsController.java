@@ -18,7 +18,7 @@ import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.BottomTabs;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,7 +65,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
     @Override
-    public void applyOptions(Options options, ReactComponent childComponent) {
+    public void applyOptions(Options options, Component childComponent) {
         super.applyOptions(options, childComponent);
         int tabIndex = bottomTabFinder.findByComponent(childComponent);
         if (tabIndex >= 0) new BottomTabsOptionsPresenter(bottomTabs, bottomTabFinder).present(this.options, tabIndex);

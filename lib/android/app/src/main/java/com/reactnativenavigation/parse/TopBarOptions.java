@@ -55,10 +55,13 @@ public class TopBarOptions implements DEFAULT_VALUES {
     public Bool animate = new NullBool();
     public Bool hideOnScroll = new NullBool();
     public Bool drawBehind = new NullBool();
-    public ArrayList<Button> leftButtons;
-    public ArrayList<Button> rightButtons;
+    @Nullable public ArrayList<Button> leftButtons;
+    @Nullable public ArrayList<Button> rightButtons;
 
     void mergeWith(final TopBarOptions other) {
+        if (other.testId.hasValue()) {
+            testId = other.testId;
+        }
         if (other.title.hasValue())
             title = other.title;
         if (other.backgroundColor.hasValue())
@@ -110,5 +113,8 @@ public class TopBarOptions implements DEFAULT_VALUES {
             leftButtons = defaultOptions.leftButtons;
         if (rightButtons == null)
             rightButtons = defaultOptions.rightButtons;
+        if (!testId.hasValue()) {
+            testId = defaultOptions.testId;
+        }
     }
 }

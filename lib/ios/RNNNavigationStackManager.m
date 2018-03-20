@@ -26,10 +26,11 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 }
 
 -(void)preparePush:(UIViewController<RNNRootViewProtocol> *)newTop onTopVC:(UIViewController*)vc completion:(RNNTransitionCompletionBlock)completion {
-	self.toVC = newTop;
+	self.toVC = (RNNRootViewController*)newTop;
 	self.fromVC = vc;
 	
-	if (self.toVC.isCustomTransitioned) {
+	
+	if (self.toVC.options.animations.push) {
 		vc.navigationController.delegate = newTop;
 	} else {
 		vc.navigationController.delegate = nil;
@@ -65,13 +66,11 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 }
 
 -(void)pop:(NSString *)componentId withTransitionOptions:(RNNAnimationOptions *)transitionOptions {
-	UIViewController<RNNRootViewProtocol>* vc = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
+	RNNRootViewController* vc = (RNNRootViewController*)[_store findComponentForId:componentId];
 	UINavigationController* nvc = [vc navigationController];
 	if ([nvc topViewController] == vc) {
-		if (transitionOptions) {
-			RNNRootViewController* RNNVC = (RNNRootViewController*)vc;
-			nvc.delegate = RNNVC;
-			RNNVC.animator = [[RNNAnimator alloc] initWithTransitionOptions:transitionOptions];
+		if (vc.options.animations.pop) {
+			nvc.delegate = vc;
 			[nvc popViewControllerAnimated:vc.isAnimated];
 		} else {
 			nvc.delegate = nil;

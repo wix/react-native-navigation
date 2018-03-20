@@ -7,10 +7,6 @@
 @implementation RNNAnimationOptions
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
-	if (!dict[@"animations"]) {
-		return nil;
-	}
-	
 	return [super initWithDict:dict];
 }
 

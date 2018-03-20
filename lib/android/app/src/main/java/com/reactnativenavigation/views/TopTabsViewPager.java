@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 
@@ -18,7 +19,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.widget.RelativeLayout.BELOW;
 
 @SuppressLint("ViewConstructor")
-public class TopTabsViewPager extends ViewPager implements Component, TitleBarButton.OnClickListener {
+public class TopTabsViewPager extends ViewPager implements Component, TopBarButtonController.OnClickListener {
 
     private static final int OFFSCREEN_PAGE_LIMIT = 99;
     private List<ViewController> tabs;

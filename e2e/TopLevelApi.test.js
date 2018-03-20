@@ -40,16 +40,3 @@ describe('top level api', () => {
     await expect(elementByLabel('didDisappear')).toBeVisible();
   });
 });
-
-describe('reload app', async () => {
-  beforeEach(async () => {
-    await device.relaunchApp();
-  });
-
-  it('push a screen to ensure its not there after reload', async () => {
-    await elementById(testIDs.PUSH_BUTTON).tap();
-    await expect(elementByLabel('Pushed Screen')).toBeVisible();
-    await device.reloadReactNative();
-    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
-  });
-});

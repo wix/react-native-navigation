@@ -10,6 +10,7 @@ import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.NoOpPromise;
+import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.TopBar;
@@ -24,28 +25,29 @@ public class StackController extends ParentController <StackLayout> {
     private static final NoOpPromise NO_OP = new NoOpPromise();
     private final IdStack<ViewController> stack = new IdStack<>();
     private final NavigationAnimator animator;
+    private ReactViewCreator topBarButtonCreator;
 
-    public StackController(final Activity activity, String id, Options initialOptions) {
+    public StackController(final Activity activity, ReactViewCreator topBarButtonCreator, String id, Options initialOptions) {
         super(activity, id, initialOptions);
         animator = new NavigationAnimator(activity);
+        this.topBarButtonCreator = topBarButtonCreator;
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    TopBar getTopBar() {
-        return getView().getTopBar();
+    public void applyOptions(Options options) {
+        super.applyOptions(options);
+        getView().applyOptions(options);
     }
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    StackLayout getStackLayout() {return getView();}
 
     @Override
-    public void applyOptions(Options options, ReactComponent component) {
+    public void applyOptions(Options options, Component component) {
         super.applyOptions(options, component);
         getView().applyOptions(this.options, component);
         applyOnParentController(parentController ->
                 ((ParentController) parentController).applyOptions(this.options.copy().clearTopBarOptions(), component)
         );
-        fabOptionsPresenter.applyOptions(options.fabOptions, component, getView());
+        if (component instanceof ReactComponent) {
+            fabOptionsPresenter.applyOptions(options.fabOptions, (ReactComponent) component, getView());
+        }
         animator.setOptions(options.animationsOptions);
     }
 
@@ -200,7 +202,7 @@ public class StackController extends ParentController <StackLayout> {
     @NonNull
     @Override
     protected StackLayout createView() {
-        return new StackLayout(getActivity(), this::sendOnNavigationButtonPressed);
+        return new StackLayout(getActivity(), topBarButtonCreator, this::sendOnNavigationButtonPressed);
     }
 
 	@NonNull
@@ -218,4 +220,12 @@ public class StackController extends ParentController <StackLayout> {
     public void clearTopTabs() {
         getView().clearTopTabs();
     }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    TopBar getTopBar() {
+        return getView().getTopBar();
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    StackLayout getStackLayout() {return getView();}
 }

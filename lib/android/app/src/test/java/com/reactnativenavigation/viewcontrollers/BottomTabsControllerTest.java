@@ -8,8 +8,9 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
@@ -99,7 +100,7 @@ public class BottomTabsControllerTest extends BaseTest {
     public void findControllerById_ReturnsSelfOrChildren() throws Exception {
         assertThat(uut.findControllerById("123")).isNull();
         assertThat(uut.findControllerById(uut.getId())).isEqualTo(uut);
-        StackController inner = new StackController(activity, "inner", tabOptions);
+        StackController inner = new StackController(activity, new TopBarButtonCreatorMock(), "inner", tabOptions);
         inner.animatePush(child1, new MockPromise());
         assertThat(uut.findControllerById(child1.getId())).isNull();
         uut.setTabs(Collections.singletonList(inner));
@@ -130,7 +131,7 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.setTabs(tabs);
         uut.ensureViewIsCreated();
 
-        StackController stack = spy(new StackController(activity, "stack", new Options()));
+        StackController stack = spy(new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options()));
         stack.ensureViewIsCreated();
         stack.push(uut, new MockPromise());
 

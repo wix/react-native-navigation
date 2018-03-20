@@ -1,19 +1,19 @@
 const _ = require('lodash');
 
-describe('test environment', () => {
-  it('handles object spread', () => {
+describe('testing that the environment is working properly', () => {
+  it('object spread', () => {
     const { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
     expect(x).toEqual(1);
     expect(y).toEqual(2);
     expect(z).toEqual({ a: 3, b: 4 });
   });
 
-  it('handles async await', async () => {
+  it('async await', async () => {
     const result = await new Promise((r) => r('hello'));
     expect(result).toEqual('hello');
   });
 
-  it('lodash equality tests', () => {
+  it('equality tests', () => {
     expect(_.eq('hello', 'hello')).toBe(true);
     expect(_.isEqual('hello', 'hello')).toBe(true);
 

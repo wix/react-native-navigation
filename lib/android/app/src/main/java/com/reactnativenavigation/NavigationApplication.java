@@ -7,13 +7,17 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.reactnativenavigation.react.ReactGateway;
+import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class NavigationApplication extends Application implements ReactApplication {
 
 	private ReactGateway reactGateway;
 	public static NavigationApplication instance;
+	final Map<String, ExternalComponentCreator> externalComponents = new HashMap<>();
 
 	@Override
 	public void onCreate() {
@@ -52,4 +56,20 @@ public abstract class NavigationApplication extends Application implements React
      */
 	@Nullable
 	public abstract List<ReactPackage> createAdditionalReactPackages();
+
+    /**
+     * Register a native View which can be displayed using the given {@code name}
+     * @param name Unique name used to register the native view
+     * @param creator Used to create the view at runtime
+     */
+    public void registerExternalComponent(String name, ExternalComponentCreator creator) {
+        if (externalComponents.containsKey(name)) {
+            throw new RuntimeException("A component has already been registered with this name: " + name);
+        }
+        externalComponents.put(name, creator);
+    }
+
+    public final Map<String, ExternalComponentCreator> getExternalComponents() {
+        return externalComponents;
+    }
 }

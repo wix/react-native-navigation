@@ -1,18 +1,5 @@
-- Getting started
- - [Installation - iOS](/docs/installation-ios)
- - [Installation - Android](/docs/installation-android)
- - [Usage](/docs/usage)
+- Getting Started
+  - [Installing](/docs/Installing)
+  - [Working Locally](/docs/WorkingLocally)
+  - [Usage](/docs/Usage)
 - API
- - [Top Level](/docs/Navigation)
-- Params
- - [Root](/docs/Root)
- - [Component](/docs/Component)
- - [SideMenu](/docs/SideMenu)
-- Options
- - [NavigationOptions](/docs/options/NavigationOptions)
- - [TopBar](/docs/options/TopBar)
- - [TopTabs](/docs/options/TopTabs)
- - [TopTab](/docs/options/TopTab)
- - [Button](/docs/options/Button)
- - [BottomTabs](/docs/options/BottomTabs)
- - [BottomTab](/docs/options/BottomTab)

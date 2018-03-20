@@ -1,20 +1,24 @@
 package com.reactnativenavigation.presentation;
 
-import com.reactnativenavigation.parse.params.Button;
+import android.app.Activity;
+
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.ArrayList;
 
 public class OptionsPresenter {
     private TopBar topBar;
-    private ReactComponent component;
+    private Component component;
 
-    public OptionsPresenter(TopBar topBar, ReactComponent component) {
+    public OptionsPresenter(TopBar topBar, Component component) {
         this.topBar = topBar;
         this.component = component;
     }
@@ -24,10 +28,15 @@ public class OptionsPresenter {
     }
 
     public void applyOptions(Options options) {
+        applyOrientation(options.orientationOptions);
         applyButtons(options.topBarOptions.leftButtons, options.topBarOptions.rightButtons);
         applyTopBarOptions(options.topBarOptions);
         applyTopTabsOptions(options.topTabsOptions);
         applyTopTabOptions(options.topTabOptions);
+    }
+
+    public void applyOrientation(OrientationOptions options) {
+        ((Activity) topBar.getContext()).setRequestedOrientation(options.getValue());
     }
 
     private void applyTopBarOptions(TopBarOptions options) {
@@ -51,7 +60,9 @@ public class OptionsPresenter {
         }
 
         if (options.hideOnScroll.isTrue()) {
-            topBar.enableCollapse(component.getScrollEventListener());
+            if (component instanceof IReactView) {
+                topBar.enableCollapse(((IReactView) component).getScrollEventListener());
+            }
         } else if (options.hideOnScroll.isTrue()) {
             topBar.disableCollapse();
         }

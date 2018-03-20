@@ -21,7 +21,6 @@ describe('screen style', () => {
   });
 
   it('set dynamic options with valid options will do something and not crash', async () => {
-    // we have no way of testing individual styles for the screen
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.DYNAMIC_OPTIONS_BUTTON).tap();
     await expect(elementById(testIDs.OPTIONS_SCREEN_HEADER)).toBeVisible();
@@ -35,14 +34,14 @@ describe('screen style', () => {
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
-  it(':ios: hides topBar onScroll down and shows it on scroll up', async () => {
+  it('hides topBar onScroll down and shows it on scroll up', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.SCROLLVIEW_SCREEN_BUTTON).tap();
     await elementById(testIDs.TOGGLE_TOP_BAR_HIDE_ON_SCROLL).tap();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
     await element(by.id(testIDs.SCROLLVIEW_ELEMENT)).swipe('up', 'slow');
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
-    await element(by.id(testIDs.SCROLLVIEW_ELEMENT)).swipe('down', 'slow');
+    await element(by.id(testIDs.SCROLLVIEW_ELEMENT)).swipe('down', 'fast');
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
@@ -52,14 +51,14 @@ describe('screen style', () => {
     await expect(element(by.text('TeSt'))).toBeVisible();
   });
 
-  it(':ios: hide Tab Bar', async () => {
+  it('hide Tab Bar', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
     await elementById(testIDs.HIDE_BOTTOM_TABS_BUTTON).tap();
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeNotVisible();
   });
 
-  it(':ios: show Tab Bar', async () => {
+  it('show Tab Bar', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await elementById(testIDs.HIDE_BOTTOM_TABS_BUTTON).tap();
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeNotVisible();
@@ -83,7 +82,7 @@ describe('screen style', () => {
     await expect(elementById(testIDs.CENTERED_TEXT_HEADER)).toBeVisible();
   });
 
-  it(':ios: set right buttons', async () => {
+  it('set right buttons', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementById('buttonOne')).toBeVisible();
     await elementById('buttonOne').tap();
@@ -126,8 +125,6 @@ describe('screen style', () => {
 
   it('stack options should not override component options', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
-    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
-    await elementById(testIDs.SECOND_TAB_BAR_BUTTON).tap();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 });

@@ -3,11 +3,12 @@
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
 #import "RNNCustomTitleView.h"
+#import "RNNPushAnimation.h"
 
 @interface RNNRootViewController()
 @property (nonatomic, strong) NSString* componentName;
 @property (nonatomic) BOOL _statusBarHidden;
-@property (nonatomic) BOOL isNativeComponent;
+@property (nonatomic) BOOL isExternalComponent;
 @end
 
 @implementation RNNRootViewController
@@ -17,7 +18,7 @@
 			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter
-		  isNativeComponent:(BOOL)isNativeComponent {
+		  isExternalComponent:(BOOL)isExternalComponent {
 	self = [super init];
 	self.componentId = componentId;
 	self.componentName = name;
@@ -25,11 +26,9 @@
 	self.eventEmitter = eventEmitter;
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	self.creator = creator;
-	self.isNativeComponent = isNativeComponent;
-
-	if (self.isNativeComponent) {
-		[self addExternalVC:name];
-	} else {
+	self.isExternalComponent = isExternalComponent;
+	
+	if (!self.isExternalComponent) {
 		self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
 	}
 
@@ -37,7 +36,6 @@
 											 selector:@selector(onJsReload)
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
-	self.navigationController.modalPresentationStyle = UIModalPresentationCustom;
 	self.navigationController.delegate = self;
 
 	return self;
@@ -69,7 +67,7 @@
 }
 
 - (void)mergeOptions:(NSDictionary *)options {
-	[self.options mergeWith:options];
+	[self.options mergeIfEmptyWith:options];
 }
 
 - (void)setCustomNavigationTitleView {
@@ -95,7 +93,7 @@
 }
 
 -(BOOL)isCustomTransitioned {
-	return self.options.customTransition != nil;
+	return self.options.customTransition.animations != nil;
 }
 
 - (BOOL)isAnimated {
@@ -103,7 +101,7 @@
 }
 
 - (BOOL)isCustomViewController {
-	return self.isNativeComponent;
+	return self.isExternalComponent;
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -139,16 +137,25 @@
 											   fromViewController:(UIViewController*)fromVC
 												 toViewController:(UIViewController*)toVC {
 {
-	if (operation == UINavigationControllerOperationPush) {
+	if (self.animator) {
 		return self.animator;
-	} else if (operation == UINavigationControllerOperationPop) {
-		return self.animator;
+	} else if (operation == UINavigationControllerOperationPush && self.options.animations.push) {
+		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.push];
+	} else if (operation == UINavigationControllerOperationPop && self.options.animations.pop) {
+		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.pop];
 	} else {
 		return nil;
 	}
 }
 	return nil;
+}
 
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.showModal isDismiss:NO];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.dismissModal isDismiss:YES];
 }
 
 -(void)applyTabBarItem {
@@ -159,27 +166,6 @@
 	[self.options.topTab applyOn:self];
 }
 
--(void)addExternalVC:(NSString*)className {
-	if (className != nil) {
-		Class class = NSClassFromString(className);
-		if (class != NULL) {
-			id obj = [[class alloc] init];
-			if (obj != nil && [obj isKindOfClass:[UIViewController class]]) {
-				UIViewController *viewController = (UIViewController*)obj;
-				[self addChildViewController:viewController];
-				self.view = [[UIView alloc] init];
-				self.view.backgroundColor = [UIColor whiteColor];
-				[self.view addSubview:viewController.view];
-			}
-			else {
-				NSLog(@"addExternalVC: could not create instance. Make sure that your class is a UIViewController whihc confirms to RCCExternalViewControllerProtocol");
-			}
-		}
-		else {
-			NSLog(@"addExternalVC: could not create class from string. Check that the proper class name wass passed in ExternalNativeScreenClass");
-		}
-	}
-}
 
 /**
  *	fix for #877, #878

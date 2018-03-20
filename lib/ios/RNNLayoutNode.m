@@ -17,9 +17,9 @@
 {
 	return [self.type isEqualToString:@"Component"];
 }
--(BOOL)isNativeComponent
+-(BOOL)isExternalComponent
 {
-	return [self.type isEqualToString:@"NativeComponent"];
+	return [self.type isEqualToString:@"ExternalComponent"];
 }
 -(BOOL)isStack
 {
