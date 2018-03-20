@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -128,7 +130,8 @@ public class TitleBarTest extends BaseTest {
     @Test
     public void setComponent_addsComponentToTitleBar() {
         uut.setComponent("com.rnn.CustomView", TitleOptions.Alignment.Center);
-        verify(uut, times(1)).addView(any(TitleBarReactView.class));
+        final int height = uut.getHeight();
+        verify(uut, times(1)).addView(any(TitleBarReactView.class), eq(ViewGroup.LayoutParams.WRAP_CONTENT), eq(height));
     }
 
     private List<Button> leftButton(Button leftButton) {
