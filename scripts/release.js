@@ -45,6 +45,7 @@ function setupGit() {
 }
 
 function createNpmRc() {
+  exec.execSync(`rm -f package-lock.json`);
   const content = `
 email=\${NPM_EMAIL}
 //registry.npmjs.org/:_authToken=\${NPM_TOKEN}
