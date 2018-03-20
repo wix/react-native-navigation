@@ -41,6 +41,10 @@
 	return YES;
 }
 
+- (RNNOptions *)options {
+	return nil;
+}
+
 - (NSString *)componentId {
 	return _child.componentId;
 }

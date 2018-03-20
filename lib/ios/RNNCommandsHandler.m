@@ -56,8 +56,7 @@
 
 -(void) setDefaultOptions:(NSDictionary*)optionsDict completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:optionsDict];
-	[_controllerFactory setDefaultOptions:options];
+	[_controllerFactory setDefaultOptionsDict:optionsDict];
 }
 
 -(void) push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
@@ -79,12 +78,8 @@
 	NSDictionary* animationData = options[@"customTransition"];
 	RNNAnimationOptions* transitionOptions = [[RNNAnimationOptions alloc] initWithDict:animationData];
 	
-	if (transitionOptions){
-		if (transitionOptions.animations) {
-			[_navigationStackManager pop:componentId withTransitionOptions:transitionOptions];
-		} else {
-			[[NSException exceptionWithName:NSInvalidArgumentException reason:@"unsupported transitionAnimation" userInfo:nil] raise];
-		}
+	if (transitionOptions.animations){
+		[_navigationStackManager pop:componentId withTransitionOptions:transitionOptions];
 	} else {
 		[_navigationStackManager pop:componentId withTransitionOptions:nil];
 	}

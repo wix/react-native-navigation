@@ -22,6 +22,19 @@
 	}
 }
 
+-(void)mergeIfEmptyWith:(NSDictionary *)otherOptions {
+	for (id key in otherOptions) {
+		if ([self hasProperty:key]) {
+			if ([[self valueForKey:key] isKindOfClass:[RNNOptions class]]) {
+				RNNOptions* options = [self valueForKey:key];
+				[options mergeIfEmptyWith:[otherOptions objectForKey:key]];
+			} else if (![self valueForKey:key]) {
+				[self setValue:[otherOptions objectForKey:key] forKey:key];
+			}
+		}
+	}
+}
+
 - (BOOL)hasProperty:(NSString*)propName {
 	return [self respondsToSelector:NSSelectorFromString(propName)];
 }

@@ -8,6 +8,7 @@ import java.util.List;
 public class LayoutNode {
 	public enum Type {
 		Component,
+        ExternalComponent,
 		Stack,
 		BottomTabs,
 		SideMenuRoot,

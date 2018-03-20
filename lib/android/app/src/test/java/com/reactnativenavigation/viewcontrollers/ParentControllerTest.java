@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.views.ReactComponent;
@@ -87,7 +88,7 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void findControllerById_Recursive() throws Exception {
-        StackController stackController = new StackController(activity, "stack", new Options());
+        StackController stackController = new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options());
         SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
         SimpleViewController child2 = new SimpleViewController(activity, "child2", new Options());
         stackController.animatePush(child1, new MockPromise());
@@ -109,7 +110,7 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void optionsAreClearedWhenChildIsAppeared() throws Exception {
-        StackController stackController = spy(new StackController(activity, "stack", new Options()));
+        StackController stackController = spy(new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options()));
         SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
         stackController.animatePush(child1, new MockPromise());
 

@@ -9,7 +9,7 @@ import android.view.View;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.SideMenuOptionsPresenter;
-import com.reactnativenavigation.views.ReactComponent;
+import com.reactnativenavigation.views.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,7 +49,7 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
 	}
 
     @Override
-    public void applyOptions(Options options, ReactComponent childComponent) {
+    public void applyOptions(Options options, Component childComponent) {
         super.applyOptions(options, childComponent);
         applyOnParentController(parentController ->
                 ((ParentController) parentController).applyOptions(this.options, childComponent)

@@ -8,6 +8,7 @@
 @implementation RNNStore {
 	NSMapTable* _componentStore;
 	NSMutableArray* _pendingModalIdsToDismiss;
+	NSMutableDictionary* _externalComponentCreators;
 	BOOL _isReadyToReceiveCommands;
 }
 
@@ -16,6 +17,7 @@
 	_isReadyToReceiveCommands = false;
 	_componentStore = [NSMapTable strongToWeakObjectsMapTable];
 	_pendingModalIdsToDismiss = [NSMutableArray new];
+	_externalComponentCreators = [NSMutableDictionary new];
 	return self;
 }
 
@@ -69,6 +71,15 @@
 		}
 	}
 	return nil;
+}
+
+- (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
+	[_externalComponentCreators setObject:[callback copy] forKey:name];
+}
+
+- (UIViewController *)getExternalComponent:(NSString *)name {
+	RNNExternalViewCreator creator = [_externalComponentCreators objectForKey:name];
+	return creator();
 }
 
 @end
