@@ -39,7 +39,7 @@ class TopTabOptionsScreen extends PureComponent {
           text: 'Dynamic Title',
           color: '#00FFFF',
           fontSize: 16,
-          fontFamily: HelveticaNeue-CondensedBold
+          fontFamily: 'HelveticaNeue-CondensedBold'
         },
         largeTitle: false,
         buttonColor: 'red',
