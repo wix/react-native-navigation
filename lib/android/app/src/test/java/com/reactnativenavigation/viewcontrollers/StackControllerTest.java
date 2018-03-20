@@ -423,7 +423,7 @@ public class StackControllerTest extends BaseTest {
         parent.push(uut, new MockPromise());
 
         Options childOptions = new Options();
-        childOptions.topBarOptions.title = new Text("Something");
+        childOptions.topBarOptions.title.text = new Text("Something");
         child1.options = childOptions;
         uut.push(child1, new MockPromise());
         child1.ensureViewIsCreated();
@@ -432,7 +432,7 @@ public class StackControllerTest extends BaseTest {
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
         ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
         verify(parent, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
-        assertThat(optionsCaptor.getValue().topBarOptions.title.hasValue()).isFalse();
+        assertThat(optionsCaptor.getValue().topBarOptions.title.text.hasValue()).isFalse();
     }
 
     @Test

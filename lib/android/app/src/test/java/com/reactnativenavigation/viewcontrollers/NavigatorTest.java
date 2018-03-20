@@ -226,14 +226,14 @@ public class NavigatorTest extends BaseTest {
     public void setOptions_CallsApplyNavigationOptions() {
         ComponentViewController componentVc = new SimpleComponentViewController(activity, "theId", new Options());
         componentVc.setParentController(parentController);
-        assertThat(componentVc.options.topBarOptions.title.get("")).isEmpty();
+        assertThat(componentVc.options.topBarOptions.title.text.get("")).isEmpty();
         uut.setRoot(componentVc, new MockPromise());
 
         Options options = new Options();
-        options.topBarOptions.title = new Text("new title");
+        options.topBarOptions.title.text = new Text("new title");
 
         uut.setOptions("theId", options);
-        assertThat(componentVc.options.topBarOptions.title.get()).isEqualTo("new title");
+        assertThat(componentVc.options.topBarOptions.title.text.get()).isEqualTo("new title");
     }
 
     @Test

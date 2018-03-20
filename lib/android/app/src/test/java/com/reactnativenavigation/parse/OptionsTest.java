@@ -63,11 +63,11 @@ public class OptionsTest extends BaseTest {
     }
 
     private void assertResult(Options result) {
-        assertThat(result.topBarOptions.title.get()).isEqualTo(TITLE);
+        assertThat(result.topBarOptions.title.text.get()).isEqualTo(TITLE);
         assertThat(result.topBarOptions.backgroundColor.get()).isEqualTo(TOP_BAR_BACKGROUND_COLOR);
-        assertThat(result.topBarOptions.textColor.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
-        assertThat(result.topBarOptions.textFontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
-        assertThat(result.topBarOptions.textFontFamily).isEqualTo(TOP_BAR_TYPEFACE);
+        assertThat(result.topBarOptions.title.color.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
+        assertThat(result.topBarOptions.title.fontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
+        assertThat(result.topBarOptions.title.fontFamily).isEqualTo(TOP_BAR_TYPEFACE);
         assertThat(result.topBarOptions.visible.get()).isEqualTo(TOP_BAR_VISIBLE.get());
         assertThat(result.topBarOptions.drawBehind.get()).isEqualTo(TOP_BAR_DRAW_BEHIND.get());
         assertThat(result.topBarOptions.hideOnScroll.get()).isEqualTo(TOP_BAR_HIDE_ON_SCROLL.get());
@@ -97,14 +97,19 @@ public class OptionsTest extends BaseTest {
     @NonNull
     private JSONObject createTopBar(boolean visible) throws JSONException {
         return new JSONObject()
-                .put("title", "the title")
+                .put("title", createTitle())
                 .put("backgroundColor", TOP_BAR_BACKGROUND_COLOR)
-                .put("textColor", TOP_BAR_TEXT_COLOR)
-                .put("textFontSize", TOP_BAR_FONT_SIZE)
-                .put("textFontFamily", TOP_BAR_FONT_FAMILY)
                 .put("visible", visible)
                 .put("drawBehind", TOP_BAR_DRAW_BEHIND.get())
                 .put("hideOnScroll", TOP_BAR_HIDE_ON_SCROLL.get());
+    }
+
+    private JSONObject createTitle() throws JSONException {
+        return new JSONObject()
+                .put("text", "the title")
+                .put("color", TOP_BAR_TEXT_COLOR)
+                .put("fontSize", TOP_BAR_FONT_SIZE)
+                .put("fontFamily", TOP_BAR_FONT_FAMILY);
     }
 
     @NonNull
@@ -136,11 +141,8 @@ public class OptionsTest extends BaseTest {
     @NonNull
     private JSONObject createOtherTopBar() throws JSONException {
         return new JSONObject()
-                .put("title", "the title")
+                .put("title", createTitle())
                 .put("backgroundColor", TOP_BAR_BACKGROUND_COLOR)
-                .put("textColor", TOP_BAR_TEXT_COLOR)
-                .put("textFontSize", TOP_BAR_FONT_SIZE)
-                .put("textFontFamily", TOP_BAR_FONT_FAMILY)
                 .put("visible", TOP_BAR_VISIBLE);
     }
 
@@ -159,17 +161,17 @@ public class OptionsTest extends BaseTest {
         JSONObject json1 = new JSONObject();
         json1.put("topBar", createTopBar(true));
         Options options1 = Options.parse(mockLoader, json1);
-        options1.topBarOptions.title = new Text("some title");
+        options1.topBarOptions.title.text = new Text("some title");
 
         JSONObject json2 = new JSONObject();
         json2.put("topBar", createTopBar(false));
         Options options2 = Options.parse(mockLoader, json2);
-        options2.topBarOptions.title = new NullText();
+        options2.topBarOptions.title.text = new NullText();
 
         Options merged = options1.mergeWith(options2);
         assertThat(options1.topBarOptions.visible.get()).isTrue();
         assertThat(merged.topBarOptions.visible.get()).isFalse();
-        assertThat(merged.topBarOptions.title.get()).isEqualTo("some title");
+        assertThat(merged.topBarOptions.title.text.get()).isEqualTo("some title");
     }
 
     @Test
@@ -203,7 +205,7 @@ public class OptionsTest extends BaseTest {
     @Test
     public void defaultEmptyOptions() throws Exception {
         Options uut = new Options();
-        assertThat(uut.topBarOptions.title.get("")).isEmpty();
+        assertThat(uut.topBarOptions.title.text.get("")).isEmpty();
     }
 
     @Test
@@ -216,9 +218,9 @@ public class OptionsTest extends BaseTest {
     @Test
     public void clear_topBarOptions() throws Exception {
         Options uut = new Options();
-        uut.topBarOptions.title = new Text("some title");
+        uut.topBarOptions.title.text = new Text("some title");
         uut.clearTopBarOptions();
-        assertThat(uut.topBarOptions.title.hasValue()).isFalse();
+        assertThat(uut.topBarOptions.title.text.hasValue()).isFalse();
     }
 
     @Test

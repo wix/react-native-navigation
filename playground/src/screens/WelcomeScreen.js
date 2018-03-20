@@ -385,7 +385,9 @@ class WelcomeScreen extends Component {
     });
     Navigation.setOptions('my unique id', {
       topBar: {
-        title: 'User provided id'
+        title: {
+          text: 'User provided id'
+        }
       }
     });
   }

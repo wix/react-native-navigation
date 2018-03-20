@@ -71,7 +71,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         for (int i = 0; i < SIZE; i++) {
             final Options options = new Options();
             options.topTabOptions.title = new Text("Tab " + i);
-            options.topBarOptions.title = new Text(createTabTopBarTitle(i));
+            options.topBarOptions.title.text = new Text(createTabTopBarTitle(i));
             result.add(options);
         }
         return result;
@@ -173,17 +173,17 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut.onViewAppeared();
         ReactComponent currentTab = tabView(0);
         verify(uut, times(1)).applyOptions(any(Options.class), eq(currentTab));
-        assertThat(uut.options.topBarOptions.title.get()).isEqualTo(createTabTopBarTitle(0));
+        assertThat(uut.options.topBarOptions.title.text.get()).isEqualTo(createTabTopBarTitle(0));
 
         uut.switchToTab(1);
         currentTab = tabView(1);
         verify(uut, times(1)).applyOptions(any(Options.class), eq(currentTab));
-        assertThat(uut.options.topBarOptions.title.get()).isEqualTo(createTabTopBarTitle(1));
+        assertThat(uut.options.topBarOptions.title.text.get()).isEqualTo(createTabTopBarTitle(1));
 
         uut.switchToTab(0);
         currentTab = tabView(0);
         verify(uut, times(2)).applyOptions(any(Options.class), eq(currentTab));
-        assertThat(uut.options.topBarOptions.title.get()).isEqualTo(createTabTopBarTitle(0));
+        assertThat(uut.options.topBarOptions.title.text.get()).isEqualTo(createTabTopBarTitle(0));
     }
 
     private TestReactView getActualTabView(int index) {

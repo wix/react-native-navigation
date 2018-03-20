@@ -17,16 +17,18 @@ class OptionsScreen extends Component {
   static get options() {
     return {
       topBar: {
-        title: 'Static Title',
-        textColor: 'black',
+        title: {
+          text: 'Static Title', 
+          color: 'black',
+          fontSize: 16,
+          fontFamily: 'HelveticaNeue-Italic',
+          largeTitle: false,
+        },
         ...Platform.select({
           android: { drawBehind: true },
           ios: { drawBehind: false, }
         }),
-        largeTitle: false,
         visible: true,
-        textFontSize: 16,
-        textFontFamily: 'HelveticaNeue-Italic',
         testID: testIDs.TOP_BAR_ELEMENT,
         rightButtons: [
           {
@@ -161,12 +163,14 @@ class OptionsScreen extends Component {
   onClickDynamicOptions() {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
-        title: 'Dynamic Title',
-        textColor: '#00FFFF',
-        largeTitle: false,
+        title: {
+          text: 'Dynamic Title',
+          color: '#00FFFF',
+          largeTitle: false,
+          fontSize: 20,
+          fontFamily: 'HelveticaNeue-CondensedBold'
+        },
         buttonColor: 'red',
-        textFontSize: 20,
-        textFontFamily: 'HelveticaNeue-CondensedBold'
       }
     });
   }
