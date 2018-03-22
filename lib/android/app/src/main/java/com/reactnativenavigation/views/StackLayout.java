@@ -6,6 +6,7 @@ import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewPager;
 import android.widget.RelativeLayout;
 
+import com.reactnativenavigation.interfaces.ChildDisappearListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -42,8 +43,8 @@ public class StackLayout extends RelativeLayout {
         optionsPresenter.applyChildOptions(options, child);
     }
 
-    public void onChildWillDisappear(Options disappearing, Options appearing) {
-        new OptionsPresenter(topBar).onChildWillDisappear(disappearing, appearing);
+    public void onChildWillDisappear(Options disappearing, Options appearing, ChildDisappearListener childDisappearListener) {
+        new OptionsPresenter(topBar).onChildWillDisappear(disappearing, appearing, childDisappearListener);
     }
 
     public void clearOptions() {

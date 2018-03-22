@@ -61,25 +61,26 @@ public class TopBarAnimator {
         return set;
     }
 
-    public void hide(AnimationOptions options) {
+    public void hide(AnimationOptions options, AnimationListener listener) {
         if (options.hasValue()) {
             hideAnimator = options.getAnimation(topBar);
         } else {
             hideAnimator = getDefaultHideAnimator(0, accelerateInterpolator, DURATION_TOPBAR);
         }
-        hide();
+        hide(listener);
     }
 
     void hide(float startTranslation) {
         hideAnimator = getDefaultHideAnimator(startTranslation, null, DEFAULT_COLLAPSE_DURATION);
-        hide();
+        hide(null);
     }
 
-    private void hide() {
+    private void hide(AnimationListener listener) {
         hideAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 topBar.setVisibility(View.GONE);
+                if (listener != null) listener.onAnimationEnd();
             }
         });
         hideAnimator.start();

@@ -12,10 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.reactnativenavigation.anim.AnimationListener;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.TitleOptions;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
@@ -153,7 +155,11 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void hideAnimate(AnimationOptions options) {
-        animator.hide(options);
+        hideAnimate(options, null);
+    }
+
+    public void hideAnimate(AnimationOptions options, AnimationListener listener) {
+        animator.hide(options, listener);
     }
 
     @Override

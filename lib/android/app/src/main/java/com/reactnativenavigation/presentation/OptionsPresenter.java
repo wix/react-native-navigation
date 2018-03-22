@@ -1,7 +1,9 @@
 package com.reactnativenavigation.presentation;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 
+import com.reactnativenavigation.interfaces.ChildDisappearListener;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
@@ -88,13 +90,16 @@ public class OptionsPresenter {
         }
     }
 
-    public void onChildWillDisappear(Options disappearing, Options appearing) {
+    public void onChildWillDisappear(Options disappearing, Options appearing, @NonNull ChildDisappearListener childDisappearListener) {
         if (disappearing.topBarOptions.visible.isTrueOrUndefined() && appearing.topBarOptions.visible.isFalse()) {
             if (disappearing.topBarOptions.animate.isTrueOrUndefined()) {
-                topBar.hideAnimate(disappearing.animationsOptions.pop.topBar);
+                topBar.hideAnimate(disappearing.animationsOptions.pop.topBar, childDisappearListener::childDisappear);
             } else {
                 topBar.hide();
+                childDisappearListener.childDisappear();
             }
+        } else {
+            childDisappearListener.childDisappear();
         }
     }
 }

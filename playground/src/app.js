@@ -31,13 +31,13 @@ function start() {
               from: 1000,
               to: 0,
               duration: 500,
-              interpolation: 'decelerate',
+              interpolation: 'accelerate',
             },
             alpha: {
               from: 0,
               to: 1,
               duration: 500,
-              interpolation: 'decelerate'
+              interpolation: 'accelerate'
             }
           },
           content: {
@@ -45,46 +45,46 @@ function start() {
               from: 1000,
               to: 0,
               duration: 500,
-              interpolation: 'decelerate',
+              interpolation: 'accelerate',
             },
             alpha: {
               from: 0,
               to: 1,
               duration: 500,
-              interpolation: 'decelerate'
+              interpolation: 'accelerate'
             }
           }
         },
-        // pop: {
-        //   topBar: {
-        //     y: {
-        //       from: 0,
-        //       to: 100,
-        //       duration: 2000,
-        //       interpolation: 'accelerate',
-        //     },
-        //     // alpha: {
-        //     //   from: 1,
-        //     //   to: 0,
-        //     //   duration: 2000,
-        //     //   interpolation: 'accelerate'
-        //     // }
-        //   },
-        //   content: {
-        //     y: {
-        //       from: 0,
-        //       to: 1000,
-        //       duration: 2000,
-        //       interpolation: 'accelerate',
-        //     },
-        //     alpha: {
-        //       from: 1,
-        //       to: 0,
-        //       duration: 2000,
-        //       interpolation: 'accelerate'
-        //     }
-        //   }
-        // }
+        pop: {
+          topBar: {
+            y: {
+              from: 0,
+              to: 100,
+              duration: 500,
+              interpolation: 'decelerate',
+            },
+            alpha: {
+              from: 1,
+              to: 0,
+              duration: 500,
+              interpolation: 'decelerate'
+            }
+          },
+          content: {
+            y: {
+              from: 0,
+              to: 1000,
+              duration: 500,
+              interpolation: 'decelerate',
+            },
+            alpha: {
+              from: 1,
+              to: 0,
+              duration: 500,
+              interpolation: 'decelerate'
+            }
+          }
+        }
       }
     });
 
