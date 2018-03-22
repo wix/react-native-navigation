@@ -106,7 +106,7 @@
 
 -(void)testTitle_string{
 	NSString* title =@"some title";
-	self.options.topBar.title = title;
+	self.options.topBar.title.text = title;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	
 	[self.uut viewWillAppear:false];
@@ -122,7 +122,7 @@
 
 -(void)testTopBarTextColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.topBar.textColor = inputColor;
+	self.options.topBar.title.color = inputColor;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
@@ -156,7 +156,7 @@
 -(void)testTopBarTextFontFamily_validFont{
 	NSString* inputFont = @"HelveticaNeue";
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	self.options.topBar.textFontFamily = inputFont;
+	self.options.topBar.title.fontFamily = inputFont;
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:20];
 	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
@@ -227,7 +227,7 @@
 
 -(void)testTopBarTextFontSize_withoutTextFontFamily_withoutTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
-	self.options.topBar.textFontSize = topBarTextFontSizeInput;
+	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
@@ -237,8 +237,8 @@
 -(void)testTopBarTextFontSize_withoutTextFontFamily_withTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.topBar.textFontSize = topBarTextFontSizeInput;
-	self.options.topBar.textColor = inputColor;
+	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
+	self.options.topBar.title.color = inputColor;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
@@ -251,9 +251,9 @@
 	NSNumber* topBarTextFontSizeInput = @(15);
 	NSNumber* inputColor = @(0xFFFF0000);
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.topBar.textFontSize = topBarTextFontSizeInput;
-	self.options.topBar.textColor = inputColor;
-	self.options.topBar.textFontFamily = inputFont;
+	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
+	self.options.topBar.title.color = inputColor;
+	self.options.topBar.title.fontFamily = inputFont;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
@@ -265,8 +265,8 @@
 -(void)testTopBarTextFontSize_withTextFontFamily_withoutTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.topBar.textFontSize = topBarTextFontSizeInput;
-	self.options.topBar.textFontFamily = inputFont;
+	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
+	self.options.topBar.title.fontFamily = inputFont;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
@@ -277,7 +277,7 @@
 -(void)testTopBarTextFontFamily_invalidFont{
 	NSString* inputFont = @"HelveticaNeueeeee";
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	self.options.topBar.textFontFamily = inputFont;
+	self.options.topBar.title.fontFamily = inputFont;
 	//	XCTAssertThrows([self.uut viewWillAppear:false]);
 }
 

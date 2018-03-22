@@ -14,8 +14,10 @@ class CustomTransitionDestination extends Component {
     return {
       backButtonTransition: 'custom',
       topBar: {
-        title: 'ye babyyyyyy',
-        textFontFamily: 'HelveticaNeue-Italic',
+        title: {
+          text: 'ye babyyyyyy',
+          fontFamily: 'HelveticaNeue-Italic'
+        },
         largeTitle: true
       }
     };

@@ -8,6 +8,7 @@ import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
@@ -46,7 +47,7 @@ public class NavigatorTest extends BaseTest {
         imageLoaderMock = ImageLoaderMock.mock();
         activity = newActivity();
         uut = new Navigator(activity);
-        parentController = spy(new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options()));
+        parentController = spy(newStack());
         parentController.ensureViewIsCreated();
         child1 = new SimpleViewController(activity, "child1", tabOptions);
         child2 = new SimpleViewController(activity, "child2", tabOptions);
@@ -226,14 +227,14 @@ public class NavigatorTest extends BaseTest {
     public void setOptions_CallsApplyNavigationOptions() {
         ComponentViewController componentVc = new SimpleComponentViewController(activity, "theId", new Options());
         componentVc.setParentController(parentController);
-        assertThat(componentVc.options.topBarOptions.title.get("")).isEmpty();
+        assertThat(componentVc.options.topBarOptions.title.text.get("")).isEmpty();
         uut.setRoot(componentVc, new MockPromise());
 
         Options options = new Options();
-        options.topBarOptions.title = new Text("new title");
+        options.topBarOptions.title.text = new Text("new title");
 
         uut.setOptions("theId", options);
-        assertThat(componentVc.options.topBarOptions.title.get()).isEqualTo("new title");
+        assertThat(componentVc.options.topBarOptions.title.text.get()).isEqualTo("new title");
     }
 
     @Test
@@ -248,7 +249,7 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private StackController newStack() {
-        return new StackController(activity, new TopBarButtonCreatorMock(), "stack" + CompatUtils.generateViewId(), tabOptions);
+        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), "stack" + CompatUtils.generateViewId(), tabOptions);
     }
 
     @Test
@@ -325,7 +326,7 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void pushedStackCanBePopped() throws Exception {
-        StackController parent = new StackController(activity, new TopBarButtonCreatorMock(), "someStack", new Options());
+        StackController parent = newStack();
         parent.ensureViewIsCreated();
         uut.setRoot(parent, new MockPromise());
         parent.push(parentController, new MockPromise());

@@ -11,6 +11,7 @@ import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -18,21 +19,27 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 @SuppressLint("ViewConstructor")
 public class StackLayout extends RelativeLayout {
     private TopBar topBar;
+    private final OptionsPresenter optionsPresenter;
 
-    public StackLayout(Context context, ReactViewCreator topBarButtonCreator, TopBarButtonController.OnClickListener topBarButtonClickListener) {
+    public StackLayout(Context context, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarButtonController.OnClickListener topBarButtonClickListener) {
         super(context);
-        topBar = new TopBar(context, topBarButtonCreator, topBarButtonClickListener, this);
-        topBar.setId(CompatUtils.generateViewId());
-        addView(topBar, MATCH_PARENT, WRAP_CONTENT);
+        createLayout(topBarButtonCreator, titleBarReactViewCreator, topBarButtonClickListener);
+        optionsPresenter = new OptionsPresenter(topBar);
         setContentDescription("StackLayout");
     }
 
-    public void applyOptions(Options options) {
-        new OptionsPresenter(topBar).applyOrientation(options.orientationOptions);
+    private void createLayout(ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarButtonController.OnClickListener topBarButtonClickListener) {
+        topBar = new TopBar(getContext(), topBarButtonCreator, titleBarReactViewCreator, topBarButtonClickListener, this);
+        topBar.setId(CompatUtils.generateViewId());
+        addView(topBar, MATCH_PARENT, WRAP_CONTENT);
     }
 
-    public void applyOptions(Options options, Component component) {
-        new OptionsPresenter(topBar, component).applyOptions(options);
+    public void applyChildOptions(Options options) {
+        optionsPresenter.applyOrientation(options.orientationOptions);
+    }
+
+    public void applyChildOptions(Options options, Component child) {
+        optionsPresenter.applyChildOptions(options, child);
     }
 
     public void onChildWillDisappear(Options disappearing, Options appearing) {
@@ -54,10 +61,5 @@ public class StackLayout extends RelativeLayout {
     @RestrictTo(RestrictTo.Scope.TESTS)
     public TopBar getTopBar() {
         return topBar;
-    }
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    public void setTopBar(TopBar topBar) {
-        this.topBar = topBar;
     }
 }

@@ -3,7 +3,6 @@ package com.reactnativenavigation.views;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.react.TopBarReactButtonView;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 
 public class TopBarButtonCreator implements ReactViewCreator {

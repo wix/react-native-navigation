@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.react.TopBarReactButtonView;
+import com.reactnativenavigation.views.TopBarReactButtonView;
 import com.reactnativenavigation.utils.ArrayUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;

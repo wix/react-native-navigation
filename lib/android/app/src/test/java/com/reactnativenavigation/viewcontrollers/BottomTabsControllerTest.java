@@ -8,6 +8,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Color;
@@ -100,7 +101,7 @@ public class BottomTabsControllerTest extends BaseTest {
     public void findControllerById_ReturnsSelfOrChildren() throws Exception {
         assertThat(uut.findControllerById("123")).isNull();
         assertThat(uut.findControllerById(uut.getId())).isEqualTo(uut);
-        StackController inner = new StackController(activity, new TopBarButtonCreatorMock(), "inner", tabOptions);
+        StackController inner = createStack("inner");
         inner.animatePush(child1, new MockPromise());
         assertThat(uut.findControllerById(child1.getId())).isNull();
         uut.setTabs(Collections.singletonList(inner));
@@ -131,14 +132,14 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.setTabs(tabs);
         uut.ensureViewIsCreated();
 
-        StackController stack = spy(new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options()));
+        StackController stack = spy(createStack("stack"));
         stack.ensureViewIsCreated();
         stack.push(uut, new MockPromise());
 
         child1.onViewAppeared();
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
         ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
-        verify(stack, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
+        verify(stack, times(1)).applyChildOptions(optionsCaptor.capture(), viewCaptor.capture());
         assertThat(viewCaptor.getValue()).isEqualTo(child1.getView());
         assertThat(optionsCaptor.getValue().bottomTabsOptions.tabColor.hasValue()).isFalse();
     }
@@ -168,5 +169,9 @@ public class BottomTabsControllerTest extends BaseTest {
     @NonNull
     private List<ViewController> createTabs() {
         return Arrays.asList(child1, child2, child3, child4, child5);
+    }
+
+    private StackController createStack(String id) {
+        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), id, tabOptions);
     }
 }

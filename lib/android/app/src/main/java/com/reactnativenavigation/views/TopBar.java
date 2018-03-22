@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.RestrictTo;
@@ -14,13 +15,17 @@ import android.widget.TextView;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
+import com.reactnativenavigation.parse.TitleOptions;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.views.titlebar.TitleBar;
+import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 
 import java.util.List;
 
@@ -35,19 +40,23 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private TopTabs topTabs;
     private StackLayout parentView;
 
-    public TopBar(final Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener, StackLayout parentView) {
+    public TopBar(final Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarButtonController.OnClickListener onClickListener, StackLayout parentView) {
         super(context);
         collapsingBehavior = new TopBarCollapseBehavior(this);
         topTabs = new TopTabs(getContext());
         animator = new TopBarAnimator(this);
         this.parentView = parentView;
-        titleBar = createTitleBar(context, buttonCreator, onClickListener);
+        titleBar = createTitleBar(context, buttonCreator, titleBarReactViewCreator, onClickListener);
         addView(titleBar);
         setContentDescription("TopBar");
     }
 
-    protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener) {
-        return new TitleBar(context, buttonCreator, onClickListener);
+    protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
+        return new TitleBar(context,
+                buttonCreator,
+                new TitleBarReactViewController((Activity) context, reactViewCreator),
+                onClickListener
+        );
     }
 
     public void setTitle(String title) {
@@ -72,6 +81,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void setTitleTypeface(Typeface typeface) {
         titleBar.setTitleTypeface(typeface);
+    }
+
+    public void setComponent(String componentName, TitleOptions.Alignment alignment) {
+        titleBar.setComponent(componentName, alignment);
     }
 
     public void setTopTabFontFamily(int tabIndex, Typeface fontFamily) {

@@ -1,15 +1,22 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
+import com.reactnativenavigation.parse.TitleOptions;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.react.ReactView;
-import com.reactnativenavigation.views.TitleBar;
+import com.reactnativenavigation.views.titlebar.TitleBar;
+import com.reactnativenavigation.views.titlebar.TitleBarReactView;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,14 +38,16 @@ public class TitleBarTest extends BaseTest {
     private Button textButton;
     private Button customButton;
     private Map<String, TopBarButtonController> buttonControllers;
+    private TitleBarReactViewController reactViewController;
 
     @Override
     public void beforeEach() {
         final TopBarButtonCreatorMock buttonCreator = new TopBarButtonCreatorMock();
         final Activity activity = newActivity();
+        reactViewController = spy(new TitleBarReactViewController(activity, new TitleBarReactViewCreatorMock()));
         createButtons();
         buttonControllers = new HashMap<>();
-        uut = spy(new TitleBar(activity, buttonCreator, (buttonId -> {})) {
+        uut = spy(new TitleBar(activity, buttonCreator, reactViewController, (buttonId -> {})) {
             @Override
             public TopBarButtonController createButtonController(Button button) {
                 TopBarButtonController controller = spy(super.createButtonController(button));
@@ -118,6 +128,40 @@ public class TitleBarTest extends BaseTest {
     public void setRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() throws Exception {
         uut.setButtons(new ArrayList<>(), rightButtons(textButton, customButton));
         assertThat(uut.getMenu().getItem(1).getTitle()).isEqualTo(textButton.title.get());
+    }
+
+    @Test
+    public void setComponent_addsComponentToTitleBar() throws Exception {
+        uut.setComponent("com.rnn.CustomView", TitleOptions.Alignment.Center);
+        verify(uut, times(1)).addView(any(TitleBarReactView.class), any(Toolbar.LayoutParams.class));
+    }
+
+    @Test
+    public void setComponent_alignFill() throws Exception {
+        uut.setComponent("com.rnn.CustomView", TitleOptions.Alignment.Fill);
+        verify(uut, times(1)).getComponentLayoutParams(TitleOptions.Alignment.Fill);
+        ArgumentCaptor<Toolbar.LayoutParams> lpCaptor = ArgumentCaptor.forClass(Toolbar.LayoutParams.class);
+        verify(uut, times(1)).addView(any(TitleBarReactView.class), lpCaptor.capture());
+        assertThat(lpCaptor.getValue().width == ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    @Test
+    public void setComponent_alignCenter() throws Exception {
+        uut.setComponent("com.rnn.CustomView", TitleOptions.Alignment.Center);
+        verify(uut, times(1)).getComponentLayoutParams(TitleOptions.Alignment.Center);
+        ArgumentCaptor<Toolbar.LayoutParams> lpCaptor = ArgumentCaptor.forClass(Toolbar.LayoutParams.class);
+        verify(uut, times(1)).addView(any(TitleBarReactView.class), lpCaptor.capture());
+        assertThat(lpCaptor.getValue().width == ViewGroup.LayoutParams.WRAP_CONTENT);
+        assertThat(lpCaptor.getValue().gravity == Gravity.CENTER);
+    }
+
+    @Test
+    public void clear() throws Exception {
+        uut.clear();
+        assertThat(uut.getTitle()).isNullOrEmpty();
+        assertThat(uut.getMenu().size()).isZero();
+        assertThat(uut.getNavigationIcon()).isNull();
+        verify(reactViewController, times(1)).destroy();
     }
 
     private List<Button> leftButton(Button leftButton) {

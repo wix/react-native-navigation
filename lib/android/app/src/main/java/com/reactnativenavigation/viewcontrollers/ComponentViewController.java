@@ -62,7 +62,7 @@ public class ComponentViewController extends ViewController<ComponentLayout> imp
     public void mergeOptions(Options options) {
         this.options = this.options.mergeWith(options);
         view.applyOptions(this.options);
-        applyOnParentController(parentController -> parentController.applyOptions(this.options, view));
+        applyOnParentController(parentController -> parentController.applyChildOptions(this.options, view));
     }
 
     ReactComponent getComponent() {

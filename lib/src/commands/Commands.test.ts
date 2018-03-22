@@ -46,10 +46,10 @@ describe('Commands', () => {
       const passProps = {
         fn: () => 'Hello'
       };
-      expect(store.getPropsForComponentId('Component+UNIQUE_ID')).toEqual({});
+      expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual({});
       uut.setRoot({ component: { name: 'asd', passProps } });
-      expect(store.getPropsForComponentId('Component+UNIQUE_ID')).toEqual(passProps);
-      expect(store.getPropsForComponentId('Component+UNIQUE_ID').fn()).toEqual('Hello');
+      expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual(passProps);
+      expect(store.getPropsForId('Component+UNIQUE_ID').fn()).toEqual('Hello');
     });
 
     it('returns a promise with the resolved layout', async () => {
@@ -108,14 +108,14 @@ describe('Commands', () => {
 
     it('passProps into components', () => {
       const passProps = {};
-      expect(store.getPropsForComponentId('Component+UNIQUE_ID')).toEqual({});
+      expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual({});
       uut.showModal({
         component: {
           name: 'com.example.MyScreen',
           passProps
         }
       });
-      expect(store.getPropsForComponentId('Component+UNIQUE_ID')).toEqual(passProps);
+      expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual(passProps);
     });
 
     it('returns a promise with the resolved layout', async () => {

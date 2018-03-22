@@ -28,9 +28,7 @@
 	self.creator = creator;
 	self.isExternalComponent = isExternalComponent;
 	
-	if (self.isExternalComponent) {
-		[self addExternalVC:name];
-	} else {
+	if (!self.isExternalComponent) {
 		self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
 	}
 	
@@ -46,13 +44,15 @@
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.options applyOn:self];
+	
 	[self setCustomNavigationTitleView];
 	[self setCustomNavigationBarView];
+	[self setCustomNavigationComponentBackground];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	[self.eventEmitter sendComponentDidAppear:self.componentId];
+	[self.eventEmitter sendComponentDidAppear:self.componentId componentName:self.componentName];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -61,7 +61,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
-	[self.eventEmitter sendComponentDidDisappear:self.componentId];
+	[self.eventEmitter sendComponentDidDisappear:self.componentId componentName:self.componentName];
 }
 
 - (void)viewDidLoad {
@@ -73,20 +73,29 @@
 }
 
 - (void)setCustomNavigationTitleView {
-	if (self.options.topBar.customTitleViewName) {
-		UIView *reactView = [_creator createRootView:self.options.topBar.customTitleViewName rootViewId:self.options.topBar.customTitleViewName];
+	if (self.options.topBar.title.component) {
+		RCTRootView *reactView = (RCTRootView*)[_creator createRootView:self.options.topBar.title.component rootViewId:self.options.topBar.title.component];
 		
-		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:nil];
+		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.options.topBar.title.componentAlignment];
 		self.navigationItem.titleView = titleView;
 	}
 }
 
 - (void)setCustomNavigationBarView {
-	if (self.options.topBar.customViewName) {
-		UIView *reactView = [_creator createRootView:self.options.topBar.customViewName rootViewId:@"navBar"];
+	if (self.options.topBar.componentName) {
+		RCTRootView *reactView = (RCTRootView*)[_creator createRootView:self.options.topBar.componentName rootViewId:@"navBar"];
 		
-		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:nil];
+		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 		[self.navigationController.navigationBar addSubview:titleView];
+	}
+}
+
+- (void)setCustomNavigationComponentBackground {
+	if (self.options.topBar.backgroundComponentName) {
+		RCTRootView *reactView = (RCTRootView*)[_creator createRootView:self.options.topBar.backgroundComponentName rootViewId:@"navBarBackground"];
+		
+		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
+		[self.navigationController.navigationBar insertSubview:titleView atIndex:1];
 	}
 }
 
@@ -109,6 +118,14 @@
 		return self.navigationController.isNavigationBarHidden;
 	}
 	return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	if (self.options.statusBarStyle && [self.options.statusBarStyle isEqualToString:@"light"]) {
+		return UIStatusBarStyleLightContent;
+	} else {
+		return UIStatusBarStyleDefault;
+	}
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -164,27 +181,6 @@
 	[self.options.topTab applyOn:self];
 }
 
--(void)addExternalVC:(NSString*)className {
-	if (className != nil) {
-		Class class = NSClassFromString(className);
-		if (class != NULL) {
-			id obj = [[class alloc] init];
-			if (obj != nil && [obj isKindOfClass:[UIViewController class]]) {
-				UIViewController *viewController = (UIViewController*)obj;
-				[self addChildViewController:viewController];
-				self.view = [[UIView alloc] init];
-				self.view.backgroundColor = [UIColor whiteColor];
-				[self.view addSubview:viewController.view];
-			}
-			else {
-				NSLog(@"addExternalVC: could not create instance. Make sure that your class is a UIViewController whihc confirms to RCCExternalViewControllerProtocol");
-			}
-		}
-		else {
-			NSLog(@"addExternalVC: could not create class from string. Check that the proper class name wass passed in ExternalNativeScreenClass");
-		}
-	}
-}
 
 /**
  *	fix for #877, #878

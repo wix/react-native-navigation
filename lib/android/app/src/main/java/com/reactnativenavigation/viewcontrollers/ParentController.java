@@ -57,7 +57,7 @@ public abstract class ParentController<T extends ViewGroup> extends ViewControll
     }
 
     @CallSuper
-    public void applyOptions(Options options, Component childComponent) {
+    public void applyChildOptions(Options options, Component child) {
         mergeChildOptions(options);
     }
 

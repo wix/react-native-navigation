@@ -5,11 +5,13 @@ export class Commands {
   private nativeCommandsSender;
   private layoutTreeParser;
   private layoutTreeCrawler;
+  private optionsProcessor: OptionsProcessor;
 
   constructor(nativeCommandsSender, layoutTreeParser, layoutTreeCrawler) {
     this.nativeCommandsSender = nativeCommandsSender;
     this.layoutTreeParser = layoutTreeParser;
     this.layoutTreeCrawler = layoutTreeCrawler;
+    this.optionsProcessor = new OptionsProcessor(this.layoutTreeCrawler.store);
   }
 
   setRoot(simpleApi) {
@@ -21,13 +23,13 @@ export class Commands {
 
   setDefaultOptions(options) {
     const input = _.cloneDeep(options);
-    OptionsProcessor.processOptions(input, this.layoutTreeCrawler.store);
+    this.optionsProcessor.processOptions(input);
     this.nativeCommandsSender.setDefaultOptions(input);
   }
 
   setOptions(componentId, options) {
     const input = _.cloneDeep(options);
-    OptionsProcessor.processOptions(input, this.layoutTreeCrawler.store);
+    this.optionsProcessor.processOptions(input);
     this.nativeCommandsSender.setOptions(componentId, input);
   }
 
@@ -48,7 +50,7 @@ export class Commands {
 
   push(onComponentId, componentData) {
     const input = _.cloneDeep(componentData);
-    OptionsProcessor.processOptions(input, this.layoutTreeCrawler.store);
+    this.optionsProcessor.processOptions(input);
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);
     return this.nativeCommandsSender.push(onComponentId, layout);
@@ -68,7 +70,7 @@ export class Commands {
 
   showOverlay(componentData) {
     const input = _.cloneDeep(componentData);
-    OptionsProcessor.processOptions(input, this.layoutTreeCrawler.store);
+    this.optionsProcessor.processOptions(input);
 
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);

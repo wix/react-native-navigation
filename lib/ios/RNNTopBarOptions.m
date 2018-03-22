@@ -13,18 +13,22 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 
 @implementation RNNTopBarOptions
 
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super initWithDict:dict];
+	self.title = [RNNTitleOptions new];
+
+	return self;
+}
+
 - (void)applyOn:(UIViewController*)viewController {
+	[self.title applyOn:viewController];
 	if (self.backgroundColor) {
 		UIColor* backgroundColor = [RCTConvert UIColor:self.backgroundColor];
 		viewController.navigationController.navigationBar.barTintColor = backgroundColor;
 	} else {
 		viewController.navigationController.navigationBar.barTintColor = nil;
 	}
-	
-	if (self.title) {
-		viewController.navigationItem.title = self.title;
-	}
-	
+
 	if (@available(iOS 11.0, *)) {
 		if (self.largeTitle){
 			if ([self.largeTitle boolValue]) {
@@ -39,35 +43,16 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		}
 	}
 	
-	
-	if (self.textFontFamily || self.textFontSize || self.textColor) {
-		NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
-		if (self.textColor) {
-			navigationBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:[self valueForKey:@"textColor"]];
-		}
-		if (self.textFontFamily){
-			if(self.textFontSize) {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.textFontFamily size:[self.textFontSize floatValue]];
-			} else {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.textFontFamily size:20];
-			}
-		} else if (self.textFontSize) {
-			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.textFontSize floatValue]];
-		}
-		viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
-		if (@available(iOS 11.0, *)){
-			viewController.navigationController.navigationBar.largeTitleTextAttributes = navigationBarTitleTextAttributes;
-		}
-		
-	}
-	
-	
 	if (self.visible) {
 		[viewController.navigationController setNavigationBarHidden:![self.visible boolValue] animated:[self.animate boolValue]];
+	} else {
+		[viewController.navigationController setNavigationBarHidden:NO animated:NO];
 	}
 	
 	if (self.hideOnScroll) {
 		viewController.navigationController.hidesBarsOnSwipe = [self.hideOnScroll boolValue];
+	} else {
+		viewController.navigationController.hidesBarsOnSwipe = NO;
 	}
 	
 	if (self.buttonColor) {
@@ -128,6 +113,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	
 	if (self.translucent) {
 		viewController.navigationController.navigationBar.translucent = [self.translucent boolValue];
+	} else {
+		viewController.navigationController.navigationBar.translucent = NO;
 	}
 	
 	if (self.drawBehind) {
@@ -136,6 +123,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		} else {
 			viewController.edgesForExtendedLayout &= ~UIRectEdgeTop;
 		}
+	} else {
+		viewController.edgesForExtendedLayout = UIRectEdgeAll;
 	}
 	
 	if (self.noBorder) {
@@ -156,6 +145,26 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
 		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons];
 	}
+	
+	UIImage *image = self.backButtonImage ? [RCTConvert UIImage:self.backButtonImage] : nil;
+	[[UINavigationBar appearance] setBackIndicatorImage:image];
+	[[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:image];
+	
+	if (self.hideBackButtonTitle) {
+		self.backButtonTitle = @"";
+	}
+	
+	if (self.backButtonTitle) {
+		UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:self.backButtonTitle
+																	 style:UIBarButtonItemStylePlain
+																	target:nil
+																	action:nil];
+		
+		viewController.navigationItem.backBarButtonItem = backItem;
+	}
+	
+	viewController.navigationItem.hidesBackButton = [self.backButtonHidden boolValue];
+	
 }
 
 -(void)storeOriginalTopBarImages:(UIViewController*)viewController {

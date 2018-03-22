@@ -2,7 +2,6 @@ import { NativeModules } from 'react-native';
 
 export class NativeCommandsSender {
   private nativeCommandsModule;
-
   constructor() {
     this.nativeCommandsModule = NativeModules.RNNBridgeModule;
   }
@@ -12,16 +11,15 @@ export class NativeCommandsSender {
   }
 
   setDefaultOptions(options: object) {
-    this.nativeCommandsModule.setDefaultOptions(options);
+    return this.nativeCommandsModule.setDefaultOptions(options);
   }
 
   setOptions(componentId: string, options: object) {
-    this.nativeCommandsModule.setOptions(componentId, options);
+    return this.nativeCommandsModule.setOptions(componentId, options);
   }
 
-  async push(onComponentId: string, layout: object) {
-    const pushedComponentId = await this.nativeCommandsModule.push(onComponentId, layout);
-    return pushedComponentId;
+  push(onComponentId: string, layout: object) {
+    return this.nativeCommandsModule.push(onComponentId, layout);
   }
 
   pop(componentId: string, options: object) {
@@ -36,9 +34,8 @@ export class NativeCommandsSender {
     return this.nativeCommandsModule.popToRoot(componentId);
   }
 
-  async showModal(layout: object) {
-    const completed = await this.nativeCommandsModule.showModal(layout);
-    return completed;
+  showModal(layout: object) {
+    return this.nativeCommandsModule.showModal(layout);
   }
 
   dismissModal(componentId: string) {

@@ -6,10 +6,10 @@ import { ComponentRegistry } from './components/ComponentRegistry';
 import { Commands } from './commands/Commands';
 import { LayoutTreeParser } from './commands/LayoutTreeParser';
 import { LayoutTreeCrawler } from './commands/LayoutTreeCrawler';
-import { PublicEventsRegistry } from './events/PublicEventsRegistry';
+import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
 import { Element } from './adapters/Element';
-import { PrivateEventsListener } from './events/PrivateEventsListener';
+import { ComponentEventsRegistry } from './events/ComponentEventsRegistry';
 
 export class Navigation {
   public readonly Element;
@@ -22,7 +22,7 @@ export class Navigation {
   private readonly layoutTreeCrawler;
   private readonly nativeCommandsSender;
   private readonly commands;
-  private readonly publicEventsRegistry;
+  private readonly eventsRegistry;
 
   constructor() {
     this.Element = Element;
@@ -35,9 +35,9 @@ export class Navigation {
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler);
-    this.publicEventsRegistry = new PublicEventsRegistry(this.nativeEventsReceiver);
+    this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver);
 
-    new PrivateEventsListener(this.nativeEventsReceiver, this.store).listenAndHandlePrivateEvents();
+    new ComponentEventsRegistry(this.eventsRegistry, this.store).registerForAllComponents();
   }
 
   /**
@@ -135,7 +135,7 @@ export class Navigation {
   /**
    * Obtain the events registry instance
    */
-  public events(): PublicEventsRegistry {
-    return this.publicEventsRegistry;
+  public events(): EventsRegistry {
+    return this.eventsRegistry;
   }
 }

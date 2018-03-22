@@ -15,11 +15,11 @@ class LifecycleScreen extends Component {
     };
   }
 
-  didAppear() {
+  componentDidAppear() {
     this.setState({ text: 'didAppear' });
   }
 
-  didDisappear() {
+  componentDidDisappear() {
     alert('didDisappear'); // eslint-disable-line no-alert
   }
 

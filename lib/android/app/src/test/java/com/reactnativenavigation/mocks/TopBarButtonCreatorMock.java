@@ -3,7 +3,7 @@ package com.reactnativenavigation.mocks;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.react.TopBarReactButtonView;
+import com.reactnativenavigation.views.TopBarReactButtonView;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 
 import static org.mockito.Mockito.mock;

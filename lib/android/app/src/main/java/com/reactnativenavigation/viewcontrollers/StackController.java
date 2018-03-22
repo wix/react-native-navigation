@@ -14,6 +14,7 @@ import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -25,28 +26,30 @@ public class StackController extends ParentController <StackLayout> {
     private static final NoOpPromise NO_OP = new NoOpPromise();
     private final IdStack<ViewController> stack = new IdStack<>();
     private final NavigationAnimator animator;
-    private ReactViewCreator topBarButtonCreator;
+    private final ReactViewCreator topBarButtonCreator;
+    private final TitleBarReactViewCreator titleBarReactViewCreator;
 
-    public StackController(final Activity activity, ReactViewCreator topBarButtonCreator, String id, Options initialOptions) {
+    public StackController(final Activity activity, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, String id, Options initialOptions) {
         super(activity, id, initialOptions);
         animator = new NavigationAnimator(activity);
         this.topBarButtonCreator = topBarButtonCreator;
+        this.titleBarReactViewCreator = titleBarReactViewCreator;
     }
 
     public void applyOptions(Options options) {
         super.applyOptions(options);
-        getView().applyOptions(options);
+        getView().applyChildOptions(options);
     }
 
     @Override
-    public void applyOptions(Options options, Component component) {
-        super.applyOptions(options, component);
-        getView().applyOptions(this.options, component);
+    public void applyChildOptions(Options options, Component child) {
+        super.applyChildOptions(options, child);
+        getView().applyChildOptions(this.options, child);
         applyOnParentController(parentController ->
-                ((ParentController) parentController).applyOptions(this.options.copy().clearTopBarOptions(), component)
+                ((ParentController) parentController).applyChildOptions(this.options.copy().clearTopBarOptions(), child)
         );
-        if (component instanceof ReactComponent) {
-            fabOptionsPresenter.applyOptions(options.fabOptions, (ReactComponent) component, getView());
+        if (child instanceof ReactComponent) {
+            fabOptionsPresenter.applyOptions(options.fabOptions, (ReactComponent) child, getView());
         }
         animator.setOptions(options.animationsOptions);
     }
@@ -202,7 +205,7 @@ public class StackController extends ParentController <StackLayout> {
     @NonNull
     @Override
     protected StackLayout createView() {
-        return new StackLayout(getActivity(), topBarButtonCreator, this::sendOnNavigationButtonPressed);
+        return new StackLayout(getActivity(), topBarButtonCreator, titleBarReactViewCreator, this::sendOnNavigationButtonPressed);
     }
 
 	@NonNull
