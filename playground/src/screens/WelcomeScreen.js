@@ -272,7 +272,7 @@ class WelcomeScreen extends Component {
         children: [
           {
             component: {
-              name: 'navigation.playground.ModalScreen',
+              name: 'navigation.playground.ModalScreen'
             }
           }
         ]
