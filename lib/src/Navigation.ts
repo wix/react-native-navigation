@@ -9,7 +9,8 @@ import { LayoutTreeCrawler } from './commands/LayoutTreeCrawler';
 import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
 import { Element } from './adapters/Element';
-import { ComponentEventsRegistry } from './events/ComponentEventsRegistry';
+import { ComponentEventsObserver } from './events/ComponentEventsObserver';
+import { CommandsObserver } from './events/CommandsObserver';
 
 export class Navigation {
   public readonly Element;
@@ -23,6 +24,8 @@ export class Navigation {
   private readonly nativeCommandsSender;
   private readonly commands;
   private readonly eventsRegistry;
+  private readonly commandsObserver;
+  private readonly componentEventsObserver;
 
   constructor() {
     this.Element = Element;
@@ -34,10 +37,12 @@ export class Navigation {
     this.layoutTreeParser = new LayoutTreeParser();
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store);
     this.nativeCommandsSender = new NativeCommandsSender();
-    this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler);
-    this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver);
+    this.commandsObserver = new CommandsObserver();
+    this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler, this.commandsObserver);
+    this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver);
+    this.componentEventsObserver = new ComponentEventsObserver(this.eventsRegistry, this.store);
 
-    new ComponentEventsRegistry(this.eventsRegistry, this.store).registerForAllComponents();
+    this.componentEventsObserver.registerForAllComponents();
   }
 
   /**

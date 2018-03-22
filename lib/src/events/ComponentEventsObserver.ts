@@ -1,7 +1,7 @@
 import { EventsRegistry } from './EventsRegistry';
 import { Store } from '../components/Store';
 
-export class ComponentEventsRegistry {
+export class ComponentEventsObserver {
   constructor(private eventsRegistry: EventsRegistry, private store: Store) {
     this.componentDidAppear = this.componentDidAppear.bind(this);
     this.componentDidDisappear = this.componentDidDisappear.bind(this);

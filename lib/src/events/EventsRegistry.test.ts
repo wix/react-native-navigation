@@ -1,13 +1,15 @@
 import { EventsRegistry } from './EventsRegistry';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
+import { CommandsObserver } from './CommandsObserver';
 
 describe('EventsRegistry', () => {
   let uut: EventsRegistry;
-  let mockNativeEventsReceiver;
+  const mockNativeEventsReceiver = new NativeEventsReceiver();
+  let commandsObserver: CommandsObserver;
 
   beforeEach(() => {
-    mockNativeEventsReceiver = new NativeEventsReceiver();
-    uut = new EventsRegistry(mockNativeEventsReceiver);
+    commandsObserver = new CommandsObserver();
+    uut = new EventsRegistry(mockNativeEventsReceiver, commandsObserver);
   });
 
   it('exposes onAppLaunched event', () => {
@@ -62,5 +64,22 @@ describe('EventsRegistry', () => {
 
     mockNativeEventsReceiver.registerOnNavigationButtonPressed.mock.calls[0][0]({ componentId: 'theId', buttonId: 'theBtnId' });
     expect(cb).toHaveBeenCalledWith('theId', 'theBtnId');
+  });
+
+  it('exposes onNavigationCommand registers listener to commandObserver', () => {
+    const cb = jest.fn();
+    const result = uut.onNavigationCommand(cb);
+    expect(result).toBeDefined();
+    commandsObserver.notify('theCommandName', { x: 1 });
+    expect(cb).toHaveBeenCalledTimes(1);
+    expect(cb).toHaveBeenCalledWith('theCommandName', { x: 1 });
+  });
+
+  it('onNavigationCommand unregister', () => {
+    const cb = jest.fn();
+    const result = uut.onNavigationCommand(cb);
+    result.remove();
+    commandsObserver.notify('theCommandName', { x: 1 });
+    expect(cb).not.toHaveBeenCalled();
   });
 });

@@ -1,11 +1,12 @@
-import { EventSubscription, NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
+import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
+import { CommandsObserver } from './CommandsObserver';
+
+export interface EventSubscription {
+  remove();
+}
 
 export class EventsRegistry {
-  private nativeEventsReceiver: NativeEventsReceiver;
-
-  constructor(nativeEventsReceiver: NativeEventsReceiver) {
-    this.nativeEventsReceiver = nativeEventsReceiver;
-  }
+  constructor(private nativeEventsReceiver: NativeEventsReceiver, private commandsObserver: CommandsObserver) { }
 
   public onAppLaunched(callback: () => void): EventSubscription {
     return this.nativeEventsReceiver.registerOnAppLaunched(callback);
@@ -21,5 +22,9 @@ export class EventsRegistry {
 
   public onNavigationButtonPressed(callback: (componentId: string, buttonId: string) => void): EventSubscription {
     return this.nativeEventsReceiver.registerOnNavigationButtonPressed(({ componentId, buttonId }) => callback(componentId, buttonId));
+  }
+
+  public onNavigationCommand(callback: (name: string, params: any) => void): EventSubscription {
+    return this.commandsObserver.register(callback);
   }
 }

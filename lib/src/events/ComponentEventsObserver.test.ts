@@ -1,8 +1,8 @@
-import { ComponentEventsRegistry } from './ComponentEventsRegistry';
+import { ComponentEventsObserver } from './ComponentEventsObserver';
 import { Store } from '../components/Store';
 
 describe(`ComponentEventRegistry`, () => {
-  let uut: ComponentEventsRegistry;
+  let uut: ComponentEventsObserver;
   let eventRegistry;
   let store: Store;
   let mockComponentRef;
@@ -24,7 +24,7 @@ describe(`ComponentEventRegistry`, () => {
     store = new Store();
     store.setRefForId(refId, mockComponentRef);
 
-    uut = new ComponentEventsRegistry(eventRegistry, store);
+    uut = new ComponentEventsObserver(eventRegistry, store);
   });
 
   it('register for lifecycle events on eventRegistry', () => {
