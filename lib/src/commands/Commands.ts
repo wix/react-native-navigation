@@ -49,45 +49,62 @@ export class Commands {
     return result;
   }
 
-  public dismissModal(id) {
-    return this.nativeCommandsSender.dismissModal(id);
+  public dismissModal(componentId) {
+    const result = this.nativeCommandsSender.dismissModal(componentId);
+    this.commandsObserver.notify('dismissModal', { componentId });
+    return result;
   }
 
   public dismissAllModals() {
-    return this.nativeCommandsSender.dismissAllModals();
+    const result = this.nativeCommandsSender.dismissAllModals();
+    this.commandsObserver.notify('dismissAllModals', {});
+    return result;
   }
 
-  public push(onComponentId, componentData) {
-    const input = _.cloneDeep(componentData);
+  public push(componentId, simpleApi) {
+    const input = _.cloneDeep(simpleApi);
     this.optionsProcessor.processOptions(input);
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);
-    return this.nativeCommandsSender.push(onComponentId, layout);
+
+    const result = this.nativeCommandsSender.push(componentId, layout);
+    this.commandsObserver.notify('push', { componentId, layout });
+    return result;
   }
 
   public pop(componentId, options) {
-    return this.nativeCommandsSender.pop(componentId, options);
+    const result = this.nativeCommandsSender.pop(componentId, options);
+    this.commandsObserver.notify('pop', { componentId, options });
+    return result;
   }
 
   public popTo(componentId) {
-    return this.nativeCommandsSender.popTo(componentId);
+    const result = this.nativeCommandsSender.popTo(componentId);
+    this.commandsObserver.notify('popTo', { componentId });
+    return result;
   }
 
   public popToRoot(componentId) {
-    return this.nativeCommandsSender.popToRoot(componentId);
+    const result = this.nativeCommandsSender.popToRoot(componentId);
+    this.commandsObserver.notify('popToRoot', { componentId });
+    return result;
   }
 
-  public showOverlay(componentData) {
-    const input = _.cloneDeep(componentData);
+  public showOverlay(simpleApi) {
+    const input = _.cloneDeep(simpleApi);
     this.optionsProcessor.processOptions(input);
 
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);
 
-    return this.nativeCommandsSender.showOverlay(layout);
+    const result = this.nativeCommandsSender.showOverlay(layout);
+    this.commandsObserver.notify('showOverlay', { layout });
+    return result;
   }
 
   public dismissOverlay(componentId) {
-    return this.nativeCommandsSender.dismissOverlay(componentId);
+    const result = this.nativeCommandsSender.dismissOverlay(componentId);
+    this.commandsObserver.notify('dismissOverlay', { componentId });
+    return result;
   }
 }

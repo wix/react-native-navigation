@@ -333,37 +333,51 @@ describe('Commands', () => {
       });
     });
 
-    xit('notify on all commands', () => {
+    it('notify on all commands', () => {
       _.forEach(getAllMethodsOfUut(), (m) => {
         uut[m]();
       });
       expect(cb).toHaveBeenCalledTimes(getAllMethodsOfUut().length);
     });
 
-    it('setRoot', () => {
-      uut.setRoot({});
-      expect(cb).toHaveBeenCalledTimes(1);
-      expect(cb).toHaveBeenCalledWith('setRoot', { layout: 'parsed' });
-    });
-
-    it('setDefaultOptions', () => {
-      const options = { x: 1 };
-      uut.setDefaultOptions(options);
-      expect(cb).toHaveBeenCalledTimes(1);
-      expect(cb).toHaveBeenCalledWith('setDefaultOptions', { options });
-    });
-
-    it('setOptions', () => {
-      const options = { x: 1 };
-      uut.setOptions('compId', options);
-      expect(cb).toHaveBeenCalledTimes(1);
-      expect(cb).toHaveBeenCalledWith('setOptions', { componentId: 'compId', options });
-    });
-
-    it('showModal', () => {
-      uut.showModal({});
-      expect(cb).toHaveBeenCalledTimes(1);
-      expect(cb).toHaveBeenCalledWith('showModal', { layout: 'parsed' });
+    describe('passes correct params', () => {
+      const argsForMethodName = {
+        setRoot: [{}],
+        setDefaultOptions: [{}],
+        setOptions: ['id', {}],
+        showModal: [{}],
+        dismissModal: ['id'],
+        dismissAllModals: [],
+        push: ['id', {}],
+        pop: ['id', {}],
+        popTo: ['id'],
+        popToRoot: ['id'],
+        showOverlay: [{}],
+        dismissOverlay: ['id'],
+      };
+      const paramsForMethodName = {
+        setRoot: { layout: 'parsed' },
+        setDefaultOptions: { options: {} },
+        setOptions: { componentId: 'id', options: {} },
+        showModal: { layout: 'parsed' },
+        dismissModal: { componentId: 'id' },
+        dismissAllModals: {},
+        push: { componentId: 'id', layout: 'parsed' },
+        pop: { componentId: 'id', options: {} },
+        popTo: { componentId: 'id' },
+        popToRoot: { componentId: 'id' },
+        showOverlay: { layout: 'parsed' },
+        dismissOverlay: { componentId: 'id' },
+      };
+      _.forEach(getAllMethodsOfUut(), (m) => {
+        it(`for ${m}`, () => {
+          expect(argsForMethodName).toHaveProperty(m);
+          expect(paramsForMethodName).toHaveProperty(m);
+          _.invoke(uut, m, ...argsForMethodName[m]);
+          expect(cb).toHaveBeenCalledTimes(1);
+          expect(cb).toHaveBeenCalledWith(m, paramsForMethodName[m]);
+        });
+      });
     });
   });
 });
