@@ -111,7 +111,8 @@ public class StackControllerTest extends BaseTest {
                 uut.animatePop(new MockPromise() {
                     @Override
                     public void resolve(@Nullable Object value) {
-                        verify(stackLayout[0], times(1)).onChildWillDisappear(child2.options, child1.options);
+                        verify(stackLayout[0], times(1)).onChildWillDisappear(child2.options, child1.options, () -> {
+                        });
                     }
                 });
             }
@@ -364,7 +365,7 @@ public class StackControllerTest extends BaseTest {
         uut.animatePop(new MockPromise() {
             @Override
             public void resolve(@Nullable Object value) {
-                verify(uut.getTopBar(), times(1)).hide(child2.options.topBarOptions.animate);
+                verify(uut.getTopBar(), times(1)).hide();
             }
         });
     }
