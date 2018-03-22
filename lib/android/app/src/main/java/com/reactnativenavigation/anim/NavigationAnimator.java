@@ -3,16 +3,9 @@ package com.reactnativenavigation.anim;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-
-import com.reactnativenavigation.parse.AnimationsOptions;
-import com.reactnativenavigation.utils.UiUtils;
 
 @SuppressWarnings("ResourceType")
 public class NavigationAnimator extends BaseAnimator {
@@ -24,8 +17,8 @@ public class NavigationAnimator extends BaseAnimator {
     public void animatePush(final View view, @Nullable final AnimationListener animationListener) {
         view.setVisibility(View.INVISIBLE);
         AnimatorSet set;
-        if (options.push.hasValue()) {
-            set = options.push.getAnimation(view);
+        if (options.push.content.hasValue()) {
+            set = options.push.content.getAnimation(view);
         } else {
             set = getDefaultPushAnimation(view);
         }
@@ -47,8 +40,8 @@ public class NavigationAnimator extends BaseAnimator {
 
     public void animatePop(View view, @Nullable final AnimationListener animationListener) {
         AnimatorSet set;
-        if (options.pop.hasValue()) {
-            set = options.pop.getAnimation(view);
+        if (options.pop.content.hasValue()) {
+            set = options.pop.content.getAnimation(view);
         } else {
             set = getDefaultPopAnimation(view);
         }

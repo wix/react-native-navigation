@@ -7,6 +7,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
+import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.NullBool;
@@ -85,8 +86,8 @@ public class TopBarTest extends BaseTest {
     @Test
     public void show_animateShowUnlessSpecifiedOtherwise() throws Exception {
         uut.hide(new Bool(false));
-        uut.show(new NullBool());
-        verify(animator, times(1)).show();
+        uut.show();
+        verify(animator, times(1)).show(new AnimationOptions());
     }
 
     @Test

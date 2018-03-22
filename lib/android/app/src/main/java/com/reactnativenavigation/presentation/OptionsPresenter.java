@@ -2,6 +2,7 @@ package com.reactnativenavigation.presentation;
 
 import android.app.Activity;
 
+import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.TopBarOptions;
@@ -24,7 +25,7 @@ public class OptionsPresenter {
     public void applyChildOptions(Options options, Component child) {
         applyOrientation(options.orientationOptions);
         applyButtons(options.topBarOptions.leftButtons, options.topBarOptions.rightButtons);
-        applyTopBarOptions(options.topBarOptions, child);
+        applyTopBarOptions(options.topBarOptions, child, options.animationsOptions);
         applyTopTabsOptions(options.topTabsOptions);
         applyTopTabOptions(options.topTabOptions);
     }
@@ -33,9 +34,10 @@ public class OptionsPresenter {
         ((Activity) topBar.getContext()).setRequestedOrientation(options.getValue());
     }
 
-    private void applyTopBarOptions(TopBarOptions options, Component component) {
+    private void applyTopBarOptions(TopBarOptions options, Component component, AnimationsOptions animationOptions) {
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
-        if (options.title.component.hasValue()) topBar.setComponent(options.title.component.get(), options.title.alignment);
+        if (options.title.component.hasValue())
+            topBar.setComponent(options.title.component.get(), options.title.alignment);
         topBar.setBackgroundColor(options.background.color);
         topBar.setTitleTextColor(options.title.color);
         topBar.setTitleFontSize(options.title.fontSize);
@@ -43,10 +45,18 @@ public class OptionsPresenter {
 
         topBar.setTitleTypeface(options.title.fontFamily);
         if (options.visible.isFalse()) {
-            topBar.hide(options.animate);
+            if (options.animate.isTrueOrUndefined()) {
+                topBar.hideAnimate(animationOptions.pop.topBar);
+            } else {
+                topBar.hide();
+            }
         }
         if (options.visible.isTrueOrUndefined()) {
-            topBar.show(options.animate);
+            if (options.animate.isTrueOrUndefined()) {
+                topBar.showAnimate(animationOptions.push.topBar);
+            } else {
+                topBar.show();
+            }
         }
         if (options.drawBehind.isTrue()) {
             component.drawBehindTopBar();
@@ -80,7 +90,11 @@ public class OptionsPresenter {
 
     public void onChildWillDisappear(Options disappearing, Options appearing) {
         if (disappearing.topBarOptions.visible.isTrueOrUndefined() && appearing.topBarOptions.visible.isFalse()) {
-            topBar.hide(disappearing.topBarOptions.animate);
+            if (disappearing.topBarOptions.animate.isTrueOrUndefined()) {
+                topBar.hideAnimate(disappearing.animationsOptions.pop.topBar);
+            } else {
+                topBar.hide();
+            }
         }
     }
 }
