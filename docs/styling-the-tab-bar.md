@@ -45,3 +45,17 @@ Navigation.startTabBasedApp({
 ...
 }
 ```
+
+?> On iOS, you can avoid overriding the tab icons color with `tabBarButtonColor` and keep the original icons colors by using the settings below:
+
+```js
+Navigation.startTabBasedApp({
+  tabs: [...],
+  appStyle: {
+    ...
+    tabBarDisableIconTint: true,
+    tabBarDisableSelectedIconTint: true
+  },
+...
+}
+```
