@@ -121,4 +121,14 @@ public class Options implements DEFAULT_VALUES {
         sideMenuRootOptions = new SideMenuRootOptions();
         return this;
     }
+
+    public Options clearAnimationOptions() {
+        animationsOptions = new AnimationsOptions();
+        return this;
+    }
+
+    public Options clearFabOptions() {
+        fabOptions = new FabOptions();
+        return this;
+    }
 }

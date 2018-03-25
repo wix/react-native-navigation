@@ -127,4 +127,8 @@ public class FabOptions implements DEFAULT_VALUES {
             size = defaultOptions.size;
         }
     }
+
+    public boolean hasValue() {
+        return id.hasValue() || icon.hasValue();
+    }
 }

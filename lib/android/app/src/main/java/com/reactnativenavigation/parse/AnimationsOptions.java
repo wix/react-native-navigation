@@ -1,8 +1,6 @@
 package com.reactnativenavigation.parse;
 
 
-import android.util.Log;
-
 import org.json.JSONObject;
 
 public class AnimationsOptions {
@@ -26,7 +24,7 @@ public class AnimationsOptions {
     public AnimationOptions showModal = new AnimationOptions();
     public AnimationOptions dismissModal = new AnimationOptions();
 
-    void mergeWith(AnimationsOptions other) {
+    public void mergeWith(AnimationsOptions other) {
         push.mergeWith(other.push);
         pop.mergeWith(other.pop);
         startApp.mergeWith(other.startApp);

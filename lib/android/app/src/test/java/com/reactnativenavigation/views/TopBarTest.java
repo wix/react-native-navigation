@@ -92,7 +92,8 @@ public class TopBarTest extends BaseTest {
 
     @Test
     public void button_TitleBarButtonOnClickInvoked() throws Exception {
-        uut.setButtons(new ArrayList<>(), rightButtons);
+        uut.setLeftButtons(new ArrayList<>());
+        uut.setRightButtons(rightButtons);
         for (int i = 0; i < rightButtons.size(); i++) {
             Button rightButton = rightButtons.get(i);
             TitleBarHelper.getRightButton(uut.getTitleBar(), i).callOnClick();

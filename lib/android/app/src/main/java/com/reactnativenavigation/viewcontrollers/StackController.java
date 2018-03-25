@@ -31,7 +31,7 @@ public class StackController extends ParentController<StackLayout> {
 
     public StackController(final Activity activity, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, String id, Options initialOptions) {
         super(activity, id, initialOptions);
-        animator = new NavigationAnimator(activity);
+        animator = createAnimator();
         this.topBarButtonCreator = topBarButtonCreator;
         this.titleBarReactViewCreator = titleBarReactViewCreator;
     }
@@ -45,13 +45,32 @@ public class StackController extends ParentController<StackLayout> {
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
         getView().applyChildOptions(this.options, child);
-        applyOnParentController(parentController ->
-                ((ParentController) parentController).applyChildOptions(this.options.copy().clearTopBarOptions(), child)
-        );
         if (child instanceof ReactComponent) {
+            fabOptionsPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child, getView());
+        }
+        applyOnParentController(parentController ->
+                ((ParentController) parentController).applyChildOptions(
+                        this.options.copy().clearTopBarOptions().clearAnimationOptions().clearFabOptions(),
+                        child
+                )
+        );
+        animator.setOptions(options.animationsOptions);
+    }
+
+    @Override
+    public void mergeChildOptions(Options options, Component child) {
+        super.mergeChildOptions(options, child);
+        getView().mergeChildOptions(options, child);
+        animator.mergeOptions(options.animationsOptions);
+        if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
             fabOptionsPresenter.applyOptions(options.fabOptions, (ReactComponent) child, getView());
         }
-        animator.setOptions(options.animationsOptions);
+        applyOnParentController(parentController ->
+                ((ParentController) parentController).mergeChildOptions(
+                        options.copy().clearTopBarOptions().clearAnimationOptions().clearFabOptions(),
+                        child
+                )
+        );
     }
 
     @Override
@@ -224,6 +243,10 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void clearTopTabs() {
         getView().clearTopTabs();
+    }
+
+     NavigationAnimator createAnimator() {
+        return new NavigationAnimator(getActivity());
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

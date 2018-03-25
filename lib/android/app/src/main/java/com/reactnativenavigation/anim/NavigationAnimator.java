@@ -7,6 +7,8 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.reactnativenavigation.parse.AnimationsOptions;
+
 @SuppressWarnings("ResourceType")
 public class NavigationAnimator extends BaseAnimator {
 
@@ -54,5 +56,13 @@ public class NavigationAnimator extends BaseAnimator {
             }
         });
         set.start();
+    }
+
+    public void setOptions(AnimationsOptions options) {
+        this.options = options;
+    }
+
+    public void mergeOptions(AnimationsOptions options) {
+        this.options.mergeWith(options);
     }
 }

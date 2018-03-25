@@ -105,8 +105,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         topTabs.setVisibility(this, visible);
     }
 
-    public void setButtons(List<Button> leftButtons, List<Button> rightButtons) {
-        titleBar.setButtons(leftButtons, rightButtons);
+    public void setLeftButtons(List<Button> leftButtons) {
+        titleBar.setLeftButtons(leftButtons);
+    }
+
+    public void setRightButtons(List<Button> rightButtons) {
+        titleBar.setRightButtons(rightButtons);
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

@@ -63,4 +63,8 @@ public class StackLayout extends RelativeLayout {
     public TopBar getTopBar() {
         return topBar;
     }
+
+    public void mergeChildOptions(Options options, Component child) {
+        optionsPresenter.mergeChildOptions(options, child);
+    }
 }

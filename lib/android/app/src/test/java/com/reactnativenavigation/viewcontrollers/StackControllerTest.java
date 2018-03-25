@@ -5,25 +5,31 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
+import com.reactnativenavigation.parse.NestedAnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ViewHelper;
+import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
 
 import org.assertj.core.api.iterable.Extractor;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import javax.annotation.Nullable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -35,6 +41,7 @@ public class StackControllerTest extends BaseTest {
     private ViewController child1;
     private ViewController child2;
     private ViewController child3;
+    private NavigationAnimator animator;
 
     @Override
     public void beforeEach() {
@@ -453,12 +460,89 @@ public class StackControllerTest extends BaseTest {
         verify(child1, times(1)).sendOnNavigationButtonPressed("btn1");
     }
 
+    @Test
+    public void mergeChildOptions_updatesViewWithNewOptions() throws Exception {
+        final StackLayout[] stackLayout = new StackLayout[1];
+        StackController uut = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), "stack", new Options()) {
+            @NonNull
+            @Override
+            protected StackLayout createView() {
+                stackLayout[0] = spy(super.createView());
+                return stackLayout[0];
+            }
+        };
+        Options optionsToMerge = new Options();
+        Component component = mock(Component.class);
+        uut.mergeChildOptions(optionsToMerge, component);
+        verify(stackLayout[0], times(1)).mergeChildOptions(optionsToMerge, component);
+    }
+
+    @Test
+    public void mergeChildOptions_updatesParentControllerWithNewOptions() throws Exception {
+        final StackLayout[] stackLayout = new StackLayout[1];
+        StackController uut = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), "stack", new Options()) {
+            @NonNull
+            @Override
+            protected StackLayout createView() {
+                stackLayout[0] = spy(super.createView());
+                return stackLayout[0];
+            }
+        };
+        ParentController parentController = Mockito.mock(ParentController.class);
+        uut.setParentController(parentController);
+        Options optionsToMerge = new Options();
+        optionsToMerge.topBarOptions.testId = new Text("topBarID");
+        optionsToMerge.bottomTabsOptions.testId = new Text("bottomTabsID");
+        Component component = mock(Component.class);
+        uut.mergeChildOptions(optionsToMerge, component);
+
+        ArgumentCaptor<Options> captor = ArgumentCaptor.forClass(Options.class);
+        verify(parentController, times(1)).mergeChildOptions(captor.capture(), eq(component));
+        assertThat(captor.getValue().topBarOptions.testId.hasValue()).isFalse();
+        assertThat(captor.getValue().bottomTabsOptions.testId.get()).isEqualTo(optionsToMerge.bottomTabsOptions.testId.get());
+    }
+
+    @Test
+    public void mergeChildOptions_mergeAnimationOptions() throws Exception {
+        Options options = new Options();
+        Component component = mock(Component.class);
+
+        uut.mergeChildOptions(options, component);
+        verify(animator, times(0)).setOptions(options.animationsOptions);
+        verify(animator, times(1)).mergeOptions(options.animationsOptions);
+    }
+
+    @Test
+    public void mergeChildOptions_StackRelatedOptionsAreCleared() throws Exception {
+        ParentController parentController = Mockito.mock(ParentController.class);
+        uut.setParentController(parentController);
+        Options options = new Options();
+        options.animationsOptions.push = NestedAnimationsOptions.parse(new JSONObject());
+        options.topBarOptions.testId = new Text("id");
+        options.fabOptions.id = new Text("fabId");
+        Component component = mock(Component.class);
+
+        assertThat(options.fabOptions.hasValue()).isTrue();
+        uut.mergeChildOptions(options, component);
+        ArgumentCaptor<Options> captor = ArgumentCaptor.forClass(Options.class);
+        verify(parentController, times(1)).mergeChildOptions(captor.capture(), eq(component));
+        assertThat(captor.getValue().animationsOptions.push.hasValue()).isFalse();
+        assertThat(captor.getValue().topBarOptions.testId.hasValue()).isFalse();
+        assertThat(captor.getValue().fabOptions.hasValue()).isFalse();
+    }
+
     private void assertContainsOnlyId(String... ids) {
         assertThat(uut.size()).isEqualTo(ids.length);
         assertThat(uut.getChildControllers()).extracting((Extractor<ViewController, String>) ViewController::getId).containsOnly(ids);
     }
 
     private StackController createStackController(String id) {
-        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), id, new Options());
+        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), id, new Options()) {
+            @Override
+            NavigationAnimator createAnimator() {
+                animator = Mockito.mock(NavigationAnimator.class);
+                return animator;
+            }
+        };
     }
 }
