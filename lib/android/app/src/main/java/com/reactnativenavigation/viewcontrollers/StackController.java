@@ -15,6 +15,7 @@ import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.TopBar;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
+import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -28,12 +29,14 @@ public class StackController extends ParentController<StackLayout> {
     private final NavigationAnimator animator;
     private final ReactViewCreator topBarButtonCreator;
     private final TitleBarReactViewCreator titleBarReactViewCreator;
+    private TopBarBackgroundViewCreator topBarBackgroundViewCreator;
 
-    public StackController(final Activity activity, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, String id, Options initialOptions) {
+    public StackController(final Activity activity, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewCreator topBarBackgroundViewCreator, String id, Options initialOptions) {
         super(activity, id, initialOptions);
-        animator = new NavigationAnimator(activity);
+        animator = createAnimator();
         this.topBarButtonCreator = topBarButtonCreator;
         this.titleBarReactViewCreator = titleBarReactViewCreator;
+        this.topBarBackgroundViewCreator = topBarBackgroundViewCreator;
     }
 
     public void applyOptions(Options options) {
@@ -45,13 +48,32 @@ public class StackController extends ParentController<StackLayout> {
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
         getView().applyChildOptions(this.options, child);
-        applyOnParentController(parentController ->
-                ((ParentController) parentController).applyChildOptions(this.options.copy().clearTopBarOptions(), child)
-        );
         if (child instanceof ReactComponent) {
+            fabOptionsPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child, getView());
+        }
+        applyOnParentController(parentController ->
+                ((ParentController) parentController).applyChildOptions(
+                        this.options.copy().clearTopBarOptions().clearAnimationOptions().clearFabOptions(),
+                        child
+                )
+        );
+        animator.setOptions(options.animationsOptions);
+    }
+
+    @Override
+    public void mergeChildOptions(Options options, Component child) {
+        super.mergeChildOptions(options, child);
+        getView().mergeChildOptions(options, child);
+        animator.mergeOptions(options.animationsOptions);
+        if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
             fabOptionsPresenter.applyOptions(options.fabOptions, (ReactComponent) child, getView());
         }
-        animator.setOptions(options.animationsOptions);
+        applyOnParentController(parentController ->
+                ((ParentController) parentController).mergeChildOptions(
+                        options.copy().clearTopBarOptions().clearAnimationOptions().clearFabOptions(),
+                        child
+                )
+        );
     }
 
     @Override
@@ -207,7 +229,7 @@ public class StackController extends ParentController<StackLayout> {
     @NonNull
     @Override
     protected StackLayout createView() {
-        return new StackLayout(getActivity(), topBarButtonCreator, titleBarReactViewCreator, this::sendOnNavigationButtonPressed);
+        return new StackLayout(getActivity(), topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewCreator, this::sendOnNavigationButtonPressed);
     }
 
     @NonNull
@@ -224,6 +246,10 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void clearTopTabs() {
         getView().clearTopTabs();
+    }
+
+     NavigationAnimator createAnimator() {
+        return new NavigationAnimator(getActivity());
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

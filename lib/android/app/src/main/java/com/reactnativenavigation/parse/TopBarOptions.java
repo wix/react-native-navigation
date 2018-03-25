@@ -23,7 +23,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
         if (json == null) return options;
 
         options.title = TitleOptions.parse(typefaceManager, json.optJSONObject("title"));
-        options.background = TopBarBackground.parse(json.optJSONObject("background"));
+        options.background = TopBarBackgroundOptions.parse(json.optJSONObject("background"));
         options.visible = BoolParser.parse(json, "visible");
         options.animate = BoolParser.parse(json,"animate");
         options.hideOnScroll = BoolParser.parse(json,"hideOnScroll");
@@ -37,7 +37,7 @@ public class TopBarOptions implements DEFAULT_VALUES {
 
     public TitleOptions title = new TitleOptions();
     public Text testId = new NullText();
-    public TopBarBackground background = new TopBarBackground();
+    public TopBarBackgroundOptions background = new TopBarBackgroundOptions();
     public Bool visible = new NullBool();
     public Bool animate = new NullBool();
     public Bool hideOnScroll = new NullBool();

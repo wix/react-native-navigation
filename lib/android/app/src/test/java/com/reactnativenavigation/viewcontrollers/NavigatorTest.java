@@ -9,6 +9,7 @@ import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
@@ -249,7 +250,7 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private StackController newStack() {
-        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), "stack" + CompatUtils.generateViewId(), tabOptions);
+        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), "stack" + CompatUtils.generateViewId(), tabOptions);
     }
 
     @Test

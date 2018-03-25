@@ -18,6 +18,7 @@ import com.reactnativenavigation.views.ComponentViewCreator;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 import com.reactnativenavigation.views.TopBarButtonCreator;
 import com.reactnativenavigation.views.TopTabsLayoutCreator;
+import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,6 +123,7 @@ public class LayoutFactory {
         StackController stackController = new StackController(activity,
                 new TopBarButtonCreator(reactInstanceManager),
                 new TitleBarReactViewCreator(reactInstanceManager),
+                new TopBarBackgroundViewCreator(reactInstanceManager),
                 node.id,
                 getOptions(node)
         );

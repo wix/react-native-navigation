@@ -40,6 +40,20 @@ function start() {
               interpolation: 'accelerate'
             }
           },
+          bottomTabs: {
+            y: {
+              from: 1000,
+              to: 0,
+              duration: 500,
+              interpolation: 'decelerate',
+            },
+            alpha: {
+              from: 0,
+              to: 1,
+              duration: 500,
+              interpolation: 'decelerate'
+            }
+          },
           content: {
             y: {
               from: 1000,
@@ -57,6 +71,20 @@ function start() {
         },
         pop: {
           topBar: {
+            y: {
+              from: 0,
+              to: 100,
+              duration: 500,
+              interpolation: 'accelerate',
+            },
+            alpha: {
+              from: 1,
+              to: 0,
+              duration: 500,
+              interpolation: 'accelerate'
+            }
+          },
+          bottomTabs: {
             y: {
               from: 0,
               to: 100,

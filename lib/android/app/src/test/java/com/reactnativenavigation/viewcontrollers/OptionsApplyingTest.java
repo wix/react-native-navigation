@@ -11,6 +11,7 @@ import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
@@ -46,7 +47,7 @@ public class OptionsApplyingTest extends BaseTest {
                 (activity1, componentId, componentName) -> view,
                 initialNavigationOptions
         );
-        stackController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), "stack", new Options());
+        stackController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), "stack", new Options());
         stackController.ensureViewIsCreated();
         uut.setParentController(stackController);
     }
@@ -63,7 +64,7 @@ public class OptionsApplyingTest extends BaseTest {
     @Test
     public void initialOptionsAppliedOnAppear() throws Exception {
         uut.options.topBarOptions.title.text = new Text("the title");
-        StackController stackController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), "stackId", new Options());
+        StackController stackController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), "stackId", new Options());
         stackController.animatePush(uut, new MockPromise() {});
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
 
