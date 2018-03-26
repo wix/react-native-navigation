@@ -37,9 +37,7 @@ public class TopBarAnimator {
     }
 
     public void show(AnimationOptions options) {
-        if (options.hasValue() && options.id.hasValue() && options.id.get().equals(stackId)) {
-            showAnimator = options.getAnimation(topBar);
-        } else if (options.hasValue() && !options.id.hasValue()) {
+        if (options.hasValue() && (!options.id.hasValue() || options.id.get().equals(stackId))) {
             showAnimator = options.getAnimation(topBar);
         } else {
             showAnimator = getDefaultShowAnimator(-1 * topBar.getMeasuredHeight(), decelerateInterpolator, DURATION_TOPBAR);
@@ -72,9 +70,7 @@ public class TopBarAnimator {
     }
 
     public void hide(AnimationOptions options, AnimationListener listener) {
-        if (options.hasValue() && options.id.hasValue() && options.id.get().equals(stackId)) {
-            hideAnimator = options.getAnimation(topBar);
-        } else if (options.hasValue() && !options.id.hasValue()) {
+        if (options.hasValue() && (!options.id.hasValue() || options.id.get().equals(stackId))) {
             hideAnimator = options.getAnimation(topBar);
         } else {
             hideAnimator = getDefaultHideAnimator(0, accelerateInterpolator, DURATION_TOPBAR);
