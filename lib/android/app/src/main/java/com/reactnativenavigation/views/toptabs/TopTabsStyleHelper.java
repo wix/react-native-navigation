@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.toptabs;
 
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
@@ -9,6 +9,7 @@ import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.toptabs.TopTabs;
 
 class TopTabsStyleHelper {
     private TopTabs topTabs;

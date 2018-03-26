@@ -12,6 +12,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.ComponentOptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.views.topbar.TopBar;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;

@@ -13,6 +13,7 @@ import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.junit.Test;
 

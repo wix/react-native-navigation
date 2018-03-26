@@ -4,7 +4,7 @@ package com.reactnativenavigation.anim;
 import android.view.View;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.views.topbar.TopBar;
 
 public class TopBarCollapseBehavior implements ScrollEventListener.OnScrollListener, ScrollEventListener.OnDragListener {
     private TopBar topBar;

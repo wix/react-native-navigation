@@ -12,6 +12,7 @@ import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.views.topbar.TopBar;
 import com.reactnativenavigation.views.topbar.TopBarBackgroundView;
 
 import org.junit.Test;

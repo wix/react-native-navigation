@@ -131,7 +131,6 @@ class OptionsScreen extends Component {
             title: 'Two',
             icon: require('../../img/navicon_add.png'),
             disableIconTint: true,
-            // disabled: true,
             showAsAction: 'ifRoom',
             buttonColor: 'green',
             buttonFontSize: 28,

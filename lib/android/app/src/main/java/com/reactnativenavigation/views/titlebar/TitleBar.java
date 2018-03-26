@@ -30,14 +30,16 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class TitleBar extends Toolbar {
     private final ReactViewCreator buttonCreator;
     private TitleBarReactViewController reactViewController;
+    private final TitleBarReactViewCreator reactViewCreator;
     private final TopBarButtonController.OnClickListener onClickListener;
     private final List<TopBarButtonController> rightButtonControllers = new ArrayList<>();
     private TopBarButtonController leftButtonController;
 
-    public TitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewController reactViewController, TopBarButtonController.OnClickListener onClickListener) {
+    public TitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
         super(context);
         this.buttonCreator = buttonCreator;
-        this.reactViewController = reactViewController;
+        this.reactViewCreator = reactViewCreator;
+        reactViewController = new TitleBarReactViewController((Activity) context, reactViewCreator);
         this.onClickListener = onClickListener;
         getMenu();
         setContentDescription("titleBar");
@@ -61,7 +63,6 @@ public class TitleBar extends Toolbar {
         clearTitle();
         reactViewController.setComponent(componentName);
         addView(reactViewController.getView(), getComponentLayoutParams(alignment));
-        requestLayout();
     }
 
     public void setBackgroundColor(Color color) {
@@ -99,7 +100,7 @@ public class TitleBar extends Toolbar {
 
     private void clearComponent() {
         reactViewController.destroy();
-        reactViewController = new TitleBarReactViewController(reactViewController);
+        reactViewController = new TitleBarReactViewController((Activity) getContext(), reactViewCreator);
     }
 
     private void clearLeftButton() {

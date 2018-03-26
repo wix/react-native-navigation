@@ -13,7 +13,7 @@ import com.reactnativenavigation.utils.NoOpPromise;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
-import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.views.topbar.TopBar;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
 

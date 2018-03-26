@@ -11,7 +11,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.views.topbar.TopBar;
 
 import javax.annotation.Nullable;
 

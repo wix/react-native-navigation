@@ -11,8 +11,8 @@ import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.ViewVisibilityListenerAdapter;
 import com.reactnativenavigation.views.Component;
-import com.reactnativenavigation.views.TopTabsLayoutCreator;
-import com.reactnativenavigation.views.TopTabsViewPager;
+import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
+import com.reactnativenavigation.views.toptabs.TopTabsViewPager;
 
 import java.util.Collection;
 import java.util.List;

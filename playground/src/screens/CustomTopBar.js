@@ -16,6 +16,22 @@ class CustomTopBar extends Component {
     this.state = {};
   }
 
+  componentDidAppear() {
+    console.log('guyca', 'componentDidAppear');
+  }
+
+  componentDidDisappear() {
+    console.log('guyca', `componentDidDisappear`);
+  }
+
+  componentDidMount() {
+    console.log('guyca', `componentDidMount`);
+  }
+
+  componentWillUnmount() {
+    console.log('guyca', `componentWillUnmount`);
+  }
+
   render() {
     return (
       <View style={styles.container}>

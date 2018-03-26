@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.views.TopBarReactButtonView;
+import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 import com.reactnativenavigation.utils.ArrayUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
@@ -28,7 +28,7 @@ import com.reactnativenavigation.utils.ViewUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopBarButtonController extends ViewController<TopBarReactButtonView> implements MenuItem.OnMenuItemClickListener {
+public class TopBarButtonController extends ViewController<TitleBarReactButtonView> implements MenuItem.OnMenuItemClickListener {
     public interface OnClickListener {
         void onPress(String buttonId);
     }
@@ -62,9 +62,9 @@ public class TopBarButtonController extends ViewController<TopBarReactButtonView
 
     @NonNull
     @Override
-    protected TopBarReactButtonView createView() {
-        view = (TopBarReactButtonView) viewCreator.create(getActivity(), getId(), button.component.get());
-        return (TopBarReactButtonView) view.asView();
+    protected TitleBarReactButtonView createView() {
+        view = (TitleBarReactButtonView) viewCreator.create(getActivity(), getId(), button.component.get());
+        return (TitleBarReactButtonView) view.asView();
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.reactnativenavigation.parse.TitleOptions;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.react.ReactView;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.titlebar.TitleBarReactView;
 
@@ -38,16 +39,15 @@ public class TitleBarTest extends BaseTest {
     private Button textButton;
     private Button customButton;
     private Map<String, TopBarButtonController> buttonControllers;
-    private TitleBarReactViewController reactViewController;
 
     @Override
     public void beforeEach() {
         final TopBarButtonCreatorMock buttonCreator = new TopBarButtonCreatorMock();
         final Activity activity = newActivity();
-        reactViewController = spy(new TitleBarReactViewController(activity, new TitleBarReactViewCreatorMock()));
         createButtons();
         buttonControllers = new HashMap<>();
-        uut = spy(new TitleBar(activity, buttonCreator, reactViewController, (buttonId -> {})) {
+        TitleBarReactViewCreatorMock reactViewCreator = new TitleBarReactViewCreatorMock();
+        uut = spy(new TitleBar(activity, buttonCreator, reactViewCreator, (buttonId -> {})) {
             @Override
             public TopBarButtonController createButtonController(Button button) {
                 TopBarButtonController controller = spy(super.createButtonController(button));
@@ -169,11 +169,12 @@ public class TitleBarTest extends BaseTest {
 
     @Test
     public void clear() throws Exception {
+        uut.setComponent("someComponent", TitleOptions.Alignment.Center);
         uut.clear();
         assertThat(uut.getTitle()).isNullOrEmpty();
         assertThat(uut.getMenu().size()).isZero();
         assertThat(uut.getNavigationIcon()).isNull();
-        verify(reactViewController, times(1)).destroy();
+        assertThat(ViewUtils.findChildrenByClassRecursive(uut, TitleBarReactView.class).size()).isZero();
     }
 
     private List<Button> leftButton(Button leftButton) {

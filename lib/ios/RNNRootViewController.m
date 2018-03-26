@@ -80,6 +80,8 @@
         reactView.backgroundColor = UIColor.clearColor;
 		titleView.backgroundColor = UIColor.clearColor;
 		self.navigationItem.titleView = titleView;
+	} if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]]) {
+		self.navigationItem.title = nil;
 	}
 }
 
@@ -91,6 +93,8 @@
 		reactView.backgroundColor = UIColor.clearColor;
 		titleView.backgroundColor = UIColor.clearColor;
 		[self.navigationController.navigationBar addSubview:titleView];
+	} else if ([[self.navigationController.navigationBar.subviews lastObject] isKindOfClass:[RNNCustomTitleView class]]) {
+		[[self.navigationController.navigationBar.subviews lastObject] removeFromSuperview];
 	}
 }
 
@@ -101,6 +105,9 @@
 		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 		[self.navigationController.navigationBar insertSubview:titleView atIndex:1];
 		self.navigationController.navigationBar.clipsToBounds = YES;
+	} else if ([[self.navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
+		[[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
+		self.navigationController.navigationBar.clipsToBounds = NO;
 	}
 }
 

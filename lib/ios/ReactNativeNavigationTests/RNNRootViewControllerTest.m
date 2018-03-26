@@ -47,7 +47,7 @@
 
 -(void)testTopBarBackgroundColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.topBar.backgroundColor = inputColor;
+	self.options.topBar.background.color = inputColor;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
@@ -57,7 +57,7 @@
 
 -(void)testTopBarBackgroundColorWithoutNavigationController{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.topBar.backgroundColor = inputColor;
+	self.options.topBar.background.color = inputColor;
 	
 	XCTAssertNoThrow([self.uut viewWillAppear:false]);
 }

@@ -12,6 +12,10 @@
 	return NO;
 }
 
+- (BOOL)isCustomViewController {
+	return [((UIViewController<RNNRootViewProtocol>*)self.topViewController) isCustomViewController];
+}
+
 - (BOOL)isAnimated {
 	UIViewController<RNNRootViewProtocol>* rootVC = (UIViewController<RNNRootViewProtocol>*) self.topViewController;
 	return rootVC.isAnimated;

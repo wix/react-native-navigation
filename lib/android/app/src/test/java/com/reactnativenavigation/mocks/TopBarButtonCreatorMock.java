@@ -3,7 +3,7 @@ package com.reactnativenavigation.mocks;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.views.TopBarReactButtonView;
+import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 
 import static org.mockito.Mockito.mock;
@@ -11,9 +11,9 @@ import static org.mockito.Mockito.mock;
 public class TopBarButtonCreatorMock implements ReactViewCreator {
 
     @Override
-    public TopBarReactButtonView create(Activity activity, String componentId, String componentName) {
+    public TitleBarReactButtonView create(Activity activity, String componentId, String componentName) {
         final ReactInstanceManager reactInstanceManager = mock(ReactInstanceManager.class);
-        return new TopBarReactButtonView(activity, reactInstanceManager, componentId, componentName) {
+        return new TitleBarReactButtonView(activity, reactInstanceManager, componentId, componentName) {
             @Override
             public void sendComponentStart() {
 

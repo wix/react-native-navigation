@@ -16,7 +16,7 @@ public class TitleBarReactView extends ReactView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(
-                getChildCount() > 0 ? MeasureSpec.makeMeasureSpec(getChildAt(0).getWidth(), MeasureSpec.EXACTLY) : widthMeasureSpec,
+                (getChildCount() > 0 && getChildAt(0).getWidth() > 0) ? MeasureSpec.makeMeasureSpec(getChildAt(0).getWidth(), MeasureSpec.EXACTLY) : widthMeasureSpec,
                 heightMeasureSpec
         );
     }

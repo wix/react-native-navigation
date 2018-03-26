@@ -12,13 +12,15 @@ public class TitleBarReactViewController extends ViewController<TitleBarReactVie
     private final TitleBarReactViewCreator reactViewCreator;
     private String componentName;
 
-    public TitleBarReactViewController(TitleBarReactViewController reactViewController) {
-        this(reactViewController.getActivity(), reactViewController.reactViewCreator);
-    }
-
     public TitleBarReactViewController(Activity activity, TitleBarReactViewCreator reactViewCreator) {
         super(activity, CompatUtils.generateViewId() + "", new Options());
         this.reactViewCreator = reactViewCreator;
+    }
+
+    @Override
+    public void onViewAppeared() {
+        super.onViewAppeared();
+        runOnPreDraw(view -> view.setLayoutParams(view.getLayoutParams()));
     }
 
     @Override

@@ -15,8 +15,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super initWithDict:dict];
-	self.title = [RNNTitleOptions new];
-	self.background = [RNNBackgrounOptions new];
+	self.title = [[RNNTitleOptions alloc] initWithDict:dict[@"title"]];
+	self.background = [[RNNBackgrounOptions alloc] initWithDict:dict[@"background"]];
 	
 	return self;
 }

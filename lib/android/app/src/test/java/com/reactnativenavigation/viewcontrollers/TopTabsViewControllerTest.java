@@ -17,8 +17,8 @@ import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
 import com.reactnativenavigation.views.ReactComponent;
-import com.reactnativenavigation.views.TopTabsLayoutCreator;
-import com.reactnativenavigation.views.TopTabsViewPager;
+import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
+import com.reactnativenavigation.views.toptabs.TopTabsViewPager;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

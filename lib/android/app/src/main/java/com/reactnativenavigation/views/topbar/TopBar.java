@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.topbar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -26,12 +26,11 @@ import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
-import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.views.toptabs.TopTabs;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
-import com.reactnativenavigation.views.topbar.TopBarBackgroundView;
-import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
 
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
         return new TitleBar(context,
                 buttonCreator,
-                new TitleBarReactViewController((Activity) context, reactViewCreator),
+                reactViewCreator,
                 onClickListener
         );
     }
@@ -101,7 +100,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setTitleTypeface(typeface);
     }
 
-    public void setComponent(String componentName, TitleOptions.Alignment alignment) {
+    public void setTitleComponent(String componentName, TitleOptions.Alignment alignment) {
         titleBar.setComponent(componentName, alignment);
     }
 

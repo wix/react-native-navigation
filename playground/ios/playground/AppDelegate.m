@@ -22,8 +22,8 @@
 	NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 	[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
 	
-	[ReactNativeNavigation registerExternalComponent:@"RNNCustomComponent" callback:^UIViewController *{
-		return [[RNNCustomViewController alloc] init];
+	[ReactNativeNavigation registerExternalComponent:@"RNNCustomComponent" callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
+		return [[RNNCustomViewController alloc] initWithProps:props];
 	}];
 	
 	/*

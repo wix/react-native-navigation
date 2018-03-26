@@ -13,6 +13,7 @@ import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
+import com.reactnativenavigation.views.topbar.TopBar;
 import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;

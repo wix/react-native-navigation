@@ -15,7 +15,7 @@ import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -137,7 +137,7 @@ public class OptionsMergingTest extends BaseTest {
 
     private void assertTopBarOptions(int t) {
         verify(topBar, times(t)).setTitle(any());
-        verify(topBar, times(t)).setComponent(any(), any());
+        verify(topBar, times(t)).setTitleComponent(any(), any());
         verify(topBar, times(t)).setBackgroundColor(any());
         verify(topBar, times(t)).setTitleTextColor(any());
         verify(topBar, times(t)).setTitleFontSize(any());
