@@ -20,6 +20,12 @@
   "main": "src/index.js",
   "scripts": {
     "build": ":",
+    "clean": ":",
+    "test-js": "npm run test",
+    "test-unit-ios": ":",
+    "test-unit-android": ":",
+    "test-e2e-ios": ":",
+    "test-e2e-android": ":",
     "lint": "eslint src test",
     "test:js": "jest --coverage",
     "test:android": "cd android && ./gradlew clean testDebugUnitTest",

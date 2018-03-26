@@ -26,7 +26,7 @@
         
         self.backgroundColor = [UIColor clearColor];
         self.subView.backgroundColor = [UIColor clearColor];
-        
+                
         if ([alignment isEqualToString:@"fill"]) {
             self.frame = frame;
             subView.sizeFlexibility = RCTRootViewSizeFlexibilityNone;
@@ -54,7 +54,7 @@
 
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
     if ([self.alignment isEqualToString:@"center"]) {
-        [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.subView.intrinsicContentSize.width, self.subView.intrinsicContentSize.height)];
+        [self setFrame:CGRectMake(self.frame.origin.x - rootView.intrinsicContentSize.width / 2, self.frame.origin.y - rootView.intrinsicContentSize.height / 2, rootView.intrinsicContentSize.width, rootView.intrinsicContentSize.height)];
         [self.subView setFrame:CGRectMake(0, 0, rootView.intrinsicContentSize.width, rootView.intrinsicContentSize.height)];
     }
 }
