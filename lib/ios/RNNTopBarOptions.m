@@ -16,19 +16,15 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super initWithDict:dict];
 	self.title = [RNNTitleOptions new];
-
+	self.background = [RNNBackgrounOptions new];
+	
 	return self;
 }
 
 - (void)applyOn:(UIViewController*)viewController {
 	[self.title applyOn:viewController];
-	if (self.backgroundColor) {
-		UIColor* backgroundColor = [RCTConvert UIColor:self.backgroundColor];
-		viewController.navigationController.navigationBar.barTintColor = backgroundColor;
-	} else {
-		viewController.navigationController.navigationBar.barTintColor = nil;
-	}
-
+	[self.background applyOn:viewController];
+	
 	if (@available(iOS 11.0, *)) {
 		if (self.largeTitle){
 			if ([self.largeTitle boolValue]) {

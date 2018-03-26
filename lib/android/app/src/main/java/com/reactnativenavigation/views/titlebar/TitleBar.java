@@ -43,6 +43,12 @@ public class TitleBar extends Toolbar {
         setContentDescription("titleBar");
     }
 
+    @Override
+    public void setTitle(CharSequence title) {
+        clearComponent();
+        super.setTitle(title);
+    }
+
     public String getTitle() {
         return super.getTitle() == null ? "" : (String) super.getTitle();
     }
@@ -52,8 +58,10 @@ public class TitleBar extends Toolbar {
     }
 
     public void setComponent(String componentName, TitleOptions.Alignment alignment) {
+        clearTitle();
         reactViewController.setComponent(componentName);
         addView(reactViewController.getView(), getComponentLayoutParams(alignment));
+        requestLayout();
     }
 
     public void setBackgroundColor(Color color) {
@@ -79,10 +87,14 @@ public class TitleBar extends Toolbar {
     }
 
     public void clear() {
-        setTitle(null);
+        clearTitle();
         clearRightButtons();
         clearLeftButton();
         clearComponent();
+    }
+
+    private void clearTitle() {
+        setTitle(null);
     }
 
     private void clearComponent() {
@@ -106,12 +118,7 @@ public class TitleBar extends Toolbar {
         getMenu().clear();
     }
 
-    public void setButtons(List<Button> leftButtons, List<Button> rightButtons) {
-        setLeftButtons(leftButtons);
-        setRightButtons(rightButtons);
-    }
-
-    private void setLeftButtons(List<Button> leftButtons) {
+    public void setLeftButtons(List<Button> leftButtons) {
         if (leftButtons == null) return;
         if (leftButtons.isEmpty()) {
             clearLeftButton();

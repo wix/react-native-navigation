@@ -6,6 +6,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.views.StackLayout;
@@ -27,7 +28,7 @@ public class ComponentViewControllerTest extends BaseTest {
         super.beforeEach();
         Activity activity = newActivity();
         view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
-        ParentController<StackLayout> parentController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), "stack", new Options());
+        ParentController<StackLayout> parentController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), "stack", new Options());
         uut = new ComponentViewController(activity, "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options());
         uut.setParentController(parentController);
         parentController.ensureViewIsCreated();

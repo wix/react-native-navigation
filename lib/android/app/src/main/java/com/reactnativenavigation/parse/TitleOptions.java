@@ -82,7 +82,7 @@ public class TitleOptions {
     private static void validate(TitleOptions options) {
         if (options.component.hasValue() && options.text.hasValue()) {
             if (BuildConfig.DEBUG) Log.w("RNN", "A screen can't use both text and component - clearing text.");
-            options.text = new Text("");
+            options.text = new NullText();
         }
     }
 }

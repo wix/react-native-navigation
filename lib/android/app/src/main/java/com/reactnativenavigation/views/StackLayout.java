@@ -13,6 +13,7 @@ import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
+import com.reactnativenavigation.views.topbar.TopBarBackgroundViewCreator;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -23,16 +24,17 @@ public class StackLayout extends RelativeLayout {
     private String stackId;
     private final OptionsPresenter optionsPresenter;
 
-    public StackLayout(Context context, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarButtonController.OnClickListener topBarButtonClickListener, String stackId) {
+    public StackLayout(Context context, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewCreator topBarBackgroundViewCreator, TopBarButtonController.OnClickListener topBarButtonClickListener, String stackId) {
         super(context);
+        createLayout(topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewCreator, topBarButtonClickListener);
         this.stackId = stackId;
-        createLayout(topBarButtonCreator, titleBarReactViewCreator, topBarButtonClickListener);
+        createLayout(topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewCreator, topBarButtonClickListener);
         optionsPresenter = new OptionsPresenter(topBar);
         setContentDescription("StackLayout");
     }
 
-    private void createLayout(ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarButtonController.OnClickListener topBarButtonClickListener) {
-        topBar = new TopBar(getContext(), topBarButtonCreator, titleBarReactViewCreator, topBarButtonClickListener, this);
+    private void createLayout(ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewCreator BackgroundViewCreator, TopBarButtonController.OnClickListener topBarButtonClickListener) {
+        topBar = new TopBar(getContext(), buttonCreator, titleBarReactViewCreator, BackgroundViewCreator, topBarButtonClickListener, this);
         topBar.setId(CompatUtils.generateViewId());
         addView(topBar, MATCH_PARENT, WRAP_CONTENT);
     }
@@ -64,6 +66,10 @@ public class StackLayout extends RelativeLayout {
     @RestrictTo(RestrictTo.Scope.TESTS)
     public TopBar getTopBar() {
         return topBar;
+    }
+
+    public void mergeChildOptions(Options options, Component child) {
+        optionsPresenter.mergeChildOptions(options, child);
     }
 
     public String getStackId() {

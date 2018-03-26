@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.params.Button;
@@ -30,6 +31,7 @@ public class TopBarTest extends BaseTest {
     private ArrayList<Button> rightButtons;
     private TopBarButtonController.OnClickListener onClickListener;
 
+    @SuppressWarnings("Convert2Lambda")
     @Override
     public void beforeEach() {
         onClickListener = spy(new TopBarButtonController.OnClickListener() {
@@ -38,8 +40,8 @@ public class TopBarTest extends BaseTest {
                 Log.i("TopBarTest", "onPress: " + buttonId);
             }
         });
-        StackLayout parent = new StackLayout(newActivity(), new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), this.onClickListener, null);
-        uut = new TopBar(newActivity(), new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), this.onClickListener, parent);
+        StackLayout parent = new StackLayout(newActivity(), new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), this.onClickListener, null);
+        uut = new TopBar(newActivity(), new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), this.onClickListener, parent);
         animator = spy(new TopBarAnimator(uut));
         uut.setAnimator(animator);
         leftButton = createLeftButton();
@@ -92,7 +94,8 @@ public class TopBarTest extends BaseTest {
 
     @Test
     public void button_TitleBarButtonOnClickInvoked() throws Exception {
-        uut.setButtons(new ArrayList<>(), rightButtons);
+        uut.setLeftButtons(new ArrayList<>());
+        uut.setRightButtons(rightButtons);
         for (int i = 0; i < rightButtons.size(); i++) {
             Button rightButton = rightButtons.get(i);
             TitleBarHelper.getRightButton(uut.getTitleBar(), i).callOnClick();

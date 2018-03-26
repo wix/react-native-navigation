@@ -30,4 +30,8 @@ public class NestedAnimationsOptions {
         bottomTabs.mergeWithDefault(defaultOptions.bottomTabs);
         topBar.mergeWithDefault(defaultOptions.topBar);
     }
+
+    public boolean hasValue() {
+        return topBar.hasValue() || content.hasValue() || bottomTabs.hasValue();
+    }
 }

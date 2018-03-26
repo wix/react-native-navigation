@@ -73,20 +73,23 @@ public class TitleBarTest extends BaseTest {
 
     @Test
     public void setButton_setsTextButton() {
-        uut.setButtons(leftButton(leftButton), rightButtons(textButton));
+        uut.setRightButtons(rightButtons(textButton));
+        uut.setLeftButtons(leftButton(leftButton));
         assertThat(uut.getMenu().getItem(0).getTitle()).isEqualTo(textButton.title.get());
     }
 
     @Test
     public void setButton_setsCustomButton() {
-        uut.setButtons(leftButton(leftButton), rightButtons(customButton));
+        uut.setLeftButtons(leftButton(leftButton));
+        uut.setRightButtons(rightButtons(customButton));
         ReactView btnView = (ReactView) uut.getMenu().getItem(0).getActionView();
         assertThat(btnView.getComponentName()).isEqualTo(customButton.component.get());
     }
 
     @Test
     public void destroy_destroysButtonControllers() throws Exception {
-        uut.setButtons(leftButton(leftButton), rightButtons(customButton, textButton));
+        uut.setLeftButtons(leftButton(leftButton));
+        uut.setRightButtons(rightButtons(customButton, textButton));
         uut.clear();
         for (TopBarButtonController controller : buttonControllers.values()) {
             verify(controller, times(1)).destroy();
@@ -95,22 +98,28 @@ public class TitleBarTest extends BaseTest {
 
     @Test
     public void setRightButtons_destroysRightButtons() throws Exception {
-        uut.setButtons(leftButton(leftButton), rightButtons(customButton));
-        uut.setButtons(leftButton(leftButton), rightButtons(textButton));
+        uut.setLeftButtons(leftButton(leftButton));
+        uut.setRightButtons(rightButtons(customButton));
+        uut.setLeftButtons(leftButton(leftButton));
+        uut.setRightButtons(rightButtons(textButton));
         verify(buttonControllers.get(customButton.id), times(1)).destroy();
     }
 
     @Test
     public void setRightButtons_onlyDestroysRightButtons() throws Exception {
-        uut.setButtons(leftButton(leftButton), rightButtons(customButton));
-        uut.setButtons(null, rightButtons(textButton));
+        uut.setLeftButtons(leftButton(leftButton));
+        uut.setRightButtons(rightButtons(customButton));
+        uut.setLeftButtons(null);
+        uut.setRightButtons(rightButtons(textButton));
         verify(buttonControllers.get(leftButton.id), times(0)).destroy();
     }
 
     @Test
     public void setRightButtons_emptyButtonsListClearsRightButtons() throws Exception {
-        uut.setButtons(new ArrayList<>(), rightButtons(customButton, textButton));
-        uut.setButtons(new ArrayList<>(), new ArrayList<>());
+        uut.setLeftButtons(new ArrayList<>());
+        uut.setRightButtons(rightButtons(customButton, textButton));
+        uut.setLeftButtons(new ArrayList<>());
+        uut.setRightButtons(new ArrayList<>());
         for (TopBarButtonController controller : buttonControllers.values()) {
             verify(controller, times(1)).destroy();
         }
@@ -119,14 +128,17 @@ public class TitleBarTest extends BaseTest {
 
     @Test
     public void setLeftButtons_emptyButtonsListClearsLeftButton() throws Exception {
-        uut.setButtons(leftButton(leftButton), rightButtons(customButton));
-        uut.setButtons(new ArrayList<>(), rightButtons(textButton));
+        uut.setLeftButtons(leftButton(leftButton));
+        uut.setRightButtons(rightButtons(customButton));
+        uut.setLeftButtons(new ArrayList<>());
+        uut.setRightButtons(rightButtons(textButton));
         verify(buttonControllers.get(leftButton.id), times(1)).destroy();
     }
 
     @Test
     public void setRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() throws Exception {
-        uut.setButtons(new ArrayList<>(), rightButtons(textButton, customButton));
+        uut.setLeftButtons(new ArrayList<>());
+        uut.setRightButtons(rightButtons(textButton, customButton));
         assertThat(uut.getMenu().getItem(1).getTitle()).isEqualTo(textButton.title.get());
     }
 

@@ -24,6 +24,9 @@ class OptionsScreen extends Component {
           fontFamily: 'HelveticaNeue-Italic',
           largeTitle: false
         },
+        background: {
+          component: 'TopBarBackground'
+        },
         ...Platform.select({
           android: { drawBehind: true },
           ios: { drawBehind: false, }

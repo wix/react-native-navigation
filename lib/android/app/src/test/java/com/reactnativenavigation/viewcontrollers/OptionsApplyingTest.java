@@ -11,12 +11,17 @@ import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.TopBarBackgroundOptions;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.topbar.TopBarBackgroundView;
 
+import org.json.JSONObject;
 import org.junit.Test;
 
 import javax.annotation.Nullable;
@@ -46,7 +51,7 @@ public class OptionsApplyingTest extends BaseTest {
                 (activity1, componentId, componentName) -> view,
                 initialNavigationOptions
         );
-        stackController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), "stack", new Options());
+        stackController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), "stack", new Options());
         stackController.ensureViewIsCreated();
         uut.setParentController(stackController);
     }
@@ -63,7 +68,7 @@ public class OptionsApplyingTest extends BaseTest {
     @Test
     public void initialOptionsAppliedOnAppear() throws Exception {
         uut.options.topBarOptions.title.text = new Text("the title");
-        StackController stackController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), "stackId", new Options());
+        StackController stackController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), "stackId", new Options());
         stackController.animatePush(uut, new MockPromise() {});
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
 
@@ -175,5 +180,18 @@ public class OptionsApplyingTest extends BaseTest {
                 assertThat(uutLayoutParams.getRule(BELOW)).isNotEqualTo(stackController.getTopBar().getId());
             }
         });
+    }
+
+    @Test
+    public void appliesTopBarComponent() throws Exception {
+        JSONObject json = new JSONObject();
+        json.put("component", "someComponent");
+        uut.options.topBarOptions.background = TopBarBackgroundOptions.parse(json);
+        uut.ensureViewIsCreated();
+        stackController.push(uut, new MockPromise());
+        uut.onViewAppeared();
+
+        assertThat(((ColorDrawable) stackController.getTopBar().getTitleBar().getBackground()).getColor()).isEqualTo(Color.TRANSPARENT);
+        assertThat(ViewUtils.findChildrenByClassRecursive(stackController.getTopBar(), TopBarBackgroundView.class)).isNotNull();
     }
 }

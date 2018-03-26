@@ -58,7 +58,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.viewVisibilityListener = viewVisibilityListener;
     }
 
-    @SuppressWarnings("WeakerAccess")
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     public void ensureViewIsCreated() {
         getView();
@@ -107,7 +106,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         }
     }
 
-    @NonNull
     public T getView() {
         if (view == null) {
             if (isDestroyed) {

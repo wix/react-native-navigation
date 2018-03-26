@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Button;
@@ -29,7 +30,7 @@ public class TopBarButtonControllerTest extends BaseTest {
 
         TopBarButtonCreatorMock buttonCreatorMock = new TopBarButtonCreatorMock();
         uut = spy(new TopBarButtonController(activity, button, buttonCreatorMock, (buttonId) -> {}));
-        stackController = spy(new StackController(activity, buttonCreatorMock, new TitleBarReactViewCreatorMock(), "stack", new Options()));
+        stackController = spy(new StackController(activity, buttonCreatorMock, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), "stack", new Options()));
 
     }
 

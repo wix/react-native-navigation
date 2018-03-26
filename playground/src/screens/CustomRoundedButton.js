@@ -34,8 +34,6 @@ module.exports = CustomRoundedButton;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: 48,
-    height: 48,
     backgroundColor: 'transparent',
     flexDirection: 'column',
     justifyContent: 'center',

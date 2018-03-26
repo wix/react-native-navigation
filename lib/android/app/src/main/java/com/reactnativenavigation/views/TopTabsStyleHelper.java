@@ -25,8 +25,6 @@ class TopTabsStyleHelper {
     }
 
     void applyTopTabsColors(Color selected, Color unselected) {
-        if (!selected.hasValue() && !unselected.hasValue()) return;
-
         ColorStateList originalColors = topTabs.getTabTextColors();
         int selectedTabColor = originalColors != null ? originalColors.getColorForState(topTabs.getSelectedTabColors(), -1) : -1;
         int tabTextColor = originalColors != null ? originalColors.getColorForState(topTabs.getDefaultTabColors(), -1) : -1;

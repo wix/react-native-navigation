@@ -52,7 +52,7 @@ public class OrientationOptions {
         if (other.hasValue()) orientations = other.orientations;
     }
 
-    private boolean hasValue() {
+    public boolean hasValue() {
         return !orientations.isEmpty();
     }
 

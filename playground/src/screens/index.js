@@ -21,6 +21,7 @@ const Alert = require('./Alert');
 const BackHandlerModalScreen = require('./BackHandlerModalScreen');
 const CustomTextButton = require('./CustomTextButton');
 const CustomRoundedButton = require('./CustomRoundedButton');
+const TopBarBackground = require('./TopBarBackground');
 
 function registerScreens() {
   Navigation.registerComponent(`navigation.playground.CustomTransitionDestination`, () => CustomTransitionDestination);
@@ -45,6 +46,7 @@ function registerScreens() {
   Navigation.registerComponent('navigation.playground.BackHandlerModalScreen', () => BackHandlerModalScreen);
   Navigation.registerComponent('CustomTextButton', () => CustomTextButton);
   Navigation.registerComponent('CustomRoundedButton', () => CustomRoundedButton);
+  Navigation.registerComponent('TopBarBackground', () => TopBarBackground);
 }
 
 module.exports = {

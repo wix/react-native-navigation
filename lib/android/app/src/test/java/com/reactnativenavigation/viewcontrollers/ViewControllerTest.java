@@ -10,6 +10,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 
@@ -67,7 +68,7 @@ public class ViewControllerTest extends BaseTest {
     @Test
     public void holdsAReferenceToStackControllerOrNull() throws Exception {
         assertThat(uut.getParentController()).isNull();
-        StackController nav = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), "stack", new Options());
+        StackController nav = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), "stack", new Options());
         nav.animatePush(uut, new MockPromise());
         assertThat(uut.getParentController()).isEqualTo(nav);
     }
