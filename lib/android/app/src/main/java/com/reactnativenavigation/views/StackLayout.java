@@ -26,7 +26,6 @@ public class StackLayout extends RelativeLayout {
 
     public StackLayout(Context context, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewCreator topBarBackgroundViewCreator, TopBarButtonController.OnClickListener topBarButtonClickListener, String stackId) {
         super(context);
-        createLayout(topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewCreator, topBarButtonClickListener);
         this.stackId = stackId;
         createLayout(topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewCreator, topBarButtonClickListener);
         optionsPresenter = new OptionsPresenter(topBar);
