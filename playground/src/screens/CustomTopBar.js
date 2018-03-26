@@ -17,19 +17,19 @@ class CustomTopBar extends Component {
   }
 
   componentDidAppear() {
-    console.log('guyca', 'componentDidAppear');
+    // console.log('guyca', 'componentDidAppear');
   }
 
   componentDidDisappear() {
-    console.log('guyca', `componentDidDisappear`);
+    // console.log('guyca', `componentDidDisappear`);
   }
 
   componentDidMount() {
-    console.log('guyca', `componentDidMount`);
+    // console.log('guyca', `componentDidMount`);
   }
 
   componentWillUnmount() {
-    console.log('guyca', `componentWillUnmount`);
+    // console.log('guyca', `componentWillUnmount`);
   }
 
   render() {
