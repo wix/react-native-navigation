@@ -13,6 +13,8 @@ import android.view.animation.DecelerateInterpolator;
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.views.TopBar;
 
+import javax.annotation.Nullable;
+
 public class TopBarAnimator {
 
     private static final int DEFAULT_COLLAPSE_DURATION = 100;
@@ -21,6 +23,7 @@ public class TopBarAnimator {
     private final AccelerateInterpolator accelerateInterpolator = new AccelerateInterpolator();
 
     private TopBar topBar;
+    private String stackId;
     private AnimatorSet hideAnimator;
     private AnimatorSet showAnimator;
 
@@ -28,8 +31,15 @@ public class TopBarAnimator {
         this.topBar = topBar;
     }
 
+    public TopBarAnimator(TopBar topBar, @Nullable String stackId) {
+        this.topBar = topBar;
+        this.stackId = stackId;
+    }
+
     public void show(AnimationOptions options) {
-        if (options.hasValue()) {
+        if (options.hasValue() && options.id.hasValue() && options.id.get().equals(stackId)) {
+            showAnimator = options.getAnimation(topBar);
+        } else if (options.hasValue() && !options.id.hasValue()) {
             showAnimator = options.getAnimation(topBar);
         } else {
             showAnimator = getDefaultShowAnimator(-1 * topBar.getMeasuredHeight(), decelerateInterpolator, DURATION_TOPBAR);
@@ -62,7 +72,9 @@ public class TopBarAnimator {
     }
 
     public void hide(AnimationOptions options, AnimationListener listener) {
-        if (options.hasValue()) {
+        if (options.hasValue() && options.id.hasValue() && options.id.get().equals(stackId)) {
+            hideAnimator = options.getAnimation(topBar);
+        } else if (options.hasValue() && !options.id.hasValue()) {
             hideAnimator = options.getAnimation(topBar);
         } else {
             hideAnimator = getDefaultHideAnimator(0, accelerateInterpolator, DURATION_TOPBAR);

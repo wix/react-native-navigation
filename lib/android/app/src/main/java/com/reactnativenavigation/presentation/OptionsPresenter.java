@@ -69,7 +69,7 @@ public class OptionsPresenter {
             if (component instanceof IReactView) {
                 topBar.enableCollapse(((IReactView) component).getScrollEventListener());
             }
-        } else if (options.hideOnScroll.isTrue()) {
+        } else if (options.hideOnScroll.isFalseOrUndefined()) {
             topBar.disableCollapse();
         }
     }

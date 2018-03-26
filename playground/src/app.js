@@ -24,15 +24,10 @@ function start() {
   registerScreens();
   Navigation.events().onAppLaunched(() => {
     Navigation.setDefaultOptions({
-      _animations: {
+      animations: {
         push: {
           topBar: {
-            y: {
-              from: 1000,
-              to: 0,
-              duration: 500,
-              interpolation: 'accelerate',
-            },
+            // id: 'NIGA',
             alpha: {
               from: 0,
               to: 1,
@@ -71,12 +66,7 @@ function start() {
         },
         pop: {
           topBar: {
-            y: {
-              from: 0,
-              to: 100,
-              duration: 500,
-              interpolation: 'accelerate',
-            },
+            // id: 'NIGA',
             alpha: {
               from: 1,
               to: 0,
@@ -118,6 +108,7 @@ function start() {
 
     Navigation.setRoot({
       stack: {
+        id: 'NIGA',
         children: [
           {
             component: {

@@ -17,7 +17,6 @@ import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.TitleOptions;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
@@ -46,7 +45,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         super(context);
         collapsingBehavior = new TopBarCollapseBehavior(this);
         topTabs = new TopTabs(getContext());
-        animator = new TopBarAnimator(this);
+        animator = new TopBarAnimator(this, parentView.getStackId());
         this.parentView = parentView;
         titleBar = createTitleBar(context, buttonCreator, titleBarReactViewCreator, onClickListener);
         addView(titleBar);

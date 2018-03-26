@@ -22,9 +22,11 @@ public class TopBarCollapseBehavior implements ScrollEventListener.OnScrollListe
     }
 
     public void disableCollapse() {
-        scrollEventListener.unregister();
-        topBar.setVisibility(View.VISIBLE);
-        topBar.setTranslationY(0);
+        if (scrollEventListener != null) {
+            scrollEventListener.unregister();
+            topBar.setVisibility(View.VISIBLE);
+            topBar.setTranslationY(0);
+        }
     }
 
     @Override

@@ -7,6 +7,10 @@ import android.util.Log;
 import android.util.Property;
 import android.view.View;
 
+import com.reactnativenavigation.parse.params.NullText;
+import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.parse.parsers.TextParser;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -23,7 +27,11 @@ public class AnimationOptions {
         options.hasValue = true;
         for (Iterator<String> it = json.keys(); it.hasNext(); ) {
             String key = it.next();
-            options.valueOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), getAnimProp(key)));
+            if ("id".equals(key)) {
+                options.id = TextParser.parse(json, key);
+            } else {
+                options.valueOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), getAnimProp(key)));
+            }
         }
 
         return options;
@@ -31,11 +39,13 @@ public class AnimationOptions {
 
     private boolean hasValue = false;
 
+    public Text id = new NullText();
     private HashSet<ValueAnimationOptions> valueOptions = new HashSet<>();
 
     void mergeWith(AnimationOptions other) {
         if (other.hasValue()) {
             hasValue = true;
+            id = other.id;
             valueOptions = other.valueOptions;
         }
     }
@@ -43,6 +53,7 @@ public class AnimationOptions {
     void mergeWithDefault(AnimationOptions defaultOptions) {
         if (defaultOptions.hasValue()) {
             hasValue = true;
+            id = defaultOptions.id;
             valueOptions = defaultOptions.valueOptions;
         }
     }
@@ -54,7 +65,7 @@ public class AnimationOptions {
     public AnimatorSet getAnimation(View view) {
         AnimatorSet animationSet = new AnimatorSet();
         List<Animator> animators = new ArrayList<>();
-        for (ValueAnimationOptions options: valueOptions) {
+        for (ValueAnimationOptions options : valueOptions) {
             animators.add(options.getAnimation(view));
         }
         animationSet.playTogether(animators);

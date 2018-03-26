@@ -207,7 +207,7 @@ public class StackController extends ParentController<StackLayout> {
     @NonNull
     @Override
     protected StackLayout createView() {
-        return new StackLayout(getActivity(), topBarButtonCreator, titleBarReactViewCreator, this::sendOnNavigationButtonPressed);
+        return new StackLayout(getActivity(), topBarButtonCreator, titleBarReactViewCreator, this::sendOnNavigationButtonPressed, getId());
     }
 
     @NonNull
