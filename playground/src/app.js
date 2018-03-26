@@ -27,7 +27,7 @@ function start() {
       animations: {
         push: {
           topBar: {
-            // id: 'NIGA',
+            id: 'TEST',
             alpha: {
               from: 0,
               to: 1,
@@ -80,7 +80,7 @@ function start() {
         },
         pop: {
           topBar: {
-            // id: 'NIGA',
+            id: 'TEST',
             alpha: {
               from: 1,
               to: 0,
@@ -136,7 +136,7 @@ function start() {
 
     Navigation.setRoot({
       stack: {
-        id: 'NIGA',
+        id: 'TEST',
         children: [
           {
             component: {
