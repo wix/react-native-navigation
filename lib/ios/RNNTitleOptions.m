@@ -1,4 +1,5 @@
 #import "RNNTitleOptions.h"
+#import "RNNTitleViewHelper.h"
 
 @implementation RNNTitleOptions
 
@@ -7,13 +8,27 @@
 		viewController.navigationItem.title = self.text;
 	}
 	
+	NSDictionary* fontAttributes = [self fontAttributes];
+	
+	viewController.navigationController.navigationBar.titleTextAttributes = fontAttributes;
+	if (@available(iOS 11.0, *)){
+		viewController.navigationController.navigationBar.largeTitleTextAttributes = fontAttributes;
+	}
+	
+	if (self.subtitle) {
+		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] init:viewController title:self.text subtitle:self.subtitle titleImageData:nil isSetSubtitle:NO];
+		[titleViewHelper setup:self];
+	}
+}
+
+- (NSDictionary *)fontAttributes {
+	NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
 	if (self.fontFamily || self.fontSize || self.color) {
-		NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
 		if (self.color) {
-			navigationBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:[self valueForKey:@"color"]];
+			navigationBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:self.color];
 		}
 		if (self.fontFamily){
-			if(self.fontSize) {
+			if (self.fontSize) {
 				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.fontFamily size:[self.fontSize floatValue]];
 			} else {
 				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.fontFamily size:20];
@@ -21,12 +36,29 @@
 		} else if (self.fontSize) {
 			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.fontSize floatValue]];
 		}
-		viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
-		if (@available(iOS 11.0, *)){
-			viewController.navigationController.navigationBar.largeTitleTextAttributes = navigationBarTitleTextAttributes;
-		}
-		
 	}
+	
+	return navigationBarTitleTextAttributes;
+}
+
+- (NSDictionary *)subtitleFontAttributes {
+	NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
+	if (self.subtitleFontFamily || self.subtitleFontSize || self.subtitleColor) {
+		if (self.subtitleColor) {
+			navigationBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:self.subtitleColor];
+		}
+		if (self.subtitleFontFamily){
+			if (self.subtitleFontSize) {
+				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.subtitleFontFamily size:[self.subtitleFontSize floatValue]];
+			} else {
+				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.subtitleFontFamily size:14];
+			}
+		} else if (self.subtitleFontSize) {
+			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.subtitleFontSize floatValue]];
+		}
+	}
+	
+	return navigationBarTitleTextAttributes;
 }
 
 @end

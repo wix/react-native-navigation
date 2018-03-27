@@ -79,6 +79,8 @@
 		504AFE771FFFF1E20076E904 /* RNNTopBarOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */; };
 		50570B262061473D006A1B5C /* RNNTitleOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50570B242061473D006A1B5C /* RNNTitleOptions.h */; };
 		50570B272061473D006A1B5C /* RNNTitleOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50570B252061473D006A1B5C /* RNNTitleOptions.m */; };
+		50570BEA2063E09B006A1B5C /* RNNTitleViewHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 50570BE82063E09B006A1B5C /* RNNTitleViewHelper.h */; };
+		50570BEB2063E09B006A1B5C /* RNNTitleViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */; };
 		50762D08205E96C200E3D18A /* RNNModalAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 50762D06205E96C200E3D18A /* RNNModalAnimation.h */; };
 		50762D09205E96C200E3D18A /* RNNModalAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 50762D07205E96C200E3D18A /* RNNModalAnimation.m */; };
 		507E7D57201DDD3000444E6C /* RNNAnimationOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 507E7D55201DDD3000444E6C /* RNNAnimationOptions.h */; };
@@ -266,6 +268,8 @@
 		504AFE731FFFF0540076E904 /* RNNTopTabsOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTopTabsOptions.m; sourceTree = "<group>"; };
 		50570B242061473D006A1B5C /* RNNTitleOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTitleOptions.h; sourceTree = "<group>"; };
 		50570B252061473D006A1B5C /* RNNTitleOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTitleOptions.m; sourceTree = "<group>"; };
+		50570BE82063E09B006A1B5C /* RNNTitleViewHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTitleViewHelper.h; sourceTree = "<group>"; };
+		50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTitleViewHelper.m; sourceTree = "<group>"; };
 		50762D06205E96C200E3D18A /* RNNModalAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNModalAnimation.h; sourceTree = "<group>"; };
 		50762D07205E96C200E3D18A /* RNNModalAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNModalAnimation.m; sourceTree = "<group>"; };
 		507E7D55201DDD3000444E6C /* RNNAnimationOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNAnimationOptions.h; sourceTree = "<group>"; };
@@ -542,6 +546,12 @@
 				E8AEDB461F58414D000F5A6A /* Animations */,
 				504AFE611FFE52EF0076E904 /* Options */,
 				50D031312005146C00386B3D /* Managers */,
+				5032774C2015E86D00ECD75D /* RNNNavigationEvent.h */,
+				5032774D2015E86D00ECD75D /* RNNNavigationEvent.m */,
+				50570BE82063E09B006A1B5C /* RNNTitleViewHelper.h */,
+				50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */,
+				5032775E2016302900ECD75D /* RNNComponentLifecycleEvent.h */,
+				5032775F2016302900ECD75D /* RNNComponentLifecycleEvent.m */,
 				26916C941E4B9CCC00D13680 /* RNNRootViewCreator.h */,
 				26916C961E4B9E7700D13680 /* RNNReactRootViewCreator.h */,
 				26916C971E4B9E7700D13680 /* RNNReactRootViewCreator.m */,
@@ -758,6 +768,7 @@
 				E8AEDB3C1F55A1C2000F5A6A /* RNNElementView.h in Headers */,
 				E8E518321F83B3E0000467AC /* RNNUtils.h in Headers */,
 				507F44201FFA8A8800D9425B /* RNNRootViewProtocol.h in Headers */,
+				50570BEA2063E09B006A1B5C /* RNNTitleViewHelper.h in Headers */,
 				263905CA1E4C6F440023D7D3 /* SidebarLuvocracyAnimation.h in Headers */,
 				50762D08205E96C200E3D18A /* RNNModalAnimation.h in Headers */,
 				390AD477200F499D00A8250D /* RNNSwizzles.h in Headers */,
@@ -907,6 +918,7 @@
 				7B1126A01E2D263F00F9B03B /* RNNEventEmitter.m in Sources */,
 				A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */,
 				263905CB1E4C6F440023D7D3 /* SidebarLuvocracyAnimation.m in Sources */,
+				50570BEB2063E09B006A1B5C /* RNNTitleViewHelper.m in Sources */,
 				263905E71E4CAC950023D7D3 /* RNNSideMenuChildVC.m in Sources */,
 				390AD478200F499D00A8250D /* RNNSwizzles.m in Sources */,
 				7BA500751E2544B9001B9E1B /* ReactNativeNavigation.m in Sources */,
