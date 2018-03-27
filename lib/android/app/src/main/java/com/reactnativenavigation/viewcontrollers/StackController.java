@@ -66,7 +66,7 @@ public class StackController extends ParentController<StackLayout> {
         getView().mergeChildOptions(options, child);
         animator.mergeOptions(options.animationsOptions);
         if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
-            fabOptionsPresenter.applyOptions(options.fabOptions, (ReactComponent) child, getView());
+            fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
         }
         applyOnParentController(parentController ->
                 ((ParentController) parentController).mergeChildOptions(
