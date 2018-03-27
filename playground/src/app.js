@@ -24,7 +24,21 @@ function start() {
   registerScreens();
   Navigation.events().onAppLaunched(() => {
     Navigation.setDefaultOptions({
-      _animations: {
+      animations: {
+        startApp: {
+          y: {
+            from: 1000,
+            to: 0,
+            duration: 500,
+            interpolation: 'accelerate',
+          },
+          alpha: {
+            from: 0,
+            to: 1,
+            duration: 500,
+            interpolation: 'accelerate'
+          }
+        },
         push: {
           topBar: {
             id: 'TEST',

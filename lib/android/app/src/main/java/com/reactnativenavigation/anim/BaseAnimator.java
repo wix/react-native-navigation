@@ -15,7 +15,7 @@ import com.reactnativenavigation.utils.UiUtils;
 
 class BaseAnimator {
 
-    AnimationsOptions options = new AnimationsOptions();
+    protected AnimationsOptions options = new AnimationsOptions();
 
     private static final int DURATION = 300;
     private static final DecelerateInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();

@@ -3,10 +3,13 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Promise;
+import com.reactnativenavigation.anim.NavigationAnimator;
+import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.OverlayManager;
@@ -66,8 +69,17 @@ public class Navigator extends ParentController implements ModalListener {
         }
 
         root = viewController;
-        getView().addView(viewController.getView());
-        promise.resolve(viewController.getId());
+        View view = viewController.getView();
+
+        AnimationsOptions animationsOptions = viewController.options.animationsOptions;
+        if (animationsOptions.startApp.hasValue()) {
+            getView().addView(view);
+            new NavigationAnimator(viewController.getActivity(), animationsOptions)
+                    .animateStartApp(view, () -> promise.resolve(viewController.getId()));
+        } else {
+            getView().addView(view);
+            promise.resolve(viewController.getId());
+        }
     }
 
     public void setDefaultOptions(Options defaultOptions) {

@@ -16,6 +16,11 @@ public class NavigationAnimator extends BaseAnimator {
         super(context);
     }
 
+    public NavigationAnimator(Context context, AnimationsOptions options) {
+        super(context);
+        this.options = options;
+    }
+
     public void animatePush(final View view, @Nullable final AnimationListener animationListener) {
         view.setVisibility(View.INVISIBLE);
         AnimatorSet set;
@@ -53,6 +58,23 @@ public class NavigationAnimator extends BaseAnimator {
                 if (animationListener != null) {
                     animationListener.onAnimationEnd();
                 }
+            }
+        });
+        set.start();
+    }
+
+    public void animateStartApp(View view, @Nullable final AnimationListener animationListener) {
+        view.setVisibility(View.INVISIBLE);
+        AnimatorSet set = options.startApp.getAnimation(view);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                view.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (animationListener != null) animationListener.onAnimationEnd();
             }
         });
         set.start();
