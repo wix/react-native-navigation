@@ -12,6 +12,8 @@
 @property (nonatomic, strong, readwrite) NSDictionary *globalAppStyle;
 @end
 
+NSString *const RCTBridgeWillReloadNotification = @"RCTBridgeWillReloadNotification";
+    
 @implementation RCCManager
 
 + (instancetype)sharedInstance {
