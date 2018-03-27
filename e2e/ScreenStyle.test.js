@@ -128,7 +128,7 @@ describe('screen style', () => {
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
-  it(':android: set title component', async () => {
+  it('set title component', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.SHOW_TOPBAR_REACT_VIEW).tap();
     await expect(elementByLabel('Press Me')).toBeVisible();

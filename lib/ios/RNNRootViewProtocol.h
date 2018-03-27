@@ -5,6 +5,7 @@
 @optional
 - (void)mergeOptions:(NSDictionary*)options;
 - (BOOL)isCustomViewController;
+- (void)optionsUpdated;
 
 @required
 - (BOOL)isCustomTransitioned;

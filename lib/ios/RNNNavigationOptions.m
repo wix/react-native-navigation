@@ -53,7 +53,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	}
 }
 
--(void)applyOn:(UIViewController*)viewController {	
+-(void)applyOn:(UIViewController<RNNRootViewProtocol> *)viewController {
 	[self.topBar applyOn:viewController];
 	[self.bottomTabs applyOn:viewController];
 	[self.topTab applyOn:viewController];
@@ -61,6 +61,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	[self.sideMenu applyOn:viewController];
 	[self.overlay applyOn:viewController];
 	[self applyOtherOptionsOn:viewController];
+	
+	[viewController optionsUpdated];
 }
 
 - (void)applyOtherOptionsOn:(UIViewController*)viewController {

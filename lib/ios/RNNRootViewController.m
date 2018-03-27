@@ -44,10 +44,7 @@
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.options applyOn:self];
-
-	[self setCustomNavigationTitleView];
-	[self setCustomNavigationBarView];
-	[self setCustomNavigationComponentBackground];
+	[self optionsUpdated];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -66,6 +63,12 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+}
+
+- (void)optionsUpdated {
+	[self setCustomNavigationTitleView];
+	[self setCustomNavigationBarView];
+	[self setCustomNavigationComponentBackground];
 }
 
 - (void)mergeOptions:(NSDictionary *)options {
