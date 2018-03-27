@@ -261,7 +261,12 @@ class WelcomeScreen extends Component {
   onClickShowStaticLifecycleOverlay = () => {
     Navigation.showOverlay({
       component: {
-        name: 'navigation.playground.StaticLifecycleOverlay'
+        name: 'navigation.playground.StaticLifecycleOverlay',
+        options: {
+          overlay: {
+            interceptTouchOutside: false
+          }
+        }
       }
     });
   }

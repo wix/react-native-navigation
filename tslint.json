@@ -4,6 +4,7 @@
     "tslint:recommended"
   ],
   "jsRules": {
+    "no-console": [false],
     "quotemark": [
       true,
       "single"
