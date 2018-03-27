@@ -54,7 +54,7 @@
     "lodash": "4.x.x",
     "prop-types": "15.x.x",
     "@types/react": "16.x.x",
-    "@types/react-native": "0.49.x",
+    "@types/react-native": "0.51.x",
     "@types/lodash": "4.x.x",
     "@types/prop-types": "15.x.x",
     "@types/react-test-renderer": "16.x.x",

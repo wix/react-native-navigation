@@ -114,9 +114,8 @@
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:YES];
 	
 	[component addChildViewController:externalVC];
-	component.view = [[UIView alloc] init];
-	component.view.backgroundColor = [UIColor whiteColor];
 	[component.view addSubview:externalVC.view];
+	[externalVC didMoveToParentViewController:component];
 	
 	return component;
 }
