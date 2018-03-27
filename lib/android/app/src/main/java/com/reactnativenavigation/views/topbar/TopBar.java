@@ -69,11 +69,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
-        return new TitleBar(context,
-                buttonCreator,
-                reactViewCreator,
-                onClickListener
-        );
+        return new TitleBar(context, buttonCreator, reactViewCreator, onClickListener);
     }
 
     public void setTitle(String title) {

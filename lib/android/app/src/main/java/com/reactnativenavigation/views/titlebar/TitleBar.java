@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressLint("ViewConstructor")
 public class TitleBar extends Toolbar {
@@ -166,12 +165,10 @@ public class TitleBar extends Toolbar {
     }
 
     public Toolbar.LayoutParams getComponentLayoutParams(TitleOptions.Alignment alignment) {
-        if (alignment == TitleOptions.Alignment.Fill) {
-            return new LayoutParams(MATCH_PARENT, getHeight());
-        } else {
-            LayoutParams lp = new LayoutParams(WRAP_CONTENT, getHeight());
+        LayoutParams lp = new LayoutParams(MATCH_PARENT, getHeight());
+        if (alignment == TitleOptions.Alignment.Center) {
             lp.gravity = Gravity.CENTER;
-            return lp;
         }
+        return lp;
     }
 }

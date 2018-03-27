@@ -30,7 +30,7 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	self.fromVC = vc;
 	
 	
-	if (self.toVC.options.animations.push) {
+	if (self.toVC.options.animations.push || self.toVC.isCustomTransitioned) {
 		vc.navigationController.delegate = newTop;
 	} else {
 		vc.navigationController.delegate = nil;
