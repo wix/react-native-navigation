@@ -13,6 +13,7 @@ import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.junit.Test;
@@ -41,7 +42,7 @@ public class TopBarTest extends BaseTest {
                 Log.i("TopBarTest", "onPress: " + buttonId);
             }
         });
-        StackLayout parent = new StackLayout(newActivity(), new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), this.onClickListener, null);
+        StackLayout parent = new StackLayout(newActivity(), new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarController(), this.onClickListener, null);
         uut = new TopBar(newActivity(), new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), this.onClickListener, parent);
         animator = spy(new TopBarAnimator(uut));
         uut.setAnimator(animator);
@@ -72,21 +73,21 @@ public class TopBarTest extends BaseTest {
     }
 
     @Test
-    public void title() throws Exception {
+    public void title() {
         assertThat(uut.getTitle()).isEmpty();
         uut.setTitle("new title");
         assertThat(uut.getTitle()).isEqualTo("new title");
     }
 
     @Test
-    public void hide_animate() throws Exception {
+    public void hide_animate() {
         AnimationOptions options = new AnimationOptions();
         uut.hideAnimate(options);
         verify(animator, times(1)).hide(options, null);
     }
 
     @Test
-    public void show_animate() throws Exception {
+    public void show_animate() {
         AnimationOptions options = new AnimationOptions();
         uut.hide();
         uut.showAnimate(options);
@@ -94,7 +95,7 @@ public class TopBarTest extends BaseTest {
     }
 
     @Test
-    public void button_TitleBarButtonOnClickInvoked() throws Exception {
+    public void button_TitleBarButtonOnClickInvoked() {
         uut.setLeftButtons(new ArrayList<>());
         uut.setRightButtons(rightButtons);
         for (int i = 0; i < rightButtons.size(); i++) {

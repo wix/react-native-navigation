@@ -16,6 +16,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ViewHelper;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
@@ -43,6 +44,7 @@ public class StackControllerTest extends BaseTest {
     private ViewController child2;
     private ViewController child3;
     private NavigationAnimator animator;
+    private TopBarController topBarController;
 
     @Override
     public void beforeEach() {
@@ -55,12 +57,12 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void isAViewController() throws Exception {
+    public void isAViewController() {
         assertThat(uut).isInstanceOf(ViewController.class);
     }
 
     @Test
-    public void holdsAStackOfViewControllers() throws Exception {
+    public void holdsAStackOfViewControllers() {
         assertThat(uut.isEmpty()).isTrue();
         uut.animatePush(child1, new MockPromise());
         uut.animatePush(child2, new MockPromise());
@@ -70,14 +72,14 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void push() throws Exception {
+    public void push() {
         assertThat(uut.isEmpty()).isTrue();
         uut.animatePush(child1, new MockPromise());
         assertContainsOnlyId(child1.getId());
     }
 
     @Test
-    public void pop() throws Exception {
+    public void pop() {
         uut.animatePush(child1, new MockPromise());
         uut.animatePush(child2, new MockPromise() {
             @Override
@@ -90,7 +92,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void pop_appliesOptionsAfterPop() throws Exception {
+    public void pop_appliesOptionsAfterPop() {
         uut.animatePush(child1, new MockPromise());
         uut.animatePush(child2, new MockPromise() {
             @Override
@@ -102,9 +104,9 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void pop_layoutHandlesChildWillDisappear() throws Exception {
+    public void pop_layoutHandlesChildWillDisappear() {
         final StackLayout[] stackLayout = new StackLayout[1];
-        uut = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), "uut", new Options()) {
+        uut = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarController(), "uut", new Options()) {
             @NonNull
             @Override
             protected StackLayout createView() {
@@ -128,7 +130,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void stackOperations() throws Exception {
+    public void stackOperations() {
         assertThat(uut.peek()).isNull();
         assertThat(uut.size()).isZero();
         assertThat(uut.isEmpty()).isTrue();
@@ -139,7 +141,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void pushAssignsRefToSelfOnPushedController() throws Exception {
+    public void pushAssignsRefToSelfOnPushedController() {
         assertThat(child1.getParentController()).isNull();
         uut.animatePush(child1, new MockPromise());
         assertThat(child1.getParentController()).isEqualTo(uut);
@@ -150,7 +152,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void handleBack_PopsUnlessSingleChild() throws Exception {
+    public void handleBack_PopsUnlessSingleChild() {
         assertThat(uut.isEmpty()).isTrue();
         assertThat(uut.handleBack()).isFalse();
 
@@ -171,7 +173,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void popDoesNothingWhenZeroOrOneChild() throws Exception {
+    public void popDoesNothingWhenZeroOrOneChild() {
         assertThat(uut.isEmpty()).isTrue();
         uut.pop(new MockPromise());
         assertThat(uut.isEmpty()).isTrue();
@@ -182,7 +184,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void canPopWhenSizeIsMoreThanOne() throws Exception {
+    public void canPopWhenSizeIsMoreThanOne() {
         assertThat(uut.isEmpty()).isTrue();
         assertThat(uut.canPop()).isFalse();
         uut.animatePush(child1, new MockPromise());
@@ -194,14 +196,14 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void pushAddsToViewTree() throws Exception {
+    public void pushAddsToViewTree() {
         assertThat(uut.getView().findViewById(child1.getView().getId())).isNull();
         uut.animatePush(child1, new MockPromise());
         assertThat(uut.getView().findViewById(child1.getView().getId())).isNotNull();
     }
 
     @Test
-    public void pushRemovesPreviousFromTree() throws Exception {
+    public void pushRemovesPreviousFromTree() {
         assertThat(uut.getView().findViewById(child1.getView().getId())).isNull();
         uut.animatePush(child1, new MockPromise());
         assertThat(uut.getView().findViewById(child1.getView().getId())).isNotNull();
@@ -215,7 +217,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void popReplacesViewWithPrevious() throws Exception {
+    public void popReplacesViewWithPrevious() {
         final View child2View = child2.getView();
         final View child1View = child1.getView();
 
@@ -233,7 +235,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void popSpecificWhenTopIsRegularPop() throws Exception {
+    public void popSpecificWhenTopIsRegularPop() {
         uut.animatePush(child1, new MockPromise());
         uut.animatePush(child2, new MockPromise() {
             @Override
@@ -250,7 +252,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void popSpecificDeepInStack() throws Exception {
+    public void popSpecificDeepInStack() {
         uut.animatePush(child1, new MockPromise());
         uut.animatePush(child2, new MockPromise());
         assertIsChildById(uut.getView(), child2.getView());
@@ -260,7 +262,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void popTo_PopsTopUntilControllerIsNewTop() throws Exception {
+    public void popTo_PopsTopUntilControllerIsNewTop() {
         uut.animatePush(child1, new MockPromise());
         uut.animatePush(child2, new MockPromise());
         uut.animatePush(child3, new MockPromise() {
@@ -278,7 +280,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void popTo_NotAChildOfThisStack_DoesNothing() throws Exception {
+    public void popTo_NotAChildOfThisStack_DoesNothing() {
         uut.animatePush(child1, new MockPromise());
         uut.animatePush(child3, new MockPromise());
         assertThat(uut.size()).isEqualTo(2);
@@ -287,7 +289,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void popToRoot_PopsEverythingAboveFirstController() throws Exception {
+    public void popToRoot_PopsEverythingAboveFirstController() {
         uut.animatePush(child1, new MockPromise());
         uut.animatePush(child2, new MockPromise());
         uut.animatePush(child3, new MockPromise() {
@@ -308,14 +310,14 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void popToRoot_EmptyStackDoesNothing() throws Exception {
+    public void popToRoot_EmptyStackDoesNothing() {
         assertThat(uut.isEmpty()).isTrue();
         uut.popToRoot(new MockPromise());
         assertThat(uut.isEmpty()).isTrue();
     }
 
     @Test
-    public void findControllerById_ReturnsSelfOrChildrenById() throws Exception {
+    public void findControllerById_ReturnsSelfOrChildrenById() {
         assertThat(uut.findControllerById("123")).isNull();
         assertThat(uut.findControllerById(uut.getId())).isEqualTo(uut);
         uut.animatePush(child1, new MockPromise());
@@ -323,7 +325,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void findControllerById_Deeply() throws Exception {
+    public void findControllerById_Deeply() {
         StackController stack = createStackController("another");
         stack.animatePush(child2, new MockPromise());
         uut.animatePush(stack, new MockPromise());
@@ -331,7 +333,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void pop_CallsDestroyOnPoppedChild() throws Exception {
+    public void pop_CallsDestroyOnPoppedChild() {
         child1 = spy(child1);
         child2 = spy(child2);
         child3 = spy(child3);
@@ -348,7 +350,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void pop_callWillAppearWillDisappear() throws Exception {
+    public void pop_callWillAppearWillDisappear() {
         child1 = spy(child1);
         child2 = spy(child2);
         uut.push(child1, new MockPromise());
@@ -359,7 +361,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void pop_animatesTopBarIfNeeded() throws Exception {
+    public void pop_animatesTopBarIfNeeded() {
         uut.ensureViewIsCreated();
 
         child1.options.topBarOptions.visible = new Bool(false);
@@ -379,7 +381,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void popSpecific_CallsDestroyOnPoppedChild() throws Exception {
+    public void popSpecific_CallsDestroyOnPoppedChild() {
         child1 = spy(child1);
         child2 = spy(child2);
         child3 = spy(child3);
@@ -393,7 +395,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void popTo_CallsDestroyOnPoppedChild() throws Exception {
+    public void popTo_CallsDestroyOnPoppedChild() {
         child1 = spy(child1);
         child2 = spy(child2);
         child3 = spy(child3);
@@ -417,7 +419,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void stackCanBePushed() throws Exception {
+    public void stackCanBePushed() {
         StackController parent = createStackController("someStack");
         parent.ensureViewIsCreated();
         parent.push(uut, new MockPromise());
@@ -426,7 +428,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void applyOptions_applyOnlyOnFirstStack() throws Exception {
+    public void applyOptions_applyOnlyOnFirstStack() {
         StackController parent = spy(createStackController("someStack"));
         parent.ensureViewIsCreated();
         parent.push(uut, new MockPromise());
@@ -445,7 +447,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void applyOptions_topTabsAreNotVisibleIfNoTabsAreDefined() throws Exception {
+    public void applyOptions_topTabsAreNotVisibleIfNoTabsAreDefined() {
         uut.ensureViewIsCreated();
         uut.push(child1, new MockPromise());
         child1.ensureViewIsCreated();
@@ -454,7 +456,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void buttonPressInvokedOnCurrentStack() throws Exception {
+    public void buttonPressInvokedOnCurrentStack() {
         uut.ensureViewIsCreated();
         uut.push(child1, new MockPromise());
         uut.sendOnNavigationButtonPressed("btn1");
@@ -462,9 +464,9 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void mergeChildOptions_updatesViewWithNewOptions() throws Exception {
+    public void mergeChildOptions_updatesViewWithNewOptions() {
         final StackLayout[] stackLayout = new StackLayout[1];
-        StackController uut = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), "stack", new Options()) {
+        StackController uut = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarController(), "stack", new Options()) {
             @NonNull
             @Override
             protected StackLayout createView() {
@@ -479,9 +481,9 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void mergeChildOptions_updatesParentControllerWithNewOptions() throws Exception {
+    public void mergeChildOptions_updatesParentControllerWithNewOptions() {
         final StackLayout[] stackLayout = new StackLayout[1];
-        StackController uut = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), "stack", new Options()) {
+        StackController uut = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarController(), "stack", new Options()) {
             @NonNull
             @Override
             protected StackLayout createView() {
@@ -504,7 +506,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void mergeChildOptions_mergeAnimationOptions() throws Exception {
+    public void mergeChildOptions_mergeAnimationOptions() {
         Options options = new Options();
         Component component = mock(Component.class);
 
@@ -514,7 +516,7 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void mergeChildOptions_StackRelatedOptionsAreCleared() throws Exception {
+    public void mergeChildOptions_StackRelatedOptionsAreCleared() {
         ParentController parentController = Mockito.mock(ParentController.class);
         uut.setParentController(parentController);
         Options options = new Options();
@@ -532,6 +534,13 @@ public class StackControllerTest extends BaseTest {
         assertThat(captor.getValue().fabOptions.hasValue()).isFalse();
     }
 
+    @Test
+    public void destroy() {
+        uut.ensureViewIsCreated();
+        uut.destroy();
+        verify(topBarController, times(1)).clear();
+    }
+
     private void assertContainsOnlyId(String... ids) {
         assertThat(uut.size()).isEqualTo(ids.length);
         assertThat(uut.getChildControllers()).extracting((Extractor<ViewController, String>) ViewController::getId).containsOnly(ids);
@@ -542,7 +551,10 @@ public class StackControllerTest extends BaseTest {
     }
 
     private StackController createStackController(String id) {
-        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), id, new Options()) {
+        topBarController = spy(new TopBarController());
+        return new StackController(activity,
+                new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(),
+                topBarController, id, new Options()) {
             @Override
             NavigationAnimator createAnimator() {
                 animator = Mockito.mock(NavigationAnimator.class);

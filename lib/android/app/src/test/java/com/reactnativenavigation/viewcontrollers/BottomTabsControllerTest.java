@@ -17,6 +17,7 @@ import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.ReactComponent;
 
@@ -58,20 +59,20 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void containsRelativeLayoutView() throws Exception {
+    public void containsRelativeLayoutView() {
         assertThat(uut.getView()).isInstanceOf(RelativeLayout.class);
         assertThat(uut.getView().getChildAt(0)).isInstanceOf(BottomTabs.class);
     }
 
     @Test(expected = RuntimeException.class)
-    public void setTabs_ThrowWhenMoreThan5() throws Exception {
+    public void setTabs_ThrowWhenMoreThan5() {
         List<ViewController> tabs = createTabs();
         tabs.add(new SimpleViewController(activity, "6", tabOptions));
         uut.setTabs(tabs);
     }
 
     @Test
-    public void setTab_controllerIsSetAsParent() throws Exception {
+    public void setTab_controllerIsSetAsParent() {
         List<ViewController> tabs = createTabs();
         uut.setTabs(tabs);
         for (ViewController tab : tabs) {
@@ -80,7 +81,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void setTabs_AddAllViews() throws Exception {
+    public void setTabs_AddAllViews() {
         List<ViewController> tabs = createTabs();
         uut.setTabs(tabs);
         assertThat(uut.getView().getChildCount()).isEqualTo(2);
@@ -88,7 +89,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void selectTabAtIndex() throws Exception {
+    public void selectTabAtIndex() {
         uut.setTabs(createTabs());
         assertThat(uut.getSelectedIndex()).isZero();
 
@@ -99,7 +100,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void findControllerById_ReturnsSelfOrChildren() throws Exception {
+    public void findControllerById_ReturnsSelfOrChildren() {
         assertThat(uut.findControllerById("123")).isNull();
         assertThat(uut.findControllerById(uut.getId())).isEqualTo(uut);
         StackController inner = createStack("inner");
@@ -110,7 +111,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void handleBack_DelegatesToSelectedChild() throws Exception {
+    public void handleBack_DelegatesToSelectedChild() {
         assertThat(uut.handleBack()).isFalse();
 
         List<ViewController> tabs = createTabs();
@@ -127,7 +128,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void applyOptions_bottomTabsOptionsAreClearedAfterApply() throws Exception {
+    public void applyOptions_bottomTabsOptionsAreClearedAfterApply() {
         List<ViewController> tabs = createTabs();
         child1.options.bottomTabsOptions.tabColor = new Color(android.graphics.Color.RED);
         uut.setTabs(tabs);
@@ -146,7 +147,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void mergeOptions_currentTabIndex() throws Exception {
+    public void mergeOptions_currentTabIndex() {
         List<ViewController> tabs = createTabs();
         uut.setTabs(tabs);
         uut.ensureViewIsCreated();
@@ -158,7 +159,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void buttonPressInvokedOnCurrentTab() throws Exception {
+    public void buttonPressInvokedOnCurrentTab() {
         uut.setTabs(createTabs());
         uut.ensureViewIsCreated();
         uut.selectTabAtIndex(1);
@@ -173,6 +174,6 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     private StackController createStack(String id) {
-        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), id, tabOptions);
+        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarController(), id, tabOptions);
     }
 }

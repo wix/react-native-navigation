@@ -13,6 +13,7 @@ import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.ReactComponent;
 
 import org.junit.Test;
@@ -29,7 +30,7 @@ import static org.mockito.Mockito.verify;
 
 public class ParentControllerTest extends BaseTest {
 
-    public static final String INITIAL_TITLE = "initial title";
+    private static final String INITIAL_TITLE = "initial title";
     private Activity activity;
     private List<ViewController> children;
     private ParentController uut;
@@ -68,17 +69,17 @@ public class ParentControllerTest extends BaseTest {
     }
 
     @Test
-    public void holdsViewGroup() throws Exception {
+    public void holdsViewGroup() {
         assertThat(uut.getView()).isInstanceOf(ViewGroup.class);
     }
 
     @Test
-    public void mustHaveChildControllers() throws Exception {
+    public void mustHaveChildControllers() {
         assertThat(uut.getChildControllers()).isNotNull();
     }
 
     @Test
-    public void findControllerById_ChildById() throws Exception {
+    public void findControllerById_ChildById() {
         SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
         SimpleViewController child2 = new SimpleViewController(activity, "child2", new Options());
         children.add(child1);
@@ -89,7 +90,7 @@ public class ParentControllerTest extends BaseTest {
     }
 
     @Test
-    public void findControllerById_Recursive() throws Exception {
+    public void findControllerById_Recursive() {
         StackController stackController = createStack();
         SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
         SimpleViewController child2 = new SimpleViewController(activity, "child2", new Options());
@@ -101,7 +102,7 @@ public class ParentControllerTest extends BaseTest {
     }
 
     @Test
-    public void destroy_DestroysChildren() throws Exception {
+    public void destroy_DestroysChildren() {
         ViewController child1 = spy(new SimpleViewController(activity, "child1", new Options()));
         children.add(child1);
 
@@ -111,7 +112,7 @@ public class ParentControllerTest extends BaseTest {
     }
 
     @Test
-    public void optionsAreClearedWhenChildIsAppeared() throws Exception {
+    public void optionsAreClearedWhenChildIsAppeared() {
         StackController stackController = spy(createStack());
         SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
         stackController.animatePush(child1, new MockPromise());
@@ -121,7 +122,7 @@ public class ParentControllerTest extends BaseTest {
     }
 
     @Test
-    public void mergeOptions_optionsAreMergedWhenChildAppears() throws Exception {
+    public void mergeOptions_optionsAreMergedWhenChildAppears() {
         Options options = new Options();
         options.topBarOptions.title.text = new Text("new title");
         ViewController child1 = spy(new SimpleViewController(activity, "child1", options));
@@ -139,7 +140,7 @@ public class ParentControllerTest extends BaseTest {
     }
 
     @Test
-    public void mergeOptions_initialParentOptionsAreNotMutatedWhenChildAppears() throws Exception {
+    public void mergeOptions_initialParentOptionsAreNotMutatedWhenChildAppears() {
         Options options = new Options();
         options.topBarOptions.title.text = new Text("new title");
         ViewController child1 = spy(new SimpleViewController(activity, "child1", options));
@@ -153,6 +154,6 @@ public class ParentControllerTest extends BaseTest {
     }
 
     private StackController createStack() {
-        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(),"stack", new Options());
+        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarController(), "stack", new Options());
     }
 }

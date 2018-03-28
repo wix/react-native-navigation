@@ -9,6 +9,7 @@ import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.StackLayout;
 
 import org.junit.Test;
@@ -28,19 +29,19 @@ public class ComponentViewControllerTest extends BaseTest {
         super.beforeEach();
         Activity activity = newActivity();
         view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
-        ParentController<StackLayout> parentController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), "stack", new Options());
+        ParentController<StackLayout> parentController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarController(), "stack", new Options());
         uut = new ComponentViewController(activity, "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options());
         uut.setParentController(parentController);
         parentController.ensureViewIsCreated();
     }
 
     @Test
-    public void createsViewFromComponentViewCreator() throws Exception {
+    public void createsViewFromComponentViewCreator() {
         assertThat(uut.getView()).isSameAs(view);
     }
 
     @Test
-    public void componentViewDestroyedOnDestroy() throws Exception {
+    public void componentViewDestroyedOnDestroy() {
         uut.ensureViewIsCreated();
         verify(view, times(0)).destroy();
         uut.onViewAppeared();
@@ -49,7 +50,7 @@ public class ComponentViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void lifecycleMethodsSentToComponentView() throws Exception {
+    public void lifecycleMethodsSentToComponentView() {
         uut.ensureViewIsCreated();
         verify(view, times(0)).sendComponentStart();
         verify(view, times(0)).sendComponentStop();
@@ -62,7 +63,7 @@ public class ComponentViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void isViewShownOnlyIfComponentViewIsReady() throws Exception {
+    public void isViewShownOnlyIfComponentViewIsReady() {
         assertThat(uut.isViewShown()).isFalse();
         uut.ensureViewIsCreated();
         when(view.asView().isShown()).thenReturn(true);
@@ -72,7 +73,7 @@ public class ComponentViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void onNavigationButtonPressInvokedOnReactComponent() throws Exception {
+    public void onNavigationButtonPressInvokedOnReactComponent() {
         uut.ensureViewIsCreated();
         uut.sendOnNavigationButtonPressed("btn1");
         verify(view, times(1)).sendOnNavigationButtonPressed("btn1");

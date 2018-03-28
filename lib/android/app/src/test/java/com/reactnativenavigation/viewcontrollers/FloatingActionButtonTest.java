@@ -14,6 +14,7 @@ import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.StackLayout;
@@ -35,7 +36,7 @@ public class FloatingActionButtonTest extends BaseTest {
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
-        stackController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(),"stackController", new Options());
+        stackController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewCreatorMock(), new TopBarController(), "stackController", new Options());
         Options options = getOptionsWithFab();
         childFab = new SimpleViewController(activity, "child1", options);
         childNoFab = new SimpleViewController(activity, "child2", new Options());
@@ -78,14 +79,14 @@ public class FloatingActionButtonTest extends BaseTest {
     }
 
     @Test
-    public void showOnPush() throws Exception {
+    public void showOnPush() {
         stackController.push(childFab, new MockPromise());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
     }
 
     @Test
-    public void hideOnPush() throws Exception {
+    public void hideOnPush() {
         stackController.push(childFab, new MockPromise());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
@@ -95,7 +96,7 @@ public class FloatingActionButtonTest extends BaseTest {
     }
 
     @Test
-    public void hideOnPop() throws Exception {
+    public void hideOnPop() {
         stackController.push(childNoFab, new MockPromise());
         stackController.push(childFab, new MockPromise());
         childFab.onViewAppeared();
@@ -106,7 +107,7 @@ public class FloatingActionButtonTest extends BaseTest {
     }
 
     @Test
-    public void showOnPop() throws Exception {
+    public void showOnPop() {
         stackController.push(childFab, new MockPromise());
         stackController.push(childNoFab, new MockPromise());
         childNoFab.onViewAppeared();
@@ -117,7 +118,7 @@ public class FloatingActionButtonTest extends BaseTest {
     }
 
     @Test
-    public void hasChildren() throws Exception {
+    public void hasChildren() {
         childFab = new SimpleViewController(activity, "child1", getOptionsWithFabActions());
         stackController.push(childFab, new MockPromise());
         childFab.onViewAppeared();

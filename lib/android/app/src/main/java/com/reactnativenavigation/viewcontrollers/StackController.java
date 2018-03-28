@@ -10,6 +10,7 @@ import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.NoOpPromise;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
@@ -30,9 +31,11 @@ public class StackController extends ParentController<StackLayout> {
     private final ReactViewCreator topBarButtonCreator;
     private final TitleBarReactViewCreator titleBarReactViewCreator;
     private TopBarBackgroundViewCreator topBarBackgroundViewCreator;
+    private TopBarController topBarController;
 
-    public StackController(final Activity activity, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewCreator topBarBackgroundViewCreator, String id, Options initialOptions) {
+    public StackController(final Activity activity, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewCreator topBarBackgroundViewCreator, TopBarController topBarController, String id, Options initialOptions) {
         super(activity, id, initialOptions);
+        this.topBarController = topBarController;
         animator = createAnimator();
         this.topBarButtonCreator = topBarButtonCreator;
         this.titleBarReactViewCreator = titleBarReactViewCreator;
@@ -77,9 +80,15 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
+    public void destroy() {
+        topBarController.clear();
+        super.destroy();
+    }
+
+    @Override
     void clearOptions() {
         super.clearOptions();
-        getView().clearOptions();
+        topBarController.clear();
     }
 
     public void push(ViewController child, final Promise promise) {
@@ -229,7 +238,7 @@ public class StackController extends ParentController<StackLayout> {
     @NonNull
     @Override
     protected StackLayout createView() {
-        return new StackLayout(getActivity(), topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewCreator, this::sendOnNavigationButtonPressed, getId());
+        return new StackLayout(getActivity(), topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewCreator, topBarController, this::sendOnNavigationButtonPressed, getId());
     }
 
     @NonNull
@@ -240,12 +249,12 @@ public class StackController extends ParentController<StackLayout> {
 
     @Override
     public void setupTopTabsWithViewPager(ViewPager viewPager) {
-        getView().initTopTabs(viewPager);
+        topBarController.initTopTabs(viewPager);
     }
 
     @Override
     public void clearTopTabs() {
-        getView().clearTopTabs();
+        topBarController.clearTopTabs();
     }
 
      NavigationAnimator createAnimator() {
@@ -254,7 +263,7 @@ public class StackController extends ParentController<StackLayout> {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     TopBar getTopBar() {
-        return getView().getTopBar();
+        return topBarController.getTopBar();
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

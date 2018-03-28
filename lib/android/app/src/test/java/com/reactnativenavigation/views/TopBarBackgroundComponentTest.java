@@ -12,6 +12,7 @@ import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.topbar.TopBar;
 import com.reactnativenavigation.views.topbar.TopBarBackgroundView;
 
@@ -42,13 +43,13 @@ public class TopBarBackgroundComponentTest extends BaseTest {
                 return backgroundView;
             }
         };
-        StackLayout parent = new StackLayout(newActivity(), new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), backgroundViewCreator, onClickListener, null);
+        StackLayout parent = new StackLayout(newActivity(), new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), backgroundViewCreator, new TopBarController(), onClickListener, null);
         uut = new TopBar(newActivity(), new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), backgroundViewCreator, onClickListener, parent);
         parent.addView(uut);
     }
 
     @Test
-    public void setBackgroundComponent() throws Exception {
+    public void setBackgroundComponent() {
         uut.getLayoutParams().height = 100;
         uut.setBackgroundComponent(new Text("someComponent"));
         TopBarBackgroundView background = (TopBarBackgroundView) ViewUtils.findChildrenByClassRecursive(uut, TopBarBackgroundView.class).get(0);
@@ -58,13 +59,13 @@ public class TopBarBackgroundComponentTest extends BaseTest {
     }
 
     @Test
-    public void setBackgroundComponent_doesNotSetIfNoComponentIsDefined() throws Exception {
+    public void setBackgroundComponent_doesNotSetIfNoComponentIsDefined() {
         uut.setBackgroundComponent(new Text("someComponent"));
         assertThat(uut.findViewById(R.id.topBarBackgroundComponent)).isNull();
     }
 
     @Test
-    public void clear_componentIsDestroyed() throws Exception {
+    public void clear_componentIsDestroyed() {
         uut.setBackgroundComponent(new Text("someComponent"));
         uut.clear();
         verify(backgroundView, times(1)).destroy();

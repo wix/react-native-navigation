@@ -87,7 +87,7 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
-    public void destroy_destroysButtonControllers() throws Exception {
+    public void destroy_destroysButtonControllers() {
         uut.setLeftButtons(leftButton(leftButton));
         uut.setRightButtons(rightButtons(customButton, textButton));
         uut.clear();
@@ -97,7 +97,7 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
-    public void setRightButtons_destroysRightButtons() throws Exception {
+    public void setRightButtons_destroysRightButtons() {
         uut.setLeftButtons(leftButton(leftButton));
         uut.setRightButtons(rightButtons(customButton));
         uut.setLeftButtons(leftButton(leftButton));
@@ -106,7 +106,7 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
-    public void setRightButtons_onlyDestroysRightButtons() throws Exception {
+    public void setRightButtons_onlyDestroysRightButtons() {
         uut.setLeftButtons(leftButton(leftButton));
         uut.setRightButtons(rightButtons(customButton));
         uut.setLeftButtons(null);
@@ -115,7 +115,7 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
-    public void setRightButtons_emptyButtonsListClearsRightButtons() throws Exception {
+    public void setRightButtons_emptyButtonsListClearsRightButtons() {
         uut.setLeftButtons(new ArrayList<>());
         uut.setRightButtons(rightButtons(customButton, textButton));
         uut.setLeftButtons(new ArrayList<>());
@@ -127,7 +127,7 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
-    public void setLeftButtons_emptyButtonsListClearsLeftButton() throws Exception {
+    public void setLeftButtons_emptyButtonsListClearsLeftButton() {
         uut.setLeftButtons(leftButton(leftButton));
         uut.setRightButtons(rightButtons(customButton));
         uut.setLeftButtons(new ArrayList<>());
@@ -136,20 +136,20 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
-    public void setRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() throws Exception {
+    public void setRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() {
         uut.setLeftButtons(new ArrayList<>());
         uut.setRightButtons(rightButtons(textButton, customButton));
         assertThat(uut.getMenu().getItem(1).getTitle()).isEqualTo(textButton.title.get());
     }
 
     @Test
-    public void setComponent_addsComponentToTitleBar() throws Exception {
+    public void setComponent_addsComponentToTitleBar() {
         uut.setComponent("com.rnn.CustomView", TitleOptions.Alignment.Center);
         verify(uut, times(1)).addView(any(TitleBarReactView.class), any(Toolbar.LayoutParams.class));
     }
 
     @Test
-    public void setComponent_alignFill() throws Exception {
+    public void setComponent_alignFill() {
         uut.setComponent("com.rnn.CustomView", TitleOptions.Alignment.Fill);
         verify(uut, times(1)).getComponentLayoutParams(TitleOptions.Alignment.Fill);
         ArgumentCaptor<Toolbar.LayoutParams> lpCaptor = ArgumentCaptor.forClass(Toolbar.LayoutParams.class);
@@ -158,7 +158,7 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
-    public void setComponent_alignCenter() throws Exception {
+    public void setComponent_alignCenter() {
         uut.setComponent("com.rnn.CustomView", TitleOptions.Alignment.Center);
         verify(uut, times(1)).getComponentLayoutParams(TitleOptions.Alignment.Center);
         ArgumentCaptor<Toolbar.LayoutParams> lpCaptor = ArgumentCaptor.forClass(Toolbar.LayoutParams.class);
@@ -168,7 +168,7 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
-    public void clear() throws Exception {
+    public void clear() {
         uut.setComponent("someComponent", TitleOptions.Alignment.Center);
         uut.clear();
         assertThat(uut.getTitle()).isNullOrEmpty();
