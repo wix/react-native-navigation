@@ -107,4 +107,13 @@ describe('modal', () => {
     Android.pressBack();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
+
+  it('present modal multiple times', async () => {
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();    
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
+    await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
+    await elementById(testIDs.SHOW_MODAL_BUTTON).tap();
+    await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
+    await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
+  });
 });

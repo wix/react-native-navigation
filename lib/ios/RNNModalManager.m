@@ -76,6 +76,7 @@
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
 		[modalToDismiss dismissViewControllerAnimated:modalToDismiss.isAnimated completion:^{
 			[[_store pendingModalIdsToDismiss] removeObject:componentId];
+			[_store removeComponent:componentId];
 			[self removePendingNextModalIfOnTop];
 		}];
 	}
