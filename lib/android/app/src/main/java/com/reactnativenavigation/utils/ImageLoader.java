@@ -63,7 +63,7 @@ public class ImageLoader {
     }
 
     private Drawable loadFile(String uri) {
-        Bitmap bitmap = BitmapFactory.decodeFile(uri);
+        Bitmap bitmap = BitmapFactory.decodeFile(Uri.parse(uri).getPath());
         return new BitmapDrawable(NavigationApplication.instance.getResources(), bitmap);
     }
 
