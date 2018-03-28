@@ -73,7 +73,7 @@
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "tslint": "5.x.x",
-    "typescript": "2.x.x"
+    "typescript": "2.7.x"
   },
   "babel": {
     "env": {
