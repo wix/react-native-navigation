@@ -16,9 +16,16 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super initWithDict:dict];
 	self.title = [[RNNTitleOptions alloc] initWithDict:dict[@"title"]];
-	self.background = [[RNNBackgrounOptions alloc] initWithDict:dict[@"background"]];
+	self.subtitle = [[RNNSubtitleOptions alloc] initWithDict:dict[@"subtitle"]];
+	self.background = [[RNNBackgroundOptions alloc] initWithDict:dict[@"background"]];
+	self.title.subtitle = self.subtitle;
 	
 	return self;
+}
+
+- (void)mergeWith:(NSDictionary *)otherOptions {
+	[super mergeWith:otherOptions];
+	self.title.subtitle = self.subtitle;
 }
 
 - (void)applyOn:(UIViewController*)viewController {

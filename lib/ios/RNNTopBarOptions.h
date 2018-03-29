@@ -1,6 +1,7 @@
 #import "RNNOptions.h"
 #import "RNNTitleOptions.h"
-#import "RNNBackgrounOptions.h"
+#import "RNNSubtitleOptions.h"
+#import "RNNBackgroundOptions.h"
 
 @interface RNNTopBarOptions : RNNOptions
 
@@ -18,7 +19,8 @@
 @property (nonatomic, strong) NSNumber* largeTitle;
 @property (nonatomic, strong) NSString* testID;
 @property (nonatomic, strong) RNNTitleOptions* title;
-@property (nonatomic, strong) RNNBackgrounOptions* background;
+@property (nonatomic, strong) RNNSubtitleOptions* subtitle;
+@property (nonatomic, strong) RNNBackgroundOptions* background;
 @property (nonatomic, strong) NSNumber* backButtonImage;
 @property (nonatomic, strong) NSNumber* backButtonHidden;
 @property (nonatomic, strong) NSString* backButtonTitle;

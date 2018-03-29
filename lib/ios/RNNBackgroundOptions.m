@@ -1,6 +1,6 @@
-#import "RNNBackgrounOptions.h"
+#import "RNNBackgroundOptions.h"
 
-@implementation RNNBackgrounOptions
+@implementation RNNBackgroundOptions
 
 - (void)applyOn:(UIViewController *)viewController {
 	if (self.color) {

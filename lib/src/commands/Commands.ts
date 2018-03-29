@@ -63,7 +63,7 @@ export class Commands {
 
   public push(componentId, simpleApi) {
     const input = _.cloneDeep(simpleApi);
-    this.optionsProcessor.processOptions(input);
+
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);
 
@@ -92,7 +92,6 @@ export class Commands {
 
   public showOverlay(simpleApi) {
     const input = _.cloneDeep(simpleApi);
-    this.optionsProcessor.processOptions(input);
 
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);

@@ -223,7 +223,14 @@ class WelcomeScreen extends Component {
         options: {
           topBar: {
             title: {
-              text: 'pushed'
+              text: 'pushed',
+              color: '#0000ff',
+              fontSize: 14
+            },
+            subtitle: {
+              text: 'subtitle',
+              fontSize: 10,
+              color: '#00ff00'
             }
           }
         }
