@@ -171,7 +171,7 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
     private void setFontSize(MenuItem menuItem) {
         SpannableString spanString = new SpannableString(button.title.get());
         if (this.button.buttonFontSize.hasValue())
-            spanString.setSpan(new AbsoluteSizeSpan(button.buttonFontSize.hashCode(), true),
+            spanString.setSpan(new AbsoluteSizeSpan(button.buttonFontSize.get(), true),
                     0, button.title.get().length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         menuItem.setTitleCondensed(spanString);
     }

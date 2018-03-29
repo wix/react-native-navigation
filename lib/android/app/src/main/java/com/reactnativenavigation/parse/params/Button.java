@@ -18,8 +18,8 @@ public class Button {
     public Bool enabled = new NullBool();
     public Bool disableIconTint = new NullBool();
     public int showAsAction;
-    public Color buttonColor;
-    public Number buttonFontSize;
+    public Color buttonColor = new NullColor();
+    public Number buttonFontSize = new NullNumber();
     private Text buttonFontWeight = new NullText();
     public Text icon = new NullText();
     public Text testId = new NullText();
