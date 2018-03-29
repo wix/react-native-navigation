@@ -7,7 +7,7 @@ import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
 
-public class Options implements DEFAULT_VALUES {
+public class Options {
 
     @NonNull
     public static Options parse(TypefaceLoader typefaceManager, JSONObject json) {

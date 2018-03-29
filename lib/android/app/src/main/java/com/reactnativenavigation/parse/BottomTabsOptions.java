@@ -15,7 +15,7 @@ import com.reactnativenavigation.parse.parsers.TextParser;
 
 import org.json.JSONObject;
 
-public class BottomTabsOptions implements DEFAULT_VALUES {
+public class BottomTabsOptions {
 
 	public static BottomTabsOptions parse(JSONObject json) {
 		BottomTabsOptions options = new BottomTabsOptions();

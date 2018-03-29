@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class TopBarOptions implements DEFAULT_VALUES {
+public class TopBarOptions {
 
     public static TopBarOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
         TopBarOptions options = new TopBarOptions();
