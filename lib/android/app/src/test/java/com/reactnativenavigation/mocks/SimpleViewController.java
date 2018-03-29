@@ -11,7 +11,7 @@ import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.ReactComponent;
-import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.views.topbar.TopBar;
 
 public class SimpleViewController extends ViewController<FrameLayout> {
 

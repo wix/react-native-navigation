@@ -1,47 +1,55 @@
 #import "RNNCustomTitleView.h"
 
 @interface RNNCustomTitleView ()
-@property (nonatomic, strong) UIView *subView;
-@property (nonatomic, strong) NSString *subViewAlign;
+
+@property (nonatomic, strong) RCTRootView *subView;
+@property (nonatomic, strong) NSString *alignment;
+
 @end
 
 @implementation RNNCustomTitleView
 
-
--(instancetype)initWithFrame:(CGRect)frame subView:(UIView*)subView alignment:(NSString*)alignment {
-    self = [super initWithFrame:frame];
-    
-    if (self) {
-        self.backgroundColor = [UIColor clearColor];
-        self.subView = subView;
-        self.subViewAlign = alignment;
-        
-        subView.frame = self.bounds;
-        [self addSubview:subView];
-    }
-    
-    return self;
+- (instancetype)initWithFrame:(CGRect)frame subView:(RCTRootView*)subView alignment:(NSString*)alignment {
+	self = [super init];
+	
+	if (self) {
+		self.subView = subView;
+		self.alignment = alignment;
+		
+		self.backgroundColor = [UIColor clearColor];
+		self.subView.backgroundColor = [UIColor clearColor];
+		
+		if ([alignment isEqualToString:@"fill"]) {
+			self.frame = frame;
+			subView.sizeFlexibility = RCTRootViewSizeFlexibilityNone;
+		} else {
+			self.subView.delegate = self;
+			subView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
+		}
+		
+		[self addSubview:subView];
+	}
+	
+	return self;
 }
 
+- (void)layoutSubviews {
+	[super layoutSubviews];
+	if ([self.alignment isEqualToString:@"fill"]) {
+		[self.subView setFrame:self.bounds];
+	}
+}
 
--(void)layoutSubviews {
-    [super layoutSubviews];
-    
-    if ([self.subViewAlign isEqualToString:@"fill"]) {
-        self.subView.frame = self.bounds;
-    }
-    else {
-        
-        CGFloat superViewWidth = self.superview.frame.size.width;
-        CGFloat paddingLeftFromCenter = (superViewWidth/2) - self.frame.origin.x;
-        CGFloat paddingRightFromCenter = self.frame.size.width - paddingLeftFromCenter;;
-        CGRect reactViewFrame = self.subView.bounds;
-        CGFloat minPadding = MIN(paddingLeftFromCenter, paddingRightFromCenter);
-        
-        reactViewFrame.size.width = minPadding*2;
-        reactViewFrame.origin.x = paddingLeftFromCenter - minPadding;
-        self.subView.frame = reactViewFrame;
-    }
+- (NSString *)alignment {
+	return _alignment ? _alignment : @"center";
+}
+
+- (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
+	if ([self.alignment isEqualToString:@"center"]) {
+		[self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.subView.intrinsicContentSize.width, self.subView.intrinsicContentSize.height)];
+		[self.subView setFrame:CGRectMake(0, 0, rootView.intrinsicContentSize.width, rootView.intrinsicContentSize.height)];
+	}
 }
 
 @end
+

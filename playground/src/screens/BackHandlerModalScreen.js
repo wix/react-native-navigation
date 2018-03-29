@@ -7,7 +7,9 @@ class BackHandlerModalScreen extends Component {
   static get options() {
     return {
       topBar: {
-        title: 'Back Handler'
+        title: {
+          text: 'Back Handler'
+        }
       }
     };
   }

@@ -1,5 +1,7 @@
 package com.reactnativenavigation.presentation;
 
+import com.reactnativenavigation.anim.BottomTabsAnimator;
+import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
@@ -9,14 +11,16 @@ import com.reactnativenavigation.views.BottomTabs;
 public class BottomTabsOptionsPresenter {
     private BottomTabs bottomTabs;
     private BottomTabFinder bottomTabFinder;
+    private BottomTabsAnimator animator;
 
     public BottomTabsOptionsPresenter(BottomTabs bottomTabs, BottomTabFinder bottomTabFinder) {
         this.bottomTabs = bottomTabs;
         this.bottomTabFinder = bottomTabFinder;
+        animator = new BottomTabsAnimator(bottomTabs);
     }
 
     public void present(Options options) {
-        applyBottomTabsOptions(options.bottomTabsOptions);
+        applyBottomTabsOptions(options.bottomTabsOptions, options.animationsOptions);
     }
 
     public void present(Options options, int tabIndex) {
@@ -29,7 +33,7 @@ public class BottomTabsOptionsPresenter {
         }
     }
 
-    private void applyBottomTabsOptions(BottomTabsOptions options) {
+    private void applyBottomTabsOptions(BottomTabsOptions options, AnimationsOptions animationsOptions) {
         if (options.backgroundColor.hasValue()) {
             bottomTabs.setBackgroundColor(options.backgroundColor.get());
         }
@@ -50,10 +54,19 @@ public class BottomTabsOptionsPresenter {
             if (tabIndex >= 0) bottomTabs.setCurrentItem(tabIndex);
         }
         if (options.visible.isTrueOrUndefined()) {
-            bottomTabs.restoreBottomNavigation(options.animate.isTrueOrUndefined());
+            if (options.animate.isTrueOrUndefined()) {
+                animator.show(animationsOptions);
+            } else {
+                bottomTabs.restoreBottomNavigation(false);
+            }
         }
         if (options.visible.isFalse()) {
-            bottomTabs.hideBottomNavigation(options.animate.isTrueOrUndefined());
+            if (options.animate.isTrueOrUndefined()) {
+                animator.hide(animationsOptions);
+            } else {
+                bottomTabs.hideBottomNavigation(false);
+            }
         }
     }
+
 }

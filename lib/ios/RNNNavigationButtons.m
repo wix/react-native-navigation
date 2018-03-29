@@ -101,6 +101,12 @@
 		[barButtonItem setTintColor:[RCTConvert UIColor: tintColor]];
 	}
 	
+	NSNumber* disabledColor = dictionary[@"disabledColor"];
+	if (disabledColor) {
+		UIColor *color = [RCTConvert UIColor:disabledColor];
+		[barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName : color} forState:UIControlStateDisabled];
+	}
+	
 	NSString *testID = dictionary[@"testID"];
 	if (testID)
 	{

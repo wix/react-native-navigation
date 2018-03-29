@@ -36,7 +36,12 @@
 -(void)showModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {
 	self.toVC = (UIViewController<RNNRootViewProtocol>*)viewController;
 	_completionBlock = completion;
-	[self waitForContentToAppearAndThen:@selector(showModalAfterLoad:)];
+	
+	if ([self.toVC isCustomViewController]) {
+		[self showModalAfterLoad:nil];
+	} else {
+		[self waitForContentToAppearAndThen:@selector(showModalAfterLoad:)];
+	}
 }
 
 -(void)dismissModal:(NSString *)componentId {
@@ -71,6 +76,7 @@
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
 		[modalToDismiss dismissViewControllerAnimated:modalToDismiss.isAnimated completion:^{
 			[[_store pendingModalIdsToDismiss] removeObject:componentId];
+			[_store removeComponent:componentId];
 			[self removePendingNextModalIfOnTop];
 		}];
 	}

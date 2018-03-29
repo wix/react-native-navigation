@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import javax.annotation.Nullable;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -103,8 +103,12 @@ public class ModalStackTest extends BaseTest {
     public void onDismiss() throws Exception {
         uut.showModal(viewController, new MockPromise());
         uut.showModal(new SimpleViewController(newActivity(), "otherComponent", new Options()), new MockPromise());
-        uut.dismissAll(new MockPromise());
-        verify(uut, times(2)).onModalDismiss(any());
+        uut.dismissAll(new MockPromise() {
+            @Override
+            public void resolve(@Nullable Object value) {
+                verify(uut, times(2)).onModalDismiss(any());
+            }
+        });
     }
 
     @Test

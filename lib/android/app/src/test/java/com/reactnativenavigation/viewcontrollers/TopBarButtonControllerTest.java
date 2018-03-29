@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -28,19 +32,19 @@ public class TopBarButtonControllerTest extends BaseTest {
 
         TopBarButtonCreatorMock buttonCreatorMock = new TopBarButtonCreatorMock();
         uut = spy(new TopBarButtonController(activity, button, buttonCreatorMock, (buttonId) -> {}));
-        stackController = spy(new StackController(activity, buttonCreatorMock, "stack", new Options()));
+        stackController = spy(new StackController(activity, buttonCreatorMock, new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), new TopBarController(), "stack", new Options()));
 
     }
 
     @Test
-    public void buttonDoesNotClearStackOptionsOnAppear() throws Exception {
+    public void buttonDoesNotClearStackOptionsOnAppear() {
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
         verify(stackController, times(0)).clearOptions();
     }
 
     @Test @Ignore
-    public void destroy_buttonIsDestroyedWhenStackIsDestroyed() throws Exception {
+    public void destroy_buttonIsDestroyedWhenStackIsDestroyed() {
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
         stackController.destroy();

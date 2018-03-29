@@ -2,4 +2,5 @@
 <resources>
     <item name="react_root_view" type="id"/>
     <item name="fragment_screen_content" type="id"/>
+    <item name="topBarBackgroundComponent" type="id"/>
 </resources>

@@ -8,6 +8,8 @@ import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
@@ -15,6 +17,8 @@ import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 
 import org.junit.Test;
 
@@ -46,7 +50,7 @@ public class NavigatorTest extends BaseTest {
         imageLoaderMock = ImageLoaderMock.mock();
         activity = newActivity();
         uut = new Navigator(activity);
-        parentController = spy(new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options()));
+        parentController = spy(newStack());
         parentController.ensureViewIsCreated();
         child1 = new SimpleViewController(activity, "child1", tabOptions);
         child2 = new SimpleViewController(activity, "child2", tabOptions);
@@ -56,27 +60,27 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void setRoot_AddsChildControllerView() throws Exception {
+    public void setRoot_AddsChildControllerView() {
         assertThat(uut.getView().getChildCount()).isZero();
         uut.setRoot(child1, new MockPromise());
         assertIsChildById(uut.getView(), child1.getView());
     }
 
     @Test
-    public void setRoot_ReplacesExistingChildControllerViews() throws Exception {
+    public void setRoot_ReplacesExistingChildControllerViews() {
         uut.setRoot(child1, new MockPromise());
         uut.setRoot(child2, new MockPromise());
         assertIsChildById(uut.getView(), child2.getView());
     }
 
     @Test
-    public void hasUniqueId() throws Exception {
+    public void hasUniqueId() {
         assertThat(uut.getId()).startsWith("navigator");
         assertThat(new Navigator(activity).getId()).isNotEqualTo(uut.getId());
     }
 
     @Test
-    public void push() throws Exception {
+    public void push() {
         StackController stackController = newStack();
         stackController.animatePush(child1, new MockPromise());
         uut.setRoot(stackController, new MockPromise());
@@ -91,14 +95,14 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void push_InvalidPushWithoutAStack_DoesNothing() throws Exception {
+    public void push_InvalidPushWithoutAStack_DoesNothing() {
         uut.setRoot(child1, new MockPromise());
         uut.push(child1.getId(), child2, new MockPromise());
         assertIsChildById(uut.getView(), child1.getView());
     }
 
     @Test
-    public void push_OnCorrectStackByFindingChildId() throws Exception {
+    public void push_OnCorrectStackByFindingChildId() {
         BottomTabsController bottomTabsController = newTabs();
         StackController stack1 = newStack();
         StackController stack2 = newStack();
@@ -115,7 +119,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void pop_InvalidDoesNothing() throws Exception {
+    public void pop_InvalidDoesNothing() {
         uut.pop("123", new MockPromise());
         uut.setRoot(child1, new MockPromise());
         uut.pop(child1.getId(), new MockPromise());
@@ -123,7 +127,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void pop_FromCorrectStackByFindingChildId() throws Exception {
+    public void pop_FromCorrectStackByFindingChildId() {
         BottomTabsController bottomTabsController = newTabs();
         StackController stack1 = newStack();
         StackController stack2 = newStack();
@@ -146,7 +150,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void popSpecific() throws Exception {
+    public void popSpecific() {
         BottomTabsController bottomTabsController = newTabs();
         StackController stack1 = newStack();
         StackController stack2 = newStack();
@@ -163,7 +167,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void popTo_FromCorrectStackUpToChild() throws Exception {
+    public void popTo_FromCorrectStackUpToChild() {
         BottomTabsController bottomTabsController = newTabs();
         StackController stack1 = newStack();
         StackController stack2 = newStack();
@@ -184,7 +188,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void popToRoot() throws Exception {
+    public void popToRoot() {
         BottomTabsController bottomTabsController = newTabs();
         StackController stack1 = newStack();
         StackController stack2 = newStack();
@@ -206,7 +210,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void handleBack_DelegatesToRoot() throws Exception {
+    public void handleBack_DelegatesToRoot() {
         ViewController root = spy(child1);
         uut.setRoot(root, new MockPromise());
         when(root.handleBack()).thenReturn(true);
@@ -215,7 +219,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void handleBack_modalTakePrecedenceOverRoot() throws Exception {
+    public void handleBack_modalTakePrecedenceOverRoot() {
         ViewController root = spy(child1);
         uut.setRoot(root, new MockPromise());
         uut.showModal(child2, new MockPromise());
@@ -226,14 +230,14 @@ public class NavigatorTest extends BaseTest {
     public void setOptions_CallsApplyNavigationOptions() {
         ComponentViewController componentVc = new SimpleComponentViewController(activity, "theId", new Options());
         componentVc.setParentController(parentController);
-        assertThat(componentVc.options.topBarOptions.title.get("")).isEmpty();
+        assertThat(componentVc.options.topBarOptions.title.text.get("")).isEmpty();
         uut.setRoot(componentVc, new MockPromise());
 
         Options options = new Options();
-        options.topBarOptions.title = new Text("new title");
+        options.topBarOptions.title.text = new Text("new title");
 
         uut.setOptions("theId", options);
-        assertThat(componentVc.options.topBarOptions.title.get()).isEqualTo("new title");
+        assertThat(componentVc.options.topBarOptions.title.text.get()).isEqualTo("new title");
     }
 
     @Test
@@ -248,11 +252,12 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private StackController newStack() {
-        return new StackController(activity, new TopBarButtonCreatorMock(), "stack" + CompatUtils.generateViewId(), tabOptions);
+        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), new TopBarController(),
+                "stack" + CompatUtils.generateViewId(), tabOptions);
     }
 
     @Test
-    public void push_Promise() throws Exception {
+    public void push_Promise() {
         final StackController stackController = newStack();
         stackController.animatePush(child1, new MockPromise());
         uut.setRoot(stackController, new MockPromise());
@@ -270,7 +275,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void push_InvalidPushWithoutAStack_DoesNothing_Promise() throws Exception {
+    public void push_InvalidPushWithoutAStack_DoesNothing_Promise() {
         uut.setRoot(child1, new MockPromise());
         uut.push(child1.getId(), child2, new MockPromise() {
             @Override
@@ -282,7 +287,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void pop_InvalidDoesNothing_Promise() throws Exception {
+    public void pop_InvalidDoesNothing_Promise() {
         uut.pop("123", new MockPromise());
         uut.setRoot(child1, new MockPromise());
         uut.pop(child1.getId(), new MockPromise() {
@@ -294,7 +299,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void pop_FromCorrectStackByFindingChildId_Promise() throws Exception {
+    public void pop_FromCorrectStackByFindingChildId_Promise() {
         BottomTabsController bottomTabsController = newTabs();
         StackController stack1 = newStack();
         final StackController stack2 = newStack();
@@ -314,7 +319,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void pushIntoModal() throws Exception {
+    public void pushIntoModal() {
         uut.setRoot(parentController, new MockPromise());
         StackController stackController = newStack();
         stackController.push(child1, new MockPromise());
@@ -324,8 +329,8 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void pushedStackCanBePopped() throws Exception {
-        StackController parent = new StackController(activity, new TopBarButtonCreatorMock(), "someStack", new Options());
+    public void pushedStackCanBePopped() {
+        StackController parent = newStack();
         parent.ensureViewIsCreated();
         uut.setRoot(parent, new MockPromise());
         parent.push(parentController, new MockPromise());
@@ -347,7 +352,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void showModal_onViewDisappearIsInvokedOnRoot() throws Exception {
+    public void showModal_onViewDisappearIsInvokedOnRoot() {
         uut.setRoot(parentController, new MockPromise());
         uut.showModal(child1, new MockPromise() {
             @Override
@@ -358,7 +363,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void dismissModal_onViewAppearedInvokedOnRoot() throws Exception {
+    public void dismissModal_onViewAppearedInvokedOnRoot() {
         uut.setRoot(parentController, new MockPromise());
         uut.showModal(child1, new MockPromise() {
             @Override

@@ -8,14 +8,16 @@ describe('orientation', () => {
 
   beforeEach(async () => {
     await device.relaunchApp();
-    waitForDeviceToSettleAfterOrientationChangeAndroid = ms => new Promise(res => setTimeout(res, device.getPlatform() === 'ios' ? 0 : 150));
+    waitForDeviceToSettleAfterOrientationChangeAndroid = ms => new Promise(res => setTimeout(res, device.getPlatform() === 'ios' ? 0 : 400));
   });
 
   it('default allows all', async () => {
     await elementById(testIDs.ORIENTATION_BUTTON).tap();
     await elementById(testIDs.DEFAULT_ORIENTATION_BUTTON).tap();
+    waitForDeviceToSettleAfterOrientationChangeAndroid();
     await expect(elementById(testIDs.PORTRAIT_ELEMENT)).toBeVisible();
     await device.setOrientation('landscape');
+    waitForDeviceToSettleAfterOrientationChangeAndroid();
     await expect(elementById(testIDs.LANDSCAPE_ELEMENT)).toBeVisible();
     await device.setOrientation('portrait');
     waitForDeviceToSettleAfterOrientationChangeAndroid();
@@ -28,6 +30,7 @@ describe('orientation', () => {
     await elementById(testIDs.LANDSCAPE_PORTRAIT_ORIENTATION_BUTTON).tap();
     await expect(element(by.id(testIDs.PORTRAIT_ELEMENT))).toBeVisible();
     await device.setOrientation('landscape');
+    waitForDeviceToSettleAfterOrientationChangeAndroid();
     await expect(element(by.id(testIDs.LANDSCAPE_ELEMENT))).toBeVisible();
     await device.setOrientation('portrait');
     waitForDeviceToSettleAfterOrientationChangeAndroid();

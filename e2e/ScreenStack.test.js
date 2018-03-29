@@ -69,7 +69,7 @@ describe('screen stack', () => {
     await expect(elementByLabel('Screen 1')).toBeVisible();
   });
 
-  it(':android: push external component with options', async () => {
+  it('push external component with options', async () => {
     await elementById(testIDs.PUSH_EXTERNAL_COMPONENT_BUTTON).tap();
     await expect(elementByLabel('This is an external component')).toBeVisible();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();

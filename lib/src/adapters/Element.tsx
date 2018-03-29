@@ -4,11 +4,7 @@ import { requireNativeComponent } from 'react-native';
 
 let RNNElement: React.ComponentType<any>;
 
-export class Element extends React.Component<{
-  elementId: any;
-  resizeMode: any;
-}, any> {
-
+export class Element extends React.Component<{ elementId: any; resizeMode: any; }, any> {
   static propTypes = {
     elementId: PropTypes.string.isRequired,
     resizeMode: PropTypes.string

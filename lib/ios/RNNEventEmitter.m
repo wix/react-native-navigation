@@ -7,14 +7,13 @@
 
 RCT_EXPORT_MODULE();
 
-static NSString* const onAppLaunched	= @"RNN.appLaunched";
+static NSString* const onAppLaunched	= @"RNN.onAppLaunched";
 static NSString* const componentDidAppear	= @"RNN.componentDidAppear";
 static NSString* const componentDidDisappear	= @"RNN.componentDidDisappear";
-static NSString* const onNavigationButtonPressed	= @"RNN.navigationButtonPressed";
-static NSString* const navigationCommands	= @"RNN.navigationCommands";
+static NSString* const onNavigationButtonPressed	= @"RNN.onNavigationButtonPressed";
 
 -(NSArray<NSString *> *)supportedEvents {
-	return @[onAppLaunched, componentDidAppear, componentDidDisappear, onNavigationButtonPressed, navigationCommands];
+	return @[onAppLaunched, componentDidAppear, componentDidDisappear, onNavigationButtonPressed];
 }
 
 # pragma mark public
@@ -27,20 +26,16 @@ static NSString* const navigationCommands	= @"RNN.navigationCommands";
 	}
 }
 
--(void)sendNavigationEvent:(RNNNavigationEvent *)navigationEvent {
-	[self send:navigationCommands body:navigationEvent.body];
+-(void)sendComponentDidAppear:(NSString *)componentId componentName:(NSString *)componentName {
+	[self send:componentDidAppear body:@{@"componentId":componentId, @"componentName": componentName}];
 }
 
--(void)sendComponentDidAppear:(NSString *)componentId {
-	[self send:componentDidAppear body:componentId];
-}
-
--(void)sendComponentDidDisappear:(NSString *)componentId {
-	[self send:componentDidDisappear body:componentId];
+-(void)sendComponentDidDisappear:(NSString *)componentId componentName:(NSString *)componentName{
+	[self send:componentDidDisappear body:@{@"componentId":componentId, @"componentName": componentName}];
 }
 
 -(void)sendOnNavigationButtonPressed:(NSString *)componentId buttonId:(NSString*)buttonId {
-	[self send:onNavigationButtonPressed body:@{@"componentId":componentId , @"buttonId": buttonId }];
+	[self send:onNavigationButtonPressed body:@{@"componentId":componentId , @"buttonId": buttonId}];
 }
 
 - (void)addListener:(NSString *)eventName {

@@ -127,4 +127,10 @@ describe('screen style', () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
+
+  it('set title component', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.SHOW_TOPBAR_REACT_VIEW).tap();
+    await expect(elementByLabel('Press Me')).toBeVisible();
+  });
 });

@@ -2,62 +2,54 @@ package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.RestrictTo;
-import android.support.v4.view.ViewPager;
 import android.widget.RelativeLayout;
 
+import com.reactnativenavigation.interfaces.ChildDisappearListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressLint("ViewConstructor")
 public class StackLayout extends RelativeLayout {
-    private TopBar topBar;
+    private String stackId;
+    private final OptionsPresenter optionsPresenter;
 
-    public StackLayout(Context context, ReactViewCreator topBarButtonCreator, TopBarButtonController.OnClickListener topBarButtonClickListener) {
+    public StackLayout(Context context, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, TopBarButtonController.OnClickListener topBarButtonClickListener, String stackId) {
         super(context);
-        topBar = new TopBar(context, topBarButtonCreator, topBarButtonClickListener, this);
-        topBar.setId(CompatUtils.generateViewId());
-        addView(topBar, MATCH_PARENT, WRAP_CONTENT);
+        this.stackId = stackId;
+        createLayout(topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewController, topBarController, topBarButtonClickListener);
+        optionsPresenter = new OptionsPresenter(topBarController.getView());
         setContentDescription("StackLayout");
     }
 
-    public void applyOptions(Options options) {
-        new OptionsPresenter(topBar).applyOrientation(options.orientationOptions);
+    private void createLayout(ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, TopBarButtonController.OnClickListener topBarButtonClickListener) {
+        addView(topBarController.createView(getContext(), buttonCreator, titleBarReactViewCreator, topBarBackgroundViewController, topBarButtonClickListener, this), MATCH_PARENT, WRAP_CONTENT);
     }
 
-    public void applyOptions(Options options, Component component) {
-        new OptionsPresenter(topBar, component).applyOptions(options);
+    public void applyChildOptions(Options options) {
+        optionsPresenter.applyOrientation(options.orientationOptions);
     }
 
-    public void onChildWillDisappear(Options disappearing, Options appearing) {
-        new OptionsPresenter(topBar).onChildWillDisappear(disappearing, appearing);
+    public void applyChildOptions(Options options, Component child) {
+        optionsPresenter.applyChildOptions(options, child);
     }
 
-    public void clearOptions() {
-        topBar.clear();
+    public void onChildWillDisappear(Options disappearing, Options appearing, ChildDisappearListener childDisappearListener) {
+        optionsPresenter.onChildWillDisappear(disappearing, appearing, childDisappearListener);
     }
 
-    public void initTopTabs(ViewPager viewPager) {
-        topBar.initTopTabs(viewPager);
+    public void mergeChildOptions(Options options, Component child) {
+        optionsPresenter.mergeChildOptions(options, child);
     }
 
-    public void clearTopTabs() {
-        topBar.clearTopTabs();
-    }
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    public TopBar getTopBar() {
-        return topBar;
-    }
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    public void setTopBar(TopBar topBar) {
-        this.topBar = topBar;
+    public String getStackId() {
+        return stackId;
     }
 }

@@ -124,7 +124,7 @@ describe('LayoutTreeParser', () => {
       expect(result.children[1].children[0].children[2].children[0].type).toEqual('TopTabs');
       expect(result.children[1].children[0].children[2].children[0].children[2].type).toEqual('TopTabs');
       expect(result.children[1].children[0].children[2].children[0].children[2].children[4].type).toEqual('Stack');
-      expect(result.children[1].children[0].children[2].children[0].children[2].data).toEqual({ options: { topBar: { title: 'Hello1' } } });
+      expect(result.children[1].children[0].children[2].children[0].children[2].data).toEqual({ options: { topBar: { title: { text: 'Hello1'} } } });
     });
   });
 
@@ -163,7 +163,9 @@ const passProps = {
 
 const options = {
   topBar: {
-    title: 'Hello1'
+    title: {
+      text: 'Hello1'
+    }
   }
 };
 
