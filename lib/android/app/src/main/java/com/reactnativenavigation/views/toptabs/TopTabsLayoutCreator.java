@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.toptabs;
 
 import android.content.Context;
 

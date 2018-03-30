@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.titlebar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -7,68 +7,99 @@ import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 @SuppressLint("ViewConstructor")
 public class TitleBar extends Toolbar {
     private final ReactViewCreator buttonCreator;
+    private TitleBarReactViewController reactViewController;
+    private final TitleBarReactViewCreator reactViewCreator;
     private final TopBarButtonController.OnClickListener onClickListener;
     private final List<TopBarButtonController> rightButtonControllers = new ArrayList<>();
     private TopBarButtonController leftButtonController;
 
-    public TitleBar(Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener) {
+    public TitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
         super(context);
         this.buttonCreator = buttonCreator;
+        this.reactViewCreator = reactViewCreator;
+        reactViewController = new TitleBarReactViewController((Activity) context, reactViewCreator);
         this.onClickListener = onClickListener;
         getMenu();
         setContentDescription("titleBar");
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        clearComponent();
+        super.setTitle(title);
     }
 
     public String getTitle() {
         return super.getTitle() == null ? "" : (String) super.getTitle();
     }
 
-    void setTitleTextColor(Color color) {
+    public void setTitleTextColor(Color color) {
         if (color.hasValue()) setTitleTextColor(color.get());
     }
 
-    void setBackgroundColor(Color color) {
+    public void setComponent(String componentName, Alignment alignment) {
+        clearTitle();
+        reactViewController.setComponent(componentName);
+        addView(reactViewController.getView(), getComponentLayoutParams(alignment));
+    }
+
+    public void setBackgroundColor(Color color) {
         if (color.hasValue()) setBackgroundColor(color.get());
     }
 
-    void setTitleFontSize(Fraction size) {
+    public void setTitleFontSize(Fraction size) {
         TextView titleTextView = getTitleTextView();
         if (titleTextView != null && size.hasValue()) {
             titleTextView.setTextSize(size.get());
         }
     }
 
-    void setTitleTypeface(Typeface typeface) {
+    public void setTitleTypeface(Typeface typeface) {
         TextView titleTextView = getTitleTextView();
         if (titleTextView != null) {
             titleTextView.setTypeface(typeface);
         }
     }
 
-    TextView getTitleTextView() {
+    public TextView getTitleTextView() {
         return findTextView(this);
     }
 
     public void clear() {
-        setTitle(null);
+        clearTitle();
         clearRightButtons();
         clearLeftButton();
+        clearComponent();
+    }
+
+    private void clearTitle() {
+        setTitle(null);
+    }
+
+    private void clearComponent() {
+        reactViewController.destroy();
+        reactViewController = new TitleBarReactViewController((Activity) getContext(), reactViewCreator);
     }
 
     private void clearLeftButton() {
@@ -87,12 +118,7 @@ public class TitleBar extends Toolbar {
         getMenu().clear();
     }
 
-    public void setButtons(List<Button> leftButtons, List<Button> rightButtons) {
-        setLeftButtons(leftButtons);
-        setRightButtons(rightButtons);
-    }
-
-    private void setLeftButtons(List<Button> leftButtons) {
+    public void setLeftButtons(List<Button> leftButtons) {
         if (leftButtons == null) return;
         if (leftButtons.isEmpty()) {
             clearLeftButton();
@@ -136,5 +162,13 @@ public class TitleBar extends Toolbar {
             }
         }
         return null;
+    }
+
+    public Toolbar.LayoutParams getComponentLayoutParams(Alignment alignment) {
+        LayoutParams lp = new LayoutParams(MATCH_PARENT, getHeight());
+        if (alignment == Alignment.Center) {
+            lp.gravity = Gravity.CENTER;
+        }
+        return lp;
     }
 }

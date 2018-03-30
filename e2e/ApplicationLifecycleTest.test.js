@@ -20,7 +20,7 @@ describe('application lifecycle test', () => {
     await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
-  it(':android: relaunch from background', async () => {
+  it('relaunch from background', async () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
@@ -40,7 +40,7 @@ describe('application lifecycle test', () => {
     await expect(elementByLabel('Pushed Screen')).toBeNotVisible();
   });
 
-  it(':android: device orientation does not destroy activity', async () => {
+  it('device orientation does not destroy activity', async () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
 

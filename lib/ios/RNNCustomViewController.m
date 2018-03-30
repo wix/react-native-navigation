@@ -1,6 +1,15 @@
 #import "RNNCustomViewController.h"
 
-@implementation RNNCustomViewController
+@implementation RNNCustomViewController {
+	NSString* _text;
+}
+
+- (instancetype)initWithProps:(NSDictionary *)props {
+	self = [super init];
+	_text = props[@"text"];
+	
+	return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -8,9 +17,11 @@
 }
 
 - (void)addTestLabel {
-	UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+	UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+	label.textAlignment = NSTextAlignmentCenter;
+	label.numberOfLines = 2;
 	label.center = self.view.center;
-	label.text = @"Test label";
+	label.text = _text;
 	label.accessibilityIdentifier = @"TestLabel";
 	[self.view addSubview:label];
 }

@@ -1,5 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.annotation.Nullable;
@@ -8,6 +10,7 @@ import android.view.View;
 
 import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.R;
+import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
 import static android.view.View.MeasureSpec.EXACTLY;
@@ -19,6 +22,8 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
     private ModalListener modalListener;
     @Nullable private Promise dismissPromise;
 
+    private ModalAnimator animator;
+
     public Modal(final ViewController viewController, ModalListener modalListener) {
         this.viewController = viewController;
         dialog = new Dialog(viewController.getActivity(), R.style.Modal);
@@ -26,17 +31,29 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
         dialog.setOnKeyListener(this);
         dialog.setOnDismissListener(this);
         dialog.setOnShowListener(this);
+        animator = new ModalAnimator(viewController.getActivity(), viewController.options.animationsOptions);
     }
 
     public void show() {
         preMeasureView();
-        dialog.setContentView(viewController.getView());
+        final View contentView = viewController.getView();
         dialog.show();
+        animator.animateShow(contentView, new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                dialog.setContentView(contentView);
+            }
+        });
     }
 
     public void dismiss(Promise promise) {
         dismissPromise = promise;
-        dialog.dismiss();
+        animator.animateDismiss(viewController.getView(), new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                dialog.dismiss();
+            }
+        });
     }
 
     public boolean containsDeepComponentId(String componentId) {

@@ -14,7 +14,6 @@ const dirs = [
 run();
 
 function run() {
-  exec.execSync('node -v');
   const paths = _.chain(dirs).map((d) => `'${d}/**/*.[tj]s*'`).join(' ').value();
   exec.execSync(`tslint ${paths} ${fix} --format verbose`);
   assertAllTsFilesInSrc();

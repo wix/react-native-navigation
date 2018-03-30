@@ -15,6 +15,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	
 	if (self.visible) {
 		[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:![self.visible boolValue] animated:[self.animate boolValue]];
+	} else {
+		[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:NO animated:NO];
 	}
 	
 	if (self.testID) {
@@ -31,10 +33,14 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	
 	if (self.backgroundColor) {
 		viewController.tabBarController.tabBar.barTintColor = [RCTConvert UIColor:self.backgroundColor];
+	} else {
+		viewController.tabBarController.tabBar.barTintColor = nil;
 	}
 	
 	if (self.translucent) {
 		viewController.tabBarController.tabBar.translucent = [self.translucent boolValue];
+	} else {
+		viewController.tabBarController.tabBar.translucent = NO;
 	}
 	
 	if (self.hideShadow) {

@@ -88,7 +88,8 @@ class TextScreen extends Component {
   hideTabBar(visible) {
     Navigation.setOptions(this.props.componentId, {
       bottomTabs: {
-        visible
+        visible,
+        animate: true
       }
     });
   }

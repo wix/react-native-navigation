@@ -8,6 +8,8 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Color;
@@ -15,6 +17,8 @@ import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.ReactComponent;
 
@@ -56,20 +60,20 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void containsRelativeLayoutView() throws Exception {
+    public void containsRelativeLayoutView() {
         assertThat(uut.getView()).isInstanceOf(RelativeLayout.class);
         assertThat(uut.getView().getChildAt(0)).isInstanceOf(BottomTabs.class);
     }
 
     @Test(expected = RuntimeException.class)
-    public void setTabs_ThrowWhenMoreThan5() throws Exception {
+    public void setTabs_ThrowWhenMoreThan5() {
         List<ViewController> tabs = createTabs();
         tabs.add(new SimpleViewController(activity, "6", tabOptions));
         uut.setTabs(tabs);
     }
 
     @Test
-    public void setTab_controllerIsSetAsParent() throws Exception {
+    public void setTab_controllerIsSetAsParent() {
         List<ViewController> tabs = createTabs();
         uut.setTabs(tabs);
         for (ViewController tab : tabs) {
@@ -78,7 +82,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void setTabs_AddAllViews() throws Exception {
+    public void setTabs_AddAllViews() {
         List<ViewController> tabs = createTabs();
         uut.setTabs(tabs);
         assertThat(uut.getView().getChildCount()).isEqualTo(2);
@@ -86,7 +90,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void selectTabAtIndex() throws Exception {
+    public void selectTabAtIndex() {
         uut.setTabs(createTabs());
         assertThat(uut.getSelectedIndex()).isZero();
 
@@ -97,10 +101,10 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void findControllerById_ReturnsSelfOrChildren() throws Exception {
+    public void findControllerById_ReturnsSelfOrChildren() {
         assertThat(uut.findControllerById("123")).isNull();
         assertThat(uut.findControllerById(uut.getId())).isEqualTo(uut);
-        StackController inner = new StackController(activity, new TopBarButtonCreatorMock(), "inner", tabOptions);
+        StackController inner = createStack("inner");
         inner.animatePush(child1, new MockPromise());
         assertThat(uut.findControllerById(child1.getId())).isNull();
         uut.setTabs(Collections.singletonList(inner));
@@ -108,7 +112,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void handleBack_DelegatesToSelectedChild() throws Exception {
+    public void handleBack_DelegatesToSelectedChild() {
         assertThat(uut.handleBack()).isFalse();
 
         List<ViewController> tabs = createTabs();
@@ -125,26 +129,26 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void applyOptions_bottomTabsOptionsAreClearedAfterApply() throws Exception {
+    public void applyOptions_bottomTabsOptionsAreClearedAfterApply() {
         List<ViewController> tabs = createTabs();
         child1.options.bottomTabsOptions.tabColor = new Color(android.graphics.Color.RED);
         uut.setTabs(tabs);
         uut.ensureViewIsCreated();
 
-        StackController stack = spy(new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options()));
+        StackController stack = spy(createStack("stack"));
         stack.ensureViewIsCreated();
         stack.push(uut, new MockPromise());
 
         child1.onViewAppeared();
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
         ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
-        verify(stack, times(1)).applyOptions(optionsCaptor.capture(), viewCaptor.capture());
+        verify(stack, times(1)).applyChildOptions(optionsCaptor.capture(), viewCaptor.capture());
         assertThat(viewCaptor.getValue()).isEqualTo(child1.getView());
         assertThat(optionsCaptor.getValue().bottomTabsOptions.tabColor.hasValue()).isFalse();
     }
 
     @Test
-    public void mergeOptions_currentTabIndex() throws Exception {
+    public void mergeOptions_currentTabIndex() {
         List<ViewController> tabs = createTabs();
         uut.setTabs(tabs);
         uut.ensureViewIsCreated();
@@ -156,7 +160,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void buttonPressInvokedOnCurrentTab() throws Exception {
+    public void buttonPressInvokedOnCurrentTab() {
         uut.setTabs(createTabs());
         uut.ensureViewIsCreated();
         uut.selectTabAtIndex(1);
@@ -168,5 +172,16 @@ public class BottomTabsControllerTest extends BaseTest {
     @NonNull
     private List<ViewController> createTabs() {
         return Arrays.asList(child1, child2, child3, child4, child5);
+    }
+
+    private StackController createStack(String id) {
+        return new StackController(activity,
+                new TopBarButtonCreatorMock(),
+                new TitleBarReactViewCreatorMock(),
+                new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()),
+                new TopBarController(),
+                id,
+                tabOptions
+        );
     }
 }

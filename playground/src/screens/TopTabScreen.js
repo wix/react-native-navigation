@@ -8,9 +8,11 @@ class TopTabScreen extends PureComponent {
   static get options() {
     return {
       topBar: {
-        textColor: 'black',
-        textFontSize: 16,
-        textFontFamily: 'HelveticaNeue-Italic'
+        title: {
+          color: 'black',
+          fontSize: 16,
+          fontFamily: 'HelveticaNeue-Italic'
+        }
       },
       fab: {
         id: FAB,

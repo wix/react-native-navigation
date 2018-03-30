@@ -9,8 +9,12 @@ import android.widget.LinearLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
+import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 
 import org.assertj.android.api.Assertions;
 import org.junit.Test;
@@ -37,17 +41,17 @@ public class ViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void holdsAView() throws Exception {
+    public void holdsAView() {
         assertThat(uut.getView()).isNotNull().isInstanceOf(View.class);
     }
 
     @Test
-    public void holdsARefToActivity() throws Exception {
+    public void holdsARefToActivity() {
         assertThat(uut.getActivity()).isNotNull().isEqualTo(activity);
     }
 
     @Test
-    public void canOverrideViewCreation() throws Exception {
+    public void canOverrideViewCreation() {
         final FrameLayout otherView = new FrameLayout(activity);
         ViewController myController = new ViewController(activity, "vc", new Options()) {
             @Override
@@ -64,38 +68,38 @@ public class ViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void holdsAReferenceToStackControllerOrNull() throws Exception {
+    public void holdsAReferenceToStackControllerOrNull() {
         assertThat(uut.getParentController()).isNull();
-        StackController nav = new StackController(activity, new TopBarButtonCreatorMock(), "stack", new Options());
+        StackController nav = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), new TopBarController(), "stack", new Options());
         nav.animatePush(uut, new MockPromise());
         assertThat(uut.getParentController()).isEqualTo(nav);
     }
 
     @Test
-    public void handleBackDefaultFalse() throws Exception {
+    public void handleBackDefaultFalse() {
         assertThat(uut.handleBack()).isFalse();
     }
 
     @Test
-    public void holdsId() throws Exception {
+    public void holdsId() {
         assertThat(uut.getId()).isEqualTo("uut");
     }
 
     @Test
-    public void isSameId() throws Exception {
+    public void isSameId() {
         assertThat(uut.isSameId("")).isFalse();
         assertThat(uut.isSameId(null)).isFalse();
         assertThat(uut.isSameId("uut")).isTrue();
     }
 
     @Test
-    public void findControllerById_SelfOrNull() throws Exception {
+    public void findControllerById_SelfOrNull() {
         assertThat(uut.findControllerById("456")).isNull();
         assertThat(uut.findControllerById("uut")).isEqualTo(uut);
     }
 
     @Test
-    public void onAppear_WhenShown() throws Exception {
+    public void onAppear_WhenShown() {
         ViewController spy = spy(uut);
         spy.getView().getViewTreeObserver().dispatchOnGlobalLayout();
         Assertions.assertThat(spy.getView()).isNotShown();
@@ -109,7 +113,7 @@ public class ViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void onAppear_CalledAtMostOnce() throws Exception {
+    public void onAppear_CalledAtMostOnce() {
         ViewController spy = spy(uut);
         Shadows.shadowOf(spy.getView()).setMyParent(mock(ViewParent.class));
         Assertions.assertThat(spy.getView()).isShown();
@@ -121,7 +125,7 @@ public class ViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void onDisappear_WhenNotShown_AfterOnAppearWasCalled() throws Exception {
+    public void onDisappear_WhenNotShown_AfterOnAppearWasCalled() {
         ViewController spy = spy(uut);
         Shadows.shadowOf(spy.getView()).setMyParent(mock(ViewParent.class));
         Assertions.assertThat(spy.getView()).isShown();
@@ -136,7 +140,7 @@ public class ViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void onDisappear_CalledAtMostOnce() throws Exception {
+    public void onDisappear_CalledAtMostOnce() {
         ViewController spy = spy(uut);
         Shadows.shadowOf(spy.getView()).setMyParent(mock(ViewParent.class));
         Assertions.assertThat(spy.getView()).isShown();
@@ -169,7 +173,7 @@ public class ViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void onDestroy_CallsOnDisappearIfNeeded() throws Exception {
+    public void onDestroy_CallsOnDisappearIfNeeded() {
         ViewController spy = spy(uut);
         Shadows.shadowOf(spy.getView()).setMyParent(mock(ViewParent.class));
         Assertions.assertThat(spy.getView()).isShown();
@@ -182,12 +186,12 @@ public class ViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void assignsIdToCreatedView() throws Exception {
+    public void assignsIdToCreatedView() {
         assertThat(uut.getView().getId()).isPositive();
     }
 
     @Test
-    public void onDestroy_RemovesSelfFromParentIfExists() throws Exception {
+    public void onDestroy_RemovesSelfFromParentIfExists() {
         LinearLayout parent = new LinearLayout(activity);
         parent.addView(uut.getView());
 
@@ -196,7 +200,7 @@ public class ViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void ensureViewIsCreated() throws Exception {
+    public void ensureViewIsCreated() {
         ViewController spy = spy(uut);
         verify(spy, times(0)).getView();
         spy.ensureViewIsCreated();

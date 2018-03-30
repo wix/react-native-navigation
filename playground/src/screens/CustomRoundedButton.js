@@ -16,6 +16,22 @@ class CustomRoundedButton extends Component {
     this.state = {};
   }
 
+  componentDidAppear() {
+    console.log('RNN', 'CRB.componentDidAppear');
+  }
+
+  componentDidDisappear() {
+    console.log('RNN', `CRB.componentDidDisappear`);
+  }
+
+  componentDidMount() {
+    console.log('RNN', `CRB.componentDidMount`);
+  }
+
+  componentWillUnmount() {
+    console.log('RNN', `CRB.componentWillUnmount`);
+  }
+
   render() {
     return (
       <View style={styles.container} key={'guyguy'}>
@@ -34,8 +50,6 @@ module.exports = CustomRoundedButton;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: 48,
-    height: 48,
     backgroundColor: 'transparent',
     flexDirection: 'column',
     justifyContent: 'center',

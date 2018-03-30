@@ -17,7 +17,7 @@ public class Options implements DEFAULT_VALUES {
     @NonNull
     public static Options parse(TypefaceLoader typefaceManager, JSONObject json, @NonNull Options defaultOptions) {
         Options result = new Options();
-        if (json == null) return result;
+        if (json == null) return result.withDefaultOptions(defaultOptions);
 
         result.orientationOptions = OrientationOptions.parse(json);
         result.topBarOptions = TopBarOptions.parse(typefaceManager, json.optJSONObject("topBar"));
@@ -119,6 +119,16 @@ public class Options implements DEFAULT_VALUES {
 
     public Options clearSideMenuOptions() {
         sideMenuRootOptions = new SideMenuRootOptions();
+        return this;
+    }
+
+    public Options clearAnimationOptions() {
+        animationsOptions = new AnimationsOptions();
+        return this;
+    }
+
+    public Options clearFabOptions() {
+        fabOptions = new FabOptions();
         return this;
     }
 }

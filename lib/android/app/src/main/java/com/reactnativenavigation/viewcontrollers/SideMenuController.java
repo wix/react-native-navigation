@@ -49,10 +49,10 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
 	}
 
     @Override
-    public void applyOptions(Options options, Component childComponent) {
-        super.applyOptions(options, childComponent);
+    public void applyChildOptions(Options options, Component child) {
+        super.applyChildOptions(options, child);
         applyOnParentController(parentController ->
-                ((ParentController) parentController).applyOptions(this.options, childComponent)
+                ((ParentController) parentController).applyChildOptions(this.options, child)
         );
     }
 

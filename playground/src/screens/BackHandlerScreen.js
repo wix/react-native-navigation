@@ -7,9 +7,11 @@ class BackHandlerScreen extends Component {
   static get options() {
     return {
       topBar: {
-        title: 'Back Handler',
-        textColor: 'black',
-        textFontSize: 16
+        title: {
+          text: 'Back Handler',
+          color: 'black',
+          fontSize: 16
+        }
       }
     };
   }

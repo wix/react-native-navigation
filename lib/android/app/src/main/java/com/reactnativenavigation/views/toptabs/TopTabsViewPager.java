@@ -1,4 +1,4 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.toptabs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +12,8 @@ import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
+import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.topbar.TopBar;
 
 import java.util.List;
 

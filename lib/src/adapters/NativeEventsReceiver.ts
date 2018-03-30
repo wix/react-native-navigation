@@ -1,33 +1,25 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
+import { EventSubscription } from '../events/EventsRegistry';
 
 export class NativeEventsReceiver {
-  private emitter;
-
+  private emitter: NativeEventEmitter;
   constructor() {
     this.emitter = new NativeEventEmitter(NativeModules.RNNEventEmitter);
   }
 
-  registerComponentDidAppear(callback) {
-    this.emitter.addListener('RNN.componentDidAppear', callback);
+  registerOnAppLaunched(callback: () => void): EventSubscription {
+    return this.emitter.addListener('RNN.onAppLaunched', callback);
   }
 
-  registerComponentDidDisappear(callback) {
-    this.emitter.addListener('RNN.componentDidDisappear', callback);
+  registerComponentDidAppear(callback: (params) => void): EventSubscription {
+    return this.emitter.addListener('RNN.componentDidAppear', callback);
   }
 
-  registerAppLaunched(callback) {
-    this.emitter.addListener('RNN.appLaunched', callback);
+  registerComponentDidDisappear(callback: (params) => void): EventSubscription {
+    return this.emitter.addListener('RNN.componentDidDisappear', callback);
   }
 
-  registerNavigationCommands(callback) {
-    this.emitter.addListener('RNN.navigationCommands', callback);
-  }
-
-  registerComponentLifecycle(callback) {
-    this.emitter.addListener('RNN.componentLifecycle', callback);
-  }
-
-  registerNavigationButtonPressed(callback) {
-    this.emitter.addListener('RNN.navigationButtonPressed', callback);
+  registerOnNavigationButtonPressed(callback: (params) => void): EventSubscription {
+    return this.emitter.addListener('RNN.onNavigationButtonPressed', callback);
   }
 }

@@ -1,14 +1,15 @@
-package com.reactnativenavigation.react;
+package com.reactnativenavigation.views.titlebar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.facebook.react.ReactInstanceManager;
+import com.reactnativenavigation.react.ReactView;
 
 @SuppressLint("ViewConstructor")
-public class TopBarReactButtonView extends ReactView {
+public class TitleBarReactButtonView extends ReactView {
 
-    public TopBarReactButtonView(Context context, ReactInstanceManager reactInstanceManager, String componentId, String componentName) {
+    public TitleBarReactButtonView(Context context, ReactInstanceManager reactInstanceManager, String componentId, String componentName) {
         super(context, reactInstanceManager, componentId, componentName);
     }
 

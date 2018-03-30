@@ -2,9 +2,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "RNNRootViewController.h"
+#import "ReactNativeNavigation.h"
 
 typedef void (^RNNTransitionCompletionBlock)(void);
-typedef UIViewController * (^RNNExternalViewCreator)(void);
 
 @interface RNNStore : NSObject
 
@@ -14,7 +14,7 @@ typedef UIViewController * (^RNNExternalViewCreator)(void);
 -(void) removeComponentByViewControllerInstance:(UIViewController*)componentInstance;
 
 - (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
-- (UIViewController *)getExternalComponent:(NSString *)name;
+- (UIViewController *)getExternalComponent:(NSString *)name props:(NSDictionary*)props bridge:(RCTBridge*)bridge;
 
 -(NSString*)componentKeyForInstance:(UIViewController*)instance;
 

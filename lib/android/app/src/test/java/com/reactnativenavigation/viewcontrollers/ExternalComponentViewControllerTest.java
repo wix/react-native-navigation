@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
 import android.widget.FrameLayout;
 
+import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.parse.ExternalComponent;
 import com.reactnativenavigation.parse.Options;
@@ -14,6 +15,7 @@ import com.reactnativenavigation.views.ExternalComponentLayout;
 
 import org.json.JSONObject;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.spy;
@@ -25,16 +27,19 @@ public class ExternalComponentViewControllerTest extends BaseTest {
     private FragmentCreatorMock componentCreator;
     private Activity activity;
     private ExternalComponent ec;
+    private ReactInstanceManager reactInstanceManager;
 
     @Override
     public void beforeEach() {
         componentCreator = spy(new FragmentCreatorMock());
         activity = newActivity();
         ec = createExternalComponent();
+        reactInstanceManager = Mockito.mock(ReactInstanceManager.class);
         uut = spy(new ExternalComponentViewController(activity,
                 "fragmentId",
                 ec,
                 componentCreator,
+                reactInstanceManager,
                 new Options())
         );
     }
@@ -47,15 +52,15 @@ public class ExternalComponentViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void createView_returnsFrameLayout() throws Exception {
+    public void createView_returnsFrameLayout() {
         ExternalComponentLayout view = uut.getView();
         assertThat(FrameLayout.class.isAssignableFrom(view.getClass())).isTrue();
     }
 
     @Test
-    public void createView_createsExternalComponent() throws Exception {
+    public void createView_createsExternalComponent() {
         ExternalComponentLayout view = uut.getView();
-        verify(componentCreator, times(1)).create((FragmentActivity) activity, ec.passProps);
+        verify(componentCreator, times(1)).create((FragmentActivity) activity, reactInstanceManager, ec.passProps);
         assertThat(view.getChildCount()).isGreaterThan(0);
     }
 }
