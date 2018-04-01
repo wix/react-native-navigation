@@ -18,12 +18,12 @@ import android.widget.TextView;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 import com.reactnativenavigation.utils.ArrayUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,12 +136,12 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
     }
 
     private void setIconColor(Drawable icon) {
-        if (button.enabled.isTrueOrUndefined()) {
-            UiUtils.tintDrawable(icon, button.buttonColor);
+        if (button.enabled.isTrueOrUndefined() && button.buttonColor.hasValue()) {
+            UiUtils.tintDrawable(icon, button.buttonColor.get());
             return;
         }
-        if (button.disableIconTint.isTrue()) {
-            UiUtils.tintDrawable(icon, button.buttonColor);
+        if (button.disableIconTint.isTrue() && button.buttonColor.hasValue()) {
+            UiUtils.tintDrawable(icon, button.buttonColor.get());
         } else {
             UiUtils.tintDrawable(icon, Color.LTGRAY);
         }
@@ -163,13 +163,16 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
 
     private void setTextColorForFoundButtonViews(ArrayList<View> buttons) {
         for (View button : buttons) {
-            ((TextView) button).setTextColor(this.button.buttonColor);
+            if (this.button.buttonColor.hasValue())
+                ((TextView) button).setTextColor(this.button.buttonColor.get());
         }
     }
 
     private void setFontSize(MenuItem menuItem) {
         SpannableString spanString = new SpannableString(button.title.get());
-        spanString.setSpan(new AbsoluteSizeSpan(button.buttonFontSize, true), 0, button.title.get().length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        if (this.button.buttonFontSize.hasValue())
+            spanString.setSpan(new AbsoluteSizeSpan(button.buttonFontSize.get(), true),
+                    0, button.title.get().length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         menuItem.setTitleCondensed(spanString);
     }
 
