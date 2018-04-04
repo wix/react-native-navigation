@@ -128,9 +128,6 @@ public class BottomTabsController extends ParentController implements AHBottomNa
                 error.printStackTrace();
             }
         });
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
-        params.addRule(ABOVE, bottomTabs.getId());
 	}
 
     public int getSelectedIndex() {
@@ -152,7 +149,9 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     public void selectTabAtIndex(final int newIndex) {
         getView().removeView(getCurrentView());
         bottomTabs.setCurrentItem(newIndex, false);
-        getView().addView(getCurrentView());
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        params.addRule(ABOVE, bottomTabs.getId());
+        getView().addView(getCurrentView(), params);
     }
 
     @NonNull
