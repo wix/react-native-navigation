@@ -110,8 +110,8 @@ public class NavigationReactGateway implements ReactGateway {
 	}
 
 	//TODO temp hack
-	private void onReactContextInitialized() {
-		reactEventEmitter = new NavigationReactEventEmitter(getReactContext());
+	private void onReactContextInitialized(ReactContext context) {
+		reactEventEmitter = new NavigationReactEventEmitter(context);
 	}
 
 	private static class ReactNativeHostImpl extends ReactNativeHost implements ReactInstanceManager.ReactInstanceEventListener {
@@ -171,7 +171,7 @@ public class NavigationReactGateway implements ReactGateway {
 
 		@Override
 		public void onReactContextInitialized(ReactContext context) {
-			((NavigationReactGateway) NavigationApplication.instance.getReactGateway()).onReactContextInitialized();
+			((NavigationReactGateway) NavigationApplication.instance.getReactGateway()).onReactContextInitialized(context);
 			NavigationApplication.instance.onReactInitialized(context);
 		}
 
