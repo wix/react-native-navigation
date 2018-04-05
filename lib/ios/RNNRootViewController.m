@@ -9,6 +9,7 @@
 @property (nonatomic, strong) NSString* componentName;
 @property (nonatomic) BOOL _statusBarHidden;
 @property (nonatomic) BOOL isExternalComponent;
+@property (nonatomic) BOOL _optionsApplied;
 @end
 
 @implementation RNNRootViewController
@@ -43,8 +44,10 @@
 
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
-	[self.options applyOn:self];
-	[self optionsUpdated];
+	if (!self._optionsApplied) {
+		[self.options applyOn:self];
+	}
+	self._optionsApplied = true;
 }
 
 -(void)viewDidAppear:(BOOL)animated {
