@@ -78,7 +78,7 @@
     
     self.tabBar.translucent = YES; // default
     
-    UIColor *buttonColor = nil;
+    self.buttonColor = nil;
     UIColor *selectedButtonColor = nil;
     UIColor *labelColor = nil;
     UIColor *selectedLabelColor = nil;
@@ -88,7 +88,7 @@
         if (tabBarButtonColor) {
             UIColor *color = tabBarButtonColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarButtonColor] : nil;
             self.tabBar.tintColor = color;
-            buttonColor = color;
+            self.buttonColor = color;
             selectedButtonColor = color;
         }
         NSString *tabBarSelectedButtonColor = tabsStyle[@"tabBarSelectedButtonColor"];
@@ -147,8 +147,8 @@
         id icon = tabItemLayout[@"props"][@"icon"];
         if (icon) {
             iconImage = [RCTConvert UIImage:icon];
-            if (buttonColor) {
-                iconImage = [[self image:iconImage withColor:buttonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            if (self.buttonColor) {
+                iconImage = [[self image:iconImage withColor:self.buttonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
             }
         }
         UIImage *iconImageSelected = nil;
@@ -293,7 +293,9 @@
             id icon = actionParams[@"icon"];
             if (icon && icon != (id)[NSNull null]) {
                 iconImage = [RCTConvert UIImage:icon];
-                iconImage = [[self image:iconImage withColor:self.tabBar.tintColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+                if (self.buttonColor) {
+                    iconImage = [[self image:iconImage withColor:self.buttonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+                }
                 viewController.tabBarItem.image = iconImage;
             }
             

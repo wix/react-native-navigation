@@ -7,5 +7,6 @@
 - (void)performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams bridge:(RCTBridge *)bridge completion:(void (^)(void))completion;
 
 @property (nonatomic) BOOL tabBarHidden;
+@property (nonatomic) UIColor *buttonColor;
 
 @end
