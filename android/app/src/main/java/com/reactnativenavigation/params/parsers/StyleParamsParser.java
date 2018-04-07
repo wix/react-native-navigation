@@ -86,6 +86,8 @@ public class StyleParamsParser {
 
         result.bottomTabsInitialIndex = getInt("initialTabIndex", 0);
         result.bottomTabsHidden = getBoolean("bottomTabsHidden", getDefaultBottomTabsHidden());
+        result.bottomTabsHideShadow = getBoolean("bottomTabsHideShadow", false);
+
         result.drawScreenAboveBottomTabs = !result.bottomTabsHidden &&
                                            params.getBoolean("drawScreenAboveBottomTabs", getDefaultDrawScreenAboveBottomTabs());
         if (result.titleBarHideOnScroll) {

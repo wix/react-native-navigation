@@ -224,6 +224,7 @@ function convertStyleParams(originalStyleObject) {
     bottomTabsSelectedButtonColor: processColor(originalStyleObject.tabBarSelectedButtonColor),
     bottomTabsHidden: originalStyleObject.tabBarHidden,
     bottomTabsHiddenOnScroll: originalStyleObject.bottomTabsHiddenOnScroll,
+    bottomTabsHideShadow: originalStyleObject.tabBarHideShadow,
     forceTitlesDisplay: originalStyleObject.forceTitlesDisplay,
     bottomTabBadgeTextColor: processColor(originalStyleObject.bottomTabBadgeTextColor),
     bottomTabBadgeBackgroundColor: processColor(originalStyleObject.bottomTabBadgeBackgroundColor),
