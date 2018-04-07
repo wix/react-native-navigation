@@ -1,11 +1,18 @@
 import * as React from 'react';
 import * as  _ from 'lodash';
+import * as ReactLifecyclesCompat from 'react-lifecycles-compat';
 
 export class ComponentWrapper {
 
   static wrap(componentName: string, OriginalComponentClass: React.ComponentType<any>, store): React.ComponentType<any> {
 
     class WrappedComponent extends React.Component<any, { componentId: string; allProps: {}; }> {
+
+      static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+          allProps: _.merge({}, nextProps, store.getPropsForId(prevState.componentId))
+        };
+      }
 
       private originalComponentRef;
 
@@ -15,11 +22,11 @@ export class ComponentWrapper {
         this._saveComponentRef = this._saveComponentRef.bind(this);
         this.state = {
           componentId: props.componentId,
-          allProps: _.merge({}, props, store.getPropsForId(props.componentId))
+          allProps: {}
         };
       }
 
-      componentWillMount() {
+      componentDidMount() {
         store.setRefForId(this.state.componentId, this);
       }
 
@@ -45,12 +52,6 @@ export class ComponentWrapper {
         }
       }
 
-      componentWillReceiveProps(nextProps) {
-        this.setState({
-          allProps: _.merge({}, nextProps, store.getPropsForId(this.state.componentId))
-        });
-      }
-
       render() {
         return (
           <OriginalComponentClass
@@ -72,6 +73,8 @@ export class ComponentWrapper {
         this.originalComponentRef = r;
       }
     }
+
+    ReactLifecyclesCompat.polyfill(WrappedComponent);
 
     return WrappedComponent;
   }
