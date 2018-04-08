@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.TestComponentViewCreator;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
@@ -14,6 +13,7 @@ import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
@@ -29,8 +29,6 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -243,9 +241,9 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut.onViewAppeared();
 
         assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isTrue();
-        stackController.animatePop(new MockPromise() {
+        stackController.animatePop(new CommandListenerAdapter() {
             @Override
-            public void resolve(@Nullable Object value) {
+            public void onSuccess(String childId) {
                 assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();
             }
         });

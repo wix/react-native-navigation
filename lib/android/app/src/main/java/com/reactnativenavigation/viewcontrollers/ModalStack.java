@@ -3,8 +3,9 @@ package com.reactnativenavigation.viewcontrollers;
 import android.support.annotation.Nullable;
 
 import com.facebook.react.bridge.Promise;
-import com.reactnativenavigation.utils.NoOpPromise;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.viewcontrollers.Navigator.CommandListener;
 import com.reactnativenavigation.viewcontrollers.modal.Modal;
 import com.reactnativenavigation.viewcontrollers.modal.ModalCreator;
 import com.reactnativenavigation.viewcontrollers.modal.ModalListener;
@@ -30,17 +31,17 @@ class ModalStack implements ModalListener {
         promise.resolve(viewController.getId());
     }
 
-    void dismissModal(final String componentId, Promise promise) {
-        applyOnModal(componentId, (modal) -> modal.dismiss(promise), () -> Navigator.rejectPromise(promise));
+    void dismissModal(final String componentId, CommandListener listener) {
+        applyOnModal(componentId, (modal) -> modal.dismiss(listener), () -> listener.onError("Nothing to dismiss"));
     }
 
     void dismissAll() {
-        dismissAll(new NoOpPromise());
+        dismissAll(new CommandListenerAdapter());
     }
 
-    void dismissAll(Promise promise) {
+    void dismissAll(CommandListener listener) {
         for (Modal modal : modals) {
-            modal.dismiss(size() == 1 ? promise : new NoOpPromise());
+            modal.dismiss(size() == 1 ? listener : new CommandListenerAdapter());
         }
         modals.clear();
     }

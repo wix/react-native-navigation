@@ -120,35 +120,35 @@ public class Navigator extends ParentController implements ModalListener {
         }
     }
 
-    void pop(final String fromId, Promise promise) {
+    void pop(final String fromId, CommandListener listener) {
         ViewController from = findControllerById(fromId);
         if (from != null) {
-            from.performOnParentStack(stack -> ((StackController) stack).pop(promise));
+            from.performOnParentStack(stack -> ((StackController) stack).pop(listener));
         }
     }
 
-    public void popSpecific(final String id, Promise promise) {
+    public void popSpecific(final String id, CommandListener listener) {
         ViewController from = findControllerById(id);
         if (from != null) {
-            from.performOnParentStack(stack -> ((StackController) stack).popSpecific(from, promise), () -> rejectPromise(promise));
+            from.performOnParentStack(stack -> ((StackController) stack).popSpecific(from, listener), () -> listener.onError("Nothing to pop"));
         } else {
-            rejectPromise(promise);
+            listener.onError("Nothing to pop");
         }
     }
 
-    public void popToRoot(final String id, Promise promise) {
+    public void popToRoot(final String id, CommandListener listener) {
         ViewController from = findControllerById(id);
         if (from != null) {
-            from.performOnParentStack(stack -> ((StackController) stack).popToRoot(promise));
+            from.performOnParentStack(stack -> ((StackController) stack).popToRoot(listener));
         }
     }
 
-    public void popTo(final String componentId, Promise promise) {
+    public void popTo(final String componentId, CommandListener listener) {
         ViewController target = findControllerById(componentId);
         if (target != null) {
-            target.performOnParentStack(stack -> ((StackController) stack).popTo(target, promise), () -> rejectPromise(promise));
+            target.performOnParentStack(stack -> ((StackController) stack).popTo(target, listener), () -> listener.onError("Nothing to pop"));
         } else {
-            rejectPromise(promise);
+            listener.onError("Nothing to pop");
         }
     }
 
@@ -156,8 +156,8 @@ public class Navigator extends ParentController implements ModalListener {
         modalStack.showModal(viewController, promise);
     }
 
-    public void dismissModal(final String componentId, Promise promise) {
-        modalStack.dismissModal(componentId, promise);
+    public void dismissModal(final String componentId, CommandListener listener) {
+        modalStack.dismissModal(componentId, listener);
     }
 
     @Override
@@ -175,8 +175,8 @@ public class Navigator extends ParentController implements ModalListener {
         }
     }
 
-    public void dismissAllModals(Promise promise) {
-        modalStack.dismissAll(promise);
+    public void dismissAllModals(CommandListener listener) {
+        modalStack.dismissAll(listener);
     }
 
     public void showOverlay(ViewController overlay) {
@@ -185,10 +185,6 @@ public class Navigator extends ParentController implements ModalListener {
 
     public void dismissOverlay(final String componentId) {
         overlayManager.dismiss(getView(), componentId);
-    }
-
-    static void rejectPromise(Promise promise) {
-        promise.reject(new Throwable("Nothing to pop"));
     }
 
     @Nullable

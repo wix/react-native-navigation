@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
@@ -15,6 +14,7 @@ import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.Fab;
@@ -104,7 +104,7 @@ public class FloatingActionButtonTest extends BaseTest {
         stackController.push(childFab);
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
-        stackController.pop(new MockPromise());
+        stackController.pop(new CommandListenerAdapter());
         childNoFab.onViewAppeared();
         assertThat(hasFab()).isFalse();
     }
@@ -118,7 +118,7 @@ public class FloatingActionButtonTest extends BaseTest {
         stackController.push(childNoFab);
         childNoFab.onViewAppeared();
         assertThat(hasFab()).isFalse();
-        stackController.pop(new MockPromise());
+        stackController.pop(new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
     }

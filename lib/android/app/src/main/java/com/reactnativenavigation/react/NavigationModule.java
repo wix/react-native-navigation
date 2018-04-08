@@ -80,17 +80,17 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void pop(final String onComponentId, final ReadableMap options, final Promise promise) {
-		handle(() -> navigator().popSpecific(onComponentId, promise));
+		handle(() -> navigator().popSpecific(onComponentId, new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
 	public void popTo(final String componentId, final Promise promise) {
-		handle(() -> navigator().popTo(componentId, promise));
+		handle(() -> navigator().popTo(componentId, new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
 	public void popToRoot(final String componentId, final Promise promise) {
-		handle(() -> navigator().popToRoot(componentId, promise));
+		handle(() -> navigator().popToRoot(componentId, new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
@@ -104,12 +104,12 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void dismissModal(final String componentId, final Promise promise) {
-		handle(() -> navigator().dismissModal(componentId, promise));
+		handle(() -> navigator().dismissModal(componentId, new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
 	public void dismissAllModals(final Promise promise) {
-		handle(() -> navigator().dismissAllModals(promise));
+		handle(() -> navigator().dismissAllModals(new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod

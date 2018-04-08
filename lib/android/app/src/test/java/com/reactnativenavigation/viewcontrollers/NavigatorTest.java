@@ -122,9 +122,9 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void pop_InvalidDoesNothing() {
-        uut.pop("123", new MockPromise());
+        uut.pop("123", new CommandListenerAdapter());
         uut.setRoot(child1, new MockPromise());
-        uut.pop(child1.getId(), new MockPromise());
+        uut.pop(child1.getId(), new CommandListenerAdapter());
         assertThat(uut.getChildControllers()).hasSize(1);
     }
 
@@ -143,7 +143,7 @@ public class NavigatorTest extends BaseTest {
                 stack2.push(child4, new CommandListenerAdapter() {
                             @Override
                             public void onSuccess(String childId) {
-                                uut.pop("child4", new MockPromise());
+                                uut.pop("child4", new CommandListenerAdapter());
                                 assertThat(stack2.getChildControllers()).containsOnly(child2, child3);
                             }
                         }
@@ -164,7 +164,7 @@ public class NavigatorTest extends BaseTest {
         bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
         uut.setRoot(bottomTabsController, new MockPromise());
 
-        uut.popSpecific(child2.getId(), new MockPromise());
+        uut.popSpecific(child2.getId(), new CommandListenerAdapter());
 
         assertThat(stack2.getChildControllers()).containsOnly(child4, child3);
     }
@@ -184,7 +184,7 @@ public class NavigatorTest extends BaseTest {
         stack2.push(child5, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                uut.popTo(child2.getId(), new MockPromise());
+                uut.popTo(child2.getId(), new CommandListenerAdapter());
                 assertThat(stack2.getChildControllers()).containsOnly(child2);
             }
         });
@@ -205,7 +205,7 @@ public class NavigatorTest extends BaseTest {
         stack2.push(child5, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                uut.popToRoot(child3.getId(), new MockPromise());
+                uut.popToRoot(child3.getId(), new CommandListenerAdapter());
                 assertThat(stack2.getChildControllers()).containsOnly(child2);
             }
         });
@@ -306,11 +306,11 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void pop_InvalidDoesNothing_Promise() {
-        uut.pop("123", new MockPromise());
+        uut.pop("123", new CommandListenerAdapter());
         uut.setRoot(child1, new MockPromise());
-        uut.pop(child1.getId(), new MockPromise() {
+        uut.pop(child1.getId(), new CommandListenerAdapter() {
             @Override
-            public void reject(Throwable reason) {
+            public void onError(String reason) {
                 assertThat(uut.getChildControllers()).hasSize(1);
             }
         });
@@ -330,7 +330,7 @@ public class NavigatorTest extends BaseTest {
         stack2.push(child4, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                uut.pop("child4", new MockPromise());
+                uut.pop("child4", new CommandListenerAdapter());
                 assertThat(stack2.getChildControllers()).containsOnly(child2, child3);
             }
         });
@@ -361,14 +361,14 @@ public class NavigatorTest extends BaseTest {
         child1.ensureViewIsCreated();
         child2.ensureViewIsCreated();
 
-        MockPromise promise = new MockPromise() {
+        Navigator.CommandListener listener = new CommandListenerAdapter() {
             @Override
-            public void resolve(@Nullable Object value) {
+            public void onSuccess(String childId) {
                 assertThat(parentController.getChildControllers().size()).isEqualTo(1);
             }
         };
-        uut.popSpecific("child2", promise);
-        verify(parentController, times(1)).popSpecific(child2, promise);
+        uut.popSpecific("child2", listener);
+        verify(parentController, times(1)).popSpecific(child2, listener);
     }
 
     @Test
@@ -388,9 +388,9 @@ public class NavigatorTest extends BaseTest {
         uut.showModal(child1, new MockPromise() {
             @Override
             public void resolve(@Nullable Object value) {
-                uut.dismissModal("child1", new MockPromise() {
+                uut.dismissModal("child1", new CommandListenerAdapter() {
                     @Override
-                    public void resolve(@Nullable Object value) {
+                    public void onSuccess(String childId) {
                         verify(parentController, times(1)).onViewRegainedFocus();
                     }
                 });
