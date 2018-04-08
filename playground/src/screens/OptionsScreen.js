@@ -32,7 +32,12 @@ class OptionsScreen extends Component {
           alignment: 'center'
         },
         background: {
-          component: 'TopBarBackground'
+          component: {
+            name: 'TopBarBackground',
+            passProps: {
+              header: 'Top bar BG'
+            }
+          }
         },
         ...Platform.select({
           android: { drawBehind: true },
