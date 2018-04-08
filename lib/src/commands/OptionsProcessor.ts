@@ -3,7 +3,7 @@ import { processColor } from 'react-native';
 import * as resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 
 export class OptionsProcessor {
-  constructor(public store) { }
+  constructor(public store, public uniqueIdProvider) { }
 
   public processOptions(options) {
     _.forEach(options, (value, key) => {
@@ -12,6 +12,7 @@ export class OptionsProcessor {
       this.processColor(key, value, options);
       this.processImage(key, value, options);
       this.processButtonsPassProps(key, value);
+      this.processComponent(key, value);
 
       if (_.isObject(value) || _.isArray(value)) {
         this.processOptions(value);
@@ -38,6 +39,15 @@ export class OptionsProcessor {
           this.store.setPropsForId(button.id, button.passProps);
         }
       });
+    }
+  }
+
+  private processComponent(key, value) {
+    if (_.isEqual(key, 'component')) {
+      value.componentId = value.id ? value.id : this.uniqueIdProvider.generate('CustomComponent');
+      if (value.passProps) {
+        this.store.setPropsForId(value.componentId, value.passProps);
+      }
     }
   }
 }

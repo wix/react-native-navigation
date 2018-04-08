@@ -1,4 +1,5 @@
 import { OptionsProcessor } from './OptionsProcessor';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
 
 describe('navigation options', () => {
@@ -8,7 +9,7 @@ describe('navigation options', () => {
   beforeEach(() => {
     options = {};
     store = new Store();
-    uut = new OptionsProcessor(store);
+    uut = new OptionsProcessor(store, new UniqueIdProvider());
   });
 
   it('processes colors into numeric AARRGGBB', () => {
@@ -109,6 +110,31 @@ describe('navigation options', () => {
     uut.processOptions({ o: options });
 
     expect(store.getPropsForId('1')).toEqual(passProps);
+  });
+
+  it('passProps for custom component', () => {
+    const passProps = { prop: 'prop' };
+    options.component = { passProps, name: 'a' };
+
+    uut.processOptions({ o: options });
+
+    expect(store.getPropsForId(options.component.componentId)).toEqual(passProps);
+  });
+
+  it('generate component id for component in options', () => {
+    options.component = { name: 'a' };
+
+    uut.processOptions({ o: options });
+
+    expect(options.component.componentId).toBeDefined();
+  });
+
+  it('pass supplied componentId for component in options', () => {
+    options.component = { name: 'a', id: 'Component1' };
+
+    uut.processOptions({ o: options });
+
+    expect(options.component.componentId).toEqual('Component1');
   });
 
   it('passProps must be with id next to it', () => {
