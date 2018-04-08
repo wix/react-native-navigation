@@ -18,6 +18,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	self.title = [[RNNTitleOptions alloc] initWithDict:dict[@"title"]];
 	self.subtitle = [[RNNSubtitleOptions alloc] initWithDict:dict[@"subtitle"]];
 	self.background = [[RNNBackgroundOptions alloc] initWithDict:dict[@"background"]];
+	self.component = [[RNNComponentOptions alloc] initWithDict:dict[@"component"]];
 	self.title.subtitle = self.subtitle;
 	
 	return self;

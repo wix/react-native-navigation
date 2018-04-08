@@ -50,7 +50,9 @@ class OptionsScreen extends Component {
           {
             id: CUSTOM_BUTTON2,
             testID: CUSTOM_BUTTON2,
-            component: 'CustomRoundedButton'
+            component: {
+              name: 'CustomRoundedButton'
+            }
           },
           {
             id: BUTTON_ONE,
@@ -275,7 +277,9 @@ class OptionsScreen extends Component {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
         title: {
-          component: 'navigation.playground.CustomTopBar',
+          component: {
+            name: 'navigation.playground.CustomTopBar'
+          },
           alignment: 'center'
         }
       }

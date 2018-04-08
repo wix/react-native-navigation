@@ -4,6 +4,13 @@
 
 @implementation RNNTitleOptions
 
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super initWithDict:dict];
+	self.component = [[RNNComponentOptions alloc] initWithDict:dict[@"component"]];
+	
+	return self;
+}
+
 - (void)applyOn:(UIViewController *)viewController {
 	if (self.text) {
 		viewController.navigationItem.title = self.text;
