@@ -21,11 +21,15 @@ class OptionsScreen extends Component {
           text: 'Static Title',
           color: 'black',
           fontSize: 16,
+          alignment: 'center',
           fontFamily: 'HelveticaNeue-Italic',
           largeTitle: false
         },
         subtitle: {
-          text: 'Static'
+          text: 'Static Subtitle',
+          color: 'red',
+          fontFamily: 'HelveticaNeue-Italic',
+          alignment: 'center'
         },
         background: {
           component: {
@@ -95,20 +99,6 @@ class OptionsScreen extends Component {
     };
   }
 
-  constructor(props) {
-    super(props);
-    this.onClickDynamicOptions = this.onClickDynamicOptions.bind(this);
-    this.onClickShowTopBar = this.onClickShowTopBar.bind(this);
-    this.onClickHideTopBar = this.onClickHideTopBar.bind(this);
-    this.onClickScrollViewScreen = this.onClickScrollViewScreen.bind(this);
-    this.onClickTopBarTransparent = this.onClickTopBarTransparent.bind(this);
-    this.onClickTopBarOpaque = this.onClickTopBarOpaque.bind(this);
-    this.onClickCustomTranstition = this.onClickCustomTranstition.bind(this);
-    this.onClickShowOverlay = this.onClickShowOverlay.bind(this);
-    this.onClickPushDefaultOptionsScreen = this.onClickPushDefaultOptionsScreen.bind(this);
-    this.onClickFab = this.onClickFab.bind(this);
-  }
-
   render() {
     return (
       <View style={styles.root}>
@@ -126,6 +116,7 @@ class OptionsScreen extends Component {
         <Button title='Show touch through overlay' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
         <Button title='Push Default Options Screen' testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
         <Button title='Show TopBar react view' testID={testIDs.SHOW_TOPBAR_REACT_VIEW} onPress={this.onShowTopBarReactView} />
+        {Platform.OS === 'android' ? <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onPush} /> : null}
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
@@ -172,7 +163,7 @@ class OptionsScreen extends Component {
     }
   }
 
-  onClickDynamicOptions() {
+  onClickDynamicOptions = () => {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
         title: {
@@ -187,7 +178,7 @@ class OptionsScreen extends Component {
     });
   }
 
-  onClickScrollViewScreen() {
+  onClickScrollViewScreen = () => {
     Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.ScrollViewScreen'
@@ -195,7 +186,7 @@ class OptionsScreen extends Component {
     });
   }
 
-  onClickCustomTranstition() {
+  onClickCustomTranstition = () => {
     Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.CustomTransitionOrigin'
@@ -203,21 +194,23 @@ class OptionsScreen extends Component {
     });
   }
 
-  onClickTopBarTransparent() {
+  onClickTopBarTransparent = () => {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
         transparent: true
       }
     });
   }
-  onClickTopBarOpaque() {
+
+  onClickTopBarOpaque = () => {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
         transparent: false
       }
     });
   }
-  onClickShowTopBar() {
+
+  onClickShowTopBar = () => {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
         visible: true,
@@ -226,7 +219,7 @@ class OptionsScreen extends Component {
     });
   }
 
-  onClickHideTopBar() {
+  onClickHideTopBar = () => {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
         visible: false,
@@ -235,7 +228,7 @@ class OptionsScreen extends Component {
     });
   }
 
-  onClickFab() {
+  onClickFab = () => {
     Navigation.setOptions(this.props.componentId, {
       fab: {
         id: FAB,
@@ -245,7 +238,7 @@ class OptionsScreen extends Component {
     });
   }
 
-  onClickShowOverlay(interceptTouchOutside) {
+  onClickShowOverlay = (interceptTouchOutside) => {
     Navigation.showOverlay({
       component: {
         name: 'navigation.playground.CustomDialog',
@@ -258,7 +251,7 @@ class OptionsScreen extends Component {
     });
   }
 
-  onClickPushDefaultOptionsScreen() {
+  onClickPushDefaultOptionsScreen = () => {
     Navigation.setDefaultOptions({
       topBar: {
         visible: false,
@@ -280,7 +273,25 @@ class OptionsScreen extends Component {
           component: {
             name: 'navigation.playground.CustomTopBar'
           },
-          alignment: 'center'
+          componentAlignment: 'center'
+        }
+      }
+    });
+  }
+
+  onPush = () => {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.PushedScreen',
+        options: {
+          topBar: {
+            title: {
+              text: 'pushed'
+            },
+            subtitle: {
+              text: 'subtitle'
+            }
+          }
         }
       }
     });

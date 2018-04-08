@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.topbar;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.annotation.ColorInt;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.AppBarLayout;
@@ -20,7 +21,6 @@ import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
-import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -83,20 +83,40 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setSubtitle(subtitle);
     }
 
+    public void setSubtitleColor(@ColorInt int color) {
+        titleBar.setSubtitleTextColor(color);
+    }
+
+    public void setSubtitleFontFamily(Typeface fontFamily) {
+        titleBar.setSubtitleTypeface(fontFamily);
+    }
+
+    public void setSubtitleFontSize(float size) {
+        titleBar.setSubtitleFontSize(size);
+    }
+
+    public void setSubtitleAlignment(Alignment alignment) {
+        titleBar.setSubtitleAlignment(alignment);
+    }
+
     public void setTestId(String testId) {
         setTag(testId);
     }
 
-    public void setTitleTextColor(Color color) {
+    public void setTitleTextColor(@ColorInt int color) {
         titleBar.setTitleTextColor(color);
     }
 
-    public void setTitleFontSize(Fraction size) {
+    public void setTitleFontSize(float size) {
         titleBar.setTitleFontSize(size);
     }
 
     public void setTitleTypeface(Typeface typeface) {
         titleBar.setTitleTypeface(typeface);
+    }
+
+    public void setTitleAlignment(Alignment alignment) {
+        titleBar.setTitleAlignment(alignment);
     }
 
     public void setTitleComponent(String componentName, Alignment alignment) {
@@ -217,6 +237,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     public TextView getTitleTextView() {
-        return titleBar.getTitleTextView();
+        return titleBar.findTitleTextView();
     }
 }

@@ -30,8 +30,9 @@ public class TitleOptions {
         options.color = ColorParser.parse(json, "color");
         options.fontSize = FractionParser.parse(json, "fontSize");
         options.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
-        options.component = TextParser.parse(json, "component");
         options.alignment = Alignment.fromString(TextParser.parse(json, "alignment").get(""));
+        options.component = TextParser.parse(json, "component");
+        options.componentAlignment = Alignment.fromString(TextParser.parse(json, "componentAlignment").get(""));
 
         validate(options);
 
@@ -41,17 +42,19 @@ public class TitleOptions {
     public Text text = new NullText();
     public Color color = new NullColor();
     public Fraction fontSize = new NullFraction();
+    public Alignment alignment = Alignment.Default;
     @Nullable public Typeface fontFamily;
     public Text component = new NullText();
-    public Alignment alignment = Alignment.Default;
+    public Alignment componentAlignment = Alignment.Default;
 
     void mergeWith(final TitleOptions other) {
         if (other.text.hasValue()) text = other.text;
         if (other.color.hasValue()) color = other.color;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         if (other.fontFamily != null) fontFamily = other.fontFamily;
-        if (other.component.hasValue()) component = other.component;
         if (other.alignment != Alignment.Default) alignment = other.alignment;
+        if (other.component.hasValue()) component = other.component;
+        if (other.componentAlignment != Alignment.Default) componentAlignment = other.componentAlignment;
         validate(this);
     }
 
@@ -60,8 +63,9 @@ public class TitleOptions {
         if (!color.hasValue()) color = defaultOptions.color;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
-        if (!component.hasValue()) component = defaultOptions.component;
         if (alignment == Alignment.Default) alignment = defaultOptions.alignment;
+        if (!component.hasValue()) component = defaultOptions.component;
+        if (componentAlignment == Alignment.Default) componentAlignment = defaultOptions.componentAlignment;
         validate(this);
     }
 

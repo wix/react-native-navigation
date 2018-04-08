@@ -6,13 +6,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.ReactComponent;
@@ -95,8 +95,8 @@ public class ParentControllerTest extends BaseTest {
         StackController stackController = createStack();
         SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
         SimpleViewController child2 = new SimpleViewController(activity, "child2", new Options());
-        stackController.animatePush(child1, new MockPromise());
-        stackController.animatePush(child2, new MockPromise());
+        stackController.push(child1, new CommandListenerAdapter());
+        stackController.push(child2, new CommandListenerAdapter());
         children.add(stackController);
 
         assertThat(uut.findControllerById("child2")).isEqualTo(child2);
@@ -116,7 +116,7 @@ public class ParentControllerTest extends BaseTest {
     public void optionsAreClearedWhenChildIsAppeared() {
         StackController stackController = spy(createStack());
         SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
-        stackController.animatePush(child1, new MockPromise());
+        stackController.push(child1, new CommandListenerAdapter());
 
         child1.onViewAppeared();
         verify(stackController, times(1)).clearOptions();

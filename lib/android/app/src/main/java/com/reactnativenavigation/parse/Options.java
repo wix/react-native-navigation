@@ -3,6 +3,9 @@ package com.reactnativenavigation.parse;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 
+import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.parsers.BoolParser;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
@@ -27,8 +30,9 @@ public class Options {
         result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
         result.overlayOptions = OverlayOptions.parse(json.optJSONObject("overlay"));
         result.fabOptions = FabOptions.parse(json.optJSONObject("fab"));
-        result.animationsOptions = AnimationsOptions.parse(json.optJSONObject("animations"));
         result.sideMenuRootOptions = SideMenuRootOptions.parse(json.optJSONObject("sideMenu"));
+        result.animationsOptions = AnimationsOptions.parse(json.optJSONObject("animations"));
+        result.animated = BoolParser.parse(json, "animated");
 
         return result.withDefaultOptions(defaultOptions);
     }
@@ -43,6 +47,7 @@ public class Options {
     @NonNull public FabOptions fabOptions = new FabOptions();
     @NonNull public AnimationsOptions animationsOptions = new AnimationsOptions();
     @NonNull public SideMenuRootOptions sideMenuRootOptions = new SideMenuRootOptions();
+    @NonNull public Bool animated = new NullBool();
 
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;
@@ -59,8 +64,9 @@ public class Options {
         result.bottomTabsOptions.mergeWith(bottomTabsOptions);
         result.overlayOptions = overlayOptions;
         result.fabOptions.mergeWith(fabOptions);
-        result.animationsOptions.mergeWith(animationsOptions);
         result.sideMenuRootOptions.mergeWith(sideMenuRootOptions);
+        result.animationsOptions.mergeWith(animationsOptions);
+        result.animated = animated;
         return result;
     }
 
@@ -76,19 +82,21 @@ public class Options {
         result.fabOptions.mergeWith(other.fabOptions);
         result.animationsOptions.mergeWith(other.animationsOptions);
         result.sideMenuRootOptions.mergeWith(other.sideMenuRootOptions);
+        if (other.animated.hasValue()) result.animated = other.animated;
         return result;
     }
 
-    Options withDefaultOptions(final Options other) {
-        orientationOptions.mergeWithDefault(other.orientationOptions);
-        topBarOptions.mergeWithDefault(other.topBarOptions);
-        topTabOptions.mergeWithDefault(other.topTabOptions);
-        topTabsOptions.mergeWithDefault(other.topTabsOptions);
-        bottomTabOptions.mergeWithDefault(other.bottomTabOptions);
-        bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
-        fabOptions.mergeWithDefault(other.fabOptions);
-        animationsOptions.mergeWithDefault(other.animationsOptions);
-        sideMenuRootOptions.mergeWithDefault(other.sideMenuRootOptions);
+    Options withDefaultOptions(final Options defaultOptions) {
+        orientationOptions.mergeWithDefault(defaultOptions.orientationOptions);
+        topBarOptions.mergeWithDefault(defaultOptions.topBarOptions);
+        topTabOptions.mergeWithDefault(defaultOptions.topTabOptions);
+        topTabsOptions.mergeWithDefault(defaultOptions.topTabsOptions);
+        bottomTabOptions.mergeWithDefault(defaultOptions.bottomTabOptions);
+        bottomTabsOptions.mergeWithDefault(defaultOptions.bottomTabsOptions);
+        fabOptions.mergeWithDefault(defaultOptions.fabOptions);
+        animationsOptions.mergeWithDefault(defaultOptions.animationsOptions);
+        sideMenuRootOptions.mergeWithDefault(defaultOptions.sideMenuRootOptions);
+        if (!animated.hasValue()) animated = defaultOptions.animated;
         return this;
     }
 

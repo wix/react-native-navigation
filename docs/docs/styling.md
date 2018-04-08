@@ -11,7 +11,7 @@ export default class StyledScreen extends Component {
       topBar: {
         title: {
           largeTitle: false,
-          title: 'My Screen'
+          text: 'My Screen'
         },
         drawBehind: true,
         visible: false,
