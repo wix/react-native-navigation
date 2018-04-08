@@ -28,7 +28,12 @@ class OptionsScreen extends Component {
           text: 'Static'
         },
         background: {
-          component: 'TopBarBackground'
+          component: {
+            name: 'TopBarBackground',
+            passProps: {
+              header: 'Top bar BG'
+            }
+          }
         },
         ...Platform.select({
           android: { drawBehind: true },
