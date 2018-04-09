@@ -211,4 +211,3 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | topBar react component        |   ✅     |✅|✅|
 |Shared Element Transition|     :x:  |✅| [Contribute](/docs/WorkingLocally.md)|
 | splitViewScreen       |     :x:  |    [Contribute](/docs/WorkingLocally.md)      | [Contribute](/docs/WorkingLocally.md)|
-
