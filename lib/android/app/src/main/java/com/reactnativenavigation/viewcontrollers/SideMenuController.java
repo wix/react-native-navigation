@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.LayoutParams;
 import android.view.Gravity;
 import android.view.View;
 
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.widget.ListPopupWindow.WRAP_CONTENT;
 
 public class SideMenuController extends ParentController<DrawerLayout> implements NavigationOptionsListener {
 
@@ -69,21 +69,13 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
 		getView().addView(childView);
 	}
 
-	public void setLeftController(ViewController leftController) {
-		this.leftController = leftController;
-		View childView = leftController.getView();
-		DrawerLayout.LayoutParams lp = new DrawerLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-		lp.gravity = Gravity.LEFT;
-		childView.setLayoutParams(lp);
-		getView().addView(childView);
+	public void setLeftController(ViewController controller) {
+		this.leftController = controller;
+        getView().addView(controller.getView(), new LayoutParams(MATCH_PARENT, MATCH_PARENT, Gravity.LEFT));
 	}
 
-	public void setRightController(ViewController rightController) {
-		this.rightController = rightController;
-		View childView = rightController.getView();
-		DrawerLayout.LayoutParams lp = new DrawerLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-		lp.gravity = Gravity.RIGHT;
-		childView.setLayoutParams(lp);
-		getView().addView(childView);
+	public void setRightController(ViewController controller) {
+		this.rightController = controller;
+        getView().addView(controller.getView(), new LayoutParams(MATCH_PARENT, MATCH_PARENT, Gravity.RIGHT));
 	}
 }
