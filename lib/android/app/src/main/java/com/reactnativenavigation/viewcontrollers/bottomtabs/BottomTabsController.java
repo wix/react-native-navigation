@@ -24,7 +24,6 @@ import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static android.widget.RelativeLayout.ABOVE;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 
 public class BottomTabsController extends ParentController implements AHBottomNavigation.OnTabSelectedListener, NavigationOptionsListener {
@@ -150,7 +149,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         getView().removeView(getCurrentView());
         bottomTabs.setCurrentItem(newIndex, false);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
-        params.addRule(ABOVE, bottomTabs.getId());
+        params.bottomMargin = bottomTabs.getHeight();
         getView().addView(getCurrentView(), params);
     }
 
