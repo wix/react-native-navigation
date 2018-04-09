@@ -241,7 +241,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut.onViewAppeared();
 
         assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isTrue();
-        stackController.animatePop(new CommandListenerAdapter() {
+        stackController.pop(new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();

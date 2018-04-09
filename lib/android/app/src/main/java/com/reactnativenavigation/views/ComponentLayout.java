@@ -16,7 +16,6 @@ import com.reactnativenavigation.views.topbar.TopBar;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.widget.RelativeLayout.BELOW;
 
 @SuppressLint("ViewConstructor")
 public class ComponentLayout extends FrameLayout implements ReactComponent, TopBarButtonController.OnClickListener {
@@ -84,7 +83,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, TopB
     public void drawBehindTopBar() {
         if (getParent() instanceof RelativeLayout) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-            layoutParams.removeRule(BELOW);
+            layoutParams.topMargin = 0;
             setLayoutParams(layoutParams);
         }
     }
@@ -93,7 +92,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, TopB
     public void drawBelowTopBar(TopBar topBar) {
         if (getParent() instanceof RelativeLayout) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-            layoutParams.addRule(BELOW, topBar.getId());
+            layoutParams.topMargin = topBar.getHeight();
             setLayoutParams(layoutParams);
         }
     }
