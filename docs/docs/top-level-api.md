@@ -1,6 +1,7 @@
 # Top Level API
 
-In order to make navigation API homogenous as much as possible, we provide setRoot function that receives layout of any kind.
+So as to make the navigation API as consistent and homogenous as possible, we begin with a single, unifying function -- setRoot -- that receives properties for any kind of layout, whether tabs or stacks.
+
 See [Layout types](docs/layout-types)
 
 
