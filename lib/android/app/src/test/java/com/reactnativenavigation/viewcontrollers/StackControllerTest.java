@@ -145,7 +145,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child2, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                uut.animatePop(new CommandListenerAdapter() {
+                uut.pop(new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
                         verify(stackLayout[0], times(1)).onChildWillDisappear(child2.options, child1.options, () -> {
@@ -343,16 +343,20 @@ public class StackControllerTest extends BaseTest {
     public void popToRoot_onlyTopChildIsAnimated() {
         child1.options.animated = new Bool(false);
         child2.options.animated = new Bool(false);
-        child3.options.animated = new Bool(false);
 
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter());
-        uut.push(child3, new CommandListenerAdapter());
-
-        uut.popToRoot(new CommandListenerAdapter() {
+        uut.push(child3, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                verify(animator, times(1)).animatePop(eq(child3.getView()), any());
+                child1.options.animated = new Bool(true);
+                child2.options.animated = new Bool(true);
+                uut.popToRoot(new CommandListenerAdapter() {
+                    @Override
+                    public void onSuccess(String childId) {
+                        verify(animator, times(1)).animatePop(eq(child3.getView()), any());
+                    }
+                });
             }
         });
     }
@@ -444,7 +448,7 @@ public class StackControllerTest extends BaseTest {
 
         assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
         uut.push(child2, new CommandListenerAdapter());
-        uut.animatePop(new CommandListenerAdapter() {
+        uut.pop(new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 verify(uut.getTopBar(), times(1)).hide();

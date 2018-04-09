@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
@@ -128,8 +127,7 @@ public class StackController extends ParentController<StackLayout> {
         while (stack.size() > 1) {
             ViewController controller = stack.get(iterator.next());
             if (!stack.isTop(controller.getId())) {
-                stack.remove(controller.getId());
-                controller.destroy();
+                removeAndDestroyController(controller);
             }
         }
     }
@@ -140,53 +138,35 @@ public class StackController extends ParentController<StackLayout> {
             return;
         }
 
-        final ViewController exitingController = stack.pop();
-        final ViewController enteringController = stack.peek();
-        popInternal(exitingController, enteringController);
-
-        finishPopping(exitingController.getView(), exitingController, listener);
-    }
-
-    void animatePop(CommandListener listener) {
-        if (!canPop()) {
-            listener.onError("Nothing to pop");
-            return;
-        }
-
-        final ViewController exitingController = stack.pop();
-        final ViewController enteringController = stack.peek();
-        popInternal(exitingController, enteringController);
-
-        animator.animatePop(
-                exitingController.getView(),
-                () -> finishPopping(exitingController.getView(), exitingController, listener)
-        );
-    }
-
-    private void popInternal(ViewController disappearing, ViewController appearing) {
+        final ViewController disappearing = stack.pop();
+        final ViewController appearing = stack.peek();
         disappearing.onViewWillDisappear();
         appearing.onViewWillAppear();
         getView().onChildWillDisappear(disappearing.options, appearing.options, () ->
                 getView().addView(appearing.getView(), getView().indexOfChild(disappearing.getView()))
         );
-    }
 
-    boolean canPop() {
-        return stack.size() > 1;
-    }
-
-    private void finishPopping(View exitingView, ViewController poppedTop, CommandListener listener) {
-        getView().removeView(exitingView);
-        poppedTop.destroy();
-        listener.onSuccess(poppedTop.getId());
-    }
-
-    void popSpecific(final ViewController childController, CommandListener listener) {
-        if (stack.isTop(childController.getId())) {
-            animatePop(listener);
+        if (disappearing.options.animated.isTrueOrUndefined()) {
+            animator.animatePop(
+                    disappearing.getView(),
+                    () -> finishPopping(disappearing, listener)
+            );
         } else {
-            stack.remove(childController.getId());
-            childController.destroy();
+            finishPopping(disappearing, listener);
+        }
+    }
+
+    private void finishPopping(ViewController disappearing, CommandListener listener) {
+        getView().removeView(disappearing.getView());
+        disappearing.destroy();
+        listener.onSuccess(disappearing.getId());
+    }
+
+    void popSpecific(ViewController childController, CommandListener listener) {
+        if (stack.isTop(childController.getId())) {
+            pop(listener);
+        } else {
+            removeAndDestroyController(childController);
             listener.onSuccess(childController.getId());
         }
     }
@@ -203,9 +183,9 @@ public class StackController extends ParentController<StackLayout> {
             String nextControlId = iterator.next();
             boolean animate = nextControlId.equals(viewController.getId());
             if (animate) {
-                animatePop(listener);
+                pop(listener);
             } else {
-                pop(new CommandListenerAdapter());
+                removeAndDestroyController(stack.get(currentControlId));
             }
             currentControlId = nextControlId;
         }
@@ -221,12 +201,16 @@ public class StackController extends ParentController<StackLayout> {
         while (stack.size() > 2) {
             ViewController controller = stack.get(iterator.next());
             if (!stack.isTop(controller.getId())) {
-                stack.remove(controller.getId());
-                controller.destroy();
+                removeAndDestroyController(controller);
             }
         }
 
-        animatePop(listener);
+        pop(listener);
+    }
+
+    private void removeAndDestroyController(ViewController controller) {
+        stack.remove(controller.getId());
+        controller.destroy();
     }
 
     ViewController peek() {
@@ -244,10 +228,14 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public boolean handleBack() {
         if (canPop()) {
-            animatePop(new CommandListenerAdapter());
+            pop(new CommandListenerAdapter());
             return true;
         }
         return false;
+    }
+
+    boolean canPop() {
+        return stack.size() > 1;
     }
 
     @Override
