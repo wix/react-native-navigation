@@ -180,15 +180,15 @@ public class StackController extends ParentController<StackLayout> {
         Iterator<String> iterator = stack.iterator();
         String currentControlId = iterator.next();
         while (!viewController.getId().equals(currentControlId)) {
-            String nextControlId = iterator.next();
-            boolean animate = nextControlId.equals(viewController.getId());
-            if (animate) {
-                pop(listener);
-            } else {
-                removeAndDestroyController(stack.get(currentControlId));
+            if (stack.isTop(currentControlId)) {
+                currentControlId = iterator.next();
+                continue;
             }
-            currentControlId = nextControlId;
+            removeAndDestroyController(stack.get(currentControlId));
+            currentControlId = iterator.next();
         }
+
+        pop(listener);
     }
 
     void popToRoot(CommandListener listener) {
