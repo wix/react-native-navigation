@@ -205,7 +205,7 @@ public class StackController extends ParentController<StackLayout> {
             if (animate) {
                 animatePop(listener);
             } else {
-                pop(listener);
+                pop(new CommandListenerAdapter());
             }
             currentControlId = nextControlId;
         }
