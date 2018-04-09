@@ -1,6 +1,6 @@
 # Top Level API
 
-So as to make the navigation API as consistent and homogenous as possible, we begin with a single, unifying function -- setRoot -- that receives properties for any kind of layout, whether tabs or stacks.
+So as to make the navigation API as consistent and homogenous as possible, we begin with a single, unifying function -- setRoot. SetRoot receives properties for any kind of layout, whether tabs or stacks, or a combination of both (as seen in this example.)
 
 See [Layout types](docs/layout-types)
 
@@ -50,7 +50,7 @@ Navigation.setRoot({
 
 ## showOverlay(layout = {})
 
-Show component as overlay.
+Shows a component as an overlay.
 
 ```js
 Navigation.showOverlay({
@@ -67,7 +67,7 @@ Navigation.showOverlay({
 
 ## dismissOverlay(componentId)
 
-Dismiss overlay matching the overlay componentId.
+Dismisses an overlay matching the given overlay componentId.
 
 ```js
 Navigation.dismissOverlay(this.props.componentId);
@@ -76,7 +76,7 @@ Navigation.dismissOverlay(this.props.componentId);
 
 <!-- ## handleDeepLink(params = {})
 
-Trigger a deep link within the app. See [deep links](https://wix.github.io/react-native-navigation/#/deep-links) for more details about how screens can listen for deep link events.
+Triggers a deep link within the app. See [deep links](https://wix.github.io/react-native-navigation/#/deep-links) for more details about how screens can listen for deep link events.
 
 ```js
 Navigation.handleDeepLink({
@@ -97,4 +97,4 @@ Navigation.registerScreen('example.AdvancedScreen', () => AdvancedScreen);
 
 In some cases you might need the id of the currently visible screen. This method returns the unique id of the currently visible screen:
 `const visibleScreenInstanceId = await Navigation.getCurrentlyVisibleScreenId()`
-In order to have any use of this method, you'd need to map instanceId to screens your self. -->
+In order to have any use of this method, you'd need to map instanceId to screens yourself. -->
