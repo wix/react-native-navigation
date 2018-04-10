@@ -35,7 +35,7 @@ class OptionsScreen extends Component {
           component: {
             name: 'TopBarBackground',
             passProps: {
-              header: 'Top bar BG'
+              color: '#bbdefb'
             }
           }
         },

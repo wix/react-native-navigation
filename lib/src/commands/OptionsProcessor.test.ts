@@ -1,6 +1,7 @@
 import { OptionsProcessor } from './OptionsProcessor';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
+import * as _ from 'lodash';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
@@ -113,12 +114,13 @@ describe('navigation options', () => {
   });
 
   it('passProps for custom component', () => {
-    const passProps = { prop: 'prop' };
+    const passProps = { color: '#ff0000', some: 'thing' };
     options.component = { passProps, name: 'a' };
 
     uut.processOptions({ o: options });
 
     expect(store.getPropsForId(options.component.componentId)).toEqual(passProps);
+    expect(Object.keys(options.component)).not.toContain('passProps');
   });
 
   it('generate component id for component in options', () => {
@@ -127,6 +129,15 @@ describe('navigation options', () => {
     uut.processOptions({ o: options });
 
     expect(options.component.componentId).toBeDefined();
+  });
+
+  it('passProps from options are not processed', () => {
+    const passProps = { color: '#ff0000', some: 'thing' };
+    const clonedProps = _.cloneDeep(passProps);
+    options.component = { passProps, name: 'a' };
+
+    uut.processOptions(options);
+    expect(store.getPropsForId(options.component.componentId)).toEqual(clonedProps);
   });
 
   it('pass supplied componentId for component in options', () => {

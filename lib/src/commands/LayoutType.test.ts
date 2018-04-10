@@ -1,6 +1,6 @@
 import { LayoutType, isLayoutType } from './LayoutType';
 
-describe.only('LayoutType', () => {
+describe('LayoutType', () => {
   it('is an enum', () => {
     expect(LayoutType.Component).toEqual('Component');
     expect(LayoutType.Stack).toEqual('Stack');

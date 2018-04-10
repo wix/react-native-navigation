@@ -9,12 +9,12 @@ export class OptionsProcessor {
     _.forEach(options, (value, key) => {
       if (!value) { return; }
 
+      this.processComponent(key, value, options);
       this.processColor(key, value, options);
       this.processImage(key, value, options);
       this.processButtonsPassProps(key, value);
-      this.processComponent(key, value);
 
-      if (_.isObject(value) || _.isArray(value)) {
+      if (!_.isEqual(key, 'passProps') && (_.isObject(value) || _.isArray(value))) {
         this.processOptions(value);
       }
     });
@@ -42,12 +42,13 @@ export class OptionsProcessor {
     }
   }
 
-  private processComponent(key, value) {
+  private processComponent(key, value, options) {
     if (_.isEqual(key, 'component')) {
       value.componentId = value.id ? value.id : this.uniqueIdProvider.generate('CustomComponent');
       if (value.passProps) {
         this.store.setPropsForId(value.componentId, value.passProps);
       }
+      options[key] = _.omit(value, 'passProps');
     }
   }
 }
