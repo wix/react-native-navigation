@@ -9,6 +9,7 @@ import com.reactnativenavigation.R;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
+import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
@@ -47,7 +48,10 @@ public class TopBarBackgroundComponentTest extends BaseTest {
     @Test
     public void setBackgroundComponent() {
         uut.getLayoutParams().height = 100;
-        uut.setBackgroundComponent(new Text("someComponent"));
+        Component component = new Component();
+        component.name = new Text("someComponent");
+        component.componentId = new Text("id");
+        uut.setBackgroundComponent(component);
         TopBarBackgroundView background = (TopBarBackgroundView) ViewUtils.findChildrenByClassRecursive(uut, TopBarBackgroundView.class).get(0);
         assertThat(background).isNotNull();
         assertThat(background.getLayoutParams().width).isEqualTo(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -56,13 +60,19 @@ public class TopBarBackgroundComponentTest extends BaseTest {
 
     @Test
     public void setBackgroundComponent_doesNotSetIfNoComponentIsDefined() {
-        uut.setBackgroundComponent(new Text("someComponent"));
+        Component component = new Component();
+        component.name = new Text("someComponent");
+        component.componentId = new Text("id");
+        uut.setBackgroundComponent(component);
         assertThat(uut.findViewById(R.id.topBarBackgroundComponent)).isNull();
     }
 
     @Test
     public void clear_componentIsDestroyed() {
-        uut.setBackgroundComponent(new Text("someComponent"));
+        Component component = new Component();
+        component.name = new Text("someComponent");
+        component.componentId = new Text("id");
+        uut.setBackgroundComponent(component);
         uut.clear();
         verify(topBarBackgroundViewController, times(1)).destroy();
     }

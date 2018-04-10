@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 
+import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.views.titlebar.TitleBarReactView;
@@ -10,7 +11,7 @@ import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 public class TitleBarReactViewController extends ViewController<TitleBarReactView> {
 
     private final TitleBarReactViewCreator reactViewCreator;
-    private String componentName;
+    private Component component;
 
     public TitleBarReactViewController(Activity activity, TitleBarReactViewCreator reactViewCreator) {
         super(activity, CompatUtils.generateViewId() + "", new Options());
@@ -32,7 +33,7 @@ public class TitleBarReactViewController extends ViewController<TitleBarReactVie
 
     @Override
     protected TitleBarReactView createView() {
-        return reactViewCreator.create(getActivity(), getId(), componentName);
+        return reactViewCreator.create(getActivity(), getId(), component.name.get());
     }
 
     @Override
@@ -40,7 +41,7 @@ public class TitleBarReactViewController extends ViewController<TitleBarReactVie
 
     }
 
-    public void setComponent(String componentName) {
-        this.componentName = componentName;
+    public void setComponent(Component component) {
+        this.component = component;
     }
 }
