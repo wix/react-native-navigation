@@ -4,7 +4,7 @@ const testIDs = require('../playground/src/testIDs');
 
 const elementById = Utils.elementById;
 
-describe('custom transition', () => {
+describe(':ios: custom transition', () => {
   beforeEach(async () => {
     await device.relaunchApp();
   });

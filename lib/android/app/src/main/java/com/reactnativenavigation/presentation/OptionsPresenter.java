@@ -47,7 +47,7 @@ public class OptionsPresenter {
 
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component) {
         topBar.setTitle(options.title.text.get(""));
-        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component.get(), options.title.componentAlignment);
+        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component);
         topBar.setTitleFontSize(options.title.fontSize.get(defaultTitleFontSize));
         topBar.setTitleTextColor(options.title.color.get(DEFAULT_TITLE_COLOR));
         topBar.setTitleTypeface(options.title.fontFamily);
@@ -138,7 +138,7 @@ public class OptionsPresenter {
 
     private void mergeTopBarOptions(TopBarOptions options, AnimationsOptions animationsOptions, Component component) {
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
-        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component.get(), options.title.componentAlignment);
+        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component);
         if (options.title.color.hasValue()) topBar.setTitleTextColor(options.title.color.get());
         if (options.title.fontSize.hasValue()) topBar.setTitleFontSize(options.title.fontSize.get());
         if (options.title.fontFamily != null) topBar.setTitleTypeface(options.title.fontFamily);

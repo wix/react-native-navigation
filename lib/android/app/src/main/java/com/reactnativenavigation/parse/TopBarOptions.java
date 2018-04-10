@@ -2,7 +2,9 @@ package com.reactnativenavigation.parse;
 
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
+import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.NullBool;
@@ -33,6 +35,7 @@ public class TopBarOptions {
         options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"));
         options.testId = TextParser.parse(json, "testID");
 
+        options.validate();
         return options;
     }
 
@@ -58,6 +61,7 @@ public class TopBarOptions {
         if (other.drawBehind.hasValue()) drawBehind = other.drawBehind;
         if (other.leftButtons != null) leftButtons = other.leftButtons;
         if (other.rightButtons != null) rightButtons = other.rightButtons;
+        validate();
     }
 
     void mergeWithDefault(TopBarOptions defaultOptions) {
@@ -71,5 +75,14 @@ public class TopBarOptions {
         if (leftButtons == null) leftButtons = defaultOptions.leftButtons;
         if (rightButtons == null) rightButtons = defaultOptions.rightButtons;
         if (!testId.hasValue()) testId = defaultOptions.testId;
+        validate();
+    }
+
+    private void validate() {
+        if (title.component.hasValue() && (title.text.hasValue() || subtitle.text.hasValue())) {
+            if (BuildConfig.DEBUG) Log.w("RNN", "A screen can't use both text and component - clearing text.");
+            title.text = new NullText();
+            subtitle.text = new NullText();
+        }
     }
 }

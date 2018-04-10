@@ -43,6 +43,7 @@ public class StackControllerTest extends BaseTest {
     private ViewController child1;
     private ViewController child2;
     private ViewController child3;
+    private ViewController child4;
     private NavigationAnimator animator;
     private TopBarController topBarController;
 
@@ -54,6 +55,7 @@ public class StackControllerTest extends BaseTest {
         child1 = spy(new SimpleViewController(activity, "child1", new Options()));
         child2 = spy(new SimpleViewController(activity, "child2", new Options()));
         child3 = spy(new SimpleViewController(activity, "child3", new Options()));
+        child4 = spy(new SimpleViewController(activity, "child4", new Options()));
     }
 
     @Test
@@ -145,7 +147,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child2, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                uut.animatePop(new CommandListenerAdapter() {
+                uut.pop(new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
                         verify(stackLayout[0], times(1)).onChildWillDisappear(child2.options, child1.options, () -> {
@@ -316,6 +318,26 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void popTo_animatesTopController() {
+        uut.push(child1, new CommandListenerAdapter());
+        uut.push(child2, new CommandListenerAdapter());
+        uut.push(child3, new CommandListenerAdapter());
+        uut.push(child4, new CommandListenerAdapter() {
+            @Override
+            public void onSuccess(String childId) {
+                uut.popTo(child2, new CommandListenerAdapter() {
+                    @Override
+                    public void onSuccess(String childId) {
+                        verify(animator, times(0)).animatePop(eq(child1.getView()), any());
+                        verify(animator, times(0)).animatePop(eq(child2.getView()), any());
+                        verify(animator, times(1)).animatePop(eq(child4.getView()), any());
+                    }
+                });
+            }
+        });
+    }
+
+    @Test
     public void popToRoot_PopsEverythingAboveFirstController() {
         child1.options.animated = new Bool(false);
         child2.options.animated = new Bool(false);
@@ -343,16 +365,20 @@ public class StackControllerTest extends BaseTest {
     public void popToRoot_onlyTopChildIsAnimated() {
         child1.options.animated = new Bool(false);
         child2.options.animated = new Bool(false);
-        child3.options.animated = new Bool(false);
 
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter());
-        uut.push(child3, new CommandListenerAdapter());
-
-        uut.popToRoot(new CommandListenerAdapter() {
+        uut.push(child3, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                verify(animator, times(1)).animatePop(eq(child3.getView()), any());
+                child1.options.animated = new Bool(true);
+                child2.options.animated = new Bool(true);
+                uut.popToRoot(new CommandListenerAdapter() {
+                    @Override
+                    public void onSuccess(String childId) {
+                        verify(animator, times(1)).animatePop(eq(child3.getView()), any());
+                    }
+                });
             }
         });
     }
@@ -444,7 +470,7 @@ public class StackControllerTest extends BaseTest {
 
         assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
         uut.push(child2, new CommandListenerAdapter());
-        uut.animatePop(new CommandListenerAdapter() {
+        uut.pop(new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 verify(uut.getTopBar(), times(1)).hide();

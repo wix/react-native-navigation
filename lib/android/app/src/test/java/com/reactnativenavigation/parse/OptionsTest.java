@@ -37,11 +37,11 @@ public class OptionsTest extends BaseTest {
     private static final String TOP_BAR_FONT_FAMILY = "HelveticaNeue-CondensedBold";
     private static final int SUBTITLE_FONT_SIZE = 14;
     private static final int SUBTITLE_TEXT_COLOR = 0xff123457;
+    private static final int SCREEN_BACKGROUND_COLOR = 0xff123458;
     private static final String SUBTITLE_FONT_FAMILY = "HelveticaNeue-Condensed";
     private static final Typeface SUBTITLE_TYPEFACE = Typeface.create("HelveticaNeue-Condensed", Typeface.NORMAL);
     private static final String SUBTITLE_ALIGNMENT = "center";
     private static final Typeface TOP_BAR_TYPEFACE = Typeface.create("HelveticaNeue-CondensedBold", Typeface.BOLD);
-    private static final String TITLE_ALIGNMENT = "center";
     private static final Bool TOP_BAR_VISIBLE = new Bool(true);
     private static final Bool TOP_BAR_DRAW_BEHIND = new Bool(true);
     private static final Bool TOP_BAR_HIDE_ON_SCROLL = new Bool(true);
@@ -70,7 +70,8 @@ public class OptionsTest extends BaseTest {
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("fab", createFab())
-                .put("bottomTabs", createBottomTabs());
+                .put("bottomTabs", createBottomTabs())
+                .put("screenBackgroundColor",SCREEN_BACKGROUND_COLOR);
         Options result = Options.parse(mockLoader, json);
         assertResult(result);
     }
@@ -100,7 +101,7 @@ public class OptionsTest extends BaseTest {
         assertThat(result.fabOptions.hideOnScroll.get()).isEqualTo(FAB_HIDE_ON_SCROLL);
         assertThat(result.fabOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
         assertThat(result.fabOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
-        assertThat(result.topBarOptions.title.componentAlignment).isEqualTo(Alignment.Center);
+        assertThat(result.screenBackgroundColor.get()).isEqualTo(SCREEN_BACKGROUND_COLOR);
     }
 
     @NonNull
@@ -133,8 +134,7 @@ public class OptionsTest extends BaseTest {
                 .put("text", "the title")
                 .put("color", TOP_BAR_TEXT_COLOR)
                 .put("fontSize", TOP_BAR_FONT_SIZE)
-                .put("fontFamily", TOP_BAR_FONT_FAMILY)
-                .put("componentAlignment", TITLE_ALIGNMENT);
+                .put("fontFamily", TOP_BAR_FONT_FAMILY);
     }
 
     private JSONObject createSubtitle() throws JSONException {
@@ -214,7 +214,8 @@ public class OptionsTest extends BaseTest {
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("fab", createFab())
-                .put("bottomTabs", createBottomTabs());
+                .put("bottomTabs", createBottomTabs())
+                .put("screenBackgroundColor",SCREEN_BACKGROUND_COLOR);
         Options defaultOptions = Options.parse(mockLoader, json);
         Options options = new Options();
 
@@ -226,7 +227,8 @@ public class OptionsTest extends BaseTest {
         JSONObject defaultJson = new JSONObject()
                 .put("topBar", createOtherTopBar())
                 .put("fab", createOtherFab())
-                .put("bottomTabs", createOtherBottomTabs());
+                .put("bottomTabs", createOtherBottomTabs())
+                .put("screenBackgroundColor",SCREEN_BACKGROUND_COLOR);
         Options defaultOptions = Options.parse(mockLoader, defaultJson);
 
         JSONObject json = new JSONObject()
@@ -241,6 +243,8 @@ public class OptionsTest extends BaseTest {
     public void defaultEmptyOptions() {
         Options uut = new Options();
         assertThat(uut.topBarOptions.title.text.get("")).isEmpty();
+        assertThat(uut.screenBackgroundColor.hasValue()).isFalse();
+
     }
 
     @Test

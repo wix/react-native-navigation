@@ -2,6 +2,7 @@
 #import "RNNTitleOptions.h"
 #import "RNNSubtitleOptions.h"
 #import "RNNBackgroundOptions.h"
+#import "RNNComponentOptions.h"
 
 @interface RNNTopBarOptions : RNNOptions
 
@@ -26,6 +27,6 @@
 @property (nonatomic, strong) NSString* backButtonTitle;
 @property (nonatomic, strong) NSNumber* hideBackButtonTitle;
 
-@property (nonatomic, strong) NSString* componentName;
+@property (nonatomic, strong) RNNComponentOptions* component;
 
 @end

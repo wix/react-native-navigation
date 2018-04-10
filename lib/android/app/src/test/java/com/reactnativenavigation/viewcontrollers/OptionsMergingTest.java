@@ -84,7 +84,8 @@ public class OptionsMergingTest extends BaseTest {
 
         TitleOptions titleOptions = new TitleOptions();
         titleOptions.text = new Text("abc");
-        titleOptions.component = new Text("someComponent");
+        titleOptions.component.name = new Text("someComponent");
+        titleOptions.component.componentId = new Text("compId");
         titleOptions.color = new Color(0);
         titleOptions.fontSize = new Fraction(1.0f);
         titleOptions.fontFamily = Typeface.DEFAULT_BOLD;
@@ -140,11 +141,10 @@ public class OptionsMergingTest extends BaseTest {
         verify(topBar, times(1)).setTopTabFontFamily(1, Typeface.DEFAULT_BOLD);
     }
 
-
     private void assertTopBarOptions(int t) {
         verify(topBar, times(t)).setTitle(any());
         verify(topBar, times(t)).setSubtitle(any());
-        verify(topBar, times(t)).setTitleComponent(any(), any());
+        verify(topBar, times(t)).setTitleComponent(any());
         verify(topBar, times(t)).setBackgroundColor(any());
         verify(topBar, times(t)).setTitleTextColor(anyInt());
         verify(topBar, times(t)).setTitleFontSize(anyFloat());

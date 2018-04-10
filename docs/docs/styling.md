@@ -98,7 +98,7 @@ Navigation.setOptions(this.props.componentId, {
       text: 'Title',
       fontSize: 14,
       color: 'red',
-      fontFamily: 'Halvetica',
+      fontFamily: 'Helvetica',
       component: 'example.CustomTopBarTitle',
       componentAlignment: 'center',
     },
@@ -106,7 +106,7 @@ Navigation.setOptions(this.props.componentId, {
       text: 'Title',
       fontSize: 14,
       color: 'red',
-      fontFamily: 'Halvetica',
+      fontFamily: 'Helvetica',
       alignment: 'center'
     },
     background: {
@@ -126,7 +126,7 @@ Navigation.setOptions(this.props.componentId, {
     backgroundColor: 'white',
     tabColor: 'red',
     selectedTabColor: 'blue',
-    fontFamily: 'Halvetica',
+    fontFamily: 'Helvetica',
     fontSize: 10
   },
   bottomTab: {
@@ -137,10 +137,14 @@ Navigation.setOptions(this.props.componentId, {
     icon: require('tab.png')
   },
   sideMenu: {
-    leftSideVisible: false,
-    rightSideVisible: false,
-    rightSideEnabled: true,
-    leftSideEnabled: true
+    left: {
+      visible: false,
+      enabled: true
+    },
+    right: {
+      visible: false,
+      enabled: true
+    }
   },
   overlay: {
     interceptTouchOutside: true

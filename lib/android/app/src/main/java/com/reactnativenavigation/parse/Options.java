@@ -4,8 +4,11 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.parsers.BoolParser;
+import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
@@ -33,6 +36,7 @@ public class Options {
         result.sideMenuRootOptions = SideMenuRootOptions.parse(json.optJSONObject("sideMenu"));
         result.animationsOptions = AnimationsOptions.parse(json.optJSONObject("animations"));
         result.animated = BoolParser.parse(json, "animated");
+        result.screenBackgroundColor = ColorParser.parse(json, "screenBackgroundColor");
 
         return result.withDefaultOptions(defaultOptions);
     }
@@ -48,6 +52,7 @@ public class Options {
     @NonNull public AnimationsOptions animationsOptions = new AnimationsOptions();
     @NonNull public SideMenuRootOptions sideMenuRootOptions = new SideMenuRootOptions();
     @NonNull public Bool animated = new NullBool();
+    @NonNull public Color screenBackgroundColor = new NullColor();
 
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;
@@ -67,6 +72,7 @@ public class Options {
         result.sideMenuRootOptions.mergeWith(sideMenuRootOptions);
         result.animationsOptions.mergeWith(animationsOptions);
         result.animated = animated;
+        result.screenBackgroundColor = screenBackgroundColor;
         return result;
     }
 
@@ -83,6 +89,9 @@ public class Options {
         result.animationsOptions.mergeWith(other.animationsOptions);
         result.sideMenuRootOptions.mergeWith(other.sideMenuRootOptions);
         if (other.animated.hasValue()) result.animated = other.animated;
+        if (other.screenBackgroundColor.hasValue()) {
+            result.screenBackgroundColor = other.screenBackgroundColor;
+        }
         return result;
     }
 
@@ -97,6 +106,9 @@ public class Options {
         animationsOptions.mergeWithDefault(defaultOptions.animationsOptions);
         sideMenuRootOptions.mergeWithDefault(defaultOptions.sideMenuRootOptions);
         if (!animated.hasValue()) animated = defaultOptions.animated;
+        if (!screenBackgroundColor.hasValue()) {
+            screenBackgroundColor = defaultOptions.screenBackgroundColor;
+        }
         return this;
     }
 

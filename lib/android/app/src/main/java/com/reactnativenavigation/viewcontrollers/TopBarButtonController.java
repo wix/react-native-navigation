@@ -63,7 +63,7 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
     @NonNull
     @Override
     protected TitleBarReactButtonView createView() {
-        view = (TitleBarReactButtonView) viewCreator.create(getActivity(), getId(), button.component.get());
+        view = (TitleBarReactButtonView) viewCreator.create(getActivity(), button.component.componentId.get(), button.component.name.get());
         return (TitleBarReactButtonView) view.asView();
     }
 
