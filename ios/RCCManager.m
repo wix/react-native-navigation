@@ -140,7 +140,7 @@
 }
 
 -(void)initBridgeWithBundleURL:(NSURL *)bundleURL launchOptions:(NSDictionary *)launchOptions {
-    if (self.sharedBridge) return;
+    if (self.sharedBridge && [self.sharedBridge isValid]) return;
     
     self.bundleURL = bundleURL;
     self.sharedBridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];

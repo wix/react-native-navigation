@@ -560,8 +560,8 @@ function dismissModal(params) {
   });
 }
 
-function dismissAllModals(params) {
-  newPlatformSpecific.dismissAllModals();
+async function dismissAllModals(params) {
+  return await newPlatformSpecific.dismissAllModals();
 }
 
 function showInAppNotification(params) {
