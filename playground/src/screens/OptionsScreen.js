@@ -271,9 +271,9 @@ class OptionsScreen extends Component {
       topBar: {
         title: {
           component: {
-            name: 'navigation.playground.CustomTopBar'
-          },
-          componentAlignment: 'center'
+            name: 'navigation.playground.CustomTopBar',
+            alignment: 'center'
+          }
         }
       }
     });

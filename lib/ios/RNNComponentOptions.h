@@ -4,5 +4,6 @@
 
 @property (nonatomic, strong) NSString* name;
 @property (nonatomic, strong) NSString* componentId;
+@property (nonatomic, strong) NSString* alignment;
 
 @end

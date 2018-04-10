@@ -2,12 +2,12 @@
 
 @implementation RNNBackgroundOptions
 
-- (instancetype)initWithDict:(NSDictionary *)dict {
-	self = [super initWithDict:dict];
-	self.component = [[RNNComponentOptions alloc] initWithDict:dict[@"component"]];
-	
-	return self;
-}
+//- (instancetype)initWithDict:(NSDictionary *)dict {
+//	self = [super initWithDict:dict];
+//	self.component = [[RNNComponentOptions alloc] initWithDict:dict[@"component"]];
+//	
+//	return self;
+//}
 
 - (void)applyOn:(UIViewController *)viewController {
 	if (self.color) {

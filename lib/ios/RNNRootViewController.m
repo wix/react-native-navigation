@@ -79,7 +79,7 @@
 	if (self.options.topBar.title.component.name) {
 		RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
 
-		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.options.topBar.title.componentAlignment];
+		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.options.topBar.title.component.alignment];
         reactView.backgroundColor = UIColor.clearColor;
 		titleView.backgroundColor = UIColor.clearColor;
 		self.navigationItem.titleView = titleView;
