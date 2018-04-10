@@ -89,10 +89,6 @@ public class StackController extends ParentController<StackLayout> {
         topBarController.clear();
     }
 
-    public void push(ViewController child) {
-        push(child, new CommandListenerAdapter());
-    }
-
     public void push(ViewController child, CommandListener listener) {
         final ViewController toRemove = stack.peek();
         child.setParentController(this);

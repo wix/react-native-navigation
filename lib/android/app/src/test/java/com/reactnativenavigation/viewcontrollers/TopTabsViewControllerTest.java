@@ -64,7 +64,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabControllers.forEach(viewController -> viewController.setParentController(uut));
 
         parentController = spy(createStackController("stackId"));
-        parentController.push(uut);
+        parentController.push(uut, new CommandListenerAdapter());
         uut.setParentController(parentController);
     }
 
@@ -233,8 +233,8 @@ public class TopTabsViewControllerTest extends BaseTest {
         );
         first.options.animated = new Bool(false);
         uut.options.animated = new Bool(false);
-        stackController.push(first);
-        stackController.push(uut);
+        stackController.push(first, new CommandListenerAdapter());
+        stackController.push(uut, new CommandListenerAdapter());
 
         first.ensureViewIsCreated();
         uut.ensureViewIsCreated();

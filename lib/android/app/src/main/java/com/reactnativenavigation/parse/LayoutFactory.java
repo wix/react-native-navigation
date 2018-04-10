@@ -3,6 +3,7 @@ package com.reactnativenavigation.parse;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
@@ -136,7 +137,7 @@ public class LayoutFactory {
 
     private void addChildrenToStack(List<LayoutNode> children, StackController stackController) {
         for (LayoutNode child : children) {
-            stackController.push(create(child));
+            stackController.push(create(child), new CommandListenerAdapter());
         }
     }
 

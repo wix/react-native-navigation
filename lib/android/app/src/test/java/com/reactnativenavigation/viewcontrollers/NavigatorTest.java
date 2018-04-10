@@ -340,7 +340,7 @@ public class NavigatorTest extends BaseTest {
     public void pushIntoModal() {
         uut.setRoot(parentController, new MockPromise());
         StackController stackController = newStack();
-        stackController.push(child1);
+        stackController.push(child1, new CommandListenerAdapter());
         uut.showModal(stackController, new MockPromise());
         uut.push(stackController.getId(), child2, new CommandListenerAdapter());
         assertIsChildById(stackController.getView(), child2.getView());
@@ -353,10 +353,10 @@ public class NavigatorTest extends BaseTest {
         StackController parent = newStack();
         parent.ensureViewIsCreated();
         uut.setRoot(parent, new MockPromise());
-        parent.push(parentController);
+        parent.push(parentController, new CommandListenerAdapter());
 
-        parentController.push(child1);
-        parentController.push(child2);
+        parentController.push(child1, new CommandListenerAdapter());
+        parentController.push(child2, new CommandListenerAdapter());
         assertThat(parentController.getChildControllers().size()).isEqualTo(2);
         child1.ensureViewIsCreated();
         child2.ensureViewIsCreated();

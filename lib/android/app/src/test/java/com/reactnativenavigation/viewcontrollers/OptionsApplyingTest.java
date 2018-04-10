@@ -193,7 +193,7 @@ public class OptionsApplyingTest extends BaseTest {
         json.put("component", new JSONObject().put("name","someComponent").put("componentId", "id"));
         uut.options.topBarOptions.background = TopBarBackgroundOptions.parse(json);
         uut.ensureViewIsCreated();
-        stackController.push(uut);
+        stackController.push(uut, new CommandListenerAdapter());
         uut.onViewAppeared();
 
         assertThat(((ColorDrawable) stackController.getTopBar().getTitleBar().getBackground()).getColor()).isEqualTo(Color.TRANSPARENT);
@@ -206,7 +206,7 @@ public class OptionsApplyingTest extends BaseTest {
         json.put("text", "sub");
         uut.options.topBarOptions.subtitle = SubtitleOptions.parse(new TypefaceLoaderMock(), json);
         uut.ensureViewIsCreated();
-        stackController.push(uut);
+        stackController.push(uut, new CommandListenerAdapter());
         uut.onViewAppeared();
 
         assertThat(stackController.getTopBar().getTitleBar().getSubtitle()).isEqualTo("sub");

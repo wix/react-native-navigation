@@ -83,25 +83,25 @@ public class FloatingActionButtonTest extends BaseTest {
 
     @Test
     public void showOnPush() {
-        stackController.push(childFab);
+        stackController.push(childFab, new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
     }
 
     @Test
     public void hideOnPush() {
-        stackController.push(childFab);
+        stackController.push(childFab, new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
-        stackController.push(childNoFab);
+        stackController.push(childNoFab, new CommandListenerAdapter());
         childNoFab.onViewAppeared();
         assertThat(hasFab()).isFalse();
     }
 
     @Test
     public void hideOnPop() {
-        stackController.push(childNoFab);
-        stackController.push(childFab);
+        stackController.push(childNoFab, new CommandListenerAdapter());
+        stackController.push(childFab, new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
         stackController.pop(new CommandListenerAdapter());
@@ -114,8 +114,8 @@ public class FloatingActionButtonTest extends BaseTest {
         childFab.options.animated = new Bool(false);
         childNoFab.options.animated = new Bool(false);
 
-        stackController.push(childFab);
-        stackController.push(childNoFab);
+        stackController.push(childFab, new CommandListenerAdapter());
+        stackController.push(childNoFab, new CommandListenerAdapter());
         childNoFab.onViewAppeared();
         assertThat(hasFab()).isFalse();
         stackController.pop(new CommandListenerAdapter());
@@ -126,7 +126,7 @@ public class FloatingActionButtonTest extends BaseTest {
     @Test
     public void hasChildren() {
         childFab = new SimpleViewController(activity, "child1", getOptionsWithFabActions());
-        stackController.push(childFab);
+        stackController.push(childFab, new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
         assertThat(containsActions()).isTrue();
