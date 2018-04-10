@@ -6,14 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.Fab;
@@ -46,6 +47,7 @@ public class FloatingActionButtonTest extends BaseTest {
     @NonNull
     private Options getOptionsWithFab() {
         Options options = new Options();
+        options.animated = new Bool(false);
         FabOptions fabOptions = new FabOptions();
         fabOptions.id = new Text("FAB");
         options.fabOptions = fabOptions;
@@ -81,39 +83,42 @@ public class FloatingActionButtonTest extends BaseTest {
 
     @Test
     public void showOnPush() {
-        stackController.push(childFab, new MockPromise());
+        stackController.push(childFab, new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
     }
 
     @Test
     public void hideOnPush() {
-        stackController.push(childFab, new MockPromise());
+        stackController.push(childFab, new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
-        stackController.push(childNoFab, new MockPromise());
+        stackController.push(childNoFab, new CommandListenerAdapter());
         childNoFab.onViewAppeared();
         assertThat(hasFab()).isFalse();
     }
 
     @Test
     public void hideOnPop() {
-        stackController.push(childNoFab, new MockPromise());
-        stackController.push(childFab, new MockPromise());
+        stackController.push(childNoFab, new CommandListenerAdapter());
+        stackController.push(childFab, new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
-        stackController.pop(new MockPromise());
+        stackController.pop(new CommandListenerAdapter());
         childNoFab.onViewAppeared();
         assertThat(hasFab()).isFalse();
     }
 
     @Test
     public void showOnPop() {
-        stackController.push(childFab, new MockPromise());
-        stackController.push(childNoFab, new MockPromise());
+        childFab.options.animated = new Bool(false);
+        childNoFab.options.animated = new Bool(false);
+
+        stackController.push(childFab, new CommandListenerAdapter());
+        stackController.push(childNoFab, new CommandListenerAdapter());
         childNoFab.onViewAppeared();
         assertThat(hasFab()).isFalse();
-        stackController.pop(new MockPromise());
+        stackController.pop(new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
     }
@@ -121,7 +126,7 @@ public class FloatingActionButtonTest extends BaseTest {
     @Test
     public void hasChildren() {
         childFab = new SimpleViewController(activity, "child1", getOptionsWithFabActions());
-        stackController.push(childFab, new MockPromise());
+        stackController.push(childFab, new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
         assertThat(containsActions()).isTrue();

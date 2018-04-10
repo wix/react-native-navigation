@@ -5,6 +5,7 @@ import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.ModalCreatorMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.modal.Modal;
 import com.reactnativenavigation.viewcontrollers.modal.ModalListener;
 
@@ -48,13 +49,13 @@ public class ModalStackTest extends BaseTest {
     }
 
     @Test
-    public void modalRefIsSaved() throws Exception {
+    public void modalRefIsSaved() {
         uut.showModal(viewController, new MockPromise());
         assertThat(findModal(CONTROLLER_ID)).isNotNull();
     }
 
     @Test
-    public void modalIsShown() throws Exception {
+    public void modalIsShown() {
         uut.showModal(viewController, new MockPromise() {
             @Override
             public void resolve(@Nullable Object value) {
@@ -65,13 +66,13 @@ public class ModalStackTest extends BaseTest {
     }
 
     @Test
-    public void modalIsDismissed() throws Exception {
+    public void modalIsDismissed() {
         uut.showModal(viewController, new MockPromise());
         final Modal modal = findModal(CONTROLLER_ID);
         assertThat(modal).isNotNull();
-        uut.dismissModal(CONTROLLER_ID, new MockPromise() {
+        uut.dismissModal(CONTROLLER_ID, new CommandListenerAdapter() {
             @Override
-            public void resolve(@Nullable Object value) {
+            public void onSuccess(String childId) {
                 assertThat(findModal(CONTROLLER_ID)).isNull();
                 verify(uut, times(1)).onModalDismiss(modal);
             }
@@ -79,46 +80,46 @@ public class ModalStackTest extends BaseTest {
     }
 
     @Test
-    public void dismissAllModals() throws Exception {
+    public void dismissAllModals() {
         uut.showModal(new SimpleViewController(newActivity(), "1", new Options()), new MockPromise());
         uut.showModal(new SimpleViewController(newActivity(), "2", new Options()), new MockPromise());
-        uut.dismissAll(new MockPromise() {
+        uut.dismissAll(new CommandListenerAdapter() {
             @Override
-            public void resolve(@Nullable Object value) {
+            public void onSuccess(String childId) {
                 assertThat(uut.isEmpty()).isTrue();
             }
         });
     }
 
     @Test
-    public void isEmpty() throws Exception {
+    public void isEmpty() {
         assertThat(uut.isEmpty()).isTrue();
         uut.showModal(viewController, new MockPromise());
         assertThat(uut.isEmpty()).isFalse();
-        uut.dismissAll(new MockPromise());
+        uut.dismissAll(new CommandListenerAdapter());
         assertThat(uut.isEmpty()).isTrue();
     }
 
     @Test
-    public void onDismiss() throws Exception {
+    public void onDismiss() {
         uut.showModal(viewController, new MockPromise());
         uut.showModal(new SimpleViewController(newActivity(), "otherComponent", new Options()), new MockPromise());
-        uut.dismissAll(new MockPromise() {
+        uut.dismissAll(new CommandListenerAdapter() {
             @Override
-            public void resolve(@Nullable Object value) {
+            public void onSuccess(String childId) {
                 verify(uut, times(2)).onModalDismiss(any());
             }
         });
     }
 
     @Test
-    public void onDismiss_onViewAppearedInvokedOnPreviousModal() throws Exception {
+    public void onDismiss_onViewAppearedInvokedOnPreviousModal() {
         SimpleViewController viewController = spy(new SimpleViewController(newActivity(), "otherComponent", new Options()));
         uut.showModal(viewController, new MockPromise());
         uut.showModal(this.viewController, new MockPromise());
-        uut.dismissModal(CONTROLLER_ID, new MockPromise() {
+        uut.dismissModal(CONTROLLER_ID, new CommandListenerAdapter() {
             @Override
-            public void resolve(@Nullable Object value) {
+            public void onSuccess(String childId) {
                 verify(viewController, times(1)).onViewAppeared();
             }
         });

@@ -23,6 +23,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -87,7 +89,7 @@ public class TopBarTest extends BaseTest {
     public void hide_animate() {
         AnimationOptions options = new AnimationOptions();
         uut.hideAnimate(options);
-        verify(animator, times(1)).hide(options, null);
+        verify(animator, times(1)).hide(eq(options), any());
     }
 
     @Test

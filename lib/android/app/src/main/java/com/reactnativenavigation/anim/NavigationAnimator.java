@@ -1,10 +1,10 @@
 package com.reactnativenavigation.anim;
 
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.reactnativenavigation.parse.AnimationsOptions;
@@ -21,14 +21,9 @@ public class NavigationAnimator extends BaseAnimator {
         this.options = options;
     }
 
-    public void animatePush(final View view, @Nullable final AnimationListener animationListener) {
+    public void push(final View view, Runnable onAnimationEnd) {
         view.setVisibility(View.INVISIBLE);
-        AnimatorSet set;
-        if (options.push.content.hasValue()) {
-            set = options.push.content.getAnimation(view);
-        } else {
-            set = getDefaultPushAnimation(view);
-        }
+        AnimatorSet set = options.push.content.getAnimation(view, getDefaultPushAnimation(view));
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -37,33 +32,24 @@ public class NavigationAnimator extends BaseAnimator {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (animationListener != null) {
-                    animationListener.onAnimationEnd();
-                }
+                onAnimationEnd.run();
             }
         });
         set.start();
     }
 
-    public void animatePop(View view, @Nullable final AnimationListener animationListener) {
-        AnimatorSet set;
-        if (options.pop.content.hasValue()) {
-            set = options.pop.content.getAnimation(view);
-        } else {
-            set = getDefaultPopAnimation(view);
-        }
+    public void pop(View view, Runnable onAnimationEnd) {
+        AnimatorSet set = options.pop.content.getAnimation(view, getDefaultPopAnimation(view));
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (animationListener != null) {
-                    animationListener.onAnimationEnd();
-                }
+                onAnimationEnd.run();
             }
         });
         set.start();
     }
 
-    public void animateStartApp(View view, @Nullable final AnimationListener animationListener) {
+    public void animateStartApp(View view, AnimatorListener listener) {
         view.setVisibility(View.INVISIBLE);
         AnimatorSet set = options.startApp.getAnimation(view);
         set.addListener(new AnimatorListenerAdapter() {
@@ -74,7 +60,7 @@ public class NavigationAnimator extends BaseAnimator {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (animationListener != null) animationListener.onAnimationEnd();
+                listener.onAnimationEnd(animation);
             }
         });
         set.start();

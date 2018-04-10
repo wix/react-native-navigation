@@ -10,7 +10,7 @@ import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
 
-public class TopTabOptions implements DEFAULT_VALUES {
+public class TopTabOptions {
     public Text title = new NullText();
     @Nullable public Typeface fontFamily;
     public int tabIndex;

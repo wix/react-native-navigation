@@ -1,16 +1,12 @@
 import * as _ from 'lodash';
-import { OptionsProcessor } from './OptionsProcessor';
 import { CommandsObserver } from '../events/CommandsObserver';
 
 export class Commands {
-  private optionsProcessor: OptionsProcessor;
-
   constructor(
     private readonly nativeCommandsSender,
     private readonly layoutTreeParser,
     private readonly layoutTreeCrawler,
     private readonly commandsObserver: CommandsObserver) {
-    this.optionsProcessor = new OptionsProcessor(this.layoutTreeCrawler.store);
   }
 
   public setRoot(simpleApi) {
@@ -25,7 +21,7 @@ export class Commands {
 
   public setDefaultOptions(options) {
     const input = _.cloneDeep(options);
-    this.optionsProcessor.processOptions(input);
+    this.layoutTreeCrawler.processOptions(input);
 
     this.nativeCommandsSender.setDefaultOptions(input);
     this.commandsObserver.notify('setDefaultOptions', { options });
@@ -33,7 +29,7 @@ export class Commands {
 
   public setOptions(componentId, options) {
     const input = _.cloneDeep(options);
-    this.optionsProcessor.processOptions(input);
+    this.layoutTreeCrawler.processOptions(input);
 
     this.nativeCommandsSender.setOptions(componentId, input);
     this.commandsObserver.notify('setOptions', { componentId, options });
@@ -87,6 +83,17 @@ export class Commands {
   public popToRoot(componentId) {
     const result = this.nativeCommandsSender.popToRoot(componentId);
     this.commandsObserver.notify('popToRoot', { componentId });
+    return result;
+  }
+
+  public setStackRoot(componentId, simpleApi) {
+    const input = _.cloneDeep(simpleApi);
+
+    const layout = this.layoutTreeParser.parse(input);
+    this.layoutTreeCrawler.crawl(layout);
+
+    const result = this.nativeCommandsSender.setStackRoot(componentId, layout);
+    this.commandsObserver.notify('setStackRoot', { componentId, layout });
     return result;
   }
 

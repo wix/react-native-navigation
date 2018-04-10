@@ -176,7 +176,7 @@ Navigation.dismissModal(this.props.componentId);
 
 ## Screen Lifecycle
 
-The `didAppear` and `didDisappear` functions are lifecycle callbacks that are called by React Native Navigation on the component when it appears and disappears. 
+The `componentDidAppear` and `componentDidDisappear` functions are lifecycle callbacks that are called by React Native Navigation on the component when it appears and disappears. 
 
 These are similar to react's `componentDidMount` and `componentWillUnmount`, but are related to the actual visibility of a component to the user. While the component is `mounted` as soon as it's part of a layout, it is not always `visible` (for example, when another screen is `pushed` on top of it), and therefore React Native Navigation  takes some performance optimizations.
 
@@ -195,12 +195,12 @@ class LifecycleScreenExample extends Component {
     };
   }
 
-  didAppear() {
-    this.setState({ text: 'didAppear' });
+  componentDidAppear() {
+    this.setState({ text: 'componentDidAppear' });
   }
 
-  didDisappear() {
-    alert('didDisappear');
+  componentDidDisappear() {
+    alert('componentDidDisappear');
   }
 
   componentWillUnmount() {

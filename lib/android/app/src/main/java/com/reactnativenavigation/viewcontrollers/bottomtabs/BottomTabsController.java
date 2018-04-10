@@ -26,7 +26,7 @@ import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static android.widget.RelativeLayout.ABOVE;
+import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 
 public class BottomTabsController extends ParentController implements AHBottomNavigation.OnTabSelectedListener, NavigationOptionsListener {
     private FrameLayout tabContentContainer;
@@ -104,7 +104,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         selectTabAtIndex(index);
         return true;
 	}
-	
+
 	public void setTabs(final List<ViewController> tabs) {
 		if (tabs.size() > 5) {
 			throw new RuntimeException("Too many tabs!");
@@ -136,10 +136,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
                 error.printStackTrace();
             }
         });
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
-        params.addRule(ABOVE, bottomTabs.getId());
-    }
+	}
 
     public int getSelectedIndex() {
 		return bottomTabs.getCurrentItem();
@@ -160,7 +157,9 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     public void selectTabAtIndex(final int newIndex) {
         tabContentContainer.removeView(getCurrentView());
         bottomTabs.setCurrentItem(newIndex, false);
-        tabContentContainer.addView(getCurrentView());
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        params.bottomMargin = bottomTabs.getHeight();
+        getView().addView(getCurrentView(), params);
     }
 
     @NonNull

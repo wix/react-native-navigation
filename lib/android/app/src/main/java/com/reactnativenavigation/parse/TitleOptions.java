@@ -2,9 +2,7 @@ package com.reactnativenavigation.parse;
 
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.NullColor;
@@ -22,18 +20,14 @@ public class TitleOptions {
 
     public static TitleOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
         final TitleOptions options = new TitleOptions();
-        if (json == null) {
-            return options;
-        }
+        if (json == null) return options;
 
+        options.component = Component.parse(json.optJSONObject("component"));
         options.text = TextParser.parse(json, "text");
         options.color = ColorParser.parse(json, "color");
         options.fontSize = FractionParser.parse(json, "fontSize");
         options.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
-        options.component = TextParser.parse(json, "component");
         options.alignment = Alignment.fromString(TextParser.parse(json, "alignment").get(""));
-
-        validate(options);
 
         return options;
     }
@@ -41,18 +35,17 @@ public class TitleOptions {
     public Text text = new NullText();
     public Color color = new NullColor();
     public Fraction fontSize = new NullFraction();
-    @Nullable public Typeface fontFamily;
-    public Text component = new NullText();
     public Alignment alignment = Alignment.Default;
+    @Nullable public Typeface fontFamily;
+    public Component component = new Component();
 
     void mergeWith(final TitleOptions other) {
         if (other.text.hasValue()) text = other.text;
         if (other.color.hasValue()) color = other.color;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         if (other.fontFamily != null) fontFamily = other.fontFamily;
-        if (other.component.hasValue()) component = other.component;
         if (other.alignment != Alignment.Default) alignment = other.alignment;
-        validate(this);
+        if (other.component.hasValue()) component = other.component;
     }
 
     void mergeWithDefault(TitleOptions defaultOptions) {
@@ -60,15 +53,7 @@ public class TitleOptions {
         if (!color.hasValue()) color = defaultOptions.color;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
-        if (!component.hasValue()) component = defaultOptions.component;
         if (alignment == Alignment.Default) alignment = defaultOptions.alignment;
-        validate(this);
-    }
-
-    private static void validate(TitleOptions options) {
-        if (options.component.hasValue() && options.text.hasValue()) {
-            if (BuildConfig.DEBUG) Log.w("RNN", "A screen can't use both text and component - clearing text.");
-            options.text = new NullText();
-        }
+        component.mergeWithDefault(defaultOptions.component);
     }
 }

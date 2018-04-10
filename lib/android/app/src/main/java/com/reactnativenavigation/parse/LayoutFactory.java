@@ -3,8 +3,8 @@ package com.reactnativenavigation.parse;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
-import com.reactnativenavigation.utils.NoOpPromise;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.SideMenuController;
@@ -136,12 +136,8 @@ public class LayoutFactory {
 	}
 
     private void addChildrenToStack(List<LayoutNode> children, StackController stackController) {
-        for (int i = 0; i < children.size(); i++) {
-            if (i < children.size() - 1) {
-                stackController.push(create(children.get(i)), new NoOpPromise());
-            } else {
-                stackController.animatePush(create(children.get(i)), new NoOpPromise());
-            }
+        for (LayoutNode child : children) {
+            stackController.push(create(child), new CommandListenerAdapter());
         }
     }
 

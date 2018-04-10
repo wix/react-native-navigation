@@ -14,5 +14,6 @@
 -(void)pop:(NSString*)componentId withTransitionOptions:(RNNAnimationOptions*)transitionOptions;
 -(void)popTo:(NSString*)componentId;
 -(void)popToRoot:(NSString*)componentId;
+-(void)setRoot:(UIViewController<RNNRootViewProtocol> *)newRoot fromComponent:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion;
 
 @end

@@ -34,6 +34,10 @@ export class NativeCommandsSender {
     return this.nativeCommandsModule.popToRoot(componentId);
   }
 
+  setStackRoot(onComponentId: string, layout: object) {
+    return this.nativeCommandsModule.setStackRoot(onComponentId, layout);
+  }
+
   showModal(layout: object) {
     return this.nativeCommandsModule.showModal(layout);
   }

@@ -55,7 +55,8 @@ public class TopBarButtonControllerTest extends BaseTest {
     private Button createButton() {
         Button button = new Button();
         button.id = "btnId";
-        button.component = new Text("com.example.customBtn");
+        button.component.name = new Text("com.example.customBtn");
+        button.component.componentId = new Text("component666");
         return button;
     }
 }

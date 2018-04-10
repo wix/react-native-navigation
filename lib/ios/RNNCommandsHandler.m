@@ -59,11 +59,20 @@
 	[_controllerFactory setDefaultOptionsDict:optionsDict];
 }
 
--(void) push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
+-(void)push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
 	UIViewController<RNNRootViewProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
 	[_navigationStackManager push:newVc onTop:componentId completion:^{
+		completion();
+	}];
+}
+
+-(void)setStackRoot:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
+	[self assertReady];
+	
+	UIViewController<RNNRootViewProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
+	[_navigationStackManager setRoot:newVc fromComponent:componentId completion:^{
 		completion();
 	}];
 }

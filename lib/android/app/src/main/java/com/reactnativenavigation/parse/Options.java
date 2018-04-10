@@ -3,11 +3,17 @@ package com.reactnativenavigation.parse;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 
+import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.params.NullColor;
+import com.reactnativenavigation.parse.parsers.BoolParser;
+import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
 
-public class Options implements DEFAULT_VALUES {
+public class Options {
 
     @NonNull
     public static Options parse(TypefaceLoader typefaceManager, JSONObject json) {
@@ -27,8 +33,10 @@ public class Options implements DEFAULT_VALUES {
         result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
         result.overlayOptions = OverlayOptions.parse(json.optJSONObject("overlay"));
         result.fabOptions = FabOptions.parse(json.optJSONObject("fab"));
-        result.animationsOptions = AnimationsOptions.parse(json.optJSONObject("animations"));
         result.sideMenuRootOptions = SideMenuRootOptions.parse(json.optJSONObject("sideMenu"));
+        result.animationsOptions = AnimationsOptions.parse(json.optJSONObject("animations"));
+        result.animated = BoolParser.parse(json, "animated");
+        result.screenBackgroundColor = ColorParser.parse(json, "screenBackgroundColor");
 
         return result.withDefaultOptions(defaultOptions);
     }
@@ -43,6 +51,8 @@ public class Options implements DEFAULT_VALUES {
     @NonNull public FabOptions fabOptions = new FabOptions();
     @NonNull public AnimationsOptions animationsOptions = new AnimationsOptions();
     @NonNull public SideMenuRootOptions sideMenuRootOptions = new SideMenuRootOptions();
+    @NonNull public Bool animated = new NullBool();
+    @NonNull public Color screenBackgroundColor = new NullColor();
 
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;
@@ -59,8 +69,10 @@ public class Options implements DEFAULT_VALUES {
         result.bottomTabsOptions.mergeWith(bottomTabsOptions);
         result.overlayOptions = overlayOptions;
         result.fabOptions.mergeWith(fabOptions);
-        result.animationsOptions.mergeWith(animationsOptions);
         result.sideMenuRootOptions.mergeWith(sideMenuRootOptions);
+        result.animationsOptions.mergeWith(animationsOptions);
+        result.animated = animated;
+        result.screenBackgroundColor = screenBackgroundColor;
         return result;
     }
 
@@ -76,19 +88,27 @@ public class Options implements DEFAULT_VALUES {
         result.fabOptions.mergeWith(other.fabOptions);
         result.animationsOptions.mergeWith(other.animationsOptions);
         result.sideMenuRootOptions.mergeWith(other.sideMenuRootOptions);
+        if (other.animated.hasValue()) result.animated = other.animated;
+        if (other.screenBackgroundColor.hasValue()) {
+            result.screenBackgroundColor = other.screenBackgroundColor;
+        }
         return result;
     }
 
-    Options withDefaultOptions(final Options other) {
-        orientationOptions.mergeWithDefault(other.orientationOptions);
-        topBarOptions.mergeWithDefault(other.topBarOptions);
-        topTabOptions.mergeWithDefault(other.topTabOptions);
-        topTabsOptions.mergeWithDefault(other.topTabsOptions);
-        bottomTabOptions.mergeWithDefault(other.bottomTabOptions);
-        bottomTabsOptions.mergeWithDefault(other.bottomTabsOptions);
-        fabOptions.mergeWithDefault(other.fabOptions);
-        animationsOptions.mergeWithDefault(other.animationsOptions);
-        sideMenuRootOptions.mergeWithDefault(other.sideMenuRootOptions);
+    Options withDefaultOptions(final Options defaultOptions) {
+        orientationOptions.mergeWithDefault(defaultOptions.orientationOptions);
+        topBarOptions.mergeWithDefault(defaultOptions.topBarOptions);
+        topTabOptions.mergeWithDefault(defaultOptions.topTabOptions);
+        topTabsOptions.mergeWithDefault(defaultOptions.topTabsOptions);
+        bottomTabOptions.mergeWithDefault(defaultOptions.bottomTabOptions);
+        bottomTabsOptions.mergeWithDefault(defaultOptions.bottomTabsOptions);
+        fabOptions.mergeWithDefault(defaultOptions.fabOptions);
+        animationsOptions.mergeWithDefault(defaultOptions.animationsOptions);
+        sideMenuRootOptions.mergeWithDefault(defaultOptions.sideMenuRootOptions);
+        if (!animated.hasValue()) animated = defaultOptions.animated;
+        if (!screenBackgroundColor.hasValue()) {
+            screenBackgroundColor = defaultOptions.screenBackgroundColor;
+        }
         return this;
     }
 

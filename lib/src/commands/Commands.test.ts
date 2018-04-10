@@ -245,6 +245,22 @@ describe('Commands', () => {
     });
   });
 
+  describe('setStackRoot', () => {
+    it('parses into correct layout node and sends to native', () => {
+      uut.setStackRoot('theComponentId', { component: { name: 'com.example.MyScreen' } });
+      expect(mockCommandsSender.setStackRoot).toHaveBeenCalledTimes(1);
+      expect(mockCommandsSender.setStackRoot).toHaveBeenCalledWith('theComponentId', {
+        type: 'Component',
+        id: 'Component+UNIQUE_ID',
+        data: {
+          name: 'com.example.MyScreen',
+          options: {}
+        },
+        children: []
+      });
+    });
+  });
+
   describe('showOverlay', () => {
     it('sends command to native after parsing into a correct layout tree', () => {
       uut.showOverlay({
@@ -298,7 +314,7 @@ describe('Commands', () => {
     beforeEach(() => {
       cb = jest.fn();
       const mockParser = { parse: () => 'parsed' };
-      const mockCrawler = { crawl: (x) => x };
+      const mockCrawler = { crawl: (x) => x, processOptions: (x) => x };
       commandsObserver.register(cb);
       uut = new Commands(mockCommandsSender, mockParser, mockCrawler, commandsObserver);
     });
@@ -352,6 +368,7 @@ describe('Commands', () => {
         pop: ['id', {}],
         popTo: ['id'],
         popToRoot: ['id'],
+        setStackRoot: ['id', {}],
         showOverlay: [{}],
         dismissOverlay: ['id'],
       };
@@ -366,6 +383,7 @@ describe('Commands', () => {
         pop: { componentId: 'id', options: {} },
         popTo: { componentId: 'id' },
         popToRoot: { componentId: 'id' },
+        setStackRoot: { componentId: 'id', layout: 'parsed' },
         showOverlay: { layout: 'parsed' },
         dismissOverlay: { componentId: 'id' },
       };

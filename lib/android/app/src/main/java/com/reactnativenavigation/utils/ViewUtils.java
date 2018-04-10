@@ -41,13 +41,21 @@ public class ViewUtils {
     }
 
     public static <T> List<T> findChildrenByClass(ViewGroup root, Class clazz) {
+        return findChildrenByClass(root, clazz, child -> true);
+    }
+
+    public static <T> List<T> findChildrenByClass(ViewGroup root, Class clazz, Matcher<T> matcher) {
         List<T> ret = new ArrayList<>();
         for (int i = 0; i < root.getChildCount(); i++) {
-            View view = root.getChildAt(i);
-            if (clazz.isAssignableFrom(view.getClass())) {
-                ret.add((T) view);
+            View child = root.getChildAt(i);
+            if (clazz.isAssignableFrom(child.getClass()) && matcher.match((T) child)) {
+                ret.add((T) child);
             }
         }
         return ret;
+    }
+
+    public interface Matcher<T> {
+        boolean match(T child);
     }
 }
