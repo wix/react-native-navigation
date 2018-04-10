@@ -101,12 +101,15 @@ More information about these glyphs can be found in [Apple's Human Interface Gui
 
 
 ##### Android left button
+
 On Android, four button types are supported by default without the need to provide an icon. You can use them by specifying one of the following ids in your left button definition:
 
 * back
 * cancel
 * accept
 * sideMenu
+
+Except for these 4 cases, the left button **must** have an icon on Android. It can't be a text only button.
 
 #### Custom Navigation Buttons
 
