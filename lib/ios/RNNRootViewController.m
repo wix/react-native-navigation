@@ -44,7 +44,6 @@
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.options applyOn:self];
-//	[self optionsUpdated];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
