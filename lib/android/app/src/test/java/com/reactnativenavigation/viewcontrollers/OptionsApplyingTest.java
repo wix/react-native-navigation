@@ -190,7 +190,7 @@ public class OptionsApplyingTest extends BaseTest {
     @Test
     public void appliesTopBarComponent() throws Exception {
         JSONObject json = new JSONObject();
-        json.put("component", "someComponent");
+        json.put("component", new JSONObject().put("name","someComponent").put("componentId", "id"));
         uut.options.topBarOptions.background = TopBarBackgroundOptions.parse(json);
         uut.ensureViewIsCreated();
         stackController.push(uut);

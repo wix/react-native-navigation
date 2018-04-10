@@ -34,4 +34,8 @@
 	return view;
 }
 
+-(UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions {
+	return [self createRootView:componentOptions.name rootViewId:componentOptions.componentId];
+}
+
 @end

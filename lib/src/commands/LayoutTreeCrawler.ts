@@ -20,7 +20,8 @@ export class LayoutTreeCrawler {
     private readonly uniqueIdProvider: any,
     public readonly store: any) {
     this.crawl = this.crawl.bind(this);
-    this.optionsProcessor = new OptionsProcessor(store);
+    this.processOptions = this.processOptions.bind(this);
+    this.optionsProcessor = new OptionsProcessor(store, uniqueIdProvider);
   }
 
   crawl(node: LayoutNode): void {
@@ -31,8 +32,12 @@ export class LayoutTreeCrawler {
     if (node.type === LayoutType.Component) {
       this._handleComponent(node);
     }
-    this.optionsProcessor.processOptions(node.data.options);
+    this.processOptions(node.data.options);
     _.forEach(node.children, this.crawl);
+  }
+
+  processOptions(options) {
+    this.optionsProcessor.processOptions(options);
   }
 
   _handleComponent(node) {

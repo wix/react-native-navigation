@@ -36,7 +36,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.animated = [options objectForKey:@"animated"];
 	self.customTransition = [[RNNAnimationOptions alloc] initWithDict:[options objectForKey:@"customTransition"]];
 	self.animations = [[RNNTransitionsOptions alloc] initWithDict:[options objectForKey:@"animations"]];
-	
+
 	return self;
 }
 

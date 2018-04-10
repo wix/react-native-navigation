@@ -137,10 +137,14 @@ Navigation.setOptions(this.props.componentId, {
     icon: require('tab.png')
   },
   sideMenu: {
-    leftSideVisible: false,
-    rightSideVisible: false,
-    rightSideEnabled: true,
-    leftSideEnabled: true
+    left: {
+      visible: false,
+      enabled: true
+    },
+    right: {
+      visible: false,
+      enabled: true
+    }
   },
   overlay: {
     interceptTouchOutside: true

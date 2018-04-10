@@ -44,7 +44,6 @@
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.options applyOn:self];
-	[self optionsUpdated];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -76,10 +75,10 @@
 }
 
 - (void)setCustomNavigationTitleView {
-	if (self.options.topBar.title.component) {
-		RCTRootView *reactView = (RCTRootView*)[_creator createRootView:self.options.topBar.title.component rootViewId:self.options.topBar.title.component];
+	if (self.options.topBar.title.component.name) {
+		RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
 
-		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.options.topBar.title.componentAlignment];
+		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.options.topBar.title.component.alignment];
         reactView.backgroundColor = UIColor.clearColor;
 		titleView.backgroundColor = UIColor.clearColor;
 		self.navigationItem.titleView = titleView;
@@ -89,8 +88,8 @@
 }
 
 - (void)setCustomNavigationBarView {
-	if (self.options.topBar.componentName) {
-		RCTRootView *reactView = (RCTRootView*)[_creator createRootView:self.options.topBar.componentName rootViewId:@"navBar"];
+	if (self.options.topBar.component.name) {
+		RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.component];
 
 		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 		reactView.backgroundColor = UIColor.clearColor;
@@ -102,8 +101,8 @@
 }
 
 - (void)setCustomNavigationComponentBackground {
-	if (self.options.topBar.background.component) {
-		RCTRootView *reactView = (RCTRootView*)[_creator createRootView:self.options.topBar.background.component rootViewId:@"navBarBackground"];
+	if (self.options.topBar.background.component.name) {
+		RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.background.component];
 
 		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 		[self.navigationController.navigationBar insertSubview:titleView atIndex:1];
