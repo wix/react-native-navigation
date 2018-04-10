@@ -19,10 +19,10 @@ import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Number;
-import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
@@ -119,13 +119,13 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setTitleAlignment(alignment);
     }
 
-    public void setTitleComponent(String componentName, Alignment alignment) {
-        titleBar.setComponent(componentName, alignment);
+    public void setTitleComponent(Component component) {
+        titleBar.setComponent(component);
     }
 
-    public void setBackgroundComponent(Text component) {
+    public void setBackgroundComponent(Component component) {
         if (component.hasValue()) {
-            topBarBackgroundViewController.setComponent(component.get());
+            topBarBackgroundViewController.setComponent(component);
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, getHeight());
             root.addView(topBarBackgroundViewController.getView(), 0, lp);
         }

@@ -314,7 +314,7 @@ describe('Commands', () => {
     beforeEach(() => {
       cb = jest.fn();
       const mockParser = { parse: () => 'parsed' };
-      const mockCrawler = { crawl: (x) => x };
+      const mockCrawler = { crawl: (x) => x, processOptions: (x) => x };
       commandsObserver.register(cb);
       uut = new Commands(mockCommandsSender, mockParser, mockCrawler, commandsObserver);
     });
