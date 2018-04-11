@@ -1,6 +1,5 @@
 package com.reactnativenavigation.views.topbar;
 
-import android.animation.Animator.AnimatorListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -180,7 +179,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void show() {
-        if (visible()) return;
+        if (visible() || animator.isAnimatingShow()) return;
         setVisibility(View.VISIBLE);
     }
 
@@ -189,12 +188,14 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void showAnimate(AnimationOptions options) {
-        if (visible()) return;
+        if (visible() || animator.isAnimatingShow()) return;
         animator.show(options);
     }
 
     public void hide() {
-        setVisibility(View.GONE);
+        if (!animator.isAnimatingHide()) {
+            setVisibility(View.GONE);
+        }
     }
 
     public void hideAnimate(AnimationOptions options) {

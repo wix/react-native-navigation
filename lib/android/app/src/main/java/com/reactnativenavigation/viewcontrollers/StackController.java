@@ -105,6 +105,8 @@ public class StackController extends ParentController<StackLayout> {
                 getView().removeView(toRemove.getView());
                 listener.onSuccess(child.getId());
             }
+        } else {
+            listener.onSuccess(child.getId());
         }
     }
 
@@ -138,9 +140,8 @@ public class StackController extends ParentController<StackLayout> {
         final ViewController appearing = stack.peek();
         disappearing.onViewWillDisappear();
         appearing.onViewWillAppear();
-        getView().onChildWillDisappear(disappearing.options, appearing.options, () ->
-                getView().addView(appearing.getView())
-        );
+        getView().addView(appearing.getView(), 0);
+        getView().onChildWillDisappear(disappearing.options, appearing.options);
 
         if (disappearing.options.animated.isTrueOrUndefined()) {
             animator.pop(disappearing.getView(), () -> finishPopping(disappearing, listener));

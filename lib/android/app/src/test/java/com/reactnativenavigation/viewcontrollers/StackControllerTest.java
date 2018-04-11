@@ -76,8 +76,10 @@ public class StackControllerTest extends BaseTest {
     @Test
     public void push() {
         assertThat(uut.isEmpty()).isTrue();
-        uut.push(child1, new CommandListenerAdapter());
+        CommandListenerAdapter listener = spy(new CommandListenerAdapter());
+        uut.push(child1, listener);
         assertContainsOnlyId(child1.getId());
+        verify(listener, times(1)).onSuccess(child1.getId());
     }
 
     @Test
@@ -150,8 +152,7 @@ public class StackControllerTest extends BaseTest {
                 uut.pop(new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
-                        verify(stackLayout[0], times(1)).onChildWillDisappear(child2.options, child1.options, () -> {
-                        });
+                        verify(stackLayout[0], times(1)).onChildWillDisappear(child2.options, child1.options);
                     }
                 });
             }
@@ -469,11 +470,15 @@ public class StackControllerTest extends BaseTest {
         child1.onViewAppeared();
 
         assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
-        uut.push(child2, new CommandListenerAdapter());
-        uut.pop(new CommandListenerAdapter() {
+        uut.push(child2, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                verify(uut.getTopBar(), times(1)).hide();
+                uut.pop(new CommandListenerAdapter() {
+                    @Override
+                    public void onSuccess(String childId) {
+                        verify(uut.getTopBar(), times(1)).hide();
+                    }
+                });
             }
         });
     }

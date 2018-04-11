@@ -3,7 +3,6 @@ package com.reactnativenavigation.presentation;
 import android.app.Activity;
 import android.graphics.Color;
 
-import com.reactnativenavigation.interfaces.ChildDisappearListener;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
@@ -105,16 +104,13 @@ public class OptionsPresenter {
         if (topTabOptions.fontFamily != null) topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
     }
 
-    public void onChildWillDisappear(Options disappearing, Options appearing, ChildDisappearListener childDisappearListener) {
+    public void onChildWillDisappear(Options disappearing, Options appearing) {
         if (disappearing.topBarOptions.visible.isTrueOrUndefined() && appearing.topBarOptions.visible.isFalse()) {
             if (disappearing.topBarOptions.animate.isTrueOrUndefined()) {
-                topBar.hideAnimate(disappearing.animationsOptions.pop.topBar, childDisappearListener::childDisappear);
+                topBar.hideAnimate(disappearing.animationsOptions.pop.topBar);
             } else {
                 topBar.hide();
-                childDisappearListener.childDisappear();
             }
-        } else {
-            childDisappearListener.childDisappear();
         }
     }
 

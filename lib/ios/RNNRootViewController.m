@@ -10,6 +10,7 @@
 @property (nonatomic) BOOL _statusBarHidden;
 @property (nonatomic) BOOL isExternalComponent;
 @property (nonatomic) BOOL _optionsApplied;
+@property (nonatomic, copy) void (^rotationBlock)(void);
 @end
 
 @implementation RNNRootViewController
@@ -19,7 +20,7 @@
 			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter
-		  isExternalComponent:(BOOL)isExternalComponent {
+		isExternalComponent:(BOOL)isExternalComponent {
 	self = [super init];
 	self.componentId = componentId;
 	self.componentName = name;
@@ -28,7 +29,7 @@
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	self.creator = creator;
 	self.isExternalComponent = isExternalComponent;
-
+	
 	if (!self.isExternalComponent) {
 		self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
 	}
@@ -38,7 +39,10 @@
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
 	self.navigationController.delegate = self;
-
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(orientationDidChange:)
+												 name:UIDeviceOrientationDidChangeNotification
+											   object:nil];
 	return self;
 }
 
@@ -199,6 +203,15 @@
 	[self.options.topTab applyOn:self];
 }
 
+- (void)performOnRotation:(void (^)(void))block {
+	_rotationBlock = block;
+}
+
+- (void)orientationDidChange:(NSNotification*)notification {
+	if (_rotationBlock) {
+		_rotationBlock();
+	}
+}
 
 /**
  *	fix for #877, #878

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.RelativeLayout;
 
-import com.reactnativenavigation.interfaces.ChildDisappearListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
@@ -41,8 +40,8 @@ public class StackLayout extends RelativeLayout {
         optionsPresenter.applyChildOptions(options, child);
     }
 
-    public void onChildWillDisappear(Options disappearing, Options appearing, ChildDisappearListener childDisappearListener) {
-        optionsPresenter.onChildWillDisappear(disappearing, appearing, childDisappearListener);
+    public void onChildWillDisappear(Options disappearing, Options appearing) {
+        optionsPresenter.onChildWillDisappear(disappearing, appearing);
     }
 
     public void mergeChildOptions(Options options, Component child) {

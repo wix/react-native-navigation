@@ -130,7 +130,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 
 |       other        | iOS  | Android | Contributor(s) |
 |--------------------|:----:|:-----:|-----|
-| screenBackgroundColor        |   ✅     |     [Contribute](/docs/WorkingLocally.md)       |  Wix |
+| screenBackgroundColor        |   ✅     | ✅ | |
 | orientation       |    ✅     |✅| Wix |
 | disabledBackGesture        |    ✅     |    / iOS specific     | |
 | screenBackgroundImageName        |   ✅      |    [Contribute](/docs/WorkingLocally.md)        | |
