@@ -8,9 +8,9 @@ import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.anim.ModalAnimator;
+import com.reactnativenavigation.viewcontrollers.Navigator.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
 import static android.view.View.MeasureSpec.EXACTLY;
@@ -20,7 +20,7 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
     public final ViewController viewController;
     private final Dialog dialog;
     private ModalListener modalListener;
-    @Nullable private Promise dismissPromise;
+    @Nullable private CommandListener dismissCommandListener;
 
     private ModalAnimator animator;
 
@@ -46,8 +46,8 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
         });
     }
 
-    public void dismiss(Promise promise) {
-        dismissPromise = promise;
+    public void dismiss(CommandListener listener) {
+        dismissCommandListener = listener;
         animator.animateDismiss(viewController.getView(), new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -79,8 +79,8 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
     @Override
     public void onDismiss(DialogInterface dialog) {
         modalListener.onModalDismiss(this);
-        if (dismissPromise != null) {
-            dismissPromise.resolve(viewController.getId());
+        if (dismissCommandListener != null) {
+            dismissCommandListener.onSuccess(viewController.getId());
         }
     }
 

@@ -4,7 +4,7 @@
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
-
+	
 	[self mergeWith:dict];
 	
 	return self;

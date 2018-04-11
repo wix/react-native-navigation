@@ -1,9 +1,8 @@
 package com.reactnativenavigation.presentation;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import android.graphics.Color;
 
-import com.reactnativenavigation.interfaces.ChildDisappearListener;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
@@ -11,6 +10,7 @@ import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
 import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.topbar.TopBar;
@@ -18,10 +18,17 @@ import com.reactnativenavigation.views.topbar.TopBar;
 import java.util.ArrayList;
 
 public class OptionsPresenter {
+    private static final int DEFAULT_TITLE_COLOR = Color.BLACK;
+    private static final int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
+    private final float defaultTitleFontSize;
+    private final float defaultSubtitleFontSize;
+
     private TopBar topBar;
 
     public OptionsPresenter(TopBar topBar) {
         this.topBar = topBar;
+        defaultTitleFontSize = UiUtils.dpToSp(topBar.getContext(), 18);
+        defaultSubtitleFontSize = UiUtils.dpToSp(topBar.getContext(), 14);
     }
 
     public void applyChildOptions(Options options, Component child) {
@@ -37,16 +44,23 @@ public class OptionsPresenter {
     }
 
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component) {
-        if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
-        if (options.subtitle.text.hasValue()) topBar.setSubtitle(options.subtitle.text.get());
-        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component.get(), options.title.alignment);
+        topBar.setTitle(options.title.text.get(""));
+        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component);
+        topBar.setTitleFontSize(options.title.fontSize.get(defaultTitleFontSize));
+        topBar.setTitleTextColor(options.title.color.get(DEFAULT_TITLE_COLOR));
+        topBar.setTitleTypeface(options.title.fontFamily);
+        topBar.setTitleAlignment(options.title.alignment);
+
+        topBar.setSubtitle(options.subtitle.text.get(""));
+        topBar.setSubtitleFontSize(options.subtitle.fontSize.get(defaultSubtitleFontSize));
+        topBar.setSubtitleColor(options.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
+        topBar.setSubtitleFontFamily(options.subtitle.fontFamily);
+        topBar.setSubtitleAlignment(options.subtitle.alignment);
+
         topBar.setBackgroundColor(options.background.color);
         topBar.setBackgroundComponent(options.background.component);
-        topBar.setTitleTextColor(options.title.color);
-        topBar.setTitleFontSize(options.title.fontSize);
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
 
-        topBar.setTitleTypeface(options.title.fontFamily);
         if (options.visible.isFalse()) {
             if (options.animate.isTrueOrUndefined()) {
                 topBar.hideAnimate(animationOptions.pop.topBar);
@@ -90,16 +104,13 @@ public class OptionsPresenter {
         if (topTabOptions.fontFamily != null) topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
     }
 
-    public void onChildWillDisappear(Options disappearing, Options appearing, @NonNull ChildDisappearListener childDisappearListener) {
+    public void onChildWillDisappear(Options disappearing, Options appearing) {
         if (disappearing.topBarOptions.visible.isTrueOrUndefined() && appearing.topBarOptions.visible.isFalse()) {
             if (disappearing.topBarOptions.animate.isTrueOrUndefined()) {
-                topBar.hideAnimate(disappearing.animationsOptions.pop.topBar, childDisappearListener::childDisappear);
+                topBar.hideAnimate(disappearing.animationsOptions.pop.topBar);
             } else {
                 topBar.hide();
-                childDisappearListener.childDisappear();
             }
-        } else {
-            childDisappearListener.childDisappear();
         }
     }
 
@@ -122,17 +133,20 @@ public class OptionsPresenter {
 
     private void mergeTopBarOptions(TopBarOptions options, AnimationsOptions animationsOptions, Component component) {
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
-        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component.get(), options.title.alignment);
-        if (options.title.color.hasValue()) topBar.setTitleTextColor(options.title.color);
-        if (options.title.fontSize.hasValue()) topBar.setTitleFontSize(options.title.fontSize);
+        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component);
+        if (options.title.color.hasValue()) topBar.setTitleTextColor(options.title.color.get());
+        if (options.title.fontSize.hasValue()) topBar.setTitleFontSize(options.title.fontSize.get());
+        if (options.title.fontFamily != null) topBar.setTitleTypeface(options.title.fontFamily);
 
         if (options.subtitle.text.hasValue()) topBar.setSubtitle(options.subtitle.text.get());
+        if (options.subtitle.color.hasValue()) topBar.setSubtitleColor(options.subtitle.color.get());
+        if (options.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(options.subtitle.fontSize.get());
+        if (options.subtitle.fontFamily != null) topBar.setSubtitleFontFamily(options.subtitle.fontFamily);
 
         if (options.background.color.hasValue()) topBar.setBackgroundColor(options.background.color);
 
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
 
-        if (options.title.fontFamily != null) topBar.setTitleTypeface(options.title.fontFamily);
         if (options.visible.isFalse()) {
             if (options.animate.isTrueOrUndefined()) {
                 topBar.hideAnimate(animationsOptions.pop.topBar);

@@ -6,7 +6,6 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
-import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
@@ -14,6 +13,7 @@ import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
@@ -105,7 +105,7 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(uut.findControllerById("123")).isNull();
         assertThat(uut.findControllerById(uut.getId())).isEqualTo(uut);
         StackController inner = createStack("inner");
-        inner.animatePush(child1, new MockPromise());
+        inner.push(child1, new CommandListenerAdapter());
         assertThat(uut.findControllerById(child1.getId())).isNull();
         uut.setTabs(Collections.singletonList(inner));
         assertThat(uut.findControllerById(child1.getId())).isEqualTo(child1);
@@ -137,7 +137,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
         StackController stack = spy(createStack("stack"));
         stack.ensureViewIsCreated();
-        stack.push(uut, new MockPromise());
+        stack.push(uut, new CommandListenerAdapter());
 
         child1.onViewAppeared();
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);

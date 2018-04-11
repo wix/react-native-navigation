@@ -1,5 +1,6 @@
+![npm](https://img.shields.io/npm/dw/react-native-navigation.svg)
 [![npm (tag)](https://img.shields.io/npm/v/react-native-navigation/alpha.svg)](https://github.com/wix/react-native-navigation/tree/v2#react-native-navigation-v2-wip)
-[![Build Status](http://207.254.44.76/buildStatus/icon?job=react-native-navigation-master)](http://207.254.44.76/job/react-native-navigation-master)
+[![Build Status](https://jenkins-oss.wixpress.com/job/react-native-navigation-master/badge/icon)](https://jenkins-oss.wixpress.com/job/react-native-navigation-master/)
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 [![StackExchange](https://img.shields.io/stackexchange/stackoverflow/t/react-native-navigation.svg)](https://stackoverflow.com/questions/tagged/react-native-navigation)
 
@@ -13,7 +14,7 @@ We are rebuilding react-native-navigation.
 - [v2 Roadmap](#v2-roadmap)
 - [v1 vs v2 feature comparison](#v1-vs-v2-feature-comparison)
 - [Documentation](https://wix.github.io/react-native-navigation/v2/)
-- [Contributing](/docs/WorkingLocally.md)
+- [Contributing](/docs/docs/WorkingLocally.md)
 
 ## Why Rebuild react-native-navigation?
 
@@ -129,7 +130,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 
 |       other        | iOS  | Android | Contributor(s) |
 |--------------------|:----:|:-----:|-----|
-| screenBackgroundColor        |   ✅     |     [Contribute](/docs/WorkingLocally.md)       |  Wix |
+| screenBackgroundColor        |   ✅     | ✅ | |
 | orientation       |    ✅     |✅| Wix |
 | disabledBackGesture        |    ✅     |    / iOS specific     | |
 | screenBackgroundImageName        |   ✅      |    [Contribute](/docs/WorkingLocally.md)        | |
@@ -211,3 +212,4 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | topBar react component        |   ✅     |✅|✅|
 |Shared Element Transition|     :x:  |✅| [Contribute](/docs/WorkingLocally.md)|
 | splitViewScreen       |     :x:  |    [Contribute](/docs/WorkingLocally.md)      | [Contribute](/docs/WorkingLocally.md)|
+

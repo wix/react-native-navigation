@@ -3,7 +3,6 @@ package com.reactnativenavigation.parse;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
-import android.util.Log;
 import android.util.Property;
 import android.view.View;
 
@@ -63,6 +62,11 @@ public class AnimationOptions {
     }
 
     public AnimatorSet getAnimation(View view) {
+        return getAnimation(view, null);
+    }
+
+    public AnimatorSet getAnimation(View view, AnimatorSet defaultAnimation) {
+        if (!hasValue()) return defaultAnimation;
         AnimatorSet animationSet = new AnimatorSet();
         List<Animator> animators = new ArrayList<>();
         for (ValueAnimationOptions options : valueOptions) {

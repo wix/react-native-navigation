@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class FabOptions implements DEFAULT_VALUES {
+public class FabOptions {
 
     public static FabOptions parse(JSONObject json) {
         FabOptions options = new FabOptions();

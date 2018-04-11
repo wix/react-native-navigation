@@ -124,6 +124,13 @@ export class Navigation {
   }
 
   /**
+   * Sets new root component to stack.
+   */
+  public setStackRoot(componentId: string, layout): Promise<any> {
+    return this.commands.setStackRoot(componentId, layout);
+  }
+
+  /**
    * Show overlay on top of the entire app
    */
   public showOverlay(layout): Promise<any> {

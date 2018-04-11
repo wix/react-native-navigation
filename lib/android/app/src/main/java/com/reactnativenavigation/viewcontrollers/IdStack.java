@@ -1,5 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
+import android.support.annotation.NonNull;
+
 import com.reactnativenavigation.utils.StringUtils;
 
 import java.util.ArrayDeque;
@@ -68,7 +70,8 @@ public class IdStack<E> implements Iterable<String> {
 		return StringUtils.isEqual(id, peekId());
 	}
 
-	@Override
+	@NonNull
+    @Override
 	public Iterator<String> iterator() {
 		return deque.iterator();
 	}

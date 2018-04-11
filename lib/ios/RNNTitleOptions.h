@@ -1,5 +1,6 @@
 #import "RNNOptions.h"
 #import "RNNSubtitleOptions.h"
+#import "RNNComponentOptions.h"
 
 @interface RNNTitleOptions : RNNOptions
 
@@ -8,7 +9,7 @@
 @property (nonatomic, strong) NSNumber* color;
 @property (nonatomic, strong) NSString* fontFamily;
 
-@property (nonatomic, strong) NSString* component;
+@property (nonatomic, strong) RNNComponentOptions* component;
 @property (nonatomic, strong) NSString* componentAlignment;
 
 @property (nonatomic, strong) RNNSubtitleOptions* subtitle;

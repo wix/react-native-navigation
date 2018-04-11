@@ -10,7 +10,7 @@ class TopBarBackground extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.dots = new Array(55).fill('').map((ignored, i) => <View key={'dot' + i} style={styles.dot}/>);
+    this.dots = new Array(55).fill('').map((ignored, i) => <View key={'dot' + i} style={[styles.dot, {backgroundColor: this.props.color}]}/>);
   }
 
   componentDidAppear() {
@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
     height: 16,
     width: 16,
     borderRadius: 8,
-    margin: 4,
-    backgroundColor: '#bbdefb'
+    margin: 4
   }
 });

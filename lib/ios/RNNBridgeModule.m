@@ -48,6 +48,12 @@ RCT_EXPORT_METHOD(pop:(NSString*)componentId options:(NSDictionary*)options reso
 	}];
 }
 
+RCT_EXPORT_METHOD(setStackRoot:(NSString*)componentId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler setStackRoot:componentId layout:layout completion:^{
+		resolve(componentId);
+	}];
+}
+
 RCT_EXPORT_METHOD(popTo:(NSString*)componentId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
 	[_commandsHandler popTo:componentId completion:^{
 		resolve(componentId);

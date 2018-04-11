@@ -54,7 +54,7 @@
 -(RNNUIBarButtonItem*)buildButton: (NSDictionary*)dictionary {
 	NSString* buttonId = dictionary[@"id"];
 	NSString* title = dictionary[@"title"];
-	NSString* component = dictionary[@"component"];
+	NSString* component = dictionary[@"component"][@"name"];
 	
 	if (!buttonId) {
 		@throw [NSException exceptionWithName:@"NSInvalidArgumentException" reason:[@"button id is not specified " stringByAppendingString:title] userInfo:nil];

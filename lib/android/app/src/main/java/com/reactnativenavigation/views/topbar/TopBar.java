@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.topbar;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.annotation.ColorInt;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.AppBarLayout;
@@ -12,17 +13,15 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.reactnativenavigation.anim.AnimationListener;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
-import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
-import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
@@ -83,15 +82,31 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setSubtitle(subtitle);
     }
 
+    public void setSubtitleColor(@ColorInt int color) {
+        titleBar.setSubtitleTextColor(color);
+    }
+
+    public void setSubtitleFontFamily(Typeface fontFamily) {
+        titleBar.setSubtitleTypeface(fontFamily);
+    }
+
+    public void setSubtitleFontSize(float size) {
+        titleBar.setSubtitleFontSize(size);
+    }
+
+    public void setSubtitleAlignment(Alignment alignment) {
+        titleBar.setSubtitleAlignment(alignment);
+    }
+
     public void setTestId(String testId) {
         setTag(testId);
     }
 
-    public void setTitleTextColor(Color color) {
+    public void setTitleTextColor(@ColorInt int color) {
         titleBar.setTitleTextColor(color);
     }
 
-    public void setTitleFontSize(Fraction size) {
+    public void setTitleFontSize(float size) {
         titleBar.setTitleFontSize(size);
     }
 
@@ -99,13 +114,17 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setTitleTypeface(typeface);
     }
 
-    public void setTitleComponent(String componentName, Alignment alignment) {
-        titleBar.setComponent(componentName, alignment);
+    public void setTitleAlignment(Alignment alignment) {
+        titleBar.setTitleAlignment(alignment);
     }
 
-    public void setBackgroundComponent(Text component) {
+    public void setTitleComponent(Component component) {
+        titleBar.setComponent(component);
+    }
+
+    public void setBackgroundComponent(Component component) {
         if (component.hasValue()) {
-            topBarBackgroundViewController.setComponent(component.get());
+            topBarBackgroundViewController.setComponent(component);
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, getHeight());
             root.addView(topBarBackgroundViewController.getView(), 0, lp);
         }
@@ -160,7 +179,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void show() {
-        if (visible()) return;
+        if (visible() || animator.isAnimatingShow()) return;
         setVisibility(View.VISIBLE);
     }
 
@@ -169,20 +188,22 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void showAnimate(AnimationOptions options) {
-        if (visible()) return;
+        if (visible() || animator.isAnimatingShow()) return;
         animator.show(options);
     }
 
     public void hide() {
-        setVisibility(View.GONE);
+        if (!animator.isAnimatingHide()) {
+            setVisibility(View.GONE);
+        }
     }
 
     public void hideAnimate(AnimationOptions options) {
-        hideAnimate(options, null);
+        hideAnimate(options, () -> {});
     }
 
-    public void hideAnimate(AnimationOptions options, AnimationListener listener) {
-        animator.hide(options, listener);
+    public void hideAnimate(AnimationOptions options, Runnable onAnimationEnd) {
+        animator.hide(options, onAnimationEnd);
     }
 
     @Override
@@ -217,6 +238,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     public TextView getTitleTextView() {
-        return titleBar.getTitleTextView();
+        return titleBar.findTitleTextView();
     }
 }

@@ -10,6 +10,7 @@
 @property (nonatomic) BOOL _statusBarHidden;
 @property (nonatomic) BOOL isExternalComponent;
 @property (nonatomic) BOOL _optionsApplied;
+@property (nonatomic, copy) void (^rotationBlock)(void);
 @end
 
 @implementation RNNRootViewController
@@ -19,7 +20,7 @@
 			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter
-		  isExternalComponent:(BOOL)isExternalComponent {
+		isExternalComponent:(BOOL)isExternalComponent {
 	self = [super init];
 	self.componentId = componentId;
 	self.componentName = name;
@@ -28,7 +29,7 @@
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	self.creator = creator;
 	self.isExternalComponent = isExternalComponent;
-
+	
 	if (!self.isExternalComponent) {
 		self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
 	}
@@ -38,7 +39,10 @@
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
 	self.navigationController.delegate = self;
-
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(orientationDidChange:)
+												 name:UIDeviceOrientationDidChangeNotification
+											   object:nil];
 	return self;
 }
 
@@ -79,10 +83,10 @@
 }
 
 - (void)setCustomNavigationTitleView {
-	if (self.options.topBar.title.component) {
-		RCTRootView *reactView = (RCTRootView*)[_creator createRootView:self.options.topBar.title.component rootViewId:self.options.topBar.title.component];
+	if (self.options.topBar.title.component.name) {
+		RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
 
-		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.options.topBar.title.componentAlignment];
+		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.options.topBar.title.component.alignment];
         reactView.backgroundColor = UIColor.clearColor;
 		titleView.backgroundColor = UIColor.clearColor;
 		self.navigationItem.titleView = titleView;
@@ -92,8 +96,8 @@
 }
 
 - (void)setCustomNavigationBarView {
-	if (self.options.topBar.componentName) {
-		RCTRootView *reactView = (RCTRootView*)[_creator createRootView:self.options.topBar.componentName rootViewId:@"navBar"];
+	if (self.options.topBar.component.name) {
+		RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.component];
 
 		RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 		reactView.backgroundColor = UIColor.clearColor;
@@ -109,8 +113,8 @@
         [[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
     }
     
-	if (self.options.topBar.background.component) {
-        RCTRootView *reactView = (RCTRootView*)[_creator createRootView:self.options.topBar.background.component rootViewId:@"navBarBackground"];
+	if (self.options.topBar.background.component.name) {
+        RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.background.component];
 
         RNNCustomTitleView *titleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
         [self.navigationController.navigationBar insertSubview:titleView atIndex:1];
@@ -199,6 +203,15 @@
 	[self.options.topTab applyOn:self];
 }
 
+- (void)performOnRotation:(void (^)(void))block {
+	_rotationBlock = block;
+}
+
+- (void)orientationDidChange:(NSNotification*)notification {
+	if (_rotationBlock) {
+		_rotationBlock();
+	}
+}
 
 /**
  *	fix for #877, #878

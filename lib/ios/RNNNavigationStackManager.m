@@ -96,11 +96,26 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	}
 }
 
--(void) popToRoot:(NSString*)componentId {
+-(void)popToRoot:(NSString*)componentId {
 	UIViewController* vc = [_store findComponentForId:componentId];
 	UINavigationController* nvc = [vc navigationController];
 	NSArray* poppedVCs = [nvc popToRootViewControllerAnimated:YES];
 	[self removePopedViewControllers:poppedVCs];
+}
+
+-(void)setRoot:(UIViewController<RNNRootViewProtocol> *)newRoot fromComponent:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion {
+	UIViewController* vc = [_store findComponentForId:componentId];
+	UINavigationController* nvc = [vc navigationController];
+	[CATransaction begin];
+	[CATransaction setCompletionBlock:^{
+		if (completion) {
+			completion();
+		}
+	}];
+	
+	[nvc setViewControllers:@[newRoot] animated:[newRoot.options.animated boolValue]];
+	
+	[CATransaction commit];
 }
 
 -(void)removePopedViewControllers:(NSArray*)viewControllers {

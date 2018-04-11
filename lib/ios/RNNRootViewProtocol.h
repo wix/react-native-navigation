@@ -6,6 +6,7 @@
 - (void)mergeOptions:(NSDictionary*)options;
 - (BOOL)isCustomViewController;
 - (void)optionsUpdated;
+- (void)performOnRotation:(void (^)(void))block;
 
 @required
 - (BOOL)isCustomTransitioned;

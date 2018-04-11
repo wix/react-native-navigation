@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -60,7 +61,7 @@ public class OptionsMergingTest extends BaseTest {
     }
 
     @Test
-    public void mergeButtons() throws Exception {
+    public void mergeButtons() {
         Options options = new Options();
         uut.mergeChildOptions(options, child);
         verify(topBar, times(0)).setRightButtons(any());
@@ -76,20 +77,22 @@ public class OptionsMergingTest extends BaseTest {
     }
 
     @Test
-    public void mergeTopBarOptions() throws Exception {
+    public void mergeTopBarOptions() {
         Options options = new Options();
         uut.mergeChildOptions(options, child);
         assertTopBarOptions(0);
 
         TitleOptions titleOptions = new TitleOptions();
         titleOptions.text = new Text("abc");
-        titleOptions.component = new Text("someComponent");
+        titleOptions.component.name = new Text("someComponent");
+        titleOptions.component.componentId = new Text("compId");
         titleOptions.color = new Color(0);
         titleOptions.fontSize = new Fraction(1.0f);
         titleOptions.fontFamily = Typeface.DEFAULT_BOLD;
         options.topBarOptions.title = titleOptions;
         SubtitleOptions subtitleOptions = new SubtitleOptions();
         subtitleOptions.text = new Text("Sub");
+        subtitleOptions.color = new Color(1);
         options.topBarOptions.subtitle = subtitleOptions;
         options.topBarOptions.background.color = new Color(0);
         options.topBarOptions.testId = new Text("test123");
@@ -107,7 +110,7 @@ public class OptionsMergingTest extends BaseTest {
     }
 
     @Test
-    public void mergeTopTabsOptions() throws Exception {
+    public void mergeTopTabsOptions() {
         Options options = new Options();
         uut.mergeChildOptions(options, child);
         verify(topBar, times(0)).applyTopTabsColors(any(), any());
@@ -125,7 +128,7 @@ public class OptionsMergingTest extends BaseTest {
     }
 
     @Test
-    public void mergeTopTabOptions() throws Exception {
+    public void mergeTopTabOptions() {
         Options options = new Options();
         uut.mergeChildOptions(options, child);
 
@@ -138,16 +141,16 @@ public class OptionsMergingTest extends BaseTest {
         verify(topBar, times(1)).setTopTabFontFamily(1, Typeface.DEFAULT_BOLD);
     }
 
-
     private void assertTopBarOptions(int t) {
         verify(topBar, times(t)).setTitle(any());
         verify(topBar, times(t)).setSubtitle(any());
-        verify(topBar, times(t)).setTitleComponent(any(), any());
+        verify(topBar, times(t)).setTitleComponent(any());
         verify(topBar, times(t)).setBackgroundColor(any());
-        verify(topBar, times(t)).setTitleTextColor(any());
-        verify(topBar, times(t)).setTitleFontSize(any());
-        verify(topBar, times(t)).setTestId(any());
+        verify(topBar, times(t)).setTitleTextColor(anyInt());
+        verify(topBar, times(t)).setTitleFontSize(anyFloat());
         verify(topBar, times(t)).setTitleTypeface(any());
+        verify(topBar, times(t)).setSubtitleColor(anyInt());
+        verify(topBar, times(t)).setTestId(any());
         verify(topBar, times(t)).hide();
         verify(child, times(t)).drawBelowTopBar(topBar);
         verify(child, times(0)).drawBehindTopBar();

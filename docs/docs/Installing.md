@@ -21,9 +21,27 @@
 	 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions { ... }
 
 	```
-  
-  Its contents must be replaced with the contents of this [reference](https://github.com/wix/react-native-navigation/blob/v2/playground/ios/playground/AppDelegate.m#L16).
-  
+
+	Its content should look like this:
+	```objectivec
+	#import "AppDelegate.h"
+
+	#import <React/RCTBundleURLProvider.h>
+	#import <React/RCTRootView.h>
+	#import <ReactNativeNavigation/ReactNativeNavigation.h>
+
+	@implementation AppDelegate
+
+	- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+	{
+		NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+		[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
+		
+		return YES;
+	}
+
+	@end
+	```
 
 ## Android
 
