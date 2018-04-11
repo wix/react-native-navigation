@@ -25,6 +25,7 @@
 @property (nonatomic, strong) NSNumber* backButtonHidden;
 @property (nonatomic, strong) NSString* backButtonTitle;
 @property (nonatomic, strong) NSNumber* hideBackButtonTitle;
+@property (nonatomic, strong) NSString* barStyle;
 
 @property (nonatomic, strong) NSString* componentName;
 
