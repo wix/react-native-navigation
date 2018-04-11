@@ -78,8 +78,8 @@ public class Navigator extends ParentController implements ModalListener {
         View view = viewController.getView();
 
         AnimationsOptions animationsOptions = viewController.options.animationsOptions;
+        getView().addView(view);
         if (animationsOptions.startApp.hasValue()) {
-            getView().addView(view);
             new NavigationAnimator(viewController.getActivity(), animationsOptions)
                     .animateStartApp(view, new AnimatorListenerAdapter() {
                         @Override
@@ -88,7 +88,6 @@ public class Navigator extends ParentController implements ModalListener {
                         }
                     });
         } else {
-            getView().addView(view);
             promise.resolve(viewController.getId());
         }
     }
