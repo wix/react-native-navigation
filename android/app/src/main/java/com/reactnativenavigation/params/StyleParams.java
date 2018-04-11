@@ -145,6 +145,7 @@ public class StyleParams {
     public int bottomTabsInitialIndex;
     public boolean bottomTabsHidden;
     public boolean bottomTabsHiddenOnScroll;
+    public boolean bottomTabsHideShadow;
     public Color bottomTabsColor;
     public Color selectedBottomTabsButtonColor;
     public Color bottomTabsButtonColor;

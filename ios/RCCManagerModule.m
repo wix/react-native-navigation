@@ -380,7 +380,14 @@ RCT_EXPORT_METHOD(dismissController:(NSString*)animationType resolver:(RCTPromis
         [[RCCManager sharedIntance] unregisterController:vc];
         
         [vc dismissViewControllerAnimated:![animationType isEqualToString:@"none"]
-                               completion:^(){ resolve(nil); }];
+                               completion:^(){ 
+                                   // This fixes weird ios tabBar layout bug after presenting a modal on top of UITabBarController
+                                   UIViewController* rootVC = [UIApplication sharedApplication].delegate.window.rootViewController;
+                                   if ([rootVC isKindOfClass:[UITabBarController class]]) {
+                                       [rootVC.view setNeedsLayout];
+                                   }
+                                   resolve(nil);
+                                    }];
     } else {
         resolve(nil);
     }
