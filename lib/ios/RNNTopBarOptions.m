@@ -171,10 +171,6 @@ extern const NSInteger BLUR_TOPBAR_TAG;
     if (self.barStyle) {
         if ([self.barStyle isEqualToString:@"black"]) {
             viewController.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-        } else if ([self.barStyle isEqualToString:@"blackOpaque"]) {
-            viewController.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-        } else if ([self.barStyle isEqualToString:@"blackTranslucent"]) {
-            viewController.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
         } else {
             viewController.navigationController.navigationBar.barStyle = UIBarMetricsDefault;
         }
