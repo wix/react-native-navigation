@@ -16,7 +16,7 @@ describe('screen stack', () => {
     await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
-  it('push and pop screen with out animation', async () => {
+  it(':android: push and pop screen with out animation', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementById(testIDs.OPTIONS_SCREEN_HEADER)).toBeVisible();
     Android.pressBack();

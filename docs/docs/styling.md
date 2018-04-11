@@ -70,7 +70,9 @@ Navigation.setOptions(this.props.componentId, {
     leftButtons: [{
       id: 'buttonOne',
       icon: require('icon.png'),
-      component: 'example.CustomButtonComponent',
+      component: {
+        name: 'example.CustomButtonComponent'
+      },
       title: 'Button one',
       enabled: true,
       disableIconTint: false,
@@ -93,14 +95,18 @@ Navigation.setOptions(this.props.componentId, {
     backButtonHidden: false,
     backButtonTitle: 'Back',
     hideBackButtonTitle: false,
-    componentName: 'example.CustomTopBar',
+    component: {
+      name: 'example.CustomTopBar'
+    },
     title: {
       text: 'Title',
       fontSize: 14,
       color: 'red',
       fontFamily: 'Helvetica',
-      component: 'example.CustomTopBarTitle',
-      componentAlignment: 'center',
+      component: {
+        name: 'example.CustomTopBarTitle',
+        alignment: 'center'
+      }
     },
     subtitle: {
       text: 'Title',
@@ -111,7 +117,9 @@ Navigation.setOptions(this.props.componentId, {
     },
     background: {
       color: '#00ff00',
-      component: 'example.CustomTopBarBackground'
+      component: {
+        name: 'example.CustomTopBarBackground'
+      }
     }
   },
   bottomTabs: {
