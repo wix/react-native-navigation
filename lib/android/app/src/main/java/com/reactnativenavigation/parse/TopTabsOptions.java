@@ -15,7 +15,7 @@ import com.reactnativenavigation.parse.parsers.NumberParser;
 
 import org.json.JSONObject;
 
-public class TopTabsOptions implements DEFAULT_VALUES {
+public class TopTabsOptions {
 
     @NonNull public Color selectedTabColor = new NullColor();
     @NonNull public Color unselectedTabColor = new NullColor();

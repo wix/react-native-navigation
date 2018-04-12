@@ -43,6 +43,14 @@
 	return self;
 }
 
+- (void)animate {
+	[UIView animateWithDuration:self.options.duration delay:self.options.startDelay usingSpringWithDamping:self.options.springDamping initialSpringVelocity:self.options.springVelocity options:UIViewAnimationOptionCurveEaseOut  animations:^{
+		[self setAnimatedViewFinalProperties];
+	} completion:^(BOOL finished) {
+		
+	}];
+}
+
 - (void)setAnimatedViewFinalProperties {
 	CGFloat alpha = _isBackButton ? self.options.startAlpha : self.options.endAlpha;
 	self.animatedView.alpha = alpha;

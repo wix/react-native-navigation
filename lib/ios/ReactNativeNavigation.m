@@ -1,7 +1,5 @@
 #import "ReactNativeNavigation.h"
 
-#import <UIKit/UIKit.h>
-#import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 
 #import "RNNBridgeManager.h"
@@ -20,6 +18,15 @@
 +(void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions {
 	[[ReactNativeNavigation sharedInstance] bootstrap:jsCodeLocation launchOptions:launchOptions];
 }
+
++ (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
+	[[ReactNativeNavigation sharedInstance].bridgeManager registerExternalComponent:name callback:callback];
+}
+
++ (RCTBridge *)getBridge {
+	return [[ReactNativeNavigation sharedInstance].bridgeManager bridge];
+}
+
 
 # pragma mark - instance
 

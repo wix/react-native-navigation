@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.ComponentOptionsPresenter;
+import com.reactnativenavigation.views.topbar.TopBar;
 
 import static android.widget.RelativeLayout.BELOW;
 

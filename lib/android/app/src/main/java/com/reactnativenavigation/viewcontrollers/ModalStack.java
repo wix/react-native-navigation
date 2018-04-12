@@ -3,8 +3,9 @@ package com.reactnativenavigation.viewcontrollers;
 import android.support.annotation.Nullable;
 
 import com.facebook.react.bridge.Promise;
-import com.reactnativenavigation.utils.NoOpPromise;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.viewcontrollers.Navigator.CommandListener;
 import com.reactnativenavigation.viewcontrollers.modal.Modal;
 import com.reactnativenavigation.viewcontrollers.modal.ModalCreator;
 import com.reactnativenavigation.viewcontrollers.modal.ModalListener;
@@ -14,7 +15,7 @@ import java.util.List;
 
 class ModalStack implements ModalListener {
 
-	private List<Modal> modals = new ArrayList<>();
+    private List<Modal> modals = new ArrayList<>();
     private ModalCreator creator;
     private ModalListener modalListener;
 
@@ -26,25 +27,24 @@ class ModalStack implements ModalListener {
     void showModal(final ViewController viewController, Promise promise) {
         Modal modal = creator.create(viewController, this);
         modals.add(modal);
-		modal.show();
+        modal.show();
         promise.resolve(viewController.getId());
-	}
+    }
 
-	void dismissModal(final String componentId, Promise promise) {
-		Modal modal = findModalByComponentId(componentId);
-		if (modal != null) {
-			modal.dismiss(promise);
-		} else {
-			Navigator.rejectPromise(promise);
-		}
-	}
+    void dismissModal(final String componentId, CommandListener listener) {
+        applyOnModal(componentId, (modal) -> modal.dismiss(listener), () -> listener.onError("Nothing to dismiss"));
+    }
 
-	void dismissAll(Promise promise) {
-		for (Modal modal : modals) {
-			modal.dismiss(size() == 1 ? promise : new NoOpPromise());
-		}
-		modals.clear();
-	}
+    void dismissAll() {
+        dismissAll(new CommandListenerAdapter());
+    }
+
+    void dismissAll(CommandListener listener) {
+        for (Modal modal : modals) {
+            modal.dismiss(size() == 1 ? listener : new CommandListenerAdapter());
+        }
+        modals.clear();
+    }
 
     boolean isEmpty() {
         return modals.isEmpty();
@@ -54,17 +54,17 @@ class ModalStack implements ModalListener {
         return modals.size();
     }
 
-	@Nullable
+    @Nullable
     Modal findModalByComponentId(String componentId) {
-		for (Modal modal : modals) {
-			if (modal.containsDeepComponentId(componentId)) {
-				return modal;
-			}
-		}
-		return null;
-	}
+        for (Modal modal : modals) {
+            if (modal.containsDeepComponentId(componentId)) {
+                return modal;
+            }
+        }
+        return null;
+    }
 
-	@Nullable
+    @Nullable
     ViewController findControllerById(String id) {
         Modal modal = findModalByComponentId(id);
         return modal != null ? modal.viewController.findControllerById(id) : null;
@@ -74,7 +74,7 @@ class ModalStack implements ModalListener {
     public void onModalDismiss(Modal modal) {
         if (peek() == modal) {
             modals.remove(modal);
-            performOnModal(peek(), peek -> peek.viewController.onViewAppeared());
+            applyOnModal(peek(), peek -> peek.viewController.onViewAppeared(), null);
         } else {
             modals.remove(modal);
         }
@@ -90,11 +90,24 @@ class ModalStack implements ModalListener {
         return isEmpty() ? null : modals.get(modals.size() - 1);
     }
 
-    private void performOnModal(@Nullable Modal modal, Task<Modal> task) {
-        if (modal != null) task.run(modal);
-    }
-
     public boolean handleBack() {
         return !modals.isEmpty() && peek().handleBack();
+    }
+
+    private void applyOnModal(String componentId, Task<Modal> accept, Runnable reject) {
+        Modal modal = findModalByComponentId(componentId);
+        if (modal != null) {
+            if (accept != null) accept.run(modal);
+        } else {
+            if (reject != null) reject.run();
+        }
+    }
+
+    private void applyOnModal(Modal modal, Task<Modal> accept, Runnable reject) {
+        if (modal != null) {
+            if (accept != null) accept.run(modal);
+        } else {
+            if (reject != null) reject.run();
+        }
     }
 }

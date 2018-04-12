@@ -1,5 +1,6 @@
 
 #import "RNNNavigationController.h"
+#import "RNNModalAnimation.h"
 
 @implementation RNNNavigationController
 
@@ -11,9 +12,8 @@
 	return NO;
 }
 
-- (BOOL)isAnimated {
-	UIViewController<RNNRootViewProtocol>* rootVC = (UIViewController<RNNRootViewProtocol>*) self.topViewController;
-	return rootVC.isAnimated;
+- (BOOL)isCustomViewController {
+	return [((UIViewController<RNNRootViewProtocol>*)self.topViewController) isCustomViewController];
 }
 
 - (void)mergeOptions:(NSDictionary *)options {
@@ -22,6 +22,18 @@
 
 - (NSString *)componentId {
 	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController).componentId;
+}
+
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.showModal isDismiss:NO];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.dismissModal isDismiss:YES];
+}
+
+- (RNNNavigationOptions *)options {
+	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController).options;
 }
 
 @end

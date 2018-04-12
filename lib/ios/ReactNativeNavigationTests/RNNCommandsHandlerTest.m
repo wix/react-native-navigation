@@ -63,7 +63,7 @@
 
 -(void)testDynamicStylesMergeWithStaticStyles {
 	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] init];
-	[initialOptions.topBar setTitle:@"the title"];
+	initialOptions.topBar.title.text = @"the title";
 	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithName:@"name"
 																withOptions:initialOptions
 															withComponentId:@"componentId"

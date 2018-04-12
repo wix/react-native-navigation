@@ -2,4 +2,6 @@
 
 @interface RNNCustomViewController : UIViewController
 
+- (instancetype)initWithProps:(NSDictionary*)props;
+
 @end

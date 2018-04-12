@@ -20,6 +20,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 -(instancetype)initWithDict:(NSDictionary *)options {
 	self = [super init];
 	self.statusBarHidden = [options objectForKey:@"statusBarHidden"];
+	self.statusBarBlur = [options objectForKey:@"statusBarBlur"];
+	self.statusBarStyle = [options objectForKey:@"statusBarStyle"];
 	self.screenBackgroundColor = [options objectForKey:@"screenBackgroundColor"];
 	self.backButtonTransition = [options objectForKey:@"backButtonTransition"];
 	self.orientation = [options objectForKey:@"orientation"];
@@ -31,9 +33,9 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	self.rootBackgroundImage = [RCTConvert UIImage:[options objectForKey:@"rootBackgroundImage"]];
 	self.bottomTab = [[RNNBottomTabOptions alloc] initWithDict:[options objectForKey:@"bottomTab"]];
 	self.overlay = [[RNNOverlayOptions alloc] initWithDict:[options objectForKey:@"overlay"]];
-	self.animated = [options objectForKey:@"animated"];
 	self.customTransition = [[RNNAnimationOptions alloc] initWithDict:[options objectForKey:@"customTransition"]];
-	
+	self.animations = [[RNNTransitionsOptions alloc] initWithDict:[options objectForKey:@"animations"]];
+
 	return self;
 }
 
@@ -50,22 +52,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	}
 }
 
--(void)mergeIfEmptyWith:(NSDictionary *)otherOptions {
-	for (id key in otherOptions) {
-		if ([self hasProperty:key]) {
-			if ([[self valueForKey:key] isKindOfClass:[RNNOptions class]]) {
-				RNNOptions* options = [self valueForKey:key];
-				[options mergeIfEmptyWith:[otherOptions objectForKey:key]];
-			} else if (![self valueForKey:key]) {
-				[self setValue:[otherOptions objectForKey:key] forKey:key];
-			}
-		}
-	}
-}
-
--(void)applyOn:(UIViewController*)viewController {
-	[_defaultOptions applyOn:viewController];
-	
+-(void)applyOn:(UIViewController<RNNRootViewProtocol> *)viewController {
 	[self.topBar applyOn:viewController];
 	[self.bottomTabs applyOn:viewController];
 	[self.topTab applyOn:viewController];
@@ -73,6 +60,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	[self.sideMenu applyOn:viewController];
 	[self.overlay applyOn:viewController];
 	[self applyOtherOptionsOn:viewController];
+	
+	[viewController optionsUpdated];
 }
 
 - (void)applyOtherOptionsOn:(UIViewController*)viewController {

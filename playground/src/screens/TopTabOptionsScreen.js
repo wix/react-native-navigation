@@ -8,9 +8,11 @@ class TopTabOptionsScreen extends PureComponent {
   static get options() {
     return {
       topBar: {
-        textColor: 'black',
-        textFontSize: 16,
-        textFontFamily: 'HelveticaNeue-Italic'
+        title: {
+          color: 'black',
+          fontSize: 16,
+          fontFamily: 'HelveticaNeue-Italic'
+        }
       }
     };
   }
@@ -33,12 +35,14 @@ class TopTabOptionsScreen extends PureComponent {
   onClickDynamicOptions() {
     Navigation.setOptions(this.props.componentId, {
       topBar: {
-        title: 'Dynamic Title',
-        textColor: '#00FFFF',
+        title: {
+          text: 'Dynamic Title',
+          color: '#00FFFF',
+          fontSize: 16,
+          fontFamily: 'HelveticaNeue-CondensedBold'
+        },
         largeTitle: false,
         buttonColor: 'red',
-        textFontSize: 20,
-        textFontFamily: 'HelveticaNeue-CondensedBold'
       }
     });
   }

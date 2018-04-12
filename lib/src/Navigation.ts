@@ -6,10 +6,11 @@ import { ComponentRegistry } from './components/ComponentRegistry';
 import { Commands } from './commands/Commands';
 import { LayoutTreeParser } from './commands/LayoutTreeParser';
 import { LayoutTreeCrawler } from './commands/LayoutTreeCrawler';
-import { PublicEventsRegistry } from './events/PublicEventsRegistry';
+import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
 import { Element } from './adapters/Element';
-import { PrivateEventsListener } from './events/PrivateEventsListener';
+import { ComponentEventsObserver } from './events/ComponentEventsObserver';
+import { CommandsObserver } from './events/CommandsObserver';
 
 export class Navigation {
   public readonly Element;
@@ -22,7 +23,9 @@ export class Navigation {
   private readonly layoutTreeCrawler;
   private readonly nativeCommandsSender;
   private readonly commands;
-  private readonly publicEventsRegistry;
+  private readonly eventsRegistry;
+  private readonly commandsObserver;
+  private readonly componentEventsObserver;
 
   constructor() {
     this.Element = Element;
@@ -34,10 +37,12 @@ export class Navigation {
     this.layoutTreeParser = new LayoutTreeParser();
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store);
     this.nativeCommandsSender = new NativeCommandsSender();
-    this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler);
-    this.publicEventsRegistry = new PublicEventsRegistry(this.nativeEventsReceiver);
+    this.commandsObserver = new CommandsObserver();
+    this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler, this.commandsObserver);
+    this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver);
+    this.componentEventsObserver = new ComponentEventsObserver(this.eventsRegistry, this.store);
 
-    new PrivateEventsListener(this.nativeEventsReceiver, this.store).listenAndHandlePrivateEvents();
+    this.componentEventsObserver.registerForAllComponents();
   }
 
   /**
@@ -119,6 +124,13 @@ export class Navigation {
   }
 
   /**
+   * Sets new root component to stack.
+   */
+  public setStackRoot(componentId: string, layout): Promise<any> {
+    return this.commands.setStackRoot(componentId, layout);
+  }
+
+  /**
    * Show overlay on top of the entire app
    */
   public showOverlay(layout): Promise<any> {
@@ -135,7 +147,7 @@ export class Navigation {
   /**
    * Obtain the events registry instance
    */
-  public events(): PublicEventsRegistry {
-    return this.publicEventsRegistry;
+  public events(): EventsRegistry {
+    return this.eventsRegistry;
   }
 }

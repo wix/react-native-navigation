@@ -57,12 +57,13 @@ public abstract class ParentController<T extends ViewGroup> extends ViewControll
     }
 
     @CallSuper
-    public void applyOptions(Options options, Component childComponent) {
-        mergeChildOptions(options);
+    public void applyChildOptions(Options options, Component child) {
+        this.options = this.options.mergeWith(options);
     }
 
-    private void mergeChildOptions(Options options) {
-        this.options = this.options.mergeWith(options);
+    @CallSuper
+    public void mergeChildOptions(Options options, Component child) {
+
     }
 
 	@Override

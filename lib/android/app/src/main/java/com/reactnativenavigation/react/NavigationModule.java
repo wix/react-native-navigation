@@ -65,23 +65,32 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
-            navigator().push(onComponentId, viewController, promise);
+            navigator().push(onComponentId, viewController, new CommandListenerAdapter(promise));
         });
 	}
 
+    @ReactMethod
+    public void setStackRoot(final String onComponentId, final ReadableMap rawLayoutTree, final Promise promise) {
+        final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
+        handle(() -> {
+            final ViewController viewController = newLayoutFactory().create(layoutTree);
+            navigator().setStackRoot(onComponentId, viewController, new CommandListenerAdapter(promise));
+        });
+    }
+
 	@ReactMethod
 	public void pop(final String onComponentId, final ReadableMap options, final Promise promise) {
-		handle(() -> navigator().popSpecific(onComponentId, promise));
+		handle(() -> navigator().popSpecific(onComponentId, new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
 	public void popTo(final String componentId, final Promise promise) {
-		handle(() -> navigator().popTo(componentId, promise));
+		handle(() -> navigator().popTo(componentId, new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
 	public void popToRoot(final String componentId, final Promise promise) {
-		handle(() -> navigator().popToRoot(componentId, promise));
+		handle(() -> navigator().popToRoot(componentId, new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
@@ -95,12 +104,12 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void dismissModal(final String componentId, final Promise promise) {
-		handle(() -> navigator().dismissModal(componentId, promise));
+		handle(() -> navigator().dismissModal(componentId, new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
 	public void dismissAllModals(final Promise promise) {
-		handle(() -> navigator().dismissAllModals(promise));
+		handle(() -> navigator().dismissAllModals(new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
@@ -141,5 +150,23 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     private NavigationActivity activity() {
         return (NavigationActivity) getCurrentActivity();
+    }
+
+    private class CommandListenerAdapter implements Navigator.CommandListener {
+        private Promise promise;
+
+        CommandListenerAdapter(Promise promise) {
+            this.promise = promise;
+        }
+
+        @Override
+        public void onSuccess(String childId) {
+            promise.resolve(childId);
+        }
+
+        @Override
+        public void onError(String message) {
+            promise.reject(new Throwable(message));
+        }
     }
 }

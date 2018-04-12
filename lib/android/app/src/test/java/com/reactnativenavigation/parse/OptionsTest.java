@@ -1,19 +1,24 @@
 package com.reactnativenavigation.parse;
 
-import android.graphics.*;
-import android.support.annotation.*;
+import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 
-import com.reactnativenavigation.*;
-import com.reactnativenavigation.mocks.*;
-import com.reactnativenavigation.parse.params.*;
+import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.TypefaceLoaderMock;
+import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
-import com.reactnativenavigation.utils.*;
+import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.utils.TypefaceLoader;
 
-import org.json.*;
-import org.junit.*;
-import org.mockito.*;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.mockito.stubbing.Answer;
 
-import static org.assertj.core.api.Java6Assertions.*;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 public class OptionsTest extends BaseTest {
 
@@ -30,6 +35,12 @@ public class OptionsTest extends BaseTest {
     private static final int TOP_BAR_TEXT_COLOR = 0xff123456;
     private static final int TOP_BAR_FONT_SIZE = 18;
     private static final String TOP_BAR_FONT_FAMILY = "HelveticaNeue-CondensedBold";
+    private static final int SUBTITLE_FONT_SIZE = 14;
+    private static final int SUBTITLE_TEXT_COLOR = 0xff123457;
+    private static final int SCREEN_BACKGROUND_COLOR = 0xff123458;
+    private static final String SUBTITLE_FONT_FAMILY = "HelveticaNeue-Condensed";
+    private static final Typeface SUBTITLE_TYPEFACE = Typeface.create("HelveticaNeue-Condensed", Typeface.NORMAL);
+    private static final String SUBTITLE_ALIGNMENT = "center";
     private static final Typeface TOP_BAR_TYPEFACE = Typeface.create("HelveticaNeue-CondensedBold", Typeface.BOLD);
     private static final Bool TOP_BAR_VISIBLE = new Bool(true);
     private static final Bool TOP_BAR_DRAW_BEHIND = new Bool(true);
@@ -44,11 +55,13 @@ public class OptionsTest extends BaseTest {
     @Override
     public void beforeEach() {
         mockLoader = Mockito.mock(TypefaceLoaderMock.class);
+        when(mockLoader.getTypeFace("HelveticaNeue-Condensed")).then((Answer<Typeface>) invocation -> SUBTITLE_TYPEFACE);
+        when(mockLoader.getTypeFace("HelveticaNeue-CondensedBold")).then((Answer<Typeface>) invocation -> TOP_BAR_TYPEFACE);
         Mockito.doReturn(TOP_BAR_TYPEFACE).when(mockLoader).getTypeFace(TOP_BAR_FONT_FAMILY);
     }
 
     @Test
-    public void parsesNullAsDefaultEmptyOptions() throws Exception {
+    public void parsesNullAsDefaultEmptyOptions() {
         assertThat(Options.parse(mockLoader, null)).isNotNull();
     }
 
@@ -57,20 +70,25 @@ public class OptionsTest extends BaseTest {
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("fab", createFab())
-                .put("bottomTabs", createBottomTabs());
+                .put("bottomTabs", createBottomTabs())
+                .put("screenBackgroundColor",SCREEN_BACKGROUND_COLOR);
         Options result = Options.parse(mockLoader, json);
         assertResult(result);
     }
 
     private void assertResult(Options result) {
-        assertThat(result.topBarOptions.title.get()).isEqualTo(TITLE);
-        assertThat(result.topBarOptions.backgroundColor.get()).isEqualTo(TOP_BAR_BACKGROUND_COLOR);
-        assertThat(result.topBarOptions.textColor.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
-        assertThat(result.topBarOptions.textFontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
-        assertThat(result.topBarOptions.textFontFamily).isEqualTo(TOP_BAR_TYPEFACE);
-        assertThat(result.topBarOptions.visible.get()).isEqualTo(TOP_BAR_VISIBLE.get());
-        assertThat(result.topBarOptions.drawBehind.get()).isEqualTo(TOP_BAR_DRAW_BEHIND.get());
-        assertThat(result.topBarOptions.hideOnScroll.get()).isEqualTo(TOP_BAR_HIDE_ON_SCROLL.get());
+        assertThat(result.topBar.title.text.get()).isEqualTo(TITLE);
+        assertThat(result.topBar.background.color.get()).isEqualTo(TOP_BAR_BACKGROUND_COLOR);
+        assertThat(result.topBar.title.color.get()).isEqualTo(TOP_BAR_TEXT_COLOR);
+        assertThat(result.topBar.title.fontSize.get()).isEqualTo(TOP_BAR_FONT_SIZE);
+        assertThat(result.topBar.title.fontFamily).isEqualTo(TOP_BAR_TYPEFACE);
+        assertThat(result.topBar.subtitle.color.get()).isEqualTo(SUBTITLE_TEXT_COLOR);
+        assertThat(result.topBar.subtitle.fontSize.get()).isEqualTo(SUBTITLE_FONT_SIZE);
+        assertThat(result.topBar.subtitle.alignment).isEqualTo(Alignment.fromString(SUBTITLE_ALIGNMENT));
+        assertThat(result.topBar.subtitle.fontFamily).isEqualTo(SUBTITLE_TYPEFACE);
+        assertThat(result.topBar.visible.get()).isEqualTo(TOP_BAR_VISIBLE.get());
+        assertThat(result.topBar.drawBehind.get()).isEqualTo(TOP_BAR_DRAW_BEHIND.get());
+        assertThat(result.topBar.hideOnScroll.get()).isEqualTo(TOP_BAR_HIDE_ON_SCROLL.get());
         assertThat(result.bottomTabsOptions.animate.get()).isEqualTo(BOTTOM_TABS_ANIMATE.get());
         assertThat(result.bottomTabsOptions.visible.get()).isEqualTo(BOTTOM_TABS_VISIBLE.get());
         assertThat(result.bottomTabsOptions.currentTabId.get()).isEqualTo(BOTTOM_TABS_CURRENT_TAB_ID);
@@ -83,6 +101,7 @@ public class OptionsTest extends BaseTest {
         assertThat(result.fabOptions.hideOnScroll.get()).isEqualTo(FAB_HIDE_ON_SCROLL);
         assertThat(result.fabOptions.alignVertically.get()).isEqualTo(FAB_ALIGN_VERTICALLY);
         assertThat(result.fabOptions.alignHorizontally.get()).isEqualTo(FAB_ALIGN_HORIZONTALLY);
+        assertThat(result.screenBackgroundColor.get()).isEqualTo(SCREEN_BACKGROUND_COLOR);
     }
 
     @NonNull
@@ -97,14 +116,34 @@ public class OptionsTest extends BaseTest {
     @NonNull
     private JSONObject createTopBar(boolean visible) throws JSONException {
         return new JSONObject()
-                .put("title", "the title")
-                .put("backgroundColor", TOP_BAR_BACKGROUND_COLOR)
-                .put("textColor", TOP_BAR_TEXT_COLOR)
-                .put("textFontSize", TOP_BAR_FONT_SIZE)
-                .put("textFontFamily", TOP_BAR_FONT_FAMILY)
+                .put("title", createTitle())
+                .put("subtitle", createSubtitle())
+                .put("background", createBackground())
                 .put("visible", visible)
                 .put("drawBehind", TOP_BAR_DRAW_BEHIND.get())
                 .put("hideOnScroll", TOP_BAR_HIDE_ON_SCROLL.get());
+    }
+
+    private JSONObject createBackground() throws JSONException {
+        return new JSONObject()
+                .put("color", TOP_BAR_BACKGROUND_COLOR);
+    }
+
+    private JSONObject createTitle() throws JSONException {
+        return new JSONObject()
+                .put("text", "the title")
+                .put("color", TOP_BAR_TEXT_COLOR)
+                .put("fontSize", TOP_BAR_FONT_SIZE)
+                .put("fontFamily", TOP_BAR_FONT_FAMILY);
+    }
+
+    private JSONObject createSubtitle() throws JSONException {
+        return new JSONObject()
+                .put("text", "the subtitle")
+                .put("color", SUBTITLE_TEXT_COLOR)
+                .put("fontSize", SUBTITLE_FONT_SIZE)
+                .put("fontFamily", SUBTITLE_FONT_FAMILY)
+                .put("alignment", SUBTITLE_ALIGNMENT);
     }
 
     @NonNull
@@ -136,11 +175,9 @@ public class OptionsTest extends BaseTest {
     @NonNull
     private JSONObject createOtherTopBar() throws JSONException {
         return new JSONObject()
-                .put("title", "the title")
-                .put("backgroundColor", TOP_BAR_BACKGROUND_COLOR)
-                .put("textColor", TOP_BAR_TEXT_COLOR)
-                .put("textFontSize", TOP_BAR_FONT_SIZE)
-                .put("textFontFamily", TOP_BAR_FONT_FAMILY)
+                .put("title", createTitle())
+                .put("subtitle", createSubtitle())
+                .put("background", createBackground())
                 .put("visible", TOP_BAR_VISIBLE);
     }
 
@@ -159,17 +196,17 @@ public class OptionsTest extends BaseTest {
         JSONObject json1 = new JSONObject();
         json1.put("topBar", createTopBar(true));
         Options options1 = Options.parse(mockLoader, json1);
-        options1.topBarOptions.title = new Text("some title");
+        options1.topBar.title.text = new Text("some title");
 
         JSONObject json2 = new JSONObject();
         json2.put("topBar", createTopBar(false));
         Options options2 = Options.parse(mockLoader, json2);
-        options2.topBarOptions.title = new NullText();
+        options2.topBar.title.text = new NullText();
 
         Options merged = options1.mergeWith(options2);
-        assertThat(options1.topBarOptions.visible.get()).isTrue();
-        assertThat(merged.topBarOptions.visible.get()).isFalse();
-        assertThat(merged.topBarOptions.title.get()).isEqualTo("some title");
+        assertThat(options1.topBar.visible.get()).isTrue();
+        assertThat(merged.topBar.visible.get()).isFalse();
+        assertThat(merged.topBar.title.text.get()).isEqualTo("some title");
     }
 
     @Test
@@ -177,7 +214,8 @@ public class OptionsTest extends BaseTest {
         JSONObject json = new JSONObject()
                 .put("topBar", createTopBar(TOP_BAR_VISIBLE.get()))
                 .put("fab", createFab())
-                .put("bottomTabs", createBottomTabs());
+                .put("bottomTabs", createBottomTabs())
+                .put("screenBackgroundColor",SCREEN_BACKGROUND_COLOR);
         Options defaultOptions = Options.parse(mockLoader, json);
         Options options = new Options();
 
@@ -189,7 +227,8 @@ public class OptionsTest extends BaseTest {
         JSONObject defaultJson = new JSONObject()
                 .put("topBar", createOtherTopBar())
                 .put("fab", createOtherFab())
-                .put("bottomTabs", createOtherBottomTabs());
+                .put("bottomTabs", createOtherBottomTabs())
+                .put("screenBackgroundColor",SCREEN_BACKGROUND_COLOR);
         Options defaultOptions = Options.parse(mockLoader, defaultJson);
 
         JSONObject json = new JSONObject()
@@ -201,28 +240,30 @@ public class OptionsTest extends BaseTest {
     }
 
     @Test
-    public void defaultEmptyOptions() throws Exception {
+    public void defaultEmptyOptions() {
         Options uut = new Options();
-        assertThat(uut.topBarOptions.title.get("")).isEmpty();
+        assertThat(uut.topBar.title.text.get("")).isEmpty();
+        assertThat(uut.screenBackgroundColor.hasValue()).isFalse();
+
     }
 
     @Test
-    public void topBar_defaultOptions() throws Exception {
+    public void topBar_defaultOptions() {
         Options uut = new Options();
-        assertThat(uut.topBarOptions.visible.isFalseOrUndefined()).isTrue();
-        assertThat(uut.topBarOptions.animate.isTrueOrUndefined()).isTrue();
+        assertThat(uut.topBar.visible.isFalseOrUndefined()).isTrue();
+        assertThat(uut.topBar.animate.isTrueOrUndefined()).isTrue();
     }
 
     @Test
-    public void clear_topBarOptions() throws Exception {
+    public void clear_topBarOptions() {
         Options uut = new Options();
-        uut.topBarOptions.title = new Text("some title");
+        uut.topBar.title.text = new Text("some title");
         uut.clearTopBarOptions();
-        assertThat(uut.topBarOptions.title.hasValue()).isFalse();
+        assertThat(uut.topBar.title.text.hasValue()).isFalse();
     }
 
     @Test
-    public void clear_bottomTabsOptions() throws Exception {
+    public void clear_bottomTabsOptions() {
         Options uut = new Options();
         uut.bottomTabsOptions.tabColor = new com.reactnativenavigation.parse.params.Color(android.graphics.Color.RED);
         uut.clearBottomTabsOptions();
@@ -230,7 +271,7 @@ public class OptionsTest extends BaseTest {
     }
 
     @Test
-    public void clear_topTabsOptions() throws Exception {
+    public void clear_topTabsOptions() {
         Options uut = new Options();
         uut.topTabsOptions.fontSize = new Number(666);
         uut.clearTopTabsOptions();
@@ -238,7 +279,7 @@ public class OptionsTest extends BaseTest {
     }
 
     @Test
-    public void clear_topTabOptions() throws Exception {
+    public void clear_topTabOptions() {
         Options uut = new Options();
         uut.topTabOptions.title = new Text("some title");
         uut.clearTopTabOptions();

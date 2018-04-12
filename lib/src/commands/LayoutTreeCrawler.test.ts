@@ -48,9 +48,9 @@ describe('LayoutTreeCrawler', () => {
       type: LayoutType.BottomTabs, children: [
         { type: LayoutType.Component, data: { name: 'the name', passProps: { myProp: 123 } } }]
     };
-    expect(store.getPropsForComponentId('Component+UNIQUE_ID')).toEqual({});
+    expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual({});
     uut.crawl(node);
-    expect(store.getPropsForComponentId('Component+UNIQUE_ID')).toEqual({ myProp: 123 });
+    expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual({ myProp: 123 });
   });
 
   it('Components: injects options from original component class static property', () => {

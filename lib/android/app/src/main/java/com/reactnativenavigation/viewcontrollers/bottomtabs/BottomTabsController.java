@@ -24,7 +24,6 @@ import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static android.widget.RelativeLayout.ABOVE;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 
 public class BottomTabsController extends ParentController implements AHBottomNavigation.OnTabSelectedListener, NavigationOptionsListener {
@@ -57,12 +56,22 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
     @Override
-    public void applyOptions(Options options, Component childComponent) {
-        super.applyOptions(options, childComponent);
-        int tabIndex = bottomTabFinder.findByComponent(childComponent);
+    public void applyChildOptions(Options options, Component child) {
+        super.applyChildOptions(options, child);
+        final int tabIndex = bottomTabFinder.findByComponent(child);
         if (tabIndex >= 0) new BottomTabsOptionsPresenter(bottomTabs, bottomTabFinder).present(this.options, tabIndex);
         applyOnParentController(parentController ->
-                ((ParentController) parentController).applyOptions(this.options.copy().clearBottomTabsOptions().clearBottomTabOptions(), childComponent)
+                ((ParentController) parentController).applyChildOptions(this.options.copy().clearBottomTabsOptions().clearBottomTabOptions(), child)
+        );
+    }
+
+    @Override
+    public void mergeChildOptions(Options options, Component child) {
+        super.mergeChildOptions(options, child);
+        final int tabIndex = bottomTabFinder.findByComponent(child);
+        new BottomTabsOptionsPresenter(bottomTabs, bottomTabFinder).present(options, tabIndex);
+        applyOnParentController(parentController ->
+                ((ParentController) parentController).mergeChildOptions(options.copy().clearBottomTabsOptions(), child)
         );
     }
 
@@ -118,9 +127,6 @@ public class BottomTabsController extends ParentController implements AHBottomNa
                 error.printStackTrace();
             }
         });
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
-        params.addRule(ABOVE, bottomTabs.getId());
 	}
 
     public int getSelectedIndex() {
@@ -142,7 +148,9 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     public void selectTabAtIndex(final int newIndex) {
         getView().removeView(getCurrentView());
         bottomTabs.setCurrentItem(newIndex, false);
-        getView().addView(getCurrentView());
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        params.bottomMargin = bottomTabs.getHeight();
+        getView().addView(getCurrentView(), params);
     }
 
     @NonNull

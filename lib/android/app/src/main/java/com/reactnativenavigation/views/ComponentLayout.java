@@ -11,16 +11,18 @@ import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.ComponentOptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.views.topbar.TopBar;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.widget.RelativeLayout.BELOW;
 
 @SuppressLint("ViewConstructor")
-public class ComponentLayout extends FrameLayout implements ReactComponent, TitleBarButton.OnClickListener {
+public class ComponentLayout extends FrameLayout implements ReactComponent, TopBarButtonController.OnClickListener {
 
     private IReactView reactView;
     private final OverlayTouchDelegate touchDelegate;
+    private final ComponentOptionsPresenter optionsPresenter;
 
     public ComponentLayout(Context context, IReactView reactView) {
 		super(context);
@@ -28,6 +30,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
         addView(reactView.asView(), MATCH_PARENT, MATCH_PARENT);
         setContentDescription("ComponentLayout");
         touchDelegate = new OverlayTouchDelegate(reactView);
+        optionsPresenter = new ComponentOptionsPresenter(this);
     }
 
     @Override
@@ -57,7 +60,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
 
     @Override
     public void applyOptions(Options options) {
-        new ComponentOptionsPresenter(this).present(options);
+        optionsPresenter.present(options);
         touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside.isTrue());
     }
 
@@ -80,7 +83,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
     public void drawBehindTopBar() {
         if (getParent() instanceof RelativeLayout) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-            layoutParams.removeRule(BELOW);
+            layoutParams.topMargin = 0;
             setLayoutParams(layoutParams);
         }
     }
@@ -89,7 +92,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
     public void drawBelowTopBar(TopBar topBar) {
         if (getParent() instanceof RelativeLayout) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-            layoutParams.addRule(BELOW, topBar.getId());
+            layoutParams.topMargin = topBar.getHeight();
             setLayoutParams(layoutParams);
         }
     }

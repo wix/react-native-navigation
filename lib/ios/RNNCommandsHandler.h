@@ -22,6 +22,8 @@
 
 -(void) popToRoot:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;
 
+-(void)setStackRoot:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
+
 -(void) showModal:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
 
 -(void) dismissModal:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;

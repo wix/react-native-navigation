@@ -12,7 +12,7 @@
 
 -(instancetype)initWithTransitionOptions:(RNNAnimationOptions *)transitionOptions {
 	self = [super init];
-	if (transitionOptions) {
+	if (transitionOptions.animations) {
 		[self setupTransition:transitionOptions];
 	} else {
 		return nil;
@@ -33,7 +33,7 @@
 -(NSArray*)prepareSharedElementTransitionWithComponentView:(UIView*)componentView {
 	NSMutableArray* transitions = [NSMutableArray new];
 	for (NSDictionary* transition in self.transitionOptions.animations) {
-		RNNTransitionStateHolder* transitionStateHolder = [[RNNTransitionStateHolder alloc] initWithTransition:transition];
+		RNNTransitionStateHolder* transitionStateHolder = [[RNNTransitionStateHolder alloc] initWithDict:transition];
 		RNNTransition* transition = [[RNNTransition alloc] initFromVC:self.fromVC toVC:self.toVC transitionOptions:transitionStateHolder isBackButton:self.backButton];
 
 		[componentView addSubview:transition.animatedView];
@@ -47,11 +47,7 @@
 
 -(void)animateTransitions:(NSArray*)transitions {
 	for (RNNTransition* transition in transitions ) {
-		[UIView animateWithDuration:transition.options.duration delay:transition.options.startDelay usingSpringWithDamping:transition.options.springDamping initialSpringVelocity:transition.options.springVelocity options:UIViewAnimationOptionCurveEaseOut  animations:^{
-			[transition setAnimatedViewFinalProperties];
-		} completion:^(BOOL finished) {
-
-		}];
+		[transition animate];
 	}
 }
 

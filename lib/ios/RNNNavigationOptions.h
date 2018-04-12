@@ -7,6 +7,7 @@
 #import "RNNTopTabsOptions.h"
 #import "RNNOverlayOptions.h"
 #import "RNNAnimationOptions.h"
+#import "RNNTransitionsOptions.h"
 
 extern const NSInteger BLUR_STATUS_TAG;
 extern const NSInteger BLUR_TOPBAR_TAG;
@@ -22,10 +23,9 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) RNNSideMenuOptions* sideMenu;
 @property (nonatomic, strong) RNNOverlayOptions* overlay;
 @property (nonatomic, strong) RNNAnimationOptions* customTransition;
+@property (nonatomic, strong) RNNTransitionsOptions* animations;
 
-@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
-@property (nonatomic, strong) NSNumber* animated;
 @property (nonatomic, strong) NSNumber* statusBarHidden;
 @property (nonatomic, strong) NSNumber* screenBackgroundColor;
 @property (nonatomic, strong) NSMutableDictionary* originalTopBarImages;
@@ -33,6 +33,7 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) id orientation;
 @property (nonatomic, strong) NSNumber* statusBarBlur;
 @property (nonatomic, strong) NSNumber* statusBarHideWithTopBar;
+@property (nonatomic, strong) NSString* statusBarStyle;
 @property (nonatomic, strong) NSNumber* popGesture;
 @property (nonatomic, strong) UIImage* backgroundImage;
 @property (nonatomic, strong) UIImage* rootBackgroundImage;

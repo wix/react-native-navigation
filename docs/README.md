@@ -1,5 +1,6 @@
+![npm](https://img.shields.io/npm/dw/react-native-navigation.svg)
 [![npm (tag)](https://img.shields.io/npm/v/react-native-navigation/alpha.svg)](https://github.com/wix/react-native-navigation/tree/v2#react-native-navigation-v2-wip)
-[![Build Status](https://travis-ci.org/wix/react-native-navigation.svg?branch=v2)](https://travis-ci.org/wix/react-native-navigation)
+[![Build Status](https://jenkins-oss.wixpress.com/job/react-native-navigation-master/badge/icon)](https://jenkins-oss.wixpress.com/job/react-native-navigation-master/)
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 [![StackExchange](https://img.shields.io/stackexchange/stackoverflow/t/react-native-navigation.svg)](https://stackoverflow.com/questions/tagged/react-native-navigation)
 
@@ -13,7 +14,7 @@ We are rebuilding react-native-navigation.
 - [v2 Roadmap](#v2-roadmap)
 - [v1 vs v2 feature comparison](#v1-vs-v2-feature-comparison)
 - [Documentation](https://wix.github.io/react-native-navigation/v2/)
-- [Contributing](/docs/WorkingLocally.md)
+- [Contributing](/docs/docs/WorkingLocally.md)
 
 ## Why Rebuild react-native-navigation?
 
@@ -53,19 +54,19 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 ### Top API
 
 |       Top API         | iOS  | Android |
-|--------------------|-----|----|
+|--------------------|:-----:|:----:|
 | setRoot   |   ✅    |   ✅  |
-| registerContainer |   ✅   |  ✅   |
-| container     |   ✅   |  ✅   |
+| registerComponent |   ✅   |  ✅   |
+| component     |   ✅   |  ✅   |
 | sideMenu             |    ✅  |    ✅ |
 | tabs            |    ✅  |    ✅ |
-| customViewController           |   [Contribute](/docs/WorkingLocally.md)  |   [Contribute](/docs/WorkingLocally.md) |
+| External Component       |   ✅  |   ✅ |
 | splitView           |   [Contribute](/docs/WorkingLocally.md)   |   [Contribute](/docs/WorkingLocally.md) |
 
 ### Screen API
 
 |       Screen API         | iOS  | Android |
-|--------------------|-----|----|
+|--------------------|:-----:|:----:|
 | push              |   ✅       |	✅		|
 | pop               |  ✅        |	✅	|
 | popToRoot              |   ✅         |✅	|
@@ -80,64 +81,64 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 
 ### Navigation Options
 
-|       topBar         | iOS  | Android | contributors|
-|--------------------|-----|----|-----|
+|       topBar         | iOS  | Android | Contributor(s) |
+|--------------------|:----:|:-----:|-----|
 | title         |        	✅    | 	✅| Wix|
 | textColor    | ✅     |     ✅        | Wix|
 | textFontSize       |    ✅      |     ✅        | Wix|
 | textFontFamily     |      ✅     |     ✅        | Wix |
 | backgroundColor    |  ✅       |     ✅         | Wix|
-| buttonColor         |    ✅      |     [Contribute](/docs/WorkingLocally.md)        | Wix|
+| buttonColor         |    ✅      |✅| Wix|
 | hidden             |   ✅      |     ✅        | Wix|
-| hideOnScroll         |  ✅    |     [Contribute](/docs/WorkingLocally.md)        | Wix|
+| hideOnScroll         |  ✅    |✅| Wix|
 | translucent         |   ✅     |     [Contribute](/docs/WorkingLocally.md)        | Wix|
-| transparent         |  ✅        |     [Contribute](/docs/WorkingLocally.md)        |
+| transparent         |  ✅        |     [Contribute](/docs/WorkingLocally.md)        | |
 | noBorder             |    ✅     |     [Contribute](/docs/WorkingLocally.md)        |  @gtchance|
-| drawUnder         |    ✅     |      [Contribute](/docs/WorkingLocally.md)       ||
+| drawUnder         |    ✅     |✅||
 | blur               |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | @gtchance|
-| custom          |     WIP @gran33     | [Contribute](/docs/WorkingLocally.md)|
-| subtitleColor            |   [Contribute](/docs/WorkingLocally.md)     |      [Contribute](/docs/WorkingLocally.md)      |
-| subtitleFontFamily      |    [Contribute](/docs/WorkingLocally.md)    |     [Contribute](/docs/WorkingLocally.md)       |
-| largeTitle (iOS 11)      |    ✅     |     /iOS Specific       |
+| custom component          |✅     |✅|
+| background component          |✅     |[Contribute](/docs/WorkingLocally.md)| |
+| subtitleColor            |   ✅      |[Contribute](/docs/WorkingLocally.md)| |
+| subtitleFontFamily      |    [Contribute](/docs/WorkingLocally.md)    |     [Contribute](/docs/WorkingLocally.md)| |
+| largeTitle (iOS 11)      |    ✅     |     /iOS Specific       | |
 
-|       tabBar         | iOS  | Android | contributors|
-|--------------------|-----|----|-----|
-| drawUnder          |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | |
+|       tabBar         | iOS  | Android | Contributor(s) |
+|--------------------|:----:|:-----:|-----|
+| drawUnder          |    ✅     |✅| |
 | hidden   |   ✅     |    ✅        | @gtchance |
-| tabBadge          |       ✅    | [Contribute](/docs/WorkingLocally.md)| Wix|
+| tabBadge          |       ✅    |✅| Wix|
 | currentTab by Index          |       ✅    | ✅ | Wix |
-| currentTab by cointainerId         |       [Contribute](/docs/WorkingLocally.md)    | ✅ | Wix |
+| currentTab by componentId         |✅| ✅ | Wix |
 
-|       buttons        | iOS  | Android | contributors|
-|--------------------|-----|----|-----|
-| id    |   ✅      |     @Johan-dutoit  |@Johan-dutoit|
-| testID   |     ✅   |   [Contribute](/docs/WorkingLocally.md)  | @Johan-dutoit|
-| color             |    ✅     |     @Johan-dutoit     | @Johan-dutoit|
-| icon          |   ✅     |    @Johan-dutoit     | @Johan-dutoit|
-| disableTint        |    ✅       |    @Johan-dutoit    | @Johan-dutoit|
-| fontSize        |    ✅       |    @Johan-dutoit    | @Johan-dutoit |
-| fontWeight        |    ✅       |    [Contribute](/docs/WorkingLocally.md)   |  [Contribute](/docs/WorkingLocally.md) |
+|       buttons        | iOS  | Android | Contributor(s) |
+|--------------------|:----:|:-----:|-----|
+| id    |   ✅      |✅|@Johan-dutoit|
+| testID   |     ✅   |✅| @Johan-dutoit|
+| color             |    ✅     |✅| @Johan-dutoit|
+| icon          |   ✅     |✅| @Johan-dutoit|
+| disableTint        |    ✅       |✅| @Johan-dutoit|
+| fontSize        |    ✅       |✅| @Johan-dutoit |
+| fontWeight        |    ✅       |    [Contribute](/docs/WorkingLocally.md)   | |
 
-|       statusBar        | iOS  | Android | contributors|
-|--------------------|-----|----|-----|
-| textColorScheme    |   in development      |      / iOS specific    |
-| textColorSchemeSingleScreen   |     in development    |     / iOS specific      |
-| blur             |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | @gtchance|
-| hideWithTopBar          |   ✅     |     [Contribute](/docs/WorkingLocally.md)       | @gtchance|
-| hidden         |    ✅       |     [Contribute](/docs/WorkingLocally.md)      | WIX |
+|       statusBar        | iOS  | Android | Contributor(s) |
+|--------------------|:----:|:-----:|-----|
+| textColorScheme    |✅|[Contribute](/docs/WorkingLocally.md) | |
+| textColorSchemeSingleScreen   |✅|     / iOS specific      | |
+| blur             |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | @gtchance |
+| hideWithTopBar          |   ✅     |     [Contribute](/docs/WorkingLocally.md)       | @gtchance |
+| hidden         |    ✅       |     [Contribute](/docs/WorkingLocally.md)      | Wix |
 
-|       other        | iOS  | Android | contributors|
-|--------------------|-----|----|-----|
-| screenBackgroundColor        |   ✅     |     [Contribute](/docs/WorkingLocally.md)       |  Wix|
-| orientation       |    ✅     |   [Contribute](/docs/WorkingLocally.md)          | Wix|
-| disabledBackGesture        |    ✅     |    / iOS specific     |
-| screenBackgroundImageName        |   ✅      |    [Contribute](/docs/WorkingLocally.md)        |
-| rootBackgroundImageName              |    ✅     |    [Contribute](/docs/WorkingLocally.md)       |
-| sideMenuVisible          |      ✅   | [Contribute](/docs/WorkingLocally.md) |
+|       other        | iOS  | Android | Contributor(s) |
+|--------------------|:----:|:-----:|-----|
+| screenBackgroundColor        |   ✅     | ✅ | |
+| orientation       |    ✅     |✅| Wix |
+| disabledBackGesture        |    ✅     |    / iOS specific     | |
+| screenBackgroundImageName        |   ✅      |    [Contribute](/docs/WorkingLocally.md)        | |
+| rootBackgroundImageName              |    ✅     |    [Contribute](/docs/WorkingLocally.md)       | |
+| sideMenuVisible          |      ✅   |✅| |
 
 
 ## v1 vs v2 Feature Comparison
-v2 currently supports most of react-native-navigation’s basic functionality but it is still behind v1.
 Here is the full comparison of features between v1 and v2 (will be updated regularly):
 ### Top Level API
 
@@ -150,7 +151,7 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 ### Screen API
 
 |  API              | v1     | v2  iOS      |	v2 Android |
-|---------------------|--------|------------|--------------|
+|---------------------|:--------:|:------------:|:--------------:|
 | push                |  ✅     |   ✅       |	✅		|
 | pop                 |  ✅     |  ✅        |	✅	|
 | showModal           |  ✅     |  ✅        |	✅|
@@ -160,12 +161,14 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 | dismissAllModals    |   ✅     |      ✅      |	✅|
 | showContextualMenu      |   ✅     |     / Android specific       |[Contribute](/docs/WorkingLocally.md) |
 | dismissContextualMenu      |   ✅     |   / Androic specific        |[Contribute](/docs/WorkingLocally.md)  |
-| showFab      |   ✅     |    / Android specific     |  [Contribute](/docs/WorkingLocally.md)  |
-| dismissFab      |   ✅     |    / Android specific       | [Contribute](/docs/WorkingLocally.md) |
+| showFab      |   ✅     |    / Android specific     |✅|
+| dismissFab      |   ✅     |    / Android specific       |✅|
 | showSnackBar     |   ✅     |     / Android specific    |   [Contribute](/docs/WorkingLocally.md) |
 | dismissSnackBar     |   ✅     |    / Android specific      |  [Contribute](/docs/WorkingLocally.md) |
-| showLightBox        |   ✅     |      [Contribute](/docs/WorkingLocally.md)      | [Contribute](/docs/WorkingLocally.md)  |
-| dismissLightBox     |   ✅     |       [Contribute](/docs/WorkingLocally.md)       | [Contribute](/docs/WorkingLocally.md) |
+| showLightBox        |   ✅     |:x:      |:x:  |
+| dismissLightBox     |   ✅     |:x:|:x: |
+| showOverlay|:x:|✅|✅|
+| dismissOverlay|:x:|✅|✅|
 | handleDeepLink      |   ✅     |       [Contribute](/docs/WorkingLocally.md)       | [Contribute](/docs/WorkingLocally.md) |
 | Screen Visibility   |   ✅     |       ✅     |✅|
 
@@ -173,41 +176,40 @@ Here is the full comparison of features between v1 and v2 (will be updated regul
 
 Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with properties beginning with 'topBar' to avoid confusion with the Android native bottom nav bar.
 
-|                       | v1  | v2 iOS | v2 Android | Contributors |
-|-----------------------|-----|--------|------------|------------|
+|                       | v1  | v2 iOS | v2 Android |
+|-----------------------|:--------:|:------------:|:----------|
 | topBarTextColor |   ✅    |    ✅     |     ✅        | Wix|
 | topBarTextFontSize    |   ✅    |    ✅      |     ✅        | Wix|
 | topBarTextFontFamily  |  ✅     |      ✅     |     ✅        | Wix |
 | topBarBackgroundColor |  ✅     |  ✅       |     ✅         | Wix|
-| topBarButtonColor     |  ✅     |    ✅      |     [Contribute](/docs/WorkingLocally.md)        | Wix|
+| topBarButtonColor     |  ✅     |    ✅      |✅| Wix|
 | topBarHidden          |   ✅    |   ✅      |     ✅        | Wix|
-| topBarHideOnScroll    |  ✅     |  ✅    |     [Contribute](/docs/WorkingLocally.md)        | Wix|
+| topBarHideOnScroll    |  ✅     |  ✅    |✅| Wix|
 | topBarTranslucent     |  ✅     |   ✅     |     [Contribute](/docs/WorkingLocally.md)        | Wix|
-| topBarTransparent     | ✅      |   WIP @bogobogo     |     [Contribute](/docs/WorkingLocally.md)        |
+| topBarTransparent     | ✅      |✅|     [Contribute](/docs/WorkingLocally.md)        |
 | topBarNoBorder        |  ✅     |    ✅     |     [Contribute](/docs/WorkingLocally.md)        |  @gtchance|
-| drawUnderTabBar       |  ✅     |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | |
-| drawUnderTopBar       |  ✅     |    ✅     |      [Contribute](/docs/WorkingLocally.md)       ||
+| drawUnderTabBar       |  ✅     |    ✅     |✅| |
+| drawUnderTopBar       |  ✅     |    ✅     |✅||
 | statusBarBlur         |  ✅     |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | @gtchance|
 | topBarBlur            | ✅      |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | @gtchance|
-| tabBarHidden  |   ✅  |   ✅     |    [Contribute](/docs/WorkingLocally.md)        | @gtchance|
-| statusBarTextColorScheme |  ✅   |   in development      |      / iOS specific    |
-| statusBarTextColorSchemeSingleScreen|  ✅   |     in development    |     / iOS specific      |
-| topBarSubtitleColor          |  ✅   |   [Contribute](/docs/WorkingLocally.md)     |      [Contribute](/docs/WorkingLocally.md)      |
-| topBarSubtitleFontFamily    |   ✅  |    [Contribute](/docs/WorkingLocally.md)    |     [Contribute](/docs/WorkingLocally.md)       |
+| tabBarHidden  |   ✅  |   ✅     |✅| @gtchance|
+| statusBarTextColorScheme |  ✅   |✅|      / iOS specific    |
+| statusBarTextColorSchemeSingleScreen|  ✅   |✅|     / iOS specific      |
+| topBarSubtitleColor          |  ✅   |✅|      [Contribute](/docs/WorkingLocally.md)      |
+| topBarSubtitleFontFamily    |   ✅  |✅|     [Contribute](/docs/WorkingLocally.md)       |
 | screenBackgroundColor     | ✅    |   ✅     |     [Contribute](/docs/WorkingLocally.md)       |  Wix|
-| orientation     |  ✅   |    ✅     |   [Contribute](/docs/WorkingLocally.md)          | Wix|
+| orientation     |  ✅   |    ✅     |✅| Wix|
 | statusBarHideWithTopBar        |  ✅   |   ✅     |     [Contribute](/docs/WorkingLocally.md)       | @gtchance|
 | statusBarHidden       |  ✅   |    ✅       |     [Contribute](/docs/WorkingLocally.md)      | WIX |
 | disabledBackGesture       |   ✅  |   ✅  |    / iOS specific     |
 | screenBackgroundImageName         |   ✅  |   ✅      |    [Contribute](/docs/WorkingLocally.md)        |
 | rootBackgroundImageName            |  ✅   |    ✅     |    [Contribute](/docs/WorkingLocally.md)       |
-| setButtons          |   ✅     |    ✅    | [Contribute](/docs/WorkingLocally.md) | @Johan-dutoit|
-| title            |   ✅     |        	✅    | 	✅| Wix|
-| toggleDrawer        |   ✅     |       ✅    | [Contribute](/docs/WorkingLocally.md) |
-| setTabBadge         |    ✅    |       ✅    | [Contribute](/docs/WorkingLocally.md)| Wix|
-| switchToTab         |    ✅    |       ✅   |[Contribute](/docs/WorkingLocally.md) |
-| topBarCustomView        |   ✅     |     WIP @gran33     | [Contribute](/docs/WorkingLocally.md)|
-| customTransition(shared element)       |     :x:  |     WIP @bogobogo     | [Contribute](/docs/WorkingLocally.md)|
+| setButtons          |   ✅     |    ✅    |✅| @Johan-dutoit|
+| title            |   ✅     |✅|    ✅| Wix|
+| toggleDrawer        |   ✅     |       ✅    |✅|
+| setTabBadge         |    ✅    |       ✅    |✅| Wix|
+| switchToTab         |    ✅    |       ✅   |✅|
+| topBar react component        |   ✅     |✅|✅|
+|Shared Element Transition|     :x:  |✅| [Contribute](/docs/WorkingLocally.md)|
 | splitViewScreen       |     :x:  |    [Contribute](/docs/WorkingLocally.md)      | [Contribute](/docs/WorkingLocally.md)|
 
-Element transitions, adding buttons and styles are not yet implemented. [Contribute](/docs/WorkingLocally.md)

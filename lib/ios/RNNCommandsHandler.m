@@ -56,15 +56,23 @@
 
 -(void) setDefaultOptions:(NSDictionary*)optionsDict completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:optionsDict];
-	[_controllerFactory setDefaultOptions:options];
+	[_controllerFactory setDefaultOptionsDict:optionsDict];
 }
 
--(void) push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
+-(void)push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
 	UIViewController<RNNRootViewProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
 	[_navigationStackManager push:newVc onTop:componentId completion:^{
+		completion();
+	}];
+}
+
+-(void)setStackRoot:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
+	[self assertReady];
+	
+	UIViewController<RNNRootViewProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
+	[_navigationStackManager setRoot:newVc fromComponent:componentId completion:^{
 		completion();
 	}];
 }
@@ -79,12 +87,8 @@
 	NSDictionary* animationData = options[@"customTransition"];
 	RNNAnimationOptions* transitionOptions = [[RNNAnimationOptions alloc] initWithDict:animationData];
 	
-	if (transitionOptions){
-		if (transitionOptions.animations) {
-			[_navigationStackManager pop:componentId withTransitionOptions:transitionOptions];
-		} else {
-			[[NSException exceptionWithName:NSInvalidArgumentException reason:@"unsupported transitionAnimation" userInfo:nil] raise];
-		}
+	if (transitionOptions.animations){
+		[_navigationStackManager pop:componentId withTransitionOptions:transitionOptions];
 	} else {
 		[_navigationStackManager pop:componentId withTransitionOptions:nil];
 	}

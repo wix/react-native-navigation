@@ -49,6 +49,10 @@
 	return self;
 }
 
+- (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
+	[_store registerExternalComponent:name callback:callback];
+}
+
 # pragma mark - RCTBridgeDelegate
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {

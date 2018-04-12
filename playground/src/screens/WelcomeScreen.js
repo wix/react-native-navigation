@@ -10,25 +10,15 @@ class WelcomeScreen extends Component {
   static get options() {
     return {
       topBar: {
-        largeTitle: false,
+        title: {
+          largeTitle: false,
+          title: 'My Screen'
+        },
         drawBehind: true,
         visible: false,
         animate: false
       }
     };
-  }
-  constructor(props) {
-    super(props);
-    this.onClickPush = this.onClickPush.bind(this);
-    this.onClickShowModal = this.onClickShowModal.bind(this);
-    this.onClickLifecycleScreen = this.onClickLifecycleScreen.bind(this);
-    this.onClickPushOptionsScreen = this.onClickPushOptionsScreen.bind(this);
-    this.onClickPushExternalComponent = this.onClickPushExternalComponent.bind(this);
-    this.onClickPushOrientationMenuScreen = this.onClickPushOrientationMenuScreen.bind(this);
-    this.onClickBackHandler = this.onClickBackHandler.bind(this);
-    this.onClickPushTopTabsScreen = this.onClickPushTopTabsScreen.bind(this);
-    this.onClickShowStaticLifecycleOverlay = this.onClickShowStaticLifecycleOverlay.bind(this);
-    this.onClickProvidedId = this.onClickProvidedId.bind(this);
   }
 
   render() {
@@ -48,12 +38,13 @@ class WelcomeScreen extends Component {
         <Button title='Show Redbox' testID={testIDs.SHOW_REDBOX_BUTTON} onPress={this.onClickShowRedbox} />
         <Button title='Orientation' testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
         <Button title='Provided Id' testID={testIDs.PROVIDED_ID} onPress={this.onClickProvidedId} />
+        <Button title='Complex Layout' testID={testIDs.COMPLEX_LAYOUT_BUTTON} onPress={this.onClickComplexLayout} />
         <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
       </View>
     );
   }
 
-  onClickSwitchToTabs() {
+  onClickSwitchToTabs = () => {
     Navigation.setRoot({
       bottomTabs: {
         children: [
@@ -70,7 +61,9 @@ class WelcomeScreen extends Component {
                     options: {
                       topBar: {
                         visible: true,
-                        title: 'React Native Navigation!'
+                        title: {
+                          text: 'React Native Navigation!'
+                        }
                       }
                     }
                   }
@@ -123,7 +116,7 @@ class WelcomeScreen extends Component {
     });
   }
 
-  onClickSwitchToSideMenus() {
+  onClickSwitchToSideMenus = () => {
     Navigation.setRoot({
       sideMenu: {
         left: {
@@ -223,20 +216,29 @@ class WelcomeScreen extends Component {
     });
   }
 
-  async onClickPush() {
+  onClickPush = async () => {
     await Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.PushedScreen',
         options: {
           topBar: {
-            title: 'pushed'
+            title: {
+              text: 'pushed',
+              color: '#0000ff',
+              fontSize: 14
+            },
+            subtitle: {
+              text: 'subtitle',
+              fontSize: 10,
+              color: '#00ff00'
+            }
           }
         }
       }
     });
   }
 
-  async onClickPushExternalComponent() {
+  onClickPushExternalComponent = async () => {
     await Navigation.push(this.props.componentId, {
       externalComponent: {
         name: 'RNNCustomComponent',
@@ -245,7 +247,9 @@ class WelcomeScreen extends Component {
         },
         options: {
           topBar: {
-            title: 'pushed',
+            title: {
+              text: 'pushed'
+            },
             visible: true,
             testID: testIDs.TOP_BAR_ELEMENT
           }
@@ -254,7 +258,7 @@ class WelcomeScreen extends Component {
     });
   }
 
-  onClickLifecycleScreen() {
+  onClickLifecycleScreen = () => {
     Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.LifecycleScreen'
@@ -262,15 +266,20 @@ class WelcomeScreen extends Component {
     });
   }
 
-  onClickShowStaticLifecycleOverlay() {
+  onClickShowStaticLifecycleOverlay = () => {
     Navigation.showOverlay({
       component: {
-        name: 'navigation.playground.StaticLifecycleOverlay'
+        name: 'navigation.playground.StaticLifecycleOverlay',
+        options: {
+          overlay: {
+            interceptTouchOutside: false
+          }
+        }
       }
     });
   }
 
-  async onClickShowModal() {
+  onClickShowModal = async () => {
     await Navigation.showModal({
       stack: {
         children: [
@@ -284,22 +293,26 @@ class WelcomeScreen extends Component {
     });
   }
 
-  onClickShowRedbox() {
+  onClickShowRedbox = () => {
     undefined();
   }
 
-  onClickPushOptionsScreen() {
+  onClickPushOptionsScreen = () => {
     Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.OptionsScreen',
         options: {
-          animated: false
+          animations: {
+            push: {
+              enable: false
+            }
+          }
         }
       }
     });
   }
 
-  onClickPushTopTabsScreen() {
+  onClickPushTopTabsScreen = () => {
     Navigation.push(this.props.componentId, {
       topTabs: {
         children: [
@@ -312,10 +325,14 @@ class WelcomeScreen extends Component {
               },
               options: {
                 topTab: {
-                  title: 'Tab 1'
+                  title: {
+                    text: 'Tab 1'
+                  }
                 },
                 topBar: {
-                  title: 'One'
+                  title: {
+                    text: 'One'
+                  }
                 }
               }
             }
@@ -333,7 +350,9 @@ class WelcomeScreen extends Component {
                   titleFontFamily: 'HelveticaNeue-Italic'
                 },
                 topBar: {
-                  title: 'Two'
+                  title: {
+                    text: 'Two'
+                  }
                 }
               }
             }
@@ -350,7 +369,9 @@ class WelcomeScreen extends Component {
                   title: 'Tab 3'
                 },
                 topBar: {
-                  title: 'Three'
+                  title: {
+                    text: 'Three'
+                  }
                 }
               }
             }
@@ -367,7 +388,7 @@ class WelcomeScreen extends Component {
     });
   }
 
-  onClickBackHandler() {
+  onClickBackHandler = () => {
     Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.BackHandlerScreen'
@@ -375,7 +396,7 @@ class WelcomeScreen extends Component {
     });
   }
 
-  onClickPushOrientationMenuScreen() {
+  onClickPushOrientationMenuScreen = () => {
     Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.OrientationSelectScreen'
@@ -383,7 +404,7 @@ class WelcomeScreen extends Component {
     });
   }
 
-  onClickProvidedId() {
+  onClickProvidedId = () => {
     Navigation.showModal({
       stack: {
         children: [
@@ -398,7 +419,17 @@ class WelcomeScreen extends Component {
     });
     Navigation.setOptions('my unique id', {
       topBar: {
-        title: 'User provided id'
+        title: {
+          text: 'User provided id'
+        }
+      }
+    });
+  }
+
+  onClickComplexLayout = () => {
+    Navigation.showModal({
+      component: {
+        name: 'navigation.playground.ComplexLayout'
       }
     });
   }

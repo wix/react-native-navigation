@@ -16,6 +16,13 @@ describe('screen stack', () => {
     await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
+  it(':android: push and pop screen with out animation', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await expect(elementById(testIDs.OPTIONS_SCREEN_HEADER)).toBeVisible();
+    Android.pressBack();
+    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
+  });
+
   it('pop screen deep in the stack', async () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementByLabel('Stack Position: 1')).toBeVisible();
@@ -69,7 +76,7 @@ describe('screen stack', () => {
     await expect(elementByLabel('Screen 1')).toBeVisible();
   });
 
-  it(':android: push external component with options', async () => {
+  it('push external component with options', async () => {
     await elementById(testIDs.PUSH_EXTERNAL_COMPONENT_BUTTON).tap();
     await expect(elementByLabel('This is an external component')).toBeVisible();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();

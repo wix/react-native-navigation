@@ -1,13 +1,16 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.R;
+import com.reactnativenavigation.anim.ModalAnimator;
+import com.reactnativenavigation.viewcontrollers.Navigator.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
 import static android.view.View.MeasureSpec.EXACTLY;
@@ -17,7 +20,9 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
     public final ViewController viewController;
     private final Dialog dialog;
     private ModalListener modalListener;
-    @Nullable private Promise dismissPromise;
+    @Nullable private CommandListener dismissCommandListener;
+
+    private ModalAnimator animator;
 
     public Modal(final ViewController viewController, ModalListener modalListener) {
         this.viewController = viewController;
@@ -26,17 +31,29 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
         dialog.setOnKeyListener(this);
         dialog.setOnDismissListener(this);
         dialog.setOnShowListener(this);
+        animator = new ModalAnimator(viewController.getActivity(), viewController.options.animations);
     }
 
     public void show() {
         preMeasureView();
-        dialog.setContentView(viewController.getView());
+        final View contentView = viewController.getView();
         dialog.show();
+        animator.animateShow(contentView, new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                dialog.setContentView(contentView);
+            }
+        });
     }
 
-    public void dismiss(Promise promise) {
-        dismissPromise = promise;
-        dialog.dismiss();
+    public void dismiss(CommandListener listener) {
+        dismissCommandListener = listener;
+        animator.animateDismiss(viewController.getView(), new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                dialog.dismiss();
+            }
+        });
     }
 
     public boolean containsDeepComponentId(String componentId) {
@@ -62,8 +79,8 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
     @Override
     public void onDismiss(DialogInterface dialog) {
         modalListener.onModalDismiss(this);
-        if (dismissPromise != null) {
-            dismissPromise.resolve(viewController.getId());
+        if (dismissCommandListener != null) {
+            dismissCommandListener.onSuccess(viewController.getId());
         }
     }
 

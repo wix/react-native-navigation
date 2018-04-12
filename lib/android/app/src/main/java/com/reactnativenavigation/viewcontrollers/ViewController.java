@@ -15,6 +15,7 @@ import com.reactnativenavigation.presentation.FabOptionsPresenter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.views.Component;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener {
@@ -57,7 +58,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.viewVisibilityListener = viewVisibilityListener;
     }
 
-    @SuppressWarnings("WeakerAccess")
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     public void ensureViewIsCreated() {
         getView();
@@ -106,14 +106,15 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         }
     }
 
-    @NonNull
     public T getView() {
         if (view == null) {
             if (isDestroyed) {
                 throw new RuntimeException("Tried to create view after it has already been destroyed");
             }
             view = createView();
-            view.setId(CompatUtils.generateViewId());
+            if (view.getId() < 0) {
+                view.setId(CompatUtils.generateViewId());
+            }
             view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         }
         return view;
@@ -153,7 +154,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         applyOptions(options);
         applyOnParentController(parentController -> {
             parentController.clearOptions();
-            if (getView() instanceof Component) parentController.applyOptions(options, (Component) getView());
+            if (getView() instanceof Component) parentController.applyChildOptions(options, (Component) getView());
         });
     }
 
@@ -197,6 +198,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
                 onViewDisappear();
             }
         }
+    }
+
+    void runOnPreDraw(Task<T> task) {
+        UiUtils.runOnPreDrawOnce(getView(), () -> task.run(getView()));
     }
 
     public abstract void sendOnNavigationButtonPressed(String buttonId);

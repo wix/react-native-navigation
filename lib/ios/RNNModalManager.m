@@ -21,8 +21,11 @@
 
 -(void)showModalAfterLoad:(NSDictionary*)notif {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
-	UIViewController *topVC = [self topPresentedVC];
-	[topVC presentViewController:self.toVC animated:self.toVC.isAnimated completion:^{
+	RNNRootViewController *topVC = (RNNRootViewController*)[self topPresentedVC];
+	if (topVC.options.animations.showModal.hasCustomAnimation) {
+		self.toVC.transitioningDelegate = topVC;
+	}
+	[topVC presentViewController:self.toVC animated:self.toVC.options.animations.showModal.enable completion:^{
 		if (_completionBlock) {
 			_completionBlock();
 			_completionBlock = nil;
@@ -33,7 +36,12 @@
 -(void)showModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {
 	self.toVC = (UIViewController<RNNRootViewProtocol>*)viewController;
 	_completionBlock = completion;
-	[self waitForContentToAppearAndThen:@selector(showModalAfterLoad:)];
+	
+	if ([self.toVC isCustomViewController]) {
+		[self showModalAfterLoad:nil];
+	} else {
+		[self waitForContentToAppearAndThen:@selector(showModalAfterLoad:)];
+	}
 }
 
 -(void)dismissModal:(NSString *)componentId {
@@ -61,9 +69,14 @@
 	
 	UIViewController* topPresentedVC = [self topPresentedVC];
 	
+	if (modalToDismiss.options.animations.showModal) {
+		modalToDismiss.transitioningDelegate = modalToDismiss;
+	}
+	
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
-		[modalToDismiss dismissViewControllerAnimated:modalToDismiss.isAnimated completion:^{
+		[modalToDismiss dismissViewControllerAnimated:modalToDismiss.options.animations.dismissModal.enable completion:^{
 			[[_store pendingModalIdsToDismiss] removeObject:componentId];
+			[_store removeComponent:componentId];
 			[self removePendingNextModalIfOnTop];
 		}];
 	}
@@ -75,6 +88,11 @@
 		root = root.presentedViewController;
 	}
 	return root;
+}
+
+-(UIViewController*)topPresentedVCLeaf {
+	id root = [self topPresentedVC];
+	return [root topViewController] ? [root topViewController] : root;
 }
 
 

@@ -4,6 +4,9 @@ import android.app.*;
 import android.support.v7.app.*;
 import android.view.*;
 
+import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.viewcontrollers.ViewController;
+
 import org.junit.*;
 import org.junit.runner.*;
 import org.robolectric.*;
@@ -40,5 +43,11 @@ public abstract class BaseTest {
         assertThat(child).isNotNull();
         assertThat(child.getId()).isNotZero().isPositive();
         assertThat(parent.findViewById(child.getId())).isNull();
+    }
+
+    protected void disablePushAnimation(ViewController... controllers) {
+        for (ViewController controller : controllers) {
+            controller.options.animations.push.enable = new Bool(false);
+        }
     }
 }

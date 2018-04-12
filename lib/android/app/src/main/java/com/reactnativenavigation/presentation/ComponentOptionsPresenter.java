@@ -15,9 +15,17 @@ public class ComponentOptionsPresenter {
 
     public void present(Options options) {
         applyOrientation(options.orientationOptions);
+        applyOtherOptions(options);
     }
 
     private void applyOrientation(OrientationOptions options) {
         ((Activity) component.getContext()).setRequestedOrientation(options.getValue());
     }
+
+    private void applyOtherOptions(Options options) {
+        if (options.screenBackgroundColor.hasValue()) {
+            component.setBackgroundColor(options.screenBackgroundColor.get());
+        }
+    }
+
 }

@@ -15,10 +15,13 @@ export interface LayoutNode {
 }
 
 export class LayoutTreeCrawler {
+  private optionsProcessor: OptionsProcessor;
   constructor(
     private readonly uniqueIdProvider: any,
-    private readonly store: any) {
+    public readonly store: any) {
     this.crawl = this.crawl.bind(this);
+    this.processOptions = this.processOptions.bind(this);
+    this.optionsProcessor = new OptionsProcessor(store, uniqueIdProvider);
   }
 
   crawl(node: LayoutNode): void {
@@ -29,8 +32,12 @@ export class LayoutTreeCrawler {
     if (node.type === LayoutType.Component) {
       this._handleComponent(node);
     }
-    OptionsProcessor.processOptions(node.data.options);
+    this.processOptions(node.data.options);
     _.forEach(node.children, this.crawl);
+  }
+
+  processOptions(options) {
+    this.optionsProcessor.processOptions(options);
   }
 
   _handleComponent(node) {
@@ -40,7 +47,7 @@ export class LayoutTreeCrawler {
   }
 
   _savePropsToStore(node) {
-    this.store.setPropsForComponentId(node.id, node.data.passProps);
+    this.store.setPropsForId(node.id, node.data.passProps);
   }
 
   _applyStaticOptions(node) {

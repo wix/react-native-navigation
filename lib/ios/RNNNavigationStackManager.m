@@ -26,10 +26,11 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 }
 
 -(void)preparePush:(UIViewController<RNNRootViewProtocol> *)newTop onTopVC:(UIViewController*)vc completion:(RNNTransitionCompletionBlock)completion {
-	self.toVC = newTop;
+	self.toVC = (RNNRootViewController*)newTop;
 	self.fromVC = vc;
 	
-	if (self.toVC.isCustomTransitioned) {
+	
+	if (self.toVC.options.animations.push.hasCustomAnimation || self.toVC.isCustomTransitioned) {
 		vc.navigationController.delegate = newTop;
 	} else {
 		vc.navigationController.delegate = nil;
@@ -56,7 +57,7 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 		}
 	}];
 	
-	[[self.fromVC navigationController] pushViewController:self.toVC animated:self.toVC.isAnimated];
+	[[self.fromVC navigationController] pushViewController:self.toVC animated:self.toVC.options.animations.push.enable];
 	[CATransaction commit];
 	
 	self.toVC = nil;
@@ -65,43 +66,56 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 }
 
 -(void)pop:(NSString *)componentId withTransitionOptions:(RNNAnimationOptions *)transitionOptions {
-	UIViewController<RNNRootViewProtocol>* vc = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
+	RNNRootViewController* vc = (RNNRootViewController*)[_store findComponentForId:componentId];
 	UINavigationController* nvc = [vc navigationController];
 	if ([nvc topViewController] == vc) {
-		if (transitionOptions) {
-			RNNRootViewController* RNNVC = (RNNRootViewController*)vc;
-			nvc.delegate = RNNVC;
-			RNNVC.animator = [[RNNAnimator alloc] initWithTransitionOptions:transitionOptions];
-			[nvc popViewControllerAnimated:vc.isAnimated];
+		if (vc.options.animations.pop) {
+			nvc.delegate = vc;
+			[nvc popViewControllerAnimated:vc.options.animations.pop.enable];
 		} else {
 			nvc.delegate = nil;
-			[nvc popViewControllerAnimated:vc.isAnimated];
+			[nvc popViewControllerAnimated:vc.options.animations.pop.enable];
 		}
 	} else {
 		NSMutableArray * vcs = nvc.viewControllers.mutableCopy;
 		[vcs removeObject:vc];
-		[nvc setViewControllers:vcs animated:YES];
+		[nvc setViewControllers:vcs animated:vc.options.animations.pop.enable];
 	}
 	[_store removeComponent:componentId];
 }
 
 -(void)popTo:(NSString*)componentId {
-	UIViewController *vc = [_store findComponentForId:componentId];
+	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
 	
 	if (vc) {
 		UINavigationController *nvc = [vc navigationController];
 		if(nvc) {
-			NSArray *poppedVCs = [nvc popToViewController:vc animated:YES];
+			NSArray *poppedVCs = [nvc popToViewController:vc animated:vc.options.animations.pop.enable];
 			[self removePopedViewControllers:poppedVCs];
 		}
 	}
 }
 
--(void) popToRoot:(NSString*)componentId {
+-(void)popToRoot:(NSString*)componentId {
+	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
+	UINavigationController* nvc = [vc navigationController];
+	NSArray* poppedVCs = [nvc popToRootViewControllerAnimated:vc.options.animations.pop.enable];
+	[self removePopedViewControllers:poppedVCs];
+}
+
+-(void)setRoot:(UIViewController<RNNRootViewProtocol> *)newRoot fromComponent:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion {
 	UIViewController* vc = [_store findComponentForId:componentId];
 	UINavigationController* nvc = [vc navigationController];
-	NSArray* poppedVCs = [nvc popToRootViewControllerAnimated:YES];
-	[self removePopedViewControllers:poppedVCs];
+	[CATransaction begin];
+	[CATransaction setCompletionBlock:^{
+		if (completion) {
+			completion();
+		}
+	}];
+	
+	[nvc setViewControllers:@[newRoot] animated:newRoot.options.animations.push.enable];
+	
+	[CATransaction commit];
 }
 
 -(void)removePopedViewControllers:(NSArray*)viewControllers {
