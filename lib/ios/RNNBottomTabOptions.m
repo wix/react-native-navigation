@@ -19,7 +19,10 @@
 	}
 	
 	if (self.badge) {
-		NSString *badge = [RCTConvert NSString:self.badge];
+		NSString *badge = nil;
+		if (self.badge != nil && ![self.badge isEqual:[NSNull null]]) {
+			badge = [RCTConvert NSString:self.badge];
+		}
 		if (viewController.navigationController) {
 			viewController.navigationController.tabBarItem.badgeValue = badge;
 		} else {
