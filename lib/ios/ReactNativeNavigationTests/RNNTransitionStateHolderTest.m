@@ -8,7 +8,7 @@
 @implementation RNNTransitionStateHolderTest
 
 - (void)testDefaultObjectProperties {
-	RNNTransitionStateHolder* defaultTransitionObject = [[RNNTransitionStateHolder alloc] initWithTransition:@{@"fromId": @"hello"}];
+	RNNTransitionStateHolder* defaultTransitionObject = [[RNNTransitionStateHolder alloc] initWithDict:@{@"fromId": @"hello"}];
 	XCTAssertEqual(defaultTransitionObject.springDamping,  0.85);
 	XCTAssertEqual(defaultTransitionObject.springVelocity,  0.8);
 	XCTAssertEqual(defaultTransitionObject.startDelay,  0);

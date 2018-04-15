@@ -104,7 +104,7 @@ public class OptionsPresenter {
         if (topTabOptions.fontFamily != null) topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
     }
 
-    public void onChildWillPop(Options disappearing, Options appearing) {
+    public void onChildWillAppear(Options appearing, Options disappearing) {
         if (disappearing.topBar.visible.isTrueOrUndefined() && appearing.topBar.visible.isFalse()) {
             if (disappearing.topBar.animate.isTrueOrUndefined() && disappearing.animations.pop.enable.isTrueOrUndefined()) {
                 topBar.hideAnimate(disappearing.animations.pop.topBar);

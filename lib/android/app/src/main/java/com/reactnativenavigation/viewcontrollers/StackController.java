@@ -141,7 +141,7 @@ public class StackController extends ParentController<StackLayout> {
         disappearing.onViewWillDisappear();
         appearing.onViewWillAppear();
         getView().addView(appearing.getView(), 0);
-        getView().onChildWillPop(disappearing.options, appearing.options);
+        getView().onChildWillAppear(appearing, disappearing);
 
         if (disappearing.options.animations.pop.enable.isTrueOrUndefined()) {
             animator.pop(disappearing.getView(), () -> finishPopping(disappearing, listener));

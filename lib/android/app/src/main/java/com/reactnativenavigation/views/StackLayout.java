@@ -8,6 +8,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
@@ -40,8 +41,8 @@ public class StackLayout extends RelativeLayout {
         optionsPresenter.applyChildOptions(options, child);
     }
 
-    public void onChildWillPop(Options disappearing, Options appearing) {
-        optionsPresenter.onChildWillPop(disappearing, appearing);
+    public void onChildWillAppear(ViewController appearing, ViewController disappearing) {
+        optionsPresenter.onChildWillAppear(appearing.options, disappearing.options);
     }
 
     public void mergeChildOptions(Options options, Component child) {

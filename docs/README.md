@@ -75,67 +75,67 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | dismissModal           |     ✅       |	✅|
 | showOverlay             |  ✅         |	✅ |
 | dismissOverlay             |  ✅   |	✅ |
-| customTransition            |   ✅        |	[Contribute](/docs/WorkingLocally.md) |
+| customTransition            |✅|✅|
 | Screen Visibility        | ✅     |✅|
 | async commands (await push)     |  ✅        |✅   |
 
 ### Navigation Options
 
-|       topBar         | iOS  | Android | Contributor(s) |
-|--------------------|:----:|:-----:|-----|
-| title         |        	✅    | 	✅| Wix|
-| textColor    | ✅     |     ✅        | Wix|
-| textFontSize       |    ✅      |     ✅        | Wix|
-| textFontFamily     |      ✅     |     ✅        | Wix |
-| backgroundColor    |  ✅       |     ✅         | Wix|
-| buttonColor         |    ✅      |✅| Wix|
-| hidden             |   ✅      |     ✅        | Wix|
-| hideOnScroll         |  ✅    |✅| Wix|
-| translucent         |   ✅     |     [Contribute](/docs/WorkingLocally.md)        | Wix|
-| transparent         |  ✅        |     [Contribute](/docs/WorkingLocally.md)        | |
-| noBorder             |    ✅     |     [Contribute](/docs/WorkingLocally.md)        |  @gtchance|
-| drawUnder         |    ✅     |✅||
-| blur               |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | @gtchance|
+|       topBar         | iOS  | Android |
+|--------------------|:----:|:-----:|
+| title         |        	✅    | 	✅|
+| textColor    | ✅     |     ✅        |
+| textFontSize       |    ✅      |     ✅|
+| textFontFamily     |      ✅     |     ✅|
+| backgroundColor    |  ✅       |     ✅|
+| buttonColor         |    ✅      |✅|
+| hidden             |   ✅      |     ✅|
+| hideOnScroll         |  ✅    |✅|
+| translucent         |   ✅     |     [Contribute](/docs/WorkingLocally.md)        |
+| transparent         |  ✅        |     [Contribute](/docs/WorkingLocally.md)        |
+| noBorder             |    ✅     |     [Contribute](/docs/WorkingLocally.md)        |
+| drawUnder         |    ✅     |✅|
+| blur               |    ✅     |      [Contribute](/docs/WorkingLocally.md)       |
 | custom component          |✅     |✅|
-| background component          |✅     |[Contribute](/docs/WorkingLocally.md)| |
-| subtitleColor            |   ✅      |[Contribute](/docs/WorkingLocally.md)| |
-| subtitleFontFamily      |    [Contribute](/docs/WorkingLocally.md)    |     [Contribute](/docs/WorkingLocally.md)| |
-| largeTitle (iOS 11)      |    ✅     |     /iOS Specific       | |
+| background component          |✅     |✅|
+| subtitleColor            |   ✅      |✅|
+| subtitleFontFamily      |✅|✅|
+| largeTitle (iOS 11)      |    ✅     |     /iOS Specific       |
 
-|       tabBar         | iOS  | Android | Contributor(s) |
-|--------------------|:----:|:-----:|-----|
-| drawUnder          |    ✅     |✅| |
-| hidden   |   ✅     |    ✅        | @gtchance |
-| tabBadge          |       ✅    |✅| Wix|
-| currentTab by Index          |       ✅    | ✅ | Wix |
-| currentTab by componentId         |✅| ✅ | Wix |
+|       tabBar         | iOS  | Android |
+|--------------------|:----:|:-----:|
+| drawUnder          |    ✅     |✅|
+| hidden   |   ✅     |    ✅        |
+| tabBadge          |       ✅    |✅|
+| currentTab by Index          |       ✅    | ✅ |
+| currentTab by componentId         |✅| ✅ |
 
-|       buttons        | iOS  | Android | Contributor(s) |
-|--------------------|:----:|:-----:|-----|
-| id    |   ✅      |✅|@Johan-dutoit|
-| testID   |     ✅   |✅| @Johan-dutoit|
-| color             |    ✅     |✅| @Johan-dutoit|
-| icon          |   ✅     |✅| @Johan-dutoit|
-| disableTint        |    ✅       |✅| @Johan-dutoit|
-| fontSize        |    ✅       |✅| @Johan-dutoit |
-| fontWeight        |    ✅       |    [Contribute](/docs/WorkingLocally.md)   | |
+|       buttons        | iOS  | Android |
+|--------------------|:----:|:-----:|
+| id    |   ✅      |✅|
+| testID   |     ✅   |✅|
+| color             |    ✅     |✅|
+| icon          |   ✅     |✅|
+| disableTint        |    ✅       |✅|
+| fontSize        |    ✅       |✅|
+| fontWeight        |    ✅       |    [Contribute](/docs/WorkingLocally.md)   |
 
-|       statusBar        | iOS  | Android | Contributor(s) |
-|--------------------|:----:|:-----:|-----|
-| textColorScheme    |✅|[Contribute](/docs/WorkingLocally.md) | |
-| textColorSchemeSingleScreen   |✅|     / iOS specific      | |
-| blur             |    ✅     |      [Contribute](/docs/WorkingLocally.md)       | @gtchance |
-| hideWithTopBar          |   ✅     |     [Contribute](/docs/WorkingLocally.md)       | @gtchance |
-| hidden         |    ✅       |     [Contribute](/docs/WorkingLocally.md)      | Wix |
+|       statusBar        | iOS  | Android |
+|--------------------|:----:|:-----:|
+| textColorScheme    |✅|[Contribute](/docs/WorkingLocally.md) |
+| textColorSchemeSingleScreen   |✅|     / iOS specific      |
+| blur             |    ✅     |      [Contribute](/docs/WorkingLocally.md)       |
+| hideWithTopBar          |   ✅     |     [Contribute](/docs/WorkingLocally.md)       |
+| hidden         |    ✅       |     [Contribute](/docs/WorkingLocally.md)      |
 
-|       other        | iOS  | Android | Contributor(s) |
-|--------------------|:----:|:-----:|-----|
-| screenBackgroundColor        |   ✅     | ✅ | |
-| orientation       |    ✅     |✅| Wix |
-| disabledBackGesture        |    ✅     |    / iOS specific     | |
-| screenBackgroundImageName        |   ✅      |    [Contribute](/docs/WorkingLocally.md)        | |
-| rootBackgroundImageName              |    ✅     |    [Contribute](/docs/WorkingLocally.md)       | |
-| sideMenuVisible          |      ✅   |✅| |
+|       other        | iOS  | Android |
+|--------------------|:----:|:-----:|
+| screenBackgroundColor        |   ✅     | ✅ |
+| orientation       |    ✅     |✅|
+| disabledBackGesture        |    ✅     |    / iOS specific     |
+| screenBackgroundImageName        |   ✅      |    [Contribute](/docs/WorkingLocally.md)        |
+| rootBackgroundImageName              |    ✅     |    [Contribute](/docs/WorkingLocally.md)       |
+| sideMenuVisible          |      ✅   |✅|
 
 
 ## v1 vs v2 Feature Comparison

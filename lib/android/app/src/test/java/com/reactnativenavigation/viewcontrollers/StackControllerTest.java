@@ -155,7 +155,7 @@ public class StackControllerTest extends BaseTest {
                 uut.pop(new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
-                        verify(stackLayout[0], times(1)).onChildWillPop(child2.options, child1.options);
+                        verify(stackLayout[0], times(1)).onChildWillAppear(child1, child2);
                     }
                 });
             }
