@@ -670,7 +670,7 @@ function showLightBox(params) {
   });
 }
 
-function dismissLightBox(params) {
+function dismissLightBox() {
   Modal.dismissLightBox();
 }
 

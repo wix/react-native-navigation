@@ -121,7 +121,7 @@ this.props.navigator.showLightBox({
 });
 ```
 
-## dismissLightBox(params = {})
+## dismissLightBox()
 
 Dismiss the current lightbox.
 
