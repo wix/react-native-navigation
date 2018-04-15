@@ -4,11 +4,18 @@
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
-	self.topBar = [[RNNTransitionStateHolder alloc] initWithTransition:dict[@"topBar"]];
-	self.content = [[RNNTransitionStateHolder alloc] initWithTransition:dict[@"content"]];
-	self.bottomTabs = [[RNNTransitionStateHolder alloc] initWithTransition:dict[@"bottomTabs"]];
-	
+
+	self.topBar = dict[@"topBar"] ? [[RNNTransitionStateHolder alloc] initWithDict:dict[@"topBar"]] : nil;
+	self.content = dict[@"content"] ? [[RNNTransitionStateHolder alloc] initWithDict:dict[@"content"]] : nil;
+	self.bottomTabs = dict[@"bottomTabs"] ? [[RNNTransitionStateHolder alloc] initWithDict:dict[@"bottomTabs"]] : nil;
+
+	self.enable = dict[@"enabled"] ? [dict[@"enabled"] boolValue] : YES;
+
 	return self;
+}
+
+- (BOOL)hasCustomAnimation {
+	return (self.topBar || self.content || self.bottomTabs);
 }
 
 @end

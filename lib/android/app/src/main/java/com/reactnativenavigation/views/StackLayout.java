@@ -4,11 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.RelativeLayout;
 
-import com.reactnativenavigation.interfaces.ChildDisappearListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
@@ -41,8 +41,8 @@ public class StackLayout extends RelativeLayout {
         optionsPresenter.applyChildOptions(options, child);
     }
 
-    public void onChildWillDisappear(Options disappearing, Options appearing, ChildDisappearListener childDisappearListener) {
-        optionsPresenter.onChildWillDisappear(disappearing, appearing, childDisappearListener);
+    public void onChildWillAppear(ViewController appearing, ViewController disappearing) {
+        optionsPresenter.onChildWillAppear(appearing.options, disappearing.options);
     }
 
     public void mergeChildOptions(Options options, Component child) {

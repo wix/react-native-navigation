@@ -22,10 +22,10 @@
 -(void)showModalAfterLoad:(NSDictionary*)notif {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
 	RNNRootViewController *topVC = (RNNRootViewController*)[self topPresentedVC];
-	if (topVC.options.animations.showModal) {
+	if (topVC.options.animations.showModal.hasCustomAnimation) {
 		self.toVC.transitioningDelegate = topVC;
 	}
-	[topVC presentViewController:self.toVC animated:self.toVC.isAnimated completion:^{
+	[topVC presentViewController:self.toVC animated:self.toVC.options.animations.showModal.enable completion:^{
 		if (_completionBlock) {
 			_completionBlock();
 			_completionBlock = nil;
@@ -74,7 +74,7 @@
 	}
 	
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
-		[modalToDismiss dismissViewControllerAnimated:modalToDismiss.isAnimated completion:^{
+		[modalToDismiss dismissViewControllerAnimated:modalToDismiss.options.animations.dismissModal.enable completion:^{
 			[[_store pendingModalIdsToDismiss] removeObject:componentId];
 			[_store removeComponent:componentId];
 			[self removePendingNextModalIfOnTop];

@@ -31,7 +31,7 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
         dialog.setOnKeyListener(this);
         dialog.setOnDismissListener(this);
         dialog.setOnShowListener(this);
-        animator = new ModalAnimator(viewController.getActivity(), viewController.options.animationsOptions);
+        animator = new ModalAnimator(viewController.getActivity(), viewController.options.animations);
     }
 
     public void show() {

@@ -7,8 +7,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.views.topbar.TopBar;
@@ -20,12 +20,12 @@ public class TopBarAnimator {
     private static final int DEFAULT_COLLAPSE_DURATION = 100;
     private static final int DURATION_TOPBAR = 300;
     private final DecelerateInterpolator decelerateInterpolator = new DecelerateInterpolator();
-    private final AccelerateInterpolator accelerateInterpolator = new AccelerateInterpolator();
+    private final LinearInterpolator linearInterpolator = new LinearInterpolator();
 
     private TopBar topBar;
     private String stackId;
-    private AnimatorSet hideAnimator;
-    private AnimatorSet showAnimator;
+    private Animator hideAnimator;
+    private Animator showAnimator;
 
     public TopBarAnimator(TopBar topBar) {
         this.topBar = topBar;
@@ -46,7 +46,7 @@ public class TopBarAnimator {
     }
 
     public void show(float startTranslation) {
-        showAnimator = getDefaultShowAnimator(startTranslation, null, DEFAULT_COLLAPSE_DURATION);
+        showAnimator = getDefaultShowAnimator(startTranslation, linearInterpolator, DEFAULT_COLLAPSE_DURATION);
         show();
     }
 
@@ -57,6 +57,7 @@ public class TopBarAnimator {
                 topBar.setVisibility(View.VISIBLE);
             }
         });
+        topBar.resetAnimationOptions();
         showAnimator.start();
     }
 
@@ -69,41 +70,43 @@ public class TopBarAnimator {
         return set;
     }
 
-    public void hide(AnimationOptions options, AnimationListener listener) {
+    public void hide(AnimationOptions options, Runnable onAnimationEnd) {
         if (options.hasValue() && (!options.id.hasValue() || options.id.get().equals(stackId))) {
             hideAnimator = options.getAnimation(topBar);
         } else {
-            hideAnimator = getDefaultHideAnimator(0, accelerateInterpolator, DURATION_TOPBAR);
+            hideAnimator = getDefaultHideAnimator(0, linearInterpolator, DURATION_TOPBAR);
         }
-        hide(listener);
+        hide(onAnimationEnd);
     }
 
     void hide(float startTranslation) {
-        hideAnimator = getDefaultHideAnimator(startTranslation, null, DEFAULT_COLLAPSE_DURATION);
-        hide(null);
+        hideAnimator = getDefaultHideAnimator(startTranslation, linearInterpolator, DEFAULT_COLLAPSE_DURATION);
+        hide(() -> {});
     }
 
-    private void hide(AnimationListener listener) {
+    private void hide(Runnable onAnimationEnd) {
         hideAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 topBar.setVisibility(View.GONE);
-                if (listener != null) listener.onAnimationEnd();
+                onAnimationEnd.run();
             }
         });
         hideAnimator.start();
     }
 
-    private AnimatorSet getDefaultHideAnimator(float startTranslation, TimeInterpolator interpolator, int duration) {
+    private Animator getDefaultHideAnimator(float startTranslation, TimeInterpolator interpolator, int duration) {
         ObjectAnimator hideAnimator = ObjectAnimator.ofFloat(topBar, View.TRANSLATION_Y, startTranslation, -1 * topBar.getMeasuredHeight());
         hideAnimator.setInterpolator(interpolator);
         hideAnimator.setDuration(duration);
-        AnimatorSet set = new AnimatorSet();
-        set.play(hideAnimator);
-        return set;
+        return hideAnimator;
     }
 
-    public boolean isRunning() {
-        return (hideAnimator != null && hideAnimator.isRunning()) || (showAnimator != null && showAnimator.isRunning());
+    public boolean isAnimatingHide() {
+        return hideAnimator != null && hideAnimator.isRunning();
+    }
+
+    public boolean isAnimatingShow() {
+         return showAnimator != null && showAnimator.isRunning();
     }
 }

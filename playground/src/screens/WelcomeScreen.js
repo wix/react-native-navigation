@@ -302,7 +302,11 @@ class WelcomeScreen extends Component {
       component: {
         name: 'navigation.playground.OptionsScreen',
         options: {
-          animated: false
+          animations: {
+            push: {
+              enable: false
+            }
+          }
         }
       }
     });

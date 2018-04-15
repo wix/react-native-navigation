@@ -1,5 +1,7 @@
 import { OptionsProcessor } from './OptionsProcessor';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 import { Store } from '../components/Store';
+import * as _ from 'lodash';
 
 describe('navigation options', () => {
   let uut: OptionsProcessor;
@@ -8,7 +10,7 @@ describe('navigation options', () => {
   beforeEach(() => {
     options = {};
     store = new Store();
-    uut = new OptionsProcessor(store);
+    uut = new OptionsProcessor(store, new UniqueIdProvider());
   });
 
   it('processes colors into numeric AARRGGBB', () => {
@@ -109,6 +111,41 @@ describe('navigation options', () => {
     uut.processOptions({ o: options });
 
     expect(store.getPropsForId('1')).toEqual(passProps);
+  });
+
+  it('passProps for custom component', () => {
+    const passProps = { color: '#ff0000', some: 'thing' };
+    options.component = { passProps, name: 'a' };
+
+    uut.processOptions({ o: options });
+
+    expect(store.getPropsForId(options.component.componentId)).toEqual(passProps);
+    expect(Object.keys(options.component)).not.toContain('passProps');
+  });
+
+  it('generate component id for component in options', () => {
+    options.component = { name: 'a' };
+
+    uut.processOptions({ o: options });
+
+    expect(options.component.componentId).toBeDefined();
+  });
+
+  it('passProps from options are not processed', () => {
+    const passProps = { color: '#ff0000', some: 'thing' };
+    const clonedProps = _.cloneDeep(passProps);
+    options.component = { passProps, name: 'a' };
+
+    uut.processOptions(options);
+    expect(store.getPropsForId(options.component.componentId)).toEqual(clonedProps);
+  });
+
+  it('pass supplied componentId for component in options', () => {
+    options.component = { name: 'a', id: 'Component1' };
+
+    uut.processOptions({ o: options });
+
+    expect(options.component.componentId).toEqual('Component1');
   });
 
   it('passProps must be with id next to it', () => {

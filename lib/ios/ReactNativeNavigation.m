@@ -23,6 +23,11 @@
 	[[ReactNativeNavigation sharedInstance].bridgeManager registerExternalComponent:name callback:callback];
 }
 
++ (RCTBridge *)getBridge {
+	return [[ReactNativeNavigation sharedInstance].bridgeManager bridge];
+}
+
+
 # pragma mark - instance
 
 + (instancetype) sharedInstance {

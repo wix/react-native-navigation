@@ -16,11 +16,6 @@
 	return [((UIViewController<RNNRootViewProtocol>*)self.topViewController) isCustomViewController];
 }
 
-- (BOOL)isAnimated {
-	UIViewController<RNNRootViewProtocol>* rootVC = (UIViewController<RNNRootViewProtocol>*) self.topViewController;
-	return rootVC.isAnimated;
-}
-
 - (void)mergeOptions:(NSDictionary *)options {
 	[((UIViewController<RNNRootViewProtocol>*)self.topViewController) mergeOptions:options];
 }

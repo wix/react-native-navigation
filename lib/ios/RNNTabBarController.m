@@ -37,10 +37,6 @@
 	return NO;
 }
 
-- (BOOL)isAnimated {
-	return YES;
-}
-
 - (RNNOptions *)options {
 	return nil;
 }

@@ -33,7 +33,7 @@
 -(NSArray*)prepareSharedElementTransitionWithComponentView:(UIView*)componentView {
 	NSMutableArray* transitions = [NSMutableArray new];
 	for (NSDictionary* transition in self.transitionOptions.animations) {
-		RNNTransitionStateHolder* transitionStateHolder = [[RNNTransitionStateHolder alloc] initWithTransition:transition];
+		RNNTransitionStateHolder* transitionStateHolder = [[RNNTransitionStateHolder alloc] initWithDict:transition];
 		RNNTransition* transition = [[RNNTransition alloc] initFromVC:self.fromVC toVC:self.toVC transitionOptions:transitionStateHolder isBackButton:self.backButton];
 
 		[componentView addSubview:transition.animatedView];

@@ -53,9 +53,10 @@ public class OptionsApplyingTest extends BaseTest {
                 (activity1, componentId, componentName) -> view,
                 initialNavigationOptions
         );
-        stackController =
-                new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), new TopBarController(), "stack", new Options());
+        stackController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), new TopBarController(), "stack", new Options());
         stackController.ensureViewIsCreated();
+        stackController.getView().layout(0, 0, 1000, 1000);
+        stackController.getTopBar().layout(0, 0, 1000, 100);
         uut.setParentController(stackController);
     }
 
@@ -70,7 +71,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void initialOptionsAppliedOnAppear() {
-        uut.options.topBarOptions.title.text = new Text("the title");
+        uut.options.topBar.title.text = new Text("the title");
         StackController stackController =
                 new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), new TopBarController(), "stackId", new Options());
         stackController.push(uut, new CommandListenerAdapter());
@@ -83,11 +84,11 @@ public class OptionsApplyingTest extends BaseTest {
     @Test
     public void mergeNavigationOptionsUpdatesCurrentOptions() {
         uut.ensureViewIsCreated();
-        assertThat(uut.options.topBarOptions.title.text.get("")).isEmpty();
+        assertThat(uut.options.topBar.title.text.get("")).isEmpty();
         Options options = new Options();
-        options.topBarOptions.title.text = new Text("new title");
+        options.topBar.title.text = new Text("new title");
         uut.mergeOptions(options);
-        assertThat(uut.options.topBarOptions.title.text.get()).isEqualTo("new title");
+        assertThat(uut.options.topBar.title.text.get()).isEqualTo("new title");
     }
 
     @Test
@@ -97,7 +98,7 @@ public class OptionsApplyingTest extends BaseTest {
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
 
         Options opts = new Options();
-        opts.topBarOptions.title.text = new Text("the new title");
+        opts.topBar.title.text = new Text("the new title");
         uut.mergeOptions(opts);
 
         assertThat(stackController.getTopBar().getTitle()).isEqualTo("the new title");
@@ -109,7 +110,7 @@ public class OptionsApplyingTest extends BaseTest {
         uut.onViewAppeared();
 
         Options opts = new Options();
-        opts.topBarOptions.background.color = new com.reactnativenavigation.parse.params.Color(Color.RED);
+        opts.topBar.background.color = new com.reactnativenavigation.parse.params.Color(Color.RED);
         uut.mergeOptions(opts);
 
         assertThat(((ColorDrawable) stackController.getTopBar().getTitleBar().getBackground()).getColor()).isEqualTo(Color.RED);
@@ -122,8 +123,8 @@ public class OptionsApplyingTest extends BaseTest {
             @Override
             public void onSuccess(String childId) {
                 Options opts = new Options();
-                opts.topBarOptions.title.text = new Text("the title");
-                opts.topBarOptions.title.color = new com.reactnativenavigation.parse.params.Color(Color.RED);
+                opts.topBar.title.text = new Text("the title");
+                opts.topBar.title.color = new com.reactnativenavigation.parse.params.Color(Color.RED);
                 uut.mergeOptions(opts);
 
                 assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);
@@ -135,13 +136,13 @@ public class OptionsApplyingTest extends BaseTest {
     @Test
     public void appliesTopBarTextSize() {
         assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
-        initialNavigationOptions.topBarOptions.title.text = new Text("the title");
+        initialNavigationOptions.topBar.title.text = new Text("the title");
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
 
         Options opts = new Options();
-        opts.topBarOptions.title.text = new Text("the title");
-        opts.topBarOptions.title.fontSize = new Fraction(18);
+        opts.topBar.title.text = new Text("the title");
+        opts.topBar.title.fontSize = new Fraction(18);
         uut.mergeOptions(opts);
 
         assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);
@@ -151,14 +152,14 @@ public class OptionsApplyingTest extends BaseTest {
     @Test
     public void appliesTopBarVisible() {
         assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);
-        initialNavigationOptions.topBarOptions.title.text = new Text("the title");
+        initialNavigationOptions.topBar.title.text = new Text("the title");
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
         assertThat(stackController.getTopBar().getVisibility()).isNotEqualTo(View.GONE);
 
         Options opts = new Options();
-        opts.topBarOptions.visible = new Bool(false);
-        opts.topBarOptions.animate = new Bool(false);
+        opts.topBar.visible = new Bool(false);
+        opts.topBar.animate = new Bool(false);
         uut.mergeOptions(opts);
 
         assertThat(stackController.getTopBar().getVisibility()).isEqualTo(View.GONE);
@@ -166,19 +167,19 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesDrawUnder() {
-        uut.options.topBarOptions.title.text = new Text("the title");
-        uut.options.topBarOptions.drawBehind = new Bool(false);
+        uut.options.topBar.title.text = new Text("the title");
+        uut.options.topBar.drawBehind = new Bool(false);
         uut.ensureViewIsCreated();
+        stackController.ensureViewIsCreated();
         stackController.push(uut, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 uut.onViewAppeared();
-                RelativeLayout.LayoutParams uutLayoutParams =
-                        (RelativeLayout.LayoutParams) uut.getComponent().asView().getLayoutParams();
-                assertThat(uutLayoutParams.getRule(BELOW)).isNotEqualTo(0);
+                RelativeLayout.LayoutParams uutLayoutParams = (RelativeLayout.LayoutParams) uut.getComponent().asView().getLayoutParams();
+                assertThat(uutLayoutParams.topMargin).isNotEqualTo(0);
 
                 Options opts = new Options();
-                opts.topBarOptions.drawBehind = new Bool(true);
+                opts.topBar.drawBehind = new Bool(true);
                 uut.mergeOptions(opts);
 
                 uutLayoutParams = (RelativeLayout.LayoutParams) (uut.getComponent().asView()).getLayoutParams();
@@ -190,10 +191,10 @@ public class OptionsApplyingTest extends BaseTest {
     @Test
     public void appliesTopBarComponent() throws Exception {
         JSONObject json = new JSONObject();
-        json.put("component", "someComponent");
-        uut.options.topBarOptions.background = TopBarBackgroundOptions.parse(json);
+        json.put("component", new JSONObject().put("name","someComponent").put("componentId", "id"));
+        uut.options.topBar.background = TopBarBackgroundOptions.parse(json);
         uut.ensureViewIsCreated();
-        stackController.push(uut);
+        stackController.push(uut, new CommandListenerAdapter());
         uut.onViewAppeared();
 
         assertThat(((ColorDrawable) stackController.getTopBar().getTitleBar().getBackground()).getColor()).isEqualTo(Color.TRANSPARENT);
@@ -204,9 +205,9 @@ public class OptionsApplyingTest extends BaseTest {
     public void appliesSubtitle() throws Exception {
         JSONObject json = new JSONObject();
         json.put("text", "sub");
-        uut.options.topBarOptions.subtitle = SubtitleOptions.parse(new TypefaceLoaderMock(), json);
+        uut.options.topBar.subtitle = SubtitleOptions.parse(new TypefaceLoaderMock(), json);
         uut.ensureViewIsCreated();
-        stackController.push(uut);
+        stackController.push(uut, new CommandListenerAdapter());
         uut.onViewAppeared();
 
         assertThat(stackController.getTopBar().getTitleBar().getSubtitle()).isEqualTo("sub");

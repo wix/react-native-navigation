@@ -137,7 +137,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
         StackController stack = spy(createStack("stack"));
         stack.ensureViewIsCreated();
-        stack.push(uut);
+        stack.push(uut, new CommandListenerAdapter());
 
         child1.onViewAppeared();
         ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);

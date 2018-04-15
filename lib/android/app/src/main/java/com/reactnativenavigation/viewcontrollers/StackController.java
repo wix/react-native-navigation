@@ -58,14 +58,14 @@ public class StackController extends ParentController<StackLayout> {
                         child
                 )
         );
-        animator.setOptions(options.animationsOptions);
+        animator.setOptions(options.animations);
     }
 
     @Override
     public void mergeChildOptions(Options options, Component child) {
         super.mergeChildOptions(options, child);
         getView().mergeChildOptions(options, child);
-        animator.mergeOptions(options.animationsOptions);
+        animator.mergeOptions(options.animations);
         if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
             fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
         }
@@ -89,10 +89,6 @@ public class StackController extends ParentController<StackLayout> {
         topBarController.clear();
     }
 
-    public void push(ViewController child) {
-        push(child, new CommandListenerAdapter());
-    }
-
     public void push(ViewController child, CommandListener listener) {
         final ViewController toRemove = stack.peek();
         child.setParentController(this);
@@ -100,8 +96,8 @@ public class StackController extends ParentController<StackLayout> {
         getView().addView(child.getView(), MATCH_PARENT, MATCH_PARENT);
 
         if (toRemove != null) {
-            if (child.options.animated.isTrueOrUndefined()) {
-                animator.animatePush(child.getView(), () -> {
+            if (child.options.animations.push.enable.isTrueOrUndefined()) {
+                animator.push(child.getView(), () -> {
                     getView().removeView(toRemove.getView());
                     listener.onSuccess(child.getId());
                 });
@@ -109,6 +105,8 @@ public class StackController extends ParentController<StackLayout> {
                 getView().removeView(toRemove.getView());
                 listener.onSuccess(child.getId());
             }
+        } else {
+            listener.onSuccess(child.getId());
         }
     }
 
@@ -142,15 +140,11 @@ public class StackController extends ParentController<StackLayout> {
         final ViewController appearing = stack.peek();
         disappearing.onViewWillDisappear();
         appearing.onViewWillAppear();
-        getView().onChildWillDisappear(disappearing.options, appearing.options, () ->
-                getView().addView(appearing.getView(), getView().indexOfChild(disappearing.getView()))
-        );
+        getView().addView(appearing.getView(), 0);
+        getView().onChildWillAppear(appearing, disappearing);
 
-        if (disappearing.options.animated.isTrueOrUndefined()) {
-            animator.animatePop(
-                    disappearing.getView(),
-                    () -> finishPopping(disappearing, listener)
-            );
+        if (disappearing.options.animations.pop.enable.isTrueOrUndefined()) {
+            animator.pop(disappearing.getView(), () -> finishPopping(disappearing, listener));
         } else {
             finishPopping(disappearing, listener);
         }

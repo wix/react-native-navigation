@@ -186,11 +186,6 @@ public class ViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void assignsIdToCreatedView() {
-        assertThat(uut.getView().getId()).isPositive();
-    }
-
-    @Test
     public void onDestroy_RemovesSelfFromParentIfExists() {
         LinearLayout parent = new LinearLayout(activity);
         parent.addView(uut.getView());

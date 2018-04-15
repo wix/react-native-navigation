@@ -42,7 +42,7 @@ public class ParentControllerTest extends BaseTest {
         activity = newActivity();
         children = new ArrayList<>();
         Options initialOptions = new Options();
-        initialOptions.topBarOptions.title.text = new Text(INITIAL_TITLE);
+        initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
         uut = spy(new ParentController(activity, "uut", initialOptions) {
 
             @NonNull
@@ -125,7 +125,7 @@ public class ParentControllerTest extends BaseTest {
     @Test
     public void mergeOptions_optionsAreMergedWhenChildAppears() {
         Options options = new Options();
-        options.topBarOptions.title.text = new Text("new title");
+        options.topBar.title.text = new Text("new title");
         ViewController child1 = spy(new SimpleViewController(activity, "child1", options));
         children.add(child1);
         uut.ensureViewIsCreated();
@@ -136,14 +136,14 @@ public class ParentControllerTest extends BaseTest {
         ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
         verify(uut, times(1)).clearOptions();
         verify(uut, times(1)).applyChildOptions(optionsCaptor.capture(), viewCaptor.capture());
-        assertThat(optionsCaptor.getValue().topBarOptions.title.text.get()).isEqualTo("new title");
+        assertThat(optionsCaptor.getValue().topBar.title.text.get()).isEqualTo("new title");
         assertThat(viewCaptor.getValue()).isEqualTo(child1.getView());
     }
 
     @Test
     public void mergeOptions_initialParentOptionsAreNotMutatedWhenChildAppears() {
         Options options = new Options();
-        options.topBarOptions.title.text = new Text("new title");
+        options.topBar.title.text = new Text("new title");
         ViewController child1 = spy(new SimpleViewController(activity, "child1", options));
         children.add(child1);
 
@@ -151,7 +151,7 @@ public class ParentControllerTest extends BaseTest {
 
         child1.ensureViewIsCreated();
         child1.onViewAppeared();
-        assertThat(uut.initialOptions.topBarOptions.title.text.get()).isEqualTo(INITIAL_TITLE);
+        assertThat(uut.initialOptions.topBar.title.text.get()).isEqualTo(INITIAL_TITLE);
     }
 
     private StackController createStack() {

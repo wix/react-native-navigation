@@ -20,7 +20,7 @@ public class BottomTabsOptionsPresenter {
     }
 
     public void present(Options options) {
-        applyBottomTabsOptions(options.bottomTabsOptions, options.animationsOptions);
+        applyBottomTabsOptions(options.bottomTabsOptions, options.animations);
     }
 
     public void present(Options options, int tabIndex) {

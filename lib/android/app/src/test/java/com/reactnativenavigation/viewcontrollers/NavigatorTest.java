@@ -65,14 +65,14 @@ public class NavigatorTest extends BaseTest {
     public void setRoot_AddsChildControllerView() {
         assertThat(uut.getView().getChildCount()).isZero();
         uut.setRoot(child1, new MockPromise());
-        assertIsChildById(uut.getView(), child1.getView());
+        assertIsChild(uut.getView(), child1.getView());
     }
 
     @Test
     public void setRoot_ReplacesExistingChildControllerViews() {
         uut.setRoot(child1, new MockPromise());
         uut.setRoot(child2, new MockPromise());
-        assertIsChildById(uut.getView(), child2.getView());
+        assertIsChild(uut.getView(), child2.getView());
     }
 
     @Test
@@ -87,20 +87,20 @@ public class NavigatorTest extends BaseTest {
         stackController.push(child1, new CommandListenerAdapter());
         uut.setRoot(stackController, new MockPromise());
 
-        assertIsChildById(uut.getView(), stackController.getView());
-        assertIsChildById(stackController.getView(), child1.getView());
+        assertIsChild(uut.getView(), stackController.getView());
+        assertIsChild(stackController.getView(), child1.getView());
 
         uut.push(child1.getId(), child2, new CommandListenerAdapter());
 
-        assertIsChildById(uut.getView(), stackController.getView());
-        assertIsChildById(stackController.getView(), child2.getView());
+        assertIsChild(uut.getView(), stackController.getView());
+        assertIsChild(stackController.getView(), child2.getView());
     }
 
     @Test
     public void push_InvalidPushWithoutAStack_DoesNothing() {
         uut.setRoot(child1, new MockPromise());
         uut.push(child1.getId(), child2, new CommandListenerAdapter());
-        assertIsChildById(uut.getView(), child1.getView());
+        assertIsChild(uut.getView(), child1.getView());
     }
 
     @Test
@@ -213,9 +213,7 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void setStackRoot() {
-        child1.options.animated = new Bool(false);
-        child2.options.animated = new Bool(false);
-        child3.options.animated = new Bool(false);
+        disablePushAnimation(child1, child2, child3);
 
         StackController stack = newStack();
         uut.setRoot(stack, new MockPromise());
@@ -248,14 +246,14 @@ public class NavigatorTest extends BaseTest {
     public void setOptions_CallsApplyNavigationOptions() {
         ComponentViewController componentVc = new SimpleComponentViewController(activity, "theId", new Options());
         componentVc.setParentController(parentController);
-        assertThat(componentVc.options.topBarOptions.title.text.get("")).isEmpty();
+        assertThat(componentVc.options.topBar.title.text.get("")).isEmpty();
         uut.setRoot(componentVc, new MockPromise());
 
         Options options = new Options();
-        options.topBarOptions.title.text = new Text("new title");
+        options.topBar.title.text = new Text("new title");
 
         uut.setOptions("theId", options);
-        assertThat(componentVc.options.topBarOptions.title.text.get()).isEqualTo("new title");
+        assertThat(componentVc.options.topBar.title.text.get()).isEqualTo("new title");
     }
 
     @Test
@@ -275,19 +273,19 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void push_Promise() {
+    public void push_promise() {
         final StackController stackController = newStack();
         stackController.push(child1, new CommandListenerAdapter());
         uut.setRoot(stackController, new MockPromise());
 
-        assertIsChildById(uut.getView(), stackController.getView());
-        assertIsChildById(stackController.getView(), child1.getView());
+        assertIsChild(uut.getView(), stackController.getView());
+        assertIsChild(stackController.getView(), child1.getView());
 
         uut.push(child1.getId(), child2, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                assertIsChildById(uut.getView(), stackController.getView());
-                assertIsChildById(stackController.getView(), child2.getView());
+                assertIsChild(uut.getView(), stackController.getView());
+                assertIsChild(stackController.getView(), child2.getView());
             }
         });
     }
@@ -298,7 +296,7 @@ public class NavigatorTest extends BaseTest {
         uut.push(child1.getId(), child2, new CommandListenerAdapter() {
             @Override
             public void onError(String message) {
-                assertIsChildById(uut.getView(), child1.getView());
+                assertIsChild(uut.getView(), child1.getView());
             }
         });
 
@@ -340,23 +338,23 @@ public class NavigatorTest extends BaseTest {
     public void pushIntoModal() {
         uut.setRoot(parentController, new MockPromise());
         StackController stackController = newStack();
-        stackController.push(child1);
+        stackController.push(child1, new CommandListenerAdapter());
         uut.showModal(stackController, new MockPromise());
         uut.push(stackController.getId(), child2, new CommandListenerAdapter());
-        assertIsChildById(stackController.getView(), child2.getView());
+        assertIsChild(stackController.getView(), child2.getView());
     }
 
     @Test
     public void pushedStackCanBePopped() {
-        child1.options.animated = new Bool(false);
-        child2.options.animated = new Bool(false);
+        child1.options.animations.push.enable = new Bool(false);
+        child2.options.animations.push.enable = new Bool(false);
         StackController parent = newStack();
         parent.ensureViewIsCreated();
         uut.setRoot(parent, new MockPromise());
-        parent.push(parentController);
+        parent.push(parentController, new CommandListenerAdapter());
 
-        parentController.push(child1);
-        parentController.push(child2);
+        parentController.push(child1, new CommandListenerAdapter());
+        parentController.push(child2, new CommandListenerAdapter());
         assertThat(parentController.getChildControllers().size()).isEqualTo(2);
         child1.ensureViewIsCreated();
         child2.ensureViewIsCreated();

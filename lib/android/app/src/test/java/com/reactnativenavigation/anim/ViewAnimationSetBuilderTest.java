@@ -22,12 +22,12 @@ public class ViewAnimationSetBuilderTest extends BaseTest {
     }
 
     @Test
-    public void implementsViewAnimationListener() throws Exception {
+    public void implementsViewAnimationListener() {
         assertThat(new ViewAnimationSetBuilder()).isInstanceOf(Animation.AnimationListener.class);
     }
 
     @Test
-    public void optionalCompletionListener() throws Exception {
+    public void optionalCompletionListener() {
         new ViewAnimationSetBuilder()
                 .add(someView(), someAnimation())
                 .start();
@@ -35,7 +35,7 @@ public class ViewAnimationSetBuilderTest extends BaseTest {
     }
 
     @Test
-    public void startsAllAnimations() throws Exception {
+    public void startsAllAnimations() {
         Animation anim1 = someAnimation();
         Animation anim2 = someAnimation();
         new ViewAnimationSetBuilder()
@@ -48,7 +48,7 @@ public class ViewAnimationSetBuilderTest extends BaseTest {
     }
 
     @Test
-    public void callsEndListenerOnlyAfterAllAnimationsFinish() throws Exception {
+    public void callsEndListenerOnlyAfterAllAnimationsFinish() {
         Animation anim1 = someAnimation();
         Animation anim2 = someAnimation();
         ViewAnimationSetBuilder uut = new ViewAnimationSetBuilder();
@@ -60,7 +60,7 @@ public class ViewAnimationSetBuilderTest extends BaseTest {
     }
 
     @Test
-    public void clearsAnimationFromViewsAfterFinished() throws Exception {
+    public void clearsAnimationFromViewsAfterFinished() {
         View v1 = someView();
         View v2 = someView();
         new ViewAnimationSetBuilder()

@@ -58,4 +58,20 @@ public class ViewUtils {
     public interface Matcher<T> {
         boolean match(T child);
     }
+
+    public static boolean isChildOf(ViewGroup parent, View child) {
+        if (parent == child) return true;
+
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            View view = parent.getChildAt(i);
+            if (view == child) {
+                return true;
+            }
+
+            if (view instanceof ViewGroup) {
+                if (isChildOf((ViewGroup) view, child)) return true;
+            }
+        }
+        return false;
+    }
 }

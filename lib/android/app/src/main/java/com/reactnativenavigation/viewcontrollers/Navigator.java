@@ -1,5 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -75,13 +77,17 @@ public class Navigator extends ParentController implements ModalListener {
         root = viewController;
         View view = viewController.getView();
 
-        AnimationsOptions animationsOptions = viewController.options.animationsOptions;
+        AnimationsOptions animationsOptions = viewController.options.animations;
+        getView().addView(view);
         if (animationsOptions.startApp.hasValue()) {
-            getView().addView(view);
             new NavigationAnimator(viewController.getActivity(), animationsOptions)
-                    .animateStartApp(view, () -> promise.resolve(viewController.getId()));
+                    .animateStartApp(view, new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            promise.resolve(viewController.getId());
+                        }
+                    });
         } else {
-            getView().addView(view);
             promise.resolve(viewController.getId());
         }
     }

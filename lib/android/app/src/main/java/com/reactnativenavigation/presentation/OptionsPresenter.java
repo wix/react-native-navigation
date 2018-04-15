@@ -2,9 +2,7 @@ package com.reactnativenavigation.presentation;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 
-import com.reactnativenavigation.interfaces.ChildDisappearListener;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
@@ -35,8 +33,8 @@ public class OptionsPresenter {
 
     public void applyChildOptions(Options options, Component child) {
         applyOrientation(options.orientationOptions);
-        applyButtons(options.topBarOptions.leftButtons, options.topBarOptions.rightButtons);
-        applyTopBarOptions(options.topBarOptions, options.animationsOptions, child);
+        applyButtons(options.topBar.leftButtons, options.topBar.rightButtons);
+        applyTopBarOptions(options.topBar, options.animations, child, options);
         applyTopTabsOptions(options.topTabsOptions);
         applyTopTabOptions(options.topTabOptions);
     }
@@ -45,9 +43,9 @@ public class OptionsPresenter {
         ((Activity) topBar.getContext()).setRequestedOrientation(options.getValue());
     }
 
-    private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component) {
+    private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
         topBar.setTitle(options.title.text.get(""));
-        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component.get(), options.title.componentAlignment);
+        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component);
         topBar.setTitleFontSize(options.title.fontSize.get(defaultTitleFontSize));
         topBar.setTitleTextColor(options.title.color.get(DEFAULT_TITLE_COLOR));
         topBar.setTitleTypeface(options.title.fontFamily);
@@ -64,14 +62,14 @@ public class OptionsPresenter {
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
 
         if (options.visible.isFalse()) {
-            if (options.animate.isTrueOrUndefined()) {
+            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enable.isTrueOrUndefined()) {
                 topBar.hideAnimate(animationOptions.pop.topBar);
             } else {
                 topBar.hide();
             }
         }
         if (options.visible.isTrueOrUndefined()) {
-            if (options.animate.isTrueOrUndefined()) {
+            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enable.isTrueOrUndefined()) {
                 topBar.showAnimate(animationOptions.push.topBar);
             } else {
                 topBar.show();
@@ -106,23 +104,20 @@ public class OptionsPresenter {
         if (topTabOptions.fontFamily != null) topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
     }
 
-    public void onChildWillDisappear(Options disappearing, Options appearing, @NonNull ChildDisappearListener childDisappearListener) {
-        if (disappearing.topBarOptions.visible.isTrueOrUndefined() && appearing.topBarOptions.visible.isFalse()) {
-            if (disappearing.topBarOptions.animate.isTrueOrUndefined()) {
-                topBar.hideAnimate(disappearing.animationsOptions.pop.topBar, childDisappearListener::childDisappear);
+    public void onChildWillAppear(Options appearing, Options disappearing) {
+        if (disappearing.topBar.visible.isTrueOrUndefined() && appearing.topBar.visible.isFalse()) {
+            if (disappearing.topBar.animate.isTrueOrUndefined() && disappearing.animations.pop.enable.isTrueOrUndefined()) {
+                topBar.hideAnimate(disappearing.animations.pop.topBar);
             } else {
                 topBar.hide();
-                childDisappearListener.childDisappear();
             }
-        } else {
-            childDisappearListener.childDisappear();
         }
     }
 
     public void mergeChildOptions(Options options, Component child) {
         mergeOrientation(options.orientationOptions);
-        mergeButtons(options.topBarOptions.leftButtons, options.topBarOptions.rightButtons);
-        mergeTopBarOptions(options.topBarOptions, options.animationsOptions, child);
+        mergeButtons(options.topBar.leftButtons, options.topBar.rightButtons);
+        mergeTopBarOptions(options.topBar, options.animations, child);
         mergeTopTabsOptions(options.topTabsOptions);
         mergeTopTabOptions(options.topTabOptions);
     }
@@ -138,7 +133,7 @@ public class OptionsPresenter {
 
     private void mergeTopBarOptions(TopBarOptions options, AnimationsOptions animationsOptions, Component component) {
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
-        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component.get(), options.title.componentAlignment);
+        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component);
         if (options.title.color.hasValue()) topBar.setTitleTextColor(options.title.color.get());
         if (options.title.fontSize.hasValue()) topBar.setTitleFontSize(options.title.fontSize.get());
         if (options.title.fontFamily != null) topBar.setTitleTypeface(options.title.fontFamily);

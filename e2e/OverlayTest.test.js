@@ -32,4 +32,12 @@ describe('Overlay', () => {
     await elementById(testIDs.HIDE_TOP_BAR_BUTTON).tap();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
+
+  it('overlay should redraw after orientation change', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.SHOW_OVERLAY_BUTTON).tap();
+    await expect(elementById(testIDs.DIALOG_HEADER)).toBeVisible();
+    await device.setOrientation('landscape');
+    await expect(elementById(testIDs.DIALOG_HEADER)).toBeVisible();
+  });
 });

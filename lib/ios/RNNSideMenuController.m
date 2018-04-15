@@ -30,7 +30,7 @@
 	self.sideMenu = [[MMDrawerController alloc] initWithCenterViewController:self.center leftDrawerViewController:self.left rightDrawerViewController:self.right];
 	
 	self.sideMenu.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
-	self.sideMenu.closeDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
+	self.sideMenu.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
 	
 	[self addChildViewController:self.sideMenu];
 	[self.sideMenu.view setFrame:self.view.bounds];
@@ -74,10 +74,6 @@
 
 - (BOOL)isCustomTransitioned {
 	return NO;
-}
-
-- (BOOL)isAnimated {
-	return YES;
 }
 
 - (RNNOptions *)options {

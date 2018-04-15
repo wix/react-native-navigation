@@ -64,7 +64,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabControllers.forEach(viewController -> viewController.setParentController(uut));
 
         parentController = spy(createStackController("stackId"));
-        parentController.push(uut);
+        parentController.push(uut, new CommandListenerAdapter());
         uut.setParentController(parentController);
     }
 
@@ -79,7 +79,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         for (int i = 0; i < SIZE; i++) {
             final Options options = new Options();
             options.topTabOptions.title = new Text("Tab " + i);
-            options.topBarOptions.title.text = new Text(createTabTopBarTitle(i));
+            options.topBar.title.text = new Text(createTabTopBarTitle(i));
             result.add(options);
         }
         return result;
@@ -181,17 +181,17 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut.onViewAppeared();
         ReactComponent currentTab = tabView(0);
         verify(uut, times(1)).applyChildOptions(any(Options.class), eq(currentTab));
-        assertThat(uut.options.topBarOptions.title.text.get()).isEqualTo(createTabTopBarTitle(0));
+        assertThat(uut.options.topBar.title.text.get()).isEqualTo(createTabTopBarTitle(0));
 
         uut.switchToTab(1);
         currentTab = tabView(1);
         verify(uut, times(1)).applyChildOptions(any(Options.class), eq(currentTab));
-        assertThat(uut.options.topBarOptions.title.text.get()).isEqualTo(createTabTopBarTitle(1));
+        assertThat(uut.options.topBar.title.text.get()).isEqualTo(createTabTopBarTitle(1));
 
         uut.switchToTab(0);
         currentTab = tabView(0);
         verify(uut, times(2)).applyChildOptions(any(Options.class), eq(currentTab));
-        assertThat(uut.options.topBarOptions.title.text.get()).isEqualTo(createTabTopBarTitle(0));
+        assertThat(uut.options.topBar.title.text.get()).isEqualTo(createTabTopBarTitle(0));
     }
 
     private TestReactView getActualTabView(int index) {
@@ -231,10 +231,10 @@ public class TopTabsViewControllerTest extends BaseTest {
                 new TestComponentViewCreator(),
                 new Options()
         );
-        first.options.animated = new Bool(false);
-        uut.options.animated = new Bool(false);
-        stackController.push(first);
-        stackController.push(uut);
+        first.options.animations.push.enable = new Bool(false);
+        uut.options.animations.push.enable = new Bool(false);
+        stackController.push(first, new CommandListenerAdapter());
+        stackController.push(uut, new CommandListenerAdapter());
 
         first.ensureViewIsCreated();
         uut.ensureViewIsCreated();

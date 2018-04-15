@@ -12,7 +12,6 @@ import android.view.ViewTreeObserver;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.FabOptionsPresenter;
-import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.utils.UiUtils;
@@ -112,9 +111,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
                 throw new RuntimeException("Tried to create view after it has already been destroyed");
             }
             view = createView();
-            if (view.getId() < 0) {
-                view.setId(CompatUtils.generateViewId());
-            }
             view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         }
         return view;
