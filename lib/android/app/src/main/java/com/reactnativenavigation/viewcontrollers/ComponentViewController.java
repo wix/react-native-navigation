@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
+import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.ReactComponent;
 

@@ -7,6 +7,9 @@ import com.facebook.react.views.scroll.ScrollEvent;
 import com.reactnativenavigation.utils.ReflectionUtils;
 import com.reactnativenavigation.utils.UiThread;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ScrollEventListener implements EventDispatcherListener {
 
     public interface OnScrollListener {
@@ -28,24 +31,36 @@ public class ScrollEventListener implements EventDispatcherListener {
     }
 
     private ScrollAwareView view;
-    private OnScrollListener onScrollListener;
-    private OnDragListener dragListener;
+    private Set<OnScrollListener> scrollSet;
+    private Set<OnDragListener> dragSet;
     private EventDispatcher eventDispatcher;
     private int prevScrollY = -1;
     private boolean dragStarted;
 
     public ScrollEventListener(EventDispatcher eventDispatcher) {
         this.eventDispatcher = eventDispatcher;
+        scrollSet = new HashSet<>();
+        dragSet = new HashSet<>();
     }
 
     public void register(ScrollAwareView scrollAwareView, OnScrollListener scrollListener, OnDragListener dragListener) {
         this.view = scrollAwareView;
-        this.onScrollListener = scrollListener;
-        this.dragListener = dragListener;
+        if (scrollListener != null) scrollSet.add(scrollListener);
+        if (dragListener != null) dragSet.add(dragListener);
         eventDispatcher.addListener(this);
     }
 
+    public void unregister(OnScrollListener scrollListener, OnDragListener dragListener) {
+        scrollSet.remove(scrollListener);
+        dragSet.remove(dragListener);
+        if (scrollSet.isEmpty() && dragSet.isEmpty()) {
+            eventDispatcher.removeListener(this);
+        }
+    }
+
     public void unregister() {
+        scrollSet.clear();
+        dragSet.clear();
         eventDispatcher.removeListener(this);
     }
 
@@ -84,9 +99,11 @@ public class ScrollEventListener implements EventDispatcherListener {
         final int scrollDiff = calcScrollDiff(scrollY, oldScrollY, view.getMeasuredHeight());
         final float translationY = view.getTranslationY() - scrollDiff;
         if (scrollDiff < 0) {
-            onScrollListener.onScrollDown(translationY);
+            for (OnScrollListener listener : scrollSet)
+                listener.onScrollDown(translationY);
         } else {
-            onScrollListener.onScrollUp(translationY);
+            for (OnScrollListener listener : scrollSet)
+                listener.onScrollUp(translationY);
         }
     }
 
@@ -103,9 +120,11 @@ public class ScrollEventListener implements EventDispatcherListener {
         UiThread.post(() -> {
             if (!dragStarted) {
                 if (velocity > 0) {
-                    dragListener.onShow();
+                    for (OnDragListener listener : dragSet)
+                        listener.onShow();
                 } else {
-                    dragListener.onHide();
+                    for (OnDragListener listener : dragSet)
+                        listener.onHide();
                 }
             }
         });

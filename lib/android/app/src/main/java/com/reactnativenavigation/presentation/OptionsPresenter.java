@@ -37,6 +37,7 @@ public class OptionsPresenter {
         applyTopBarOptions(options.topBar, options.animations, child, options);
         applyTopTabsOptions(options.topTabsOptions);
         applyTopTabOptions(options.topTabOptions);
+        setCollapseOptions(options.topTabsOptions, options.topBarOptions, child);
     }
 
     public void applyOrientation(OrientationOptions options) {
@@ -80,13 +81,6 @@ public class OptionsPresenter {
         } else if (options.drawBehind.isFalseOrUndefined()) {
             component.drawBelowTopBar(topBar);
         }
-        if (options.hideOnScroll.isTrue()) {
-            if (component instanceof IReactView) {
-                topBar.enableCollapse(((IReactView) component).getScrollEventListener());
-            }
-        } else if (options.hideOnScroll.isFalseOrUndefined()) {
-            topBar.disableCollapse();
-        }
     }
 
     private void applyButtons(ArrayList<Button> leftButtons, ArrayList<Button> rightButtons) {
@@ -101,7 +95,32 @@ public class OptionsPresenter {
     }
 
     private void applyTopTabOptions(TopTabOptions topTabOptions) {
-        if (topTabOptions.fontFamily != null) topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
+        if (topTabOptions.fontFamily != null)
+            topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
+    }
+
+    private void setCollapseOptions(TopTabsOptions topTabsOptions, TopBarOptions topBarOptions, Component component) {
+        if (topBarOptions.hideOnScroll.isTrue()) {
+            if (topTabsOptions.hideOnScroll.isTrueOrUndefined()) {
+                topBar.enableCollapse(((IReactView) component).getScrollEventListener());
+            }
+            if (topTabsOptions.hideOnScroll.isFalse()) {
+                topBar.disableTopTabsCollapse();
+                topBar.enableTitleBarCollapse(((IReactView) component).getScrollEventListener());
+            }
+        }
+        if (topBarOptions.hideOnScroll.isFalseOrUndefined()) {
+            if (topTabsOptions.hideOnScroll.isFalseOrUndefined()) {
+                topBar.disableTopTabsCollapse();
+                topBar.disableTitleBarCollapse();
+                topBar.disableCollapse();
+            }
+            if (topTabsOptions.hideOnScroll.isTrue()) {
+                topBar.disableTitleBarCollapse();
+                topBar.disableCollapse();
+                topBar.enableTopTabsCollapse(((IReactView) component).getScrollEventListener());
+            }
+        }
     }
 
     public void onChildWillAppear(Options appearing, Options disappearing) {
@@ -120,6 +139,7 @@ public class OptionsPresenter {
         mergeTopBarOptions(options.topBar, options.animations, child);
         mergeTopTabsOptions(options.topTabsOptions);
         mergeTopTabOptions(options.topTabOptions);
+        setCollapseOptions(options.topTabsOptions, options.topBarOptions, child);
     }
 
     private void mergeOrientation(OrientationOptions orientationOptions) {
@@ -167,21 +187,17 @@ public class OptionsPresenter {
         if (options.drawBehind.isFalse()) {
             component.drawBelowTopBar(topBar);
         }
-        if (options.hideOnScroll.isTrue() && component instanceof IReactView) {
-            topBar.enableCollapse(((IReactView) component).getScrollEventListener());
-        }
-        if (options.hideOnScroll.isFalse()) {
-            topBar.disableCollapse();
-        }
     }
 
     private void mergeTopTabsOptions(TopTabsOptions options) {
-        if (options.selectedTabColor.hasValue() && options.unselectedTabColor.hasValue()) topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
+        if (options.selectedTabColor.hasValue() && options.unselectedTabColor.hasValue())
+            topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
         if (options.fontSize.hasValue()) topBar.applyTopTabsFontSize(options.fontSize);
         if (options.visible.hasValue()) topBar.setTopTabsVisible(options.visible.isTrue());
     }
 
     private void mergeTopTabOptions(TopTabOptions topTabOptions) {
-        if (topTabOptions.fontFamily != null) topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
+        if (topTabOptions.fontFamily != null)
+            topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
     }
 }

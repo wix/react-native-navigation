@@ -1,6 +1,7 @@
 package com.reactnativenavigation.anim;
 
 
+import android.util.Log;
 import android.view.View;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
@@ -23,7 +24,7 @@ public class TopBarCollapseBehavior implements ScrollEventListener.OnScrollListe
 
     public void disableCollapse() {
         if (scrollEventListener != null) {
-            scrollEventListener.unregister();
+            scrollEventListener.unregister(this, this);
             topBar.setVisibility(View.VISIBLE);
             topBar.setTranslationY(0);
         }
@@ -32,6 +33,7 @@ public class TopBarCollapseBehavior implements ScrollEventListener.OnScrollListe
     @Override
     public void onScrollUp(float nextTranslation) {
         final int measuredHeight = topBar.getMeasuredHeight();
+        Log.i("NIGA", "topbar = " + measuredHeight);
         if (nextTranslation < -measuredHeight && topBar.getVisibility() == View.VISIBLE) {
             topBar.setVisibility(View.GONE);
             topBar.setTranslationY(-measuredHeight);

@@ -7,8 +7,11 @@ import android.graphics.Typeface;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 
+import com.reactnativenavigation.anim.TitleBarCollapseBehavior;
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Button;
@@ -27,15 +30,16 @@ import javax.annotation.Nullable;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 @SuppressLint("ViewConstructor")
-public class TitleBar extends Toolbar {
+public class TitleBar extends Toolbar implements ScrollEventListener.ScrollAwareView {
     private final ReactViewCreator buttonCreator;
     private TitleBarReactViewController reactViewController;
     private final TitleBarReactViewCreator reactViewCreator;
     private final TopBarButtonController.OnClickListener onClickListener;
     private final List<TopBarButtonController> rightButtonControllers = new ArrayList<>();
     private TopBarButtonController leftButtonController;
+    private TitleBarCollapseBehavior collapseBehavior;
 
-    public TitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
+    public TitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener, View parent) {
         super(context);
         this.buttonCreator = buttonCreator;
         this.reactViewCreator = reactViewCreator;
@@ -43,6 +47,7 @@ public class TitleBar extends Toolbar {
         this.onClickListener = onClickListener;
         getMenu();
         setContentDescription("titleBar");
+        collapseBehavior = new TitleBarCollapseBehavior(this, parent);
     }
 
     @Override
@@ -199,5 +204,13 @@ public class TitleBar extends Toolbar {
             lp.gravity = Gravity.CENTER;
         }
         return lp;
+    }
+
+    public void enableCollapse(ScrollEventListener scrollEventListener) {
+        collapseBehavior.enableCollapse(scrollEventListener);
+    }
+
+    public void disableCollapse() {
+        collapseBehavior.disableCollapse();
     }
 }

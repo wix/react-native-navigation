@@ -48,7 +48,7 @@ public class TitleBarTest extends BaseTest {
         createButtons();
         buttonControllers = new HashMap<>();
         TitleBarReactViewCreatorMock reactViewCreator = new TitleBarReactViewCreatorMock();
-        uut = spy(new TitleBar(activity, buttonCreator, reactViewCreator, (buttonId -> {})) {
+        uut = spy(new TitleBar(activity, buttonCreator, reactViewCreator, (buttonId -> {}), null) {
             @Override
             public TopBarButtonController createButtonController(Button button) {
                 TopBarButtonController controller = spy(super.createButtonController(button));

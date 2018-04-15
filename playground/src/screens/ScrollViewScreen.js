@@ -21,6 +21,9 @@ class ScrollViewScreen extends Component {
         visible: true,
         testID: testIDs.TOP_BAR_ELEMENT
       },
+      topTabs: {
+        hideOnScroll: false
+      },
       fab: {
         id: FAB,
         backgroundColor: 'blue',
@@ -34,9 +37,11 @@ class ScrollViewScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      topBarHideOnScroll: false
+      topBarHideOnScroll: false,
+      topTabsHideOnScroll: false
     };
     this.onClickToggleTopBarHideOnScroll = this.onClickToggleTopBarHideOnScroll.bind(this);
+    this.onClickToggleTopTabsHideOnScroll = this.onClickToggleTopTabsHideOnScroll.bind(this);
   }
 
   render() {
@@ -45,6 +50,7 @@ class ScrollViewScreen extends Component {
         <ScrollView testID={testIDs.SCROLLVIEW_ELEMENT} contentContainerStyle={styles.contentContainer}>
           <View>
             <Button title='Toggle Top Bar Hide On Scroll' testID={testIDs.TOGGLE_TOP_BAR_HIDE_ON_SCROLL} onPress={this.onClickToggleTopBarHideOnScroll} />
+            <Button title='Toggle TopTabs Hide On Scroll' testID={testIDs.TOGGLE_TOP_BAR_HIDE_ON_SCROLL} onPress={this.onClickToggleTopTabsHideOnScroll} />
           </View>
         </ScrollView>
       </View>
@@ -57,10 +63,20 @@ class ScrollViewScreen extends Component {
     });
   }
 
+  onClickToggleTopTabsHideOnScroll() {
+    this.setState({
+      topTabsHideOnScroll: !this.state.topTabsHideOnScroll
+    });
+  }
+
   componentDidUpdate() {
+    console.log('NIGA', `topbar = ${this.state.topBarHideOnScroll} toptabs = ${this.state.topTabsHideOnScroll}`);
     Navigation.setOptions(this.props.componentId, {
       topBar: {
         hideOnScroll: this.state.topBarHideOnScroll
+      },
+      topTabs: {
+        hideOnScroll: this.state.topTabsHideOnScroll
       },
       fab: {
         hideOnScroll: !this.state.topBarHideOnScroll

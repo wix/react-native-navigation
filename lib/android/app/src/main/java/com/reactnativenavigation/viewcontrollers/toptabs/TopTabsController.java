@@ -82,15 +82,20 @@ public class TopTabsController extends ParentController<TopTabsViewPager> implem
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
         applyOnParentController(parentController -> {
-                Options opt = this.options.copy();
-                ((ParentController) parentController).applyChildOptions(opt.clearTopTabOptions().clearTopTabsOptions(), child);
-            }
+                    Options opt = this.options.copy();
+                    ((ParentController) parentController).applyChildOptions(opt.clearTopTabOptions().clearTopTabsOptions(), child);
+                }
         );
     }
 
     @Override
     public void mergeOptions(Options options) {
+    }
 
+    @Override
+    public void mergeChildOptions(Options options, Component child) {
+        super.mergeChildOptions(options, child);
+        applyOnParentController(parent -> ((ParentController) parent).mergeChildOptions(options, child));
     }
 
     public void switchToTab(int index) {

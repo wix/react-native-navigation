@@ -4,18 +4,23 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.ViewManager;
 
+import com.reactnativenavigation.anim.TopTabsCollapseBehavior;
+import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.views.topbar.TopBar;
 
-public class TopTabs extends TabLayout {
+public class TopTabs extends TabLayout implements ScrollEventListener.ScrollAwareView {
     private final TopTabsStyleHelper styleHelper;
+    private TopTabsCollapseBehavior collapseBehavior;
 
-    public TopTabs(Context context) {
+    public TopTabs(Context context, View parent) {
         super(context);
         styleHelper = new TopTabsStyleHelper(this);
+        collapseBehavior = new TopTabsCollapseBehavior(this, parent);
     }
 
     public void setFontFamily(int tabIndex, Typeface fontFamily) {
@@ -56,5 +61,13 @@ public class TopTabs extends TabLayout {
 
     public void init(ViewPager viewPager) {
         setupWithViewPager(viewPager);
+    }
+
+    public void enableCollapse(ScrollEventListener scrollEventListener) {
+        collapseBehavior.enableCollapse(scrollEventListener);
+    }
+
+    public void disableCollapse() {
+        collapseBehavior.disableCollapse();
     }
 }

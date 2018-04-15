@@ -51,23 +51,22 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         collapsingBehavior = new TopBarCollapseBehavior(this);
         this.topBarBackgroundViewController = topBarBackgroundViewController;
         this.parentView = parentView;
-        topTabs = new TopTabs(getContext());
         animator = new TopBarAnimator(this, parentView.getStackId());
         createLayout(buttonCreator, titleBarReactViewCreator, onClickListener);
     }
 
     private void createLayout(ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
-        topTabs = new TopTabs(getContext());
+        root = new RelativeLayout(getContext());
+        topTabs = new TopTabs(getContext(), root);
         titleBar = createTitleBar(getContext(), buttonCreator, titleBarReactViewCreator, onClickListener);
         titleBar.setId(CompatUtils.generateViewId());
-        root = new RelativeLayout(getContext());
         root.addView(titleBar, MATCH_PARENT, WRAP_CONTENT);
         addView(root, MATCH_PARENT, WRAP_CONTENT);
         setContentDescription("TopBar");
     }
 
     protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
-        return new TitleBar(context, buttonCreator, reactViewCreator, onClickListener);
+        return new TitleBar(context, buttonCreator, reactViewCreator, onClickListener, root);
     }
 
     public void setTitle(String title) {
@@ -163,7 +162,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void initTopTabs(ViewPager viewPager) {
-        topTabs = new TopTabs(getContext());
+        topTabs = new TopTabs(getContext(), root);
         topTabs.init(viewPager);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
         lp.addRule(RelativeLayout.BELOW, titleBar.getId());
@@ -174,8 +173,24 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         collapsingBehavior.enableCollapse(scrollEventListener);
     }
 
+    public void enableTitleBarCollapse(ScrollEventListener scrollEventListener) {
+        if (titleBar != null) titleBar.enableCollapse(scrollEventListener);
+    }
+
+    public void enableTopTabsCollapse(ScrollEventListener scrollEventListener) {
+        if (topTabs != null) topTabs.enableCollapse(scrollEventListener);
+    }
+
     public void disableCollapse() {
         collapsingBehavior.disableCollapse();
+    }
+
+    public void disableTitleBarCollapse() {
+        if (titleBar != null) titleBar.disableCollapse();
+    }
+
+    public void disableTopTabsCollapse() {
+        if (topTabs != null) topTabs.disableCollapse();
     }
 
     public void show() {
@@ -225,6 +240,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public void clearTopTabs() {
         topTabs.clear(this);
+        if (titleBar.isAttachedToWindow()) {
+            root.removeView(topTabs);
+            root.getLayoutParams().height = WRAP_CONTENT;
+            topBarBackgroundViewController.getView().getLayoutParams().height = titleBar.getMeasuredHeight();
+            root.invalidate();
+        }
     }
 
     @VisibleForTesting
