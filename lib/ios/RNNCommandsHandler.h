@@ -10,7 +10,7 @@
 
 -(void) setRoot:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
 
--(void) setOptions:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
+-(void) mergeOptions:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
 
 -(void) setDefaultOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
 

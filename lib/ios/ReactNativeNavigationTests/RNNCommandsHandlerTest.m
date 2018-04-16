@@ -80,7 +80,7 @@
 	NSDictionary* dictFromJs = @{@"topBar": @{@"backgroundColor" :@(0xFFFF0000)}};
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 
-	[self.uut setOptions:@"componentId" options:dictFromJs completion:^{
+	[self.uut mergeOptions:@"componentId" options:dictFromJs completion:^{
 		XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
 		XCTAssertTrue([nav.navigationBar.barTintColor isEqual:expectedColor]);
 	}];

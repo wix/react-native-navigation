@@ -24,8 +24,8 @@ RCT_EXPORT_METHOD(setRoot:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock
 	}];
 }
 
-RCT_EXPORT_METHOD(setOptions:(NSString*)componentId options:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler setOptions:componentId options:options completion:^{
+RCT_EXPORT_METHOD(mergeOptions:(NSString*)componentId options:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	[_commandsHandler mergeOptions:componentId options:options completion:^{
 		resolve(componentId);
 	}];
 }
