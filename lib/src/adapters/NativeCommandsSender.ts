@@ -14,8 +14,8 @@ export class NativeCommandsSender {
     return this.nativeCommandsModule.setDefaultOptions(options);
   }
 
-  setOptions(componentId: string, options: object) {
-    return this.nativeCommandsModule.setOptions(componentId, options);
+  mergeOptions(componentId: string, options: object) {
+    return this.nativeCommandsModule.mergeOptions(componentId, options);
   }
 
   push(onComponentId: string, layout: object) {

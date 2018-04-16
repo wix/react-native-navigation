@@ -42,10 +42,10 @@ Navigation.setDefaultOptions({
 ```
 
 ## Setting styles dynamically
-Use the `setOptions` method to change a screen's style dynamically.
+Use the `mergeOptions` method to change a screen's style dynamically.
 
 ```js
-Navigation.setOptions(this.props.componentId, {
+Navigation.mergeOptions(this.props.componentId, {
   topBar: {
     visible: true
   }
@@ -142,7 +142,8 @@ Navigation.setOptions(this.props.componentId, {
     badge: '2',
     testID: 'bottomTabTestID',
     visible: undefined,
-    icon: require('tab.png')
+    icon: require('tab.png'),
+    iconInsets: { top: 0, left: 0, bottom: 0, right: 0 }
   },
   sideMenu: {
     left: {

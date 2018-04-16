@@ -20,7 +20,7 @@ class SideMenuScreen extends Component {
   }
 
   hideSideMenu() {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       sideMenu: {
         [this.props.side]: {
           visible: false

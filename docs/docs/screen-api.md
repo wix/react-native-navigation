@@ -44,6 +44,13 @@ Pop all the screens until the root from this screen's navigation stack.
 ```js
 Navigation.popToRoot(this.props.componentId);
 ```
+## popTo(componentId)
+
+Pop the stack to a given component.
+
+```js
+Navigation.popTo(componentId);
+```
 
 ## setStackRoot(componentId, params)
 
@@ -121,12 +128,12 @@ this.props.navigator.handleDeepLink({
   Navigation.handleDeepLink(...);
 ``` -->
 
-## setOptions(componentId, options = {})
+## mergeOptions(componentId, options = {})
 
 Set options dynamically for component.
 
 ```js
-Navigation.setOptions(this.props.componentId, {
+Navigation.mergeOptions(this.props.componentId, {
   topBar: {
     visible: true,
     title: {

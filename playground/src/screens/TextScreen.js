@@ -58,7 +58,7 @@ class TextScreen extends Component {
   }
 
   onButtonPress() {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       bottomTab: {
         badge: `TeSt`
       }
@@ -66,7 +66,7 @@ class TextScreen extends Component {
   }
 
   onClickSwitchToTab() {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       bottomTabs: {
         currentTabIndex: 1,
         visible: false,
@@ -78,7 +78,7 @@ class TextScreen extends Component {
   }
 
   onClickSwitchToTabByComponentID() {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       bottomTabs: {
         currentTabId: globalFirstComponentID
       }
@@ -86,7 +86,7 @@ class TextScreen extends Component {
   }
 
   hideTabBar(visible) {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       bottomTabs: {
         visible,
         animate: true
@@ -95,7 +95,7 @@ class TextScreen extends Component {
   }
 
   showSideMenu(side) {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       sideMenu: {
         [side]: {
           visible: true

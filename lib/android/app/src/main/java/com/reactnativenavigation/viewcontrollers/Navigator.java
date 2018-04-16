@@ -100,7 +100,7 @@ public class Navigator extends ParentController implements ModalListener {
         return defaultOptions;
     }
 
-    public void setOptions(final String componentId, Options options) {
+    public void mergeOptions(final String componentId, Options options) {
         ViewController target = findControllerById(componentId);
         if (target instanceof NavigationOptionsListener) {
             ((NavigationOptionsListener) target).mergeOptions(options);

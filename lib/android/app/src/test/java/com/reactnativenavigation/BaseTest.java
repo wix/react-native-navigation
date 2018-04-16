@@ -49,4 +49,8 @@ public abstract class BaseTest {
             controller.options.animations.push.enable = new Bool(false);
         }
     }
+
+    protected void dispatchPreDraw(View view) {
+        view.getViewTreeObserver().dispatchOnPreDraw();
+    }
 }

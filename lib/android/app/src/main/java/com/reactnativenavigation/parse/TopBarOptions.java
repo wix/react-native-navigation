@@ -20,19 +20,19 @@ import java.util.ArrayList;
 
 public class TopBarOptions {
 
-    public static TopBarOptions parse(TypefaceLoader typefaceManager, JSONObject json) {
+    public static TopBarOptions parse(TypefaceLoader typefaceLoader, JSONObject json) {
         TopBarOptions options = new TopBarOptions();
         if (json == null) return options;
 
-        options.title = TitleOptions.parse(typefaceManager, json.optJSONObject("title"));
-        options.subtitle = SubtitleOptions.parse(typefaceManager, json.optJSONObject("subtitle"));
+        options.title = TitleOptions.parse(typefaceLoader, json.optJSONObject("title"));
+        options.subtitle = SubtitleOptions.parse(typefaceLoader, json.optJSONObject("subtitle"));
         options.background = TopBarBackgroundOptions.parse(json.optJSONObject("background"));
         options.visible = BoolParser.parse(json, "visible");
         options.animate = BoolParser.parse(json,"animate");
         options.hideOnScroll = BoolParser.parse(json,"hideOnScroll");
         options.drawBehind = BoolParser.parse(json,"drawBehind");
-        options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"));
-        options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"));
+        options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"), typefaceLoader);
+        options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"), typefaceLoader);
         options.testId = TextParser.parse(json, "testID");
 
         options.validate();

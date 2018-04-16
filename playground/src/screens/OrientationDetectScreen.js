@@ -12,7 +12,7 @@ class OrientationDetectScreen extends Component {
 
     this.detectHorizontal = this.detectHorizontal.bind(this);
     this.state = { horizontal: false };
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       orientation: props.orientation
     });
   }

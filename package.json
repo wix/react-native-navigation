@@ -74,7 +74,10 @@
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "tslint": "5.x.x",
-    "typescript": "2.7.x"
+    "typescript": "2.7.x",
+    "typedoc": "0.x.x",
+    "handlebars": "4.x.x",
+    "ts-node": "5.x.x"
   },
   "babel": {
     "env": {

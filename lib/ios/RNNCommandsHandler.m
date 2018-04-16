@@ -38,7 +38,7 @@
 	completion();
 }
 
--(void) setOptions:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion {
+-(void) mergeOptions:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
 	UIViewController* vc = [_store findComponentForId:componentId];

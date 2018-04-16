@@ -13,6 +13,8 @@ import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.utils.ButtonOptionsPresenter;
+import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
@@ -190,7 +192,7 @@ public class TitleBar extends Toolbar {
     }
 
     public TopBarButtonController createButtonController(Button button) {
-        return new TopBarButtonController((Activity) getContext(), button, buttonCreator, onClickListener);
+        return new TopBarButtonController((Activity) getContext(), new ImageLoader(), new ButtonOptionsPresenter(this, button), button, buttonCreator, onClickListener);
     }
 
     public Toolbar.LayoutParams getComponentLayoutParams(Component component) {

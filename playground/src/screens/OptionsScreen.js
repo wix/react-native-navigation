@@ -62,8 +62,9 @@ class OptionsScreen extends Component {
             id: BUTTON_ONE,
             testID: BUTTON_ONE,
             title: 'One',
-            buttonFontSize: 28,
-            buttonColor: 'red'
+            fontFamily: 'HelveticaNeue-Italic',
+            fontSize: 28,
+            color: 'red'
           }
         ],
         leftButtons: [{
@@ -71,7 +72,7 @@ class OptionsScreen extends Component {
           testID: BUTTON_LEFT,
           icon: require('../../img/navicon_add.png'),
           title: 'Left',
-          buttonColor: 'purple'
+          color: 'purple'
         }]
       },
       fab: {
@@ -124,7 +125,7 @@ class OptionsScreen extends Component {
 
   onNavigationButtonPressed(id) {
     if (id === BUTTON_ONE) {
-      Navigation.setOptions(this.props.componentId, {
+      Navigation.mergeOptions(this.props.componentId, {
         topBar: {
           rightButtons: [{
             id: BUTTON_TWO,
@@ -133,28 +134,28 @@ class OptionsScreen extends Component {
             icon: require('../../img/navicon_add.png'),
             disableIconTint: true,
             showAsAction: 'ifRoom',
-            buttonColor: 'green',
-            buttonFontSize: 28,
-            buttonFontWeight: '800'
+            color: 'green',
+            fontSize: 28,
+            fontWeight: '800'
           }],
           leftButtons: []
         }
       });
     } else if (id === BUTTON_TWO) {
-      Navigation.setOptions(this.props.componentId, {
+      Navigation.mergeOptions(this.props.componentId, {
         topBar: {
           rightButtons: [{
             id: BUTTON_ONE,
             testID: BUTTON_ONE,
             title: 'One',
-            buttonColor: 'red'
+            color: 'red'
           }],
           leftButtons: [{
             id: BUTTON_LEFT,
             testID: BUTTON_LEFT,
             icon: require('../../img/navicon_add.png'),
             title: 'Left',
-            buttonColor: 'purple'
+            color: 'purple'
           }]
         }
       });
@@ -164,7 +165,7 @@ class OptionsScreen extends Component {
   }
 
   onClickDynamicOptions = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         title: {
           text: 'Dynamic Title',
@@ -172,8 +173,7 @@ class OptionsScreen extends Component {
           largeTitle: false,
           fontSize: 20,
           fontFamily: 'HelveticaNeue-CondensedBold'
-        },
-        buttonColor: 'red',
+        }
       }
     });
   }
@@ -195,7 +195,7 @@ class OptionsScreen extends Component {
   }
 
   onClickTopBarTransparent = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         transparent: true
       }
@@ -203,7 +203,7 @@ class OptionsScreen extends Component {
   }
 
   onClickTopBarOpaque = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         transparent: false
       }
@@ -211,7 +211,7 @@ class OptionsScreen extends Component {
   }
 
   onClickShowTopBar = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         visible: true,
         animate: true
@@ -220,7 +220,7 @@ class OptionsScreen extends Component {
   }
 
   onClickHideTopBar = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         visible: false,
         animate: true
@@ -229,7 +229,7 @@ class OptionsScreen extends Component {
   }
 
   onClickFab = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       fab: {
         id: FAB,
         visible: false
@@ -267,7 +267,7 @@ class OptionsScreen extends Component {
   }
 
   onShowTopBarReactView = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         title: {
           component: {

@@ -2,9 +2,6 @@ package com.reactnativenavigation.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -29,10 +26,6 @@ public class UiUtils {
             }
         });
     }
-
-	public static void tintDrawable(Drawable drawable, int tint) {
-		drawable.setColorFilter(new PorterDuffColorFilter(tint, PorterDuff.Mode.SRC_IN));
-	}
 
 	public static void runOnMainThread(Runnable runnable) {
 		new Handler(Looper.getMainLooper()).post(runnable);

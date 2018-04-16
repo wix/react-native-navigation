@@ -70,6 +70,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | push              |   ✅       |	✅		|
 | pop               |  ✅        |	✅	|
 | popToRoot              |   ✅         |✅	|
+| popTo              |   ✅         |✅	|
 | resetTo             |   ✅        |	✅|
 | showModal              |  ✅        |	✅|
 | dismissModal           |     ✅       |	✅|
@@ -212,4 +213,3 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | topBar react component        |   ✅     |✅|✅|
 |Shared Element Transition|     :x:  |✅| [Contribute](/docs/WorkingLocally.md)|
 | splitViewScreen       |     :x:  |    [Contribute](/docs/WorkingLocally.md)      | [Contribute](/docs/WorkingLocally.md)|
-

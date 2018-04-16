@@ -58,7 +58,7 @@ class ScrollViewScreen extends Component {
   }
 
   componentDidUpdate() {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         hideOnScroll: this.state.topBarHideOnScroll
       },
