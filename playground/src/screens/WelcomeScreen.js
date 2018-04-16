@@ -417,7 +417,7 @@ class WelcomeScreen extends Component {
         ]
       }
     });
-    Navigation.setOptions('my unique id', {
+    Navigation.mergeOptions('my unique id', {
       topBar: {
         title: {
           text: 'User provided id'

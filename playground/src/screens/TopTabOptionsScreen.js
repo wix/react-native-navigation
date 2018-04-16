@@ -33,7 +33,7 @@ class TopTabOptionsScreen extends PureComponent {
   }
 
   onClickDynamicOptions() {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         title: {
           text: 'Dynamic Title',

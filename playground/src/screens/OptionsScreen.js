@@ -125,7 +125,7 @@ class OptionsScreen extends Component {
 
   onNavigationButtonPressed(id) {
     if (id === BUTTON_ONE) {
-      Navigation.setOptions(this.props.componentId, {
+      Navigation.mergeOptions(this.props.componentId, {
         topBar: {
           rightButtons: [{
             id: BUTTON_TWO,
@@ -142,7 +142,7 @@ class OptionsScreen extends Component {
         }
       });
     } else if (id === BUTTON_TWO) {
-      Navigation.setOptions(this.props.componentId, {
+      Navigation.mergeOptions(this.props.componentId, {
         topBar: {
           rightButtons: [{
             id: BUTTON_ONE,
@@ -165,7 +165,7 @@ class OptionsScreen extends Component {
   }
 
   onClickDynamicOptions = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         title: {
           text: 'Dynamic Title',
@@ -173,8 +173,7 @@ class OptionsScreen extends Component {
           largeTitle: false,
           fontSize: 20,
           fontFamily: 'HelveticaNeue-CondensedBold'
-        },
-        color: 'red',
+        }
       }
     });
   }
@@ -196,7 +195,7 @@ class OptionsScreen extends Component {
   }
 
   onClickTopBarTransparent = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         transparent: true
       }
@@ -204,7 +203,7 @@ class OptionsScreen extends Component {
   }
 
   onClickTopBarOpaque = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         transparent: false
       }
@@ -212,7 +211,7 @@ class OptionsScreen extends Component {
   }
 
   onClickShowTopBar = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         visible: true,
         animate: true
@@ -221,7 +220,7 @@ class OptionsScreen extends Component {
   }
 
   onClickHideTopBar = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         visible: false,
         animate: true
@@ -230,7 +229,7 @@ class OptionsScreen extends Component {
   }
 
   onClickFab = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       fab: {
         id: FAB,
         visible: false
@@ -268,7 +267,7 @@ class OptionsScreen extends Component {
   }
 
   onShowTopBarReactView = () => {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         title: {
           component: {

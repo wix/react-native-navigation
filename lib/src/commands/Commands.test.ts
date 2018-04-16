@@ -68,17 +68,17 @@ describe('Commands', () => {
     });
   });
 
-  describe('setOptions', () => {
+  describe('mergeOptions', () => {
     it('deep clones input to avoid mutation errors', () => {
       const obj = { title: 'test' };
-      uut.setOptions('theComponentId', obj);
-      expect(mockCommandsSender.setOptions.mock.calls[0][1]).not.toBe(obj);
+      uut.mergeOptions('theComponentId', obj);
+      expect(mockCommandsSender.mergeOptions.mock.calls[0][1]).not.toBe(obj);
     });
 
     it('passes options for component', () => {
-      uut.setOptions('theComponentId', { title: '1' });
-      expect(mockCommandsSender.setOptions).toHaveBeenCalledTimes(1);
-      expect(mockCommandsSender.setOptions).toHaveBeenCalledWith('theComponentId', { title: '1' });
+      uut.mergeOptions('theComponentId', { title: '1' });
+      expect(mockCommandsSender.mergeOptions).toHaveBeenCalledTimes(1);
+      expect(mockCommandsSender.mergeOptions).toHaveBeenCalledWith('theComponentId', { title: '1' });
     });
   });
 
@@ -360,7 +360,7 @@ describe('Commands', () => {
       const argsForMethodName = {
         setRoot: [{}],
         setDefaultOptions: [{}],
-        setOptions: ['id', {}],
+        mergeOptions: ['id', {}],
         showModal: [{}],
         dismissModal: ['id'],
         dismissAllModals: [],
@@ -375,7 +375,7 @@ describe('Commands', () => {
       const paramsForMethodName = {
         setRoot: { layout: 'parsed' },
         setDefaultOptions: { options: {} },
-        setOptions: { componentId: 'id', options: {} },
+        mergeOptions: { componentId: 'id', options: {} },
         showModal: { layout: 'parsed' },
         dismissModal: { componentId: 'id' },
         dismissAllModals: {},

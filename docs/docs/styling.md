@@ -42,10 +42,10 @@ Navigation.setDefaultOptions({
 ```
 
 ## Setting styles dynamically
-Use the `setOptions` method to change a screen's style dynamically.
+Use the `mergeOptions` method to change a screen's style dynamically.
 
 ```js
-Navigation.setOptions(this.props.componentId, {
+Navigation.mergeOptions(this.props.componentId, {
   topBar: {
     visible: true
   }

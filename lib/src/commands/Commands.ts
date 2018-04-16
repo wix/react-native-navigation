@@ -27,12 +27,12 @@ export class Commands {
     this.commandsObserver.notify('setDefaultOptions', { options });
   }
 
-  public setOptions(componentId, options) {
+  public mergeOptions(componentId, options) {
     const input = _.cloneDeep(options);
     this.layoutTreeCrawler.processOptions(input);
 
-    this.nativeCommandsSender.setOptions(componentId, input);
-    this.commandsObserver.notify('setOptions', { componentId, options });
+    this.nativeCommandsSender.mergeOptions(componentId, input);
+    this.commandsObserver.notify('mergeOptions', { componentId, options });
   }
 
   public showModal(simpleApi) {

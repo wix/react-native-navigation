@@ -55,9 +55,9 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
 	@ReactMethod
-	public void setOptions(final String onComponentId, final ReadableMap options) {
+	public void mergeOptions(final String onComponentId, final ReadableMap options) {
 		final Options navOptions = Options.parse(new TypefaceLoader(activity()), new JSONObject(options.toHashMap()));
-		handle(() -> navigator().setOptions(onComponentId, navOptions));
+		handle(() -> navigator().mergeOptions(onComponentId, navOptions));
 	}
 
 	@ReactMethod

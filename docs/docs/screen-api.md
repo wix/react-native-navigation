@@ -128,12 +128,12 @@ this.props.navigator.handleDeepLink({
   Navigation.handleDeepLink(...);
 ``` -->
 
-## setOptions(componentId, options = {})
+## mergeOptions(componentId, options = {})
 
 Set options dynamically for component.
 
 ```js
-Navigation.setOptions(this.props.componentId, {
+Navigation.mergeOptions(this.props.componentId, {
   topBar: {
     visible: true,
     title: {

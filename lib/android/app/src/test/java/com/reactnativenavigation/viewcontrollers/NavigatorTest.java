@@ -243,7 +243,7 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void setOptions_CallsApplyNavigationOptions() {
+    public void mergeOptions_CallsApplyNavigationOptions() {
         ComponentViewController componentVc = new SimpleComponentViewController(activity, "theId", new Options());
         componentVc.setParentController(parentController);
         assertThat(componentVc.options.topBar.title.text.get("")).isEmpty();
@@ -252,13 +252,13 @@ public class NavigatorTest extends BaseTest {
         Options options = new Options();
         options.topBar.title.text = new Text("new title");
 
-        uut.setOptions("theId", options);
+        uut.mergeOptions("theId", options);
         assertThat(componentVc.options.topBar.title.text.get()).isEqualTo("new title");
     }
 
     @Test
-    public void setOptions_AffectsOnlyComponentViewControllers() {
-        uut.setOptions("some unknown child id", new Options());
+    public void mergeOptions_AffectsOnlyComponentViewControllers() {
+        uut.mergeOptions("some unknown child id", new Options());
     }
 
     @NonNull
