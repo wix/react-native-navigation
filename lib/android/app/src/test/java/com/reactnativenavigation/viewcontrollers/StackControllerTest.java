@@ -52,6 +52,7 @@ public class StackControllerTest extends BaseTest {
     @Override
     public void beforeEach() {
         super.beforeEach();
+        animator = Mockito.mock(NavigationAnimator.class);
         activity = newActivity();
         uut = createStackController();
         child1 = spy(new SimpleViewController(activity, "child1", new Options()));
@@ -139,8 +140,7 @@ public class StackControllerTest extends BaseTest {
     public void pop_layoutHandlesChildWillDisappear() {
         final StackLayout[] stackLayout = new StackLayout[1];
         uut =
-                new StackControllerBuilder()
-                        .setActivity(activity)
+                new StackControllerBuilder(activity)
                         .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                         .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                         .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
@@ -636,29 +636,23 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void mergeChildOptions_updatesViewWithNewOptions() {
-        final StackLayout[] stackLayout = new StackLayout[1];
-        StackController uut =
-                new StackControllerBuilder()
-                        .setActivity(activity)
+        StackController uut = spy(new StackControllerBuilder(activity)
                         .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                         .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                         .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
                         .setTopBarController(new TopBarController())
                         .setId("stack")
                         .setInitialOptions(new Options())
-                        .createStackController();
+                        .createStackController());
         Options optionsToMerge = new Options();
         Component component = mock(Component.class);
         uut.mergeChildOptions(optionsToMerge, component);
-        verify(stackLayout[0], times(1)).mergeChildOptions(optionsToMerge, component);
+        verify(uut, times(1)).mergeChildOptions(optionsToMerge, component);
     }
 
     @Test
     public void mergeChildOptions_updatesParentControllerWithNewOptions() {
-        final StackLayout[] stackLayout = new StackLayout[1];
-        StackController uut =
-                new StackControllerBuilder()
-                        .setActivity(activity)
+        StackController uut = new StackControllerBuilder(activity)
                         .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                         .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                         .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
@@ -733,12 +727,12 @@ public class StackControllerTest extends BaseTest {
                 return topBar;
             }
         });
-        return new StackControllerBuilder()
-                .setActivity(activity)
+        return new StackControllerBuilder(activity)
                 .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
                 .setTopBarController(topBarController)
+                .setAnimator(animator)
                 .setId(id)
                 .setInitialOptions(new Options())
                 .createStackController();

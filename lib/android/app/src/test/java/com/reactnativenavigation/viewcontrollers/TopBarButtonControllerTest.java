@@ -44,8 +44,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         final Activity activity = newActivity();
 
         TopBarButtonCreatorMock buttonCreatorMock = new TopBarButtonCreatorMock();
-        stackController = spy(new StackControllerBuilder()
-                .setActivity(activity)
+        stackController = spy(new StackControllerBuilder(activity)
                 .setTopBarButtonCreator(buttonCreatorMock)
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))

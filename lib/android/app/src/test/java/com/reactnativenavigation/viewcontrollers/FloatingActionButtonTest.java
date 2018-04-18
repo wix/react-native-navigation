@@ -37,8 +37,7 @@ public class FloatingActionButtonTest extends BaseTest {
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
-        stackController = new StackControllerBuilder()
-                .setActivity(activity)
+        stackController = new StackControllerBuilder(activity)
                 .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))

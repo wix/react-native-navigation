@@ -53,8 +53,7 @@ public class OptionsApplyingTest extends BaseTest {
                 (activity1, componentId, componentName) -> view,
                 initialNavigationOptions
         );
-        stackController = new StackControllerBuilder()
-                .setActivity(activity)
+        stackController = new StackControllerBuilder(activity)
                 .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
@@ -81,8 +80,7 @@ public class OptionsApplyingTest extends BaseTest {
     public void initialOptionsAppliedOnAppear() {
         uut.options.topBar.title.text = new Text("the title");
         StackController stackController =
-                new StackControllerBuilder()
-                        .setActivity(activity)
+                new StackControllerBuilder(activity)
                         .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                         .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                         .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))

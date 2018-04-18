@@ -70,8 +70,7 @@ public class ViewControllerTest extends BaseTest {
     @Test
     public void holdsAReferenceToStackControllerOrNull() {
         assertThat(uut.getParentController()).isNull();
-        StackController nav = new StackControllerBuilder()
-                .setActivity(activity)
+        StackController nav = new StackControllerBuilder(activity)
                 .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))

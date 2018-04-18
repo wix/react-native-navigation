@@ -124,8 +124,7 @@ public class LayoutFactory {
     }
 
 	private ViewController createStack(LayoutNode node) {
-        StackController stackController = new StackControllerBuilder()
-                .setActivity(activity)
+        StackController stackController = new StackControllerBuilder(activity)
                 .setTopBarButtonCreator(new TitleBarButtonCreator(reactInstanceManager))
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreator(reactInstanceManager))
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreator(reactInstanceManager)))

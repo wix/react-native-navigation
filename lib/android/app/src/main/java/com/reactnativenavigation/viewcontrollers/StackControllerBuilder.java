@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 
+import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
@@ -14,11 +15,12 @@ public class StackControllerBuilder {
     private TopBarBackgroundViewController topBarBackgroundViewController;
     private TopBarController topBarController;
     private String id;
-    private Options initialOptions;
+    private Options initialOptions = new Options();
+    private NavigationAnimator animator;
 
-    public StackControllerBuilder setActivity(Activity activity) {
+    public StackControllerBuilder(Activity activity) {
         this.activity = activity;
-        return this;
+        animator = new NavigationAnimator(activity);
     }
 
     public StackControllerBuilder setTopBarButtonCreator(ReactViewCreator topBarButtonCreator) {
@@ -51,7 +53,12 @@ public class StackControllerBuilder {
         return this;
     }
 
+    public StackControllerBuilder setAnimator(NavigationAnimator animator) {
+        this.animator = animator;
+        return this;
+    }
+
     public StackController createStackController() {
-        return new StackController(activity, topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewController, topBarController, id, initialOptions);
+        return new StackController(activity, topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewController, topBarController, animator, id, initialOptions);
     }
 }

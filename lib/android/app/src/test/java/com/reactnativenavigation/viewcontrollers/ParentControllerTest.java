@@ -155,8 +155,7 @@ public class ParentControllerTest extends BaseTest {
     }
 
     private StackController createStack() {
-        return new StackControllerBuilder()
-                .setActivity(activity)
+        return new StackControllerBuilder(activity)
                 .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))

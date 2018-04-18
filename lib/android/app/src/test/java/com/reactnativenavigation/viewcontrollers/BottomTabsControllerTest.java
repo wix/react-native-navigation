@@ -176,8 +176,7 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     private StackController createStack(String id) {
-        return new StackControllerBuilder()
-                .setActivity(activity)
+        return new StackControllerBuilder(activity)
                 .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
