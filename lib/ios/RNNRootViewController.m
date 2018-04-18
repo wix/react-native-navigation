@@ -52,8 +52,11 @@
 
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
-	[self.options applyOn:self];
-	[self optionsUpdated];
+  
+	if (!self._optionsApplied) {
+		[self.options applyOn:self];
+	}
+	self._optionsApplied = true;
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -168,7 +171,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
 	RNNRootViewController* vc =  (RNNRootViewController*)viewController;
-	if (![vc.options.backButtonTransition isEqualToString:@"custom"]){
+	if (![vc.options.backButtonTransition isEqualToString:@"custom"]) {
 		navigationController.delegate = nil;
 	}
 }
