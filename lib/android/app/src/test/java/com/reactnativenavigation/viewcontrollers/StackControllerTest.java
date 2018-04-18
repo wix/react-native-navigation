@@ -176,20 +176,20 @@ public class StackControllerTest extends BaseTest {
     @Test
     public void handleBack_PopsUnlessSingleChild() {
         assertThat(uut.isEmpty()).isTrue();
-        assertThat(uut.handleBack()).isFalse();
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
 
         uut.push(child1, new CommandListenerAdapter());
         assertThat(uut.size()).isEqualTo(1);
-        assertThat(uut.handleBack()).isFalse();
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
 
         uut.push(child2, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 assertThat(uut.size()).isEqualTo(2);
-                assertThat(uut.handleBack()).isTrue();
+                assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
 
                 assertThat(uut.size()).isEqualTo(1);
-                assertThat(uut.handleBack()).isFalse();
+                assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
             }
         });
     }

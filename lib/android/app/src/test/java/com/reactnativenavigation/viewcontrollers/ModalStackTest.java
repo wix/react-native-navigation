@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.ModalCreatorMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
@@ -10,8 +9,6 @@ import com.reactnativenavigation.viewcontrollers.modal.Modal;
 import com.reactnativenavigation.viewcontrollers.modal.ModalListener;
 
 import org.junit.Test;
-
-import javax.annotation.Nullable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,15 +47,15 @@ public class ModalStackTest extends BaseTest {
 
     @Test
     public void modalRefIsSaved() {
-        uut.showModal(viewController, new MockPromise());
+        uut.showModal(viewController, new CommandListenerAdapter());
         assertThat(findModal(CONTROLLER_ID)).isNotNull();
     }
 
     @Test
     public void modalIsShown() {
-        uut.showModal(viewController, new MockPromise() {
+        uut.showModal(viewController, new CommandListenerAdapter() {
             @Override
-            public void resolve(@Nullable Object value) {
+            public void onSuccess(String childId) {
                 verify(findModal(CONTROLLER_ID), times(1)).show();
                 verify(modalListener, times(1)).onModalDisplay(any());
             }
@@ -67,7 +64,7 @@ public class ModalStackTest extends BaseTest {
 
     @Test
     public void modalIsDismissed() {
-        uut.showModal(viewController, new MockPromise());
+        uut.showModal(viewController, new CommandListenerAdapter());
         final Modal modal = findModal(CONTROLLER_ID);
         assertThat(modal).isNotNull();
         uut.dismissModal(CONTROLLER_ID, new CommandListenerAdapter() {
@@ -81,8 +78,8 @@ public class ModalStackTest extends BaseTest {
 
     @Test
     public void dismissAllModals() {
-        uut.showModal(new SimpleViewController(newActivity(), "1", new Options()), new MockPromise());
-        uut.showModal(new SimpleViewController(newActivity(), "2", new Options()), new MockPromise());
+        uut.showModal(new SimpleViewController(newActivity(), "1", new Options()), new CommandListenerAdapter());
+        uut.showModal(new SimpleViewController(newActivity(), "2", new Options()), new CommandListenerAdapter());
         uut.dismissAll(new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
@@ -94,7 +91,7 @@ public class ModalStackTest extends BaseTest {
     @Test
     public void isEmpty() {
         assertThat(uut.isEmpty()).isTrue();
-        uut.showModal(viewController, new MockPromise());
+        uut.showModal(viewController, new CommandListenerAdapter());
         assertThat(uut.isEmpty()).isFalse();
         uut.dismissAll(new CommandListenerAdapter());
         assertThat(uut.isEmpty()).isTrue();
@@ -102,8 +99,8 @@ public class ModalStackTest extends BaseTest {
 
     @Test
     public void onDismiss() {
-        uut.showModal(viewController, new MockPromise());
-        uut.showModal(new SimpleViewController(newActivity(), "otherComponent", new Options()), new MockPromise());
+        uut.showModal(viewController, new CommandListenerAdapter());
+        uut.showModal(new SimpleViewController(newActivity(), "otherComponent", new Options()), new CommandListenerAdapter());
         uut.dismissAll(new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
@@ -115,8 +112,8 @@ public class ModalStackTest extends BaseTest {
     @Test
     public void onDismiss_onViewAppearedInvokedOnPreviousModal() {
         SimpleViewController viewController = spy(new SimpleViewController(newActivity(), "otherComponent", new Options()));
-        uut.showModal(viewController, new MockPromise());
-        uut.showModal(this.viewController, new MockPromise());
+        uut.showModal(viewController, new CommandListenerAdapter());
+        uut.showModal(this.viewController, new CommandListenerAdapter());
         uut.dismissModal(CONTROLLER_ID, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {

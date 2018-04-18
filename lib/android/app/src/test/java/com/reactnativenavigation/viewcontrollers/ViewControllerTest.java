@@ -77,7 +77,7 @@ public class ViewControllerTest extends BaseTest {
 
     @Test
     public void handleBackDefaultFalse() {
-        assertThat(uut.handleBack()).isFalse();
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
     }
 
     @Test

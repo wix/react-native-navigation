@@ -15,10 +15,11 @@ import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.OverlayManager;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.modal.Modal;
-import com.reactnativenavigation.viewcontrollers.modal.ModalCreator;
 import com.reactnativenavigation.viewcontrollers.modal.ModalListener;
+import com.reactnativenavigation.viewcontrollers.modal.ModalStack2;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -31,20 +32,32 @@ public class Navigator extends ParentController implements ModalListener {
         void onError(String message);
     }
 
-    private final ModalStack modalStack;
+//    private final ModalStack modalStack;
+    private final ModalStack2 modalStack;
     private ViewController root;
+    private FrameLayout rootLayout;
+    private FrameLayout contentLayout;
     private OverlayManager overlayManager = new OverlayManager();
     private Options defaultOptions = new Options();
 
     public Navigator(final Activity activity) {
         super(activity, "navigator" + CompatUtils.generateViewId(), new Options());
-        modalStack = new ModalStack(new ModalCreator(), this);
+//        modalStack = new ModalStack(new ModalCreator(), this);
+        modalStack = new ModalStack2();
+    }
+
+    public FrameLayout getContentLayout() {
+        return contentLayout;
     }
 
     @NonNull
     @Override
     protected ViewGroup createView() {
-        return new FrameLayout(getActivity());
+        rootLayout = new FrameLayout(getActivity());
+        contentLayout = new FrameLayout(getActivity());
+        rootLayout.addView(contentLayout);
+        modalStack.setContentLayout(contentLayout);
+        return rootLayout;
     }
 
     @NonNull
@@ -54,13 +67,16 @@ public class Navigator extends ParentController implements ModalListener {
     }
 
     @Override
-    public boolean handleBack() {
-        return modalStack.isEmpty() ? root.handleBack() : modalStack.handleBack();
+    public boolean handleBack(CommandListener listener) {
+        if (modalStack.isEmpty()) return root.handleBack(listener);
+        return modalStack.handleBack(listener, () -> {
+            if (modalStack.size() == 1) contentLayout.addView(root.getView());
+        });
     }
 
     @Override
     public void destroy() {
-        modalStack.dismissAll();
+        modalStack.dismissAll(new CommandListenerAdapter());
         super.destroy();
     }
 
@@ -78,7 +94,7 @@ public class Navigator extends ParentController implements ModalListener {
         View view = viewController.getView();
 
         AnimationsOptions animationsOptions = viewController.options.animations;
-        getView().addView(view);
+        contentLayout.addView(view);
         if (animationsOptions.startApp.hasValue()) {
             new NavigationAnimator(viewController.getActivity(), animationsOptions)
                     .animateStartApp(view, new AnimatorListenerAdapter() {
@@ -126,7 +142,7 @@ public class Navigator extends ParentController implements ModalListener {
         }
     }
 
-    void pop(final String fromId, CommandListener listener) {
+    public void pop(final String fromId, CommandListener listener) {
         ViewController from = findControllerById(fromId);
         if (from != null) {
             from.performOnParentStack(stack -> ((StackController) stack).pop(listener));
@@ -158,12 +174,34 @@ public class Navigator extends ParentController implements ModalListener {
         }
     }
 
-    public void showModal(final ViewController viewController, Promise promise) {
-        modalStack.showModal(viewController, promise);
+    public void showModal(final ViewController viewController, CommandListener listener) {
+        modalStack.showModal(viewController, new CommandListenerAdapter() {
+            @Override
+            public void onSuccess(String childId) {
+                contentLayout.removeView(root.getView());
+                listener.onSuccess(childId);
+            }
+
+            @Override
+            public void onError(String message) {
+                listener.onError(message);
+            }
+        });
     }
 
     public void dismissModal(final String componentId, CommandListener listener) {
-        modalStack.dismissModal(componentId, listener);
+        modalStack.dismissModal(componentId, new CommandListener() {
+            @Override
+            public void onSuccess(String childId) {
+                if (modalStack.size() == 0) contentLayout.addView(root.getView());
+                listener.onSuccess(childId);
+            }
+
+            @Override
+            public void onError(String message) {
+                listener.onError(message);
+            }
+        });
     }
 
     @Override
@@ -173,7 +211,6 @@ public class Navigator extends ParentController implements ModalListener {
         }
     }
 
-
     @Override
     public void onModalDismiss(Modal modal) {
         if (modalStack.isEmpty()) {
@@ -182,11 +219,12 @@ public class Navigator extends ParentController implements ModalListener {
     }
 
     public void dismissAllModals(CommandListener listener) {
+        if (!modalStack.isEmpty()) contentLayout.addView(root.getView());
         modalStack.dismissAll(listener);
     }
 
     public void showOverlay(ViewController overlay) {
-        overlayManager.show(getView(), overlay);
+        overlayManager.show(rootLayout, overlay);
     }
 
     public void dismissOverlay(final String componentId) {

@@ -53,4 +53,8 @@ public abstract class BaseTest {
     protected void dispatchPreDraw(View view) {
         view.getViewTreeObserver().dispatchOnPreDraw();
     }
+
+    protected void dispatchOnGlobalLayout(View view) {
+        view.getViewTreeObserver().dispatchOnGlobalLayout();
+    }
 }

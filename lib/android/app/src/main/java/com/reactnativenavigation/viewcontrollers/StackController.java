@@ -220,9 +220,9 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    public boolean handleBack() {
+    public boolean handleBack(CommandListener listener) {
         if (canPop()) {
-            pop(new CommandListenerAdapter());
+            pop(listener);
             return true;
         }
         return false;
