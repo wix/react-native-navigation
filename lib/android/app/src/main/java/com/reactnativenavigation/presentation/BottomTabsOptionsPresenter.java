@@ -38,7 +38,8 @@ public class BottomTabsOptionsPresenter {
             bottomTabs.setBackgroundColor(options.backgroundColor.get());
         }
         if (options.currentTabIndex.hasValue()) {
-            bottomTabs.setCurrentItem(options.currentTabIndex.get());
+            int tabIndex = options.currentTabIndex.get();
+            if (tabIndex >= 0) bottomTabs.setCurrentItem(tabIndex);
         }
         if (options.testId.hasValue()) {
             bottomTabs.setTag(options.testId.get());
