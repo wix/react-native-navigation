@@ -14,31 +14,28 @@ import javax.annotation.Nullable;
 
 public class ModalStack2 {
     private List<ViewController> modals = new ArrayList<>();
-    private ViewGroup root;
+    private final ModalPresenter presenter;
+
+    public ModalStack2(ModalPresenter presenter) {
+        this.presenter = presenter;
+    }
 
     public void setContentLayout(ViewGroup contentLayout) {
-        this.root = contentLayout;
+        presenter.setContentLayout(contentLayout);
     }
 
     public void showModal(ViewController viewController, CommandListener listener) {
         ViewController toRemove = isEmpty() ? null : peek();
         modals.add(viewController);
-        root.addView(viewController.getView());
-        if (toRemove != null) root.removeView(toRemove.getView());
-        listener.onSuccess(viewController.getId());
+        presenter.showModal(viewController, toRemove, listener);
     }
 
     public void dismissModal(String componentId, CommandListener listener) {
-        ViewController modal = findModalByComponentId(componentId);
-        if (modal != null) {
-            if (size() > 1 && peek().equals(modal)) {
-                ViewController toAdd = get(size() - 2);
-                root.addView(toAdd.getView());
-            }
-
-            modals.remove(modal);
-            modal.destroy();
-            listener.onSuccess(componentId);
+        ViewController toDismiss = findModalByComponentId(componentId);
+        if (toDismiss != null) {
+            ViewController toAdd = isTop(toDismiss) ? get(size() - 2) : null;
+            modals.remove(toDismiss);
+            presenter.dismissModal(toDismiss, toAdd, listener);
         } else {
             listener.onError("Nothing to dismiss");
         }
@@ -61,7 +58,29 @@ public class ModalStack2 {
         return true;
     }
 
-    public ViewController findModalByComponentId(String componentId) {
+    public ViewController peek() {
+        if (modals.isEmpty()) throw new EmptyStackException();
+        return modals.get(modals.size() - 1);
+    }
+
+    public ViewController get(int index) {
+        return modals.get(index);
+    }
+
+    public boolean isEmpty() {
+        return modals.isEmpty();
+    }
+
+    public int size() {
+        return modals.size();
+    }
+
+    private boolean isTop(ViewController modal) {
+        return size() > 1 && peek().equals(modal);
+    }
+
+    @Nullable
+    private ViewController findModalByComponentId(String componentId) {
         for (ViewController modal : modals) {
             if (modal.findControllerById(componentId) != null) {
                 return modal;
@@ -80,22 +99,5 @@ public class ModalStack2 {
             }
         }
         return null;
-    }
-
-    public ViewController peek() {
-        if (modals.isEmpty()) throw new EmptyStackException();
-        return modals.get(modals.size() - 1);
-    }
-
-    public ViewController get(int index) {
-        return modals.get(index);
-    }
-
-    public boolean isEmpty() {
-        return modals.isEmpty();
-    }
-
-    public int size() {
-        return modals.size();
     }
 }

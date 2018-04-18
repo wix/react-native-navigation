@@ -1,4 +1,4 @@
-package com.reactnativenavigation.viewcontrollers;
+package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.app.Activity;
 import android.view.ViewGroup;
@@ -9,7 +9,7 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.Navigator.CommandListener;
-import com.reactnativenavigation.viewcontrollers.modal.ModalStack2;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 
 import org.junit.Test;
 
@@ -33,15 +33,16 @@ public class ModalStackTest2 extends BaseTest {
     private ViewController modal1;
     private ViewController modal2;
     private ViewController modal3;
-    private ViewGroup root;
     private Activity activity;
+    private ModalPresenter presenter;
 
     @Override
     public void beforeEach() {
         activity = newActivity();
-        root = new FrameLayout(activity);
+        ViewGroup root = new FrameLayout(activity);
         activity.setContentView(root);
-        uut = new ModalStack2();
+        presenter = spy(new ModalPresenter());
+        uut = new ModalStack2(presenter);
         uut.setContentLayout(root);
         modal1 = spy(new SimpleViewController(activity, MODAL_ID_1, new Options()));
         modal2 = spy(new SimpleViewController(activity, MODAL_ID_2, new Options()));
@@ -58,50 +59,20 @@ public class ModalStackTest2 extends BaseTest {
 
     @Test
     public void showModal() {
-        CommandListener listener = spy(new CommandListenerAdapter() {
-            @Override
-            public void onSuccess(String childId) {
-                assertThat(modal1.getView().getParent()).isEqualTo(root);
-                verify(modal1, times(1)).onViewAppeared();
-            }
-        });
+        CommandListener listener = new CommandListenerAdapter();
         uut.showModal(modal1, listener);
-        verify(listener, times(1)).onSuccess(MODAL_ID_1);
+        assertThat(uut.size()).isOne();
+        verify(presenter, times(1)).showModal(modal1, null, listener);
+        assertThat(findModal(MODAL_ID_1)).isNotNull();
     }
 
     @Test
-    public void showModal_previousModalIsRemovedFromHierarchy() {
-        uut.showModal(modal1, new CommandListenerAdapter() {
-            @Override
-            public void onSuccess(String childId) {
-                uut.showModal(modal2, new CommandListenerAdapter() {
-                    @Override
-                    public void onSuccess(String childId) {
-                        assertThat(modal1.getView().getParent()).isNull();
-                        verify(modal1, times(1)).onViewDisappear();
-                    }
-                });
-            }
-        });
-    }
-
-    @Test
-    public void modalIsDismissed() {
-        CommandListener listener = spy(new CommandListenerAdapter() {
-            @Override
-            public void onSuccess(String childId) {
-                verifyModalDismissed(modal1);
-            }
-        });
-        uut.showModal(modal1, new CommandListenerAdapter() {
-            @Override
-            public void onSuccess(String childId) {
-                assertThat(findModal(MODAL_ID_1)).isNotNull();
-                uut.dismissModal(MODAL_ID_1, listener);
-            }
-        });
-        verify(listener, times(1)).onSuccess(MODAL_ID_1);
-        verifyZeroInteractions(listener);
+    public void dismissModal() {
+        uut.showModal(modal1, new CommandListenerAdapter());
+        CommandListener listener = new CommandListenerAdapter();
+        uut.dismissModal(modal1.getId(), listener);
+        assertThat(findModal(modal1.getId())).isNull();
+        verify(presenter, times(1)).dismissModal(modal1, null, listener);
     }
 
     @Test
@@ -119,8 +90,8 @@ public class ModalStackTest2 extends BaseTest {
         CommandListener listener = spy(new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                verifyModalDismissed(modal1);
-                verifyModalDismissed(modal2);
+                assertThat(findModal(modal1.getId())).isNull();
+                assertThat(findModal(modal2.getId())).isNull();
                 assertThat(uut.isEmpty()).isTrue();
             }
         });
@@ -201,11 +172,5 @@ public class ModalStackTest2 extends BaseTest {
 
     private ViewController findModal(String id) {
         return uut.findControllerById(id);
-    }
-
-    private void verifyModalDismissed(ViewController modal) {
-        assertThat(findModal(MODAL_ID_1)).isNull();
-        verify(modal, times(1)).onViewDisappear();
-        verify(modal, times(1)).destroy();
     }
 }

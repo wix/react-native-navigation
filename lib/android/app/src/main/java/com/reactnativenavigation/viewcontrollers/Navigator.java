@@ -19,6 +19,7 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.modal.Modal;
 import com.reactnativenavigation.viewcontrollers.modal.ModalListener;
+import com.reactnativenavigation.viewcontrollers.modal.ModalPresenter;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack2;
 
 import java.util.Collection;
@@ -43,7 +44,7 @@ public class Navigator extends ParentController implements ModalListener {
     public Navigator(final Activity activity) {
         super(activity, "navigator" + CompatUtils.generateViewId(), new Options());
 //        modalStack = new ModalStack(new ModalCreator(), this);
-        modalStack = new ModalStack2();
+        modalStack = new ModalStack2(new ModalPresenter());
     }
 
     public FrameLayout getContentLayout() {
