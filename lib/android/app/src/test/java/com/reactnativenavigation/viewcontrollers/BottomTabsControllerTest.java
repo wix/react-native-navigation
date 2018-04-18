@@ -176,13 +176,14 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     private StackController createStack(String id) {
-        return new StackController(activity,
-                new TopBarButtonCreatorMock(),
-                new TitleBarReactViewCreatorMock(),
-                new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()),
-                new TopBarController(),
-                id,
-                tabOptions
-        );
+        return new StackControllerBuilder()
+                .setActivity(activity)
+                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
+                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
+                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
+                .setTopBarController(new TopBarController())
+                .setId(id)
+                .setInitialOptions(tabOptions)
+                .createStackController();
     }
 }

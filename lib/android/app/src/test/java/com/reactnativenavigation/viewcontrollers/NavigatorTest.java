@@ -270,8 +270,15 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private StackController newStack() {
-        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), new TopBarController(),
-                "stack" + CompatUtils.generateViewId(), tabOptions);
+        return new StackControllerBuilder()
+                .setActivity(activity)
+                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
+                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
+                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
+                .setTopBarController(new TopBarController())
+                .setId("stack" + CompatUtils.generateViewId())
+                .setInitialOptions(tabOptions)
+                .createStackController();
     }
 
     @Test
