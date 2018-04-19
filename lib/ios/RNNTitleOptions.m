@@ -43,7 +43,7 @@
 }
 
 - (NSNumber *)fontSize {
-	return _fontSize ? _fontSize : @(20);
+	return _fontSize ? _fontSize : nil;
 }
 
 @end
