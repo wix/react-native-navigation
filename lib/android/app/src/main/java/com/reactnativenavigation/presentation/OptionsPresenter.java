@@ -45,7 +45,8 @@ public class OptionsPresenter {
 
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
         topBar.setTitle(options.title.text.get(""));
-        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component);
+        topBar.setComponent(options.component);
+        topBar.setTitleComponent(options.title.component);
         topBar.setTitleFontSize(options.title.fontSize.get(defaultTitleFontSize));
         topBar.setTitleTextColor(options.title.color.get(DEFAULT_TITLE_COLOR));
         topBar.setTitleTypeface(options.title.fontFamily);
@@ -133,7 +134,8 @@ public class OptionsPresenter {
 
     private void mergeTopBarOptions(TopBarOptions options, AnimationsOptions animationsOptions, Component component) {
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
-        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component);
+        topBar.setTitleComponent(options.component);
+        topBar.setTitleComponent(options.title.component);
         if (options.title.color.hasValue()) topBar.setTitleTextColor(options.title.color.get());
         if (options.title.fontSize.hasValue()) topBar.setTitleFontSize(options.title.fontSize.get());
         if (options.title.fontFamily != null) topBar.setTitleTypeface(options.title.fontFamily);
@@ -144,6 +146,7 @@ public class OptionsPresenter {
         if (options.subtitle.fontFamily != null) topBar.setSubtitleFontFamily(options.subtitle.fontFamily);
 
         if (options.background.color.hasValue()) topBar.setBackgroundColor(options.background.color);
+        topBar.setBackgroundComponent(options.background.component);
 
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
 
