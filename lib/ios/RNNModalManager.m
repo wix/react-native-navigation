@@ -37,7 +37,13 @@
 	self.toVC = (UIViewController<RNNRootViewProtocol>*)viewController;
 	_completionBlock = completion;
 	
-	if ([self.toVC isCustomViewController]) {
+    if ([self.toVC respondsToSelector:@selector(applyModalOptions)]) {
+        [self.toVC applyModalOptions];
+    }
+    
+    if ([self.toVC respondsToSelector:@selector(isCustomViewController)] &&
+        [self.toVC isCustomViewController]
+    ) {
 		[self showModalAfterLoad:nil];
 	} else {
 		[self waitForContentToAppearAndThen:@selector(showModalAfterLoad:)];
@@ -60,19 +66,19 @@
 
 -(void)removePendingNextModalIfOnTop {
 	NSString *componentId = [[_store pendingModalIdsToDismiss] lastObject];
-	
+
 	UIViewController<RNNRootViewProtocol> *modalToDismiss = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
-	
+
 	if(!modalToDismiss) {
 		return;
 	}
-	
+
 	UIViewController* topPresentedVC = [self topPresentedVC];
-	
+
 	if (modalToDismiss.options.animations.showModal) {
 		modalToDismiss.transitioningDelegate = modalToDismiss;
 	}
-	
+
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
 		[modalToDismiss dismissViewControllerAnimated:modalToDismiss.options.animations.dismissModal.enable completion:^{
 			[[_store pendingModalIdsToDismiss] removeObject:componentId];
