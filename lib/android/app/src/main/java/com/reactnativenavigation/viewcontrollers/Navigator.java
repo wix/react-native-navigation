@@ -72,7 +72,7 @@ public class Navigator extends ParentController implements ModalListener {
     public boolean handleBack(CommandListener listener) {
         if (modalStack.isEmpty()) return root.handleBack(listener);
         return modalStack.handleBack(listener, () -> {
-            if (modalStack.size() == 1) contentLayout.addView(root.getView());
+            if (modalStack.size() == 1) contentLayout.addView(root.getView(), 0);
         });
     }
 

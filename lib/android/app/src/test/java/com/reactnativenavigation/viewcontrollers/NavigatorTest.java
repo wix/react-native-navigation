@@ -396,6 +396,7 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void dismissModal_onViewAppearedInvokedOnRoot() {
         disableShowModalAnimation(child1, child2);
+        disableDismissModalAnimation(child1, child2);
 
         uut.setRoot(parentController, new MockPromise());
         uut.showModal(child1, new CommandListenerAdapter());
@@ -407,6 +408,7 @@ public class NavigatorTest extends BaseTest {
 
         uut.dismissModal(child1.getId(), new CommandListenerAdapter());
         assertThat(parentController.getView().getParent()).isNotNull();
+
         verify(parentController, times(2)).onViewAppeared();
     }
 

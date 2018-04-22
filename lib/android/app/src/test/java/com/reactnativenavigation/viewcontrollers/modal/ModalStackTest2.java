@@ -136,6 +136,7 @@ public class ModalStackTest2 extends BaseTest {
     @Test
     public void onDismiss_dismissModalInTheMiddleOfStack() {
         disableShowModalAnimation(modal1, modal2, modal3);
+        disableDismissModalAnimation(modal1, modal2, modal3);
 
         uut.showModal(modal1, new CommandListenerAdapter());
         uut.showModal(modal2, new CommandListenerAdapter());
@@ -156,6 +157,7 @@ public class ModalStackTest2 extends BaseTest {
 
     @Test
     public void handleBack_dismissModal() {
+        disableDismissModalAnimation(modal1);
         uut.showModal(modal1, new CommandListenerAdapter());
         assertThat(uut.handleBack(new CommandListenerAdapter(), () -> {})).isTrue();
         verify(modal1, times(1)).onViewDisappear();

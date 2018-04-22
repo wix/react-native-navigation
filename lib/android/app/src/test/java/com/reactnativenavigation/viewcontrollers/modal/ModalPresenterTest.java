@@ -94,11 +94,31 @@ public class ModalPresenterTest extends BaseTest {
     }
 
     @Test
-    public void dismissModal() {
+    public void dismissModal_animatesByDefault() {
+        disableShowModalAnimation(modal1);
+
+        uut.showModal(modal1, null, new CommandListenerAdapter());
+        uut.dismissModal(modal1, null, new CommandListenerAdapter() {
+            @Override
+            public void onSuccess(String childId) {
+                verify(modal1, times(1)).onViewDisappear();
+                verify(modal1, times(1)).destroy();
+            }
+        });
+
+        verify(animator, times(1)).dismiss(eq(modal1.getView()), any());
+    }
+
+    @Test
+    public void dismissModal_noAnimation() {
+        disableShowModalAnimation(modal1);
+        disableDismissModalAnimation(modal1);
+
         uut.showModal(modal1, null, new CommandListenerAdapter());
         uut.dismissModal(modal1, null, new CommandListenerAdapter());
         verify(modal1, times(1)).onViewDisappear();
         verify(modal1, times(1)).destroy();
+        verify(animator, times(0)).dismiss(any(), any());
     }
 
     @Test
