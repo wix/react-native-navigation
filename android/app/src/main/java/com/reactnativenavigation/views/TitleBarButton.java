@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.NavigationApplication;
@@ -21,29 +20,28 @@ import java.util.ArrayList;
 class TitleBarButton implements MenuItem.OnMenuItemClickListener {
 
     protected final Menu menu;
-    protected final ViewGroup parent;
+    private final ActionMenuView actionMenuView;
     private TitleBarButtonParams buttonParams;
     @Nullable protected String navigatorEventId;
 
-    TitleBarButton(Menu menu, ViewGroup parent, TitleBarButtonParams buttonParams, @Nullable String navigatorEventId) {
+    TitleBarButton(Menu menu, ActionMenuView actionMenuView, TitleBarButtonParams buttonParams, @Nullable String navigatorEventId) {
         this.menu = menu;
-        this.parent = parent;
+        this.actionMenuView = actionMenuView;
         this.buttonParams = buttonParams;
         this.navigatorEventId = navigatorEventId;
     }
 
-    MenuItem addToMenu(int index) {
+    void addToMenu(int index) {
         MenuItem item = createMenuItem(index);
         item.setShowAsAction(buttonParams.showAsAction.action);
         item.setEnabled(buttonParams.enabled);
         if (buttonParams.hasComponent()) {
-            item.setActionView(new TitleBarButtonComponent(parent.getContext(), buttonParams.componentName, buttonParams.componentProps));
+            item.setActionView(new TitleBarButtonComponent(actionMenuView.getContext(), buttonParams.componentName, buttonParams.componentProps));
         }
         setIcon(item, index);
         setColor();
         setFont();
         item.setOnMenuItemClickListener(this);
-        return item;
     }
 
     private MenuItem createMenuItem(int index) {
@@ -66,10 +64,9 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     }
 
     private void dontShowLabelOnLongPress(final int index) {
-        ViewUtils.runOnPreDraw(parent, new Runnable() {
+        ViewUtils.runOnPreDraw(actionMenuView, new Runnable() {
             @Override
             public void run() {
-                ActionMenuView actionMenuView = ViewUtils.findChildByClass(parent, ActionMenuView.class);
                 if (actionMenuView != null && actionMenuView.getChildAt(index) != null) {
                     actionMenuView.getChildAt(index).setOnLongClickListener(null);
                 }
@@ -94,7 +91,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     }
 
     private void setTextColor() {
-        ViewUtils.runOnPreDraw(parent, new Runnable() {
+        ViewUtils.runOnPreDraw(actionMenuView, new Runnable() {
             @Override
             public void run() {
                 ArrayList<View> outViews = findActualTextViewInMenuByLabel();
@@ -114,7 +111,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     @NonNull
     private ArrayList<View> findActualTextViewInMenuByLabel() {
         ArrayList<View> outViews = new ArrayList<>();
-        parent.findViewsWithText(outViews, buttonParams.label, View.FIND_VIEWS_WITH_TEXT);
+        actionMenuView.findViewsWithText(outViews, buttonParams.label, View.FIND_VIEWS_WITH_TEXT);
         return outViews;
     }
 
