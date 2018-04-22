@@ -395,6 +395,8 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void dismissModal_onViewAppearedInvokedOnRoot() {
+        disableShowModalAnimation(child1, child2);
+
         uut.setRoot(parentController, new MockPromise());
         uut.showModal(child1, new CommandListenerAdapter());
         uut.showModal(child2, new CommandListenerAdapter());
@@ -410,6 +412,8 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void dismissAllModals_onViewAppearedInvokedOnRoot() {
+        disableShowModalAnimation(child1);
+
         uut.dismissAllModals(new CommandListenerAdapter());
         verify(parentController, times(0)).onViewAppeared();
 
@@ -421,9 +425,10 @@ public class NavigatorTest extends BaseTest {
         verify(parentController, times(2)).onViewAppeared();
     }
 
-
     @Test
     public void handleBack_onViewAppearedInvokedOnRoot() {
+        disableShowModalAnimation(child1, child2);
+
         uut.setRoot(parentController, new MockPromise());
         uut.showModal(child1, new CommandListenerAdapter());
         uut.showModal(child2, new CommandListenerAdapter());

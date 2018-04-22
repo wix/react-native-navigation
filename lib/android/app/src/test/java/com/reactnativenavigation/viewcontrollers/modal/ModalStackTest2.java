@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.anim.ModalAnimator2;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
@@ -41,7 +42,7 @@ public class ModalStackTest2 extends BaseTest {
         activity = newActivity();
         ViewGroup root = new FrameLayout(activity);
         activity.setContentView(root);
-        presenter = spy(new ModalPresenter());
+        presenter = spy(new ModalPresenter(new ModalAnimator2(activity)));
         uut = new ModalStack2(presenter);
         uut.setContentLayout(root);
         modal1 = spy(new SimpleViewController(activity, MODAL_ID_1, new Options()));
@@ -51,6 +52,7 @@ public class ModalStackTest2 extends BaseTest {
 
     @Test
     public void modalRefIsSaved() {
+        disableShowModalAnimation(modal1);
         CommandListener listener = spy(new CommandListenerAdapter());
         uut.showModal(modal1, listener);
         verify(listener, times(1)).onSuccess(modal1.getId());
@@ -123,6 +125,8 @@ public class ModalStackTest2 extends BaseTest {
 
     @Test
     public void onDismiss_onViewAppearedInvokedOnPreviousModal() {
+        disableShowModalAnimation(modal1, modal2);
+
         uut.showModal(modal1, new CommandListenerAdapter());
         uut.showModal(modal2, new CommandListenerAdapter());
         uut.dismissModal(modal2.getId(), new CommandListenerAdapter());
@@ -131,6 +135,8 @@ public class ModalStackTest2 extends BaseTest {
 
     @Test
     public void onDismiss_dismissModalInTheMiddleOfStack() {
+        disableShowModalAnimation(modal1, modal2, modal3);
+
         uut.showModal(modal1, new CommandListenerAdapter());
         uut.showModal(modal2, new CommandListenerAdapter());
         uut.showModal(modal3, new CommandListenerAdapter());

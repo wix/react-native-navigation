@@ -50,6 +50,12 @@ public abstract class BaseTest {
         }
     }
 
+    protected void disableShowModalAnimation(ViewController... modals) {
+        for (ViewController modal : modals) {
+            modal.options.animations.showModal.enable = new Bool(false);
+        }
+    }
+
     protected void dispatchPreDraw(View view) {
         view.getViewTreeObserver().dispatchOnPreDraw();
     }

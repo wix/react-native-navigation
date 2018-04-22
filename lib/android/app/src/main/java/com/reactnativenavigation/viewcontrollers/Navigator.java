@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Promise;
+import com.reactnativenavigation.anim.ModalAnimator2;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.Options;
@@ -44,7 +45,7 @@ public class Navigator extends ParentController implements ModalListener {
     public Navigator(final Activity activity) {
         super(activity, "navigator" + CompatUtils.generateViewId(), new Options());
 //        modalStack = new ModalStack(new ModalCreator(), this);
-        modalStack = new ModalStack2(new ModalPresenter());
+        modalStack = new ModalStack2(new ModalPresenter(new ModalAnimator2(activity)));
     }
 
     public FrameLayout getContentLayout() {
