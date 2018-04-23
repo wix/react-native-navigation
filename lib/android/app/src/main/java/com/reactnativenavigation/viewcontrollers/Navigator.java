@@ -217,7 +217,7 @@ public class Navigator extends ParentController implements ModalListener {
     }
 
     public void dismissAllModals(CommandListener listener) {
-        if (!modalStack.isEmpty()) contentLayout.addView(root.getView());
+        if (!modalStack.isEmpty()) contentLayout.addView(root.getView(), 0);
         modalStack.dismissAllModals(listener);
     }
 
