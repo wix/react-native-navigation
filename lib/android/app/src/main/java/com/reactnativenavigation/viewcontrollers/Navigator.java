@@ -5,14 +5,12 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.anim.ModalAnimator2;
 import com.reactnativenavigation.anim.NavigationAnimator;
-import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.OverlayManager;
@@ -78,7 +76,7 @@ public class Navigator extends ParentController implements ModalListener {
 
     @Override
     public void destroy() {
-        modalStack.dismissAll(new CommandListenerAdapter());
+        modalStack.dismissAllModals(new CommandListenerAdapter());
         super.destroy();
     }
 
@@ -93,13 +91,11 @@ public class Navigator extends ParentController implements ModalListener {
         }
 
         root = viewController;
-        View view = viewController.getView();
 
-        AnimationsOptions animationsOptions = viewController.options.animations;
-        contentLayout.addView(view);
-        if (animationsOptions.startApp.hasValue()) {
-            new NavigationAnimator(viewController.getActivity(), animationsOptions)
-                    .animateStartApp(view, new AnimatorListenerAdapter() {
+        contentLayout.addView(viewController.getView());
+        if (viewController.options.animations.startApp.hasValue()) {
+            new NavigationAnimator(viewController.getActivity(), viewController.options.animations)
+                    .animateStartApp(viewController.getView(), new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             promise.resolve(viewController.getId());
@@ -222,7 +218,7 @@ public class Navigator extends ParentController implements ModalListener {
 
     public void dismissAllModals(CommandListener listener) {
         if (!modalStack.isEmpty()) contentLayout.addView(root.getView());
-        modalStack.dismissAll(listener);
+        modalStack.dismissAllModals(listener);
     }
 
     public void showOverlay(ViewController overlay) {

@@ -97,7 +97,7 @@ public class ModalStackTest2 extends BaseTest {
                 assertThat(uut.isEmpty()).isTrue();
             }
         });
-        uut.dismissAll(listener);
+        uut.dismissAllModals(listener);
         verify(listener, times(1)).onSuccess(anyString());
         verifyZeroInteractions(listener);
     }
@@ -107,7 +107,7 @@ public class ModalStackTest2 extends BaseTest {
         assertThat(uut.isEmpty()).isTrue();
         uut.showModal(modal1, new CommandListenerAdapter());
         assertThat(uut.isEmpty()).isFalse();
-        uut.dismissAll(new CommandListenerAdapter());
+        uut.dismissAllModals(new CommandListenerAdapter());
         assertThat(uut.isEmpty()).isTrue();
     }
 

@@ -41,7 +41,7 @@ public class ModalStack2 {
         }
     }
 
-    public void dismissAll(CommandListener listener) {
+    public void dismissAllModals(CommandListener listener) {
         while (!modals.isEmpty()) {
             dismissModal(modals.get(0).getId(), new CommandListenerAdapter());
         }

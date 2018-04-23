@@ -109,7 +109,6 @@ public class ModalPresenterTest extends BaseTest {
         verify(animator, times(1)).dismiss(eq(modal1.getView()), any());
     }
 
-
     @Test
     public void dismissModal_previousModalIsAddedAtIndex0() {
         FrameLayout spy = spy(new FrameLayout(newActivity()));
