@@ -109,6 +109,15 @@ public class ModalPresenterTest extends BaseTest {
         verify(animator, times(1)).dismiss(eq(modal1.getView()), any());
     }
 
+
+    @Test
+    public void dismissModal_previousModalIsAddedAtIndex0() {
+        FrameLayout spy = spy(new FrameLayout(newActivity()));
+        uut.setContentLayout(spy);
+        uut.dismissModal(modal1, modal2, new CommandListenerAdapter());
+        verify(spy, times(1)).addView(modal2.getView(), 0);
+    }
+
     @Test
     public void dismissModal_noAnimation() {
         disableShowModalAnimation(modal1);

@@ -43,7 +43,7 @@ public class ModalPresenter {
     }
 
     public void dismissModal(ViewController toDismiss, @Nullable ViewController toAdd, CommandListener listener) {
-        if (toAdd != null) content.addView(toAdd.getView());
+        if (toAdd != null) content.addView(toAdd.getView(), 0);
         if (toDismiss.options.animations.dismissModal.enable.isTrueOrUndefined()) {
             animator.dismiss(toDismiss.getView(), new AnimatorListenerAdapter() {
                 @Override
