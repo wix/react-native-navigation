@@ -33,6 +33,9 @@ public class TitleBar extends Toolbar {
 
     public TitleBar(Context context) {
         super(context);
+        super.setContentInsetStartWithNavigation(0);
+        super.setContentInsetEndWithActions(0);
+        super.setContentInsetsAbsolute(0,0);
     }
 
     @Override
