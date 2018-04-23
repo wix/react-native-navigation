@@ -2,7 +2,6 @@ package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.Navigator.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
@@ -42,10 +41,19 @@ public class ModalStack2 {
     }
 
     public void dismissAllModals(CommandListener listener) {
-        while (!modals.isEmpty()) {
-            dismissModal(modals.get(0).getId(), new CommandListenerAdapter());
+        if (modals.isEmpty()) {
+            listener.onError("Nothing to dismiss");
+            return;
         }
-        listener.onSuccess("");
+
+        while (!modals.isEmpty()) {
+            if (modals.size() == 1) {
+                dismissModal(modals.get(0).getId(), listener);
+            } else {
+                modals.get(0).destroy();
+                modals.remove(0);
+            }
+        }
     }
 
     public boolean handleBack(CommandListener listener, Runnable onModalWillDismiss) {

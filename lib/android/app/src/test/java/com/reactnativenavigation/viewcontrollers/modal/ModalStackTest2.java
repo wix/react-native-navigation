@@ -20,6 +20,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -36,13 +37,15 @@ public class ModalStackTest2 extends BaseTest {
     private ViewController modal3;
     private Activity activity;
     private ModalPresenter presenter;
+    private ModalAnimator2 animator;
 
     @Override
     public void beforeEach() {
         activity = newActivity();
         ViewGroup root = new FrameLayout(activity);
         activity.setContentView(root);
-        presenter = spy(new ModalPresenter(new ModalAnimator2(activity)));
+        animator = spy(new ModalAnimatorMock(activity));
+        presenter = spy(new ModalPresenter(animator));
         uut = new ModalStack2(presenter);
         uut.setContentLayout(root);
         modal1 = spy(new SimpleViewController(activity, MODAL_ID_1, new Options()));
@@ -61,8 +64,9 @@ public class ModalStackTest2 extends BaseTest {
 
     @Test
     public void showModal() {
-        CommandListener listener = new CommandListenerAdapter();
+        CommandListener listener = spy(new CommandListenerAdapter());
         uut.showModal(modal1, listener);
+        verify(listener, times(1)).onSuccess(modal1.getId());
         assertThat(uut.size()).isOne();
         verify(presenter, times(1)).showModal(modal1, null, listener);
         assertThat(findModal(MODAL_ID_1)).isNotNull();
@@ -100,6 +104,41 @@ public class ModalStackTest2 extends BaseTest {
         uut.dismissAllModals(listener);
         verify(listener, times(1)).onSuccess(anyString());
         verifyZeroInteractions(listener);
+    }
+
+    @Test
+    public void dismissAllModals_rejectIfEmpty() {
+        CommandListener spy = spy(new CommandListenerAdapter());
+        uut.dismissAllModals(spy);
+        verify(spy, times(1)).onError(any());
+    }
+
+    @Test
+    public void dismissAllModals_onlyTopModalIsAnimated() {
+        uut.showModal(modal1, new CommandListenerAdapter());
+        uut.showModal(modal2, new CommandListenerAdapter());
+
+        ViewGroup view1 = modal1.getView();
+        ViewGroup view2 = modal2.getView();
+        CommandListener listener = spy(new CommandListenerAdapter());
+        uut.dismissAllModals(listener);
+
+        verify(presenter, times(1)).dismissModal(modal2, null, listener);
+        verify(animator, times(0)).dismiss(eq(view1), any());
+        verify(animator, times(1)).dismiss(eq(view2), any());
+        assertThat(uut.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void dismissAllModals_bottomModalsAreDestroyed() {
+        uut.showModal(modal1, new CommandListenerAdapter());
+        uut.showModal(modal2, new CommandListenerAdapter());
+
+        uut.dismissAllModals(new CommandListenerAdapter());
+
+        verify(modal1, times(1)).destroy();
+        verify(modal1, times(1)).onViewDisappear();
+        assertThat(uut.size()).isEqualTo(0);
     }
 
     @Test
