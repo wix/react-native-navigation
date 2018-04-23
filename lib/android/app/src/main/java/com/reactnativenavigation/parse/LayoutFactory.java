@@ -9,6 +9,7 @@ import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.SideMenuController;
 import com.reactnativenavigation.viewcontrollers.StackController;
+import com.reactnativenavigation.viewcontrollers.StackControllerBuilder;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
@@ -123,14 +124,14 @@ public class LayoutFactory {
     }
 
 	private ViewController createStack(LayoutNode node) {
-        StackController stackController = new StackController(activity,
-                new TitleBarButtonCreator(reactInstanceManager),
-                new TitleBarReactViewCreator(reactInstanceManager),
-                new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreator(reactInstanceManager)),
-                new TopBarController(),
-                node.id,
-                getOptions(node)
-        );
+        StackController stackController = new StackControllerBuilder(activity)
+                .setTopBarButtonCreator(new TitleBarButtonCreator(reactInstanceManager))
+                .setTitleBarReactViewCreator(new TitleBarReactViewCreator(reactInstanceManager))
+                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreator(reactInstanceManager)))
+                .setTopBarController(new TopBarController())
+                .setId(node.id)
+                .setInitialOptions(getOptions(node))
+                .createStackController();
         addChildrenToStack(node.children, stackController);
         return stackController;
 	}

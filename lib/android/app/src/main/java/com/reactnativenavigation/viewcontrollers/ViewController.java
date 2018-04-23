@@ -62,7 +62,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         getView();
     }
 
-    public boolean handleBack() {
+    public boolean handleBack(Navigator.CommandListener listener) {
         return false;
     }
 

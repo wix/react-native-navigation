@@ -24,6 +24,7 @@
     "url": "https://github.com/wix/react-native-navigation.git"
   },
   "main": "lib/dist/index.js",
+  "typings": "lib/dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./lib/dist && tsc",
     "xcode": "open playground/ios/playground.xcodeproj",

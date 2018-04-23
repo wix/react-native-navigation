@@ -160,7 +160,7 @@ public class TitleBar extends Toolbar {
             button.destroy();
         }
         rightButtonControllers.clear();
-        getMenu().clear();
+        if (getMenu().size() > 0) getMenu().clear();
     }
 
     public void setLeftButtons(List<Button> leftButtons) {

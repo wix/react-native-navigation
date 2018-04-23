@@ -33,9 +33,8 @@ class BaseAnimator {
 
         AnimatorSet set = new AnimatorSet();
         ObjectAnimator translationY = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, this.translationY, 0);
-        translationY.setInterpolator(DECELERATE_INTERPOLATOR);
-        translationY.setDuration(DURATION);
-        alpha.setDuration(DURATION);
+        set.setInterpolator(DECELERATE_INTERPOLATOR);
+        set.setDuration(DURATION);
         set.playTogether(translationY, alpha);
         return set;
     }

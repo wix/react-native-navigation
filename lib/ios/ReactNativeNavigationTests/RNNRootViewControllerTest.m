@@ -41,7 +41,7 @@
 	self.pageName = @"somename";
 	self.componentId = @"cntId";
 	self.emitter = nil;
-	self.options = [RNNNavigationOptions new];
+	self.options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withComponentId:self.componentId rootViewCreator:self.creator eventEmitter:self.emitter isExternalComponent:NO];
 }
 
@@ -533,6 +533,7 @@
 	self.options.backgroundImage = backgroundImage;
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
+	
 	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:backgroundImage]);
 }
 

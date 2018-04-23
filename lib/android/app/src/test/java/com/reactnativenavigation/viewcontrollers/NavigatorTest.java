@@ -29,6 +29,7 @@ import java.util.Arrays;
 import javax.annotation.Nullable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -59,20 +60,21 @@ public class NavigatorTest extends BaseTest {
         child3 = new SimpleViewController(activity, "child3", tabOptions);
         child4 = new SimpleViewController(activity, "child4", tabOptions);
         child5 = new SimpleViewController(activity, "child5", tabOptions);
+        activity.setContentView(uut.getView());
     }
 
     @Test
     public void setRoot_AddsChildControllerView() {
-        assertThat(uut.getView().getChildCount()).isZero();
+        assertThat(uut.getContentLayout().getChildCount()).isZero();
         uut.setRoot(child1, new MockPromise());
-        assertIsChild(uut.getView(), child1.getView());
+        assertIsChild(uut.getContentLayout(), child1.getView());
     }
 
     @Test
     public void setRoot_ReplacesExistingChildControllerViews() {
         uut.setRoot(child1, new MockPromise());
         uut.setRoot(child2, new MockPromise());
-        assertIsChild(uut.getView(), child2.getView());
+        assertIsChild(uut.getContentLayout(), child2.getView());
     }
 
     @Test
@@ -229,17 +231,17 @@ public class NavigatorTest extends BaseTest {
     public void handleBack_DelegatesToRoot() {
         ViewController root = spy(child1);
         uut.setRoot(root, new MockPromise());
-        when(root.handleBack()).thenReturn(true);
-        assertThat(uut.handleBack()).isTrue();
-        verify(root, times(1)).handleBack();
+        when(root.handleBack(any(Navigator.CommandListener.class))).thenReturn(true);
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
+        verify(root, times(1)).handleBack(any());
     }
 
     @Test
     public void handleBack_modalTakePrecedenceOverRoot() {
         ViewController root = spy(child1);
         uut.setRoot(root, new MockPromise());
-        uut.showModal(child2, new MockPromise());
-        verify(root, times(0)).handleBack();
+        uut.showModal(child2, new CommandListenerAdapter());
+        verify(root, times(0)).handleBack(new CommandListenerAdapter());
     }
 
     @Test
@@ -268,8 +270,14 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private StackController newStack() {
-        return new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), new TopBarController(),
-                "stack" + CompatUtils.generateViewId(), tabOptions);
+        return new StackControllerBuilder(activity)
+                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
+                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
+                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
+                .setTopBarController(new TopBarController())
+                .setId("stack" + CompatUtils.generateViewId())
+                .setInitialOptions(tabOptions)
+                .createStackController();
     }
 
     @Test
@@ -339,7 +347,7 @@ public class NavigatorTest extends BaseTest {
         uut.setRoot(parentController, new MockPromise());
         StackController stackController = newStack();
         stackController.push(child1, new CommandListenerAdapter());
-        uut.showModal(stackController, new MockPromise());
+        uut.showModal(stackController, new CommandListenerAdapter());
         uut.push(stackController.getId(), child2, new CommandListenerAdapter());
         assertIsChild(stackController.getView(), child2.getView());
     }
@@ -371,28 +379,72 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void showModal_onViewDisappearIsInvokedOnRoot() {
-        uut.setRoot(parentController, new MockPromise());
-        uut.showModal(child1, new MockPromise() {
+        uut.setRoot(parentController, new MockPromise() {
             @Override
             public void resolve(@Nullable Object value) {
-                verify(parentController, times(1)).onViewLostFocus();
+                uut.showModal(child1, new CommandListenerAdapter() {
+                    @Override
+                    public void onSuccess(String childId) {
+                        assertThat(parentController.getView().getParent()).isNull();
+                        verify(parentController, times(1)).onViewDisappear();
+                    }
+                });
             }
         });
     }
 
     @Test
     public void dismissModal_onViewAppearedInvokedOnRoot() {
+        disableShowModalAnimation(child1, child2);
+        disableDismissModalAnimation(child1, child2);
+
         uut.setRoot(parentController, new MockPromise());
-        uut.showModal(child1, new MockPromise() {
+        uut.showModal(child1, new CommandListenerAdapter());
+        uut.showModal(child2, new CommandListenerAdapter());
+
+        uut.dismissModal(child2.getId(), new CommandListenerAdapter());
+        assertThat(parentController.getView().getParent()).isNull();
+        verify(parentController, times(1)).onViewAppeared();
+
+        uut.dismissModal(child1.getId(), new CommandListenerAdapter());
+        assertThat(parentController.getView().getParent()).isNotNull();
+
+        verify(parentController, times(2)).onViewAppeared();
+    }
+
+    @Test
+    public void dismissAllModals_onViewAppearedInvokedOnRoot() {
+        disableShowModalAnimation(child1);
+
+        uut.dismissAllModals(new CommandListenerAdapter());
+        verify(parentController, times(0)).onViewAppeared();
+
+        uut.setRoot(parentController, new MockPromise());
+        verify(parentController, times(1)).onViewAppeared();
+        uut.showModal(child1, new CommandListenerAdapter());
+        uut.dismissAllModals(new CommandListenerAdapter());
+
+        verify(parentController, times(2)).onViewAppeared();
+    }
+
+    @Test
+    public void handleBack_onViewAppearedInvokedOnRoot() {
+        disableShowModalAnimation(child1, child2);
+
+        uut.setRoot(parentController, new MockPromise());
+        uut.showModal(child1, new CommandListenerAdapter());
+        uut.showModal(child2, new CommandListenerAdapter());
+
+        uut.handleBack(new CommandListenerAdapter());
+        verify(parentController, times(1)).onViewAppeared();
+
+        uut.handleBack(new CommandListenerAdapter() {
             @Override
-            public void resolve(@Nullable Object value) {
-                uut.dismissModal("child1", new CommandListenerAdapter() {
-                    @Override
-                    public void onSuccess(String childId) {
-                        verify(parentController, times(1)).onViewRegainedFocus();
-                    }
-                });
+            public void onSuccess(String childId) {
+                assertThat(parentController.getView().getParent()).isNotNull();
+                verify(parentController, times(2)).onViewAppeared();
             }
         });
     }
+
 }
