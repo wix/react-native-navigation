@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
@@ -40,7 +41,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
 	@Override
 	public void invokeDefaultOnBackPressed() {
-		if (!navigator.handleBack()) {
+		if (!navigator.handleBack(new CommandListenerAdapter())) {
 			super.onBackPressed();
 		}
 	}

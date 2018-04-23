@@ -13,6 +13,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.utils.ImageLoader;
+import com.reactnativenavigation.viewcontrollers.Navigator.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.views.BottomTabs;
@@ -76,8 +77,8 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
     @Override
-	public boolean handleBack() {
-		return !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack();
+	public boolean handleBack(CommandListener listener) {
+		return !tabs.isEmpty() && tabs.get(bottomTabs.getCurrentItem()).handleBack(listener);
 	}
 
     @Override

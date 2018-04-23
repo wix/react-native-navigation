@@ -6,8 +6,11 @@ import android.animation.AnimatorSet;
 import android.util.Property;
 import android.view.View;
 
+import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.parse.parsers.BoolParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
 
 import org.json.JSONObject;
@@ -26,10 +29,15 @@ public class AnimationOptions {
         options.hasValue = true;
         for (Iterator<String> it = json.keys(); it.hasNext(); ) {
             String key = it.next();
-            if ("id".equals(key)) {
-                options.id = TextParser.parse(json, key);
-            } else {
-                options.valueOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), getAnimProp(key)));
+            switch (key) {
+                case "id":
+                    options.id = TextParser.parse(json, key);
+                    break;
+                case "enable":
+                    options.enable = BoolParser.parse(json, key);
+                    break;
+                default:
+                    options.valueOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), getAnimProp(key)));
             }
         }
 
@@ -39,6 +47,7 @@ public class AnimationOptions {
     private boolean hasValue = false;
 
     public Text id = new NullText();
+    public Bool enable = new NullBool();
     private HashSet<ValueAnimationOptions> valueOptions = new HashSet<>();
 
     void mergeWith(AnimationOptions other) {

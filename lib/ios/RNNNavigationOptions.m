@@ -74,9 +74,9 @@ RCT_ENUM_CONVERTER(UIModalPresentationStyle,
 			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
 			[viewController.view insertSubview:backgroundImageView atIndex:0];
 		}
-		
+
 		backgroundImageView.layer.masksToBounds = YES;
-		backgroundImageView.image = [RCTConvert UIImage:self.backgroundImage];
+		backgroundImageView.image = [self.backgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.backgroundImage : [RCTConvert UIImage:self.backgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
 	
@@ -86,9 +86,9 @@ RCT_ENUM_CONVERTER(UIModalPresentationStyle,
 			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
 			[viewController.navigationController.view insertSubview:backgroundImageView atIndex:0];
 		}
-		
+
 		backgroundImageView.layer.masksToBounds = YES;
-		backgroundImageView.image = [RCTConvert UIImage:self.rootBackgroundImage];
+		backgroundImageView.image = [self.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.rootBackgroundImage : [RCTConvert UIImage:self.rootBackgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
 	
