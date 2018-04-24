@@ -318,6 +318,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     @Override
     public void onModalDismissed() {
+        getCurrentScreenStack().peek().setStyle();
         getCurrentScreenStack().peek().getScreenParams().timestamp = System.currentTimeMillis();
         NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(getCurrentScreenStack().peek().getScreenParams(), NavigationType.DismissModal);
         NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(getCurrentScreenStack().peek().getScreenParams(), NavigationType.DismissModal);

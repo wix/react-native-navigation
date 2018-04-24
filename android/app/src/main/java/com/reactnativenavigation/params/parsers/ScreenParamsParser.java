@@ -59,7 +59,7 @@ public class ScreenParamsParser extends Parser {
         result.animateScreenTransitions = new AnimationParser(params).parse();
         result.sharedElementsTransitions = getSharedElementsTransitions(params);
 
-        result.animationType = params.getString(ANIMATION_TYPE, AppStyle.appStyle.screenAnimationType);
+        result.animationType = params.getString(ANIMATION_TYPE, AppStyle.appStyle == null ? "" : AppStyle.appStyle.screenAnimationType);
 
         return result;
     }

@@ -192,7 +192,7 @@ Navigation.showLightBox({
 });
 ```
 
-## dismissLightBox(params = {})
+## dismissLightBox()
 
 Dismiss the current lightbox.
 

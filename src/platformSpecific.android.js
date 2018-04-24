@@ -62,12 +62,12 @@ function dismissLightBox() {
   NativeReactModule.dismissLightBox();
 }
 
-function dismissTopModal(params) {
-  NativeReactModule.dismissTopModal(params);
+async function dismissTopModal(params) {
+  return await NativeReactModule.dismissTopModal(params);
 }
 
-function dismissAllModals() {
-  NativeReactModule.dismissAllModals();
+async function dismissAllModals() {
+  return await NativeReactModule.dismissAllModals();
 }
 
 function showInAppNotification(params) {
@@ -79,6 +79,7 @@ function dismissInAppNotification(params) {
   NativeReactModule.hideSlidingOverlay(params);
 }
 
+// eslint-disable-next-line max-statements
 function savePassProps(params) {
   if (params.navigationParams && params.passProps) {
     PropRegistry.save(params.navigationParams.screenInstanceID, params.passProps);
@@ -89,7 +90,7 @@ function savePassProps(params) {
   }
 
   if (_.get(params, 'screen.screens')) {
-    _.forEach(params.screen.screens, savePassProps)
+    _.forEach(params.screen.screens, savePassProps);
   }
 
   if (_.get(params, 'screen.topTabs')) {
@@ -108,7 +109,7 @@ function savePassProps(params) {
       savePassProps(tab);
       
       if (tab.screens) {
-        _.forEach(tab.screens, savePassProps)
+        _.forEach(tab.screens, savePassProps);
       }
     });
   }
