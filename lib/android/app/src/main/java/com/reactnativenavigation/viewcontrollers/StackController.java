@@ -31,13 +31,13 @@ public class StackController extends ParentController<StackLayout> {
     private TopBarBackgroundViewController topBarBackgroundViewController;
     private TopBarController topBarController;
 
-    public StackController(final Activity activity, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, String id, Options initialOptions) {
+    public StackController(final Activity activity, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions) {
         super(activity, id, initialOptions);
         this.topBarController = topBarController;
-        animator = createAnimator();
         this.topBarButtonCreator = topBarButtonCreator;
         this.titleBarReactViewCreator = titleBarReactViewCreator;
         this.topBarBackgroundViewController = topBarBackgroundViewController;
+        this.animator = animator;
     }
 
     public void applyOptions(Options options) {
@@ -220,9 +220,9 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    public boolean handleBack() {
+    public boolean handleBack(CommandListener listener) {
         if (canPop()) {
-            pop(new CommandListenerAdapter());
+            pop(listener);
             return true;
         }
         return false;
@@ -257,10 +257,6 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void clearTopTabs() {
         topBarController.clearTopTabs();
-    }
-
-     NavigationAnimator createAnimator() {
-        return new NavigationAnimator(getActivity());
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

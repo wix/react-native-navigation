@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -113,19 +114,19 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void handleBack_DelegatesToSelectedChild() {
-        assertThat(uut.handleBack()).isFalse();
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
 
         List<ViewController> tabs = createTabs();
         ViewController spy = spy(tabs.get(2));
         tabs.set(2, spy);
-        when(spy.handleBack()).thenReturn(true);
+        when(spy.handleBack(any())).thenReturn(true);
         uut.setTabs(tabs);
 
-        assertThat(uut.handleBack()).isFalse();
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
         uut.selectTabAtIndex(2);
-        assertThat(uut.handleBack()).isTrue();
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
 
-        verify(spy, times(1)).handleBack();
+        verify(spy, times(1)).handleBack(any());
     }
 
     @Test
@@ -175,13 +176,13 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     private StackController createStack(String id) {
-        return new StackController(activity,
-                new TopBarButtonCreatorMock(),
-                new TitleBarReactViewCreatorMock(),
-                new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()),
-                new TopBarController(),
-                id,
-                tabOptions
-        );
+        return new StackControllerBuilder(activity)
+                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
+                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
+                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
+                .setTopBarController(new TopBarController())
+                .setId(id)
+                .setInitialOptions(tabOptions)
+                .createStackController();
     }
 }

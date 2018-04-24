@@ -89,8 +89,8 @@ public class Modal implements DialogInterface.OnKeyListener, DialogInterface.OnD
         modalListener.onModalDisplay(this);
     }
 
-    public boolean handleBack() {
-        if (!viewController.handleBack()) {
+    public boolean handleBack(CommandListener listener) {
+        if (!viewController.handleBack(listener)) {
             dialog.dismiss();
         }
         return true;

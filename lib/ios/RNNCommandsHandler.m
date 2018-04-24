@@ -20,7 +20,7 @@
 	_controllerFactory = controllerFactory;
 	_navigationStackManager = [[RNNNavigationStackManager alloc] initWithStore:_store];
 	_modalManager = [[RNNModalManager alloc] initWithStore:_store];
-	_overlayManager = [[RNNOverlayManager alloc] init];
+	_overlayManager = [[RNNOverlayManager alloc] initWithStore:_store];
 	return self;
 }
 

@@ -70,14 +70,21 @@ public class ViewControllerTest extends BaseTest {
     @Test
     public void holdsAReferenceToStackControllerOrNull() {
         assertThat(uut.getParentController()).isNull();
-        StackController nav = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), new TopBarController(), "stack", new Options());
+        StackController nav = new StackControllerBuilder(activity)
+                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
+                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
+                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
+                .setTopBarController(new TopBarController())
+                .setId("stack")
+                .setInitialOptions(new Options())
+                .createStackController();
         nav.push(uut, new CommandListenerAdapter());
         assertThat(uut.getParentController()).isEqualTo(nav);
     }
 
     @Test
     public void handleBackDefaultFalse() {
-        assertThat(uut.handleBack()).isFalse();
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
     }
 
     @Test

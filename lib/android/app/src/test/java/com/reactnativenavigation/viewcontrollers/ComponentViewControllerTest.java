@@ -30,7 +30,14 @@ public class ComponentViewControllerTest extends BaseTest {
         super.beforeEach();
         Activity activity = newActivity();
         view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
-        ParentController<StackLayout> parentController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), new TopBarController(), "stack", new Options());
+        ParentController<StackLayout> parentController = new StackControllerBuilder(activity)
+                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
+                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
+                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
+                .setTopBarController(new TopBarController())
+                .setId("stack")
+                .setInitialOptions(new Options())
+                .createStackController();
         uut = new ComponentViewController(activity, "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options());
         uut.setParentController(parentController);
         parentController.ensureViewIsCreated();

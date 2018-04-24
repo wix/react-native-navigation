@@ -53,7 +53,14 @@ public class OptionsApplyingTest extends BaseTest {
                 (activity1, componentId, componentName) -> view,
                 initialNavigationOptions
         );
-        stackController = new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), new TopBarController(), "stack", new Options());
+        stackController = new StackControllerBuilder(activity)
+                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
+                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
+                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
+                .setTopBarController(new TopBarController())
+                .setId("stack")
+                .setInitialOptions(new Options())
+                .createStackController();
         stackController.ensureViewIsCreated();
         stackController.getView().layout(0, 0, 1000, 1000);
         stackController.getTopBar().layout(0, 0, 1000, 100);
@@ -73,7 +80,14 @@ public class OptionsApplyingTest extends BaseTest {
     public void initialOptionsAppliedOnAppear() {
         uut.options.topBar.title.text = new Text("the title");
         StackController stackController =
-                new StackController(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()), new TopBarController(), "stackId", new Options());
+                new StackControllerBuilder(activity)
+                        .setTopBarButtonCreator(new TopBarButtonCreatorMock())
+                        .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
+                        .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
+                        .setTopBarController(new TopBarController())
+                        .setId("stackId")
+                        .setInitialOptions(new Options())
+                        .createStackController();
         stackController.push(uut, new CommandListenerAdapter());
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
 
