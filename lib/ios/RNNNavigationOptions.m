@@ -27,6 +27,17 @@ RCT_ENUM_CONVERTER(UIModalPresentationStyle,
 
 @end
 
+@implementation RCTConvert (UIModalTransitionStyle)
+
+RCT_ENUM_CONVERTER(UIModalTransitionStyle,
+                   (@{@"coverVertical": @(UIModalTransitionStyleCoverVertical),
+                      @"flipHorizontal": @(UIModalTransitionStyleFlipHorizontal),
+                      @"crossDissolve": @(UIModalTransitionStyleCrossDissolve),
+                      @"partialCurl": @(UIModalTransitionStylePartialCurl)
+                      }), UIModalTransitionStyleCoverVertical, integerValue)
+
+@end
+
 @implementation RNNNavigationOptions
 
 
@@ -91,10 +102,17 @@ RCT_ENUM_CONVERTER(UIModalPresentationStyle,
 		backgroundImageView.image = [self.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.rootBackgroundImage : [RCTConvert UIImage:self.rootBackgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
-	
-	if (self.modalPresentationStyle) {
-		viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:self.modalPresentationStyle];
-	}
+    
+    [self applyModalOptions:viewController];
+}
+
+- (void)applyModalOptions:(UIViewController*)viewController {
+    if (self.modalPresentationStyle) {
+        viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:self.modalPresentationStyle];
+    }
+    if (self.modalTransitionStyle) {
+        viewController.modalTransitionStyle = [RCTConvert UIModalTransitionStyle:self.modalTransitionStyle];
+    }
 }
 
 - (UIInterfaceOrientationMask)supportedOrientations {

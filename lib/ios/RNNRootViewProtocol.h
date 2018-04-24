@@ -7,6 +7,7 @@
 - (BOOL)isCustomViewController;
 - (void)performOnRotation:(void (^)(void))block;
 - (void)optionsUpdated;
+- (void)applyModalOptions;
 
 @required
 - (BOOL)isCustomTransitioned;

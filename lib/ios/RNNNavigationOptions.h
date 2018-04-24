@@ -38,8 +38,10 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) NSDictionary* backgroundImage;
 @property (nonatomic, strong) NSDictionary* rootBackgroundImage;
 @property (nonatomic, strong) NSString* modalPresentationStyle;
+@property (nonatomic, strong) NSString* modalTransitionStyle;
 
 - (UIInterfaceOrientationMask)supportedOrientations;
 
+- (void)applyModalOptions:(UIViewController*)viewController;
 
 @end
