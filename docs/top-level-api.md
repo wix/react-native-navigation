@@ -45,7 +45,7 @@ Navigation.startTabBasedApp({
       titleImage: require('../img/titleImage.png'), // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
       navigatorStyle: {}, // override the navigator style for the tab screen, see "Styling the navigator" below (optional),
       navigatorButtons: {}, // override the nav buttons for the tab screen, see "Adding buttons to the navigator" below (optional)
-      modal: false // prevent tab selection and send a 'modalTabSelected' navigator event instead (optional)
+      modal: false // Prevent tab selection and send a 'modalTabSelected' navigator event instead (optional, iOS only)
     },
     {
       label: 'Two',
