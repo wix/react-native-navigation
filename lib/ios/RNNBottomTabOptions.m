@@ -13,7 +13,7 @@
 
 - (void)applyOn:(UIViewController *)viewController {
 	if (self.title || self.icon) {
-		UITabBarItem* tabItem = [[UITabBarItem alloc] initWithTitle:nil image:[RCTConvert UIImage:self.icon] tag:self.tag];
+		UITabBarItem* tabItem = [[UITabBarItem alloc] initWithTitle:self.title image:[RCTConvert UIImage:self.icon] tag:self.tag];
 		tabItem.accessibilityIdentifier = self.testID;
 		
 		if (self.iconInsets && ![self.iconInsets isKindOfClass:[NSNull class]]) {

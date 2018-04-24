@@ -2,11 +2,13 @@
 
 @implementation RNNOverlayManager {
 	NSMutableDictionary* _overlayDict;
+	RNNStore* _store;
 }
 
-- (instancetype)init {
+- (instancetype)initWithStore:(RNNStore *)store {
 	self = [super init];
 	_overlayDict = [[NSMutableDictionary alloc] init];
+	_store = store;
 	return self;
 }
 
@@ -33,6 +35,7 @@
 - (void)removeCachedOverlay:(RNNRootViewController*)viewController {
 	[viewController.view removeFromSuperview];
 	[_overlayDict removeObjectForKey:viewController.componentId];
+	[_store removeComponent:viewController.componentId];
 }
 
 @end
