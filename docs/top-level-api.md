@@ -70,12 +70,12 @@ Navigation.startTabBasedApp({
   drawer: { // optional, add this if you want a side menu drawer in your app
     left: { // optional, define if you want a drawer from the left
       screen: 'example.FirstSideMenu', // unique ID registered with Navigation.registerScreen
-      passProps: {} // simple serializable object that will pass as props to all top screens (optional),
+      passProps: {}, // simple serializable object that will pass as props to all top screens (optional),
       fixedWidth: 500, // a fixed width you want your left drawer to have (optional)
     },
     right: { // optional, define if you want a drawer from the right
       screen: 'example.SecondSideMenu', // unique ID registered with Navigation.registerScreen
-      passProps: {} // simple serializable object that will pass as props to all top screens (optional)
+      passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
       fixedWidth: 500, // a fixed width you want your right drawer to have (optional)
     },
     style: { // ( iOS only )
