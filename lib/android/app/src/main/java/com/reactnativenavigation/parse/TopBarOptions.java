@@ -33,6 +33,7 @@ public class TopBarOptions {
         options.drawBehind = BoolParser.parse(json,"drawBehind");
         options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"), typefaceLoader);
         options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"), typefaceLoader);
+        options.component = Component.parse(json.optJSONObject("component"));
         options.testId = TextParser.parse(json, "testID");
 
         options.validate();
@@ -49,6 +50,7 @@ public class TopBarOptions {
     public Bool drawBehind = new NullBool();
     @Nullable public ArrayList<Button> leftButtons;
     @Nullable public ArrayList<Button> rightButtons;
+    public Component component = new Component();
 
     void mergeWith(final TopBarOptions other) {
         title.mergeWith(other.title);
@@ -61,6 +63,7 @@ public class TopBarOptions {
         if (other.drawBehind.hasValue()) drawBehind = other.drawBehind;
         if (other.leftButtons != null) leftButtons = other.leftButtons;
         if (other.rightButtons != null) rightButtons = other.rightButtons;
+        if (other.component.hasValue()) component = other.component;
         validate();
     }
 
@@ -74,15 +77,23 @@ public class TopBarOptions {
         if (!drawBehind.hasValue()) drawBehind = defaultOptions.drawBehind;
         if (leftButtons == null) leftButtons = defaultOptions.leftButtons;
         if (rightButtons == null) rightButtons = defaultOptions.rightButtons;
+        component.mergeWithDefault(defaultOptions.component);
         if (!testId.hasValue()) testId = defaultOptions.testId;
         validate();
     }
 
     private void validate() {
-        if (title.component.hasValue() && (title.text.hasValue() || subtitle.text.hasValue())) {
-            if (BuildConfig.DEBUG) Log.w("RNN", "A screen can't use both text and component - clearing text.");
+        boolean titleComponent = title.component.hasValue();
+        boolean titleText = title.text.hasValue() || subtitle.text.hasValue();
+        boolean rootComponent =  component.hasValue();
+        if(titleText && (rootComponent || titleComponent)) {
+            if (BuildConfig.DEBUG) Log.w("RNN", "A screen can only use one of: text, component, title component - clearing text.");
             title.text = new NullText();
             subtitle.text = new NullText();
+        }
+        if(rootComponent && titleComponent){
+            if (BuildConfig.DEBUG) Log.w("RNN", "A screen can only use one of: component, title component - clearing title component.");
+            title.component = new Component();
         }
     }
 }

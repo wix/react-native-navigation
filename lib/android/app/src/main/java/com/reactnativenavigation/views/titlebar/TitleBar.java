@@ -61,6 +61,10 @@ public class TitleBar extends Toolbar {
         if (color.hasValue()) setTitleTextColor(color.get());
     }
 
+    public void setRootComponent(Component component) {
+        setContentInsetsAbsolute(0,0);
+        setComponent(component);
+    }
     public void setComponent(Component component) {
         clearTitle();
         clearSubtitle();

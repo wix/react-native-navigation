@@ -119,7 +119,15 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setTitleComponent(Component component) {
-        titleBar.setComponent(component);
+        if (component.hasValue()) {
+            titleBar.setComponent(component);
+        }
+    }
+
+    public void setComponent(Component component) {
+        if (component.hasValue()) {
+            titleBar.setRootComponent(component);
+        }
     }
 
     public void setBackgroundComponent(Component component) {
