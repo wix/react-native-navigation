@@ -24,7 +24,7 @@
 
 -(void)setStackRoot:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
 
--(void)showModal:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
+-(void)showModal:(NSDictionary*)layout completion:(RNNTransitionComponentIdCompletionBlock)completion;
 
 -(void)dismissModal:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;
 
@@ -33,5 +33,7 @@
 -(void)showOverlay:(NSDictionary *)layout completion:(RNNTransitionCompletionBlock)completion;
 
 -(void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;
+
+-(void)setTabIndex:(NSString *)componentId index:(int)index completion:(RNNTransitionCompletionBlock)completion;
 
 @end

@@ -145,6 +145,13 @@ export class Navigation {
   }
 
   /**
+   * sets tab bar to desired index
+   */
+  public setTabIndex(componentId: string, index: number): Promise<any> {
+    return this.commands.setTabIndex(componentId, index);
+  }
+
+  /**
    * Obtain the events registry instance
    */
   public events(): EventsRegistry {

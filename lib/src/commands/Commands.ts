@@ -113,4 +113,10 @@ export class Commands {
     this.commandsObserver.notify('dismissOverlay', { componentId });
     return result;
   }
+
+  public setTabIndex(componentId, index) {
+    const result = this.nativeCommandsSender.setTabIndex(componentId, index);
+    this.commandsObserver.notify('setTabIndex', { componentId, index });
+    return result;
+  }
 }
