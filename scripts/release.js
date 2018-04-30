@@ -15,7 +15,7 @@ function execSyncSilently(cmd) {
 }
 
 function validateEnv() {
-  if (!process.env.CI) {
+  if (!process.env.JENKINS_CI) {
     throw new Error(`releasing is only available from CI`);
   }
 
