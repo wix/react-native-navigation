@@ -100,7 +100,12 @@
 		} if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
 			self.navigationItem.title = nil;
 		}
-	}
+    } else if (_customTitleView.superview == nil) {
+        if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
+            self.navigationItem.title = nil;
+        }
+        self.navigationItem.titleView = _customTitleView;
+    }
 }
 
 - (void)setCustomNavigationBarView {
@@ -115,7 +120,12 @@
 		} else if ([[self.navigationController.navigationBar.subviews lastObject] isKindOfClass:[RNNCustomTitleView class]] && !_customTopBar) {
 			[[self.navigationController.navigationBar.subviews lastObject] removeFromSuperview];
 		}
-	}
+    } else if (_customTopBar.superview == nil) {
+        if ([[self.navigationController.navigationBar.subviews lastObject] isKindOfClass:[RNNCustomTitleView class]] && !_customTopBar) {
+            [[self.navigationController.navigationBar.subviews lastObject] removeFromSuperview];
+        }
+        [self.navigationController.navigationBar addSubview:_customTopBar];
+    }
 }
 
 - (void)setCustomNavigationComponentBackground {
@@ -130,7 +140,13 @@
 			[[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
 			self.navigationController.navigationBar.clipsToBounds = NO;
 		}
-	}
+    } if (_customTopBarBackground.superview == nil) {
+        if ([[self.navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
+            [[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
+        }
+        [self.navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
+        self.navigationController.navigationBar.clipsToBounds = YES;
+    }
 }
 
 -(BOOL)isCustomTransitioned {
