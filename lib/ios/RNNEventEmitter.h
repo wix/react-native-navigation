@@ -14,4 +14,8 @@
 
 -(void)sendOnNavigationButtonPressed:(NSString*)componentId buttonId:(NSString*)buttonId;
 
+-(void)sendOnNavigationEvent:(NSString *)commandName params:(NSDictionary*)params;
+
+-(void)sendOnNavigationComment:(NSString *)commandName params:(NSDictionary*)params;
+
 @end

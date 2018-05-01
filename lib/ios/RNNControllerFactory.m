@@ -135,7 +135,7 @@
 }
 
 -(UIViewController<RNNRootViewProtocol> *)createTabs:(RNNLayoutNode*)node {
-	RNNTabBarController* vc = [[RNNTabBarController alloc] init];
+	RNNTabBarController* vc = [[RNNTabBarController alloc] initWithEventEmitter:_eventEmitter];
 	NSDictionary* options = node.data[@"options"];
 
 	NSMutableArray* controllers = [NSMutableArray new];

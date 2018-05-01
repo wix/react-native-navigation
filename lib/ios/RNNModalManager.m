@@ -75,7 +75,7 @@
 
 	UIViewController* topPresentedVC = [self topPresentedVC];
 
-	if (modalToDismiss.options.animations.showModal) {
+	if ([modalToDismiss.options.animations.showModal hasCustomAnimation]) {
 		modalToDismiss.transitioningDelegate = modalToDismiss;
 	}
 

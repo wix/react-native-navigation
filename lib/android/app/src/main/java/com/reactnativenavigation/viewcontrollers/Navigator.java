@@ -65,14 +65,12 @@ public class Navigator extends ParentController {
     @Override
     public boolean handleBack(CommandListener listener) {
         if (modalStack.isEmpty()) return root.handleBack(listener);
-        return modalStack.handleBack(listener, () -> {
-            if (modalStack.size() == 1) contentLayout.addView(root.getView(), 0);
-        });
+        return modalStack.handleBack(listener, root);
     }
 
     @Override
     public void destroy() {
-        modalStack.dismissAllModals(new CommandListenerAdapter(), () -> {});
+        modalStack.dismissAllModals(new CommandListenerAdapter(), root);
         super.destroy();
     }
 
@@ -172,33 +170,15 @@ public class Navigator extends ParentController {
     }
 
     public void showModal(final ViewController viewController, CommandListener listener) {
-        modalStack.showModal(viewController, new CommandListenerAdapter() {
-            @Override
-            public void onSuccess(String childId) {
-                contentLayout.removeView(root.getView());
-                listener.onSuccess(childId);
-            }
-
-            @Override
-            public void onError(String message) {
-                listener.onError(message);
-            }
-        });
+        modalStack.showModal(viewController, root, listener);
     }
 
     public void dismissModal(final String componentId, CommandListener listener) {
-        modalStack.dismissModal(componentId,
-                () -> {
-                    if (modalStack.size() == 1) contentLayout.addView(root.getView());
-                },
-                listener
-        );
+        modalStack.dismissModal(componentId, root, listener);
     }
 
     public void dismissAllModals(CommandListener listener) {
-        modalStack.dismissAllModals(listener, () -> {
-            if (!modalStack.isEmpty()) contentLayout.addView(root.getView(), 0);
-        });
+        modalStack.dismissAllModals(listener, root);
     }
 
     public void showOverlay(ViewController overlay) {

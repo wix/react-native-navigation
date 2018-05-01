@@ -12,7 +12,7 @@ function run() {
   const prefix = android ? `android.emu` : `ios.sim`;
   const suffix = release ? `release` : `debug`;
   const configuration = `${prefix}.${suffix}`;
-  const cleanup = process.env.CI ? `--cleanup` : ``;
+  const cleanup = process.env.JENKINS_CI ? `--cleanup` : ``;
 
   if (!skipBuild) {
     exec.execSync(`detox build --configuration ${configuration}`);

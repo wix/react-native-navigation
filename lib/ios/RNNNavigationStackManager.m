@@ -1,6 +1,7 @@
 #import "RNNNavigationStackManager.h"
 #import "RNNRootViewController.h"
 #import "RNNAnimator.h"
+#import "RNNErrorHandler.h"
 
 
 dispatch_queue_t RCTGetUIManagerQueue(void);
@@ -15,9 +16,10 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	return self;
 }
 
--(void)push:(UIViewController<RNNRootViewProtocol> *)newTop onTop:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion {
+-(void)push:(UIViewController<RNNRootViewProtocol> *)newTop onTop:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	UIViewController *vc = [_store findComponentForId:componentId];
 	[self preparePush:newTop onTopVC:vc completion:completion];
+	[self assertNavigationControllerExist:vc reject:rejection];
 	if ([newTop isCustomViewController]) {
 		[self pushAfterLoad:nil];
 	} else {
@@ -65,8 +67,9 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	self.fromVC = nil;
 }
 
--(void)pop:(NSString *)componentId withTransitionOptions:(RNNAnimationOptions *)transitionOptions {
+-(void)pop:(NSString *)componentId withTransitionOptions:(RNNAnimationOptions *)transitionOptions rejection:(RCTPromiseRejectBlock)rejection {
 	RNNRootViewController* vc = (RNNRootViewController*)[_store findComponentForId:componentId];
+	[self assertNavigationControllerExist:vc reject:rejection];
 	UINavigationController* nvc = [vc navigationController];
 	if ([nvc topViewController] == vc) {
 		if (vc.options.animations.pop) {
@@ -84,9 +87,9 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	[_store removeComponent:componentId];
 }
 
--(void)popTo:(NSString*)componentId {
+-(void)popTo:(NSString*)componentId rejection:(RCTPromiseRejectBlock)rejection {
 	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
-	
+	[self assertNavigationControllerExist:vc reject:rejection];
 	if (vc) {
 		UINavigationController *nvc = [vc navigationController];
 		if(nvc) {
@@ -96,16 +99,19 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	}
 }
 
--(void)popToRoot:(NSString*)componentId {
+-(void)popToRoot:(NSString*)componentId rejection:(RCTPromiseRejectBlock)rejection {
 	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
+	[self assertNavigationControllerExist:vc reject:rejection];
 	UINavigationController* nvc = [vc navigationController];
 	NSArray* poppedVCs = [nvc popToRootViewControllerAnimated:vc.options.animations.pop.enable];
 	[self removePopedViewControllers:poppedVCs];
 }
 
--(void)setRoot:(UIViewController<RNNRootViewProtocol> *)newRoot fromComponent:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion {
+-(void)setStackRoot:(UIViewController<RNNRootViewProtocol> *)newRoot fromComponent:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	UIViewController* vc = [_store findComponentForId:componentId];
+	[self assertNavigationControllerExist:vc reject:rejection];
 	UINavigationController* nvc = [vc navigationController];
+	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
 		if (completion) {
@@ -116,6 +122,13 @@ dispatch_queue_t RCTGetUIManagerQueue(void);
 	[nvc setViewControllers:@[newRoot] animated:newRoot.options.animations.push.enable];
 	
 	[CATransaction commit];
+}
+
+- (void)assertNavigationControllerExist:(UIViewController *)viewController reject:(RCTPromiseRejectBlock)reject {
+	if (!viewController.navigationController) {
+		_completionBlock = nil;
+		[RNNErrorHandler reject:reject withErrorCode:RNNCommandErrorCodeNoStack errorDescription:[NSString stringWithFormat:@"%@ should be called from a stack child component", [RNNErrorHandler getCallerFunctionName]]];
+	}
 }
 
 -(void)removePopedViewControllers:(NSArray*)viewControllers {

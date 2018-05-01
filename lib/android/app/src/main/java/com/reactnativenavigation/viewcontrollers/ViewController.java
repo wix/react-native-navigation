@@ -116,6 +116,14 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return view;
     }
 
+    public void detachView() {
+        ((ViewManager) view.getParent()).removeView(view);
+    }
+
+    public void attachView(ViewGroup parent, int index) {
+        if (view.getParent() == null) parent.addView(view, index);
+    }
+
     public String getId() {
         return id;
     }

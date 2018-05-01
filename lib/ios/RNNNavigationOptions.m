@@ -102,6 +102,10 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 		backgroundImageView.image = [self.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.rootBackgroundImage : [RCTConvert UIImage:self.rootBackgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
+	
+	if (self.statusBarStyle) {
+		[viewController setNeedsStatusBarAppearanceUpdate];
+	}
     
     [self applyModalOptions:viewController];
 }

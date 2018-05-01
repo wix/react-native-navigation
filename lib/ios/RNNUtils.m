@@ -8,6 +8,7 @@
 		return defaultResult;
 	}
 }
+
 +(BOOL)getBoolOrKey:(NSDictionary*)dict withKey:(NSString*)key withDefault:(BOOL)defaultResult {
 	if ([dict objectForKey:key]) {
 		return [dict[key] boolValue];
@@ -15,6 +16,7 @@
 		return defaultResult;
 	}
 }
+
 +(id)getObjectOrKey:(NSDictionary*)dict withKey:(NSString*)key withDefault:(id)defaultResult {
 	if ([dict objectForKey:key]) {
 		return dict[key];
@@ -22,4 +24,5 @@
 		return defaultResult;
 	}
 }
+
 @end

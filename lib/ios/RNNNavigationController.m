@@ -36,4 +36,8 @@
 	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController).options;
 }
 
+- (UIViewController *)childViewControllerForStatusBarStyle {
+	return self.topViewController;
+}
+
 @end

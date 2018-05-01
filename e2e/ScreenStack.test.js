@@ -81,4 +81,13 @@ describe('screen stack', () => {
     await expect(elementByLabel('This is an external component')).toBeVisible();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
+
+  it(':ios: set stack root component should be first in stack', async () => {
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementByLabel('Stack Position: 1')).toBeVisible();
+    await elementById(testIDs.SET_STACK_ROOT_BUTTON).tap();
+    await expect(elementByLabel('Stack Position: 2')).toBeVisible();
+    await elementById(testIDs.POP_BUTTON).tap();
+    await expect(elementByLabel('Stack Position: 2')).toBeVisible();
+  });
 });

@@ -53,7 +53,7 @@
 
 
 - (void)testPop_removeTopVCFromStore {
-	[self.uut pop:@"vc3" withTransitionOptions:nil];
+	[self.uut pop:@"vc3" withTransitionOptions:nil rejection:nil];
 	XCTAssertNil([self.store findComponentForId:@"vc3"]);
 	XCTAssertNotNil([self.store findComponentForId:@"vc2"]);
 	XCTAssertNotNil([self.store findComponentForId:@"vc1"]);
@@ -61,7 +61,7 @@
 
 - (void)testPopToSpecificVC_removeAllPopedVCFromStore {
 	self.nvc.willReturnVCs = @[self.vc2, self.vc3];
-	[self.uut popTo:@"vc1"];
+	[self.uut popTo:@"vc1" rejection:nil];
 	
 	XCTAssertNil([self.store findComponentForId:@"vc2"]);
 	XCTAssertNil([self.store findComponentForId:@"vc3"]);
@@ -71,7 +71,7 @@
 
 - (void)testPopToRoot_removeAllTopVCsFromStore {
 	self.nvc.willReturnVCs = @[self.vc2, self.vc3];
-	[self.uut popToRoot:@"vc3"];
+	[self.uut popToRoot:@"vc3" rejection:nil];
 	
 	XCTAssertNil([self.store findComponentForId:@"vc2"]);
 	XCTAssertNil([self.store findComponentForId:@"vc3"]);
@@ -79,7 +79,13 @@
 
 }
 
-
-
+- (void)testStackRoot_shouldUpdateNavigationControllerChildrenViewControllers {
+	self.nvc.willReturnVCs = @[self.vc1, self.vc2, self.vc3];
+	
+	[self.uut setStackRoot:self.vc2 fromComponent:@"vc1" completion:nil rejection:nil];
+	
+	XCTAssertEqual(self.nvc.viewControllers.lastObject, self.vc2);
+	XCTAssertEqual(self.nvc.viewControllers.count, 1);
+}
 
 @end

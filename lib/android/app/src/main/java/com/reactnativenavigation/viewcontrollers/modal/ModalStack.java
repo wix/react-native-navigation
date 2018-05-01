@@ -23,17 +23,16 @@ public class ModalStack {
         presenter.setContentLayout(contentLayout);
     }
 
-    public void showModal(ViewController viewController, CommandListener listener) {
-        ViewController toRemove = isEmpty() ? null : peek();
+    public void showModal(ViewController viewController, ViewController root, CommandListener listener) {
+        ViewController toRemove = isEmpty() ? root : peek();
         modals.add(viewController);
         presenter.showModal(viewController, toRemove, listener);
     }
 
-    public void dismissModal(String componentId, Runnable onModalWilDismiss, CommandListener listener) {
+    public void dismissModal(String componentId, ViewController root, CommandListener listener) {
         ViewController toDismiss = findModalByComponentId(componentId);
         if (toDismiss != null) {
-            onModalWilDismiss.run();
-            ViewController toAdd = isTop(toDismiss) ? get(size() - 2) : null;
+            ViewController toAdd = isTop(toDismiss) ? get(size() - 2) : root;
             modals.remove(toDismiss);
             presenter.dismissModal(toDismiss, toAdd, listener);
         } else {
@@ -41,7 +40,7 @@ public class ModalStack {
         }
     }
 
-    public void dismissAllModals(CommandListener listener, Runnable onModalWilDismiss) {
+    public void dismissAllModals(CommandListener listener, ViewController root) {
         if (modals.isEmpty()) {
             listener.onError("Nothing to dismiss");
             return;
@@ -49,7 +48,7 @@ public class ModalStack {
 
         while (!modals.isEmpty()) {
             if (modals.size() == 1) {
-                dismissModal(modals.get(0).getId(), onModalWilDismiss, listener);
+                dismissModal(modals.get(0).getId(), root, listener);
             } else {
                 modals.get(0).destroy();
                 modals.remove(0);
@@ -57,12 +56,12 @@ public class ModalStack {
         }
     }
 
-    public boolean handleBack(CommandListener listener, Runnable onModalWillDismiss) {
+    public boolean handleBack(CommandListener listener, ViewController root) {
         if (isEmpty()) return false;
         if (peek().handleBack(listener)) {
             return true;
         }
-        dismissModal(peek().getId(), onModalWillDismiss, listener);
+        dismissModal(peek().getId(), root, listener);
         return true;
     }
 

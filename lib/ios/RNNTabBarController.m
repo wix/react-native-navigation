@@ -3,7 +3,17 @@
 #import "RNNRootViewController.h"
 #define kTabBarHiddenDuration 0.3
 
-@implementation RNNTabBarController
+@implementation RNNTabBarController {
+	NSUInteger _currentTabIndex;
+	RNNEventEmitter *_eventEmitter;
+}
+
+- (instancetype)initWithEventEmitter:(id)eventEmitter {
+	self = [super init];
+	_eventEmitter = eventEmitter;
+	self.delegate = self;
+	return self;
+}
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.selectedViewController.supportedInterfaceOrientations;
@@ -47,6 +57,18 @@
 
 - (NSString *)componentId {
 	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).componentId;
+}
+
+#pragma mark UITabBarControllerDelegate
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+	if (tabBarController.selectedIndex == _currentTabIndex) {
+		[_eventEmitter sendOnNavigationEvent:@"bottomTabReselected" params:@{@"index": @(tabBarController.selectedIndex)}];
+	} else {
+		[_eventEmitter sendOnNavigationEvent:@"bottomTabSelected" params:@{@"index": @(tabBarController.selectedIndex)}];
+	}
+	
+	_currentTabIndex = tabBarController.selectedIndex;
 }
 
 @end

@@ -33,6 +33,7 @@ public class Options {
         result.sideMenuRootOptions = SideMenuRootOptions.parse(json.optJSONObject("sideMenu"));
         result.animations = AnimationsOptions.parse(json.optJSONObject("animations"));
         result.screenBackgroundColor = ColorParser.parse(json, "screenBackgroundColor");
+        result.modal = ModalOptions.parse(json);
 
         return result.withDefaultOptions(defaultOptions);
     }
@@ -48,6 +49,7 @@ public class Options {
     @NonNull public AnimationsOptions animations = new AnimationsOptions();
     @NonNull public SideMenuRootOptions sideMenuRootOptions = new SideMenuRootOptions();
     @NonNull public Color screenBackgroundColor = new NullColor();
+    @NonNull public ModalOptions modal = new ModalOptions();
 
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;
@@ -67,6 +69,7 @@ public class Options {
         result.sideMenuRootOptions.mergeWith(sideMenuRootOptions);
         result.animations.mergeWith(animations);
         result.screenBackgroundColor = screenBackgroundColor;
+        result.modal.mergeWith(modal);
         return result;
     }
 
@@ -83,6 +86,7 @@ public class Options {
         result.animations.mergeWith(other.animations);
         result.sideMenuRootOptions.mergeWith(other.sideMenuRootOptions);
         if (other.screenBackgroundColor.hasValue()) result.screenBackgroundColor = other.screenBackgroundColor;
+        result.modal.mergeWith(other.modal);
         return result;
     }
 
@@ -97,6 +101,7 @@ public class Options {
         animations.mergeWithDefault(defaultOptions.animations);
         sideMenuRootOptions.mergeWithDefault(defaultOptions.sideMenuRootOptions);
         if (!screenBackgroundColor.hasValue()) screenBackgroundColor = defaultOptions.screenBackgroundColor;
+        modal.mergeWithDefault(defaultOptions.modal);
         return this;
     }
 

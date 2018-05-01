@@ -19,7 +19,7 @@
 	[super setUp];
 //	[self.store setReadyToReceiveCommands:true];
 	self.store = [[RNNStore alloc] init];
-	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:nil];
+	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:nil eventEmitter:nil];
 }
 
 
@@ -38,7 +38,7 @@
 -(NSArray*) getPublicMethodNamesForObject:(NSObject*)obj{
 	NSMutableArray* skipMethods = [NSMutableArray new];
 
-	[skipMethods addObject:@"initWithStore:controllerFactory:"];
+	[skipMethods addObject:@"initWithStore:controllerFactory:eventEmitter:"];
 	[skipMethods addObject:@"assertReady"];
 	[skipMethods addObject:@".cxx_destruct"];
 
