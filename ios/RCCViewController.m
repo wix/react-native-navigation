@@ -541,8 +541,9 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         UIView* backgroundView = [self.navigationController.navigationBar valueForKey:@"backgroundView"];
         CGFloat originalAlpha = backgroundView.alpha;
         backgroundView.alpha = navBarTransparentBool ? 0.0 : 1.0;
-        [self.transitionCoordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [self.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
             action();
+        } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
             backgroundView.alpha = originalAlpha;
         }];
     }
@@ -618,10 +619,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
             self.navigationItem.titleView.clipsToBounds = YES;
         }
     }
-    
-    [self processTitleView:viewController
-                     props:self.navigatorStyle
-                     style:self.navigatorStyle];
     
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
     if (@available(iOS 11.0, *)) {

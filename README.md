@@ -6,11 +6,11 @@
 
 [![NPM Version](https://img.shields.io/npm/v/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
 [![NPM Downloads](https://img.shields.io/npm/dm/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
-[![Build Status](http://34.201.210.182/buildStatus/icon?job=react-native-navigation-master)](http://34.201.210.182/job/react-native-navigation-master)
+[![Build Status](https://jenkins-oss.wixpress.com/buildStatus/icon?job=react-native-navigation-master)](https://jenkins-oss.wixpress.com/job/react-native-navigation-master/)
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 
 ## Important
-Latest stable version is `1.1.x` and is published to npm under tag `latest`. It supports react-native >= 0.43.
+Latest stable version is `1.1.x` and is published to npm under tag `latest`. It supports react-native >= 0.48.
 <br><br>We are currently redesigning and rewriting this project under branch `v2`.
 <br>As a result, new features and pull requests on the current stable version will take more time to process.
 
@@ -49,3 +49,4 @@ For example, this package replaces the native [NavigatorIOS](https://facebook.gi
 The MIT License.
 
 See [LICENSE](LICENSE)
+

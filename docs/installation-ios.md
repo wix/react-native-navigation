@@ -14,12 +14,8 @@
 
 4. In Xcode, in Project Navigator (left pane), click on your project (top), then click on your *project* row (on the "project and targets list") and select the `Build Settings` tab (right pane). In the `Header Search Paths` section add `$(SRCROOT)/../node_modules/react-native-navigation/ios`. Make sure on the right to mark this new path `recursive` ([screenshots](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#step-3))
 
-5. In Xcode, you will need to edit this file: `AppDelegate.m`. This function is the main entry point for your app:
+5. In Xcode, you will need to edit this file: `AppDelegate.m`. 
 
-    ```objc
-    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions { ... }
-    ```
-
-    Its content must be replaced with the content of this [reference](https://github.com/wix/react-native-navigation/blob/master/example/ios/example/AppDelegate.m)
+    Replace all of its code with this [reference](https://github.com/wix/react-native-navigation/blob/master/example/ios/example/AppDelegate.m)
 
     Replace `@"index.ios"` with `@"index"` if you are using `index.js` as your entry point instead of `index.ios.js` and `index.android.js` (it is the default since React Native 0.49).

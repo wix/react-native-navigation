@@ -47,7 +47,7 @@ public class ContextualMenu extends TitleBar implements LeftButtonOnClickListene
 
     private void addButtonsToContextualMenu(List<ContextualMenuButtonParams> buttons, Menu menu) {
         for (int i = 0; i < buttons.size(); i++) {
-            final TitleBarButton button = new ContextualMenuButton(menu, this, buttons.get(i), this);
+            final TitleBarButton button = new ContextualMenuButton(menu, getActionMenuView(), buttons.get(i), this);
             addButtonInReverseOrder(buttons, i, button);
         }
     }

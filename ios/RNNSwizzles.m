@@ -50,7 +50,7 @@ static void __RNN_setFrame_orig(UIScrollView* self, SEL _cmd, CGRect frame)
 	id returnValue = __SWZ_initWithEventDispatcher_orig(self, _cmd, eventDispatcher);
 	
 	if (@available(iOS 11.0, *)) {
-		[(UIScrollView*)[returnValue valueForKey:@"scrollView"] setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentAlways];
+		[(UIScrollView*)[returnValue valueForKey:@"scrollView"] setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentScrollableAxes];
 	}
 	
 	return returnValue;
