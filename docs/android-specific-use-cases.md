@@ -160,18 +160,19 @@ Specify `topTab` in the screen object you use when starting your app:
 ```js
 Navigation.startSingleScreenApp({
     screen: {
-    screen: 'example.collapsingReactViewTopTabsScreen',
-    title: 'Collapsing React TopTabs View',
-    topTabs: [
-      {
-        screenId: 'example.ListScreen',
-        icon: require('../img/list.png')
-      },
-      {
-        screenId: 'example.secondTabScreen',
-        icon: require('../img/list.png')
-      }
-    ]
+        screen: 'example.collapsingReactViewTopTabsScreen',
+        title: 'Collapsing React TopTabs View',
+        topTabs: [
+          {
+            screenId: 'example.ListScreen',
+            icon: require('../img/list.png')
+          },
+          {
+            screenId: 'example.secondTabScreen',
+            icon: require('../img/list.png')
+          }
+        ]
+    }
 });
 ```
 ## Shared Element Transition

@@ -21,6 +21,9 @@ public class ActivityParamsParser extends Parser {
         if (hasKey(params, "tabs")) {
             result.type = ActivityParams.Type.TabBased;
             result.tabParams = new ScreenParamsParser().parseTabs(params.getBundle("tabs"));
+            if (result.tabParams.size() == 0) {
+                throw new RuntimeException("Tried to start tab based app with zero tabs");
+            }
         }
 
         if (hasKey(params, "sideMenu")) {
