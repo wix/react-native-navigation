@@ -36,6 +36,10 @@
 	return [self fromTree:layout];
 }
 
+- (NSString *)componentIdForViewController:(UIViewController<RNNRootViewProtocol> *)viewController {
+    return [_store componentKeyForInstance:viewController];
+}
+
 # pragma mark private
 
 - (UIViewController<RNNRootViewProtocol> *)fromTree:(NSDictionary*)json {

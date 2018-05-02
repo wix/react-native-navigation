@@ -57,4 +57,8 @@ export class NativeCommandsSender {
   dismissOverlay(componentId: string) {
     return this.nativeCommandsModule.dismissOverlay(componentId);
   }
+
+  setTabIndex(componentId: string, index: number) {
+    return this.nativeCommandsModule.setTabIndex(componentId, index);
+  }
 }

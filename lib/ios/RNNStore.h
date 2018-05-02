@@ -6,6 +6,7 @@
 
 typedef void (^RNNTransitionCompletionBlock)(void);
 //typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, NSError *error);
+typedef void (^RNNTransitionComponentIdCompletionBlock)(NSString *);
 
 @interface RNNStore : NSObject
 

@@ -15,7 +15,9 @@
 
 -(UIViewController<RNNRootViewProtocol> *)createLayoutAndSaveToStore:(NSDictionary*)layout;
 
-- (UIViewController<RNNRootViewProtocol> *)createOverlay:(NSDictionary*)layout;
+-(UIViewController<RNNRootViewProtocol> *)createOverlay:(NSDictionary*)layout;
+
+-(NSString *)componentIdForViewController:(UIViewController<RNNRootViewProtocol> *)viewController;
 
 @property (nonatomic, strong) NSDictionary* defaultOptionsDict;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
