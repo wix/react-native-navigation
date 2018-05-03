@@ -25,6 +25,7 @@ public class NoOpPromise implements Promise {
 
     }
 
+    @Deprecated
     @Override
     public void reject(String message) {
 

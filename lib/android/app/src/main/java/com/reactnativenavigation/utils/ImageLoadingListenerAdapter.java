@@ -3,9 +3,11 @@ package com.reactnativenavigation.utils;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 
-public class ImageLoadingListenerAdapter implements ImageLoader.ImageLoadingListener {
+import java.util.List;
+
+public class ImageLoadingListenerAdapter implements ImageLoader.ImagesLoadingListener {
     @Override
-    public void onComplete(@NonNull Drawable drawable) {
+    public void onComplete(@NonNull List<Drawable> drawables) {
 
     }
 

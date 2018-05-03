@@ -19,7 +19,7 @@ public class ReactGateway {
 		this(application, isDebug, new NavigationReactNativeHost(application, isDebug, additionalReactPackages));
 	}
 
-	private ReactGateway(final Application application, final boolean isDebug, final ReactNativeHost reactNativeHost) {
+	public ReactGateway(final Application application, final boolean isDebug, final ReactNativeHost reactNativeHost) {
 		SoLoader.init(application, false);
 		this.reactNativeHost = reactNativeHost;
 		initializer = new NavigationReactInitializer(reactNativeHost.getReactInstanceManager(), isDebug);

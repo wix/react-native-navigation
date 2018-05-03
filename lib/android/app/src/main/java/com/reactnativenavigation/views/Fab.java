@@ -10,6 +10,9 @@ import com.reactnativenavigation.anim.FabCollapseBehaviour;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.utils.ImageLoader;
 
+import java.util.Collections;
+import java.util.List;
+
 
 public class Fab extends FloatingActionButton implements FabAnimator {
 
@@ -23,10 +26,10 @@ public class Fab extends FloatingActionButton implements FabAnimator {
     }
 
     public void applyIcon(String icon) {
-        new ImageLoader().loadIcon(getContext(), icon, new ImageLoader.ImageLoadingListener() {
+        new ImageLoader().loadIcons(getContext(), Collections.singletonList(icon), new ImageLoader.ImagesLoadingListener() {
             @Override
-            public void onComplete(@NonNull Drawable drawable) {
-                setImageDrawable(drawable);
+            public void onComplete(@NonNull List<Drawable> drawables) {
+                setImageDrawable(drawables.get(0));
             }
 
             @Override
