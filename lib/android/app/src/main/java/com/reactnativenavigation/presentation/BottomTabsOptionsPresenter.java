@@ -52,7 +52,9 @@ public class BottomTabsOptionsPresenter {
         if (options.drawBehind.isTrue()) {
             lp.bottomMargin = 0;
         }
-        if (options.drawBehind.isFalseOrUndefined()) {
+
+        // Allocate space for the bottom tabs only if it is visible and it should not draw behind.
+        if (options.visible.isTrueOrUndefined() && options.drawBehind.isFalseOrUndefined()) {
             lp.bottomMargin = bottomTabs.getHeight();
         }
 

@@ -75,24 +75,45 @@ public class LayoutFactory {
 	}
 
     private ViewController createSideMenuRoot(LayoutNode node) {
-        SideMenuController sideMenuController = new SideMenuController(activity, childRegistry, node.id, parseNodeOptions(node));
+		SideMenuController sideMenuController = new SideMenuController(activity, childRegistry, node.id, parseNodeOptions(node));
+		ViewController childControllerCenter = null, childControllerLeft = null, childControllerRight = null;
+
 		for (LayoutNode child : node.children) {
-			ViewController childController = create(child);
-            childController.setParentController(sideMenuController);
 			switch (child.type) {
 				case SideMenuCenter:
-					sideMenuController.setCenterController(childController);
+					childControllerCenter = create(child);
+					childControllerCenter.setParentController(sideMenuController);
 					break;
 				case SideMenuLeft:
-					sideMenuController.setLeftController(childController);
+					childControllerLeft = create(child);
+					childControllerLeft.setParentController(sideMenuController);
 					break;
 				case SideMenuRight:
-					sideMenuController.setRightController(childController);
+					childControllerRight = create(child);
+					childControllerRight.setParentController(sideMenuController);
 					break;
 				default:
 					throw new IllegalArgumentException("Invalid node type in sideMenu: " + node.type);
 			}
-        }
+		}
+
+		// Need to set the center controller first, otherwise "onPress" events on the JS components
+		// of the left and right drawers are not handled properly.
+		//
+		// See https://github.com/wix/react-native-navigation/issues/2835
+		//
+		if (childControllerCenter != null) {
+			sideMenuController.setCenterController(childControllerCenter);
+		}
+
+		if (childControllerLeft != null) {
+			sideMenuController.setLeftController(childControllerLeft);
+		}
+
+		if (childControllerRight != null) {
+			sideMenuController.setRightController(childControllerRight);
+		}
+
 		return sideMenuController;
 	}
 
