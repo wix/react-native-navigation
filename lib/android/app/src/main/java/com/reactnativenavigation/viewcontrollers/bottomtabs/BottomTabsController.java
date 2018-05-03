@@ -104,23 +104,34 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 		this.tabs = tabs;
         bottomTabFinder.setTabs(tabs);
         getView();
-		for (int i = 0; i < tabs.size(); i++) {
-		    tabs.get(i).setParentController(this);
-			createTab(i, tabs.get(i).options.bottomTabOptions);
-		}
-		selectTabAtIndex(0);
-	}
-
-	private void createTab(int index, final BottomTabOptions tabOptions) {
-	    if (!tabOptions.icon.hasValue()) {
-            throw new RuntimeException("BottomTab must have an icon");
+        List<String> icons = new ArrayList<>();
+        List<BottomTabOptions> bottomTabOptionsList = new ArrayList<>();
+        for (int i = 0; i < tabs.size(); i++) {
+            tabs.get(i).setParentController(this);
+            BottomTabOptions tabOptions = tabs.get(i).options.bottomTabOptions;
+            if (!tabOptions.icon.hasValue()) {
+                throw new RuntimeException("BottomTab must have an icon");
+            }
+            bottomTabOptionsList.add(tabOptions);
+            icons.add(tabOptions.icon.get());
         }
-        imageLoader.loadIcon(getActivity(), tabOptions.icon.get(), new ImageLoader.ImageLoadingListener() {
+
+        imageLoader.loadIcons(getActivity(), icons, new ImageLoader.ImagesLoadingListener() {
+
             @Override
-            public void onComplete(@NonNull Drawable drawable) {
-                AHBottomNavigationItem item = new AHBottomNavigationItem(tabOptions.title.get(""), drawable);
-                bottomTabs.addItem(item);
-                bottomTabs.post(() -> bottomTabs.setTabTag(index, tabOptions.testId));
+            public void onComplete(@NonNull List<Drawable> drawables) {
+                List<AHBottomNavigationItem> tabs = new ArrayList<>();
+                for (int i = 0; i < drawables.size(); i++) {
+                    AHBottomNavigationItem tab = createTab(bottomTabOptionsList.get(i), drawables.get(i));
+                    tabs.add(tab);
+
+                }
+                bottomTabs.addItems(tabs);
+                for (int i = 0; i < bottomTabOptionsList.size(); i++) {
+                    bottomTabs.setTabTag(i, bottomTabOptionsList.get(i).testId);
+
+                }
+                selectTabAtIndex(0);
             }
 
             @Override
@@ -128,6 +139,12 @@ public class BottomTabsController extends ParentController implements AHBottomNa
                 error.printStackTrace();
             }
         });
+
+	}
+
+	private AHBottomNavigationItem createTab(final BottomTabOptions tabOptions, Drawable drawable) {
+        return  new AHBottomNavigationItem(tabOptions.title.get(""), drawable);
+
 	}
 
     public int getSelectedIndex() {
