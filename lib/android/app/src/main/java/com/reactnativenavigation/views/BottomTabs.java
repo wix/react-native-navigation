@@ -3,6 +3,7 @@ package com.reactnativenavigation.views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.IntRange;
+import android.view.View;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.reactnativenavigation.parse.params.Text;
@@ -17,9 +18,10 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     public void setTabTag(int index, Text testId) {
-        if (!testId.hasValue()) return;
-        if (testId.hasValue()) getViewAtPosition(index).setTag(testId.get());
-        if (testId.hasValue()) getViewAtPosition(index).setContentDescription(testId.get());
+        View view = getViewAtPosition(index);
+        if (!testId.hasValue() || view == null) return;
+        view.setTag(testId.get());
+        view.setContentDescription(testId.get());
     }
 
     public void setBadge(int bottomTabIndex, Text badge) {
