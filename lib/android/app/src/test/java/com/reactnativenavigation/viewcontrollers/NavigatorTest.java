@@ -15,6 +15,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.OverlayManager;
+import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -242,7 +243,7 @@ public class NavigatorTest extends BaseTest {
     public void handleBack_DelegatesToRoot() {
         ViewController root = spy(child1);
         uut.setRoot(root, new MockPromise());
-        when(root.handleBack(any(Navigator.CommandListener.class))).thenReturn(true);
+        when(root.handleBack(any(CommandListener.class))).thenReturn(true);
         assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
         verify(root, times(1)).handleBack(any());
     }
@@ -378,7 +379,7 @@ public class NavigatorTest extends BaseTest {
         child1.ensureViewIsCreated();
         child2.ensureViewIsCreated();
 
-        Navigator.CommandListener listener = new CommandListenerAdapter() {
+        CommandListenerAdapter listener = new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 assertThat(parentController.getChildControllers().size()).isEqualTo(1);

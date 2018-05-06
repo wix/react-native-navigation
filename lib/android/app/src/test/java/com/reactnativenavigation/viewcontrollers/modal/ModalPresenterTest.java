@@ -9,8 +9,8 @@ import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.ModalPresentationStyle;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.Navigator.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 

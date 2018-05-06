@@ -2,7 +2,7 @@ package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.viewcontrollers.Navigator.CommandListener;
+import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
 import java.util.ArrayList;

@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.FabOptionsPresenter;
+import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.utils.UiUtils;
@@ -62,7 +63,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         getView();
     }
 
-    public boolean handleBack(Navigator.CommandListener listener) {
+    public boolean handleBack(CommandListener listener) {
         return false;
     }
 

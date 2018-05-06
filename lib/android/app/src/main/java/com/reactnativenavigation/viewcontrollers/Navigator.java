@@ -15,6 +15,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.NavigationOptionsListener;
 import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.react.JsDevReloadHandler;
+import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.modal.ModalPresenter;
@@ -24,12 +25,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class Navigator extends ParentController implements JsDevReloadHandler.ReloadListener {
-
-    public interface CommandListener {
-        void onSuccess(String childId);
-
-        void onError(String message);
-    }
 
     private final ModalStack modalStack;
     private ViewController root;
