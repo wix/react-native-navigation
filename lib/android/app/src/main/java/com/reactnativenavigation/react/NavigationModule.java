@@ -40,7 +40,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void setRoot(final ReadableMap rawLayoutTree, final Promise promise) {
+	public void setRoot(String commandId, ReadableMap rawLayoutTree, Promise promise) {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
@@ -49,19 +49,19 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void setDefaultOptions(final ReadableMap options) {
+	public void setDefaultOptions(ReadableMap options) {
         final Options defaultOptions = Options.parse(new TypefaceLoader(activity()), new JSONObject(options.toHashMap()));
         handle(() -> navigator().setDefaultOptions(defaultOptions));
     }
 
 	@ReactMethod
-	public void mergeOptions(final String onComponentId, final ReadableMap options) {
+	public void mergeOptions(String onComponentId, ReadableMap options) {
 		final Options navOptions = Options.parse(new TypefaceLoader(activity()), new JSONObject(options.toHashMap()));
 		handle(() -> navigator().mergeOptions(onComponentId, navOptions));
 	}
 
 	@ReactMethod
-	public void push(final String onComponentId, final ReadableMap rawLayoutTree, final Promise promise) {
+	public void push(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
@@ -70,7 +70,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
     @ReactMethod
-    public void setStackRoot(final String onComponentId, final ReadableMap rawLayoutTree, final Promise promise) {
+    public void setStackRoot(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
         handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
@@ -79,22 +79,22 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
 	@ReactMethod
-	public void pop(final String onComponentId, final ReadableMap options, final Promise promise) {
+	public void pop(String commandId, String onComponentId, ReadableMap options, Promise promise) {
 		handle(() -> navigator().popSpecific(onComponentId, new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
-	public void popTo(final String componentId, final Promise promise) {
+	public void popTo(String commandId, String componentId, Promise promise) {
 		handle(() -> navigator().popTo(componentId, new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
-	public void popToRoot(final String componentId, final Promise promise) {
+	public void popToRoot(String commandId, String componentId, Promise promise) {
 		handle(() -> navigator().popToRoot(componentId, new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
-	public void showModal(final ReadableMap rawLayoutTree, final Promise promise) {
+	public void showModal(String commandId, ReadableMap rawLayoutTree, Promise promise) {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
@@ -103,17 +103,17 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void dismissModal(final String componentId, final Promise promise) {
+	public void dismissModal(String commandId, String componentId, Promise promise) {
 		handle(() -> navigator().dismissModal(componentId, new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
-	public void dismissAllModals(final Promise promise) {
+	public void dismissAllModals(String commandId, Promise promise) {
 		handle(() -> navigator().dismissAllModals(new CommandListenerAdapter(promise)));
 	}
 
 	@ReactMethod
-	public void showOverlay(final ReadableMap rawLayoutTree) {
+	public void showOverlay(String commandId, ReadableMap rawLayoutTree) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
         handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
@@ -122,7 +122,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void dismissOverlay(final String componentId) {
+	public void dismissOverlay(String commandId, String componentId) {
 		handle(() -> navigator().dismissOverlay(componentId));
 	}
 
