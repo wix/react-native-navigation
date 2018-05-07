@@ -70,7 +70,7 @@ public class ReactView extends ReactRootView implements IReactView {
 
     @Override
 	public void sendOnNavigationButtonPressed(String buttonId) {
-		new EventEmitter(reactInstanceManager.getCurrentReactContext()).sendOnNavigationButtonPressed(componentId, buttonId);
+		new EventEmitter(reactInstanceManager.getCurrentReactContext()).emitOnNavigationButtonPressed(componentId, buttonId);
 	}
 
     @Override
