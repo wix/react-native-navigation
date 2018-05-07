@@ -31,13 +31,13 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     private final Now now = new Now();
 	private final ReactInstanceManager reactInstanceManager;
-    private NavigationEvent eventEmitter;
+    private EventEmitter eventEmitter;
 
     @SuppressWarnings("WeakerAccess")
     public NavigationModule(ReactApplicationContext reactContext, ReactInstanceManager reactInstanceManager) {
 		super(reactContext);
 		this.reactInstanceManager = reactInstanceManager;
-		reactInstanceManager.addReactInstanceEventListener(context -> eventEmitter = new NavigationEvent(context));
+		reactInstanceManager.addReactInstanceEventListener(context -> eventEmitter = new EventEmitter(context));
     }
 
 	@Override
@@ -50,7 +50,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
-            navigator().setRoot(viewController, promise);
+            navigator().setRoot(viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
         });
 	}
 

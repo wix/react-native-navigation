@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
@@ -92,7 +91,7 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
 
     }
 
-    public void setRoot(final ViewController viewController, Promise promise) {
+    public void setRoot(final ViewController viewController, CommandListener commandListener) {
         destroyRoot();
         root = viewController;
         contentLayout.addView(viewController.getView());
@@ -101,11 +100,11 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
                     .animateStartApp(viewController.getView(), new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            promise.resolve(viewController.getId());
+                            commandListener.onSuccess(viewController.getId());
                         }
                     });
         } else {
-            promise.resolve(viewController.getId());
+            commandListener.onSuccess(viewController.getId());
         }
     }
 

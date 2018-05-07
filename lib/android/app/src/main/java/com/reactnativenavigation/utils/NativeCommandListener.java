@@ -1,17 +1,17 @@
 package com.reactnativenavigation.utils;
 
 import com.facebook.react.bridge.Promise;
-import com.reactnativenavigation.react.NavigationEvent;
+import com.reactnativenavigation.react.EventEmitter;
 
 import java.util.HashMap;
 
 public class NativeCommandListener extends CommandListenerAdapter {
     private String commandId;
     private Promise promise;
-    private NavigationEvent eventEmitter;
+    private EventEmitter eventEmitter;
     private Now now;
 
-    public NativeCommandListener(String commandId, Promise promise, NavigationEvent  eventEmitter, Now now) {
+    public NativeCommandListener(String commandId, Promise promise, EventEmitter eventEmitter, Now now) {
         this.commandId = commandId;
         this.promise = promise;
         this.eventEmitter = eventEmitter;

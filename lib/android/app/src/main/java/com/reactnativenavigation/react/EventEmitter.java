@@ -7,7 +7,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import static com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 
-public class NavigationEvent {
+public class EventEmitter {
 	private static final String onAppLaunched = "RNN.appLaunched";
 	private static final String componentDidAppear = "RNN.componentDidAppear";
 	private static final String componentDidDisappear = "RNN.componentDidDisappear";
@@ -16,7 +16,7 @@ public class NavigationEvent {
 
 	private final RCTDeviceEventEmitter emitter;
 
-	public NavigationEvent(ReactContext reactContext) {
+	EventEmitter(ReactContext reactContext) {
 		this.emitter = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
 	}
 
