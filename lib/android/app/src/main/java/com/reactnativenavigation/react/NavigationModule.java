@@ -15,6 +15,7 @@ import com.reactnativenavigation.parse.LayoutNode;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.parsers.LayoutNodeParser;
 import com.reactnativenavigation.utils.NativeCommandListener;
+import com.reactnativenavigation.utils.Now;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.viewcontrollers.Navigator;
@@ -27,13 +28,17 @@ import java.util.Map;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
 	private static final String NAME = "RNNBridgeModule";
-	private final ReactInstanceManager reactInstanceManager;
 
-	@SuppressWarnings("WeakerAccess")
-    public NavigationModule(final ReactApplicationContext reactContext, final ReactInstanceManager reactInstanceManager) {
+    private final Now now = new Now();
+	private final ReactInstanceManager reactInstanceManager;
+    private NavigationEvent eventEmitter;
+
+    @SuppressWarnings("WeakerAccess")
+    public NavigationModule(ReactApplicationContext reactContext, ReactInstanceManager reactInstanceManager) {
 		super(reactContext);
 		this.reactInstanceManager = reactInstanceManager;
-	}
+		reactInstanceManager.addReactInstanceEventListener(context -> eventEmitter = new NavigationEvent(context));
+    }
 
 	@Override
 	public String getName() {
@@ -66,7 +71,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
-            navigator().push(onComponentId, viewController, new NativeCommandListener(promise));
+            navigator().push(onComponentId, viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
         });
 	}
 
@@ -75,23 +80,23 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
         handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
-            navigator().setStackRoot(onComponentId, viewController, new NativeCommandListener(promise));
+            navigator().setStackRoot(onComponentId, viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
         });
     }
 
 	@ReactMethod
 	public void pop(String commandId, String onComponentId, ReadableMap options, Promise promise) {
-		handle(() -> navigator().popSpecific(onComponentId, new NativeCommandListener(promise)));
+		handle(() -> navigator().popSpecific(onComponentId, new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	@ReactMethod
 	public void popTo(String commandId, String componentId, Promise promise) {
-		handle(() -> navigator().popTo(componentId, new NativeCommandListener(promise)));
+		handle(() -> navigator().popTo(componentId, new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	@ReactMethod
 	public void popToRoot(String commandId, String componentId, Promise promise) {
-		handle(() -> navigator().popToRoot(componentId, new NativeCommandListener(promise)));
+		handle(() -> navigator().popToRoot(componentId, new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	@ReactMethod
@@ -99,18 +104,18 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
-            navigator().showModal(viewController, new NativeCommandListener(promise));
+            navigator().showModal(viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
         });
 	}
 
 	@ReactMethod
 	public void dismissModal(String commandId, String componentId, Promise promise) {
-		handle(() -> navigator().dismissModal(componentId, new NativeCommandListener(promise)));
+		handle(() -> navigator().dismissModal(componentId, new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	@ReactMethod
 	public void dismissAllModals(String commandId, Promise promise) {
-		handle(() -> navigator().dismissAllModals(new NativeCommandListener(promise)));
+		handle(() -> navigator().dismissAllModals(new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	@ReactMethod
