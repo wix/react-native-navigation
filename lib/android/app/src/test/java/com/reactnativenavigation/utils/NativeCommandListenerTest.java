@@ -43,9 +43,8 @@ public class NativeCommandListenerTest extends BaseTest {
     public void onSuccess_emitsNavigationEvent() {
         uut.onSuccess(CHILD_ID);
         Map<String, Object> map = new HashMap<>();
-        map.put("childId", CHILD_ID);
         map.put("commandId", COMMAND_ID);
-        map.put("timestamp", NOW);
+        map.put("completionTime", NOW);
         verify(eventEmitter, times(1)).navigationEvent(map);
     }
 

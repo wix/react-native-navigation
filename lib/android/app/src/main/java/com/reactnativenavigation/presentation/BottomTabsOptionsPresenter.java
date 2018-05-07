@@ -6,15 +6,18 @@ import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
+import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
 import com.reactnativenavigation.views.BottomTabs;
 
 public class BottomTabsOptionsPresenter {
     private BottomTabs bottomTabs;
+    private TabSelector tabSelector;
     private BottomTabFinder bottomTabFinder;
     private BottomTabsAnimator animator;
 
-    public BottomTabsOptionsPresenter(BottomTabs bottomTabs, BottomTabFinder bottomTabFinder) {
+    public BottomTabsOptionsPresenter(BottomTabs bottomTabs, TabSelector tabSelector, BottomTabFinder bottomTabFinder) {
         this.bottomTabs = bottomTabs;
+        this.tabSelector = tabSelector;
         this.bottomTabFinder = bottomTabFinder;
         animator = new BottomTabsAnimator(bottomTabs);
     }
@@ -39,7 +42,7 @@ public class BottomTabsOptionsPresenter {
         }
         if (options.currentTabIndex.hasValue()) {
             int tabIndex = options.currentTabIndex.get();
-            if (tabIndex >= 0) bottomTabs.setCurrentItem(tabIndex);
+            if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
         }
         if (options.testId.hasValue()) {
             bottomTabs.setTag(options.testId.get());

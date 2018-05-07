@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestActivity;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
-import com.reactnativenavigation.mocks.MockPromise;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
@@ -15,6 +14,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.OverlayManager;
+import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -29,8 +29,6 @@ import org.mockito.Mockito;
 import org.robolectric.android.controller.ActivityController;
 
 import java.util.Arrays;
-
-import javax.annotation.Nullable;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,10 +50,11 @@ public class NavigatorTest extends BaseTest {
     private ImageLoader imageLoaderMock;
     private ActivityController<TestActivity> activityController;
     private OverlayManager overlayManager;
+    private EventEmitter eventEmitter;
 
     @Override
     public void beforeEach() {
-        super.beforeEach();
+        eventEmitter = Mockito.mock(EventEmitter.class);
         overlayManager = Mockito.mock(OverlayManager.class);
         imageLoaderMock = ImageLoaderMock.mock();
         activityController = newActivityController(TestActivity.class);
@@ -78,14 +77,14 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void setRoot_AddsChildControllerView() {
         assertThat(uut.getContentLayout().getChildCount()).isZero();
-        uut.setRoot(child1, new MockPromise());
+        uut.setRoot(child1, new CommandListenerAdapter());
         assertIsChild(uut.getContentLayout(), child1.getView());
     }
 
     @Test
     public void setRoot_ReplacesExistingChildControllerViews() {
-        uut.setRoot(child1, new MockPromise());
-        uut.setRoot(child2, new MockPromise());
+        uut.setRoot(child1, new CommandListenerAdapter());
+        uut.setRoot(child2, new CommandListenerAdapter());
         assertIsChild(uut.getContentLayout(), child2.getView());
     }
 
@@ -99,7 +98,7 @@ public class NavigatorTest extends BaseTest {
     public void push() {
         StackController stackController = newStack();
         stackController.push(child1, new CommandListenerAdapter());
-        uut.setRoot(stackController, new MockPromise());
+        uut.setRoot(stackController, new CommandListenerAdapter());
 
         assertIsChild(uut.getView(), stackController.getView());
         assertIsChild(stackController.getView(), child1.getView());
@@ -112,7 +111,7 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void push_InvalidPushWithoutAStack_DoesNothing() {
-        uut.setRoot(child1, new MockPromise());
+        uut.setRoot(child1, new CommandListenerAdapter());
         uut.push(child1.getId(), child2, new CommandListenerAdapter());
         assertIsChild(uut.getView(), child1.getView());
     }
@@ -125,7 +124,7 @@ public class NavigatorTest extends BaseTest {
         stack1.push(child1, new CommandListenerAdapter());
         stack2.push(child2, new CommandListenerAdapter());
         bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
-        uut.setRoot(bottomTabsController, new MockPromise());
+        uut.setRoot(bottomTabsController, new CommandListenerAdapter());
 
         SimpleViewController newChild = new SimpleViewController(activity, "new child", tabOptions);
         uut.push(child2.getId(), newChild, new CommandListenerAdapter());
@@ -137,7 +136,7 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void pop_InvalidDoesNothing() {
         uut.pop("123", new CommandListenerAdapter());
-        uut.setRoot(child1, new MockPromise());
+        uut.setRoot(child1, new CommandListenerAdapter());
         uut.pop(child1.getId(), new CommandListenerAdapter());
         assertThat(uut.getChildControllers()).hasSize(1);
     }
@@ -148,7 +147,7 @@ public class NavigatorTest extends BaseTest {
         StackController stack1 = newStack();
         StackController stack2 = newStack();
         bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
-        uut.setRoot(bottomTabsController, new MockPromise());
+        uut.setRoot(bottomTabsController, new CommandListenerAdapter());
         stack1.push(child1, new CommandListenerAdapter());
         stack2.push(child2, new CommandListenerAdapter());
         stack2.push(child3, new CommandListenerAdapter() {
@@ -176,7 +175,7 @@ public class NavigatorTest extends BaseTest {
         stack2.push(child3, new CommandListenerAdapter());
         stack2.push(child4, new CommandListenerAdapter());
         bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
-        uut.setRoot(bottomTabsController, new MockPromise());
+        uut.setRoot(bottomTabsController, new CommandListenerAdapter());
 
         uut.popSpecific(child2.getId(), new CommandListenerAdapter());
 
@@ -189,7 +188,7 @@ public class NavigatorTest extends BaseTest {
         StackController stack1 = newStack();
         StackController stack2 = newStack();
         bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
-        uut.setRoot(bottomTabsController, new MockPromise());
+        uut.setRoot(bottomTabsController, new CommandListenerAdapter());
 
         stack1.push(child1, new CommandListenerAdapter());
         stack2.push(child2, new CommandListenerAdapter());
@@ -210,7 +209,7 @@ public class NavigatorTest extends BaseTest {
         StackController stack1 = newStack();
         StackController stack2 = newStack();
         bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
-        uut.setRoot(bottomTabsController, new MockPromise());
+        uut.setRoot(bottomTabsController, new CommandListenerAdapter());
 
         stack1.push(child1, new CommandListenerAdapter());
         stack2.push(child2, new CommandListenerAdapter());
@@ -230,7 +229,7 @@ public class NavigatorTest extends BaseTest {
         disablePushAnimation(child1, child2, child3);
 
         StackController stack = newStack();
-        uut.setRoot(stack, new MockPromise());
+        uut.setRoot(stack, new CommandListenerAdapter());
 
         stack.push(child1, new CommandListenerAdapter());
         stack.push(child2, new CommandListenerAdapter());
@@ -242,7 +241,7 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void handleBack_DelegatesToRoot() {
         ViewController root = spy(child1);
-        uut.setRoot(root, new MockPromise());
+        uut.setRoot(root, new CommandListenerAdapter());
         when(root.handleBack(any(CommandListener.class))).thenReturn(true);
         assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
         verify(root, times(1)).handleBack(any());
@@ -251,7 +250,7 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void handleBack_modalTakePrecedenceOverRoot() {
         ViewController root = spy(child1);
-        uut.setRoot(root, new MockPromise());
+        uut.setRoot(root, new CommandListenerAdapter());
         uut.showModal(child2, new CommandListenerAdapter());
         verify(root, times(0)).handleBack(new CommandListenerAdapter());
     }
@@ -261,7 +260,7 @@ public class NavigatorTest extends BaseTest {
         ComponentViewController componentVc = new SimpleComponentViewController(activity, "theId", new Options());
         componentVc.setParentController(parentController);
         assertThat(componentVc.options.topBar.title.text.get("")).isEmpty();
-        uut.setRoot(componentVc, new MockPromise());
+        uut.setRoot(componentVc, new CommandListenerAdapter());
 
         Options options = new Options();
         options.topBar.title.text = new Text("new title");
@@ -277,7 +276,7 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private BottomTabsController newTabs() {
-        return new BottomTabsController(activity, imageLoaderMock, "tabsController", new Options());
+        return new BottomTabsController(activity, eventEmitter, imageLoaderMock, "tabsController", new Options());
     }
 
     @NonNull
@@ -296,7 +295,7 @@ public class NavigatorTest extends BaseTest {
     public void push_promise() {
         final StackController stackController = newStack();
         stackController.push(child1, new CommandListenerAdapter());
-        uut.setRoot(stackController, new MockPromise());
+        uut.setRoot(stackController, new CommandListenerAdapter());
 
         assertIsChild(uut.getView(), stackController.getView());
         assertIsChild(stackController.getView(), child1.getView());
@@ -312,7 +311,7 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void push_InvalidPushWithoutAStack_DoesNothing_Promise() {
-        uut.setRoot(child1, new MockPromise());
+        uut.setRoot(child1, new CommandListenerAdapter());
         uut.push(child1.getId(), child2, new CommandListenerAdapter() {
             @Override
             public void onError(String message) {
@@ -325,7 +324,7 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void pop_InvalidDoesNothing_Promise() {
         uut.pop("123", new CommandListenerAdapter());
-        uut.setRoot(child1, new MockPromise());
+        uut.setRoot(child1, new CommandListenerAdapter());
         uut.pop(child1.getId(), new CommandListenerAdapter() {
             @Override
             public void onError(String reason) {
@@ -340,7 +339,7 @@ public class NavigatorTest extends BaseTest {
         StackController stack1 = newStack();
         final StackController stack2 = newStack();
         bottomTabsController.setTabs(Arrays.asList(stack1, stack2));
-        uut.setRoot(bottomTabsController, new MockPromise());
+        uut.setRoot(bottomTabsController, new CommandListenerAdapter());
 
         stack1.push(child1, new CommandListenerAdapter());
         stack2.push(child2, new CommandListenerAdapter());
@@ -356,7 +355,7 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void pushIntoModal() {
-        uut.setRoot(parentController, new MockPromise());
+        uut.setRoot(parentController, new CommandListenerAdapter());
         StackController stackController = newStack();
         stackController.push(child1, new CommandListenerAdapter());
         uut.showModal(stackController, new CommandListenerAdapter());
@@ -370,7 +369,7 @@ public class NavigatorTest extends BaseTest {
         child2.options.animations.push.enable = new Bool(false);
         StackController parent = newStack();
         parent.ensureViewIsCreated();
-        uut.setRoot(parent, new MockPromise());
+        uut.setRoot(parent, new CommandListenerAdapter());
         parent.push(parentController, new CommandListenerAdapter());
 
         parentController.push(child1, new CommandListenerAdapter());
@@ -391,9 +390,9 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void showModal_onViewDisappearIsInvokedOnRoot() {
-        uut.setRoot(parentController, new MockPromise() {
+        uut.setRoot(parentController, new CommandListenerAdapter() {
             @Override
-            public void resolve(@Nullable Object value) {
+            public void onSuccess(String childId) {
                 uut.showModal(child1, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
@@ -410,7 +409,7 @@ public class NavigatorTest extends BaseTest {
         disableShowModalAnimation(child1, child2);
         disableDismissModalAnimation(child1, child2);
 
-        uut.setRoot(parentController, new MockPromise());
+        uut.setRoot(parentController, new CommandListenerAdapter());
         uut.showModal(child1, new CommandListenerAdapter());
         uut.showModal(child2, new CommandListenerAdapter());
 
@@ -431,7 +430,7 @@ public class NavigatorTest extends BaseTest {
         uut.dismissAllModals(new CommandListenerAdapter());
         verify(parentController, times(0)).onViewAppeared();
 
-        uut.setRoot(parentController, new MockPromise());
+        uut.setRoot(parentController, new CommandListenerAdapter());
         verify(parentController, times(1)).onViewAppeared();
         uut.showModal(child1, new CommandListenerAdapter());
         uut.dismissAllModals(new CommandListenerAdapter());
@@ -443,7 +442,7 @@ public class NavigatorTest extends BaseTest {
     public void handleBack_onViewAppearedInvokedOnRoot() {
         disableShowModalAnimation(child1, child2);
 
-        uut.setRoot(parentController, new MockPromise());
+        uut.setRoot(parentController, new CommandListenerAdapter());
         uut.showModal(child1, new CommandListenerAdapter());
         uut.showModal(child2, new CommandListenerAdapter());
 
@@ -462,21 +461,21 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void destroy_destroyedRoot() {
         parentController.options.animations.startApp.enable = new Bool(false);
-        uut.setRoot(parentController, new MockPromise());
+        uut.setRoot(parentController, new CommandListenerAdapter());
         activityController.destroy();
         verify(parentController, times(1)).destroy();
     }
 
     @Test
     public void destroy_destroyOverlayManager() {
-        uut.setRoot(parentController, new MockPromise());
+        uut.setRoot(parentController, new CommandListenerAdapter());
         activityController.destroy();
         verify(overlayManager, times(1)).destroy();
     }
 
     @Test
     public void reload_navigatorIsDestroyedOnReload() {
-        uut.setRoot(parentController, new MockPromise());
+        uut.setRoot(parentController, new CommandListenerAdapter());
         uut.onReload();
         verify(parentController, times(1)).destroy();
         verify(overlayManager, times(1)).destroy();

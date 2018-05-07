@@ -13,6 +13,7 @@ import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Number;
+import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
@@ -24,6 +25,7 @@ import com.reactnativenavigation.views.ReactComponent;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,12 +49,14 @@ public class BottomTabsControllerTest extends BaseTest {
     private ViewController child5;
     private Options tabOptions = OptionHelper.createBottomTabOptions();
     private ImageLoader imageLoaderMock = ImageLoaderMock.mock();
+    private EventEmitter eventEmitter;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
-        uut = spy(new BottomTabsController(activity, imageLoaderMock, "uut", new Options()));
+        eventEmitter = Mockito.mock(EventEmitter.class);
+        uut = spy(new BottomTabsController(activity, eventEmitter, imageLoaderMock, "uut", new Options()));
         child1 = spy(new SimpleViewController(activity, "child1", tabOptions));
         child2 = spy(new SimpleViewController(activity, "child2", tabOptions));
         child3 = spy(new SimpleViewController(activity, "child3", tabOptions));
@@ -91,14 +95,27 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
-    public void selectTabAtIndex() {
+    public void onTabSelected() {
         uut.setTabs(createTabs());
         assertThat(uut.getSelectedIndex()).isZero();
 
-        uut.selectTabAtIndex(3);
+        uut.onTabSelected(3, false);
 
         assertThat(uut.getSelectedIndex()).isEqualTo(3);
         assertThat(((ViewController) ((List) uut.getChildControllers()).get(0)).getView().getParent()).isNull();
+        verify(eventEmitter, times(1)).emitBottomTabSelected(0, 3);
+    }
+
+    @Test
+    public void onTabReSelected() {
+        uut.setTabs(createTabs());
+        assertThat(uut.getSelectedIndex()).isZero();
+
+        uut.onTabSelected(0, false);
+
+        assertThat(uut.getSelectedIndex()).isEqualTo(0);
+        assertThat(((ViewController) ((List) uut.getChildControllers()).get(0)).getView().getParent()).isNotNull();
+        verify(eventEmitter, times(1)).emitBottomTabSelected(0, 0);
     }
 
     @Test
@@ -123,7 +140,7 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.setTabs(tabs);
 
         assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
-        uut.selectTabAtIndex(2);
+        uut.selectTab(2);
         assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
 
         verify(spy, times(1)).handleBack(any());
@@ -157,14 +174,15 @@ public class BottomTabsControllerTest extends BaseTest {
         Options options = new Options();
         options.bottomTabsOptions.currentTabIndex = new Number(1);
         uut.mergeOptions(options);
-        verify(uut, times(1)).selectTabAtIndex(1);
+        verify(uut, times(1)).selectTab(1);
+        verify(eventEmitter, times(0)).emitBottomTabSelected(any(Integer.class), any(Integer.class));
     }
 
     @Test
     public void buttonPressInvokedOnCurrentTab() {
         uut.setTabs(createTabs());
         uut.ensureViewIsCreated();
-        uut.selectTabAtIndex(1);
+        uut.selectTab(1);
 
         uut.sendOnNavigationButtonPressed("btn1");
         verify(child2, times(1)).sendOnNavigationButtonPressed("btn1");

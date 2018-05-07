@@ -28,7 +28,6 @@ public class EventEmitter {
 		WritableMap map = Arguments.createMap();
 		map.putString("componentId", id);
 		map.putString("componentName", componentName);
-
 		emit(componentDidDisappear, map);
 	}
 
@@ -50,6 +49,17 @@ public class EventEmitter {
 
 		emit(nativeEvent, map);
 	}
+
+    public void emitBottomTabSelected(int unselectedTabIndex, int selectedTabIndex) {
+        WritableMap map = Arguments.createMap();
+        map.putInt("unselectedTabIndex", unselectedTabIndex);
+        map.putInt("selectedTabIndex", selectedTabIndex);
+        emit(onNavigationEvent, map);
+    }
+
+    public void navigationEvent(Map<String, Object> data) {
+        emit(onNavigationEvent, Arguments.makeNativeMap(data));
+    }
 
 	private void emit(String eventName) {
 		emit(eventName, Arguments.createMap());

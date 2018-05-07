@@ -3,6 +3,7 @@ package com.reactnativenavigation.parse;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
+import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.TypefaceLoader;
@@ -31,13 +32,15 @@ public class LayoutFactory {
 
 	private final Activity activity;
 	private final ReactInstanceManager reactInstanceManager;
+    private EventEmitter eventEmitter;
     private Map<String, ExternalComponentCreator> externalComponentCreators;
     private Options defaultOptions;
     private final TypefaceLoader typefaceManager;
 
-    public LayoutFactory(Activity activity, final ReactInstanceManager reactInstanceManager, Map<String, ExternalComponentCreator> externalComponentCreators, Options defaultOptions) {
+    public LayoutFactory(Activity activity, final ReactInstanceManager reactInstanceManager, EventEmitter eventEmitter, Map<String, ExternalComponentCreator> externalComponentCreators, Options defaultOptions) {
 		this.activity = activity;
 		this.reactInstanceManager = reactInstanceManager;
+        this.eventEmitter = eventEmitter;
         this.externalComponentCreators = externalComponentCreators;
         this.defaultOptions = defaultOptions;
         typefaceManager = new TypefaceLoader(activity);
@@ -143,7 +146,7 @@ public class LayoutFactory {
     }
 
     private ViewController createBottomTabs(LayoutNode node) {
-        final BottomTabsController tabsComponent = new BottomTabsController(activity, new ImageLoader(), node.id, getOptions(node));
+        final BottomTabsController tabsComponent = new BottomTabsController(activity, eventEmitter, new ImageLoader(), node.id, getOptions(node));
 		List<ViewController> tabs = new ArrayList<>();
 		for (int i = 0; i < node.children.size(); i++) {
             tabs.add(create(node.children.get(i)));
