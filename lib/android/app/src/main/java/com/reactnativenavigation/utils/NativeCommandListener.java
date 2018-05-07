@@ -32,7 +32,7 @@ public class NativeCommandListener extends CommandListenerAdapter {
     private HashMap<String, Object> navigationEventData() {
         HashMap<String, Object> map = new HashMap<>();
         map.put("commandId", commandId);
-        map.put("timestamp", now.now());
+        map.put("completionTime", now.now());
         return map;
     }
 }
