@@ -108,6 +108,8 @@ public class TitleBar extends Toolbar {
         view.post(() -> {
             if (alignment == Alignment.Center) {
                 view.setX((getWidth() - view.getWidth()) / 2);
+            } else if (leftButtonController != null) {
+                view.setX(getContentInsetStartWithNavigation());
             } else {
                 view.setX(UiUtils.dpToPx(getContext(), 16));
             }
