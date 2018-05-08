@@ -119,17 +119,17 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void showOverlay(String commandId, ReadableMap rawLayoutTree) {
+	public void showOverlay(String commandId, ReadableMap rawLayoutTree, Promise promise) {
         final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
         handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
-            navigator().showOverlay(viewController);
+            navigator().showOverlay(viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
         });
 	}
 
 	@ReactMethod
-	public void dismissOverlay(String commandId, String componentId) {
-		handle(() -> navigator().dismissOverlay(componentId));
+	public void dismissOverlay(String commandId, String componentId, Promise promise) {
+		handle(() -> navigator().dismissOverlay(componentId, new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	private Navigator navigator() {

@@ -238,8 +238,8 @@ class OptionsScreen extends Component {
     });
   }
 
-  onClickShowOverlay = (interceptTouchOutside) => {
-    Navigation.showOverlay({
+  onClickShowOverlay = async (interceptTouchOutside) => {
+    await Navigation.showOverlay({
       component: {
         name: 'navigation.playground.CustomDialog',
         options: {

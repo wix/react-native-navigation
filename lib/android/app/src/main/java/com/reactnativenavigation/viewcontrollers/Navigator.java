@@ -17,6 +17,7 @@ import com.reactnativenavigation.react.JsDevReloadHandler;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.NativeCommandListener;
 import com.reactnativenavigation.viewcontrollers.modal.ModalPresenter;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 
@@ -190,12 +191,12 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
         modalStack.dismissAllModals(listener, root);
     }
 
-    public void showOverlay(ViewController overlay) {
-        overlayManager.show(rootLayout, overlay);
+    public void showOverlay(ViewController overlay, NativeCommandListener listener) {
+        overlayManager.show(rootLayout, overlay, listener);
     }
 
-    public void dismissOverlay(final String componentId) {
-        overlayManager.dismiss(getView(), componentId);
+    public void dismissOverlay(final String componentId, CommandListener listener) {
+        overlayManager.dismiss(getView(), componentId, listener);
     }
 
     @Nullable
