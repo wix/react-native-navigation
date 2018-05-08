@@ -73,6 +73,7 @@ this.props.navigator.setStyle({
   screenBackgroundColor: 'white', // Default screen color, visible before the actual react view is rendered
   orientation: 'portrait' // Sets a specific orientation to a modal and all screens pushed to it. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
   disabledButtonColor: '#ff0000' // chnaged the navigation bar button text color when disabled.
+  rootBackgroundImageName: 'iOS: <name of image in Images.xcassets>. Android: <name of drawable>', // Static while you transition between screens. Works best with screenBackgroundColor: 'transparent'
   
   // iOS only
   statusBarTextColorSchemeSingleScreen: 'light', // same as statusBarTextColorScheme but does NOT remember across pushes
@@ -82,8 +83,7 @@ this.props.navigator.setStyle({
   disabledBackGesture: false, // default: false. Disable the back gesture (swipe gesture) in order to pop the top screen. 
   disabledSimultaneousGesture: true, // default: true. Disable simultaneous gesture recognition.
   screenBackgroundImageName: '<name of image in Images.xcassets>', // Optional. default screen background image.
-  rootBackgroundImageName: '<name of image in Images.xcassets>', // Static while you transition between screens. Works best with screenBackgroundColor: 'transparent'
-
+  
   navBarButtonFontSize: 20, // Change font size nav bar buttons (eg. the back button) (remembered across pushes)
   navBarButtonFontWeight: '500', // Change font weight nav bar buttons (eg. the back button) (remembered across pushes)
 
@@ -103,9 +103,12 @@ this.props.navigator.setStyle({
   preferredContentSize: { width: 500, height: 500 } // Sets the preferred size for the view controller’s view.
   modalPresentationStyle: 'formSheet' // Sets the presentation style for modally presented view controllers. Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext' and 'fullScreen'. 
   
+  largeTitle: false, // Sets the nav bar title to be in the larger iOS 11 style
+
   // Android only
   navigationBarColor: '#000000', // change the background color of the bottom native navigation bar.
   navBarTitleTextCentered: true, // default: false. centers the title.
+  navBarSubTitleTextCentered: true, // (Android - default: false, iOS - default: depending on navBarTitleTextCentered). centers the subTitle.
   navBarButtonFontFamily: 'sans-serif-thin', // Change the font family of textual buttons
   statusBarColor: '#000000', // change the color of the status bar.
   drawUnderStatusBar: false, // default: false, will draw the screen underneath the statusbar. Useful togheter with statusBarColor: transparent

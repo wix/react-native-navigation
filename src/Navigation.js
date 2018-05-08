@@ -28,7 +28,7 @@ function _registerComponentNoRedux(screenID, generator) {
     if (!InternalComponent) {
       console.error(`Navigation: ${screenID} registration result is 'undefined'`);
     }
-    
+
     return class extends Screen {
       static navigatorStyle = InternalComponent.navigatorStyle || {};
       static navigatorButtons = InternalComponent.navigatorButtons || {};
@@ -119,8 +119,8 @@ function showLightBox(params = {}) {
   return platformSpecific.showLightBox(params);
 }
 
-function dismissLightBox(params = {}) {
-  return platformSpecific.dismissLightBox(params);
+function dismissLightBox() {
+  return platformSpecific.dismissLightBox();
 }
 
 function showInAppNotification(params = {}) {
@@ -182,6 +182,10 @@ function getCurrentlyVisibleScreenId() {
   return platformSpecific.getCurrentlyVisibleScreenId();
 }
 
+async function getLaunchArgs() {
+  return await platformSpecific.getLaunchArgs();
+}
+
 export default {
   getRegisteredScreen,
   getCurrentlyVisibleScreenId,
@@ -200,5 +204,6 @@ export default {
   clearEventHandler: clearEventHandler,
   handleDeepLink: handleDeepLink,
   isAppLaunched: isAppLaunched,
-  isRootLaunched: isRootLaunched
+  isRootLaunched: isRootLaunched,
+  getLaunchArgs
 };

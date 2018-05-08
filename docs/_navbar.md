@@ -1,1 +1,1 @@
-- [Github](https://github.com/wix/react-native-navigation/)
+- [GitHub](https://github.com/wix/react-native-navigation/)
