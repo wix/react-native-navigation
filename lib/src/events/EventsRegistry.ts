@@ -5,27 +5,27 @@ import { EventSubscription } from '../interfaces/EventSubscription';
 export class EventsRegistry {
   constructor(private nativeEventsReceiver: NativeEventsReceiver, private commandsObserver: CommandsObserver) { }
 
-  public onAppLaunched(callback: () => void): EventSubscription {
-    return this.nativeEventsReceiver.registerOnAppLaunched(callback);
+  public registerAppLaunchedListener(callback: () => void): EventSubscription {
+    return this.nativeEventsReceiver.registerAppLaunchedListener(callback);
   }
 
-  public componentDidAppear(callback: (componentId: string, componentName: string) => void): EventSubscription {
-    return this.nativeEventsReceiver.registerComponentDidAppear(({ componentId, componentName }) => callback(componentId, componentName));
+  public registerComponentDidAppearListener(callback: (componentId: string, componentName: string) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerComponentDidAppearListener(({ componentId, componentName }) => callback(componentId, componentName));
   }
 
-  public componentDidDisappear(callback: (componentId: string, componentName: string) => void): EventSubscription {
-    return this.nativeEventsReceiver.registerComponentDidDisappear(({ componentId, componentName }) => callback(componentId, componentName));
+  public registerComponentDidDisappearListener(callback: (componentId: string, componentName: string) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerComponentDidDisappearListener(({ componentId, componentName }) => callback(componentId, componentName));
   }
 
-  public onNavigationButtonPressed(callback: (componentId: string, buttonId: string) => void): EventSubscription {
-    return this.nativeEventsReceiver.registerOnNavigationButtonPressed(({ componentId, buttonId }) => callback(componentId, buttonId));
-  }
-
-  public onNavigationCommand(callback: (name: string, params: any) => void): EventSubscription {
+  public registerCommandListener(callback: (name: string, params: any) => void): EventSubscription {
     return this.commandsObserver.register(callback);
   }
 
-  public onNavigationEvent(callback: (name: string, params: any) => void): EventSubscription {
-    return this.nativeEventsReceiver.registerOnNavigationEvent(({ name, params }) => callback(name, params));
+  public registerCommandCompletedListener(callback: (commandId: string, completionTime: number, params: any) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerCommandCompletedListener(({ commandId, completionTime, params }) => callback(commandId, completionTime, params));
+  }
+
+  public registerNativeEventListener(callback: (name: string, params: any) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerNativeEventListener(({ name, params }) => callback(name, params));
   }
 }

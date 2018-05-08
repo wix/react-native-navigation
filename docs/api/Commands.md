@@ -4,7 +4,7 @@
 
 `setRoot(simpleApi: any): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L12)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L13)
 
 ---
 
@@ -12,7 +12,7 @@
 
 `setDefaultOptions(options: any): void`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L22)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L23)
 
 ---
 
@@ -20,7 +20,7 @@
 
 `mergeOptions(componentId: any, options: any): void`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L30)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L31)
 
 ---
 
@@ -28,7 +28,7 @@
 
 `showModal(simpleApi: any): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L38)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L39)
 
 ---
 
@@ -36,7 +36,7 @@
 
 `dismissModal(componentId: any): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L48)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L49)
 
 ---
 
@@ -44,7 +44,7 @@
 
 `dismissAllModals(): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L54)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L55)
 
 ---
 
@@ -52,7 +52,7 @@
 
 `push(componentId: any, simpleApi: any): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L60)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L61)
 
 ---
 
@@ -60,7 +60,7 @@
 
 `pop(componentId: any, options: any): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L71)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L72)
 
 ---
 
@@ -68,7 +68,7 @@
 
 `popTo(componentId: any): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L77)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L78)
 
 ---
 
@@ -76,7 +76,7 @@
 
 `popToRoot(componentId: any): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L83)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L84)
 
 ---
 
@@ -84,7 +84,7 @@
 
 `setStackRoot(componentId: any, simpleApi: any): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L89)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L90)
 
 ---
 
@@ -92,7 +92,7 @@
 
 `showOverlay(simpleApi: any): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L100)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L101)
 
 ---
 
@@ -100,7 +100,7 @@
 
 `dismissOverlay(componentId: any): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L111)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/Commands.ts#L112)
 
 ---
 

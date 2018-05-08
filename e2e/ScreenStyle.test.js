@@ -34,7 +34,7 @@ describe('screen style', () => {
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
-  it('hides topBar onScroll down and shows it on scroll up', async () => {
+  xit('hides topBar onScroll down and shows it on scroll up', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.SCROLLVIEW_SCREEN_BUTTON).tap();
     await elementById(testIDs.TOGGLE_TOP_BAR_HIDE_ON_SCROLL).tap();
