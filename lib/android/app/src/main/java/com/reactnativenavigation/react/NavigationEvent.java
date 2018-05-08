@@ -1,7 +1,5 @@
 package com.reactnativenavigation.react;
 
-import android.support.annotation.NonNull;
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -10,10 +8,11 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import static com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 
 public class NavigationEvent {
-	private static final String onAppLaunched = "RNN.onAppLaunched";
+	private static final String onAppLaunched = "RNN.appLaunched";
 	private static final String componentDidAppear = "RNN.componentDidAppear";
 	private static final String componentDidDisappear = "RNN.componentDidDisappear";
-	private static final String onNavigationButtonPressed = "RNN.onNavigationButtonPressed";
+	private static final String nativeEvent = "RNN.nativeEvent";
+    private static final String buttonPressedEvent = "buttonPressed";
 
 	private final RCTDeviceEventEmitter emitter;
 
@@ -37,16 +36,19 @@ public class NavigationEvent {
 		WritableMap map = Arguments.createMap();
 		map.putString("componentId", id);
 		map.putString("componentName", componentName);
-
 		emit(componentDidAppear, map);
 	}
 
     public void sendOnNavigationButtonPressed(String id, String buttonId) {
-		WritableMap map = Arguments.createMap();
-		map.putString("componentId", id);
-		map.putString("buttonId", buttonId);
+		WritableMap params = Arguments.createMap();
+		params.putString("componentId", id);
+		params.putString("buttonId", buttonId);
 
-		emit(onNavigationButtonPressed, map);
+        WritableMap map = Arguments.createMap();
+        map.putString("name", buttonPressedEvent);
+        map.putMap("params", params);
+
+		emit(nativeEvent, map);
 	}
 
 	private void emit(String eventName) {

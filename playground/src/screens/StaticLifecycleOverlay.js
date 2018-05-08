@@ -10,17 +10,17 @@ class StaticLifecycleOverlay extends Component {
       text: 'nothing yet',
       events: []
     };
-    Navigation.events().componentDidAppear((componentId, componentName) => {
+    Navigation.events().registerComponentDidAppearListener((componentId, componentName) => {
       this.setState({
         events: [...this.state.events, { event: 'componentDidAppear', componentId, componentName }]
       });
     });
-    Navigation.events().componentDidDisappear((componentId, componentName) => {
+    Navigation.events().registerComponentDidDisappearListener((componentId, componentName) => {
       this.setState({
         events: [...this.state.events, { event: 'componentDidDisappear', componentId, componentName }]
       });
     });
-    Navigation.events().onNavigationCommand((name, params) => {
+    Navigation.events().registerCommandListener((name, params) => {
       // console.log('RNN', `name: ${JSON.stringify(name)}`);
       // console.log('RNN', `params: ${JSON.stringify(params)}`);
     });
