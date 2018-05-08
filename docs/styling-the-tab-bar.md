@@ -24,7 +24,7 @@ Navigation.startTabBasedApp({
   tabBarLabelColor: '#ffb700', // iOS only. change the color of tab text
   tabBarSelectedLabelColor: 'red', // iOS only. change the color of the selected tab text
   forceTitlesDisplay: true, // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
-  tabBarHideShadow: true // iOS only. Remove default tab bar top shadow (hairline)
+  tabBarHideShadow: true // Remove default tab bar top shadow (hairline)
 }
 ```
 
@@ -36,6 +36,7 @@ Navigation.startTabBasedApp({
   appStyle: {
     tabBarBackgroundColor: '#0f2362',
     tabBarButtonColor: '#ffffff',
+    tabBarHideShadow: true,
     tabBarSelectedButtonColor: '#63d7cc',
     tabBarTranslucent: false,
     tabFontFamily: 'Avenir-Medium',  // existing font family name or asset file without extension which can be '.ttf' or '.otf' (searched only if '.ttf' asset not found)
