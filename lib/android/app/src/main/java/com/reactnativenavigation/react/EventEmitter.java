@@ -5,6 +5,8 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
+import java.util.Map;
+
 import static com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 
 public class EventEmitter {
@@ -14,9 +16,9 @@ public class EventEmitter {
 	private static final String nativeEvent = "RNN.nativeEvent";
     private static final String buttonPressedEvent = "buttonPressed";
 
-	private final RCTDeviceEventEmitter emitter;
+    private final RCTDeviceEventEmitter emitter;
 
-	EventEmitter(ReactContext reactContext) {
+    EventEmitter(ReactContext reactContext) {
 		this.emitter = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
 	}
 
@@ -38,7 +40,7 @@ public class EventEmitter {
 		emit(componentDidAppear, map);
 	}
 
-    public void sendOnNavigationButtonPressed(String id, String buttonId) {
+    public void emitOnNavigationButtonPressed(String id, String buttonId) {
 		WritableMap params = Arguments.createMap();
 		params.putString("componentId", id);
 		params.putString("buttonId", buttonId);
@@ -54,11 +56,11 @@ public class EventEmitter {
         WritableMap map = Arguments.createMap();
         map.putInt("unselectedTabIndex", unselectedTabIndex);
         map.putInt("selectedTabIndex", selectedTabIndex);
-        emit(onNavigationEvent, map);
+        emit(nativeEvent, map);
     }
 
     public void navigationEvent(Map<String, Object> data) {
-        emit(onNavigationEvent, Arguments.makeNativeMap(data));
+        emit(nativeEvent, Arguments.makeNativeMap(data));
     }
 
 	private void emit(String eventName) {
