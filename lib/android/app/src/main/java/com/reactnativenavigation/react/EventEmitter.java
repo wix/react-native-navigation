@@ -5,8 +5,6 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import java.util.Map;
-
 import static com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 
 public class EventEmitter {
@@ -14,6 +12,7 @@ public class EventEmitter {
 	private static final String componentDidAppear = "RNN.componentDidAppear";
 	private static final String componentDidDisappear = "RNN.componentDidDisappear";
 	private static final String nativeEvent = "RNN.nativeEvent";
+    private static final String commandCompleted = "RNN.commandCompleted";
     private static final String buttonPressedEvent = "buttonPressed";
 
     private final RCTDeviceEventEmitter emitter;
@@ -27,17 +26,17 @@ public class EventEmitter {
 	}
 
 	public void componentDidDisappear(String id, String componentName) {
-		WritableMap map = Arguments.createMap();
-		map.putString("componentId", id);
-		map.putString("componentName", componentName);
-		emit(componentDidDisappear, map);
+		WritableMap data = Arguments.createMap();
+		data.putString("componentId", id);
+		data.putString("componentName", componentName);
+		emit(componentDidDisappear, data);
 	}
 
 	public void componentDidAppear(String id, String componentName) {
-		WritableMap map = Arguments.createMap();
-		map.putString("componentId", id);
-		map.putString("componentName", componentName);
-		emit(componentDidAppear, map);
+		WritableMap data = Arguments.createMap();
+		data.putString("componentId", id);
+		data.putString("componentName", componentName);
+		emit(componentDidAppear, data);
 	}
 
     public void emitOnNavigationButtonPressed(String id, String buttonId) {
@@ -45,22 +44,24 @@ public class EventEmitter {
 		params.putString("componentId", id);
 		params.putString("buttonId", buttonId);
 
-        WritableMap map = Arguments.createMap();
-        map.putString("name", buttonPressedEvent);
-        map.putMap("params", params);
-
-		emit(nativeEvent, map);
+        WritableMap data = Arguments.createMap();
+        data.putString("name", buttonPressedEvent);
+        data.putMap("params", params);
+		emit(nativeEvent, data);
 	}
 
     public void emitBottomTabSelected(int unselectedTabIndex, int selectedTabIndex) {
-        WritableMap map = Arguments.createMap();
-        map.putInt("unselectedTabIndex", unselectedTabIndex);
-        map.putInt("selectedTabIndex", selectedTabIndex);
-        emit(nativeEvent, map);
+        WritableMap data = Arguments.createMap();
+        data.putInt("unselectedTabIndex", unselectedTabIndex);
+        data.putInt("selectedTabIndex", selectedTabIndex);
+        emit(nativeEvent, data);
     }
 
-    public void navigationEvent(Map<String, Object> data) {
-        emit(nativeEvent, Arguments.makeNativeMap(data));
+    public void emitCommandCompletedEvent(String commandId, long completionTime) {
+        WritableMap map = Arguments.createMap();
+        map.putString("commandId", commandId);
+        map.putDouble("completionTime", completionTime);
+        emit(commandCompleted, map);
     }
 
 	private void emit(String eventName) {

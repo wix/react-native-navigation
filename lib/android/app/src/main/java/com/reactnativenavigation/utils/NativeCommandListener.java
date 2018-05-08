@@ -21,18 +21,11 @@ public class NativeCommandListener extends CommandListenerAdapter {
     @Override
     public void onSuccess(String childId) {
         promise.resolve(childId);
-        eventEmitter.navigationEvent(navigationEventData());
+        eventEmitter.emitCommandCompletedEvent(commandId, now.now());
     }
 
     @Override
     public void onError(String message) {
         promise.reject(new Throwable(message));
-    }
-
-    private HashMap<String, Object> navigationEventData() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("commandId", commandId);
-        map.put("completionTime", now.now());
-        return map;
     }
 }

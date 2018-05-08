@@ -8,9 +8,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -42,10 +39,7 @@ public class NativeCommandListenerTest extends BaseTest {
     @Test
     public void onSuccess_emitsNavigationEvent() {
         uut.onSuccess(CHILD_ID);
-        Map<String, Object> map = new HashMap<>();
-        map.put("commandId", COMMAND_ID);
-        map.put("completionTime", NOW);
-        verify(eventEmitter, times(1)).navigationEvent(map);
+        verify(eventEmitter, times(1)).emitCommandCompletedEvent(COMMAND_ID, NOW);
     }
 
     @Test
