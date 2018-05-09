@@ -243,23 +243,26 @@
     
     //xcassets LaunchImage files
     UIImage *image = [UIImage imageNamed:imageName];
-    if (image == nil) {
-        imageName = @"LaunchImage";
-        
-        if (screenHeight == 480)
-            imageName = [imageName stringByAppendingString:@"-700"];
-        if (screenHeight == 568)
-            imageName = [imageName stringByAppendingString:@"-700-568h"];
-        else if (screenHeight == 667)
-            imageName = [imageName stringByAppendingString:@"-800-667h"];
-        else if (screenHeight == 736)
-            imageName = [imageName stringByAppendingString:@"-800-Portrait-736h"];
-        else if (screenHeight == 812)
-            imageName = [imageName stringByAppendingString:@"-1100-Portrait-2436h"];
-        else if (screenHeight == 1024)
-            imageName = [imageName stringByAppendingString:@"-Portrait"];
-        
-        image = [UIImage imageNamed:imageName];
+    if (image == nil)
+    {
+      imageName = @"LaunchImage";
+      
+      if (screenHeight == 480)
+        imageName = [imageName stringByAppendingString:@"-700"];
+      if (screenHeight == 568)
+        imageName = [imageName stringByAppendingString:@"-700-568h"];
+      else if (screenHeight == 667)
+        imageName = [imageName stringByAppendingString:@"-800-667h"];
+      else if (screenHeight == 736)
+        imageName = [imageName stringByAppendingString:@"-800-Portrait-736h"];
+      else if (screenHeight == 768)
+        imageName = [imageName stringByAppendingString:@"-Landscape"]; 
+      else if (screenHeight == 812)
+        imageName = [imageName stringByAppendingString:@"-1100-Portrait-2436h"];
+      else if (screenHeight == 1024)
+        imageName = [imageName stringByAppendingString:@"-Portrait"];
+
+      image = [UIImage imageNamed:imageName];
     }
     
     if (image == nil) {
