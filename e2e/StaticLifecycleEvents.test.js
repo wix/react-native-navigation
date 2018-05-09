@@ -15,4 +15,12 @@ describe('static lifecycle events', () => {
     await expect(elementByLabel('componentDidAppear | navigation.playground.PushedScreen')).toBeVisible();
     await expect(elementByLabel('componentDidDisappear | navigation.playground.WelcomeScreen')).toBeVisible();
   });
+
+  it(':android: unmounts when dismissed', async () => {
+    await elementById(testIDs.PUSH_STATIC_LIFECYCLE_BUTTON).tap();
+    await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
+    await elementById(testIDs.DISMISS_BUTTON).tap();
+    await expect(elementByLabel('Overlay Unmounted')).toBeVisible();
+    await elementById(testIDs.OK_BUTTON).tap();
+  });
 });

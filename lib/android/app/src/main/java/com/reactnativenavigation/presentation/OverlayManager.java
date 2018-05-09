@@ -16,13 +16,14 @@ public class OverlayManager {
         listener.onSuccess(overlay.getId());
     }
 
-    public void dismiss(ViewGroup root, String componentId, CommandListener listener) {
-        ViewGroup overlay = overlayRegistry.get(componentId).getView();
-        if (overlay.getParent() == root) {
-            root.removeView(overlay);
-            listener.onSuccess(componentId);
+    public void dismiss(String componentId, CommandListener listener) {
+        ViewController overlay = overlayRegistry.get(componentId);
+        if (overlay == null) {
+            listener.onError("Could not dismiss Overlay. Overlay with id " + componentId + " was not found.");
         } else {
-            listener.onError("Overlay is not attached");
+            overlay.destroy();
+            overlayRegistry.remove(componentId);
+            listener.onSuccess(componentId);
         }
     }
 
@@ -31,5 +32,9 @@ public class OverlayManager {
             view.destroy();
         }
         overlayRegistry.clear();
+    }
+
+    public int size() {
+        return overlayRegistry.size();
     }
 }

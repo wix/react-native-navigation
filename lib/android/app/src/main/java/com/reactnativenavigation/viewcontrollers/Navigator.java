@@ -196,7 +196,7 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
     }
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
-        overlayManager.dismiss(getView(), componentId, listener);
+        overlayManager.dismiss(componentId, listener);
     }
 
     @Nullable
