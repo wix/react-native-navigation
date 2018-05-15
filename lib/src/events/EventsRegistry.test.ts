@@ -12,96 +12,88 @@ describe('EventsRegistry', () => {
     uut = new EventsRegistry(mockNativeEventsReceiver, commandsObserver);
   });
 
-  it('exposes onAppLaunched event', () => {
+  it('exposes appLaunched event', () => {
     const subscription = {};
     const cb = jest.fn();
-    mockNativeEventsReceiver.registerOnAppLaunched.mockReturnValueOnce(subscription);
+    mockNativeEventsReceiver.registerAppLaunchedListener.mockReturnValueOnce(subscription);
 
-    const result = uut.onAppLaunched(cb);
+    const result = uut.registerAppLaunchedListener(cb);
 
     expect(result).toBe(subscription);
-    expect(mockNativeEventsReceiver.registerOnAppLaunched).toHaveBeenCalledTimes(1);
-    expect(mockNativeEventsReceiver.registerOnAppLaunched).toHaveBeenCalledWith(cb);
+    expect(mockNativeEventsReceiver.registerAppLaunchedListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerAppLaunchedListener).toHaveBeenCalledWith(cb);
   });
 
   it('exposes componentDidAppear event', () => {
     const subscription = {};
     const cb = jest.fn();
-    mockNativeEventsReceiver.registerComponentDidAppear.mockReturnValueOnce(subscription);
+    mockNativeEventsReceiver.registerComponentDidAppearListener.mockReturnValueOnce(subscription);
 
-    const result = uut.componentDidAppear(cb);
+    const result = uut.registerComponentDidAppearListener(cb);
 
     expect(result).toBe(subscription);
-    expect(mockNativeEventsReceiver.registerComponentDidAppear).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerComponentDidAppearListener).toHaveBeenCalledTimes(1);
 
-    mockNativeEventsReceiver.registerComponentDidAppear.mock.calls[0][0]({ componentId: 'theId', componentName: 'theName' });
+    mockNativeEventsReceiver.registerComponentDidAppearListener.mock.calls[0][0]({ componentId: 'theId', componentName: 'theName' });
     expect(cb).toHaveBeenCalledWith('theId', 'theName');
   });
 
   it('exposes componentDidDisappear event', () => {
     const subscription = {};
     const cb = jest.fn();
-    mockNativeEventsReceiver.registerComponentDidDisappear.mockReturnValueOnce(subscription);
+    mockNativeEventsReceiver.registerComponentDidDisappearListener.mockReturnValueOnce(subscription);
 
-    const result = uut.componentDidDisappear(cb);
+    const result = uut.registerComponentDidDisappearListener(cb);
 
     expect(result).toBe(subscription);
-    expect(mockNativeEventsReceiver.registerComponentDidDisappear).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerComponentDidDisappearListener).toHaveBeenCalledTimes(1);
 
-    mockNativeEventsReceiver.registerComponentDidDisappear.mock.calls[0][0]({ componentId: 'theId', componentName: 'theName' });
+    mockNativeEventsReceiver.registerComponentDidDisappearListener.mock.calls[0][0]({ componentId: 'theId', componentName: 'theName' });
     expect(cb).toHaveBeenCalledWith('theId', 'theName');
   });
 
-  it('exposes onNavigationButtonPressed event', () => {
-    const subscription = {};
+  it('exposes registerCommandListener registers listener to commandObserver', () => {
     const cb = jest.fn();
-    mockNativeEventsReceiver.registerOnNavigationButtonPressed.mockReturnValueOnce(subscription);
-
-    const result = uut.onNavigationButtonPressed(cb);
-
-    expect(result).toBe(subscription);
-    expect(mockNativeEventsReceiver.registerOnNavigationButtonPressed).toHaveBeenCalledTimes(1);
-
-    mockNativeEventsReceiver.registerOnNavigationButtonPressed.mock.calls[0][0]({ componentId: 'theId', buttonId: 'theBtnId' });
-    expect(cb).toHaveBeenCalledWith('theId', 'theBtnId');
-  });
-
-  it('exposes onNavigationCommand registers listener to commandObserver', () => {
-    const cb = jest.fn();
-    const result = uut.onNavigationCommand(cb);
+    const result = uut.registerCommandListener(cb);
     expect(result).toBeDefined();
     commandsObserver.notify('theCommandName', { x: 1 });
     expect(cb).toHaveBeenCalledTimes(1);
     expect(cb).toHaveBeenCalledWith('theCommandName', { x: 1 });
   });
 
-  it('onNavigationCommand unregister', () => {
+  it('registerCommandListener unregister', () => {
     const cb = jest.fn();
-    const result = uut.onNavigationCommand(cb);
+    const result = uut.registerCommandListener(cb);
     result.remove();
     commandsObserver.notify('theCommandName', { x: 1 });
     expect(cb).not.toHaveBeenCalled();
   });
 
-  it('onNavigationEvent', () => {
+  it('registerCommandCompletedListener', () => {
     const subscription = {};
     const cb = jest.fn();
-    mockNativeEventsReceiver.registerOnNavigationEvent.mockReturnValueOnce(subscription);
+    mockNativeEventsReceiver.registerCommandCompletedListener.mockReturnValueOnce(subscription);
 
-    const result = uut.onNavigationEvent(cb);
+    const result = uut.registerCommandCompletedListener(cb);
 
     expect(result).toBe(subscription);
-    expect(mockNativeEventsReceiver.registerOnNavigationEvent).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerCommandCompletedListener).toHaveBeenCalledTimes(1);
 
-    mockNativeEventsReceiver.registerOnNavigationEvent.mock.calls[0][0]({ name: 'the event name', params: { a: 1 } });
-    expect(cb).toHaveBeenCalledWith('the event name', { a: 1 });
+    mockNativeEventsReceiver.registerCommandCompletedListener.mock.calls[0][0]({ commandId: 'theCommandId', completionTime: 12345, params: { a: 1 } });
+    expect(cb).toHaveBeenCalledWith('theCommandId', 12345, { a: 1 });
   });
 
-  it('onNavigationEvent unregister', () => {
+  it('registerNativeEventListener', () => {
     const subscription = {};
     const cb = jest.fn();
-    mockNativeEventsReceiver.registerOnNavigationEvent.mockReturnValueOnce(subscription);
-    const result = uut.onNavigationEvent(cb);
+    mockNativeEventsReceiver.registerNativeEventListener.mockReturnValueOnce(subscription);
+
+    const result = uut.registerNativeEventListener(cb);
+
     expect(result).toBe(subscription);
+    expect(mockNativeEventsReceiver.registerNativeEventListener).toHaveBeenCalledTimes(1);
+
+    mockNativeEventsReceiver.registerNativeEventListener.mock.calls[0][0]({ name: 'the event name', params: { a: 1 } });
+    expect(cb).toHaveBeenCalledWith('the event name', { a: 1 });
   });
 });

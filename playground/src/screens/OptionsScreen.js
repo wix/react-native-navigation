@@ -1,7 +1,7 @@
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Button, Platform } = require('react-native');
+const { View, Text, Button, Platform, StatusBar } = require('react-native');
 
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
@@ -16,6 +16,7 @@ const FAB = 'fab';
 class OptionsScreen extends Component {
   static get options() {
     return {
+      statusBarBackgroundColor: 'red',
       topBar: {
         title: {
           text: 'Static Title',
@@ -103,7 +104,7 @@ class OptionsScreen extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <View style={{width: 2, height: 2, backgroundColor: 'red', alignSelf: 'center'}}/>
+        <View style={{ width: 2, height: 2, backgroundColor: 'red', alignSelf: 'center' }} />
         <Text style={styles.h1} testID={testIDs.OPTIONS_SCREEN_HEADER}>{`Options Screen`}</Text>
         <Button title='Dynamic Options' testID={testIDs.DYNAMIC_OPTIONS_BUTTON} onPress={this.onClickDynamicOptions} />
         <Button title='Show Top Bar' testID={testIDs.SHOW_TOP_BAR_BUTTON} onPress={this.onClickShowTopBar} />
@@ -238,8 +239,8 @@ class OptionsScreen extends Component {
     });
   }
 
-  onClickShowOverlay = (interceptTouchOutside) => {
-    Navigation.showOverlay({
+  onClickShowOverlay = async (interceptTouchOutside) => {
+    await Navigation.showOverlay({
       component: {
         name: 'navigation.playground.CustomDialog',
         options: {

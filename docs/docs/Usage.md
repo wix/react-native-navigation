@@ -21,13 +21,13 @@ Navigation.registerComponent(`navigation.playground.WelcomeScreen`, () => Welcom
 ```
 
 
-### onAppLaunched(callback)
+### registerAppLaunchedListener(callback)
 This event is called once the app is launched. It's where you will initialize the app with the layout you want, via the SetRoot command. This creates the native layout hierarchy, loading React components into the `component` by name. 
 
-Afterwards, the app is ready for user interaction. (Common gotcha: Be sure not to run setRoot before onAppLaunched() has fired!)
+Afterwards, the app is ready for user interaction. (Common gotcha: Be sure not to run setRoot before registerAppLaunchedListener() has fired!)
 
 ```js
-Navigation.events().onAppLaunched(() => {
+Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
     component: {
       name: 'navigation.playground.WelcomeScreen'

@@ -52,7 +52,7 @@ public class NavigationReactInitializer implements ReactInstanceManager.ReactIns
 
 	private void emitAppLaunched(ReactContext context) {
 		waitingForAppLaunchEvent = false;
-		new NavigationEvent(context).appLaunched();
+		new EventEmitter(context).appLaunched();
 	}
 
 	private boolean shouldCreateContext() {

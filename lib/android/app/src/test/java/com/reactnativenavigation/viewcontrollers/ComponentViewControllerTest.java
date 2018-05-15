@@ -38,7 +38,7 @@ public class ComponentViewControllerTest extends BaseTest {
                 .setId("stack")
                 .setInitialOptions(new Options())
                 .createStackController();
-        uut = new ComponentViewController(activity, "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options());
+        uut = new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options());
         uut.setParentController(parentController);
         parentController.ensureViewIsCreated();
     }

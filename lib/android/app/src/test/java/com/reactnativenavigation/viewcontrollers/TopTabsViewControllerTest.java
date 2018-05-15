@@ -48,19 +48,21 @@ public class TopTabsViewControllerTest extends BaseTest {
     private final Options options = new Options();
     private TopTabsViewPager topTabsLayout;
     private Activity activity;
+    private ChildControllersRegistry childRegistry;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
 
         activity = newActivity();
+        childRegistry = new ChildControllersRegistry();
         tabOptions = createOptions();
         tabControllers = createTabsControllers(activity, tabOptions);
 
         topTabsLayout = spy(new TopTabsViewPager(activity, tabControllers, new TopTabsAdapter(tabControllers)));
         TopTabsLayoutCreator layoutCreator = Mockito.mock(TopTabsLayoutCreator.class);
         Mockito.when(layoutCreator.create()).thenReturn(topTabsLayout);
-        uut = spy(new TopTabsController(activity, "componentId", tabControllers, layoutCreator, options));
+        uut = spy(new TopTabsController(activity, childRegistry, "componentId", tabControllers, layoutCreator, options));
         tabControllers.forEach(viewController -> viewController.setParentController(uut));
 
         parentController = spy(createStackController("stackId"));
@@ -97,6 +99,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         for (int i = 0; i < SIZE; i++) {
             ComponentViewController viewController = new ComponentViewController(
                     activity,
+                    childRegistry,
                     "idTab" + i,
                     "theComponentName",
                     new TestComponentViewCreator(),
@@ -233,6 +236,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         StackController stackController = spy(createStackController("stack"));
         ComponentViewController first = new ComponentViewController(
                 activity,
+                childRegistry,
                 "firstScreen",
                 "comp1",
                 new TestComponentViewCreator(),
@@ -259,6 +263,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     @Test
     public void onNavigationButtonPressInvokedOnCurrentTab() {
         uut.ensureViewIsCreated();
+        uut.onViewAppeared();
         uut.switchToTab(1);
         uut.sendOnNavigationButtonPressed("btn1");
         verify(tabControllers.get(1), times(1)).sendOnNavigationButtonPressed("btn1");

@@ -33,6 +33,7 @@ public class ParentControllerTest extends BaseTest {
 
     private static final String INITIAL_TITLE = "initial title";
     private Activity activity;
+    private ChildControllersRegistry childRegistry;
     private List<ViewController> children;
     private ParentController uut;
 
@@ -40,10 +41,11 @@ public class ParentControllerTest extends BaseTest {
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
+        childRegistry = new ChildControllersRegistry();
         children = new ArrayList<>();
         Options initialOptions = new Options();
         initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
-        uut = spy(new ParentController(activity, "uut", initialOptions) {
+        uut = spy(new ParentController(activity, childRegistry, "uut", initialOptions) {
 
             @NonNull
             @Override
@@ -81,8 +83,8 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void findControllerById_ChildById() {
-        SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
-        SimpleViewController child2 = new SimpleViewController(activity, "child2", new Options());
+        SimpleViewController child1 = new SimpleViewController(activity, childRegistry, "child1", new Options());
+        SimpleViewController child2 = new SimpleViewController(activity, childRegistry, "child2", new Options());
         children.add(child1);
         children.add(child2);
 
@@ -93,8 +95,8 @@ public class ParentControllerTest extends BaseTest {
     @Test
     public void findControllerById_Recursive() {
         StackController stackController = createStack();
-        SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
-        SimpleViewController child2 = new SimpleViewController(activity, "child2", new Options());
+        SimpleViewController child1 = new SimpleViewController(activity, childRegistry, "child1", new Options());
+        SimpleViewController child2 = new SimpleViewController(activity, childRegistry, "child2", new Options());
         stackController.push(child1, new CommandListenerAdapter());
         stackController.push(child2, new CommandListenerAdapter());
         children.add(stackController);
@@ -104,7 +106,7 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void destroy_DestroysChildren() {
-        ViewController child1 = spy(new SimpleViewController(activity, "child1", new Options()));
+        ViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
         children.add(child1);
 
         verify(child1, times(0)).destroy();
@@ -115,7 +117,7 @@ public class ParentControllerTest extends BaseTest {
     @Test
     public void optionsAreClearedWhenChildIsAppeared() {
         StackController stackController = spy(createStack());
-        SimpleViewController child1 = new SimpleViewController(activity, "child1", new Options());
+        SimpleViewController child1 = new SimpleViewController(activity, childRegistry, "child1", new Options());
         stackController.push(child1, new CommandListenerAdapter());
 
         child1.onViewAppeared();
@@ -126,7 +128,7 @@ public class ParentControllerTest extends BaseTest {
     public void mergeOptions_optionsAreMergedWhenChildAppears() {
         Options options = new Options();
         options.topBar.title.text = new Text("new title");
-        ViewController child1 = spy(new SimpleViewController(activity, "child1", options));
+        ViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
         children.add(child1);
         uut.ensureViewIsCreated();
 
@@ -144,7 +146,7 @@ public class ParentControllerTest extends BaseTest {
     public void mergeOptions_initialParentOptionsAreNotMutatedWhenChildAppears() {
         Options options = new Options();
         options.topBar.title.text = new Text("new title");
-        ViewController child1 = spy(new SimpleViewController(activity, "child1", options));
+        ViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
         children.add(child1);
 
         uut.ensureViewIsCreated();

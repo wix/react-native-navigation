@@ -41,6 +41,7 @@ import static org.mockito.Mockito.verify;
 public class StackControllerTest extends BaseTest {
 
     private Activity activity;
+    private ChildControllersRegistry childRegistry;
     private StackController uut;
     private ViewController child1;
     private ViewController child2;
@@ -54,11 +55,12 @@ public class StackControllerTest extends BaseTest {
         super.beforeEach();
         animator = Mockito.mock(NavigationAnimator.class);
         activity = newActivity();
+        childRegistry = new ChildControllersRegistry();
         uut = createStackController();
-        child1 = spy(new SimpleViewController(activity, "child1", new Options()));
-        child2 = spy(new SimpleViewController(activity, "child2", new Options()));
-        child3 = spy(new SimpleViewController(activity, "child3", new Options()));
-        child4 = spy(new SimpleViewController(activity, "child4", new Options()));
+        child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
+        child2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
+        child3 = spy(new SimpleViewController(activity, childRegistry, "child3", new Options()));
+        child4 = spy(new SimpleViewController(activity, childRegistry, "child4", new Options()));
     }
 
     @Test
@@ -728,6 +730,7 @@ public class StackControllerTest extends BaseTest {
             }
         });
         return new StackControllerBuilder(activity)
+                .setChildRegistry(childRegistry)
                 .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))

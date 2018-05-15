@@ -50,6 +50,7 @@ class WelcomeScreen extends Component {
         children: [
           {
             stack: {
+              id: 'TAB1_ID',
               children: [
                 {
                   component: {

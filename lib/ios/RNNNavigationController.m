@@ -21,7 +21,7 @@
 }
 
 - (NSString *)componentId {
-	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController).componentId;
+	return _componentId ? _componentId : ((UIViewController<RNNRootViewProtocol>*)self.topViewController).componentId;
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {

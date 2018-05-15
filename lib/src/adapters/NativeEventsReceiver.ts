@@ -7,23 +7,23 @@ export class NativeEventsReceiver {
     this.emitter = new NativeEventEmitter(NativeModules.RNNEventEmitter);
   }
 
-  registerOnAppLaunched(callback: () => void): EventSubscription {
-    return this.emitter.addListener('RNN.onAppLaunched', callback);
+  public registerAppLaunchedListener(callback: () => void): EventSubscription {
+    return this.emitter.addListener('RNN.appLaunched', callback);
   }
 
-  registerComponentDidAppear(callback: (params) => void): EventSubscription {
+  public registerComponentDidAppearListener(callback: (data) => void): EventSubscription {
     return this.emitter.addListener('RNN.componentDidAppear', callback);
   }
 
-  registerComponentDidDisappear(callback: (params) => void): EventSubscription {
+  public registerComponentDidDisappearListener(callback: (data) => void): EventSubscription {
     return this.emitter.addListener('RNN.componentDidDisappear', callback);
   }
 
-  registerOnNavigationButtonPressed(callback: (params) => void): EventSubscription {
-    return this.emitter.addListener('RNN.onNavigationButtonPressed', callback);
+  public registerCommandCompletedListener(callback: (data) => void): EventSubscription {
+    return this.emitter.addListener('RNN.commandCompleted', callback);
   }
 
-  public registerOnNavigationEvent(callback: (params) => void): EventSubscription {
-    return this.emitter.addListener('RNN.onNavigationEvent', callback);
+  public registerNativeEventListener(callback: (data) => void): EventSubscription {
+    return this.emitter.addListener('RNN.nativeEvent', callback);
   }
 }

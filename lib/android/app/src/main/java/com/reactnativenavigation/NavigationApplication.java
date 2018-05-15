@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.reactnativenavigation.react.NavigationReactNativeHost;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 
@@ -36,7 +37,11 @@ public abstract class NavigationApplication extends Application implements React
      * @return a singleton {@link ReactGateway}
      */
 	protected ReactGateway createReactGateway() {
-	    return new ReactGateway(this, isDebug(), createAdditionalReactPackages());
+	    return new ReactGateway(this, isDebug(), createReactNativeHost());
+    }
+
+    protected ReactNativeHost createReactNativeHost() {
+        return new NavigationReactNativeHost(this);
     }
 
 	public ReactGateway getReactGateway() {

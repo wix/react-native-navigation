@@ -1,8 +1,6 @@
 package com.reactnativenavigation.utils;
 
-import com.reactnativenavigation.viewcontrollers.Navigator;
-
-public class CommandListenerAdapter implements Navigator.CommandListener {
+public class CommandListenerAdapter implements CommandListener {
     @Override
     public void onSuccess(String childId) {
 
@@ -13,4 +11,3 @@ public class CommandListenerAdapter implements Navigator.CommandListener {
 
     }
 }
-

@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.ComponentOptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.views.topbar.TopBar;
@@ -22,7 +21,6 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, TopB
 
     private IReactView reactView;
     private final OverlayTouchDelegate touchDelegate;
-    private final ComponentOptionsPresenter optionsPresenter;
 
     public ComponentLayout(Context context, IReactView reactView) {
 		super(context);
@@ -30,7 +28,6 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, TopB
         addView(reactView.asView(), MATCH_PARENT, MATCH_PARENT);
         setContentDescription("ComponentLayout");
         touchDelegate = new OverlayTouchDelegate(reactView);
-        optionsPresenter = new ComponentOptionsPresenter(this);
     }
 
     @Override
@@ -58,9 +55,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, TopB
 		reactView.sendComponentStop();
 	}
 
-    @Override
     public void applyOptions(Options options) {
-        optionsPresenter.present(options);
         touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside.isTrue());
     }
 

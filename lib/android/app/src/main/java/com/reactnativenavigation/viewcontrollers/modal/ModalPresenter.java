@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.parse.ModalPresentationStyle;
-import com.reactnativenavigation.viewcontrollers.Navigator.CommandListener;
+import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
 public class ModalPresenter {

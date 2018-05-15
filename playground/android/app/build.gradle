@@ -2,7 +2,7 @@ apply plugin: "com.android.application"
 
 project.ext.react = [
         root     : "../../../",
-        entryFile: "playground/index.android.js"
+        entryFile: "playground/index.js"
 ]
 
 apply from: "../../../node_modules/react-native/react.gradle"
@@ -47,7 +47,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.facebook.react:react-native:+'
+    implementation ('com.facebook.react:react-native:0.51.1') { force = true }
     implementation 'com.android.support:design:25.4.0'
     implementation "com.android.support:appcompat-v7:25.4.0"
     implementation project(':react-native-navigation')

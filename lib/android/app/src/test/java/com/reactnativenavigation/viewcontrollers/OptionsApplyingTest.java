@@ -48,6 +48,7 @@ public class OptionsApplyingTest extends BaseTest {
         view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
         view.asView().setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         uut = new ComponentViewController(activity,
+                new ChildControllersRegistry(),
                 "componentId1",
                 "componentName",
                 (activity1, componentId, componentName) -> view,

@@ -123,6 +123,7 @@
 
 - (UIViewController<RNNRootViewProtocol> *)createStack:(RNNLayoutNode*)node {
 	RNNNavigationController* vc = [[RNNNavigationController alloc] init];
+	[vc setComponentId:node.nodeId];
 	NSDictionary* options = node.data[@"options"];
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary* child in node.children) {
@@ -190,10 +191,10 @@
 
 - (UIViewController<RNNRootViewProtocol> *)createOverlay:(NSDictionary*)layout {
 	UIViewController<RNNRootViewProtocol> *vc = [self fromTree:layout];
-	RCTRootView* rootView = (RCTRootView*)vc.view;
+	__block RCTRootView* rootView = (RCTRootView*)vc.view;
 	[vc performOnRotation:^{
 		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
-		[_bridge.uiManager setSize:availableSize forView:vc.view];
+		[_bridge.uiManager setSize:availableSize forView:rootView];
 	}];
 	rootView.backgroundColor = [UIColor clearColor];
 	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;

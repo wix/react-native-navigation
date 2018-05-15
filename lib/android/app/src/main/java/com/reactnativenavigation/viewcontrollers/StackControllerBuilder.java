@@ -10,6 +10,7 @@ import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 
 public class StackControllerBuilder {
     private Activity activity;
+    private ChildControllersRegistry childRegistry;
     private ReactViewCreator topBarButtonCreator;
     private TitleBarReactViewCreator titleBarReactViewCreator;
     private TopBarBackgroundViewController topBarBackgroundViewController;
@@ -21,6 +22,11 @@ public class StackControllerBuilder {
     public StackControllerBuilder(Activity activity) {
         this.activity = activity;
         animator = new NavigationAnimator(activity);
+    }
+
+    public StackControllerBuilder setChildRegistry(ChildControllersRegistry childRegistry) {
+        this.childRegistry = childRegistry;
+        return this;
     }
 
     public StackControllerBuilder setTopBarButtonCreator(ReactViewCreator topBarButtonCreator) {
@@ -59,6 +65,6 @@ public class StackControllerBuilder {
     }
 
     public StackController createStackController() {
-        return new StackController(activity, topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewController, topBarController, animator, id, initialOptions);
+        return new StackController(activity, childRegistry, topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewController, topBarController, animator, id, initialOptions);
     }
 }
