@@ -32,12 +32,14 @@ public class ViewControllerTest extends BaseTest {
 
     private ViewController uut;
     private Activity activity;
+    private ChildControllersRegistry childRegistry;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
-        uut = new SimpleViewController(activity, "uut", new Options());
+        childRegistry = new ChildControllersRegistry();
+        uut = new SimpleViewController(activity, childRegistry, "uut", new Options());
     }
 
     @Test
@@ -161,7 +163,7 @@ public class ViewControllerTest extends BaseTest {
 
     @Test
     public void onDestroy_RemovesGlobalLayoutListener() throws Exception {
-        new SimpleViewController(activity, "ensureNotNull", new Options()).destroy();
+        new SimpleViewController(activity, childRegistry, "ensureNotNull", new Options()).destroy();
 
         ViewController spy = spy(uut);
         View view = spy.getView();

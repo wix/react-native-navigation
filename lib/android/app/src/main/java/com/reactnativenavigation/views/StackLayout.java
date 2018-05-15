@@ -5,7 +5,7 @@ import android.content.Context;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
@@ -19,13 +19,13 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 @SuppressLint("ViewConstructor")
 public class StackLayout extends RelativeLayout {
     private String stackId;
-    private final OptionsPresenter optionsPresenter;
+    private final StackOptionsPresenter optionsPresenter;
 
     public StackLayout(Context context, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, TopBarButtonController.OnClickListener topBarButtonClickListener, String stackId) {
         super(context);
         this.stackId = stackId;
         createLayout(topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewController, topBarController, topBarButtonClickListener);
-        optionsPresenter = new OptionsPresenter(topBarController.getView());
+        optionsPresenter = new StackOptionsPresenter(topBarController.getView());
         setContentDescription("StackLayout");
     }
 

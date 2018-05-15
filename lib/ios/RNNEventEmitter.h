@@ -16,6 +16,6 @@
 
 -(void)sendOnNavigationEvent:(NSString *)commandName params:(NSDictionary*)params;
 
--(void)sendOnNavigationComment:(NSString *)commandName params:(NSDictionary*)params;
+-(void)sendOnNavigationCommand:(NSString *)commandName params:(NSDictionary*)params;
 
 @end

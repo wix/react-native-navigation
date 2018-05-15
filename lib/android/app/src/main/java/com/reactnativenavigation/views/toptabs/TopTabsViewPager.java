@@ -42,11 +42,6 @@ public class TopTabsViewPager extends ViewPager implements Component, TopBarButt
     }
 
     @Override
-    public void applyOptions(Options options) {
-
-    }
-
-    @Override
     public void drawBehindTopBar() {
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
         layoutParams.removeRule(BELOW);
@@ -82,5 +77,9 @@ public class TopTabsViewPager extends ViewPager implements Component, TopBarButt
             }
         }
         return false;
+    }
+
+    public void applyOptions(Options options) {
+
     }
 }

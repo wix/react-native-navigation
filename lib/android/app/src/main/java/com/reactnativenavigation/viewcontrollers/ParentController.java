@@ -12,10 +12,10 @@ import com.reactnativenavigation.views.Component;
 
 import java.util.Collection;
 
-public abstract class ParentController<T extends ViewGroup> extends ViewController {
+public abstract class ParentController<T extends ViewGroup> extends ChildController {
 
-	public ParentController(final Activity activity, final String id, Options initialOptions) {
-		super(activity, id, initialOptions);
+	public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions) {
+		super(activity, childRegistry, id, initialOptions);
 	}
 
 	@NonNull

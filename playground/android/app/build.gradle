@@ -2,7 +2,7 @@ apply plugin: "com.android.application"
 
 project.ext.react = [
         root     : "../../../",
-        entryFile: "playground/index.android.js"
+        entryFile: "playground/index.js"
 ]
 
 apply from: "../../../node_modules/react-native/react.gradle"

@@ -6,8 +6,8 @@ export class NativeCommandsSender {
     this.nativeCommandsModule = NativeModules.RNNBridgeModule;
   }
 
-  setRoot(layoutTree: object) {
-    return this.nativeCommandsModule.setRoot(layoutTree);
+  setRoot(commandId: string, layoutTree: object) {
+    return this.nativeCommandsModule.setRoot(commandId, layoutTree);
   }
 
   setDefaultOptions(options: object) {
@@ -18,43 +18,43 @@ export class NativeCommandsSender {
     return this.nativeCommandsModule.mergeOptions(componentId, options);
   }
 
-  push(onComponentId: string, layout: object) {
-    return this.nativeCommandsModule.push(onComponentId, layout);
+  push(commandId: string, onComponentId: string, layout: object) {
+    return this.nativeCommandsModule.push(commandId, onComponentId, layout);
   }
 
-  pop(componentId: string, options: object) {
-    return this.nativeCommandsModule.pop(componentId, options);
+  pop(commandId: string, componentId: string, options: object) {
+    return this.nativeCommandsModule.pop(commandId, componentId, options);
   }
 
-  popTo(componentId: string) {
-    return this.nativeCommandsModule.popTo(componentId);
+  popTo(commandId: string, componentId: string) {
+    return this.nativeCommandsModule.popTo(commandId, componentId);
   }
 
-  popToRoot(componentId: string) {
-    return this.nativeCommandsModule.popToRoot(componentId);
+  popToRoot(commandId: string, componentId: string) {
+    return this.nativeCommandsModule.popToRoot(commandId, componentId);
   }
 
-  setStackRoot(onComponentId: string, layout: object) {
-    return this.nativeCommandsModule.setStackRoot(onComponentId, layout);
+  setStackRoot(commandId: string, onComponentId: string, layout: object) {
+    return this.nativeCommandsModule.setStackRoot(commandId, onComponentId, layout);
   }
 
-  showModal(layout: object) {
-    return this.nativeCommandsModule.showModal(layout);
+  showModal(commandId: string, layout: object) {
+    return this.nativeCommandsModule.showModal(commandId, layout);
   }
 
-  dismissModal(componentId: string) {
-    return this.nativeCommandsModule.dismissModal(componentId);
+  dismissModal(commandId: string, componentId: string) {
+    return this.nativeCommandsModule.dismissModal(commandId, componentId);
   }
 
-  dismissAllModals() {
-    return this.nativeCommandsModule.dismissAllModals();
+  dismissAllModals(commandId: string) {
+    return this.nativeCommandsModule.dismissAllModals(commandId);
   }
 
-  showOverlay(layout: object) {
-    return this.nativeCommandsModule.showOverlay(layout);
+  showOverlay(commandId: string, layout: object) {
+    return this.nativeCommandsModule.showOverlay(commandId, layout);
   }
 
-  dismissOverlay(componentId: string) {
-    return this.nativeCommandsModule.dismissOverlay(componentId);
+  dismissOverlay(commandId: string, componentId: string) {
+    return this.nativeCommandsModule.dismissOverlay(commandId, componentId);
   }
 }

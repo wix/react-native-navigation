@@ -15,7 +15,7 @@ import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.json.JSONObject;
@@ -35,7 +35,7 @@ import static org.mockito.Mockito.when;
 
 public class OptionsMergingTest extends BaseTest {
 
-    private OptionsPresenter uut;
+    private StackOptionsPresenter uut;
     private TestComponentLayout child;
     private Activity activity;
     private TopBar topBar;
@@ -44,7 +44,7 @@ public class OptionsMergingTest extends BaseTest {
     public void beforeEach() {
         activity = spy(newActivity());
         topBar = mockTopBar();
-        uut = spy(new OptionsPresenter(topBar));
+        uut = spy(new StackOptionsPresenter(topBar));
         child = spy(new TestComponentLayout(activity, new TestReactView(activity)));
     }
 

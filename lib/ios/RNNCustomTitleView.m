@@ -33,10 +33,17 @@
 	return self;
 }
 
+- (CGSize)sizeThatFits:(CGSize)size {
+	if ([self.alignment isEqualToString:@"fill"]) {
+		return size;
+	}
+	return [super sizeThatFits:size];
+}
+
 - (void)layoutSubviews {
 	[super layoutSubviews];
 	if ([self.alignment isEqualToString:@"fill"]) {
-		[self.subView setFrame:self.bounds];
+		[self.subView setFrame:self.frame];
 	}
 }
 

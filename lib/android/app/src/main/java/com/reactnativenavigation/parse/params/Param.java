@@ -3,7 +3,7 @@ package com.reactnativenavigation.parse.params;
 public abstract class Param<T> {
     protected T value;
 
-    public Param(T value) {
+    Param(T value) {
         this.value = value;
     }
 

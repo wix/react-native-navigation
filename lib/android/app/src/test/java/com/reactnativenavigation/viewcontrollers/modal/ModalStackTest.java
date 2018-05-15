@@ -8,8 +8,9 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.Navigator.CommandListener;
+import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
@@ -39,6 +40,7 @@ public class ModalStackTest extends BaseTest {
     private ViewController modal2;
     private ViewController modal3;
     private Activity activity;
+    private ChildControllersRegistry childRegistry;
     private ModalPresenter presenter;
     private ModalAnimator animator;
     private ViewController rootController;
@@ -46,6 +48,7 @@ public class ModalStackTest extends BaseTest {
     @Override
     public void beforeEach() {
         activity = newActivity();
+        childRegistry = new ChildControllersRegistry();
 
         ViewGroup root = new FrameLayout(activity);
         rootController = Mockito.mock(ParentController.class);
@@ -58,9 +61,9 @@ public class ModalStackTest extends BaseTest {
         presenter = spy(new ModalPresenter(animator));
         uut = new ModalStack(presenter);
         uut.setContentLayout(activityContentView);
-        modal1 = spy(new SimpleViewController(activity, MODAL_ID_1, new Options()));
-        modal2 = spy(new SimpleViewController(activity, MODAL_ID_2, new Options()));
-        modal3 = spy(new SimpleViewController(activity, MODAL_ID_3, new Options()));
+        modal1 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_1, new Options()));
+        modal2 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_2, new Options()));
+        modal3 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_3, new Options()));
     }
 
     @Test
@@ -224,7 +227,7 @@ public class ModalStackTest extends BaseTest {
 
     @Test
     public void handleBack_ViewControllerTakesPrecedenceOverModal() {
-        ViewController backHandlingModal = spy(new SimpleViewController(activity, "stack", new Options()){
+        ViewController backHandlingModal = spy(new SimpleViewController(activity, childRegistry, "stack", new Options()){
             @Override
             public boolean handleBack(CommandListener listener) {
                 return true;

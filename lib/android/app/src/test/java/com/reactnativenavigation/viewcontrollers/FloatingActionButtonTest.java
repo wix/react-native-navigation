@@ -32,11 +32,13 @@ public class FloatingActionButtonTest extends BaseTest {
     private SimpleViewController childFab;
     private SimpleViewController childNoFab;
     private Activity activity;
+    private ChildControllersRegistry childRegistry;
 
     @Override
     public void beforeEach() {
         super.beforeEach();
         activity = newActivity();
+        childRegistry = new ChildControllersRegistry();
         stackController = new StackControllerBuilder(activity)
                 .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
@@ -46,8 +48,8 @@ public class FloatingActionButtonTest extends BaseTest {
                 .setInitialOptions(new Options())
                 .createStackController();
         Options options = getOptionsWithFab();
-        childFab = new SimpleViewController(activity, "child1", options);
-        childNoFab = new SimpleViewController(activity, "child2", new Options());
+        childFab = new SimpleViewController(activity, childRegistry, "child1", options);
+        childNoFab = new SimpleViewController(activity, childRegistry, "child2", new Options());
     }
 
     @NonNull
@@ -129,7 +131,7 @@ public class FloatingActionButtonTest extends BaseTest {
 
     @Test
     public void hasChildren() {
-        childFab = new SimpleViewController(activity, "child1", getOptionsWithFabActions());
+        childFab = new SimpleViewController(activity, childRegistry, "child1", getOptionsWithFabActions());
         stackController.push(childFab, new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();

@@ -10,6 +10,7 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
+import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
@@ -18,7 +19,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        navigator = new Navigator(this, new OverlayManager());
+        navigator = new Navigator(this, new ChildControllersRegistry(), new OverlayManager());
         getReactGateway().onActivityCreated(this);
         getReactGateway().addReloadListener(navigator);
         setContentView(navigator.getView());

@@ -3,4 +3,6 @@
 
 @interface RNNNavigationController : UINavigationController <RNNRootViewProtocol>
 
+@property (nonatomic, strong) NSString* componentId;
+
 @end

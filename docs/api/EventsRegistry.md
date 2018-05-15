@@ -1,48 +1,48 @@
 # EventsRegistry
 
-## onAppLaunched
+## registerAppLaunchedListener
 
-`onAppLaunched(callback: function): EventSubscription`
+`registerAppLaunchedListener(callback: function): EventSubscription`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L8)
 
 ---
 
-## componentDidAppear
+## registerComponentDidAppearListener
 
-`componentDidAppear(callback: function): EventSubscription`
+`registerComponentDidAppearListener(callback: function): EventSubscription`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L12)
 
 ---
 
-## componentDidDisappear
+## registerComponentDidDisappearListener
 
-`componentDidDisappear(callback: function): EventSubscription`
+`registerComponentDidDisappearListener(callback: function): EventSubscription`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L16)
 
 ---
 
-## onNavigationButtonPressed
+## registerCommandListener
 
-`onNavigationButtonPressed(callback: function): EventSubscription`
+`registerCommandListener(callback: function): EventSubscription`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L20)
 
 ---
 
-## onNavigationCommand
+## registerCommandCompletedListener
 
-`onNavigationCommand(callback: function): EventSubscription`
+`registerCommandCompletedListener(callback: function): EventSubscription`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L24)
 
 ---
 
-## onNavigationEvent
+## registerNativeEventListener
 
-`onNavigationEvent(callback: function): EventSubscription`
+`registerNativeEventListener(callback: function): EventSubscription`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L28)
 

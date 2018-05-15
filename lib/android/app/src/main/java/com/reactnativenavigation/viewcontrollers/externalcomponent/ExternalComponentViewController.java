@@ -22,11 +22,6 @@ public class ExternalComponentViewController extends ViewController<ExternalComp
     }
 
     @Override
-    public void applyOptions(Options options) {
-        getView().applyOptions(options);
-    }
-
-    @Override
     protected ExternalComponentLayout createView() {
         ExternalComponentLayout content = new ExternalComponentLayout(getActivity());
         content.addView(componentCreator.create(getActivity(), reactInstanceManager, externalComponent.passProps).asView());

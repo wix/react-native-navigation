@@ -6,8 +6,6 @@ const { View, Text, Button } = require('react-native');
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
-let globalFirstComponentID;
-
 class TextScreen extends Component {
   static get options() {
     return {
@@ -18,11 +16,6 @@ class TextScreen extends Component {
         testID: testIDs.TOP_BAR_ELEMENT
       }
     };
-  }
-
-  constructor(props) {
-    super(props);
-    globalFirstComponentID = (props.text === 'This is tab 1') ? props.componentId : globalFirstComponentID;
   }
 
   render() {
@@ -79,7 +72,7 @@ class TextScreen extends Component {
   onClickSwitchToTabByComponentID() {
     Navigation.mergeOptions(this.props.componentId, {
       bottomTabs: {
-        currentTabId: globalFirstComponentID
+        currentTabId: 'TAB1_ID'
       }
     });
   }

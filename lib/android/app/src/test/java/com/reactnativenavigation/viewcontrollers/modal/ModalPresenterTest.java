@@ -9,8 +9,10 @@ import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.ModalPresentationStyle;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.Navigator.CommandListener;
+import com.reactnativenavigation.viewcontrollers.ChildController;
+import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
@@ -29,16 +31,18 @@ public class ModalPresenterTest extends BaseTest {
     private static final String MODAL_ID_1 = "modalId1";
     private static final String MODAL_ID_2 = "modalId2";
 
-    private ViewController modal1;
-    private ViewController modal2;
+    private ChildController modal1;
+    private ChildController modal2;
     private ModalPresenter uut;
     private FrameLayout contentLayout;
     private ModalAnimator animator;
     private ViewController rootController;
+    private ChildControllersRegistry childRegistry;
 
     @Override
     public void beforeEach() {
         Activity activity = newActivity();
+        childRegistry = new ChildControllersRegistry();
 
         ViewGroup root = new FrameLayout(activity);
         rootController = Mockito.mock(ParentController.class);
@@ -50,8 +54,8 @@ public class ModalPresenterTest extends BaseTest {
         animator = spy(new ModalAnimator(activity));
         uut = new ModalPresenter(animator);
         uut.setContentLayout(contentLayout);
-        modal1 = spy(new SimpleViewController(activity, MODAL_ID_1, new Options()));
-        modal2 = spy(new SimpleViewController(activity, MODAL_ID_2, new Options()));
+        modal1 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_1, new Options()));
+        modal2 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_2, new Options()));
     }
 
     @Test
@@ -128,6 +132,17 @@ public class ModalPresenterTest extends BaseTest {
         uut.setContentLayout(spy);
         uut.dismissModal(modal1, modal2, new CommandListenerAdapter());
         verify(spy, times(1)).addView(modal2.getView(), 0);
+    }
+
+    @Test
+    public void dismissModal_onViewBroughtToFront_invokedOnPreviousView() {
+        disableShowModalAnimation(modal1, modal2);
+        disableDismissModalAnimation(modal1, modal2);
+
+        uut.showModal(modal1, rootController, new CommandListenerAdapter());
+        uut.showModal(modal2, rootController, new CommandListenerAdapter());
+        uut.dismissModal(modal2, modal1, new CommandListenerAdapter());
+        verify(modal1, times(1)).onViewBroughtToFront();
     }
 
     @Test
