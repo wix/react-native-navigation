@@ -8,12 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
+import com.reactnativenavigation.screens.NavigationType;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 
 public class SideMenu extends DrawerLayout {
+    private SideMenuParams leftMenuParams;
+    private SideMenuParams rightMenuParams;
+
     public enum Side {
         Left(Gravity.LEFT), Right(Gravity.RIGHT);
 
@@ -24,7 +30,7 @@ public class SideMenu extends DrawerLayout {
         }
 
         public static Side fromString(String side) {
-            return "left".equals(side.toLowerCase()) ? Left : Right;
+            return (side == null) || "left".equals(side.toLowerCase()) ? Left : Right;
         }
     }
 
@@ -38,6 +44,7 @@ public class SideMenu extends DrawerLayout {
     }
 
     public void destroy() {
+        removeDrawerListener(sideMenuListener);
         destroySideMenu(leftSideMenuView);
         destroySideMenu(rightSideMenuView);
     }
@@ -52,11 +59,11 @@ public class SideMenu extends DrawerLayout {
     }
 
     public void setVisible(boolean visible, boolean animated, Side side) {
-        if (!isShown() && visible) {
+        if (visible) {
             openDrawer(animated, side);
         }
 
-        if (isShown() && !visible) {
+        if (!visible) {
             closeDrawer(animated, side);
         }
     }
@@ -91,6 +98,8 @@ public class SideMenu extends DrawerLayout {
 
     public SideMenu(Context context, SideMenuParams leftMenuParams, SideMenuParams rightMenuParams) {
         super(context);
+        this.leftMenuParams = leftMenuParams;
+        this.rightMenuParams = rightMenuParams;
         createContentContainer();
         leftSideMenuView = createSideMenu(leftMenuParams);
         rightSideMenuView = createSideMenu(rightMenuParams);
@@ -113,18 +122,28 @@ public class SideMenu extends DrawerLayout {
         ContentView sideMenuView = new ContentView(getContext(), params.screenId, params.navigationParams);
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         lp.gravity = params.side.gravity;
-        setSideMenuWidth(sideMenuView);
+        setSideMenuWidth(sideMenuView, params);
         addView(sideMenuView, lp);
         return sideMenuView;
     }
 
-    private void setSideMenuWidth(final ContentView sideMenuView) {
+    private void setSideMenuWidth(final ContentView sideMenuView, @Nullable final SideMenuParams params) {
         sideMenuView.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
-                ViewGroup.LayoutParams lp = sideMenuView.getLayoutParams();
-                lp.width = sideMenuView.getChildAt(0).getWidth();
-                sideMenuView.setLayoutParams(lp);
+                final ViewGroup.LayoutParams lp = sideMenuView.getLayoutParams();
+                if (params != null && params.fixedWidth > 0) {
+                    lp.width = params.fixedWidth;
+                    sideMenuView.setLayoutParams(lp);
+                } else {
+                    NavigationApplication.instance.getUiManagerModule().measure(sideMenuView.getId(), new Callback() {
+                        @Override
+                        public void invoke(Object... args) {
+                            lp.width = sideMenuView.getChildAt(0).getWidth();
+                            sideMenuView.setLayoutParams(lp);
+                        }
+                    });
+                }
             }
         });
     }
@@ -133,14 +152,22 @@ public class SideMenu extends DrawerLayout {
         sideMenuListener = new SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
-                NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", ((ContentView)drawerView).getNavigatorEventId());
-                NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", ((ContentView)drawerView).getNavigatorEventId());
+                NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(getVisibleDrawerScreenParams(), NavigationType.OpenSideMenu);
+                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(getVisibleDrawerScreenParams(), NavigationType.OpenSideMenu);
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", ((ContentView)drawerView).getNavigatorEventId());
-                NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", ((ContentView)drawerView).getNavigatorEventId());
+                NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(getVisibleDrawerScreenParams((ContentView) drawerView), NavigationType.CloseSideMenu);
+                NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(getVisibleDrawerScreenParams((ContentView) drawerView), NavigationType.CloseSideMenu);
+            }
+
+            private BaseScreenParams getVisibleDrawerScreenParams() {
+                return isDrawerOpen(Side.Left.gravity) ? leftMenuParams : rightMenuParams;
+            }
+
+            private BaseScreenParams getVisibleDrawerScreenParams(ContentView drawerView) {
+                return drawerView == leftSideMenuView ? leftMenuParams : rightMenuParams;
             }
         };
         addDrawerListener(sideMenuListener);

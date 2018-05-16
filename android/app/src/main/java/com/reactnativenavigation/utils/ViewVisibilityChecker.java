@@ -1,12 +1,16 @@
 package com.reactnativenavigation.utils;
 
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.reactnativenavigation.views.ContentView;
 
 public class ViewVisibilityChecker {
 
-    public static boolean check(View view) {
+    public static boolean check(@Nullable View view) {
+        if (view == null) {
+            return false;
+        }
         final int top = getTopRelativeToContentView(view);
         final int scrollYInScreen = getScrollYInScreen(view);
         return top + view.getHeight() > scrollYInScreen;

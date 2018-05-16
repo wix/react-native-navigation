@@ -4,11 +4,11 @@ import {
   View,
   TouchableOpacity,
   Text,
-  Image
+  Alert,
+  Platform
 } from 'react-native';
 
-
-export default class CustomNavBar extends Component {
+export default class CustomTopBar extends Component {
 
   constructor(props) {
     super(props);
@@ -18,11 +18,9 @@ export default class CustomNavBar extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity stye={styles.button} onPress={ () => alert('Thanks for that :)') }>
-          <Text style={{color: 'red', textAlign: 'center'}}>{this.props.name}</Text>
-          <Text style={{textAlign: 'center'}}>Press Me</Text>
+        <TouchableOpacity style={styles.button} onPress={ () => Alert.alert(this.props.title, 'Hello custom btn :)') }>
+          <Text style={styles.text}>Custom</Text>
         </TouchableOpacity>
-
       </View>
     );
   }
@@ -33,15 +31,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent'
+    // backgroundColor: 'yellow'
   },
   button: {
-    textAlign: 'center',
-    fontSize: 22,
-    marginBottom: 10,
-    marginTop: 10,
-    color: 'blue',
-
+    alignSelf: 'center',
+    // backgroundColor: 'green'
+  },
+  text: {
+    alignSelf: 'center',
+    color: 'white'
   }
 });
 

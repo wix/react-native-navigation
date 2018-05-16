@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
@@ -57,14 +58,14 @@ public class ScreenStack {
         final Screen nextScreen = ScreenFactory.create(activity, params, leftButtonOnClickListener);
         final Screen previousScreen = stack.peek();
         if (isStackVisible) {
-            pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen, new Screen.OnDisplayListener() {
+            pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen, null, new Screen.OnDisplayListener() {
                 @Override
                 public void onDisplay() {
                     removeElementsBelowTop();
                 }
             });
         } else {
-            pushScreenToInvisibleStack(layoutParams, nextScreen, previousScreen);
+            pushScreenToInvisibleStack(layoutParams, nextScreen, previousScreen, null);
             removeElementsBelowTop();
         }
     }
@@ -78,14 +79,14 @@ public class ScreenStack {
         }
     }
 
-    public void pushInitialScreenWithAnimation(final ScreenParams initialScreenParams, LayoutParams params) {
+    public void pushInitialModalScreenWithAnimation(final ScreenParams initialScreenParams, LayoutParams params) {
         isStackVisible = true;
         pushInitialScreen(initialScreenParams, params);
         final Screen screen = stack.peek();
         screen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
-                screen.show(initialScreenParams.animateScreenTransitions);
+                screen.show(initialScreenParams.animateScreenTransitions, NavigationType.ShowModal);
                 screen.setStyle();
             }
         });
@@ -94,44 +95,41 @@ public class ScreenStack {
     public void pushInitialScreen(ScreenParams initialScreenParams, LayoutParams params) {
         Screen initialScreen = ScreenFactory.create(activity, initialScreenParams, leftButtonOnClickListener);
         initialScreen.setVisibility(View.INVISIBLE);
-        initialScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
-            @Override
-            public void onDisplay() {
-                if (isStackVisible) {
-                    NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", stack.peek().getNavigatorEventId());
-                    NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", stack.peek().getNavigatorEventId());
-                }
-            }
-        });
+        removeCurrentScreen();
         addScreen(initialScreen, params);
     }
 
-    public void push(final ScreenParams params, LayoutParams layoutParams) {
+    private void removeCurrentScreen() {
+        if (!stack.empty()) parent.removeView(peek());
+    }
+
+    public void push(final ScreenParams params, LayoutParams layoutParams, Promise onPushComplete) {
         Screen nextScreen = ScreenFactory.create(activity, params, leftButtonOnClickListener);
         final Screen previousScreen = stack.peek();
         if (isStackVisible) {
             if (nextScreen.screenParams.sharedElementsTransitions.isEmpty()) {
-                pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen);
+                pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen, onPushComplete);
             } else {
-                pushScreenToVisibleStackWithSharedElementTransition(layoutParams, nextScreen, previousScreen);
+                pushScreenToVisibleStackWithSharedElementTransition(layoutParams, nextScreen, previousScreen, onPushComplete);
             }
         } else {
-            pushScreenToInvisibleStack(layoutParams, nextScreen, previousScreen);
+            pushScreenToInvisibleStack(layoutParams, nextScreen, previousScreen, onPushComplete);
         }
     }
 
     private void pushScreenToVisibleStack(LayoutParams layoutParams, final Screen nextScreen,
-                                          final Screen previousScreen) {
-        pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen, null);
+                                          final Screen previousScreen, Promise onPushComplete) {
+        pushScreenToVisibleStack(layoutParams, nextScreen, previousScreen, onPushComplete, null);
     }
 
     private void pushScreenToVisibleStack(LayoutParams layoutParams,
                                           final Screen nextScreen,
                                           final Screen previousScreen,
+                                          @Nullable final Promise onPushComplete,
                                           @Nullable final Screen.OnDisplayListener onDisplay) {
         nextScreen.setVisibility(View.INVISIBLE);
         addScreen(nextScreen, layoutParams);
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", previousScreen.getNavigatorEventId());
+        NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(previousScreen.getScreenParams(), NavigationType.Push);
         nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
@@ -139,15 +137,17 @@ public class ScreenStack {
                     @Override
                     public void run() {
                         if (onDisplay != null) onDisplay.onDisplay();
-                        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", previousScreen.getNavigatorEventId());
+                        if (onPushComplete != null) onPushComplete.resolve(null);
+                        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(previousScreen.getScreenParams(), NavigationType.Push);
                         parent.removeView(previousScreen);
                     }
-                });
+                }, NavigationType.Push);
             }
         });
     }
 
-    private void pushScreenToVisibleStackWithSharedElementTransition(LayoutParams layoutParams, final Screen nextScreen, final Screen previousScreen) {
+    private void pushScreenToVisibleStackWithSharedElementTransition(LayoutParams layoutParams, final Screen nextScreen,
+                                                                     final Screen previousScreen, @Nullable final Promise onPushComplete) {
         nextScreen.setVisibility(View.INVISIBLE);
         nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
@@ -155,6 +155,7 @@ public class ScreenStack {
                 nextScreen.showWithSharedElementsTransitions(previousScreen.sharedElements.getToElements(), new Runnable() {
                     @Override
                     public void run() {
+                        if (onPushComplete != null) onPushComplete.resolve(null);
                         parent.removeView(previousScreen);
                     }
                 });
@@ -163,8 +164,15 @@ public class ScreenStack {
         addScreen(nextScreen, layoutParams);
     }
 
-    private void pushScreenToInvisibleStack(LayoutParams layoutParams, Screen nextScreen, Screen previousScreen) {
+    private void pushScreenToInvisibleStack(LayoutParams layoutParams, Screen nextScreen, Screen previousScreen,
+                                            @Nullable final Promise onPushComplete) {
         nextScreen.setVisibility(View.INVISIBLE);
+        nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
+            @Override
+            public void onDisplay() {
+                if (onPushComplete != null) onPushComplete.resolve(null);
+            }
+        });
         addScreen(nextScreen, layoutParams);
         parent.removeView(previousScreen);
     }
@@ -178,11 +186,11 @@ public class ScreenStack {
         parent.addView(screen, parent.getChildCount() - 1, layoutParams);
     }
 
-    public void pop(boolean animated) {
-        pop(animated, null);
+    public void pop(boolean animated, double jsPopTimestamp) {
+        pop(animated, jsPopTimestamp, null);
     }
 
-    public void pop(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
+    public void pop(final boolean animated, final double jsPopTimestamp, @Nullable final OnScreenPop onScreenPop) {
         if (!canPop()) {
             return;
         }
@@ -191,18 +199,19 @@ public class ScreenStack {
                 @Override
                 public void run() {
                     keyboardVisibilityDetector.setKeyboardCloseListener(null);
-                    popInternal(animated, onScreenPop);
+                    popInternal(animated, jsPopTimestamp, onScreenPop);
                 }
             });
             keyboardVisibilityDetector.closeKeyboard();
         } else {
-            popInternal(animated, onScreenPop);
+            popInternal(animated, jsPopTimestamp, onScreenPop);
         }
     }
 
-    private void popInternal(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
+    private void popInternal(final boolean animated, double jsPopTimestamp, @Nullable final OnScreenPop onScreenPop) {
         final Screen toRemove = stack.pop();
         final Screen previous = stack.peek();
+        previous.screenParams.timestamp = jsPopTimestamp;
         swapScreens(animated, toRemove, previous, onScreenPop);
     }
 
@@ -215,18 +224,20 @@ public class ScreenStack {
         }
     }
 
-    private void hideScreen(boolean animated, final Screen toRemove, Screen previous) {
+    private void hideScreen(boolean animated, final Screen toRemove, final Screen previous) {
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(previous.getScreenParams(), NavigationType.Pop);
         Runnable onAnimationEnd = new Runnable() {
             @Override
             public void run() {
                 toRemove.destroy();
                 parent.removeView(toRemove);
+                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(previous.getScreenParams(), NavigationType.Pop);
             }
         };
         if (animated) {
-            toRemove.animateHide(previous.sharedElements.getToElements(), onAnimationEnd);
+            toRemove.animateHide(previous.sharedElements.getToElements(), onAnimationEnd, NavigationType.Pop);
         } else {
-            toRemove.hide(previous.sharedElements.getToElements(), onAnimationEnd);
+            toRemove.hide(previous.sharedElements.getToElements(), onAnimationEnd, NavigationType.Pop);
         }
     }
 
@@ -236,32 +247,30 @@ public class ScreenStack {
 
     private void readdPrevious(Screen previous) {
         previous.setVisibility(View.VISIBLE);
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", previous.getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", previous.getNavigatorEventId());
         parent.addView(previous, 0);
     }
 
-    public void popToRoot(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
+    public void popToRoot(final boolean animated, final double jsPopTimestamp, @Nullable final OnScreenPop onScreenPop) {
         if (keyboardVisibilityDetector.isKeyboardVisible()) {
             keyboardVisibilityDetector.setKeyboardCloseListener(new Runnable() {
                 @Override
                 public void run() {
                     keyboardVisibilityDetector.setKeyboardCloseListener(null);
-                    popToRootInternal(animated, onScreenPop);
+                    popToRootInternal(animated, jsPopTimestamp, onScreenPop);
                 }
             });
             keyboardVisibilityDetector.closeKeyboard();
         } else {
-            popToRootInternal(animated, onScreenPop);
+            popToRootInternal(animated, jsPopTimestamp, onScreenPop);
         }
     }
 
-    private void popToRootInternal(final boolean animated, @Nullable final OnScreenPop onScreenPop) {
+    private void popToRootInternal(final boolean animated, double jsPopTimestamp, @Nullable final OnScreenPop onScreenPop) {
         while (canPop()) {
             if (stack.size() == 2) {
-                popInternal(animated, onScreenPop);
+                popInternal(animated, jsPopTimestamp, onScreenPop);
             } else {
-                popInternal(animated, null);
+                popInternal(animated, jsPopTimestamp, null);
             }
         }
     }
@@ -421,17 +430,40 @@ public class ScreenStack {
         }
     }
 
-    public void show() {
+    public void show(NavigationType type) {
         isStackVisible = true;
         stack.peek().setStyle();
         stack.peek().setVisibility(View.VISIBLE);
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willAppear", stack.peek().getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didAppear", stack.peek().getNavigatorEventId());
+        sendScreenAppearEvent(type, stack.peek());
     }
 
-    public void hide() {
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("willDisappear", stack.peek().getNavigatorEventId());
-        NavigationApplication.instance.getEventEmitter().sendScreenChangedEvent("didDisappear", stack.peek().getNavigatorEventId());
+    private void sendScreenAppearEvent(final NavigationType type, final Screen screen) {
+        if (type == NavigationType.InitialScreen) {
+            sendInitialScreenAppearEvent(type, screen);
+        } else {
+            sendScreenAppearEvent(screen, type);
+        }
+    }
+
+    private void sendInitialScreenAppearEvent(final NavigationType type, final Screen screen) {
+        screen.setOnDisplayListener(new Screen.OnDisplayListener() {
+            @Override
+            public void onDisplay() {
+                sendScreenAppearEvent(screen, type);
+            }
+        });
+    }
+
+    private void sendScreenAppearEvent(Screen screen, NavigationType type) {
+        screen.getScreenParams().timestamp = System.currentTimeMillis();
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(screen.getScreenParams(), type);
+        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(screen.getScreenParams(), type);
+    }
+
+
+    public void hide(NavigationType type) {
+        NavigationApplication.instance.getEventEmitter().sendWillDisappearEvent(stack.peek().getScreenParams(), type);
+        NavigationApplication.instance.getEventEmitter().sendDidDisappearEvent(stack.peek().getScreenParams(), type);
         isStackVisible = false;
         stack.peek().setVisibility(View.INVISIBLE);
     }

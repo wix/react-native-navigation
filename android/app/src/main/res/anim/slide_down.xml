@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:interpolator="@android:anim/accelerate_interpolator"
-    android:shareInterpolator="true"
-    android:duration="190">
+     android:duration="@integer/config_activityDefaultDur"
+     android:interpolator="@android:anim/accelerate_interpolator"
+     android:shareInterpolator="true">
     <translate
         android:fromYDelta="0"
         android:toYDelta="100%"/>
     <alpha
+        android:startOffset="100"
+        android:duration="150"
         android:fromAlpha="1"
         android:toAlpha="0"/>
 </set>

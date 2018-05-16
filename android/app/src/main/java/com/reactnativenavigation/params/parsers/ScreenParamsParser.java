@@ -3,6 +3,7 @@ package com.reactnativenavigation.params.parsers;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.params.PageParams;
 import com.reactnativenavigation.params.ScreenParams;
@@ -15,6 +16,7 @@ public class ScreenParamsParser extends Parser {
     private static final String KEY_TITLE = "title";
     private static final String KEY_SUBTITLE = "subtitle";
     private static final String KEY_SCREEN_ID = "screenId";
+    private static final String KEY_TIMESTAMP = "timestamp";
     private static final String KEY_NAVIGATION_PARAMS = "navigationParams";
     private static final String STYLE_PARAMS = "styleParams";
     private static final String TOP_TABS = "topTabs";
@@ -27,6 +29,7 @@ public class ScreenParamsParser extends Parser {
     public static ScreenParams parse(Bundle params) {
         ScreenParams result = new ScreenParams();
         result.screenId = params.getString(KEY_SCREEN_ID);
+        result.timestamp = params.getDouble(KEY_TIMESTAMP);
         assertKeyExists(params, KEY_NAVIGATION_PARAMS);
         result.navigationParams = new NavigationParams(params.getBundle(KEY_NAVIGATION_PARAMS));
 
@@ -39,6 +42,9 @@ public class ScreenParamsParser extends Parser {
         result.leftButton = ButtonParser.parseLeftButton(params);
 
         result.topTabParams = parseTopTabs(params);
+        if (hasKey(params, "screens")) {
+            result.screens = parseScreens(params.getBundle("screens"));
+        }
 
         if (hasKey(params, FRAGMENT_CREATOR_CLASS_NAME)) {
             result.fragmentCreatorClassName = params.getString(FRAGMENT_CREATOR_CLASS_NAME);
@@ -53,7 +59,7 @@ public class ScreenParamsParser extends Parser {
         result.animateScreenTransitions = new AnimationParser(params).parse();
         result.sharedElementsTransitions = getSharedElementsTransitions(params);
 
-        result.animationType = params.getString(ANIMATION_TYPE);
+        result.animationType = params.getString(ANIMATION_TYPE, AppStyle.appStyle == null ? "" : AppStyle.appStyle.screenAnimationType);
 
         return result;
     }
@@ -96,6 +102,15 @@ public class ScreenParamsParser extends Parser {
 
     List<ScreenParams> parseTabs(Bundle params) {
         return parseBundle(params, new ParseStrategy<ScreenParams>() {
+            @Override
+            public ScreenParams parse(Bundle screen) {
+                return ScreenParamsParser.parse(screen);
+            }
+        });
+    }
+
+    private static List<ScreenParams> parseScreens(Bundle screens) {
+        return new Parser().parseBundle(screens, new ParseStrategy<ScreenParams>() {
             @Override
             public ScreenParams parse(Bundle screen) {
                 return ScreenParamsParser.parse(screen);

@@ -26,6 +26,8 @@ public class BottomTabs extends AHBottomNavigation {
         createVisibilityAnimator();
         setStyle();
         setFontFamily();
+        setFontSize();
+        setTabsHideShadow();
     }
 
     public void addTabs(List<ScreenParams> params, OnTabSelectedListener onTabSelectedListener) {
@@ -57,10 +59,22 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     public void setTabButton(ScreenParams params, Integer index) {
-        if (params.tabIcon != null) {
+        if (params.tabIcon != null || params.tabLabel != null) {
             AHBottomNavigationItem item = this.getItem(index);
-            item.setDrawable(params.tabIcon);
-            refresh();
+            boolean tabNeedsRefresh = false;
+
+            if (params.tabIcon != null) {
+                item.setDrawable(params.tabIcon);
+                tabNeedsRefresh = true;
+            }
+            if (params.tabLabel != null) {
+                item.setTitle(params.tabLabel);
+                tabNeedsRefresh = true;
+            }
+
+            if (tabNeedsRefresh) {
+                this.refresh();
+            }
         }
     }
 
@@ -76,7 +90,7 @@ public class BottomTabs extends AHBottomNavigation {
 
     private boolean hasTabsWithLabels() {
         for (int i = 0; i < getItemsCount(); i++) {
-            String title = getItem(0).getTitle(getContext());
+            String title = getItem(i).getTitle(getContext());
             if (!TextUtils.isEmpty(title)) {
                 return true;
             }
@@ -84,12 +98,20 @@ public class BottomTabs extends AHBottomNavigation {
         return false;
     }
 
+    public void setVisibilityByInitialScreen(StyleParams styleParams) {
+        setVisibility(styleParams.bottomTabsHidden, false);
+    }
+
     public void setVisibility(boolean hidden, boolean animated) {
         if (visibilityAnimator != null) {
-            visibilityAnimator.setVisible(!hidden, animated);
+            visibilityAnimator.setVisible(!hidden, animated, null);
         } else {
             setVisibility(hidden);
         }
+    }
+
+    public void setCurrentItemWithoutInvokingTabSelectedListener(Integer index) {
+        setCurrentItem(index, false);
     }
 
     private void setBackgroundColor(StyleParams.Color bottomTabsColor) {
@@ -135,5 +157,15 @@ public class BottomTabs extends AHBottomNavigation {
         if (AppStyle.appStyle.bottomTabFontFamily.hasFont()) {
             setTitleTypeface(AppStyle.appStyle.bottomTabFontFamily.get());
         }
+    }
+
+    private void setFontSize() {
+        if(AppStyle.appStyle.bottomTabSelectedFontSize != null &&  AppStyle.appStyle.bottomTabFontSize != null) {
+            setTitleTextSizeInSp(AppStyle.appStyle.bottomTabSelectedFontSize, AppStyle.appStyle.bottomTabFontSize);
+        }
+    }
+
+    private void setTabsHideShadow() {
+        setUseElevation(!AppStyle.appStyle.bottomTabsHideShadow);
     }
 }

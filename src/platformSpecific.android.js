@@ -5,14 +5,14 @@ import PropRegistry from './PropRegistry';
 
 const NativeReactModule = NativeModules.NavigationReactModule;
 
-function startApp(activityParams) {
+async function startApp(activityParams) {
   savePassProps(activityParams);
-  NativeReactModule.startApp(activityParams);
+  return await NativeReactModule.startApp(activityParams);
 }
 
 function push(screenParams) {
   savePassProps(screenParams);
-  NativeReactModule.push(screenParams);
+  return NativeReactModule.push(screenParams);
 }
 
 function pop(screenParams) {
@@ -62,12 +62,12 @@ function dismissLightBox() {
   NativeReactModule.dismissLightBox();
 }
 
-function dismissTopModal() {
-  NativeReactModule.dismissTopModal();
+async function dismissTopModal(params) {
+  return await NativeReactModule.dismissTopModal(params);
 }
 
-function dismissAllModals() {
-  NativeReactModule.dismissAllModals();
+async function dismissAllModals() {
+  return await NativeReactModule.dismissAllModals();
 }
 
 function showInAppNotification(params) {
@@ -79,6 +79,7 @@ function dismissInAppNotification(params) {
   NativeReactModule.hideSlidingOverlay(params);
 }
 
+// eslint-disable-next-line max-statements
 function savePassProps(params) {
   if (params.navigationParams && params.passProps) {
     PropRegistry.save(params.navigationParams.screenInstanceID, params.passProps);
@@ -86,6 +87,10 @@ function savePassProps(params) {
 
   if (params.screen && params.screen.passProps) {
     PropRegistry.save(params.screen.navigationParams.screenInstanceID, params.screen.passProps);
+  }
+
+  if (_.get(params, 'screen.screens')) {
+    _.forEach(params.screen.screens, savePassProps);
   }
 
   if (_.get(params, 'screen.topTabs')) {
@@ -102,6 +107,10 @@ function savePassProps(params) {
         tab.passProps = params.passProps;
       }
       savePassProps(tab);
+      
+      if (tab.screens) {
+        _.forEach(tab.screens, savePassProps);
+      }
     });
   }
 
@@ -181,6 +190,18 @@ async function isAppLaunched() {
   return await NativeReactModule.isAppLaunched();
 }
 
+async function isRootLaunched() {
+  return await NativeReactModule.isRootLaunched();
+}
+
+async function getCurrentlyVisibleScreenId() {
+  return await NativeReactModule.getCurrentlyVisibleScreenId();
+}
+
+async function getLaunchArgs() {
+  return await NativeReactModule.getLaunchArgs();
+}
+
 module.exports = {
   startApp,
   push,
@@ -215,5 +236,8 @@ module.exports = {
   showContextualMenu,
   dismissContextualMenu,
   setScreenStyle,
-  isAppLaunched
+  isAppLaunched,
+  isRootLaunched,
+  getCurrentlyVisibleScreenId,
+  getLaunchArgs
 };

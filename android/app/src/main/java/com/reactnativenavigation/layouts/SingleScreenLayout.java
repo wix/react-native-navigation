@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.EventBus;
 import com.reactnativenavigation.events.ScreenChangedEvent;
@@ -19,6 +20,7 @@ import com.reactnativenavigation.params.SlidingOverlayParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.screens.NavigationType;
 import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
@@ -83,11 +85,18 @@ public class SingleScreenLayout extends BaseLayout {
         stack = new ScreenStack(getActivity(), parent, screenParams.getNavigatorId(), this);
         LayoutParams lp = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         pushInitialScreen(lp);
+        pushAdditionalScreens(lp);
     }
 
     protected void pushInitialScreen(LayoutParams lp) {
         stack.pushInitialScreen(screenParams, lp);
-        stack.show();
+    }
+
+    protected void pushAdditionalScreens(LayoutParams lp) {
+        for (ScreenParams screen : screenParams.screens) {
+            stack.pushInitialScreen(screen, lp);
+        }
+        stack.show(NavigationType.Push);
     }
 
     private void sendScreenChangedEventAfterInitialPush() {
@@ -108,17 +117,22 @@ public class SingleScreenLayout extends BaseLayout {
 
     @Override
     public boolean onBackPressed() {
-        if (stack.handleBackPressInJs()) {
+        if (handleBackInJs()) {
             return true;
         }
 
         if (stack.canPop()) {
-            stack.pop(true);
+            stack.pop(true, System.currentTimeMillis());
             EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
             return true;
         } else {
             return false;
         }
+    }
+
+    @Override
+    public boolean handleBackInJs() {
+        return stack.handleBackPressInJs();
     }
 
     @Override
@@ -138,14 +152,14 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
-    public void push(ScreenParams params) {
-        stack.push(params, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
+    public void push(ScreenParams params, Promise onPushComplete) {
+        stack.push(params, new LayoutParams(MATCH_PARENT, MATCH_PARENT), onPushComplete);
         EventBus.instance.post(new ScreenChangedEvent(params));
     }
 
     @Override
     public void pop(ScreenParams params) {
-        stack.pop(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
+        stack.pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
             @Override
             public void onScreenPopAnimationEnd() {
                 EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
@@ -155,7 +169,7 @@ public class SingleScreenLayout extends BaseLayout {
 
     @Override
     public void popToRoot(ScreenParams params) {
-        stack.popToRoot(params.animateScreenTransitions, new ScreenStack.OnScreenPop() {
+        stack.popToRoot(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
             @Override
             public void onScreenPopAnimationEnd() {
                 EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
@@ -274,6 +288,11 @@ public class SingleScreenLayout extends BaseLayout {
     }
 
     @Override
+    public String getCurrentlyVisibleScreenId() {
+        return stack.peek().getScreenInstanceId();
+    }
+
+    @Override
     public void showSlidingOverlay(final SlidingOverlayParams params) {
         slidingOverlaysQueue.add(new SlidingOverlay(this, params));
     }
@@ -285,6 +304,10 @@ public class SingleScreenLayout extends BaseLayout {
 
     @Override
     public void onModalDismissed() {
+        stack.peek().setStyle();
+        stack.peek().getScreenParams().timestamp = System.currentTimeMillis();
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(stack.peek().getScreenParams(), NavigationType.DismissModal);
+        NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(stack.peek().getScreenParams(), NavigationType.DismissModal);
         EventBus.instance.post(new ScreenChangedEvent(stack.peek().getScreenParams()));
     }
 

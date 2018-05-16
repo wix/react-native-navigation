@@ -8,6 +8,7 @@
 
 #import "RCCTitleViewHelper.h"
 #import <React/RCTConvert.h>
+#import "RCCViewController.h"
 #import "RCTHelpers.h"
 
 @implementation RCCTitleView
@@ -69,6 +70,13 @@ navigationController:(UINavigationController*)navigationController
         return;
     }
     
+    if ([self.viewController isKindOfClass:[RCCViewController class]]) {
+        NSMutableDictionary *mergedStyle = [NSMutableDictionary dictionaryWithDictionary:((RCCViewController*)self.viewController).navigatorStyle];
+        [mergedStyle addEntriesFromDictionary:style];
+        
+        style = mergedStyle;
+    }
+    
     CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;
     
     self.titleView = [[RCCTitleView alloc] initWithFrame:navigationBarBounds];
@@ -107,7 +115,10 @@ navigationController:(UINavigationController*)navigationController
 
 -(BOOL)isTitleOnly
 {
-    return self.title && !self.subtitle && !self.titleImageData;
+    BOOL hasNoImageData = [[NSNull null] isEqual:self.titleImageData] || self.titleImageData == nil;
+    return self.title != nil &&
+        self.subtitle == nil &&
+        hasNoImageData;
 }
 
 
@@ -164,7 +175,7 @@ navigationController:(UINavigationController*)navigationController
     labelframe.size = labelSize;
     subtitleLabel.frame = labelframe;
     [subtitleLabel sizeToFit];
-
+    
     [self.titleView addSubview:subtitleLabel];
     
     return subtitleLabel;
@@ -213,7 +224,8 @@ navigationController:(UINavigationController*)navigationController
         UIColor *color = navBarTextColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarTextColor] : nil;
         titleLabel.textColor = color;
     }
-    
+
+    [titleLabel sizeToFit];
     [self.titleView addSubview:titleLabel];
     
     return titleLabel;

@@ -54,7 +54,7 @@ public class MainApplication extends NavigationApplication {
 public class MyApplication extends NavigationApplication {
     @Override
     public void onCreate() {
-        registerActivityLifecycleCallbacks(new LifecycleCallbacks() {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -160,18 +160,19 @@ Specify `topTab` in the screen object you use when starting your app:
 ```js
 Navigation.startSingleScreenApp({
     screen: {
-    screen: 'example.collapsingReactViewTopTabsScreen',
-    title: 'Collapsing React TopTabs View',
-    topTabs: [
-      {
-        screenId: 'example.ListScreen',
-        icon: require('../img/list.png')
-      },
-      {
-        screenId: 'example.secondTabScreen',
-        icon: require('../img/list.png')
-      }
-    ]
+        screen: 'example.collapsingReactViewTopTabsScreen',
+        title: 'Collapsing React TopTabs View',
+        topTabs: [
+          {
+            screenId: 'example.ListScreen',
+            icon: require('../img/list.png')
+          },
+          {
+            screenId: 'example.secondTabScreen',
+            icon: require('../img/list.png')
+          }
+        ]
+    }
 });
 ```
 ## Shared Element Transition
@@ -312,13 +313,12 @@ In most cases, `Navigation.startSingleScreenApp()` or `Navigation.startTabBasedA
 ```js
 import {Navigation, NativeEventsReceiver} from 'react-native-navigation';
 
-Promise.resolve(Navigation.isAppLaunched())
+Navigation.isAppLaunched()
   .then(appLaunched => {
     if (appLaunched) {
       startApp(); // App is launched -> show UI
-    } else {
-      new NativeEventsReceiver().appLaunched(startApp); // App hasn't been launched yet -> show the UI only when needed.
     }
+    new NativeEventsReceiver().appLaunched(startApp); // App hasn't been launched yet -> show the UI only when needed.
   });
 
 function startApp() {

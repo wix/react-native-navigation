@@ -1,26 +1,17 @@
 package com.reactnativenavigation.controllers;
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.content.*;
+import android.os.*;
 
-import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.Promise;
-import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.params.ActivityParams;
-import com.reactnativenavigation.params.ContextualMenuParams;
-import com.reactnativenavigation.params.FabParams;
-import com.reactnativenavigation.params.LightBoxParams;
-import com.reactnativenavigation.params.ScreenParams;
-import com.reactnativenavigation.params.SlidingOverlayParams;
-import com.reactnativenavigation.params.SnackbarParams;
-import com.reactnativenavigation.params.TitleBarButtonParams;
-import com.reactnativenavigation.params.TitleBarLeftButtonParams;
-import com.reactnativenavigation.params.parsers.ActivityParamsParser;
-import com.reactnativenavigation.params.parsers.ScreenParamsParser;
-import com.reactnativenavigation.utils.OrientationHelper;
-import com.reactnativenavigation.views.SideMenu.Side;
+import com.facebook.react.bridge.*;
+import com.reactnativenavigation.*;
+import com.reactnativenavigation.params.*;
+import com.reactnativenavigation.params.parsers.*;
+import com.reactnativenavigation.react.*;
+import com.reactnativenavigation.utils.*;
+import com.reactnativenavigation.views.SideMenu.*;
 
-import java.util.List;
+import java.util.*;
 
 public class NavigationCommandsHandler {
 
@@ -30,22 +21,17 @@ public class NavigationCommandsHandler {
         return ActivityParamsParser.parse(intent.getBundleExtra(NavigationCommandsHandler.ACTIVITY_PARAMS_BUNDLE));
     }
 
-    /**
-     * start a new activity with CLEAR_TASK | NEW_TASK
-     *
-     * @param params ActivityParams as bundle
-     */
-
-    public static void startApp(Bundle params) {
+    public static void startApp(Bundle params, Promise promise) {
         Intent intent = new Intent(NavigationApplication.instance, NavigationActivity.class);
         IntentDataHandler.onStartApp(intent);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ACTIVITY_PARAMS_BUNDLE, params);
         intent.putExtra("animationType", params.getString("animationType"));
+        NavigationActivity.setStartAppPromise(promise);
         NavigationApplication.instance.startActivity(intent);
     }
 
-    public static void push(Bundle screenParams) {
+    public static void push(Bundle screenParams, final Promise onPushComplete) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
@@ -55,7 +41,7 @@ public class NavigationCommandsHandler {
         NavigationApplication.instance.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                currentActivity.push(params);
+                currentActivity.push(params, onPushComplete);
             }
         });
     }
@@ -261,7 +247,7 @@ public class NavigationCommandsHandler {
         });
     }
 
-    public static void dismissTopModal() {
+    public static void dismissTopModal(final ScreenParams params, final Promise promise) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
@@ -270,12 +256,13 @@ public class NavigationCommandsHandler {
         NavigationApplication.instance.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                currentActivity.dismissTopModal();
+                currentActivity.dismissTopModal(params);
+                promise.resolve("true");
             }
         });
     }
 
-    public static void dismissAllModals() {
+    public static void dismissAllModals(final Promise promise) {
         final NavigationActivity currentActivity = NavigationActivity.currentActivity;
         if (currentActivity == null) {
             return;
@@ -285,6 +272,7 @@ public class NavigationCommandsHandler {
             @Override
             public void run() {
                 currentActivity.dismissAllModals();
+                promise.resolve("true");
             }
         });
     }
@@ -539,5 +527,30 @@ public class NavigationCommandsHandler {
     public static void isAppLaunched(Promise promise) {
         final boolean isAppLaunched = SplashActivity.isResumed || NavigationActivity.currentActivity != null;
         promise.resolve(isAppLaunched);
+    }
+
+    public static void isRootLaunched(Promise promise) {
+        promise.resolve(NavigationActivity.currentActivity != null);
+    }
+
+    public static void getCurrentlyVisibleScreenId(final Promise promise) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            promise.resolve("");
+            return;
+        }
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                WritableMap map = Arguments.createMap();
+                map.putString("screenId", currentActivity.getCurrentlyVisibleScreenId());
+                promise.resolve(map);
+            }
+        });
+    }
+
+    public static void getLaunchArgs(Promise promise) {
+        Bundle bundle = LaunchArgs.instance.get();
+        promise.resolve(Arguments.fromBundle(bundle));
     }
 }

@@ -1,4 +1,5 @@
 /*eslint-disable*/
+var _ = require('lodash');
 var OriginalReactNative = require('react-native');
 var RCCManager = OriginalReactNative.NativeModules.RCCManager;
 var NativeAppEventEmitter = OriginalReactNative.NativeAppEventEmitter;
@@ -101,6 +102,15 @@ var Controllers = {
           props['style'] = Object.assign({}, props['style']);
           _processProperties(props['style']);
         }
+
+        if (props['components']) {
+          props['components'].forEach(component => {
+            if (component['navigatorStyle']) {
+              component['navigatorStyle'] = Object.assign({}, component['navigatorStyle']);
+              _processProperties(component['navigatorStyle']);
+            }
+          });
+        }
         return {
           'type': type.name,
           'props': props,
@@ -120,12 +130,17 @@ var Controllers = {
     registerController: function (appKey, getControllerFunc) {
       _controllerRegistry[appKey] = getControllerFunc();
     },
-    setRootController: function (appKey, animationType = 'none', passProps = {}) {
+    setRootController: async function (appKey, animationType = 'none', passProps = {}) {
       var controller = _controllerRegistry[appKey];
       if (controller === undefined) return;
       var layout = controller.render();
       _validateDrawerProps(layout);
-      RCCManager.setRootController(layout, animationType, passProps);
+      console.log('set root');
+      _processProperties(_.get(layout, 'props.appStyle', {}));
+      return await RCCManager.setRootController(layout, animationType, passProps);
+    },
+    getLaunchArgs: async function() {
+      return await RCCManager.getLaunchArgs();
     }
   },
 
@@ -242,6 +257,7 @@ var Controllers = {
         return RCCManager.TabBarControllerIOS(id, "setTabBarHidden", params);
       },
       setBadge: function (params) {
+        _processProperties(params);
         return RCCManager.TabBarControllerIOS(id, "setBadge", params);
       },
       switchTo: function (params) {
@@ -313,10 +329,15 @@ var Controllers = {
     }
   },
 
+  ScreenUtils: {
+    getCurrentlyVisibleScreenId: async function() {
+      return await RCCManager.getCurrentlyVisibleScreenId();
+    }
+  },
+
   NavigationToolBarIOS: OriginalReactNative.requireNativeComponent('RCCToolBar', null),
 
   Constants: Constants
 };
 
 module.exports = Controllers;
-

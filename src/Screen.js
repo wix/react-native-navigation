@@ -21,6 +21,7 @@ class Navigator {
     this.screenInstanceID = screenInstanceID;
     this.navigatorEventID = navigatorEventID;
     this.navigatorEventHandler = null;
+    this.navigatorEventHandlers = [];
     this.navigatorEventSubscription = null;
   }
 
@@ -60,8 +61,8 @@ class Navigator {
     return Navigation.showLightBox(params);
   }
 
-  dismissLightBox(params = {}) {
-    return Navigation.dismissLightBox(params);
+  dismissLightBox() {
+    return Navigation.dismissLightBox();
   }
 
   showInAppNotification(params = {}) {
@@ -141,7 +142,27 @@ class Navigator {
   }
 
   setOnNavigatorEvent(callback) {
+    if (this.navigatorEventHandlers.length > 0) {
+      throw new Error('setOnNavigatorEvent can not be used after addOnNavigatorEvent has been called');
+    }
     this.navigatorEventHandler = callback;
+    this._registerNavigatorEvent();
+  }
+
+  addOnNavigatorEvent(callback) {
+    if (this.navigatorEventHandler) {
+      throw new Error('addOnNavigatorEvent can not be used after setOnNavigatorEvent has been called');
+    }
+    if (this.navigatorEventHandlers.indexOf(callback) === -1) {
+      this.navigatorEventHandlers.push(callback);
+    }
+    this._registerNavigatorEvent();
+
+    return () => this._removeOnNavigatorEvent(callback)
+    
+  }
+
+  _registerNavigatorEvent() {
     if (!this.navigatorEventSubscription) {
       let Emitter = Platform.OS === 'android' ? DeviceEventEmitter : NativeAppEventEmitter;
       this.navigatorEventSubscription = Emitter.addListener(this.navigatorEventID, (event) => this.onNavigatorEvent(event));
@@ -149,25 +170,42 @@ class Navigator {
     }
   }
 
-  handleDeepLink(params = {}) {
-    Navigation.handleDeepLink(params);
+  _removeOnNavigatorEvent(callback) {
+    const index = this.navigatorEventHandlers.indexOf(callback);
+    if (index !== -1) {
+      this.navigatorEventHandlers.splice(index, 1);
+    }
   }
 
   onNavigatorEvent(event) {
     if (this.navigatorEventHandler) {
       this.navigatorEventHandler(event);
     }
+    this.navigatorEventHandlers.forEach(handler => handler(event));
+  }
+
+  handleDeepLink(params = {}) {
+    Navigation.handleDeepLink(params);
   }
 
   cleanup() {
     if (this.navigatorEventSubscription) {
       this.navigatorEventSubscription.remove();
+      this.navigatorEventHandlers = [];
       Navigation.clearEventHandler(this.navigatorEventID);
     }
   }
+
+  async screenIsCurrentlyVisible() {
+    const res = await Navigation.getCurrentlyVisibleScreenId();
+    if (!res) {
+      return false;
+    }
+    return res.screenId === this.screenInstanceID;
+  }
 }
 
-export default class Screen extends Component {
+class Screen extends Component {
   static navigatorStyle = {};
   static navigatorButtons = {};
 
@@ -185,3 +223,8 @@ export default class Screen extends Component {
     }
   }
 }
+
+export {
+  Screen,
+  Navigator
+};
