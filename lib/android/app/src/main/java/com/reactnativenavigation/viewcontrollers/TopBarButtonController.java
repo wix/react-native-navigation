@@ -22,6 +22,7 @@ import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TopBarButtonController extends ViewController<TitleBarReactButtonView> implements MenuItem.OnMenuItemClickListener {
@@ -79,11 +80,11 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
             return;
         }
 
-        imageLoader.loadIcon(toolbar.getContext(), button.icon.get(), new ImageLoader.ImageLoadingListener() {
+        imageLoader.loadIcons(toolbar.getContext(), Collections.singletonList(button.icon.get()), new ImageLoader.ImagesLoadingListener() {
             @Override
-            public void onComplete(@NonNull Drawable drawable) {
-                icon = drawable;
-                setIconColor(drawable);
+            public void onComplete(@NonNull List<Drawable> drawables) {
+                icon = drawables.get(0);
+                setIconColor(icon);
                 toolbar.setNavigationOnClickListener(view -> onPressListener.onPress(button.id));
                 toolbar.setNavigationIcon(icon);
                 setLeftButtonTestId(toolbar);
@@ -117,7 +118,8 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
             if (button.hasIcon()) {
                 loadIcon(new ImageLoadingListenerAdapter() {
                     @Override
-                    public void onComplete(@NonNull Drawable icon) {
+                    public void onComplete(@NonNull List<Drawable> icons) {
+                        Drawable icon = icons.get(0);
                         TopBarButtonController.this.icon = icon;
                         setIconColor(icon);
                         menuItem.setIcon(icon);
@@ -132,8 +134,8 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
         setTestId(toolbar, button.testId);
     }
 
-    private void loadIcon(ImageLoader.ImageLoadingListener callbacks) {
-        imageLoader.loadIcon(getActivity(), button.icon.get(), callbacks);
+    private void loadIcon(ImageLoader.ImagesLoadingListener callback) {
+        imageLoader.loadIcons(getActivity(), Collections.singletonList(button.icon.get()), callback);
     }
 
     private void setIconColor(Drawable icon) {
