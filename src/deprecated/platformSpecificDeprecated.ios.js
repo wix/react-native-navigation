@@ -38,7 +38,7 @@ async function startTabBasedApp(params) {
 
       components.forEach(component => {
         const screenInstanceID = _.uniqueId('screenInstanceID');
-
+  
         const {
           navigatorStyle,
           navigatorButtons,
@@ -46,12 +46,12 @@ async function startTabBasedApp(params) {
         } = _mergeScreenSpecificSettings(component.screen, screenInstanceID, params);
         _saveNavigatorButtonsProps(navigatorButtons);
         _saveNavBarComponentProps(navigatorStyle);
-        const passProps = _.cloneDeep(component.passProps);
+        const passProps = Object.assign({}, component.passProps);
         passProps.navigatorID = navigatorID;
         passProps.screenInstanceID = screenInstanceID;
         passProps.navigatorEventID = navigatorEventID;
-
-
+  
+  
         component.navigationParams = {
           screenInstanceID,
           navigatorStyle,
@@ -60,15 +60,15 @@ async function startTabBasedApp(params) {
           navigatorID: navigatorID,
           passProps
         };
-
+  
         component.subtitle = params.subtitle;
         component.passProps = passProps;
         component.navigatorStyle = navigatorStyle;
 
         savePassProps(component);
-
+  
       });
-
+        
     }
 
     const {
@@ -191,7 +191,7 @@ async function startSingleScreenApp(params) {
       } = _mergeScreenSpecificSettings(component.screen, screenInstanceID, params);
       _saveNavigatorButtonsProps(navigatorButtons);
       _saveNavBarComponentProps(navigatorStyle);
-      const passProps = _.cloneDeep(params.passProps);
+      const passProps = Object.assign({}, params.passProps);
       passProps.navigatorID = navigatorID;
       passProps.screenInstanceID = screenInstanceID;
       passProps.navigatorEventID = navigatorEventID;
@@ -340,7 +340,7 @@ function navigatorPush(navigator, params) {
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
   _saveNavigatorButtonsProps(navigatorButtons);
   _saveNavBarComponentProps(navigatorStyle);
-  const passProps = _.cloneDeep(params);
+  const passProps = Object.assign({}, params.passProps);
   passProps.navigatorID = navigator.navigatorID;
   passProps.screenInstanceID = screenInstanceID;
   passProps.navigatorEventID = navigatorEventID;
@@ -406,7 +406,7 @@ function navigatorResetTo(navigator, params) {
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
   _saveNavigatorButtonsProps(navigatorButtons);
   _saveNavBarComponentProps(navigatorStyle);
-  const passProps = _.cloneDeep(params.passProps);
+  const passProps = Object.assign({}, params.passProps);
   passProps.navigatorID = navigator.navigatorID;
   passProps.screenInstanceID = screenInstanceID;
   passProps.navigatorEventID = navigatorEventID;
@@ -590,7 +590,7 @@ function showModal(params) {
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
   _saveNavigatorButtonsProps(navigatorButtons);
   _saveNavBarComponentProps(navigatorStyle);
-  const passProps = _.cloneDeep(params.passProps);
+  const passProps = Object.assign({}, params.passProps);
   passProps.navigatorID = navigatorID;
   passProps.screenInstanceID = screenInstanceID;
   passProps.navigatorEventID = navigatorEventID;
@@ -648,7 +648,7 @@ function showLightBox(params) {
     navigatorButtons,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
-  const passProps = _.cloneDeep(params.passProps);
+  const passProps = Object.assign({}, params.passProps);
   passProps.navigatorID = navigatorID;
   passProps.screenInstanceID = screenInstanceID;
   passProps.navigatorEventID = navigatorEventID;
@@ -688,7 +688,7 @@ function showInAppNotification(params) {
     navigatorButtons,
     navigatorEventID
   } = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params);
-  const passProps = _.cloneDeep(params.passProps);
+  const passProps = Object.assign({}, params.passProps);
   passProps.navigatorID = navigatorID;
   passProps.screenInstanceID = screenInstanceID;
   passProps.navigatorEventID = navigatorEventID;
