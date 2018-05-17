@@ -30,8 +30,10 @@ describe('Commands', () => {
   describe('setRoot', () => {
     it('sends setRoot to native after parsing into a correct layout tree', () => {
       uut.setRoot({
-        component: {
-          name: 'com.example.MyScreen'
+        root: {
+          component: {
+            name: 'com.example.MyScreen'
+          }
         }
       });
       expect(mockCommandsSender.setRoot).toHaveBeenCalledTimes(1);
@@ -48,7 +50,7 @@ describe('Commands', () => {
 
     it('deep clones input to avoid mutation errors', () => {
       const obj = {};
-      uut.setRoot({ component: { name: 'bla', inner: obj } });
+      uut.setRoot({ root: { component: { name: 'bla', inner: obj } } });
       expect(mockCommandsSender.setRoot.mock.calls[0][1].data.inner).not.toBe(obj);
     });
 
@@ -57,14 +59,14 @@ describe('Commands', () => {
         fn: () => 'Hello'
       };
       expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual({});
-      uut.setRoot({ component: { name: 'asd', passProps } });
+      uut.setRoot({ root: { component: { name: 'asd', passProps } } });
       expect(store.getPropsForId('Component+UNIQUE_ID')).toEqual(passProps);
       expect(store.getPropsForId('Component+UNIQUE_ID').fn()).toEqual('Hello');
     });
 
     it('returns a promise with the resolved layout', async () => {
       mockCommandsSender.setRoot.mockReturnValue(Promise.resolve('the resolved layout'));
-      const result = await uut.setRoot({ component: { name: 'com.example.MyScreen' } });
+      const result = await uut.setRoot({ root: { component: { name: 'com.example.MyScreen' } } });
       expect(result).toEqual('the resolved layout');
     });
   });
@@ -352,7 +354,7 @@ describe('Commands', () => {
 
     it('notify on all commands', () => {
       _.forEach(getAllMethodsOfUut(), (m) => {
-        uut[m]();
+        uut[m]({});
       });
       expect(cb).toHaveBeenCalledTimes(getAllMethodsOfUut().length);
     });
@@ -379,7 +381,7 @@ describe('Commands', () => {
         mergeOptions: { componentId: 'id', options: {} },
         showModal: { commandId: 'showModal+UNIQUE_ID', layout: 'parsed' },
         dismissModal: { commandId: 'dismissModal+UNIQUE_ID', componentId: 'id' },
-        dismissAllModals: {commandId: 'dismissAllModals+UNIQUE_ID'},
+        dismissAllModals: { commandId: 'dismissAllModals+UNIQUE_ID' },
         push: { commandId: 'push+UNIQUE_ID', componentId: 'id', layout: 'parsed' },
         pop: { commandId: 'pop+UNIQUE_ID', componentId: 'id', options: {} },
         popTo: { commandId: 'popTo+UNIQUE_ID', componentId: 'id' },

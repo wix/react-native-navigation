@@ -14,12 +14,12 @@ export class Commands {
 
   public setRoot(simpleApi) {
     const input = _.cloneDeep(simpleApi);
-    const layout = this.layoutTreeParser.parse(input);
-    this.layoutTreeCrawler.crawl(layout);
+    const rootLayout = this.layoutTreeParser.parse(input.root);
+    this.layoutTreeCrawler.crawl(rootLayout);
 
     const commandId = this.uniqueIdProvider.generate('setRoot');
-    const result = this.nativeCommandsSender.setRoot(commandId, layout);
-    this.commandsObserver.notify('setRoot', { commandId, layout });
+    const result = this.nativeCommandsSender.setRoot(commandId, rootLayout);
+    this.commandsObserver.notify('setRoot', { commandId, layout: rootLayout });
     return result;
   }
 
