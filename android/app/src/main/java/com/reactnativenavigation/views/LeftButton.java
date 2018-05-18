@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
+import com.facebook.react.modules.i18nmanager.I18nUtil;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -33,6 +34,7 @@ class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
         this.onClickListener = onClickListener;
         this.navigatorEventId = navigatorEventId;
         this.overrideBackPressInJs = overrideBackPressInJs;
+        setRTLEnabled(I18nUtil.getInstance().isRTL(context));
         setInitialState();
         setColor();
     }
