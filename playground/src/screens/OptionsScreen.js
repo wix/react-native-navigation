@@ -16,8 +16,10 @@ const FAB = 'fab';
 class OptionsScreen extends Component {
   static get options() {
     return {
-      statusBarBackgroundColor: '#EDEDED',
-      statusBarStyle: 'dark',
+      statusBar: {
+        style: 'dark',
+        backgroundColor: '#EDEDED'
+      },
       topBar: {
         title: {
           text: 'Static Title',

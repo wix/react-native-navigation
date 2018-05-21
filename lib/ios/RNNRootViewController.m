@@ -158,16 +158,16 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-	if ([self.options.statusBarHidden boolValue]) {
+	if ([self.options.statusBar.hidden boolValue]) {
 		return YES;
-	} else if ([self.options.statusBarHideWithTopBar boolValue]) {
+	} else if ([self.options.statusBar.hideWithTopBar boolValue]) {
 		return self.navigationController.isNavigationBarHidden;
 	}
 	return NO;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	if (self.options.statusBarStyle && [self.options.statusBarStyle isEqualToString:@"light"]) {
+	if (self.options.statusBar.style && [self.options.statusBar.style isEqualToString:@"light"]) {
 		return UIStatusBarStyleLightContent;
 	} else {
 		return UIStatusBarStyleDefault;

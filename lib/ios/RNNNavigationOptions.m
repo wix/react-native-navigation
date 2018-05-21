@@ -48,6 +48,8 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 	[self.bottomTab applyOn:viewController];
 	[self.sideMenu applyOn:viewController];
 	[self.overlay applyOn:viewController];
+	[self.statusBar applyOn:viewController];
+	
 	[self applyOtherOptionsOn:viewController];
 	
 	[viewController optionsUpdated];
@@ -61,22 +63,6 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 	if (self.screenBackgroundColor) {
 		UIColor* screenColor = [RCTConvert UIColor:self.screenBackgroundColor];
 		viewController.view.backgroundColor = screenColor;
-	}
-	
-	if (self.statusBarBlur) {
-		UIView* curBlurView = [viewController.view viewWithTag:BLUR_STATUS_TAG];
-		if ([self.statusBarBlur boolValue]) {
-			if (!curBlurView) {
-				UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-				blur.frame = [[UIApplication sharedApplication] statusBarFrame];
-				blur.tag = BLUR_STATUS_TAG;
-				[viewController.view insertSubview:blur atIndex:0];
-			}
-		} else {
-			if (curBlurView) {
-				[curBlurView removeFromSuperview];
-			}
-		}
 	}
 	
 	if (self.backgroundImage) {
@@ -101,10 +87,6 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 		backgroundImageView.layer.masksToBounds = YES;
 		backgroundImageView.image = [self.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.rootBackgroundImage : [RCTConvert UIImage:self.rootBackgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
-	}
-	
-	if (self.statusBarStyle) {
-		[viewController setNeedsStatusBarAppearanceUpdate];
 	}
     
     [self applyModalOptions:viewController];
