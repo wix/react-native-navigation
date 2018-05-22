@@ -39,8 +39,8 @@ public class StatusBarOptions {
         StatusBarOptions result = new StatusBarOptions();
         if (json == null) return result;
 
-        result.backgroundColor = ColorParser.parse(json, "statusBarBackgroundColor");
-        result.textColorScheme = TextColorScheme.fromString(json.optString("statusBarStyle"));
+        result.backgroundColor = ColorParser.parse(json, "backgroundColor");
+        result.textColorScheme = TextColorScheme.fromString(json.optString("style"));
 
         return result;
     }

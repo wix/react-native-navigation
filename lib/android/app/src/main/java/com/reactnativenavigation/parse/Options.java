@@ -36,7 +36,7 @@ public class Options {
         result.animations = AnimationsOptions.parse(json.optJSONObject("animations"));
         result.screenBackgroundColor = ColorParser.parse(json, "screenBackgroundColor");
         result.modal = ModalOptions.parse(json);
-        result.statusBar = StatusBarOptions.parse(json);
+        result.statusBar = StatusBarOptions.parse(json.optJSONObject("statusBar"));
 
         return result.withDefaultOptions(defaultOptions);
     }
