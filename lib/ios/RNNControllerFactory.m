@@ -79,6 +79,10 @@
 		result = [self createExternalComponent:node];
 	}
 	
+	else if (node.isSplitView) {
+		result = [self createSplitView:node];
+	}
+	
 	if (!result) {
 		@throw [NSException exceptionWithName:@"UnknownControllerType" reason:[@"Unknown controller type " stringByAppendingString:node.type] userInfo:nil];
 	}
@@ -202,6 +206,36 @@
 	[_bridge.uiManager setAvailableSize:availableSize forRootView:vc.view];
 	
 	return vc;
+}
+
+- (UIViewController<RNNRootViewProtocol> *)createSplitView:(RNNLayoutNode*)node {
+
+	UISplitViewController<RNNRootViewProtocol> *svc = [[UISplitViewController<RNNRootViewProtocol> alloc] init];
+
+	NSDictionary* options = node.data[@"options"];
+	NSString* vclNameId = [NSString stringWithFormat:@"%@_Left", node.nodeId];
+
+	RNNNavigationController* vcl = [[RNNNavigationController alloc] init];
+	[vcl setComponentId:vclNameId];
+	NSMutableArray* controllersl = [NSMutableArray new];
+	for (NSDictionary* child in node.sidebar) {
+		[controllersl addObject:[self fromTree:child]];
+	}
+	[vcl setViewControllers:controllersl];
+	[vcl mergeOptions:options];
+	
+	RNNNavigationController* vc = [[RNNNavigationController alloc] init];
+	[vc setComponentId:node.nodeId];
+	NSMutableArray* controllers = [NSMutableArray new];
+	for (NSDictionary* child in node.children) {
+		[controllers addObject:[self fromTree:child]];
+	}
+	[vc setViewControllers:controllers];
+	[vc mergeOptions:options];
+
+	svc.viewControllers = [NSArray arrayWithObjects:vcl, vc, nil];
+
+	return svc;
 }
 
 @end

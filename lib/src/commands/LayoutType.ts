@@ -7,5 +7,6 @@ export enum LayoutType {
   SideMenuLeft = 'SideMenuLeft',
   SideMenuRight = 'SideMenuRight',
   TopTabs = 'TopTabs',
-  ExternalComponent = 'ExternalComponent'
+  ExternalComponent = 'ExternalComponent',
+  SplitView = 'SplitView'
 }

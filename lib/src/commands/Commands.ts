@@ -16,7 +16,6 @@ export class Commands {
     const input = _.cloneDeep(simpleApi);
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);
-
     const commandId = this.uniqueIdProvider.generate('setRoot');
     const result = this.nativeCommandsSender.setRoot(commandId, layout);
     this.commandsObserver.notify('setRoot', { commandId, layout });

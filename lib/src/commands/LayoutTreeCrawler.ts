@@ -11,6 +11,7 @@ export interface LayoutNode {
   id?: string;
   type: LayoutType;
   data: Data;
+  sidebar?: LayoutNode[];
   children: LayoutNode[];
 }
 
@@ -28,12 +29,14 @@ export class LayoutTreeCrawler {
     this._assertKnownLayoutType(node.type);
     node.id = node.id || this.uniqueIdProvider.generate(node.type);
     node.data = node.data || {};
+    node.sidebar = node.sidebar || [];
     node.children = node.children || [];
     if (node.type === LayoutType.Component) {
       this._handleComponent(node);
     }
     this.processOptions(node.data.options);
     _.forEach(node.children, this.crawl);
+    _.forEach(node.sidebar, this.crawl);
   }
 
   processOptions(options) {

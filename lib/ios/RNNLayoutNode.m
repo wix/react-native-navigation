@@ -9,7 +9,9 @@
 	node.type = json[@"type"];
 	node.nodeId = json[@"id"];
 	node.data = json[@"data"];
+	node.sidebar = json[@"sidebar"];
 	node.children = json[@"children"];
+	
 	return node;
 }
 
@@ -48,6 +50,10 @@
 -(BOOL)isSideMenuCenter
 {
 	return [self.type isEqualToString:@"SideMenuCenter"];
+}
+-(BOOL)isSplitView
+{
+	return [self.type isEqualToString:@"SplitView"];
 }
 
 @end

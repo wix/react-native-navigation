@@ -8,6 +8,7 @@
 @property NSString* nodeId;
 @property NSDictionary* data;
 @property NSArray* children;
+@property NSArray* sidebar;
 
 +(instancetype)create:(NSDictionary *)json;
 
@@ -20,5 +21,6 @@
 -(BOOL)isSideMenuLeft;
 -(BOOL)isSideMenuRight;
 -(BOOL)isSideMenuCenter;
+-(BOOL)isSplitView;
 
 @end

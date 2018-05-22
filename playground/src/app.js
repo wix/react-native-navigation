@@ -148,18 +148,39 @@ function start() {
       }
     });
 
+    // Navigation.setRoot({
+    //   stack: {
+    //     id: 'TEST',
+    //     children: [
+    //       {
+    //         component: {
+    //           name: 'navigation.playground.WelcomeScreen'
+    //         }
+    //       }
+    //     ]
+    //   },
+    // });
+
     Navigation.setRoot({
-      stack: {
+      splitView: {
         id: 'TEST',
+        sidebar: [
+          {
+            component: {
+              name: 'navigation.playground.WelcomeScreen'
+            },
+          }
+        ],
         children: [
           {
             component: {
               name: 'navigation.playground.WelcomeScreen'
-            }
+            },
           }
-        ]
-      }
+        ],
+      },
     });
+
   });
 }
 
