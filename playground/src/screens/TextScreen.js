@@ -111,7 +111,7 @@ const styles = {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'orange'
+    backgroundColor: '#E3DCC3'
   },
   h1: {
     fontSize: 24,
