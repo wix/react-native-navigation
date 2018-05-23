@@ -27,6 +27,7 @@ class WelcomeScreen extends Component {
         <Text testID={testIDs.WELCOME_SCREEN_HEADER} style={styles.h1}>{`React Native Navigation!`}</Text>
         <Button title='Switch to tab based app' testID={testIDs.TAB_BASED_APP_BUTTON} onPress={this.onClickSwitchToTabs} />
         <Button title='Switch to app with side menus' testID={testIDs.TAB_BASED_APP_SIDE_BUTTON} onPress={this.onClickSwitchToSideMenus} />
+        <Button title='Switch to split view based app' testID={testIDs.SPLIT_VIEW_BUTTON} onPress={this.onClickSplitView} />
         <Button title='Push Lifecycle Screen' testID={testIDs.PUSH_LIFECYCLE_BUTTON} onPress={this.onClickLifecycleScreen} />
         <Button title='Static Lifecycle Events' testID={testIDs.PUSH_STATIC_LIFECYCLE_BUTTON} onPress={this.onClickShowStaticLifecycleOverlay} />
         <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
@@ -436,6 +437,46 @@ class WelcomeScreen extends Component {
       component: {
         name: 'navigation.playground.ComplexLayout'
       }
+    });
+  }
+
+  onClickSplitView = () => {
+    Navigation.setRoot({
+      root: {
+        splitView: {
+          id: 'SPLITVIEW_ID',
+          master: {
+            stack: {
+              id: 'MASTER_ID',
+              children: [
+                {
+                  component: {
+                    name: 'navigation.playground.WelcomeScreen'
+                  },
+                },
+              ]
+            },
+          },
+          detail: {
+            stack: {
+              id: 'DETAILS_ID',
+              children: [
+                {
+                  component: {
+                    name: 'navigation.playground.WelcomeScreen'
+                  },
+                },
+              ]
+            }
+          },
+          options: {
+            displayMode: 'auto',
+            primaryEdge: 'leading',
+            minWidth: 150,
+            maxWidth: 300,
+          },
+        },
+      },
     });
   }
 }

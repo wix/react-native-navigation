@@ -80,3 +80,27 @@ const sideMenu = {
   }
 }
 ```
+
+## splitView
+
+Master and Detail based layout.
+
+You can change the it's options with `Navigation.mergeOptions('splitView1', { maxWidth: 400 })`.
+
+```js
+const splitView = {
+  id: 'splitView1', // Required to update options
+  master: {
+    // All layout types accepted supported by device, eg. `stack`
+  },
+  detail: {
+    // All layout types accepted supported by device, eg. `stack`
+  },
+  options: {
+    displayMode: 'auto', // Master view display mode: `auto`, `visible`, `hidden` and `overlay`
+    primaryEdge: 'leading', // Master view side: `leading` or `trailing`
+    minWidth: 150, // Minimum width of master view
+    maxWidth: 300, // Maximum width of master view
+  },
+}
+```
