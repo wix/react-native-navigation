@@ -111,12 +111,17 @@ export class LayoutTreeParser {
   }
 
   _splitView(api): LayoutNode {
+    const master = this.parse(api.master);
+    const detail = this.parse(api.detail);
+
     return {
       id: api.id,
       type: LayoutType.SplitView,
       data: { name: api.name, options: api.options },
-      sidebar: _.map(api.sidebar, this.parse),
-      children: _.map(api.children, this.parse)
+      children: [
+        master,
+        detail,
+      ],
     };
   }
 }

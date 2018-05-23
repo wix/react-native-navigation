@@ -2,6 +2,8 @@
 #import "RNNControllerFactory.h"
 #import "RNNLayoutNode.h"
 #import "RNNRootViewController.h"
+#import "RNNSplitViewController.h"
+#import "RNNSplitViewOptions.h"
 #import "RNNSideMenuController.h"
 #import "RNNSideMenuChildVC.h"
 #import "RNNNavigationOptions.h"
@@ -210,30 +212,23 @@
 
 - (UIViewController<RNNRootViewProtocol> *)createSplitView:(RNNLayoutNode*)node {
 
-	UISplitViewController<RNNRootViewProtocol> *svc = [[UISplitViewController<RNNRootViewProtocol> alloc] init];
+	RNNSplitViewController *svc = [[RNNSplitViewController alloc] init];
+	RNNSplitViewOptions* options = [[RNNSplitViewOptions alloc] initWithDict:_defaultOptionsDict];
+	[options mergeWith:node.data[@"options"]];
 
-	NSDictionary* options = node.data[@"options"];
-	NSString* vclNameId = [NSString stringWithFormat:@"%@_Left", node.nodeId];
+	// We need two children of the node for successful Master / Detail
+	NSDictionary *master = node.children[0];
+	NSDictionary *detail = node.children[1];
 
-	RNNNavigationController* vcl = [[RNNNavigationController alloc] init];
-	[vcl setComponentId:vclNameId];
-	NSMutableArray* controllersl = [NSMutableArray new];
-	for (NSDictionary* child in node.sidebar) {
-		[controllersl addObject:[self fromTree:child]];
-	}
-	[vcl setViewControllers:controllersl];
-	[vcl mergeOptions:options];
-	
-	RNNNavigationController* vc = [[RNNNavigationController alloc] init];
-	[vc setComponentId:node.nodeId];
-	NSMutableArray* controllers = [NSMutableArray new];
-	for (NSDictionary* child in node.children) {
-		[controllers addObject:[self fromTree:child]];
-	}
-	[vc setViewControllers:controllers];
-	[vc mergeOptions:options];
+	// Create view controllers
+	RNNRootViewController* masterVc = (RNNRootViewController*)[self fromTree:master];
+	RNNRootViewController* detailVc = (RNNRootViewController*)[self fromTree:detail];
 
-	svc.viewControllers = [NSArray arrayWithObjects:vcl, vc, nil];
+	// Set the controllers and delegate to masterVC
+	svc.viewControllers = [NSArray arrayWithObjects:masterVc, detailVc, nil];
+	svc.delegate = masterVc;
+
+	[options applyOn:svc];
 
 	return svc;
 }

@@ -5,6 +5,7 @@
 #import "RNNTopBarOptions.h"
 #import "RNNSideMenuController.h"
 #import "RNNRootViewController.h"
+#import "RNNSplitViewController.h"
 #import "RNNNavigationButtons.h"
 
 const NSInteger BLUR_STATUS_TAG = 78264801;
