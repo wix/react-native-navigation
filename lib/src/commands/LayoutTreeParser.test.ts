@@ -126,6 +126,16 @@ describe('LayoutTreeParser', () => {
       expect(result.children[1].children[0].children[2].children[0].children[2].children[4].type).toEqual('Stack');
       expect(result.children[1].children[0].children[2].children[0].children[2].data).toEqual({ options: { topBar: { title: { text: 'Hello1'} } } });
     });
+
+    it('split view', () => {
+      const result = uut.parse(LayoutExamples.splitView);
+      const master = uut.parse(LayoutExamples.splitView.splitView.master);
+      const detail = uut.parse(LayoutExamples.splitView.splitView.detail);
+
+      expect(result.type).toEqual('SplitView');
+      expect(result.children[0]).toEqual(master);
+      expect(result.children[1]).toEqual(detail);
+    });
   });
 
   it('options for all containing types', () => {
@@ -134,6 +144,7 @@ describe('LayoutTreeParser', () => {
     expect(uut.parse({ bottomTabs: { options } }).data.options).toBe(options);
     expect(uut.parse({ topTabs: { options } }).data.options).toBe(options);
     expect(uut.parse({ sideMenu: { options, center: { component: {} } } }).data.options).toBe(options);
+    expect(uut.parse(LayoutExamples.splitView).data.options).toBe(optionsSplitView);
   });
 
   it('pass user provided id as is', () => {
@@ -167,6 +178,13 @@ const options = {
       text: 'Hello1'
     }
   }
+};
+
+const optionsSplitView = {
+  displayMode: 'auto',
+  primaryEdge: 'leading',
+  minWidth: 150,
+  maxWidth: 300,
 };
 
 const singleComponent = {
@@ -279,6 +297,21 @@ const complexLayout = {
   }
 };
 
+const splitView = {
+  splitView: {
+    master: {
+      stack: {
+        children: [
+          singleComponent,
+        ],
+        options
+      },
+    },
+    detail: stackWithTopBar,
+    options: optionsSplitView,
+  },
+};
+
 const LayoutExamples = {
   passProps,
   options,
@@ -288,5 +321,6 @@ const LayoutExamples = {
   sideMenu,
   topTabs,
   complexLayout,
-  externalComponent
+  externalComponent,
+  splitView
 };
