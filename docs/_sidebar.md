@@ -6,6 +6,7 @@
 - Guide
   - [Top Level](/docs/top-level-api)
   - [Screen](/docs/screen-api)
+  - [Events](/docs/events)
   - [Layout Types](/docs/layout-types)
   - [Styling](/docs/styling)
 - Migration from v1

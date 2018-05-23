@@ -29,8 +29,10 @@ Afterwards, the app is ready for user interaction. (Common gotcha: Be sure not t
 ```js
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
-    component: {
-      name: 'navigation.playground.WelcomeScreen'
+    root: {
+      component: {
+        name: 'navigation.playground.WelcomeScreen'
+      }
     }
   });
 });
@@ -49,25 +51,27 @@ For all possible layout types see [API](/api/README).
 
 ```js
 Navigation.setRoot({
-  sideMenu: {
-    left: {
-      component: {
-        name: 'navigation.playground.TextScreen',
-        passProps: {
-          text: 'This is a left side menu screen'
+  root: {
+    sideMenu: {
+      left: {
+        component: {
+          name: 'navigation.playground.TextScreen',
+          passProps: {
+            text: 'This is a left side menu screen'
+          }
         }
-      }
-    },
-    center: {
-      component: {
-        name: 'navigation.playground.WelcomeScreen'
       },
-    },
-    right: {
-      component: {
-        name: 'navigation.playground.TextScreen',
-        passProps: {
-          text: 'This is a right side menu screen'
+      center: {
+        component: {
+          name: 'navigation.playground.WelcomeScreen'
+        },
+      },
+      right: {
+        component: {
+          name: 'navigation.playground.TextScreen',
+          passProps: {
+            text: 'This is a right side menu screen'
+          }
         }
       }
     }
@@ -79,27 +83,29 @@ Navigation.setRoot({
 
 ```js
 Navigation.setRoot({
-  bottomTabs: {
-    children: [
-      {
-        component: {
-          name: 'navigation.playground.TextScreen',
-          passProps: {
-            text: 'This is tab 1',
-            myFunction: () => 'Hello from a function!',
+  root: {
+    bottomTabs: {
+      children: [
+        {
+          component: {
+            name: 'navigation.playground.TextScreen',
+            passProps: {
+              text: 'This is tab 1',
+              myFunction: () => 'Hello from a function!',
+            },
           },
         },
-      },
-      {
-        component: {
-          name: 'navigation.playground.TextScreen',
-          passProps: {
-            text: 'This is tab 2',
+        {
+          component: {
+            name: 'navigation.playground.TextScreen',
+            passProps: {
+              text: 'This is tab 2',
+            },
           },
         },
-      },
-    ],
-  },
+      ],
+    },
+  }
 });
 ```
 
@@ -107,32 +113,34 @@ Navigation.setRoot({
 
 ```js
 Navigation.setRoot({
-  stack: {
-    options: {
-      topBar: {
-        hidden: true,
+  root: {
+    stack: {
+      options: {
+        topBar: {
+          hidden: true,
+        },
       },
+      children: [
+        {
+          component: {
+            name: 'navigation.playground.TextScreen',
+            passProps: {
+              text: 'This is tab 1',
+              myFunction: () => 'Hello from a function!',
+            },
+          },
+        },
+        {
+          component: {
+            name: 'navigation.playground.TextScreen',
+            passProps: {
+              text: 'This is tab 2',
+            },
+          },
+        },
+      ],
     },
-    children: [
-      {
-        component: {
-          name: 'navigation.playground.TextScreen',
-          passProps: {
-            text: 'This is tab 1',
-            myFunction: () => 'Hello from a function!',
-          },
-        },
-      },
-      {
-        component: {
-          name: 'navigation.playground.TextScreen',
-          passProps: {
-            text: 'This is tab 2',
-          },
-        },
-      },
-    ],
-  },
+  }
 });
 ```
 
