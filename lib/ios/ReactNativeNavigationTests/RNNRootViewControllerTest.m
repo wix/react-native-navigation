@@ -70,7 +70,7 @@
 }
 
 - (void)testStatusBarHidden_true {
-	self.options.statusBarHidden = @(1);
+	self.options.statusBar.hidden = @(1);
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -78,7 +78,7 @@
 }
 
 - (void)testStatusBarHideWithTopBar_false {
-	self.options.statusBarHideWithTopBar = @(0);
+	self.options.statusBar.hideWithTopBar = @(0);
 	self.options.topBar.visible = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
@@ -87,7 +87,7 @@
 }
 
 - (void)testStatusBarHideWithTopBar_true {
-	self.options.statusBarHideWithTopBar = @(1);
+	self.options.statusBar.hideWithTopBar = @(1);
 	self.options.topBar.visible = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
@@ -97,7 +97,7 @@
 
 
 - (void)testStatusBarHidden_false {
-	self.options.statusBarHidden = @(0);
+	self.options.statusBar.hidden = @(0);
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	
@@ -448,7 +448,7 @@
 
 -(void)testStatusBarBlurOn {
 	NSNumber* statusBarBlurInput = @(1);
-	self.options.statusBarBlur = statusBarBlurInput;
+	self.options.statusBar.blur = statusBarBlurInput;
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	XCTAssertNotNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
@@ -456,7 +456,7 @@
 
 -(void)testStatusBarBlurOff {
 	NSNumber* statusBarBlurInput = @(0);
-	self.options.statusBarBlur = statusBarBlurInput;
+	self.options.statusBar.blur = statusBarBlurInput;
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	XCTAssertNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
