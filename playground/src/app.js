@@ -162,37 +162,39 @@ function start() {
     // });
 
     Navigation.setRoot({
-      splitView: {
-        id: 'SPLITVIEW_ID',
-        master: {
-          stack: {
-            id: 'MASTER_ID',
-            children: [
-              {
-                component: {
-                  name: 'navigation.playground.WelcomeScreen'
+      root: {
+        splitView: {
+          id: 'SPLITVIEW_ID',
+          master: {
+            stack: {
+              id: 'MASTER_ID',
+              children: [
+                {
+                  component: {
+                    name: 'navigation.playground.WelcomeScreen'
+                  },
                 },
-              },
-            ]
+              ]
+            },
           },
-        },
-        detail: {
-          stack: {
-            id: 'DETAILS_ID',
-            children: [
-              {
-                component: {
-                  name: 'navigation.playground.WelcomeScreen'
+          detail: {
+            stack: {
+              id: 'DETAILS_ID',
+              children: [
+                {
+                  component: {
+                    name: 'navigation.playground.WelcomeScreen'
+                  },
                 },
-              },
-            ]
-          }
-        },
-        options: {
-          displayMode: 'auto', // auto, hidden, overlay
-          primaryEdge: 'leading', // leading, trailing
-          minWidth: 150,
-          maxWidth: 300,
+              ]
+            }
+          },
+          options: {
+            displayMode: 'auto', // auto, hidden, overlay
+            primaryEdge: 'leading', // leading, trailing
+            minWidth: 150,
+            maxWidth: 300,
+          },
         },
       },
     });

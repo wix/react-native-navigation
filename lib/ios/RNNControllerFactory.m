@@ -212,9 +212,12 @@
 
 - (UIViewController<RNNRootViewProtocol> *)createSplitView:(RNNLayoutNode*)node {
 
-	RNNSplitViewController *svc = [[RNNSplitViewController alloc] init];
+	NSString* componentId = node.nodeId;
+	
 	RNNSplitViewOptions* options = [[RNNSplitViewOptions alloc] initWithDict:_defaultOptionsDict];
 	[options mergeWith:node.data[@"options"]];
+
+	RNNSplitViewController* svc = [[RNNSplitViewController alloc] initWithOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter];
 
 	// We need two children of the node for successful Master / Detail
 	NSDictionary *master = node.children[0];
@@ -227,8 +230,6 @@
 	// Set the controllers and delegate to masterVC
 	svc.viewControllers = [NSArray arrayWithObjects:masterVc, detailVc, nil];
 	svc.delegate = masterVc;
-
-	[options applyOn:svc];
 
 	return svc;
 }

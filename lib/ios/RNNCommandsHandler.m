@@ -4,6 +4,7 @@
 #import "RNNOverlayManager.h"
 #import "RNNNavigationOptions.h"
 #import "RNNRootViewController.h"
+#import "RNNSplitViewController.h"
 #import "React/RCTUIManager.h"
 
 static NSString* const setRoot	= @"setRoot";
@@ -70,6 +71,18 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		
 		[CATransaction commit];
 	}
+
+	if ([vc isKindOfClass:[RNNSplitViewController class]]) {
+		RNNSplitViewController* splitVc = (RNNSplitViewController*)vc;
+		[splitVc.options mergeWith:options];
+		[CATransaction begin];
+		[CATransaction setCompletionBlock:completion];
+		
+		[splitVc.options applyOn:vc];
+		
+		[CATransaction commit];
+	}
+	
 }
 
 -(void) setDefaultOptions:(NSDictionary*)optionsDict completion:(RNNTransitionCompletionBlock)completion {

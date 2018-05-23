@@ -5,29 +5,22 @@
 #import "RNNRootViewCreator.h"
 #import "RNNEventEmitter.h"
 #import "RNNNavigationOptions.h"
+#import "RNNSplitViewOptions.h"
 #import "RNNAnimator.h"
 #import "RNNTopTabsViewController.h"
 #import "RNNRootViewProtocol.h"
 
 @interface RNNSplitViewController : UISplitViewController	<RNNRootViewProtocol>
 
-@property (nonatomic, strong) RNNNavigationOptions* options;
+@property (nonatomic, strong) RNNSplitViewOptions* options;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic, strong) NSString* componentId;
-@property (nonatomic, strong) RNNTopTabsViewController* topTabsViewController;
 @property (nonatomic) id<RNNRootViewCreator> creator;
-@property (nonatomic, strong) RNNAnimator* animator;
 
--(instancetype)initWithName:(NSString*)name
-				withOptions:(RNNNavigationOptions*)options
+-(instancetype)initWithOptions:(RNNSplitViewOptions*)options
 			withComponentId:(NSString*)componentId
 			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter
-		isExternalComponent:(BOOL)isExternalComponent;
-
-
--(void)applyTabBarItem;
--(void)applyTopTabsOptions;
+				  eventEmitter:(RNNEventEmitter*)eventEmitter;
 
 -(BOOL)isCustomTransitioned;
 

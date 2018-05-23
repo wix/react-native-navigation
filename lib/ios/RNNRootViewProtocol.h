@@ -1,6 +1,6 @@
 #import "RNNNavigationOptions.h"
 
-@protocol RNNRootViewProtocol <NSObject, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate>
+@protocol RNNRootViewProtocol <NSObject, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, UISplitViewControllerDelegate>
 
 @optional
 - (void)mergeOptions:(NSDictionary*)options;
