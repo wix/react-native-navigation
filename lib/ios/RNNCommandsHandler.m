@@ -48,7 +48,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[_modalManager dismissAllModals];
 	[_eventEmitter sendOnNavigationCommand:setRoot params:@{@"layout": layout}];
 	
-	UIViewController *vc = [_controllerFactory createLayoutAndSaveToStore:layout];
+	UIViewController *vc = [_controllerFactory createLayoutAndSaveToStore:layout[@"root"]];
 	
 	UIApplication.sharedApplication.delegate.window.rootViewController = vc;
 	[UIApplication.sharedApplication.delegate.window makeKeyAndVisible];
