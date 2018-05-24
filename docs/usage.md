@@ -3,7 +3,7 @@
 If you don't like reading, just jump into the fully working example projects:
 
 * [example](https://github.com/wix/react-native-navigation/tree/master/example) - Example project showing the best practice use of this package. Shows many navigation features.
-* [redux-example](https://github.com/wix/react-native-navigation/tree/master/old-example-redux) - (**deprecated** in favor of [JuneDomingo/movieapp](https://github.com/JuneDomingo/movieapp/tree/feature/similar-movies)) Best practice use of this package in a [redux](https://github.com/reactjs/redux)-based project.
+* [redux-example](https://github.com/wix/react-native-navigation/tree/master/old-example-redux) - (**deprecated** in favor of [JuneDomingo/movieapp](https://github.com/JuneDomingo/movieapp)) Best practice use of this package in a [redux](https://github.com/reactjs/redux)-based project.
 
 > Note: example redux is deprecated. Since we did not have enough time and resources to maintain both example projects, we decided to stop maintaining the redux example. This does not mean redux can't be used with react-native-navigation (In fact, we use redux in the Wix app). For a working example project which uses redux with RNN you can refer to [JuneDomingo/movieapp](https://github.com/JuneDomingo/movieapp).
 
@@ -41,7 +41,7 @@ Navigation.startTabBasedApp({
 
 #### Step 2 - Register all of your screen components
 
-Every screen that you want to be able to place in a tab, push to the navigation stack or present modally needs to be registered. We recommend doing this in a central place, like [screens/index.js](https://github.com/wix/react-native-navigation/blob/master/example/src/screens/index.ios.js).
+Every screen that you want to be able to place in a tab, push to the navigation stack or present modally needs to be registered. We recommend doing this in a central place, like [screens/index.js](https://github.com/wix/react-native-navigation/blob/master/example/src/screens/index.js).
 
 > Note: Since your screens will potentially be bundled with other packages, your registered name must be **unique**! Follow a namespacing convention like `packageName.ScreenName`.
 

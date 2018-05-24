@@ -95,7 +95,12 @@ public class ScreenStack {
     public void pushInitialScreen(ScreenParams initialScreenParams, LayoutParams params) {
         Screen initialScreen = ScreenFactory.create(activity, initialScreenParams, leftButtonOnClickListener);
         initialScreen.setVisibility(View.INVISIBLE);
+        removeCurrentScreen();
         addScreen(initialScreen, params);
+    }
+
+    private void removeCurrentScreen() {
+        if (!stack.empty()) parent.removeView(peek());
     }
 
     public void push(final ScreenParams params, LayoutParams layoutParams, Promise onPushComplete) {
