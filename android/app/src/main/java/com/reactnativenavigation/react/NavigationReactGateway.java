@@ -10,6 +10,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
+import com.facebook.react.uimanager.UIImplementationProvider;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.bridge.NavigationReactEventEmitter;
 import com.reactnativenavigation.bridge.NavigationReactPackage;
@@ -28,7 +29,28 @@ public class NavigationReactGateway implements ReactGateway {
 	private JsDevReloadHandler jsDevReloadHandler;
 
 	public NavigationReactGateway() {
-		host = new ReactNativeHostImpl();
+		this(null);
+	}
+
+	public NavigationReactGateway(final UIImplementationProvider customImplProvider) {
+
+		if (customImplProvider != null) {
+			host = new ReactNativeHostImpl() {
+				/**
+				 * This was added in case someone needs to provide a different UIImplementationProvider
+				 * @param {UIImplementationProvider} defaultProvider
+				 * @return {UIImplementationProvider}
+				 */
+				@Override
+				protected UIImplementationProvider getUIImplementationProvider() {
+					return customImplProvider;
+				}
+			};
+		} else {
+			host = new ReactNativeHostImpl();
+		}
+
+
 		jsDevReloadHandler = new JsDevReloadHandler();
 	}
 
@@ -40,6 +62,7 @@ public class NavigationReactGateway implements ReactGateway {
 	public boolean isInitialized() {
 		return host.hasInstance() && getReactInstanceManager().getCurrentReactContext() != null;
 	}
+
 
 	@Override
 	public boolean hasStartedCreatingContext() {
@@ -105,6 +128,7 @@ public class NavigationReactGateway implements ReactGateway {
 		}
 	}
 
+
 	public ReactNativeHost getReactNativeHost() {
 		return host;
 	}
@@ -114,11 +138,12 @@ public class NavigationReactGateway implements ReactGateway {
 		reactEventEmitter = new NavigationReactEventEmitter(context);
 	}
 
-	private static class ReactNativeHostImpl extends ReactNativeHost implements ReactInstanceManager.ReactInstanceEventListener {
+	public static class ReactNativeHostImpl extends ReactNativeHost implements ReactInstanceManager.ReactInstanceEventListener {
 
-		ReactNativeHostImpl() {
+		public ReactNativeHostImpl() {
 			super(NavigationApplication.instance);
 		}
+
 
 		@Override
 		public boolean getUseDeveloperSupport() {
