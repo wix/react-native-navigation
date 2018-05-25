@@ -14,12 +14,24 @@ export class Commands {
 
   public setRoot(simpleApi) {
     const input = _.cloneDeep(simpleApi);
-    const layout = this.layoutTreeParser.parse(input);
-    this.layoutTreeCrawler.crawl(layout);
+    const root = this.layoutTreeParser.parse(input.root);
+    this.layoutTreeCrawler.crawl(root);
+
+    const modals = _.map(input.modals, (modal) => {
+      const modalLayout = this.layoutTreeParser.parse(modal);
+      this.layoutTreeCrawler.crawl(modalLayout);
+      return modalLayout;
+    });
+
+    const overlays = _.map(input.overlays, (overlay) => {
+      const overlayLayout = this.layoutTreeParser.parse(overlay);
+      this.layoutTreeCrawler.crawl(overlayLayout);
+      return overlayLayout;
+    });
 
     const commandId = this.uniqueIdProvider.generate('setRoot');
-    const result = this.nativeCommandsSender.setRoot(commandId, layout);
-    this.commandsObserver.notify('setRoot', { commandId, layout });
+    const result = this.nativeCommandsSender.setRoot(commandId, { root, modals, overlays });
+    this.commandsObserver.notify('setRoot', { commandId, layout: { root, modals, overlays } });
     return result;
   }
 

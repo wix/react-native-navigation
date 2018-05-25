@@ -149,15 +149,17 @@ function start() {
     });
 
     Navigation.setRoot({
-      stack: {
-        id: 'TEST',
-        children: [
-          {
-            component: {
-              name: 'navigation.playground.WelcomeScreen'
+      root: {
+        stack: {
+          id: 'TEST',
+          children: [
+            {
+              component: {
+                name: 'navigation.playground.WelcomeScreen'
+              }
             }
-          }
-        ]
+          ]
+        }
       }
     });
   });

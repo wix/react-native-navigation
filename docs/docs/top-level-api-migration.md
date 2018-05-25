@@ -6,41 +6,43 @@ In order to make our API homogenous as much as possible, we provide setRoot func
 
 ```js
 Navigation.setRoot({
-  bottomTabs: {
-    children: [{
-      stack: {
-        children: [{
-          component: {
-            name: 'example.FirstTabScreen',
-            passProps: {
-              text: 'This is tab 1'
+  root: {
+    bottomTabs: {
+      children: [{
+        stack: {
+          children: [{
+            component: {
+              name: 'example.FirstTabScreen',
+              passProps: {
+                text: 'This is tab 1'
+              }
+            }
+          }],
+          options: {
+            bottomTab: {
+              title: 'Tab 1',
+              icon: require('../images/one.png'),
+              testID: 'FIRST_TAB_BAR_BUTTON'
             }
           }
-        }],
-        options: {
-          bottomTab: {
-            title: 'Tab 1',
-            icon: require('../images/one.png'),
-            testID: 'FIRST_TAB_BAR_BUTTON'
+        }
+      },
+      {
+        component: {
+          name: 'navigation.playground.TextScreen',
+          passProps: {
+            text: 'This is tab 2'
+          },
+          options: {
+            bottomTab: {
+              title: 'Tab 2',
+              icon: require('../images/two.png'),
+              testID: 'SECOND_TAB_BAR_BUTTON'
+            }
           }
         }
-      }
-    },
-    {
-      component: {
-        name: 'navigation.playground.TextScreen',
-        passProps: {
-          text: 'This is tab 2'
-        },
-        options: {
-          bottomTab: {
-            title: 'Tab 2',
-            icon: require('../images/two.png'),
-            testID: 'SECOND_TAB_BAR_BUTTON'
-          }
-        }
-      }
-    }]
+      }]
+    }
   }
 });
 ```
@@ -51,19 +53,21 @@ Change your app root into an app based on a single screen (like the iOS Calendar
 
 ```js
 Navigation.setRoot({
-  stack: {
-    children: [{
-      component: {
-        name: 'example.WelcomeScreen',
-        passProps: {
-          text: 'stack with one child'
+  root: {
+    stack: {
+      children: [{
+        component: {
+          name: 'example.WelcomeScreen',
+          passProps: {
+            text: 'stack with one child'
+          }
         }
-      }
-    }],
-    options: {
-      topBar: {
-        title: {
-          text: 'Welcome screen'
+      }],
+      options: {
+        topBar: {
+          title: {
+            text: 'Welcome screen'
+          }
         }
       }
     }
