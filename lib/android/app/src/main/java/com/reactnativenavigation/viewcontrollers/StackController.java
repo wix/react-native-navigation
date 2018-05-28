@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
@@ -36,7 +37,7 @@ public class StackController extends ParentController<StackLayout> {
     private TopBarController topBarController;
 
     public StackController(Activity activity, ChildControllersRegistry childRegistry, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions) {
-        super(activity, childRegistry, id, initialOptions);
+        super(activity, childRegistry, id, new OptionsPresenter(activity), initialOptions);
         this.topBarController = topBarController;
         this.topBarButtonCreator = topBarButtonCreator;
         this.titleBarReactViewCreator = titleBarReactViewCreator;

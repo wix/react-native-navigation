@@ -3,10 +3,13 @@ package com.reactnativenavigation.viewcontrollers.child;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.ChildController;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.ParentController;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -16,11 +19,13 @@ public class ChildControllerTest extends BaseTest {
 
     private ChildController uut;
     private ChildControllersRegistry childRegistry;
+    private OptionsPresenter presenter;
 
     @Override
     public void beforeEach() {
         childRegistry = spy(new ChildControllersRegistry());
-        uut = new SimpleViewController(newActivity(), childRegistry, "childId", new Options());
+        presenter = Mockito.mock(OptionsPresenter.class);
+        uut = new SimpleViewController(newActivity(), childRegistry, "childId", presenter, new Options());
     }
 
     @Test
@@ -35,5 +40,21 @@ public class ChildControllerTest extends BaseTest {
 
         uut.onViewDisappear();
         verify(childRegistry, times(1)).onViewDisappear(uut);
+    }
+
+    @Test
+    public void applyOptions_applyRootOptionsIfRoot() {
+        addToParent(newActivity(), uut);
+        Options options = new Options();
+        uut.applyOptions(options);
+        verify(presenter, times(1)).applyRootOptions(uut.getView(), options);
+    }
+
+    @Test
+    public void applyOptions_doesNotApplyRootOptionsIfHasParent() {
+        Options options = new Options();
+        uut.setParentController(Mockito.mock(ParentController.class));
+        uut.applyOptions(options);
+        verify(presenter, times(0)).applyRootOptions(uut.getView(), options);
     }
 }

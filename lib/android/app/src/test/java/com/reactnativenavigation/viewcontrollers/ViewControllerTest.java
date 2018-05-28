@@ -18,6 +18,7 @@ import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 
 import org.assertj.android.api.Assertions;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.robolectric.Shadows;
 
 import java.lang.reflect.Field;
@@ -40,6 +41,7 @@ public class ViewControllerTest extends BaseTest {
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
         uut = new SimpleViewController(activity, childRegistry, "uut", new Options());
+        uut.setParentController(Mockito.mock(ParentController.class));
     }
 
     @Test
@@ -71,6 +73,9 @@ public class ViewControllerTest extends BaseTest {
 
     @Test
     public void holdsAReferenceToStackControllerOrNull() {
+        //noinspection ConstantConditions
+        uut.setParentController(null);
+
         assertThat(uut.getParentController()).isNull();
         StackController nav = new StackControllerBuilder(activity)
                 .setTopBarButtonCreator(new TopBarButtonCreatorMock())

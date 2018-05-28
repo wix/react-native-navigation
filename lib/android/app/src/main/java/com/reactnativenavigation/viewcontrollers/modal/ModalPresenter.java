@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.anim.ModalAnimator;
@@ -43,8 +44,12 @@ public class ModalPresenter {
         listener.onSuccess(toAdd.getId());
     }
 
-    public void dismissModal(ViewController toDismiss, ViewController toAdd, CommandListener listener) {
+    public void dismissTopModal(ViewController toDismiss, @NonNull ViewController toAdd, CommandListener listener) {
         toAdd.attachView(content, 0);
+        dismissModal(toDismiss, listener);
+    }
+
+    public void dismissModal(ViewController toDismiss, CommandListener listener) {
         if (toDismiss.options.animations.dismissModal.enable.isTrueOrUndefined()) {
             animator.dismiss(toDismiss.getView(), new AnimatorListenerAdapter() {
                 @Override

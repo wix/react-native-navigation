@@ -11,6 +11,10 @@ const testIDs = require('../testIDs');
 class PushedScreen extends Component {
   static get options() {
     return {
+      _statusBar: {
+        visible: false,
+        drawBehind: true
+      },
       topBar: {
         testID: testIDs.TOP_BAR_ELEMENT
       }

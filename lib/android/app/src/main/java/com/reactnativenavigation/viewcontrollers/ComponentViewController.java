@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.views.ComponentLayout;
 import com.reactnativenavigation.views.ReactComponent;
 
@@ -19,7 +20,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
                                    final String componentName,
                                    final ReactViewCreator viewCreator,
                                    final Options initialOptions) {
-        super(activity, childRegistry, id, initialOptions);
+        super(activity, childRegistry, id, new OptionsPresenter(activity), initialOptions);
         this.componentName = componentName;
         this.viewCreator = viewCreator;
     }

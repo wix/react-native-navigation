@@ -8,14 +8,15 @@ import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.views.Component;
 
 import java.util.Collection;
 
 public abstract class ParentController<T extends ViewGroup> extends ChildController {
 
-	public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions) {
-		super(activity, childRegistry, id, initialOptions);
+	public ParentController(Activity activity, ChildControllersRegistry childRegistry, String id, OptionsPresenter presenter, Options initialOptions) {
+		super(activity, childRegistry, id, presenter, initialOptions);
 	}
 
 	@NonNull
@@ -59,6 +60,9 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     @CallSuper
     public void applyChildOptions(Options options, Component child) {
         this.options = this.options.mergeWith(options);
+        if (isRoot()) {
+            presenter.applyRootOptions(getView(), options);
+        }
     }
 
     @CallSuper

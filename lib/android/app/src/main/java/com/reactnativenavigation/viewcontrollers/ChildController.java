@@ -7,16 +7,16 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 
 public abstract class ChildController<T extends ViewGroup> extends ViewController<T>  {
-    private final OptionsPresenter presenter;
+    final OptionsPresenter presenter;
     private final ChildControllersRegistry childRegistry;
 
     public ChildControllersRegistry getChildRegistry() {
         return childRegistry;
     }
 
-    public ChildController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions) {
+    public ChildController(Activity activity, ChildControllersRegistry childRegistry, String id, OptionsPresenter presenter, Options initialOptions) {
         super(activity, id, initialOptions);
-        presenter = new OptionsPresenter(activity);
+        this.presenter = presenter;
         this.childRegistry = childRegistry;
     }
 
@@ -33,12 +33,21 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     public void onViewBroughtToFront() {
-        presenter.onViewBroughtToFront(options);
+        presenter.onViewBroughtToFront(getView(), options);
     }
 
     @Override
     public void applyOptions(Options options) {
         super.applyOptions(options);
         presenter.present(getView(), options);
+        if (isRoot()) {
+            presenter.applyRootOptions(getView(), options);
+        }
+    }
+
+    protected boolean isRoot() {
+        return getParentController() == null &&
+               !(this instanceof Navigator) &&
+                getView().getParent() != null;
     }
 }

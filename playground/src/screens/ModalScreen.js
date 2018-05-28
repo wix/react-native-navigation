@@ -11,6 +11,11 @@ const testIDs = require('../testIDs');
 class ModalScreen extends Component {
   static get options() {
     return {
+      statusBar: {
+        visible: false,
+        drawBehind: true,
+        backgroundColor: 'transparent'
+      },
       orientation: ['portrait']
     };
   }

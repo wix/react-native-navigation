@@ -12,6 +12,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -40,7 +41,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     private final BottomTabFinder bottomTabFinder = new BottomTabFinder();
 
     public BottomTabsController(Activity activity, List<ViewController> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions) {
-		super(activity, childRegistry, id, initialOptions);
+		super(activity, childRegistry, id, new OptionsPresenter(activity), initialOptions);
         this.tabs = tabs;
         this.eventEmitter = eventEmitter;
         this.imageLoader = imageLoader;

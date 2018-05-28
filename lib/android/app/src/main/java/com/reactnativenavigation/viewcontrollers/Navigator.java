@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.react.JsDevReloadHandler;
 import com.reactnativenavigation.utils.CommandListener;
@@ -41,7 +42,7 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, OverlayManager overlayManager) {
-        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new Options());
+        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new OptionsPresenter(activity), new Options());
         modalStack = new ModalStack(new ModalPresenter(new ModalAnimator(activity)));
         this.overlayManager = overlayManager;
     }

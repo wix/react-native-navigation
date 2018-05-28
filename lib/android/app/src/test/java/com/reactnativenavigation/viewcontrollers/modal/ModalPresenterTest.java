@@ -1,7 +1,6 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
 import android.app.Activity;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
@@ -13,11 +12,9 @@ import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildController;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,7 +22,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class ModalPresenterTest extends BaseTest {
     private static final String MODAL_ID_1 = "modalId1";
@@ -37,18 +33,15 @@ public class ModalPresenterTest extends BaseTest {
     private FrameLayout contentLayout;
     private ModalAnimator animator;
     private ViewController rootController;
-    private ChildControllersRegistry childRegistry;
 
     @Override
     public void beforeEach() {
         Activity activity = newActivity();
-        childRegistry = new ChildControllersRegistry();
+        ChildControllersRegistry childRegistry = new ChildControllersRegistry();
 
-        ViewGroup root = new FrameLayout(activity);
-        rootController = Mockito.mock(ParentController.class);
-        when(this.rootController.getView()).then(invocation -> root);
+        rootController = spy(new SimpleViewController(activity, childRegistry, "root", new Options()));
         contentLayout = new FrameLayout(activity);
-        contentLayout.addView(root);
+        contentLayout.addView(rootController.getView());
         activity.setContentView(contentLayout);
 
         animator = spy(new ModalAnimator(activity));
@@ -114,7 +107,7 @@ public class ModalPresenterTest extends BaseTest {
         disableShowModalAnimation(modal1);
 
         uut.showModal(modal1, rootController, new CommandListenerAdapter());
-        uut.dismissModal(modal1, rootController, new CommandListenerAdapter() {
+        uut.dismissTopModal(modal1, rootController, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 verify(modal1, times(1)).onViewDisappear();
@@ -130,19 +123,8 @@ public class ModalPresenterTest extends BaseTest {
         modal2.ensureViewIsCreated();
         FrameLayout spy = spy(new FrameLayout(newActivity()));
         uut.setContentLayout(spy);
-        uut.dismissModal(modal1, modal2, new CommandListenerAdapter());
+        uut.dismissTopModal(modal1, modal2, new CommandListenerAdapter());
         verify(spy, times(1)).addView(modal2.getView(), 0);
-    }
-
-    @Test
-    public void dismissModal_onViewBroughtToFront_invokedOnPreviousView() {
-        disableShowModalAnimation(modal1, modal2);
-        disableDismissModalAnimation(modal1, modal2);
-
-        uut.showModal(modal1, rootController, new CommandListenerAdapter());
-        uut.showModal(modal2, rootController, new CommandListenerAdapter());
-        uut.dismissModal(modal2, modal1, new CommandListenerAdapter());
-        verify(modal1, times(1)).onViewBroughtToFront();
     }
 
     @Test
@@ -151,7 +133,7 @@ public class ModalPresenterTest extends BaseTest {
         disableDismissModalAnimation(modal1);
 
         uut.showModal(modal1, rootController, new CommandListenerAdapter());
-        uut.dismissModal(modal1, rootController, new CommandListenerAdapter());
+        uut.dismissTopModal(modal1, rootController, new CommandListenerAdapter());
         verify(modal1, times(1)).onViewDisappear();
         verify(modal1, times(1)).destroy();
         verify(animator, times(0)).dismiss(any(), any());
@@ -164,8 +146,25 @@ public class ModalPresenterTest extends BaseTest {
         uut.showModal(modal1, rootController, new CommandListenerAdapter());
         uut.showModal(modal2, modal1, new CommandListenerAdapter());
         assertThat(modal1.getView().getParent()).isNull();
-        uut.dismissModal(modal2, modal1, new CommandListenerAdapter());
+        uut.dismissTopModal(modal2, modal1, new CommandListenerAdapter());
         verify(modal1, times(2)).onViewAppeared();
+    }
+
+    @Test
+    public void dismissModal_previousControllerIsNotAddedIfDismissedModalIsNotTop() {
+        disableShowModalAnimation(modal1, modal2);
+        disableDismissModalAnimation(modal1, modal2);
+
+        uut.showModal(modal1, rootController, new CommandListenerAdapter());
+        uut.showModal(modal2, modal1, new CommandListenerAdapter());
+        assertThat(modal1.getView().getParent()).isNull();
+        assertThat(rootController.getView().getParent()).isNull();
+
+        uut.dismissModal(modal1, new CommandListenerAdapter());
+        assertThat(rootController.getView().getParent()).isNull();
+
+        uut.dismissTopModal(modal2, rootController, new CommandListenerAdapter());
+        assertThat(rootController.getView().getParent()).isNotNull();
     }
 
     @Test

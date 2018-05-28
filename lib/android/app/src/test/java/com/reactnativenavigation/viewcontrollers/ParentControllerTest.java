@@ -12,6 +12,7 @@ import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
@@ -19,6 +20,7 @@ import com.reactnativenavigation.views.ReactComponent;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,6 +38,7 @@ public class ParentControllerTest extends BaseTest {
     private ChildControllersRegistry childRegistry;
     private List<ViewController> children;
     private ParentController uut;
+    private OptionsPresenter presenter;
 
     @Override
     public void beforeEach() {
@@ -45,7 +48,8 @@ public class ParentControllerTest extends BaseTest {
         children = new ArrayList<>();
         Options initialOptions = new Options();
         initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
-        uut = spy(new ParentController(activity, childRegistry, "uut", initialOptions) {
+        presenter = spy(new OptionsPresenter(activity));
+        uut = spy(new ParentController(activity, childRegistry, "uut", presenter, initialOptions) {
 
             @NonNull
             @Override
@@ -154,6 +158,25 @@ public class ParentControllerTest extends BaseTest {
         child1.ensureViewIsCreated();
         child1.onViewAppeared();
         assertThat(uut.initialOptions.topBar.title.text.get()).isEqualTo(INITIAL_TITLE);
+    }
+
+    @Test
+    public void applyChildOptions_appliesRootOptionsIfRoot() {
+        addToParent(activity, uut);
+
+        Options options = new Options();
+        SimpleViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
+        uut.applyChildOptions(options, child1.getView());
+        verify(presenter, times(1)).applyRootOptions(uut.getView(), options);
+    }
+
+    @Test
+    public void applyChildOptions_doesNotApplyRootOptionsIfHasParent() {
+        Options options = new Options();
+        uut.setParentController(Mockito.mock(ParentController.class));
+        SimpleViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
+        uut.applyChildOptions(options, child1.getView());
+        verify(presenter, times(0)).applyRootOptions(uut.getView(), options);
     }
 
     private StackController createStack() {

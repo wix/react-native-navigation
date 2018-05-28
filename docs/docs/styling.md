@@ -58,10 +58,10 @@ Navigation.mergeOptions(this.props.componentId, {
 {
   statusBar: {
     backgroundColor: 'red', // Android only
-    hidden: false, // iOS only
-    hideWithTopBar: false, // iOS only
-    blur: true, // iOS only
+    visible: false,
     style: 'light',
+    hideWithTopBar: false, // iOS only
+    blur: true // iOS only
   },
   screenBackgroundColor: 'white',
   orientation: ['portrait', 'landscape'],

@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.SideMenuOptionsPresenter;
 import com.reactnativenavigation.views.Component;
 
@@ -23,7 +24,7 @@ public class SideMenuController extends ParentController<DrawerLayout> {
 	private ViewController rightController;
 
 	public SideMenuController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions) {
-		super(activity, childRegistry, id, initialOptions);
+		super(activity, childRegistry, id, new OptionsPresenter(activity), initialOptions);
 	}
 
 	@NonNull

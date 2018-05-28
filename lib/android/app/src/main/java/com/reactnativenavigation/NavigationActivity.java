@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
 
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.reactnativenavigation.presentation.OverlayManager;
@@ -22,6 +23,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         navigator = new Navigator(this, new ChildControllersRegistry(), new OverlayManager());
         getReactGateway().onActivityCreated(this);
         getReactGateway().addReloadListener(navigator);
+        navigator.getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         setContentView(navigator.getView());
     }
 

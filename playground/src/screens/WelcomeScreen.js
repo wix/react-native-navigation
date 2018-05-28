@@ -9,6 +9,11 @@ const { Navigation } = require('react-native-navigation');
 class WelcomeScreen extends Component {
   static get options() {
     return {
+      _statusBar: {
+        backgroundColor: 'transparent',
+        style: 'dark',
+        drawBehind: true
+      },
       topBar: {
         title: {
           largeTitle: false,
@@ -23,24 +28,28 @@ class WelcomeScreen extends Component {
 
   render() {
     return (
-      <View style={styles.root} key={'root'}>
-        <Text testID={testIDs.WELCOME_SCREEN_HEADER} style={styles.h1}>{`React Native Navigation!`}</Text>
-        <Button title='Switch to tab based app' testID={testIDs.TAB_BASED_APP_BUTTON} onPress={this.onClickSwitchToTabs} />
-        <Button title='Switch to app with side menus' testID={testIDs.TAB_BASED_APP_SIDE_BUTTON} onPress={this.onClickSwitchToSideMenus} />
-        {Platform.OS === 'ios' && <Button title='Switch to split view based app' testID={testIDs.SPLIT_VIEW_BUTTON} onPress={this.onClickSplitView} />}
-        <Button title='Push Lifecycle Screen' testID={testIDs.PUSH_LIFECYCLE_BUTTON} onPress={this.onClickLifecycleScreen} />
-        <Button title='Static Lifecycle Events' testID={testIDs.PUSH_STATIC_LIFECYCLE_BUTTON} onPress={this.onClickShowStaticLifecycleOverlay} />
-        <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
-        <Button title='Push Options Screen' testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
-        <Button title='Push External Component' testID={testIDs.PUSH_EXTERNAL_COMPONENT_BUTTON} onPress={this.onClickPushExternalComponent} />
-        {Platform.OS === 'android' && <Button title='Push Top Tabs screen' testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />}
-        {Platform.OS === 'android' && <Button title='Back Handler' testID={testIDs.BACK_HANDLER_BUTTON} onPress={this.onClickBackHandler} />}
-        <Button title='Show Modal' testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
-        <Button title='Show Redbox' testID={testIDs.SHOW_REDBOX_BUTTON} onPress={this.onClickShowRedbox} />
-        <Button title='Orientation' testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
-        <Button title='Provided Id' testID={testIDs.PROVIDED_ID} onPress={this.onClickProvidedId} />
-        <Button title='Complex Layout' testID={testIDs.COMPLEX_LAYOUT_BUTTON} onPress={this.onClickComplexLayout} />
-        <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
+      <View style={styles.bar}>
+        <View style={{ width: 2, height: 2, borderRadius: 1, backgroundColor: 'red', alignSelf: 'center' }} />
+        <View style={styles.root} key={'root'}>
+          <Text testID={testIDs.WELCOME_SCREEN_HEADER} style={styles.h1}>{`React Native Navigation!`}</Text>
+          <Button title='Switch to tab based app' testID={testIDs.TAB_BASED_APP_BUTTON} onPress={this.onClickSwitchToTabs} />
+          <Button title='Switch to app with side menus' testID={testIDs.TAB_BASED_APP_SIDE_BUTTON} onPress={this.onClickSwitchToSideMenus} />
+          {Platform.OS === 'ios' && <Button title='Switch to split view based app' testID={testIDs.SPLIT_VIEW_BUTTON} onPress={this.onClickSplitView} />}
+          <Button title='Push Lifecycle Screen' testID={testIDs.PUSH_LIFECYCLE_BUTTON} onPress={this.onClickLifecycleScreen} />
+          <Button title='Static Lifecycle Events' testID={testIDs.PUSH_STATIC_LIFECYCLE_BUTTON} onPress={this.onClickShowStaticLifecycleOverlay} />
+          <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
+          <Button title='Push Options Screen' testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
+          <Button title='Push External Component' testID={testIDs.PUSH_EXTERNAL_COMPONENT_BUTTON} onPress={this.onClickPushExternalComponent} />
+          {Platform.OS === 'android' && <Button title='Push Top Tabs screen' testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />}
+          {Platform.OS === 'android' && <Button title='Back Handler' testID={testIDs.BACK_HANDLER_BUTTON} onPress={this.onClickBackHandler} />}
+          <Button title='Show Modal' testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
+          <Button title='Show Redbox' testID={testIDs.SHOW_REDBOX_BUTTON} onPress={this.onClickShowRedbox} />
+          <Button title='Orientation' testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
+          <Button title='Provided Id' testID={testIDs.PROVIDED_ID} onPress={this.onClickProvidedId} />
+          <Button title='Complex Layout' testID={testIDs.COMPLEX_LAYOUT_BUTTON} onPress={this.onClickComplexLayout} />
+          <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
+        </View>
+        <View style={{ width: 2, height: 2, borderRadius: 1, backgroundColor: 'red', alignSelf: 'center' }} />
       </View>
     );
   }
@@ -488,7 +497,13 @@ const styles = {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white'
+    backgroundColor: '#e8e8e8',
+  },
+  bar: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#e8e8e8',
+    justifyContent: 'space-between'
   },
   h1: {
     fontSize: 24,

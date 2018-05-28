@@ -32,9 +32,14 @@ public class ModalStack {
     public void dismissModal(String componentId, ViewController root, CommandListener listener) {
         ViewController toDismiss = findModalByComponentId(componentId);
         if (toDismiss != null) {
-            ViewController toAdd = isTop(toDismiss) ? get(size() - 2) : root;
+            boolean isTop = isTop(toDismiss);
             modals.remove(toDismiss);
-            presenter.dismissModal(toDismiss, toAdd, listener);
+            ViewController toAdd = isEmpty() ? root : isTop ? get(size() - 1) : null;
+            if (isTop) {
+                presenter.dismissTopModal(toDismiss, toAdd, listener);
+            } else {
+                presenter.dismissModal(toDismiss, listener);
+            }
         } else {
             listener.onError("Nothing to dismiss");
         }
@@ -83,7 +88,7 @@ public class ModalStack {
     }
 
     private boolean isTop(ViewController modal) {
-        return size() > 1 && peek().equals(modal);
+        return !isEmpty() && peek().equals(modal);
     }
 
     @Nullable

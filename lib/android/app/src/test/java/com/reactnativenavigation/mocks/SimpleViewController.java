@@ -9,22 +9,26 @@ import android.widget.FrameLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.ChildController;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.topbar.TopBar;
 
-public class SimpleViewController extends ChildController<FrameLayout> {
+public class SimpleViewController extends ChildController<SimpleViewController.SimpleView> {
 
     private SimpleView simpleView;
 
     public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Options options) {
-        super(activity, childRegistry, id, options);
+        this(activity, childRegistry, id, new OptionsPresenter(activity), options);
+    }
+
+    public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, OptionsPresenter presenter, Options options) {
+        super(activity, childRegistry, id, presenter, options);
     }
 
     @Override
-    protected FrameLayout createView() {
+    protected SimpleView createView() {
         simpleView = new SimpleView(getActivity());
         return simpleView;
     }
@@ -41,7 +45,7 @@ public class SimpleViewController extends ChildController<FrameLayout> {
 
     @Override
     public void mergeOptions(Options options) {
-        applyOnParentController(parentController -> parentController.mergeChildOptions(options, (Component) view));
+        applyOnParentController(parentController -> parentController.mergeChildOptions(options, view));
         super.mergeOptions(options);
     }
 
