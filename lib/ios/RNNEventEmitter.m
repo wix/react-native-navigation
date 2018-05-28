@@ -40,11 +40,11 @@ static NSString* const navigationEvent	= @"RNN.nativeEvent";
 }
 
 -(void)sendOnNavigationCommand:(NSString *)commandName params:(NSDictionary*)params {
-	[self send:navigationEvent body:@{@"commandName":commandName , @"params": params}];
+	[self send:navigationEvent body:@{@"name":commandName , @"params": params}];
 }
 
 -(void)sendOnNavigationEvent:(NSString *)commandName params:(NSDictionary*)params {
-	[self send:navigationEvent body:@{@"commandName":commandName , @"params": params}];
+	[self send:navigationEvent body:@{@"name":commandName , @"params": params}];
 }
 
 - (void)addListener:(NSString *)eventName {
