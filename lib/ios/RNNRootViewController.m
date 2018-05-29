@@ -246,6 +246,8 @@
 	if (vc.options.preview.commit) {
 		[_eventEmitter sendOnNavigationEvent:@"previewCommit" params:@{@"componentId": vc.componentId}];
 		[self.navigationController pushViewController:vc animated:false];
+	} else {
+		[_eventEmitter sendOnNavigationEvent:@"previewDismissed" params:@{@"componentId": vc.componentId}];
 	}
 }
 
