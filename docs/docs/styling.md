@@ -163,6 +163,18 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   overlay: {
     interceptTouchOutside: true
+  },
+  preview: {
+    elementId: 'PreviewId',
+    width: 100,
+    height: 100,
+    commit: false,
+    actions: [{
+      id: 'ActionId1',
+      title: 'Action title',
+      style: 'selected', // default, selected, destructive,
+      actions: [/* ... */]
+    }]
   }
 }
 ```

@@ -3,9 +3,10 @@ const _ = require('lodash');
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Button, Platform, TouchableHighlight } = require('react-native');
+const { View, Text, Platform, TouchableHighlight } = require('react-native');
 
 const { Navigation } = require('react-native-navigation');
+const Button = require('./Button');
 const testIDs = require('../testIDs');
 
 class PushedScreen extends Component {
@@ -40,9 +41,7 @@ class PushedScreen extends Component {
         <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
           {Platform.OS === 'ios' && (
             <Navigation.Element elementId='PreviewElement'>
-              <TouchableHighlight testID={testIDs.SHOW_REDBOX_BUTTON} onPressIn={this.onClickShowPreview}>
-                <Text>Push Preview</Text>
-              </TouchableHighlight>
+              <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPressIn={this.onClickShowPreview} title='Push Preview' />
             </Navigation.Element>
           )}
         <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
@@ -81,14 +80,6 @@ class PushedScreen extends Component {
             actions: [{
               id: 'action-cancel',
               title: 'Cancel'
-            }, {
-              id: 'action-delete',
-              title: 'Delete',
-              actions: [{
-                id: 'action-delete-sure',
-                title: 'Are you sure?',
-                style: 'destructive'
-              }]
             }]
           }
         }

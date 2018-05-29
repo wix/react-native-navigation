@@ -1,8 +1,9 @@
 const React = require('react');
 const { Component } = require('react');
-const { View, Text, Button, Platform, TouchableHighlight } = require('react-native');
+const { View, Text, Platform, TouchableHighlight } = require('react-native');
 
 const testIDs = require('../testIDs');
+const Button = require('./Button');
 
 const { Navigation } = require('react-native-navigation');
 
@@ -38,19 +39,17 @@ class WelcomeScreen extends Component {
           <Button title='Push Lifecycle Screen' testID={testIDs.PUSH_LIFECYCLE_BUTTON} onPress={this.onClickLifecycleScreen} />
           <Button title='Static Lifecycle Events' testID={testIDs.PUSH_STATIC_LIFECYCLE_BUTTON} onPress={this.onClickShowStaticLifecycleOverlay} />
           <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
+          {Platform.OS === 'ios' && (
+            <Navigation.Element elementId='PreviewElement'>
+              <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPressIn={this.onClickShowPreview} title='Push Preview' />
+            </Navigation.Element>
+          )}
           <Button title='Push Options Screen' testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
           <Button title='Push External Component' testID={testIDs.PUSH_EXTERNAL_COMPONENT_BUTTON} onPress={this.onClickPushExternalComponent} />
           {Platform.OS === 'android' && <Button title='Push Top Tabs screen' testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />}
           {Platform.OS === 'android' && <Button title='Back Handler' testID={testIDs.BACK_HANDLER_BUTTON} onPress={this.onClickBackHandler} />}
           <Button title='Show Modal' testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
           <Button title='Show Redbox' testID={testIDs.SHOW_REDBOX_BUTTON} onPress={this.onClickShowRedbox} />
-          {Platform.OS === 'ios' && (
-            <Navigation.Element elementId='PreviewElement'>
-              <TouchableHighlight testID={testIDs.SHOW_REDBOX_BUTTON} onPressIn={this.onClickShowPreview}>
-                <Text>Show Preview</Text>
-              </TouchableHighlight>
-            </Navigation.Element>
-          )}
           <Button title='Orientation' testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
           <Button title='Provided Id' testID={testIDs.PROVIDED_ID} onPress={this.onClickProvidedId} />
           <Button title='Complex Layout' testID={testIDs.COMPLEX_LAYOUT_BUTTON} onPress={this.onClickComplexLayout} />
