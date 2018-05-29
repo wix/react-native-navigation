@@ -1,6 +1,6 @@
 const React = require('react');
 const { Component } = require('react');
-const { View, Text, Button, Platform } = require('react-native');
+const { View, Text, Button, Platform, TouchableHighlight } = require('react-native');
 
 const testIDs = require('../testIDs');
 
@@ -44,6 +44,13 @@ class WelcomeScreen extends Component {
           {Platform.OS === 'android' && <Button title='Back Handler' testID={testIDs.BACK_HANDLER_BUTTON} onPress={this.onClickBackHandler} />}
           <Button title='Show Modal' testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
           <Button title='Show Redbox' testID={testIDs.SHOW_REDBOX_BUTTON} onPress={this.onClickShowRedbox} />
+          {Platform.OS === 'ios' && (
+            <Navigation.Element elementId="PreviewElement">
+              <TouchableHighlight testID={testIDs.SHOW_REDBOX_BUTTON} onPressIn={this.onClickShowPreview}>
+                <Text>Show Preview</Text>
+              </TouchableHighlight>
+            </Navigation.Element>
+          )}
           <Button title='Orientation' testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
           <Button title='Provided Id' testID={testIDs.PROVIDED_ID} onPress={this.onClickProvidedId} />
           <Button title='Complex Layout' testID={testIDs.COMPLEX_LAYOUT_BUTTON} onPress={this.onClickComplexLayout} />
@@ -310,6 +317,38 @@ class WelcomeScreen extends Component {
 
   onClickShowRedbox = () => {
     undefined();
+  }
+
+  onClickShowPreview = async () => {
+    await Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.PushedScreen',
+        options: {
+          animations: {
+            push: {
+              enable: false
+            }
+          },
+          preview: {
+            elementId: 'PreviewElement',
+            height: 400,
+            commit: true,
+            actions: [{
+              id: 'action-cancel',
+              title: 'Cancel'
+            }, {
+              id: 'action-delete',
+              title: 'Delete',
+              actions: [{
+                id: 'action-delete-sure',
+                title: 'Are you sure?',
+                style: 'destructive'
+              }]
+            }]
+          }
+        }
+      }
+    });
   }
 
   onClickPushOptionsScreen = () => {

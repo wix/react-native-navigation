@@ -154,9 +154,9 @@
 		A7626BFD1FC2FB2C00492FB8 /* RNNTopBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */; };
 		A7626C011FC5796200492FB8 /* RNNBottomTabsOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7626C001FC5796200492FB8 /* RNNBottomTabsOptions.m */; };
 		E33AC20020B5BA0B0090DB8A /* RNNSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E33AC1FF20B5BA0B0090DB8A /* RNNSplitViewController.m */; };
-		E33AC20420B5C3890090DB8A /* RNNStatusBarOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = E33AC20220B5C3880090DB8A /* RNNStatusBarOptions.h */; };
 		E33AC20520B5C3890090DB8A /* RNNStatusBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E33AC20320B5C3890090DB8A /* RNNStatusBarOptions.m */; };
 		E33AC20820B5C4F90090DB8A /* RNNSplitViewOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E33AC20720B5C4F90090DB8A /* RNNSplitViewOptions.m */; };
+		E3458D3E20BD9CE40023149B /* RNNPreviewOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E3458D3D20BD9CE40023149B /* RNNPreviewOptions.m */; };
 		E8367B801F7A8A4700675C05 /* VICMAImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = E8367B7E1F7A8A4700675C05 /* VICMAImageView.h */; };
 		E8367B811F7A8A4700675C05 /* VICMAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E8367B7F1F7A8A4700675C05 /* VICMAImageView.m */; };
 		E83BAD681F2734B500A9F3DD /* RNNNavigationOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E83BAD671F2734B500A9F3DD /* RNNNavigationOptionsTest.m */; };
@@ -365,6 +365,8 @@
 		E33AC20320B5C3890090DB8A /* RNNStatusBarOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNStatusBarOptions.m; sourceTree = "<group>"; };
 		E33AC20620B5C49E0090DB8A /* RNNSplitViewOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSplitViewOptions.h; sourceTree = "<group>"; };
 		E33AC20720B5C4F90090DB8A /* RNNSplitViewOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSplitViewOptions.m; sourceTree = "<group>"; };
+		E3458D3C20BD9CA10023149B /* RNNPreviewOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNPreviewOptions.h; sourceTree = "<group>"; };
+		E3458D3D20BD9CE40023149B /* RNNPreviewOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNPreviewOptions.m; sourceTree = "<group>"; };
 		E8367B7E1F7A8A4700675C05 /* VICMAImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VICMAImageView.h; sourceTree = "<group>"; };
 		E8367B7F1F7A8A4700675C05 /* VICMAImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VICMAImageView.m; sourceTree = "<group>"; };
 		E83BAD671F2734B500A9F3DD /* RNNNavigationOptionsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationOptionsTest.m; sourceTree = "<group>"; };
@@ -551,6 +553,8 @@
 				50415CB920553B8E00BB682E /* RNNScreenTransition.m */,
 				E33AC20620B5C49E0090DB8A /* RNNSplitViewOptions.h */,
 				E33AC20720B5C4F90090DB8A /* RNNSplitViewOptions.m */,
+				E3458D3C20BD9CA10023149B /* RNNPreviewOptions.h */,
+				E3458D3D20BD9CE40023149B /* RNNPreviewOptions.m */,
 			);
 			name = Options;
 			sourceTree = "<group>";
@@ -1017,6 +1021,7 @@
 				50F5DFC61F407AA0001A00BC /* RNNNavigationController.m in Sources */,
 				21B85E5D1F44480200B314B5 /* RNNNavigationButtons.m in Sources */,
 				E8E518371F83B94A000467AC /* RNNViewLocation.m in Sources */,
+				E3458D3E20BD9CE40023149B /* RNNPreviewOptions.m in Sources */,
 				263905C91E4C6F440023D7D3 /* SidebarFlipboardAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,7 +9,7 @@
 #import "RNNTopTabsViewController.h"
 #import "RNNRootViewProtocol.h"
 
-@interface RNNRootViewController : UIViewController	<RNNRootViewProtocol>
+@interface RNNRootViewController : UIViewController	<RNNRootViewProtocol, UIViewControllerPreviewingDelegate>
 
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
@@ -17,6 +17,8 @@
 @property (nonatomic, strong) RNNTopTabsViewController* topTabsViewController;
 @property (nonatomic) id<RNNRootViewCreator> creator;
 @property (nonatomic, strong) RNNAnimator* animator;
+@property (nonatomic, strong) UIViewController* previewController;
+
 
 -(instancetype)initWithName:(NSString*)name
 				withOptions:(RNNNavigationOptions*)options

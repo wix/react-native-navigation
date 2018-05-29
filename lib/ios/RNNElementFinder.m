@@ -18,6 +18,14 @@
 	return self;
 }
 
+- (instancetype)initWithFromVC:(UIViewController *)fromVC {
+	self = [super init];
+
+	self.fromVCTransitionElements = [self findRNNElementViews:fromVC.view];
+	
+	return self;
+}
+
 - (RNNElementView *)findViewToAnimate:(NSArray *)RNNTransitionElementViews withId:(NSString *)elementId{
 	for (RNNElementView* view in RNNTransitionElementViews) {
 		if ([view.elementId isEqualToString:elementId]){

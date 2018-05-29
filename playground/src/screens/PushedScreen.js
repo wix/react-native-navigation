@@ -3,7 +3,7 @@ const _ = require('lodash');
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Button } = require('react-native');
+const { View, Text, Button, Platform, TouchableHighlight } = require('react-native');
 
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
@@ -38,6 +38,13 @@ class PushedScreen extends Component {
         <Text testID={testIDs.PUSHED_SCREEN_HEADER} style={styles.h1}>{`Pushed Screen`}</Text>
         <Text style={styles.h2}>{`Stack Position: ${stackPosition}`}</Text>
         <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
+          {Platform.OS === 'ios' && (
+            <Navigation.Element elementId="PreviewElement">
+              <TouchableHighlight testID={testIDs.SHOW_REDBOX_BUTTON} onPressIn={this.onClickShowPreview}>
+                <Text>Push Preview</Text>
+              </TouchableHighlight>
+            </Navigation.Element>
+          )}
         <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
         <Button title='Pop Previous' testID={testIDs.POP_PREVIOUS_BUTTON} onPress={this.onClickPopPrevious} />
         <Button title='Pop To Root' testID={testIDs.POP_TO_ROOT} onPress={this.onClickPopToRoot} />
@@ -46,6 +53,47 @@ class PushedScreen extends Component {
         <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
       </View>
     );
+  }
+
+  onClickShowPreview = async () => {
+    await Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.PushedScreen',
+        passProps: {
+          stackPosition: this.getStackPosition() + 1,
+          previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
+        },
+        options: {
+          topBar: {
+            title: {
+              text: `Pushed ${this.getStackPosition() + 1}`
+            }
+          },
+          animations: {
+            push: {
+              enable: false
+            }
+          },
+          preview: {
+            elementId: 'PreviewElement',
+            height: 400,
+            commit: true,
+            actions: [{
+              id: 'action-cancel',
+              title: 'Cancel'
+            }, {
+              id: 'action-delete',
+              title: 'Delete',
+              actions: [{
+                id: 'action-delete-sure',
+                title: 'Are you sure?',
+                style: 'destructive'
+              }]
+            }]
+          }
+        }
+      }
+    });
   }
 
   async onClickPush() {
