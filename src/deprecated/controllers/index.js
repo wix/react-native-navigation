@@ -102,6 +102,15 @@ var Controllers = {
           props['style'] = Object.assign({}, props['style']);
           _processProperties(props['style']);
         }
+
+        if (props['components']) {
+          props['components'].forEach(component => {
+            if (component['navigatorStyle']) {
+              component['navigatorStyle'] = Object.assign({}, component['navigatorStyle']);
+              _processProperties(component['navigatorStyle']);
+            }
+          });
+        }
         return {
           'type': type.name,
           'props': props,
@@ -126,6 +135,7 @@ var Controllers = {
       if (controller === undefined) return;
       var layout = controller.render();
       _validateDrawerProps(layout);
+      console.log('set root');
       _processProperties(_.get(layout, 'props.appStyle', {}));
       return await RCCManager.setRootController(layout, animationType, passProps);
     },
