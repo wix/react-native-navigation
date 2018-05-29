@@ -71,6 +71,7 @@ Navigation.mergeOptions(this.props.componentId, {
   modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popOver', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
   topBar: {
     visible: true,
+    height: 70, // Android only, optional; Height of the TopBar in dp.
     leftButtons: [{
       id: 'buttonOne',
       icon: require('icon.png'),
@@ -107,6 +108,7 @@ Navigation.mergeOptions(this.props.componentId, {
       fontSize: 14,
       color: 'red',
       fontFamily: 'Helvetica',
+      height: 70, // Android only, optional; Height of the TitleBar in dp.
       component: {
         name: 'example.CustomTopBarTitle',
         alignment: 'center'
