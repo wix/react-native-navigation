@@ -7,7 +7,9 @@ import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.params.NullFraction;
+import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
+import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.FractionParser;
@@ -38,6 +40,7 @@ public class TitleOptions {
     public Alignment alignment = Alignment.Default;
     @Nullable public Typeface fontFamily;
     public Component component = new Component();
+    public Number height = new NullNumber();
 
     void mergeWith(final TitleOptions other) {
         if (other.text.hasValue()) text = other.text;
@@ -46,6 +49,7 @@ public class TitleOptions {
         if (other.fontFamily != null) fontFamily = other.fontFamily;
         if (other.alignment != Alignment.Default) alignment = other.alignment;
         if (other.component.hasValue()) component = other.component;
+        if (other.height.hasValue()) height = other.height;
     }
 
     void mergeWithDefault(TitleOptions defaultOptions) {
@@ -55,5 +59,6 @@ public class TitleOptions {
         if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
         if (alignment == Alignment.Default) alignment = defaultOptions.alignment;
         component.mergeWithDefault(defaultOptions.component);
+        if (!height.hasValue()) height = defaultOptions.height;
     }
 }

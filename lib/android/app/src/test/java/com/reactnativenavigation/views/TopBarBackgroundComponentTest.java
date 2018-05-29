@@ -55,7 +55,7 @@ public class TopBarBackgroundComponentTest extends BaseTest {
         TopBarBackgroundView background = (TopBarBackgroundView) ViewUtils.findChildrenByClassRecursive(uut, TopBarBackgroundView.class).get(0);
         assertThat(background).isNotNull();
         assertThat(background.getLayoutParams().width).isEqualTo(ViewGroup.LayoutParams.MATCH_PARENT);
-        assertThat(background.getLayoutParams().height).isEqualTo(uut.getHeight());
+        assertThat(background.getLayoutParams().height).isEqualTo(100);
     }
 
     @Test

@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Alignment;
@@ -212,5 +213,12 @@ public class TitleBar extends Toolbar {
             lp.gravity = Gravity.CENTER;
         }
         return lp;
+    }
+
+    public void setHeight(int height) {
+        if (height == getLayoutParams().height) return;
+        ViewGroup.LayoutParams lp = getLayoutParams();
+        lp.height = (int) UiUtils.dpToPx(getContext(), height);
+        setLayoutParams(lp);
     }
 }

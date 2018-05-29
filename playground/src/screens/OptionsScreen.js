@@ -12,6 +12,7 @@ const CUSTOM_BUTTON = 'customButton';
 const CUSTOM_BUTTON2 = 'customButton2';
 const BUTTON_LEFT = 'buttonLeft';
 const FAB = 'fab';
+const TOPBAR_HEIGHT = 67;
 
 class OptionsScreen extends Component {
   static get options() {
@@ -23,6 +24,7 @@ class OptionsScreen extends Component {
       topBar: {
         title: {
           text: 'Static Title',
+          _height: TOPBAR_HEIGHT,
           color: 'black',
           fontSize: 16,
           alignment: 'center',
@@ -47,6 +49,7 @@ class OptionsScreen extends Component {
           android: { drawBehind: true },
           ios: { drawBehind: false, }
         }),
+        _height: TOPBAR_HEIGHT,
         visible: true,
         testID: testIDs.TOP_BAR_ELEMENT,
         rightButtons: [
@@ -116,12 +119,12 @@ class OptionsScreen extends Component {
         <Button title='Top Bar Opaque' onPress={this.onClickTopBarOpaque} />
         <Button title='scrollView Screen' testID={testIDs.SCROLLVIEW_SCREEN_BUTTON} onPress={this.onClickScrollViewScreen} />
         <Button title='Custom Transition' testID={testIDs.CUSTOM_TRANSITION_BUTTON} onPress={this.onClickCustomTranstition} />
-        {Platform.OS === 'android' ? <Button title='Hide fab' testID={testIDs.HIDE_FAB} onPress={this.onClickFab} /> : null}
+        {Platform.OS === 'android' && <Button title='Hide fab' testID={testIDs.HIDE_FAB} onPress={this.onClickFab} />}
         <Button title='Show overlay' testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
         <Button title='Show touch through overlay' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
         <Button title='Push Default Options Screen' testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
         <Button title='Show TopBar react view' testID={testIDs.SHOW_TOPBAR_REACT_VIEW} onPress={this.onShowTopBarReactView} />
-        {Platform.OS === 'android' ? <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onPush} /> : null}
+        {Platform.OS === 'android' && <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onPush} />}
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );

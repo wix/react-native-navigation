@@ -10,6 +10,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.UiUtils;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
@@ -68,6 +71,17 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
         return new TitleBar(context, buttonCreator, reactViewCreator, onClickListener);
+    }
+
+    public void setHeight(int height) {
+        if (height == getLayoutParams().height) return;
+        ViewGroup.LayoutParams lp = getLayoutParams();
+        lp.height = (int) UiUtils.dpToPx(getContext(), height);
+        setLayoutParams(lp);
+    }
+
+    public void setTitleHeight(int height) {
+        titleBar.setHeight(height);
     }
 
     public void setTitle(String title) {
@@ -125,7 +139,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     public void setBackgroundComponent(Component component) {
         if (component.hasValue()) {
             topBarBackgroundViewController.setComponent(component);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, getHeight());
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, ViewUtils.getPreferredHeight(this));
             root.addView(topBarBackgroundViewController.getView(), 0, lp);
         }
     }
@@ -213,7 +227,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         if (visibility == View.GONE) {
             this.parentView.removeView(this);
         } else if (visibility == View.VISIBLE && this.getParent() == null) {
-            this.parentView.addView(this, MATCH_PARENT, WRAP_CONTENT);
+            this.parentView.addView(this);
         }
     }
 

@@ -2,6 +2,7 @@ package com.reactnativenavigation.presentation;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.view.ViewGroup.LayoutParams;
 
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.Options;
@@ -44,6 +45,9 @@ public class StackOptionsPresenter {
     }
 
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
+        topBar.setHeight(options.height.get(LayoutParams.WRAP_CONTENT));
+
+        topBar.setTitleHeight(options.title.height.get(LayoutParams.WRAP_CONTENT));
         topBar.setTitle(options.title.text.get(""));
         if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component);
         topBar.setTitleFontSize(options.title.fontSize.get(defaultTitleFontSize));

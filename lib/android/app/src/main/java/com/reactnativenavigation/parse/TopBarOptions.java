@@ -8,9 +8,12 @@ import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
+import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.BoolParser;
+import com.reactnativenavigation.parse.parsers.NumberParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
@@ -34,6 +37,7 @@ public class TopBarOptions {
         options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"), typefaceLoader);
         options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"), typefaceLoader);
         options.testId = TextParser.parse(json, "testID");
+        options.height = NumberParser.parse(json, "height");
 
         options.validate();
         return options;
@@ -47,6 +51,7 @@ public class TopBarOptions {
     public Bool animate = new NullBool();
     public Bool hideOnScroll = new NullBool();
     public Bool drawBehind = new NullBool();
+    public Number height = new NullNumber();
     @Nullable public ArrayList<Button> leftButtons;
     @Nullable public ArrayList<Button> rightButtons;
 
@@ -61,6 +66,7 @@ public class TopBarOptions {
         if (other.drawBehind.hasValue()) drawBehind = other.drawBehind;
         if (other.leftButtons != null) leftButtons = other.leftButtons;
         if (other.rightButtons != null) rightButtons = other.rightButtons;
+        if (other.height.hasValue()) height = other.height;
         validate();
     }
 
@@ -75,6 +81,7 @@ public class TopBarOptions {
         if (leftButtons == null) leftButtons = defaultOptions.leftButtons;
         if (rightButtons == null) rightButtons = defaultOptions.rightButtons;
         if (!testId.hasValue()) testId = defaultOptions.testId;
+        if (!height.hasValue()) height = defaultOptions.height;
         validate();
     }
 
