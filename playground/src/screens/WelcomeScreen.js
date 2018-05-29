@@ -330,7 +330,7 @@ class WelcomeScreen extends Component {
           },
           preview: {
             elementId: 'PreviewElement',
-            height: 400,
+            height: 300,
             commit: true,
             actions: [{
               id: 'action-cancel',

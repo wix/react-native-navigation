@@ -109,10 +109,20 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			RNNElementFinder* elementFinder = [[RNNElementFinder alloc] initWithFromVC:vc];
 			RNNElementView* elementView = [elementFinder findElementForId:newVc.options.preview.elementId];
 
-			if (newVc.options.preview.height) {
-				newVc.preferredContentSize = CGSizeMake(rootVc.view.frame.size.width, [newVc.options.preview.height floatValue]);
+			CGSize size = CGSizeMake(rootVc.view.frame.size.width, rootVc.view.frame.size.height);
+			
+			if (newVc.options.preview.width) {
+				size.width = [newVc.options.preview.width floatValue];
 			}
 
+			if (newVc.options.preview.height) {
+				size.height = [newVc.options.preview.height floatValue];
+			}
+
+			if (newVc.options.preview.width || newVc.options.preview.height) {
+				newVc.preferredContentSize = size;
+			}
+			
 			[_eventEmitter sendOnNavigationCommand:preview params:@{@"componentId": componentId}];
 			[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:elementView];
 		}
