@@ -39,7 +39,7 @@ class PushedScreen extends Component {
         <Text style={styles.h2}>{`Stack Position: ${stackPosition}`}</Text>
         <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
           {Platform.OS === 'ios' && (
-            <Navigation.Element elementId="PreviewElement">
+            <Navigation.Element elementId='PreviewElement'>
               <TouchableHighlight testID={testIDs.SHOW_REDBOX_BUTTON} onPressIn={this.onClickShowPreview}>
                 <Text>Push Preview</Text>
               </TouchableHighlight>

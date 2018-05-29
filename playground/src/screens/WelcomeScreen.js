@@ -45,7 +45,7 @@ class WelcomeScreen extends Component {
           <Button title='Show Modal' testID={testIDs.SHOW_MODAL_BUTTON} onPress={this.onClickShowModal} />
           <Button title='Show Redbox' testID={testIDs.SHOW_REDBOX_BUTTON} onPress={this.onClickShowRedbox} />
           {Platform.OS === 'ios' && (
-            <Navigation.Element elementId="PreviewElement">
+            <Navigation.Element elementId='PreviewElement'>
               <TouchableHighlight testID={testIDs.SHOW_REDBOX_BUTTON} onPressIn={this.onClickShowPreview}>
                 <Text>Show Preview</Text>
               </TouchableHighlight>
