@@ -30,6 +30,34 @@ class PushedScreen extends Component {
     this.onClickPopToFirstPosition = this.onClickPopToFirstPosition.bind(this);
     this.onClickPopToRoot = this.onClickPopToRoot.bind(this);
     this.onClickSetStackRoot = this.onClickSetStackRoot.bind(this);
+    this.state = { disabled: false };
+  }
+
+  listeners = [];
+
+  componentWillMount() {
+    this.listeners.push(
+      Navigation.events().registerNativeEventListener((name, params) => {
+        if (name === 'previewContext') {
+          const { previewComponentId } = params;
+          this.setState({ previewComponentId });
+        }
+      }),
+      Navigation.events().registerComponentDidAppearListener((componentId, componentName) => {
+        if (this.state.previewComponentId === componentId) {
+          this.setState({ disabled: true });
+        }
+      }),
+      Navigation.events().registerComponentDidDisappearListener((componentId, componentName) => {
+        if (this.state.previewComponentId === componentId) {
+          this.setState({ disabled: false });
+        }
+      })
+    );
+  }
+
+  componentWillUnmount() {
+    this.listeners.forEach(listener => listener.remove && listener.remove());
   }
 
   render() {
@@ -41,7 +69,7 @@ class PushedScreen extends Component {
         <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
           {Platform.OS === 'ios' && (
             <Navigation.Element elementId='PreviewElement'>
-              <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPressIn={this.onClickShowPreview} title='Push Preview' />
+              <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPress={this.onClickPush} onPressIn={this.onClickShowPreview} title='Push Preview' />
             </Navigation.Element>
           )}
         <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
@@ -88,6 +116,10 @@ class PushedScreen extends Component {
   }
 
   async onClickPush() {
+    if (this.state.disabled) {
+      return;
+    }
+
     await Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.PushedScreen',

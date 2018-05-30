@@ -122,8 +122,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			if (newVc.options.preview.width || newVc.options.preview.height) {
 				newVc.preferredContentSize = size;
 			}
-			
-			[_eventEmitter sendOnNavigationCommand:preview params:@{@"componentId": componentId}];
+
 			[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:elementView];
 		}
 	} else {
