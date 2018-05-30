@@ -52,6 +52,8 @@ class OptionsScreen extends Component {
         _height: TOPBAR_HEIGHT,
         visible: true,
         testID: testIDs.TOP_BAR_ELEMENT,
+        borderColor: 'red',
+        borderHeight: 1,
         rightButtons: [
           // {
           //   id: CUSTOM_BUTTON,

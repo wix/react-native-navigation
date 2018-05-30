@@ -7,12 +7,18 @@ import android.util.Log;
 import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.NullBool;
+import com.reactnativenavigation.parse.params.NullColor;
+import com.reactnativenavigation.parse.params.NullFraction;
 import com.reactnativenavigation.parse.params.NullNumber;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.parse.parsers.BoolParser;
+import com.reactnativenavigation.parse.parsers.ColorParser;
+import com.reactnativenavigation.parse.parsers.FractionParser;
 import com.reactnativenavigation.parse.parsers.NumberParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
 import com.reactnativenavigation.utils.TypefaceLoader;
@@ -38,6 +44,8 @@ public class TopBarOptions {
         options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"), typefaceLoader);
         options.testId = TextParser.parse(json, "testID");
         options.height = NumberParser.parse(json, "height");
+        options.borderColor = ColorParser.parse(json, "borderColor");
+        options.borderHeight = FractionParser.parse(json, "borderHeight");
 
         options.validate();
         return options;
@@ -52,6 +60,8 @@ public class TopBarOptions {
     public Bool hideOnScroll = new NullBool();
     public Bool drawBehind = new NullBool();
     public Number height = new NullNumber();
+    public Fraction borderHeight = new NullFraction();
+    public Color borderColor = new NullColor();
     @Nullable public ArrayList<Button> leftButtons;
     @Nullable public ArrayList<Button> rightButtons;
 
@@ -67,6 +77,8 @@ public class TopBarOptions {
         if (other.leftButtons != null) leftButtons = other.leftButtons;
         if (other.rightButtons != null) rightButtons = other.rightButtons;
         if (other.height.hasValue()) height = other.height;
+        if (other.borderHeight.hasValue()) borderHeight = other.borderHeight;
+        if (other.borderColor.hasValue()) borderColor = other.borderColor;
         validate();
     }
 
@@ -82,6 +94,8 @@ public class TopBarOptions {
         if (rightButtons == null) rightButtons = defaultOptions.rightButtons;
         if (!testId.hasValue()) testId = defaultOptions.testId;
         if (!height.hasValue()) height = defaultOptions.height;
+        if (!borderHeight.hasValue()) borderHeight = defaultOptions.borderHeight;
+        if (!borderColor.hasValue()) borderColor = defaultOptions.borderColor;
         validate();
     }
 

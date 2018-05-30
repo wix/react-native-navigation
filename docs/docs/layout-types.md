@@ -1,9 +1,24 @@
 # Layout Types
 
+## component
+
+Component layout holds a single react component.
+
+```js
+const component = {
+  id: 'comopnent1', // Optional, Auto generated if empty
+  name: 'Your registered component name',
+  options: {},
+  passProps: {
+    text: 'This text will be available in your component.props'
+  }
+}
+```
+
 ## stack
 
-Expect children layouts of any kind.\
-When initializing with more than one screen last screen will be presented at the top of the stack.
+Support children layouts of any kind.
+When initialized with more than one screen, the last screen will be presented at the top of the stack.
 
 ```js
 const stack = {
@@ -21,24 +36,7 @@ const stack = {
 }
 ```
 
-## component
-
-Component layout holds your react component.
-
-```js
-const component = {
-  id: 'comopnent1', // Optional, Auto generated if empty
-  name: 'Your registered component name',
-  options: {},
-  passProps: {
-    text: 'This text will be available in your component.props'
-  }
-}
-```
-
 ## bottomTabs
-
-Expect children layouts
 
 ```js
 const bottomTabs = {
@@ -81,7 +79,7 @@ const sideMenu = {
 }
 ```
 
-## splitView
+## splitView (iOS only)
 
 Master and Detail based layout.
 

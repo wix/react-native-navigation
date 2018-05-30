@@ -50,7 +50,7 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 	[self.sideMenu applyOn:viewController];
 	[self.overlay applyOn:viewController];
 	[self.statusBar applyOn:viewController];
-	
+	[self.layout applyOn:viewController];
 	[self applyOtherOptionsOn:viewController];
 	
 	[viewController optionsUpdated];
@@ -59,11 +59,6 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 - (void)applyOtherOptionsOn:(UIViewController*)viewController {
 	if (self.popGesture) {
 		viewController.navigationController.interactivePopGestureRecognizer.enabled = [self.popGesture boolValue];
-	}
-	
-	if (self.screenBackgroundColor) {
-		UIColor* screenColor = [RCTConvert UIColor:self.screenBackgroundColor];
-		viewController.view.backgroundColor = screenColor;
 	}
 	
 	if (self.backgroundImage) {
@@ -102,30 +97,5 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
     }
 }
 
-- (UIInterfaceOrientationMask)supportedOrientations {
-	NSArray* orientationsArray = [self.orientation isKindOfClass:[NSString class]] ? @[self.orientation] : self.orientation;
-	NSUInteger supportedOrientationsMask = 0;
-	if (!orientationsArray || [self.orientation isEqual:@"default"]) {
-		return [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
-	} else {
-		for (NSString* orientation in orientationsArray) {
-			if ([orientation isEqualToString:@"all"]) {
-				supportedOrientationsMask = UIInterfaceOrientationMaskAll;
-				break;
-			}
-			if ([orientation isEqualToString:@"landscape"]) {
-				supportedOrientationsMask = (supportedOrientationsMask | UIInterfaceOrientationMaskLandscape);
-			}
-			if ([orientation isEqualToString:@"portrait"]) {
-				supportedOrientationsMask = (supportedOrientationsMask | UIInterfaceOrientationMaskPortrait);
-			}
-			if ([orientation isEqualToString:@"upsideDown"]) {
-				supportedOrientationsMask = (supportedOrientationsMask | UIInterfaceOrientationMaskPortraitUpsideDown);
-			}
-		}
-	}
-	
-	return supportedOrientationsMask;
-}
 
 @end

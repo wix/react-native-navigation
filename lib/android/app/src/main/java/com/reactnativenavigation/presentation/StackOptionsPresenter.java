@@ -21,8 +21,9 @@ import java.util.ArrayList;
 public class StackOptionsPresenter {
     private static final int DEFAULT_TITLE_COLOR = Color.BLACK;
     private static final int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
-    private final float defaultTitleFontSize;
-    private final float defaultSubtitleFontSize;
+    private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
+    private final double defaultTitleFontSize;
+    private final double defaultSubtitleFontSize;
 
     private TopBar topBar;
 
@@ -60,6 +61,9 @@ public class StackOptionsPresenter {
         topBar.setSubtitleColor(options.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
         topBar.setSubtitleFontFamily(options.subtitle.fontFamily);
         topBar.setSubtitleAlignment(options.subtitle.alignment);
+
+        topBar.setBorderHeight(options.borderHeight.get(0d));
+        topBar.setBorderColor(options.borderColor.get(DEFAULT_BORDER_COLOR));
 
         topBar.setBackgroundColor(options.background.color);
         topBar.setBackgroundComponent(options.background.component);

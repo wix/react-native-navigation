@@ -54,52 +54,26 @@ Navigation.mergeOptions(this.props.componentId, {
 
 ## Options object format
 
+### Common options
+
 ```js
 {
   statusBar: {
-    backgroundColor: 'red', // Android only
     visible: false,
-    style: 'light',
-    hideWithTopBar: false, // iOS only
-    blur: true // iOS only
+    style: 'light' | 'dark'
   },
-  screenBackgroundColor: 'white',
-  orientation: ['portrait', 'landscape'],
-  popGesture: true,
-  backgroundImage: require('background.png'),
-  rootBackgroundImage: require('rootBackground.png'),
+  layout: {
+    backgroundColor: 'white',
+    orientation: ['portrait', 'landscape'] // An array of supported orientations
+  },
   modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popOver', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
   topBar: {
     visible: true,
-    height: 70, // Android only, optional; Height of the TopBar in dp.
-    leftButtons: [{
-      id: 'buttonOne',
-      icon: require('icon.png'),
-      component: {
-        name: 'example.CustomButtonComponent'
-      },
-      title: 'Button one',
-      enabled: true,
-      disableIconTint: false,
-      tintColor: 'red',
-      disabledColor: 'black',
-      testID: 'buttonOneTestID'
-    }],
-    rightButtons: [],
+    animate: false, // Controls wether TopBar visibility changes should be animated
     hideOnScroll: true,
     buttonColor: 'black',
-    translucent: true,
-    transparent: false,
     drawBehind: false,
-    noBorder: false,
-    blur: false,
-    animate: false,
-    largeTitle: false,
     testID: 'topBar',
-    backButtonImage: require('icon.png'),
-    backButtonHidden: false,
-    backButtonTitle: 'Back',
-    hideBackButtonTitle: false,
     component: {
       name: 'example.CustomTopBar'
     },
@@ -108,7 +82,6 @@ Navigation.mergeOptions(this.props.componentId, {
       fontSize: 14,
       color: 'red',
       fontFamily: 'Helvetica',
-      height: 70, // Android only, optional; Height of the TitleBar in dp.
       component: {
         name: 'example.CustomTopBarTitle',
         alignment: 'center'
@@ -130,13 +103,11 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   bottomTabs: {
     visible: true,
-    animate: false,
+    animate: false, // Controls wether BottomTabs visibility changes should be animated
     currentTabIndex: 0,
+    currentTabId: 'currentTabId',
     testID: 'bottomTabsTestID',
     drawBehind: false,
-    currentTabId: 'currentTabId',
-    translucent: true,
-    hideShadow: false,
     backgroundColor: 'white',
     tabColor: 'red',
     selectedTabColor: 'blue',
@@ -147,9 +118,7 @@ Navigation.mergeOptions(this.props.componentId, {
     title: 'Tab 1',
     badge: '2',
     testID: 'bottomTabTestID',
-    visible: undefined,
-    icon: require('tab.png'),
-    iconInsets: { top: 0, left: 0, bottom: 0, right: 0 }
+    icon: require('tab.png')
   },
   sideMenu: {
     left: {
@@ -175,6 +144,55 @@ Navigation.mergeOptions(this.props.componentId, {
       style: 'selected', // default, selected, destructive,
       actions: [/* ... */]
     }]
+  }  
+}
+```
+
+### iOS specific options
+```js
+{
+  statusBar: {
+    hideWithTopBar: false,
+    blur: true
+  },
+  popGesture: true,
+  backgroundImage: require('background.png'),
+  rootBackgroundImage: require('rootBackground.png'),
+  topBar: {
+    translucent: true,
+    transparent: false,
+    noBorder: false,
+    blur: false,
+    largeTitle: false,
+    backButtonImage: require('icon.png'),
+    backButtonHidden: false,
+    backButtonTitle: 'Back',
+    hideBackButtonTitle: false,
+  },
+  bottomTabs: {
+    translucent: true,
+    hideShadow: false
+  },
+  bottomTab: {
+    iconInsets: { top: 0, left: 0, bottom: 0, right: 0 }
+  }
+}
+```
+
+### Android specific options
+
+```js
+{
+  statusBar: {
+    backgroundColor: 'red'
+  },
+  topBar: {
+    height: 70, // TopBar height in dp.
+    borderColor: 'red',
+    borderHeight: 1.3,
+    title: {
+      height: 70 // TitleBar height in dp.
+    }
   }
 }
 ```
