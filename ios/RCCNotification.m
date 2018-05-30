@@ -66,12 +66,10 @@
 
 -(UISwipeGestureRecognizerDirection)swipeDirection
 {
-    UISwipeGestureRecognizerDirection direction = UISwipeGestureRecognizerDirectionUp;
+    UISwipeGestureRecognizerDirection direction = [self isBottomPosition] ?  UISwipeGestureRecognizerDirectionDown : UISwipeGestureRecognizerDirectionUp;
     
     NSString *animationType = [self.params valueForKeyPath:@"animation.type"];
-    if ([animationType isEqualToString:@"swing"] || [animationType isEqualToString:@"slide-down"])
-        direction = UISwipeGestureRecognizerDirectionUp;
-    else if ([animationType isEqualToString:@"slide-left"])
+    if ([animationType isEqualToString:@"slide-left"])
         direction = UISwipeGestureRecognizerDirectionRight;
     else if ([animationType isEqualToString:@"slide-right"])
         direction = UISwipeGestureRecognizerDirectionLeft;
@@ -121,7 +119,7 @@
     }
     
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(1, 1), YES, 0);
-    [self.reactView.contentView drawViewHierarchyInRect:CGRectMake(0, 0, 1, 1) afterScreenUpdates:YES];
+    [self.reactView.contentView drawViewHierarchyInRect:CGRectMake(0, 0, 1, 1) afterScreenUpdates:NO];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     

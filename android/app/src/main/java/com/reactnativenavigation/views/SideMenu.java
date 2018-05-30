@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.SideMenuParams;
@@ -29,7 +30,7 @@ public class SideMenu extends DrawerLayout {
         }
 
         public static Side fromString(String side) {
-            return "left".equals(side.toLowerCase()) ? Left : Right;
+            return (side == null) || "left".equals(side.toLowerCase()) ? Left : Right;
         }
     }
 
@@ -130,15 +131,19 @@ public class SideMenu extends DrawerLayout {
         sideMenuView.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
-                ViewGroup.LayoutParams lp = sideMenuView.getLayoutParams();
-                if (params != null
-                    && params.fixedWidth > 0) {
+                final ViewGroup.LayoutParams lp = sideMenuView.getLayoutParams();
+                if (params != null && params.fixedWidth > 0) {
                     lp.width = params.fixedWidth;
+                    sideMenuView.setLayoutParams(lp);
                 } else {
-                    lp.width = sideMenuView.getChildAt(0).getWidth();
+                    NavigationApplication.instance.getUiManagerModule().measure(sideMenuView.getId(), new Callback() {
+                        @Override
+                        public void invoke(Object... args) {
+                            lp.width = sideMenuView.getChildAt(0).getWidth();
+                            sideMenuView.setLayoutParams(lp);
+                        }
+                    });
                 }
-
-                sideMenuView.setLayoutParams(lp);
             }
         });
     }
