@@ -163,6 +163,7 @@
 	} else if ([self.options.statusBar.hideWithTopBar boolValue]) {
 		return self.navigationController.isNavigationBarHidden;
 	}
+
 	return NO;
 }
 
@@ -175,7 +176,7 @@
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-	return self.options.supportedOrientations;
+	return self.options.layout.supportedOrientations;
 }
 
 - (BOOL)hidesBottomBarWhenPushed

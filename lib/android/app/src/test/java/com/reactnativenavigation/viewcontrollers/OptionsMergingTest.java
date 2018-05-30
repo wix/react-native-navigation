@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyFloat;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -147,7 +147,7 @@ public class OptionsMergingTest extends BaseTest {
         verify(topBar, times(t)).setTitleComponent(any());
         verify(topBar, times(t)).setBackgroundColor(any());
         verify(topBar, times(t)).setTitleTextColor(anyInt());
-        verify(topBar, times(t)).setTitleFontSize(anyFloat());
+        verify(topBar, times(t)).setTitleFontSize(anyDouble());
         verify(topBar, times(t)).setTitleTypeface(any());
         verify(topBar, times(t)).setSubtitleColor(anyInt());
         verify(topBar, times(t)).setTestId(any());

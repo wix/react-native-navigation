@@ -131,7 +131,7 @@
 
 -(void)testScreenBackgroundColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.screenBackgroundColor = inputColor;
+	self.options.layout.screenBackgroundColor = inputColor;
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	XCTAssertTrue([self.uut.view.backgroundColor isEqual:expectedColor]);
@@ -283,7 +283,7 @@
 
 -(void)testOrientation_portrait {
 	NSArray* supportedOrientations = @[@"portrait"];
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskPortrait;
@@ -292,7 +292,7 @@
 
 -(void)testOrientation_portraitString {
 	NSString* supportedOrientation = @"portrait";
-	self.options.orientation = supportedOrientation;
+	self.options.layout.orientation = supportedOrientation;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait);
@@ -301,7 +301,7 @@
 
 -(void)testOrientation_portraitAndLandscape {
 	NSArray* supportedOrientations = @[@"portrait", @"landscape"];
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscape);
@@ -310,7 +310,7 @@
 
 -(void)testOrientation_all {
 	NSArray* supportedOrientations = @[@"all"];
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskAll;
@@ -319,7 +319,7 @@
 
 -(void)testOrientation_default {
 	NSString* supportedOrientations = @"default";
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
@@ -329,7 +329,7 @@
 
 -(void)testOrientationTabsController_portrait {
 	NSArray* supportedOrientations = @[@"portrait"];
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
 	
@@ -343,7 +343,7 @@
 
 -(void)testOrientationTabsController_portraitAndLandscape {
 	NSArray* supportedOrientations = @[@"portrait", @"landscape"];
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
 	
@@ -357,7 +357,7 @@
 
 -(void)testOrientationTabsController_all {
 	NSArray* supportedOrientations = @[@"all"];
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
 	

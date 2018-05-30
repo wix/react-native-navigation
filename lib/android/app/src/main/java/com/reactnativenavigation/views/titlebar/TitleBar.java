@@ -74,9 +74,9 @@ public class TitleBar extends Toolbar {
         if (color.hasValue()) setBackgroundColor(color.get());
     }
 
-    public void setTitleFontSize(float size) {
+    public void setTitleFontSize(double size) {
         TextView titleTextView = findTitleTextView();
-        if (titleTextView != null) titleTextView.setTextSize(size);
+        if (titleTextView != null) titleTextView.setTextSize((float) size);
     }
 
     public void setTitleTypeface(Typeface typeface) {
@@ -95,9 +95,9 @@ public class TitleBar extends Toolbar {
         if (subtitleTextView != null) subtitleTextView.setTypeface(typeface);
     }
 
-    public void setSubtitleFontSize(float size) {
+    public void setSubtitleFontSize(double size) {
         TextView subtitleTextView = findSubtitleTextView();
-        if (subtitleTextView != null) subtitleTextView.setTextSize(size);
+        if (subtitleTextView != null) subtitleTextView.setTextSize((float) size);
     }
 
     public void setSubtitleAlignment(Alignment alignment) {
