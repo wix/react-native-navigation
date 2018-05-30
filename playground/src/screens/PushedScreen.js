@@ -3,7 +3,7 @@ const _ = require('lodash');
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Platform, TouchableHighlight } = require('react-native');
+const { View, Text, Platform } = require('react-native');
 
 const { Navigation } = require('react-native-navigation');
 const Button = require('./Button');

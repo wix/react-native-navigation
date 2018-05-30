@@ -4,7 +4,7 @@ const PropTypes = require('prop-types');
 const { Platform, ColorPropType, StyleSheet, TouchableNativeFeedback, TouchableOpacity, View, Text } = require('react-native');
 
 class Button extends Component {
-  
+
     static propTypes = {
     title: PropTypes.string.isRequired,
     accessibilityLabel: PropTypes.string,
