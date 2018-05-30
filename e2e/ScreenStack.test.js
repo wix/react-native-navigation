@@ -82,6 +82,14 @@ describe('screen stack', () => {
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
+  it('push into a stack from BottomTabs', async () => {
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementByLabel('Pushed Screen')).toBeVisible();
+    await elementById(testIDs.POP_BUTTON).tap();
+    await expect(elementByLabel('This is tab 1')).toBeVisible();
+  });
+
   it(':ios: set stack root component should be first in stack', async () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementByLabel('Stack Position: 1')).toBeVisible();
