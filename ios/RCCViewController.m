@@ -311,6 +311,23 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     [self setStyleOnAppearForViewController:self appeared:true];
 }
 
+// the only way I found so far to make it possible to solve the problem with changing navigation bar color.
+// otherwise chaning color of navigation bar is delayed on pop and it is visually distructing
+- (BOOL) isViewLoaded {
+    [self updateNavigationBarTintColor];
+    return [super isViewLoaded];
+}
+
+- (void) updateNavigationBarTintColor {
+    NSString *navBarBackgroundColor = self.navigatorStyle[@"navBarBackgroundColor"];
+    if (navBarBackgroundColor) {
+        UIColor *color = navBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarBackgroundColor] : nil;
+        self.navigationController.navigationBar.barTintColor = color;
+    } else {
+        self.navigationController.navigationBar.barTintColor = nil;
+    }
+}
+
 -(void)setStyleOnAppearForViewController:(UIViewController*)viewController appeared:(BOOL)appeared {
     NSString *screenBackgroundColor = self.navigatorStyle[@"screenBackgroundColor"];
     if (screenBackgroundColor) {
@@ -324,16 +341,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         
         UIImage *image = [UIImage imageNamed: screenBackgroundImageName];
         viewController.view.layer.contents = (__bridge id _Nullable)(image.CGImage);
-    }
-    
-    NSString *navBarBackgroundColor = self.navigatorStyle[@"navBarBackgroundColor"];
-    if (navBarBackgroundColor) {
-        
-        UIColor *color = navBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarBackgroundColor] : nil;
-        viewController.navigationController.navigationBar.barTintColor = color;
-        
-    } else {
-        viewController.navigationController.navigationBar.barTintColor = nil;
     }
     
     NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
