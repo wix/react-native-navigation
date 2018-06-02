@@ -83,9 +83,12 @@ public class StyleParamsParser {
         result.topTabsHeight = getInt("topTabsHeight", getDefaultTopTabsHeight());
 
         result.screenBackgroundColor = getColor("screenBackgroundColor", getDefaultScreenBackgroundColor());
+        result.rootBackgroundImageName = params.getString("rootBackgroundImageName");
 
         result.bottomTabsInitialIndex = getInt("initialTabIndex", 0);
         result.bottomTabsHidden = getBoolean("bottomTabsHidden", getDefaultBottomTabsHidden());
+        result.bottomTabsHideShadow = getBoolean("bottomTabsHideShadow", false);
+
         result.drawScreenAboveBottomTabs = !result.bottomTabsHidden &&
                                            params.getBoolean("drawScreenAboveBottomTabs", getDefaultDrawScreenAboveBottomTabs());
         if (result.titleBarHideOnScroll) {
