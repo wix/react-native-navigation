@@ -57,7 +57,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, TopB
 	}
 
     public void applyOptions(Options options) {
-        touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside.isTrue());
+        touchDelegate.setInterceptTouchOutside(options.overlayOptions.interceptTouchOutside);
     }
 
     @Override
