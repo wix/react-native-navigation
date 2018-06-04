@@ -118,7 +118,7 @@ Navigation.mergeOptions(this.props.componentId, {
     title: 'Tab 1',
     badge: '2',
     testID: 'bottomTabTestID',
-    icon: require('tab.png'),
+    icon: require('tab.png')
   },
   sideMenu: {
     left: {
