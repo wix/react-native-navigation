@@ -118,7 +118,10 @@ Navigation.mergeOptions(this.props.componentId, {
     title: 'Tab 1',
     badge: '2',
     testID: 'bottomTabTestID',
-    icon: require('tab.png')
+    icon: require('tab.png'),
+    selectedIcon: require('selectedTab.png'),
+    disableIconTint: true, //set true if you want to disable the icon tinting
+    disableSelectedIconTint: true
   },
   sideMenu: {
     left: {
