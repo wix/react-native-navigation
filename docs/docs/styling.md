@@ -119,9 +119,6 @@ Navigation.mergeOptions(this.props.componentId, {
     badge: '2',
     testID: 'bottomTabTestID',
     icon: require('tab.png'),
-    selectedIcon: require('selectedTab.png'),
-    disableIconTint: true, //set true if you want to disable the icon tinting
-    disableSelectedIconTint: true
   },
   sideMenu: {
     left: {
@@ -165,7 +162,10 @@ Navigation.mergeOptions(this.props.componentId, {
     hideShadow: false
   },
   bottomTab: {
-    iconInsets: { top: 0, left: 0, bottom: 0, right: 0 }
+    iconInsets: { top: 0, left: 0, bottom: 0, right: 0 },
+    selectedIcon: require('selectedTab.png'),
+    disableIconTint: true, //set true if you want to disable the icon tinting
+    disableSelectedIconTint: true
   }
 }
 ```
