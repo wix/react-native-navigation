@@ -26,6 +26,9 @@
 @property (nonatomic, strong) NSNumber* backButtonHidden;
 @property (nonatomic, strong) NSString* backButtonTitle;
 @property (nonatomic, strong) NSNumber* hideBackButtonTitle;
+@property (nonatomic, strong) NSNumber* searchBar;
+@property (nonatomic, strong) NSNumber* searchBarHiddenWhenScrolling;
+@property (nonatomic, strong) NSString* searchBarPlaceholder;
 
 @property (nonatomic, strong) RNNComponentOptions* component;
 

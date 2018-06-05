@@ -47,6 +47,16 @@ static NSString* const navigationEvent	= @"RNN.nativeEvent";
 	[self send:navigationEvent body:@{@"name":commandName , @"params": params}];
 }
 
+-(void)sendOnSearchBarUpdated:(NSString *)componentId
+						 text:(NSString*)text
+					isFocused:(BOOL)isFocused {
+	[self send:navigationEvent body:@{@"name": @"searchBarUpdated",
+									  @"params": @{
+												  @"componentId": componentId,
+												  @"text": text,
+												  @"isFocused": @(isFocused)}}];
+}
+
 - (void)addListener:(NSString *)eventName {
 	[super addListener:eventName];
 	if ([eventName isEqualToString:onAppLaunched]) {

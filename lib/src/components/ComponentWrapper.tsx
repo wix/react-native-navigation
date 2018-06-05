@@ -1,16 +1,24 @@
-import * as React from 'react';
-import * as  _ from 'lodash';
-import * as ReactLifecyclesCompat from 'react-lifecycles-compat';
+import * as React from "react";
+import * as _ from "lodash";
+import * as ReactLifecyclesCompat from "react-lifecycles-compat";
 
 export class ComponentWrapper {
-
-  static wrap(componentName: string, OriginalComponentClass: React.ComponentType<any>, store): React.ComponentType<any> {
-
-    class WrappedComponent extends React.Component<any, { componentId: string; allProps: {}; }> {
-
+  static wrap(
+    componentName: string,
+    OriginalComponentClass: React.ComponentType<any>,
+    store
+  ): React.ComponentType<any> {
+    class WrappedComponent extends React.Component<
+      any,
+      { componentId: string; allProps: {} }
+    > {
       static getDerivedStateFromProps(nextProps, prevState) {
         return {
-          allProps: _.merge({}, nextProps, store.getPropsForId(prevState.componentId))
+          allProps: _.merge(
+            {},
+            nextProps,
+            store.getPropsForId(prevState.componentId)
+          )
         };
       }
 
@@ -52,6 +60,12 @@ export class ComponentWrapper {
         }
       }
 
+      onSearchBarUpdated(text, isFocused) {
+        if (this.originalComponentRef.onSearchBarUpdated) {
+          this.originalComponentRef.onSearchBarUpdated(text, isFocused);
+        }
+      }
+
       render() {
         return (
           <OriginalComponentClass
@@ -65,7 +79,9 @@ export class ComponentWrapper {
 
       private _assertComponentId() {
         if (!this.props.componentId) {
-          throw new Error(`Component ${componentName} does not have a componentId!`);
+          throw new Error(
+            `Component ${componentName} does not have a componentId!`
+          );
         }
       }
 
