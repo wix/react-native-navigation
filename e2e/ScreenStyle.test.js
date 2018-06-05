@@ -136,9 +136,10 @@ describe('screen style', () => {
 
   it('set searchBar and handle onSearchUpdated event', async () => {
     await elementById(testIDs.SHOW_TOPBAR_SEARCHBAR).tap();
-    await expect(elementByLabel("Start Typing")).toBeVisible();
-    await elementByLabel("Start Typing").tap();
-    await elementByLabel("Start Typing").typeText("124");
-    await expect(elementById(testIDs.SEARCH_RESULT_ITEM)).toHaveText("Item 124")
+    await expect(elementByLabel('Start Typing')).toBeVisible();
+    await elementByLabel('Start Typing').tap();
+    const query = '124'
+    await elementByLabel('Start Typing').typeText(query);
+    await expect(elementById(testIDs.SEARCH_RESULT_ITEM)).toHaveText(`Item ${query}`)
   });
 });

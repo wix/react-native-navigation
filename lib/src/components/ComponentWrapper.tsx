@@ -1,6 +1,6 @@
-import * as React from "react";
-import * as _ from "lodash";
-import * as ReactLifecyclesCompat from "react-lifecycles-compat";
+import * as React from 'react';
+import * as _ from 'lodash';
+import * as ReactLifecyclesCompat from 'react-lifecycles-compat';
 
 export class ComponentWrapper {
   static wrap(

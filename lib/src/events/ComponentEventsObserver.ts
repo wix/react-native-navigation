@@ -1,8 +1,8 @@
-import { EventsRegistry } from "./EventsRegistry";
-import { Store } from "../components/Store";
+import { EventsRegistry } from './EventsRegistry';
+import { Store } from '../components/Store';
 
-const BUTTON_PRESSED_EVENT_NAME = "buttonPressed";
-const ON_SEARCH_BAR_UPDATED = "searchBarUpdated";
+const BUTTON_PRESSED_EVENT_NAME = 'buttonPressed';
+const ON_SEARCH_BAR_UPDATED = 'searchBarUpdated';
 
 export class ComponentEventsObserver {
   constructor(private eventsRegistry: EventsRegistry, private store: Store) {

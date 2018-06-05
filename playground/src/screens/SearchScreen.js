@@ -1,5 +1,5 @@
-const React = require("react");
-const { Component } = require("react");
+const React = require('react');
+const { Component } = require('react');
 
 const {
   StyleSheet,
@@ -8,10 +8,10 @@ const {
   Button,
   Text,
   Platform
-} = require("react-native");
+} = require('react-native');
 
-const { Navigation } = require("react-native-navigation");
-const testIDs = require("../testIDs");
+const { Navigation } = require('react-native-navigation');
+const testIDs = require('../testIDs');
 
 const ITEMS = [...Array(200).keys()].map(key => ({ key: `Item ${key}` }));
 
@@ -20,11 +20,13 @@ class SearchControllerScreen extends Component {
     return {
       topBar: {
         title: {
-          text: "Search"
+          text: 'Search'
         },
         largeTitle: true,
         searchBar: true,
-        searchBarPlaceholder: "Start Typing"
+        searchBarHiddenWhenScrolling: true,
+        translucent: true,
+        searchBarPlaceholder: 'Start Typing'
       }
     };
   }
@@ -32,30 +34,30 @@ class SearchControllerScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: ""
+      query: ''
     };
   }
 
   filteredData() {
     return ITEMS.filter(
       item =>
-        this.state.query.length == 0 || item.key.indexOf(this.state.query) > -1
+        this.state.query.length === 0 || item.key.indexOf(this.state.query) > -1
     );
   }
 
-  highlight(string, query) {
-    if (query.length > 0 && string.indexOf(query) > -1) {
-      const before = string.split(query)[0];
-      const after = string.split(query)[1];
+  highlight(text, query) {
+    if (query.length > 0 && text.indexOf(query) > -1) {
+      const before = text.split(query)[0];
+      const after = text.split(query)[1];
       return (
         <Text>
           <Text>{before}</Text>
-          <Text style={{ backgroundColor: "yellow" }}>{query}</Text>
+          <Text style={{ backgroundColor: 'yellow' }}>{query}</Text>
           <Text>{after}</Text>
         </Text>
       );
     }
-    return string;
+    return text;
   }
 
   render() {
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
   row: {
     height: 50,
     padding: 20,
-    justifyContent: "center"
+    justifyContent: 'center'
   },
   rowText: {
     fontSize: 18
