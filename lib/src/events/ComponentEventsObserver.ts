@@ -12,12 +12,8 @@ export class ComponentEventsObserver {
   }
 
   public registerForAllComponents(): void {
-    this.eventsRegistry.registerComponentDidAppearListener(
-      this.componentDidAppear
-    );
-    this.eventsRegistry.registerComponentDidDisappearListener(
-      this.componentDidDisappear
-    );
+    this.eventsRegistry.registerComponentDidAppearListener(this.componentDidAppear);
+    this.eventsRegistry.registerComponentDidDisappearListener(this.componentDidDisappear);
     this.eventsRegistry.registerNativeEventListener(this.onNativeEvent);
   }
 
