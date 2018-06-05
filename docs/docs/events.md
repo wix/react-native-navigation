@@ -16,7 +16,7 @@ Called each time this component appears on screen (attached to the view heirarch
 ```js
 class MyComponent extends Component {
   componentDidAppear() {
-    
+
   }
 }
 ```
@@ -39,7 +39,7 @@ Called each time this component disappears from screen (detached from the view h
 ```js
 class MyComponent extends Component {
   componentDidAppear() {
-    
+
   }
 }
 ```
@@ -89,7 +89,17 @@ Called when a TopBar button is pressed.
 ```js
 class MyComponent extends Component {
   onNavigationButtonPressed(buttonId) {
-    
+
+  }
+}
+```
+
+## onSearchBarUpdated (iOS 11+ only)
+Called when a SearchBar from NavigationBar gets updated.
+```js
+class MyComponent extends Component {
+  onSearchBarUpdated(query, isFocused) {
+
   }
 }
 ```
