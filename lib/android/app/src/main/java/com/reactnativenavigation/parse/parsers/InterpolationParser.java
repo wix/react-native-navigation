@@ -7,17 +7,15 @@ import org.json.JSONObject;
 
 public class InterpolationParser {
     public static Interpolation parse(JSONObject json, String interpolation) {
-        Interpolation result = Interpolation.DEFAULT;
-        if (json.has(interpolation)) {
-            switch (json.optString(interpolation)) {
-                case "decelerate":
-                    result = Interpolation.DECELERATING;
-                    break;
-                case "accelerate":
-                    result = Interpolation.ACCELERATING;
-                    break;
-            }
+        switch (json.optString(interpolation, "default")) {
+            case "decelerate":
+                return Interpolation.DECELERATE;
+            case "accelerateDecelerate":
+                return Interpolation.ACCELERATE_DECELERATE;
+            case "accelerate":
+                return Interpolation.ACCELERATE;
+            default:
+                return Interpolation.DEFAULT;
         }
-        return result;
     }
 }
