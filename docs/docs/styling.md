@@ -191,12 +191,16 @@ Navigation.mergeOptions(this.props.componentId, {
     backgroundColor: 'red'
   },
   topBar: {
-    height: 70, // TopBar height in dp.
+    height: 70, // TopBar height in dp
     borderColor: 'red',
     borderHeight: 1.3,
+    elevation: 1.5, // TopBar elevation in dp
     title: {
-      height: 70 // TitleBar height in dp.
+      height: 70 // TitleBar height in dp
     }
+  },
+  bottomTabs: {
+    titleDisplayMode: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' // Sets the title state for each tab.
   }
 }
 ```
@@ -211,4 +215,89 @@ If you'd like to use a custom font, you'll first have to edit your project.
 
 * iOS - follow this [guide](https://medium.com/@dabit3/adding-custom-fonts-to-react-native-b266b41bff7f)
 
-All supported styles are defined [here](https://github.com/wix/react-native-controllers#styling-navigation). There's also an example project there showcasing all the different styles.
+## Customizing screen animations
+Animation used for navigation commands that modify the layout hierarchy can be controlled in options. Animations can be modified per command and it's also possible to change the default animation for each command.
+
+## Animation properties
+
+The following properties can be animated:
+* x
+* y
+* alpha
+* scaleX
+* scaleY
+* rotationX
+* rotationY
+* rotation
+
+```js
+{
+  from: 0, // Mandatory, initial value
+  to: 1, // Mandatory, end value
+  duration: 400, // Default value is 300 ms
+  startDelay: 100, // Default value is 0
+  interpolation: 'accelerate' | 'decelerate' // Optional
+}
+```
+
+For example, changing the animation used when the app is first launched:
+```js
+Navigation.setDefaultOptions({
+  animations: {
+    startApp: {
+      y: {
+        from: 1000,
+        to: 0,
+        duration: 500,
+        interpolation: 'accelerate',
+      },
+      alpha: {
+        from: 0,
+        to: 1,
+        duration: 400,
+        startDelay: 100,
+        interpolation: 'accelerate'
+      }
+    }
+  }
+});
+```
+
+## Customizing navigation commands animation
+
+Animations for the following set of commands can be customized
+* startApp
+* push
+* pop
+* showModal
+* dismissModal
+
+## Customizing stack command animation
+
+When *pushing* and *popping* screens to and from a stack, you can control the TopBar, BottomTabs and actual content animations as separately.
+
+```js
+animations: {
+  push: {
+    topBar: {
+      id: 'TEST', // Optional, id of the TopBar we'd like to animate.
+      alpha: {
+        from: 0,
+        to: 1
+      }
+    },
+    bottomTabs: {
+      alpha: {
+        from: 0,
+        to: 1
+      }
+    },
+    content: {
+      alpha: {
+        from: 0,
+        to: 1
+      }
+    }
+  }
+}
+```

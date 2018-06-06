@@ -46,6 +46,7 @@ public class TopBarOptions {
         options.height = NumberParser.parse(json, "height");
         options.borderColor = ColorParser.parse(json, "borderColor");
         options.borderHeight = FractionParser.parse(json, "borderHeight");
+        options.elevation = FractionParser.parse(json, "elevation");
 
         options.validate();
         return options;
@@ -60,6 +61,7 @@ public class TopBarOptions {
     public Bool hideOnScroll = new NullBool();
     public Bool drawBehind = new NullBool();
     public Number height = new NullNumber();
+    public Fraction elevation = new NullFraction();
     public Fraction borderHeight = new NullFraction();
     public Color borderColor = new NullColor();
     @Nullable public ArrayList<Button> leftButtons;
@@ -79,6 +81,7 @@ public class TopBarOptions {
         if (other.height.hasValue()) height = other.height;
         if (other.borderHeight.hasValue()) borderHeight = other.borderHeight;
         if (other.borderColor.hasValue()) borderColor = other.borderColor;
+        if (other.elevation.hasValue()) elevation = other.elevation;
         validate();
     }
 
@@ -96,6 +99,7 @@ public class TopBarOptions {
         if (!height.hasValue()) height = defaultOptions.height;
         if (!borderHeight.hasValue()) borderHeight = defaultOptions.borderHeight;
         if (!borderColor.hasValue()) borderColor = defaultOptions.borderColor;
+        if (!elevation.hasValue()) elevation = defaultOptions.elevation;
         validate();
     }
 

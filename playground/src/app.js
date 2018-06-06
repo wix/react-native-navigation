@@ -63,20 +63,6 @@ function start() {
               interpolation: 'decelerate'
             }
           },
-          bottomTabs: {
-            y: {
-              from: 1000,
-              to: 0,
-              duration: 500,
-              interpolation: 'decelerate',
-            },
-            alpha: {
-              from: 0,
-              to: 1,
-              duration: 500,
-              interpolation: 'decelerate'
-            }
-          },
           content: {
             y: {
               from: 1000,

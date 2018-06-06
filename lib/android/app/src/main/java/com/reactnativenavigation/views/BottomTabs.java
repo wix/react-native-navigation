@@ -18,7 +18,7 @@ public class BottomTabs extends AHBottomNavigation {
         setContentDescription("BottomTabs");
     }
 
-    public void setTabTag(int index, Text testId) {
+    public void setTabTestId(int index, Text testId) {
         if (!testId.hasValue()) return;
         View view = getViewAtPosition(index);
         view.setTag(testId.get());
@@ -42,5 +42,10 @@ public class BottomTabs extends AHBottomNavigation {
     @Override
     public void setInactiveColor(int inactiveColor) {
         if (getInactiveColor() != inactiveColor) super.setInactiveColor(inactiveColor);
+    }
+
+    @Override
+    public void setTitleState(TitleState titleState) {
+        if (getTitleState() != titleState) super.setTitleState(titleState);
     }
 }

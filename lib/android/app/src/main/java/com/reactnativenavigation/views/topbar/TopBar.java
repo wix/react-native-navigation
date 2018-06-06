@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.topbar;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
@@ -27,6 +28,7 @@ import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
@@ -216,7 +218,16 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setBackgroundColor(Color color) {
-        titleBar.setBackgroundColor(color);
+        if (!color.hasValue()) return;
+        setBackgroundColor(color.get());
+    }
+
+    public void setElevation(Fraction elevation) {
+        if (elevation.hasValue() &&
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+            getElevation() != elevation.get().floatValue()) {
+            setElevation(UiUtils.dpToPx(getContext(), elevation.get().floatValue()));
+        }
     }
 
     public Toolbar getTitleBar() {

@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
@@ -20,10 +21,11 @@ import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
-import com.reactnativenavigation.views.topbar.TopBarBackgroundView;
+import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
+import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -31,7 +33,10 @@ import org.junit.Test;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.widget.RelativeLayout.BELOW;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class OptionsApplyingTest extends BaseTest {
     private Activity activity;
@@ -39,6 +44,8 @@ public class OptionsApplyingTest extends BaseTest {
     private ComponentViewController uut;
     private IReactView view;
     private Options initialNavigationOptions;
+    private TopBarController topBarController;
+    private TopBar topBar;
 
     @Override
     public void beforeEach() {
@@ -54,11 +61,18 @@ public class OptionsApplyingTest extends BaseTest {
                 (activity1, componentId, componentName) -> view,
                 initialNavigationOptions
         );
+        topBarController = new TopBarController() {
+            @Override
+            protected TopBar createTopBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener topBarButtonClickListener, StackLayout stackLayout) {
+                topBar = spy(super.createTopBar(context, buttonCreator, titleBarReactViewCreator, topBarBackgroundViewController, topBarButtonClickListener, stackLayout));
+                return topBar;
+            }
+        };
         stackController = new StackControllerBuilder(activity)
                 .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
-                .setTopBarController(new TopBarController())
+                .setTopBarController(topBarController)
                 .setId("stack")
                 .setInitialOptions(new Options())
                 .createStackController();
@@ -128,7 +142,7 @@ public class OptionsApplyingTest extends BaseTest {
         opts.topBar.background.color = new com.reactnativenavigation.parse.params.Color(Color.RED);
         uut.mergeOptions(opts);
 
-        assertThat(((ColorDrawable) stackController.getTopBar().getTitleBar().getBackground()).getColor()).isEqualTo(Color.RED);
+        assertThat(((ColorDrawable) stackController.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
     }
 
     @Test
@@ -205,6 +219,7 @@ public class OptionsApplyingTest extends BaseTest {
 
     @Test
     public void appliesTopBarComponent() throws Exception {
+        disablePushAnimation(uut);
         JSONObject json = new JSONObject();
         json.put("component", new JSONObject().put("name","someComponent").put("componentId", "id"));
         uut.options.topBar.background = TopBarBackgroundOptions.parse(json);
@@ -212,8 +227,7 @@ public class OptionsApplyingTest extends BaseTest {
         stackController.push(uut, new CommandListenerAdapter());
         uut.onViewAppeared();
 
-        assertThat(((ColorDrawable) stackController.getTopBar().getTitleBar().getBackground()).getColor()).isEqualTo(Color.TRANSPARENT);
-        assertThat(ViewUtils.findChildrenByClassRecursive(stackController.getTopBar(), TopBarBackgroundView.class)).isNotNull();
+        verify(topBar, times(1)).setBackgroundComponent(any());
     }
 
     @Test
