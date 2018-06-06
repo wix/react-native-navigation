@@ -53,11 +53,57 @@ class WelcomeScreen extends Component {
           <Button title='Orientation' testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
           <Button title='Provided Id' testID={testIDs.PROVIDED_ID} onPress={this.onClickProvidedId} />
           <Button title='Complex Layout' testID={testIDs.COMPLEX_LAYOUT_BUTTON} onPress={this.onClickComplexLayout} />
+          <Button title='Push screen after async action' onPress={this.onClickSwitchToStack} />
           <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
         </View>
         <View style={{ width: 2, height: 2, borderRadius: 1, backgroundColor: 'red', alignSelf: 'center' }} />
       </View>
     );
+  }
+
+  onClickSwitchToStack = () => {
+    Navigation.setRoot({
+      root: {
+        stack: {
+          id: 'MyStack',
+          children: [
+            {
+              component: {
+                name: 'navigation.playground.ProfileScreen',
+                passProps: {
+                  text: 'This is Profile',
+                  myFunction: () => 'Hello from a function!'
+                },
+              }
+            },
+            {
+              component: {
+                name: 'navigation.playground.LoginScreen',
+                passProps: {
+                  text: 'This is Login',
+                  myFunction: () => 'Hello from a function!'
+                },
+              }
+            }
+          ],
+          options: {
+            topBar: {
+              visible: false,
+            }
+          }
+        },
+      }
+    })
+
+    // lets pretend this is async action dispatched from store
+    // basically user logs in > dispatch an action > change screen to Profile
+    setTimeout(() => {
+      Navigation.push('MyStack', {
+        component: {
+          name: 'navigation.playground.ProfileScreen'
+        }
+      })
+    }, 3000)
   }
 
   onClickSwitchToTabs = () => {
