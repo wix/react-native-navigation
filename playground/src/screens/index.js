@@ -49,6 +49,9 @@ function registerScreens() {
   Navigation.registerComponent('CustomTextButton', () => CustomTextButton);
   Navigation.registerComponent('CustomRoundedButton', () => CustomRoundedButton);
   Navigation.registerComponent('TopBarBackground', () => TopBarBackground);
+
+  Navigation.registerComponent('navigation.playground.LoginScreen', () => TextScreen)
+  Navigation.registerComponent('navigation.playground.ProfileScreen', () => TextScreen)
 }
 
 module.exports = {
