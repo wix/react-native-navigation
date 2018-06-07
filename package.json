@@ -56,7 +56,7 @@
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0",
     "@types/react": "16.x.x",
-    "@types/react-native": "0.51.x",
+    "@types/react-native": "0.51.1",
     "@types/lodash": "4.x.x",
     "@types/prop-types": "15.x.x",
     "@types/react-test-renderer": "16.x.x",

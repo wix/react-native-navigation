@@ -15,6 +15,7 @@ class SideMenuScreen extends Component {
         <Text testID={testIDs.SIDE_BAR}>Side Bar</Text>
         <Text style={styles.h1}>{`This is a ${this.props.side} side menu screen`}</Text>
         <Button title='Hide Side Menu' testID={testID} onPress={() => this.hideSideMenu()} />
+        <Button title='Push' testID={this.props.side + testIDs.SIDE_MENU_PUSH_BUTTON} onPress={() => this.pushAndCloseSideMenu()} />
       </View>
     );
   }
@@ -25,6 +26,15 @@ class SideMenuScreen extends Component {
         [this.props.side]: {
           visible: false
         }
+      }
+    });
+  }
+
+  pushAndCloseSideMenu() {
+    this.hideSideMenu();
+    Navigation.push('tab1Stack', {
+      component: {
+        name: 'navigation.playground.TextScreen'
       }
     });
   }
