@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.reactnativenavigation.params.CollapsingTopBarParams;
+import com.reactnativenavigation.react.ResourceDrawableUriHelper;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.Scrim;
 
@@ -36,7 +37,7 @@ public class CollapsingTopBarBackground extends FrameLayout {
 
     private void setImageSource() {
         if (params.imageUri != null) {
-            backdrop.setImageURI(params.imageUri);
+            backdrop.setImageURI(ResourceDrawableUriHelper.computeUri(params.imageUri));
         }
     }
 
