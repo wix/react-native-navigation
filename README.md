@@ -10,9 +10,13 @@
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 
 ## Important
-Latest stable version is `1.1.x` and is published to npm under tag `latest`. It supports react-native >= 0.48.
-<br><br>We are currently redesigning and rewriting this project under branch `v2`.
-<br>As a result, new features and pull requests on the current stable version will take more time to process.
+We are currently in late stages of development of [v2](https://github.com/wix/react-native-navigation/tree/v2), which is published to npm under `alpha` tag.
+* New to RNN? We recommend you start with [v2](https://github.com/wix/react-native-navigation/tree/v2).
+* Already using v1? now is the time to migrate your code base to [v2](https://github.com/wix/react-native-navigation/tree/v2), and you can easily do do with a single line of code using the [v1-v2 adapter](https://github.com/wix-playground/react-native-navigation-v1-v2-adapter).
+<br><br>Have any questions regarding v2? Join us in [Discord](https://discord.gg/DhkZjq2) #v2 channel.
+
+<br><br>Latest stable version is `1.1.x` and is published to npm under tag `latest`. It supports react-native >= 0.48.
+>⚠️Since we're focusing our efforts on v2, we are not accepting pull requests for v1 and are not addresing issues for v1.
 
 ### tl;dr
 
