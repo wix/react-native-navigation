@@ -498,4 +498,18 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public static void setStartAppPromise(Promise promise) {
         NavigationActivity.startAppPromise = promise;
     }
+
+    public static void onCatalystInstanceDestroy() {
+        if (currentActivity == null) {
+            return;
+        }
+        currentActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (currentActivity != null) {
+                    currentActivity.destroyLayouts();
+                }
+            }
+        });
+    }
 }
