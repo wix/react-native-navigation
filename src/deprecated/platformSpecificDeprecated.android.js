@@ -593,23 +593,28 @@ function addNavigatorButtons(screen, sideMenuParams) {
 
   // Get image uri from image id
   const rightButtons = getRightButtons(screen);
+  let clonedRightButtons;
   if (rightButtons) {
-    rightButtons.forEach(function(button) {
-      button.enabled = !button.disabled;
+    clonedRightButtons = rightButtons.map(function(button) {
+      const clonedButton = { ...button };
+
+      clonedButton.enabled = !button.disabled;
       if (button.icon) {
         const icon = resolveAssetSource(button.icon);
         if (icon) {
-          button.icon = icon.uri;
+          clonedButton.icon = icon.uri;
         }
       }
       if (button.buttonColor) {
-        button.color = processColor(button.buttonColor);
+        clonedButton.color = processColor(button.buttonColor);
       }
       if (button.component) {
         const passPropsKey = _.uniqueId('customButtonComponent');
         PropRegistry.save(passPropsKey, button.passProps);
-        button.passProps = {passPropsKey};
+        clonedButton.passProps = {passPropsKey};
       }
+
+      return clonedButton;
     });
   }
 
@@ -631,8 +636,8 @@ function addNavigatorButtons(screen, sideMenuParams) {
     screen.fab = fab;
   }
 
-  if (rightButtons) {
-    screen.rightButtons = rightButtons;
+  if (clonedRightButtons) {
+    screen.rightButtons = clonedRightButtons;
   }
   if (leftButton) {
     screen.leftButton = leftButton;
