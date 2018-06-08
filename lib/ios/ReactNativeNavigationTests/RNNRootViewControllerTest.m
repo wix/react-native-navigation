@@ -51,21 +51,21 @@
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	
+
 	XCTAssertTrue([self.uut.navigationController.navigationBar.barTintColor isEqual:expectedColor]);
 }
 
 -(void)testTopBarBackgroundColorWithoutNavigationController{
 	NSNumber* inputColor = @(0xFFFF0000);
 	self.options.topBar.background.color = inputColor;
-	
+
 	XCTAssertNoThrow([self.uut viewWillAppear:false]);
 }
 
 - (void)testStatusBarHidden_default {
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
 }
 
@@ -73,7 +73,7 @@
 	self.options.statusBar.hidden = @(1);
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertTrue([self.uut prefersStatusBarHidden]);
 }
 
@@ -82,7 +82,7 @@
 	self.options.topBar.visible = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
 }
 
@@ -100,7 +100,7 @@
 	self.options.statusBar.hidden = @(0);
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
 }
 
@@ -108,14 +108,14 @@
 	NSString* title =@"some title";
 	self.options.topBar.title.text = title;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	
+
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue([self.uut.navigationItem.title isEqual:title]);
 }
 
 -(void)testTitle_default{
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	
+
 	[self.uut viewWillAppear:false];
 	XCTAssertNil(self.uut.navigationItem.title);
 }
@@ -129,9 +129,9 @@
 	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 
--(void)testScreenBackgroundColor_validColor{
+-(void)testbackgroundColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.layout.screenBackgroundColor = inputColor;
+	self.options.layout.backgroundColor = inputColor;
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	XCTAssertTrue([self.uut.view.backgroundColor isEqual:expectedColor]);
@@ -198,7 +198,7 @@
 	[vc setViewControllers:controllers];
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue([self.uut.tabBarItem.badgeValue isEqualToString:tabBadgeInput]);
-	
+
 }
 
 -(void)testTopBarTransparent_BOOL_True {
@@ -222,7 +222,7 @@
 
 
 -(void)testStoreOriginalTopBarImages {
-	
+
 }
 
 -(void)testTopBarTextFontSize_withoutTextFontFamily_withoutTextColor {
@@ -332,11 +332,11 @@
 	self.options.layout.orientation = supportedOrientations;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
-	
+
 	[controllers addObject:self.uut];
 	[vc setViewControllers:controllers];
 	[self.uut viewWillAppear:false];
-	
+
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskPortrait;
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
 }
@@ -346,11 +346,11 @@
 	self.options.layout.orientation = supportedOrientations;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
-	
+
 	[controllers addObject:self.uut];
 	[vc setViewControllers:controllers];
 	[self.uut viewWillAppear:false];
-	
+
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscape);
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
 }
@@ -360,11 +360,11 @@
 	self.options.layout.orientation = supportedOrientations;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
-	
+
 	[controllers addObject:self.uut];
 	[vc setViewControllers:controllers];
 	[self.uut viewWillAppear:false];
-	
+
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskAll;
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
 }
@@ -373,7 +373,7 @@
 	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
 	NSString* expectedTitle = @"test";
@@ -384,18 +384,18 @@
 
 -(void)testRightButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
-	
+
 	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
 	NSString* expectedTitle = @"test";
 	XCTAssertTrue([button.buttonId isEqualToString:expectedButtonId]);
 	XCTAssertTrue([button.title isEqualToString:expectedTitle]);
 	XCTAssertFalse(button.enabled);
-	
+
 	//TODO: Determine how to tests buttonColor,buttonFontSize and buttonFontWeight?
 }
 
@@ -404,7 +404,7 @@
 	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
 	NSString* expectedTitle = @"test";
@@ -415,18 +415,18 @@
 
 -(void)testLeftButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
-	
+
 	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
 	NSString* expectedTitle = @"test";
 	XCTAssertTrue([button.buttonId isEqualToString:expectedButtonId]);
 	XCTAssertTrue([button.title isEqualToString:expectedTitle]);
 	XCTAssertFalse(button.enabled);
-	
+
 	//TODO: Determine how to tests buttonColor,buttonFontSize and buttonFontWeight?
 }
 
@@ -495,21 +495,21 @@
 -(void)testTopBarLargeTitle_default {
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
 }
 -(void)testTopBarLargeTitle_true {
 	self.options.topBar.largeTitle = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
 }
 -(void)testTopBarLargeTitle_false {
 	self.options.topBar.largeTitle  = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
 }
 -(void)testTopBarBlur_false {
@@ -533,7 +533,7 @@
 	self.options.backgroundImage = backgroundImage;
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:backgroundImage]);
 }
 
@@ -549,7 +549,7 @@
 	self.options.topBar.drawBehind = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertTrue(self.uut.edgesForExtendedLayout & UIRectEdgeTop);
 }
 
@@ -557,7 +557,7 @@
 	self.options.topBar.drawBehind = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertFalse(self.uut.edgesForExtendedLayout & UIRectEdgeTop);
 }
 
@@ -565,7 +565,7 @@
 	self.options.bottomTabs.drawBehind = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertTrue(self.uut.edgesForExtendedLayout & UIRectEdgeBottom);
 }
 
@@ -573,7 +573,7 @@
 	self.options.bottomTabs.drawBehind = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertFalse(self.uut.edgesForExtendedLayout & UIRectEdgeBottom);
 }
 
