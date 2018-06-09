@@ -22,7 +22,9 @@ class SearchControllerScreen extends Component {
         title: {
           text: 'Search'
         },
-        largeTitle: true,
+        largeTitle: {
+          visible: true
+        },
         searchBar: true,
         searchBarHiddenWhenScrolling: true,
         translucent: true,

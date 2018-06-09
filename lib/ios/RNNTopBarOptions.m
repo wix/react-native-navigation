@@ -30,7 +30,23 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	[self.title applyOn:viewController];
 	[self.largeTitle applyOn:viewController];
 	[self.background applyOn:viewController];
-
+	
+	if (@available(iOS 11.0, *)) {
+		if ([self.searchBar boolValue] && !viewController.navigationItem.searchController) {
+			UISearchController *search = [[UISearchController alloc]initWithSearchResultsController:nil];
+			search.dimsBackgroundDuringPresentation = NO;
+			if ([viewController conformsToProtocol:@protocol(UISearchResultsUpdating)]) {
+				[search setSearchResultsUpdater:((UIViewController <UISearchResultsUpdating> *) viewController)];
+			}
+			if (self.searchBarPlaceholder) {
+				search.searchBar.placeholder = self.searchBarPlaceholder;
+			}
+			viewController.navigationItem.searchController = search;
+			// enable it back if needed on componentDidAppear
+			viewController.navigationItem.hidesSearchBarWhenScrolling = NO;
+		}
+	}
+	
 	if (self.visible) {
 		[viewController.navigationController setNavigationBarHidden:![self.visible boolValue] animated:[self.animate boolValue]];
 	} else {
