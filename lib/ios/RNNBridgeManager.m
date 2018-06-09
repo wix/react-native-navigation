@@ -18,6 +18,7 @@
 @implementation RNNBridgeManager {
 	NSURL* _jsCodeLocation;
 	NSDictionary* _launchOptions;
+	id<RNNBridgeManagerDelegate> _delegate;
 	RCTBridge* _bridge;
 
 	RNNStore* _store;
@@ -25,10 +26,11 @@
 	RNNCommandsHandler* _commandsHandler;
 }
 
-- (instancetype)initWithJsCodeLocation:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions {
+- (instancetype)initWithJsCodeLocation:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RNNBridgeManagerDelegate>)delegate {
 	if (self = [super init]) {
 		_jsCodeLocation = jsCodeLocation;
 		_launchOptions = launchOptions;
+		_delegate = delegate;
 		
 		_store = [RNNStore new];
 		_bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:_launchOptions];
@@ -53,6 +55,14 @@
 	[_store registerExternalComponent:name callback:callback];
 }
 
+- (NSArray *)extraModulesFromDelegate {
+	if ([_delegate respondsToSelector:@selector(extraModulesForBridge:)]) {
+		return [_delegate extraModulesForBridge:_bridge];
+	}
+	
+	return nil;
+}
+
 # pragma mark - RCTBridgeDelegate
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
@@ -67,7 +77,7 @@
 	_commandsHandler = [[RNNCommandsHandler alloc] initWithStore:_store controllerFactory:controllerFactory eventEmitter:eventEmitter];
 	RNNBridgeModule *bridgeModule = [[RNNBridgeModule alloc] initWithCommandsHandler:_commandsHandler];
 
-	return @[bridgeModule,eventEmitter];
+	return [@[bridgeModule,eventEmitter] arrayByAddingObjectsFromArray:[self extraModulesFromDelegate]];
 }
 
 # pragma mark - JavaScript & Bridge Notifications

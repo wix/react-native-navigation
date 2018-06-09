@@ -18,4 +18,6 @@
 
 -(void)sendOnNavigationCommand:(NSString *)commandName params:(NSDictionary*)params;
 
+-(void)sendOnSearchBarUpdated:(NSString *)componentId text:(NSString*)text isFocused:(BOOL)isFocused;
+
 @end

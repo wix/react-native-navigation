@@ -55,6 +55,7 @@ class WelcomeScreen extends Component {
           <Button title='Orientation' testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
           <Button title='Provided Id' testID={testIDs.PROVIDED_ID} onPress={this.onClickProvidedId} />
           <Button title='Complex Layout' testID={testIDs.COMPLEX_LAYOUT_BUTTON} onPress={this.onClickComplexLayout} />
+          <Button title='Push SearchBar' testID={testIDs.SHOW_TOPBAR_SEARCHBAR} onPress={this.onClickSearchBar} />
           <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
         </View>
         <View style={{ width: 2, height: 2, borderRadius: 1, backgroundColor: 'red', alignSelf: 'center' }} />
@@ -526,6 +527,13 @@ class WelcomeScreen extends Component {
           },
         },
       },
+    });
+  }
+  onClickSearchBar = () => {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.SearchControllerScreen'
+      }
     });
   }
 }

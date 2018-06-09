@@ -30,7 +30,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	[self.title applyOn:viewController];
 	[self.largeTitle applyOn:viewController];
 	[self.background applyOn:viewController];
-	
+
 	if (self.visible) {
 		[viewController.navigationController setNavigationBarHidden:![self.visible boolValue] animated:[self.animate boolValue]];
 	} else {
