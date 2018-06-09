@@ -225,6 +225,78 @@
 	
 }
 
+
+-(void)testTopBarLargeTitle_default {
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
+}
+-(void)testTopBarLargeTitle_true {
+	self.options.topBar.largeTitle.visible = @(1);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
+}
+-(void)testTopBarLargeTitle_false {
+	self.options.topBar.largeTitle.visible  = @(0);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
+}
+
+
+-(void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withoutTextColor {
+	NSNumber* topBarTextFontSizeInput = @(15);
+	self.options.topBar.largeTitle.fontSize = topBarTextFontSizeInput;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	UIFont* expectedFont = [UIFont systemFontOfSize:15];
+	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+}
+
+-(void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withTextColor {
+	NSNumber* topBarTextFontSizeInput = @(15);
+	NSNumber* inputColor = @(0xFFFF0000);
+	self.options.topBar.largeTitle.fontSize = topBarTextFontSizeInput;
+	self.options.topBar.largeTitle.color = inputColor;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	UIFont* expectedFont = [UIFont systemFontOfSize:15];
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+}
+
+-(void)testTopBarLargeTitleFontSize_withTextFontFamily_withTextColor {
+	NSNumber* topBarTextFontSizeInput = @(15);
+	NSNumber* inputColor = @(0xFFFF0000);
+	NSString* inputFont = @"HelveticaNeue";
+	self.options.topBar.largeTitle.fontSize = topBarTextFontSizeInput;
+	self.options.topBar.largeTitle.color = inputColor;
+	self.options.topBar.largeTitle.fontFamily = inputFont;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
+	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+}
+
+-(void)testTopBarLargeTitleFontSize_withTextFontFamily_withoutTextColor {
+	NSNumber* topBarTextFontSizeInput = @(15);
+	NSString* inputFont = @"HelveticaNeue";
+	self.options.topBar.largeTitle.fontSize = topBarTextFontSizeInput;
+	self.options.topBar.largeTitle.fontFamily = inputFont;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
+	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+}
+
+
 -(void)testTopBarTextFontSize_withoutTextFontFamily_withoutTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
 	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
@@ -492,26 +564,6 @@
 	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
 }
 
--(void)testTopBarLargeTitle_default {
-	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-	
-	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
-}
--(void)testTopBarLargeTitle_true {
-	self.options.topBar.largeTitle = @(1);
-	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-	
-	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
-}
--(void)testTopBarLargeTitle_false {
-	self.options.topBar.largeTitle  = @(0);
-	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-	
-	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
-}
 -(void)testTopBarBlur_false {
 	NSNumber* topBarBlurInput = @(0);
 	self.options.topBar.blur = topBarBlurInput;

@@ -28,8 +28,10 @@ class OptionsScreen extends Component {
           color: 'black',
           fontSize: 16,
           alignment: 'center',
-          fontFamily: 'HelveticaNeue-Italic',
-          largeTitle: false
+          fontFamily: 'HelveticaNeue-Italic'
+        },
+        largeTitle: {
+          visible: false
         },
         subtitle: {
           text: 'Static Subtitle',
@@ -179,9 +181,11 @@ class OptionsScreen extends Component {
         title: {
           text: 'Dynamic Title',
           color: '#00FFFF',
-          largeTitle: false,
           fontSize: 20,
           fontFamily: 'HelveticaNeue-CondensedBold'
+        },
+        largeTitle: {
+          visible: false
         }
       }
     });
