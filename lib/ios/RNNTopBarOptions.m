@@ -161,8 +161,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	}
 	
 	UIImage *image = self.backButtonImage ? [RCTConvert UIImage:self.backButtonImage] : nil;
-	[[UINavigationBar appearance] setBackIndicatorImage:image];
-	[[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:image];
+	[viewController.navigationController.navigationBar setBackIndicatorImage:image];
+	[viewController.navigationController.navigationBar setBackIndicatorTransitionMaskImage:image];
 	
 	if (self.hideBackButtonTitle) {
 		self.backButtonTitle = @"";
@@ -201,5 +201,3 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 }
 
 @end
-
-

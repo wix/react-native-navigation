@@ -22,6 +22,8 @@
 -(void)showModalAfterLoad:(NSDictionary*)notif {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
 	RNNRootViewController *topVC = (RNNRootViewController*)[self topPresentedVC];
+	topVC.definesPresentationContext = YES;
+	
 	if (topVC.options.animations.showModal.hasCustomAnimation) {
 		self.toVC.transitioningDelegate = topVC;
 	}

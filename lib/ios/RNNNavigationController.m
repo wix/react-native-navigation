@@ -8,20 +8,36 @@
 	return self.viewControllers.lastObject.supportedInterfaceOrientations;
 }
 
+- (UIViewController<RNNRootViewProtocol>*)getTopViewController {
+	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController);
+}
+
 - (BOOL)isCustomTransitioned {
 	return NO;
 }
 
 - (BOOL)isCustomViewController {
-	return [((UIViewController<RNNRootViewProtocol>*)self.topViewController) isCustomViewController];
+	return [self.getTopViewController isCustomViewController];
 }
 
 - (void)mergeOptions:(NSDictionary *)options {
-	[((UIViewController<RNNRootViewProtocol>*)self.topViewController) mergeOptions:options];
+	[self.getTopViewController mergeOptions:options];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	return self.getTopViewController.preferredStatusBarStyle;
+}
+
+- (UIModalPresentationStyle)modalPresentationStyle {
+	return self.getTopViewController.modalPresentationStyle;
+}
+
+- (void)applyModalOptions {
+	[self.getTopViewController applyModalOptions];
 }
 
 - (NSString *)componentId {
-	return _componentId ? _componentId : ((UIViewController<RNNRootViewProtocol>*)self.topViewController).componentId;
+	return _componentId ? _componentId : self.getTopViewController.componentId;
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
@@ -33,7 +49,7 @@
 }
 
 - (RNNNavigationOptions *)options {
-	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController).options;
+	return self.getTopViewController.options;
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {

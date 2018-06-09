@@ -37,7 +37,6 @@
 	[self.view addSubview:self.sideMenu.view];
 	[self.view bringSubviewToFront:self.sideMenu.view];
 	
-	
 	return self;
 }
 
@@ -69,6 +68,24 @@
 		else {
 			@throw [NSException exceptionWithName:@"UnknownSideMenuControllerType" reason:[@"Unknown side menu type " stringByAppendingString:[controller description]] userInfo:nil];
 		}
+	}
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	return self.openedViewController.preferredStatusBarStyle;
+}
+
+- (UIViewController *)openedViewController {
+	switch (self.sideMenu.openSide) {
+		case MMDrawerSideNone:
+			return self.center;
+		case MMDrawerSideLeft:
+			return self.left;
+		case MMDrawerSideRight:
+			return self.right;
+		default:
+			return self.center;
+			break;
 	}
 }
 
