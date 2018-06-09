@@ -10,7 +10,6 @@ export default class StyledScreen extends Component {
     return {
       topBar: {
         title: {
-          largeTitle: false,
           text: 'My Screen'
         },
         drawBehind: true,
@@ -76,6 +75,12 @@ Navigation.mergeOptions(this.props.componentId, {
     testID: 'topBar',
     component: {
       name: 'example.CustomTopBar'
+    },
+    largeTitle: {
+      visible: true,
+      fontSize: 30,
+      color: 'red',
+      fontFamily: 'Helvetica'
     },
     title: {
       text: 'Title',
@@ -163,11 +168,16 @@ Navigation.mergeOptions(this.props.componentId, {
     transparent: false,
     noBorder: false,
     blur: false,
-    largeTitle: false,
     backButtonImage: require('icon.png'),
     backButtonHidden: false,
     backButtonTitle: 'Back',
     hideBackButtonTitle: false,
+    largeTitle: {
+      visible: true,
+      fontSize: 30,
+      color: 'red',
+      fontFamily: 'Helvetica'
+    },
   },
   bottomTabs: {
     translucent: true,

@@ -15,7 +15,9 @@ class CustomTransitionOrigin extends Component {
           fontFamily: 'HelveticaNeue-Italic',
           fontSize: 16
         },
-        largeTitle: false,
+        largeTitle: {
+          visible: false
+        },
         translucent: true
       }
     };

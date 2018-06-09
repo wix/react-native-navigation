@@ -1,21 +1,24 @@
-#import "RNNTitleOptions.h"
+#import "RNNLargeTitleOptions.h"
 #import "RNNTitleViewHelper.h"
 
 
-@implementation RNNTitleOptions
+@implementation RNNLargeTitleOptions
 
 - (void)applyOn:(UIViewController *)viewController {
-	if (self.text) {
-		viewController.navigationItem.title = self.text;
-	}
-	
-	NSDictionary* fontAttributes = [self fontAttributes];
-	
-	viewController.navigationController.navigationBar.titleTextAttributes = fontAttributes;
 
-	if (self.subtitle.text) {
-		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] init:viewController title:self.text subtitle:self.subtitle.text titleImageData:nil isSetSubtitle:NO];
-		[titleViewHelper setup:self];
+	if (@available(iOS 11.0, *)) {
+		
+		viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+	
+		if ([self.visible boolValue]){
+			viewController.navigationController.navigationBar.prefersLargeTitles = YES;
+			viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
+		} else {
+			viewController.navigationController.navigationBar.prefersLargeTitles = NO;
+		}
+		
+		NSDictionary* fontAttributes = [self fontAttributes];
+		viewController.navigationController.navigationBar.largeTitleTextAttributes = fontAttributes;
 	}
 }
 

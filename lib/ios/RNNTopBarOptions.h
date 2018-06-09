@@ -1,4 +1,5 @@
 #import "RNNOptions.h"
+#import "RNNLargeTitleOptions.h"
 #import "RNNTitleOptions.h"
 #import "RNNSubtitleOptions.h"
 #import "RNNBackgroundOptions.h"
@@ -17,8 +18,8 @@
 @property (nonatomic, strong) NSNumber* noBorder;
 @property (nonatomic, strong) NSNumber* blur;
 @property (nonatomic, strong) NSNumber* animate;
-@property (nonatomic, strong) NSNumber* largeTitle;
 @property (nonatomic, strong) NSString* testID;
+@property (nonatomic, strong) RNNLargeTitleOptions* largeTitle;
 @property (nonatomic, strong) RNNTitleOptions* title;
 @property (nonatomic, strong) RNNSubtitleOptions* subtitle;
 @property (nonatomic, strong) RNNBackgroundOptions* background;
