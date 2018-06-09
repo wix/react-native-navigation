@@ -63,7 +63,11 @@ public class SingleScreenLayout extends BaseLayout {
             sideMenu = createSideMenu();
             createStack(getScreenStackParent());
         }
-        createFabAndSnackbarContainer();
+
+        if (screenParams.getFab() != null) {
+            createFabAndSnackbarContainer();
+        }
+
         sendScreenChangedEventAfterInitialPush();
     }
 
@@ -138,7 +142,9 @@ public class SingleScreenLayout extends BaseLayout {
     @Override
     public void destroy() {
         stack.destroy();
-        snackbarAndFabContainer.destroy();
+        if (snackbarAndFabContainer != null) {
+            snackbarAndFabContainer.destroy();
+        }
         if (sideMenu != null) {
             sideMenu.destroy();
         }
@@ -242,13 +248,19 @@ public class SingleScreenLayout extends BaseLayout {
 
     @Override
     public void showSnackbar(SnackbarParams params) {
+        if (snackbarAndFabContainer == null) {
+            createFabAndSnackbarContainer();
+        }
+
         final String navigatorEventId = stack.peek().getNavigatorEventId();
         snackbarAndFabContainer.showSnackbar(navigatorEventId, params);
     }
 
     @Override
     public void dismissSnackbar() {
-        snackbarAndFabContainer.dismissSnackbar();
+        if (snackbarAndFabContainer != null) {
+          snackbarAndFabContainer.dismissSnackbar();
+        }
     }
 
     @Override
