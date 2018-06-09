@@ -20,7 +20,7 @@ class CustomTransitionDestination extends Component {
         },
         largeTitle: {
           visible: false
-        }      
+        }
       }
     };
   }
