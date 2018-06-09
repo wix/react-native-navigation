@@ -46,7 +46,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 			viewController.navigationItem.hidesSearchBarWhenScrolling = NO;
 		}
 	}
-	
+
 	if (self.visible) {
 		[viewController.navigationController setNavigationBarHidden:![self.visible boolValue] animated:[self.animate boolValue]];
 	} else {
