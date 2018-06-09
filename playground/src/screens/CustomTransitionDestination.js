@@ -18,7 +18,9 @@ class CustomTransitionDestination extends Component {
           text: 'ye babyyyyyy',
           fontFamily: 'HelveticaNeue-Italic'
         },
-        largeTitle: false
+        largeTitle: {
+          visible: false
+        }      
       }
     };
   }
