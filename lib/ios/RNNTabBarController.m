@@ -57,6 +57,10 @@
 	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).componentId;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).preferredStatusBarStyle;
+}
+
 #pragma mark UITabBarControllerDelegate
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {

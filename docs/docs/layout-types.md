@@ -1,5 +1,9 @@
 # Layout Types
 
+The possibilities of the RNN layout API are wide open in terms of what you can construct with it: stacks, tabs and drawers in many combinations.
+
+You can compose arbitrary native layout hierarchies (although some weird edge cases may not be possible or produce errors). In such cases, open an issue so that we either fix it or warn in dev time.
+
 ## component
 
 Component layout holds a single react component.
@@ -18,7 +22,7 @@ const component = {
 ## stack
 
 Support children layouts of any kind.
-When initialized with more than one screen, the last screen will be presented at the top of the stack.
+A stack can be initialised with more then one screen, in which case the last screen will be presented at the top of the stack.
 
 ```js
 const stack = {
@@ -30,9 +34,7 @@ const stack = {
       component: {}
     }
   ],
-  options: {
-
-  }
+  options: {}
 }
 ```
 
@@ -42,22 +44,29 @@ const stack = {
 const bottomTabs = {
   children: [
     {
-      stack: {}
+      stack: {
+        children: [],
+        options: {
+          bottomTab: {
+            title: 'Tab 1',
+            icon: require('../images/one.png')
+          }
+        }
+      }
     },
     {
       component: {
-        name: 'tab1',
+        name: 'secondTabScreen',
         options: {
           bottomTab: {
-            icon: require('icon')
+            title: 'Tab 2',
+            icon: require('../images/two.png')
           }
         }
       }
     }
   ],
-  options: {
-
-  }
+  options: {}
 }
 ```
 
@@ -101,4 +110,103 @@ const splitView = {
     maxWidth: 300, // Maximum width of master view
   },
 }
+```
+
+# Layout Examples
+
+## Single page app with two side menus:
+
+```js
+Navigation.setRoot({
+  root: {
+    sideMenu: {
+      left: {
+        component: {
+          name: 'navigation.playground.TextScreen',
+          passProps: {
+            text: 'This is a left side menu screen'
+          }
+        }
+      },
+      center: {
+        component: {
+          name: 'navigation.playground.WelcomeScreen'
+        },
+      },
+      right: {
+        component: {
+          name: 'navigation.playground.TextScreen',
+          passProps: {
+            text: 'This is a right side menu screen'
+          }
+        }
+      }
+    }
+  }
+});
+```
+
+## Tab based app (with passProps example):
+
+```js
+Navigation.setRoot({
+  root: {
+    bottomTabs: {
+      children: [
+        {
+          component: {
+            name: 'navigation.playground.TextScreen',
+            passProps: {
+              text: 'This is tab 1',
+              myFunction: () => 'Hello from a function!',
+            },
+          },
+        },
+        {
+          component: {
+            name: 'navigation.playground.TextScreen',
+            passProps: {
+              text: 'This is tab 2',
+            },
+          },
+        },
+      ],
+    },
+  }
+});
+```
+
+## Stack based app (with options example, initialised with 2 screens):
+
+```js
+Navigation.setRoot({
+  root: {
+    stack: {
+      options: {
+        topBar: {
+          hidden: true
+        }
+      },
+      children: [
+        {
+          component: {
+            name: 'navigation.playground.TextScreen',
+            passProps: {
+              text: 'This is tab 1',
+              myFunction: () => 'Hello from a function!',
+            }
+          }
+        },
+        {
+          component: {
+            name: 'navigation.playground.TextScreen',
+            passProps: {
+              text: 'This is tab 2',
+            }
+          }
+        }
+      ]
+    }
+  }
+});
 ```

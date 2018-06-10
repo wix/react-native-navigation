@@ -52,6 +52,12 @@ export class ComponentWrapper {
         }
       }
 
+      onSearchBarUpdated(text, isFocused) {
+        if (this.originalComponentRef.onSearchBarUpdated) {
+          this.originalComponentRef.onSearchBarUpdated(text, isFocused);
+        }
+      }
+
       render() {
         return (
           <OriginalComponentClass

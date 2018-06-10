@@ -22,7 +22,7 @@ public class Options {
         if (json == null) return result.withDefaultOptions(defaultOptions);
 
         result.topBar = TopBarOptions.parse(typefaceManager, json.optJSONObject("topBar"));
-        result.topTabsOptions = TopTabsOptions.parse(json.optJSONObject("topTabs"));
+        result.topTabs = TopTabsOptions.parse(json.optJSONObject("topTabs"));
         result.topTabOptions = TopTabOptions.parse(typefaceManager, json.optJSONObject("topTab"));
         result.bottomTabOptions = BottomTabOptions.parse(json.optJSONObject("bottomTab"));
         result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
@@ -38,7 +38,7 @@ public class Options {
     }
 
     @NonNull public TopBarOptions topBar = new TopBarOptions();
-    @NonNull public TopTabsOptions topTabsOptions = new TopTabsOptions();
+    @NonNull public TopTabsOptions topTabs = new TopTabsOptions();
     @NonNull public TopTabOptions topTabOptions = new TopTabOptions();
     @NonNull public BottomTabOptions bottomTabOptions = new BottomTabOptions();
     @NonNull public BottomTabsOptions bottomTabsOptions = new BottomTabsOptions();
@@ -58,7 +58,7 @@ public class Options {
     public Options copy() {
         Options result = new Options();
         result.topBar.mergeWith(topBar);
-        result.topTabsOptions.mergeWith(topTabsOptions);
+        result.topTabs.mergeWith(topTabs);
         result.topTabOptions.mergeWith(topTabOptions);
         result.bottomTabOptions.mergeWith(bottomTabOptions);
         result.bottomTabsOptions.mergeWith(bottomTabsOptions);
@@ -76,7 +76,7 @@ public class Options {
 	public Options mergeWith(final Options other) {
         Options result = copy();
         result.topBar.mergeWith(other.topBar);
-        result.topTabsOptions.mergeWith(other.topTabsOptions);
+        result.topTabs.mergeWith(other.topTabs);
         result.topTabOptions.mergeWith(other.topTabOptions);
         result.bottomTabOptions.mergeWith(other.bottomTabOptions);
         result.bottomTabsOptions.mergeWith(other.bottomTabsOptions);
@@ -92,7 +92,7 @@ public class Options {
     Options withDefaultOptions(final Options defaultOptions) {
         topBar.mergeWithDefault(defaultOptions.topBar);
         topTabOptions.mergeWithDefault(defaultOptions.topTabOptions);
-        topTabsOptions.mergeWithDefault(defaultOptions.topTabsOptions);
+        topTabs.mergeWithDefault(defaultOptions.topTabs);
         bottomTabOptions.mergeWithDefault(defaultOptions.bottomTabOptions);
         bottomTabsOptions.mergeWithDefault(defaultOptions.bottomTabsOptions);
         fabOptions.mergeWithDefault(defaultOptions.fabOptions);
@@ -120,7 +120,7 @@ public class Options {
     }
 
     public Options clearTopTabsOptions() {
-        topTabsOptions = new TopTabsOptions();
+        topTabs = new TopTabsOptions();
         return this;
     }
 

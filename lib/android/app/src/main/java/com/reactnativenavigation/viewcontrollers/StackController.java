@@ -54,7 +54,12 @@ public class StackController extends ParentController<StackLayout> {
         }
         applyOnParentController(parentController ->
                 ((ParentController) parentController).applyChildOptions(
-                        this.options.copy().clearTopBarOptions().clearAnimationOptions().clearFabOptions(),
+                        this.options.copy()
+                                .clearTopBarOptions()
+                                .clearAnimationOptions()
+                                .clearFabOptions()
+                                .clearTopTabOptions()
+                                .clearTopTabsOptions(),
                         child
                 )
         );
@@ -71,7 +76,12 @@ public class StackController extends ParentController<StackLayout> {
         }
         applyOnParentController(parentController ->
                 ((ParentController) parentController).mergeChildOptions(
-                        options.copy().clearTopBarOptions().clearAnimationOptions().clearFabOptions(),
+                        options.copy()
+                                .clearTopBarOptions()
+                                .clearAnimationOptions()
+                                .clearFabOptions()
+                                .clearTopTabOptions()
+                                .clearTopTabsOptions(),
                         child
                 )
         );

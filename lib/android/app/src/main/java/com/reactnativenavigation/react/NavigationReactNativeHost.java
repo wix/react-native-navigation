@@ -23,7 +23,8 @@ public class NavigationReactNativeHost extends ReactNativeHost {
         this(application, application.isDebug(), application.createAdditionalReactPackages());
     }
 
-	public NavigationReactNativeHost(Application application, boolean isDebug, final List<ReactPackage> additionalReactPackages) {
+	@SuppressWarnings("WeakerAccess")
+    public NavigationReactNativeHost(Application application, boolean isDebug, final List<ReactPackage> additionalReactPackages) {
 		super(application);
 		this.isDebug = isDebug;
 		this.additionalReactPackages = additionalReactPackages;

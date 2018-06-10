@@ -52,15 +52,15 @@ public class BottomTabsOptionsPresenter {
         if (options.drawBehind.isTrue()) {
             lp.bottomMargin = 0;
         }
-
-        // Allocate space for the bottom tabs only if it is visible and it should not draw behind.
         if (options.visible.isTrueOrUndefined() && options.drawBehind.isFalseOrUndefined()) {
             lp.bottomMargin = bottomTabs.getHeight();
         }
-
     }
 
     private void applyBottomTabsOptions(BottomTabsOptions options, AnimationsOptions animationsOptions) {
+        if (options.titleDisplayMode.hasValue()) {
+            bottomTabs.setTitleState(options.titleDisplayMode.toState());
+        }
         if (options.backgroundColor.hasValue()) {
             bottomTabs.setBackgroundColor(options.backgroundColor.get());
         }

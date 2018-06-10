@@ -1,8 +1,9 @@
 const React = require('react');
 const { Component } = require('react');
-const { View, Text, Button, Platform } = require('react-native');
+const { View, Text, Platform, TouchableHighlight } = require('react-native');
 
 const testIDs = require('../testIDs');
+const Button = require('./Button');
 
 const { Navigation } = require('react-native-navigation');
 
@@ -16,8 +17,10 @@ class WelcomeScreen extends Component {
       },
       topBar: {
         title: {
-          largeTitle: false,
           title: 'My Screen'
+        },
+        largeTitle: {
+          visible: false,
         },
         drawBehind: true,
         visible: false,
@@ -38,6 +41,11 @@ class WelcomeScreen extends Component {
           <Button title='Push Lifecycle Screen' testID={testIDs.PUSH_LIFECYCLE_BUTTON} onPress={this.onClickLifecycleScreen} />
           <Button title='Static Lifecycle Events' testID={testIDs.PUSH_STATIC_LIFECYCLE_BUTTON} onPress={this.onClickShowStaticLifecycleOverlay} />
           <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
+          {Platform.OS === 'ios' && (
+            <Navigation.Element elementId='PreviewElement'>
+              <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPressIn={this.onClickShowPreview} title='Push Preview' />
+            </Navigation.Element>
+          )}
           <Button title='Push Options Screen' testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
           <Button title='Push External Component' testID={testIDs.PUSH_EXTERNAL_COMPONENT_BUTTON} onPress={this.onClickPushExternalComponent} />
           {Platform.OS === 'android' && <Button title='Push Top Tabs screen' testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />}
@@ -47,6 +55,7 @@ class WelcomeScreen extends Component {
           <Button title='Orientation' testID={testIDs.ORIENTATION_BUTTON} onPress={this.onClickPushOrientationMenuScreen} />
           <Button title='Provided Id' testID={testIDs.PROVIDED_ID} onPress={this.onClickProvidedId} />
           <Button title='Complex Layout' testID={testIDs.COMPLEX_LAYOUT_BUTTON} onPress={this.onClickComplexLayout} />
+          <Button title='Push SearchBar' testID={testIDs.SHOW_TOPBAR_SEARCHBAR} onPress={this.onClickSearchBar} />
           <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
         </View>
         <View style={{ width: 2, height: 2, borderRadius: 1, backgroundColor: 'red', alignSelf: 'center' }} />
@@ -118,6 +127,7 @@ class WelcomeScreen extends Component {
           options: {
             bottomTabs: {
               tabColor: 'red',
+              titleDisplayMode: 'alwaysShow',
               selectedTabColor: 'blue',
               fontFamily: 'HelveticaNeue-Italic',
               fontSize: 13,
@@ -146,6 +156,7 @@ class WelcomeScreen extends Component {
               children: [
                 {
                   stack: {
+                    id: 'tab1Stack',
                     children: [
                       {
                         component: {
@@ -312,6 +323,38 @@ class WelcomeScreen extends Component {
     undefined();
   }
 
+  onClickShowPreview = async () => {
+    await Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.PushedScreen',
+        options: {
+          animations: {
+            push: {
+              enable: false
+            }
+          },
+          preview: {
+            elementId: 'PreviewElement',
+            height: 300,
+            commit: true,
+            actions: [{
+              id: 'action-cancel',
+              title: 'Cancel'
+            }, {
+              id: 'action-delete',
+              title: 'Delete',
+              actions: [{
+                id: 'action-delete-sure',
+                title: 'Are you sure?',
+                style: 'destructive'
+              }]
+            }]
+          }
+        }
+      }
+    });
+  }
+
   onClickPushOptionsScreen = () => {
     Navigation.push(this.props.componentId, {
       component: {
@@ -340,9 +383,7 @@ class WelcomeScreen extends Component {
               },
               options: {
                 topTab: {
-                  title: {
-                    text: 'Tab 1'
-                  }
+                  title: 'Tab 1'
                 },
                 topBar: {
                   title: {
@@ -391,13 +432,13 @@ class WelcomeScreen extends Component {
               }
             }
           }
-        ]
-      },
-      options: {
-        topTabs: {
-          selectedTabColor: '#12766b',
-          unselectedTabColor: 'red',
-          fontSize: 6
+        ],
+        options: {
+          topTabs: {
+            selectedTabColor: '#12766b',
+            unselectedTabColor: 'red',
+            fontSize: 6
+          }
         }
       }
     });
@@ -486,6 +527,13 @@ class WelcomeScreen extends Component {
           },
         },
       },
+    });
+  }
+  onClickSearchBar = () => {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.SearchControllerScreen'
+      }
     });
   }
 }

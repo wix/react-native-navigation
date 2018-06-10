@@ -1,4 +1,5 @@
 #import "RNNStatusBarOptions.h"
+#define kStatusBarAnimationDuration 0.35
 
 @implementation RNNStatusBarOptions
 
@@ -19,9 +20,15 @@
 		}
 	}
 	
-	if (self.style) {
-		[viewController setNeedsStatusBarAppearanceUpdate];
+	if (self.style || self.hidden) {
+		[UIView animateWithDuration:[self statusBarAnimationDuration] animations:^{
+			[viewController setNeedsStatusBarAppearanceUpdate];
+		}];
 	}
+}
+
+- (CGFloat)statusBarAnimationDuration {
+	return [self.animate boolValue] ? kStatusBarAnimationDuration : CGFLOAT_MIN;
 }
 
 @end

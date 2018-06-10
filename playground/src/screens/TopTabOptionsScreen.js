@@ -41,7 +41,9 @@ class TopTabOptionsScreen extends PureComponent {
           fontSize: 16,
           fontFamily: 'HelveticaNeue-CondensedBold'
         },
-        largeTitle: false,
+        largeTitle: {
+          visible: false,
+        },
         buttonColor: 'red',
       }
     });

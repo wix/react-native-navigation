@@ -9,7 +9,6 @@ import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.views.toptabs.TopTabs;
 
 class TopTabsStyleHelper {
     private TopTabs topTabs;
@@ -31,11 +30,11 @@ class TopTabsStyleHelper {
         int tabTextColor = originalColors != null ? originalColors.getColorForState(topTabs.getDefaultTabColors(), -1) : -1;
 
         if (selected.hasValue()) {
-            tabTextColor = selected.get();
+            selectedTabColor = selected.get();
         }
 
         if (unselected.hasValue()) {
-            selectedTabColor = unselected.get();
+            tabTextColor = unselected.get();
         }
 
         topTabs.setTabTextColors(tabTextColor, selectedTabColor);

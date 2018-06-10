@@ -5,21 +5,25 @@ import android.animation.TimeInterpolator;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 
 public enum Interpolation {
-    ACCELERATING,
-    DECELERATING,
+    ACCELERATE,
+    DECELERATE,
+    ACCELERATE_DECELERATE,
     DEFAULT,
     NO_VALUE;
 
     public TimeInterpolator getInterpolator() {
         switch (this) {
-            case ACCELERATING:
+            case ACCELERATE:
                 return new AccelerateInterpolator();
-            case DECELERATING:
+            case DECELERATE:
                 return new DecelerateInterpolator();
-            case DEFAULT:
+            case ACCELERATE_DECELERATE:
                 return new AccelerateDecelerateInterpolator();
+            case DEFAULT:
+                return new LinearInterpolator();
         }
         return null;
     }

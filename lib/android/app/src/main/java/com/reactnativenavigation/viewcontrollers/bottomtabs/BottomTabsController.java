@@ -137,7 +137,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
                 bottomTabs.addItems(tabs);
                 bottomTabs.post(() -> {
                     for (int i = 0; i < bottomTabOptionsList.size(); i++) {
-                        bottomTabs.setTabTag(i, bottomTabOptionsList.get(i).testId);
+                        bottomTabs.setTabTestId(i, bottomTabOptionsList.get(i).testId);
                     }
                 });
                 selectTab(0);

@@ -5,11 +5,14 @@
 #import "RNNNavigationOptions.h"
 #import "RNNRootViewController.h"
 #import "RNNSplitViewController.h"
+#import "RNNElementFinder.h"
 #import "React/RCTUIManager.h"
+
 
 static NSString* const setRoot	= @"setRoot";
 static NSString* const setStackRoot	= @"setStackRoot";
 static NSString* const push	= @"push";
+static NSString* const preview	= @"preview";
 static NSString* const pop	= @"pop";
 static NSString* const popTo	= @"popTo";
 static NSString* const popToRoot	= @"popToRoot";
@@ -93,11 +96,41 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 -(void)push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
-	[_eventEmitter sendOnNavigationCommand:push params:@{@"componentId": componentId}];
-	UIViewController<RNNRootViewProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
-	[_navigationStackManager push:newVc onTop:componentId completion:^{
-		completion();
-	} rejection:rejection];
+
+	UIViewController<RNNRootViewProtocol, UIViewControllerPreviewingDelegate> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
+
+	if (newVc.options.preview.elementId) {
+		UIViewController* vc = [_store findComponentForId:componentId];
+
+		if([vc isKindOfClass:[RNNRootViewController class]]) {
+			RNNRootViewController* rootVc = (RNNRootViewController*)vc;
+			rootVc.previewController = newVc;
+
+			RNNElementFinder* elementFinder = [[RNNElementFinder alloc] initWithFromVC:vc];
+			RNNElementView* elementView = [elementFinder findElementForId:newVc.options.preview.elementId];
+
+			CGSize size = CGSizeMake(rootVc.view.frame.size.width, rootVc.view.frame.size.height);
+			
+			if (newVc.options.preview.width) {
+				size.width = [newVc.options.preview.width floatValue];
+			}
+
+			if (newVc.options.preview.height) {
+				size.height = [newVc.options.preview.height floatValue];
+			}
+
+			if (newVc.options.preview.width || newVc.options.preview.height) {
+				newVc.preferredContentSize = size;
+			}
+
+			[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:elementView];
+		}
+	} else {
+		[_eventEmitter sendOnNavigationCommand:push params:@{@"componentId": componentId}];
+		[_navigationStackManager push:newVc onTop:componentId completion:^{
+			completion();
+		} rejection:rejection];
+	}
 }
 
 -(void)setStackRoot:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {

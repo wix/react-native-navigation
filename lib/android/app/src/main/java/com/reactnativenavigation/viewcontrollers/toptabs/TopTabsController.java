@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers.toptabs;
 
 import android.app.Activity;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.view.View;
 
@@ -84,11 +85,13 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     @Override
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
-        applyOnParentController(parentController -> {
-                Options opt = this.options.copy();
-                ((ParentController) parentController).applyChildOptions(opt.clearTopTabOptions().clearTopTabsOptions(), child);
-            }
-        );
+        applyOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(this.options.copy(), child));
+    }
+
+    @CallSuper
+    public void mergeChildOptions(Options options, Component child) {
+        super.mergeChildOptions(options, child);
+        applyOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(options.copy(), child));
     }
 
     public void switchToTab(int index) {

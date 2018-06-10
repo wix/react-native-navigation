@@ -277,9 +277,9 @@ public class OptionsTest extends BaseTest {
     @Test
     public void clear_topTabsOptions() {
         Options uut = new Options();
-        uut.topTabsOptions.fontSize = new Number(666);
+        uut.topTabs.fontSize = new Number(666);
         uut.clearTopTabsOptions();
-        assertThat(uut.topTabsOptions.fontSize.hasValue()).isFalse();
+        assertThat(uut.topTabs.fontSize.hasValue()).isFalse();
     }
 
     @Test

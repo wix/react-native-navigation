@@ -56,10 +56,9 @@ class StaticLifecycleOverlay extends Component {
   return (
     <TouchableOpacity
       style={styles.dismissBtn}
-      testID={testIDs.DISMISS_BUTTON}
       onPress={() => Navigation.dismissOverlay(this.props.componentId)}
     >
-      <Text style={{ color: 'red', alignSelf: 'center' }}>X</Text>
+      <Text testID={testIDs.DISMISS_BUTTON} style={{ color: 'red', alignSelf: 'center' }}>X</Text>
     </TouchableOpacity>
   );
   }
@@ -78,8 +77,8 @@ const styles = {
   },
   dismissBtn: {
     position: 'absolute',
-    width: 25,
-    height: 25,
+    width: 35,
+    height: 35,
     backgroundColor: 'white',
     justifyContent: 'center'
   },

@@ -4,8 +4,8 @@
 @implementation RNNLayoutOptions
 
 - (void)applyOn:(UIViewController *)viewController {
-	if (self.screenBackgroundColor) {
-		UIColor* screenColor = [RCTConvert UIColor:self.screenBackgroundColor];
+	if (self.backgroundColor) {
+		UIColor* screenColor = [RCTConvert UIColor:self.backgroundColor];
 		viewController.view.backgroundColor = screenColor;
 	}
 }
@@ -32,7 +32,7 @@
 			}
 		}
 	}
-	
+
 	return supportedOrientationsMask;
 }
 

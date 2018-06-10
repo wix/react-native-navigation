@@ -31,11 +31,11 @@ RCT_ENUM_CONVERTER(UIModalPresentationStyle,
 @implementation RCTConvert (UIModalTransitionStyle)
 
 RCT_ENUM_CONVERTER(UIModalTransitionStyle,
-                   (@{@"coverVertical": @(UIModalTransitionStyleCoverVertical),
-                      @"flipHorizontal": @(UIModalTransitionStyleFlipHorizontal),
-                      @"crossDissolve": @(UIModalTransitionStyleCrossDissolve),
-                      @"partialCurl": @(UIModalTransitionStylePartialCurl)
-                      }), UIModalTransitionStyleCoverVertical, integerValue)
+				   (@{@"coverVertical": @(UIModalTransitionStyleCoverVertical),
+					  @"flipHorizontal": @(UIModalTransitionStyleFlipHorizontal),
+					  @"crossDissolve": @(UIModalTransitionStyleCrossDissolve),
+					  @"partialCurl": @(UIModalTransitionStylePartialCurl)
+					  }), UIModalTransitionStyleCoverVertical, integerValue)
 
 @end
 
@@ -67,7 +67,7 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
 			[viewController.view insertSubview:backgroundImageView atIndex:0];
 		}
-
+		
 		backgroundImageView.layer.masksToBounds = YES;
 		backgroundImageView.image = [self.backgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.backgroundImage : [RCTConvert UIImage:self.backgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
@@ -79,22 +79,23 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
 			[viewController.navigationController.view insertSubview:backgroundImageView atIndex:0];
 		}
-
+		
 		backgroundImageView.layer.masksToBounds = YES;
 		backgroundImageView.image = [self.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.rootBackgroundImage : [RCTConvert UIImage:self.rootBackgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
-    
-    [self applyModalOptions:viewController];
+	
+	[self applyModalOptions:viewController];
 }
 
 - (void)applyModalOptions:(UIViewController*)viewController {
-    if (self.modalPresentationStyle) {
-        viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:self.modalPresentationStyle];
-    }
-    if (self.modalTransitionStyle) {
-        viewController.modalTransitionStyle = [RCTConvert UIModalTransitionStyle:self.modalTransitionStyle];
-    }
+	if (self.modalPresentationStyle) {
+		viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:self.modalPresentationStyle];
+		[viewController.view setBackgroundColor:[UIColor clearColor]];
+	}
+	if (self.modalTransitionStyle) {
+		viewController.modalTransitionStyle = [RCTConvert UIModalTransitionStyle:self.modalTransitionStyle];
+	}
 }
 
 

@@ -20,6 +20,8 @@ import com.reactnativenavigation.views.Component;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener {
 
+    private Runnable onAppearedListener;
+
     public interface ViewVisibilityListener {
         /**
          * @return true if the event is consumed, false otherwise
@@ -50,6 +52,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         fabOptionsPresenter = new FabOptionsPresenter();
         this.initialOptions = initialOptions;
         options = initialOptions.copy();
+    }
+
+    public void setOnAppearedListener(Runnable onAppearedListener) {
+        this.onAppearedListener = onAppearedListener;
     }
 
     protected abstract T createView();
@@ -162,6 +168,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             parentController.clearOptions();
             if (getView() instanceof Component) parentController.applyChildOptions(options, (Component) getView());
         });
+        if (onAppearedListener != null) {
+            onAppearedListener.run();
+            onAppearedListener = null;
+        }
     }
 
     public void onViewWillDisappear() {

@@ -4,8 +4,6 @@
 
 @interface RNNNavigationStackManager : NSObject
 
-@property (nonatomic, strong) UIViewController* fromVC;
-@property (nonatomic, strong) RNNRootViewController* toVC;
 @property (nonatomic) int loadCount;
 -(instancetype)initWithStore:(RNNStore*)store;
 

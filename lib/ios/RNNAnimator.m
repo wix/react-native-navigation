@@ -4,8 +4,8 @@
 @interface  RNNAnimator()
 @property (nonatomic, strong) RNNAnimationOptions* transitionOptions;
 @property (nonatomic) BOOL backButton;
-@property (nonatomic, strong) UIViewController* fromVC;
-@property (nonatomic, strong) UIViewController* toVC;
+@property (nonatomic, weak) UIViewController* fromVC;
+@property (nonatomic, weak) UIViewController* toVC;
 @end
 
 @implementation RNNAnimator
