@@ -11,10 +11,17 @@ const BUTTON_TWO = 'buttonTwo';
 const CUSTOM_BUTTON = 'customButton';
 const CUSTOM_BUTTON2 = 'customButton2';
 const BUTTON_LEFT = 'buttonLeft';
+const BUTTON_TOGGLE_ANOTHER = 'buttonToggleAnother';
+const BUTTON_ANOHTER = 'buttonAnother';
 const FAB = 'fab';
 const TOPBAR_HEIGHT = 67;
 
 class OptionsScreen extends Component {
+  constructor() {
+    super();
+    this.state = {showRightButton: false};
+  }
+
   static get options() {
     return {
       statusBar: {
@@ -129,12 +136,14 @@ class OptionsScreen extends Component {
         <Button title='Push Default Options Screen' testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
         <Button title='Show TopBar react view' testID={testIDs.SHOW_TOPBAR_REACT_VIEW} onPress={this.onShowTopBarReactView} />
         {Platform.OS === 'android' && <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onPush} />}
+        <Button title='Dynamic Top Bar Buttons' testID={testIDs.SHOW_DYNAMIC_TOPBAR_BUTTONS} onPress={this.showDynamicTopBarButtons}/>
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
   }
 
   onNavigationButtonPressed(id) {
+    console.log('on-navigation-button-pressed', id);
     if (id === BUTTON_ONE) {
       Navigation.mergeOptions(this.props.componentId, {
         topBar: {
@@ -172,7 +181,33 @@ class OptionsScreen extends Component {
       });
     } else if (id === BUTTON_LEFT) {
       Navigation.pop(this.props.componentId);
+    } else if (id === BUTTON_TOGGLE_ANOTHER) {
+      this.setState(({showRightButton}) => {
+        showRightButton = !showRightButton;
+        Navigation.mergeOptions(this.props.componentId, {
+          topBar: {
+            rightButtons: showRightButton ? [{
+              testID: BUTTON_ANOHTER,
+              id: BUTTON_ANOHTER,
+              title: 'Another'
+            }] : [],
+          }
+        });
+        return {showRightButton};
+      });
     }
+  }
+
+  showDynamicTopBarButtons = () => {
+    Navigation.mergeOptions(this.props.componentId, {
+      topBar: {
+        leftButtons: [{
+          testID: BUTTON_TOGGLE_ANOTHER,
+          id: BUTTON_TOGGLE_ANOTHER,
+          title: 'Toggle'
+        }]
+      }
+    });
   }
 
   onClickDynamicOptions = () => {

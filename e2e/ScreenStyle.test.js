@@ -96,6 +96,18 @@ describe('screen style', () => {
     await expect(elementById('buttonLeft')).toBeVisible();
   });
 
+  it('dynamically changing buttons on one side does not break the other side', async () => {
+    const ANOTHER = 'buttonAnother';
+    const TOGGLE = 'buttonToggleAnother';
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.SHOW_DYNAMIC_TOPBAR_BUTTONS).tap();
+    await expect(elementById(ANOTHER)).toBeNotVisible();
+    await elementById(TOGGLE).tap();
+    await expect(elementById(ANOTHER)).toBeVisible();
+    await elementById(TOGGLE).tap();
+    await expect(elementById(ANOTHER)).toBeNotVisible();
+  });
+
   it('tab bar items visibility', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementById(testIDs.FIRST_TAB_BAR_BUTTON)).toBeVisible();
