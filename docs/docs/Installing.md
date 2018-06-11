@@ -94,6 +94,7 @@
 	    defaultConfig {
 	        minSdkVersion 19
 	        targetSdkVersion 25
+	        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative51" // <- See note below for further instruction regarding compatibility with other React Native versions
 		...
 	    }
 	
@@ -111,7 +112,17 @@
 	    implementation project(':react-native-navigation')
 	}
 	```
-	
+	> react-native-navigation supports multiple React Native versions. Target the React Native version required by your project by specifying the RNN build flavor you require.
+><br><br>Available options:
+>
+>* `reactNative51`: Support for React Native 0.51-0.54
+>* `reactNative55`: Support for React Native 0.55 and above
+>
+><br>For example, To target React Native 0.55, replace the following line:<br>
+>`missingDimensionStrategy "RNN.reactNativeVersion", "reactNative51"`
+><br>with:<br>
+>`missingDimensionStrategy "RNN.reactNativeVersion", "reactNative55"`
+
 4. Make sure you're using the new gradle plugin, edit `android/gradle/wrapper/gradle-wrapper.properties`
 
 	```diff
