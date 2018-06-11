@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridge.h>
 #import "ReactNativeNavigation.h"
+#import "RNNStore.h"
 
 @interface RNNBridgeManager : NSObject <RCTBridgeDelegate>
 
@@ -9,5 +10,6 @@
 - (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
 
 @property (readonly, nonatomic, strong) RCTBridge *bridge;
+@property (readonly, nonatomic, strong) RNNStore *store;
 
 @end
