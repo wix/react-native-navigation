@@ -1,7 +1,9 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridge.h>
-#import "ReactNativeNavigation.h"
+#import "RNNBridgeManagerDelegate.h"
 #import "RNNStore.h"
+
+typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBridge* bridge);
 
 @interface RNNBridgeManager : NSObject <RCTBridgeDelegate>
 
