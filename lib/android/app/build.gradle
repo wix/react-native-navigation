@@ -29,7 +29,7 @@ android {
                 html.enabled true
             }
             testLogging {
-                events "passed", "skipped", "failed", "standardOut", "standardError"
+                events "PASSED", "SKIPPED", "FAILED", "standardOut", "standardError"
             }
             afterSuite { desc, result ->
                 if (!desc.parent) { // will match the outermost suite
