@@ -61,7 +61,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | sideMenu             |    ✅  |    ✅ |
 | tabs            |    ✅  |    ✅ |
 | External Component       |   ✅  |   ✅ |
-| splitView           |   [Contribute](/docs/WorkingLocally.md)   |   [Contribute](/docs/WorkingLocally.md) |
+| splitView           |   ✅   |   [Contribute](/docs/WorkingLocally.md) |
 
 ### Screen API
 
@@ -79,6 +79,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | customTransition            |✅|✅|
 | Screen Visibility        | ✅     |✅|
 | async commands (await push)     |  ✅        |✅   |
+| preview              |   ✅       |	:x:		|
 
 ### Navigation Options
 
@@ -212,4 +213,4 @@ Note:  v1 properties with names beginning with 'navBar' are replaced in v2 with 
 | switchToTab         |    ✅    |       ✅   |✅|
 | topBar react component        |   ✅     |✅|✅|
 |Shared Element Transition|     :x:  |✅| [Contribute](/docs/WorkingLocally.md)|
-| splitViewScreen       |     :x:  |    [Contribute](/docs/WorkingLocally.md)      | [Contribute](/docs/WorkingLocally.md)|
+| splitViewScreen       |     :x:  |    ✅      | [Contribute](/docs/WorkingLocally.md)|

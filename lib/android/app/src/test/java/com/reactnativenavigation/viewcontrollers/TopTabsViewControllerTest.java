@@ -24,7 +24,6 @@ import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
 import com.reactnativenavigation.views.toptabs.TopTabsViewPager;
 
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     private static final int SIZE = 2;
 
-    private StackController parentController;
+    private StackController stack;
     private TopTabsController uut;
     private List<ViewController> tabControllers = new ArrayList<>(SIZE);
     private List<Options> tabOptions = new ArrayList<>(SIZE);
@@ -65,9 +64,9 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut = spy(new TopTabsController(activity, childRegistry, "componentId", tabControllers, layoutCreator, options));
         tabControllers.forEach(viewController -> viewController.setParentController(uut));
 
-        parentController = spy(createStackController("stackId"));
-        parentController.push(uut, new CommandListenerAdapter());
-        uut.setParentController(parentController);
+        stack = spy(createStackController("stackId"));
+        stack.push(uut, new CommandListenerAdapter());
+        uut.setParentController(stack);
     }
 
     @NonNull
@@ -137,7 +136,7 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     @Test
     public void lifecycleMethodsSentWhenSelectedTabChanges() {
-        parentController.ensureViewIsCreated();
+        stack.ensureViewIsCreated();
         uut.ensureViewIsCreated();
         tabControllers.get(0).ensureViewIsCreated();
         tabControllers.get(1).ensureViewIsCreated();
@@ -157,7 +156,7 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     @Test
     public void lifecycleMethodsSentWhenSelectedPreviouslySelectedTab() {
-        parentController.ensureViewIsCreated();
+        stack.ensureViewIsCreated();
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
         uut.switchToTab(1);
@@ -171,7 +170,7 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     @Test
     public void setOptionsOfInitialTab() {
-        parentController.ensureViewIsCreated();
+        stack.ensureViewIsCreated();
         uut.ensureViewIsCreated();
         uut.onViewAppeared();
         verify(tabControllers.get(0), times(1)).onViewAppeared();
@@ -183,7 +182,7 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     @Test
     public void setOptionsWhenTabChanges() {
-        parentController.ensureViewIsCreated();
+        stack.ensureViewIsCreated();
         uut.ensureViewIsCreated();
         tabControllers.get(0).ensureViewIsCreated();
         tabControllers.get(1).ensureViewIsCreated();
@@ -211,7 +210,7 @@ public class TopTabsViewControllerTest extends BaseTest {
     @Test
     public void appliesOptionsOnLayoutWhenVisible() {
         tabControllers.get(0).ensureViewIsCreated();
-        parentController.ensureViewIsCreated();
+        stack.ensureViewIsCreated();
         uut.ensureViewIsCreated();
 
         uut.onViewAppeared();
@@ -220,18 +219,8 @@ public class TopTabsViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void applyOptions_applyOnlyOnFirstTopTabs() {
-        tabOptions.get(0).topTabOptions.title = new Text("tab title");
-        tabControllers.get(0).onViewAppeared();
-        ArgumentCaptor<Options> optionsCaptor = ArgumentCaptor.forClass(Options.class);
-        ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
-        verify(parentController, times(1)).applyChildOptions(optionsCaptor.capture(), viewCaptor.capture());
-        assertThat(optionsCaptor.getValue().topTabOptions.title.hasValue()).isFalse();
-    }
-
-    @Test
     public void applyOptions_tabsAreRemovedAfterViewDisappears() {
-        parentController.getView().removeAllViews();
+        stack.getView().removeAllViews();
 
         StackController stackController = spy(createStackController("stack"));
         ComponentViewController first = new ComponentViewController(

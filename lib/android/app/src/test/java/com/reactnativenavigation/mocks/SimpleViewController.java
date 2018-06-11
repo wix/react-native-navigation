@@ -45,7 +45,7 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
     @Override
     public void mergeOptions(Options options) {
-        applyOnParentController(parentController -> parentController.mergeChildOptions(options, view));
+        applyOnParentController(parentController -> parentController.mergeChildOptions(options, getView()));
         super.mergeOptions(options);
     }
 

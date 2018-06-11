@@ -82,6 +82,14 @@ describe('screen stack', () => {
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
+  it('push into a stack from BottomTabs', async () => {
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementByLabel('Pushed Screen')).toBeVisible();
+    await elementById(testIDs.POP_BUTTON).tap();
+    await expect(elementByLabel('This is tab 1')).toBeVisible();
+  });
+
   it(':ios: set stack root component should be first in stack', async () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementByLabel('Stack Position: 1')).toBeVisible();
@@ -89,5 +97,14 @@ describe('screen stack', () => {
     await expect(elementByLabel('Stack Position: 2')).toBeVisible();
     await elementById(testIDs.POP_BUTTON).tap();
     await expect(elementByLabel('Stack Position: 2')).toBeVisible();
+  });
+
+  it('push to stack with static id from SideMenu', async () => {
+    await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
+    await elementById(testIDs.SHOW_LEFT_SIDE_MENU_BUTTON).tap();
+    await elementById(testIDs.LEFT_SIDE_MENU_PUSH_BUTTON).tap();
+    await expect(elementByLabel('Text Screen')).toBeVisible();
+    await elementById(testIDs.POP_BUTTON).tap();
+    await expect(elementByLabel('This is a side menu center screen tab 1')).toBeVisible();
   });
 });

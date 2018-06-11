@@ -8,5 +8,6 @@ extern const NSInteger BLUR_STATUS_TAG;
 @property (nonatomic, strong) NSNumber* hideWithTopBar;
 @property (nonatomic, strong) NSString* style;
 @property (nonatomic, strong) NSNumber* hidden;
+@property (nonatomic, strong) NSNumber* animate;
 
 @end

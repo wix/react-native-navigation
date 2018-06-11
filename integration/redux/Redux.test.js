@@ -2,6 +2,7 @@ const React = require('react');
 require('react-native');
 const renderer = require('react-test-renderer');
 const { Provider } = require('react-redux');
+const { Navigation } = require('../../lib/dist/index');
 
 describe('redux support', () => {
   let MyConnectedComponent;
@@ -13,11 +14,18 @@ describe('redux support', () => {
   });
 
   it('renders normally', () => {
-    const tree = renderer.create(
-      <Provider store={store.reduxStore}>
-        <MyConnectedComponent />
-      </Provider>
-    );
+    const HOC = class extends React.Component {
+      render() {
+        return (
+          <Provider store={store.reduxStore}>
+            <MyConnectedComponent />
+          </Provider>
+        );
+      }
+    };
+    Navigation.registerComponent('ComponentName', () => HOC);
+
+    const tree = renderer.create(<HOC />);
     expect(tree.toJSON().children).toEqual(['no name']);
   });
 

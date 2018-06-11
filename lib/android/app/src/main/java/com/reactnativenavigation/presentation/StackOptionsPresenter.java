@@ -21,8 +21,9 @@ import java.util.ArrayList;
 public class StackOptionsPresenter {
     private static final int DEFAULT_TITLE_COLOR = Color.BLACK;
     private static final int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
-    private final float defaultTitleFontSize;
-    private final float defaultSubtitleFontSize;
+    private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
+    private final double defaultTitleFontSize;
+    private final double defaultSubtitleFontSize;
 
     private TopBar topBar;
 
@@ -36,7 +37,7 @@ public class StackOptionsPresenter {
         applyOrientation(options.layout.orientation);
         applyButtons(options.topBar.leftButtons, options.topBar.rightButtons);
         applyTopBarOptions(options.topBar, options.animations, child, options);
-        applyTopTabsOptions(options.topTabsOptions);
+        applyTopTabsOptions(options.topTabs);
         applyTopTabOptions(options.topTabOptions);
     }
 
@@ -46,6 +47,7 @@ public class StackOptionsPresenter {
 
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
         topBar.setHeight(options.height.get(LayoutParams.WRAP_CONTENT));
+        topBar.setElevation(options.elevation);
 
         topBar.setTitleHeight(options.title.height.get(LayoutParams.WRAP_CONTENT));
         topBar.setTitle(options.title.text.get(""));
@@ -60,6 +62,9 @@ public class StackOptionsPresenter {
         topBar.setSubtitleColor(options.subtitle.color.get(DEFAULT_SUBTITLE_COLOR));
         topBar.setSubtitleFontFamily(options.subtitle.fontFamily);
         topBar.setSubtitleAlignment(options.subtitle.alignment);
+
+        topBar.setBorderHeight(options.borderHeight.get(0d));
+        topBar.setBorderColor(options.borderColor.get(DEFAULT_BORDER_COLOR));
 
         topBar.setBackgroundColor(options.background.color);
         topBar.setBackgroundComponent(options.background.component);
@@ -102,6 +107,7 @@ public class StackOptionsPresenter {
         topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
         topBar.applyTopTabsFontSize(options.fontSize);
         topBar.setTopTabsVisible(options.visible.isTrueOrUndefined());
+        topBar.setTopTabsHeight(options.height.get(LayoutParams.WRAP_CONTENT));
     }
 
     private void applyTopTabOptions(TopTabOptions topTabOptions) {
@@ -122,7 +128,7 @@ public class StackOptionsPresenter {
         mergeOrientation(options.layout.orientation);
         mergeButtons(options.topBar.leftButtons, options.topBar.rightButtons);
         mergeTopBarOptions(options.topBar, options.animations, child);
-        mergeTopTabsOptions(options.topTabsOptions);
+        mergeTopTabsOptions(options.topTabs);
         mergeTopTabOptions(options.topTabOptions);
     }
 
@@ -136,6 +142,10 @@ public class StackOptionsPresenter {
     }
 
     private void mergeTopBarOptions(TopBarOptions options, AnimationsOptions animationsOptions, Component component) {
+        if (options.height.hasValue()) topBar.setHeight(options.height.get());
+        if (options.elevation.hasValue()) topBar.setElevation(options.elevation);
+
+        if (options.title.height.hasValue()) topBar.setTitleHeight(options.title.height.get());
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
         if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component);
         if (options.title.color.hasValue()) topBar.setTitleTextColor(options.title.color.get());
@@ -183,6 +193,7 @@ public class StackOptionsPresenter {
         if (options.selectedTabColor.hasValue() && options.unselectedTabColor.hasValue()) topBar.applyTopTabsColors(options.selectedTabColor, options.unselectedTabColor);
         if (options.fontSize.hasValue()) topBar.applyTopTabsFontSize(options.fontSize);
         if (options.visible.hasValue()) topBar.setTopTabsVisible(options.visible.isTrue());
+        if (options.height.hasValue()) topBar.setTopTabsHeight(options.height.get(LayoutParams.WRAP_CONTENT));
     }
 
     private void mergeTopTabOptions(TopTabOptions topTabOptions) {

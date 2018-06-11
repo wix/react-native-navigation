@@ -13,7 +13,13 @@
 
 - (void)applyOn:(UIViewController *)viewController {
 	if (self.title || self.icon) {
-		UITabBarItem* tabItem = [[UITabBarItem alloc] initWithTitle:self.title image:[RCTConvert UIImage:self.icon] tag:self.tag];
+		UIImage *iconImage = nil;
+		if (self.disableIconTint) {
+			iconImage = [[RCTConvert UIImage:self.icon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+		} else {
+			iconImage = [RCTConvert UIImage:self.icon];
+		}
+		UITabBarItem* tabItem = [[UITabBarItem alloc] initWithTitle:self.title image:iconImage tag:self.tag];
 		tabItem.accessibilityIdentifier = self.testID;
 		
 		if (self.iconInsets && ![self.iconInsets isKindOfClass:[NSNull class]]) {
@@ -31,6 +37,19 @@
 		}
 		
 		[viewController.navigationController setTabBarItem:tabItem];
+	}
+	if (self.selectedIcon) {
+		UIImage *selectedIconImage = nil;
+		if (self.disableSelectedIconTint) {
+			selectedIconImage = [[RCTConvert UIImage:self.selectedIcon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+		} else {
+			selectedIconImage = [RCTConvert UIImage:self.selectedIcon];
+		}
+		if (viewController.navigationController) {
+			viewController.navigationController.tabBarItem.selectedImage = selectedIconImage;
+		} else {
+			viewController.tabBarItem.selectedImage = selectedIconImage;
+		}	
 	}
 	
 	if (self.badge) {

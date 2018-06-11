@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyFloat;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -117,13 +117,13 @@ public class OptionsMergingTest extends BaseTest {
         verify(topBar, times(0)).applyTopTabsFontSize(any());
         verify(topBar, times(0)).setTopTabsVisible(anyBoolean());
 
-        options.topTabsOptions.selectedTabColor = new Color(1);
-        options.topTabsOptions.unselectedTabColor = new Color(1);
-        options.topTabsOptions.fontSize = new Number(1);
-        options.topTabsOptions.visible = new Bool(true);
+        options.topTabs.selectedTabColor = new Color(1);
+        options.topTabs.unselectedTabColor = new Color(1);
+        options.topTabs.fontSize = new Number(1);
+        options.topTabs.visible = new Bool(true);
         uut.mergeChildOptions(options, child);
-        verify(topBar, times(1)).applyTopTabsColors(options.topTabsOptions.selectedTabColor, options.topTabsOptions.unselectedTabColor);
-        verify(topBar, times(1)).applyTopTabsFontSize(options.topTabsOptions.fontSize);
+        verify(topBar, times(1)).applyTopTabsColors(options.topTabs.selectedTabColor, options.topTabs.unselectedTabColor);
+        verify(topBar, times(1)).applyTopTabsFontSize(options.topTabs.fontSize);
         verify(topBar, times(1)).setTopTabsVisible(anyBoolean());
     }
 
@@ -147,7 +147,7 @@ public class OptionsMergingTest extends BaseTest {
         verify(topBar, times(t)).setTitleComponent(any());
         verify(topBar, times(t)).setBackgroundColor(any());
         verify(topBar, times(t)).setTitleTextColor(anyInt());
-        verify(topBar, times(t)).setTitleFontSize(anyFloat());
+        verify(topBar, times(t)).setTitleFontSize(anyDouble());
         verify(topBar, times(t)).setTitleTypeface(any());
         verify(topBar, times(t)).setSubtitleColor(anyInt());
         verify(topBar, times(t)).setTestId(any());

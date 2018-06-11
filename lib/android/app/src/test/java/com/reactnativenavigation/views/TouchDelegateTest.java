@@ -4,6 +4,7 @@ import android.view.MotionEvent;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleOverlay;
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
 
 import org.junit.Test;
@@ -29,28 +30,28 @@ public class TouchDelegateTest extends BaseTest {
     }
 
     @Test
-    public void downEventIsHandled() throws Exception {
-        uut.setInterceptTouchOutside(true);
+    public void downEventIsHandled() {
+        uut.setInterceptTouchOutside(new Bool(true));
         uut.onInterceptTouchEvent(downEvent);
         verify(uut, times(1)).handleDown(downEvent);
     }
 
     @Test
-    public void onlyDownEventIsHandled() throws Exception {
-        uut.setInterceptTouchOutside(true);
+    public void onlyDownEventIsHandled() {
+        uut.setInterceptTouchOutside(new Bool(true));
         uut.onInterceptTouchEvent(upEvent);
         verify(uut, times(0)).handleDown(upEvent);
     }
 
     @Test
-    public void nonDownEventsDontIntercept() throws Exception {
-        uut.setInterceptTouchOutside(true);
+    public void nonDownEventsDontIntercept() {
+        uut.setInterceptTouchOutside(new Bool(true));
         assertThat(uut.onInterceptTouchEvent(upEvent)).isFalse();
     }
 
     @Test
-    public void nonDownEventsDispatchTouchEventsToJs() throws Exception {
-        uut.setInterceptTouchOutside(true);
+    public void nonDownEventsDispatchTouchEventsToJs() {
+        uut.setInterceptTouchOutside(new Bool(true));
         uut.onInterceptTouchEvent(upEvent);
         verify(reactView, times(1)).dispatchTouchEventToJs(upEvent);
     }

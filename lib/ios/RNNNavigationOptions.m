@@ -31,11 +31,11 @@ RCT_ENUM_CONVERTER(UIModalPresentationStyle,
 @implementation RCTConvert (UIModalTransitionStyle)
 
 RCT_ENUM_CONVERTER(UIModalTransitionStyle,
-                   (@{@"coverVertical": @(UIModalTransitionStyleCoverVertical),
-                      @"flipHorizontal": @(UIModalTransitionStyleFlipHorizontal),
-                      @"crossDissolve": @(UIModalTransitionStyleCrossDissolve),
-                      @"partialCurl": @(UIModalTransitionStylePartialCurl)
-                      }), UIModalTransitionStyleCoverVertical, integerValue)
+				   (@{@"coverVertical": @(UIModalTransitionStyleCoverVertical),
+					  @"flipHorizontal": @(UIModalTransitionStyleFlipHorizontal),
+					  @"crossDissolve": @(UIModalTransitionStyleCrossDissolve),
+					  @"partialCurl": @(UIModalTransitionStylePartialCurl)
+					  }), UIModalTransitionStyleCoverVertical, integerValue)
 
 @end
 
@@ -50,7 +50,7 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 	[self.sideMenu applyOn:viewController];
 	[self.overlay applyOn:viewController];
 	[self.statusBar applyOn:viewController];
-	
+	[self.layout applyOn:viewController];
 	[self applyOtherOptionsOn:viewController];
 	
 	[viewController optionsUpdated];
@@ -61,18 +61,13 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 		viewController.navigationController.interactivePopGestureRecognizer.enabled = [self.popGesture boolValue];
 	}
 	
-	if (self.screenBackgroundColor) {
-		UIColor* screenColor = [RCTConvert UIColor:self.screenBackgroundColor];
-		viewController.view.backgroundColor = screenColor;
-	}
-	
 	if (self.backgroundImage) {
 		UIImageView* backgroundImageView = (viewController.view.subviews.count > 0) ? viewController.view.subviews[0] : nil;
 		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
 			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
 			[viewController.view insertSubview:backgroundImageView atIndex:0];
 		}
-
+		
 		backgroundImageView.layer.masksToBounds = YES;
 		backgroundImageView.image = [self.backgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.backgroundImage : [RCTConvert UIImage:self.backgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
@@ -84,48 +79,24 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
 			[viewController.navigationController.view insertSubview:backgroundImageView atIndex:0];
 		}
-
+		
 		backgroundImageView.layer.masksToBounds = YES;
 		backgroundImageView.image = [self.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.rootBackgroundImage : [RCTConvert UIImage:self.rootBackgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
-    
-    [self applyModalOptions:viewController];
+	
+	[self applyModalOptions:viewController];
 }
 
 - (void)applyModalOptions:(UIViewController*)viewController {
-    if (self.modalPresentationStyle) {
-        viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:self.modalPresentationStyle];
-    }
-    if (self.modalTransitionStyle) {
-        viewController.modalTransitionStyle = [RCTConvert UIModalTransitionStyle:self.modalTransitionStyle];
-    }
+	if (self.modalPresentationStyle) {
+		viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:self.modalPresentationStyle];
+		[viewController.view setBackgroundColor:[UIColor clearColor]];
+	}
+	if (self.modalTransitionStyle) {
+		viewController.modalTransitionStyle = [RCTConvert UIModalTransitionStyle:self.modalTransitionStyle];
+	}
 }
 
-- (UIInterfaceOrientationMask)supportedOrientations {
-	NSArray* orientationsArray = [self.orientation isKindOfClass:[NSString class]] ? @[self.orientation] : self.orientation;
-	NSUInteger supportedOrientationsMask = 0;
-	if (!orientationsArray || [self.orientation isEqual:@"default"]) {
-		return [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
-	} else {
-		for (NSString* orientation in orientationsArray) {
-			if ([orientation isEqualToString:@"all"]) {
-				supportedOrientationsMask = UIInterfaceOrientationMaskAll;
-				break;
-			}
-			if ([orientation isEqualToString:@"landscape"]) {
-				supportedOrientationsMask = (supportedOrientationsMask | UIInterfaceOrientationMaskLandscape);
-			}
-			if ([orientation isEqualToString:@"portrait"]) {
-				supportedOrientationsMask = (supportedOrientationsMask | UIInterfaceOrientationMaskPortrait);
-			}
-			if ([orientation isEqualToString:@"upsideDown"]) {
-				supportedOrientationsMask = (supportedOrientationsMask | UIInterfaceOrientationMaskPortraitUpsideDown);
-			}
-		}
-	}
-	
-	return supportedOrientationsMask;
-}
 
 @end

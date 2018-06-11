@@ -9,6 +9,7 @@
   - [Events](/docs/events)
   - [Layout Types](/docs/layout-types)
   - [Styling](/docs/styling)
+  - [TopBar Buttons](/docs/topBar-buttons) 
 - Migration from v1
   - [Top Level](/docs/top-level-api-migration)
 - [API](/api/README)

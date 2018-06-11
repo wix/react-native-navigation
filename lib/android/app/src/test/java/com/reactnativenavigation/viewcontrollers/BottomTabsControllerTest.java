@@ -47,7 +47,7 @@ public class BottomTabsControllerTest extends BaseTest {
     private ViewController child1;
     private ViewController child2;
     private ViewController child3;
-    private ViewController child4;
+    private StackController child4;
     private ViewController child5;
     private Options tabOptions = OptionHelper.createBottomTabOptions();
     private ImageLoader imageLoaderMock = ImageLoaderMock.mock();
@@ -64,7 +64,7 @@ public class BottomTabsControllerTest extends BaseTest {
         child1 = spy(new SimpleViewController(activity, childRegistry, "child1", tabOptions));
         child2 = spy(new SimpleViewController(activity, childRegistry, "child2", tabOptions));
         child3 = spy(new SimpleViewController(activity, childRegistry, "child3", tabOptions));
-        child4 = spy(new SimpleViewController(activity, childRegistry, "child4", tabOptions));
+        child4 = spy(createStack("someStack"));
         child5 = spy(new SimpleViewController(activity, childRegistry, "child5", tabOptions));
         when(child5.handleBack(any())).thenReturn(true);
         tabs = createTabs();
@@ -212,6 +212,20 @@ public class BottomTabsControllerTest extends BaseTest {
 
         uut.sendOnNavigationButtonPressed("btn1");
         verify(child5, times(1)).sendOnNavigationButtonPressed("btn1");
+    }
+
+    @Test
+    public void push() {
+        uut.selectTab(3);
+
+        SimpleViewController stackChild = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
+        SimpleViewController stackChild2 = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
+        disablePushAnimation(stackChild, stackChild2);
+
+        child4.push(stackChild, new CommandListenerAdapter());
+        assertThat(child4.size()).isOne();
+        child4.push(stackChild2, new CommandListenerAdapter());
+        assertThat(child4.size()).isEqualTo(2);
     }
 
     @NonNull

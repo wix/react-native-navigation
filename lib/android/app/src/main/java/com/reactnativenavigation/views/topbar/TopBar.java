@@ -3,17 +3,23 @@ package com.reactnativenavigation.views.topbar;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
@@ -22,6 +28,7 @@ import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.UiUtils;
@@ -45,9 +52,11 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private final TopBarCollapseBehavior collapsingBehavior;
     private TopBarAnimator animator;
     private TopTabs topTabs;
-    private RelativeLayout root;
+    private FrameLayout root;
+    private LinearLayout content;
     private StackLayout parentView;
     private TopBarBackgroundViewController topBarBackgroundViewController;
+    private View border;
 
     public TopBar(final Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener onClickListener, StackLayout parentView) {
         super(context);
@@ -60,17 +69,51 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     private void createLayout(ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
-        topTabs = new TopTabs(getContext());
+        setId(CompatUtils.generateViewId());
         titleBar = createTitleBar(getContext(), buttonCreator, titleBarReactViewCreator, onClickListener);
-        titleBar.setId(CompatUtils.generateViewId());
-        root = new RelativeLayout(getContext());
-        root.addView(titleBar, MATCH_PARENT, WRAP_CONTENT);
+        topTabs = createTopTabs();
+        border = createBorder();
+        content = createContentLayout();
+
+        root = new FrameLayout(getContext());
+        root.setId(CompatUtils.generateViewId());
+        content.addView(titleBar);
+        content.addView(topTabs);
+        root.addView(content);
+        root.addView(border);
         addView(root, MATCH_PARENT, WRAP_CONTENT);
-        setContentDescription("TopBar");
+        if (BuildConfig.DEBUG) setContentDescription("TopBar");
+    }
+
+    private LinearLayout createContentLayout() {
+        LinearLayout content = new LinearLayout(getContext());
+        content.setOrientation(VERTICAL);
+        return content;
+    }
+
+    @NonNull
+    private TopTabs createTopTabs() {
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+        lp.addRule(RelativeLayout.BELOW, titleBar.getId());
+        TopTabs topTabs = new TopTabs(getContext());
+        topTabs.setLayoutParams(lp);
+        topTabs.setVisibility(GONE);
+        return topTabs;
+    }
+
+    private View createBorder() {
+        View border = new View(getContext());
+        border.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(MATCH_PARENT, 0);
+        lp.gravity = Gravity.BOTTOM;
+        border.setLayoutParams(lp);
+        return border;
     }
 
     protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
-        return new TitleBar(context, buttonCreator, reactViewCreator, onClickListener);
+        TitleBar titleBar = new TitleBar(context, buttonCreator, reactViewCreator, onClickListener);
+        titleBar.setId(CompatUtils.generateViewId());
+        return titleBar;
     }
 
     public void setHeight(int height) {
@@ -104,7 +147,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setSubtitleTypeface(fontFamily);
     }
 
-    public void setSubtitleFontSize(float size) {
+    public void setSubtitleFontSize(double size) {
         titleBar.setSubtitleFontSize(size);
     }
 
@@ -120,7 +163,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setTitleTextColor(color);
     }
 
-    public void setTitleFontSize(float size) {
+    public void setTitleFontSize(double size) {
         titleBar.setTitleFontSize(size);
     }
 
@@ -160,6 +203,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         topTabs.setVisibility(this, visible);
     }
 
+    public void setTopTabsHeight(int height) {
+        if (topTabs.getLayoutParams().height == height) return;
+        topTabs.getLayoutParams().height = height > 0 ? (int) UiUtils.dpToPx(getContext(), height) : height;
+        topTabs.setLayoutParams(topTabs.getLayoutParams());
+    }
+
     public void setLeftButtons(List<Button> leftButtons) {
         titleBar.setLeftButtons(leftButtons);
     }
@@ -169,7 +218,16 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setBackgroundColor(Color color) {
-        titleBar.setBackgroundColor(color);
+        if (!color.hasValue()) return;
+        setBackgroundColor(color.get());
+    }
+
+    public void setElevation(Fraction elevation) {
+        if (elevation.hasValue() &&
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+            getElevation() != elevation.get().floatValue()) {
+            setElevation(UiUtils.dpToPx(getContext(), elevation.get().floatValue()));
+        }
     }
 
     public Toolbar getTitleBar() {
@@ -177,11 +235,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void initTopTabs(ViewPager viewPager) {
-        topTabs = new TopTabs(getContext());
+        topTabs.setVisibility(VISIBLE);
         topTabs.init(viewPager);
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-        lp.addRule(RelativeLayout.BELOW, titleBar.getId());
-        root.addView(topTabs, lp);
     }
 
     public void enableCollapse(ScrollEventListener scrollEventListener) {
@@ -265,5 +320,13 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         setRotationX(0);
         setRotationY(0);
         setRotation(0);
+    }
+
+    public void setBorderHeight(double height) {
+        border.getLayoutParams().height = (int) UiUtils.dpToPx(getContext(), (float) height);
+    }
+
+    public void setBorderColor(int color) {
+        border.setBackgroundColor(color);
     }
 }

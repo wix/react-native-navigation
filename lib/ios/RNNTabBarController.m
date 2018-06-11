@@ -57,14 +57,14 @@
 	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).componentId;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).preferredStatusBarStyle;
+}
+
 #pragma mark UITabBarControllerDelegate
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-	if (tabBarController.selectedIndex == _currentTabIndex) {
-		[_eventEmitter sendOnNavigationEvent:@"bottomTabReselected" params:@{@"index": @(tabBarController.selectedIndex)}];
-	} else {
-		[_eventEmitter sendOnNavigationEvent:@"bottomTabSelected" params:@{@"index": @(tabBarController.selectedIndex)}];
-	}
+	[_eventEmitter sendOnNavigationEvent:@"bottomTabSelected" params:@{@"selectedTabIndex": @(tabBarController.selectedIndex), @"unselectedTabIndex": @(_currentTabIndex)}];
 	
 	_currentTabIndex = tabBarController.selectedIndex;
 }

@@ -12,10 +12,7 @@
 	NSDictionary* fontAttributes = [self fontAttributes];
 	
 	viewController.navigationController.navigationBar.titleTextAttributes = fontAttributes;
-	if (@available(iOS 11.0, *)){
-		viewController.navigationController.navigationBar.largeTitleTextAttributes = fontAttributes;
-	}
-	
+
 	if (self.subtitle.text) {
 		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] init:viewController title:self.text subtitle:self.subtitle.text titleImageData:nil isSetSubtitle:NO];
 		[titleViewHelper setup:self];

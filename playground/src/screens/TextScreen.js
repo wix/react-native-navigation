@@ -32,9 +32,18 @@ class TextScreen extends Component {
         <Button title='Show Tab Bar' testID={testIDs.SHOW_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(true)} />
         <Button title='Show Left Side Menu' testID={testIDs.SHOW_LEFT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('left')} />
         <Button title='Show Right Side Menu' testID={testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('right')} />
+        <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
         <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
       </View>
     );
+  }
+
+  onClickPush = async () => {
+    await Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.PushedScreen'
+      }
+    });
   }
 
   onClickPop = async () => {

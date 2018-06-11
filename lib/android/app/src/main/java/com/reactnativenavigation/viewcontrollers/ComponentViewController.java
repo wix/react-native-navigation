@@ -62,7 +62,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void mergeOptions(Options options) {
-        applyOnParentController(parentController -> parentController.mergeChildOptions(options, view));
+        applyOnParentController(parentController -> parentController.mergeChildOptions(options, getView()));
         super.mergeOptions(options);
     }
 

@@ -22,9 +22,10 @@ class StaticLifecycleOverlay extends Component {
         events: [...this.state.events, { event: 'componentDidDisappear', componentId, componentName }]
       });
     }));
-    this.listeners.push(Navigation.events().registerCommandListener((name, params) => {
-      // console.log('RNN', `name: ${JSON.stringify(name)}`);
-      // console.log('RNN', `params: ${JSON.stringify(params)}`);
+    this.listeners.push(Navigation.events().registerCommandCompletedListener((commandId, completionTime, params) => {
+      this.setState({
+        events: [...this.state.events, { event: 'commandCompleted', commandId }]
+      });
     }));
   }
 
@@ -34,11 +35,19 @@ class StaticLifecycleOverlay extends Component {
     alert('Overlay Unmounted');
   }
 
+  renderEvent(event) {
+    if (event.commandId) {
+      return <Text style={styles.h2}>{`${event.commandId}`}</Text>;
+    } else {
+      return <Text style={styles.h2}>{`${event.event} | ${event.componentName}`}</Text>;
+    }
+  }
+
   render() {
     const events = this.state.events.map((event, idx) =>
       (
         <View key={`${event.componentId}${idx}`}>
-          <Text style={styles.h2}>{`${event.event} | ${event.componentName}`}</Text>
+          {this.renderEvent(event)}
         </View>
       ));
     return (
@@ -56,10 +65,9 @@ class StaticLifecycleOverlay extends Component {
   return (
     <TouchableOpacity
       style={styles.dismissBtn}
-      testID={testIDs.DISMISS_BUTTON}
       onPress={() => Navigation.dismissOverlay(this.props.componentId)}
     >
-      <Text style={{ color: 'red', alignSelf: 'center' }}>X</Text>
+      <Text testID={testIDs.DISMISS_BUTTON} style={{ color: 'red', alignSelf: 'center' }}>X</Text>
     </TouchableOpacity>
   );
   }
@@ -78,8 +86,8 @@ const styles = {
   },
   dismissBtn: {
     position: 'absolute',
-    width: 25,
-    height: 25,
+    width: 35,
+    height: 35,
     backgroundColor: 'white',
     justifyContent: 'center'
   },

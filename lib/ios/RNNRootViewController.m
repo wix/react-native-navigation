@@ -37,7 +37,7 @@
 	if (!self.isExternalComponent) {
 		self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
 	}
-
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(onJsReload)
 												 name:RCTJavaScriptWillStartLoadingNotification
@@ -59,6 +59,11 @@
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[self.eventEmitter sendComponentDidAppear:self.componentId componentName:self.componentName];
+	if (@available(iOS 11.0, *)) {
+		if (self.navigationItem.searchController && [self.options.topBar.searchBarHiddenWhenScrolling boolValue]) {
+			self.navigationItem.hidesSearchBarWhenScrolling = YES;
+		}
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -68,6 +73,12 @@
 -(void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	[self.eventEmitter sendComponentDidDisappear:self.componentId componentName:self.componentName];
+}
+
+-(void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+	[self.eventEmitter sendOnSearchBarUpdated:self.componentId
+										 text:searchController.searchBar.text
+									isFocused:searchController.searchBar.isFirstResponder];
 }
 
 - (void)viewDidLoad {
@@ -81,7 +92,8 @@
 }
 
 - (void)applyModalOptions {
-    [self.options applyModalOptions:self];
+	[self.options applyOn:self];
+	[self.options applyModalOptions:self];
 }
 
 - (void)mergeOptions:(NSDictionary *)options {
@@ -100,12 +112,12 @@
 		} if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
 			self.navigationItem.title = nil;
 		}
-    } else if (_customTitleView && _customTitleView.superview == nil) {
-        if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
-            self.navigationItem.title = nil;
-        }
-        self.navigationItem.titleView = _customTitleView;
-    }
+	} else if (_customTitleView && _customTitleView.superview == nil) {
+		if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
+			self.navigationItem.title = nil;
+		}
+		self.navigationItem.titleView = _customTitleView;
+	}
 }
 
 - (void)setCustomNavigationBarView {
@@ -120,12 +132,12 @@
 		} else if ([[self.navigationController.navigationBar.subviews lastObject] isKindOfClass:[RNNCustomTitleView class]] && !_customTopBar) {
 			[[self.navigationController.navigationBar.subviews lastObject] removeFromSuperview];
 		}
-    } else if (_customTopBar && _customTopBar.superview == nil) {
-        if ([[self.navigationController.navigationBar.subviews lastObject] isKindOfClass:[RNNCustomTitleView class]] && !_customTopBar) {
-            [[self.navigationController.navigationBar.subviews lastObject] removeFromSuperview];
-        }
-        [self.navigationController.navigationBar addSubview:_customTopBar];
-    }
+	} else if (_customTopBar && _customTopBar.superview == nil) {
+		if ([[self.navigationController.navigationBar.subviews lastObject] isKindOfClass:[RNNCustomTitleView class]] && !_customTopBar) {
+			[[self.navigationController.navigationBar.subviews lastObject] removeFromSuperview];
+		}
+		[self.navigationController.navigationBar addSubview:_customTopBar];
+	}
 }
 
 - (void)setCustomNavigationComponentBackground {
@@ -140,13 +152,13 @@
 			[[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
 			self.navigationController.navigationBar.clipsToBounds = NO;
 		}
-    } if (_customTopBarBackground && _customTopBarBackground.superview == nil) {
-        if ([[self.navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
-            [[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
-        }
-        [self.navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
-        self.navigationController.navigationBar.clipsToBounds = YES;
-    }
+	} if (_customTopBarBackground && _customTopBarBackground.superview == nil) {
+		if ([[self.navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
+			[[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
+		}
+		[self.navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
+		self.navigationController.navigationBar.clipsToBounds = YES;
+	}
 }
 
 -(BOOL)isCustomTransitioned {
@@ -163,6 +175,7 @@
 	} else if ([self.options.statusBar.hideWithTopBar boolValue]) {
 		return self.navigationController.isNavigationBarHidden;
 	}
+	
 	return NO;
 }
 
@@ -175,7 +188,7 @@
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-	return self.options.supportedOrientations;
+	return self.options.layout.supportedOrientations;
 }
 
 - (BOOL)hidesBottomBarWhenPushed
@@ -197,17 +210,17 @@
 								  animationControllerForOperation:(UINavigationControllerOperation)operation
 											   fromViewController:(UIViewController*)fromVC
 												 toViewController:(UIViewController*)toVC {
-{
-	if (self.animator) {
-		return self.animator;
-	} else if (operation == UINavigationControllerOperationPush && self.options.animations.push.hasCustomAnimation) {
-		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.push];
-	} else if (operation == UINavigationControllerOperationPop && self.options.animations.pop.hasCustomAnimation) {
-		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.pop];
-	} else {
-		return nil;
+	{
+		if (self.animator) {
+			return self.animator;
+		} else if (operation == UINavigationControllerOperationPush && self.options.animations.push.hasCustomAnimation) {
+			return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.push];
+		} else if (operation == UINavigationControllerOperationPop && self.options.animations.pop.hasCustomAnimation) {
+			return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.pop];
+		} else {
+			return nil;
+		}
 	}
-}
 	return nil;
 }
 
@@ -235,6 +248,70 @@
 	if (_rotationBlock) {
 		_rotationBlock();
 	}
+}
+
+- (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
+	if (self.previewController) {
+		RNNRootViewController * vc = (RNNRootViewController*) self.previewController;
+		[_eventEmitter sendOnNavigationEvent:@"previewContext" params:@{
+																		@"previewComponentId": vc.componentId,
+																		@"componentId": self.componentId
+																		}];
+	}
+	return self.previewController;
+}
+
+
+- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
+	RNNRootViewController * vc = (RNNRootViewController*) self.previewController;
+	NSDictionary * params = @{
+							  @"previewComponentId": vc.componentId,
+							  @"componentId": self.componentId
+							  };
+	if (vc.options.preview.commit) {
+		[_eventEmitter sendOnNavigationEvent:@"previewCommit" params:params];
+		[self.navigationController pushViewController:vc animated:false];
+	} else {
+		[_eventEmitter sendOnNavigationEvent:@"previewDismissed" params:params];
+	}
+}
+
+- (void)onActionPress:(NSString *)id {
+	[_eventEmitter sendOnNavigationButtonPressed:self.componentId buttonId:id];
+}
+
+- (UIPreviewAction *) convertAction:(NSDictionary *)action {
+	NSString *actionId = action[@"id"];
+	NSString *actionTitle = action[@"title"];
+	UIPreviewActionStyle actionStyle = UIPreviewActionStyleDefault;
+	if ([action[@"style"] isEqualToString:@"selected"]) {
+		actionStyle = UIPreviewActionStyleSelected;
+	} else if ([action[@"style"] isEqualToString:@"destructive"]) {
+		actionStyle = UIPreviewActionStyleDestructive;
+	}
+	
+	return [UIPreviewAction actionWithTitle:actionTitle style:actionStyle handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+		[self onActionPress:actionId];
+	}];
+}
+
+- (NSArray<id<UIPreviewActionItem>> *)previewActionItems {
+	NSMutableArray *actions = [[NSMutableArray alloc] init];
+	for (NSDictionary *previewAction in self.options.preview.actions) {
+		UIPreviewAction *action = [self convertAction:previewAction];
+		NSDictionary *actionActions = previewAction[@"actions"];
+		if (actionActions.count > 0) {
+			NSMutableArray *group = [[NSMutableArray alloc] init];
+			for (NSDictionary *previewGroupAction in actionActions) {
+				[group addObject:[self convertAction:previewGroupAction]];
+			}
+			UIPreviewActionGroup *actionGroup = [UIPreviewActionGroup actionGroupWithTitle:action.title style:UIPreviewActionStyleDefault actions:group];
+			[actions addObject:actionGroup];
+		} else {
+			[actions addObject:action];
+		}
+	}
+	return actions;
 }
 
 /**

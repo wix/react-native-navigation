@@ -25,4 +25,8 @@
 	}
 }
 
++ (NSNumber *)getCurrentTimestamp {
+	return [NSNumber numberWithLong:[[NSDate date] timeIntervalSince1970] * 1000];
+}
+
 @end

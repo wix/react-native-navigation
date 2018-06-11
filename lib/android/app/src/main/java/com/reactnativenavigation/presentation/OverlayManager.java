@@ -12,8 +12,8 @@ public class OverlayManager {
 
     public void show(ViewGroup root, ViewController overlay, CommandListener listener) {
         overlayRegistry.put(overlay.getId(), overlay);
+        overlay.setOnAppearedListener(() -> listener.onSuccess(overlay.getId()));
         root.addView(overlay.getView());
-        listener.onSuccess(overlay.getId());
     }
 
     public void dismiss(String componentId, CommandListener listener) {

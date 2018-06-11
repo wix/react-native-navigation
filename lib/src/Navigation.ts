@@ -11,30 +11,24 @@ import { ComponentProvider } from 'react-native';
 import { Element } from './adapters/Element';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 import { CommandsObserver } from './events/CommandsObserver';
-import { Constants } from './constants/Constants';
-import { NativeModules } from 'react-native';
-
-const NavigationModule = NativeModules.RNNBridgeModule;
+import { Constants } from './adapters/Constants';
 
 export class Navigation {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode: any; }>;
-  public readonly constants = new Constants(NavigationModule);
-
-  private readonly store;
-  private readonly nativeEventsReceiver;
-  private readonly uniqueIdProvider;
-  private readonly componentRegistry;
-  private readonly layoutTreeParser;
-  private readonly layoutTreeCrawler;
-  private readonly nativeCommandsSender;
-  private readonly commands;
-  private readonly eventsRegistry;
-  private readonly commandsObserver;
-  private readonly componentEventsObserver;
+  public readonly store: Store;
+  private readonly nativeEventsReceiver: NativeEventsReceiver;
+  private readonly uniqueIdProvider: UniqueIdProvider;
+  private readonly componentRegistry: ComponentRegistry;
+  private readonly layoutTreeParser: LayoutTreeParser;
+  private readonly layoutTreeCrawler: LayoutTreeCrawler;
+  private readonly nativeCommandsSender: NativeCommandsSender;
+  private readonly commands: Commands;
+  private readonly eventsRegistry: EventsRegistry;
+  private readonly commandsObserver: CommandsObserver;
+  private readonly componentEventsObserver: ComponentEventsObserver;
 
   constructor() {
     this.Element = Element;
-
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
@@ -54,8 +48,8 @@ export class Navigation {
    * Every navigation component in your app must be registered with a unique name.
    * The component itself is a traditional React component extending React.Component.
    */
-  public registerComponent(componentName: string, getComponentClassFunc: ComponentProvider): React.ComponentType<any> {
-    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc);
+  public registerComponent(componentName: string, getComponentClassFunc: ComponentProvider): void {
+    this.componentRegistry.registerComponent(componentName, getComponentClassFunc);
   }
 
   /**
@@ -154,5 +148,12 @@ export class Navigation {
    */
   public events(): EventsRegistry {
     return this.eventsRegistry;
+  }
+
+  /**
+   * Constants coming from native
+   */
+  public constants(): Constants {
+    return Constants.get();
   }
 }
