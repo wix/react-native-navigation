@@ -10,7 +10,6 @@ export default class StyledScreen extends Component {
     return {
       topBar: {
         title: {
-          largeTitle: false,
           text: 'My Screen'
         },
         drawBehind: true,
@@ -19,7 +18,7 @@ export default class StyledScreen extends Component {
       }
     };
   }
-  
+
   constructor(props) {
     super(props);
   }
@@ -74,8 +73,18 @@ Navigation.mergeOptions(this.props.componentId, {
     buttonColor: 'black',
     drawBehind: false,
     testID: 'topBar',
+    largeTitle: true, // iOS 11+ Large Title
+    searchBar: true, // iOS 11+ native UISearchBar inside topBar
+    searchBarHiddenWhenScrolling: true,
+    searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
     component: {
       name: 'example.CustomTopBar'
+    },
+    largeTitle: {
+      visible: true,
+      fontSize: 30,
+      color: 'red',
+      fontFamily: 'Helvetica'
     },
     title: {
       text: 'Title',
@@ -163,18 +172,26 @@ Navigation.mergeOptions(this.props.componentId, {
     transparent: false,
     noBorder: false,
     blur: false,
-    largeTitle: false,
     backButtonImage: require('icon.png'),
     backButtonHidden: false,
     backButtonTitle: 'Back',
     hideBackButtonTitle: false,
+    largeTitle: {
+      visible: true,
+      fontSize: 30,
+      color: 'red',
+      fontFamily: 'Helvetica'
+    },
   },
   bottomTabs: {
     translucent: true,
     hideShadow: false
   },
   bottomTab: {
-    iconInsets: { top: 0, left: 0, bottom: 0, right: 0 }
+    iconInsets: { top: 0, left: 0, bottom: 0, right: 0 },
+    selectedIcon: require('selectedTab.png'),
+    disableIconTint: true, //set true if you want to disable the icon tinting
+    disableSelectedIconTint: true
   }
 }
 ```

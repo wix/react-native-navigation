@@ -9,7 +9,7 @@
 #import "RNNTopTabsViewController.h"
 #import "RNNRootViewProtocol.h"
 
-@interface RNNRootViewController : UIViewController	<RNNRootViewProtocol, UIViewControllerPreviewingDelegate>
+@interface RNNRootViewController : UIViewController	<RNNRootViewProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating>
 
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;

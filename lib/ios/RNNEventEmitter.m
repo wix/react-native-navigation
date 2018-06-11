@@ -1,4 +1,5 @@
 #import "RNNEventEmitter.h"
+#import "RNNUtils.h"
 
 @implementation RNNEventEmitter {
   NSInteger _appLaunchedListenerCount;
@@ -43,8 +44,22 @@ static NSString* const navigationEvent	= @"RNN.nativeEvent";
 	[self send:navigationEvent body:@{@"name":commandName , @"params": params}];
 }
 
+-(void)sendOnNavigationCommandCompletion:(NSString *)commandName params:(NSDictionary*)params {
+	[self send:commandComplete body:@{@"commandId":commandName , @"params": params, @"completionTime": [RNNUtils getCurrentTimestamp] }];
+}
+
 -(void)sendOnNavigationEvent:(NSString *)commandName params:(NSDictionary*)params {
 	[self send:navigationEvent body:@{@"name":commandName , @"params": params}];
+}
+
+-(void)sendOnSearchBarUpdated:(NSString *)componentId
+						 text:(NSString*)text
+					isFocused:(BOOL)isFocused {
+	[self send:navigationEvent body:@{@"name": @"searchBarUpdated",
+									  @"params": @{
+												  @"componentId": componentId,
+												  @"text": text,
+												  @"isFocused": @(isFocused)}}];
 }
 
 - (void)addListener:(NSString *)eventName {

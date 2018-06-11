@@ -28,19 +28,22 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 
 - (void)applyOn:(UIViewController*)viewController {
 	[self.title applyOn:viewController];
+	[self.largeTitle applyOn:viewController];
 	[self.background applyOn:viewController];
 	
 	if (@available(iOS 11.0, *)) {
-		if (self.largeTitle){
-			if ([self.largeTitle boolValue]) {
-				viewController.navigationController.navigationBar.prefersLargeTitles = YES;
-				viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
-			} else {
-				viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+		if ([self.searchBar boolValue] && !viewController.navigationItem.searchController) {
+			UISearchController *search = [[UISearchController alloc]initWithSearchResultsController:nil];
+			search.dimsBackgroundDuringPresentation = NO;
+			if ([viewController conformsToProtocol:@protocol(UISearchResultsUpdating)]) {
+				[search setSearchResultsUpdater:((UIViewController <UISearchResultsUpdating> *) viewController)];
 			}
-		} else {
-			viewController.navigationController.navigationBar.prefersLargeTitles = NO;
-			viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+			if (self.searchBarPlaceholder) {
+				search.searchBar.placeholder = self.searchBarPlaceholder;
+			}
+			viewController.navigationItem.searchController = search;
+			// enable it back if needed on componentDidAppear
+			viewController.navigationItem.hidesSearchBarWhenScrolling = NO;
 		}
 	}
 	
@@ -168,13 +171,6 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	}
 	
 	viewController.navigationItem.hidesBackButton = [self.backButtonHidden boolValue];
-	
-	[self resetOptions];
-}
-
-- (void)resetOptions {
-	self.leftButtons = nil;
-	self.rightButtons = nil;
 }
 
 -(void)storeOriginalTopBarImages:(UIViewController*)viewController {

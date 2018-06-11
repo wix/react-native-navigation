@@ -56,6 +56,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIApplication.sharedApplication.delegate.window.rootViewController = vc;
 	[UIApplication.sharedApplication.delegate.window makeKeyAndVisible];
+	[_eventEmitter sendOnNavigationCommandCompletion:setRoot params:@{@"layout": layout}];
 	completion();
 }
 
@@ -126,8 +127,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:elementView];
 		}
 	} else {
-		[_eventEmitter sendOnNavigationCommand:push params:@{@"componentId": componentId}];
 		[_navigationStackManager push:newVc onTop:componentId completion:^{
+			[_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
 			completion();
 		} rejection:rejection];
 	}
@@ -135,19 +136,21 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 -(void)setStackRoot:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
-	[_eventEmitter sendOnNavigationCommand:setStackRoot params:@{@"componentId": componentId}];
 	
 	UIViewController<RNNRootViewProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
+	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
 	[_navigationStackManager setStackRoot:newVc fromComponent:componentId completion:^{
+		[weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot params:@{@"componentId": componentId}];
 		completion();
 	} rejection:rejection];
 }
 
 -(void)pop:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
-	[_eventEmitter sendOnNavigationCommand:pop params:@{@"componentId": componentId}];
+
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
+		[_eventEmitter sendOnNavigationCommandCompletion:pop params:@{@"componentId": componentId}];
 		completion();
 	}];
 	
@@ -164,9 +167,9 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 -(void) popTo:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
-	[_eventEmitter sendOnNavigationCommand:popTo params:@{@"componentId": componentId}];
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
+		[_eventEmitter sendOnNavigationCommandCompletion:popTo params:@{@"componentId": componentId}];
 		completion();
 	}];
 	
@@ -177,9 +180,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 -(void) popToRoot:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
-	[_eventEmitter sendOnNavigationCommand:popToRoot params:@{@"componentId": componentId}];
+
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
+		[_eventEmitter sendOnNavigationCommandCompletion:popToRoot params:@{@"componentId": componentId}];
 		completion();
 	}];
 	
@@ -190,18 +194,20 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 -(void) showModal:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	[_eventEmitter sendOnNavigationCommand:showModal params:@{@"layout": layout}];
+
 	UIViewController<RNNRootViewProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
 	[_modalManager showModal:newVc completion:^{
+		[_eventEmitter sendOnNavigationCommandCompletion:showModal params:@{@"layout": layout}];
 		completion();
 	}];
 }
 
 -(void) dismissModal:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	[_eventEmitter sendOnNavigationCommand:dismissModal params:@{@"componentId": componentId}];
+
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
+		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
 		completion();
 	}];
 	
@@ -212,9 +218,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 -(void) dismissAllModalsWithCompletion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	[_eventEmitter sendOnNavigationCommand:dismissAllModals params:@{}];
+
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
+		[_eventEmitter sendOnNavigationCommandCompletion:dismissAllModals params:@{}];
 		completion();
 	}];
 	
@@ -225,17 +232,19 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 -(void)showOverlay:(NSDictionary *)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	[_eventEmitter sendOnNavigationCommand:showOverlay params:@{@"layout": layout}];
+
 	UIViewController<RNNRootViewProtocol>* overlayVC = [_controllerFactory createOverlay:layout];
 	[_overlayManager showOverlay:overlayVC completion:^{
+		[_eventEmitter sendOnNavigationCommandCompletion:showOverlay params:@{@"layout": layout}];
 		completion();
 	}];
 }
 
 - (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	[_eventEmitter sendOnNavigationCommand:dismissModal params:@{@"componentId": componentId}];
+
 	[_overlayManager dismissOverlay:componentId completion:^{
+		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
 		completion();
 	}];
 }
