@@ -63,7 +63,7 @@
     "@types/jest": "22.x.x"
   },
   "devDependencies": {
-    "detox": "7.3.6",
+    "detox": "7.x.x",
     "jest": "22.x.x",
     "mocha": "4.x.x",
     "react": "16.2.0",
