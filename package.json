@@ -134,13 +134,13 @@
       },
       "android.emu.debug": {
         "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
-        "build": "cd playground/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug",
+        "build": "cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug",
         "type": "android.emulator",
         "name": "Pixel_2_API_26"
       },
       "android.emu.release": {
         "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
-        "build": "cd playground/android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release",
+        "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release",
         "type": "android.emulator",
         "name": "Pixel_2_API_26"
       }

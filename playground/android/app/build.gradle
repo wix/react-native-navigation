@@ -28,7 +28,7 @@ android {
 
         testBuildType System.getProperty('testBuildType', 'debug')  //this will later be used to control the test apk build type
         missingDimensionStrategy "minReactNative", "minReactNative46"
-        missingDimensionStrategy "reactNativeVersion", "reactNative51"
+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative51"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
