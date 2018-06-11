@@ -7,7 +7,7 @@ describe('Overlay', () => {
     await device.relaunchApp();
   });
 
-  it('show and dismiss overlay', async () => {
+  test('show and dismiss overlay', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.SHOW_OVERLAY_BUTTON).tap();
     await expect(elementById(testIDs.DIALOG_HEADER)).toBeVisible();
@@ -15,7 +15,7 @@ describe('Overlay', () => {
     await expect(elementById(testIDs.DIALOG_HEADER)).toBeNotVisible();
   });
 
-  it('overlay pass touches - true', async () => {
+  test('overlay pass touches - true', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON).tap();
     await expect(elementById(testIDs.DIALOG_HEADER)).toBeVisible();
@@ -24,7 +24,7 @@ describe('Overlay', () => {
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeNotVisible();
   });
 
-  it('overlay pass touches - false', async () => {
+  test('overlay pass touches - false', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.SHOW_OVERLAY_BUTTON).tap();
     await expect(elementById(testIDs.DIALOG_HEADER)).toBeVisible();
@@ -33,7 +33,7 @@ describe('Overlay', () => {
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
   });
 
-  it('overlay should redraw after orientation change', async () => {
+  test('overlay should redraw after orientation change', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.SHOW_OVERLAY_BUTTON).tap();
     await expect(elementById(testIDs.DIALOG_HEADER)).toBeVisible();

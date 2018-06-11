@@ -9,7 +9,7 @@ describe(':ios: custom transition', () => {
     await device.relaunchApp();
   });
 
-  it('sanity', async () => {
+  test('sanity', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await elementById(testIDs.CUSTOM_TRANSITION_BUTTON).tap();
     await expect(element(by.id('shared_image1'))).toExist();

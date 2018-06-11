@@ -7,7 +7,7 @@ describe('static lifecycle events', () => {
     await device.relaunchApp();
   });
 
-  it('didAppear didDisappear', async () => {
+  test('didAppear didDisappear', async () => {
     await elementById(testIDs.PUSH_STATIC_LIFECYCLE_BUTTON).tap();
     await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
     await expect(elementByLabel('componentDidAppear | navigation.playground.StaticLifecycleOverlay')).toBeVisible();
@@ -16,7 +16,7 @@ describe('static lifecycle events', () => {
     await expect(elementByLabel('componentDidDisappear | navigation.playground.WelcomeScreen')).toBeVisible();
   });
 
-  it(':ios: pushing and popping screen dispatch static event', async () => {
+  test(':ios: pushing and popping screen dispatch static event', async () => {
     await elementById(testIDs.PUSH_STATIC_LIFECYCLE_BUTTON).tap();
     await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
     await expect(elementByLabel('componentDidAppear | navigation.playground.StaticLifecycleOverlay')).toBeVisible();
@@ -26,7 +26,7 @@ describe('static lifecycle events', () => {
     await expect(elementByLabel('pop')).toBeVisible();
   });
 
-  it(':ios: showModal and dismissModal dispatch static event', async () => {
+  test(':ios: showModal and dismissModal dispatch static event', async () => {
     await elementById(testIDs.PUSH_STATIC_LIFECYCLE_BUTTON).tap();
     await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
     await expect(elementByLabel('componentDidAppear | navigation.playground.StaticLifecycleOverlay')).toBeVisible();
@@ -36,7 +36,7 @@ describe('static lifecycle events', () => {
     await expect(elementByLabel('dismissModal')).toBeVisible();
   });
 
-  it(':ios: unmounts when dismissed', async () => {
+  test(':ios: unmounts when dismissed', async () => {
     await elementById(testIDs.PUSH_STATIC_LIFECYCLE_BUTTON).tap();
     await expect(elementByLabel('Static Lifecycle Events Overlay')).toBeVisible();
     await elementById(testIDs.DISMISS_BUTTON).tap();

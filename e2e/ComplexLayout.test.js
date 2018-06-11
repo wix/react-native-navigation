@@ -8,13 +8,13 @@ describe('complex layout', () => {
     await device.relaunchApp();
   });
 
-  it(':ios: shows external component in stack in modal', async () => {
+  test(':ios: shows external component in stack in modal', async () => {
     await elementById(testIDs.COMPLEX_LAYOUT_BUTTON).tap();
     await elementById(testIDs.EXTERNAL_COMPONENT_IN_STACK).tap();
     await expect(elementByLabel('External component in stack')).toBeVisible();
   });
 
-  it(':ios: shows external component in deep stack in modal', async () => {
+  test(':ios: shows external component in deep stack in modal', async () => {
     await elementById(testIDs.COMPLEX_LAYOUT_BUTTON).tap();
     await elementById(testIDs.EXTERNAL_COMPONENT_IN_DEEP_STACK).tap();
     await expect(elementByLabel('External component in deep stack')).toBeVisible();

@@ -41,6 +41,7 @@
     "test-e2e-android": "node ./scripts/test-e2e --android",
     "pretest-e2e-ios": "npm run build",
     "test-e2e-ios": "node ./scripts/test-e2e --ios",
+    "test-e2e-ios-multi": "npm run test-e2e-ios -- --multi",
     "test-all": "node ./scripts/test-all",
     "prerelease": "npm run build",
     "release": "node ./scripts/release",
@@ -116,9 +117,8 @@
     }
   },
   "detox": {
-    "test-runner": "mocha",
+    "test-runner": "jest",
     "specs": "e2e",
-    "runner-config": "e2e/mocha.opts",
     "configurations": {
       "ios.sim.debug": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
@@ -147,4 +147,3 @@
     }
   }
 }
-
