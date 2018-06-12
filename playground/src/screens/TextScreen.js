@@ -73,9 +73,7 @@ class TextScreen extends Component {
         currentTabIndex: 1,
         visible: false,
         drawBehind: true,
-        animate: true,
-        tabColor: 'blue',
-        selectedTabColor: 'red'
+        animate: true
       }
     });
   }

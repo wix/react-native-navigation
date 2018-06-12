@@ -94,6 +94,7 @@ class WelcomeScreen extends Component {
                   bottomTab: {
                     title: 'Tab 1',
                     icon: require('../images/one.png'),
+                    selectedIcon: require('../images/one.png'),
                     testID: testIDs.FIRST_TAB_BAR_BUTTON
                   },
                   topBar: {
@@ -126,11 +127,7 @@ class WelcomeScreen extends Component {
           ],
           options: {
             bottomTabs: {
-              tabColor: 'red',
               titleDisplayMode: 'alwaysShow',
-              selectedTabColor: 'blue',
-              fontFamily: 'HelveticaNeue-Italic',
-              fontSize: 13,
               testID: testIDs.BOTTOM_TABS_ELEMENT
             }
           }
@@ -220,9 +217,11 @@ class WelcomeScreen extends Component {
                 }
               ],
               options: {
-                bottomTabs: {
-                  tabColor: 'red',
-                  selectedTabColor: 'blue',
+                bottomTab: {
+                  textColor: 'red',
+                  iconColor: 'red',
+                  selectedTextColor: 'blue',
+                  selectedIconColor: 'blue',
                   fontFamily: 'HelveticaNeue-Italic',
                   fontSize: 13
                 }

@@ -24,6 +24,14 @@ function start() {
   registerScreens();
   Navigation.events().registerAppLaunchedListener(() => {
     Navigation.setDefaultOptions({
+      bottomTab: {
+        iconColor: 'black',
+        selectedIconColor: 'red',
+        textColor: 'black',
+        selectedTextColor: 'red',
+        fontFamily: 'HelveticaNeue-Italic',
+        fontSize: 13
+      },
       _animations: {
         startApp: {
           y: {
