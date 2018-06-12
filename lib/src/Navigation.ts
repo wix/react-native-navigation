@@ -15,7 +15,7 @@ import { Constants } from './adapters/Constants';
 import { ComponentType } from 'react';
 
 export class Navigation {
-  public readonly Element: React.ComponentType<{ elementId: any; resizeMode: any; }>;
+  public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
   public readonly store: Store;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly uniqueIdProvider: UniqueIdProvider;
