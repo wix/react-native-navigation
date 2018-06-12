@@ -12,6 +12,7 @@ import { Element } from './adapters/Element';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 import { CommandsObserver } from './events/CommandsObserver';
 import { Constants } from './adapters/Constants';
+import { ComponentType } from 'react';
 
 export class Navigation {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode: any; }>;
@@ -48,8 +49,8 @@ export class Navigation {
    * Every navigation component in your app must be registered with a unique name.
    * The component itself is a traditional React component extending React.Component.
    */
-  public registerComponent(componentName: string, getComponentClassFunc: ComponentProvider): void {
-    this.componentRegistry.registerComponent(componentName, getComponentClassFunc);
+  public registerComponent(componentName: string, getComponentClassFunc: ComponentProvider): ComponentType<any> {
+    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc);
   }
 
   /**

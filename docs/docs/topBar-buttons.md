@@ -12,7 +12,7 @@ The following options can be used to customise buttons.
   title: 'Button one',
   enabled: true,
   disableIconTint: false,
-  tintColor: 'red',
+  color: 'red',
   disabledColor: 'black',
   testID: 'buttonOneTestID'
 }

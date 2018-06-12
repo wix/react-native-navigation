@@ -6,6 +6,10 @@ const { connect } = require('remx');
 const store = require('./MyStore');
 
 class MyComponent extends Component {
+  static options = {
+    title: 'MyComponent'
+  };
+
   render() {
     if (this.props.renderCountIncrement) {
       this.props.renderCountIncrement();
