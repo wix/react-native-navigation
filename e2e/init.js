@@ -1,7 +1,7 @@
 const detox = require('detox');
 const config = require('../package.json').detox;
 const exec = require('shell-utils').exec;
-jest.setTimeout(180000);
+jest.setTimeout(300000);
 
 beforeAll(async () => {
   await detox.init(config, { launchApp: false });
