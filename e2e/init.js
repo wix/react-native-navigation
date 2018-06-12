@@ -1,14 +1,23 @@
 const detox = require('detox');
 const config = require('../package.json').detox;
 const exec = require('shell-utils').exec;
+jest.setTimeout(180000);
 
-before(async () => {
+beforeAll(async () => {
   await detox.init(config, { launchApp: false });
   disableAndroidEmulatorAnimations();
 });
 
-after(async () => {
+afterAll(async () => {
   await detox.cleanup();
+});
+
+beforeEach(async function() {
+    await detox.beforeEach(jasmine.testPath);
+});
+
+afterEach(async function() {
+    await detox.afterEach(jasmine.testPath);
 });
 
 function disableAndroidEmulatorAnimations() {

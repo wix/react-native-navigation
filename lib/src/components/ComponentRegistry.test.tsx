@@ -28,9 +28,10 @@ describe('ComponentRegistry', () => {
 
   it('registers component component by componentName into AppRegistry', () => {
     expect(mockRegistry).not.toHaveBeenCalled();
-    uut.registerComponent('example.MyComponent.name', () => MyComponent);
+    const result = uut.registerComponent('example.MyComponent.name', () => MyComponent);
     expect(mockRegistry).toHaveBeenCalledTimes(1);
     expect(mockRegistry.mock.calls[0][0]).toEqual('example.MyComponent.name');
+    expect(mockRegistry.mock.calls[0][1]()).toEqual(result);
   });
 
   it('saves the original component into the store', () => {

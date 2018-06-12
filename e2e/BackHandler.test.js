@@ -9,7 +9,7 @@ describe(':android: screen stack', () => {
     await device.relaunchApp();
   });
 
-  it('override hardware back button', async () => {
+  test('override hardware back button', async () => {
     await elementByLabel('BACK HANDLER').tap();
     await expect(elementByLabel('Back Handler Screen')).toBeVisible();
 
@@ -24,7 +24,7 @@ describe(':android: screen stack', () => {
     await expect(elementByLabel('React Native Navigation!')).toBeVisible();
   });
 
-  it('override hardware back button in modal with stack', async () => {
+  test('override hardware back button in modal with stack', async () => {
     await elementByLabel('BACK HANDLER').tap();
     await expect(elementByLabel('Back Handler Screen')).toBeVisible();
 

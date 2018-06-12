@@ -29,7 +29,7 @@ android {
                 html.enabled true
             }
             testLogging {
-                events "passed", "skipped", "failed", "standardOut", "standardError"
+                events "PASSED", "SKIPPED", "FAILED", "standardOut", "standardError"
             }
             afterSuite { desc, result ->
                 if (!desc.parent) { // will match the outermost suite
@@ -45,6 +45,15 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    flavorDimensions "RNN.reactNativeVersion"
+    productFlavors {
+        reactNative51 {
+            dimension "RNN.reactNativeVersion"
+        }
+        reactNative55 {
+            dimension "RNN.reactNativeVersion"
+        }
     }
 }
 
@@ -63,8 +72,6 @@ dependencies {
     implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
     implementation 'com.github.clans:fab:1.6.4'
 
-
-    // node_modules
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
 

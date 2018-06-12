@@ -1,6 +1,7 @@
 const React = require('react');
 require('react-native');
 const renderer = require('react-test-renderer');
+const { Navigation } = require('../../lib/dist/index');
 
 describe('remx support', () => {
   let MyConnectedComponent;
@@ -42,5 +43,12 @@ describe('remx support', () => {
     expect(tree.toJSON().children).toEqual(['30']);
 
     expect(renderCountIncrement).toHaveBeenCalledTimes(2);
+  });
+
+  it('support for static members in connected components', () => {
+    expect(MyConnectedComponent.options).toEqual({ title: 'MyComponent' });
+
+    const registeredComponentClass = Navigation.componentRegistry.registerComponent('MyComponentName', () => MyConnectedComponent);
+    expect(registeredComponentClass.options).toEqual({ title: 'MyComponent' });
   });
 });

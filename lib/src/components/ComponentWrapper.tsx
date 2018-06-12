@@ -82,6 +82,8 @@ export class ComponentWrapper {
 
     ReactLifecyclesCompat.polyfill(WrappedComponent);
 
+    _.defaults(WrappedComponent, OriginalComponentClass);
+
     return WrappedComponent;
   }
 }

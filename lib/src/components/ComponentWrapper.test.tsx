@@ -16,6 +16,10 @@ describe('ComponentWrapper', () => {
   let childRef;
 
   class MyComponent extends React.Component {
+    static options = {
+      title: 'MyComponentTitle'
+    };
+
     render() {
       return <Text>{'Hello, World!'}</Text>;
     }
@@ -140,6 +144,11 @@ describe('ComponentWrapper', () => {
     expect(instance.originalComponentRef).toBeInstanceOf(React.Component);
     tree.unmount();
     expect(instance.originalComponentRef).toBeFalsy();
+  });
+
+  it(`merges static members from wrapped component`, () => {
+    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store) as any;
+    expect(NavigationComponent.options).toEqual({ title: 'MyComponentTitle' });
   });
 
   describe('component lifecycle', () => {

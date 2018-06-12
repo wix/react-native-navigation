@@ -13,14 +13,14 @@ describe('application lifecycle test', () => {
     await device.relaunchApp();
   });
 
-  it('push a screen to ensure its not there after reload', async () => {
+  test('push a screen to ensure its not there after reload', async () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
     await device.reloadReactNative();
     await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
-  it('relaunch from background', async () => {
+  test('relaunch from background', async () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
@@ -30,7 +30,7 @@ describe('application lifecycle test', () => {
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
 
-  it(':android: relaunch after close with back button', async () => {
+  test(':android: relaunch after close with back button', async () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
@@ -40,7 +40,7 @@ describe('application lifecycle test', () => {
     await expect(elementByLabel('Pushed Screen')).toBeNotVisible();
   });
 
-  it('device orientation does not destroy activity', async () => {
+  test('device orientation does not destroy activity', async () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
 
@@ -49,7 +49,7 @@ describe('application lifecycle test', () => {
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
   });
 
-  it(':android: relaunch after activity killed by system', async () => {
+  test(':android: relaunch after activity killed by system', async () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementByLabel('Pushed Screen')).toBeVisible();
     await device.sendToHome();
@@ -82,7 +82,7 @@ describe('application lifecycle test', () => {
     }
   });
 
-  it(':android: pressing r twice with delay does nothing', async () => {
+  test(':android: pressing r twice with delay does nothing', async () => {
     if (!IS_RELEASE) {
       await elementById(testIDs.PUSH_BUTTON).tap();
       await expect(elementByLabel('Pushed Screen')).toBeVisible();
