@@ -46,7 +46,11 @@
 }
 
 - (RNNOptions *)options {
-	return nil;
+	return [((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) options];
+}
+
+- (void)applyModalOptions {
+	[self.options applyModalOptions:self];
 }
 
 - (void)mergeOptions:(NSDictionary *)options {
