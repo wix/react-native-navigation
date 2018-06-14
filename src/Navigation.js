@@ -26,7 +26,7 @@ function _registerComponentNoRedux(screenID, generator) {
   const generatorWrapper = function() {
     const InternalComponent = generator();
     if (!InternalComponent) {
-      console.error(`Navigation: ${screenID} registration result is 'undefined'`);
+      console.warn(`Navigation: ${screenID} registration result is 'undefined'`);
     }
 
     return class extends Screen {

@@ -139,7 +139,7 @@ public class SideMenu extends DrawerLayout {
                     NavigationApplication.instance.getUiManagerModule().measure(sideMenuView.getId(), new Callback() {
                         @Override
                         public void invoke(Object... args) {
-                            lp.width = sideMenuView.getChildAt(0).getWidth();
+                            lp.width = params.fixedWidth;
                             sideMenuView.setLayoutParams(lp);
                         }
                     });

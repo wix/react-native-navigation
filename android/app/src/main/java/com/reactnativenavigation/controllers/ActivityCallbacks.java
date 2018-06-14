@@ -5,14 +5,16 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import java.lang.ref.WeakReference;
 
 public class ActivityCallbacks {
+    WeakReference<Activity> activityReference;
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 
     }
 
     public void onActivityStarted(Activity activity) {
-
+        activityReference = new WeakReference(activity);
     }
 
     public void onActivityResumed(Activity activity) {
@@ -44,7 +46,10 @@ public class ActivityCallbacks {
     }
 
     public void onConfigurationChanged(Configuration newConfig) {
-
+        Intent intent = new Intent("onConfigurationChanged");
+        intent.putExtra("newConfig", newConfig);
+ 
+        activityReference.get().sendBroadcast(intent);
     }
 
     public void onKeyUp(int keyCode, KeyEvent event) {
