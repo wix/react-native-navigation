@@ -17,7 +17,7 @@ class WelcomeScreen extends Component {
       },
       topBar: {
         title: {
-          title: 'My Screen'
+          text: 'My Screen'
         },
         largeTitle: {
           visible: false,

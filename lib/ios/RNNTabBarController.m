@@ -41,14 +41,6 @@
 	}
 }
 
-- (BOOL)isCustomTransitioned {
-	return NO;
-}
-
-- (RNNOptions *)options {
-	return nil;
-}
-
 - (void)mergeOptions:(NSDictionary *)options {
 	[((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) mergeOptions:options];
 }

@@ -2,31 +2,15 @@
 #import "RNNStore.h"
 #import "RNNNavigationStackManager.h"
 
-@interface MockUINavigationController : UINavigationController
-@property (nonatomic, strong) NSArray* willReturnVCs;
-@end
-
-@implementation MockUINavigationController
-
--(NSArray<UIViewController *> *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated {
-	return self.willReturnVCs;
-}
-
--(NSArray<UIViewController *> *)popToRootViewControllerAnimated:(BOOL)animated {
-	return self.willReturnVCs;
-}
-
-@end
-
 
 @interface RNNNavigationStackManagerTest : XCTestCase
 
 @property (nonatomic, strong) RNNStore *store;
-@property (nonatomic, strong) RNNNavigationStackManager *uut;
-@property (nonatomic, strong) MockUINavigationController *nvc;
+@property (nonatomic, strong) UINavigationController *nvc;
 @property (nonatomic, strong) UIViewController *vc1;
 @property (nonatomic, strong) UIViewController *vc2;
 @property (nonatomic, strong) UIViewController *vc3;
+@property (nonatomic, strong) RNNNavigationStackManager *stackManager;
 
 @end
 
@@ -35,57 +19,60 @@
 - (void)setUp {
     [super setUp];
 	self.store = [RNNStore new];
-	self.uut = [[RNNNavigationStackManager alloc] initWithStore:self.store];
 	
-	self.nvc = [[MockUINavigationController alloc] init];
+	self.nvc = [[UINavigationController alloc] init];
 	self.vc1 = [RNNRootViewController new];
 	self.vc2 = [RNNRootViewController new];
 	self.vc3 = [RNNRootViewController new];
+	self.stackManager = [RNNNavigationStackManager new];
+	
 	NSArray *vcArray = @[self.vc1, self.vc2, self.vc3];
 	[self.nvc setViewControllers:vcArray];
-	
-	[self.store setComponent:self.vc1 componentId:@"vc1"];
-	[self.store setComponent:self.vc2 componentId:@"vc2"];
-	[self.store setComponent:self.vc3 componentId:@"vc3"];
-	
-	
 }
 
 
-- (void)testPop_removeTopVCFromStore {
-	[self.uut pop:@"vc3" withTransitionOptions:nil rejection:nil];
-	XCTAssertNil([self.store findComponentForId:@"vc3"]);
-	XCTAssertNotNil([self.store findComponentForId:@"vc2"]);
-	XCTAssertNotNil([self.store findComponentForId:@"vc1"]);
+- (void)testPop_removeTopVCFromStack {
+	XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
+	XCTAssertTrue([self.nvc.topViewController isEqual:self.vc3]);
+	[_stackManager popTo:self.vc2 animated:YES completion:^(NSArray *poppedViewControllers) {
+		XCTAssertTrue([self.nvc.topViewController isEqual:self.vc2]);
+		[expectation fulfill];
+	} rejection:nil];
+	
+	[self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
-- (void)testPopToSpecificVC_removeAllPopedVCFromStore {
-	self.nvc.willReturnVCs = @[self.vc2, self.vc3];
-	[self.uut popTo:@"vc1" rejection:nil];
+- (void)testPopToSpecificVC_removeAllPopedVCFromStack {
+	XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
+	XCTAssertFalse([self.nvc.topViewController isEqual:self.vc1]);
+	[_stackManager popTo:self.vc1 animated:NO completion:^(NSArray *poppedViewControllers) {
+		XCTAssertTrue([self.nvc.topViewController isEqual:self.vc1]);
+		[expectation fulfill];
+	} rejection:nil];
 	
-	XCTAssertNil([self.store findComponentForId:@"vc2"]);
-	XCTAssertNil([self.store findComponentForId:@"vc3"]);
-	XCTAssertNotNil([self.store findComponentForId:@"vc1"]);
-	
+	[self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
-- (void)testPopToRoot_removeAllTopVCsFromStore {
-	self.nvc.willReturnVCs = @[self.vc2, self.vc3];
-	[self.uut popToRoot:@"vc3" rejection:nil];
+- (void)testPopToRoot_removeAllTopVCsFromStack {
+	XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
+	[_stackManager popToRoot:self.vc3 animated:NO completion:^(NSArray *poppedViewControllers) {
+		XCTAssertTrue(self.nvc.childViewControllers.count == 1);
+		XCTAssertTrue([self.nvc.topViewController isEqual:self.vc1]);
+		[expectation fulfill];
+	} rejection:nil];
 	
-	XCTAssertNil([self.store findComponentForId:@"vc2"]);
-	XCTAssertNil([self.store findComponentForId:@"vc3"]);
-	XCTAssertNotNil([self.store findComponentForId:@"vc1"]);
-
+	[self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
 - (void)testStackRoot_shouldUpdateNavigationControllerChildrenViewControllers {
-	self.nvc.willReturnVCs = @[self.vc1, self.vc2, self.vc3];
-	
-	[self.uut setStackRoot:self.vc2 fromComponent:@"vc1" completion:nil rejection:nil];
-	
-	XCTAssertEqual(self.nvc.viewControllers.lastObject, self.vc2);
-	XCTAssertEqual(self.nvc.viewControllers.count, 1);
+	XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
+	[_stackManager setStackRoot:self.vc2 fromViewController:self.vc1 animated:NO completion:^{
+		XCTAssertTrue(self.nvc.childViewControllers.count == 1);
+		XCTAssertTrue([self.nvc.topViewController isEqual:self.vc2]);
+		[expectation fulfill];
+	} rejection:nil];
+
+	[self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
 @end

@@ -9,6 +9,10 @@
 #import "RNNTopTabsViewController.h"
 #import "RNNRootViewProtocol.h"
 
+@class RNNRootViewController;
+
+typedef void (^RNNReactViewReadyCompletionBlock)(void);
+
 @interface RNNRootViewController : UIViewController	<RNNRootViewProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating>
 
 @property (nonatomic, strong) RNNNavigationOptions* options;
@@ -27,10 +31,9 @@
 			   eventEmitter:(RNNEventEmitter*)eventEmitter
 		  isExternalComponent:(BOOL)isExternalComponent;
 
+- (void)onReactViewReady:(RNNReactViewReadyCompletionBlock)readyBlock;
 
 -(void)applyTabBarItem;
 -(void)applyTopTabsOptions;
-
--(BOOL)isCustomTransitioned;
 
 @end

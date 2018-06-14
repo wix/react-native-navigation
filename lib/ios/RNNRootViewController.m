@@ -10,11 +10,14 @@
 	UIView* _customTopBar;
 	UIView* _customTopBarBackground;
 }
+
 @property (nonatomic, strong) NSString* componentName;
 @property (nonatomic) BOOL _statusBarHidden;
 @property (nonatomic) BOOL isExternalComponent;
 @property (nonatomic) BOOL _optionsApplied;
 @property (nonatomic, copy) void (^rotationBlock)(void);
+@property (nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
+
 @end
 
 @implementation RNNRootViewController
@@ -36,6 +39,10 @@
 	
 	if (!self.isExternalComponent) {
 		self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(reactViewReady)
+													 name: @"RCTContentDidAppearNotification"
+												   object:nil];
 	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -73,6 +80,23 @@
 -(void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	[self.eventEmitter sendComponentDidDisappear:self.componentId componentName:self.componentName];
+}
+
+- (void)reactViewReady {
+	if (_reactViewReadyBlock) {
+		_reactViewReadyBlock();
+		_reactViewReadyBlock = nil;
+	}
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
+}
+
+- (void)onReactViewReady:(RNNReactViewReadyCompletionBlock)readyBlock {
+	if (self.isCustomViewController) {
+		readyBlock();
+	} else {
+		self.reactViewReadyBlock = readyBlock;
+	}
 }
 
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController {

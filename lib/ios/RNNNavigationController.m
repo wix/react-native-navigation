@@ -12,8 +12,8 @@
 	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController);
 }
 
-- (BOOL)isCustomTransitioned {
-	return NO;
+- (UINavigationController *)navigationController {
+	return self;
 }
 
 - (BOOL)isCustomViewController {

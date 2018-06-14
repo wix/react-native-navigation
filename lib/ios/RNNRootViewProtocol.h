@@ -8,10 +8,10 @@
 - (void)performOnRotation:(void (^)(void))block;
 - (void)optionsUpdated;
 - (void)applyModalOptions;
-
-@required
 - (BOOL)isCustomTransitioned;
 - (RNNNavigationOptions*)options;
+
+@required
 - (NSString *)componentId;
 
 @end

@@ -72,14 +72,6 @@
     [super viewDidLoad];
 }
 
-- (BOOL)isCustomTransitioned {
-	return NO;
-}
-
-- (RNNOptions *)options {
-	return nil;
-}
-
 - (NSString *)componentId {
 	return _currentViewController.componentId;
 }
