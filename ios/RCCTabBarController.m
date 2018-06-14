@@ -119,10 +119,11 @@
             self.tabBar.translucent = [tabBarTranslucent boolValue] ? YES : NO;
         }
         
-        NSString *tabBarHideShadow = tabsStyle[@"tabBarHideShadow"];
-        if (tabBarHideShadow) {
-            self.tabBar.clipsToBounds = [tabBarHideShadow boolValue] ? YES : NO;
-        }
+        self.tabBar.clipsToBounds = NO;
+        self.tabBar.layer.shadowOffset = CGSizeMake(0,0);
+        self.tabBar.layer.shadowRadius = 8;
+        self.tabBar.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.tabBar.layer.shadowOpacity = 0.3;
     }
     
     NSMutableArray *viewControllers = [NSMutableArray array];

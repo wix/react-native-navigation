@@ -275,6 +275,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"viewControllerHasChanged" object:nil userInfo:nil];
     [self sendGlobalScreenEvent:@"didAppear" endTimestampString:[self getTimestampString] shouldReset:YES];
     [self sendScreenChangedEvent:@"didAppear"];
     
