@@ -37,8 +37,4 @@
 	[self.options mergeIfEmptyWith:options];
 }
 
--(BOOL)isCustomTransitioned {
-	return false;
-}
-
 @end

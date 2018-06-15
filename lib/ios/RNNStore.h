@@ -5,7 +5,6 @@
 #import "ReactNativeNavigation.h"
 
 typedef void (^RNNTransitionCompletionBlock)(void);
-//typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, NSError *error);
 
 @interface RNNStore : NSObject
 

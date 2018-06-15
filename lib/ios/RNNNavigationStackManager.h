@@ -1,17 +1,20 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "RNNStore.h"
+
+typedef void (^RNNTransitionCompletionBlock)(void);
+typedef void (^RNNPopCompletionBlock)(NSArray* poppedViewControllers);
+typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, NSError *error);
 
 @interface RNNNavigationStackManager : NSObject
 
-@property (nonatomic) int loadCount;
--(instancetype)initWithStore:(RNNStore*)store;
+- (void)push:(UIViewController *)newTop onTop:(UIViewController *)onTopViewController animated:(BOOL)animated animationDelegate:(id)animationDelegate completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection;
 
+- (void)pop:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection;
 
--(void)push:(UIViewController<RNNRootViewProtocol>*)newTop onTop:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
--(void)pop:(NSString*)componentId withTransitionOptions:(RNNAnimationOptions*)transitionOptions rejection:(RCTPromiseRejectBlock)rejection;
--(void)popTo:(NSString*)componentId rejection:(RCTPromiseRejectBlock)rejection;
--(void)popToRoot:(NSString*)componentId rejection:(RCTPromiseRejectBlock)rejection;
--(void)setStackRoot:(UIViewController<RNNRootViewProtocol> *)newRoot fromComponent:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
+- (void)popTo:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection;
+
+- (void)popToRoot:(UIViewController*)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection;
+
+- (void)setStackRoot:(UIViewController *)newRoot fromViewController:(UIViewController *)fromViewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection;
 
 @end

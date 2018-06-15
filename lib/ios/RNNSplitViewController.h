@@ -22,6 +22,4 @@
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 				  eventEmitter:(RNNEventEmitter*)eventEmitter;
 
--(BOOL)isCustomTransitioned;
-
 @end

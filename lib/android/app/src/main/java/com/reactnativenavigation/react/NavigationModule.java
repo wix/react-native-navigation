@@ -13,6 +13,7 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.parse.LayoutFactory;
 import com.reactnativenavigation.parse.LayoutNode;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.parsers.JSONParser;
 import com.reactnativenavigation.parse.parsers.LayoutNodeParser;
 import com.reactnativenavigation.utils.NativeCommandListener;
 import com.reactnativenavigation.utils.Now;
@@ -22,8 +23,6 @@ import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +56,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void setRoot(String commandId, ReadableMap rawLayoutTree, Promise promise) {
-		final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.getMap("root").toHashMap()));
+		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree).optJSONObject("root"));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
             navigator().setRoot(viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
@@ -66,19 +65,19 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void setDefaultOptions(ReadableMap options) {
-        final Options defaultOptions = Options.parse(new TypefaceLoader(activity()), new JSONObject(options.toHashMap()));
+        final Options defaultOptions = Options.parse(new TypefaceLoader(activity()), JSONParser.parse(options));
         handle(() -> navigator().setDefaultOptions(defaultOptions));
     }
 
 	@ReactMethod
 	public void mergeOptions(String onComponentId, ReadableMap options) {
-		final Options navOptions = Options.parse(new TypefaceLoader(activity()), new JSONObject(options.toHashMap()));
+		final Options navOptions = Options.parse(new TypefaceLoader(activity()), JSONParser.parse(options));
 		handle(() -> navigator().mergeOptions(onComponentId, navOptions));
 	}
 
 	@ReactMethod
 	public void push(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
-		final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
+		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
             navigator().push(onComponentId, viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
@@ -87,7 +86,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setStackRoot(String commandId, String onComponentId, ReadableMap rawLayoutTree, Promise promise) {
-        final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
+        final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
         handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
             navigator().setStackRoot(onComponentId, viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
@@ -111,7 +110,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void showModal(String commandId, ReadableMap rawLayoutTree, Promise promise) {
-		final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
+		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
 		handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
             navigator().showModal(viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
@@ -130,7 +129,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void showOverlay(String commandId, ReadableMap rawLayoutTree, Promise promise) {
-        final LayoutNode layoutTree = LayoutNodeParser.parse(new JSONObject(rawLayoutTree.toHashMap()));
+        final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree));
         handle(() -> {
             final ViewController viewController = newLayoutFactory().create(layoutTree);
             navigator().showOverlay(viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
