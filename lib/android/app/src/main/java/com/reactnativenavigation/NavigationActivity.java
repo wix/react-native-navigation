@@ -1,7 +1,11 @@
 package com.reactnativenavigation;
 
+import android.annotation.TargetApi;
+import android.support.annotation.NonNull;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -14,7 +18,13 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 
-public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
+import com.facebook.react.modules.core.PermissionAwareActivity;
+import com.facebook.react.modules.core.PermissionListener;
+
+public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity {
+    @Nullable
+    private PermissionListener mPermissionListener;
+    
     protected Navigator navigator;
 
     @Override
@@ -80,5 +90,19 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     public Navigator getNavigator() {
         return navigator;
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public void requestPermissions(String[] permissions, int requestCode, PermissionListener listener) {
+        mPermissionListener = listener;
+        requestPermissions(permissions, requestCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        NavigationApplication.instance.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+            mPermissionListener = null;
+        }
     }
 }
