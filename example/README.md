@@ -1,6 +1,6 @@
 # example
 
-A simple usage example. If you're using redux, take a look at [example-redux](../example-redux).
+A simple usage example. If you're using redux, take a look at [example-redux](../old-example-redux) (**deprecated** in favor of [JuneDomingo/movieapp](https://github.com/JuneDomingo/movieapp)).
 
 ## Installation - iOS
 
