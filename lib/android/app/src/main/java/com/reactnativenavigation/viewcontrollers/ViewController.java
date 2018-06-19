@@ -189,9 +189,9 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (isShown) {
             isShown = false;
             onViewDisappear();
-            if (view instanceof Destroyable) {
-                ((Destroyable) view).destroy();
-            }
+        }
+        if (view instanceof Destroyable) {
+            ((Destroyable) view).destroy();
         }
         if (view != null) {
             view.getViewTreeObserver().removeOnGlobalLayoutListener(this);

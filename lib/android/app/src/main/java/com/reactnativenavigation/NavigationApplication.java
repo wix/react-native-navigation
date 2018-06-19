@@ -2,6 +2,7 @@ package com.reactnativenavigation;
 
 import android.app.Application;
 import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -52,6 +53,13 @@ public abstract class NavigationApplication extends Application implements React
 	public ReactNativeHost getReactNativeHost() {
 		return getReactGateway().getReactNativeHost();
 	}
+
+    /**
+     * Generally no need to override this; override for custom permission handling.
+     */
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+    }
 
 	public abstract boolean isDebug();
 

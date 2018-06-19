@@ -205,6 +205,9 @@ Navigation.mergeOptions(this.props.componentId, {
   statusBar: {
     backgroundColor: 'red'
   },
+  layout: {
+    topMargin: Navigation.constants().statusBarHeight // Set the layout's top margin
+  },
   topBar: {
     height: 70, // TopBar height in dp
     borderColor: 'red',
