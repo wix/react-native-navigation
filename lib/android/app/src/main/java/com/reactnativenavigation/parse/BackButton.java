@@ -58,4 +58,9 @@ public class BackButton extends Button {
         if (!enabled.hasValue()) enabled = defaultOptions.enabled;
         if (!testId.hasValue()) testId = defaultOptions.testId;
     }
+
+    public void setVisible() {
+        visible = new Bool(true);
+        hasValue = true;
+    }
 }

@@ -3,12 +3,18 @@
 @implementation RNNBackButtonOptions
 
 - (void)applyOn:(UIViewController *)viewController {
-	UIImage *image = self.image ? [RCTConvert UIImage:self.image] : nil;
-	[viewController.navigationController.navigationBar setBackIndicatorImage:image];
-	[viewController.navigationController.navigationBar setBackIndicatorTransitionMaskImage:image];
+	if (self.image) {
+		UIImage *image = self.image ? [RCTConvert UIImage:self.image] : nil;
+		[viewController.navigationController.navigationBar setBackIndicatorImage:image];
+		[viewController.navigationController.navigationBar setBackIndicatorTransitionMaskImage:image];
+	}
 	
-	if ([self.hideTitle boolValue]) {
-		self.title = @"";
+	if (self.visible) {
+		viewController.navigationItem.hidesBackButton = ![self.visible boolValue];
+		
+		if (![self.visible boolValue]) {
+			self.title = @"";
+		}
 	}
 	
 	if (self.title) {
@@ -19,8 +25,6 @@
 		
 		viewController.navigationItem.backBarButtonItem = backItem;
 	}
-	
-	viewController.navigationItem.hidesBackButton = ![self.visible boolValue];
 }
 
 @end

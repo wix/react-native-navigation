@@ -155,7 +155,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     private void attachTabs() {
         for (int i = (tabs.size() - 1); i >= 0; i--) {
             ViewGroup tab = tabs.get(i).getView();
-            if (i != 0) tab.setVisibility(View.GONE);
+            if (i != 0) tab.setVisibility(View.INVISIBLE);
             getView().addView(tab);
         }
     }
@@ -172,7 +172,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
     @Override
     public void selectTab(final int newIndex) {
-        getCurrentView().setVisibility(View.GONE);
+        getCurrentView().setVisibility(View.INVISIBLE);
         bottomTabs.setCurrentItem(newIndex, false);
         getCurrentView().setVisibility(View.VISIBLE);
     }
