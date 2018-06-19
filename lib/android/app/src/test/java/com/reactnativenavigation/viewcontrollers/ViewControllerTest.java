@@ -190,6 +190,22 @@ public class ViewControllerTest extends BaseTest {
     }
 
     @Test
+    public void onDestroy_destroysViewEvenIfHidden() {
+        final SimpleViewController.SimpleView[] spy = new SimpleViewController.SimpleView[1];
+        ViewController uut = new SimpleViewController(activity, childRegistry, "uut", new Options()) {
+            @Override
+            protected SimpleView createView() {
+                SimpleView view = spy(super.createView());
+                spy[0] = view;
+                return view;
+            }
+        };
+        assertThat(uut.isViewShown()).isFalse();
+        uut.destroy();
+        verify(spy[0], times(1)).destroy();
+    }
+
+    @Test
     public void onDestroy_RemovesSelfFromParentIfExists() {
         LinearLayout parent = new LinearLayout(activity);
         parent.addView(uut.getView());
