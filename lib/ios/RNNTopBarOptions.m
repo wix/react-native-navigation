@@ -39,6 +39,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 			if ([viewController conformsToProtocol:@protocol(UISearchResultsUpdating)]) {
 				[search setSearchResultsUpdater:((UIViewController <UISearchResultsUpdating> *) viewController)];
 			}
+			search.searchBar.delegate = (id<UISearchBarDelegate>)viewController;
 			if (self.searchBarPlaceholder) {
 				search.searchBar.placeholder = self.searchBarPlaceholder;
 			}

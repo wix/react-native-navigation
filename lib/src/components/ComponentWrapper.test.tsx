@@ -156,6 +156,7 @@ describe('ComponentWrapper', () => {
     const componentDidDisappearCallback = jest.fn();
     const onNavigationButtonPressedCallback = jest.fn();
     const onSearchBarCallback = jest.fn();
+    const onSearchBarCancelCallback = jest.fn();
 
     class MyLifecycleComponent extends MyComponent {
       componentDidAppear() {
@@ -173,6 +174,10 @@ describe('ComponentWrapper', () => {
       onSearchBarUpdated() {
         onSearchBarCallback();
       }
+
+      onSearchBarCancelPressed() {
+        onSearchBarCancelCallback();
+      }
     }
 
     it('componentDidAppear, componentDidDisappear and onNavigationButtonPressed are optional', () => {
@@ -182,6 +187,7 @@ describe('ComponentWrapper', () => {
       expect(() => tree.getInstance()!.componentDidDisappear()).not.toThrow();
       expect(() => tree.getInstance()!.onNavigationButtonPressed()).not.toThrow();
       expect(() => tree.getInstance()!.onSearchBarUpdated()).not.toThrow();
+      expect(() => tree.getInstance()!.onSearchBarCancelPressed()).not.toThrow();
     });
 
     it('calls componentDidAppear on OriginalComponent', () => {
@@ -214,6 +220,14 @@ describe('ComponentWrapper', () => {
       expect(onSearchBarCallback).toHaveBeenCalledTimes(0);
       tree.getInstance()!.onSearchBarUpdated();
       expect(onSearchBarCallback).toHaveBeenCalledTimes(1);
+    });
+
+    it('calls onSearchBarCancelPressed on OriginalComponent', () => {
+      const NavigationComponent = ComponentWrapper.wrap(componentName, MyLifecycleComponent, store);
+      const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
+      expect(onSearchBarCancelCallback).toHaveBeenCalledTimes(0);
+      tree.getInstance()!.onSearchBarCancelPressed();
+      expect(onSearchBarCancelCallback).toHaveBeenCalledTimes(1);
     });
   });
 });

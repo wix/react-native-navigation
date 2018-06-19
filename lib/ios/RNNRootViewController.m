@@ -105,6 +105,10 @@
 									isFocused:searchController.searchBar.isFirstResponder];
 }
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+	[self.eventEmitter sendOnSearchBarCancelPressed:self.componentId];
+}
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
 }

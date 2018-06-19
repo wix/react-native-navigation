@@ -103,3 +103,13 @@ class MyComponent extends Component {
   }
 }
 ```
+
+## onSearchBarCancelPressed (iOS 11+ only)
+Called when the cancel button on the SearchBar from NavigationBar gets pressed.
+```js
+class MyComponent extends Component {
+  onSearchBarCancelPressed() {
+
+  }
+}
+```
