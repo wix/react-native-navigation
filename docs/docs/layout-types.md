@@ -10,7 +10,7 @@ Component layout holds a single react component.
 
 ```js
 const component = {
-  id: 'comopnent1', // Optional, Auto generated if empty
+  id: 'component1', // Optional, Auto generated if empty
   name: 'Your registered component name',
   options: {},
   passProps: {
