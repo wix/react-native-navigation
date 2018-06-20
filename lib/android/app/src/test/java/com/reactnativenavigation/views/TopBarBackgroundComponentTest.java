@@ -2,6 +2,7 @@ package com.reactnativenavigation.views;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
@@ -65,7 +66,7 @@ public class TopBarBackgroundComponentTest extends BaseTest {
         component.name = new Text("someComponent");
         component.componentId = new Text("id");
         uut.setBackgroundComponent(component);
-        assertThat(uut.findViewById(R.id.topBarBackgroundComponent)).isNull();
+        assertThat((View) uut.findViewById(R.id.topBarBackgroundComponent)).isNull();
     }
 
     @Test

@@ -17,7 +17,6 @@ import com.reactnativenavigation.react.JsDevReloadHandler;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.utils.NativeCommandListener;
 import com.reactnativenavigation.viewcontrollers.modal.ModalPresenter;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
@@ -86,9 +85,9 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
     }
 
     private void destroyViews() {
-        destroyRoot();
-        overlayManager.destroy();
         modalStack.dismissAllModals(new CommandListenerAdapter(), root);
+        overlayManager.destroy();
+        destroyRoot();
     }
 
     private void destroyRoot() {
@@ -189,7 +188,7 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
         modalStack.dismissAllModals(listener, root);
     }
 
-    public void showOverlay(ViewController overlay, NativeCommandListener listener) {
+    public void showOverlay(ViewController overlay, CommandListener listener) {
         overlayManager.show(rootLayout, overlay, listener);
     }
 

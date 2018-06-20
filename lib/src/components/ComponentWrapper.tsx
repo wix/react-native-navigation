@@ -87,9 +87,7 @@ export class ComponentWrapper {
     }
 
     ReactLifecyclesCompat.polyfill(WrappedComponent);
-
-    _.defaults(WrappedComponent, OriginalComponentClass);
-
+    require('hoist-non-react-statics')(WrappedComponent, OriginalComponentClass);
     return WrappedComponent;
   }
 }

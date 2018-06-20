@@ -77,9 +77,6 @@ Navigation.mergeOptions(this.props.componentId, {
     searchBar: true, // iOS 11+ native UISearchBar inside topBar
     searchBarHiddenWhenScrolling: true,
     searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
-    component: {
-      name: 'example.CustomTopBar'
-    },
     largeTitle: {
       visible: true,
       fontSize: 30,
@@ -102,6 +99,10 @@ Navigation.mergeOptions(this.props.componentId, {
       color: 'red',
       fontFamily: 'Helvetica',
       alignment: 'center'
+    },
+    backButton: {
+      icon: require('icon.png'),
+      visible: true
     },
     background: {
       color: '#00ff00',
@@ -173,10 +174,8 @@ Navigation.mergeOptions(this.props.componentId, {
     noBorder: false,
     blur: false,
     backButton: {
-      image: require('icon.png'),
-      visible: true,
       title: 'Back',
-      hideTitle: false,
+      showTitle: false
     },
     largeTitle: {
       visible: true,

@@ -465,6 +465,16 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void destroyViews() {
+        disableShowModalAnimation(child1);
+        uut.setRoot(parentController, new CommandListenerAdapter());
+        uut.showModal(child1, new CommandListenerAdapter());
+        uut.showOverlay(child2, new CommandListenerAdapter());
+        uut.destroy();
+        assertThat(childRegistry.size()).isZero();
+    }
+
+    @Test
     public void reload_navigatorIsDestroyedOnReload() {
         uut.setRoot(parentController, new CommandListenerAdapter());
         uut.onReload();

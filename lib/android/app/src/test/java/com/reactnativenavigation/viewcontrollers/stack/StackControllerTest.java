@@ -284,8 +284,8 @@ public class StackControllerTest extends BaseTest {
         uut.push(child2, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                assertThat(uut.getView().findViewById(child1.getView().getId())).isNull();
-                assertThat(uut.getView().findViewById(child2.getView().getId())).isNotNull();
+                assertThat((View) uut.getView().findViewById(child1.getView().getId())).isNull();
+                assertThat((View) uut.getView().findViewById(child2.getView().getId())).isNotNull();
             }
         });
     }

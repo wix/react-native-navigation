@@ -60,17 +60,26 @@ public class ReactView extends ReactRootView implements IReactView {
 
 	@Override
 	public void sendComponentStart() {
-		new EventEmitter(reactInstanceManager.getCurrentReactContext()).componentDidAppear(componentId, componentName);
+        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+        if (currentReactContext != null) {
+            new EventEmitter(currentReactContext).componentDidAppear(componentId, componentName);
+        }
 	}
 
 	@Override
 	public void sendComponentStop() {
-		new EventEmitter(reactInstanceManager.getCurrentReactContext()).componentDidDisappear(componentId, componentName);
+        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+        if (currentReactContext != null) {
+            new EventEmitter(currentReactContext).componentDidDisappear(componentId, componentName);
+        }
 	}
 
     @Override
 	public void sendOnNavigationButtonPressed(String buttonId) {
-		new EventEmitter(reactInstanceManager.getCurrentReactContext()).emitOnNavigationButtonPressed(componentId, buttonId);
+        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+        if (currentReactContext != null) {
+            new EventEmitter(currentReactContext).emitOnNavigationButtonPressed(componentId, buttonId);
+        }
 	}
 
     @Override
