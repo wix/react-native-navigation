@@ -26,9 +26,9 @@ function start() {
     Navigation.setDefaultOptions({
       bottomTab: {
         iconColor: '#1B4C77',
-        selectedIconColor: '#f00',
+        selectedIconColor: '#0f0',
         textColor: '#1B4C77',
-        selectedTextColor: '#f00',
+        selectedTextColor: '#0f0',
         fontFamily: 'HelveticaNeue-Italic',
         fontSize: 13
       },

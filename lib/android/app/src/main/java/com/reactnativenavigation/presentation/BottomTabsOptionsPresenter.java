@@ -1,5 +1,7 @@
 package com.reactnativenavigation.presentation;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.ViewGroup.MarginLayoutParams;
 
 import com.reactnativenavigation.anim.BottomTabsAnimator;
@@ -12,7 +14,6 @@ import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.Component;
-import com.reactnativenavigation.views.bottomtabs.TabResolver;
 
 import java.util.List;
 
@@ -22,15 +23,17 @@ public class BottomTabsOptionsPresenter {
     private final BottomTabFinder bottomTabFinder;
     private final BottomTabsAnimator animator;
     private final List<ViewController> tabs;
-    private final TabResolver tabResolver;
+    private final int defaultSelectedTabColor;
+    private final int defaultTabColor;
 
-    public BottomTabsOptionsPresenter(BottomTabs bottomTabs, List<ViewController> tabs, TabSelector tabSelector, BottomTabFinder bottomTabFinder) {
+    public BottomTabsOptionsPresenter(Context context, BottomTabs bottomTabs, List<ViewController> tabs, TabSelector tabSelector, BottomTabFinder bottomTabFinder) {
         this.bottomTabs = bottomTabs;
         this.tabs = tabs;
         this.tabSelector = tabSelector;
         this.bottomTabFinder = bottomTabFinder;
         animator = new BottomTabsAnimator(bottomTabs);
-        tabResolver = new TabResolver(bottomTabs);
+        defaultSelectedTabColor = ContextCompat.getColor(context, com.aurelhubert.ahbottomnavigation.R.color.colorBottomNavigationAccent);
+        defaultTabColor = ContextCompat.getColor(context, com.aurelhubert.ahbottomnavigation.R.color.colorBottomNavigationInactive);
     }
 
     public void present(Options options) {
@@ -48,19 +51,8 @@ public class BottomTabsOptionsPresenter {
         if (options.badge.hasValue()) {
             bottomTabs.setBadge(tabIndex, options.badge);
         }
-        TabResolver.Tab tab = tabResolver.resolve(tabIndex);
-        if (options.iconColor.hasValue()) tab.setIconColor(options.iconColor);
-        if (options.textColor.hasValue()) tab.setTextColor(options.textColor);
-    }
-
-    public void onTabSelected(int selectedTabIndex, int unselectedTabIndex, BottomTabOptions unselected, BottomTabOptions selected) {
-        TabResolver.Tab selectedTab = tabResolver.resolve(selectedTabIndex);
-        TabResolver.Tab unselectedTab = tabResolver.resolve(unselectedTabIndex);
-
-        if (unselected.iconColor.hasValue()) unselectedTab.setIconColor(unselected.iconColor);
-        if (unselected.textColor.hasValue()) unselectedTab.setTextColor(unselected.textColor);
-        if (selected.iconColor.hasValue()) selectedTab.setIconColor(selected.selectedIconColor);
-        if (selected.textColor.hasValue()) selectedTab.setTextColor(selected.selectedTextColor);
+        bottomTabs.setAccentColor(tabIndex, options.selectedIconColor.get(defaultSelectedTabColor));
+        bottomTabs.setInactiveColor(tabIndex, options.iconColor.get(defaultTabColor));
     }
 
     private void applyDrawBehind(BottomTabsOptions options, int tabIndex) {
@@ -104,6 +96,10 @@ public class BottomTabsOptionsPresenter {
             } else {
                 bottomTabs.hideBottomNavigation(false);
             }
+        }
+        for (int i = 0; i < tabs.size(); i++) {
+            bottomTabs.setAccentColor(i, tabs.get(i).options.bottomTabOptions.selectedIconColor.get(defaultSelectedTabColor));
+            bottomTabs.setInactiveColor(i, tabs.get(i).options.bottomTabOptions.iconColor.get(defaultTabColor));
         }
     }
 }

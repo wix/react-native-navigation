@@ -97,11 +97,6 @@ public class LayoutFactory {
 			}
 		}
 
-		// Need to set the center controller first, otherwise "onPress" events on the JS components
-		// of the left and right drawers are not handled properly.
-		//
-		// See https://github.com/wix/react-native-navigation/issues/2835
-		//
 		if (childControllerCenter != null) {
 			sideMenuController.setCenterController(childControllerCenter);
 		}

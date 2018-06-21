@@ -54,7 +54,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	protected ViewGroup createView() {
 		RelativeLayout root = new RelativeLayout(getActivity());
 		bottomTabs = new BottomTabs(getActivity());
-        presenter = new BottomTabsOptionsPresenter(bottomTabs, tabs, this, bottomTabFinder);
+        presenter = new BottomTabsOptionsPresenter(getActivity(), bottomTabs, tabs, this, bottomTabFinder);
         bottomTabs.setOnTabSelectedListener(this);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
 		lp.addRule(ALIGN_PARENT_BOTTOM);
@@ -104,10 +104,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     public boolean onTabSelected(int index, boolean wasSelected) {
         if (wasSelected) return false;
         eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
-        BottomTabOptions unselected = tabs.get(bottomTabs.getCurrentItem()).options.bottomTabOptions;
-        BottomTabOptions selected = tabs.get(index).options.bottomTabOptions;
         selectTab(index);
-        bottomTabs.post(() -> presenter.onTabSelected(bottomTabs.getCurrentItem(), index, unselected, selected));
         return false;
 	}
 
