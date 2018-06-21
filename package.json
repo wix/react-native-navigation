@@ -114,7 +114,12 @@
         "lines": 100,
         "statements": 100
       }
-    }
+    },
+    "coverageReporters": [
+      "json",
+      "text",
+      "html"
+    ]
   },
   "detox": {
     "test-runner": "jest",
