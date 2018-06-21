@@ -92,7 +92,7 @@ class WelcomeScreen extends Component {
                 ],
                 options: {
                   bottomTab: {
-                    title: 'Tab 1',
+                    text: 'Tab 1',
                     icon: require('../images/one.png'),
                     selectedIcon: require('../images/one.png'),
                     testID: testIDs.FIRST_TAB_BAR_BUTTON
@@ -117,7 +117,7 @@ class WelcomeScreen extends Component {
                 ],
                 options: {
                   bottomTab: {
-                    title: 'Tab 2',
+                    text: 'Tab 2',
                     icon: require('../images/two.png'),
                     testID: testIDs.SECOND_TAB_BAR_BUTTON
                   }
@@ -166,7 +166,7 @@ class WelcomeScreen extends Component {
                     ],
                     options: {
                       bottomTab: {
-                        title: 'Tab 1',
+                        text: 'Tab 1',
                         icon: require('../images/one.png'),
                         testID: testIDs.FIRST_TAB_BAR_BUTTON
                       }
@@ -187,7 +187,7 @@ class WelcomeScreen extends Component {
                     ],
                     options: {
                       bottomTab: {
-                        title: 'Tab 2',
+                        text: 'Tab 2',
                         icon: require('../images/two.png'),
                         testID: testIDs.SECOND_TAB_BAR_BUTTON
                       }
@@ -208,7 +208,7 @@ class WelcomeScreen extends Component {
                     ],
                     options: {
                       bottomTab: {
-                        title: 'Tab 3',
+                        text: 'Tab 3',
                         icon: require('../images/three.png'),
                         testID: testIDs.SECOND_TAB_BAR_BUTTON
                       }

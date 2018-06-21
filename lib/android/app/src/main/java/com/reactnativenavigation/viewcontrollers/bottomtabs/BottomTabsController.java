@@ -104,8 +104,11 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     public boolean onTabSelected(int index, boolean wasSelected) {
         if (wasSelected) return false;
         eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
+        BottomTabOptions unselected = tabs.get(bottomTabs.getCurrentItem()).options.bottomTabOptions;
+        BottomTabOptions selected = tabs.get(index).options.bottomTabOptions;
         selectTab(index);
-        return true;
+        bottomTabs.post(() -> presenter.onTabSelected(bottomTabs.getCurrentItem(), index, unselected, selected));
+        return false;
 	}
 
 	private void createTabs(final List<ViewController> tabs) {
@@ -133,7 +136,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
             public void onComplete(@NonNull List<Drawable> drawables) {
                 List<AHBottomNavigationItem> tabs = new ArrayList<>();
                 for (int i = 0; i < drawables.size(); i++) {
-                    tabs.add(new AHBottomNavigationItem(bottomTabOptionsList.get(i).title.get(""), drawables.get(i)));
+                    tabs.add(new AHBottomNavigationItem(bottomTabOptionsList.get(i).text.get(""), drawables.get(i)));
                 }
                 bottomTabs.addItems(tabs);
                 bottomTabs.post(() -> {

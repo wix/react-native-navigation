@@ -12,6 +12,7 @@ import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.bottomtabs.TabResolver;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class BottomTabsOptionsPresenter {
     private final BottomTabFinder bottomTabFinder;
     private final BottomTabsAnimator animator;
     private final List<ViewController> tabs;
+    private final TabResolver tabResolver;
 
     public BottomTabsOptionsPresenter(BottomTabs bottomTabs, List<ViewController> tabs, TabSelector tabSelector, BottomTabFinder bottomTabFinder) {
         this.bottomTabs = bottomTabs;
@@ -28,6 +30,7 @@ public class BottomTabsOptionsPresenter {
         this.tabSelector = tabSelector;
         this.bottomTabFinder = bottomTabFinder;
         animator = new BottomTabsAnimator(bottomTabs);
+        tabResolver = new TabResolver(bottomTabs);
     }
 
     public void present(Options options) {
@@ -45,6 +48,19 @@ public class BottomTabsOptionsPresenter {
         if (options.badge.hasValue()) {
             bottomTabs.setBadge(tabIndex, options.badge);
         }
+        TabResolver.Tab tab = tabResolver.resolve(tabIndex);
+        if (options.iconColor.hasValue()) tab.setIconColor(options.iconColor);
+        if (options.textColor.hasValue()) tab.setTextColor(options.textColor);
+    }
+
+    public void onTabSelected(int selectedTabIndex, int unselectedTabIndex, BottomTabOptions unselected, BottomTabOptions selected) {
+        TabResolver.Tab selectedTab = tabResolver.resolve(selectedTabIndex);
+        TabResolver.Tab unselectedTab = tabResolver.resolve(unselectedTabIndex);
+
+        if (unselected.iconColor.hasValue()) unselectedTab.setIconColor(unselected.iconColor);
+        if (unselected.textColor.hasValue()) unselectedTab.setTextColor(unselected.textColor);
+        if (selected.iconColor.hasValue()) selectedTab.setIconColor(selected.selectedIconColor);
+        if (selected.textColor.hasValue()) selectedTab.setTextColor(selected.selectedTextColor);
     }
 
     private void applyDrawBehind(BottomTabsOptions options, int tabIndex) {
@@ -70,12 +86,6 @@ public class BottomTabsOptionsPresenter {
         }
         if (options.testId.hasValue()) {
             bottomTabs.setTag(options.testId.get());
-        }
-        if (options.selectedTabColor.hasValue()) {
-            bottomTabs.setAccentColor(options.selectedTabColor.get());
-        }
-        if (options.tabColor.hasValue()) {
-            bottomTabs.setInactiveColor(options.tabColor.get());
         }
         if (options.currentTabId.hasValue()) {
             int tabIndex = bottomTabFinder.findByControllerId(options.currentTabId.get());
