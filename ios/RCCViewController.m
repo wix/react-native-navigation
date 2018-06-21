@@ -27,6 +27,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 @property (nonatomic, strong) NSDictionary *originalNavBarImages;
 @property (nonatomic, strong) UIImageView *navBarHairlineImageView;
 @property (nonatomic, weak) id <UIGestureRecognizerDelegate> originalInteractivePopGestureDelegate;
+@property (nonatomic, strong) RCTRootView *rootView;
 @end
 
 @implementation RCCViewController
@@ -127,8 +128,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   return modifiedPassProps;
 }
 
-
-
 - (instancetype)initWithProps:(NSDictionary *)props children:(NSArray *)children globalProps:(NSDictionary *)globalProps bridge:(RCTBridge *)bridge
 {
   NSString *component = props[@"component"];
@@ -173,8 +172,9 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
 
 - (void)commonInit:(RCTRootView*)reactView navigatorStyle:(NSDictionary*)navigatorStyle props:(NSDictionary*)props
 {
-  self.view = reactView;
-  
+  self.rootView = reactView;
+  [self.view addSubview:reactView];
+    
   self.edgesForExtendedLayout = UIRectEdgeNone; // default
   self.automaticallyAdjustsScrollViewInsets = NO; // default
   
@@ -296,7 +296,6 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   [super viewDidAppear:animated];
   [self sendGlobalScreenEvent:@"didAppear" endTimestampString:[self getTimestampString] shouldReset:YES];
   [self sendScreenChangedEvent:@"didAppear"];
-  
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -321,6 +320,12 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   [self sendGlobalScreenEvent:@"willDisappear" endTimestampString:[self getTimestampString] shouldReset:NO];
   [self sendScreenChangedEvent:@"willDisappear"];
   [self setStyleOnDisappear];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    self.rootView.frame = self.view.bounds;
 }
 
 // most styles should be set here since when we pop a view controller that changed them
@@ -812,7 +817,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         UIViewController *viewController = (UIViewController*)obj;
         [self addChildViewController:viewController];
         viewController.view.frame = self.view.bounds;
-        [self.view addSubview:viewController.view];
+        [self.rootView addSubview:viewController.view];
         [viewController didMoveToParentViewController:self];
       }
       else
