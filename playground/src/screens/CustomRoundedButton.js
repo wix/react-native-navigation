@@ -37,7 +37,7 @@ class CustomRoundedButton extends Component {
       <View style={styles.container} key={'guyguy'}>
         <View style={styles.button}>
           <TouchableOpacity onPress={() => Alert.alert(this.props.title, 'Thanks for that :)')}>
-            <Text style={styles.text}>Hi:)</Text>
+            <Text style={styles.text}>{this.props.title}</Text>
           </TouchableOpacity>
         </View>
       </View>

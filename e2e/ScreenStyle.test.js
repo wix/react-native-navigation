@@ -102,6 +102,11 @@ describe('screen style', () => {
     await expect(elementById('buttonLeft')).toBeVisible();
   });
 
+  test('pass props to custom button component', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await expect(elementByLabel(`Two`)).toExist();
+  });
+
   test('tab bar items visibility', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementById(testIDs.FIRST_TAB_BAR_BUTTON)).toBeVisible();

@@ -38,15 +38,19 @@ public class NavigationReactNativeHost extends ReactNativeHost {
     @Override
 	protected List<ReactPackage> getPackages() {
 		List<ReactPackage> packages = new ArrayList<>();
-		packages.add(new MainReactPackage());
+		boolean hasMainReactPackage = false;
 		packages.add(new NavigationPackage(this));
 		if (additionalReactPackages != null) {
 			for (ReactPackage p : additionalReactPackages) {
-				if (!(p instanceof MainReactPackage || p instanceof NavigationPackage)) {
+				if (!(p instanceof NavigationPackage)) {
 					packages.add(p);
 				}
+				if (p instanceof MainReactPackage) hasMainReactPackage = true;
 			}
 		}
+        if (!hasMainReactPackage) {
+            packages.add(new MainReactPackage());
+        }
 		return packages;
 	}
 }

@@ -184,7 +184,7 @@ Navigation.setRoot({
     stack: {
       options: {
         topBar: {
-          hidden: true
+          visible: false
         }
       },
       children: [

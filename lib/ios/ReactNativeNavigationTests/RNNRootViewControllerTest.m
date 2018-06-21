@@ -69,12 +69,20 @@
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
 }
 
-- (void)testStatusBarHidden_true {
-	self.options.statusBar.hidden = @(1);
+- (void)testStatusBarVisible_false {
+	self.options.statusBar.visible = @(0);
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue([self.uut prefersStatusBarHidden]);
+}
+
+- (void)testStatusBarVisible_true {
+	self.options.statusBar.visible = @(1);
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertFalse([self.uut prefersStatusBarHidden]);
 }
 
 - (void)testStatusBarHideWithTopBar_false {
@@ -93,15 +101,6 @@
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue([self.uut prefersStatusBarHidden]);
-}
-
-
-- (void)testStatusBarHidden_false {
-	self.options.statusBar.hidden = @(0);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-
-	XCTAssertFalse([self.uut prefersStatusBarHidden]);
 }
 
 -(void)testTitle_string{
