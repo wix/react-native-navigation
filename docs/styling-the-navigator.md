@@ -73,6 +73,7 @@ this.props.navigator.setStyle({
   screenBackgroundColor: 'white', // Default screen color, visible before the actual react view is rendered
   orientation: 'portrait' // Sets a specific orientation to a modal and all screens pushed to it. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
   disabledButtonColor: '#ff0000' // chnaged the navigation bar button text color when disabled.
+  rootBackgroundImageName: 'iOS: <name of image in Images.xcassets>. Android: <name of drawable>', // Static while you transition between screens. Works best with screenBackgroundColor: 'transparent'
   
   // iOS only
   statusBarTextColorSchemeSingleScreen: 'light', // same as statusBarTextColorScheme but does NOT remember across pushes
@@ -82,8 +83,7 @@ this.props.navigator.setStyle({
   disabledBackGesture: false, // default: false. Disable the back gesture (swipe gesture) in order to pop the top screen. 
   disabledSimultaneousGesture: true, // default: true. Disable simultaneous gesture recognition.
   screenBackgroundImageName: '<name of image in Images.xcassets>', // Optional. default screen background image.
-  rootBackgroundImageName: '<name of image in Images.xcassets>', // Static while you transition between screens. Works best with screenBackgroundColor: 'transparent'
-
+  
   navBarButtonFontSize: 20, // Change font size nav bar buttons (eg. the back button) (remembered across pushes)
   navBarButtonFontWeight: '500', // Change font weight nav bar buttons (eg. the back button) (remembered across pushes)
 
