@@ -15,3 +15,7 @@ Check out [this link](https://github.com/kanzitelli/react-native-navigation-mobx
 
 ### redux-persist
 Boilerplate for integrating redux-persist can be found [here](https://stackoverflow.com/questions/47732500/react-native-navigation-and-redux-persist).
+
+### Splash Screen Tutorial
+A detail tutorial about how to correctly implement Splash Screen with RNN: [Article Link](https://medium.com/@pqkluan/how-to-implement-splash-screen-in-react-native-navigation-ee2184a1a96).
+Note: The article use third-party tool name RN-Toolbox (optional) to generate Splash Screen assets.

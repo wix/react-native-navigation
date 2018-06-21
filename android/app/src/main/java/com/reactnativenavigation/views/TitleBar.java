@@ -223,7 +223,7 @@ public class TitleBar extends Toolbar {
 
     private void addButtonsToTitleBar(String navigatorEventId, Menu menu) {
         for (int i = 0; i < rightButtons.size(); i++) {
-            final TitleBarButton button = new TitleBarButton(menu, this, rightButtons.get(i), navigatorEventId);
+            final TitleBarButton button = new TitleBarButton(menu, getActionMenuView(), rightButtons.get(i), navigatorEventId);
             addButtonInReverseOrder(rightButtons, i, button);
         }
     }
@@ -368,7 +368,7 @@ public class TitleBar extends Toolbar {
     }
 
     private void setButtonTextColor() {
-        final ActionMenuView buttonsContainer = ViewUtils.findChildByClass(this, ActionMenuView.class);
+        final ActionMenuView buttonsContainer = getActionMenuView();
         if (buttonsContainer != null) {
             for (int i = 0; i < buttonsContainer.getChildCount(); i++) {
                 if (buttonsContainer.getChildAt(i) instanceof TextView) {
@@ -376,6 +376,10 @@ public class TitleBar extends Toolbar {
                 }
             }
         }
+    }
+
+    protected ActionMenuView getActionMenuView() {
+        return ViewUtils.findChildByClass(this, ActionMenuView.class);
     }
 
     private void setButtonsIconColor() {
