@@ -65,7 +65,7 @@
 	+        jcenter()
 	    }
 	    dependencies {
-	+        classpath 'com.android.tools.build:gradle:3.0.1'
+	+        classpath 'com.android.tools.build:gradle:3.1.3'
 	-        classpath 'com.android.tools.build:gradle:2.2.3'
 	    }
 	}
@@ -88,7 +88,7 @@
 
 	```groovy
 	android {
-	    compileSdkVersion 25
+	    compileSdkVersion 26
 	    buildToolsVersion "27.0.3"
 	    
 	    defaultConfig {
@@ -107,7 +107,8 @@
 	
 	dependencies {
 	    implementation fileTree(dir: "libs", include: ["*.jar"])
-	    implementation "com.android.support:appcompat-v7:25.4.0"
+	    implementation "com.android.support:design:26.1.0"
+	    implementation "com.android.support:appcompat-v7:26.1.0"
 	    implementation "com.facebook.react:react-native:+"
 	    implementation project(':react-native-navigation')
 	}
@@ -130,7 +131,7 @@
 	distributionPath=wrapper/dists
 	zipStoreBase=GRADLE_USER_HOME
 	zipStorePath=wrapper/dists
-	+distributionUrl=https\://services.gradle.org/distributions/gradle-4.4-all.zip
+	+distributionUrl=https\://services.gradle.org/distributions/gradle-4.4.1-all.zip
 	-distributionUrl=https\://services.gradle.org/distributions/gradle-2.14.1-all.zip
 	```
 
