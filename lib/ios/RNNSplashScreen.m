@@ -17,14 +17,30 @@
 		@try
 		{
 			splashView = [[NSBundle mainBundle] loadNibNamed:launchStoryBoard owner:self options:nil][0];
-			if (splashView != nil)
-			{
-				splashView.frame = CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height);
-			}
+			
 		}
 		@catch(NSException *e)
 		{
 			splashView = nil;
+		}
+		
+		if (splashView == nil) {
+			@try
+			{
+				UIStoryboard *storyboard = [UIStoryboard storyboardWithName:launchStoryBoard bundle: nil];
+				NSData *archiveView = [NSKeyedArchiver archivedDataWithRootObject:[storyboard instantiateInitialViewController].view];
+
+				splashView = [NSKeyedUnarchiver unarchiveObjectWithData:archiveView];
+			}
+			@catch(NSException *e)
+			{
+				splashView = nil;
+			}
+		}
+		
+		if (splashView != nil)
+		{
+			splashView.frame = CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height);
 		}
 	}
 	else {//load the splash from the DEfault image or from LaunchImage in the xcassets
@@ -66,7 +82,8 @@
 	
 	if (splashView != nil) {
 		RNNSplashScreen *splashVC = [[RNNSplashScreen alloc] init];
-		splashVC.view = splashView;
+		splashVC.view = [[UIView alloc]initWithFrame:splashView.frame];
+		[splashVC.view addSubview:splashView];
 		
 		id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
 		appDelegate.window.rootViewController = splashVC;
@@ -75,3 +92,4 @@
 }
 
 @end
+
