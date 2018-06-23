@@ -11,6 +11,7 @@ import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
@@ -385,10 +386,14 @@ public class TitleBar extends Toolbar {
     private void setButtonsIconColor() {
         final Menu menu = getMenu();
         for (int i = 0; i < menu.size(); i++) {
-            if (menu.getItem(i).getIcon() != null) {
-                ViewUtils.tintDrawable(menu.getItem(i).getIcon(),
-                        getButton(i).getColor().getColor(),
-                        getButton(i).enabled);
+            MenuItem item = menu.getItem(i);
+            if (item.getIcon() != null) {
+                BaseTitleBarButtonParams button = getButton(i);
+                if (!button.disableIconTint) {
+                    ViewUtils.tintDrawable(item.getIcon(),
+                            button.getColor().getColor(),
+                            button.enabled);
+                }
             }
         }
     }
