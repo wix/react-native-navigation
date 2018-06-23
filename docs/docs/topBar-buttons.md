@@ -25,14 +25,17 @@ Buttons can be defined in a screen's static options:
 ```js
 class MyScreen extends Component {
   static get options() {
-    topBar: {
-    leftButtons: [
-      {
-        id: 'buttonOne',
-        icon: require('icon.png')
+    return {
+      topBar: {
+        leftButtons: [
+          {
+            id: 'buttonOne',
+            icon: require('icon.png')
+          }
+        ],
+        rightButtons: [],
       }
-    ],
-    rightButtons: [],
+    };
   }
   
 }
