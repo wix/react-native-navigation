@@ -15,17 +15,12 @@ function execSyncSilently(cmd) {
 }
 
 function validateEnv() {
-  if (!process.env.CI || !process.env.TRAVIS) {
-    throw new Error(`releasing is only available from Travis CI`);
+  if (!process.env.JENKINS_CI) {
+    throw new Error(`releasing is only available from CI`);
   }
 
-  if (process.env.TRAVIS_BRANCH !== 'master') {
-    console.error(`not publishing on branch ${process.env.TRAVIS_BRANCH}`);
-    return false;
-  }
-
-  if (process.env.TRAVIS_PULL_REQUEST !== 'false') {
-    console.error(`not publishing as triggered by pull request ${process.env.TRAVIS_PULL_REQUEST}`);
+  if (!process.env.JENKINS_MASTER) {
+    console.log(`not publishing on a different build`);
     return false;
   }
 
@@ -53,6 +48,7 @@ function calcNewVersion() {
 }
 
 function copyNpmRc() {
+  execSync(`rm -f package-lock.json`);
   const npmrcPath = p.resolve(`${__dirname}/.npmrc`);
   execSync(`cp -rf ${npmrcPath} .`);
 }
@@ -60,8 +56,8 @@ function copyNpmRc() {
 function tagAndPublish(newVersion) {
   console.log(`new version is: ${newVersion}`);
   execSync(`npm version ${newVersion} -m "v${newVersion} [ci skip]"`);
-  execSyncSilently(`git push deploy --tags`);
   execSync(`npm publish --tag latest`);
+  execSyncSilently(`git push deploy --tags`);
 }
 
 function run() {
