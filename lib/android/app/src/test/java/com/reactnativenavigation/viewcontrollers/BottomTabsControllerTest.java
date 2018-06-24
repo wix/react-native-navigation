@@ -155,7 +155,7 @@ public class BottomTabsControllerTest extends BaseTest {
     @Test
     public void applyOptions_bottomTabsOptionsAreClearedAfterApply() {
         Options options = new Options();
-        options.bottomTabsOptions.tabColor = new Color(android.graphics.Color.RED);
+        options.bottomTabsOptions.backgroundColor = new Color(android.graphics.Color.RED);
         child1.mergeOptions(options);
         uut.ensureViewIsCreated();
 
@@ -168,7 +168,7 @@ public class BottomTabsControllerTest extends BaseTest {
         ArgumentCaptor<ReactComponent> viewCaptor = ArgumentCaptor.forClass(ReactComponent.class);
         verify(stack, times(1)).applyChildOptions(optionsCaptor.capture(), viewCaptor.capture());
         assertThat(viewCaptor.getValue()).isEqualTo(child1.getView());
-        assertThat(optionsCaptor.getValue().bottomTabsOptions.tabColor.hasValue()).isFalse();
+        assertThat(optionsCaptor.getValue().bottomTabsOptions.backgroundColor.hasValue()).isFalse();
     }
 
     @Test
