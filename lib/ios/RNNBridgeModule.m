@@ -1,4 +1,5 @@
 #import "RNNBridgeModule.h"
+#import "Constants.h"
 
 @implementation RNNBridgeModule {
 	RNNCommandsHandler* _commandsHandler;
@@ -99,6 +100,10 @@ RCT_EXPORT_METHOD(dismissOverlay:(NSString*)commandId componentId:(NSString*)com
 RCT_EXPORT_METHOD(getLaunchArgs:(NSString*)commandId :(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
 	NSArray* args = [[NSProcessInfo processInfo] arguments];
 	resolve(args);
+}
+
+RCT_EXPORT_METHOD(getConstants:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+	resolve([Constants getConstants]);
 }
 
 @end

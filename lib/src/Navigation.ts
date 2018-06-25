@@ -162,7 +162,7 @@ export class Navigation {
   /**
    * Constants coming from native
    */
-  public constants(): Constants {
-    return Constants.get();
+  public async constants(): Promise<any> {
+    return await Constants.get();
   }
 }
