@@ -19,7 +19,7 @@ public class Options {
         result.topBar = TopBarOptions.parse(typefaceManager, json.optJSONObject("topBar"));
         result.topTabs = TopTabsOptions.parse(json.optJSONObject("topTabs"));
         result.topTabOptions = TopTabOptions.parse(typefaceManager, json.optJSONObject("topTab"));
-        result.bottomTabOptions = BottomTabOptions.parse(json.optJSONObject("bottomTab"));
+        result.bottomTabOptions = BottomTabOptions.parse(typefaceManager, json.optJSONObject("bottomTab"));
         result.bottomTabsOptions = BottomTabsOptions.parse(json.optJSONObject("bottomTabs"));
         result.overlayOptions = OverlayOptions.parse(json.optJSONObject("overlay"));
         result.fabOptions = FabOptions.parse(json.optJSONObject("fab"));

@@ -35,16 +35,6 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     @Override
-    public void setAccentColor(int tabIndex, int accentColor) {
-        if (getAccentColor(tabIndex) != accentColor) super.setAccentColor(tabIndex, accentColor);
-    }
-
-    @Override
-    public void setInactiveColor(int tabIndex, int inactiveColor) {
-        if (getInactiveColor(tabIndex) != inactiveColor) super.setInactiveColor(tabIndex, inactiveColor);
-    }
-
-    @Override
     public void setTitleState(TitleState titleState) {
         if (getTitleState() != titleState) super.setTitleState(titleState);
     }

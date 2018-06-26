@@ -39,19 +39,25 @@ public class BottomTabOptionsPresenter {
 
     public void present() {
         for (int i = 0; i < tabs.size(); i++) {
-            BottomTabOptions bottomTab = tabs.get(i).options.bottomTabOptions;
-            bottomTabs.setAccentColor(i, bottomTab.selectedIconColor.get(defaultSelectedTabColor));
-            bottomTabs.setInactiveColor(i, bottomTab.iconColor.get(defaultTabColor));
+            BottomTabOptions bottomTab = tabs.get(i).options.copy().withDefaultOptions(defaultOptions).bottomTabOptions;
             bottomTabs.setBadge(i, bottomTab.badge.get(""));
+            bottomTabs.setTitleTypeface(i, bottomTab.fontFamily);
+            if (bottomTab.selectedIconColor.hasValue()) bottomTabs.setIconActiveColor(i, bottomTab.selectedIconColor.get());
+            if (bottomTab.iconColor.hasValue()) bottomTabs.setIconInactiveColor(i, bottomTab.iconColor.get());
+            if (bottomTab.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(i, bottomTab.selectedTextColor.get());
+            if (bottomTab.textColor.hasValue()) bottomTabs.setTitleInactiveColor(i, bottomTab.textColor.get());
         }
     }
 
     public void mergeChildOptions(Options options, Component child) {
         BottomTabOptions withDefaultOptions = options.withDefaultOptions(defaultOptions).bottomTabOptions;
-        int tabIndex = bottomTabFinder.findByComponent(child);
-        if (withDefaultOptions.badge.hasValue()) bottomTabs.setBadge(tabIndex, withDefaultOptions.badge.get());
-        if (withDefaultOptions.selectedIconColor.hasValue()) bottomTabs.setAccentColor(tabIndex, withDefaultOptions.selectedIconColor.get());
-        if (withDefaultOptions.iconColor.hasValue()) bottomTabs.setInactiveColor(tabIndex, withDefaultOptions.iconColor.get());
+        int index = bottomTabFinder.findByComponent(child);
+        if (withDefaultOptions.badge.hasValue()) bottomTabs.setBadge(index, withDefaultOptions.badge.get());
+        if (withDefaultOptions.fontFamily != null) bottomTabs.setTitleTypeface(index, withDefaultOptions.fontFamily);
+        if (withDefaultOptions.selectedIconColor.hasValue()) bottomTabs.setIconActiveColor(index, withDefaultOptions.selectedIconColor.get());
+        if (withDefaultOptions.iconColor.hasValue()) bottomTabs.setIconInactiveColor(index, withDefaultOptions.iconColor.get());
+        if (withDefaultOptions.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(index, withDefaultOptions.selectedTextColor.get());
+        if (withDefaultOptions.textColor.hasValue()) bottomTabs.setTitleInactiveColor(index, withDefaultOptions.textColor.get());
     }
 
     @VisibleForTesting
