@@ -206,7 +206,7 @@ android {
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
         def requested = details.requested
-        if (requested.group == 'com.android.support') {
+        if (requested.group == 'com.android.support' && requested.name != 'multidex') {
             details.useVersion "25.4.0" // <- Change this to whatever version you're using
         }
     }
