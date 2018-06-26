@@ -17,19 +17,32 @@ import com.reactnativenavigation.utils.UiUtils;
 public class OptionsPresenter {
 
     private Activity activity;
+    private Options defaultOptions;
 
-    public OptionsPresenter(Activity activity) {
+    public OptionsPresenter(Activity activity, Options defaultOptions) {
         this.activity = activity;
+        this.defaultOptions = defaultOptions;
+    }
+
+    public void setDefaultOptions(Options defaultOptions) {
+        this.defaultOptions = defaultOptions;
     }
 
     public void present(View view, Options options) {
-        applyOrientation(options.layout.orientation);
-        applyViewOptions(view, options);
-        applyStatusBarOptions(view, options.statusBar);
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        applyOrientation(withDefaultOptions.layout.orientation);
+        applyViewOptions(view, withDefaultOptions);
+        applyStatusBarOptions(view, withDefaultOptions.statusBar);
     }
 
     public void applyRootOptions(View view, Options options) {
-        setDrawBehindStatusBar(view, options.statusBar);
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        setDrawBehindStatusBar(view, withDefaultOptions.statusBar);
+    }
+
+    public void onViewBroughtToFront(View view, Options options) {
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        applyStatusBarOptions(view, withDefaultOptions.statusBar);
     }
 
     private void applyOrientation(OrientationOptions options) {
@@ -43,10 +56,6 @@ public class OptionsPresenter {
         if (options.layout.topMargin.hasValue()) {
             ((MarginLayoutParams) view.getLayoutParams()).topMargin = options.layout.topMargin.get();
         }
-    }
-
-    public void onViewBroughtToFront(View view, Options options) {
-        applyStatusBarOptions(view, options.statusBar);
     }
 
     private void applyStatusBarOptions(View view, StatusBarOptions statusBar) {

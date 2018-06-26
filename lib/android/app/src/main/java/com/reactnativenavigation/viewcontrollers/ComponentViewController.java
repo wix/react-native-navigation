@@ -19,8 +19,9 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
                                    final String id,
                                    final String componentName,
                                    final ReactViewCreator viewCreator,
-                                   final Options initialOptions) {
-        super(activity, childRegistry, id, new OptionsPresenter(activity), initialOptions);
+                                   final Options initialOptions,
+                                   final OptionsPresenter presenter) {
+        super(activity, childRegistry, id, presenter, initialOptions);
         this.componentName = componentName;
         this.viewCreator = viewCreator;
     }

@@ -20,7 +20,7 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
     private SimpleView simpleView;
 
     public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Options options) {
-        this(activity, childRegistry, id, new OptionsPresenter(activity), options);
+        this(activity, childRegistry, id, new OptionsPresenter(activity, new Options()), options);
     }
 
     public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, OptionsPresenter presenter, Options options) {

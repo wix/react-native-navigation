@@ -7,6 +7,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 
 import org.junit.Test;
 
@@ -21,7 +22,8 @@ public class SideMenuControllerTest extends BaseTest {
     public void beforeEach() {
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
-        uut = new SideMenuController(activity, childRegistry, "sideMenu", new Options());
+        OptionsPresenter presenter = new OptionsPresenter(activity, new Options());
+        uut = new SideMenuController(activity, childRegistry, "sideMenu", new Options(), presenter);
     }
 
     @Test

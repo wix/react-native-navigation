@@ -12,6 +12,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
 import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.react.EventEmitter;
@@ -39,26 +40,36 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     private EventEmitter eventEmitter;
     private ImageLoader imageLoader;
     private BottomTabsOptionsPresenter presenter;
-    private final BottomTabFinder bottomTabFinder = new BottomTabFinder();
+    private BottomTabOptionsPresenter tabPresenter;
 
-    public BottomTabsController(Activity activity, List<ViewController> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions) {
-		super(activity, childRegistry, id, new OptionsPresenter(activity), initialOptions);
+    public BottomTabsController(Activity activity, List<ViewController> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, OptionsPresenter presenter, BottomTabsOptionsPresenter bottomTabsPresenter, BottomTabOptionsPresenter bottomTabPresenter) {
+		super(activity, childRegistry, id, presenter, initialOptions);
         this.tabs = tabs;
         this.eventEmitter = eventEmitter;
         this.imageLoader = imageLoader;
-        createTabs(tabs);
+        this.presenter = bottomTabsPresenter;
+        this.tabPresenter = bottomTabPresenter;
     }
 
-	@NonNull
+    @Override
+    public void setDefaultOptions(Options defaultOptions) {
+        super.setDefaultOptions(defaultOptions);
+        presenter.setDefaultOptions(defaultOptions);
+        tabPresenter.setDefaultOptions(defaultOptions);
+    }
+
+    @NonNull
 	@Override
 	protected ViewGroup createView() {
 		RelativeLayout root = new RelativeLayout(getActivity());
 		bottomTabs = new BottomTabs(getActivity());
-        presenter = new BottomTabsOptionsPresenter(getActivity(), bottomTabs, tabs, this, bottomTabFinder);
+        presenter.bindView(bottomTabs, this);
+        tabPresenter.bindView(bottomTabs);
         bottomTabs.setOnTabSelectedListener(this);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
 		lp.addRule(ALIGN_PARENT_BOTTOM);
 		root.addView(bottomTabs, lp);
+		createTabs(root);
 		return root;
 	}
 
@@ -66,6 +77,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     public void applyOptions(Options options) {
         super.applyOptions(options);
         presenter.present(options);
+        tabPresenter.present();
     }
 
     @Override
@@ -81,6 +93,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     public void mergeChildOptions(Options options, Component child) {
         super.mergeChildOptions(options, child);
         presenter.presentChildOptions(options, child);
+        tabPresenter.mergeChildOptions(options, child);
         applyOnParentController(parentController ->
                 ((ParentController) parentController).mergeChildOptions(options.copy().clearBottomTabsOptions(), child)
         );
@@ -108,13 +121,10 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         return false;
 	}
 
-	private void createTabs(final List<ViewController> tabs) {
+	private void createTabs(RelativeLayout root) {
 		if (tabs.size() > 5) {
 			throw new RuntimeException("Too many tabs!");
 		}
-		this.tabs = tabs;
-        bottomTabFinder.setTabs(tabs);
-        getView();
         List<String> icons = new ArrayList<>();
         List<BottomTabOptions> bottomTabOptionsList = new ArrayList<>();
         for (int i = 0; i < tabs.size(); i++) {
@@ -141,7 +151,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
                         bottomTabs.setTabTestId(i, bottomTabOptionsList.get(i).testId);
                     }
                 });
-                attachTabs();
+                attachTabs(root);
             }
 
             @Override
@@ -149,14 +159,13 @@ public class BottomTabsController extends ParentController implements AHBottomNa
                 error.printStackTrace();
             }
         });
-
 	}
 
-    private void attachTabs() {
+    private void attachTabs(RelativeLayout root) {
         for (int i = (tabs.size() - 1); i >= 0; i--) {
             ViewGroup tab = tabs.get(i).getView();
             if (i != 0) tab.setVisibility(View.INVISIBLE);
-            getView().addView(tab);
+            root.addView(tab);
         }
     }
 

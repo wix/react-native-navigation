@@ -15,6 +15,10 @@ import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
+import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -66,15 +70,7 @@ public class BottomTabsControllerTest extends BaseTest {
         child5 = spy(new SimpleViewController(activity, childRegistry, "child5", tabOptions));
         when(child5.handleBack(any())).thenReturn(true);
         tabs = createTabs();
-
-        uut = new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "uut", new Options()) {
-            @Override
-            public void ensureViewIsCreated() {
-                super.ensureViewIsCreated();
-                uut.getView().layout(0, 0, 1000, 1000);
-                uut.getBottomTabs().layout(0, 0, 1000, 100);
-            }
-        };
+        uut = createBottomTabs();
     }
 
     @Test
@@ -86,21 +82,7 @@ public class BottomTabsControllerTest extends BaseTest {
     @Test(expected = RuntimeException.class)
     public void setTabs_ThrowWhenMoreThan5() {
         tabs.add(new SimpleViewController(activity, childRegistry, "6", tabOptions));
-        new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "uut", new Options()) {
-            @Override
-            public void ensureViewIsCreated() {
-                super.ensureViewIsCreated();
-                uut.getView().layout(0, 0, 1000, 1000);
-                uut.getBottomTabs().layout(0, 0, 1000, 100);
-            }
-        };
-    }
-
-    @Test
-    public void setTab_controllerIsSetAsParent() {
-        for (ViewController tab : tabs) {
-            assertThat(tab.getParentController()).isEqualTo(uut);
-        }
+        createBottomTabs();
     }
 
     @Test
@@ -122,6 +104,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void onTabSelected() {
+        uut.ensureViewIsCreated();
         assertThat(uut.getSelectedIndex()).isZero();
         assertThat(((ViewController) ((List) uut.getChildControllers()).get(0)).getView().getVisibility()).isEqualTo(View.VISIBLE);
 
@@ -135,6 +118,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void onTabReSelected() {
+        uut.ensureViewIsCreated();
         assertThat(uut.getSelectedIndex()).isZero();
 
         uut.onTabSelected(0, false);
@@ -146,6 +130,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void handleBack_DelegatesToSelectedChild() {
+        uut.ensureViewIsCreated();
         assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
         uut.selectTab(4);
         assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
@@ -226,6 +211,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void push() {
+        uut.ensureViewIsCreated();
         uut.selectTab(3);
 
         SimpleViewController stackChild = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
@@ -247,10 +233,31 @@ public class BottomTabsControllerTest extends BaseTest {
         return TestUtils.newStackController(activity)
                 .setId(id)
                 .setInitialOptions(tabOptions)
+                .setStackPresenter(new StackOptionsPresenter(activity, new Options()))
                 .build();
     }
 
     private ViewGroup.MarginLayoutParams childLayoutParams(int index) {
         return (ViewGroup.MarginLayoutParams) tabs.get(index).getView().getLayoutParams();
+    }
+
+    public BottomTabsController createBottomTabs() {
+        return new BottomTabsController(activity,
+                tabs,
+                childRegistry,
+                eventEmitter,
+                imageLoaderMock,
+                "uut",
+                new Options(),
+                new OptionsPresenter(activity, new Options()),
+                new BottomTabsOptionsPresenter(tabs, new Options()),
+                new BottomTabOptionsPresenter(activity, tabs, new Options())) {
+            @Override
+            public void ensureViewIsCreated() {
+                super.ensureViewIsCreated();
+                uut.getView().layout(0, 0, 1000, 1000);
+                uut.getBottomTabs().layout(0, 0, 1000, 100);
+            }
+        };
     }
 }

@@ -11,6 +11,9 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
@@ -72,6 +75,17 @@ public class NavigatorTest extends BaseTest {
         activity.setContentView(uut.getView());
 
         activityController.visible();
+    }
+
+    @Test
+    public void setDefaultOptions() {
+        uut.setDefaultOptions(new Options());
+
+        SimpleViewController spy = spy(child1);
+        uut.setRoot(spy, new CommandListenerAdapter());
+        Options defaultOptions = new Options();
+        uut.setDefaultOptions(defaultOptions);
+        verify(spy, times(1)).setDefaultOptions(defaultOptions);
     }
 
     @Test
@@ -271,7 +285,7 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private BottomTabsController newTabs(List<ViewController> tabs) {
-        return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options());
+        return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options(), new OptionsPresenter(activity, new Options()), new BottomTabsOptionsPresenter(tabs, new Options()), new BottomTabOptionsPresenter(activity, tabs, new Options()));
     }
 
     @NonNull

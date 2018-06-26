@@ -86,6 +86,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     }
 
+    public void setDefaultOptions(Options defaultOptions) {
+        
+    }
+
     public Activity getActivity() {
         return activity;
     }

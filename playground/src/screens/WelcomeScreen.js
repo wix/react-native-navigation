@@ -160,15 +160,23 @@ class WelcomeScreen extends Component {
                           name: 'navigation.playground.TextScreen',
                           passProps: {
                             text: 'This is a side menu center screen tab 1'
-                          }
+                          },
+                          // options: {
+                          //   bottomTab: {
+                          //     iconColor: 'red',
+                          //     textColor: 'red',
+                          //     selectedIconColor: 'purple',
+                          //     selectedTextColor: 'purple',
+                          //   }
+                          // }
                         }
                       }
                     ],
                     options: {
                       bottomTab: {
                         iconColor: 'red',
-                        selectedIconColor: 'red',
-                        textColor: 'purple',
+                        textColor: 'red',
+                        selectedIconColor: 'purple',
                         selectedTextColor: 'purple',
                         text: 'Tab 1',
                         icon: require('../images/one.png'),
@@ -222,10 +230,10 @@ class WelcomeScreen extends Component {
               ],
               options: {
                 bottomTab: {
-                  textColor: 'red',
-                  iconColor: 'red',
-                  selectedTextColor: 'blue',
-                  selectedIconColor: 'blue',
+                  textColor: '#AED581',
+                  iconColor: '#AED581',
+                  selectedTextColor: '#90CAF9',
+                  selectedIconColor: '#90CAF9',
                   fontFamily: 'HelveticaNeue-Italic',
                   fontSize: 13
                 }

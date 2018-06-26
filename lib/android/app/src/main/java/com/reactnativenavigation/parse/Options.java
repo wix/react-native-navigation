@@ -13,13 +13,8 @@ public class Options {
 
     @NonNull
     public static Options parse(TypefaceLoader typefaceManager, JSONObject json) {
-        return parse(typefaceManager, json, new Options());
-    }
-
-    @NonNull
-    public static Options parse(TypefaceLoader typefaceManager, JSONObject json, @NonNull Options defaultOptions) {
         Options result = new Options();
-        if (json == null) return result.withDefaultOptions(defaultOptions);
+        if (json == null) return result;
 
         result.topBar = TopBarOptions.parse(typefaceManager, json.optJSONObject("topBar"));
         result.topTabs = TopTabsOptions.parse(json.optJSONObject("topTabs"));
@@ -34,7 +29,7 @@ public class Options {
         result.statusBar = StatusBarOptions.parse(json.optJSONObject("statusBar"));
         result.layout = LayoutOptions.parse(json.optJSONObject("layout"));
 
-        return result.withDefaultOptions(defaultOptions);
+        return result;
     }
 
     @NonNull public TopBarOptions topBar = new TopBarOptions();
@@ -89,7 +84,7 @@ public class Options {
         return result;
     }
 
-    Options withDefaultOptions(final Options defaultOptions) {
+    public Options withDefaultOptions(final Options defaultOptions) {
         topBar.mergeWithDefault(defaultOptions.topBar);
         topTabOptions.mergeWithDefault(defaultOptions.topTabOptions);
         topTabs.mergeWithDefault(defaultOptions.topTabs);

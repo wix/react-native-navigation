@@ -1,12 +1,9 @@
 package com.reactnativenavigation.presentation;
 
-import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.ViewGroup.MarginLayoutParams;
 
 import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.parse.AnimationsOptions;
-import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.viewcontrollers.ViewController;
@@ -18,41 +15,39 @@ import com.reactnativenavigation.views.Component;
 import java.util.List;
 
 public class BottomTabsOptionsPresenter {
-    private final BottomTabs bottomTabs;
-    private final TabSelector tabSelector;
     private final BottomTabFinder bottomTabFinder;
-    private final BottomTabsAnimator animator;
     private final List<ViewController> tabs;
-    private final int defaultSelectedTabColor;
-    private final int defaultTabColor;
+    private Options defaultOptions;
+    private BottomTabs bottomTabs;
+    private BottomTabsAnimator animator;
+    private TabSelector tabSelector;
 
-    public BottomTabsOptionsPresenter(Context context, BottomTabs bottomTabs, List<ViewController> tabs, TabSelector tabSelector, BottomTabFinder bottomTabFinder) {
-        this.bottomTabs = bottomTabs;
+    public BottomTabsOptionsPresenter(List<ViewController> tabs, Options defaultOptions) {
         this.tabs = tabs;
+        this.defaultOptions = defaultOptions;
+        this.bottomTabFinder = new BottomTabFinder(tabs);
+    }
+
+    public void setDefaultOptions(Options defaultOptions) {
+        this.defaultOptions = defaultOptions;
+    }
+
+    public void bindView(BottomTabs bottomTabs, TabSelector tabSelector) {
+        this.bottomTabs = bottomTabs;
         this.tabSelector = tabSelector;
-        this.bottomTabFinder = bottomTabFinder;
         animator = new BottomTabsAnimator(bottomTabs);
-        defaultSelectedTabColor = ContextCompat.getColor(context, com.aurelhubert.ahbottomnavigation.R.color.colorBottomNavigationAccent);
-        defaultTabColor = ContextCompat.getColor(context, com.aurelhubert.ahbottomnavigation.R.color.colorBottomNavigationInactive);
     }
 
     public void present(Options options) {
-        applyBottomTabsOptions(options.bottomTabsOptions, options.animations);
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
     }
 
     public void presentChildOptions(Options options, Component child) {
-        applyBottomTabsOptions(options.bottomTabsOptions, options.animations);
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
         int tabIndex = bottomTabFinder.findByComponent(child);
-        applyBottomTabOptions(options.bottomTabOptions, tabIndex);
-        applyDrawBehind(options.bottomTabsOptions, tabIndex);
-    }
-
-    private void applyBottomTabOptions(BottomTabOptions options, int tabIndex) {
-        if (options.badge.hasValue()) {
-            bottomTabs.setBadge(tabIndex, options.badge);
-        }
-        bottomTabs.setAccentColor(tabIndex, options.selectedIconColor.get(defaultSelectedTabColor));
-        bottomTabs.setInactiveColor(tabIndex, options.iconColor.get(defaultTabColor));
+        applyDrawBehind(withDefaultOptions.bottomTabsOptions, tabIndex);
     }
 
     private void applyDrawBehind(BottomTabsOptions options, int tabIndex) {
@@ -96,10 +91,6 @@ public class BottomTabsOptionsPresenter {
             } else {
                 bottomTabs.hideBottomNavigation(false);
             }
-        }
-        for (int i = 0; i < tabs.size(); i++) {
-            bottomTabs.setAccentColor(i, tabs.get(i).options.bottomTabOptions.selectedIconColor.get(defaultSelectedTabColor));
-            bottomTabs.setInactiveColor(i, tabs.get(i).options.bottomTabOptions.iconColor.get(defaultTabColor));
         }
     }
 }

@@ -23,8 +23,8 @@ public class SideMenuController extends ParentController<DrawerLayout> {
 	private ViewController leftController;
 	private ViewController rightController;
 
-	public SideMenuController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions) {
-		super(activity, childRegistry, id, new OptionsPresenter(activity), initialOptions);
+	public SideMenuController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions, OptionsPresenter presenter) {
+		super(activity, childRegistry, id, presenter, initialOptions);
 	}
 
 	@NonNull

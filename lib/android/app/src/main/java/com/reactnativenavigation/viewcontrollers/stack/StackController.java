@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
@@ -39,21 +40,29 @@ public class StackController extends ParentController<StackLayout> {
     private TopBarBackgroundViewController topBarBackgroundViewController;
     private TopBarController topBarController;
     private BackButtonHelper backButtonHelper;
+    private final StackOptionsPresenter presenter;
 
-    public StackController(Activity activity, ChildControllersRegistry childRegistry, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper) {
-        super(activity, childRegistry, id, new OptionsPresenter(activity), initialOptions);
+    public StackController(Activity activity, ChildControllersRegistry childRegistry, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackOptionsPresenter stackPresenter, OptionsPresenter presenter) {
+        super(activity, childRegistry, id, presenter, initialOptions);
         this.topBarController = topBarController;
         this.topBarButtonCreator = topBarButtonCreator;
         this.titleBarReactViewCreator = titleBarReactViewCreator;
         this.topBarBackgroundViewController = topBarBackgroundViewController;
         this.animator = animator;
         this.backButtonHelper = backButtonHelper;
+        this.presenter = stackPresenter;
+    }
+
+    @Override
+    public void setDefaultOptions(Options defaultOptions) {
+        super.setDefaultOptions(defaultOptions);
+        presenter.setDefaultOptions(defaultOptions);
     }
 
     @Override
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
-        getView().applyChildOptions(this.options, child);
+        presenter.applyChildOptions(options, child);
         if (child instanceof ReactComponent) {
             fabOptionsPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child, getView());
         }
@@ -74,7 +83,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void mergeChildOptions(Options options, Component child) {
         super.mergeChildOptions(options, child);
-        getView().mergeChildOptions(options, child);
+        presenter.mergeChildOptions(options, child);
         animator.mergeOptions(options.animations);
         if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
             fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
@@ -161,8 +170,7 @@ public class StackController extends ParentController<StackLayout> {
         disappearing.onViewWillDisappear();
         appearing.onViewWillAppear();
         getView().addView(appearing.getView(), 0);
-        getView().onChildWillAppear(appearing, disappearing);
-
+        presenter.onChildWillAppear(appearing.options, disappearing.options);
         if (disappearing.options.animations.pop.enable.isTrueOrUndefined()) {
             animator.pop(disappearing.getView(), () -> finishPopping(disappearing, listener));
         } else {
@@ -256,7 +264,7 @@ public class StackController extends ParentController<StackLayout> {
     @NonNull
     @Override
     protected StackLayout createView() {
-        return new StackLayout(getActivity(),
+        StackLayout stackLayout = new StackLayout(getActivity(),
                 topBarButtonCreator,
                 titleBarReactViewCreator,
                 topBarBackgroundViewController,
@@ -264,6 +272,8 @@ public class StackController extends ParentController<StackLayout> {
                 this::onNavigationButtonPressed,
                 getId()
         );
+        presenter.bindView(topBarController.getView());
+        return stackLayout;
     }
 
     private void onNavigationButtonPressed(String buttonId) {

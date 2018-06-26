@@ -11,6 +11,7 @@ import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
@@ -57,7 +58,8 @@ public class TopTabsViewControllerTest extends BaseTest {
         topTabsLayout = spy(new TopTabsViewPager(activity, tabControllers, new TopTabsAdapter(tabControllers)));
         TopTabsLayoutCreator layoutCreator = Mockito.mock(TopTabsLayoutCreator.class);
         Mockito.when(layoutCreator.create()).thenReturn(topTabsLayout);
-        uut = spy(new TopTabsController(activity, childRegistry, "componentId", tabControllers, layoutCreator, options));
+        OptionsPresenter presenter = new OptionsPresenter(activity, new Options());
+        uut = spy(new TopTabsController(activity, childRegistry, "componentId", tabControllers, layoutCreator, options, presenter));
         tabControllers.forEach(viewController -> viewController.setParentController(uut));
 
         stack = spy(TestUtils.newStackController(activity).build());
@@ -86,7 +88,8 @@ public class TopTabsViewControllerTest extends BaseTest {
                     "idTab" + i,
                     "theComponentName",
                     new TestComponentViewCreator(),
-                    tabOptions.get(i)
+                    tabOptions.get(i),
+                    new OptionsPresenter(activity, new Options())
             );
             tabControllers.add(spy(viewController));
         }
@@ -213,7 +216,8 @@ public class TopTabsViewControllerTest extends BaseTest {
                 "firstScreen",
                 "comp1",
                 new TestComponentViewCreator(),
-                new Options()
+                new Options(),
+                new OptionsPresenter(activity, new Options())
         );
         first.options.animations.push.enable = new Bool(false);
         uut.options.animations.push.enable = new Bool(false);

@@ -25,8 +25,8 @@ public class BottomTabs extends AHBottomNavigation {
         if (BuildConfig.DEBUG) view.setContentDescription(testId.get());
     }
 
-    public void setBadge(int bottomTabIndex, Text badge) {
-        setNotification(badge.get(), bottomTabIndex);
+    public void setBadge(int bottomTabIndex, String badge) {
+        setNotification(badge, bottomTabIndex);
     }
 
     @Override

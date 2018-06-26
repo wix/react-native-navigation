@@ -45,7 +45,7 @@ public class ParentControllerTest extends BaseTest {
         children = new ArrayList<>();
         Options initialOptions = new Options();
         initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
-        presenter = spy(new OptionsPresenter(activity));
+        presenter = spy(new OptionsPresenter(activity, new Options()));
         uut = spy(new ParentController(activity, childRegistry, "uut", presenter, initialOptions) {
 
             @NonNull
