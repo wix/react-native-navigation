@@ -46,8 +46,42 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	if (self.hideShadow) {
 		viewController.tabBarController.tabBar.clipsToBounds = [self.hideShadow boolValue];
 	}
+	
+	if (self.tabColor) {
+		viewController.tabBarController.tabBar.unselectedItemTintColor = [RCTConvert UIColor:self.tabColor];
+	}
+	
+	if (self.selectedTabColor) {
+		viewController.tabBarController.tabBar.tintColor = [RCTConvert UIColor:self.selectedTabColor];
+	}
+	
+	if (self.tabBarTextFont) {
+		NSMutableDictionary* tabBarTitleTextAttributes = [NSMutableDictionary new];
+		tabBarTitleTextAttributes[NSFontAttributeName] = self.tabBarTextFont;
+		
+		for (UITabBarItem* item in viewController.tabBarController.tabBar.items) {
+			[item setTitleTextAttributes:tabBarTitleTextAttributes forState:UIControlStateNormal];
+		}
+	}
+
 
 	[self resetOptions];
+}
+
+-(UIFont *)tabBarTextFont {
+	if (self.fontFamily) {
+		return [UIFont fontWithName:self.fontFamily size:self.tabBarTextFontSizeValue];
+	}
+	else if (self.fontSize) {
+		return [UIFont systemFontOfSize:self.tabBarTextFontSizeValue];
+	}
+	else {
+		return nil;
+	}
+}
+
+-(CGFloat)tabBarTextFontSizeValue {
+	return self.fontSize ? [self.fontSize floatValue] : 10;
 }
 
 - (void)resetOptions {
