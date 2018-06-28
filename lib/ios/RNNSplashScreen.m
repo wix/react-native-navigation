@@ -10,21 +10,24 @@
 	UIApplication.sharedApplication.delegate.window.backgroundColor = [UIColor whiteColor];
 	
 	CGRect screenBounds = [UIScreen mainScreen].bounds;
-	UIView *splashView = nil;
+	UIViewController *viewController = nil;
 	
 	NSString* launchStoryBoard = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UILaunchStoryboardName"];
 	if (launchStoryBoard != nil) {//load the splash from the storyboard that's defined in the info.plist as the LaunchScreen
 		@try
 		{
-			splashView = [[NSBundle mainBundle] loadNibNamed:launchStoryBoard owner:self options:nil][0];
-			if (splashView != nil)
-			{
-				splashView.frame = CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height);
-			}
+			UIStoryboard *storyboard = [UIStoryboard storyboardWithName:launchStoryBoard bundle:nil];
+			viewController = [storyboard instantiateInitialViewController];
 		}
 		@catch(NSException *e)
 		{
-			splashView = nil;
+			UIView *splashView = [[NSBundle mainBundle] loadNibNamed:launchStoryBoard owner:self options:nil][0];
+			if (splashView != nil)
+			{
+				splashView.frame = CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height);
+				viewController = [[RNNSplashScreen alloc] init];
+				viewController.view = splashView;
+			}
 		}
 	}
 	else {//load the splash from the DEfault image or from LaunchImage in the xcassets
@@ -60,16 +63,14 @@
 		}
 		
 		if (image != nil) {
-			splashView = [[UIImageView alloc] initWithImage:image];
+			viewController = [[RNNSplashScreen alloc] init];
+			viewController.view = [[UIImageView alloc] initWithImage:image];
 		}
 	}
 	
-	if (splashView != nil) {
-		RNNSplashScreen *splashVC = [[RNNSplashScreen alloc] init];
-		splashVC.view = splashView;
-		
+	if (viewController != nil) {
 		id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
-		appDelegate.window.rootViewController = splashVC;
+		appDelegate.window.rootViewController = viewController;
 		[appDelegate.window makeKeyAndVisible];
 	}
 }
