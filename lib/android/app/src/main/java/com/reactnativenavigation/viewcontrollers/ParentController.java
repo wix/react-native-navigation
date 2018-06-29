@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.CallSuper;
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -30,7 +31,14 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
         }
     }
 
-	@NonNull
+    @Override
+    @CheckResult
+    public Options resolveCurrentOptions() {
+	    if (CollectionUtils.isNullOrEmpty(getChildControllers())) return options;
+        Options o = getCurrentChild().resolveCurrentOptions();
+        return o.copy().mergeWith(options);
+    }
+
     protected abstract ViewController getCurrentChild();
 
     @NonNull
