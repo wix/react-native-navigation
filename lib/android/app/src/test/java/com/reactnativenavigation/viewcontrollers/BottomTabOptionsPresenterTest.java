@@ -51,19 +51,10 @@ public class BottomTabOptionsPresenterTest extends BaseTest {
     public void present() {
         uut.present();
         for (int i = 0; i < tabs.size(); i++) {
-            verify(bottomTabs, times(1)).setBadge(eq(i), eq(tabs.get(i).options.bottomTabOptions.badge.get("")));
-            verify(bottomTabs, times(1)).setInactiveColor(eq(i), anyInt());
-            verify(bottomTabs, times(1)).setAccentColor(eq(i), anyInt());
+            verify(bottomTabs, times(1)).setBadge(i, tabs.get(i).options.bottomTabOptions.badge.get(""));
+            verify(bottomTabs, times(1)).setTitleInactiveColor(i, tabs.get(i).options.bottomTabOptions.textColor.get(null));
+            verify(bottomTabs, times(1)).setTitleActiveColor(i, tabs.get(i).options.bottomTabOptions.selectedTextColor.get(null));
         }
-        verifyNoMoreInteractions(bottomTabs);
-    }
-
-    @Test
-    public void present_resetsOptions() {
-        uut.present();
-        verify(bottomTabs, times(1)).setBadge(2, "");
-        verify(bottomTabs, times(1)).setInactiveColor(2, uut.getDefaultTabColor());
-        verify(bottomTabs, times(1)).setAccentColor(2, uut.getDefaultSelectedTabColor());
     }
 
     @Test
@@ -72,8 +63,8 @@ public class BottomTabOptionsPresenterTest extends BaseTest {
             Options options = tabs.get(i).options;
             uut.mergeChildOptions(options, (Component) tabs.get(i).getView());
             verify(bottomTabs, times(1)).setBadge(i, options.bottomTabOptions.badge.get());
-            verify(bottomTabs, times(1)).setAccentColor(eq(i), anyInt());
-            verify(bottomTabs, times(1)).setInactiveColor(eq(i), anyInt());
+            verify(bottomTabs, times(1)).setIconActiveColor(eq(i), anyInt());
+            verify(bottomTabs, times(1)).setIconInactiveColor(eq(i), anyInt());
         }
         verifyNoMoreInteractions(bottomTabs);
     }
@@ -82,8 +73,8 @@ public class BottomTabOptionsPresenterTest extends BaseTest {
     public void mergeChildOptions_onlySetsDefinedOptions() {
         uut.mergeChildOptions(child3.options, (Component) child3.getView());
         verify(bottomTabs, times(0)).setBadge(eq(2), anyString());
-        verify(bottomTabs, times(0)).setInactiveColor(eq(2), anyInt());
-        verify(bottomTabs, times(0)).setAccentColor(eq(2), anyInt());
+        verify(bottomTabs, times(0)).setIconInactiveColor(eq(2), anyInt());
+        verify(bottomTabs, times(0)).setIconActiveColor(eq(2), anyInt());
         verifyNoMoreInteractions(bottomTabs);
     }
 

@@ -17,16 +17,16 @@ public class BottomTabOptionsPresenter {
     private Options defaultOptions;
     private final BottomTabFinder bottomTabFinder;
     private BottomTabs bottomTabs;
-    private final int defaultSelectedTabColor;
-    private final int defaultTabColor;
+    private final int defaultSelectedTextColor;
+    private final int defaultTextColor;
     private final List<ViewController> tabs;
 
     public BottomTabOptionsPresenter(Context context, List<ViewController> tabs, Options defaultOptions) {
         this.tabs = tabs;
         this.bottomTabFinder = new BottomTabFinder(tabs);
         this.defaultOptions = defaultOptions;
-        defaultSelectedTabColor = defaultOptions.bottomTabOptions.selectedIconColor.get(ContextCompat.getColor(context, com.aurelhubert.ahbottomnavigation.R.color.colorBottomNavigationAccent));
-        defaultTabColor = defaultOptions.bottomTabOptions.iconColor.get(ContextCompat.getColor(context, com.aurelhubert.ahbottomnavigation.R.color.colorBottomNavigationInactive));
+        defaultSelectedTextColor = defaultOptions.bottomTabOptions.selectedIconColor.get(ContextCompat.getColor(context, com.aurelhubert.ahbottomnavigation.R.color.colorBottomNavigationAccent));
+        defaultTextColor = defaultOptions.bottomTabOptions.iconColor.get(ContextCompat.getColor(context, com.aurelhubert.ahbottomnavigation.R.color.colorBottomNavigationInactive));
     }
 
     public void setDefaultOptions(Options defaultOptions) {
@@ -42,10 +42,10 @@ public class BottomTabOptionsPresenter {
             BottomTabOptions bottomTab = tabs.get(i).options.copy().withDefaultOptions(defaultOptions).bottomTabOptions;
             bottomTabs.setBadge(i, bottomTab.badge.get(""));
             bottomTabs.setTitleTypeface(i, bottomTab.fontFamily);
-            if (bottomTab.selectedIconColor.hasValue()) bottomTabs.setIconActiveColor(i, bottomTab.selectedIconColor.get());
-            if (bottomTab.iconColor.hasValue()) bottomTabs.setIconInactiveColor(i, bottomTab.iconColor.get());
-            if (bottomTab.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(i, bottomTab.selectedTextColor.get());
-            if (bottomTab.textColor.hasValue()) bottomTabs.setTitleInactiveColor(i, bottomTab.textColor.get());
+            bottomTabs.setIconActiveColor(i, bottomTab.selectedIconColor.get(null));
+            bottomTabs.setIconInactiveColor(i, bottomTab.iconColor.get(null));
+            bottomTabs.setTitleActiveColor(i, bottomTab.selectedTextColor.get(null));
+            bottomTabs.setTitleInactiveColor(i, bottomTab.textColor.get(null));
         }
     }
 
@@ -61,12 +61,12 @@ public class BottomTabOptionsPresenter {
     }
 
     @VisibleForTesting
-    public int getDefaultSelectedTabColor() {
-        return defaultSelectedTabColor;
+    public int getDefaultSelectedTextColor() {
+        return defaultSelectedTextColor;
     }
 
     @VisibleForTesting
-    public int getDefaultTabColor() {
-        return defaultTabColor;
+    public int getDefaultTextColor() {
+        return defaultTextColor;
     }
 }
