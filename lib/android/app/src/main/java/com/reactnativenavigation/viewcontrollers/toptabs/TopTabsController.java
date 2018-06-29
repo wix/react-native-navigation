@@ -39,6 +39,11 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
         }
     }
 
+    @Override
+    protected ViewController getCurrentChild() {
+        return tabs.get(getView().getCurrentItem());
+    }
+
     @NonNull
     @Override
     protected TopTabsViewPager createView() {

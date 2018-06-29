@@ -106,10 +106,11 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
-        getCurrentTab().sendOnNavigationButtonPressed(buttonId);
+        getCurrentChild().sendOnNavigationButtonPressed(buttonId);
     }
 
-    private ViewController getCurrentTab() {
+    @Override
+    protected ViewController getCurrentChild() {
         return tabs.get(bottomTabs.getCurrentItem());
     }
 

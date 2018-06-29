@@ -31,6 +31,9 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     }
 
 	@NonNull
+    protected abstract ViewController getCurrentChild();
+
+    @NonNull
 	@Override
 	public T getView() {
 		return (T) super.getView();

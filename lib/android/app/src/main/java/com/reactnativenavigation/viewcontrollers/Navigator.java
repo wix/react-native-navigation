@@ -76,6 +76,11 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
     }
 
     @Override
+    protected ViewController getCurrentChild() {
+        return root;
+    }
+
+    @Override
     public void onReload() {
         destroyViews();
     }

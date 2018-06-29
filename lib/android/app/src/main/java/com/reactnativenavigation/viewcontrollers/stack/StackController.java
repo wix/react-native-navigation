@@ -60,6 +60,11 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
+    protected ViewController getCurrentChild() {
+        return stack.peek();
+    }
+
+    @Override
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(options, child);

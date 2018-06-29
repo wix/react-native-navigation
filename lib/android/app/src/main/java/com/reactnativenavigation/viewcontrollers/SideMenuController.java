@@ -27,7 +27,17 @@ public class SideMenuController extends ParentController<DrawerLayout> {
 		super(activity, childRegistry, id, presenter, initialOptions);
 	}
 
-	@NonNull
+    @Override
+    protected ViewController getCurrentChild() {
+	    if (getView().isDrawerOpen(Gravity.LEFT)) {
+            return leftController;
+        } else if (getView().isDrawerOpen(Gravity.RIGHT)) {
+            return rightController;
+        }
+        return centerController;
+    }
+
+    @NonNull
 	@Override
 	protected DrawerLayout createView() {
         return new DrawerLayout(getActivity());
