@@ -37,6 +37,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -57,6 +58,7 @@ public class BottomTabsControllerTest extends BaseTest {
     private EventEmitter eventEmitter;
     private ChildControllersRegistry childRegistry;
     private List<ViewController> tabs;
+    private BottomTabsOptionsPresenter presenter;
 
     @Override
     public void beforeEach() {
@@ -72,6 +74,7 @@ public class BottomTabsControllerTest extends BaseTest {
         child6 = spy(new SimpleViewController(activity, childRegistry, "child6", tabOptions));
         when(child5.handleBack(any())).thenReturn(true);
         tabs = createTabs();
+        presenter = spy(new BottomTabsOptionsPresenter(tabs, new Options()));
         uut = createBottomTabs();
     }
 
@@ -101,6 +104,16 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.onViewAppeared();
         for (int i = 0; i < uut.getChildControllers().size(); i++) {
             assertThat(uut.getView().getChildAt(i).getVisibility()).isEqualTo(i == 0 ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+    @Test
+    public void createView_layoutOptionsAreAppliedToTabs() {
+        uut.ensureViewIsCreated();
+        for (int i = 0; i < tabs.size(); i++) {
+            verify(presenter, times(1)).applyLayoutParamsOptions(any(), eq(i));
+            assertThat(childLayoutParams(i).width).isEqualTo(ViewGroup.LayoutParams.MATCH_PARENT);
+            assertThat(childLayoutParams(i).height).isEqualTo(ViewGroup.LayoutParams.MATCH_PARENT);
         }
     }
 
@@ -271,7 +284,7 @@ public class BottomTabsControllerTest extends BaseTest {
                 "uut",
                 new Options(),
                 new OptionsPresenter(activity, new Options()),
-                new BottomTabsOptionsPresenter(tabs, new Options()),
+                presenter,
                 new BottomTabOptionsPresenter(activity, tabs, new Options())) {
             @Override
             public void ensureViewIsCreated() {

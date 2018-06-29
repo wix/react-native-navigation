@@ -93,7 +93,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, TopB
             if (topBarHeight == 0) {
                 UiUtils.runOnPreDrawOnce(topBar, () -> layoutParams.topMargin = topBar.getHeight());
             } else {
-                layoutParams.topMargin = ViewUtils.getPreferredHeight(topBar);
+                layoutParams.topMargin = topBarHeight;
             }
             setLayoutParams(layoutParams);
         }

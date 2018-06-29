@@ -165,6 +165,9 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     private void attachTabs(RelativeLayout root) {
         for (int i = (tabs.size() - 1); i >= 0; i--) {
             ViewGroup tab = tabs.get(i).getView();
+            tab.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+            Options options = resolveCurrentOptions();
+            presenter.applyLayoutParamsOptions(options, i);
             if (i != 0) tab.setVisibility(View.INVISIBLE);
             root.addView(tab);
         }

@@ -1,11 +1,13 @@
 package com.reactnativenavigation.presentation;
 
+import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 
 import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
@@ -38,6 +40,11 @@ public class BottomTabsOptionsPresenter {
         animator = new BottomTabsAnimator(bottomTabs);
     }
 
+    public void applyLayoutParamsOptions(Options options, int tabIndex) {
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        applyDrawBehind(withDefaultOptions.bottomTabsOptions, tabIndex);
+    }
+
     public void present(Options options) {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
         applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
@@ -51,12 +58,17 @@ public class BottomTabsOptionsPresenter {
     }
 
     private void applyDrawBehind(BottomTabsOptions options, int tabIndex) {
-        MarginLayoutParams lp = (MarginLayoutParams) tabs.get(tabIndex).getView().getLayoutParams();
+        ViewGroup tab = tabs.get(tabIndex).getView();
+        MarginLayoutParams lp = (MarginLayoutParams) tab.getLayoutParams();
         if (options.drawBehind.isTrue()) {
             lp.bottomMargin = 0;
         }
         if (options.visible.isTrueOrUndefined() && options.drawBehind.isFalseOrUndefined()) {
-            lp.bottomMargin = bottomTabs.getHeight();
+            if (bottomTabs.getHeight() == 0) {
+                UiUtils.runOnPreDrawOnce(bottomTabs, () -> lp.bottomMargin = bottomTabs.getHeight());
+            } else {
+                lp.bottomMargin = bottomTabs.getHeight();
+            }
         }
     }
 
