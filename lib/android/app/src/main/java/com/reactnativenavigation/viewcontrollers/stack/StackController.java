@@ -122,8 +122,8 @@ public class StackController extends ParentController<StackLayout> {
         final ViewController toRemove = stack.peek();
         child.setParentController(this);
         stack.push(child.getId(), child);
-        addBackButton(child);
         getView().addView(child.getView(), MATCH_PARENT, MATCH_PARENT);
+        backButtonHelper.addToPushedChild(this, child);
 
         if (toRemove != null) {
             if (child.options.animations.push.enable.isTrueOrUndefined()) {
@@ -140,11 +140,8 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
-    private void addBackButton(ViewController child) {
-        backButtonHelper.addToChild(this, child);
-    }
-
     public void setRoot(ViewController child, CommandListener listener) {
+        backButtonHelper.clear(child);
         push(child, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
