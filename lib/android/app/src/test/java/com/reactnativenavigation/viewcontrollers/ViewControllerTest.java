@@ -75,6 +75,7 @@ public class ViewControllerTest extends BaseTest {
 
         assertThat(uut.getParentController()).isNull();
         StackController nav = TestUtils.newStackController(activity).build();
+        nav.ensureViewIsCreated();
         nav.push(uut, new CommandListenerAdapter());
         assertThat(uut.getParentController()).isEqualTo(nav);
     }

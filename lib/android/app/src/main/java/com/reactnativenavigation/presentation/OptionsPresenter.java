@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 
 import com.reactnativenavigation.parse.Options;
@@ -26,6 +27,10 @@ public class OptionsPresenter {
 
     public void setDefaultOptions(Options defaultOptions) {
         this.defaultOptions = defaultOptions;
+    }
+
+    public void applyLayoutOptions(ViewGroup.LayoutParams layoutParams) {
+
     }
 
     public void present(View view, Options options) {

@@ -37,6 +37,7 @@ public class BackButtonHelperTest extends BaseTest {
                 .build();
         child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
         child2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
+        stack.ensureViewIsCreated();
     }
 
     @Test

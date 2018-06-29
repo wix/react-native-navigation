@@ -107,6 +107,7 @@ public class OptionsApplyingTest extends BaseTest {
                         .setInitialOptions(new Options())
                         .setStackPresenter(new StackOptionsPresenter(activity, new Options()))
                         .build();
+        stackController.ensureViewIsCreated();
         stackController.push(uut, new CommandListenerAdapter());
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
 

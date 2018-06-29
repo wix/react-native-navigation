@@ -63,6 +63,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         tabControllers.forEach(viewController -> viewController.setParentController(uut));
 
         stack = spy(TestUtils.newStackController(activity).build());
+        stack.ensureViewIsCreated();
         stack.push(uut, new CommandListenerAdapter());
         uut.setParentController(stack);
     }
@@ -210,6 +211,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         stack.getView().removeAllViews();
 
         StackController stackController = spy(TestUtils.newStackController(activity).build());
+        stackController.ensureViewIsCreated();
         ComponentViewController first = new ComponentViewController(
                 activity,
                 childRegistry,

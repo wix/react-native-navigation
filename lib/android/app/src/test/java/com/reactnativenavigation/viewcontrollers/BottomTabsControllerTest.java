@@ -51,6 +51,7 @@ public class BottomTabsControllerTest extends BaseTest {
     private ViewController child3;
     private StackController child4;
     private ViewController child5;
+    private ViewController child6;
     private Options tabOptions = OptionHelper.createBottomTabOptions();
     private ImageLoader imageLoaderMock = ImageLoaderMock.mock();
     private EventEmitter eventEmitter;
@@ -68,6 +69,7 @@ public class BottomTabsControllerTest extends BaseTest {
         child3 = spy(new SimpleViewController(activity, childRegistry, "child3", tabOptions));
         child4 = spy(createStack("someStack"));
         child5 = spy(new SimpleViewController(activity, childRegistry, "child5", tabOptions));
+        child6 = spy(new SimpleViewController(activity, childRegistry, "child6", tabOptions));
         when(child5.handleBack(any())).thenReturn(true);
         tabs = createTabs();
         uut = createBottomTabs();
@@ -222,6 +224,25 @@ public class BottomTabsControllerTest extends BaseTest {
         assertThat(child4.size()).isOne();
         child4.push(stackChild2, new CommandListenerAdapter());
         assertThat(child4.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void deepChildOptionsAreApplied() {
+        BottomTabsController spy = spy(uut);
+        activity.setContentView(spy.getView());
+
+        child6.options.topBar.drawBehind = new Bool(false);
+        disablePushAnimation(child6);
+        child4.push(child6, new CommandListenerAdapter());
+        assertThat(child4.size()).isOne();
+
+
+        verify(spy, times(1)).onViewAppeared();
+        assertThat(spy.getSelectedIndex()).isZero();
+        verify(child6, times(0)).onViewAppeared();
+        assertThat(child4.getTopBar().getHeight())
+                .isNotZero()
+                .isEqualTo(((ViewGroup.MarginLayoutParams) child6.getView().getLayoutParams()).topMargin);
     }
 
     @NonNull

@@ -8,18 +8,16 @@ import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.react.EventEmitter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.SideMenuController;
-import com.reactnativenavigation.viewcontrollers.stack.StackController;
-import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
+import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
@@ -160,7 +158,8 @@ public class LayoutFactory {
     }
 
 	private ViewController createStack(LayoutNode node) {
-        StackController stackController = new StackControllerBuilder(activity)
+        return new StackControllerBuilder(activity)
+                .setChildren(createChildredn(node.children))
                 .setChildRegistry(childRegistry)
                 .setTopBarButtonCreator(new TitleBarButtonCreator(reactInstanceManager))
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreator(reactInstanceManager))
@@ -171,14 +170,14 @@ public class LayoutFactory {
                 .setOptionsPresenter(new OptionsPresenter(activity, defaultOptions))
                 .setStackPresenter(new StackOptionsPresenter(activity, defaultOptions))
                 .build();
-        addChildrenToStack(node.children, stackController);
-        return stackController;
 	}
 
-    private void addChildrenToStack(List<LayoutNode> children, StackController stackController) {
+    private List<ViewController> createChildredn(List<LayoutNode> children) {
+        List<ViewController> result = new ArrayList<>();
         for (LayoutNode child : children) {
-            stackController.push(create(child), new CommandListenerAdapter());
+            result.add(create(child));
         }
+        return result;
     }
 
     private ViewController createBottomTabs(LayoutNode node) {

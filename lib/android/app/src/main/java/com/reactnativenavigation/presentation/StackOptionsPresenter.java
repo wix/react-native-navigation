@@ -3,6 +3,7 @@ package com.reactnativenavigation.presentation;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
 import com.reactnativenavigation.parse.AnimationsOptions;
@@ -39,6 +40,17 @@ public class StackOptionsPresenter {
 
     public void bindView(TopBar topBar) {
         this.topBar = topBar;
+    }
+
+    public void applyLayoutParamsOptions(Options options, View view) {
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        if (view instanceof Component) {
+            if (withDefaultOptions.topBar.drawBehind.isTrue() && !withDefaultOptions.layout.topMargin.hasValue()) {
+                ((Component) view).drawBehindTopBar();
+            } else if (options.topBar.drawBehind.isFalseOrUndefined()) {
+                ((Component) view).drawBelowTopBar(topBar);
+            }
+        }
     }
 
     public void applyChildOptions(Options options, Component child) {
