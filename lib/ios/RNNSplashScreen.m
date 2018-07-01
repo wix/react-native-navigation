@@ -51,6 +51,10 @@
 				imageName = [imageName stringByAppendingString:@"-800-667h"];
 			else if (screenHeight == 736)
 				imageName = [imageName stringByAppendingString:@"-800-Portrait-736h"];
+			else if (screenHeight == 812)
+				imageName = [imageName stringByAppendingString:@"-1100-Portrait-2436h"];
+			else if (screenHeight == 375)
+				imageName = [imageName stringByAppendingString:@"-1100-Landscape-2436h"];
 			
 			image = [UIImage imageNamed:imageName];
 		}

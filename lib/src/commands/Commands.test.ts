@@ -437,6 +437,7 @@ describe('Commands', () => {
         setStackRoot: ['id', {}],
         showOverlay: [{}],
         dismissOverlay: ['id'],
+        getLaunchArgs: ['id']
       };
       const paramsForMethodName = {
         setRoot: { commandId: 'setRoot+UNIQUE_ID', layout: { root: 'parsed', modals: [], overlays: [] } },
@@ -452,6 +453,7 @@ describe('Commands', () => {
         setStackRoot: { commandId: 'setStackRoot+UNIQUE_ID', componentId: 'id', layout: 'parsed' },
         showOverlay: { commandId: 'showOverlay+UNIQUE_ID', layout: 'parsed' },
         dismissOverlay: { commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id' },
+        getLaunchArgs: { commandId: 'getLaunchArgs+UNIQUE_ID' },
       };
       _.forEach(getAllMethodsOfUut(), (m) => {
         it(`for ${m}`, () => {

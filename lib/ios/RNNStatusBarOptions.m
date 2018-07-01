@@ -20,7 +20,7 @@
 		}
 	}
 	
-	if (self.style || self.hidden) {
+	if (self.style || self.visible) {
 		[UIView animateWithDuration:[self statusBarAnimationDuration] animations:^{
 			[viewController setNeedsStatusBarAppearanceUpdate];
 		}];

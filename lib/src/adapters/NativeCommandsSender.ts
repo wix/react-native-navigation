@@ -57,4 +57,8 @@ export class NativeCommandsSender {
   dismissOverlay(commandId: string, componentId: string) {
     return this.nativeCommandsModule.dismissOverlay(commandId, componentId);
   }
+
+  getLaunchArgs(commandId: string) {
+    return this.nativeCommandsModule.getLaunchArgs(commandId);
+  }
 }

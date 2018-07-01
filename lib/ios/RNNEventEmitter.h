@@ -22,4 +22,6 @@
 
 -(void)sendOnSearchBarUpdated:(NSString *)componentId text:(NSString*)text isFocused:(BOOL)isFocused;
 
+-(void)sendOnSearchBarCancelPressed:(NSString *)componentId;
+
 @end

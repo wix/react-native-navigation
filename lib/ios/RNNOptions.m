@@ -30,17 +30,19 @@
 	}
 }
 
--(void)mergeIfEmptyWith:(NSDictionary *)otherOptions {
-	for (id key in otherOptions) {
-		if ([self hasProperty:key]) {
-			if ([[self valueForKey:key] isKindOfClass:[RNNOptions class]]) {
-				RNNOptions* options = [self valueForKey:key];
-				[options mergeIfEmptyWith:[otherOptions objectForKey:key]];
-			} else if (![self valueForKey:key]) {
-				[self setValue:[otherOptions objectForKey:key] forKey:key];
-			}
+- (void)mergeOptions:(RNNOptions *)otherOptions overrideOptions:(BOOL)override {
+	for (id prop in [self objectProperties:otherOptions]) {
+		id value = [otherOptions valueForKey:prop];
+		if ([value isKindOfClass:[RNNOptions class]]) {
+			[[self valueForKey:prop] mergeOptions:value overrideOptions:override];
+		} else if (value && (override || ![self valueForKey:prop])) {
+			[self setValue:value forKey:prop];
 		}
 	}
+}
+
+- (void)mergeOptions:(RNNOptions *)otherOptions {
+	[self mergeOptions:otherOptions overrideOptions:YES];
 }
 
 - (BOOL)hasProperty:(NSString*)propName {
@@ -69,6 +71,20 @@
 		
 	}
 	free(props);
+}
+
+- (NSArray *)objectProperties:(NSObject *)object {
+	NSMutableArray* properties = [NSMutableArray new];
+	unsigned int count;
+	objc_property_t* props = class_copyPropertyList([object class], &count);
+	for (int i = 0; i < count; i++) {
+		objc_property_t property = props[i];
+		NSString *propertyName = [NSString stringWithCString:property_getName(property) encoding:NSUTF8StringEncoding];
+		[properties addObject:propertyName];
+	}
+	
+	free(props);
+	return properties;
 }
 
 @end

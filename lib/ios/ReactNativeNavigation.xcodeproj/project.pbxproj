@@ -89,6 +89,8 @@
 		50570B272061473D006A1B5C /* RNNTitleOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50570B252061473D006A1B5C /* RNNTitleOptions.m */; };
 		50570BEA2063E09B006A1B5C /* RNNTitleViewHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 50570BE82063E09B006A1B5C /* RNNTitleViewHelper.h */; };
 		50570BEB2063E09B006A1B5C /* RNNTitleViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */; };
+		5064495D20DC62B90026709C /* RNNSideMenuSideOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5064495B20DC62B90026709C /* RNNSideMenuSideOptions.h */; };
+		5064495E20DC62B90026709C /* RNNSideMenuSideOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5064495C20DC62B90026709C /* RNNSideMenuSideOptions.m */; };
 		506A2B1420973DFD00F43A95 /* RNNErrorHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 506A2B1220973DFD00F43A95 /* RNNErrorHandler.h */; };
 		506A2B1520973DFD00F43A95 /* RNNErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 506A2B1320973DFD00F43A95 /* RNNErrorHandler.m */; };
 		50706E6D20CE7CA5003345C3 /* UIImage+tint.h in Headers */ = {isa = PBXBuildFile; fileRef = 50706E6B20CE7CA5003345C3 /* UIImage+tint.h */; };
@@ -303,6 +305,8 @@
 		50570B252061473D006A1B5C /* RNNTitleOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTitleOptions.m; sourceTree = "<group>"; };
 		50570BE82063E09B006A1B5C /* RNNTitleViewHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTitleViewHelper.h; sourceTree = "<group>"; };
 		50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTitleViewHelper.m; sourceTree = "<group>"; };
+		5064495B20DC62B90026709C /* RNNSideMenuSideOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSideMenuSideOptions.h; sourceTree = "<group>"; };
+		5064495C20DC62B90026709C /* RNNSideMenuSideOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuSideOptions.m; sourceTree = "<group>"; };
 		506A2B1220973DFD00F43A95 /* RNNErrorHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNErrorHandler.h; sourceTree = "<group>"; };
 		506A2B1320973DFD00F43A95 /* RNNErrorHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNErrorHandler.m; sourceTree = "<group>"; };
 		50706E6B20CE7CA5003345C3 /* UIImage+tint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+tint.h"; sourceTree = "<group>"; };
@@ -570,6 +574,8 @@
 				504AFE731FFFF0540076E904 /* RNNTopTabsOptions.m */,
 				50CB3B671FDE911400AA153B /* RNNSideMenuOptions.h */,
 				50CB3B681FDE911400AA153B /* RNNSideMenuOptions.m */,
+				5064495B20DC62B90026709C /* RNNSideMenuSideOptions.h */,
+				5064495C20DC62B90026709C /* RNNSideMenuSideOptions.m */,
 				50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */,
 				50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */,
 				507E7D55201DDD3000444E6C /* RNNAnimationOptions.h */,
@@ -808,6 +814,7 @@
 				50A00C37200F84D6000F01A6 /* RNNOverlayOptions.h in Headers */,
 				7B4928081E70415400555040 /* RNNCommandsHandler.h in Headers */,
 				263905AE1E4C6F440023D7D3 /* MMDrawerBarButtonItem.h in Headers */,
+				5064495D20DC62B90026709C /* RNNSideMenuSideOptions.h in Headers */,
 				50F5DFC11F407A8C001A00BC /* RNNTabBarController.h in Headers */,
 				50CB3B691FDE911400AA153B /* RNNSideMenuOptions.h in Headers */,
 				263905BD1E4C6F440023D7D3 /* RCCDrawerProtocol.h in Headers */,
@@ -1029,6 +1036,7 @@
 				50EB4ED82068EBE000D6ED34 /* RNNBackgroundOptions.m in Sources */,
 				507F43CA1FF4F9CC00D9425B /* RNNTopTabOptions.m in Sources */,
 				26916C991E4B9E7700D13680 /* RNNReactRootViewCreator.m in Sources */,
+				5064495E20DC62B90026709C /* RNNSideMenuSideOptions.m in Sources */,
 				214545251F4DC125006E8DA1 /* RNNUIBarButtonItem.m in Sources */,
 				263905B81E4C6F440023D7D3 /* UIViewController+MMDrawerController.m in Sources */,
 				263905CD1E4C6F440023D7D3 /* SidebarWunderlistAnimation.m in Sources */,

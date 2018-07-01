@@ -25,8 +25,10 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	
 	if (self.drawBehind) {
 		if ([self.drawBehind boolValue]) {
+			[viewController setExtendedLayoutIncludesOpaqueBars:YES];
 			viewController.edgesForExtendedLayout |= UIRectEdgeBottom;
 		} else {
+			[viewController setExtendedLayoutIncludesOpaqueBars:NO];
 			viewController.edgesForExtendedLayout &= ~UIRectEdgeBottom;
 		}
 	}

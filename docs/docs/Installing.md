@@ -47,14 +47,14 @@
 
 > Make sure your Android Studio installation is updated. We recommend editing `gradle` and `java` files in Android Studio as the IDE will suggest fixes and point out errors, this way you avoid most common pitfalls.
 
-1. Add the following in `android/settings.gradle`:
+### 1. Add the following in `android/settings.gradle`:
 
 	```groovy
 	include ':react-native-navigation'
 	project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/lib/android/app/')
 	```
 
-2. Update `android/build.gradle`:
+### 2. Update `android/build.gradle`:
 
 	```diff
 	buildscript {
@@ -85,7 +85,7 @@
 	}
 	```
 
-3. Update project dependencies in `android/app/build.gradle`.
+### 3. Update project dependencies in `android/app/build.gradle`.
 
 	```groovy
 	android {
@@ -124,7 +124,7 @@
 ><br>with:<br>
 >`missingDimensionStrategy "RNN.reactNativeVersion", "reactNative55"`
 
-4. Make sure you're using the new gradle plugin, edit `android/gradle/wrapper/gradle-wrapper.properties`
+### 4. Make sure you're using the new gradle plugin, edit `android/gradle/wrapper/gradle-wrapper.properties`
 
 	```diff
 	distributionBase=GRADLE_USER_HOME
@@ -135,14 +135,14 @@
 	-distributionUrl=https\://services.gradle.org/distributions/gradle-2.14.1-all.zip
 	```
 
-5. Update `gradle.properties` and disable incremental resource processing
+### 5. Update `gradle.properties` and disable incremental resource processing
 
 	```diff
 	+# Disable incremental resource processing as it broke relase build
 	+android.enableAapt2=false
 	```
 
-6. In `MainActivity.java` it should extend `com.reactnativenavigation.NavigationActivity` instead of `ReactActivity`.
+### 6. In `MainActivity.java` it should extend `com.reactnativenavigation.NavigationActivity` instead of `ReactActivity`.
 
 	This file can be located in `android/app/src/main/java/com/yourproject/`.
 
@@ -156,7 +156,7 @@
 
 	If you have any **react-native** related methods, you can safely delete them.
 
-7. In `MainApplication.java`, add the following
+### 7. In `MainApplication.java`, add the following
 	
 	```java
 	import com.reactnativenavigation.NavigationApplication;
@@ -177,11 +177,46 @@
 	```
     Make sure that `isDebug` method is implemented.
 
-8. Update `AndroidManifest.xml` and set `application` **android:name** value to `.MainApplication`
-	
+### 8. Update `AndroidManifest.xml` and set `application` **android:name** value to `.MainApplication`
+
 	```xml
 	<application
 		android:name=".MainApplication"
 		...
 	/>
 	```
+### 9. Force the same support library version across all dependencies
+
+Some of your dependencies might require a different version of one of Google's support library packages. This results in compilation errors similar to this:
+
+```
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:preDebugBuild'.
+> Android dependency 'com.android.support:design' has different version for the compile (25.4.0) and runtime (26.1.0) classpath. You should manually set the same version via DependencyResolution
+```
+
+To resolve these conflicts, add the following to your `app/build.gradle`:
+
+```groovy
+android {
+    ...
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            details.useVersion "25.4.0" // <- Change this to whatever version you're using
+        }
+    }
+}
+
+dependencies {
+    ...
+    implementation 'com.android.support:design:25.4.0'
+    implementation 'com.android.support:appcompat-v7:25.4.0'
+}
+
+```

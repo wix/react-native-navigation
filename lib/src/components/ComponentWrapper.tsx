@@ -58,6 +58,12 @@ export class ComponentWrapper {
         }
       }
 
+      onSearchBarCancelPressed() {
+        if (this.originalComponentRef.onSearchBarCancelPressed) {
+          this.originalComponentRef.onSearchBarCancelPressed();
+        }
+      }
+
       render() {
         return (
           <OriginalComponentClass

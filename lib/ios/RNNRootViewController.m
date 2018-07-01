@@ -105,6 +105,10 @@
 									isFocused:searchController.searchBar.isFirstResponder];
 }
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+	[self.eventEmitter sendOnSearchBarCancelPressed:self.componentId];
+}
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
 }
@@ -120,8 +124,8 @@
 	[self.options applyModalOptions:self];
 }
 
-- (void)mergeOptions:(NSDictionary *)options {
-	[self.options mergeIfEmptyWith:options];
+- (void)mergeOptions:(RNNOptions *)options {
+	[self.options mergeOptions:options overrideOptions:NO];
 }
 
 - (void)setCustomNavigationTitleView {
@@ -194,8 +198,8 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-	if ([self.options.statusBar.hidden boolValue]) {
-		return YES;
+	if (self.options.statusBar.visible) {
+		return ![self.options.statusBar.visible boolValue];
 	} else if ([self.options.statusBar.hideWithTopBar boolValue]) {
 		return self.navigationController.isNavigationBarHidden;
 	}

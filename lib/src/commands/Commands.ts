@@ -139,4 +139,11 @@ export class Commands {
     this.commandsObserver.notify('dismissOverlay', { commandId, componentId });
     return result;
   }
+
+  public getLaunchArgs() {
+    const commandId = this.uniqueIdProvider.generate('getLaunchArgs');
+    const result = this.nativeCommandsSender.getLaunchArgs(commandId);
+    this.commandsObserver.notify('getLaunchArgs', { commandId });
+    return result;
+  }
 }

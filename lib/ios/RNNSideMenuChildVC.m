@@ -31,6 +31,10 @@
 	return self;
 }
 
+- (void)mergeOptions:(RNNOptions *)options {
+	[self.child mergeOptions:options];
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return self.child.preferredStatusBarStyle;
 }

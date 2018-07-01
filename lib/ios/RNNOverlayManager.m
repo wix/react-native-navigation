@@ -1,4 +1,5 @@
 #import "RNNOverlayManager.h"
+#import "RNNErrorHandler.h"
 
 @implementation RNNOverlayManager {
 	NSMutableDictionary* _overlayDict;
@@ -20,10 +21,14 @@
 	completion();
 }
 
-- (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion {
+- (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
 	RNNRootViewController* viewController = [_overlayDict objectForKey:componentId];
-	[self removeCachedOverlay:viewController];
-	completion();
+	if (viewController) {
+		[self removeCachedOverlay:viewController];
+		completion();
+	} else {
+		[RNNErrorHandler reject:reject withErrorCode:1010 errorDescription:@"ComponentId not found"];
+	}
 }
 
 #pragma mark - private

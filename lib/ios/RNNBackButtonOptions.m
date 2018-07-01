@@ -13,7 +13,7 @@
 		viewController.navigationItem.hidesBackButton = ![self.visible boolValue];
 	}
 	
-	if (self.hideTitle) {
+	if (self.showTitle && ![self.showTitle boolValue]) {
 		self.title = @"";
 	}
 	

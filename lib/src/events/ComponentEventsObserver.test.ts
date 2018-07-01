@@ -19,7 +19,8 @@ describe(`ComponentEventsObserver`, () => {
       componentDidAppear: jest.fn(),
       componentDidDisappear: jest.fn(),
       onNavigationButtonPressed: jest.fn(),
-      onSearchBarUpdated: jest.fn()
+      onSearchBarUpdated: jest.fn(),
+      onSearchBarCancelPressed: jest.fn()
     };
 
     store = new Store();
@@ -44,6 +45,7 @@ describe(`ComponentEventsObserver`, () => {
     expect(mockComponentRef.componentDidDisappear).toHaveBeenCalledTimes(0);
     expect(mockComponentRef.onNavigationButtonPressed).toHaveBeenCalledTimes(0);
     expect(mockComponentRef.onSearchBarUpdated).toHaveBeenCalledTimes(0);
+    expect(mockComponentRef.onSearchBarCancelPressed).toHaveBeenCalledTimes(0);
     uut.registerForAllComponents();
     eventRegistry.registerComponentDidAppearListener.mock.calls[0][0](refId);
     eventRegistry.registerComponentDidDisappearListener.mock.calls[0][0](refId);
@@ -52,6 +54,7 @@ describe(`ComponentEventsObserver`, () => {
     expect(mockComponentRef.componentDidDisappear).toHaveBeenCalledTimes(1);
     expect(mockComponentRef.onNavigationButtonPressed).toHaveBeenCalledTimes(0);
     expect(mockComponentRef.onSearchBarUpdated).toHaveBeenCalledTimes(0);
+    expect(mockComponentRef.onSearchBarCancelPressed).toHaveBeenCalledTimes(0);
   });
 
   it('bubbles onNavigationButtonPressed to component by id', () => {
@@ -93,6 +96,26 @@ describe(`ComponentEventsObserver`, () => {
     eventRegistry.registerNativeEventListener.mock.calls[0][0]('searchBarUpdated', paramsForUnexisted);
     expect(mockComponentRef.onSearchBarUpdated).toHaveBeenCalledTimes(1);
     expect(mockComponentRef.onSearchBarUpdated).toHaveBeenCalledWith('query', true);
+  });
+
+  it('bubbles onSearchBarCancelPressed to component by id', () => {
+    const params = {
+      componentId: refId,
+    };
+    expect(mockComponentRef.onSearchBarCancelPressed).toHaveBeenCalledTimes(0);
+    uut.registerForAllComponents();
+
+    eventRegistry.registerNativeEventListener.mock.calls[0][0]('buttonPressed', params);
+    expect(mockComponentRef.onSearchBarCancelPressed).toHaveBeenCalledTimes(0);
+
+    eventRegistry.registerNativeEventListener.mock.calls[0][0]('searchBarCancelPressed', params);
+    expect(mockComponentRef.onSearchBarCancelPressed).toHaveBeenCalledTimes(1);
+
+    const paramsForUnexisted = {
+      componentId: 'NOT_EXISTED',
+    };
+    eventRegistry.registerNativeEventListener.mock.calls[0][0]('searchBarCancelPressed', paramsForUnexisted);
+    expect(mockComponentRef.onSearchBarCancelPressed).toHaveBeenCalledTimes(1);
   });
 
   it('defensive unknown id', () => {

@@ -145,6 +145,14 @@ export class Navigation {
   }
 
   /**
+   * 
+   * Resolves arguments passed on launch
+   */
+  public getLaunchArgs(): Promise<any> {
+    return this.commands.getLaunchArgs();
+  }
+
+  /**
    * Obtain the events registry instance
    */
   public events(): EventsRegistry {

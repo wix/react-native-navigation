@@ -96,8 +96,7 @@
 
 - (UIViewController<RNNRootViewProtocol> *)createComponent:(RNNLayoutNode*)node {
 	NSString* name = node.data[@"name"];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:_defaultOptionsDict];
-	[options mergeWith:node.data[@"options"]];
+	RNNNavigationOptions* options = [self createOptions:node.data[@"options"]];
 
 	NSString* componentId = node.nodeId;
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:NO];
@@ -113,8 +112,7 @@
 	NSDictionary* props = node.data[@"passProps"];
 	
 	UIViewController* externalVC = [_store getExternalComponent:name props:props bridge:_bridge];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:_defaultOptionsDict];
-	[options mergeWith:node.data[@"options"]];
+	RNNNavigationOptions* options = [self createOptions:node.data[@"options"]];
 	
 	NSString* componentId = node.nodeId;
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithName:name withOptions:options withComponentId:componentId rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:YES];
@@ -130,7 +128,7 @@
 - (UIViewController<RNNRootViewProtocol> *)createStack:(RNNLayoutNode*)node {
 	RNNNavigationController* vc = [[RNNNavigationController alloc] init];
 	[vc setComponentId:node.nodeId];
-	NSDictionary* options = node.data[@"options"];
+	RNNNavigationOptions* options = [self createOptions:node.data[@"options"]];
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary* child in node.children) {
 		[controllers addObject:[self fromTree:child]];
@@ -143,7 +141,7 @@
 
 -(UIViewController<RNNRootViewProtocol> *)createTabs:(RNNLayoutNode*)node {
 	RNNTabBarController* vc = [[RNNTabBarController alloc] initWithEventEmitter:_eventEmitter];
-	NSDictionary* options = node.data[@"options"];
+	RNNNavigationOptions* options = [self createOptions:node.data[@"options"]];
 
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
@@ -178,18 +176,18 @@
 - (UIViewController<RNNRootViewProtocol> *)createSideMenu:(RNNLayoutNode*)node {
 	NSMutableArray* childrenVCs = [NSMutableArray new];
 	
-	
 	for (NSDictionary *child in node.children) {
 		UIViewController *vc = [self fromTree:child];
 		[childrenVCs addObject:vc];
 	}
 	RNNSideMenuController *sideMenu = [[RNNSideMenuController alloc] initWithControllers:childrenVCs];
+	[sideMenu mergeOptions:[self createOptions:node.data[@"options"]]];
 	return sideMenu;
 }
 
 
 - (UIViewController<RNNRootViewProtocol> *)createSideMenuChild:(RNNLayoutNode*)node type:(RNNSideMenuChildType)type {
-	UIViewController* child = (UIViewController*)[self fromTree:node.children[0]];
+	UIViewController<RNNRootViewProtocol>* child = [self fromTree:node.children[0]];
 	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithChild: child type:type];
 	
 	return sideMenuChild;
@@ -232,6 +230,12 @@
 	svc.delegate = masterVc;
 
 	return svc;
+}
+
+- (RNNNavigationOptions *)createOptions:(NSDictionary *)optionsDict {
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:_defaultOptionsDict];
+	[options mergeWith:optionsDict];
+	return options;
 }
 
 @end

@@ -62,6 +62,12 @@ static NSString* const navigationEvent	= @"RNN.nativeEvent";
 												  @"isFocused": @(isFocused)}}];
 }
 
+- (void)sendOnSearchBarCancelPressed:(NSString *)componentId {
+	[self send:navigationEvent body:@{@"name": @"searchBarCancelPressed",
+									  @"params": @{
+											  @"componentId": componentId}}];
+}
+
 - (void)addListener:(NSString *)eventName {
 	[super addListener:eventName];
 	if ([eventName isEqualToString:onAppLaunched]) {

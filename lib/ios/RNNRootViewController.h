@@ -13,7 +13,7 @@
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
-@interface RNNRootViewController : UIViewController	<RNNRootViewProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating>
+@interface RNNRootViewController : UIViewController	<RNNRootViewProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate>
 
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
