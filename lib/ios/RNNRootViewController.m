@@ -125,7 +125,7 @@
 }
 
 - (void)mergeOptions:(RNNOptions *)options {
-	[self.options mergeOptions:options overrideOptions:YES];
+	[self.options mergeOptions:options overrideOptions:NO];
 }
 
 - (void)setCustomNavigationTitleView {
