@@ -13,12 +13,12 @@
 }
 
 - (void)applyOn:(UIViewController *)viewController {
-	if (self.title || self.icon || self.selectedIcon) {
+	if (self.text || self.icon || self.selectedIcon) {
 		UITabBarItem* tabItem = viewController.tabBarItem;
 		
 		tabItem.selectedImage = [self getSelectedIconImage];
 		tabItem.image = [self getIconImage];
-		tabItem.title = self.title;
+		tabItem.title = self.text;
 		tabItem.tag = self.tag;
 		tabItem.accessibilityIdentifier = self.testID;
 		
@@ -35,9 +35,7 @@
 			
 			tabItem.imageInsets = UIEdgeInsetsMake(top, left, bottom, right);
 		}
-//		[tabItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"HelveticaLTStd-Roman" size:10.0f], NSFontAttributeName,  [UIColor yellowColor], NSForegroundColorAttributeName,nil] forState:UIControlStateNormal];
-//
-//		[tabItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"HelveticaLTStd-Roman" size:10.0f], NSFontAttributeName,  [UIColor blackColor], NSForegroundColorAttributeName,nil] forState:UIControlStateHighlighted];
+		
 		[self appendTitleAttributes:tabItem];
 		
 		[viewController setTabBarItem:tabItem];
@@ -71,7 +69,7 @@
 		if (self.selectedIconColor) {
 			return [[[RCTConvert UIImage:self.selectedIcon] withTintColor:[RCTConvert UIColor:self.selectedIconColor]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 		} else {
-			return [RCTConvert UIImage:self.selectedIcon];
+			return [[RCTConvert UIImage:self.selectedIcon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 		}
 	} else {
 		return [self getIconImageWithTint:self.selectedIconColor];
@@ -85,7 +83,7 @@
 		if (tintColor) {
 			return [[[RCTConvert UIImage:self.icon] withTintColor:[RCTConvert UIColor:tintColor]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 		} else {
-			return [RCTConvert UIImage:self.icon];
+			return [[RCTConvert UIImage:self.icon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 		}
 	}
 	
@@ -96,7 +94,10 @@
 	NSMutableDictionary* selectedAttributes = [NSMutableDictionary dictionaryWithDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal]];
 	if (self.selectedTextColor) {
 		selectedAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:self.selectedTextColor];
+	} else {
+		selectedAttributes[NSForegroundColorAttributeName] = [UIColor blackColor];
 	}
+	
 	selectedAttributes[NSFontAttributeName] = [self tabBarTextFont];
 	[tabItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
 
@@ -104,7 +105,10 @@
 	NSMutableDictionary* normalAttributes = [NSMutableDictionary dictionaryWithDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal]];
 	if (self.textColor) {
 		normalAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:self.textColor];
+	} else {
+		normalAttributes[NSForegroundColorAttributeName] = [UIColor blackColor];
 	}
+	
 	normalAttributes[NSFontAttributeName] = [self tabBarTextFont];
 	[tabItem setTitleTextAttributes:normalAttributes forState:UIControlStateNormal];
 }
@@ -127,7 +131,7 @@
 }
 
 -(void)resetOptions {
-	self.title = nil;
+	self.text = nil;
 	self.badge = nil;
 	self.visible = nil;
 	self.icon = nil;
