@@ -46,7 +46,10 @@ public class NavigationReactInitializer implements ReactInstanceManager.ReactIns
 		if (shouldCreateContext()) {
 			reactInstanceManager.createReactContextInBackground();
 		} else if (waitingForAppLaunchEvent) {
-			emitAppLaunched(reactInstanceManager.getCurrentReactContext());
+			ReactContext context = reactInstanceManager.getCurrentReactContext(); // It's have @Nullable annotation in getCurrentReactContext()
+			if (context != null) {
+				emitAppLaunched(context);
+			} // else TODO handle this state
 		}
 	}
 
