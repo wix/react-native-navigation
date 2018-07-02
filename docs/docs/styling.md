@@ -206,7 +206,9 @@ Navigation.mergeOptions(this.props.componentId, {
 ```js
 {
   statusBar: {
-    backgroundColor: 'red'
+    backgroundColor: 'red',
+    drawBehind: true,
+    visible: false
   },
   layout: {
     topMargin: Navigation.constants().statusBarHeight // Set the layout's top margin
