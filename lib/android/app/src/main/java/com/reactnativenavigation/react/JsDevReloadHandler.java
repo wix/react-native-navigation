@@ -29,7 +29,7 @@ public class JsDevReloadHandler {
 		this.reactInstanceManager = reactInstanceManager;
 	}
 
-    public void addReloadListener(ReloadListener listener) {
+    public void setReloadListener(ReloadListener listener) {
         reloadListener = listener;
     }
 

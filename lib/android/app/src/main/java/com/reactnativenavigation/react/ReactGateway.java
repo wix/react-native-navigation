@@ -50,8 +50,11 @@ public class ReactGateway {
 		initializer.onActivityDestroyed(activity);
 	}
 
-    public void addReloadListener(JsDevReloadHandler.ReloadListener reloadListener) {
-	    jsDevReloadHandler.addReloadListener(reloadListener);
+    public void setReloadListener(ReloadListener reloadListener) {
+	    jsDevReloadHandler.setReloadListener(reloadListener);
+        if (reactNativeHost instanceof NavigationReactNativeHost) {
+            ((NavigationReactNativeHost) reactNativeHost).setDevBundleDownloadListener(reloadListener);
+        }
     }
 
     public void removeReloadListener(JsDevReloadHandler.ReloadListener reloadListener) {
