@@ -92,8 +92,9 @@ class WelcomeScreen extends Component {
                 ],
                 options: {
                   bottomTab: {
-                    title: 'Tab 1',
+                    text: 'Tab 1',
                     icon: require('../images/one.png'),
+                    selectedIcon: require('../images/one.png'),
                     testID: testIDs.FIRST_TAB_BAR_BUTTON
                   },
                   topBar: {
@@ -116,7 +117,7 @@ class WelcomeScreen extends Component {
                 ],
                 options: {
                   bottomTab: {
-                    title: 'Tab 2',
+                    text: 'Tab 2',
                     icon: require('../images/two.png'),
                     testID: testIDs.SECOND_TAB_BAR_BUTTON
                   }
@@ -126,11 +127,7 @@ class WelcomeScreen extends Component {
           ],
           options: {
             bottomTabs: {
-              tabColor: 'red',
               titleDisplayMode: 'alwaysShow',
-              selectedTabColor: 'blue',
-              fontFamily: 'HelveticaNeue-Italic',
-              fontSize: 13,
               testID: testIDs.BOTTOM_TABS_ELEMENT
             }
           }
@@ -163,13 +160,25 @@ class WelcomeScreen extends Component {
                           name: 'navigation.playground.TextScreen',
                           passProps: {
                             text: 'This is a side menu center screen tab 1'
-                          }
+                          },
+                          // options: {
+                          //   bottomTab: {
+                          //     iconColor: 'red',
+                          //     textColor: 'red',
+                          //     selectedIconColor: 'purple',
+                          //     selectedTextColor: 'purple',
+                          //   }
+                          // }
                         }
                       }
                     ],
                     options: {
                       bottomTab: {
-                        title: 'Tab 1',
+                        iconColor: 'red',
+                        textColor: 'red',
+                        selectedIconColor: 'purple',
+                        selectedTextColor: 'purple',
+                        text: 'Tab 1',
                         icon: require('../images/one.png'),
                         testID: testIDs.FIRST_TAB_BAR_BUTTON
                       }
@@ -190,7 +199,7 @@ class WelcomeScreen extends Component {
                     ],
                     options: {
                       bottomTab: {
-                        title: 'Tab 2',
+                        text: 'Tab 2',
                         icon: require('../images/two.png'),
                         testID: testIDs.SECOND_TAB_BAR_BUTTON
                       }
@@ -211,7 +220,7 @@ class WelcomeScreen extends Component {
                     ],
                     options: {
                       bottomTab: {
-                        title: 'Tab 3',
+                        text: 'Tab 3',
                         icon: require('../images/three.png'),
                         testID: testIDs.SECOND_TAB_BAR_BUTTON
                       }
@@ -220,9 +229,11 @@ class WelcomeScreen extends Component {
                 }
               ],
               options: {
-                bottomTabs: {
-                  tabColor: 'red',
-                  selectedTabColor: 'blue',
+                bottomTab: {
+                  textColor: '#AED581',
+                  iconColor: '#AED581',
+                  selectedTextColor: '#90CAF9',
+                  selectedIconColor: '#90CAF9',
                   fontFamily: 'HelveticaNeue-Italic',
                   fontSize: 13
                 }

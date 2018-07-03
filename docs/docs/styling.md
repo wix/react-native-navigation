@@ -32,6 +32,8 @@ export default class StyledScreen extends Component {
 ## Enabling persistent styling properties
 In v2 we added `setDefaultOptions` API for styles that should be applied on all components.
 
+> `setDefaultOptions` Does not update options of existing component, therefore it should be called before `setRoot`
+
 ```js
 Navigation.setDefaultOptions({
   topBar: {
@@ -118,17 +120,19 @@ Navigation.mergeOptions(this.props.componentId, {
     currentTabId: 'currentTabId',
     testID: 'bottomTabsTestID',
     drawBehind: false,
-    backgroundColor: 'white',
-    tabColor: 'red',
-    selectedTabColor: 'blue',
-    fontFamily: 'Helvetica',
-    fontSize: 10
+    backgroundColor: 'white'
   },
   bottomTab: {
-    title: 'Tab 1',
+    text: 'Tab 1',
     badge: '2',
     testID: 'bottomTabTestID',
-    icon: require('tab.png')
+    icon: require('tab.png'),
+    iconColor: 'red',
+    selectedIconColor: 'blue',
+    textColor: 'red',
+    selectedTextColor: 'blue',
+    fontFamily: 'Helvetica',
+    fontSize: 10
   },
   sideMenu: {
     left: {
@@ -202,7 +206,9 @@ Navigation.mergeOptions(this.props.componentId, {
 ```js
 {
   statusBar: {
-    backgroundColor: 'red'
+    backgroundColor: 'red',
+    drawBehind: true,
+    visible: false
   },
   layout: {
     topMargin: Navigation.constants().statusBarHeight // Set the layout's top margin

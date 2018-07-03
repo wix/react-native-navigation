@@ -3,6 +3,7 @@ package com.reactnativenavigation.viewcontrollers.stack;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
@@ -17,6 +18,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ViewHelper;
@@ -40,7 +42,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -61,6 +65,7 @@ public class StackControllerTest extends BaseTest {
     private ViewController child4;
     private NavigationAnimator animator;
     private TopBarController topBarController;
+    private StackOptionsPresenter presenter;
 
     @Override
     public void beforeEach() {
@@ -68,16 +73,34 @@ public class StackControllerTest extends BaseTest {
         animator = Mockito.mock(NavigationAnimator.class);
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
-        uut = createStackController();
+        presenter = new StackOptionsPresenter(activity, new Options());
         child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
         child2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
         child3 = spy(new SimpleViewController(activity, childRegistry, "child3", new Options()));
         child4 = spy(new SimpleViewController(activity, childRegistry, "child4", new Options()));
+        uut = createStack();
+        uut.ensureViewIsCreated();
     }
 
     @Test
     public void isAViewController() {
         assertThat(uut).isInstanceOf(ViewController.class);
+    }
+
+    @Test
+    public void childrenAreAssignedParent() {
+        StackController uut = createStack(Arrays.asList(child1, child2));
+        for (ViewController child : uut.getChildControllers()) {
+            assertThat(child.getParentController().equals(uut));
+        }
+    }
+
+    @Test
+    public void createView_currentChildIsAdded() {
+        StackController uut = createStack(Arrays.asList(child1, child2, child3, child4));
+        assertThat(uut.getChildControllers().size()).isEqualTo(4);
+        assertThat(uut.getView().getChildCount()).isEqualTo(2);
+        assertThat(uut.getView().getChildAt(1)).isEqualTo(child4.getView());
     }
 
     @Test
@@ -137,6 +160,7 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void animateSetRoot() {
+        disablePushAnimation(child1, child2, child3);
         assertThat(uut.isEmpty()).isTrue();
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter());
@@ -150,7 +174,9 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void setRoot() {
-        disablePushAnimation(child1, child2);
+        activity.setContentView(uut.getView());
+        disablePushAnimation(child1, child2, child3);
+
         assertThat(uut.isEmpty()).isTrue();
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter());
@@ -165,7 +191,8 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void pop() {
+    public synchronized void pop() {
+        disablePushAnimation(child1, child2);
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter() {
             @Override
@@ -191,7 +218,6 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void pop_layoutHandlesChildWillDisappear() {
-        final StackLayout[] stackLayout = new StackLayout[1];
         uut = new StackControllerBuilder(activity)
                         .setTopBarButtonCreator(new TopBarButtonCreatorMock())
                         .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
@@ -199,7 +225,9 @@ public class StackControllerTest extends BaseTest {
                         .setTopBarController(new TopBarController())
                         .setId("uut")
                         .setInitialOptions(new Options())
+                        .setStackPresenter(new StackOptionsPresenter(activity, new Options()))
                         .build();
+        uut.ensureViewIsCreated();
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter() {
             @Override
@@ -207,7 +235,7 @@ public class StackControllerTest extends BaseTest {
                 uut.pop(new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
-                        verify(stackLayout[0], times(1)).onChildWillAppear(child1, child2);
+                        verify(presenter, times(1)).onChildWillAppear(child1.options, child2.options);
                     }
                 });
             }
@@ -296,7 +324,8 @@ public class StackControllerTest extends BaseTest {
         uut.push(child1, new CommandListenerAdapter());
         assertThat(child1.getParentController()).isEqualTo(uut);
 
-        StackController anotherNavController = createStackController("another");
+        StackController anotherNavController = createStack("another");
+        anotherNavController.ensureViewIsCreated();
         anotherNavController.push(child2, new CommandListenerAdapter());
         assertThat(child2.getParentController()).isEqualTo(anotherNavController);
     }
@@ -375,6 +404,25 @@ public class StackControllerTest extends BaseTest {
                 });
             }
         });
+    }
+
+    @Test
+    public void pop_appearingChildHasCorrectLayoutParams() {
+        child2.options.animations.pop.enable = new Bool(false);
+        child1.options.topBar.drawBehind = new Bool(false);
+
+        StackController uut = createStack(Arrays.asList(child1, child2));
+        uut.ensureViewIsCreated();
+
+        assertThat(child2.getView().getParent()).isEqualTo(uut.getView());
+        uut.pop(new CommandListenerAdapter());
+        assertThat(child1.getView().getParent()).isEqualTo(uut.getView());
+
+        assertThat(child1.getView().getLayoutParams().width).isEqualTo(ViewGroup.LayoutParams.MATCH_PARENT);
+        assertThat(child1.getView().getLayoutParams().height).isEqualTo(ViewGroup.LayoutParams.MATCH_PARENT);
+        assertThat(((ViewGroup.MarginLayoutParams) child1.getView().getLayoutParams()).topMargin).isEqualTo(uut
+                .getTopBar()
+                .getHeight());
     }
 
     @Test
@@ -517,7 +565,8 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void findControllerById_Deeply() {
-        StackController stack = createStackController("another");
+        StackController stack = createStack("another");
+        stack.ensureViewIsCreated();
         stack.push(child2, new CommandListenerAdapter());
         uut.push(stack, new CommandListenerAdapter());
         assertThat(uut.findControllerById(child2.getId())).isEqualTo(child2);
@@ -643,7 +692,7 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void stackCanBePushed() {
-        StackController parent = createStackController("someStack");
+        StackController parent = createStack("someStack");
         parent.ensureViewIsCreated();
         parent.push(uut, new CommandListenerAdapter());
         uut.onViewAppeared();
@@ -652,7 +701,7 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void applyOptions_applyOnlyOnFirstStack() {
-        StackController parent = spy(createStackController("someStack"));
+        StackController parent = spy(createStack("someStack"));
         parent.ensureViewIsCreated();
         parent.push(uut, new CommandListenerAdapter());
 
@@ -695,6 +744,7 @@ public class StackControllerTest extends BaseTest {
                         .setTopBarController(new TopBarController())
                         .setId("stack")
                         .setInitialOptions(new Options())
+                        .setStackPresenter(new StackOptionsPresenter(activity, new Options()))
                         .build());
         Options optionsToMerge = new Options();
         Component component = mock(Component.class);
@@ -711,9 +761,11 @@ public class StackControllerTest extends BaseTest {
                         .setTopBarController(new TopBarController())
                         .setId("stack")
                         .setInitialOptions(new Options())
+                        .setStackPresenter(new StackOptionsPresenter(activity, new Options()))
                         .build();
         ParentController parentController = Mockito.mock(ParentController.class);
         uut.setParentController(parentController);
+        uut.ensureViewIsCreated();
         Options optionsToMerge = new Options();
         optionsToMerge.topBar.testId = new Text("topBarID");
         optionsToMerge.bottomTabsOptions.testId = new Text("bottomTabsID");
@@ -738,6 +790,7 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void mergeChildOptions_StackRelatedOptionsAreCleared() {
+        uut.ensureViewIsCreated();
         ParentController parentController = Mockito.mock(ParentController.class);
         uut.setParentController(parentController);
         Options options = new Options();
@@ -767,17 +820,27 @@ public class StackControllerTest extends BaseTest {
         assertThat(uut.getChildControllers()).extracting((Extractor<ViewController, String>) ViewController::getId).containsOnly(ids);
     }
 
-    private StackController createStackController() {
-        return createStackController("stack");
+    private StackController createStack() {
+        return createStack("stack", new ArrayList<>());
     }
 
-    private StackController createStackController(String id) {
+    private StackController createStack(String id) {
+        return createStack(id, new ArrayList<>());
+    }
+
+    private StackController createStack(List<ViewController> children) {
+        return createStack("stack", children);
+    }
+
+    private StackController createStack(String id, List<ViewController> children) {
         createTopBarController();
         return TestUtils.newStackController(activity)
+                .setChildren(children)
                 .setId(id)
                 .setTopBarController(topBarController)
                 .setChildRegistry(childRegistry)
                 .setAnimator(animator)
+                .setStackPresenter(presenter)
                 .build();
     }
 
@@ -785,7 +848,9 @@ public class StackControllerTest extends BaseTest {
         topBarController = spy(new TopBarController() {
             @Override
             protected TopBar createTopBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener topBarButtonClickListener, StackLayout stackLayout, ImageLoader imageLoader) {
-                return spy(super.createTopBar(context, buttonCreator, titleBarReactViewCreator, topBarBackgroundViewController, topBarButtonClickListener, stackLayout, ImageLoaderMock.mock()));
+                TopBar spy = spy(super.createTopBar(context, buttonCreator, titleBarReactViewCreator, topBarBackgroundViewController, topBarButtonClickListener, stackLayout, ImageLoaderMock.mock()));
+                spy.layout(0, 0, 1000, 100);
+                return spy;
             }
         });
     }

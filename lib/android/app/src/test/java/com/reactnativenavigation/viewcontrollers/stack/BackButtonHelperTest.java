@@ -37,11 +37,12 @@ public class BackButtonHelperTest extends BaseTest {
                 .build();
         child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
         child2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
+        stack.ensureViewIsCreated();
     }
 
     @Test
     public void addToChild_doesNotAddIfStackContainsOneChild() {
-        uut.addToChild(stack, child1);
+        uut.addToPushedChild(stack, child1);
         verify(child1, times(0)).mergeOptions(any());
     }
 
@@ -64,5 +65,12 @@ public class BackButtonHelperTest extends BaseTest {
         stack.push(child2, new CommandListenerAdapter());
 
         verify(child2, times(0)).mergeOptions(any());
+    }
+
+    @Test
+    public void clear() {
+        child1.options.topBar.buttons.back.visible = new Bool(true);
+        uut.clear(child1);
+        assertThat(child1.options.topBar.buttons.back.visible.get()).isFalse();
     }
 }

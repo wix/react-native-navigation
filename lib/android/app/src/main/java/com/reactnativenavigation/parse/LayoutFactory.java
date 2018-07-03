@@ -3,19 +3,21 @@ package com.reactnativenavigation.parse;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
+import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
+import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.react.EventEmitter;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
 import com.reactnativenavigation.viewcontrollers.SideMenuController;
-import com.reactnativenavigation.viewcontrollers.stack.StackController;
-import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentViewController;
+import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
@@ -28,6 +30,8 @@ import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.reactnativenavigation.parse.Options.parse;
 
 public class LayoutFactory {
 
@@ -75,7 +79,12 @@ public class LayoutFactory {
 	}
 
     private ViewController createSideMenuRoot(LayoutNode node) {
-		SideMenuController sideMenuController = new SideMenuController(activity, childRegistry, node.id, parseNodeOptions(node));
+		SideMenuController sideMenuController = new SideMenuController(activity,
+                childRegistry,
+                node.id,
+                parse(typefaceManager, node.getOptions()),
+                new OptionsPresenter(activity, defaultOptions)
+        );
 		ViewController childControllerCenter = null, childControllerLeft = null, childControllerRight = null;
 
 		for (LayoutNode child : node.children) {
@@ -97,11 +106,6 @@ public class LayoutFactory {
 			}
 		}
 
-		// Need to set the center controller first, otherwise "onPress" events on the JS components
-		// of the left and right drawers are not handled properly.
-		//
-		// See https://github.com/wix/react-native-navigation/issues/2835
-		//
 		if (childControllerCenter != null) {
 			sideMenuController.setCenterController(childControllerCenter);
 		}
@@ -137,7 +141,8 @@ public class LayoutFactory {
                 id,
                 name,
                 new ComponentViewCreator(reactInstanceManager),
-                parseNodeOptions(node)
+                parse(typefaceManager, node.getOptions()),
+                new OptionsPresenter(activity, defaultOptions)
         );
 	}
 
@@ -148,28 +153,31 @@ public class LayoutFactory {
                 externalComponent,
                 externalComponentCreators.get(externalComponent.name.get()),
                 reactInstanceManager,
-                parseNodeOptions(node)
+                parse(typefaceManager, node.getOptions())
         );
     }
 
 	private ViewController createStack(LayoutNode node) {
-        StackController stackController = new StackControllerBuilder(activity)
+        return new StackControllerBuilder(activity)
+                .setChildren(createChildredn(node.children))
                 .setChildRegistry(childRegistry)
                 .setTopBarButtonCreator(new TitleBarButtonCreator(reactInstanceManager))
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreator(reactInstanceManager))
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreator(reactInstanceManager)))
                 .setTopBarController(new TopBarController())
                 .setId(node.id)
-                .setInitialOptions(parseNodeOptions(node))
+                .setInitialOptions(parse(typefaceManager, node.getOptions()))
+                .setOptionsPresenter(new OptionsPresenter(activity, defaultOptions))
+                .setStackPresenter(new StackOptionsPresenter(activity, defaultOptions))
                 .build();
-        addChildrenToStack(node.children, stackController);
-        return stackController;
 	}
 
-    private void addChildrenToStack(List<LayoutNode> children, StackController stackController) {
+    private List<ViewController> createChildredn(List<LayoutNode> children) {
+        List<ViewController> result = new ArrayList<>();
         for (LayoutNode child : children) {
-            stackController.push(create(child), new CommandListenerAdapter());
+            result.add(create(child));
         }
+        return result;
     }
 
     private ViewController createBottomTabs(LayoutNode node) {
@@ -177,21 +185,26 @@ public class LayoutFactory {
         for (int i = 0; i < node.children.size(); i++) {
             tabs.add(create(node.children.get(i)));
         }
-        return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, new ImageLoader(), node.id, parseNodeOptions(node));
+        return new BottomTabsController(activity,
+                tabs,
+                childRegistry,
+                eventEmitter,
+                new ImageLoader(),
+                node.id,
+                parse(typefaceManager, node.getOptions()),
+                new OptionsPresenter(activity, defaultOptions),
+                new BottomTabsOptionsPresenter(tabs, defaultOptions),
+                new BottomTabOptionsPresenter(activity, tabs, defaultOptions));
 	}
 
     private ViewController createTopTabs(LayoutNode node) {
         final List<ViewController> tabs = new ArrayList<>();
         for (int i = 0; i < node.children.size(); i++) {
             ViewController tabController = create(node.children.get(i));
-            Options options = parseNodeOptions(node.children.get(i));
+            Options options = parse(typefaceManager, node.children.get(i).getOptions());
             options.setTopTabIndex(i);
             tabs.add(tabController);
         }
-        return new TopTabsController(activity, childRegistry, node.id, tabs, new TopTabsLayoutCreator(activity, tabs), parseNodeOptions(node));
-    }
-
-    private Options parseNodeOptions(LayoutNode node) {
-        return Options.parse(typefaceManager, node.getNavigationOptions(), defaultOptions);
+        return new TopTabsController(activity, childRegistry, node.id, tabs, new TopTabsLayoutCreator(activity, tabs), parse(typefaceManager, node.getOptions()), new OptionsPresenter(activity, defaultOptions));
     }
 }

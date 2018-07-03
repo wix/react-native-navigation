@@ -10,6 +10,8 @@
   - [Layout Types](/docs/layout-types)
   - [Styling](/docs/styling)
   - [TopBar Buttons](/docs/topBar-buttons) 
+  - [Animations](/docs/animations)
 - Migration from v1
   - [Top Level](/docs/top-level-api-migration)
+  - [Options](/docs/options-migration)
 - [API](/api/README)
