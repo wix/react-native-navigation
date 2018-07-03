@@ -177,6 +177,20 @@ public class MainApplication extends NavigationApplication {
 ```
 Make sure that `isDebug` method is implemented.
 
+If you are using a React Native version (after version 49) that supports a single entry point (ie. `index.js` and **not** `index.android.js`), then you will also have to add this to the above class:
+
+```java
+  @Override
+  protected ReactNativeHost createReactNativeHost() {
+    return new NavigationReactNativeHost(this) {
+      @Override
+      protected String getJSMainModuleName() {
+        return "index";
+      }
+    };
+  }
+```
+
 ### 8. Update `AndroidManifest.xml` and set `application` **android:name** value to `.MainApplication`
 
 ```xml
