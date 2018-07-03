@@ -21,6 +21,8 @@ import com.reactnativenavigation.parse.TopBarBackgroundOptions;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
@@ -62,7 +64,8 @@ public class OptionsApplyingTest extends BaseTest {
                 "componentId1",
                 "componentName",
                 (activity1, componentId, componentName) -> view,
-                initialNavigationOptions
+                initialNavigationOptions,
+                new OptionsPresenter(activity, new Options())
         );
         TopBarController topBarController = new TopBarController() {
             @Override
@@ -102,7 +105,9 @@ public class OptionsApplyingTest extends BaseTest {
                         .setTopBarController(new TopBarController())
                         .setId("stackId")
                         .setInitialOptions(new Options())
+                        .setStackPresenter(new StackOptionsPresenter(activity, new Options()))
                         .build();
+        stackController.ensureViewIsCreated();
         stackController.push(uut, new CommandListenerAdapter());
         assertThat(stackController.getTopBar().getTitle()).isEmpty();
 
@@ -162,6 +167,7 @@ public class OptionsApplyingTest extends BaseTest {
         });
     }
 
+    @SuppressWarnings("MagicNumber")
     @Test
     public void appliesTopBarTextSize() {
         assertThat(uut.initialOptions).isSameAs(initialNavigationOptions);

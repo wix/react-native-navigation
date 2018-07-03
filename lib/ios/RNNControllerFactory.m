@@ -233,8 +233,9 @@
 }
 
 - (RNNNavigationOptions *)createOptions:(NSDictionary *)optionsDict {
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:_defaultOptionsDict];
-	[options mergeWith:optionsDict];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:optionsDict];
+	options.defaultOptions = [[RNNNavigationOptions alloc] initWithDict:_defaultOptionsDict];
+	
 	return options;
 }
 

@@ -48,24 +48,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	if (self.hideShadow) {
 		viewController.tabBarController.tabBar.clipsToBounds = [self.hideShadow boolValue];
 	}
-	
-	if (self.tabBarTextFont) {
-		NSMutableDictionary* tabBarTitleTextAttributes = [NSMutableDictionary new];
-		tabBarTitleTextAttributes[NSFontAttributeName] = self.tabBarTextFont;
-		
-		for (UITabBarItem* item in viewController.tabBarController.tabBar.items) {
-			[item setTitleTextAttributes:tabBarTitleTextAttributes forState:UIControlStateNormal];
-		}
-	}
-	
-	if (self.tabColor) {
-		viewController.tabBarController.tabBar.unselectedItemTintColor = [RCTConvert UIColor:self.tabColor];
-	}
-	
-	if (self.selectedTabColor) {
-		viewController.tabBarController.tabBar.tintColor = [RCTConvert UIColor:self.selectedTabColor];
-	}
-	
+
 	[self resetOptions];
 }
 

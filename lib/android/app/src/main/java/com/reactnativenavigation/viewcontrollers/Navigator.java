@@ -33,8 +33,10 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
     private final OverlayManager overlayManager;
     private Options defaultOptions = new Options();
 
+    @Override
     public void setDefaultOptions(Options defaultOptions) {
         this.defaultOptions = defaultOptions;
+        if (root != null) root.setDefaultOptions(defaultOptions);
     }
 
     public Options getDefaultOptions() {
@@ -42,7 +44,7 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, OverlayManager overlayManager) {
-        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new OptionsPresenter(activity), new Options());
+        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new OptionsPresenter(activity, new Options()), new Options());
         modalStack = new ModalStack(new ModalPresenter(new ModalAnimator(activity)));
         this.overlayManager = overlayManager;
     }
@@ -71,6 +73,11 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
     public boolean handleBack(CommandListener listener) {
         if (modalStack.isEmpty()) return root.handleBack(listener);
         return modalStack.handleBack(listener, root);
+    }
+
+    @Override
+    protected ViewController getCurrentChild() {
+        return root;
     }
 
     @Override

@@ -120,17 +120,19 @@ Navigation.mergeOptions(this.props.componentId, {
     currentTabId: 'currentTabId',
     testID: 'bottomTabsTestID',
     drawBehind: false,
-    backgroundColor: 'white',
-    tabColor: 'red',
-    selectedTabColor: 'blue',
-    fontFamily: 'Helvetica',
-    fontSize: 10
+    backgroundColor: 'white'
   },
   bottomTab: {
-    title: 'Tab 1',
+    text: 'Tab 1',
     badge: '2',
     testID: 'bottomTabTestID',
-    icon: require('tab.png')
+    icon: require('tab.png'),
+    iconColor: 'red',
+    selectedIconColor: 'blue',
+    textColor: 'red',
+    selectedTextColor: 'blue',
+    fontFamily: 'Helvetica',
+    fontSize: 10
   },
   sideMenu: {
     left: {

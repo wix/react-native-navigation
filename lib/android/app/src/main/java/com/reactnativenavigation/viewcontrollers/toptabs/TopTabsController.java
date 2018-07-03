@@ -24,8 +24,8 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     private List<ViewController> tabs;
     private TopTabsLayoutCreator viewCreator;
 
-    public TopTabsController(Activity activity, ChildControllersRegistry childRegistry, String id, List<ViewController> tabs, TopTabsLayoutCreator viewCreator, Options options) {
-        super(activity, childRegistry, id, new OptionsPresenter(activity), options);
+    public TopTabsController(Activity activity, ChildControllersRegistry childRegistry, String id, List<ViewController> tabs, TopTabsLayoutCreator viewCreator, Options options, OptionsPresenter presenter) {
+        super(activity, childRegistry, id, presenter, options);
         this.viewCreator = viewCreator;
         this.tabs = tabs;
         for (ViewController tab : tabs) {
@@ -37,6 +37,11 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
                 }
             });
         }
+    }
+
+    @Override
+    protected ViewController getCurrentChild() {
+        return tabs.get(getView().getCurrentItem());
     }
 
     @NonNull

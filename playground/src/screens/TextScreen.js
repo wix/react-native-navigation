@@ -25,7 +25,7 @@ class TextScreen extends Component {
         <Text style={styles.h1} testID={testIDs.CENTERED_TEXT_HEADER}>{this.props.text || 'Text Screen'}</Text>
         {this.renderTextFromFunctionInProps()}
         <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
-        <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onButtonPress()} />
+        <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onClickSetBadge()} />
         <Button title={'Switch To Tab 2'} testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
         <Button title={'Switch To Tab 1 by componentID'} testID={testIDs.SWITCH_FIRST_TAB_BUTTON} onPress={() => this.onClickSwitchToTabByComponentID()} />
         <Button title='Hide Tab Bar' testID={testIDs.HIDE_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(false)} />
@@ -59,7 +59,7 @@ class TextScreen extends Component {
     );
   }
 
-  onButtonPress() {
+  onClickSetBadge() {
     Navigation.mergeOptions(this.props.componentId, {
       bottomTab: {
         badge: `TeSt`
@@ -73,9 +73,7 @@ class TextScreen extends Component {
         currentTabIndex: 1,
         visible: false,
         drawBehind: true,
-        animate: true,
-        tabColor: 'blue',
-        selectedTabColor: 'red'
+        animate: true
       }
     });
   }

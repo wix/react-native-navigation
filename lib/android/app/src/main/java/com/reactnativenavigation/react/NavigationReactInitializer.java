@@ -1,5 +1,7 @@
 package com.reactnativenavigation.react;
 
+import android.support.annotation.NonNull;
+
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.ReactContext;
 import com.reactnativenavigation.NavigationActivity;
@@ -50,7 +52,7 @@ public class NavigationReactInitializer implements ReactInstanceManager.ReactIns
 		}
 	}
 
-	private void emitAppLaunched(ReactContext context) {
+	private void emitAppLaunched(@NonNull ReactContext context) {
 		waitingForAppLaunchEvent = false;
 		new EventEmitter(context).appLaunched();
 	}

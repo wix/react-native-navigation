@@ -33,7 +33,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class OptionsMergingTest extends BaseTest {
+public class StackOptionsPresenterTest extends BaseTest {
 
     private StackOptionsPresenter uut;
     private TestComponentLayout child;
@@ -43,8 +43,9 @@ public class OptionsMergingTest extends BaseTest {
     @Override
     public void beforeEach() {
         activity = spy(newActivity());
+        uut = spy(new StackOptionsPresenter(activity, new Options()));
         topBar = mockTopBar();
-        uut = spy(new StackOptionsPresenter(topBar));
+        uut.bindView(topBar);
         child = spy(new TestComponentLayout(activity, new TestReactView(activity)));
     }
 
@@ -80,16 +81,16 @@ public class OptionsMergingTest extends BaseTest {
     public void mergeTopBarOptions() {
         Options options = new Options();
         uut.mergeChildOptions(options, child);
-        assertTopBarOptions(0);
+        assertTopBarOptions(options, 0);
 
-        TitleOptions titleOptions = new TitleOptions();
-        titleOptions.text = new Text("abc");
-        titleOptions.component.name = new Text("someComponent");
-        titleOptions.component.componentId = new Text("compId");
-        titleOptions.color = new Color(0);
-        titleOptions.fontSize = new Fraction(1.0f);
-        titleOptions.fontFamily = Typeface.DEFAULT_BOLD;
-        options.topBar.title = titleOptions;
+        TitleOptions title = new TitleOptions();
+        title.text = new Text("abc");
+        title.component.name = new Text("someComponent");
+        title.component.componentId = new Text("compId");
+        title.color = new Color(0);
+        title.fontSize = new Fraction(1.0f);
+        title.fontFamily = Typeface.DEFAULT_BOLD;
+        options.topBar.title = title;
         SubtitleOptions subtitleOptions = new SubtitleOptions();
         subtitleOptions.text = new Text("Sub");
         subtitleOptions.color = new Color(1);
@@ -102,7 +103,7 @@ public class OptionsMergingTest extends BaseTest {
         options.topBar.hideOnScroll = new Bool(false);
         uut.mergeChildOptions(options, child);
 
-        assertTopBarOptions(1);
+        assertTopBarOptions(options, 1);
 
         options.topBar.drawBehind = new Bool(true);
         uut.mergeChildOptions(options, child);
@@ -141,9 +142,14 @@ public class OptionsMergingTest extends BaseTest {
         verify(topBar, times(1)).setTopTabFontFamily(1, Typeface.DEFAULT_BOLD);
     }
 
-    private void assertTopBarOptions(int t) {
-        verify(topBar, times(t)).setTitle(any());
-        verify(topBar, times(t)).setSubtitle(any());
+    private void assertTopBarOptions(Options options, int t) {
+        if (options.topBar.title.component.hasValue()) {
+            verify(topBar, times(0)).setTitle(any());
+            verify(topBar, times(0)).setSubtitle(any());
+        } else {
+            verify(topBar, times(t)).setTitle(any());
+            verify(topBar, times(t)).setSubtitle(any());
+        }
         verify(topBar, times(t)).setTitleComponent(any());
         verify(topBar, times(t)).setBackgroundColor(any());
         verify(topBar, times(t)).setTitleTextColor(anyInt());

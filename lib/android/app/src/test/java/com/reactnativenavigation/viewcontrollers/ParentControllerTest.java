@@ -45,8 +45,13 @@ public class ParentControllerTest extends BaseTest {
         children = new ArrayList<>();
         Options initialOptions = new Options();
         initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
-        presenter = spy(new OptionsPresenter(activity));
+        presenter = spy(new OptionsPresenter(activity, new Options()));
         uut = spy(new ParentController(activity, childRegistry, "uut", presenter, initialOptions) {
+
+            @Override
+            protected ViewController getCurrentChild() {
+                return children.get(0);
+            }
 
             @NonNull
             @Override
@@ -96,6 +101,7 @@ public class ParentControllerTest extends BaseTest {
     @Test
     public void findControllerById_Recursive() {
         StackController stackController = TestUtils.newStackController(activity).build();
+        stackController.ensureViewIsCreated();
         SimpleViewController child1 = new SimpleViewController(activity, childRegistry, "child1", new Options());
         SimpleViewController child2 = new SimpleViewController(activity, childRegistry, "child2", new Options());
         stackController.push(child1, new CommandListenerAdapter());
@@ -118,6 +124,7 @@ public class ParentControllerTest extends BaseTest {
     @Test
     public void optionsAreClearedWhenChildIsAppeared() {
         StackController stackController = spy(TestUtils.newStackController(activity).build());
+        stackController.ensureViewIsCreated();
         SimpleViewController child1 = new SimpleViewController(activity, childRegistry, "child1", new Options());
         stackController.push(child1, new CommandListenerAdapter());
 
