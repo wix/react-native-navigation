@@ -21,6 +21,11 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     @Override
+    public void setDefaultOptions(Options defaultOptions) {
+        presenter.setDefaultOptions(defaultOptions);
+    }
+
+    @Override
     public void onViewAppeared() {
         super.onViewAppeared();
         childRegistry.onViewAppeared(this);

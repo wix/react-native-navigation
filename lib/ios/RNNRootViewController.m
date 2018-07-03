@@ -261,6 +261,7 @@
 }
 
 -(void)applyTabBarItem {
+	[self.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.options.defaultOptions).bottomTab overrideOptions:NO];
 	[self.options.bottomTab applyOn:self];
 }
 

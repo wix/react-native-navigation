@@ -30,6 +30,8 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) RNNPreviewOptions* preview;
 @property (nonatomic, strong) RNNLayoutOptions* layout;
 
+@property (nonatomic, strong) RNNOptions* defaultOptions;
+
 @property (nonatomic, strong) NSMutableDictionary* originalTopBarImages;
 @property (nonatomic, strong) NSNumber* popGesture;
 @property (nonatomic, strong) NSDictionary* backgroundImage;

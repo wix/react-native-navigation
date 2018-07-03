@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.CallSuper;
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -74,6 +75,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return false;
     }
 
+    @CheckResult
+    public Options resolveCurrentOptions() {
+        return options;
+    }
+
     @CallSuper
     public void mergeOptions(Options options) {
         this.options = this.options.mergeWith(options);
@@ -84,6 +90,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     @CallSuper
     public void applyOptions(Options options) {
 
+    }
+
+    public void setDefaultOptions(Options defaultOptions) {
+        
     }
 
     public Activity getActivity() {

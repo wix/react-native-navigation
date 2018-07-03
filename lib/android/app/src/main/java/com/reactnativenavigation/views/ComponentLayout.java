@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
@@ -77,7 +78,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, TopB
 
     @Override
     public void drawBehindTopBar() {
-        if (getParent() instanceof RelativeLayout) {
+        if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
             layoutParams.topMargin = 0;
             setLayoutParams(layoutParams);
@@ -86,9 +87,14 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, TopB
 
     @Override
     public void drawBelowTopBar(TopBar topBar) {
-        if (getParent() instanceof RelativeLayout) {
+        if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-            layoutParams.topMargin = ViewUtils.getPreferredHeight(topBar);
+            int topBarHeight = ViewUtils.getPreferredHeight(topBar);
+            if (topBarHeight == 0) {
+                UiUtils.runOnPreDrawOnce(topBar, () -> layoutParams.topMargin = topBar.getHeight());
+            } else {
+                layoutParams.topMargin = topBarHeight;
+            }
             setLayoutParams(layoutParams);
         }
     }

@@ -13,4 +13,5 @@
   - [Animations](/docs/animations)
 - Migration from v1
   - [Top Level](/docs/top-level-api-migration)
+  - [Options](/docs/options-migration)
 - [API](/api/README)
