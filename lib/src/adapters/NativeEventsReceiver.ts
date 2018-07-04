@@ -1,6 +1,19 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
 import { EventSubscription } from '../interfaces/EventSubscription';
 
+export const enum LifecycleEventType {
+  ComponentDidMount = 'ComponentDidMount',
+  ComponentDidAppear = 'ComponentDidAppear',
+  ComponentDidDisappear = 'ComponentDidDisappear',
+  ComponentWillUnmount = 'ComponentWillUnmount'
+}
+
+export interface LifecycleEvent {
+  type: LifecycleEventType;
+  componentId: string;
+  componentName: string;
+}
+
 export class NativeEventsReceiver {
   private emitter;
   constructor() {
@@ -18,22 +31,18 @@ export class NativeEventsReceiver {
   }
 
   public registerAppLaunchedListener(callback: () => void): EventSubscription {
-    return this.emitter.addListener('RNN.appLaunched', callback);
+    return this.emitter.addListener('RNN.AppLaunched', callback);
   }
 
-  public registerComponentDidAppearListener(callback: (data) => void): EventSubscription {
-    return this.emitter.addListener('RNN.componentDidAppear', callback);
-  }
-
-  public registerComponentDidDisappearListener(callback: (data) => void): EventSubscription {
-    return this.emitter.addListener('RNN.componentDidDisappear', callback);
+  public registerComponentLifecycleListener(callback: (event: LifecycleEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.ComponentLifecycle', callback);
   }
 
   public registerCommandCompletedListener(callback: (data) => void): EventSubscription {
-    return this.emitter.addListener('RNN.commandCompleted', callback);
+    return this.emitter.addListener('RNN.CommandCompleted', callback);
   }
 
   public registerNativeEventListener(callback: (data) => void): EventSubscription {
-    return this.emitter.addListener('RNN.nativeEvent', callback);
+    return this.emitter.addListener('RNN.NativeEvent', callback);
   }
 }

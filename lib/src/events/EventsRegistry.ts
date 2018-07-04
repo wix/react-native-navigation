@@ -1,4 +1,4 @@
-import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
+import { NativeEventsReceiver, LifecycleEvent } from '../adapters/NativeEventsReceiver';
 import { CommandsObserver } from './CommandsObserver';
 import { EventSubscription } from '../interfaces/EventSubscription';
 
@@ -9,12 +9,8 @@ export class EventsRegistry {
     return this.nativeEventsReceiver.registerAppLaunchedListener(callback);
   }
 
-  public registerComponentDidAppearListener(callback: (componentId: string, componentName: string) => void): EventSubscription {
-    return this.nativeEventsReceiver.registerComponentDidAppearListener(({ componentId, componentName }) => callback(componentId, componentName));
-  }
-
-  public registerComponentDidDisappearListener(callback: (componentId: string, componentName: string) => void): EventSubscription {
-    return this.nativeEventsReceiver.registerComponentDidDisappearListener(({ componentId, componentName }) => callback(componentId, componentName));
+  public registerComponentLifecycleListener(callback: (event: LifecycleEvent) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerComponentLifecycleListener((event) => callback(event));
   }
 
   public registerCommandListener(callback: (name: string, params: any) => void): EventSubscription {

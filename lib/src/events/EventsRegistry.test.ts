@@ -1,6 +1,7 @@
 import { EventsRegistry } from './EventsRegistry';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 import { CommandsObserver } from './CommandsObserver';
+import { LifecycleEventType } from '../adapters/NativeEventsReceiver';
 
 describe('EventsRegistry', () => {
   let uut: EventsRegistry;
@@ -24,32 +25,18 @@ describe('EventsRegistry', () => {
     expect(mockNativeEventsReceiver.registerAppLaunchedListener).toHaveBeenCalledWith(cb);
   });
 
-  it('exposes componentDidAppear event', () => {
+  it('exposes componentLifecycle event', () => {
     const subscription = {};
     const cb = jest.fn();
-    mockNativeEventsReceiver.registerComponentDidAppearListener.mockReturnValueOnce(subscription);
+    mockNativeEventsReceiver.registerComponentLifecycleListener.mockReturnValueOnce(subscription);
 
-    const result = uut.registerComponentDidAppearListener(cb);
-
-    expect(result).toBe(subscription);
-    expect(mockNativeEventsReceiver.registerComponentDidAppearListener).toHaveBeenCalledTimes(1);
-
-    mockNativeEventsReceiver.registerComponentDidAppearListener.mock.calls[0][0]({ componentId: 'theId', componentName: 'theName' });
-    expect(cb).toHaveBeenCalledWith('theId', 'theName');
-  });
-
-  it('exposes componentDidDisappear event', () => {
-    const subscription = {};
-    const cb = jest.fn();
-    mockNativeEventsReceiver.registerComponentDidDisappearListener.mockReturnValueOnce(subscription);
-
-    const result = uut.registerComponentDidDisappearListener(cb);
+    const result = uut.registerComponentLifecycleListener(cb);
 
     expect(result).toBe(subscription);
-    expect(mockNativeEventsReceiver.registerComponentDidDisappearListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerComponentLifecycleListener).toHaveBeenCalledTimes(1);
 
-    mockNativeEventsReceiver.registerComponentDidDisappearListener.mock.calls[0][0]({ componentId: 'theId', componentName: 'theName' });
-    expect(cb).toHaveBeenCalledWith('theId', 'theName');
+    mockNativeEventsReceiver.registerComponentLifecycleListener.mock.calls[0][0]({ type: LifecycleEventType.ComponentDidAppear, componentId: 'theId', componentName: 'theName' });
+    expect(cb).toHaveBeenCalledWith({ type: 'ComponentDidAppear', componentId: 'theId', componentName: 'theName' });
   });
 
   it('exposes registerCommandListener registers listener to commandObserver', () => {
