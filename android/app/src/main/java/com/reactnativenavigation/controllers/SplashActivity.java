@@ -15,6 +15,7 @@ import com.reactnativenavigation.utils.CompatUtils;
 
 public abstract class SplashActivity extends AppCompatActivity {
     public static boolean isResumed = false;
+    public static SplashActivity instance = null;
 
     public static void start(Activity activity) {
         Intent intent = activity.getPackageManager().getLaunchIntentForPackage(activity.getPackageName());
@@ -30,6 +31,7 @@ public abstract class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         LaunchArgs.instance.set(getIntent());
         setSplashLayout();
         IntentDataHandler.saveIntentData(getIntent());

@@ -68,7 +68,13 @@ class JsDevReloadListenerReplacer {
                 listener.onJsDevReload();
             }
 
-            return method.invoke(originalReactHelper, args);
+            Object result = method.invoke(originalReactHelper, args);
+
+            if (methodName.equals("getCurrentActivity") && result == null) {
+                return SplashActivity.instance;
+            }
+
+            return result;
         }
     }
 }

@@ -14,9 +14,17 @@ import com.reactnativenavigation.NavigationApplication;
 public class ReactDevPermission {
 
     public static boolean shouldAskPermission() {
-        return NavigationApplication.instance.isDebug() &&
-                Build.VERSION.SDK_INT >= 23 &&
-                !Settings.canDrawOverlays(NavigationApplication.instance);
+        boolean result = false;
+        try {
+            // ReactInstanceManagerDevHelper interface is firstly available on RN 0.52
+            // so it can be used to easily test if the permission is still needed.
+            Class.forName("com.facebook.react.devsupport.ReactInstanceManagerDevHelper");
+        } catch (Exception e) {
+            result = NavigationApplication.instance.isDebug() &&
+                    Build.VERSION.SDK_INT >= 23 &&
+                    !Settings.canDrawOverlays(NavigationApplication.instance);
+        }
+        return result;
     }
 
     @TargetApi(23)
