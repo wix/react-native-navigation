@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Alignment;
@@ -49,7 +50,7 @@ public class TitleBarTest extends BaseTest {
         createButtons();
         buttonControllers = new HashMap<>();
         TitleBarReactViewCreatorMock reactViewCreator = new TitleBarReactViewCreatorMock();
-        uut = spy(new TitleBar(activity, buttonCreator, reactViewCreator, (buttonId -> {})) {
+        uut = spy(new TitleBar(activity, buttonCreator, reactViewCreator, (buttonId -> {}), ImageLoaderMock.mock()) {
             @Override
             public TopBarButtonController createButtonController(Button button) {
                 TopBarButtonController controller = spy(super.createButtonController(button));

@@ -6,16 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.FabOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.Fab;
 import com.reactnativenavigation.views.FabMenu;
 import com.reactnativenavigation.views.StackLayout;
@@ -39,14 +36,8 @@ public class FloatingActionButtonTest extends BaseTest {
         super.beforeEach();
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
-        stackController = new StackControllerBuilder(activity)
-                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
-                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
-                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
-                .setTopBarController(new TopBarController())
-                .setId("stackController")
-                .setInitialOptions(new Options())
-                .createStackController();
+        stackController = TestUtils.newStackController(activity).build();
+        stackController.ensureViewIsCreated();
         Options options = getOptionsWithFab();
         childFab = new SimpleViewController(activity, childRegistry, "child1", options);
         childNoFab = new SimpleViewController(activity, childRegistry, "child2", new Options());

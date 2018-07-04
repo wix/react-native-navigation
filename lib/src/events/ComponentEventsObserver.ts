@@ -3,6 +3,7 @@ import { Store } from '../components/Store';
 
 const BUTTON_PRESSED_EVENT_NAME = 'buttonPressed';
 const ON_SEARCH_BAR_UPDATED = 'searchBarUpdated';
+const ON_SEARCH_BAR_CANCEL_PRESSED = 'searchBarCancelPressed';
 
 export class ComponentEventsObserver {
   constructor(private eventsRegistry: EventsRegistry, private store: Store) {
@@ -42,6 +43,12 @@ export class ComponentEventsObserver {
       const componentRef = this.store.getRefForId(params.componentId);
       if (componentRef && componentRef.onSearchBarUpdated) {
         componentRef.onSearchBarUpdated(params.text, params.isFocused);
+      }
+    }
+    if (name === ON_SEARCH_BAR_CANCEL_PRESSED) {
+      const componentRef = this.store.getRefForId(params.componentId);
+      if (componentRef && componentRef.onSearchBarCancelPressed) {
+        componentRef.onSearchBarCancelPressed();
       }
     }
   }

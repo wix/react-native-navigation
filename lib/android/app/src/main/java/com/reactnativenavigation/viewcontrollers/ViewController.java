@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.CallSuper;
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -16,6 +17,7 @@ import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.utils.UiUtils;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.Component;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener {
@@ -44,7 +46,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
-    FabOptionsPresenter fabOptionsPresenter;
+    protected FabOptionsPresenter fabOptionsPresenter;
 
     public ViewController(Activity activity, String id, Options initialOptions) {
         this.activity = activity;
@@ -73,6 +75,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return false;
     }
 
+    @CheckResult
+    public Options resolveCurrentOptions() {
+        return options;
+    }
+
     @CallSuper
     public void mergeOptions(Options options) {
         this.options = this.options.mergeWith(options);
@@ -85,6 +92,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     }
 
+    public void setDefaultOptions(Options defaultOptions) {
+        
+    }
+
     public Activity getActivity() {
         return activity;
     }
@@ -93,8 +104,8 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (parentController != null) task.run(parentController);
     }
 
-    @Nullable
-    ParentController getParentController() {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    public ParentController getParentController() {
         return parentController;
     }
 
@@ -188,9 +199,9 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         if (isShown) {
             isShown = false;
             onViewDisappear();
-            if (view instanceof Destroyable) {
-                ((Destroyable) view).destroy();
-            }
+        }
+        if (view instanceof Destroyable) {
+            ((Destroyable) view).destroy();
         }
         if (view != null) {
             view.getViewTreeObserver().removeOnGlobalLayoutListener(this);

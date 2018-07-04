@@ -1,12 +1,10 @@
 package com.reactnativenavigation.parse;
 
 
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.NullBool;
@@ -25,8 +23,6 @@ import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class TopBarOptions {
 
     public static TopBarOptions parse(TypefaceLoader typefaceLoader, JSONObject json) {
@@ -40,13 +36,12 @@ public class TopBarOptions {
         options.animate = BoolParser.parse(json,"animate");
         options.hideOnScroll = BoolParser.parse(json,"hideOnScroll");
         options.drawBehind = BoolParser.parse(json,"drawBehind");
-        options.rightButtons = Button.parseJsonArray(json.optJSONArray("rightButtons"), typefaceLoader);
-        options.leftButtons = Button.parseJsonArray(json.optJSONArray("leftButtons"), typefaceLoader);
         options.testId = TextParser.parse(json, "testID");
         options.height = NumberParser.parse(json, "height");
         options.borderColor = ColorParser.parse(json, "borderColor");
         options.borderHeight = FractionParser.parse(json, "borderHeight");
         options.elevation = FractionParser.parse(json, "elevation");
+        options.buttons = TopBarButtons.parse(typefaceLoader, json);
 
         options.validate();
         return options;
@@ -54,6 +49,7 @@ public class TopBarOptions {
 
     public TitleOptions title = new TitleOptions();
     public SubtitleOptions subtitle = new SubtitleOptions();
+    public TopBarButtons buttons = new TopBarButtons();
     public Text testId = new NullText();
     public TopBarBackgroundOptions background = new TopBarBackgroundOptions();
     public Bool visible = new NullBool();
@@ -64,20 +60,17 @@ public class TopBarOptions {
     public Fraction elevation = new NullFraction();
     public Fraction borderHeight = new NullFraction();
     public Color borderColor = new NullColor();
-    @Nullable public ArrayList<Button> leftButtons;
-    @Nullable public ArrayList<Button> rightButtons;
 
     void mergeWith(final TopBarOptions other) {
         title.mergeWith(other.title);
         subtitle.mergeWith(other.subtitle);
         background.mergeWith(other.background);
+        buttons.mergeWith(other.buttons);
         if (other.testId.hasValue()) testId = other.testId;
         if (other.visible.hasValue()) visible = other.visible;
         if (other.animate.hasValue()) animate = other.animate;
         if (other.hideOnScroll.hasValue()) hideOnScroll = other.hideOnScroll;
         if (other.drawBehind.hasValue()) drawBehind = other.drawBehind;
-        if (other.leftButtons != null) leftButtons = other.leftButtons;
-        if (other.rightButtons != null) rightButtons = other.rightButtons;
         if (other.height.hasValue()) height = other.height;
         if (other.borderHeight.hasValue()) borderHeight = other.borderHeight;
         if (other.borderColor.hasValue()) borderColor = other.borderColor;
@@ -89,12 +82,11 @@ public class TopBarOptions {
         title.mergeWithDefault(defaultOptions.title);
         subtitle.mergeWithDefault(defaultOptions.subtitle);
         background.mergeWithDefault(defaultOptions.background);
+        buttons.mergeWithDefault(defaultOptions.buttons);
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!animate.hasValue()) animate = defaultOptions.animate;
         if (!hideOnScroll.hasValue()) hideOnScroll = defaultOptions.hideOnScroll;
         if (!drawBehind.hasValue()) drawBehind = defaultOptions.drawBehind;
-        if (leftButtons == null) leftButtons = defaultOptions.leftButtons;
-        if (rightButtons == null) rightButtons = defaultOptions.rightButtons;
         if (!testId.hasValue()) testId = defaultOptions.testId;
         if (!height.hasValue()) height = defaultOptions.height;
         if (!borderHeight.hasValue()) borderHeight = defaultOptions.borderHeight;

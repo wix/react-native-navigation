@@ -6,11 +6,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
-import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
-import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
@@ -19,8 +17,7 @@ import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ButtonOptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
 import org.junit.Test;
 
@@ -45,14 +42,10 @@ public class TopBarButtonControllerTest extends BaseTest {
         final Activity activity = newActivity();
 
         TopBarButtonCreatorMock buttonCreatorMock = new TopBarButtonCreatorMock();
-        stackController = spy(new StackControllerBuilder(activity)
-                .setTopBarButtonCreator(buttonCreatorMock)
-                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
-                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
-                .setTopBarController(new TopBarController())
-                .setId("stack")
-                .setInitialOptions(new Options())
-                .createStackController()
+        stackController = spy(
+                TestUtils.newStackController(activity)
+                        .setTopBarButtonCreator(buttonCreatorMock)
+                        .build()
         );
         stackController.getView().layout(0, 0, 1080, 1920);
         stackController.getTopBar().layout(0, 0, 1080, 200);

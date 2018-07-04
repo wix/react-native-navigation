@@ -4,6 +4,7 @@
 #import "RNNSubtitleOptions.h"
 #import "RNNBackgroundOptions.h"
 #import "RNNComponentOptions.h"
+#import "RNNBackButtonOptions.h"
 
 @interface RNNTopBarOptions : RNNOptions
 
@@ -23,10 +24,7 @@
 @property (nonatomic, strong) RNNTitleOptions* title;
 @property (nonatomic, strong) RNNSubtitleOptions* subtitle;
 @property (nonatomic, strong) RNNBackgroundOptions* background;
-@property (nonatomic, strong) NSNumber* backButtonImage;
-@property (nonatomic, strong) NSNumber* backButtonHidden;
-@property (nonatomic, strong) NSString* backButtonTitle;
-@property (nonatomic, strong) NSNumber* hideBackButtonTitle;
+@property (nonatomic, strong) RNNBackButtonOptions* backButton;
 @property (nonatomic, strong) NSNumber* searchBar;
 @property (nonatomic, strong) NSNumber* searchBarHiddenWhenScrolling;
 @property (nonatomic, strong) NSString* searchBarPlaceholder;

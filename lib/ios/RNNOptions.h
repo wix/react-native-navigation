@@ -16,8 +16,9 @@
 
 - (instancetype)initWithDict:(NSDictionary*)dict;
 - (void)mergeWith:(NSDictionary*)otherOptions;
-- (void)mergeIfEmptyWith:(NSDictionary*)otherOptions;
 - (void)applyOn:(UIViewController *)viewController defaultOptions:(RNNOptions*)defaultOptions;
 - (BOOL)hasProperty:(NSString*)propName;
+- (void)mergeOptions:(RNNOptions *)otherOptions;
+- (void)mergeOptions:(RNNOptions *)otherOptions overrideOptions:(BOOL)override;
 
 @end

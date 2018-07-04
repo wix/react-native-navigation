@@ -33,8 +33,8 @@
 - (void)optionsUpdated {
 }
 
-- (void)mergeOptions:(NSDictionary *)options {
-	[self.options mergeIfEmptyWith:options];
+- (void)mergeOptions:(RNNOptions *)options {
+	[self.options mergeOptions:options];
 }
 
 @end

@@ -58,6 +58,12 @@ export class ComponentWrapper {
         }
       }
 
+      onSearchBarCancelPressed() {
+        if (this.originalComponentRef.onSearchBarCancelPressed) {
+          this.originalComponentRef.onSearchBarCancelPressed();
+        }
+      }
+
       render() {
         return (
           <OriginalComponentClass
@@ -81,9 +87,7 @@ export class ComponentWrapper {
     }
 
     ReactLifecyclesCompat.polyfill(WrappedComponent);
-
-    _.defaults(WrappedComponent, OriginalComponentClass);
-
+    require('hoist-non-react-statics')(WrappedComponent, OriginalComponentClass);
     return WrappedComponent;
   }
 }

@@ -1,18 +1,20 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestActivity;
+import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
@@ -21,8 +23,7 @@ import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -53,6 +54,7 @@ public class NavigatorTest extends BaseTest {
     private ActivityController<TestActivity> activityController;
     private OverlayManager overlayManager;
     private EventEmitter eventEmitter;
+    private ViewController.ViewVisibilityListener parentVisibilityListener;
 
     @Override
     public void beforeEach() {
@@ -65,8 +67,20 @@ public class NavigatorTest extends BaseTest {
         uut = new Navigator(activity, childRegistry, overlayManager);
         activity.setNavigator(uut);
 
-        parentController = spy(newStack());
-        parentController.ensureViewIsCreated();
+        parentController = newStack();
+        parentVisibilityListener = spy(new ViewController.ViewVisibilityListener() {
+            @Override
+            public boolean onViewAppeared(View view) {
+                return false;
+            }
+
+            @Override
+            public boolean onViewDisappear(View view) {
+                return false;
+            }
+        });
+        parentController.setViewVisibilityListener(parentVisibilityListener);
+//        parentController.ensureViewIsCreated();
         child1 = new SimpleViewController(activity, childRegistry, "child1", tabOptions);
         child2 = new SimpleViewController(activity, childRegistry, "child2", tabOptions);
         child3 = new SimpleViewController(activity, childRegistry, "child3", tabOptions);
@@ -75,6 +89,17 @@ public class NavigatorTest extends BaseTest {
         activity.setContentView(uut.getView());
 
         activityController.visible();
+    }
+
+    @Test
+    public void setDefaultOptions() {
+        uut.setDefaultOptions(new Options());
+
+        SimpleViewController spy = spy(child1);
+        uut.setRoot(spy, new CommandListenerAdapter());
+        Options defaultOptions = new Options();
+        uut.setDefaultOptions(defaultOptions);
+        verify(spy, times(1)).setDefaultOptions(defaultOptions);
     }
 
     @Test
@@ -121,8 +146,8 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void push_OnCorrectStackByFindingChildId() {
-        StackController stack1 = newStack();
-        StackController stack2 = newStack();
+        StackController stack1 = newStack(); stack1.ensureViewIsCreated();
+        StackController stack2 = newStack(); stack2.ensureViewIsCreated();
         stack1.push(child1, new CommandListenerAdapter());
         stack2.push(child2, new CommandListenerAdapter());
         BottomTabsController bottomTabsController = newTabs(Arrays.asList(stack1, stack2));
@@ -168,8 +193,9 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void popSpecific() {
-        StackController stack1 = newStack();
-        StackController stack2 = newStack();
+        disablePushAnimation(child1, child2, child3, child4);
+        StackController stack1 = newStack(); stack1.ensureViewIsCreated();
+        StackController stack2 = newStack(); stack2.ensureViewIsCreated();
         stack1.push(child1, new CommandListenerAdapter());
         stack2.push(child2, new CommandListenerAdapter());
         stack2.push(child3, new CommandListenerAdapter());
@@ -274,20 +300,18 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private BottomTabsController newTabs(List<ViewController> tabs) {
-        return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options());
+        return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options(), new OptionsPresenter(activity, new Options()), new BottomTabsOptionsPresenter(tabs, new Options()), new BottomTabOptionsPresenter(activity, tabs, new Options()));
     }
 
     @NonNull
     private StackController newStack() {
-        return new StackControllerBuilder(activity)
+        StackController stack = TestUtils.newStackController(activity)
                 .setChildRegistry(childRegistry)
-                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
-                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
-                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
-                .setTopBarController(new TopBarController())
                 .setId("stack" + CompatUtils.generateViewId())
                 .setInitialOptions(tabOptions)
-                .createStackController();
+                .build();
+        stack.ensureViewIsCreated();
+        return stack;
     }
 
     @Test
@@ -365,25 +389,26 @@ public class NavigatorTest extends BaseTest {
     public void pushedStackCanBePopped() {
         child1.options.animations.push.enable = new Bool(false);
         child2.options.animations.push.enable = new Bool(false);
+        StackController spy = spy(parentController);
         StackController parent = newStack();
         parent.ensureViewIsCreated();
         uut.setRoot(parent, new CommandListenerAdapter());
-        parent.push(parentController, new CommandListenerAdapter());
+        parent.push(spy, new CommandListenerAdapter());
 
-        parentController.push(child1, new CommandListenerAdapter());
-        parentController.push(child2, new CommandListenerAdapter());
-        assertThat(parentController.getChildControllers().size()).isEqualTo(2);
+        spy.push(child1, new CommandListenerAdapter());
+        spy.push(child2, new CommandListenerAdapter());
+        assertThat(spy.getChildControllers().size()).isEqualTo(2);
         child1.ensureViewIsCreated();
         child2.ensureViewIsCreated();
 
         CommandListenerAdapter listener = new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                assertThat(parentController.getChildControllers().size()).isEqualTo(1);
+                assertThat(spy.getChildControllers().size()).isEqualTo(1);
             }
         };
         uut.popSpecific("child2", listener);
-        verify(parentController, times(1)).popSpecific(child2, listener);
+        verify(spy, times(1)).popSpecific(child2, listener);
     }
 
     @Test
@@ -413,12 +438,12 @@ public class NavigatorTest extends BaseTest {
 
         uut.dismissModal(child2.getId(), new CommandListenerAdapter());
         assertThat(parentController.getView().getParent()).isNull();
-        verify(parentController, times(1)).onViewAppeared();
+        verify(parentVisibilityListener, times(1)).onViewAppeared(parentController.getView());
 
         uut.dismissModal(child1.getId(), new CommandListenerAdapter());
         assertThat(parentController.getView().getParent()).isNotNull();
 
-        verify(parentController, times(2)).onViewAppeared();
+        verify(parentVisibilityListener, times(2)).onViewAppeared(parentController.getView());
     }
 
     @Test
@@ -426,42 +451,45 @@ public class NavigatorTest extends BaseTest {
         disableShowModalAnimation(child1);
 
         uut.dismissAllModals(new CommandListenerAdapter());
-        verify(parentController, times(0)).onViewAppeared();
+        verify(parentVisibilityListener, times(0)).onViewAppeared(parentController.getView());
 
         uut.setRoot(parentController, new CommandListenerAdapter());
-        verify(parentController, times(1)).onViewAppeared();
+
+        verify(parentVisibilityListener, times(1)).onViewAppeared(parentController.getView());
         uut.showModal(child1, new CommandListenerAdapter());
         uut.dismissAllModals(new CommandListenerAdapter());
 
-        verify(parentController, times(2)).onViewAppeared();
+        verify(parentVisibilityListener, times(2)).onViewAppeared(parentController.getView());
     }
 
     @Test
     public void handleBack_onViewAppearedInvokedOnRoot() {
         disableShowModalAnimation(child1, child2);
 
-        uut.setRoot(parentController, new CommandListenerAdapter());
+        StackController spy = spy(parentController);
+        uut.setRoot(spy, new CommandListenerAdapter());
         uut.showModal(child1, new CommandListenerAdapter());
         uut.showModal(child2, new CommandListenerAdapter());
 
         uut.handleBack(new CommandListenerAdapter());
-        verify(parentController, times(1)).onViewAppeared();
+        verify(parentVisibilityListener, times(1)).onViewAppeared(spy.getView());
 
         uut.handleBack(new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                assertThat(parentController.getView().getParent()).isNotNull();
-                verify(parentController, times(2)).onViewAppeared();
+                assertThat(spy.getView().getParent()).isNotNull();
+                verify(spy, times(2)).onViewAppeared();
             }
         });
     }
 
     @Test
     public void destroy_destroyedRoot() {
-        parentController.options.animations.startApp.enable = new Bool(false);
-        uut.setRoot(parentController, new CommandListenerAdapter());
+        StackController spy = spy(parentController);
+        spy.options.animations.startApp.enable = new Bool(false);
+        uut.setRoot(spy, new CommandListenerAdapter());
         activityController.destroy();
-        verify(parentController, times(1)).destroy();
+        verify(spy, times(1)).destroy();
     }
 
     @Test
@@ -472,10 +500,21 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void reload_navigatorIsDestroyedOnReload() {
+    public void destroyViews() {
+        disableShowModalAnimation(child1);
         uut.setRoot(parentController, new CommandListenerAdapter());
+        uut.showModal(child1, new CommandListenerAdapter());
+        uut.showOverlay(child2, new CommandListenerAdapter());
+        uut.destroy();
+        assertThat(childRegistry.size()).isZero();
+    }
+
+    @Test
+    public void reload_navigatorIsDestroyedOnReload() {
+        StackController spy = spy(parentController);
+        uut.setRoot(spy, new CommandListenerAdapter());
         uut.onReload();
-        verify(parentController, times(1)).destroy();
+        verify(spy, times(1)).destroy();
         verify(overlayManager, times(1)).destroy();
     }
 }

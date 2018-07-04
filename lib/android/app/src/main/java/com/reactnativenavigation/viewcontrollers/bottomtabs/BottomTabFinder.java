@@ -10,6 +10,10 @@ import java.util.List;
 public class BottomTabFinder {
     private List<ViewController> tabs;
 
+    public BottomTabFinder(List<ViewController> tabs) {
+        this.tabs = tabs;
+    }
+
     @IntRange(from = -1)
     public int findByComponent(Component component) {
         for (int i = 0; i < tabs.size(); i++) {
@@ -28,9 +32,5 @@ public class BottomTabFinder {
             }
         }
         return -1;
-    }
-
-    void setTabs(List<ViewController> tabs) {
-        this.tabs = tabs;
     }
 }

@@ -26,16 +26,4 @@ public class NavigationReactNativeHostTest extends BaseTest {
         NavigationReactNativeHost uut = new NavigationReactNativeHost(RuntimeEnvironment.application, false, Collections.singletonList(myPackage));
         assertThat(uut.getPackages()).hasSize(3).containsOnlyOnce(myPackage);
     }
-
-    @Test
-    public void getPackages_DoesNotAddDefaultTwice() {
-        NavigationReactNativeHost uut = new NavigationReactNativeHost(
-                RuntimeEnvironment.application,
-                false,
-                Arrays.asList(
-                        new MainReactPackage(),
-                        new MainReactPackage(),
-                        new MainReactPackage()));
-        assertThat(uut.getPackages()).hasSize(2).extracting("class").containsOnly(MainReactPackage.class, NavigationPackage.class);
-    }
 }

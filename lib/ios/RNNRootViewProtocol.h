@@ -3,7 +3,7 @@
 @protocol RNNRootViewProtocol <NSObject, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, UISplitViewControllerDelegate>
 
 @optional
-- (void)mergeOptions:(NSDictionary*)options;
+- (void)mergeOptions:(RNNOptions*)options;
 - (BOOL)isCustomViewController;
 - (void)performOnRotation:(void (^)(void))block;
 - (void)optionsUpdated;

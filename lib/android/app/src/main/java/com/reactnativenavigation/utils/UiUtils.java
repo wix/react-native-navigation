@@ -12,11 +12,14 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 public class UiUtils {
-    public static final int STATUS_BAR_HEIGHT_M = 24;
-    public static final int STATUS_BAR_HEIGHT_L = 25;
-    private static int statusBarHeight = -1;
+    private static final int STATUS_BAR_HEIGHT_M = 24;
+    private static final int STATUS_BAR_HEIGHT_L = 25;
+    private static final int DEFAULT_TOOLBAR_HEIGHT = 56;
 
-	public static void runOnPreDrawOnce(final View view, final Runnable task) {
+    private static int statusBarHeight = -1;
+    private static int toolBarHeight = -1;
+
+    public static void runOnPreDrawOnce(final View view, final Runnable task) {
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
@@ -59,6 +62,18 @@ public class UiUtils {
                 resources.getDimensionPixelSize(resourceId) :
                 (int) dpToPx(context, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? STATUS_BAR_HEIGHT_M : STATUS_BAR_HEIGHT_L);
         return statusBarHeight;
+    }
+
+    public static int getToolBarHeight(Context context) {
+        if (toolBarHeight > 0) {
+            return toolBarHeight;
+        }
+        final Resources resources = context.getResources();
+        final int resourceId = resources.getIdentifier("action_bar_size", "dimen", "android");
+        toolBarHeight = resourceId > 0 ?
+                resources.getDimensionPixelSize(resourceId) :
+                (int) dpToPx(context, DEFAULT_TOOLBAR_HEIGHT);
+        return toolBarHeight;
     }
 
     public static float dpToPx(Context context, float dp) {

@@ -23,8 +23,6 @@ public class BottomTabsOptions {
 		if (json == null) return options;
 
         options.backgroundColor = ColorParser.parse(json, "backgroundColor");
-        options.tabColor = ColorParser.parse(json, "tabColor");
-        options.selectedTabColor = ColorParser.parse(json, "selectedTabColor");
         options.currentTabId = TextParser.parse(json, "currentTabId");
 		options.currentTabIndex = NumberParser.parse(json,"currentTabIndex");
 		options.visible = BoolParser.parse(json,"visible");
@@ -37,8 +35,6 @@ public class BottomTabsOptions {
 	}
 
     public Color backgroundColor = new NullColor();
-    public Color tabColor = new NullColor();
-    public Color selectedTabColor = new NullColor();
 	public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();
 	public Bool animate = new NullBool();
@@ -53,8 +49,6 @@ public class BottomTabsOptions {
 		if (other.visible.hasValue()) visible = other.visible;
         if (other.drawBehind.hasValue()) drawBehind = other.drawBehind;
 		if (other.animate.hasValue()) animate = other.animate;
-        if (other.tabColor.hasValue()) tabColor = other.tabColor;
-        if (other.selectedTabColor.hasValue()) selectedTabColor = other.selectedTabColor;
         if (other.backgroundColor.hasValue()) backgroundColor = other.backgroundColor;
         if (other.testId.hasValue()) testId = other.testId;
         if (other.titleDisplayMode.hasValue()) titleDisplayMode = other.titleDisplayMode;
@@ -66,8 +60,6 @@ public class BottomTabsOptions {
         if (!visible.hasValue()) visible = defaultOptions.visible;
         if (!drawBehind.hasValue()) drawBehind = defaultOptions.drawBehind;
         if (!animate.hasValue()) animate = defaultOptions.animate;
-        if (!tabColor.hasValue()) tabColor = defaultOptions.tabColor;
-        if (!selectedTabColor.hasValue()) selectedTabColor = defaultOptions.selectedTabColor;
         if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
         if (!titleDisplayMode.hasValue()) titleDisplayMode = defaultOptions.titleDisplayMode;
     }

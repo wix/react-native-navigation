@@ -145,6 +145,14 @@ export class Navigation {
   }
 
   /**
+   * 
+   * Resolves arguments passed on launch
+   */
+  public getLaunchArgs(): Promise<any> {
+    return this.commands.getLaunchArgs();
+  }
+
+  /**
    * Obtain the events registry instance
    */
   public events(): EventsRegistry {
@@ -154,7 +162,7 @@ export class Navigation {
   /**
    * Constants coming from native
    */
-  public constants(): Constants {
-    return Constants.get();
+  public async constants(): Promise<any> {
+    return await Constants.get();
   }
 }

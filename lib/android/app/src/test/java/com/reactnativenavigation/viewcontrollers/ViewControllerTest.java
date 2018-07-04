@@ -7,14 +7,11 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
 import org.assertj.android.api.Assertions;
 import org.junit.Test;
@@ -71,20 +68,14 @@ public class ViewControllerTest extends BaseTest {
         assertThat(myController.getView()).isEqualTo(otherView);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     public void holdsAReferenceToStackControllerOrNull() {
-        //noinspection ConstantConditions
         uut.setParentController(null);
 
         assertThat(uut.getParentController()).isNull();
-        StackController nav = new StackControllerBuilder(activity)
-                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
-                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
-                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
-                .setTopBarController(new TopBarController())
-                .setId("stack")
-                .setInitialOptions(new Options())
-                .createStackController();
+        StackController nav = TestUtils.newStackController(activity).build();
+        nav.ensureViewIsCreated();
         nav.push(uut, new CommandListenerAdapter());
         assertThat(uut.getParentController()).isEqualTo(nav);
     }
@@ -197,6 +188,22 @@ public class ViewControllerTest extends BaseTest {
         spy.destroy();
 
         verify(spy, times(1)).onViewDisappear();
+    }
+
+    @Test
+    public void onDestroy_destroysViewEvenIfHidden() {
+        final SimpleViewController.SimpleView[] spy = new SimpleViewController.SimpleView[1];
+        ViewController uut = new SimpleViewController(activity, childRegistry, "uut", new Options()) {
+            @Override
+            protected SimpleView createView() {
+                SimpleView view = spy(super.createView());
+                spy[0] = view;
+                return view;
+            }
+        };
+        assertThat(uut.isViewShown()).isFalse();
+        uut.destroy();
+        verify(spy[0], times(1)).destroy();
     }
 
     @Test

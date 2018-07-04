@@ -3,14 +3,11 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
-import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.views.StackLayout;
 
 import org.junit.Test;
@@ -30,15 +27,9 @@ public class ComponentViewControllerTest extends BaseTest {
         super.beforeEach();
         Activity activity = newActivity();
         view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
-        ParentController<StackLayout> parentController = new StackControllerBuilder(activity)
-                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
-                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
-                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
-                .setTopBarController(new TopBarController())
-                .setId("stack")
-                .setInitialOptions(new Options())
-                .createStackController();
-        uut = new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options());
+        ParentController<StackLayout> parentController = TestUtils.newStackController(activity).build();
+        OptionsPresenter presenter = new OptionsPresenter(activity, new Options());
+        uut = new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options(), presenter);
         uut.setParentController(parentController);
         parentController.ensureViewIsCreated();
     }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Alignment;
+import com.reactnativenavigation.parse.BackButton;
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
@@ -38,11 +39,13 @@ public class TitleBar extends Toolbar {
     private final TopBarButtonController.OnClickListener onClickListener;
     private final List<TopBarButtonController> rightButtonControllers = new ArrayList<>();
     private TopBarButtonController leftButtonController;
+    private ImageLoader imageLoader;
 
-    public TitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
+    public TitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener, ImageLoader imageLoader) {
         super(context);
         this.buttonCreator = buttonCreator;
         this.reactViewCreator = reactViewCreator;
+        this.imageLoader = imageLoader;
         reactViewController = new TitleBarReactViewController((Activity) context, reactViewCreator);
         this.onClickListener = onClickListener;
         getMenu();
@@ -167,6 +170,10 @@ public class TitleBar extends Toolbar {
         if (getMenu().size() > 0) getMenu().clear();
     }
 
+    public void setBackButton(BackButton button) {
+        setLeftButton(button);
+    }
+
     public void setLeftButtons(List<Button> leftButtons) {
         if (leftButtons == null) return;
         if (leftButtons.isEmpty()) {
@@ -196,7 +203,6 @@ public class TitleBar extends Toolbar {
     }
 
     public TopBarButtonController createButtonController(Button button) {
-        ImageLoader imageLoader = new ImageLoader();
         return new TopBarButtonController((Activity) getContext(),
                 new NavigationIconResolver(getContext(), imageLoader),
                 imageLoader,

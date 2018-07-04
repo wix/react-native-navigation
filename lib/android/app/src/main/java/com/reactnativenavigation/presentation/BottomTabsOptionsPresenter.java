@@ -1,12 +1,13 @@
 package com.reactnativenavigation.presentation;
 
+import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 
 import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.parse.AnimationsOptions;
-import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
@@ -16,44 +17,58 @@ import com.reactnativenavigation.views.Component;
 import java.util.List;
 
 public class BottomTabsOptionsPresenter {
-    private final BottomTabs bottomTabs;
-    private final TabSelector tabSelector;
     private final BottomTabFinder bottomTabFinder;
-    private final BottomTabsAnimator animator;
     private final List<ViewController> tabs;
+    private Options defaultOptions;
+    private BottomTabs bottomTabs;
+    private BottomTabsAnimator animator;
+    private TabSelector tabSelector;
 
-    public BottomTabsOptionsPresenter(BottomTabs bottomTabs, List<ViewController> tabs, TabSelector tabSelector, BottomTabFinder bottomTabFinder) {
-        this.bottomTabs = bottomTabs;
+    public BottomTabsOptionsPresenter(List<ViewController> tabs, Options defaultOptions) {
         this.tabs = tabs;
+        this.defaultOptions = defaultOptions;
+        this.bottomTabFinder = new BottomTabFinder(tabs);
+    }
+
+    public void setDefaultOptions(Options defaultOptions) {
+        this.defaultOptions = defaultOptions;
+    }
+
+    public void bindView(BottomTabs bottomTabs, TabSelector tabSelector) {
+        this.bottomTabs = bottomTabs;
         this.tabSelector = tabSelector;
-        this.bottomTabFinder = bottomTabFinder;
         animator = new BottomTabsAnimator(bottomTabs);
     }
 
+    public void applyLayoutParamsOptions(Options options, int tabIndex) {
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        applyDrawBehind(withDefaultOptions.bottomTabsOptions, tabIndex);
+    }
+
     public void present(Options options) {
-        applyBottomTabsOptions(options.bottomTabsOptions, options.animations);
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
     }
 
     public void presentChildOptions(Options options, Component child) {
-        applyBottomTabsOptions(options.bottomTabsOptions, options.animations);
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
         int tabIndex = bottomTabFinder.findByComponent(child);
-        applyBottomTabOptions(options.bottomTabOptions, tabIndex);
-        applyDrawBehind(options.bottomTabsOptions, tabIndex);
-    }
-
-    private void applyBottomTabOptions(BottomTabOptions options, int tabIndex) {
-        if (options.badge.hasValue()) {
-            bottomTabs.setBadge(tabIndex, options.badge);
-        }
+        applyDrawBehind(withDefaultOptions.bottomTabsOptions, tabIndex);
     }
 
     private void applyDrawBehind(BottomTabsOptions options, int tabIndex) {
-        MarginLayoutParams lp = (MarginLayoutParams) tabs.get(tabIndex).getView().getLayoutParams();
+        ViewGroup tab = tabs.get(tabIndex).getView();
+        MarginLayoutParams lp = (MarginLayoutParams) tab.getLayoutParams();
         if (options.drawBehind.isTrue()) {
             lp.bottomMargin = 0;
         }
         if (options.visible.isTrueOrUndefined() && options.drawBehind.isFalseOrUndefined()) {
-            lp.bottomMargin = bottomTabs.getHeight();
+            if (bottomTabs.getHeight() == 0) {
+                UiUtils.runOnPreDrawOnce(bottomTabs, () -> lp.bottomMargin = bottomTabs.getHeight());
+            } else {
+                lp.bottomMargin = bottomTabs.getHeight();
+            }
         }
     }
 
@@ -70,12 +85,6 @@ public class BottomTabsOptionsPresenter {
         }
         if (options.testId.hasValue()) {
             bottomTabs.setTag(options.testId.get());
-        }
-        if (options.selectedTabColor.hasValue()) {
-            bottomTabs.setAccentColor(options.selectedTabColor.get());
-        }
-        if (options.tabColor.hasValue()) {
-            bottomTabs.setInactiveColor(options.tabColor.get());
         }
         if (options.currentTabId.hasValue()) {
             int tabIndex = bottomTabFinder.findByControllerId(options.currentTabId.get());

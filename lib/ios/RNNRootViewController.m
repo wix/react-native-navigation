@@ -105,6 +105,10 @@
 									isFocused:searchController.searchBar.isFirstResponder];
 }
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+	[self.eventEmitter sendOnSearchBarCancelPressed:self.componentId];
+}
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
 }
@@ -120,8 +124,8 @@
 	[self.options applyModalOptions:self];
 }
 
-- (void)mergeOptions:(NSDictionary *)options {
-	[self.options mergeIfEmptyWith:options];
+- (void)mergeOptions:(RNNOptions *)options {
+	[self.options mergeOptions:options overrideOptions:NO];
 }
 
 - (void)setCustomNavigationTitleView {
@@ -172,12 +176,12 @@
 			_customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 			[self.navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
 			self.navigationController.navigationBar.clipsToBounds = YES;
-		} else if ([[self.navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
+		} else if (self.navigationController.navigationBar.subviews.count && [[self.navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
 			[[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
 			self.navigationController.navigationBar.clipsToBounds = NO;
 		}
 	} if (_customTopBarBackground && _customTopBarBackground.superview == nil) {
-		if ([[self.navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
+		if (self.navigationController.navigationBar.subviews.count && [[self.navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
 			[[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
 		}
 		[self.navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
@@ -194,8 +198,8 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-	if ([self.options.statusBar.hidden boolValue]) {
-		return YES;
+	if (self.options.statusBar.visible) {
+		return ![self.options.statusBar.visible boolValue];
 	} else if ([self.options.statusBar.hideWithTopBar boolValue]) {
 		return self.navigationController.isNavigationBarHidden;
 	}
@@ -225,7 +229,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
 	RNNRootViewController* vc =  (RNNRootViewController*)viewController;
-	if (![vc.options.backButtonTransition isEqualToString:@"custom"]){
+	if (![vc.options.topBar.backButton.transition isEqualToString:@"custom"]){
 		navigationController.delegate = nil;
 	}
 }
@@ -257,6 +261,7 @@
 }
 
 -(void)applyTabBarItem {
+	[self.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.options.defaultOptions).bottomTab overrideOptions:NO];
 	[self.options.bottomTab applyOn:self];
 }
 

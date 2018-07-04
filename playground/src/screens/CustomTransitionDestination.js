@@ -12,11 +12,13 @@ class CustomTransitionDestination extends Component {
 
   static get options() {
     return {
-      backButtonTransition: 'custom',
       topBar: {
         title: {
           text: 'ye babyyyyyy',
           fontFamily: 'HelveticaNeue-Italic'
+        },
+        backButton: {
+          transition: 'custom'
         },
         largeTitle: {
           visible: false

@@ -257,13 +257,13 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}];
 }
 
-- (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion {
+- (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
 	[self assertReady];
 
 	[_overlayManager dismissOverlay:componentId completion:^{
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
 		completion();
-	}];
+	} rejection:reject];
 }
 
 #pragma mark - private

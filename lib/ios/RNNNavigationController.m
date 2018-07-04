@@ -20,7 +20,7 @@
 	return [self.getTopViewController isCustomViewController];
 }
 
-- (void)mergeOptions:(NSDictionary *)options {
+- (void)mergeOptions:(RNNOptions *)options {
 	[self.getTopViewController mergeOptions:options];
 }
 

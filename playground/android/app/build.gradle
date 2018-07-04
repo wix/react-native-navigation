@@ -8,7 +8,7 @@ project.ext.react = [
 apply from: "../../../node_modules/react-native/react.gradle"
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "27.0.3"
 
     compileOptions {
@@ -46,10 +46,19 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            details.useVersion "26.1.0"
+        }
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:design:25.4.0'
-    implementation "com.android.support:appcompat-v7:25.4.0"
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
 
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
@@ -57,6 +66,6 @@ dependencies {
 
     androidTestImplementation(project(':detox'))
     androidTestImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test:rules:1.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 }

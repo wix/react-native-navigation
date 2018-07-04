@@ -25,12 +25,14 @@ import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.parse.BackButton;
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
+import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
@@ -57,9 +59,11 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private StackLayout parentView;
     private TopBarBackgroundViewController topBarBackgroundViewController;
     private View border;
+    private ImageLoader imageLoader;
 
-    public TopBar(final Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener onClickListener, StackLayout parentView) {
+    public TopBar(final Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener onClickListener, StackLayout parentView, ImageLoader imageLoader) {
         super(context);
+        this.imageLoader = imageLoader;
         collapsingBehavior = new TopBarCollapseBehavior(this);
         this.topBarBackgroundViewController = topBarBackgroundViewController;
         this.parentView = parentView;
@@ -70,7 +74,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     private void createLayout(ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
         setId(CompatUtils.generateViewId());
-        titleBar = createTitleBar(getContext(), buttonCreator, titleBarReactViewCreator, onClickListener);
+        titleBar = createTitleBar(getContext(), buttonCreator, titleBarReactViewCreator, onClickListener, imageLoader);
         topTabs = createTopTabs();
         border = createBorder();
         content = createContentLayout();
@@ -110,8 +114,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return border;
     }
 
-    protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
-        TitleBar titleBar = new TitleBar(context, buttonCreator, reactViewCreator, onClickListener);
+    protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener, ImageLoader imageLoader) {
+        TitleBar titleBar = new TitleBar(context, buttonCreator, reactViewCreator, onClickListener, imageLoader);
         titleBar.setId(CompatUtils.generateViewId());
         return titleBar;
     }
@@ -207,6 +211,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         if (topTabs.getLayoutParams().height == height) return;
         topTabs.getLayoutParams().height = height > 0 ? (int) UiUtils.dpToPx(getContext(), height) : height;
         topTabs.setLayoutParams(topTabs.getLayoutParams());
+    }
+
+    public void setBackButton(BackButton backButton) {
+        titleBar.setBackButton(backButton);
     }
 
     public void setLeftButtons(List<Button> leftButtons) {

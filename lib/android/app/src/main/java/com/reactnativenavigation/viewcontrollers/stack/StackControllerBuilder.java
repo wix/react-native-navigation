@@ -1,12 +1,20 @@
-package com.reactnativenavigation.viewcontrollers;
+package com.reactnativenavigation.viewcontrollers.stack;
 
 import android.app.Activity;
 
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.StackOptionsPresenter;
+import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StackControllerBuilder {
     private Activity activity;
@@ -18,10 +26,30 @@ public class StackControllerBuilder {
     private String id;
     private Options initialOptions = new Options();
     private NavigationAnimator animator;
+    private BackButtonHelper backButtonHelper = new BackButtonHelper();
+    private OptionsPresenter presenter;
+    private StackOptionsPresenter stackPresenter;
+    private List<ViewController> children = new ArrayList<>();
 
     public StackControllerBuilder(Activity activity) {
         this.activity = activity;
+        presenter = new OptionsPresenter(activity, new Options());
         animator = new NavigationAnimator(activity);
+    }
+
+    public StackControllerBuilder setChildren(List<ViewController> children) {
+        this.children = children;
+        return this;
+    }
+
+    public StackControllerBuilder setOptionsPresenter(OptionsPresenter presenter) {
+        this.presenter = presenter;
+        return this;
+    }
+
+    public StackControllerBuilder setStackPresenter(StackOptionsPresenter stackPresenter) {
+        this.stackPresenter = stackPresenter;
+        return this;
     }
 
     public StackControllerBuilder setChildRegistry(ChildControllersRegistry childRegistry) {
@@ -64,7 +92,25 @@ public class StackControllerBuilder {
         return this;
     }
 
-    public StackController createStackController() {
-        return new StackController(activity, childRegistry, topBarButtonCreator, titleBarReactViewCreator, topBarBackgroundViewController, topBarController, animator, id, initialOptions);
+    public StackControllerBuilder setBackButtonHelper(BackButtonHelper backButtonHelper) {
+        this.backButtonHelper = backButtonHelper;
+        return this;
+    }
+
+    public StackController build() {
+        return new StackController(activity,
+                children,
+                childRegistry,
+                topBarButtonCreator,
+                titleBarReactViewCreator,
+                topBarBackgroundViewController,
+                topBarController,
+                animator,
+                id,
+                initialOptions,
+                backButtonHelper,
+                stackPresenter,
+                presenter
+        );
     }
 }

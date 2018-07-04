@@ -6,16 +6,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.ReactComponent;
 
 import org.junit.Test;
@@ -48,8 +45,13 @@ public class ParentControllerTest extends BaseTest {
         children = new ArrayList<>();
         Options initialOptions = new Options();
         initialOptions.topBar.title.text = new Text(INITIAL_TITLE);
-        presenter = spy(new OptionsPresenter(activity));
+        presenter = spy(new OptionsPresenter(activity, new Options()));
         uut = spy(new ParentController(activity, childRegistry, "uut", presenter, initialOptions) {
+
+            @Override
+            protected ViewController getCurrentChild() {
+                return children.get(0);
+            }
 
             @NonNull
             @Override
@@ -98,7 +100,8 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void findControllerById_Recursive() {
-        StackController stackController = createStack();
+        StackController stackController = TestUtils.newStackController(activity).build();
+        stackController.ensureViewIsCreated();
         SimpleViewController child1 = new SimpleViewController(activity, childRegistry, "child1", new Options());
         SimpleViewController child2 = new SimpleViewController(activity, childRegistry, "child2", new Options());
         stackController.push(child1, new CommandListenerAdapter());
@@ -120,7 +123,8 @@ public class ParentControllerTest extends BaseTest {
 
     @Test
     public void optionsAreClearedWhenChildIsAppeared() {
-        StackController stackController = spy(createStack());
+        StackController stackController = spy(TestUtils.newStackController(activity).build());
+        stackController.ensureViewIsCreated();
         SimpleViewController child1 = new SimpleViewController(activity, childRegistry, "child1", new Options());
         stackController.push(child1, new CommandListenerAdapter());
 
@@ -177,16 +181,5 @@ public class ParentControllerTest extends BaseTest {
         SimpleViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
         uut.applyChildOptions(options, child1.getView());
         verify(presenter, times(0)).applyRootOptions(uut.getView(), options);
-    }
-
-    private StackController createStack() {
-        return new StackControllerBuilder(activity)
-                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
-                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
-                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
-                .setTopBarController(new TopBarController())
-                .setId("stack")
-                .setInitialOptions(new Options())
-                .createStackController();
     }
 }

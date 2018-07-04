@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class OptionHelper {
     public static Options createBottomTabOptions() {
         Options options = new Options();
-        options.topBar.leftButtons = new ArrayList<>();
-        options.bottomTabOptions.title = new Text("Tab");
+        options.topBar.buttons.left = new ArrayList<>();
+        options.bottomTabOptions.text = new Text("Tab");
         options.bottomTabOptions.icon = new Text("http://127.0.0.1/icon.png");
         return options;
     }

@@ -5,18 +5,16 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.TestComponentViewCreator;
 import com.reactnativenavigation.mocks.TestReactView;
-import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ViewHelper;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
-import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsAdapter;
 import com.reactnativenavigation.viewcontrollers.toptabs.TopTabsController;
 import com.reactnativenavigation.views.ReactComponent;
@@ -43,7 +41,6 @@ public class TopTabsViewControllerTest extends BaseTest {
     private StackController stack;
     private TopTabsController uut;
     private List<ViewController> tabControllers = new ArrayList<>(SIZE);
-    private List<Options> tabOptions = new ArrayList<>(SIZE);
     private final Options options = new Options();
     private TopTabsViewPager topTabsLayout;
     private Activity activity;
@@ -55,30 +52,20 @@ public class TopTabsViewControllerTest extends BaseTest {
 
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
-        tabOptions = createOptions();
+        List<Options> tabOptions = createOptions();
         tabControllers = createTabsControllers(activity, tabOptions);
 
         topTabsLayout = spy(new TopTabsViewPager(activity, tabControllers, new TopTabsAdapter(tabControllers)));
         TopTabsLayoutCreator layoutCreator = Mockito.mock(TopTabsLayoutCreator.class);
         Mockito.when(layoutCreator.create()).thenReturn(topTabsLayout);
-        uut = spy(new TopTabsController(activity, childRegistry, "componentId", tabControllers, layoutCreator, options));
+        OptionsPresenter presenter = new OptionsPresenter(activity, new Options());
+        uut = spy(new TopTabsController(activity, childRegistry, "componentId", tabControllers, layoutCreator, options, presenter));
         tabControllers.forEach(viewController -> viewController.setParentController(uut));
 
-        stack = spy(createStackController("stackId"));
+        stack = spy(TestUtils.newStackController(activity).build());
+        stack.ensureViewIsCreated();
         stack.push(uut, new CommandListenerAdapter());
         uut.setParentController(stack);
-    }
-
-    @NonNull
-    private StackController createStackController(String id) {
-        return new StackControllerBuilder(activity)
-                .setTopBarButtonCreator(new TopBarButtonCreatorMock())
-                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
-                .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
-                .setTopBarController(new TopBarController())
-                .setId(id)
-                .setInitialOptions(new Options())
-                .createStackController();
     }
 
     @NonNull
@@ -102,7 +89,8 @@ public class TopTabsViewControllerTest extends BaseTest {
                     "idTab" + i,
                     "theComponentName",
                     new TestComponentViewCreator(),
-                    tabOptions.get(i)
+                    tabOptions.get(i),
+                    new OptionsPresenter(activity, new Options())
             );
             tabControllers.add(spy(viewController));
         }
@@ -222,14 +210,16 @@ public class TopTabsViewControllerTest extends BaseTest {
     public void applyOptions_tabsAreRemovedAfterViewDisappears() {
         stack.getView().removeAllViews();
 
-        StackController stackController = spy(createStackController("stack"));
+        StackController stackController = spy(TestUtils.newStackController(activity).build());
+        stackController.ensureViewIsCreated();
         ComponentViewController first = new ComponentViewController(
                 activity,
                 childRegistry,
                 "firstScreen",
                 "comp1",
                 new TestComponentViewCreator(),
-                new Options()
+                new Options(),
+                new OptionsPresenter(activity, new Options())
         );
         first.options.animations.push.enable = new Bool(false);
         uut.options.animations.push.enable = new Bool(false);

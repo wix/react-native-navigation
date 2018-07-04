@@ -31,7 +31,7 @@ public class Button {
     public Text testId = new NullText();
     public Component component = new Component();
 
-    private static Button parseJson(JSONObject json, TypefaceLoader typefaceManager) {
+    protected static Button parseJson(JSONObject json, TypefaceLoader typefaceManager) {
         Button button = new Button();
         button.id = json.optString("id");
         button.title = TextParser.parse(json, "title");

@@ -32,6 +32,8 @@ export default class StyledScreen extends Component {
 ## Enabling persistent styling properties
 In v2 we added `setDefaultOptions` API for styles that should be applied on all components.
 
+> `setDefaultOptions` Does not update options of existing component, therefore it should be called before `setRoot`
+
 ```js
 Navigation.setDefaultOptions({
   topBar: {
@@ -77,9 +79,6 @@ Navigation.mergeOptions(this.props.componentId, {
     searchBar: true, // iOS 11+ native UISearchBar inside topBar
     searchBarHiddenWhenScrolling: true,
     searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
-    component: {
-      name: 'example.CustomTopBar'
-    },
     largeTitle: {
       visible: true,
       fontSize: 30,
@@ -103,6 +102,10 @@ Navigation.mergeOptions(this.props.componentId, {
       fontFamily: 'Helvetica',
       alignment: 'center'
     },
+    backButton: {
+      icon: require('icon.png'),
+      visible: true
+    },
     background: {
       color: '#00ff00',
       component: {
@@ -117,17 +120,19 @@ Navigation.mergeOptions(this.props.componentId, {
     currentTabId: 'currentTabId',
     testID: 'bottomTabsTestID',
     drawBehind: false,
-    backgroundColor: 'white',
-    tabColor: 'red',
-    selectedTabColor: 'blue',
-    fontFamily: 'Helvetica',
-    fontSize: 10
+    backgroundColor: 'white'
   },
   bottomTab: {
-    title: 'Tab 1',
+    text: 'Tab 1',
     badge: '2',
     testID: 'bottomTabTestID',
-    icon: require('tab.png')
+    icon: require('tab.png'),
+    iconColor: 'red',
+    selectedIconColor: 'blue',
+    textColor: 'red',
+    selectedTextColor: 'blue',
+    fontFamily: 'Helvetica',
+    fontSize: 10
   },
   sideMenu: {
     left: {
@@ -172,10 +177,10 @@ Navigation.mergeOptions(this.props.componentId, {
     transparent: false,
     noBorder: false,
     blur: false,
-    backButtonImage: require('icon.png'),
-    backButtonHidden: false,
-    backButtonTitle: 'Back',
-    hideBackButtonTitle: false,
+    backButton: {
+      title: 'Back',
+      showTitle: false
+    },
     largeTitle: {
       visible: true,
       fontSize: 30,
@@ -201,7 +206,12 @@ Navigation.mergeOptions(this.props.componentId, {
 ```js
 {
   statusBar: {
-    backgroundColor: 'red'
+    backgroundColor: 'red',
+    drawBehind: true,
+    visible: false
+  },
+  layout: {
+    topMargin: Navigation.constants().statusBarHeight // Set the layout's top margin
   },
   topBar: {
     height: 70, // TopBar height in dp

@@ -69,12 +69,20 @@
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
 }
 
-- (void)testStatusBarHidden_true {
-	self.options.statusBar.hidden = @(1);
+- (void)testStatusBarVisible_false {
+	self.options.statusBar.visible = @(0);
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue([self.uut prefersStatusBarHidden]);
+}
+
+- (void)testStatusBarVisible_true {
+	self.options.statusBar.visible = @(1);
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertFalse([self.uut prefersStatusBarHidden]);
 }
 
 - (void)testStatusBarHideWithTopBar_false {
@@ -93,15 +101,6 @@
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue([self.uut prefersStatusBarHidden]);
-}
-
-
-- (void)testStatusBarHidden_false {
-	self.options.statusBar.hidden = @(0);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-
-	XCTAssertFalse([self.uut prefersStatusBarHidden]);
 }
 
 -(void)testTitle_string{
@@ -672,25 +671,10 @@
 	XCTAssertTrue([self.uut.tabBarController.tabBar.barTintColor isEqual:expectedColor]);
 }
 
--(void)testTabBarSelectedColor_validColor{
-	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.bottomTabs.tabColor = inputColor;
-	[self.uut embedInTabBarController];
-	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([self.uut.tabBarController.tabBar.unselectedItemTintColor isEqual:expectedColor]);
-}
-
--(void)testTabBarUnselectedColor_validColor{
-	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.bottomTabs.selectedTabColor = inputColor;
-	[self.uut embedInTabBarController];
-	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([self.uut.tabBarController.tabBar.tintColor isEqual:expectedColor]);
-}
-
 -(void)testTabBarTextFontFamily_validFont{
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.bottomTabs.fontFamily = inputFont;
+	self.options.bottomTab.fontFamily = inputFont;
+	self.options.bottomTab.text = @"Tab 1";
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:10];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
@@ -698,7 +682,8 @@
 }
 
 -(void)testTabBarTextFontSize_withoutTextFontFamily_withoutTextColor {
-	self.options.bottomTabs.fontSize = @(15);
+	self.options.bottomTab.fontSize = @(15);
+	self.options.bottomTab.text = @"Tab 1";
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
@@ -706,7 +691,8 @@
 }
 
 -(void)testTabBarTextFontSize_withoutTextFontFamily {
-	self.options.bottomTabs.fontSize = @(15);
+	self.options.bottomTab.fontSize = @(15);
+	self.options.bottomTab.text = @"Tab 1";
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
@@ -715,8 +701,9 @@
 
 -(void)testTabBarTextFontSize_withTextFontFamily_withTextColor {
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.bottomTabs.fontSize = @(15);
-	self.options.bottomTabs.fontFamily = inputFont;
+	self.options.bottomTab.text = @"Tab 1";
+	self.options.bottomTab.fontSize = @(15);
+	self.options.bottomTab.fontFamily = inputFont;
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
@@ -725,8 +712,9 @@
 
 -(void)testTabBarTextFontSize_withTextFontFamily_withoutTextColor {
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.bottomTabs.fontSize = @(15);
-	self.options.bottomTabs.fontFamily = inputFont;
+	self.options.bottomTab.text = @"Tab 1";
+	self.options.bottomTab.fontSize = @(15);
+	self.options.bottomTab.fontFamily = inputFont;
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
