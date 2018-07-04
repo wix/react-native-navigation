@@ -12,21 +12,15 @@
 	_store = store;
 	return self;
 }
--(void)waitForContentToAppearAndThen:(SEL)nameOfSelector {
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:nameOfSelector
-												 name: @"RCTContentDidAppearNotification"
-											   object:nil];
-}
 
 -(void)showModalAfterLoad:(NSDictionary*)notif {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
 	RNNRootViewController *topVC = (RNNRootViewController*)[self topPresentedVC];
 	topVC.definesPresentationContext = YES;
 	
 	if (topVC.options.animations.showModal.hasCustomAnimation) {
 		self.toVC.transitioningDelegate = topVC;
 	}
+	
 	[topVC presentViewController:self.toVC animated:self.toVC.options.animations.showModal.enable completion:^{
 		if (_completionBlock) {
 			_completionBlock();
@@ -49,7 +43,9 @@
     ) {
 		[self showModalAfterLoad:nil];
 	} else {
-		[self waitForContentToAppearAndThen:@selector(showModalAfterLoad:)];
+		[self.toVC waitForReactViewRender:self.toVC.options.animations.showModal.waitForRender perform:^{
+			[self showModalAfterLoad:nil];
+		}];
 	}
 }
 

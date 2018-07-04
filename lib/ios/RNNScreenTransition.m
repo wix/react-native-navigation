@@ -10,6 +10,7 @@
 	self.bottomTabs = dict[@"bottomTabs"] ? [[RNNTransitionStateHolder alloc] initWithDict:dict[@"bottomTabs"]] : nil;
 
 	self.enable = dict[@"enabled"] ? [dict[@"enabled"] boolValue] : YES;
+	self.waitForRender = dict[@"waitForRender"] ? [dict[@"waitForRender"] boolValue] : NO;
 
 	return self;
 }
