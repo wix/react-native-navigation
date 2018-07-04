@@ -35,6 +35,10 @@
 	[self.child mergeOptions:options];
 }
 
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self.child waitForReactViewRender:wait perform:readyBlock];
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return self.child.preferredStatusBarStyle;
 }

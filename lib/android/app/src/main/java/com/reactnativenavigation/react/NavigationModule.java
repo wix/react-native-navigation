@@ -3,11 +3,13 @@ package com.reactnativenavigation.react;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 import com.reactnativenavigation.NavigationActivity;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.parse.LayoutFactory;
@@ -24,7 +26,6 @@ import com.reactnativenavigation.viewcontrollers.Navigator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class NavigationModule extends ReactContextBaseJavaModule {
@@ -46,12 +47,14 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 		return NAME;
 	}
 
-	@Override
-    public Map<String, Object> getConstants() {
-        final Map<String, Object> constants = new HashMap<>();
-        constants.put(Constants.BACK_BUTTON_JS_KEY, Constants.BACK_BUTTON_ID);
-        constants.put(Constants.STATUS_BAR_HEIGHT_KEY, UiUtils.getStatusBarHeight(getReactApplicationContext()));
-        return constants;
+	@ReactMethod
+    public void getConstants(Promise promise) {
+        WritableMap constants = Arguments.createMap();
+        constants.putString(Constants.BACK_BUTTON_JS_KEY, Constants.BACK_BUTTON_ID);
+        constants.putDouble(Constants.STATUS_BAR_HEIGHT_KEY, UiUtils.getStatusBarHeight(getReactApplicationContext()));
+        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY, UiUtils.getToolBarHeight(getReactApplicationContext()));
+        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY, UiUtils.dpToPx(getReactApplicationContext(), Constants.BOTTOM_TABS_HEIGHT));
+        promise.resolve(constants);
     }
 
 	@ReactMethod

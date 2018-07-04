@@ -13,6 +13,8 @@ typedef UIViewController * (^RNNExternalViewCreator)(NSDictionary* props, RCTBri
 
 + (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
 
++ (UIViewController *)findViewController:(NSString *)componentId;
+
 + (RCTBridge *)getBridge;
 
 @end

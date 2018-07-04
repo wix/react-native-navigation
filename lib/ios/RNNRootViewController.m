@@ -91,6 +91,14 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
 }
 
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	if (wait) {
+		[self onReactViewReady:readyBlock];
+	} else {
+		readyBlock();
+	}
+}
+
 - (void)onReactViewReady:(RNNReactViewReadyCompletionBlock)readyBlock {
 	if (self.isCustomViewController) {
 		readyBlock();

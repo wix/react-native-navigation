@@ -11,6 +11,7 @@
   - [Styling](/docs/styling)
   - [TopBar Buttons](/docs/topBar-buttons) 
   - [Animations](/docs/animations)
+  - [Constants](/docs/constants)
 - Migration from v1
   - [Top Level](/docs/top-level-api-migration)
   - [Options](/docs/options-migration)

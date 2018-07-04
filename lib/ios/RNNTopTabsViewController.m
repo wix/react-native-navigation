@@ -76,4 +76,8 @@
 	return _currentViewController.componentId;
 }
 
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[_currentViewController waitForReactViewRender:wait perform:readyBlock];
+}
+
 @end

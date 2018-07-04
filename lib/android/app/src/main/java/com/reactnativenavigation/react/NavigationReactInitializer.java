@@ -48,7 +48,9 @@ public class NavigationReactInitializer implements ReactInstanceManager.ReactIns
 		if (shouldCreateContext()) {
 			reactInstanceManager.createReactContextInBackground();
 		} else if (waitingForAppLaunchEvent) {
-			emitAppLaunched(reactInstanceManager.getCurrentReactContext());
+            if (reactInstanceManager.getCurrentReactContext() != null) {
+			    emitAppLaunched(reactInstanceManager.getCurrentReactContext());
+            }
 		}
 	}
 
