@@ -45,6 +45,10 @@
 	[((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) mergeOptions:options];
 }
 
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) waitForReactViewRender:wait perform:readyBlock];
+}
+
 - (RNNNavigationOptions *)options {
 	return [((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) options];
 }

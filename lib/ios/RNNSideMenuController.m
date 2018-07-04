@@ -93,6 +93,10 @@
 	[self.center mergeOptions:options];
 }
 
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self.center waitForReactViewRender:wait perform:readyBlock];
+}
+
 - (NSString *)componentId {
 	return _center.componentId;
 }

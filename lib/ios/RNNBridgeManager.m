@@ -12,6 +12,7 @@
 @interface RNNBridgeManager() <RCTBridgeDelegate>
 
 @property (nonatomic, strong, readwrite) RCTBridge *bridge;
+@property (nonatomic, strong, readwrite) RNNStore *store;
 
 @end
 
