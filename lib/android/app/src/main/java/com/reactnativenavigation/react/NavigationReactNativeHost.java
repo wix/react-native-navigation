@@ -21,50 +21,60 @@ import java.util.List;
  * Default implementation of {@link ReactNativeHost} that includes {@link NavigationPackage}
  * and user-defined additional packages.
  */
-public class NavigationReactNativeHost extends ReactNativeHost {
+public class NavigationReactNativeHost extends ReactNativeHost implements BundleDownloadListenerProvider {
 
-	private final boolean isDebug;
-	private final List<ReactPackage> additionalReactPackages;
+    private final boolean isDebug;
+    private final List<ReactPackage> additionalReactPackages;
     private @Nullable DevBundleDownloadListener bundleListener;
+    private final DevBundleDownloadListener bundleListenerMediator = new DevBundleDownloadListenerAdapter() {
+        @Override
+        public void onSuccess() {
+            if (bundleListener != null) {
+                bundleListener.onSuccess();
+            }
+        }
+    };
+
 
     public NavigationReactNativeHost(NavigationApplication application) {
         this(application, application.isDebug(), application.createAdditionalReactPackages());
     }
 
-	@SuppressWarnings("WeakerAccess")
+    @SuppressWarnings("WeakerAccess")
     public NavigationReactNativeHost(Application application, boolean isDebug, final List<ReactPackage> additionalReactPackages) {
-		super(application);
-		this.isDebug = isDebug;
-		this.additionalReactPackages = additionalReactPackages;
-	}
-
-	@Override
-	public boolean getUseDeveloperSupport() {
-		return isDebug;
-	}
-
-    public void setDevBundleDownloadListener(DevBundleDownloadListener listener) {
-        this.bundleListener = listener;
+        super(application);
+        this.isDebug = isDebug;
+        this.additionalReactPackages = additionalReactPackages;
     }
 
     @Override
-	protected List<ReactPackage> getPackages() {
-		List<ReactPackage> packages = new ArrayList<>();
-		boolean hasMainReactPackage = false;
-		packages.add(new NavigationPackage(this));
-		if (additionalReactPackages != null) {
-			for (ReactPackage p : additionalReactPackages) {
-				if (!(p instanceof NavigationPackage)) {
-					packages.add(p);
-				}
-				if (p instanceof MainReactPackage) hasMainReactPackage = true;
-			}
-		}
+    public void setBundleLoaderListener(DevBundleDownloadListener listener) {
+        bundleListener = listener;
+    }
+
+    @Override
+    public boolean getUseDeveloperSupport() {
+        return isDebug;
+    }
+
+    @Override
+    protected List<ReactPackage> getPackages() {
+        List<ReactPackage> packages = new ArrayList<>();
+        boolean hasMainReactPackage = false;
+        packages.add(new NavigationPackage(this));
+        if (additionalReactPackages != null) {
+            for (ReactPackage p : additionalReactPackages) {
+                if (!(p instanceof NavigationPackage)) {
+                    packages.add(p);
+                }
+                if (p instanceof MainReactPackage) hasMainReactPackage = true;
+            }
+        }
         if (!hasMainReactPackage) {
             packages.add(new MainReactPackage());
         }
-		return packages;
-	}
+        return packages;
+    }
 
     protected ReactInstanceManager createReactInstanceManager() {
         ReactInstanceManagerBuilder builder = ReactInstanceManager.builder()
@@ -93,13 +103,6 @@ public class NavigationReactNativeHost extends ReactNativeHost {
     @SuppressWarnings("WeakerAccess")
     @NonNull
     protected DevBundleDownloadListener getDevBundleDownloadListener() {
-        return new DevBundleDownloadListenerAdapter() {
-            @Override
-            public void onSuccess() {
-                if (bundleListener != null) {
-                    bundleListener.onSuccess();
-                }
-            }
-        };
+        return bundleListenerMediator;
     }
 }

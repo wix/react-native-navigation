@@ -1,16 +1,15 @@
 package com.reactnativenavigation.react;
 
 import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
-import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.Navigator;
 
 import javax.annotation.Nullable;
 
-public class ReloadListener implements JsDevReloadHandler.ReloadListener, DevBundleDownloadListener {
-    private Navigator navigator;
+public class ReloadHandler implements JsDevReloadHandler.ReloadListener, DevBundleDownloadListener {
 
-    public ReloadListener(Navigator navigator) {
-        this.navigator = navigator;
+    private Runnable onReloadListener = () -> {};
+
+    public void setOnReloadListener(Runnable onReload) {
+        this.onReloadListener = onReload;
     }
 
     /**
@@ -18,7 +17,7 @@ public class ReloadListener implements JsDevReloadHandler.ReloadListener, DevBun
      */
     @Override
     public void onReload() {
-        navigator.destroyViews();
+        onReloadListener.run();
     }
 
     /**
@@ -26,7 +25,7 @@ public class ReloadListener implements JsDevReloadHandler.ReloadListener, DevBun
      */
     @Override
     public void onSuccess() {
-        UiUtils.runOnMainThread(navigator::destroyViews);
+        onReloadListener.run();
     }
 
     /**
@@ -46,6 +45,6 @@ public class ReloadListener implements JsDevReloadHandler.ReloadListener, DevBun
     }
 
     public void destroy() {
-        navigator = null;
+        onReloadListener = null;
     }
 }

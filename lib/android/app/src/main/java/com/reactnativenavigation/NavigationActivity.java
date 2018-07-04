@@ -1,41 +1,36 @@
 package com.reactnativenavigation;
 
 import android.annotation.TargetApi;
-import android.support.annotation.NonNull;
-
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
+import com.facebook.react.modules.core.PermissionAwareActivity;
+import com.facebook.react.modules.core.PermissionListener;
 import com.reactnativenavigation.presentation.OverlayManager;
-import com.reactnativenavigation.react.ReloadListener;
+import com.reactnativenavigation.react.JsDevReloadHandler;
 import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.Navigator;
 
-import com.facebook.react.modules.core.PermissionAwareActivity;
-import com.facebook.react.modules.core.PermissionListener;
-
-public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity {
+public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity, JsDevReloadHandler.ReloadListener {
     @Nullable
     private PermissionListener mPermissionListener;
     
     protected Navigator navigator;
-    private ReloadListener reloadListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         navigator = new Navigator(this, new ChildControllersRegistry(), new OverlayManager());
-        reloadListener = new ReloadListener(navigator);
         getReactGateway().onActivityCreated(this);
-        getReactGateway().setReloadListener(reloadListener);
         navigator.getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         setContentView(navigator.getView());
     }
@@ -55,9 +50,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        reloadListener.destroy();
         navigator.destroy();
-        getReactGateway().removeReloadListener(reloadListener);
         getReactGateway().onActivityDestroyed(this);
     }
 
@@ -108,5 +101,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             mPermissionListener = null;
         }
+    }
+
+    @Override
+    public void onReload() {
+        navigator.destroyViews();
     }
 }

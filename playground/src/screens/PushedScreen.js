@@ -35,7 +35,7 @@ class PushedScreen extends Component {
 
   listeners = [];
 
-  componentWillMount() {
+  componentDidMount() {
     this.listeners.push(
       Navigation.events().registerNativeEventListener((name, params) => {
         if (name === 'previewContext') {
