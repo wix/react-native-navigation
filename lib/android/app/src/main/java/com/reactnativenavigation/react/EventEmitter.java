@@ -12,6 +12,7 @@ public class EventEmitter {
 	private static final String componentLifecycle = "RNN.ComponentLifecycle";
 	private static final String nativeEvent = "RNN.NativeEvent";
 	private static final String commandCompleted = "RNN.CommandCompleted";
+
 	private static final String componentLifecycleDidMount = "ComponentDidMount";
 	private static final String componentLifecycleDidAppear = "ComponentDidAppear";
 	private static final String componentLifecycleDidDisappear = "ComponentDidDisappear";

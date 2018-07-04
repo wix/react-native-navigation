@@ -8,14 +8,18 @@
 
 RCT_EXPORT_MODULE();
 
-static NSString* const onAppLaunched	= @"RNN.appLaunched";
-static NSString* const componentDidAppear	= @"RNN.componentDidAppear";
-static NSString* const componentDidDisappear	= @"RNN.componentDidDisappear";
-static NSString* const commandComplete	= @"RNN.commandCompleted";
-static NSString* const navigationEvent	= @"RNN.nativeEvent";
+static NSString* const onAppLaunched		= @"RNN.AppLaunched";
+static NSString* const componentLifecycle	= @"RNN.ComponentLifecycle";
+static NSString* const commandCompleted		= @"RNN.CommandCompleted";
+static NSString* const navigationEvent		= @"RNN.NativeEvent";
+
+static NSString* const componentLifecycleDidMount = @"ComponentDidMount";
+static NSString* const componentLifecycleDidAppear = @"ComponentDidAppear";
+static NSString* const componentLifecycleDidDisappear = @"ComponentDidDisappear";
+static NSString* const componentLifecycleWillUnmount = @"ComponentWillUnmount";
 
 -(NSArray<NSString *> *)supportedEvents {
-	return @[onAppLaunched, componentDidAppear, componentDidDisappear, commandComplete, navigationEvent];
+	return @[onAppLaunched, componentLifecycle, commandCompleted, navigationEvent];
 }
 
 # pragma mark public
@@ -29,23 +33,44 @@ static NSString* const navigationEvent	= @"RNN.nativeEvent";
 }
 
 -(void)sendComponentDidAppear:(NSString *)componentId componentName:(NSString *)componentName {
-	[self send:componentDidAppear body:@{@"componentId":componentId, @"componentName": componentName}];
+	[self send:componentLifecycle body:@{
+										 @"type": componentLifecycleDidAppear,
+										 @"componentId":componentId,
+										 @"componentName": componentName
+										 }];
 }
 
 -(void)sendComponentDidDisappear:(NSString *)componentId componentName:(NSString *)componentName{
-	[self send:componentDidDisappear body:@{@"componentId":componentId, @"componentName": componentName}];
+	[self send:componentLifecycle body:@{
+										 @"type": componentLifecycleDidDisappear,
+										 @"componentId":componentId,
+										 @"componentName": componentName
+										 }];
 }
 
 -(void)sendOnNavigationButtonPressed:(NSString *)componentId buttonId:(NSString*)buttonId {
-	[self send:navigationEvent body:@{@"name": @"buttonPressed", @"params": @{@"componentId": componentId , @"buttonId": buttonId}}];
+	[self send:navigationEvent body:@{
+									  @"name": @"buttonPressed",
+									  @"params": @{
+											  @"componentId": componentId,
+											  @"buttonId": buttonId
+											  }
+									  }];
 }
 
 -(void)sendOnNavigationCommand:(NSString *)commandName params:(NSDictionary*)params {
-	[self send:navigationEvent body:@{@"name":commandName , @"params": params}];
+	[self send:navigationEvent body:@{
+									  @"name":commandName ,
+									  @"params": params
+									  }];
 }
 
 -(void)sendOnNavigationCommandCompletion:(NSString *)commandName params:(NSDictionary*)params {
-	[self send:commandComplete body:@{@"commandId":commandName , @"params": params, @"completionTime": [RNNUtils getCurrentTimestamp] }];
+	[self send:commandCompleted body:@{
+									   @"commandId":commandName,
+									   @"params": params,
+									   @"completionTime": [RNNUtils getCurrentTimestamp]
+									   }];
 }
 
 -(void)sendOnNavigationEvent:(NSString *)commandName params:(NSDictionary*)params {
@@ -82,7 +107,7 @@ static NSString* const navigationEvent	= @"RNN.nativeEvent";
 # pragma mark private
 
 -(void)send:(NSString *)eventName body:(id)body {
-    if ([eventName isEqualToString:componentDidDisappear] && self.bridge == nil) {
+    if (self.bridge == nil) {
         return;
     }
 	[self sendEventWithName:eventName body:body];
