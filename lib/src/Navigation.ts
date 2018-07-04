@@ -9,7 +9,6 @@ import { LayoutTreeCrawler } from './commands/LayoutTreeCrawler';
 import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
 import { Element } from './adapters/Element';
-import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 import { CommandsObserver } from './events/CommandsObserver';
 import { Constants } from './adapters/Constants';
 import { ComponentType } from 'react';
@@ -26,7 +25,6 @@ export class Navigation {
   private readonly commands: Commands;
   private readonly eventsRegistry: EventsRegistry;
   private readonly commandsObserver: CommandsObserver;
-  private readonly componentEventsObserver: ComponentEventsObserver;
 
   constructor() {
     this.Element = Element;
@@ -40,9 +38,6 @@ export class Navigation {
     this.commandsObserver = new CommandsObserver();
     this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler, this.commandsObserver, this.uniqueIdProvider);
     this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver);
-    this.componentEventsObserver = new ComponentEventsObserver(this.eventsRegistry, this.store);
-
-    this.componentEventsObserver.registerForAllComponents();
   }
 
   /**
@@ -145,7 +140,6 @@ export class Navigation {
   }
 
   /**
-   * 
    * Resolves arguments passed on launch
    */
   public getLaunchArgs(): Promise<any> {
