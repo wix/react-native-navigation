@@ -10,8 +10,7 @@ describe(`ComponentEventsObserver`, () => {
 
   beforeEach(() => {
     eventRegistry = {
-      registerComponentDidAppearListener: jest.fn(),
-      registerComponentDidDisappearListener: jest.fn(),
+      registerComponentLifecycleListener: jest.fn(),
       registerNativeEventListener: jest.fn()
     };
 
@@ -30,12 +29,10 @@ describe(`ComponentEventsObserver`, () => {
   });
 
   it('register for lifecycle events on eventRegistry', () => {
-    expect(eventRegistry.registerComponentDidAppearListener).toHaveBeenCalledTimes(0);
-    expect(eventRegistry.registerComponentDidDisappearListener).toHaveBeenCalledTimes(0);
+    expect(eventRegistry.registerComponentLifecycleListener).toHaveBeenCalledTimes(0);
     expect(eventRegistry.registerNativeEventListener).toHaveBeenCalledTimes(0);
     uut.registerForAllComponents();
-    expect(eventRegistry.registerComponentDidAppearListener).toHaveBeenCalledTimes(1);
-    expect(eventRegistry.registerComponentDidDisappearListener).toHaveBeenCalledTimes(1);
+    expect(eventRegistry.registerComponentLifecycleListener).toHaveBeenCalledTimes(1);
     expect(eventRegistry.registerNativeEventListener).toHaveBeenCalledTimes(1);
   });
 
@@ -47,8 +44,8 @@ describe(`ComponentEventsObserver`, () => {
     expect(mockComponentRef.onSearchBarUpdated).toHaveBeenCalledTimes(0);
     expect(mockComponentRef.onSearchBarCancelPressed).toHaveBeenCalledTimes(0);
     uut.registerForAllComponents();
-    eventRegistry.registerComponentDidAppearListener.mock.calls[0][0](refId);
-    eventRegistry.registerComponentDidDisappearListener.mock.calls[0][0](refId);
+    eventRegistry.registerComponentLifecycleListener.mock.calls[0][0]({ componentId: refId, type: 'ComponentDidAppear' });
+    eventRegistry.registerComponentLifecycleListener.mock.calls[0][0]({ componentId: refId, type: 'ComponentDidDisappear' });
     eventRegistry.registerNativeEventListener.mock.calls[0][0](refId, params);
     expect(mockComponentRef.componentDidAppear).toHaveBeenCalledTimes(1);
     expect(mockComponentRef.componentDidDisappear).toHaveBeenCalledTimes(1);
@@ -121,8 +118,7 @@ describe(`ComponentEventsObserver`, () => {
   it('defensive unknown id', () => {
     uut.registerForAllComponents();
     expect(() => {
-      eventRegistry.registerComponentDidAppearListener.mock.calls[0][0]('bad id');
-      eventRegistry.registerComponentDidDisappearListener.mock.calls[0][0]('bad id');
+      eventRegistry.registerComponentLifecycleListener.mock.calls[0][0]('bad id');
       eventRegistry.registerNativeEventListener.mock.calls[0][0]('buttonPressed', { componentId: 'bad id' });
     }).not.toThrow();
   });
@@ -131,8 +127,7 @@ describe(`ComponentEventsObserver`, () => {
     store.setRefForId('myId', {});
     uut.registerForAllComponents();
     expect(() => {
-      eventRegistry.registerComponentDidAppearListener.mock.calls[0][0]('myId');
-      eventRegistry.registerComponentDidDisappearListener.mock.calls[0][0]('myId');
+      eventRegistry.registerComponentLifecycleListener.mock.calls[0][0]('myId');
       eventRegistry.registerNativeEventListener.mock.calls[0][0]('bad event name', {});
     }).not.toThrow();
   });

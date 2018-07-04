@@ -14,6 +14,12 @@ export interface LifecycleEvent {
   componentName: string;
 }
 
+export interface CommandCompletedEvent {
+  commandId: string;
+  completionTime: number;
+  params: any;
+}
+
 export class NativeEventsReceiver {
   private emitter;
   constructor() {
@@ -38,7 +44,7 @@ export class NativeEventsReceiver {
     return this.emitter.addListener('RNN.ComponentLifecycle', callback);
   }
 
-  public registerCommandCompletedListener(callback: (data) => void): EventSubscription {
+  public registerCommandCompletedListener(callback: (data: CommandCompletedEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.CommandCompleted', callback);
   }
 

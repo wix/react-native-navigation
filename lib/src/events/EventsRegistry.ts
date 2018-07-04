@@ -1,4 +1,4 @@
-import { NativeEventsReceiver, LifecycleEvent } from '../adapters/NativeEventsReceiver';
+import { NativeEventsReceiver, LifecycleEvent, CommandCompletedEvent } from '../adapters/NativeEventsReceiver';
 import { CommandsObserver } from './CommandsObserver';
 import { EventSubscription } from '../interfaces/EventSubscription';
 
@@ -17,8 +17,8 @@ export class EventsRegistry {
     return this.commandsObserver.register(callback);
   }
 
-  public registerCommandCompletedListener(callback: (commandId: string, completionTime: number, params: any) => void): EventSubscription {
-    return this.nativeEventsReceiver.registerCommandCompletedListener(({ commandId, completionTime, params }) => callback(commandId, completionTime, params));
+  public registerCommandCompletedListener(callback: (event: CommandCompletedEvent) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerCommandCompletedListener((event) => callback(event));
   }
 
   public registerNativeEventListener(callback: (name: string, params: any) => void): EventSubscription {

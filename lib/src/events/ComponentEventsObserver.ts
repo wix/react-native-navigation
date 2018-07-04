@@ -8,26 +8,31 @@ const ON_SEARCH_BAR_CANCEL_PRESSED = 'searchBarCancelPressed';
 
 export class ComponentEventsObserver {
   constructor(private eventsRegistry: EventsRegistry, private store: Store) {
-    this.componentLifecycle = this.componentLifecycle.bind(this);
+    this.onComponentLifecycle = this.onComponentLifecycle.bind(this);
     this.onNativeEvent = this.onNativeEvent.bind(this);
   }
 
   public registerForAllComponents(): void {
-    this.eventsRegistry.registerComponentLifecycleListener(this.componentLifecycle);
+    this.eventsRegistry.registerComponentLifecycleListener(this.onComponentLifecycle);
     this.eventsRegistry.registerNativeEventListener(this.onNativeEvent);
   }
 
-  private componentLifecycle(event: LifecycleEvent) {
+  private onComponentLifecycle(event: LifecycleEvent) {
+    let componentRef;
     switch (event.type) {
       case LifecycleEventType.ComponentDidMount:
         break;
       case LifecycleEventType.ComponentDidAppear:
-        const componentRef = this.store.getRefForId(event.componentId);
+        componentRef = this.store.getRefForId(event.componentId);
         if (componentRef && componentRef.componentDidAppear) {
           componentRef.componentDidAppear();
         }
         break;
       case LifecycleEventType.ComponentDidDisappear:
+        componentRef = this.store.getRefForId(event.componentId);
+        if (componentRef && componentRef.componentDidDisappear) {
+          componentRef.componentDidDisappear();
+        }
         break;
       case LifecycleEventType.ComponentWillUnmount:
         break;

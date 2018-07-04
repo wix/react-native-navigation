@@ -67,7 +67,7 @@ describe('EventsRegistry', () => {
     expect(mockNativeEventsReceiver.registerCommandCompletedListener).toHaveBeenCalledTimes(1);
 
     mockNativeEventsReceiver.registerCommandCompletedListener.mock.calls[0][0]({ commandId: 'theCommandId', completionTime: 12345, params: { a: 1 } });
-    expect(cb).toHaveBeenCalledWith('theCommandId', 12345, { a: 1 });
+    expect(cb).toHaveBeenCalledWith({ commandId: 'theCommandId', completionTime: 12345, params: { a: 1 } });
   });
 
   it('registerNativeEventListener', () => {
