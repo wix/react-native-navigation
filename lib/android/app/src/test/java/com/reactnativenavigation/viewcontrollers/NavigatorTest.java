@@ -508,13 +508,4 @@ public class NavigatorTest extends BaseTest {
         uut.destroy();
         assertThat(childRegistry.size()).isZero();
     }
-
-    @Test
-    public void reload_navigatorIsDestroyedOnReload() {
-        StackController spy = spy(parentController);
-        uut.setRoot(spy, new CommandListenerAdapter());
-        uut.onReload();
-        verify(spy, times(1)).destroy();
-        verify(overlayManager, times(1)).destroy();
-    }
 }

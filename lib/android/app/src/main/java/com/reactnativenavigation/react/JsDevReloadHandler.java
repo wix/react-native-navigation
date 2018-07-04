@@ -7,29 +7,50 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.KeyEvent;
 
-import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
+import com.facebook.react.devsupport.interfaces.DevSupportManager;
+import com.reactnativenavigation.utils.UiUtils;
 
-public class JsDevReloadHandler {
+import javax.annotation.Nullable;
+
+public class JsDevReloadHandler implements DevBundleDownloadListener {
+    private static final String RELOAD_BROADCAST = "com.reactnativenavigation.broadcast.RELOAD";
+
     public interface ReloadListener {
         void onReload();
     }
 
-	private static final String RELOAD_BROADCAST = "com.reactnativenavigation.broadcast.RELOAD";
 	private final BroadcastReceiver reloadReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(final Context context, final Intent intent) {
 			reloadReactNative();
 		}
 	};
-	private final ReactInstanceManager reactInstanceManager;
-	private long firstRTimestamp = 0;
-    private ReloadListener reloadListener;
+    private final DevSupportManager devSupportManager;
 
-    JsDevReloadHandler(final ReactInstanceManager reactInstanceManager) {
-		this.reactInstanceManager = reactInstanceManager;
-	}
+    private long firstRTimestamp = 0;
+    private ReloadListener reloadListener = () -> {};
 
-    public void addReloadListener(ReloadListener listener) {
+    JsDevReloadHandler(DevSupportManager devSupportManager) {
+        this.devSupportManager = devSupportManager;
+    }
+
+    @Override
+    public void onSuccess() {
+        UiUtils.runOnMainThread(reloadListener::onReload);
+    }
+
+    @Override
+    public void onProgress(@Nullable String status, @Nullable Integer done, @Nullable Integer total) {
+
+    }
+
+    @Override
+    public void onFailure(Exception cause) {
+
+    }
+
+    public void setReloadListener(ReloadListener listener) {
         reloadListener = listener;
     }
 
@@ -48,12 +69,12 @@ public class JsDevReloadHandler {
 	}
 
 	public boolean onKeyUp(int keyCode) {
-		if (!reactInstanceManager.getDevSupportManager().getDevSupportEnabled()) {
+		if (!devSupportManager.getDevSupportEnabled()) {
 			return false;
 		}
 
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			reactInstanceManager.getDevSupportManager().showDevOptionsDialog();
+			devSupportManager.showDevOptionsDialog();
 			return true;
 		}
 
@@ -73,6 +94,6 @@ public class JsDevReloadHandler {
 
 	private void reloadReactNative() {
         reloadListener.onReload();
-		reactInstanceManager.getDevSupportManager().handleReloadJS();
+		devSupportManager.handleReloadJS();
 	}
 }

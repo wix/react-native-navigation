@@ -11,8 +11,6 @@
 
 @class RNNRootViewController;
 
-typedef void (^RNNReactViewReadyCompletionBlock)(void);
-
 @interface RNNRootViewController : UIViewController	<RNNRootViewProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate>
 
 @property (nonatomic, strong) RNNNavigationOptions* options;
@@ -30,8 +28,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 			rootViewCreator:(id<RNNRootViewCreator>)creator
 			   eventEmitter:(RNNEventEmitter*)eventEmitter
 		  isExternalComponent:(BOOL)isExternalComponent;
-
-- (void)onReactViewReady:(RNNReactViewReadyCompletionBlock)readyBlock;
 
 -(void)applyTabBarItem;
 -(void)applyTopTabsOptions;

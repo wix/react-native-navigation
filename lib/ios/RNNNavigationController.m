@@ -36,6 +36,10 @@
 	[self.getTopViewController applyModalOptions];
 }
 
+- (UIViewController *)popViewControllerAnimated:(BOOL)animated {
+	return [super popViewControllerAnimated:animated];
+}
+
 - (NSString *)componentId {
 	return _componentId ? _componentId : self.getTopViewController.componentId;
 }
@@ -50,6 +54,10 @@
 
 - (RNNNavigationOptions *)options {
 	return self.getTopViewController.options;
+}
+
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self.getTopViewController waitForReactViewRender:wait perform:readyBlock];
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {

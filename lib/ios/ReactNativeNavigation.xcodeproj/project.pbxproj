@@ -110,6 +110,8 @@
 		507F43F81FF525B500D9425B /* RNNSegmentedControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 507F43F61FF525B500D9425B /* RNNSegmentedControl.h */; };
 		507F43F91FF525B500D9425B /* RNNSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 507F43F71FF525B500D9425B /* RNNSegmentedControl.m */; };
 		507F44201FFA8A8800D9425B /* RNNRootViewProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 507F441F1FFA8A8800D9425B /* RNNRootViewProtocol.h */; };
+		50887C1520ECC5C200D06111 /* RNNButtonOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50887C1320ECC5C200D06111 /* RNNButtonOptions.h */; };
+		50887C1620ECC5C200D06111 /* RNNButtonOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50887C1420ECC5C200D06111 /* RNNButtonOptions.m */; };
 		50A00C37200F84D6000F01A6 /* RNNOverlayOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */; };
 		50A00C38200F84D6000F01A6 /* RNNOverlayOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */; };
 		50BE951220B5A787004F5DF5 /* RNNStatusBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50BE951020B5A787004F5DF5 /* RNNStatusBarOptions.m */; };
@@ -328,6 +330,8 @@
 		507F43F61FF525B500D9425B /* RNNSegmentedControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSegmentedControl.h; sourceTree = "<group>"; };
 		507F43F71FF525B500D9425B /* RNNSegmentedControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSegmentedControl.m; sourceTree = "<group>"; };
 		507F441F1FFA8A8800D9425B /* RNNRootViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNRootViewProtocol.h; sourceTree = "<group>"; };
+		50887C1320ECC5C200D06111 /* RNNButtonOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNButtonOptions.h; sourceTree = "<group>"; };
+		50887C1420ECC5C200D06111 /* RNNButtonOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNButtonOptions.m; sourceTree = "<group>"; };
 		50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNOverlayOptions.h; sourceTree = "<group>"; };
 		50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayOptions.m; sourceTree = "<group>"; };
 		50BE951020B5A787004F5DF5 /* RNNStatusBarOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNStatusBarOptions.m; sourceTree = "<group>"; };
@@ -558,6 +562,8 @@
 				50175CD0207A2AA1004FE91B /* RNNComponentOptions.m */,
 				A7626BFE1FC2FB6700492FB8 /* RNNTopBarOptions.h */,
 				A7626BFC1FC2FB2C00492FB8 /* RNNTopBarOptions.m */,
+				50887C1320ECC5C200D06111 /* RNNButtonOptions.h */,
+				50887C1420ECC5C200D06111 /* RNNButtonOptions.m */,
 				502CB46C20CD1DDA0019B2FE /* RNNBackButtonOptions.h */,
 				502CB46D20CD1DDA0019B2FE /* RNNBackButtonOptions.m */,
 				50570B242061473D006A1B5C /* RNNTitleOptions.h */,
@@ -850,6 +856,7 @@
 				50D031342005149000386B3D /* RNNOverlayManager.h in Headers */,
 				7B1126A71E2D2B6C00F9B03B /* RNNEventEmitter.h in Headers */,
 				E8A430111F9CB87B00B61A20 /* RNNAnimatedView.h in Headers */,
+				50887C1520ECC5C200D06111 /* RNNButtonOptions.h in Headers */,
 				50C4A496206BDDBB00DB292E /* RNNSubtitleOptions.h in Headers */,
 				268692821E5054F800E2C612 /* RNNStore.h in Headers */,
 				E8AEDB3C1F55A1C2000F5A6A /* RNNElementView.h in Headers */,
@@ -1064,6 +1071,7 @@
 				263905AF1E4C6F440023D7D3 /* MMDrawerBarButtonItem.m in Sources */,
 				E8AEDB4B1F5C0BAF000F5A6A /* RNNInteractivePopAnimator.m in Sources */,
 				7B4928091E70415400555040 /* RNNCommandsHandler.m in Sources */,
+				50887C1620ECC5C200D06111 /* RNNButtonOptions.m in Sources */,
 				268692831E5054F800E2C612 /* RNNStore.m in Sources */,
 				7BC9346E1E26886E00EFA125 /* RNNControllerFactory.m in Sources */,
 				507F43F91FF525B500D9425B /* RNNSegmentedControl.m in Sources */,
