@@ -8,13 +8,13 @@
 
 	if (@available(iOS 11.0, *)) {
 		
-		viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-	
+		
 		if ([self.visible boolValue]){
 			viewController.navigationController.navigationBar.prefersLargeTitles = YES;
 			viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
 		} else {
 			viewController.navigationController.navigationBar.prefersLargeTitles = NO;
+			viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
 		}
 		
 		NSDictionary* fontAttributes = [self fontAttributes];
