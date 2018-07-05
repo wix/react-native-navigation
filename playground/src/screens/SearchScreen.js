@@ -25,6 +25,9 @@ class SearchControllerScreen extends Component {
         largeTitle: {
           visible: true
         },
+        backButton: {
+          color: 'green',
+        },
         searchBar: true,
         searchBarHiddenWhenScrolling: true,
         translucent: true,

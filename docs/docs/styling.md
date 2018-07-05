@@ -75,7 +75,6 @@ Navigation.mergeOptions(this.props.componentId, {
     buttonColor: 'black',
     drawBehind: false,
     testID: 'topBar',
-    largeTitle: true, // iOS 11+ Large Title
     searchBar: true, // iOS 11+ native UISearchBar inside topBar
     searchBarHiddenWhenScrolling: true,
     searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
@@ -104,7 +103,8 @@ Navigation.mergeOptions(this.props.componentId, {
     },
     backButton: {
       icon: require('icon.png'),
-      visible: true
+      visible: true,
+      color: 'green'
     },
     background: {
       color: '#00ff00',

@@ -13,7 +13,6 @@
 @property (nonatomic, strong) NSArray* rightButtons;
 @property (nonatomic, strong) NSNumber* visible;
 @property (nonatomic, strong) NSNumber* hideOnScroll;
-@property (nonatomic, strong) NSNumber* buttonColor;
 @property (nonatomic, strong) NSNumber* translucent;
 @property (nonatomic, strong) NSNumber* transparent;
 @property (nonatomic, strong) NSNumber* drawBehind;
