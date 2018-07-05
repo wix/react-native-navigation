@@ -132,15 +132,25 @@ public class StackController extends ParentController<StackLayout> {
         backButtonHelper.addToPushedChild(this, child);
         ViewGroup childView = child.getView();
         childView.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        presenter.applyLayoutParamsOptions(resolveCurrentOptions(), childView);
+        Options resolvedOptions = resolveCurrentOptions().withDefaultOptions(presenter.getDefaultOptions());
+        child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
+        presenter.applyLayoutParamsOptions(resolvedOptions, childView);
         getView().addView(childView);
+
 
         if (toRemove != null) {
             if (child.options.animations.push.enable.isTrueOrUndefined()) {
-                animator.push(child.getView(), () -> {
-                    getView().removeView(toRemove.getView());
-                    listener.onSuccess(child.getId());
-                });
+                if (resolvedOptions.animations.push.waitForRender.isTrue()) {
+                    child.setOnAppearedListener(() -> animator.push(child.getView(), () -> {
+                        getView().removeView(toRemove.getView());
+                        listener.onSuccess(child.getId());
+                    }));
+                } else {
+                    animator.push(child.getView(), () -> {
+                        getView().removeView(toRemove.getView());
+                        listener.onSuccess(child.getId());
+                    });
+                }
             } else {
                 getView().removeView(toRemove.getView());
                 listener.onSuccess(child.getId());

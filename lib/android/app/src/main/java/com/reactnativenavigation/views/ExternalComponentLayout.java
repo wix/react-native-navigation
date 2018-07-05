@@ -33,4 +33,9 @@ public class ExternalComponentLayout extends FrameLayout implements Component {
             setLayoutParams(layoutParams);
         }
     }
+
+    @Override
+    public boolean isRendered() {
+        return getChildCount() >= 1;
+    }
 }

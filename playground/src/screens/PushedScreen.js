@@ -18,12 +18,16 @@ class PushedScreen extends Component {
       },
       topBar: {
         testID: testIDs.TOP_BAR_ELEMENT
+      },
+      layout: {
+        backgroundColor: '#f5fcff'
       }
     };
   }
 
   constructor(props) {
     super(props);
+    // for (let i = 0; i < Math.pow(2, 24); i++); // Simulate long running task in constructor
     this.onClickPush = this.onClickPush.bind(this);
     this.onClickPop = this.onClickPop.bind(this);
     this.onClickPopPrevious = this.onClickPopPrevious.bind(this);
