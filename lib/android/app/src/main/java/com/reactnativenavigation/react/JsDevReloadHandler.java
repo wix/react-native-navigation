@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.KeyEvent;
 
+import com.facebook.react.bridge.NativeDeltaClient;
 import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
 import com.facebook.react.devsupport.interfaces.DevSupportManager;
 import com.reactnativenavigation.utils.UiUtils;
@@ -35,12 +36,13 @@ public class JsDevReloadHandler implements DevBundleDownloadListener {
         this.devSupportManager = devSupportManager;
     }
 
-    @Override
-    public void onSuccess() {
-        UiUtils.runOnMainThread(reloadListener::onReload);
-    }
 
-    @Override
+	@Override
+	public void onSuccess(@Nullable NativeDeltaClient nativeDeltaClient) {
+		UiUtils.runOnMainThread(reloadListener::onReload);
+	}
+
+	@Override
     public void onProgress(@Nullable String status, @Nullable Integer done, @Nullable Integer total) {
 
     }

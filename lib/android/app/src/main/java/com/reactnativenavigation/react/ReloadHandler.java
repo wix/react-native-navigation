@@ -1,5 +1,6 @@
 package com.reactnativenavigation.react;
 
+import com.facebook.react.bridge.NativeDeltaClient;
 import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
 
 import javax.annotation.Nullable;
@@ -24,7 +25,7 @@ public class ReloadHandler implements JsDevReloadHandler.ReloadListener, DevBund
      * Called when the bundle was successfully reloaded
      */
     @Override
-    public void onSuccess() {
+    public void onSuccess(@Nullable NativeDeltaClient nativeDeltaClient) {
         onReloadListener.run();
     }
 

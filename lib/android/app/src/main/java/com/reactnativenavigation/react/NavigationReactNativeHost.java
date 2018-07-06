@@ -9,6 +9,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactInstanceManagerBuilder;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.NativeDeltaClient;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
 import com.facebook.react.shell.MainReactPackage;
@@ -28,9 +29,9 @@ public class NavigationReactNativeHost extends ReactNativeHost implements Bundle
     private @Nullable DevBundleDownloadListener bundleListener;
     private final DevBundleDownloadListener bundleListenerMediator = new DevBundleDownloadListenerAdapter() {
         @Override
-        public void onSuccess() {
+        public void onSuccess(@javax.annotation.Nullable NativeDeltaClient nativeDeltaClient) {
             if (bundleListener != null) {
-                bundleListener.onSuccess();
+                bundleListener.onSuccess(nativeDeltaClient);
             }
         }
     };

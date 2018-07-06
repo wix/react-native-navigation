@@ -1,12 +1,14 @@
 package com.reactnativenavigation.react;
 
+import com.facebook.react.bridge.NativeDeltaClient;
 import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
 
 import javax.annotation.Nullable;
 
 public class DevBundleDownloadListenerAdapter implements DevBundleDownloadListener {
+
     @Override
-    public void onSuccess() {
+    public void onSuccess(@Nullable NativeDeltaClient nativeDeltaClient) {
 
     }
 
