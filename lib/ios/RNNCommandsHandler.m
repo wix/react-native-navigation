@@ -7,6 +7,7 @@
 #import "RNNSplitViewController.h"
 #import "RNNElementFinder.h"
 #import "React/RCTUIManager.h"
+#import "React/RCTI18nUtil.h"
 
 
 static NSString* const setRoot	= @"setRoot";
@@ -48,6 +49,20 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 -(void) setRoot:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
+
+	if (@available(iOS 9, *)) {
+        if ([_controllerFactory.defaultOptionsDict[@"layout"][@"direction"] isEqualToString:@"rtl"]) {
+            [[RCTI18nUtil sharedInstance] allowRTL:YES];
+            [[RCTI18nUtil sharedInstance] forceRTL:YES];
+            [[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
+            [[UINavigationBar appearance] setSemanticContentAttribute:UISemanticContentAttributeForceRightToLeft];
+        } else {
+            [[RCTI18nUtil sharedInstance] allowRTL:NO];
+            [[RCTI18nUtil sharedInstance] forceRTL:NO];
+            [[UIView appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
+            [[UINavigationBar appearance] setSemanticContentAttribute:UISemanticContentAttributeForceLeftToRight];
+        }
+    }
 	
 	[_modalManager dismissAllModals];
 	[_eventEmitter sendOnNavigationCommand:setRoot params:@{@"layout": layout}];

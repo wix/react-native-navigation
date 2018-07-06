@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.view.View;
 
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.BackButton;
@@ -110,13 +111,16 @@ public class TitleBar extends Toolbar {
     }
 
     private void alignTextView(Alignment alignment, TextView view) {
+        Integer direction = view.getParent().getLayoutDirection();
+        Boolean isRTL = direction == View.LAYOUT_DIRECTION_RTL;
+
         view.post(() -> {
             if (alignment == Alignment.Center) {
                 view.setX((getWidth() - view.getWidth()) / 2);
             } else if (leftButtonController != null) {
-                view.setX(getContentInsetStartWithNavigation());
+                view.setX(isRTL ? (getWidth() - view.getWidth()) - getContentInsetStartWithNavigation() : getContentInsetStartWithNavigation());
             } else {
-                view.setX(UiUtils.dpToPx(getContext(), 16));
+                view.setX(isRTL ? (getWidth() - view.getWidth()) - UiUtils.dpToPx(getContext(), 16) : UiUtils.dpToPx(getContext(), 16));
             }
         });
     }
