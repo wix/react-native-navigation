@@ -145,8 +145,8 @@
 
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
-		UIViewController* childVc = (UIViewController*)[self fromTree:child];
-		RNNRootViewController* rootView = (RNNRootViewController *)childVc.childViewControllers.firstObject;
+		UIViewController<RNNRootViewProtocol>* childVc = [self fromTree:child];
+		RNNRootViewController* rootView = (RNNRootViewController *)[childVc getLeafViewController];
 		[rootView applyTabBarItem];
 		
 		[controllers addObject:childVc];

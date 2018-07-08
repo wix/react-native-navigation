@@ -8,32 +8,28 @@
 	return self.viewControllers.lastObject.supportedInterfaceOrientations;
 }
 
-- (UIViewController<RNNRootViewProtocol>*)getTopViewController {
-	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController);
-}
-
 - (UINavigationController *)navigationController {
 	return self;
 }
 
 - (BOOL)isCustomViewController {
-	return [self.getTopViewController isCustomViewController];
+	return [self.getLeafViewController isCustomViewController];
 }
 
 - (void)mergeOptions:(RNNOptions *)options {
-	[self.getTopViewController mergeOptions:options];
+	[self.getLeafViewController mergeOptions:options];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	return self.getTopViewController.preferredStatusBarStyle;
+	return self.getLeafViewController.preferredStatusBarStyle;
 }
 
 - (UIModalPresentationStyle)modalPresentationStyle {
-	return self.getTopViewController.modalPresentationStyle;
+	return self.getLeafViewController.modalPresentationStyle;
 }
 
 - (void)applyModalOptions {
-	[self.getTopViewController applyModalOptions];
+	[self.getLeafViewController applyModalOptions];
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
@@ -41,7 +37,7 @@
 }
 
 - (NSString *)componentId {
-	return _componentId ? _componentId : self.getTopViewController.componentId;
+	return _componentId ? _componentId : self.getLeafViewController.componentId;
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
@@ -53,11 +49,15 @@
 }
 
 - (RNNNavigationOptions *)options {
-	return self.getTopViewController.options;
+	return self.getLeafViewController.options;
+}
+
+- (UIViewController *)getLeafViewController {
+	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController);
 }
 
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	[self.getTopViewController waitForReactViewRender:wait perform:readyBlock];
+	[self.getLeafViewController waitForReactViewRender:wait perform:readyBlock];
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {

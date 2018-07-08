@@ -33,6 +33,10 @@
 - (void)optionsUpdated {
 }
 
+- (UIViewController *)getLeafViewController {
+	return self;
+}
+
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
 	readyBlock();
 }

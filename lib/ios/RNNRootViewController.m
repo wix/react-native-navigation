@@ -99,6 +99,10 @@
 	}
 }
 
+- (UIViewController *)getLeafViewController {
+	return self;
+}
+
 - (void)onReactViewReady:(RNNReactViewReadyCompletionBlock)readyBlock {
 	if (self.isCustomViewController) {
 		readyBlock();
