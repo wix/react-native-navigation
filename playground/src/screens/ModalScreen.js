@@ -44,6 +44,7 @@ class ModalScreen extends Component {
   }
 
   simulateLongRunningTask = () => {
+    // tslint:disable-next-line
     for (let i = 0; i < Math.pow(2, 25); i++);
   }
 

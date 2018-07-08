@@ -27,7 +27,9 @@ class PushedScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.props.simulateLongRunningTask && this.simulateLongRunningTask();
+    if (this.props.simulateLongRunningTask) {
+      this.simulateLongRunningTask();
+    }
     this.onClickPush = this.onClickPush.bind(this);
     this.onClickPop = this.onClickPop.bind(this);
     this.onClickPopPrevious = this.onClickPopPrevious.bind(this);
@@ -38,6 +40,7 @@ class PushedScreen extends Component {
   }
 
   simulateLongRunningTask() {
+    // tslint:disable-next-line
     for (let i = 0; i < Math.pow(2, 25); i++);
   }
 
@@ -208,7 +211,7 @@ class PushedScreen extends Component {
           }
         }
       }
-    })
+    });
   }
 
   getStackPosition() {
