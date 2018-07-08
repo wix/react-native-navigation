@@ -30,18 +30,27 @@ public class ModalPresenter {
     }
 
     public void showModal(ViewController toAdd, ViewController toRemove, CommandListener listener) {
-        Options options = toAdd.options.withDefaultOptions(defaultOptions);
+        Options options = toAdd.resolveCurrentOptions(defaultOptions);
+        toAdd.setWaitForRender(options.animations.showModal.waitForRender);
         content.addView(toAdd.getView());
         if (options.animations.showModal.enable.isTrueOrUndefined()) {
-            animator.show(toAdd.getView(), options.animations.showModal, new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    onShowModalEnd(toAdd, toRemove, listener);
-                }
-            });
+            if (options.animations.showModal.waitForRender.isTrue()) {
+                toAdd.setOnAppearedListener(() -> animateShow(toAdd, toRemove, listener, options));
+            } else {
+                animateShow(toAdd, toRemove, listener, options);
+            }
         } else {
             onShowModalEnd(toAdd, toRemove, listener);
         }
+    }
+
+    private void animateShow(ViewController toAdd, ViewController toRemove, CommandListener listener, Options options) {
+        animator.show(toAdd.getView(), options.animations.showModal, new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                onShowModalEnd(toAdd, toRemove, listener);
+            }
+        });
     }
 
     private void onShowModalEnd(ViewController toAdd, ViewController toRemove, CommandListener listener) {

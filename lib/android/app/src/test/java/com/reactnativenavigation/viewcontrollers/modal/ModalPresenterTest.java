@@ -9,6 +9,7 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.ModalPresentationStyle;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildController;
@@ -53,6 +54,16 @@ public class ModalPresenterTest extends BaseTest {
         uut.setContentLayout(contentLayout);
         modal1 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_1, new Options()));
         modal2 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_2, new Options()));
+    }
+
+    @Test
+    public void showModal() {
+        Options defaultOptions = new Options();
+        uut.setDefaultOptions(defaultOptions);
+        disableShowModalAnimation(modal1);
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        verify(modal1).setWaitForRender(any());
+        verify(modal1).resolveCurrentOptions(defaultOptions);
     }
 
     @Test
@@ -115,6 +126,14 @@ public class ModalPresenterTest extends BaseTest {
                 assertThat(animator.isRunning()).isFalse();
             }
         });
+    }
+
+    @Test
+    public void showModal_waitForRender() {
+        modal1.options.animations.showModal.waitForRender = new Bool(true);
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        verify(modal1).setOnAppearedListener(any());
+        verifyZeroInteractions(animator);
     }
 
     @Test

@@ -131,7 +131,7 @@ public class StackController extends ParentController<StackLayout> {
         child.setParentController(this);
         stack.push(child.getId(), child);
         backButtonHelper.addToPushedChild(this, child);
-        Options resolvedOptions = resolveCurrentOptions().withDefaultOptions(presenter.getDefaultOptions());
+        Options resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
         addChildToStack(child, child.getView(), resolvedOptions);
 
         if (toRemove != null) {

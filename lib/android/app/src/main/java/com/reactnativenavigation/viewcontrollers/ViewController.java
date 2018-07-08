@@ -87,6 +87,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return options;
     }
 
+    @CheckResult
+    public Options resolveCurrentOptions(Options defaultOptions) {
+        return options.copy().withDefaultOptions(defaultOptions);
+    }
+
     @CallSuper
     public void mergeOptions(Options options) {
         this.options = this.options.mergeWith(options);
@@ -254,5 +259,9 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
                 !(view instanceof Component) ||
                 ((Component) view).isRendered()
         );
+    }
+
+    void applyOnController(ViewController controller, Task<ViewController> task) {
+        if (controller != null) task.run(controller);
     }
 }

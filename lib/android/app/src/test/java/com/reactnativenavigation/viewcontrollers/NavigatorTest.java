@@ -433,10 +433,11 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void dismissModal_onViewAppearedInvokedOnRoot() {
-        disableShowModalAnimation(child1, child2);
+        disableShowModalAnimation(child1, child2, child3);
         disableDismissModalAnimation(child1, child2);
 
         uut.setRoot(parentController, new CommandListenerAdapter());
+        parentController.push(child3, new CommandListenerAdapter());
         uut.showModal(child1, new CommandListenerAdapter());
         uut.showModal(child2, new CommandListenerAdapter());
 
@@ -452,12 +453,14 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void dismissAllModals_onViewAppearedInvokedOnRoot() {
+        disablePushAnimation(child2);
         disableShowModalAnimation(child1);
 
         uut.dismissAllModals(new CommandListenerAdapter());
         verify(parentVisibilityListener, times(0)).onViewAppeared(parentController.getView());
 
         uut.setRoot(parentController, new CommandListenerAdapter());
+        parentController.push(child2, new CommandListenerAdapter());
 
         verify(parentVisibilityListener, times(1)).onViewAppeared(parentController.getView());
         uut.showModal(child1, new CommandListenerAdapter());
@@ -468,8 +471,9 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void handleBack_onViewAppearedInvokedOnRoot() {
-        disableShowModalAnimation(child1, child2);
+        disableShowModalAnimation(child1, child2, child3);
 
+        parentController.push(child3, new CommandListenerAdapter());
         StackController spy = spy(parentController);
         uut.setRoot(spy, new CommandListenerAdapter());
         uut.showModal(child1, new CommandListenerAdapter());
@@ -489,9 +493,12 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void destroy_destroyedRoot() {
+        disablePushAnimation(child1);
+
         StackController spy = spy(parentController);
         spy.options.animations.startApp.enable = new Bool(false);
         uut.setRoot(spy, new CommandListenerAdapter());
+        spy.push(child1, new CommandListenerAdapter());
         activityController.destroy();
         verify(spy, times(1)).destroy();
     }

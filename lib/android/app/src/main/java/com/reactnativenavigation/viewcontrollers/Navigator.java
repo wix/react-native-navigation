@@ -106,7 +106,7 @@ public class Navigator extends ParentController {
         destroyRoot();
         root = viewController;
         contentLayout.addView(viewController.getView());
-        if (viewController.options.animations.startApp.hasValue()) {
+        if (viewController.options.animations.startApp.hasAnimation()) {
             new NavigationAnimator(viewController.getActivity(), viewController.options.animations)
                     .animateStartApp(viewController.getView(), new AnimatorListenerAdapter() {
                         @Override
