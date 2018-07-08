@@ -23,6 +23,7 @@ import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
 import org.junit.Test;
@@ -55,6 +56,7 @@ public class NavigatorTest extends BaseTest {
     private OverlayManager overlayManager;
     private EventEmitter eventEmitter;
     private ViewController.ViewVisibilityListener parentVisibilityListener;
+    private ModalStack modalStack;
 
     @Override
     public void beforeEach() {
@@ -64,7 +66,8 @@ public class NavigatorTest extends BaseTest {
         imageLoaderMock = ImageLoaderMock.mock();
         activityController = newActivityController(TestActivity.class);
         activity = activityController.create().get();
-        uut = new Navigator(activity, childRegistry, overlayManager);
+        modalStack = spy(new ModalStack(activity));
+        uut = new Navigator(activity, childRegistry, modalStack, overlayManager);
         activity.setNavigator(uut);
 
         parentController = newStack();
@@ -100,6 +103,7 @@ public class NavigatorTest extends BaseTest {
         Options defaultOptions = new Options();
         uut.setDefaultOptions(defaultOptions);
         verify(spy, times(1)).setDefaultOptions(defaultOptions);
+        verify(modalStack).setDefaultOptions(defaultOptions);
     }
 
     @Test
@@ -119,7 +123,7 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void hasUniqueId() {
         assertThat(uut.getId()).startsWith("navigator");
-        assertThat(new Navigator(activity, childRegistry, overlayManager).getId()).isNotEqualTo(uut.getId());
+        assertThat(new Navigator(activity, childRegistry, modalStack, overlayManager).getId()).isNotEqualTo(uut.getId());
     }
 
     @Test

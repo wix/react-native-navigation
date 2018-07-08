@@ -55,6 +55,7 @@ public class AnimationOptions {
             hasValue = true;
             id = other.id;
             valueOptions = other.valueOptions;
+            enable = other.enable;
         }
     }
 
@@ -63,6 +64,7 @@ public class AnimationOptions {
             hasValue = true;
             id = defaultOptions.id;
             valueOptions = defaultOptions.valueOptions;
+            enable = defaultOptions.enable;
         }
     }
 
