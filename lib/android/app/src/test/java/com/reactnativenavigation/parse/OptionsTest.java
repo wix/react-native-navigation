@@ -269,9 +269,9 @@ public class OptionsTest extends BaseTest {
     @Test
     public void clear_bottomTabsOptions() {
         Options uut = new Options();
-        uut.bottomTabsOptions.tabColor = new com.reactnativenavigation.parse.params.Color(android.graphics.Color.RED);
+        uut.bottomTabsOptions.backgroundColor = new com.reactnativenavigation.parse.params.Color(android.graphics.Color.RED);
         uut.clearBottomTabsOptions();
-        assertThat(uut.bottomTabsOptions.tabColor.hasValue()).isFalse();
+        assertThat(uut.bottomTabsOptions.backgroundColor.hasValue()).isFalse();
     }
 
     @Test

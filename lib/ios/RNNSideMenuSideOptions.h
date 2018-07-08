@@ -7,5 +7,6 @@
 
 @property (nonatomic, strong) NSNumber* visible;
 @property (nonatomic, strong) NSNumber* enabled;
+@property (nonatomic, strong) NSNumber* width;
 
 @end

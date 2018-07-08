@@ -33,6 +33,14 @@
 - (void)optionsUpdated {
 }
 
+- (UIViewController *)getLeafViewController {
+	return self;
+}
+
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	readyBlock();
+}
+
 - (void)mergeOptions:(RNNOptions *)options {
 	[self.options mergeOptions:options];
 }

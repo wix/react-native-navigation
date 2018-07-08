@@ -128,8 +128,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:elementView];
 		}
 	} else {
-		[newVc onReactViewReady:^{
-			id animationDelegate = (newVc.options.animations.push.hasCustomAnimation || newVc.isCustomTransitioned) ? newVc : nil;
+		id animationDelegate = (newVc.options.animations.push.hasCustomAnimation || newVc.isCustomTransitioned) ? newVc : nil;
+		[newVc waitForReactViewRender:newVc.options.animations.push.waitForRender perform:^{
 			[_stackManager push:newVc onTop:fromVC animated:newVc.options.animations.push.enable animationDelegate:animationDelegate completion:^{
 				[_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
 				completion();
@@ -257,13 +257,13 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}];
 }
 
-- (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion {
+- (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
 	[self assertReady];
 
 	[_overlayManager dismissOverlay:componentId completion:^{
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
 		completion();
-	}];
+	} rejection:reject];
 }
 
 #pragma mark - private

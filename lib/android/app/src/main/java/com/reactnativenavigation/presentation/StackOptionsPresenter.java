@@ -1,7 +1,9 @@
 package com.reactnativenavigation.presentation;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
 import com.reactnativenavigation.parse.AnimationsOptions;
@@ -24,23 +26,45 @@ public class StackOptionsPresenter {
     private final double defaultSubtitleFontSize;
 
     private TopBar topBar;
+    private Options defaultOptions;
 
-    public StackOptionsPresenter(TopBar topBar) {
+    public StackOptionsPresenter(Context context, Options defaultOptions) {
+        defaultTitleFontSize = UiUtils.dpToSp(context, 18);
+        defaultSubtitleFontSize = UiUtils.dpToSp(context, 14);
+        this.defaultOptions = defaultOptions;
+    }
+
+    public void setDefaultOptions(Options defaultOptions) {
+        this.defaultOptions = defaultOptions;
+    }
+
+    public void bindView(TopBar topBar) {
         this.topBar = topBar;
-        defaultTitleFontSize = UiUtils.dpToSp(topBar.getContext(), 18);
-        defaultSubtitleFontSize = UiUtils.dpToSp(topBar.getContext(), 14);
+    }
+
+    public void applyLayoutParamsOptions(Options options, View view) {
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        if (view instanceof Component) {
+            if (withDefaultOptions.topBar.drawBehind.isTrue() && !withDefaultOptions.layout.topMargin.hasValue()) {
+                ((Component) view).drawBehindTopBar();
+            } else if (options.topBar.drawBehind.isFalseOrUndefined()) {
+                ((Component) view).drawBelowTopBar(topBar);
+            }
+        }
     }
 
     public void applyChildOptions(Options options, Component child) {
-        applyOrientation(options.layout.orientation);
-        applyButtons(options.topBar.buttons);
-        applyTopBarOptions(options.topBar, options.animations, child, options);
-        applyTopTabsOptions(options.topTabs);
-        applyTopTabOptions(options.topTabOptions);
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        applyOrientation(withDefaultOptions.layout.orientation);
+        applyButtons(withDefaultOptions.topBar.buttons);
+        applyTopBarOptions(withDefaultOptions.topBar, withDefaultOptions.animations, child, options);
+        applyTopTabsOptions(withDefaultOptions.topTabs);
+        applyTopTabOptions(withDefaultOptions.topTabOptions);
     }
 
     public void applyOrientation(OrientationOptions options) {
-        ((Activity) topBar.getContext()).setRequestedOrientation(options.getValue());
+        OrientationOptions withDefaultOptions = options.copy().mergeWithDefault(defaultOptions.layout.orientation);
+        ((Activity) topBar.getContext()).setRequestedOrientation(withDefaultOptions.getValue());
     }
 
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
@@ -124,11 +148,12 @@ public class StackOptionsPresenter {
     }
 
     public void mergeChildOptions(Options options, Component child) {
-        mergeOrientation(options.layout.orientation);
-        mergeButtons(options.topBar.buttons);
-        mergeTopBarOptions(options.topBar, options.animations, child);
-        mergeTopTabsOptions(options.topTabs);
-        mergeTopTabOptions(options.topTabOptions);
+        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        mergeOrientation(withDefaultOptions.layout.orientation);
+        mergeButtons(withDefaultOptions.topBar.buttons);
+        mergeTopBarOptions(withDefaultOptions.topBar, withDefaultOptions.animations, child);
+        mergeTopTabsOptions(withDefaultOptions.topTabs);
+        mergeTopTabOptions(withDefaultOptions.topTabOptions);
     }
 
     private void mergeOrientation(OrientationOptions orientationOptions) {

@@ -8,6 +8,7 @@
 @property (weak, nonatomic) RNNRootViewController* viewController;
 @property (strong, nonatomic) NSArray* rightButtons;
 @property (strong, nonatomic) NSArray* leftButtons;
+@property (strong, nonatomic) RNNButtonOptions* defaultButtonStyle;
 
 @end
 
@@ -21,7 +22,8 @@
 	return self;
 }
 
--(void)applyLeftButtons:(NSArray*)leftButtons rightButtons:(NSArray*)rightButtons {
+-(void)applyLeftButtons:(NSArray*)leftButtons rightButtons:(NSArray*)rightButtons defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle {
+	_defaultButtonStyle = defaultButtonStyle;
 	if (leftButtons) {
 		[self setButtons:leftButtons side:@"left" animated:NO];
 	}
@@ -99,19 +101,19 @@
 	NSMutableDictionary* textAttributes = [[NSMutableDictionary alloc] init];
 	NSMutableDictionary* disabledTextAttributes = [[NSMutableDictionary alloc] init];
 	
-	id color = dictionary[@"color"];
+	UIColor* color = [self color:dictionary[@"color"] defaultColor:_defaultButtonStyle.color];
 	if (color) {
-		[textAttributes setObject:[RCTConvert UIColor:color] forKey:NSForegroundColorAttributeName];
+		[textAttributes setObject:color forKey:NSForegroundColorAttributeName];
 	}
 	
-	NSNumber* disabledColor = dictionary[@"disabledColor"];
+	UIColor* disabledColor = [self color:dictionary[@"disabledColor"] defaultColor:_defaultButtonStyle.disabledColor];;
 	if (disabledColor) {
-		UIColor *color = [RCTConvert UIColor:disabledColor];
+		UIColor *color = disabledColor;
 		[disabledTextAttributes setObject:color forKey:NSForegroundColorAttributeName];
 	}
 	
-	NSNumber* fontSize = dictionary[@"fontSize"] ? dictionary[@"fontSize"] : @(17);
-	NSString* fontFamily = dictionary[@"fontFamily"];
+	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:_defaultButtonStyle.fontSize];
+	NSString* fontFamily = [self fontFamily:dictionary[@"fontFamily"] defaultFontFamily:_defaultButtonStyle.fontFamily];
 	if (fontFamily) {
 		[textAttributes setObject:[UIFont fontWithName:fontFamily size:[fontSize floatValue]] forKey:NSFontAttributeName];
 	} else{
@@ -128,6 +130,34 @@
 	}
 	
 	return barButtonItem;
+}
+
+- (UIColor *)color:(NSNumber *)color defaultColor:(NSNumber *)defaultColor {
+	if (color) {
+		return [RCTConvert UIColor:color];
+	} else if (defaultColor) {
+		return [RCTConvert UIColor:defaultColor];
+	}
+		
+	return nil;
+}
+
+- (NSNumber *)fontSize:(NSNumber *)fontSize defaultFontSize:(NSNumber *)defaultFontSize {
+	if (fontSize) {
+		return fontSize;
+	} else if (defaultFontSize) {
+		return defaultFontSize;
+	}
+	
+	return @(17);
+}
+
+- (NSString *)fontFamily:(NSString *)fontFamily defaultFontFamily:(NSString *)defaultFontFamily {
+	if (fontFamily) {
+		return fontFamily;
+	} else {
+		return defaultFontFamily;
+	}
 }
 
 -(void)onButtonPress:(RNNUIBarButtonItem*)barButtonItem {

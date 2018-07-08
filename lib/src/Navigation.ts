@@ -15,7 +15,7 @@ import { Constants } from './adapters/Constants';
 import { ComponentType } from 'react';
 
 export class Navigation {
-  public readonly Element: React.ComponentType<{ elementId: any; resizeMode: any; }>;
+  public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
   public readonly store: Store;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly uniqueIdProvider: UniqueIdProvider;
@@ -162,7 +162,7 @@ export class Navigation {
   /**
    * Constants coming from native
    */
-  public constants(): Constants {
-    return Constants.get();
+  public async constants(): Promise<any> {
+    return await Constants.get();
   }
 }

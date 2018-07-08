@@ -37,6 +37,7 @@ public class FloatingActionButtonTest extends BaseTest {
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
         stackController = TestUtils.newStackController(activity).build();
+        stackController.ensureViewIsCreated();
         Options options = getOptionsWithFab();
         childFab = new SimpleViewController(activity, childRegistry, "child1", options);
         childNoFab = new SimpleViewController(activity, childRegistry, "child2", new Options());

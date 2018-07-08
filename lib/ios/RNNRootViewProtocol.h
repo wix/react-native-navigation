@@ -1,4 +1,5 @@
 #import "RNNNavigationOptions.h"
+typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @protocol RNNRootViewProtocol <NSObject, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, UISplitViewControllerDelegate>
 
@@ -13,6 +14,8 @@
 
 @required
 - (NSString *)componentId;
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+- (UIViewController<RNNRootViewProtocol> *)getLeafViewController;
 
 @end
 

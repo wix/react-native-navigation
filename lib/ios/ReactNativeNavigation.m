@@ -31,6 +31,10 @@
 	return [[ReactNativeNavigation sharedInstance].bridgeManager bridge];
 }
 
++ (UIViewController *)findViewController:(NSString *)componentId {
+    RNNStore *store = [[ReactNativeNavigation sharedInstance].bridgeManager store];
+    return [store findComponentForId:componentId];
+}
 
 # pragma mark - instance
 

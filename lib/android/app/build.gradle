@@ -62,6 +62,9 @@ allprojects { p ->
         p.android.compileOptions.sourceCompatibility JavaVersion.VERSION_1_8
         p.android.compileOptions.targetCompatibility JavaVersion.VERSION_1_8
     }
+    p.repositories {
+        maven { url "https://jitpack.io" }
+    }
 }
 
 dependencies {
@@ -69,7 +72,8 @@ dependencies {
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:support-v4:26.1.0'
-    implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
+    implementation 'com.github.wix-playground:ahbottomnavigation:2.4.3'
+
     implementation 'com.github.clans:fab:1.6.4'
 
     //noinspection GradleDynamicVersion

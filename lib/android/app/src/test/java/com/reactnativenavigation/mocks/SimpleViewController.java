@@ -6,10 +6,12 @@ import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ChildController;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.views.ReactComponent;
@@ -20,7 +22,7 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
     private SimpleView simpleView;
 
     public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Options options) {
-        this(activity, childRegistry, id, new OptionsPresenter(activity), options);
+        this(activity, childRegistry, id, new OptionsPresenter(activity, new Options()), options);
     }
 
     public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, OptionsPresenter presenter, Options options) {
@@ -57,12 +59,22 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
         @Override
         public void drawBehindTopBar() {
-
+            if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+                if (layoutParams.topMargin == 0) return;
+                layoutParams.topMargin = 0;
+                setLayoutParams(layoutParams);
+            }
         }
 
         @Override
         public void drawBelowTopBar(TopBar topBar) {
-
+            if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+                if (layoutParams.topMargin == ViewUtils.getPreferredHeight(topBar)) return;
+                layoutParams.topMargin = ViewUtils.getPreferredHeight(topBar);
+//                setLayoutParams(layoutParams);
+            }
         }
 
         @Override

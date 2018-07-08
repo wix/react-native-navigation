@@ -31,7 +31,7 @@
 	
 	self.sideMenu.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
 	self.sideMenu.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
-	
+
 	[self addChildViewController:self.sideMenu];
 	[self.sideMenu.view setFrame:self.view.bounds];
 	[self.view addSubview:self.sideMenu.view];
@@ -89,8 +89,16 @@
 	}
 }
 
+- (UIViewController *)getLeafViewController {
+	return self.center;
+}
+
 - (void)mergeOptions:(RNNOptions *)options {
 	[self.center mergeOptions:options];
+}
+
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	[self.center waitForReactViewRender:wait perform:readyBlock];
 }
 
 - (NSString *)componentId {

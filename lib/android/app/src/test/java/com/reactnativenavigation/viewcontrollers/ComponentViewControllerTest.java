@@ -7,6 +7,7 @@ import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.views.StackLayout;
 
 import org.junit.Test;
@@ -27,7 +28,8 @@ public class ComponentViewControllerTest extends BaseTest {
         Activity activity = newActivity();
         view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
         ParentController<StackLayout> parentController = TestUtils.newStackController(activity).build();
-        uut = new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options());
+        OptionsPresenter presenter = new OptionsPresenter(activity, new Options());
+        uut = new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options(), presenter);
         uut.setParentController(parentController);
         parentController.ensureViewIsCreated();
     }

@@ -25,23 +25,13 @@ public class BottomTabs extends AHBottomNavigation {
         if (BuildConfig.DEBUG) view.setContentDescription(testId.get());
     }
 
-    public void setBadge(int bottomTabIndex, Text badge) {
-        setNotification(badge.get(), bottomTabIndex);
+    public void setBadge(int bottomTabIndex, String badge) {
+        setNotification(badge, bottomTabIndex);
     }
 
     @Override
     public void setCurrentItem(@IntRange(from = 0) int position) {
         super.setCurrentItem(position);
-    }
-
-    @Override
-    public void setAccentColor(int accentColor) {
-        if (getAccentColor() != accentColor) super.setAccentColor(accentColor);
-    }
-
-    @Override
-    public void setInactiveColor(int inactiveColor) {
-        if (getInactiveColor() != inactiveColor) super.setInactiveColor(inactiveColor);
     }
 
     @Override

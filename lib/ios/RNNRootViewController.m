@@ -91,6 +91,18 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
 }
 
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
+	if (wait) {
+		[self onReactViewReady:readyBlock];
+	} else {
+		readyBlock();
+	}
+}
+
+- (UIViewController *)getLeafViewController {
+	return self;
+}
+
 - (void)onReactViewReady:(RNNReactViewReadyCompletionBlock)readyBlock {
 	if (self.isCustomViewController) {
 		readyBlock();
@@ -261,6 +273,7 @@
 }
 
 -(void)applyTabBarItem {
+	[self.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.options.defaultOptions).bottomTab overrideOptions:NO];
 	[self.options.bottomTab applyOn:self];
 }
 

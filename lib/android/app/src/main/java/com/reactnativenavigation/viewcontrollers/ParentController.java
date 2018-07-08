@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.support.annotation.CallSuper;
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.views.Component;
 
 import java.util.Collection;
@@ -19,7 +21,27 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 		super(activity, childRegistry, id, presenter, initialOptions);
 	}
 
-	@NonNull
+	@Override
+    public void setDefaultOptions(Options defaultOptions) {
+        Collection<? extends ViewController> children = getChildControllers();
+        if (!CollectionUtils.isNullOrEmpty(children)) {
+            for (ViewController child : children) {
+                child.setDefaultOptions(defaultOptions);
+            }
+        }
+    }
+
+    @Override
+    @CheckResult
+    public Options resolveCurrentOptions() {
+	    if (CollectionUtils.isNullOrEmpty(getChildControllers())) return options;
+        Options o = getCurrentChild().resolveCurrentOptions();
+        return o.copy().mergeWith(options);
+    }
+
+    protected abstract ViewController getCurrentChild();
+
+    @NonNull
 	@Override
 	public T getView() {
 		return (T) super.getView();

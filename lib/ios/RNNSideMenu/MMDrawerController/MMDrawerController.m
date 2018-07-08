@@ -925,7 +925,6 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         }
         [viewController didMoveToParentViewController:self];
         [viewController.view setAutoresizingMask:autoResizingMask];
-        [viewController.view setFrame:viewController.mm_visibleDrawerFrame];
     }
 }
 

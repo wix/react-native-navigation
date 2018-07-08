@@ -13,7 +13,6 @@ import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.OverlayManager;
-import com.reactnativenavigation.react.JsDevReloadHandler;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -24,7 +23,7 @@ import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import java.util.Collection;
 import java.util.Collections;
 
-public class Navigator extends ParentController implements JsDevReloadHandler.ReloadListener {
+public class Navigator extends ParentController {
 
     private final ModalStack modalStack;
     private ViewController root;
@@ -33,8 +32,10 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
     private final OverlayManager overlayManager;
     private Options defaultOptions = new Options();
 
+    @Override
     public void setDefaultOptions(Options defaultOptions) {
         this.defaultOptions = defaultOptions;
+        if (root != null) root.setDefaultOptions(defaultOptions);
     }
 
     public Options getDefaultOptions() {
@@ -42,7 +43,7 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, OverlayManager overlayManager) {
-        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new OptionsPresenter(activity), new Options());
+        super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new OptionsPresenter(activity, new Options()), new Options());
         modalStack = new ModalStack(new ModalPresenter(new ModalAnimator(activity)));
         this.overlayManager = overlayManager;
     }
@@ -74,8 +75,8 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
     }
 
     @Override
-    public void onReload() {
-        destroyViews();
+    protected ViewController getCurrentChild() {
+        return root;
     }
 
     @Override
@@ -84,7 +85,7 @@ public class Navigator extends ParentController implements JsDevReloadHandler.Re
         super.destroy();
     }
 
-    private void destroyViews() {
+    public void destroyViews() {
         modalStack.dismissAllModals(new CommandListenerAdapter(), root);
         overlayManager.destroy();
         destroyRoot();

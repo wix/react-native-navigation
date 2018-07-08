@@ -32,6 +32,6 @@
 
 -(void)showOverlay:(NSDictionary *)layout completion:(RNNTransitionCompletionBlock)completion;
 
--(void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;
+-(void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject;
 
 @end
