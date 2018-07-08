@@ -249,8 +249,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     public boolean isRendered() {
-        return waitForRender.isFalseOrUndefined() ||
-               !(view instanceof Component) ||
-               ((Component) view).isRendered();
+        return view != null && (
+                waitForRender.isFalseOrUndefined() ||
+                !(view instanceof Component) ||
+                ((Component) view).isRendered()
+        );
     }
 }

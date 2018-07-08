@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -10,8 +11,11 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.views.Component;
 
 import org.assertj.android.api.Assertions;
 import org.junit.Test;
@@ -25,6 +29,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.withSettings;
 
 public class ViewControllerTest extends BaseTest {
 
@@ -221,6 +226,27 @@ public class ViewControllerTest extends BaseTest {
         verify(spy, times(0)).getView();
         spy.ensureViewIsCreated();
         verify(spy, times(1)).getView();
+    }
+
+    @Test
+    public void isRendered_falseIfViewIsNotCreated() {
+        uut.setWaitForRender(new Bool(true));
+        assertThat(uut.isRendered()).isFalse();
+    }
+
+    @Test
+    public void isRendered_delegatesToView() {
+        uut.setWaitForRender(new Bool(true));
+        uut.view = Mockito.mock(ViewGroup.class, withSettings().extraInterfaces(Component.class));
+        uut.isRendered();
+        verify((Component) uut.view).isRendered();
+    }
+
+    @Test
+    public void isRendered_returnsTrueForEveryViewByDefault() {
+        uut.setWaitForRender(new NullBool());
+        uut.view = Mockito.mock(ViewGroup.class);
+        assertThat(uut.isRendered()).isTrue();
     }
 }
 

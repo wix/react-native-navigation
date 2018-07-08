@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
@@ -130,13 +131,8 @@ public class StackController extends ParentController<StackLayout> {
         child.setParentController(this);
         stack.push(child.getId(), child);
         backButtonHelper.addToPushedChild(this, child);
-        ViewGroup childView = child.getView();
-        childView.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         Options resolvedOptions = resolveCurrentOptions().withDefaultOptions(presenter.getDefaultOptions());
-        child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
-        presenter.applyLayoutParamsOptions(resolvedOptions, childView);
-        getView().addView(childView);
-
+        addChildToStack(child, child.getView(), resolvedOptions);
 
         if (toRemove != null) {
             if (child.options.animations.push.enable.isTrueOrUndefined()) {
@@ -158,6 +154,13 @@ public class StackController extends ParentController<StackLayout> {
         } else {
             listener.onSuccess(child.getId());
         }
+    }
+
+    private void addChildToStack(ViewController child, View view, Options resolvedOptions) {
+        view.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
+        presenter.applyLayoutParamsOptions(resolvedOptions, view);
+        getView().addView(view);
     }
 
     public void setRoot(ViewController child, CommandListener listener) {

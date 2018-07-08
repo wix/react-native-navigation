@@ -27,7 +27,7 @@ class PushedScreen extends Component {
 
   constructor(props) {
     super(props);
-    // for (let i = 0; i < Math.pow(2, 24); i++); // Simulate long running task in constructor
+    this.props.simulateLongRunningTask && this.simulateLongRunningTask();
     this.onClickPush = this.onClickPush.bind(this);
     this.onClickPop = this.onClickPop.bind(this);
     this.onClickPopPrevious = this.onClickPopPrevious.bind(this);
@@ -35,6 +35,10 @@ class PushedScreen extends Component {
     this.onClickPopToRoot = this.onClickPopToRoot.bind(this);
     this.onClickSetStackRoot = this.onClickSetStackRoot.bind(this);
     this.state = { disabled: false };
+  }
+
+  simulateLongRunningTask() {
+    for (let i = 0; i < Math.pow(2, 25); i++);
   }
 
   listeners = [];
@@ -80,6 +84,7 @@ class PushedScreen extends Component {
         <Button title='Pop Previous' testID={testIDs.POP_PREVIOUS_BUTTON} onPress={this.onClickPopPrevious} />
         <Button title='Pop To Root' testID={testIDs.POP_TO_ROOT} onPress={this.onClickPopToRoot} />
         <Button title='Set Stack Root' testID={testIDs.SET_STACK_ROOT_BUTTON} onPress={this.onClickSetStackRoot} />
+        <Button title='Push and Wait for Render' testID={testIDs.PUSH_BUTTON_WAIT_FOR_RENDER} onPress={this.onClickPushWaitForRender} />
         {stackPosition > 2 && <Button title='Pop To Stack Position 1' testID={testIDs.POP_STACK_POSITION_ONE_BUTTON} onPress={this.onClickPopToFirstPosition} />}
         <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
       </View>
@@ -176,6 +181,34 @@ class PushedScreen extends Component {
         }
       }
     });
+  }
+
+  onClickPushWaitForRender = async () => {
+    await Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.PushedScreen',
+        passProps: {
+          stackPosition: this.getStackPosition() + 1,
+          previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId),
+          simulateLongRunningTask: true
+        },
+        options: {
+          layout: {
+            backgroundColor: 'transparent'
+          },
+          topBar: {
+            title: {
+              text: `Pushed ${this.getStackPosition() + 1}`
+            }
+          },
+          animations: {
+            push: {
+              waitForRender: true
+            }
+          }
+        }
+      }
+    })
   }
 
   getStackPosition() {

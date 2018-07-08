@@ -159,6 +159,17 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void push_waitForRender() {
+        disablePushAnimation(child1);
+        uut.push(child1, new CommandListenerAdapter());
+
+        child2.options.animations.push.waitForRender = new Bool(true);
+        uut.push(child2, new CommandListenerAdapter());
+        verify(child2).setOnAppearedListener(any());
+        verify(animator, times(0)).push(eq(child1.getView()), any());
+    }
+
+    @Test
     public void animateSetRoot() {
         disablePushAnimation(child1, child2, child3);
         assertThat(uut.isEmpty()).isTrue();
