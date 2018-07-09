@@ -76,8 +76,14 @@
 	return _currentViewController.componentId;
 }
 
+#pragma mark RNNRootViewProtocol
+
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
 	[_currentViewController waitForReactViewRender:wait perform:readyBlock];
+}
+
+- (UIViewController *)getLeafViewController {
+	return _currentViewController;
 }
 
 @end

@@ -39,6 +39,10 @@
 	[self.child waitForReactViewRender:wait perform:readyBlock];
 }
 
+- (UIViewController *)getLeafViewController {
+	return self.child;
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return self.child.preferredStatusBarStyle;
 }

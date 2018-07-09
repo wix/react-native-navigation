@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
@@ -16,7 +15,6 @@ import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.viewcontrollers.modal.ModalPresenter;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
@@ -35,16 +33,19 @@ public class Navigator extends ParentController {
     @Override
     public void setDefaultOptions(Options defaultOptions) {
         this.defaultOptions = defaultOptions;
-        if (root != null) root.setDefaultOptions(defaultOptions);
+        if (root != null) {
+            root.setDefaultOptions(defaultOptions);
+            modalStack.setDefaultOptions(defaultOptions);
+        }
     }
 
     public Options getDefaultOptions() {
         return defaultOptions;
     }
 
-    public Navigator(final Activity activity, ChildControllersRegistry childRegistry, OverlayManager overlayManager) {
+    public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager) {
         super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new OptionsPresenter(activity, new Options()), new Options());
-        modalStack = new ModalStack(new ModalPresenter(new ModalAnimator(activity)));
+        this.modalStack = modalStack;
         this.overlayManager = overlayManager;
     }
 
@@ -105,7 +106,7 @@ public class Navigator extends ParentController {
         destroyRoot();
         root = viewController;
         contentLayout.addView(viewController.getView());
-        if (viewController.options.animations.startApp.hasValue()) {
+        if (viewController.options.animations.startApp.hasAnimation()) {
             new NavigationAnimator(viewController.getActivity(), viewController.options.animations)
                     .animateStartApp(viewController.getView(), new AnimatorListenerAdapter() {
                         @Override

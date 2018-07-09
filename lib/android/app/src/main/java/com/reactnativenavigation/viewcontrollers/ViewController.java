@@ -12,6 +12,8 @@ import android.view.ViewManager;
 import android.view.ViewTreeObserver;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.presentation.FabOptionsPresenter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.StringUtils;
@@ -23,6 +25,7 @@ import com.reactnativenavigation.views.Component;
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener {
 
     private Runnable onAppearedListener;
+    private Bool waitForRender = new NullBool();
 
     public interface ViewVisibilityListener {
         /**
@@ -56,6 +59,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         options = initialOptions.copy();
     }
 
+    public void setWaitForRender(Bool waitForRender) {
+        this.waitForRender = waitForRender;
+    }
+
     public void setOnAppearedListener(Runnable onAppearedListener) {
         this.onAppearedListener = onAppearedListener;
     }
@@ -78,6 +85,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     @CheckResult
     public Options resolveCurrentOptions() {
         return options;
+    }
+
+    @CheckResult
+    public Options resolveCurrentOptions(Options defaultOptions) {
+        return options.copy().withDefaultOptions(defaultOptions);
     }
 
     @CallSuper
@@ -235,6 +247,21 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     public abstract void sendOnNavigationButtonPressed(String buttonId);
 
     protected boolean isViewShown() {
-        return !isDestroyed && getView().isShown();
+        return !isDestroyed &&
+               getView().isShown() &&
+               view != null &&
+               isRendered();
+    }
+
+    public boolean isRendered() {
+        return view != null && (
+                waitForRender.isFalseOrUndefined() ||
+                !(view instanceof Component) ||
+                ((Component) view).isRendered()
+        );
+    }
+
+    void applyOnController(ViewController controller, Task<ViewController> task) {
+        if (controller != null) task.run(controller);
     }
 }

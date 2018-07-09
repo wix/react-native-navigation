@@ -15,6 +15,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @required
 - (NSString *)componentId;
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+- (UIViewController<RNNRootViewProtocol> *)getLeafViewController;
 
 @end
 

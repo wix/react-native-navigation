@@ -256,6 +256,13 @@ public class ModalStackTest extends BaseTest {
         verify(backHandlingModal, times(0)).onViewDisappear();
     }
 
+    @Test
+    public void setDefaultOptions() {
+        Options defaultOptions = new Options();
+        uut.setDefaultOptions(defaultOptions);
+        verify(presenter).setDefaultOptions(defaultOptions);
+    }
+
     private ViewController findModal(String id) {
         return uut.findControllerById(id);
     }

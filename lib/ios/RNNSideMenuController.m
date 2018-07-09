@@ -89,6 +89,10 @@
 	}
 }
 
+- (UIViewController *)getLeafViewController {
+	return self.center;
+}
+
 - (void)mergeOptions:(RNNOptions *)options {
 	[self.center mergeOptions:options];
 }

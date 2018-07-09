@@ -53,6 +53,10 @@
 	return [((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) options];
 }
 
+- (UIViewController *)getLeafViewController {
+	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController);
+}
+
 - (NSString *)componentId {
 	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).componentId;
 }

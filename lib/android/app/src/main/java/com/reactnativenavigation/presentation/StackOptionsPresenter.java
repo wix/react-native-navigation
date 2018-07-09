@@ -38,6 +38,10 @@ public class StackOptionsPresenter {
         this.defaultOptions = defaultOptions;
     }
 
+    public Options getDefaultOptions() {
+        return defaultOptions;
+    }
+
     public void bindView(TopBar topBar) {
         this.topBar = topBar;
     }

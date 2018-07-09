@@ -100,6 +100,11 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, TopB
     }
 
     @Override
+    public boolean isRendered() {
+        return reactView.isRendered();
+    }
+
+    @Override
     public void onPress(String buttonId) {
         reactView.sendOnNavigationButtonPressed(buttonId);
     }

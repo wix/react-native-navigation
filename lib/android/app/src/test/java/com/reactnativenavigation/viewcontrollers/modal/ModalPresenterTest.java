@@ -6,14 +6,18 @@ import android.widget.FrameLayout;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.ModalPresentationStyle;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildController;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -22,6 +26,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class ModalPresenterTest extends BaseTest {
     private static final String MODAL_ID_1 = "modalId1";
@@ -32,16 +37,16 @@ public class ModalPresenterTest extends BaseTest {
     private ModalPresenter uut;
     private FrameLayout contentLayout;
     private ModalAnimator animator;
-    private ViewController rootController;
+    private ViewController root;
 
     @Override
     public void beforeEach() {
         Activity activity = newActivity();
         ChildControllersRegistry childRegistry = new ChildControllersRegistry();
 
-        rootController = spy(new SimpleViewController(activity, childRegistry, "root", new Options()));
+        root = spy(new SimpleViewController(activity, childRegistry, "root", new Options()));
         contentLayout = new FrameLayout(activity);
-        contentLayout.addView(rootController.getView());
+        contentLayout.addView(root.getView());
         activity.setContentView(contentLayout);
 
         animator = spy(new ModalAnimator(activity));
@@ -49,6 +54,16 @@ public class ModalPresenterTest extends BaseTest {
         uut.setContentLayout(contentLayout);
         modal1 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_1, new Options()));
         modal2 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_2, new Options()));
+    }
+
+    @Test
+    public void showModal() {
+        Options defaultOptions = new Options();
+        uut.setDefaultOptions(defaultOptions);
+        disableShowModalAnimation(modal1);
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        verify(modal1).setWaitForRender(any());
+        verify(modal1).resolveCurrentOptions(defaultOptions);
     }
 
     @Test
@@ -61,13 +76,24 @@ public class ModalPresenterTest extends BaseTest {
                 verify(modal1, times(1)).onViewAppeared();
             }
         });
-        uut.showModal(modal1, rootController, listener);
+        uut.showModal(modal1, root, listener);
         verify(animator, times(0)).show(
                 eq(modal1.getView()),
                 eq(modal1.options.animations.showModal),
                 any()
         );
         verify(listener, times(1)).onSuccess(MODAL_ID_1);
+    }
+
+    @Test
+    public void showModal_resolvesDefaultOptions() throws JSONException {
+        Options defaultOptions = new Options();
+        JSONObject disabledShowModalAnimation = new JSONObject().put("enable", false);
+        defaultOptions.animations.showModal = AnimationOptions.parse(disabledShowModalAnimation);
+
+        uut.setDefaultOptions(defaultOptions);
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        verifyZeroInteractions(animator);
     }
 
     @Test
@@ -103,11 +129,19 @@ public class ModalPresenterTest extends BaseTest {
     }
 
     @Test
+    public void showModal_waitForRender() {
+        modal1.options.animations.showModal.waitForRender = new Bool(true);
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        verify(modal1).setOnAppearedListener(any());
+        verifyZeroInteractions(animator);
+    }
+
+    @Test
     public void dismissModal_animatesByDefault() {
         disableShowModalAnimation(modal1);
 
-        uut.showModal(modal1, rootController, new CommandListenerAdapter());
-        uut.dismissTopModal(modal1, rootController, new CommandListenerAdapter() {
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        uut.dismissTopModal(modal1, root, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 verify(modal1, times(1)).onViewDisappear();
@@ -132,8 +166,8 @@ public class ModalPresenterTest extends BaseTest {
         disableShowModalAnimation(modal1);
         disableDismissModalAnimation(modal1);
 
-        uut.showModal(modal1, rootController, new CommandListenerAdapter());
-        uut.dismissTopModal(modal1, rootController, new CommandListenerAdapter());
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        uut.dismissTopModal(modal1, root, new CommandListenerAdapter());
         verify(modal1, times(1)).onViewDisappear();
         verify(modal1, times(1)).destroy();
         verify(animator, times(0)).dismiss(any(), any());
@@ -143,7 +177,7 @@ public class ModalPresenterTest extends BaseTest {
     public void dismissModal_previousModalIsAddedBackToHierarchy() {
         disableShowModalAnimation(modal1, modal2);
 
-        uut.showModal(modal1, rootController, new CommandListenerAdapter());
+        uut.showModal(modal1, root, new CommandListenerAdapter());
         uut.showModal(modal2, modal1, new CommandListenerAdapter());
         assertThat(modal1.getView().getParent()).isNull();
         uut.dismissTopModal(modal2, modal1, new CommandListenerAdapter());
@@ -155,16 +189,16 @@ public class ModalPresenterTest extends BaseTest {
         disableShowModalAnimation(modal1, modal2);
         disableDismissModalAnimation(modal1, modal2);
 
-        uut.showModal(modal1, rootController, new CommandListenerAdapter());
+        uut.showModal(modal1, root, new CommandListenerAdapter());
         uut.showModal(modal2, modal1, new CommandListenerAdapter());
         assertThat(modal1.getView().getParent()).isNull();
-        assertThat(rootController.getView().getParent()).isNull();
+        assertThat(root.getView().getParent()).isNull();
 
         uut.dismissModal(modal1, new CommandListenerAdapter());
-        assertThat(rootController.getView().getParent()).isNull();
+        assertThat(root.getView().getParent()).isNull();
 
-        uut.dismissTopModal(modal2, rootController, new CommandListenerAdapter());
-        assertThat(rootController.getView().getParent()).isNotNull();
+        uut.dismissTopModal(modal2, root, new CommandListenerAdapter());
+        assertThat(root.getView().getParent()).isNotNull();
     }
 
     @Test
@@ -172,8 +206,8 @@ public class ModalPresenterTest extends BaseTest {
         modal1.options.modal.presentationStyle = ModalPresentationStyle.OverCurrentContext;
         disableShowModalAnimation(modal1, modal2);
 
-        uut.showModal(modal1, rootController, new CommandListenerAdapter());
-        assertThat(rootController.getView().getParent()).isNotNull();
-        verify(rootController, times(0)).onViewDisappear();
+        uut.showModal(modal1, root, new CommandListenerAdapter());
+        assertThat(root.getView().getParent()).isNotNull();
+        verify(root, times(0)).onViewDisappear();
     }
 }
