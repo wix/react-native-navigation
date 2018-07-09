@@ -8,16 +8,17 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import static com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 
 public class EventEmitter {
-	private static final String onAppLaunched = "RNN.AppLaunched";
-	private static final String componentLifecycle = "RNN.ComponentLifecycle";
-	private static final String nativeEvent = "RNN.NativeEvent";
-	private static final String commandCompleted = "RNN.CommandCompleted";
+	private static final String AppLaunched = "RNN.AppLaunched";
+	private static final String CommandCompleted = "RNN.CommandCompleted";
+	private static final String NativeEvent = "RNN.NativeEvent";
+	private static final String ComponentEvent = "RNN.ComponentEvent";
 
-	private static final String componentLifecycleDidMount = "ComponentDidMount";
-	private static final String componentLifecycleDidAppear = "ComponentDidAppear";
-	private static final String componentLifecycleDidDisappear = "ComponentDidDisappear";
-	private static final String componentLifecycleWillUnmount = "ComponentWillUnmount";
-	private static final String buttonPressedEvent = "buttonPressed";
+	// componentEvents:
+	private static final String ComponentDidAppear = "ComponentDidAppear";
+	private static final String ComponentDidDisappear = "ComponentDidDisappear";
+	private static final String NavigationButtonPressed = "NavigationButtonPressed";
+	private static final String SearchBarUpdated = "SearchBarUpdated";
+	private static final String SearchBarCancelPressed = "SearchBarCancelPressed";
 
 	private final RCTDeviceEventEmitter emitter;
 
@@ -26,34 +27,31 @@ public class EventEmitter {
 	}
 
 	public void appLaunched() {
-		emit(onAppLaunched);
+		emit(AppLaunched);
 	}
 
 	public void componentDidDisappear(String id, String componentName) {
 		WritableMap event = Arguments.createMap();
 		event.putString("componentId", id);
 		event.putString("componentName", componentName);
-		event.putString("type", componentLifecycleDidDisappear);
-		emit(componentLifecycle, event);
+		event.putString("type", ComponentDidAppear);
+		emit(ComponentEvent, event);
 	}
 
 	public void componentDidAppear(String id, String componentName) {
 		WritableMap event = Arguments.createMap();
 		event.putString("componentId", id);
 		event.putString("componentName", componentName);
-		event.putString("type", componentLifecycleDidAppear);
-		emit(componentLifecycle, event);
+		event.putString("type", ComponentDidDisappear);
+		emit(ComponentEvent, event);
 	}
 
 	public void emitOnNavigationButtonPressed(String id, String buttonId) {
-		WritableMap params = Arguments.createMap();
-		params.putString("componentId", id);
-		params.putString("buttonId", buttonId);
-
 		WritableMap event = Arguments.createMap();
-		event.putString("name", buttonPressedEvent);
-		event.putMap("params", params);
-		emit(nativeEvent, event);
+		event.putString("componentId", id);
+		event.putString("buttonId", buttonId);
+		event.putString("type", NavigationButtonPressed);
+		emit(ComponentEvent, event);
 	}
 
 	public void emitBottomTabSelected(int unselectedTabIndex, int selectedTabIndex) {
@@ -64,14 +62,14 @@ public class EventEmitter {
 		WritableMap event = Arguments.createMap();
 		event.putString("name", "bottomTabSelected");
 		event.putMap("params", params);
-		emitter.emit(nativeEvent, event);
+		emit(NativeEvent, event);
 	}
 
 	public void emitCommandCompletedEvent(String commandId, long completionTime) {
 		WritableMap event = Arguments.createMap();
 		event.putString("commandId", commandId);
 		event.putDouble("completionTime", completionTime);
-		emitter.emit(commandCompleted, event);
+		emit(CommandCompleted, event);
 	}
 
 	private void emit(String eventName) {

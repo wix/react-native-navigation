@@ -42,7 +42,7 @@ export class Navigation {
     this.screenEventsRegistry = new ScreenEventsRegistry(this.nativeEventsReceiver);
     this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.screenEventsRegistry);
 
-    this.screenEventsRegistry.registerForEvents();
+    // this.nativeEventsReceiver.registerComponentLifecycleListener(this.eventsRegistry.on...);
   }
 
   /**
