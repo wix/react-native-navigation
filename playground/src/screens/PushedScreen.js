@@ -1,10 +1,7 @@
 const _ = require('lodash');
-
 const React = require('react');
 const { Component } = require('react');
-
 const { View, Text, Platform } = require('react-native');
-
 const { Navigation } = require('react-native-navigation');
 const Button = require('./Button');
 const testIDs = require('../testIDs');
@@ -54,14 +51,9 @@ class PushedScreen extends Component {
           this.setState({ previewComponentId });
         }
       }),
-      Navigation.events().registerComponentDidAppearListener((componentId, componentName) => {
-        if (this.state.previewComponentId === componentId) {
-          this.setState({ disabled: true });
-        }
-      }),
-      Navigation.events().registerComponentDidDisappearListener((componentId, componentName) => {
-        if (this.state.previewComponentId === componentId) {
-          this.setState({ disabled: false });
+      Navigation.events().registerComponentLifecycleListener((event) => {
+        if (this.state.previewComponentId === event.componentId) {
+          this.setState({ disabled: event.type == 'ComponentDidAppear' });
         }
       })
     );
@@ -78,11 +70,11 @@ class PushedScreen extends Component {
         <Text testID={testIDs.PUSHED_SCREEN_HEADER} style={styles.h1}>{`Pushed Screen`}</Text>
         <Text style={styles.h2}>{`Stack Position: ${stackPosition}`}</Text>
         <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
-          {Platform.OS === 'ios' && (
-            <Navigation.Element elementId='PreviewElement'>
-              <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPress={this.onClickPush} onPressIn={this.onClickShowPreview} title='Push Preview' />
-            </Navigation.Element>
-          )}
+        {Platform.OS === 'ios' && (
+          <Navigation.Element elementId='PreviewElement'>
+            <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPress={this.onClickPush} onPressIn={this.onClickShowPreview} title='Push Preview' />
+          </Navigation.Element>
+        )}
         <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
         <Button title='Pop Previous' testID={testIDs.POP_PREVIOUS_BUTTON} onPress={this.onClickPopPrevious} />
         <Button title='Pop To Root' testID={testIDs.POP_TO_ROOT} onPress={this.onClickPopToRoot} />

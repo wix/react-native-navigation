@@ -12,14 +12,9 @@ class StaticLifecycleOverlay extends Component {
       events: []
     };
     this.listeners = [];
-    this.listeners.push(Navigation.events().registerComponentDidAppearListener((componentId, componentName) => {
+    this.listeners.push(Navigation.events().registerComponentLifecycleListener((event) => {
       this.setState({
-        events: [...this.state.events, { event: 'componentDidAppear', componentId, componentName }]
-      });
-    }));
-    this.listeners.push(Navigation.events().registerComponentDidDisappearListener((componentId, componentName) => {
-      this.setState({
-        events: [...this.state.events, { event: 'componentDidDisappear', componentId, componentName }]
+        events: [...this.state.events, { ...event }]
       });
     }));
     this.listeners.push(Navigation.events().registerCommandCompletedListener((commandId, completionTime, params) => {
@@ -62,14 +57,14 @@ class StaticLifecycleOverlay extends Component {
   }
 
   renderDismissButton = () => {
-  return (
-    <TouchableOpacity
-      style={styles.dismissBtn}
-      onPress={() => Navigation.dismissOverlay(this.props.componentId)}
-    >
-      <Text testID={testIDs.DISMISS_BUTTON} style={{ color: 'red', alignSelf: 'center' }}>X</Text>
-    </TouchableOpacity>
-  );
+    return (
+      <TouchableOpacity
+        style={styles.dismissBtn}
+        onPress={() => Navigation.dismissOverlay(this.props.componentId)}
+      >
+        <Text testID={testIDs.DISMISS_BUTTON} style={{ color: 'red', alignSelf: 'center' }}>X</Text>
+      </TouchableOpacity>
+    );
   }
 }
 module.exports = StaticLifecycleOverlay;
