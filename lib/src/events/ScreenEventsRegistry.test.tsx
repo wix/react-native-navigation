@@ -128,4 +128,8 @@ describe('ScreenEventsRegistry', () => {
     });
     expect(didAppearFn).not.toHaveBeenCalled();
   });
+
+  it.skip(`supports multiple listeners with same componentId`, () => {
+    // TODO
+  });
 });

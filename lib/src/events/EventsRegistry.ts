@@ -1,9 +1,10 @@
 import { NativeEventsReceiver, LifecycleEvent, CommandCompletedEvent } from '../adapters/NativeEventsReceiver';
 import { CommandsObserver } from './CommandsObserver';
 import { EventSubscription } from '../interfaces/EventSubscription';
+import { ScreenEventsRegistry } from './ScreenEventsRegistry';
 
 export class EventsRegistry {
-  constructor(private nativeEventsReceiver: NativeEventsReceiver, private commandsObserver: CommandsObserver) { }
+  constructor(private nativeEventsReceiver: NativeEventsReceiver, private commandsObserver: CommandsObserver, private screenEventsRegistry: ScreenEventsRegistry) { }
 
   public registerAppLaunchedListener(callback: () => void): EventSubscription {
     return this.nativeEventsReceiver.registerAppLaunchedListener(callback);
@@ -25,8 +26,7 @@ export class EventsRegistry {
     return this.nativeEventsReceiver.registerNativeEventListener(({ name, params }) => callback(name, params));
   }
 
-  public bindScreen(screen: React.Component<any>): void {
-    screen.toString();
-    //
+  public bindScreen(screen: React.Component<any>): EventSubscription {
+    return this.screenEventsRegistry.bindScreen(screen);
   }
 }

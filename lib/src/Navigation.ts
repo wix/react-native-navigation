@@ -12,6 +12,7 @@ import { Element } from './adapters/Element';
 import { CommandsObserver } from './events/CommandsObserver';
 import { Constants } from './adapters/Constants';
 import { ComponentType } from 'react';
+import { ScreenEventsRegistry } from './events/ScreenEventsRegistry';
 
 export class Navigation {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
@@ -25,6 +26,7 @@ export class Navigation {
   private readonly commands: Commands;
   private readonly eventsRegistry: EventsRegistry;
   private readonly commandsObserver: CommandsObserver;
+  private readonly screenEventsRegistry: ScreenEventsRegistry;
 
   constructor() {
     this.Element = Element;
@@ -37,7 +39,8 @@ export class Navigation {
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver();
     this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler, this.commandsObserver, this.uniqueIdProvider);
-    this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver);
+    this.screenEventsRegistry = new ScreenEventsRegistry();
+    this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.screenEventsRegistry);
   }
 
   /**

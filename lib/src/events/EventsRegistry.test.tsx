@@ -7,10 +7,11 @@ describe('EventsRegistry', () => {
   let uut: EventsRegistry;
   const mockNativeEventsReceiver = new NativeEventsReceiver();
   let commandsObserver: CommandsObserver;
+  const mockScreenEventsRegistry = {} as any;
 
   beforeEach(() => {
     commandsObserver = new CommandsObserver();
-    uut = new EventsRegistry(mockNativeEventsReceiver, commandsObserver);
+    uut = new EventsRegistry(mockNativeEventsReceiver, commandsObserver, mockScreenEventsRegistry);
   });
 
   it('exposes appLaunched event', () => {
@@ -82,5 +83,12 @@ describe('EventsRegistry', () => {
 
     mockNativeEventsReceiver.registerNativeEventListener.mock.calls[0][0]({ name: 'the event name', params: { a: 1 } });
     expect(cb).toHaveBeenCalledWith('the event name', { a: 1 });
+  });
+
+  it(`sends screenEventsRegistry bindScren`, () => {
+    const subscription = {};
+    mockScreenEventsRegistry.bindScreen = jest.fn();
+    mockScreenEventsRegistry.bindScreen.mockReturnValueOnce(subscription);
+    expect(uut.bindScreen({} as React.Component<any>)).toEqual(subscription);
   });
 });
