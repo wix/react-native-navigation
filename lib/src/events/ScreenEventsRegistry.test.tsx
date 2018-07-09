@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 import { ScreenEventsRegistry } from './ScreenEventsRegistry';
-import { LifecycleEventType } from '../adapters/NativeEventsReceiver';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
+import { LifecycleEventType } from '../interfaces/LifecycleEvent';
 
 describe('ScreenEventsRegistry', () => {
   const mockNativeEventsReceiver = new NativeEventsReceiver();

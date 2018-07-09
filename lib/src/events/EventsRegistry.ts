@@ -1,7 +1,9 @@
-import { NativeEventsReceiver, LifecycleEvent, CommandCompletedEvent } from '../adapters/NativeEventsReceiver';
+import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 import { CommandsObserver } from './CommandsObserver';
 import { EventSubscription } from '../interfaces/EventSubscription';
 import { ScreenEventsRegistry } from './ScreenEventsRegistry';
+import { LifecycleEvent } from '../interfaces/LifecycleEvent';
+import { CommandCompletedEvent } from '../interfaces/CommandCompletedEvent';
 
 export class EventsRegistry {
   constructor(private nativeEventsReceiver: NativeEventsReceiver, private commandsObserver: CommandsObserver, private screenEventsRegistry: ScreenEventsRegistry) { }

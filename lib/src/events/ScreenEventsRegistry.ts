@@ -1,6 +1,7 @@
-import { LifecycleEvent, LifecycleEventType, NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 import * as _ from 'lodash';
+import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 import { EventSubscription } from '../interfaces/EventSubscription';
+import { LifecycleEventType, LifecycleEvent } from '../interfaces/LifecycleEvent';
 
 export class ScreenEventsRegistry {
   private screens = {};
@@ -33,13 +34,12 @@ export class ScreenEventsRegistry {
     switch (event.type) {
       case LifecycleEventType.ComponentDidAppear:
       case LifecycleEventType.ComponentDidDisappear:
-        this.triggerOnScreen(screen, event.type);
+        this.triggerOnScreen(screen, _.camelCase(event.type));
         break;
     }
   }
 
-  private triggerOnScreen(screen, eventType) {
-    const method = _.camelCase(eventType);
+  private triggerOnScreen(screen: React.Component<any>, method: string) {
     if (_.isFunction(screen[method])) {
       screen[method]();
     }

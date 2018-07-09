@@ -1,7 +1,7 @@
 import { EventsRegistry } from './EventsRegistry';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 import { CommandsObserver } from './CommandsObserver';
-import { LifecycleEventType } from '../adapters/NativeEventsReceiver';
+import { LifecycleEventType } from '../interfaces/LifecycleEvent';
 
 describe('EventsRegistry', () => {
   let uut: EventsRegistry;

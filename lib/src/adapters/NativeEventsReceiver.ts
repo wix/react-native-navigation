@@ -1,24 +1,7 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
 import { EventSubscription } from '../interfaces/EventSubscription';
-
-export const enum LifecycleEventType {
-  ComponentDidMount = 'ComponentDidMount',
-  ComponentDidAppear = 'ComponentDidAppear',
-  ComponentDidDisappear = 'ComponentDidDisappear',
-  ComponentWillUnmount = 'ComponentWillUnmount'
-}
-
-export interface LifecycleEvent {
-  type: LifecycleEventType;
-  componentId: string;
-  componentName: string;
-}
-
-export interface CommandCompletedEvent {
-  commandId: string;
-  completionTime: number;
-  params: any;
-}
+import { LifecycleEvent } from '../interfaces/LifecycleEvent';
+import { CommandCompletedEvent } from '../interfaces/CommandCompletedEvent';
 
 export class NativeEventsReceiver {
   private emitter;
