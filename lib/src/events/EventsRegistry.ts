@@ -24,4 +24,9 @@ export class EventsRegistry {
   public registerNativeEventListener(callback: (name: string, params: any) => void): EventSubscription {
     return this.nativeEventsReceiver.registerNativeEventListener(({ name, params }) => callback(name, params));
   }
+
+  public bindScreen(screen: React.Component<any>): void {
+    screen.toString();
+    //
+  }
 }
