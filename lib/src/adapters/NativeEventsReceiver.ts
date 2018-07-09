@@ -1,7 +1,14 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
 import { EventSubscription } from '../interfaces/EventSubscription';
-import { LifecycleEvent } from '../interfaces/LifecycleEvent';
-import { CommandCompletedEvent } from '../interfaces/CommandCompletedEvent';
+import {
+  ComponentDidAppearEvent,
+  CommandCompletedEvent,
+  ComponentDidDisappearEvent,
+  NavigationButtonPressedEvent,
+  SearchBarUpdatedEvent,
+  BottomTabSelectedEvent,
+  SearchBarCancelPressedEvent
+} from '../interfaces/Events';
 
 export class NativeEventsReceiver {
   private emitter;
@@ -23,15 +30,31 @@ export class NativeEventsReceiver {
     return this.emitter.addListener('RNN.AppLaunched', callback);
   }
 
-  public registerComponentLifecycleListener(callback: (event: LifecycleEvent) => void): EventSubscription {
-    return this.emitter.addListener('RNN.ComponentLifecycle', callback);
+  public registerComponentDidAppearListener(callback: (event: ComponentDidAppearEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.ComponentDidAppear', callback);
+  }
+
+  public registerComponentDidDisappearListener(callback: (event: ComponentDidDisappearEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.ComponentDidDisappear', callback);
+  }
+
+  public registerNavigationButtonPressedListener(callback: (event: NavigationButtonPressedEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.NavigationButtonPressed', callback);
+  }
+
+  public registerSearchBarUpdatedListener(callback: (event: SearchBarUpdatedEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.SearchBarUpdated', callback);
+  }
+
+  public registerSearchBarCancelPressedListener(callback: (event: SearchBarCancelPressedEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.SearchBarCancelPressed', callback);
   }
 
   public registerCommandCompletedListener(callback: (data: CommandCompletedEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.CommandCompleted', callback);
   }
 
-  public registerNativeEventListener(callback: (data) => void): EventSubscription {
-    return this.emitter.addListener('RNN.NativeEvent', callback);
+  public registerBottomTabSelectedListener(callback: (data: BottomTabSelectedEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.BottomTabSelected', callback);
   }
 }

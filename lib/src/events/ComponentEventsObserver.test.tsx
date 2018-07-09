@@ -1,12 +1,9 @@
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
-import { ScreenEventsRegistry } from './ScreenEventsRegistry';
-import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
-import { LifecycleEventType } from '../interfaces/LifecycleEvent';
+import { ComponentEventsObserver } from './ComponentEventsObserver';
 
-describe('ScreenEventsRegistry', () => {
-  const mockNativeEventsReceiver = new NativeEventsReceiver();
-  const uut = new ScreenEventsRegistry(mockNativeEventsReceiver);
+describe('ComponentObserver', () => {
+  const uut = new ComponentEventsObserver();
   const didAppearFn = jest.fn();
   const didDisappearFn = jest.fn();
   const didMountFn = jest.fn();
@@ -21,7 +18,7 @@ describe('ScreenEventsRegistry', () => {
   class Screen extends React.Component<any, any> {
     constructor(props) {
       super(props);
-      uut.bindScreen(this);
+      uut.bindComponent(this);
     }
 
     componentDidMount() {
@@ -59,7 +56,7 @@ describe('ScreenEventsRegistry', () => {
     expect(didDisappearFn).not.toHaveBeenCalled();
 
     uut.onLifecycleEvent({
-      type: LifecycleEventType.ComponentDidAppear,
+      type: ComponentEventType.ComponentDidAppear,
       componentId: 'myCompId',
       componentName: 'doesnt matter'
     });
@@ -67,12 +64,12 @@ describe('ScreenEventsRegistry', () => {
     expect(didAppearFn).toHaveBeenCalledTimes(1);
 
     uut.onLifecycleEvent({
-      type: LifecycleEventType.ComponentDidDisappear,
+      type: ComponentEventType.ComponentDidDisappear,
       componentId: 'myCompId',
       componentName: 'doesnt matter'
     });
     uut.onLifecycleEvent({
-      type: LifecycleEventType.ComponentWillUnmount,
+      type: ComponentEventType.ComponentWillUnmount,
       componentId: 'myCompId',
       componentName: 'doesnt matter'
     });
@@ -87,13 +84,13 @@ describe('ScreenEventsRegistry', () => {
     expect(didDisappearFn).not.toHaveBeenCalled();
 
     uut.onLifecycleEvent({
-      type: LifecycleEventType.ComponentDidAppear,
+      type: ComponentEventType.ComponentDidAppear,
       componentId: 'otherScreen',
       componentName: 'doesnt matter'
     });
 
     uut.onLifecycleEvent({
-      type: LifecycleEventType.ComponentDidDisappear,
+      type: ComponentEventType.ComponentDidDisappear,
       componentId: 'anotherScreen',
       componentName: 'doesnt matter'
     });
@@ -107,12 +104,12 @@ describe('ScreenEventsRegistry', () => {
     uut.bindScreen(tree.getInstance() as any);
 
     uut.onLifecycleEvent({
-      type: LifecycleEventType.ComponentDidAppear,
+      type: ComponentEventType.ComponentDidAppear,
       componentId: '123',
       componentName: 'doesnt matter'
     });
     uut.onLifecycleEvent({
-      type: LifecycleEventType.ComponentDidDisappear,
+      type: ComponentEventType.ComponentDidDisappear,
       componentId: '123',
       componentName: 'doesnt matter'
     });
@@ -124,7 +121,7 @@ describe('ScreenEventsRegistry', () => {
     expect((result as any).remove).toBeDefined();
     result.remove();
     uut.onLifecycleEvent({
-      type: LifecycleEventType.ComponentDidAppear,
+      type: ComponentEventType.ComponentDidAppear,
       componentId: '123',
       componentName: 'doesnt matter'
     });

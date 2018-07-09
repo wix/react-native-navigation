@@ -1,24 +1,35 @@
-export interface ComponentDidAppear {
+export interface ComponentDidAppearEvent {
   componentId: string;
   componentName: string;
 }
 
-export interface ComponentDidDisappear {
+export interface ComponentDidDisappearEvent {
   componentId: string;
   componentName: string;
 }
 
-export interface NavigationButtonPressed {
+export interface NavigationButtonPressedEvent {
   componentId: string;
   buttonId: string;
 }
 
-export interface SearchBarUpdated {
+export interface SearchBarUpdatedEvent {
   componentId: string;
   text: string;
   isFocused: boolean;
 }
 
-export interface SearchBarCancelPressed {
+export interface SearchBarCancelPressedEvent {
   componentId: string;
+}
+
+export interface CommandCompletedEvent {
+  commandId: string;
+  completionTime: number;
+  params: any;
+}
+
+export interface BottomTabSelectedEvent {
+  selectedTabIndex: number;
+  unselectedTabIndex: number;
 }

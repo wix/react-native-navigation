@@ -11,16 +11,15 @@ RCT_EXPORT_MODULE();
 static const NSString* AppLaunched		= @"RNN.AppLaunched";
 static const NSString* CommandCompleted	= @"RNN.CommandCompleted";
 static const NSString* NativeEvent		= @"RNN.NativeEvent";
-static const NSString* ComponentEvent	= @"RNN.ComponentEvent";
 
-static const NSString* ComponentDidAppear = @"ComponentDidAppear";
-static const NSString* ComponentDidDisappear = @"ComponentDidDisappear";
-static const NSString* NavigationButtonPressed = @"NavigationButtonPressed";
-static const NSString* SearchBarUpdated = @"SearchBarUpdated";
-static const NSString* SearchBarCancelPressed = @"SearchBarCancelPressed";
+static const NSString* ComponentDidAppear = @"RNN.ComponentDidAppear";
+static const NSString* ComponentDidDisappear = @"RNN.ComponentDidDisappear";
+static const NSString* NavigationButtonPressed = @"RNN.NavigationButtonPressed";
+static const NSString* SearchBarUpdated = @"RNN.SearchBarUpdated";
+static const NSString* SearchBarCancelPressed = @"RNN.SearchBarCancelPressed";
 
 -(NSArray<NSString *> *)supportedEvents {
-	return @[AppLaunched, CommandCompleted, NativeEvent, ComponentEvent];
+	return @[AppLaunched, CommandCompleted, NativeEvent, ];
 }
 
 # pragma mark public

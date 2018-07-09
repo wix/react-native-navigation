@@ -1,7 +1,6 @@
 import { EventsRegistry } from './EventsRegistry';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 import { CommandsObserver } from './CommandsObserver';
-import { LifecycleEventType } from '../interfaces/LifecycleEvent';
 
 describe('EventsRegistry', () => {
   let uut: EventsRegistry;
@@ -26,18 +25,18 @@ describe('EventsRegistry', () => {
     expect(mockNativeEventsReceiver.registerAppLaunchedListener).toHaveBeenCalledWith(cb);
   });
 
-  it('exposes componentLifecycle event', () => {
-    const subscription = {};
+  it('delegates didAppear to nativeEventsReceiver', () => {
     const cb = jest.fn();
-    mockNativeEventsReceiver.registerComponentLifecycleListener.mockReturnValueOnce(subscription);
+    uut.registerComponentDidAppearListener(cb);
+    expect(mockNativeEventsReceiver.registerComponentDidAppearListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerComponentDidAppearListener).toHaveBeenCalledWith(cb);
+  });
 
-    const result = uut.registerComponentLifecycleListener(cb);
-
-    expect(result).toBe(subscription);
-    expect(mockNativeEventsReceiver.registerComponentLifecycleListener).toHaveBeenCalledTimes(1);
-
-    mockNativeEventsReceiver.registerComponentLifecycleListener.mock.calls[0][0]({ type: LifecycleEventType.ComponentDidAppear, componentId: 'theId', componentName: 'theName' });
-    expect(cb).toHaveBeenCalledWith({ type: 'ComponentDidAppear', componentId: 'theId', componentName: 'theName' });
+  it('delegates didDisappear to nativeEventsReceiver', () => {
+    const cb = jest.fn();
+    uut.registerComponentDidDisappearListener(cb);
+    expect(mockNativeEventsReceiver.registerComponentDidDisappearListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerComponentDidDisappearListener).toHaveBeenCalledWith(cb);
   });
 
   it('exposes registerCommandListener registers listener to commandObserver', () => {
@@ -71,24 +70,17 @@ describe('EventsRegistry', () => {
     expect(cb).toHaveBeenCalledWith({ commandId: 'theCommandId', completionTime: 12345, params: { a: 1 } });
   });
 
-  it('registerNativeEventListener', () => {
-    const subscription = {};
+  it('bottomTabSelected delegates to nativeEventsReceiver', () => {
     const cb = jest.fn();
-    mockNativeEventsReceiver.registerNativeEventListener.mockReturnValueOnce(subscription);
-
-    const result = uut.registerNativeEventListener(cb);
-
-    expect(result).toBe(subscription);
-    expect(mockNativeEventsReceiver.registerNativeEventListener).toHaveBeenCalledTimes(1);
-
-    mockNativeEventsReceiver.registerNativeEventListener.mock.calls[0][0]({ name: 'the event name', params: { a: 1 } });
-    expect(cb).toHaveBeenCalledWith('the event name', { a: 1 });
+    uut.registerBottomTabSelectedListener(cb);
+    expect(mockNativeEventsReceiver.registerBottomTabSelectedListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerBottomTabSelectedListener).toHaveBeenCalledWith(cb);
   });
 
-  it(`sends screenEventsRegistry bindScren`, () => {
+  it(`delegates bindComponent to ComponentObserver`, () => {
     const subscription = {};
     mockScreenEventsRegistry.bindScreen = jest.fn();
     mockScreenEventsRegistry.bindScreen.mockReturnValueOnce(subscription);
-    expect(uut.bindScreen({} as React.Component<any>)).toEqual(subscription);
+    expect(uut.bindComponent({} as React.Component<any>)).toEqual(subscription);
   });
 });

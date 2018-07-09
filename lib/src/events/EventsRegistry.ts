@@ -1,34 +1,57 @@
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 import { CommandsObserver } from './CommandsObserver';
 import { EventSubscription } from '../interfaces/EventSubscription';
-import { ScreenEventsRegistry } from './ScreenEventsRegistry';
-import { LifecycleEvent } from '../interfaces/LifecycleEvent';
-import { CommandCompletedEvent } from '../interfaces/CommandCompletedEvent';
+import { ComponentEventsObserver } from './ComponentEventsObserver';
+import {
+  ComponentDidAppearEvent,
+  ComponentDidDisappearEvent,
+  CommandCompletedEvent,
+  BottomTabSelectedEvent,
+  NavigationButtonPressedEvent,
+  SearchBarUpdatedEvent,
+  SearchBarCancelPressedEvent
+} from '../interfaces/Events';
 
 export class EventsRegistry {
-  constructor(private nativeEventsReceiver: NativeEventsReceiver, private commandsObserver: CommandsObserver, private screenEventsRegistry: ScreenEventsRegistry) { }
+  constructor(private nativeEventsReceiver: NativeEventsReceiver, private commandsObserver: CommandsObserver, private componentEventsObserver: ComponentEventsObserver) { }
 
   public registerAppLaunchedListener(callback: () => void): EventSubscription {
     return this.nativeEventsReceiver.registerAppLaunchedListener(callback);
   }
 
-  public registerComponentLifecycleListener(callback: (event: LifecycleEvent) => void): EventSubscription {
-    return this.nativeEventsReceiver.registerComponentLifecycleListener((event) => callback(event));
+  public registerComponentDidAppearListener(callback: (event: ComponentDidAppearEvent) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerComponentDidAppearListener(callback);
+  }
+
+  public registerComponentDidDisappearListener(callback: (event: ComponentDidDisappearEvent) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerComponentDidDisappearListener(callback);
+  }
+
+  public registerCommandCompletedListener(callback: (event: CommandCompletedEvent) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerCommandCompletedListener(callback);
+  }
+
+  public registerBottomTabSelectedListener(callback: (event: BottomTabSelectedEvent) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerBottomTabSelectedListener(callback);
+  }
+
+  public registerNavigationButtonPressedListener(callback: (event: NavigationButtonPressedEvent) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerNavigationButtonPressedListener(callback);
+  }
+
+  public registerSearchBarUpdatedListener(callback: (event: SearchBarUpdatedEvent) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerSearchBarUpdatedListener(callback);
+  }
+
+  public registerSearchBarCancelPressedListener(callback: (event: SearchBarCancelPressedEvent) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerSearchBarCancelPressedListener(callback);
   }
 
   public registerCommandListener(callback: (name: string, params: any) => void): EventSubscription {
     return this.commandsObserver.register(callback);
   }
 
-  public registerCommandCompletedListener(callback: (event: CommandCompletedEvent) => void): EventSubscription {
-    return this.nativeEventsReceiver.registerCommandCompletedListener((event) => callback(event));
-  }
-
-  public registerNativeEventListener(callback: (name: string, params: any) => void): EventSubscription {
-    return this.nativeEventsReceiver.registerNativeEventListener(({ name, params }) => callback(name, params));
-  }
-
-  public bindScreen(screen: React.Component<any>): EventSubscription {
-    return this.screenEventsRegistry.bindScreen(screen);
+  public bindComponent(screen: React.Component<any>): EventSubscription {
+    return this.componentEventsObserver.bindComponent(screen);
   }
 }
