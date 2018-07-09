@@ -39,8 +39,10 @@ export class Navigation {
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver();
     this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler, this.commandsObserver, this.uniqueIdProvider);
-    this.screenEventsRegistry = new ScreenEventsRegistry();
+    this.screenEventsRegistry = new ScreenEventsRegistry(this.nativeEventsReceiver);
     this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.screenEventsRegistry);
+
+    this.screenEventsRegistry.registerForEvents();
   }
 
   /**

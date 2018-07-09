@@ -2,9 +2,11 @@ import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 import { ScreenEventsRegistry } from './ScreenEventsRegistry';
 import { LifecycleEventType } from '../adapters/NativeEventsReceiver';
+import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 
 describe('ScreenEventsRegistry', () => {
-  const uut = new ScreenEventsRegistry();
+  const mockNativeEventsReceiver = new NativeEventsReceiver();
+  const uut = new ScreenEventsRegistry(mockNativeEventsReceiver);
   const didAppearFn = jest.fn();
   const didDisappearFn = jest.fn();
   const didMountFn = jest.fn();
@@ -127,6 +129,12 @@ describe('ScreenEventsRegistry', () => {
       componentName: 'doesnt matter'
     });
     expect(didAppearFn).not.toHaveBeenCalled();
+  });
+
+  it(`registerForAllEvents using nativeEventsReceiver`, () => {
+    expect(mockNativeEventsReceiver.registerComponentLifecycleListener).not.toHaveBeenCalled();
+    uut.registerForEvents();
+    expect(mockNativeEventsReceiver.registerComponentLifecycleListener).toHaveBeenCalledTimes(1);
   });
 
   it.skip(`supports multiple listeners with same componentId`, () => {
