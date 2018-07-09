@@ -13,6 +13,7 @@ class LifecycleScreen extends Component {
     this.state = {
       text: 'nothing yet'
     };
+    this.subscription = Navigation.events().bindScreen(this);
   }
 
   componentDidAppear() {
@@ -24,6 +25,7 @@ class LifecycleScreen extends Component {
   }
 
   componentWillUnmount() {
+    this.subscription.remove();
     alert('componentWillUnmount'); // eslint-disable-line no-alert
   }
 
