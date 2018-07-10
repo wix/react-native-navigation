@@ -8,14 +8,14 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import static com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 
 public class EventEmitter {
-	private static final String AppLaunched = "RNN.AppLaunched";
-	private static final String CommandCompleted = "RNN.CommandCompleted";
-	private static final String BottomTabSelected = "RNN.BottomTabSelected";
-	private static final String ComponentDidAppear = "RNN.ComponentDidAppear";
-	private static final String ComponentDidDisappear = "RNN.ComponentDidDisappear";
+	private static final String AppLaunched             = "RNN.AppLaunched";
+	private static final String CommandCompleted        = "RNN.CommandCompleted";
+	private static final String BottomTabSelected       = "RNN.BottomTabSelected";
+	private static final String ComponentDidAppear      = "RNN.ComponentDidAppear";
+	private static final String ComponentDidDisappear   = "RNN.ComponentDidDisappear";
 	private static final String NavigationButtonPressed = "RNN.NavigationButtonPressed";
-	private static final String SearchBarUpdated = "RNN.SearchBarUpdated";
-	private static final String SearchBarCancelPressed = "RNN.SearchBarCancelPressed";
+	private static final String SearchBarUpdated        = "RNN.SearchBarUpdated";
+	private static final String SearchBarCancelPressed  = "RNN.SearchBarCancelPressed";
 
 	private final RCTDeviceEventEmitter emitter;
 
