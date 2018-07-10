@@ -10,7 +10,7 @@ class TopBarBackground extends Component {
 
   constructor(props) {
     super(props);
-    this.subscription = Navigation.events().bindScreen(this);
+    this.subscription = Navigation.events().bindComponent(this);
     this.state = {};
     this.dots = new Array(55).fill('').map((ignored, i) => <View key={'dot' + i} style={[styles.dot, {backgroundColor: this.props.color}]}/>);
   }

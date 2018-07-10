@@ -15,7 +15,7 @@ class CustomTopBar extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.subscription = Navigation.events().bindScreen(this);
+    this.subscription = Navigation.events().bindComponent(this);
   }
 
   componentDidAppear() {

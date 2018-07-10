@@ -14,7 +14,7 @@ class CustomRoundedButton extends Component {
 
   constructor(props) {
     super(props);
-    this.subscription = Navigation.events().bindScreen(this);
+    this.subscription = Navigation.events().bindComponent(this);
     this.state = {};
   }
 

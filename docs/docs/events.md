@@ -103,12 +103,12 @@ This event is emitted whenever a TopBat button is pressed by the user
 |**name**|`buttonPressed`|
 |**params**|`componentId`: `componentId` of the layout element the pressed button is bound to<br>`buttonId`: `id` of the pressed button|
 
-## onNavigationButtonPressed
+## navigationButtonPressed
 Called when a TopBar button is pressed.
 
 ```js
 class MyComponent extends Component {
-  onNavigationButtonPressed(buttonId) {
+  navigationButtonPressed(buttonId) {
 
   }
 }

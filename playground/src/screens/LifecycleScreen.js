@@ -29,8 +29,8 @@ class LifecycleScreen extends Component {
     alert('componentWillUnmount'); // eslint-disable-line no-alert
   }
 
-  onNavigationButtonPressed(id) {
-    alert(`onNavigationButtonPressed: ${id}`); // eslint-disable-line no-alert
+  navigationButtonPressed(id) {
+    alert(`navigationButtonPressed: ${id}`); // eslint-disable-line no-alert
   }
 
   render() {

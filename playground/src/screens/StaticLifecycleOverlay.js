@@ -12,12 +12,19 @@ class StaticLifecycleOverlay extends Component {
       events: []
     };
     this.listeners = [];
-    this.listeners.push(Navigation.events().registerComponentLifecycleListener((event) => {
+    this.listeners.push(Navigation.events().registerComponentDidAppearListener((event) => {
+      event.event = 'componentDidAppear';
       this.setState({
         events: [...this.state.events, { ...event }]
       });
     }));
-    this.listeners.push(Navigation.events().registerCommandCompletedListener((commandId, completionTime, params) => {
+    this.listeners.push(Navigation.events().registerComponentDidDisappearListener((event) => {
+      event.event = 'componentDidDisappear';
+      this.setState({
+        events: [...this.state.events, { ...event }]
+      });
+    }));
+    this.listeners.push(Navigation.events().registerCommandCompletedListener(({commandId}) => {
       this.setState({
         events: [...this.state.events, { event: 'commandCompleted', commandId }]
       });
