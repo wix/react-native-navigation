@@ -53,7 +53,7 @@ class PushedScreen extends Component {
       }),
       Navigation.events().registerComponentLifecycleListener((event) => {
         if (this.state.previewComponentId === event.componentId) {
-          this.setState({ disabled: event.type == 'ComponentDidAppear' });
+          this.setState({ disabled: event.type === 'ComponentDidAppear' });
         }
       })
     );

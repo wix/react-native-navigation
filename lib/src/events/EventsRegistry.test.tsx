@@ -79,8 +79,8 @@ describe('EventsRegistry', () => {
 
   it(`delegates bindComponent to ComponentObserver`, () => {
     const subscription = {};
-    mockScreenEventsRegistry.bindScreen = jest.fn();
-    mockScreenEventsRegistry.bindScreen.mockReturnValueOnce(subscription);
+    mockScreenEventsRegistry.bindComponent = jest.fn();
+    mockScreenEventsRegistry.bindComponent.mockReturnValueOnce(subscription);
     expect(uut.bindComponent({} as React.Component<any>)).toEqual(subscription);
   });
 });

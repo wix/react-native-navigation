@@ -1,11 +1,11 @@
 import * as _ from 'lodash';
 import { EventSubscription } from '../interfaces/EventSubscription';
-import { ComponentDidAppearEvent } from '../interfaces/Events';
+import { ComponentDidAppearEvent, ComponentDidDisappearEvent } from '../interfaces/Events';
 
 export class ComponentEventsObserver {
-  private listeners = {};
+  private readonly listeners = {};
 
-  bindComponent(component: React.Component<any>): EventSubscription {
+  public bindComponent(component: React.Component<any>): EventSubscription {
     const key = component.props.componentId;
     if (!_.isString(key)) {
       throw new Error(`bindComponent expects a component with a componentId in props`);
@@ -16,8 +16,12 @@ export class ComponentEventsObserver {
     return { remove: () => _.unset(this.listeners, key) };
   }
 
-  notifyComponentDidAppear(event: ComponentDidAppearEvent) {
+  public notifyComponentDidAppear(event: ComponentDidAppearEvent) {
     this.triggerOnComponent(this.findListener(event.componentId), 'componentDidAppear');
+  }
+
+  public notifyComponentDidDisappear(event: ComponentDidDisappearEvent) {
+    this.triggerOnComponent(this.findListener(event.componentId), 'componentDidDisappear');
   }
 
   private findListener(componentId: string) {
@@ -25,7 +29,7 @@ export class ComponentEventsObserver {
   }
 
   private triggerOnComponent(component: React.Component<any>, method: string) {
-    if (_.isObject(screen) && _.isFunction(component[method])) {
+    if (_.isObject(component) && _.isFunction(component[method])) {
       component[method]();
     }
   }

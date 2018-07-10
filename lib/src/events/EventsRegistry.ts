@@ -51,7 +51,7 @@ export class EventsRegistry {
     return this.commandsObserver.register(callback);
   }
 
-  public bindComponent(screen: React.Component<any>): EventSubscription {
-    return this.componentEventsObserver.bindComponent(screen);
+  public bindComponent(component: React.Component<any>): EventSubscription {
+    return this.componentEventsObserver.bindComponent(component);
   }
 }
