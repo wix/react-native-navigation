@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.parse.params.Button;
@@ -38,7 +39,7 @@ public class NavigationIconResolver {
         } else if (Constants.BACK_BUTTON_ID.equals(button.id)) {
             onSuccess.run(ContextCompat.getDrawable(context, R.drawable.ic_arrow_back_black_24dp));
         } else {
-            throw new RuntimeException("Left button needs to have an icon");
+            Log.w("RNN", "Left button needs to have an icon");
         }
     }
 }

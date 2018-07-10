@@ -12,6 +12,7 @@ import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
@@ -73,7 +74,7 @@ public class TopBarTest extends BaseTest {
             Button button = new Button();
             button.id = "rightButtons" + i;
             button.text = new Text("btn" + i);
-            button.showAsAction = MenuItem.SHOW_AS_ACTION_ALWAYS;
+            button.showAsAction = new Number(MenuItem.SHOW_AS_ACTION_ALWAYS);
             result.add(spy(button));
         }
         return result;

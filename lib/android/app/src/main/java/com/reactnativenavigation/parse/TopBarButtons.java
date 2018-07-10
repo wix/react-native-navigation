@@ -3,6 +3,7 @@ package com.reactnativenavigation.parse;
 import android.support.annotation.Nullable;
 
 import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
@@ -38,8 +39,20 @@ public class TopBarButtons {
     }
 
     void mergeWithDefault(TopBarButtons defaultOptions) {
-        if (left == null) left = defaultOptions.left;
-        if (right == null) right = defaultOptions.right;
+        if (left == null) {
+            left = defaultOptions.left;
+        } else if (!CollectionUtils.isNullOrEmpty(defaultOptions.left)){
+            for (Button button : left) {
+                button.mergeWithDefault(defaultOptions.left.get(0));
+            }
+        }
+        if (right == null) {
+            right = defaultOptions.right;
+        } else if (!CollectionUtils.isNullOrEmpty(defaultOptions.right)) {
+            for (Button button : right) {
+                button.mergeWithDefault(defaultOptions.right.get(0));
+            }
+        }
         back.mergeWithDefault(defaultOptions.back);
     }
 }

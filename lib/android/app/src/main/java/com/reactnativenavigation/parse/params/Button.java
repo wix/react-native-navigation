@@ -21,7 +21,7 @@ public class Button {
     public Text text = new NullText();
     public Bool enabled = new NullBool();
     public Bool disableIconTint = new NullBool();
-    public int showAsAction;
+    public Number showAsAction = new NullNumber();
     public Color color = new NullColor();
     public Color disabledColor = new NullColor();
     public Number fontSize = new NullNumber();
@@ -86,22 +86,37 @@ public class Button {
         return icon.hasValue();
     }
 
-    private static int parseShowAsAction(JSONObject json) {
+    private static Number parseShowAsAction(JSONObject json) {
         final Text showAsAction = TextParser.parse(json, "showAsAction");
         if (!showAsAction.hasValue()) {
-            return MenuItem.SHOW_AS_ACTION_IF_ROOM;
+            return new Number(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
 
         switch (showAsAction.get()) {
             case "always":
-                return MenuItem.SHOW_AS_ACTION_ALWAYS;
+                return new Number(MenuItem.SHOW_AS_ACTION_ALWAYS);
             case "never":
-                return MenuItem.SHOW_AS_ACTION_NEVER;
+                return new Number(MenuItem.SHOW_AS_ACTION_NEVER);
             case "withText":
-                return MenuItem.SHOW_AS_ACTION_WITH_TEXT;
+                return new Number(MenuItem.SHOW_AS_ACTION_WITH_TEXT);
             case "ifRoom":
             default:
-                return MenuItem.SHOW_AS_ACTION_IF_ROOM;
+                return new Number(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
+    }
+
+    public void mergeWithDefault(Button defaultOptions) {
+        if (!text.hasValue()) text = defaultOptions.text;
+        if (!enabled.hasValue()) enabled = defaultOptions.enabled;
+        if (!disableIconTint.hasValue()) disableIconTint = defaultOptions.disableIconTint;
+        if (!color.hasValue()) color = defaultOptions.color;
+        if (!disabledColor.hasValue()) disabledColor = defaultOptions.disabledColor;
+        if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
+        if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
+        if (!fontWeight.hasValue()) fontWeight = defaultOptions.fontWeight;
+        if (!testId.hasValue()) testId = defaultOptions.testId;
+        if (!component.hasValue()) component = defaultOptions.component;
+        if (!showAsAction.hasValue()) showAsAction = defaultOptions.showAsAction;
+        if (!icon.hasValue()) icon = defaultOptions.icon;
     }
 }

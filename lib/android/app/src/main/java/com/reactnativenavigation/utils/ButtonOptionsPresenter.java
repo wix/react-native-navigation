@@ -76,7 +76,9 @@ public class ButtonOptionsPresenter {
     @NonNull
     private ArrayList<View> findActualTextViewInMenu() {
         ArrayList<View> outViews = new ArrayList<>();
-        toolbar.findViewsWithText(outViews, button.text.get(), View.FIND_VIEWS_WITH_TEXT);
+        if (button.text.hasValue()) {
+            toolbar.findViewsWithText(outViews, button.text.get(), View.FIND_VIEWS_WITH_TEXT);
+        }
         return outViews;
     }
 

@@ -9,7 +9,7 @@ The following options can be used to customise buttons.
   component: {
     name: 'example.CustomButtonComponent'
   },
-  title: 'Button one',
+  text: 'Button one',
   enabled: true,
   disableIconTint: false,
   color: 'red',
@@ -74,7 +74,7 @@ Navigation.mergeOptions(this.props.componentId, {
     rightButtons: [
       {
         id: 'myDynamicButton',
-        title: 'My Button'
+        text: 'My Button'
       }
     ]
   }

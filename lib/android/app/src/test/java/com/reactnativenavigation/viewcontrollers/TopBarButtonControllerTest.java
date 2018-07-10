@@ -161,7 +161,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         button.id = "btn1";
         button.text = new Text("Button");
         button.fontFamily = Typeface.MONOSPACE;
-        button.showAsAction = MenuItem.SHOW_AS_ACTION_ALWAYS;
+        button.showAsAction = new Number(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     private void setIconButton(boolean enabled) {
@@ -171,7 +171,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         button.component.name = new NullText();
         button.component.componentId = new NullText();
         button.enabled = new Bool(enabled);
-        button.showAsAction = MenuItem.SHOW_AS_ACTION_ALWAYS;
+        button.showAsAction = new Number(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     private void setReactComponentButton() {
