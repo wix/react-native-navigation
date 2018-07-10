@@ -50,13 +50,13 @@ class PushedScreen extends Component {
 
   componentDidMount() {
     this.listeners.push(
-      Navigation.events().registerNativeEventListener((name, params) => {
-        if (name === 'previewContext') {
-          const { previewComponentId } = params;
-          this.setState({ previewComponentId });
-        }
-      }),
-      Navigation.events().registerComponentLifecycleListener((event) => {
+      // Navigation.events().registerNativeEventListener((name, params) => {
+      //   if (name === 'previewContext') {
+      //     const { previewComponentId } = params;
+      //     this.setState({ previewComponentId });
+      //   }
+      // }),
+      this.subscription = Navigation.events().registerComponentDidAppearListener((event) => {
         if (this.state.previewComponentId === event.componentId) {
           this.setState({ disabled: event.type === 'ComponentDidAppear' });
         }
@@ -65,6 +65,7 @@ class PushedScreen extends Component {
   }
 
   componentWillUnmount() {
+    this.subscription.remove();
     this.listeners.forEach(listener => listener.remove && listener.remove());
   }
 
