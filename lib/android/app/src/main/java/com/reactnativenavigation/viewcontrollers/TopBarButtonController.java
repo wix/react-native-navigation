@@ -99,7 +99,7 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
     }
 
     public void addToMenu(Toolbar toolbar, int position) {
-        MenuItem menuItem = toolbar.getMenu().add(0, position, position, button.title.get(""));
+        MenuItem menuItem = toolbar.getMenu().add(0, position, position, button.text.get(""));
         menuItem.setShowAsAction(button.showAsAction);
         menuItem.setEnabled(button.enabled.isTrueOrUndefined());
         menuItem.setOnMenuItemClickListener(this);
@@ -144,7 +144,7 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
             ActionMenuView buttonsLayout = ViewUtils.findChildByClass(toolbar, ActionMenuView.class);
             List<TextView> buttons = ViewUtils.findChildrenByClass(buttonsLayout, TextView.class);
             for (TextView view : buttons) {
-                if (button.title.hasValue() && button.title.get().equals(view.getText().toString())) {
+                if (button.text.hasValue() && button.text.get().equals(view.getText().toString())) {
                     view.setTag(testId.get());
                 } else if (button.icon.hasValue() && ArrayUtils.contains(view.getCompoundDrawables(), icon)) {
                     view.setTag(testId.get());

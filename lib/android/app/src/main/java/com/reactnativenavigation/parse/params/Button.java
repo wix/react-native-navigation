@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class Button {
     public String id;
-    public Text title = new NullText();
+    public Text text = new NullText();
     public Bool enabled = new NullBool();
     public Bool disableIconTint = new NullBool();
     public int showAsAction;
@@ -34,7 +34,7 @@ public class Button {
     protected static Button parseJson(JSONObject json, TypefaceLoader typefaceManager) {
         Button button = new Button();
         button.id = json.optString("id");
-        button.title = TextParser.parse(json, "title");
+        button.text = TextParser.parse(json, "text");
         button.enabled = BoolParser.parse(json, "enabled");
         button.disableIconTint = BoolParser.parse(json, "disableIconTint");
         button.showAsAction = parseShowAsAction(json);
@@ -53,19 +53,28 @@ public class Button {
         return button;
     }
 
-    public static ArrayList<Button> parseJsonArray(JSONArray jsonArray, TypefaceLoader typefaceLoader) {
+    public static ArrayList<Button> parse(JSONObject json, String buttonsType, TypefaceLoader typefaceLoader) {
         ArrayList<Button> buttons = new ArrayList<>();
-
-        if (jsonArray == null) {
+        if (!json.has(buttonsType)) {
             return null;
         }
 
+        JSONArray jsonArray = json.optJSONArray(buttonsType);
+        if (jsonArray != null) {
+            buttons.addAll(parseJsonArray(jsonArray, typefaceLoader));
+        } else {
+            buttons.add(parseJson(json.optJSONObject(buttonsType), typefaceLoader));
+        }
+        return buttons;
+    }
+
+    private static ArrayList<Button> parseJsonArray(JSONArray jsonArray, TypefaceLoader typefaceLoader) {
+        ArrayList<Button> buttons = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject json = jsonArray.optJSONObject(i);
             Button button = Button.parseJson(json, typefaceLoader);
             buttons.add(button);
         }
-
         return buttons;
     }
 

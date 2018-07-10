@@ -41,12 +41,12 @@ public class ButtonOptionsPresenter {
     }
 
     public void setFontSize(MenuItem menuItem) {
-        SpannableString spanString = new SpannableString(button.title.get());
+        SpannableString spanString = new SpannableString(button.text.get());
         if (this.button.fontSize.hasValue())
             spanString.setSpan(
                     new AbsoluteSizeSpan(button.fontSize.get(), true),
                     0,
-                    button.title.get().length(),
+                    button.text.get().length(),
                     Spannable.SPAN_INCLUSIVE_INCLUSIVE
             );
         menuItem.setTitleCondensed(spanString);
@@ -76,7 +76,7 @@ public class ButtonOptionsPresenter {
     @NonNull
     private ArrayList<View> findActualTextViewInMenu() {
         ArrayList<View> outViews = new ArrayList<>();
-        toolbar.findViewsWithText(outViews, button.title.get(), View.FIND_VIEWS_WITH_TEXT);
+        toolbar.findViewsWithText(outViews, button.text.get(), View.FIND_VIEWS_WITH_TEXT);
         return outViews;
     }
 

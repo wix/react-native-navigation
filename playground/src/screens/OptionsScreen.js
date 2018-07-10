@@ -75,19 +75,19 @@ class OptionsScreen extends Component {
           {
             id: BUTTON_ONE,
             testID: BUTTON_ONE,
-            title: 'One',
+            text: 'One',
             fontFamily: 'HelveticaNeue-Italic',
             fontSize: 28,
             color: 'red'
           }
         ],
-        leftButtons: [{
+        leftButtons: {
           id: BUTTON_LEFT,
           testID: BUTTON_LEFT,
           icon: require('../../img/navicon_add.png'),
-          title: 'Left',
+          text: 'Left',
           color: 'purple'
-        }]
+        }
       },
       fab: {
         id: FAB,
@@ -144,7 +144,7 @@ class OptionsScreen extends Component {
           rightButtons: [{
             id: BUTTON_TWO,
             testID: BUTTON_TWO,
-            title: 'Two',
+            text: 'Two',
             icon: require('../../img/navicon_add.png'),
             disableIconTint: true,
             showAsAction: 'ifRoom',
@@ -161,14 +161,14 @@ class OptionsScreen extends Component {
           rightButtons: [{
             id: BUTTON_ONE,
             testID: BUTTON_ONE,
-            title: 'One',
+            text: 'One',
             color: 'red'
           }],
           leftButtons: [{
             id: BUTTON_LEFT,
             testID: BUTTON_LEFT,
             icon: require('../../img/navicon_add.png'),
-            title: 'Left',
+            text: 'Left',
             color: 'purple'
           }]
         }

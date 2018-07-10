@@ -14,7 +14,7 @@ public class ModalAnimatorMock extends ModalAnimator {
     }
 
     @Override
-    public void show(View view, AnimationOptions animation, AnimatorListenerAdapter listener) {
+    public void show(View view, AnimationOptions show, AnimatorListenerAdapter listener) {
         try {
             listener.onAnimationStart(null);
             Thread.sleep(10);
@@ -25,7 +25,7 @@ public class ModalAnimatorMock extends ModalAnimator {
     }
 
     @Override
-    public void dismiss(View view, AnimatorListenerAdapter listener) {
+    public void dismiss(View view, AnimationOptions dismiss, AnimatorListenerAdapter listener) {
         try {
             listener.onAnimationStart(null);
             Thread.sleep(10);

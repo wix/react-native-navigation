@@ -90,14 +90,12 @@ public class StackController extends ParentController<StackLayout> {
                         child
                 )
         );
-        animator.setOptions(options.animations);
     }
 
     @Override
     public void mergeChildOptions(Options options, Component child) {
         super.mergeChildOptions(options, child);
         presenter.mergeChildOptions(options, child);
-        animator.mergeOptions(options.animations);
         if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
             fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
         }
@@ -135,14 +133,14 @@ public class StackController extends ParentController<StackLayout> {
         addChildToStack(child, child.getView(), resolvedOptions);
 
         if (toRemove != null) {
-            if (child.options.animations.push.enable.isTrueOrUndefined()) {
+            if (resolvedOptions.animations.push.enable.isTrueOrUndefined()) {
                 if (resolvedOptions.animations.push.waitForRender.isTrue()) {
-                    child.setOnAppearedListener(() -> animator.push(child.getView(), () -> {
+                    child.setOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.push, () -> {
                         getView().removeView(toRemove.getView());
                         listener.onSuccess(child.getId());
                     }));
                 } else {
-                    animator.push(child.getView(), () -> {
+                    animator.push(child.getView(), resolvedOptions.animations.push, () -> {
                         getView().removeView(toRemove.getView());
                         listener.onSuccess(child.getId());
                     });
@@ -194,16 +192,16 @@ public class StackController extends ParentController<StackLayout> {
         final ViewController appearing = stack.peek();
         disappearing.onViewWillDisappear();
         appearing.onViewWillAppear();
+        Options resolvedOptions = resolveCurrentOptions();
         ViewGroup appearingView = appearing.getView();
         if (appearingView.getLayoutParams() == null) {
             appearingView.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-            Options options = resolveCurrentOptions();
-            presenter.applyLayoutParamsOptions(options, appearingView);
+            presenter.applyLayoutParamsOptions(resolvedOptions, appearingView);
         }
         getView().addView(appearingView, 0);
         presenter.onChildWillAppear(appearing.options, disappearing.options);
         if (disappearing.options.animations.pop.enable.isTrueOrUndefined()) {
-            animator.pop(disappearing.getView(), () -> finishPopping(disappearing, listener));
+            animator.pop(disappearing.getView(), resolvedOptions.animations.pop, () -> finishPopping(disappearing, listener));
         } else {
             finishPopping(disappearing, listener);
         }
