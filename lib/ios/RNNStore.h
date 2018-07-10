@@ -1,7 +1,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "RNNRootViewController.h"
+#import "RNNRootViewProtocol.h"
 #import "ReactNativeNavigation.h"
 
 typedef void (^RNNTransitionCompletionBlock)(void);

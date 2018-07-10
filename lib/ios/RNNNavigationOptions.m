@@ -54,7 +54,7 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 	[self.layout applyOn:viewController];
 	[self applyOtherOptionsOn:viewController];
 	
-	[viewController optionsUpdated];
+	[viewController.getLeafViewController optionsUpdated];
 }
 
 - (void)applyOtherOptionsOn:(UIViewController*)viewController {
