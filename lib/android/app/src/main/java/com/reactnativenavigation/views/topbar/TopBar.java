@@ -225,11 +225,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setRightButtons(rightButtons);
     }
 
-    public void setBackgroundColor(Color color) {
-        if (!color.hasValue()) return;
-        setBackgroundColor(color.get());
-    }
-
     public void setElevation(Fraction elevation) {
         if (elevation.hasValue() &&
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
