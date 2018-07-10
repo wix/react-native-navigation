@@ -39,7 +39,42 @@ describe('EventsRegistry', () => {
     expect(mockNativeEventsReceiver.registerComponentDidDisappearListener).toHaveBeenCalledWith(cb);
   });
 
-  it('exposes registerCommandListener registers listener to commandObserver', () => {
+  it('delegates commandCompleted to nativeEventsReceiver', () => {
+    const cb = jest.fn();
+    uut.registerCommandCompletedListener(cb);
+    expect(mockNativeEventsReceiver.registerCommandCompletedListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerCommandCompletedListener).toHaveBeenCalledWith(cb);
+  });
+
+  it('delegates BottomTabsSelected to nativeEventsReceiver', () => {
+    const cb = jest.fn();
+    uut.registerBottomTabSelectedListener(cb);
+    expect(mockNativeEventsReceiver.registerBottomTabSelectedListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerBottomTabSelectedListener).toHaveBeenCalledWith(cb);
+  });
+
+  it('delegates navigationButtonPressed to nativeEventsReceiver', () => {
+    const cb = jest.fn();
+    uut.registerNavigationButtonPressedListener(cb);
+    expect(mockNativeEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledWith(cb);
+  });
+
+  it('delegates searchBarUpdated to nativeEventsReceiver', () => {
+    const cb = jest.fn();
+    uut.registerSearchBarUpdatedListener(cb);
+    expect(mockNativeEventsReceiver.registerSearchBarUpdatedListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerSearchBarUpdatedListener).toHaveBeenCalledWith(cb);
+  });
+
+  it('delegates searchBarCancelPressed to nativeEventsReceiver', () => {
+    const cb = jest.fn();
+    uut.registerSearchBarCancelPressedListener(cb);
+    expect(mockNativeEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(1);
+    expect(mockNativeEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledWith(cb);
+  });
+
+  it('delegates registerCommandListener to commandObserver', () => {
     const cb = jest.fn();
     const result = uut.registerCommandListener(cb);
     expect(result).toBeDefined();
@@ -54,27 +89,6 @@ describe('EventsRegistry', () => {
     result.remove();
     commandsObserver.notify('theCommandName', { x: 1 });
     expect(cb).not.toHaveBeenCalled();
-  });
-
-  it('registerCommandCompletedListener', () => {
-    const subscription = {};
-    const cb = jest.fn();
-    mockNativeEventsReceiver.registerCommandCompletedListener.mockReturnValueOnce(subscription);
-
-    const result = uut.registerCommandCompletedListener(cb);
-
-    expect(result).toBe(subscription);
-    expect(mockNativeEventsReceiver.registerCommandCompletedListener).toHaveBeenCalledTimes(1);
-
-    mockNativeEventsReceiver.registerCommandCompletedListener.mock.calls[0][0]({ commandId: 'theCommandId', completionTime: 12345, params: { a: 1 } });
-    expect(cb).toHaveBeenCalledWith({ commandId: 'theCommandId', completionTime: 12345, params: { a: 1 } });
-  });
-
-  it('bottomTabSelected delegates to nativeEventsReceiver', () => {
-    const cb = jest.fn();
-    uut.registerBottomTabSelectedListener(cb);
-    expect(mockNativeEventsReceiver.registerBottomTabSelectedListener).toHaveBeenCalledTimes(1);
-    expect(mockNativeEventsReceiver.registerBottomTabSelectedListener).toHaveBeenCalledWith(cb);
   });
 
   it(`delegates bindComponent to ComponentObserver`, () => {

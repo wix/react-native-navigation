@@ -73,66 +73,28 @@ describe('ComponentEventsObserver', () => {
   it(`doesnt call unimplemented methods`, () => {
     const tree = renderer.create(<SimpleScreen componentId={'myCompId'} />);
     expect((tree.getInstance() as any).componentDidAppear).toBeUndefined();
+    uut.bindComponent(tree.getInstance() as any);
     uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
   });
 
-  // it(`bindScreen componentId`, () => {
-  //   renderer.create(<Screen componentId={'myCompId'} />);
-  //   expect(didAppearFn).not.toHaveBeenCalled();
-  //   expect(didDisappearFn).not.toHaveBeenCalled();
+  it(`returns unregister fn`, () => {
+    const tree = renderer.create(<SimpleScreen componentId={'123'} />);
+    const instance = tree.getInstance() as any;
+    instance.componentDidAppear = jest.fn();
 
-  //   uut.onLifecycleEvent({
-  //     type: ComponentEventType.ComponentDidAppear,
-  //     componentId: 'otherScreen',
-  //     componentName: 'doesnt matter'
-  //   });
+    const result = uut.bindComponent(instance);
 
-  //   uut.onLifecycleEvent({
-  //     type: ComponentEventType.ComponentDidDisappear,
-  //     componentId: 'anotherScreen',
-  //     componentName: 'doesnt matter'
-  //   });
+    uut.notifyComponentDidAppear({ componentId: '123', componentName: 'doesnt matter' });
+    expect(instance.componentDidAppear).toHaveBeenCalledTimes(1);
 
-  //   expect(didAppearFn).not.toHaveBeenCalled();
-  //   expect(didDisappearFn).not.toHaveBeenCalled();
-  // });
+    expect(result.remove).toBeDefined();
+    result.remove();
 
-  // it(`lifecycle methods are optionally implemented`, () => {
-  //   const tree = renderer.create(<SimpleScreen componentId={'123'} />);
-  //   uut.bindScreen(tree.getInstance() as any);
+    uut.notifyComponentDidAppear({ componentId: '123', componentName: 'doesnt matter' });
+    expect(instance.componentDidAppear).toHaveBeenCalledTimes(1);
+  });
 
-  //   uut.onLifecycleEvent({
-  //     type: ComponentEventType.ComponentDidAppear,
-  //     componentId: '123',
-  //     componentName: 'doesnt matter'
-  //   });
-  //   uut.onLifecycleEvent({
-  //     type: ComponentEventType.ComponentDidDisappear,
-  //     componentId: '123',
-  //     componentName: 'doesnt matter'
-  //   });
-  // });
-
-  // it(`returns unregister fn`, () => {
-  //   const tree = renderer.create(<SimpleScreen componentId={'123'} />);
-  //   const result = uut.bindScreen(tree.getInstance() as any);
-  //   expect((result as any).remove).toBeDefined();
-  //   result.remove();
-  //   uut.onLifecycleEvent({
-  //     type: ComponentEventType.ComponentDidAppear,
-  //     componentId: '123',
-  //     componentName: 'doesnt matter'
-  //   });
-  //   expect(didAppearFn).not.toHaveBeenCalled();
-  // });
-
-  // it(`registerForAllEvents using nativeEventsReceiver`, () => {
-  //   expect(mockNativeEventsReceiver.registerComponentLifecycleListener).not.toHaveBeenCalled();
-  //   uut.registerForEvents();
-  //   expect(mockNativeEventsReceiver.registerComponentLifecycleListener).toHaveBeenCalledTimes(1);
-  // });
-
-  // it.skip(`supports multiple listeners with same componentId`, () => {
-  //   // TODO
-  // });
+  it.skip(`supports multiple listeners with same componentId`, () => {
+    // TODO
+  });
 });
