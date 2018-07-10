@@ -33,13 +33,13 @@ export class Navigation {
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
-    this.componentRegistry = new ComponentRegistry(this.store);
+    this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
+    this.componentRegistry = new ComponentRegistry(this.store, this.componentEventsObserver);
     this.layoutTreeParser = new LayoutTreeParser();
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver();
     this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler, this.commandsObserver, this.uniqueIdProvider);
-    this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
     this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.componentEventsObserver);
 
     this.componentEventsObserver.registerOnceForAllComponentEvents();

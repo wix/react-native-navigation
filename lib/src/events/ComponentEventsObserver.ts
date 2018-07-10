@@ -46,6 +46,10 @@ export class ComponentEventsObserver {
     return { remove: () => _.unset(this.listeners[componentId], key) };
   }
 
+  public unmounted(componentId: string) {
+    _.unset(this.listeners, componentId);
+  }
+
   notifyComponentDidAppear(event: ComponentDidAppearEvent) {
     this.triggerOnAllListenersByComponentId(event, 'componentDidAppear');
   }

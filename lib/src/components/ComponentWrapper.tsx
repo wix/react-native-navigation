@@ -4,7 +4,11 @@ import * as ReactLifecyclesCompat from 'react-lifecycles-compat';
 
 export class ComponentWrapper {
 
-  static wrap(componentName: string, OriginalComponentClass: React.ComponentType<any>, store): React.ComponentType<any> {
+  static wrap(
+    componentName: string,
+    OriginalComponentClass: React.ComponentType<any>,
+    store,
+    componentEventsObserver): React.ComponentType<any> {
 
     class WrappedComponent extends React.Component<any, { componentId: string; allProps: {}; }> {
 
@@ -25,6 +29,7 @@ export class ComponentWrapper {
 
       componentWillUnmount() {
         store.cleanId(this.state.componentId);
+        componentEventsObserver.unmounted(this.state.componentId);
       }
 
       render() {

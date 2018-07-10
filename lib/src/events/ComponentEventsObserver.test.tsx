@@ -119,8 +119,14 @@ describe('ComponentEventsObserver', () => {
     expect(didAppearFn).toHaveBeenCalledTimes(1);
   });
 
-  it.skip(`unmounted for componentId removes listeners`, () => {
+  it(`removeAllListenersForComponentId`, () => {
     renderer.create(<BoundScreen componentId={'123'} />);
+    renderer.create(<BoundScreen componentId={'123'} />);
+
+    uut.unmounted('123');
+
+    uut.notifyComponentDidAppear({ componentId: '123', componentName: 'doesnt matter' });
+    expect(didAppearFn).not.toHaveBeenCalled();
   });
 
   it(`supports multiple listeners with same componentId`, () => {
@@ -141,6 +147,12 @@ describe('ComponentEventsObserver', () => {
     expect(instance2.componentDidAppear).toHaveBeenCalledTimes(1);
 
     result2.remove();
+
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    expect(instance1.componentDidAppear).toHaveBeenCalledTimes(2);
+    expect(instance2.componentDidAppear).toHaveBeenCalledTimes(1);
+
+    result1.remove();
 
     uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
     expect(instance1.componentDidAppear).toHaveBeenCalledTimes(2);
