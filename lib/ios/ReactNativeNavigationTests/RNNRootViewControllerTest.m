@@ -169,15 +169,6 @@
 	XCTAssertTrue(self.uut.navigationController.hidesBarsOnSwipe);
 }
 
--(void)testTopBarButtonColor {
-	NSNumber* inputColor = @(0xFFFF0000);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	self.options.topBar.buttonColor = inputColor;
-	[self.uut viewWillAppear:false];
-	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.tintColor isEqual:expectedColor]);
-}
-
 -(void)testTopBarTranslucent {
 	NSNumber* topBarTranslucentInput = @(0);
 	self.options.topBar.translucent = topBarTranslucentInput;
@@ -456,7 +447,7 @@
 -(void)testRightButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
 
-	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test", @"enabled": @false, @"color": inputColor, @"fontSize": @22, @"fontFamily": @"HelveticaNeue"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
@@ -467,7 +458,7 @@
 	XCTAssertTrue([button.title isEqualToString:expectedTitle]);
 	XCTAssertFalse(button.enabled);
 
-	//TODO: Determine how to tests buttonColor,buttonFontSize and buttonFontWeight?
+	//TODO: Determine how to tests buttonColor,fontSize and fontFamily?
 }
 
 
@@ -487,7 +478,7 @@
 -(void)testLeftButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
 
-	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test", @"enabled": @false, @"color": inputColor, @"fontSize": @22, @"fontFamily": @"HelveticaNeue"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
@@ -498,7 +489,7 @@
 	XCTAssertTrue([button.title isEqualToString:expectedTitle]);
 	XCTAssertFalse(button.enabled);
 
-	//TODO: Determine how to tests buttonColor,buttonFontSize and buttonFontWeight?
+	//TODO: Determine how to tests color,fontSize and fontFamily?
 }
 
 -(void)testTopBarNoBorderOn {

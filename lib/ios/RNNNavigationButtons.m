@@ -105,6 +105,8 @@
 	if (color) {
 		[textAttributes setObject:color forKey:NSForegroundColorAttributeName];
 	}
+
+	[barButtonItem setTintColor: color];
 	
 	UIColor* disabledColor = [self color:dictionary[@"disabledColor"] defaultColor:_defaultButtonStyle.disabledColor];;
 	if (disabledColor) {

@@ -104,7 +104,8 @@ Navigation.mergeOptions(this.props.componentId, {
     },
     backButton: {
       icon: require('icon.png'),
-      visible: true
+      visible: true,
+      color: 'green'
     },
     background: {
       color: '#00ff00',

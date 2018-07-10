@@ -61,12 +61,6 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		viewController.navigationController.hidesBarsOnSwipe = NO;
 	}
 	
-	if (self.buttonColor) {
-		UIColor* buttonColor = [RCTConvert UIColor:self.buttonColor];
-		viewController.navigationController.navigationBar.tintColor = buttonColor;
-	} else {
-		viewController.navigationController.navigationBar.tintColor = nil;
-	}
 	
 	if ([self.blur boolValue]) {
 		if (![viewController.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]) {

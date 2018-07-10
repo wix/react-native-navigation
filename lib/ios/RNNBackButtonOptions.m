@@ -25,6 +25,13 @@
 		
 		viewController.navigationItem.backBarButtonItem = backItem;
 	}
+	
+	if (self.color) {
+		UIColor* buttonColor = [RCTConvert UIColor:self.color];
+		viewController.navigationController.navigationBar.tintColor = buttonColor;
+	} else {
+		viewController.navigationController.navigationBar.tintColor = nil;
+	}
 }
 
 @end
