@@ -50,18 +50,22 @@ class PushedScreen extends Component {
 
   componentDidMount() {
     this.listeners.push(
-      // Navigation.events().registerNativeEventListener((name, params) => {
-      //   if (name === 'previewContext') {
-      //     const { previewComponentId } = params;
-      //     this.setState({ previewComponentId });
-      //   }
-      // }),
       this.subscription = Navigation.events().registerComponentDidAppearListener((event) => {
         if (this.state.previewComponentId === event.componentId) {
           this.setState({ disabled: event.type === 'ComponentDidAppear' });
         }
       })
     );
+    if (Platform.OS === 'ios') {
+      this.listeners.push(
+        Navigation.events().registerNativeEventListener((name, params) => {
+          if (name === 'previewContext') {
+            const { previewComponentId } = params;
+            this.setState({ previewComponentId });
+          }
+        })
+      );
+    }
   }
 
   componentWillUnmount() {
