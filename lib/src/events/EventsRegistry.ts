@@ -5,12 +5,11 @@ import { ComponentEventsObserver } from './ComponentEventsObserver';
 import {
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
-  CommandCompletedEvent,
-  BottomTabSelectedEvent,
   NavigationButtonPressedEvent,
   SearchBarUpdatedEvent,
   SearchBarCancelPressedEvent
-} from '../interfaces/Events';
+} from '../interfaces/ComponentEvents';
+import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
 
 export class EventsRegistry {
   constructor(private nativeEventsReceiver: NativeEventsReceiver, private commandsObserver: CommandsObserver, private componentEventsObserver: ComponentEventsObserver) { }

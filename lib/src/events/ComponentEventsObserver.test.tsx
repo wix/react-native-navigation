@@ -8,6 +8,9 @@ describe('ComponentEventsObserver', () => {
   const didDisappearFn = jest.fn();
   const didMountFn = jest.fn();
   const willUnmountFn = jest.fn();
+  const navigationButtonPressedFn = jest.fn();
+  const searchBarUpdatedFn = jest.fn();
+  const searchBarCancelPressedFn = jest.fn();
 
   class SimpleScreen extends React.Component<any, any> {
     render() {
@@ -37,6 +40,18 @@ describe('ComponentEventsObserver', () => {
       didDisappearFn();
     }
 
+    navigationButtonPressed(event) {
+      navigationButtonPressedFn(event);
+    }
+
+    searchBarUpdated(event) {
+      searchBarUpdatedFn(event);
+    }
+
+    searchBarCancelPressed(event) {
+      searchBarCancelPressedFn(event);
+    }
+
     render() {
       return 'Hello';
     }
@@ -49,7 +64,7 @@ describe('ComponentEventsObserver', () => {
     expect(() => uut.bindComponent(tree2.getInstance() as any)).toThrow('');
   });
 
-  it(`bindComponent notifies listeners by componentId on lifecycle events`, () => {
+  it(`bindComponent notifies listeners by componentId on events`, () => {
     const tree = renderer.create(<BoundScreen componentId={'myCompId'} />);
     expect(tree.toJSON()).toBeDefined();
     expect(didMountFn).toHaveBeenCalledTimes(1);
@@ -62,6 +77,18 @@ describe('ComponentEventsObserver', () => {
 
     uut.notifyComponentDidDisappear({ componentId: 'myCompId', componentName: 'doesnt matter' });
     expect(didDisappearFn).toHaveBeenCalledTimes(1);
+
+    uut.notifyNavigationButtonPressed({ componentId: 'myCompId', buttonId: 'myButtonId' });
+    expect(navigationButtonPressedFn).toHaveBeenCalledTimes(1);
+    expect(navigationButtonPressedFn).toHaveBeenCalledWith({ buttonId: 'myButtonId', componentId: 'myCompId' });
+
+    uut.notifySearchBarUpdated({ componentId: 'myCompId', text: 'theText', isFocused: true });
+    expect(searchBarUpdatedFn).toHaveBeenCalledTimes(1);
+    expect(searchBarUpdatedFn).toHaveBeenCalledWith({ componentId: 'myCompId', text: 'theText', isFocused: true });
+
+    uut.notifySearchBarCancelPressed({ componentId: 'myCompId' });
+    expect(searchBarCancelPressedFn).toHaveBeenCalledTimes(1);
+    expect(searchBarCancelPressedFn).toHaveBeenCalledWith({ componentId: 'myCompId' });
   });
 
   it(`doesnt call other componentIds`, () => {

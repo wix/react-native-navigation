@@ -2,13 +2,12 @@ import { NativeModules, NativeEventEmitter } from 'react-native';
 import { EventSubscription } from '../interfaces/EventSubscription';
 import {
   ComponentDidAppearEvent,
-  CommandCompletedEvent,
   ComponentDidDisappearEvent,
   NavigationButtonPressedEvent,
   SearchBarUpdatedEvent,
-  BottomTabSelectedEvent,
   SearchBarCancelPressedEvent
-} from '../interfaces/Events';
+} from '../interfaces/ComponentEvents';
+import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
 
 export class NativeEventsReceiver {
   private emitter;
