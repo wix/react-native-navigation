@@ -17,7 +17,11 @@ class PushedScreen extends Component {
         drawBehind: true
       },
       topBar: {
-        testID: testIDs.TOP_BAR_ELEMENT
+        testID: testIDs.TOP_BAR_ELEMENT,
+        rightButtons: {
+          id: 'singleBtn',
+          text: 'single'
+        }
       },
       layout: {
         backgroundColor: '#f5fcff'

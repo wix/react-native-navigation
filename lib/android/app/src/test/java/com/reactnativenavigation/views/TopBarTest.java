@@ -62,7 +62,7 @@ public class TopBarTest extends BaseTest {
         ArrayList<Button> result = new ArrayList<>();
         Button leftButton = new Button();
         leftButton.id = "leftButton";
-        leftButton.title = new Text("");
+        leftButton.text = new Text("");
         result.add(spy(leftButton));
         return result;
     }
@@ -72,7 +72,7 @@ public class TopBarTest extends BaseTest {
         for (int i = 0; i < 2; i++) {
             Button button = new Button();
             button.id = "rightButtons" + i;
-            button.title = new Text("btn" + i);
+            button.text = new Text("btn" + i);
             button.showAsAction = MenuItem.SHOW_AS_ACTION_ALWAYS;
             result.add(spy(button));
         }
