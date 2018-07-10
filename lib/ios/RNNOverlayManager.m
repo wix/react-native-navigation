@@ -22,7 +22,7 @@
 	_overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	[_overlayWindow setWindowLevel:UIWindowLevelNormal];
 	[_overlayWindow setRootViewController:viewController];
-	[_overlayWindow makeKeyAndVisible];
+	[_overlayWindow setHidden:NO];
 	
 	completion();
 }

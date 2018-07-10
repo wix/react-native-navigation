@@ -160,8 +160,8 @@ public class ModalStackTest extends BaseTest {
         CommandListener listener = spy(new CommandListenerAdapter());
         uut.dismissAllModals(listener, rootController);
         verify(presenter, times(1)).dismissTopModal(modal2, rootController, listener);
-        verify(animator, times(0)).dismiss(eq(view1), any());
-        verify(animator, times(1)).dismiss(eq(view2), any());
+        verify(animator, times(0)).dismiss(eq(view1), eq(modal1.options.animations.dismissModal), any());
+        verify(animator, times(1)).dismiss(eq(view2), eq(modal2.options.animations.dismissModal), any());
         assertThat(uut.size()).isEqualTo(0);
     }
 

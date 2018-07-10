@@ -1,7 +1,6 @@
 
 #import "RNNControllerFactory.h"
 #import "RNNLayoutNode.h"
-#import "RNNRootViewController.h"
 #import "RNNSplitViewController.h"
 #import "RNNSplitViewOptions.h"
 #import "RNNSideMenuController.h"
@@ -104,7 +103,7 @@
 		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
 		[_bridge.uiManager setAvailableSize:availableSize forRootView:component.view];
 	}
-	return component;
+	return (UIViewController<RNNRootViewProtocol> *)component;
 }
 
 - (UIViewController<RNNRootViewProtocol> *)createExternalComponent:(RNNLayoutNode*)node {
@@ -121,7 +120,7 @@
 	[component.view addSubview:externalVC.view];
 	[externalVC didMoveToParentViewController:component];
 	
-	return component;
+	return (UIViewController<RNNRootViewProtocol> *)component;
 }
 
 
@@ -134,7 +133,7 @@
 		[controllers addObject:[self fromTree:child]];
 	}
 	[vc setViewControllers:controllers];
-	[vc mergeOptions:options];
+	[vc.getLeafViewController mergeOptions:options];
 	
 	return vc;
 }
@@ -152,7 +151,7 @@
 		[controllers addObject:childVc];
 	}
 	[vc setViewControllers:controllers];
-	[vc mergeOptions:options];
+	[vc.getLeafViewController mergeOptions:options];
 	
 	return vc;
 }
@@ -163,7 +162,7 @@
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
 		RNNRootViewController* childVc = (RNNRootViewController*)[self fromTree:child];
-		childVc.topTabsViewController = vc;
+//		childVc.topTabsViewController = vc;
 		[controllers addObject:childVc];
 		[_bridge.uiManager setAvailableSize:vc.contentView.bounds.size forRootView:childVc.view];
 	}
@@ -181,7 +180,7 @@
 		[childrenVCs addObject:vc];
 	}
 	RNNSideMenuController *sideMenu = [[RNNSideMenuController alloc] initWithControllers:childrenVCs];
-	[sideMenu mergeOptions:[self createOptions:node.data[@"options"]]];
+	[sideMenu.getLeafViewController mergeOptions:[self createOptions:node.data[@"options"]]];
 	return sideMenu;
 }
 

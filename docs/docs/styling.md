@@ -224,7 +224,9 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   bottomTabs: {
     titleDisplayMode: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' // Sets the title state for each tab.
-  }
+  },
+  bottomTab: {
+    selectedFontSize: 19 // Selected tab font size in sp
 }
 ```
 

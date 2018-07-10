@@ -3,6 +3,7 @@ package com.reactnativenavigation.parse;
 import android.support.annotation.Nullable;
 
 import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONObject;
@@ -15,11 +16,16 @@ public class TopBarButtons {
         TopBarButtons result = new TopBarButtons();
         if (json == null) return result;
 
-        result.right = Button.parseJsonArray(json.optJSONArray("rightButtons"), typefaceLoader);
-        result.left = Button.parseJsonArray(json.optJSONArray("leftButtons"), typefaceLoader);
+        result.right = parseButtons(typefaceLoader, json, "rightButtons");
+        result.left = parseButtons(typefaceLoader, json, "leftButtons");
         result.back = BackButton.parse(json.optJSONObject("backButton"));
 
         return result;
+    }
+
+    @Nullable
+    private static ArrayList<Button> parseButtons(TypefaceLoader typefaceLoader, JSONObject json, String buttons) {
+        return Button.parse(json, buttons, typefaceLoader);
     }
 
     public BackButton back = new BackButton();
@@ -33,8 +39,20 @@ public class TopBarButtons {
     }
 
     void mergeWithDefault(TopBarButtons defaultOptions) {
-        if (left == null) left = defaultOptions.left;
-        if (right == null) right = defaultOptions.right;
+        if (left == null) {
+            left = defaultOptions.left;
+        } else if (!CollectionUtils.isNullOrEmpty(defaultOptions.left)){
+            for (Button button : left) {
+                button.mergeWithDefault(defaultOptions.left.get(0));
+            }
+        }
+        if (right == null) {
+            right = defaultOptions.right;
+        } else if (!CollectionUtils.isNullOrEmpty(defaultOptions.right)) {
+            for (Button button : right) {
+                button.mergeWithDefault(defaultOptions.right.get(0));
+            }
+        }
         back.mergeWithDefault(defaultOptions.back);
     }
 }
