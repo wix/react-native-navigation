@@ -12,7 +12,7 @@
 
 `_topTabs(api: any): LayoutNode`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L27)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L29)
 
 ---
 
@@ -20,7 +20,7 @@
 
 `_sideMenu(api: any): LayoutNode`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L36)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L38)
 
 ---
 
@@ -28,7 +28,7 @@
 
 `_sideMenuChildren(api: any): LayoutNode[]`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L45)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L47)
 
 ---
 
@@ -36,7 +36,7 @@
 
 `_bottomTabs(api: any): LayoutNode`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L75)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L77)
 
 ---
 
@@ -44,7 +44,7 @@
 
 `_stack(api: any): LayoutNode`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L84)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L86)
 
 ---
 
@@ -52,7 +52,7 @@
 
 `_component(api: any): LayoutNode`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L93)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L95)
 
 ---
 
@@ -60,7 +60,15 @@
 
 `_externalComponent(api: any): LayoutNode`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L102)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L104)
+
+---
+
+## _splitView
+
+`_splitView(api: any): LayoutNode`
+
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/commands/LayoutTreeParser.ts#L113)
 
 ---
 
