@@ -13,7 +13,7 @@ class LifecycleScreen extends Component {
     this.state = {
       text: 'nothing yet'
     };
-    this.subscription = Navigation.events().bindScreen(this);
+    this.subscription = Navigation.events().bindComponent(this);
   }
 
   componentDidAppear() {
