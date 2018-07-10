@@ -149,7 +149,7 @@ public class ModalPresenterTest extends BaseTest {
             }
         });
 
-        verify(animator, times(1)).dismiss(eq(modal1.getView()), any());
+        verify(animator, times(1)).dismiss(eq(modal1.getView()), eq(modal1.options.animations.dismissModal), any());
     }
 
     @Test
@@ -170,7 +170,7 @@ public class ModalPresenterTest extends BaseTest {
         uut.dismissTopModal(modal1, root, new CommandListenerAdapter());
         verify(modal1, times(1)).onViewDisappear();
         verify(modal1, times(1)).destroy();
-        verify(animator, times(0)).dismiss(any(), any());
+        verify(animator, times(0)).dismiss(any(), eq(modal1.options.animations.dismissModal), any());
     }
 
     @Test

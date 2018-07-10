@@ -15,11 +15,16 @@ public class TopBarButtons {
         TopBarButtons result = new TopBarButtons();
         if (json == null) return result;
 
-        result.right = Button.parseJsonArray(json.optJSONArray("rightButtons"), typefaceLoader);
-        result.left = Button.parseJsonArray(json.optJSONArray("leftButtons"), typefaceLoader);
+        result.right = parseButtons(typefaceLoader, json, "rightButtons");
+        result.left = parseButtons(typefaceLoader, json, "leftButtons");
         result.back = BackButton.parse(json.optJSONObject("backButton"));
 
         return result;
+    }
+
+    @Nullable
+    private static ArrayList<Button> parseButtons(TypefaceLoader typefaceLoader, JSONObject json, String buttons) {
+        return Button.parse(json, buttons, typefaceLoader);
     }
 
     public BackButton back = new BackButton();

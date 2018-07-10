@@ -92,7 +92,7 @@ public class StackOptionsPresenter {
         topBar.setBorderHeight(options.borderHeight.get(0d));
         topBar.setBorderColor(options.borderColor.get(DEFAULT_BORDER_COLOR));
 
-        topBar.setBackgroundColor(options.background.color);
+        topBar.setBackgroundColor(options.background.color.get(Color.WHITE));
         topBar.setBackgroundComponent(options.background.component);
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
 
@@ -186,7 +186,7 @@ public class StackOptionsPresenter {
         if (options.subtitle.fontSize.hasValue()) topBar.setSubtitleFontSize(options.subtitle.fontSize.get());
         if (options.subtitle.fontFamily != null) topBar.setSubtitleFontFamily(options.subtitle.fontFamily);
 
-        if (options.background.color.hasValue()) topBar.setBackgroundColor(options.background.color);
+        if (options.background.color.hasValue()) topBar.setBackgroundColor(options.background.color.get());
 
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
 

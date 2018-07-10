@@ -159,7 +159,7 @@ public class TopBarButtonControllerTest extends BaseTest {
 
     private void setTextButton() {
         button.id = "btn1";
-        button.title = new Text("Button");
+        button.text = new Text("Button");
         button.fontFamily = Typeface.MONOSPACE;
         button.showAsAction = MenuItem.SHOW_AS_ACTION_ALWAYS;
     }

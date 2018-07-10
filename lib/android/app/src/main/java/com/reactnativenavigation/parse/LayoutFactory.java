@@ -159,7 +159,7 @@ public class LayoutFactory {
 
 	private ViewController createStack(LayoutNode node) {
         return new StackControllerBuilder(activity)
-                .setChildren(createChildredn(node.children))
+                .setChildren(createChildren(node.children))
                 .setChildRegistry(childRegistry)
                 .setTopBarButtonCreator(new TitleBarButtonCreator(reactInstanceManager))
                 .setTitleBarReactViewCreator(new TitleBarReactViewCreator(reactInstanceManager))
@@ -172,7 +172,7 @@ public class LayoutFactory {
                 .build();
 	}
 
-    private List<ViewController> createChildredn(List<LayoutNode> children) {
+    private List<ViewController> createChildren(List<LayoutNode> children) {
         List<ViewController> result = new ArrayList<>();
         for (LayoutNode child : children) {
             result.add(create(child));
