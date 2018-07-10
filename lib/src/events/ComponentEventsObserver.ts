@@ -12,6 +12,7 @@ import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 
 export class ComponentEventsObserver {
   private readonly listeners = {};
+  private alreadyRegistered = false;
 
   constructor(private readonly nativeEventsReceiver: NativeEventsReceiver) {
     this.notifyComponentDidAppear = this.notifyComponentDidAppear.bind(this);
@@ -21,7 +22,9 @@ export class ComponentEventsObserver {
     this.notifySearchBarCancelPressed = this.notifySearchBarCancelPressed.bind(this);
   }
 
-  public registerForAllComponentEvents() {
+  public registerOnceForAllComponentEvents() {
+    if (this.alreadyRegistered) { return; }
+    this.alreadyRegistered = true;
     this.nativeEventsReceiver.registerComponentDidAppearListener(this.notifyComponentDidAppear);
     this.nativeEventsReceiver.registerComponentDidDisappearListener(this.notifyComponentDidDisappear);
     this.nativeEventsReceiver.registerNavigationButtonPressedListener(this.notifyNavigationButtonPressed);

@@ -127,13 +127,16 @@ describe('ComponentEventsObserver', () => {
     // TODO
   });
 
-  it(`register for all native component events notifies self on events`, () => {
+  it(`register for all native component events notifies self on events, once`, () => {
     expect(mockEventsReceiver.registerComponentDidAppearListener).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerComponentDidDisappearListener).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerNavigationButtonPressedListener).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerSearchBarUpdatedListener).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerSearchBarCancelPressedListener).not.toHaveBeenCalled();
-    uut.registerForAllComponentEvents();
+    uut.registerOnceForAllComponentEvents();
+    uut.registerOnceForAllComponentEvents();
+    uut.registerOnceForAllComponentEvents();
+    uut.registerOnceForAllComponentEvents();
     expect(mockEventsReceiver.registerComponentDidAppearListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerComponentDidDisappearListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(1);

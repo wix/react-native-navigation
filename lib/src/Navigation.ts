@@ -42,7 +42,7 @@ export class Navigation {
     this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
     this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.componentEventsObserver);
 
-    this.componentEventsObserver.registerForAllComponentEvents();
+    this.componentEventsObserver.registerOnceForAllComponentEvents();
   }
 
   /**
