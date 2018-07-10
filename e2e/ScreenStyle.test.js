@@ -153,4 +153,10 @@ describe('screen style', () => {
     await elementByLabel('Start Typing').typeText(query);
     await expect(elementById(testIDs.SEARCH_RESULT_ITEM)).toHaveText(`Item ${query}`);
   });
+
+  test('default options should apply to all screens in stack', async () => {
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
+    await expect(elementById(testIDs.TOP_BAR_BUTTON)).toBeVisible();
+  });
 });

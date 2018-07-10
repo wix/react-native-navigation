@@ -92,6 +92,11 @@ public class ReactView extends ReactRootView implements IReactView {
         jsTouchDispatcher.handleTouchEvent(event, getEventDispatcher());
     }
 
+    @Override
+    public boolean isRendered() {
+        return getChildCount() >= 1;
+    }
+
     public EventDispatcher getEventDispatcher() {
         ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
         return reactContext == null ? null : reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();

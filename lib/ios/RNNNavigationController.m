@@ -12,24 +12,12 @@
 	return self;
 }
 
-- (BOOL)isCustomViewController {
-	return [self.getLeafViewController isCustomViewController];
-}
-
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.getLeafViewController mergeOptions:options];
-}
-
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return self.getLeafViewController.preferredStatusBarStyle;
 }
 
 - (UIModalPresentationStyle)modalPresentationStyle {
 	return self.getLeafViewController.modalPresentationStyle;
-}
-
-- (void)applyModalOptions {
-	[self.getLeafViewController applyModalOptions];
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
@@ -41,23 +29,15 @@
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.showModal isDismiss:NO];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.options.animations.showModal isDismiss:NO];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.dismissModal isDismiss:YES];
-}
-
-- (RNNNavigationOptions *)options {
-	return self.getLeafViewController.options;
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.options.animations.dismissModal isDismiss:YES];
 }
 
 - (UIViewController *)getLeafViewController {
 	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController);
-}
-
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	[self.getLeafViewController waitForReactViewRender:wait perform:readyBlock];
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {

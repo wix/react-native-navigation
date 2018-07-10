@@ -39,13 +39,15 @@ public class BottomTabOptionsPresenter {
 
     public void present() {
         for (int i = 0; i < tabs.size(); i++) {
-            BottomTabOptions bottomTab = tabs.get(i).options.copy().withDefaultOptions(defaultOptions).bottomTabOptions;
-            bottomTabs.setBadge(i, bottomTab.badge.get(""));
-            bottomTabs.setTitleTypeface(i, bottomTab.fontFamily);
-            bottomTabs.setIconActiveColor(i, bottomTab.selectedIconColor.get(null));
-            bottomTabs.setIconInactiveColor(i, bottomTab.iconColor.get(null));
-            bottomTabs.setTitleActiveColor(i, bottomTab.selectedTextColor.get(null));
-            bottomTabs.setTitleInactiveColor(i, bottomTab.textColor.get(null));
+            BottomTabOptions tab = tabs.get(i).options.copy().withDefaultOptions(defaultOptions).bottomTabOptions;
+            bottomTabs.setBadge(i, tab.badge.get(""));
+            bottomTabs.setTitleTypeface(i, tab.fontFamily);
+            bottomTabs.setIconActiveColor(i, tab.selectedIconColor.get(null));
+            bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
+            bottomTabs.setTitleActiveColor(i, tab.selectedTextColor.get(null));
+            bottomTabs.setTitleInactiveColor(i, tab.textColor.get(null));
+            bottomTabs.setTitleInactiveTextSizeInSp(i, tab.fontSize.hasValue() ? Float.valueOf(tab.fontSize.get()) : null);
+            bottomTabs.setTitleActiveTextSizeInSp(i, tab.selectedFontSize.hasValue() ? Float.valueOf(tab.selectedFontSize.get()) : null);
         }
     }
 

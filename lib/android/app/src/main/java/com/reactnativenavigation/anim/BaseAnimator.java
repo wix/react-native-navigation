@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
-import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.utils.UiUtils;
 
 import static android.view.View.ALPHA;
@@ -21,8 +20,6 @@ class BaseAnimator {
     private static final int DURATION = 300;
     private static final TimeInterpolator DECELERATE = new DecelerateInterpolator();
     private static final TimeInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();
-
-    protected AnimationsOptions options = new AnimationsOptions();
 
     private float translationY;
 
@@ -51,9 +48,5 @@ class BaseAnimator {
         ObjectAnimator alpha = ObjectAnimator.ofFloat(view, ALPHA, 1, 0);
         set.playTogether(translationY, alpha);
         return set;
-    }
-
-    public void setOptions(AnimationsOptions options) {
-        this.options = options;
     }
 }

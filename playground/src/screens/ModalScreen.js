@@ -17,13 +17,20 @@ class ModalScreen extends Component {
         backgroundColor: 'transparent'
       },
       layout: {
-        orientation: ['portrait']
+        orientation: ['portrait'],
+        backgroundColor: '#f5fcff'
+      },
+      _animations: {
+        showModal: {
+          waitForRender: true
+        }
       }
     };
   }
 
   constructor(props) {
     super(props);
+    // this.simulateLongRunningTask();
     this.onClickShowModal = this.onClickShowModal.bind(this);
     this.onClickDismissModal = this.onClickDismissModal.bind(this);
     this.onClickDismissPreviousModal = this.onClickDismissPreviousModal.bind(this);
@@ -34,6 +41,11 @@ class ModalScreen extends Component {
     this.onClickPushScreen = this.onClickPushScreen.bind(this);
     this.onShowModalWithDeepStack = this.onShowModalWithDeepStack.bind(this);
     this.onClickModalLifecycle = this.onClickModalLifecycle.bind(this);
+  }
+
+  simulateLongRunningTask = () => {
+    // tslint:disable-next-line
+    for (let i = 0; i < Math.pow(2, 25); i++);
   }
 
   render() {
