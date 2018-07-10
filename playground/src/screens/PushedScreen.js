@@ -20,7 +20,8 @@ class PushedScreen extends Component {
         testID: testIDs.TOP_BAR_ELEMENT,
         rightButtons: {
           id: 'singleBtn',
-          text: 'single'
+          text: 'single',
+          testID: testIDs.TOP_BAR_BUTTON
         }
       },
       layout: {
