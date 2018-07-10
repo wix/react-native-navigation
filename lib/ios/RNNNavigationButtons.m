@@ -35,7 +35,8 @@
 
 -(void)setButtons:(NSArray*)buttons side:(NSString*)side animated:(BOOL)animated {
 	NSMutableArray *barButtonItems = [NSMutableArray new];
-	for (NSDictionary *button in buttons) {
+	NSArray* resolvedButtons = [self resolveButtons:buttons];
+	for (NSDictionary *button in resolvedButtons) {
 		RNNUIBarButtonItem* barButtonItem = [self buildButton:button];
 		if(barButtonItem) {
 			[barButtonItems addObject:barButtonItem];
@@ -50,6 +51,14 @@
 	if ([side isEqualToString:@"right"]) {
 		self.rightButtons = barButtonItems;
 		[self.viewController.navigationItem setRightBarButtonItems:self.rightButtons animated:animated];
+	}
+}
+
+- (NSArray *)resolveButtons:(id)buttons {
+	if ([buttons isKindOfClass:[NSArray class]]) {
+		return buttons;
+	} else {
+		return @[buttons];
 	}
 }
 

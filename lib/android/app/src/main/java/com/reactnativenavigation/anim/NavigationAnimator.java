@@ -7,7 +7,8 @@ import android.animation.AnimatorSet;
 import android.content.Context;
 import android.view.View;
 
-import com.reactnativenavigation.parse.AnimationsOptions;
+import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.parse.NestedAnimationsOptions;
 
 @SuppressWarnings("ResourceType")
 public class NavigationAnimator extends BaseAnimator {
@@ -16,14 +17,9 @@ public class NavigationAnimator extends BaseAnimator {
         super(context);
     }
 
-    public NavigationAnimator(Context context, AnimationsOptions options) {
-        super(context);
-        this.options = options;
-    }
-
-    public void push(final View view, Runnable onAnimationEnd) {
+    public void push(View view, NestedAnimationsOptions push, Runnable onAnimationEnd) {
         view.setVisibility(View.INVISIBLE);
-        AnimatorSet set = options.push.content.getAnimation(view, getDefaultPushAnimation(view));
+        AnimatorSet set = push.content.getAnimation(view, getDefaultPushAnimation(view));
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -38,8 +34,8 @@ public class NavigationAnimator extends BaseAnimator {
         set.start();
     }
 
-    public void pop(View view, Runnable onAnimationEnd) {
-        AnimatorSet set = options.pop.content.getAnimation(view, getDefaultPopAnimation(view));
+    public void pop(View view, NestedAnimationsOptions pop, Runnable onAnimationEnd) {
+        AnimatorSet set = pop.content.getAnimation(view, getDefaultPopAnimation(view));
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -49,9 +45,9 @@ public class NavigationAnimator extends BaseAnimator {
         set.start();
     }
 
-    public void animateStartApp(View view, AnimatorListener listener) {
+    public void animateStartApp(View view, AnimationOptions startApp, AnimatorListener listener) {
         view.setVisibility(View.INVISIBLE);
-        AnimatorSet set = options.startApp.getAnimation(view);
+        AnimatorSet set = startApp.getAnimation(view);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -64,13 +60,5 @@ public class NavigationAnimator extends BaseAnimator {
             }
         });
         set.start();
-    }
-
-    public void setOptions(AnimationsOptions options) {
-        this.options = options;
-    }
-
-    public void mergeOptions(AnimationsOptions options) {
-        this.options.mergeWith(options);
     }
 }

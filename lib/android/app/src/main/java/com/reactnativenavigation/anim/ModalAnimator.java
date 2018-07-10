@@ -16,14 +16,14 @@ public class ModalAnimator extends BaseAnimator {
         super(context);
     }
 
-    public void show(View view, AnimationOptions animation, AnimatorListenerAdapter listener) {
-        animator = animation.getAnimation(view, getDefaultPushAnimation(view));
+    public void show(View view, AnimationOptions show, AnimatorListenerAdapter listener) {
+        animator = show.getAnimation(view, getDefaultPushAnimation(view));
         animator.addListener(listener);
         animator.start();
     }
 
-    public void dismiss(View view, AnimatorListenerAdapter listener) {
-        animator = options.dismissModal.getAnimation(view, getDefaultPopAnimation(view));
+    public void dismiss(View view, AnimationOptions dismiss, AnimatorListenerAdapter listener) {
+        animator = dismiss.getAnimation(view, getDefaultPopAnimation(view));
         animator.addListener(listener);
         animator.start();
     }

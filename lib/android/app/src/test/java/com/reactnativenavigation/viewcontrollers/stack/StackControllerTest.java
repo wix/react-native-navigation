@@ -166,7 +166,7 @@ public class StackControllerTest extends BaseTest {
         child2.options.animations.push.waitForRender = new Bool(true);
         uut.push(child2, new CommandListenerAdapter());
         verify(child2).setOnAppearedListener(any());
-        verify(animator, times(0)).push(eq(child1.getView()), any());
+        verify(animator, times(0)).push(eq(child1.getView()), eq(child1.options.animations.push), any());
     }
 
     @Test
@@ -484,9 +484,9 @@ public class StackControllerTest extends BaseTest {
                 uut.popTo(child2, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
-                        verify(animator, times(0)).pop(eq(child1.getView()), any());
-                        verify(animator, times(0)).pop(eq(child2.getView()), any());
-                        verify(animator, times(1)).pop(eq(child4.getView()), any());
+                        verify(animator, times(0)).pop(eq(child1.getView()), any(), any());
+                        verify(animator, times(0)).pop(eq(child2.getView()), any(), any());
+                        verify(animator, times(1)).pop(eq(child4.getView()), eq(child4.options.animations.push), any());
                     }
                 });
             }
@@ -530,7 +530,7 @@ public class StackControllerTest extends BaseTest {
                 uut.popToRoot(new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
-                        verify(animator, times(1)).pop(eq(child3.getView()), any());
+                        verify(animator, times(1)).pop(eq(child3.getView()), eq(child3.options.animations.pop), any());
                     }
                 });
             }
@@ -787,16 +787,6 @@ public class StackControllerTest extends BaseTest {
         verify(parentController, times(1)).mergeChildOptions(captor.capture(), eq(component));
         assertThat(captor.getValue().topBar.testId.hasValue()).isFalse();
         assertThat(captor.getValue().bottomTabsOptions.testId.get()).isEqualTo(optionsToMerge.bottomTabsOptions.testId.get());
-    }
-
-    @Test
-    public void mergeChildOptions_mergeAnimationOptions() {
-        Options options = new Options();
-        Component component = mock(Component.class);
-
-        uut.mergeChildOptions(options, component);
-        verify(animator, times(0)).setOptions(options.animations);
-        verify(animator, times(1)).mergeOptions(options.animations);
     }
 
     @Test

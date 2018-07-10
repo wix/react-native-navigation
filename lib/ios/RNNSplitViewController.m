@@ -1,5 +1,3 @@
-
-#import "RNNRootViewController.h"
 #import "RNNSplitViewController.h"
 
 @interface RNNSplitViewController()
@@ -27,10 +25,6 @@
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.options applyOn:self];
-	[self optionsUpdated];
-}
-
-- (void)optionsUpdated {
 }
 
 - (UIViewController *)getLeafViewController {

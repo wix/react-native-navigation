@@ -89,20 +89,12 @@
 	}
 }
 
-- (UIViewController *)getLeafViewController {
-	return self.center;
+- (RNNRootViewController *)getLeafViewController {
+	return [self.center getLeafViewController];
 }
 
 - (void)mergeOptions:(RNNOptions *)options {
-	[self.center mergeOptions:options];
-}
-
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	[self.center waitForReactViewRender:wait perform:readyBlock];
-}
-
-- (NSString *)componentId {
-	return _center.componentId;
+	[self.center.getLeafViewController mergeOptions:options];
 }
 
 @end

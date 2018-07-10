@@ -1,6 +1,6 @@
 
 #import "RNNTabBarController.h"
-#import "RNNRootViewController.h"
+
 #define kTabBarHiddenDuration 0.3
 
 @implementation RNNTabBarController {
@@ -42,23 +42,11 @@
 }
 
 - (void)mergeOptions:(RNNOptions *)options {
-	[((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) mergeOptions:options];
-}
-
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	[((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) waitForReactViewRender:wait perform:readyBlock];
-}
-
-- (RNNNavigationOptions *)options {
-	return [((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) options];
+	[self.getLeafViewController mergeOptions:options];
 }
 
 - (UIViewController *)getLeafViewController {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController);
-}
-
-- (NSString *)componentId {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).componentId;
+	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).getLeafViewController;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

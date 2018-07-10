@@ -81,13 +81,13 @@ class OptionsScreen extends Component {
             color: 'red'
           }
         ],
-        leftButtons: [{
+        leftButtons: {
           id: BUTTON_LEFT,
           testID: BUTTON_LEFT,
           icon: require('../../img/navicon_add.png'),
           text: 'Left',
           color: 'purple'
-        }]
+        }
       },
       fab: {
         id: FAB,

@@ -107,8 +107,8 @@ public class Navigator extends ParentController {
         root = viewController;
         contentLayout.addView(viewController.getView());
         if (viewController.options.animations.startApp.hasAnimation()) {
-            new NavigationAnimator(viewController.getActivity(), viewController.options.animations)
-                    .animateStartApp(viewController.getView(), new AnimatorListenerAdapter() {
+            new NavigationAnimator(viewController.getActivity())
+                    .animateStartApp(viewController.getView(), viewController.options.animations.startApp, new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             commandListener.onSuccess(viewController.getId());
