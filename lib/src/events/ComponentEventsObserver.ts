@@ -33,39 +33,44 @@ export class ComponentEventsObserver {
   }
 
   public bindComponent(component: React.Component<any>): EventSubscription {
-    const key = component.props.componentId;
-    if (!_.isString(key)) {
+    const componentId = component.props.componentId;
+    if (!_.isString(componentId)) {
       throw new Error(`bindComponent expects a component with a componentId in props`);
     }
+    if (_.isNil(this.listeners[componentId])) {
+      this.listeners[componentId] = {};
+    }
+    const key = _.uniqueId();
+    this.listeners[componentId][key] = component;
 
-    _.set(this.listeners, key, component);
-
-    return { remove: () => _.unset(this.listeners, key) };
+    return { remove: () => _.unset(this.listeners[componentId], key) };
   }
 
   notifyComponentDidAppear(event: ComponentDidAppearEvent) {
-    this.triggerOnComponent(this.listeners[event.componentId], 'componentDidAppear', event);
+    this.triggerOnAllListenersByComponentId(event, 'componentDidAppear');
   }
 
   notifyComponentDidDisappear(event: ComponentDidDisappearEvent) {
-    this.triggerOnComponent(this.listeners[event.componentId], 'componentDidDisappear', event);
+    this.triggerOnAllListenersByComponentId(event, 'componentDidDisappear');
   }
 
   notifyNavigationButtonPressed(event: NavigationButtonPressedEvent) {
-    this.triggerOnComponent(this.listeners[event.componentId], 'navigationButtonPressed', event);
+    this.triggerOnAllListenersByComponentId(event, 'navigationButtonPressed');
   }
 
   notifySearchBarUpdated(event: SearchBarUpdatedEvent) {
-    this.triggerOnComponent(this.listeners[event.componentId], 'searchBarUpdated', event);
+    this.triggerOnAllListenersByComponentId(event, 'searchBarUpdated');
   }
 
   notifySearchBarCancelPressed(event: SearchBarCancelPressedEvent) {
-    this.triggerOnComponent(this.listeners[event.componentId], 'searchBarCancelPressed', event);
+    this.triggerOnAllListenersByComponentId(event, 'searchBarCancelPressed');
   }
 
-  private triggerOnComponent(component: React.Component<any>, method: string, event: ComponentEvent) {
-    if (_.isObject(component) && _.isFunction(component[method])) {
-      component[method](event);
-    }
+  private triggerOnAllListenersByComponentId(event: ComponentEvent, method: string) {
+    _.forEach(this.listeners[event.componentId], (component) => {
+      if (_.isObject(component) && _.isFunction(component[method])) {
+        component[method](event);
+      }
+    });
   }
 }

@@ -123,8 +123,28 @@ describe('ComponentEventsObserver', () => {
     renderer.create(<BoundScreen componentId={'123'} />);
   });
 
-  it.skip(`supports multiple listeners with same componentId`, () => {
-    // TODO
+  it(`supports multiple listeners with same componentId`, () => {
+    const tree1 = renderer.create(<SimpleScreen componentId={'myCompId'} />);
+    const tree2 = renderer.create(<SimpleScreen componentId={'myCompId'} />);
+    const instance1 = tree1.getInstance() as any;
+    const instance2 = tree2.getInstance() as any;
+    instance1.componentDidAppear = jest.fn();
+    instance2.componentDidAppear = jest.fn();
+
+    const result1 = uut.bindComponent(instance1);
+    const result2 = uut.bindComponent(instance2);
+    expect(result1).not.toEqual(result2);
+
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+
+    expect(instance1.componentDidAppear).toHaveBeenCalledTimes(1);
+    expect(instance2.componentDidAppear).toHaveBeenCalledTimes(1);
+
+    result2.remove();
+
+    uut.notifyComponentDidAppear({ componentId: 'myCompId', componentName: 'doesnt matter' });
+    expect(instance1.componentDidAppear).toHaveBeenCalledTimes(2);
+    expect(instance2.componentDidAppear).toHaveBeenCalledTimes(1);
   });
 
   it(`register for all native component events notifies self on events, once`, () => {
