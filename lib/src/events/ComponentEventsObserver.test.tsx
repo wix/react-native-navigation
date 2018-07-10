@@ -1,9 +1,11 @@
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 import { ComponentEventsObserver } from './ComponentEventsObserver';
+import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 
 describe('ComponentEventsObserver', () => {
-  const uut = new ComponentEventsObserver();
+  const mockEventsReceiver = new NativeEventsReceiver();
+  const uut = new ComponentEventsObserver(mockEventsReceiver);
   const didAppearFn = jest.fn();
   const didDisappearFn = jest.fn();
   const didMountFn = jest.fn();
@@ -11,6 +13,7 @@ describe('ComponentEventsObserver', () => {
   const navigationButtonPressedFn = jest.fn();
   const searchBarUpdatedFn = jest.fn();
   const searchBarCancelPressedFn = jest.fn();
+  let subscription;
 
   class SimpleScreen extends React.Component<any, any> {
     render() {
@@ -21,7 +24,7 @@ describe('ComponentEventsObserver', () => {
   class BoundScreen extends React.Component<any, any> {
     constructor(props) {
       super(props);
-      uut.bindComponent(this);
+      subscription = uut.bindComponent(this);
     }
 
     componentDidMount() {
@@ -105,23 +108,36 @@ describe('ComponentEventsObserver', () => {
   });
 
   it(`returns unregister fn`, () => {
-    const tree = renderer.create(<SimpleScreen componentId={'123'} />);
-    const instance = tree.getInstance() as any;
-    instance.componentDidAppear = jest.fn();
-
-    const result = uut.bindComponent(instance);
+    renderer.create(<BoundScreen componentId={'123'} />);
 
     uut.notifyComponentDidAppear({ componentId: '123', componentName: 'doesnt matter' });
-    expect(instance.componentDidAppear).toHaveBeenCalledTimes(1);
+    expect(didAppearFn).toHaveBeenCalledTimes(1);
 
-    expect(result.remove).toBeDefined();
-    result.remove();
+    subscription.remove();
 
     uut.notifyComponentDidAppear({ componentId: '123', componentName: 'doesnt matter' });
-    expect(instance.componentDidAppear).toHaveBeenCalledTimes(1);
+    expect(didAppearFn).toHaveBeenCalledTimes(1);
+  });
+
+  it.skip(`unmounted for componentId removes listeners`, () => {
+    renderer.create(<BoundScreen componentId={'123'} />);
   });
 
   it.skip(`supports multiple listeners with same componentId`, () => {
     // TODO
+  });
+
+  it(`register for all native component events notifies self on events`, () => {
+    expect(mockEventsReceiver.registerComponentDidAppearListener).not.toHaveBeenCalled();
+    expect(mockEventsReceiver.registerComponentDidDisappearListener).not.toHaveBeenCalled();
+    expect(mockEventsReceiver.registerNavigationButtonPressedListener).not.toHaveBeenCalled();
+    expect(mockEventsReceiver.registerSearchBarUpdatedListener).not.toHaveBeenCalled();
+    expect(mockEventsReceiver.registerSearchBarCancelPressedListener).not.toHaveBeenCalled();
+    uut.registerForAllComponentEvents();
+    expect(mockEventsReceiver.registerComponentDidAppearListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsReceiver.registerComponentDidDisappearListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsReceiver.registerSearchBarUpdatedListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(1);
   });
 });

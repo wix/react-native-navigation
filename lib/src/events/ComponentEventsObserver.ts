@@ -8,9 +8,26 @@ import {
   SearchBarCancelPressedEvent,
   ComponentEvent
 } from '../interfaces/ComponentEvents';
+import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 
 export class ComponentEventsObserver {
   private readonly listeners = {};
+
+  constructor(private readonly nativeEventsReceiver: NativeEventsReceiver) {
+    this.notifyComponentDidAppear = this.notifyComponentDidAppear.bind(this);
+    this.notifyComponentDidDisappear = this.notifyComponentDidDisappear.bind(this);
+    this.notifyNavigationButtonPressed = this.notifyNavigationButtonPressed.bind(this);
+    this.notifySearchBarUpdated = this.notifySearchBarUpdated.bind(this);
+    this.notifySearchBarCancelPressed = this.notifySearchBarCancelPressed.bind(this);
+  }
+
+  public registerForAllComponentEvents() {
+    this.nativeEventsReceiver.registerComponentDidAppearListener(this.notifyComponentDidAppear);
+    this.nativeEventsReceiver.registerComponentDidDisappearListener(this.notifyComponentDidDisappear);
+    this.nativeEventsReceiver.registerNavigationButtonPressedListener(this.notifyNavigationButtonPressed);
+    this.nativeEventsReceiver.registerSearchBarUpdatedListener(this.notifySearchBarUpdated);
+    this.nativeEventsReceiver.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
+  }
 
   public bindComponent(component: React.Component<any>): EventSubscription {
     const key = component.props.componentId;
@@ -23,23 +40,23 @@ export class ComponentEventsObserver {
     return { remove: () => _.unset(this.listeners, key) };
   }
 
-  public notifyComponentDidAppear(event: ComponentDidAppearEvent) {
+  notifyComponentDidAppear(event: ComponentDidAppearEvent) {
     this.triggerOnComponent(this.listeners[event.componentId], 'componentDidAppear', event);
   }
 
-  public notifyComponentDidDisappear(event: ComponentDidDisappearEvent) {
+  notifyComponentDidDisappear(event: ComponentDidDisappearEvent) {
     this.triggerOnComponent(this.listeners[event.componentId], 'componentDidDisappear', event);
   }
 
-  public notifyNavigationButtonPressed(event: NavigationButtonPressedEvent) {
+  notifyNavigationButtonPressed(event: NavigationButtonPressedEvent) {
     this.triggerOnComponent(this.listeners[event.componentId], 'navigationButtonPressed', event);
   }
 
-  public notifySearchBarUpdated(event: SearchBarUpdatedEvent) {
+  notifySearchBarUpdated(event: SearchBarUpdatedEvent) {
     this.triggerOnComponent(this.listeners[event.componentId], 'searchBarUpdated', event);
   }
 
-  public notifySearchBarCancelPressed(event: SearchBarCancelPressedEvent) {
+  notifySearchBarCancelPressed(event: SearchBarCancelPressedEvent) {
     this.triggerOnComponent(this.listeners[event.componentId], 'searchBarCancelPressed', event);
   }
 
