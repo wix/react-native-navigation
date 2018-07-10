@@ -96,7 +96,7 @@ This event is emitted whenever a BottomTab is selected by the user
 |**params**|`unselectedTabIndex`: The index of the previously selected tab<br>`selectedTabIndex`: The index of the newly selected tab|
 
 ### buttonPressed event
-This event is emitted whenever a TopBat button is pressed by the user
+This event is emitted whenever a TopBar button is pressed by the user
 
 |Parameter|Description|
 |:-:|:--|
