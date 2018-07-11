@@ -92,6 +92,9 @@ describe('ComponentEventsObserver', () => {
     uut.notifySearchBarCancelPressed({ componentId: 'myCompId' });
     expect(searchBarCancelPressedFn).toHaveBeenCalledTimes(1);
     expect(searchBarCancelPressedFn).toHaveBeenCalledWith({ componentId: 'myCompId' });
+
+    tree.unmount();
+    expect(willUnmountFn).toHaveBeenCalledTimes(1);
   });
 
   it(`doesnt call other componentIds`, () => {
