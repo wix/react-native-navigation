@@ -31,14 +31,14 @@ public class EventEmitter {
 		WritableMap event = Arguments.createMap();
 		event.putString("componentId", id);
 		event.putString("componentName", componentName);
-		emit(ComponentDidAppear, event);
+		emit(ComponentDidDisappear, event);
 	}
 
 	public void componentDidAppear(String id, String componentName) {
 		WritableMap event = Arguments.createMap();
 		event.putString("componentId", id);
 		event.putString("componentName", componentName);
-		emit(ComponentDidDisappear, event);
+		emit(ComponentDidAppear, event);
 	}
 
 	public void emitOnNavigationButtonPressed(String id, String buttonId) {
