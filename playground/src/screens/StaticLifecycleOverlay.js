@@ -12,19 +12,26 @@ class StaticLifecycleOverlay extends Component {
       events: []
     };
     this.listeners = [];
-    this.listeners.push(Navigation.events().registerComponentDidAppearListener((componentId, componentName) => {
+    this.listeners.push(Navigation.events().registerComponentDidAppearListener((event) => {
+      event.event = 'componentDidAppear';
       this.setState({
-        events: [...this.state.events, { event: 'componentDidAppear', componentId, componentName }]
+        events: [...this.state.events, { ...event }]
       });
     }));
-    this.listeners.push(Navigation.events().registerComponentDidDisappearListener((componentId, componentName) => {
+    this.listeners.push(Navigation.events().registerComponentDidDisappearListener((event) => {
+      event.event = 'componentDidDisappear';
       this.setState({
-        events: [...this.state.events, { event: 'componentDidDisappear', componentId, componentName }]
+        events: [...this.state.events, { ...event }]
       });
     }));
-    this.listeners.push(Navigation.events().registerCommandCompletedListener((commandId, completionTime, params) => {
+    this.listeners.push(Navigation.events().registerCommandCompletedListener(({ commandId }) => {
       this.setState({
         events: [...this.state.events, { event: 'commandCompleted', commandId }]
+      });
+    }));
+    this.listeners.push(Navigation.events().registerNavigationButtonPressedListener(({ componentId, buttonId }) => {
+      this.setState({
+        events: [...this.state.events, { event: 'navigationButtonPressed', buttonId, componentId }]
       });
     }));
   }
@@ -38,8 +45,10 @@ class StaticLifecycleOverlay extends Component {
   renderEvent(event) {
     if (event.commandId) {
       return <Text style={styles.h2}>{`${event.commandId}`}</Text>;
-    } else {
+    } else if (event.componentName) {
       return <Text style={styles.h2}>{`${event.event} | ${event.componentName}`}</Text>;
+    } else {
+      return <Text style={styles.h2}>{`${event.event} | ${event.buttonId}`}</Text>;
     }
   }
 
@@ -62,14 +71,14 @@ class StaticLifecycleOverlay extends Component {
   }
 
   renderDismissButton = () => {
-  return (
-    <TouchableOpacity
-      style={styles.dismissBtn}
-      onPress={() => Navigation.dismissOverlay(this.props.componentId)}
-    >
-      <Text testID={testIDs.DISMISS_BUTTON} style={{ color: 'red', alignSelf: 'center' }}>X</Text>
-    </TouchableOpacity>
-  );
+    return (
+      <TouchableOpacity
+        style={styles.dismissBtn}
+        onPress={() => Navigation.dismissOverlay(this.props.componentId)}
+      >
+        <Text testID={testIDs.DISMISS_BUTTON} style={{ color: 'red', alignSelf: 'center' }}>X</Text>
+      </TouchableOpacity>
+    );
   }
 }
 module.exports = StaticLifecycleOverlay;

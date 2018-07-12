@@ -2,7 +2,7 @@
 
 ## setRoot
 
-`setRoot(layoutTree: object): any`
+`setRoot(commandId: string, layout: object): any`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/adapters/NativeCommandsSender.ts#L9)
 
@@ -26,7 +26,7 @@
 
 ## push
 
-`push(onComponentId: string, layout: object): any`
+`push(commandId: string, onComponentId: string, layout: object): any`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/adapters/NativeCommandsSender.ts#L21)
 
@@ -34,7 +34,7 @@
 
 ## pop
 
-`pop(componentId: string, options: object): any`
+`pop(commandId: string, componentId: string, options: object): any`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/adapters/NativeCommandsSender.ts#L25)
 
@@ -42,7 +42,7 @@
 
 ## popTo
 
-`popTo(componentId: string): any`
+`popTo(commandId: string, componentId: string): any`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/adapters/NativeCommandsSender.ts#L29)
 
@@ -50,7 +50,7 @@
 
 ## popToRoot
 
-`popToRoot(componentId: string): any`
+`popToRoot(commandId: string, componentId: string): any`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/adapters/NativeCommandsSender.ts#L33)
 
@@ -58,7 +58,7 @@
 
 ## setStackRoot
 
-`setStackRoot(onComponentId: string, layout: object): any`
+`setStackRoot(commandId: string, onComponentId: string, layout: object): any`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/adapters/NativeCommandsSender.ts#L37)
 
@@ -66,7 +66,7 @@
 
 ## showModal
 
-`showModal(layout: object): any`
+`showModal(commandId: string, layout: object): any`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/adapters/NativeCommandsSender.ts#L41)
 
@@ -74,7 +74,7 @@
 
 ## dismissModal
 
-`dismissModal(componentId: string): any`
+`dismissModal(commandId: string, componentId: string): any`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/adapters/NativeCommandsSender.ts#L45)
 
@@ -82,7 +82,7 @@
 
 ## dismissAllModals
 
-`dismissAllModals(): any`
+`dismissAllModals(commandId: string): any`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/adapters/NativeCommandsSender.ts#L49)
 
@@ -90,7 +90,7 @@
 
 ## showOverlay
 
-`showOverlay(layout: object): any`
+`showOverlay(commandId: string, layout: object): any`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/adapters/NativeCommandsSender.ts#L53)
 
@@ -98,9 +98,17 @@
 
 ## dismissOverlay
 
-`dismissOverlay(componentId: string): any`
+`dismissOverlay(commandId: string, componentId: string): any`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/adapters/NativeCommandsSender.ts#L57)
+
+---
+
+## getLaunchArgs
+
+`getLaunchArgs(commandId: string): any`
+
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/adapters/NativeCommandsSender.ts#L61)
 
 ---
 

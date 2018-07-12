@@ -9,10 +9,10 @@ import { LayoutTreeCrawler } from './commands/LayoutTreeCrawler';
 import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
 import { Element } from './adapters/Element';
-import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 import { CommandsObserver } from './events/CommandsObserver';
 import { Constants } from './adapters/Constants';
 import { ComponentType } from 'react';
+import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 
 export class Navigation {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
@@ -33,16 +33,16 @@ export class Navigation {
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
-    this.componentRegistry = new ComponentRegistry(this.store);
+    this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
+    this.componentRegistry = new ComponentRegistry(this.store, this.componentEventsObserver);
     this.layoutTreeParser = new LayoutTreeParser();
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store);
     this.nativeCommandsSender = new NativeCommandsSender();
     this.commandsObserver = new CommandsObserver();
     this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler, this.commandsObserver, this.uniqueIdProvider);
-    this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver);
-    this.componentEventsObserver = new ComponentEventsObserver(this.eventsRegistry, this.store);
+    this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.componentEventsObserver);
 
-    this.componentEventsObserver.registerForAllComponents();
+    this.componentEventsObserver.registerOnceForAllComponentEvents();
   }
 
   /**
@@ -145,7 +145,6 @@ export class Navigation {
   }
 
   /**
-   * 
    * Resolves arguments passed on launch
    */
   public getLaunchArgs(): Promise<any> {
