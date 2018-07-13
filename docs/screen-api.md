@@ -12,7 +12,7 @@ this.props.navigator.push({
   title: undefined, // navigation bar title of the pushed screen (optional)
   subtitle: undefined, // navigation bar subtitle of the pushed screen (optional)
   titleImage: require('../../img/my_image.png'), // iOS only. navigation bar title image instead of the title text of the pushed screen (optional)
-  passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+  passProps: {}, // serializable object that will be passed as props to the pushed screen (optional)
   animated: true, // does the push have transition animation or does it happen immediately (optional)
   animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the push have different transition animation (optional)
   backButtonTitle: undefined, // override the back button title (optional)
