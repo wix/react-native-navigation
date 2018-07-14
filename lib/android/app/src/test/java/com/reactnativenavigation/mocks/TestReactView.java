@@ -54,4 +54,9 @@ public class TestReactView extends FrameLayout implements IReactView {
     public void dispatchTouchEventToJs(MotionEvent event) {
 
     }
+
+    @Override
+    public boolean isRendered() {
+        return getChildCount() >= 1;
+    }
 }

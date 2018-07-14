@@ -39,7 +39,7 @@ Navigation.events().registerAppLaunchedListener(() => {
 
 ## Screen Lifecycle
 
-The `componentDidAppear` and `componentDidDisappear` functions are special React Native Navigation lifecycle callbacks that are called on the component when it appears and disappears. 
+The `componentDidAppear` and `componentDidDisappear` functions are special React Native Navigation lifecycle callbacks that are called on the component when it appears and disappears (after it was bounded using `Navigation.events().bindComponent(this)`). 
 
 Similar to React's `componentDidMount` and `componentWillUnmount`, what's different is that they represent whether the user can actually see the component in question -- and not just whether it's been mounted or not. Because of the way React Native Navigation optimizes performance, a component is actually `mounted` as soon as it's part of a layout -- but it is not always `visible` (for example, when another screen is `pushed` on top of it).
 
@@ -47,12 +47,13 @@ There are lots of use cases for these. For example: starting and stopping an ani
 
 > They are implemented by iOS's viewDidAppear/viewDidDisappear and Android's ViewTreeObserver visibility detection
 
-To use them, simply implement them in your component like any other React lifecycle function:
+To use them, simply implement them in your component like any other React lifecycle function, and bind the screen to the Navigation events module which will call all functions automatically:
 
 ```js
 class LifecycleScreenExample extends Component {
   constructor(props) {
     super(props);
+    Navigation.events().bindComponent(this);
     this.state = {
       text: 'nothing yet'
     };
@@ -64,6 +65,10 @@ class LifecycleScreenExample extends Component {
 
   componentDidDisappear() {
     alert('componentDidDisappear');
+  }
+
+  navigationButtonPressed({buttonId}) {
+    // a navigation-based button (for example in the topBar) was clicked. See section on buttons.
   }
 
   componentWillUnmount() {

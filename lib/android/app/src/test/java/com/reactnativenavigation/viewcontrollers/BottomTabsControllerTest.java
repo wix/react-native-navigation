@@ -47,6 +47,7 @@ public class BottomTabsControllerTest extends BaseTest {
 
     private Activity activity;
     private BottomTabsController uut;
+    private Options initialOptions = new Options();
     private ViewController child1;
     private ViewController child2;
     private ViewController child3;
@@ -258,6 +259,20 @@ public class BottomTabsControllerTest extends BaseTest {
                 .isEqualTo(((ViewGroup.MarginLayoutParams) child6.getView().getLayoutParams()).topMargin);
     }
 
+    @Test
+    public void oneTimeOptionsAreAppliedOnce() {
+        initialOptions.bottomTabsOptions.currentTabIndex = new Number(1);
+        BottomTabsController spy = spy(createBottomTabs());
+        spy.onViewAppeared();
+
+        assertThat(spy.getSelectedIndex()).isOne();
+        spy.selectTab(0);
+        tabs.get(0).onViewAppeared();
+        verify(spy).clearOptions();
+        assertThat(spy.getSelectedIndex()).isZero();
+        assertThat(spy.options.bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
+    }
+
     @NonNull
     private List<ViewController> createTabs() {
         return Arrays.asList(child1, child2, child3, child4, child5);
@@ -282,7 +297,7 @@ public class BottomTabsControllerTest extends BaseTest {
                 eventEmitter,
                 imageLoaderMock,
                 "uut",
-                new Options(),
+                initialOptions,
                 new OptionsPresenter(activity, new Options()),
                 presenter,
                 new BottomTabOptionsPresenter(activity, tabs, new Options())) {

@@ -33,6 +33,11 @@ function start() {
         fontSize: 13
       },
       _animations: {
+        push: {
+          waitForRender: false,
+        }
+      },
+      _animations: {
         startApp: {
           y: {
             from: 1000,

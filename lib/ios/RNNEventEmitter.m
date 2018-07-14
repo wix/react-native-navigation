@@ -2,75 +2,97 @@
 #import "RNNUtils.h"
 
 @implementation RNNEventEmitter {
-  NSInteger _appLaunchedListenerCount;
-  BOOL _appLaunchedEventDeferred;
+	NSInteger _appLaunchedListenerCount;
+	BOOL _appLaunchedEventDeferred;
 }
 
 RCT_EXPORT_MODULE();
 
-static NSString* const onAppLaunched	= @"RNN.appLaunched";
-static NSString* const componentDidAppear	= @"RNN.componentDidAppear";
-static NSString* const componentDidDisappear	= @"RNN.componentDidDisappear";
-static NSString* const commandComplete	= @"RNN.commandCompleted";
-static NSString* const navigationEvent	= @"RNN.nativeEvent";
+static NSString* const AppLaunched				= @"RNN.AppLaunched";
+static NSString* const CommandCompleted			= @"RNN.CommandCompleted";
+static NSString* const BottomTabSelected		= @"RNN.BottomTabSelected";
+static NSString* const ComponentDidAppear		= @"RNN.ComponentDidAppear";
+static NSString* const ComponentDidDisappear	= @"RNN.ComponentDidDisappear";
+static NSString* const NavigationButtonPressed	= @"RNN.NavigationButtonPressed";
+static NSString* const SearchBarUpdated 		= @"RNN.SearchBarUpdated";
+static NSString* const SearchBarCancelPressed 	= @"RNN.SearchBarCancelPressed";
 
 -(NSArray<NSString *> *)supportedEvents {
-	return @[onAppLaunched, componentDidAppear, componentDidDisappear, commandComplete, navigationEvent];
+	return @[AppLaunched,
+			 CommandCompleted,
+			 BottomTabSelected,
+			 ComponentDidAppear,
+			 ComponentDidDisappear,
+			 NavigationButtonPressed,
+			 SearchBarUpdated,
+			 SearchBarCancelPressed];
 }
 
 # pragma mark public
 
 -(void)sendOnAppLaunched {
 	if (_appLaunchedListenerCount > 0) {
-		[self send:onAppLaunched body:nil];
+		[self send:AppLaunched body:nil];
 	} else {
 		_appLaunchedEventDeferred = TRUE;
 	}
 }
 
 -(void)sendComponentDidAppear:(NSString *)componentId componentName:(NSString *)componentName {
-	[self send:componentDidAppear body:@{@"componentId":componentId, @"componentName": componentName}];
+	[self send:ComponentDidAppear body:@{
+										 @"componentId":componentId,
+										 @"componentName": componentName
+										 }];
 }
 
 -(void)sendComponentDidDisappear:(NSString *)componentId componentName:(NSString *)componentName{
-	[self send:componentDidDisappear body:@{@"componentId":componentId, @"componentName": componentName}];
+	[self send:ComponentDidDisappear body:@{
+											@"componentId":componentId,
+											@"componentName": componentName
+											}];
 }
 
 -(void)sendOnNavigationButtonPressed:(NSString *)componentId buttonId:(NSString*)buttonId {
-	[self send:navigationEvent body:@{@"name": @"buttonPressed", @"params": @{@"componentId": componentId , @"buttonId": buttonId}}];
+	[self send:NavigationButtonPressed body:@{
+											  @"componentId": componentId,
+											  @"buttonId": buttonId
+											  }];
 }
 
--(void)sendOnNavigationCommand:(NSString *)commandName params:(NSDictionary*)params {
-	[self send:navigationEvent body:@{@"name":commandName , @"params": params}];
+-(void)sendBottomTabSelected:(NSNumber *)selectedTabIndex unselected:(NSNumber*)unselectedTabIndex {
+	[self send:BottomTabSelected body:@{
+									  @"selectedTabIndex": selectedTabIndex,
+									  @"unselectedTabIndex": unselectedTabIndex
+									  }];
 }
 
 -(void)sendOnNavigationCommandCompletion:(NSString *)commandName params:(NSDictionary*)params {
-	[self send:commandComplete body:@{@"commandId":commandName , @"params": params, @"completionTime": [RNNUtils getCurrentTimestamp] }];
-}
-
--(void)sendOnNavigationEvent:(NSString *)commandName params:(NSDictionary*)params {
-	[self send:navigationEvent body:@{@"name":commandName , @"params": params}];
+	[self send:CommandCompleted body:@{
+									   @"commandId":commandName,
+									   @"params": params,
+									   @"completionTime": [RNNUtils getCurrentTimestamp]
+									   }];
 }
 
 -(void)sendOnSearchBarUpdated:(NSString *)componentId
 						 text:(NSString*)text
 					isFocused:(BOOL)isFocused {
-	[self send:navigationEvent body:@{@"name": @"searchBarUpdated",
-									  @"params": @{
-												  @"componentId": componentId,
-												  @"text": text,
-												  @"isFocused": @(isFocused)}}];
+	[self send:SearchBarUpdated body:@{
+									   @"componentId": componentId,
+									   @"text": text,
+									   @"isFocused": @(isFocused)
+									   }];
 }
 
 - (void)sendOnSearchBarCancelPressed:(NSString *)componentId {
-	[self send:navigationEvent body:@{@"name": @"searchBarCancelPressed",
-									  @"params": @{
-											  @"componentId": componentId}}];
+	[self send:SearchBarCancelPressed body:@{
+											@"componentId": componentId
+											}];
 }
 
 - (void)addListener:(NSString *)eventName {
 	[super addListener:eventName];
-	if ([eventName isEqualToString:onAppLaunched]) {
+	if ([eventName isEqualToString:AppLaunched]) {
 		_appLaunchedListenerCount++;
 		if (_appLaunchedEventDeferred) {
 			_appLaunchedEventDeferred = FALSE;
@@ -82,9 +104,9 @@ static NSString* const navigationEvent	= @"RNN.nativeEvent";
 # pragma mark private
 
 -(void)send:(NSString *)eventName body:(id)body {
-    if ([eventName isEqualToString:componentDidDisappear] && self.bridge == nil) {
-        return;
-    }
+	if (self.bridge == nil) {
+		return;
+	}
 	[self sendEventWithName:eventName body:body];
 }
 

@@ -9,7 +9,7 @@ The following options can be used to customise buttons.
   component: {
     name: 'example.CustomButtonComponent'
   },
-  title: 'Button one',
+  text: 'Button one',
   enabled: true,
   disableIconTint: false,
   color: 'red',
@@ -25,14 +25,17 @@ Buttons can be defined in a screen's static options:
 ```js
 class MyScreen extends Component {
   static get options() {
-    topBar: {
-    leftButtons: [
-      {
-        id: 'buttonOne',
-        icon: require('icon.png')
+    return {
+      topBar: {
+        leftButtons: [
+          {
+            id: 'buttonOne',
+            icon: require('icon.png')
+          }
+        ],
+        rightButtons: [],
       }
-    ],
-    rightButtons: [],
+    };
   }
   
 }
@@ -58,6 +61,37 @@ Navigation.push(this.props.componentId, {
 }
 ```
 
+# Handling button press events
+
+Navigation sends events on button clicks, to which you can subscribe from anywhere using `Navigation.events().registerNavigationButtonPressedListener((event) => {})`.
+Additionally the component can listen to the button clicks just for its own buttons (via componentId) by using `events().bindComponent(this)`.
+This has to be called if you want the component to handle navigation events, such as navigationButtonPressed.
+Example:
+
+```js
+class MyScreen extends Component {
+  static get options() {
+    return {
+      topBar: {
+        rightButtons: {
+          id: 'buttonOne',
+          icon: require('icon.png')
+        }
+      }
+    };
+  }
+
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this); // <== Will be automatically unregistered when unmounted
+  }
+
+  navigationButtonPressed({ buttonId }) {
+    // will be called when "buttonOne" is clicked
+  }
+}
+```
+
 # Modifying buttons at runtime
 
 As buttons are part of a screen's options, they can be modified like any other styling option using the `mergeOptions` command.
@@ -71,7 +105,7 @@ Navigation.mergeOptions(this.props.componentId, {
     rightButtons: [
       {
         id: 'myDynamicButton',
-        title: 'My Button'
+        text: 'My Button'
       }
     ]
   }

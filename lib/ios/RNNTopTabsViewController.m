@@ -1,6 +1,5 @@
 #import "RNNTopTabsViewController.h"
 #import "RNNSegmentedControl.h"
-#import "RNNRootViewController.h"
 #import "ReactNativeNavigation.h"
 
 @interface RNNTopTabsViewController () {
@@ -72,8 +71,10 @@
     [super viewDidLoad];
 }
 
-- (NSString *)componentId {
-	return _currentViewController.componentId;
+#pragma mark RNNRootViewProtocol
+
+- (UIViewController *)getLeafViewController {
+	return _currentViewController;
 }
 
 @end

@@ -441,7 +441,7 @@
 }
 
 -(void)testRightButtonsWithTitle_withoutStyle {
-	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test"}];
+	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"text": @"test"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
@@ -456,7 +456,7 @@
 -(void)testRightButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
 
-	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"text": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
@@ -472,7 +472,7 @@
 
 
 -(void)testLeftButtonsWithTitle_withoutStyle {
-	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test"}];
+	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"text": @"test"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 
@@ -487,7 +487,7 @@
 -(void)testLeftButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
 
-	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"text": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 

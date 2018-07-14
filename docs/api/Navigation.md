@@ -5,10 +5,15 @@
 `Element (React.ComponentType<object>)`
 
 ---
+## store
+
+`store (Store)`
+
+---
 
 ## registerComponent
 
-`registerComponent(componentName: string, getComponentClassFunc: ComponentProvider): React.ComponentType<any>`
+`registerComponent(componentName: string, getComponentClassFunc: ComponentProvider): ComponentType<any>`
 
 [source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L52)
 
@@ -147,13 +152,33 @@ dismiss overlay by componentId
 
 ---
 
+## getLaunchArgs
+
+`getLaunchArgs(): Promise<any>`
+
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L150)
+
+Resolves arguments passed on launch
+
+---
+
 ## events
 
 `events(): EventsRegistry`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L150)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L157)
 
 Obtain the events registry instance
+
+---
+
+## constants
+
+`constants(): Promise<any>`
+
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L164)
+
+Constants coming from native
 
 ---
 

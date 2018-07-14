@@ -12,22 +12,17 @@
 	_store = store;
 	return self;
 }
--(void)waitForContentToAppearAndThen:(SEL)nameOfSelector {
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:nameOfSelector
-												 name: @"RCTContentDidAppearNotification"
-											   object:nil];
-}
 
 -(void)showModalAfterLoad:(NSDictionary*)notif {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
-	RNNRootViewController *topVC = (RNNRootViewController*)[self topPresentedVC];
+	UIViewController<RNNRootViewProtocol>* topVC = (UIViewController<RNNRootViewProtocol>*)[self topPresentedVC];
 	topVC.definesPresentationContext = YES;
-	
-	if (topVC.options.animations.showModal.hasCustomAnimation) {
+	RNNNavigationOptions* options = topVC.getLeafViewController.options;
+
+	if (options.animations.showModal.hasCustomAnimation) {
 		self.toVC.transitioningDelegate = topVC;
 	}
-	[topVC presentViewController:self.toVC animated:self.toVC.options.animations.showModal.enable completion:^{
+	
+	[topVC presentViewController:self.toVC animated:options.animations.showModal.enable completion:^{
 		if (_completionBlock) {
 			_completionBlock();
 			_completionBlock = nil;
@@ -38,18 +33,22 @@
 
 -(void)showModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {
 	self.toVC = (UIViewController<RNNRootViewProtocol>*)viewController;
+	RNNNavigationOptions* options = self.toVC.getLeafViewController.options;
+
 	_completionBlock = completion;
 	
     if ([self.toVC respondsToSelector:@selector(applyModalOptions)]) {
-        [self.toVC applyModalOptions];
+        [self.toVC.getLeafViewController applyModalOptions];
     }
     
     if ([self.toVC respondsToSelector:@selector(isCustomViewController)] &&
-        [self.toVC isCustomViewController]
+        [self.toVC.getLeafViewController isCustomViewController]
     ) {
 		[self showModalAfterLoad:nil];
 	} else {
-		[self waitForContentToAppearAndThen:@selector(showModalAfterLoad:)];
+		[self.toVC.getLeafViewController waitForReactViewRender:options.animations.showModal.waitForRender perform:^{
+			[self showModalAfterLoad:nil];
+		}];
 	}
 }
 
@@ -69,8 +68,8 @@
 
 -(void)removePendingNextModalIfOnTop {
 	NSString *componentId = [[_store pendingModalIdsToDismiss] lastObject];
-
 	UIViewController<RNNRootViewProtocol> *modalToDismiss = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
+	RNNNavigationOptions* options = modalToDismiss.getLeafViewController.options;
 
 	if(!modalToDismiss) {
 		return;
@@ -78,12 +77,12 @@
 
 	UIViewController* topPresentedVC = [self topPresentedVC];
 
-	if ([modalToDismiss.options.animations.showModal hasCustomAnimation]) {
+	if ([options.animations.showModal hasCustomAnimation]) {
 		modalToDismiss.transitioningDelegate = modalToDismiss;
 	}
 
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
-		[modalToDismiss dismissViewControllerAnimated:modalToDismiss.options.animations.dismissModal.enable completion:^{
+		[modalToDismiss dismissViewControllerAnimated:options.animations.dismissModal.enable completion:^{
 			[[_store pendingModalIdsToDismiss] removeObject:componentId];
 			[_store removeComponent:componentId];
 			[self removePendingNextModalIfOnTop];

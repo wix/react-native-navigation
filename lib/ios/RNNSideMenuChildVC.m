@@ -31,16 +31,12 @@
 	return self;
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.child mergeOptions:options];
+- (RNNRootViewController *)getLeafViewController {
+	return [self.child getLeafViewController];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return self.child.preferredStatusBarStyle;
-}
-
-- (NSString *)componentId {
-	return _child.componentId;
 }
 
 @end

@@ -7,5 +7,6 @@
 - SideMenuLeft
 - SideMenuRight
 - SideMenuRoot
+- SplitView
 - Stack
 - TopTabs

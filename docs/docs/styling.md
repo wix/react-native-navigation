@@ -75,10 +75,10 @@ Navigation.mergeOptions(this.props.componentId, {
     buttonColor: 'black',
     drawBehind: false,
     testID: 'topBar',
-    largeTitle: true, // iOS 11+ Large Title
     searchBar: true, // iOS 11+ native UISearchBar inside topBar
     searchBarHiddenWhenScrolling: true,
     searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
+    // iOS 11+ Large Title
     largeTitle: {
       visible: true,
       fontSize: 30,
@@ -224,7 +224,9 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   bottomTabs: {
     titleDisplayMode: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' // Sets the title state for each tab.
-  }
+  },
+  bottomTab: {
+    selectedFontSize: 19 // Selected tab font size in sp
 }
 ```
 

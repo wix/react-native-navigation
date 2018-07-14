@@ -1,5 +1,6 @@
 - [Home](/)
 - [Navigation](/api/Navigation)
+- [Constants](/api/Constants)
 - [Element](/api/Element)
 - [NativeCommandsSender](/api/NativeCommandsSender)
 - [NativeEventsReceiver](/api/NativeEventsReceiver)

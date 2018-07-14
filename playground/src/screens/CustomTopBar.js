@@ -8,12 +8,14 @@ const {
   Alert,
   Platform
 } = require('react-native');
+const { Navigation } = require('react-native-navigation');
 
 class CustomTopBar extends Component {
 
   constructor(props) {
     super(props);
     this.state = {};
+    this.subscription = Navigation.events().bindComponent(this);
   }
 
   componentDidAppear() {
@@ -30,6 +32,7 @@ class CustomTopBar extends Component {
 
   componentWillUnmount() {
     console.log('RNN', `CTB.componentWillUnmount`);
+    this.subscription.remove();
   }
 
   render() {

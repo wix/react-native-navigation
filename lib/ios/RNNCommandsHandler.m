@@ -50,7 +50,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	[_modalManager dismissAllModals];
-	[_eventEmitter sendOnNavigationCommand:setRoot params:@{@"layout": layout}];
 	
 	UIViewController *vc = [_controllerFactory createLayoutAndSaveToStore:layout[@"root"]];
 	
@@ -62,7 +61,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 -(void) mergeOptions:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	[_eventEmitter sendOnNavigationCommand:mergeOptions params:@{@"componentId": componentId, @"options": options}];
 	
 	UIViewController* vc = [_store findComponentForId:componentId];
 	if([vc isKindOfClass:[RNNRootViewController class]]) {
@@ -91,7 +89,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 -(void) setDefaultOptions:(NSDictionary*)optionsDict completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	[_eventEmitter sendOnNavigationCommand:setDefaultOptions params:@{@"options": optionsDict}];
 	[_controllerFactory setDefaultOptionsDict:optionsDict];
 }
 
@@ -128,8 +125,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:elementView];
 		}
 	} else {
-		[newVc onReactViewReady:^{
-			id animationDelegate = (newVc.options.animations.push.hasCustomAnimation || newVc.isCustomTransitioned) ? newVc : nil;
+		id animationDelegate = (newVc.options.animations.push.hasCustomAnimation || newVc.isCustomTransitioned) ? newVc : nil;
+		[newVc waitForReactViewRender:newVc.options.animations.push.waitForRender perform:^{
 			[_stackManager push:newVc onTop:fromVC animated:newVc.options.animations.push.enable animationDelegate:animationDelegate completion:^{
 				[_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
 				completion();
@@ -142,9 +139,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	UIViewController<RNNRootViewProtocol> *newVC = [_controllerFactory createLayoutAndSaveToStore:layout];
+	RNNNavigationOptions* options = [newVC getLeafViewController].options;
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
-	[_stackManager setStackRoot:newVC fromViewController:fromVC animated:newVC.options.animations.push.enable completion:^{
+	[_stackManager setStackRoot:newVC fromViewController:fromVC animated:options.animations.push.enable completion:^{
 		[weakEventEmitter sendOnNavigationCommandCompletion:setStackRoot params:@{@"componentId": componentId}];
 		completion();
 	} rejection:rejection];

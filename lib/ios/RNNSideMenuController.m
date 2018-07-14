@@ -89,12 +89,12 @@
 	}
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.center mergeOptions:options];
+- (RNNRootViewController *)getLeafViewController {
+	return [self.center getLeafViewController];
 }
 
-- (NSString *)componentId {
-	return _center.componentId;
+- (void)mergeOptions:(RNNOptions *)options {
+	[self.center.getLeafViewController mergeOptions:options];
 }
 
 @end

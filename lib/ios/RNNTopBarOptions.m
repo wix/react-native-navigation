@@ -149,7 +149,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	
 	if (self.rightButtons || self.leftButtons) {
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
-		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons];
+		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons defaultButtonStyle:_button];
 	}
 }
 
