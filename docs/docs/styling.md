@@ -115,7 +115,7 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   bottomTabs: {
     visible: true,
-    animate: false, // Controls wether BottomTabs visibility changes should be animated
+    animate: false, // Controls whether BottomTabs visibility changes should be animated
     currentTabIndex: 0,
     currentTabId: 'currentTabId',
     testID: 'bottomTabsTestID',
