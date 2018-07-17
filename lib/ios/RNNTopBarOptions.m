@@ -27,6 +27,9 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 }
 
 - (void)applyOn:(UIViewController*)viewController {
+	if (viewController.navigationController.topViewController != viewController) {
+		return;
+	}
 	[self.title applyOn:viewController];
 	[self.largeTitle applyOn:viewController];
 	[self.background applyOn:viewController];
