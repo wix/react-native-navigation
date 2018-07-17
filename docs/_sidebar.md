@@ -7,7 +7,7 @@
   - [Top Level](/docs/top-level-api)
   - [Screen](/docs/screen-api)
   - [Events](/docs/events)
-  - [Layout Types](/docs/layout-types)
+  - [Layouts](/docs/layout-types)
   - [Styling](/docs/styling)
   - [TopBar Buttons](/docs/topBar-buttons) 
   - [Animations](/docs/animations)

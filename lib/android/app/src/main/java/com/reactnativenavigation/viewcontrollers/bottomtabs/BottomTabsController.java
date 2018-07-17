@@ -130,7 +130,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         List<BottomTabOptions> bottomTabOptionsList = new ArrayList<>();
         for (int i = 0; i < tabs.size(); i++) {
             tabs.get(i).setParentController(this);
-            BottomTabOptions tabOptions = tabs.get(i).options.bottomTabOptions;
+            BottomTabOptions tabOptions = tabs.get(i).resolveCurrentOptions().bottomTabOptions;
             if (!tabOptions.icon.hasValue()) {
                 throw new RuntimeException("BottomTab must have an icon");
             }

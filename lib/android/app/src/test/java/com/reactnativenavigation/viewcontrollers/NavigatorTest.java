@@ -83,7 +83,6 @@ public class NavigatorTest extends BaseTest {
             }
         });
         parentController.setViewVisibilityListener(parentVisibilityListener);
-//        parentController.ensureViewIsCreated();
         child1 = new SimpleViewController(activity, childRegistry, "child1", tabOptions);
         child2 = new SimpleViewController(activity, childRegistry, "child2", tabOptions);
         child3 = new SimpleViewController(activity, childRegistry, "child3", tabOptions);
@@ -162,6 +161,13 @@ public class NavigatorTest extends BaseTest {
 
         assertThat(stack1.getChildControllers()).doesNotContain(newChild);
         assertThat(stack2.getChildControllers()).contains(newChild);
+    }
+
+    @Test
+    public void push_rejectIfNotContainedInStack() {
+        CommandListener listener = Mockito.mock(CommandListener.class);
+        uut.push("someId", child1, listener);
+        verify(listener).onError(any());
     }
 
     @Test
