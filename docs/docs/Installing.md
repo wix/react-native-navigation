@@ -117,12 +117,16 @@ dependencies {
 ><br><br>Available options:
 >
 >* `reactNative51`: Support for React Native 0.51-0.54
->* `reactNative55`: Support for React Native 0.55 and above
+>* `reactNative55`: Support for React Native 0.55
+>* `reactNative56`: Support for React Native 0.56 and above
 >
 ><br>For example, To target React Native 0.55, replace the following line:<br>
 >`missingDimensionStrategy "RNN.reactNativeVersion", "reactNative51"`
 ><br>with:<br>
 >`missingDimensionStrategy "RNN.reactNativeVersion", "reactNative55"`
+><br>For React Native 0.56:<br>
+>`missingDimensionStrategy "RNN.reactNativeVersion", "reactNative56"`
+
 
 ### 4. Make sure you're using the new gradle plugin, edit `android/gradle/wrapper/gradle-wrapper.properties`
 
