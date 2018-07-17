@@ -30,20 +30,11 @@ describe('Store', () => {
     expect(uut.getOriginalComponentClassForName('example.mycomponent')).toEqual(MyComponent);
   });
 
-  it('holds component refs by id', () => {
-    const ref = {};
-    uut.setRefForId('refUniqueId', ref);
-    expect(uut.getRefForId('other')).toBeUndefined();
-    expect(uut.getRefForId('refUniqueId')).toBe(ref);
-  });
-
-  it('clean by id', () => {
-    uut.setRefForId('refUniqueId', {});
+  it('clean by component id', () => {
     uut.setPropsForId('refUniqueId', { foo: 'bar' });
 
     uut.cleanId('refUniqueId');
 
-    expect(uut.getRefForId('refUniqueId')).toBeUndefined();
     expect(uut.getPropsForId('refUniqueId')).toEqual({});
   });
 });

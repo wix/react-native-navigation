@@ -55,6 +55,18 @@ public class TopTabsViewPager extends ViewPager implements Component, TopBarButt
         setLayoutParams(layoutParams);
     }
 
+    @Override
+    public boolean isRendered() {
+        return tabs.size() != 0 && areAllTabsRendered();
+    }
+
+    private boolean areAllTabsRendered() {
+        for (ViewController tab : tabs) {
+            if (!tab.isRendered()) return false;
+        }
+        return true;
+    }
+
     public void switchToTab(int index) {
         setCurrentItem(index);
     }

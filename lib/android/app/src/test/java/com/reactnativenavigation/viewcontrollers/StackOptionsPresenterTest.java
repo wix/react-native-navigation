@@ -151,7 +151,7 @@ public class StackOptionsPresenterTest extends BaseTest {
             verify(topBar, times(t)).setSubtitle(any());
         }
         verify(topBar, times(t)).setTitleComponent(any());
-        verify(topBar, times(t)).setBackgroundColor(any());
+        verify(topBar, times(t)).setBackgroundColor(anyInt());
         verify(topBar, times(t)).setTitleTextColor(anyInt());
         verify(topBar, times(t)).setTitleFontSize(anyDouble());
         verify(topBar, times(t)).setTitleTypeface(any());

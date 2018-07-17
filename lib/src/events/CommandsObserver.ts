@@ -15,6 +15,6 @@ export class CommandsObserver {
   }
 
   public notify(commandName: string, params: {}): void {
-    _.forEach(this.listeners, (listener) => listener(commandName, params));
+    _.forEach(this.listeners, (listener: CommandsListener) => listener(commandName, params));
   }
 }

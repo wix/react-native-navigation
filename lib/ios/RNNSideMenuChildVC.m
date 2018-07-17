@@ -31,20 +31,12 @@
 	return self;
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.child mergeOptions:options];
-}
-
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	[self.child waitForReactViewRender:wait perform:readyBlock];
+- (RNNRootViewController *)getLeafViewController {
+	return [self.child getLeafViewController];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return self.child.preferredStatusBarStyle;
-}
-
-- (NSString *)componentId {
-	return _child.componentId;
 }
 
 @end

@@ -1,7 +1,11 @@
 package com.reactnativenavigation.viewcontrollers.modal;
 
+import android.app.Activity;
+import android.support.annotation.RestrictTo;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.anim.ModalAnimator;
+import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
@@ -15,12 +19,21 @@ public class ModalStack {
     private List<ViewController> modals = new ArrayList<>();
     private final ModalPresenter presenter;
 
-    public ModalStack(ModalPresenter presenter) {
+    public ModalStack(Activity activity) {
+        this.presenter = new ModalPresenter(new ModalAnimator(activity));
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    ModalStack(ModalPresenter presenter) {
         this.presenter = presenter;
     }
 
     public void setContentLayout(ViewGroup contentLayout) {
         presenter.setContentLayout(contentLayout);
+    }
+
+    public void setDefaultOptions(Options defaultOptions) {
+        presenter.setDefaultOptions(defaultOptions);
     }
 
     public void showModal(ViewController viewController, ViewController root, CommandListener listener) {

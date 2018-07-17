@@ -1,55 +1,80 @@
-import { EventsRegistry } from './EventsRegistry';
-import { Store } from '../components/Store';
-
-const BUTTON_PRESSED_EVENT_NAME = 'buttonPressed';
-const ON_SEARCH_BAR_UPDATED = 'searchBarUpdated';
-const ON_SEARCH_BAR_CANCEL_PRESSED = 'searchBarCancelPressed';
+import * as _ from 'lodash';
+import { EventSubscription } from '../interfaces/EventSubscription';
+import {
+  ComponentDidAppearEvent,
+  ComponentDidDisappearEvent,
+  NavigationButtonPressedEvent,
+  SearchBarUpdatedEvent,
+  SearchBarCancelPressedEvent,
+  ComponentEvent
+} from '../interfaces/ComponentEvents';
+import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 
 export class ComponentEventsObserver {
-  constructor(private eventsRegistry: EventsRegistry, private store: Store) {
-    this.componentDidAppear = this.componentDidAppear.bind(this);
-    this.componentDidDisappear = this.componentDidDisappear.bind(this);
-    this.onNativeEvent = this.onNativeEvent.bind(this);
+  private readonly listeners = {};
+  private alreadyRegistered = false;
+
+  constructor(private readonly nativeEventsReceiver: NativeEventsReceiver) {
+    this.notifyComponentDidAppear = this.notifyComponentDidAppear.bind(this);
+    this.notifyComponentDidDisappear = this.notifyComponentDidDisappear.bind(this);
+    this.notifyNavigationButtonPressed = this.notifyNavigationButtonPressed.bind(this);
+    this.notifySearchBarUpdated = this.notifySearchBarUpdated.bind(this);
+    this.notifySearchBarCancelPressed = this.notifySearchBarCancelPressed.bind(this);
   }
 
-  public registerForAllComponents(): void {
-    this.eventsRegistry.registerComponentDidAppearListener(this.componentDidAppear);
-    this.eventsRegistry.registerComponentDidDisappearListener(this.componentDidDisappear);
-    this.eventsRegistry.registerNativeEventListener(this.onNativeEvent);
+  public registerOnceForAllComponentEvents() {
+    if (this.alreadyRegistered) { return; }
+    this.alreadyRegistered = true;
+    this.nativeEventsReceiver.registerComponentDidAppearListener(this.notifyComponentDidAppear);
+    this.nativeEventsReceiver.registerComponentDidDisappearListener(this.notifyComponentDidDisappear);
+    this.nativeEventsReceiver.registerNavigationButtonPressedListener(this.notifyNavigationButtonPressed);
+    this.nativeEventsReceiver.registerSearchBarUpdatedListener(this.notifySearchBarUpdated);
+    this.nativeEventsReceiver.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
   }
 
-  private componentDidAppear(componentId: string) {
-    const componentRef = this.store.getRefForId(componentId);
-    if (componentRef && componentRef.componentDidAppear) {
-      componentRef.componentDidAppear();
+  public bindComponent(component: React.Component<any>): EventSubscription {
+    const componentId = component.props.componentId;
+    if (!_.isString(componentId)) {
+      throw new Error(`bindComponent expects a component with a componentId in props`);
     }
-  }
-
-  private componentDidDisappear(componentId: string) {
-    const componentRef = this.store.getRefForId(componentId);
-    if (componentRef && componentRef.componentDidDisappear) {
-      componentRef.componentDidDisappear();
+    if (_.isNil(this.listeners[componentId])) {
+      this.listeners[componentId] = {};
     }
+    const key = _.uniqueId();
+    this.listeners[componentId][key] = component;
+
+    return { remove: () => _.unset(this.listeners[componentId], key) };
   }
 
-  private onNativeEvent(name: string, params: any) {
-    if (name === BUTTON_PRESSED_EVENT_NAME) {
-      const componentRef = this.store.getRefForId(params.componentId);
-      if (componentRef && componentRef.onNavigationButtonPressed) {
-        componentRef.onNavigationButtonPressed(params.buttonId);
+  public unmounted(componentId: string) {
+    _.unset(this.listeners, componentId);
+  }
+
+  notifyComponentDidAppear(event: ComponentDidAppearEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'componentDidAppear');
+  }
+
+  notifyComponentDidDisappear(event: ComponentDidDisappearEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'componentDidDisappear');
+  }
+
+  notifyNavigationButtonPressed(event: NavigationButtonPressedEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'navigationButtonPressed');
+  }
+
+  notifySearchBarUpdated(event: SearchBarUpdatedEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'searchBarUpdated');
+  }
+
+  notifySearchBarCancelPressed(event: SearchBarCancelPressedEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'searchBarCancelPressed');
+  }
+
+  private triggerOnAllListenersByComponentId(event: ComponentEvent, method: string) {
+    _.forEach(this.listeners[event.componentId], (component) => {
+      if (_.isObject(component) && _.isFunction(component[method])) {
+        component[method](event);
       }
-    }
-    if (name === ON_SEARCH_BAR_UPDATED) {
-      const componentRef = this.store.getRefForId(params.componentId);
-      if (componentRef && componentRef.onSearchBarUpdated) {
-        componentRef.onSearchBarUpdated(params.text, params.isFocused);
-      }
-    }
-    if (name === ON_SEARCH_BAR_CANCEL_PRESSED) {
-      const componentRef = this.store.getRefForId(params.componentId);
-      if (componentRef && componentRef.onSearchBarCancelPressed) {
-        componentRef.onSearchBarCancelPressed();
-      }
-    }
+    });
   }
 }

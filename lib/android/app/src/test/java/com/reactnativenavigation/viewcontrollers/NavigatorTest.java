@@ -23,6 +23,7 @@ import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
+import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 
 import org.junit.Test;
@@ -55,6 +56,7 @@ public class NavigatorTest extends BaseTest {
     private OverlayManager overlayManager;
     private EventEmitter eventEmitter;
     private ViewController.ViewVisibilityListener parentVisibilityListener;
+    private ModalStack modalStack;
 
     @Override
     public void beforeEach() {
@@ -64,7 +66,8 @@ public class NavigatorTest extends BaseTest {
         imageLoaderMock = ImageLoaderMock.mock();
         activityController = newActivityController(TestActivity.class);
         activity = activityController.create().get();
-        uut = new Navigator(activity, childRegistry, overlayManager);
+        modalStack = spy(new ModalStack(activity));
+        uut = new Navigator(activity, childRegistry, modalStack, overlayManager);
         activity.setNavigator(uut);
 
         parentController = newStack();
@@ -80,7 +83,6 @@ public class NavigatorTest extends BaseTest {
             }
         });
         parentController.setViewVisibilityListener(parentVisibilityListener);
-//        parentController.ensureViewIsCreated();
         child1 = new SimpleViewController(activity, childRegistry, "child1", tabOptions);
         child2 = new SimpleViewController(activity, childRegistry, "child2", tabOptions);
         child3 = new SimpleViewController(activity, childRegistry, "child3", tabOptions);
@@ -100,6 +102,7 @@ public class NavigatorTest extends BaseTest {
         Options defaultOptions = new Options();
         uut.setDefaultOptions(defaultOptions);
         verify(spy, times(1)).setDefaultOptions(defaultOptions);
+        verify(modalStack).setDefaultOptions(defaultOptions);
     }
 
     @Test
@@ -119,7 +122,7 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void hasUniqueId() {
         assertThat(uut.getId()).startsWith("navigator");
-        assertThat(new Navigator(activity, childRegistry, overlayManager).getId()).isNotEqualTo(uut.getId());
+        assertThat(new Navigator(activity, childRegistry, modalStack, overlayManager).getId()).isNotEqualTo(uut.getId());
     }
 
     @Test
@@ -158,6 +161,13 @@ public class NavigatorTest extends BaseTest {
 
         assertThat(stack1.getChildControllers()).doesNotContain(newChild);
         assertThat(stack2.getChildControllers()).contains(newChild);
+    }
+
+    @Test
+    public void push_rejectIfNotContainedInStack() {
+        CommandListener listener = Mockito.mock(CommandListener.class);
+        uut.push("someId", child1, listener);
+        verify(listener).onError(any());
     }
 
     @Test
@@ -429,10 +439,11 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void dismissModal_onViewAppearedInvokedOnRoot() {
-        disableShowModalAnimation(child1, child2);
+        disableShowModalAnimation(child1, child2, child3);
         disableDismissModalAnimation(child1, child2);
 
         uut.setRoot(parentController, new CommandListenerAdapter());
+        parentController.push(child3, new CommandListenerAdapter());
         uut.showModal(child1, new CommandListenerAdapter());
         uut.showModal(child2, new CommandListenerAdapter());
 
@@ -448,12 +459,14 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void dismissAllModals_onViewAppearedInvokedOnRoot() {
+        disablePushAnimation(child2);
         disableShowModalAnimation(child1);
 
         uut.dismissAllModals(new CommandListenerAdapter());
         verify(parentVisibilityListener, times(0)).onViewAppeared(parentController.getView());
 
         uut.setRoot(parentController, new CommandListenerAdapter());
+        parentController.push(child2, new CommandListenerAdapter());
 
         verify(parentVisibilityListener, times(1)).onViewAppeared(parentController.getView());
         uut.showModal(child1, new CommandListenerAdapter());
@@ -464,8 +477,9 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void handleBack_onViewAppearedInvokedOnRoot() {
-        disableShowModalAnimation(child1, child2);
+        disableShowModalAnimation(child1, child2, child3);
 
+        parentController.push(child3, new CommandListenerAdapter());
         StackController spy = spy(parentController);
         uut.setRoot(spy, new CommandListenerAdapter());
         uut.showModal(child1, new CommandListenerAdapter());
@@ -485,9 +499,12 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void destroy_destroyedRoot() {
+        disablePushAnimation(child1);
+
         StackController spy = spy(parentController);
         spy.options.animations.startApp.enable = new Bool(false);
         uut.setRoot(spy, new CommandListenerAdapter());
+        spy.push(child1, new CommandListenerAdapter());
         activityController.destroy();
         verify(spy, times(1)).destroy();
     }

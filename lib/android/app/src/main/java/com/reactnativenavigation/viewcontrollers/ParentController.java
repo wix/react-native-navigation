@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.views.Component;
@@ -21,7 +22,13 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 		super(activity, childRegistry, id, presenter, initialOptions);
 	}
 
-	@Override
+    @Override
+    public void setWaitForRender(Bool waitForRender) {
+        super.setWaitForRender(waitForRender);
+        applyOnController(getCurrentChild(), controller -> ((ViewController) controller).setWaitForRender(waitForRender));
+    }
+
+    @Override
     public void setDefaultOptions(Options defaultOptions) {
         Collection<? extends ViewController> children = getChildControllers();
         if (!CollectionUtils.isNullOrEmpty(children)) {
@@ -35,8 +42,16 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     @CheckResult
     public Options resolveCurrentOptions() {
 	    if (CollectionUtils.isNullOrEmpty(getChildControllers())) return options;
-        Options o = getCurrentChild().resolveCurrentOptions();
-        return o.copy().mergeWith(options);
+        return getCurrentChild()
+                .resolveCurrentOptions()
+                .copy()
+                .mergeWith(options);
+    }
+
+    @Override
+    @CheckResult
+    public Options resolveCurrentOptions(Options defaultOptions) {
+        return resolveCurrentOptions().withDefaultOptions(defaultOptions);
     }
 
     protected abstract ViewController getCurrentChild();
@@ -103,7 +118,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 	@CallSuper
     protected void clearOptions() {
 	    applyOnParentController(parent -> ((ParentController) parent).clearOptions());
-        options = initialOptions.copy();
+        options = initialOptions.copy().clearOneTimeOptions();
     }
 
     public void setupTopTabsWithViewPager(ViewPager viewPager) {
@@ -112,5 +127,10 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     public void clearTopTabs() {
 
+    }
+
+    @Override
+    public boolean isRendered() {
+        return getCurrentChild() != null && getCurrentChild().isRendered();
     }
 }

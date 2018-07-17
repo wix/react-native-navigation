@@ -35,7 +35,8 @@
 
 -(void)setButtons:(NSArray*)buttons side:(NSString*)side animated:(BOOL)animated {
 	NSMutableArray *barButtonItems = [NSMutableArray new];
-	for (NSDictionary *button in buttons) {
+	NSArray* resolvedButtons = [self resolveButtons:buttons];
+	for (NSDictionary *button in resolvedButtons) {
 		RNNUIBarButtonItem* barButtonItem = [self buildButton:button];
 		if(barButtonItem) {
 			[barButtonItems addObject:barButtonItem];
@@ -53,9 +54,17 @@
 	}
 }
 
+- (NSArray *)resolveButtons:(id)buttons {
+	if ([buttons isKindOfClass:[NSArray class]]) {
+		return buttons;
+	} else {
+		return @[buttons];
+	}
+}
+
 -(RNNUIBarButtonItem*)buildButton: (NSDictionary*)dictionary {
 	NSString* buttonId = dictionary[@"id"];
-	NSString* title = dictionary[@"title"];
+	NSString* title = dictionary[@"text"];
 	NSDictionary* component = dictionary[@"component"];
 	
 	if (!buttonId) {

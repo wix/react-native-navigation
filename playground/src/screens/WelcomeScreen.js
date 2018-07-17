@@ -85,18 +85,18 @@ class WelcomeScreen extends Component {
                           title: {
                             text: 'React Native Navigation!'
                           }
+                        },
+                        bottomTab: {
+                          text: 'Tab 1',
+                          icon: require('../images/one.png'),
+                          selectedIcon: require('../images/one.png'),
+                          testID: testIDs.FIRST_TAB_BAR_BUTTON
                         }
                       }
                     }
                   }
                 ],
                 options: {
-                  bottomTab: {
-                    text: 'Tab 1',
-                    icon: require('../images/one.png'),
-                    selectedIcon: require('../images/one.png'),
-                    testID: testIDs.FIRST_TAB_BAR_BUTTON
-                  },
                   topBar: {
                     visible: false
                   }

@@ -4,7 +4,7 @@
 
 `setPropsForId(componentId: string, props: any): void`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/Store.ts#L8)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/Store.ts#L7)
 
 ---
 
@@ -12,7 +12,7 @@
 
 `getPropsForId(componentId: string): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/Store.ts#L12)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/Store.ts#L11)
 
 ---
 
@@ -20,7 +20,7 @@
 
 `setOriginalComponentClassForName(componentName: string, ComponentClass: any): void`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/Store.ts#L16)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/Store.ts#L15)
 
 ---
 
@@ -28,23 +28,7 @@
 
 `getOriginalComponentClassForName(componentName: string): any`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/Store.ts#L20)
-
----
-
-## setRefForId
-
-`setRefForId(id: string, ref: any): void`
-
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/Store.ts#L24)
-
----
-
-## getRefForId
-
-`getRefForId(id: string): any`
-
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/Store.ts#L28)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/Store.ts#L19)
 
 ---
 
@@ -52,7 +36,7 @@
 
 `cleanId(id: string): void`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/Store.ts#L32)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/components/Store.ts#L23)
 
 ---
 

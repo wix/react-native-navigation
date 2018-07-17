@@ -20,4 +20,6 @@ public interface IReactView extends Destroyable {
     ScrollEventListener getScrollEventListener();
 
     void dispatchTouchEventToJs(MotionEvent event);
+
+    boolean isRendered();
 }

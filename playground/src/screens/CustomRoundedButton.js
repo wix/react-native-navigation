@@ -8,11 +8,13 @@ const {
   Alert,
   Platform
 } = require('react-native');
+const { Navigation } = require('react-native-navigation');
 
 class CustomRoundedButton extends Component {
 
   constructor(props) {
     super(props);
+    this.subscription = Navigation.events().bindComponent(this);
     this.state = {};
   }
 
@@ -29,6 +31,7 @@ class CustomRoundedButton extends Component {
   }
 
   componentWillUnmount() {
+    this.subscription.remove();
     console.log('RNN', `CRB.componentWillUnmount`);
   }
 

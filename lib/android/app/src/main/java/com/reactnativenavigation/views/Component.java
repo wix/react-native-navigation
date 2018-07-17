@@ -6,4 +6,6 @@ public interface Component {
     void drawBehindTopBar();
 
     void drawBelowTopBar(TopBar topBar);
+
+    boolean isRendered();
 }

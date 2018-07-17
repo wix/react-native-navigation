@@ -1,6 +1,6 @@
 
 #import "RNNTabBarController.h"
-#import "RNNRootViewController.h"
+
 #define kTabBarHiddenDuration 0.3
 
 @implementation RNNTabBarController {
@@ -42,19 +42,11 @@
 }
 
 - (void)mergeOptions:(RNNOptions *)options {
-	[((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) mergeOptions:options];
+	[self.getLeafViewController mergeOptions:options];
 }
 
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	[((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) waitForReactViewRender:wait perform:readyBlock];
-}
-
-- (RNNNavigationOptions *)options {
-	return [((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) options];
-}
-
-- (NSString *)componentId {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).componentId;
+- (UIViewController *)getLeafViewController {
+	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).getLeafViewController;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -64,8 +56,7 @@
 #pragma mark UITabBarControllerDelegate
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-	[_eventEmitter sendOnNavigationEvent:@"bottomTabSelected" params:@{@"selectedTabIndex": @(tabBarController.selectedIndex), @"unselectedTabIndex": @(_currentTabIndex)}];
-	
+	[_eventEmitter sendBottomTabSelected:@(tabBarController.selectedIndex) unselected:@(_currentTabIndex)];
 	_currentTabIndex = tabBarController.selectedIndex;
 }
 
