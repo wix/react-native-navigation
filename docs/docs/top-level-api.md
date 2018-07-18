@@ -23,7 +23,7 @@ Navigation.setRoot({
           }],
           options: {
             bottomTab: {
-              title: 'Tab 1',
+              text: 'Tab 1',
               icon: require('../images/one.png'),
               testID: 'FIRST_TAB_BAR_BUTTON'
             }
@@ -38,7 +38,7 @@ Navigation.setRoot({
           },
           options: {
             bottomTab: {
-              title: 'Tab 2',
+              text: 'Tab 2',
               icon: require('../images/two.png'),
               testID: 'SECOND_TAB_BAR_BUTTON'
             }

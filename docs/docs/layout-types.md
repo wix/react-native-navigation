@@ -48,7 +48,7 @@ const bottomTabs = {
         children: [],
         options: {
           bottomTab: {
-            title: 'Tab 1',
+            text: 'Tab 1',
             icon: require('../images/one.png')
           }
         }
@@ -59,7 +59,7 @@ const bottomTabs = {
         name: 'secondTabScreen',
         options: {
           bottomTab: {
-            title: 'Tab 2',
+            text: 'Tab 2',
             icon: require('../images/two.png')
           }
         }
