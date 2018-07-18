@@ -6,12 +6,11 @@ const { View, Text, Button } = require('react-native');
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
-let globalFirstComponentID;
-
 class TextScreen extends Component {
   static get options() {
     return {
       bottomTabs: {
+        drawBehind: true,
         testID: testIDs.BOTTOM_TABS_ELEMENT
       },
       topBar: {
@@ -20,31 +19,34 @@ class TextScreen extends Component {
     };
   }
 
-  constructor(props) {
-    super(props);
-    globalFirstComponentID = (props.text === 'This is tab 1') ? props.componentId : globalFirstComponentID;
-    this.onClickPop = this.onClickPop.bind(this);
-  }
-
   render() {
     return (
       <View style={styles.root}>
         <Text style={styles.h1} testID={testIDs.CENTERED_TEXT_HEADER}>{this.props.text || 'Text Screen'}</Text>
         {this.renderTextFromFunctionInProps()}
         <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
-        <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onButtonPress()} />
+        <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onClickSetBadge()} />
         <Button title={'Switch To Tab 2'} testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
         <Button title={'Switch To Tab 1 by componentID'} testID={testIDs.SWITCH_FIRST_TAB_BUTTON} onPress={() => this.onClickSwitchToTabByComponentID()} />
         <Button title='Hide Tab Bar' testID={testIDs.HIDE_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(false)} />
         <Button title='Show Tab Bar' testID={testIDs.SHOW_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(true)} />
         <Button title='Show Left Side Menu' testID={testIDs.SHOW_LEFT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('left')} />
         <Button title='Show Right Side Menu' testID={testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('right')} />
+        <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
         <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
       </View>
     );
   }
 
-  async onClickPop() {
+  onClickPush = async () => {
+    await Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.PushedScreen'
+      }
+    });
+  }
+
+  onClickPop = async () => {
     await Navigation.pop(this.props.componentId);
   }
 
@@ -57,8 +59,8 @@ class TextScreen extends Component {
     );
   }
 
-  onButtonPress() {
-    Navigation.setOptions(this.props.componentId, {
+  onClickSetBadge() {
+    Navigation.mergeOptions(this.props.componentId, {
       bottomTab: {
         badge: `TeSt`
       }
@@ -66,35 +68,36 @@ class TextScreen extends Component {
   }
 
   onClickSwitchToTab() {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       bottomTabs: {
         currentTabIndex: 1,
         visible: false,
-        animate: true,
-        tabColor: 'blue',
-        selectedTabColor: 'red'
+        drawBehind: true,
+        animate: true
       }
     });
   }
 
   onClickSwitchToTabByComponentID() {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       bottomTabs: {
-        currentTabId: globalFirstComponentID
+        currentTabId: 'TAB1_ID'
       }
     });
   }
 
   hideTabBar(visible) {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       bottomTabs: {
-        visible
+        visible,
+        drawBehind: true,
+        animate: true
       }
     });
   }
 
   showSideMenu(side) {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       sideMenu: {
         [side]: {
           visible: true
@@ -115,7 +118,7 @@ const styles = {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5fcff'
+    backgroundColor: '#E3DCC3'
   },
   h1: {
     fontSize: 24,

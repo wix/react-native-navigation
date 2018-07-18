@@ -13,61 +13,52 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 
 @implementation RNNTopBarOptions
 
-- (void)applyOn:(UIViewController*)viewController {
-	if (self.backgroundColor) {
-		UIColor* backgroundColor = [RCTConvert UIColor:self.backgroundColor];
-		viewController.navigationController.navigationBar.barTintColor = backgroundColor;
-	} else {
-		viewController.navigationController.navigationBar.barTintColor = nil;
-	}
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super initWithDict:dict];
 	
-	if (self.title) {
-		viewController.navigationItem.title = self.title;
-	}
+	self.title.subtitle = self.subtitle;
+	
+	return self;
+}
+
+- (void)mergeWith:(NSDictionary *)otherOptions {
+	[super mergeWith:otherOptions];
+	self.title.subtitle = self.subtitle;
+}
+
+- (void)applyOn:(UIViewController*)viewController {
+	[self.title applyOn:viewController];
+	[self.largeTitle applyOn:viewController];
+	[self.background applyOn:viewController];
+	[self.backButton applyOn:viewController];
 	
 	if (@available(iOS 11.0, *)) {
-		if (self.largeTitle){
-			if ([self.largeTitle boolValue]) {
-				viewController.navigationController.navigationBar.prefersLargeTitles = YES;
-				viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
-			} else {
-				viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+		if ([self.searchBar boolValue] && !viewController.navigationItem.searchController) {
+			UISearchController *search = [[UISearchController alloc]initWithSearchResultsController:nil];
+			search.dimsBackgroundDuringPresentation = NO;
+			if ([viewController conformsToProtocol:@protocol(UISearchResultsUpdating)]) {
+				[search setSearchResultsUpdater:((UIViewController <UISearchResultsUpdating> *) viewController)];
 			}
-		} else {
-			viewController.navigationController.navigationBar.prefersLargeTitles = NO;
-			viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+			search.searchBar.delegate = (id<UISearchBarDelegate>)viewController;
+			if (self.searchBarPlaceholder) {
+				search.searchBar.placeholder = self.searchBarPlaceholder;
+			}
+			viewController.navigationItem.searchController = search;
+			// enable it back if needed on componentDidAppear
+			viewController.navigationItem.hidesSearchBarWhenScrolling = NO;
 		}
 	}
-	
-	
-	if (self.textFontFamily || self.textFontSize || self.textColor) {
-		NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
-		if (self.textColor) {
-			navigationBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:[self valueForKey:@"textColor"]];
-		}
-		if (self.textFontFamily){
-			if(self.textFontSize) {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.textFontFamily size:[self.textFontSize floatValue]];
-			} else {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.textFontFamily size:20];
-			}
-		} else if (self.textFontSize) {
-			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.textFontSize floatValue]];
-		}
-		viewController.navigationController.navigationBar.titleTextAttributes = navigationBarTitleTextAttributes;
-		if (@available(iOS 11.0, *)){
-			viewController.navigationController.navigationBar.largeTitleTextAttributes = navigationBarTitleTextAttributes;
-		}
-		
-	}
-	
 	
 	if (self.visible) {
 		[viewController.navigationController setNavigationBarHidden:![self.visible boolValue] animated:[self.animate boolValue]];
+	} else {
+		[viewController.navigationController setNavigationBarHidden:NO animated:NO];
 	}
 	
 	if (self.hideOnScroll) {
 		viewController.navigationController.hidesBarsOnSwipe = [self.hideOnScroll boolValue];
+	} else {
+		viewController.navigationController.hidesBarsOnSwipe = NO;
 	}
 	
 	if (self.buttonColor) {
@@ -128,6 +119,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	
 	if (self.translucent) {
 		viewController.navigationController.navigationBar.translucent = [self.translucent boolValue];
+	} else {
+		viewController.navigationController.navigationBar.translucent = NO;
 	}
 	
 	if (self.drawBehind) {
@@ -136,6 +129,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		} else {
 			viewController.edgesForExtendedLayout &= ~UIRectEdgeTop;
 		}
+	} else {
+		viewController.edgesForExtendedLayout = UIRectEdgeAll;
 	}
 	
 	if (self.noBorder) {
@@ -154,7 +149,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	
 	if (self.rightButtons || self.leftButtons) {
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
-		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons];
+		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons defaultButtonStyle:_button];
 	}
 }
 
@@ -172,5 +167,3 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 }
 
 @end
-
-

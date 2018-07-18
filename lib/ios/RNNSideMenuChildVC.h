@@ -19,8 +19,8 @@ typedef NS_ENUM(NSInteger, RNNSideMenuChildType) {
 @interface RNNSideMenuChildVC : UIViewController <RNNRootViewProtocol>
 
 @property (readonly) RNNSideMenuChildType type;
-@property (readonly) UIViewController *child;
+@property (readonly) UIViewController<RNNRootViewProtocol> *child;
 
--(instancetype) initWithChild:(UIViewController*)child type:(RNNSideMenuChildType)type;
+-(instancetype) initWithChild:(UIViewController<RNNRootViewProtocol>*)child type:(RNNSideMenuChildType)type;
 
 @end

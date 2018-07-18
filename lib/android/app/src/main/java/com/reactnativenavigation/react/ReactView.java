@@ -3,8 +3,8 @@ package com.reactnativenavigation.react;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.RestrictTo;
 import android.view.MotionEvent;
-import android.view.View;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
@@ -49,7 +49,7 @@ public class ReactView extends ReactRootView implements IReactView {
 	}
 
 	@Override
-	public View asView() {
+	public ReactView asView() {
 		return this;
 	}
 
@@ -60,17 +60,26 @@ public class ReactView extends ReactRootView implements IReactView {
 
 	@Override
 	public void sendComponentStart() {
-		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).componentDidAppear(componentId, componentName);
+        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+        if (currentReactContext != null) {
+            new EventEmitter(currentReactContext).componentDidAppear(componentId, componentName);
+        }
 	}
 
 	@Override
 	public void sendComponentStop() {
-		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).componentDidDisappear(componentId, componentName);
+        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+        if (currentReactContext != null) {
+            new EventEmitter(currentReactContext).componentDidDisappear(componentId, componentName);
+        }
 	}
 
     @Override
 	public void sendOnNavigationButtonPressed(String buttonId) {
-		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).sendOnNavigationButtonPressed(componentId, buttonId);
+        ReactContext currentReactContext = reactInstanceManager.getCurrentReactContext();
+        if (currentReactContext != null) {
+            new EventEmitter(currentReactContext).emitOnNavigationButtonPressed(componentId, buttonId);
+        }
 	}
 
     @Override
@@ -83,8 +92,18 @@ public class ReactView extends ReactRootView implements IReactView {
         jsTouchDispatcher.handleTouchEvent(event, getEventDispatcher());
     }
 
+    @Override
+    public boolean isRendered() {
+        return getChildCount() >= 1;
+    }
+
     public EventDispatcher getEventDispatcher() {
         ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
         return reactContext == null ? null : reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public String getComponentName() {
+        return componentName;
     }
 }

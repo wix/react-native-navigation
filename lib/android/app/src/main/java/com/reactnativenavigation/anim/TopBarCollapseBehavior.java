@@ -4,7 +4,7 @@ package com.reactnativenavigation.anim;
 import android.view.View;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
-import com.reactnativenavigation.views.TopBar;
+import com.reactnativenavigation.views.topbar.TopBar;
 
 public class TopBarCollapseBehavior implements ScrollEventListener.OnScrollListener, ScrollEventListener.OnDragListener {
     private TopBar topBar;
@@ -22,9 +22,11 @@ public class TopBarCollapseBehavior implements ScrollEventListener.OnScrollListe
     }
 
     public void disableCollapse() {
-        scrollEventListener.unregister();
-        topBar.setVisibility(View.VISIBLE);
-        topBar.setTranslationY(0);
+        if (scrollEventListener != null) {
+            scrollEventListener.unregister();
+            topBar.setVisibility(View.VISIBLE);
+            topBar.setTranslationY(0);
+        }
     }
 
     @Override
@@ -51,11 +53,11 @@ public class TopBarCollapseBehavior implements ScrollEventListener.OnScrollListe
 
     @Override
     public void onShow() {
-        animator.show(topBar.getTranslationY(), null, 100);
+        animator.show(topBar.getTranslationY());
     }
 
     @Override
     public void onHide() {
-        animator.hide(topBar.getTranslationY(), null, 100);
+        animator.hide(topBar.getTranslationY());
     }
 }

@@ -7,22 +7,45 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.KeyEvent;
 
-import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.devsupport.interfaces.DevSupportManager;
+import com.reactnativenavigation.utils.UiUtils;
 
-public class JsDevReloadHandler {
-	private static final String RELOAD_BROADCAST = "com.reactnativenavigation.broadcast.RELOAD";
+public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
+    private static final String RELOAD_BROADCAST = "com.reactnativenavigation.broadcast.RELOAD";
+
+    public interface ReloadListener {
+        void onReload();
+    }
+
 	private final BroadcastReceiver reloadReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(final Context context, final Intent intent) {
 			reloadReactNative();
 		}
 	};
-	private final ReactInstanceManager reactInstanceManager;
-	private long firstRTimestamp = 0;
+    private final DevSupportManager devSupportManager;
 
-	public JsDevReloadHandler(final ReactInstanceManager reactInstanceManager) {
-		this.reactInstanceManager = reactInstanceManager;
-	}
+    private long firstRTimestamp = 0;
+    private ReloadListener reloadListener = () -> {};
+
+    JsDevReloadHandler(DevSupportManager devSupportManager) {
+        this.devSupportManager = devSupportManager;
+    }
+
+    @Override
+    public void onSuccess() {
+        UiUtils.runOnMainThread(reloadListener::onReload);
+    }
+
+    public void setReloadListener(ReloadListener listener) {
+        reloadListener = listener;
+    }
+
+    public void removeReloadListener(ReloadListener listener) {
+        if (reloadListener == listener) {
+            reloadListener = null;
+        }
+    }
 
 	public void onActivityResumed(Activity activity) {
 		activity.registerReceiver(reloadReceiver, new IntentFilter(RELOAD_BROADCAST));
@@ -33,12 +56,12 @@ public class JsDevReloadHandler {
 	}
 
 	public boolean onKeyUp(int keyCode) {
-		if (!reactInstanceManager.getDevSupportManager().getDevSupportEnabled()) {
+		if (!devSupportManager.getDevSupportEnabled()) {
 			return false;
 		}
 
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			reactInstanceManager.getDevSupportManager().showDevOptionsDialog();
+			devSupportManager.showDevOptionsDialog();
 			return true;
 		}
 
@@ -57,6 +80,7 @@ public class JsDevReloadHandler {
 	}
 
 	private void reloadReactNative() {
-		reactInstanceManager.getDevSupportManager().handleReloadJS();
+        reloadListener.onReload();
+		devSupportManager.handleReloadJS();
 	}
 }

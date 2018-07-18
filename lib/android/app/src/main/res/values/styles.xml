@@ -3,10 +3,11 @@
 
     <style name="Modal" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@style/modalAnimations</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <style name="modalAnimations">
-        <item name="android:windowEnterAnimation">@anim/slide_up</item>
-        <item name="android:windowExitAnimation">@anim/slide_down</item>
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>
     </style>
 </resources>

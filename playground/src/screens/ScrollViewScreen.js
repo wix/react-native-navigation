@@ -12,10 +12,12 @@ class ScrollViewScreen extends Component {
   static get options() {
     return {
       topBar: {
-        title: 'Collapse',
+        title: {
+          text: 'Collapse',
+          color: 'black',
+          fontSize: 16
+        },
         drawBehind: true,
-        textColor: 'black',
-        textFontSize: 16,
         visible: true,
         testID: testIDs.TOP_BAR_ELEMENT
       },
@@ -56,7 +58,7 @@ class ScrollViewScreen extends Component {
   }
 
   componentDidUpdate() {
-    Navigation.setOptions(this.props.componentId, {
+    Navigation.mergeOptions(this.props.componentId, {
       topBar: {
         hideOnScroll: this.state.topBarHideOnScroll
       },

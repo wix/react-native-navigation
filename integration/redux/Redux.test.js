@@ -2,6 +2,7 @@ const React = require('react');
 require('react-native');
 const renderer = require('react-test-renderer');
 const { Provider } = require('react-redux');
+const { Navigation } = require('../../lib/dist/index');
 
 describe('redux support', () => {
   let MyConnectedComponent;
@@ -13,12 +14,38 @@ describe('redux support', () => {
   });
 
   it('renders normally', () => {
-    const tree = renderer.create(
-      <Provider store={store.reduxStore}>
-        <MyConnectedComponent />
-      </Provider>
-    );
+    const HOC = class extends React.Component {
+      render() {
+        return (
+          <Provider store={store.reduxStore}>
+            <MyConnectedComponent />
+          </Provider>
+        );
+      }
+    };
+    Navigation.registerComponent('ComponentName', () => HOC);
+
+    const tree = renderer.create(<HOC />);
     expect(tree.toJSON().children).toEqual(['no name']);
+  });
+
+  it('passes props into wrapped components', () => {
+    const renderCountIncrement = jest.fn();
+
+    const HOC = class extends React.Component {
+      render() {
+        return (
+          <Provider store={store.reduxStore}>
+            <MyConnectedComponent {...this.props}/>
+          </Provider>
+        );
+      }
+    };
+    const CompFromNavigation = Navigation.registerComponent('ComponentName', () => HOC);
+
+    const tree = renderer.create(<CompFromNavigation componentId='componentId' renderCountIncrement={renderCountIncrement}/>);
+    expect(tree.toJSON().children).toEqual(['no name']);
+    expect(renderCountIncrement).toHaveBeenCalledTimes(1);
   });
 
   it('rerenders as a result of an underlying state change (by selector)', () => {

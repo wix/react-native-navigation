@@ -41,13 +41,42 @@ public class ViewUtils {
     }
 
     public static <T> List<T> findChildrenByClass(ViewGroup root, Class clazz) {
+        return findChildrenByClass(root, clazz, child -> true);
+    }
+
+    public static <T> List<T> findChildrenByClass(ViewGroup root, Class clazz, Matcher<T> matcher) {
         List<T> ret = new ArrayList<>();
         for (int i = 0; i < root.getChildCount(); i++) {
-            View view = root.getChildAt(i);
-            if (clazz.isAssignableFrom(view.getClass())) {
-                ret.add((T) view);
+            View child = root.getChildAt(i);
+            if (clazz.isAssignableFrom(child.getClass()) && matcher.match((T) child)) {
+                ret.add((T) child);
             }
         }
         return ret;
+    }
+
+    public interface Matcher<T> {
+        boolean match(T child);
+    }
+
+    public static boolean isChildOf(ViewGroup parent, View child) {
+        if (parent == child) return true;
+
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            View view = parent.getChildAt(i);
+            if (view == child) {
+                return true;
+            }
+
+            if (view instanceof ViewGroup) {
+                if (isChildOf((ViewGroup) view, child)) return true;
+            }
+        }
+        return false;
+    }
+
+    public static int getPreferredHeight(View view) {
+        if (view.getLayoutParams() == null) return 0;
+        return view.getLayoutParams().height < 0 ? view.getHeight() : view.getLayoutParams().height;
     }
 }

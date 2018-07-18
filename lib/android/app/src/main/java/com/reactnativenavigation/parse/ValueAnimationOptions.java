@@ -17,7 +17,7 @@ import com.reactnativenavigation.parse.parsers.NumberParser;
 
 import org.json.JSONObject;
 
-public class ValueAnimationOptions implements DEFAULT_VALUES {
+public class ValueAnimationOptions {
 
     public static ValueAnimationOptions parse(JSONObject json, Property<View, Float> property) {
         ValueAnimationOptions options = new ValueAnimationOptions();

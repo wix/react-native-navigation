@@ -11,12 +11,26 @@ const testIDs = require('../testIDs');
 class ModalScreen extends Component {
   static get options() {
     return {
-      orientation: ['portrait']
+      statusBar: {
+        visible: false,
+        drawBehind: true,
+        backgroundColor: 'transparent'
+      },
+      layout: {
+        orientation: ['portrait'],
+        backgroundColor: '#f5fcff'
+      },
+      _animations: {
+        showModal: {
+          waitForRender: true
+        }
+      }
     };
   }
 
   constructor(props) {
     super(props);
+    // this.simulateLongRunningTask();
     this.onClickShowModal = this.onClickShowModal.bind(this);
     this.onClickDismissModal = this.onClickDismissModal.bind(this);
     this.onClickDismissPreviousModal = this.onClickDismissPreviousModal.bind(this);
@@ -26,6 +40,12 @@ class ModalScreen extends Component {
     this.onClickDismissAllModals = this.onClickDismissAllModals.bind(this);
     this.onClickPushScreen = this.onClickPushScreen.bind(this);
     this.onShowModalWithDeepStack = this.onShowModalWithDeepStack.bind(this);
+    this.onClickModalLifecycle = this.onClickModalLifecycle.bind(this);
+  }
+
+  simulateLongRunningTask = () => {
+    // tslint:disable-next-line
+    for (let i = 0; i < Math.pow(2, 25); i++);
   }
 
   render() {
@@ -37,6 +57,7 @@ class ModalScreen extends Component {
         <Button title='Dismiss Modal' testID={testIDs.DISMISS_MODAL_BUTTON} onPress={this.onClickDismissModal} />
         <Button title='Dismiss Unknown Modal' testID={testIDs.DISMISS_UNKNOWN_MODAL_BUTTON} onPress={this.onClickDismissUnknownModal} />
         <Button title='Dismiss All Modals' testID={testIDs.DISMISS_ALL_MODALS_BUTTON} onPress={this.onClickDismissAllModals} />
+        <Button title='Test Modal Lifecycle' testID={testIDs.MODAL_LIFECYCLE_BUTTON} onPress={this.onClickModalLifecycle} />
         <Button title='Push screen' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPushScreen} />
         <Button title='Show Modal With Stack' testID={testIDs.MODAL_WITH_STACK_BUTTON} onPress={this.onShowModalWithDeepStack} />
         {this.getPreviousModalId() ? (<Button title='Dismiss Previous Modal' testID={testIDs.DISMISS_PREVIOUS_MODAL_BUTTON}
@@ -87,6 +108,20 @@ class ModalScreen extends Component {
 
   onClickDismissAllModals() {
     Navigation.dismissAllModals();
+  }
+
+  onClickModalLifecycle() {
+    Navigation.showModal({
+      component: {
+        name: 'navigation.playground.LifecycleScreen',
+        passProps: {
+          isModal: true,
+        },
+        options: {
+          animated: false
+        }
+      }
+    });
   }
 
   onClickPushScreen() {

@@ -2,8 +2,8 @@ apply plugin: 'com.android.library'
 apply from: '../prepare-robolectric.gradle'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "27.0.1"
+    compileSdkVersion 26
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 19
@@ -29,7 +29,7 @@ android {
                 html.enabled true
             }
             testLogging {
-                events "passed", "skipped", "failed", "standardOut", "standardError"
+                events "PASSED", "SKIPPED", "FAILED", "standardOut", "standardError"
             }
             afterSuite { desc, result ->
                 if (!desc.parent) { // will match the outermost suite
@@ -46,6 +46,18 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    flavorDimensions "RNN.reactNativeVersion"
+    productFlavors {
+        reactNative51 {
+            dimension "RNN.reactNativeVersion"
+        }
+        reactNative55 {
+            dimension "RNN.reactNativeVersion"
+        }
+        reactNative56 {
+            dimension "RNN.reactNativeVersion"
+        }
+    }
 }
 
 allprojects { p ->
@@ -53,18 +65,20 @@ allprojects { p ->
         p.android.compileOptions.sourceCompatibility JavaVersion.VERSION_1_8
         p.android.compileOptions.targetCompatibility JavaVersion.VERSION_1_8
     }
+    p.repositories {
+        maven { url "https://jitpack.io" }
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:design:25.4.0'
-    implementation 'com.android.support:appcompat-v7:25.4.0'
-    implementation 'com.android.support:support-v4:25.4.0'
-    implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.github.wix-playground:ahbottomnavigation:2.4.5'
+
     implementation 'com.github.clans:fab:1.6.4'
 
-
-    // node_modules
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
 

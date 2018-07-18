@@ -20,6 +20,8 @@ export class LayoutTreeParser {
       return this._component(api.component);
     } else if (api.externalComponent) {
       return this._externalComponent(api.externalComponent);
+    } else if (api.splitView) {
+      return this._splitView(api.splitView);
     }
     throw new Error(`unknown LayoutType "${_.keys(api)}"`);
   }
@@ -105,6 +107,21 @@ export class LayoutTreeParser {
       type: LayoutType.ExternalComponent,
       data: { name: api.name, options: api.options, passProps: api.passProps },
       children: []
+    };
+  }
+
+  _splitView(api): LayoutNode {
+    const master = this.parse(api.master);
+    const detail = this.parse(api.detail);
+
+    return {
+      id: api.id,
+      type: LayoutType.SplitView,
+      data: { name: api.name, options: api.options },
+      children: [
+        master,
+        detail,
+      ],
     };
   }
 }

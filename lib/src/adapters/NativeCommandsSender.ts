@@ -1,59 +1,64 @@
 import { NativeModules } from 'react-native';
 
 export class NativeCommandsSender {
-  private nativeCommandsModule;
-
+  private readonly nativeCommandsModule;
   constructor() {
     this.nativeCommandsModule = NativeModules.RNNBridgeModule;
   }
 
-  setRoot(layoutTree: object) {
-    return this.nativeCommandsModule.setRoot(layoutTree);
+  setRoot(commandId: string, layout: { root: any, modals: any[], overlays: any[] }) {
+    return this.nativeCommandsModule.setRoot(commandId, layout);
   }
 
   setDefaultOptions(options: object) {
-    this.nativeCommandsModule.setDefaultOptions(options);
+    return this.nativeCommandsModule.setDefaultOptions(options);
   }
 
-  setOptions(componentId: string, options: object) {
-    this.nativeCommandsModule.setOptions(componentId, options);
+  mergeOptions(componentId: string, options: object) {
+    return this.nativeCommandsModule.mergeOptions(componentId, options);
   }
 
-  async push(onComponentId: string, layout: object) {
-    const pushedComponentId = await this.nativeCommandsModule.push(onComponentId, layout);
-    return pushedComponentId;
+  push(commandId: string, onComponentId: string, layout: object) {
+    return this.nativeCommandsModule.push(commandId, onComponentId, layout);
   }
 
-  pop(componentId: string, options: object) {
-    return this.nativeCommandsModule.pop(componentId, options);
+  pop(commandId: string, componentId: string, options: object) {
+    return this.nativeCommandsModule.pop(commandId, componentId, options);
   }
 
-  popTo(componentId: string) {
-    return this.nativeCommandsModule.popTo(componentId);
+  popTo(commandId: string, componentId: string) {
+    return this.nativeCommandsModule.popTo(commandId, componentId);
   }
 
-  popToRoot(componentId: string) {
-    return this.nativeCommandsModule.popToRoot(componentId);
+  popToRoot(commandId: string, componentId: string) {
+    return this.nativeCommandsModule.popToRoot(commandId, componentId);
   }
 
-  async showModal(layout: object) {
-    const completed = await this.nativeCommandsModule.showModal(layout);
-    return completed;
+  setStackRoot(commandId: string, onComponentId: string, layout: object) {
+    return this.nativeCommandsModule.setStackRoot(commandId, onComponentId, layout);
   }
 
-  dismissModal(componentId: string) {
-    return this.nativeCommandsModule.dismissModal(componentId);
+  showModal(commandId: string, layout: object) {
+    return this.nativeCommandsModule.showModal(commandId, layout);
   }
 
-  dismissAllModals() {
-    return this.nativeCommandsModule.dismissAllModals();
+  dismissModal(commandId: string, componentId: string) {
+    return this.nativeCommandsModule.dismissModal(commandId, componentId);
   }
 
-  showOverlay(layout: object) {
-    return this.nativeCommandsModule.showOverlay(layout);
+  dismissAllModals(commandId: string) {
+    return this.nativeCommandsModule.dismissAllModals(commandId);
   }
 
-  dismissOverlay(componentId: string) {
-    return this.nativeCommandsModule.dismissOverlay(componentId);
+  showOverlay(commandId: string, layout: object) {
+    return this.nativeCommandsModule.showOverlay(commandId, layout);
+  }
+
+  dismissOverlay(commandId: string, componentId: string) {
+    return this.nativeCommandsModule.dismissOverlay(commandId, componentId);
+  }
+
+  getLaunchArgs(commandId: string) {
+    return this.nativeCommandsModule.getLaunchArgs(commandId);
   }
 }

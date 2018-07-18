@@ -10,13 +10,13 @@ import static org.mockito.Mockito.*;
 
 public class UiUtilsTest extends BaseTest {
     @Test
-    public void runOnPreDrawOnce() throws Exception {
+    public void runOnPreDrawOnce() {
         View view = new View(newActivity());
         Runnable task = mock(Runnable.class);
         verifyZeroInteractions(task);
 
         UiUtils.runOnPreDrawOnce(view, task);
-        view.getViewTreeObserver().dispatchOnPreDraw();
+        dispatchPreDraw(view);
         verify(task, times(1)).run();
     }
 }

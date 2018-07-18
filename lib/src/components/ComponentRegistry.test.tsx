@@ -23,14 +23,15 @@ describe('ComponentRegistry', () => {
   beforeEach(() => {
     store = new Store();
     mockRegistry = AppRegistry.registerComponent = jest.fn(AppRegistry.registerComponent);
-    uut = new ComponentRegistry(store);
+    uut = new ComponentRegistry(store, {} as any);
   });
 
   it('registers component component by componentName into AppRegistry', () => {
     expect(mockRegistry).not.toHaveBeenCalled();
-    uut.registerComponent('example.MyComponent.name', () => MyComponent);
+    const result = uut.registerComponent('example.MyComponent.name', () => MyComponent);
     expect(mockRegistry).toHaveBeenCalledTimes(1);
     expect(mockRegistry.mock.calls[0][0]).toEqual('example.MyComponent.name');
+    expect(mockRegistry.mock.calls[0][1]()).toEqual(result);
   });
 
   it('saves the original component into the store', () => {

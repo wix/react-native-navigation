@@ -1,18 +1,20 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "RNNStore.h"
+
+typedef void (^RNNTransitionCompletionBlock)(void);
+typedef void (^RNNPopCompletionBlock)(NSArray* poppedViewControllers);
+typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, NSError *error);
 
 @interface RNNNavigationStackManager : NSObject
 
-@property (nonatomic, strong) UIViewController* fromVC;
-@property (nonatomic, strong) UIViewController<RNNRootViewProtocol>* toVC;
-@property (nonatomic) int loadCount;
--(instancetype)initWithStore:(RNNStore*)store;
+- (void)push:(UIViewController *)newTop onTop:(UIViewController *)onTopViewController animated:(BOOL)animated animationDelegate:(id)animationDelegate completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection;
 
+- (void)pop:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection;
 
--(void)push:(UIViewController<RNNRootViewProtocol>*)newTop onTop:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;
--(void)pop:(NSString*)componentId withTransitionOptions:(RNNAnimationOptions*)transitionOptions;
--(void)popTo:(NSString*)componentId;
--(void)popToRoot:(NSString*)componentId;
+- (void)popTo:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection;
+
+- (void)popToRoot:(UIViewController*)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection;
+
+- (void)setStackRoot:(UIViewController *)newRoot fromViewController:(UIViewController *)fromViewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection;
 
 @end

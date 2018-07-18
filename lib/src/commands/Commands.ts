@@ -1,82 +1,149 @@
 import * as _ from 'lodash';
-import { OptionsProcessor } from './OptionsProcessor';
+import { CommandsObserver } from '../events/CommandsObserver';
+import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
+import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
 
 export class Commands {
-  private nativeCommandsSender;
-  private layoutTreeParser;
-  private layoutTreeCrawler;
-
-  constructor(nativeCommandsSender, layoutTreeParser, layoutTreeCrawler) {
-    this.nativeCommandsSender = nativeCommandsSender;
-    this.layoutTreeParser = layoutTreeParser;
-    this.layoutTreeCrawler = layoutTreeCrawler;
+  constructor(
+    private readonly nativeCommandsSender: NativeCommandsSender,
+    private readonly layoutTreeParser,
+    private readonly layoutTreeCrawler,
+    private readonly commandsObserver: CommandsObserver,
+    private readonly uniqueIdProvider: UniqueIdProvider) {
   }
 
-  setRoot(simpleApi) {
+  public setRoot(simpleApi) {
     const input = _.cloneDeep(simpleApi);
-    const layout = this.layoutTreeParser.parse(input);
-    this.layoutTreeCrawler.crawl(layout);
-    return this.nativeCommandsSender.setRoot(layout);
+    const root = this.layoutTreeParser.parse(input.root);
+    this.layoutTreeCrawler.crawl(root);
+
+    const modals = _.map(input.modals, (modal) => {
+      const modalLayout = this.layoutTreeParser.parse(modal);
+      this.layoutTreeCrawler.crawl(modalLayout);
+      return modalLayout;
+    });
+
+    const overlays = _.map(input.overlays, (overlay) => {
+      const overlayLayout = this.layoutTreeParser.parse(overlay);
+      this.layoutTreeCrawler.crawl(overlayLayout);
+      return overlayLayout;
+    });
+
+    const commandId = this.uniqueIdProvider.generate('setRoot');
+    const result = this.nativeCommandsSender.setRoot(commandId, { root, modals, overlays });
+    this.commandsObserver.notify('setRoot', { commandId, layout: { root, modals, overlays } });
+    return result;
   }
 
-  setDefaultOptions(options) {
+  public setDefaultOptions(options) {
     const input = _.cloneDeep(options);
-    OptionsProcessor.processOptions(input);
+    this.layoutTreeCrawler.processOptions(input);
+
     this.nativeCommandsSender.setDefaultOptions(input);
+    this.commandsObserver.notify('setDefaultOptions', { options });
   }
 
-  setOptions(componentId, options) {
+  public mergeOptions(componentId, options) {
     const input = _.cloneDeep(options);
-    OptionsProcessor.processOptions(input);
-    this.nativeCommandsSender.setOptions(componentId, input);
+    this.layoutTreeCrawler.processOptions(input);
+
+    this.nativeCommandsSender.mergeOptions(componentId, input);
+    this.commandsObserver.notify('mergeOptions', { componentId, options });
   }
 
-  showModal(simpleApi) {
+  public showModal(simpleApi) {
     const input = _.cloneDeep(simpleApi);
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);
-    return this.nativeCommandsSender.showModal(layout);
+
+    const commandId = this.uniqueIdProvider.generate('showModal');
+    const result = this.nativeCommandsSender.showModal(commandId, layout);
+    this.commandsObserver.notify('showModal', { commandId, layout });
+    return result;
   }
 
-  dismissModal(id) {
-    return this.nativeCommandsSender.dismissModal(id);
+  public dismissModal(componentId) {
+    const commandId = this.uniqueIdProvider.generate('dismissModal');
+    const result = this.nativeCommandsSender.dismissModal(commandId, componentId);
+    this.commandsObserver.notify('dismissModal', { commandId, componentId });
+    return result;
   }
 
-  dismissAllModals() {
-    return this.nativeCommandsSender.dismissAllModals();
+  public dismissAllModals() {
+    const commandId = this.uniqueIdProvider.generate('dismissAllModals');
+    const result = this.nativeCommandsSender.dismissAllModals(commandId);
+    this.commandsObserver.notify('dismissAllModals', { commandId });
+    return result;
   }
 
-  push(onComponentId, componentData) {
-    const input = _.cloneDeep(componentData);
-    OptionsProcessor.processOptions(input);
-    const layout = this.layoutTreeParser.parse(input);
-    this.layoutTreeCrawler.crawl(layout);
-    return this.nativeCommandsSender.push(onComponentId, layout);
-  }
-
-  pop(componentId, options) {
-    return this.nativeCommandsSender.pop(componentId, options);
-  }
-
-  popTo(componentId) {
-    return this.nativeCommandsSender.popTo(componentId);
-  }
-
-  popToRoot(componentId) {
-    return this.nativeCommandsSender.popToRoot(componentId);
-  }
-
-  showOverlay(componentData) {
-    const input = _.cloneDeep(componentData);
-    OptionsProcessor.processOptions(input);
+  public push(componentId, simpleApi) {
+    const input = _.cloneDeep(simpleApi);
 
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);
 
-    return this.nativeCommandsSender.showOverlay(layout);
+    const commandId = this.uniqueIdProvider.generate('push');
+    const result = this.nativeCommandsSender.push(commandId, componentId, layout);
+    this.commandsObserver.notify('push', { commandId, componentId, layout });
+    return result;
   }
 
-  dismissOverlay(componentId) {
-    return this.nativeCommandsSender.dismissOverlay(componentId);
+  public pop(componentId, options) {
+    const commandId = this.uniqueIdProvider.generate('pop');
+    const result = this.nativeCommandsSender.pop(commandId, componentId, options);
+    this.commandsObserver.notify('pop', { commandId, componentId, options });
+    return result;
+  }
+
+  public popTo(componentId) {
+    const commandId = this.uniqueIdProvider.generate('popTo');
+    const result = this.nativeCommandsSender.popTo(commandId, componentId);
+    this.commandsObserver.notify('popTo', { commandId, componentId });
+    return result;
+  }
+
+  public popToRoot(componentId) {
+    const commandId = this.uniqueIdProvider.generate('popToRoot');
+    const result = this.nativeCommandsSender.popToRoot(commandId, componentId);
+    this.commandsObserver.notify('popToRoot', { commandId, componentId });
+    return result;
+  }
+
+  public setStackRoot(componentId, simpleApi) {
+    const input = _.cloneDeep(simpleApi);
+
+    const layout = this.layoutTreeParser.parse(input);
+    this.layoutTreeCrawler.crawl(layout);
+
+    const commandId = this.uniqueIdProvider.generate('setStackRoot');
+    const result = this.nativeCommandsSender.setStackRoot(commandId, componentId, layout);
+    this.commandsObserver.notify('setStackRoot', { commandId, componentId, layout });
+    return result;
+  }
+
+  public showOverlay(simpleApi) {
+    const input = _.cloneDeep(simpleApi);
+
+    const layout = this.layoutTreeParser.parse(input);
+    this.layoutTreeCrawler.crawl(layout);
+
+    const commandId = this.uniqueIdProvider.generate('showOverlay');
+    const result = this.nativeCommandsSender.showOverlay(commandId, layout);
+    this.commandsObserver.notify('showOverlay', { commandId, layout });
+    return result;
+  }
+
+  public dismissOverlay(componentId) {
+    const commandId = this.uniqueIdProvider.generate('dismissOverlay');
+    const result = this.nativeCommandsSender.dismissOverlay(commandId, componentId);
+    this.commandsObserver.notify('dismissOverlay', { commandId, componentId });
+    return result;
+  }
+
+  public getLaunchArgs() {
+    const commandId = this.uniqueIdProvider.generate('getLaunchArgs');
+    const result = this.nativeCommandsSender.getLaunchArgs(commandId);
+    this.commandsObserver.notify('getLaunchArgs', { commandId });
+    return result;
   }
 }

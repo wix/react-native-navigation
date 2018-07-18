@@ -1,113 +1,75 @@
 #import "RNNNavigationStackManager.h"
-#import "RNNRootViewController.h"
-#import "RNNAnimator.h"
+#import "RNNErrorHandler.h"
 
+typedef void (^RNNAnimationBlock)(void);
 
-dispatch_queue_t RCTGetUIManagerQueue(void);
-@implementation RNNNavigationStackManager {
-	RNNStore *_store;
-	RNNTransitionCompletionBlock _completionBlock;
-}
+@implementation RNNNavigationStackManager
 
--(instancetype)initWithStore:(RNNStore*)store {
-	self = [super init];
-	_store = store;
-	return self;
-}
+- (void)push:(UIViewController *)newTop onTop:(UIViewController *)onTopViewController animated:(BOOL)animated animationDelegate:(id)animationDelegate completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+	UINavigationController *nvc = onTopViewController.navigationController;
 
--(void)push:(UIViewController<RNNRootViewProtocol> *)newTop onTop:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion {
-	UIViewController *vc = [_store findComponentForId:componentId];
-	[self preparePush:newTop onTopVC:vc completion:completion];
-	if ([newTop isCustomViewController]) {
-		[self pushAfterLoad:nil];
+	if (animationDelegate) {
+		nvc.delegate = animationDelegate;
 	} else {
-		[self waitForContentToAppearAndThen:@selector(pushAfterLoad:)];
-	}
-}
-
--(void)preparePush:(UIViewController<RNNRootViewProtocol> *)newTop onTopVC:(UIViewController*)vc completion:(RNNTransitionCompletionBlock)completion {
-	self.toVC = newTop;
-	self.fromVC = vc;
-	
-	if (self.toVC.isCustomTransitioned) {
-		vc.navigationController.delegate = newTop;
-	} else {
-		vc.navigationController.delegate = nil;
-		self.fromVC.navigationController.interactivePopGestureRecognizer.delegate = nil;
+		nvc.delegate = nil;
+		nvc.interactivePopGestureRecognizer.delegate = nil;
 	}
 	
-	_completionBlock = completion;
+	[self performAnimationBlock:^{
+		[nvc pushViewController:newTop animated:animated];
+	} completion:completion];
 }
 
--(void)waitForContentToAppearAndThen:(SEL)nameOfSelector {
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:nameOfSelector
-												 name: @"RCTContentDidAppearNotification"
-											   object:nil];
+- (void)pop:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {
+	[self performAnimationBlock:^{
+		[viewController.navigationController popViewControllerAnimated:animated];
+	} completion:completion];
 }
 
--(void)pushAfterLoad:(NSDictionary*)notif {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
+- (void)popTo:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection; {
+	__block NSArray* poppedVCs;
+	
+	[self performAnimationBlock:^{
+		poppedVCs = [viewController.navigationController popToViewController:viewController animated:animated];
+	} completion:^{
+		if (completion) {
+			completion(poppedVCs);
+		}
+	}];
+}
+
+- (void)popToRoot:(UIViewController*)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {
+	__block NSArray* poppedVCs;
+	
+	[self performAnimationBlock:^{
+		poppedVCs = [viewController.navigationController popToRootViewControllerAnimated:animated];
+	} completion:^{
+		completion(poppedVCs);
+	}];
+}
+
+- (void)setStackRoot:(UIViewController *)newRoot fromViewController:(UIViewController *)fromViewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {
+	UINavigationController* nvc = fromViewController.navigationController;
+	
+	[self performAnimationBlock:^{
+		[nvc setViewControllers:@[newRoot] animated:animated];
+	} completion:completion];
+}
+
+# pragma mark Private
+
+- (void)performAnimationBlock:(RNNAnimationBlock)animationBlock completion:(RNNTransitionCompletionBlock)completion {
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
-		if (_completionBlock) {
-			_completionBlock();
-			_completionBlock = nil;
+		if (completion) {
+			completion();
 		}
 	}];
 	
-	[[self.fromVC navigationController] pushViewController:self.toVC animated:self.toVC.isAnimated];
+	animationBlock();
+	
 	[CATransaction commit];
-	
-	self.toVC = nil;
-	self.fromVC.navigationController.interactivePopGestureRecognizer.delegate = nil;
-	self.fromVC = nil;
 }
 
--(void)pop:(NSString *)componentId withTransitionOptions:(RNNAnimationOptions *)transitionOptions {
-	UIViewController<RNNRootViewProtocol>* vc = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
-	UINavigationController* nvc = [vc navigationController];
-	if ([nvc topViewController] == vc) {
-		if (transitionOptions) {
-			RNNRootViewController* RNNVC = (RNNRootViewController*)vc;
-			nvc.delegate = RNNVC;
-			RNNVC.animator = [[RNNAnimator alloc] initWithTransitionOptions:transitionOptions];
-			[nvc popViewControllerAnimated:vc.isAnimated];
-		} else {
-			nvc.delegate = nil;
-			[nvc popViewControllerAnimated:vc.isAnimated];
-		}
-	} else {
-		NSMutableArray * vcs = nvc.viewControllers.mutableCopy;
-		[vcs removeObject:vc];
-		[nvc setViewControllers:vcs animated:YES];
-	}
-	[_store removeComponent:componentId];
-}
-
--(void)popTo:(NSString*)componentId {
-	UIViewController *vc = [_store findComponentForId:componentId];
-	
-	if (vc) {
-		UINavigationController *nvc = [vc navigationController];
-		if(nvc) {
-			NSArray *poppedVCs = [nvc popToViewController:vc animated:YES];
-			[self removePopedViewControllers:poppedVCs];
-		}
-	}
-}
-
--(void) popToRoot:(NSString*)componentId {
-	UIViewController* vc = [_store findComponentForId:componentId];
-	UINavigationController* nvc = [vc navigationController];
-	NSArray* poppedVCs = [nvc popToRootViewControllerAnimated:YES];
-	[self removePopedViewControllers:poppedVCs];
-}
-
--(void)removePopedViewControllers:(NSArray*)viewControllers {
-	for (UIViewController *popedVC in viewControllers) {
-		[_store removeComponentByViewControllerInstance:popedVC];
-	}
-}
 
 @end

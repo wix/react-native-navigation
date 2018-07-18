@@ -5,8 +5,7 @@ import android.content.Context;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.ComponentOptionsPresenter;
+import com.reactnativenavigation.views.topbar.TopBar;
 
 import static android.widget.RelativeLayout.BELOW;
 
@@ -15,11 +14,6 @@ public class ExternalComponentLayout extends FrameLayout implements Component {
     public ExternalComponentLayout(Context context) {
 		super(context);
         setContentDescription("ExternalComponentLayout");
-    }
-
-    @Override
-    public void applyOptions(Options options) {
-        new ComponentOptionsPresenter(this).present(options);
     }
 
     @Override
@@ -38,5 +32,10 @@ public class ExternalComponentLayout extends FrameLayout implements Component {
             layoutParams.addRule(BELOW, topBar.getId());
             setLayoutParams(layoutParams);
         }
+    }
+
+    @Override
+    public boolean isRendered() {
+        return getChildCount() >= 1;
     }
 }

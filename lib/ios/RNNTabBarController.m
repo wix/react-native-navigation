@@ -1,9 +1,19 @@
 
 #import "RNNTabBarController.h"
-#import "RNNRootViewController.h"
+
 #define kTabBarHiddenDuration 0.3
 
-@implementation RNNTabBarController
+@implementation RNNTabBarController {
+	NSUInteger _currentTabIndex;
+	RNNEventEmitter *_eventEmitter;
+}
+
+- (instancetype)initWithEventEmitter:(id)eventEmitter {
+	self = [super init];
+	_eventEmitter = eventEmitter;
+	self.delegate = self;
+	return self;
+}
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.selectedViewController.supportedInterfaceOrientations;
@@ -24,29 +34,35 @@
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
 	for (id child in self.childViewControllers) {
 		RNNRootViewController* vc = child;
-		if ([child isKindOfClass:[UINavigationController class]]) {
-			vc = ((UINavigationController *)child).childViewControllers.firstObject;
-		}
+
 		if ([vc.componentId isEqualToString:componentID]) {
 			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
 		}
 	}
 }
 
-- (BOOL)isCustomTransitioned {
-	return NO;
+- (void)setSelectedIndex:(NSUInteger)selectedIndex {
+	_currentTabIndex = selectedIndex;
+	[super setSelectedIndex:selectedIndex];
 }
 
-- (BOOL)isAnimated {
-	return YES;
+- (void)mergeOptions:(RNNOptions *)options {
+	[self.getLeafViewController mergeOptions:options];
 }
 
-- (void)mergeOptions:(NSDictionary *)options {
-	[((UIViewController<RNNRootViewProtocol>*)self.selectedViewController) mergeOptions:options];
+- (UIViewController *)getLeafViewController {
+	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).getLeafViewController;
 }
 
-- (NSString *)componentId {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).componentId;
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).preferredStatusBarStyle;
+}
+
+#pragma mark UITabBarControllerDelegate
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+	[_eventEmitter sendBottomTabSelected:@(tabBarController.selectedIndex) unselected:@(_currentTabIndex)];
+	_currentTabIndex = tabBarController.selectedIndex;
 }
 
 @end

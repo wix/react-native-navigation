@@ -15,27 +15,15 @@ import static org.mockito.Mockito.*;
 public class NavigationReactNativeHostTest extends BaseTest {
 
     @Test
-    public void getPackagesDefaults() throws Exception {
+    public void getPackagesDefaults() {
         NavigationReactNativeHost uut = new NavigationReactNativeHost(RuntimeEnvironment.application, false, null);
         assertThat(uut.getPackages()).hasSize(2).extracting("class").containsOnly(MainReactPackage.class, NavigationPackage.class);
     }
 
     @Test
-    public void getPackagesAddsAdditionalPackages() throws Exception {
+    public void getPackagesAddsAdditionalPackages() {
         ReactPackage myPackage = mock(ReactPackage.class);
         NavigationReactNativeHost uut = new NavigationReactNativeHost(RuntimeEnvironment.application, false, Collections.singletonList(myPackage));
         assertThat(uut.getPackages()).hasSize(3).containsOnlyOnce(myPackage);
-    }
-
-    @Test
-    public void getPackages_DoesNotAddDefaultTwice() throws Exception {
-        NavigationReactNativeHost uut = new NavigationReactNativeHost(
-                RuntimeEnvironment.application,
-                false,
-                Arrays.<ReactPackage>asList(
-                        new MainReactPackage(),
-                        new MainReactPackage(),
-                        new MainReactPackage()));
-        assertThat(uut.getPackages()).hasSize(2).extracting("class").containsOnly(MainReactPackage.class, NavigationPackage.class);
     }
 }

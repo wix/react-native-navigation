@@ -13,22 +13,24 @@ class LifecycleScreen extends Component {
     this.state = {
       text: 'nothing yet'
     };
+    this.subscription = Navigation.events().bindComponent(this);
   }
 
-  didAppear() {
+  componentDidAppear() {
     this.setState({ text: 'didAppear' });
   }
 
-  didDisappear() {
+  componentDidDisappear() {
     alert('didDisappear'); // eslint-disable-line no-alert
   }
 
   componentWillUnmount() {
+    this.subscription.remove();
     alert('componentWillUnmount'); // eslint-disable-line no-alert
   }
 
-  onNavigationButtonPressed(id) {
-    alert(`onNavigationButtonPressed: ${id}`); // eslint-disable-line no-alert
+  navigationButtonPressed(id) {
+    alert(`navigationButtonPressed: ${id}`); // eslint-disable-line no-alert
   }
 
   render() {
@@ -37,7 +39,9 @@ class LifecycleScreen extends Component {
         <Text style={styles.h1}>{`Lifecycle Screen`}</Text>
         <Text style={styles.h1}>{this.state.text}</Text>
         <Button title='Push to test didDisappear' testID={testIDs.PUSH_TO_TEST_DID_DISAPPEAR_BUTTON} onPress={this.onClickPush} />
-        <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={() => this.onClickPop()} />
+        {this.props.isModal ?
+          (<Button title='Dismiss' testID={testIDs.DISMISS_MODAL_BUTTON} onPress={() => this.onClickDismiss()} />)
+          : (<Button title='Pop' testID={testIDs.POP_BUTTON} onPress={() => this.onClickPop()} />)}
         <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
       </View>
     );
@@ -49,6 +53,10 @@ class LifecycleScreen extends Component {
 
   onClickPop() {
     Navigation.pop(this.props.componentId);
+  }
+
+  onClickDismiss() {
+    Navigation.dismissModal(this.props.componentId);
   }
 }
 module.exports = LifecycleScreen;

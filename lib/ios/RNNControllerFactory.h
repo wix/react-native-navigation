@@ -13,11 +13,11 @@
 						  eventEmitter:(RNNEventEmitter*)eventEmitter
 							 andBridge:(RCTBridge*)bridge;
 
--(UIViewController<RNNRootViewProtocol> *)createLayoutAndSaveToStore:(NSDictionary*)layout;
+-(UIViewController<RNNRootViewProtocol, UIViewControllerPreviewingDelegate> *)createLayoutAndSaveToStore:(NSDictionary*)layout;
 
 - (UIViewController<RNNRootViewProtocol> *)createOverlay:(NSDictionary*)layout;
 
-@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
+@property (nonatomic, strong) NSDictionary* defaultOptionsDict;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 
 @end

@@ -30,13 +30,12 @@
 	self.sideMenu = [[MMDrawerController alloc] initWithCenterViewController:self.center leftDrawerViewController:self.left rightDrawerViewController:self.right];
 	
 	self.sideMenu.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
-	self.sideMenu.closeDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
-	
+	self.sideMenu.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
+
 	[self addChildViewController:self.sideMenu];
 	[self.sideMenu.view setFrame:self.view.bounds];
 	[self.view addSubview:self.sideMenu.view];
 	[self.view bringSubviewToFront:self.sideMenu.view];
-	
 	
 	return self;
 }
@@ -72,16 +71,30 @@
 	}
 }
 
-- (BOOL)isCustomTransitioned {
-	return NO;
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	return self.openedViewController.preferredStatusBarStyle;
 }
 
-- (BOOL)isAnimated {
-	return YES;
+- (UIViewController *)openedViewController {
+	switch (self.sideMenu.openSide) {
+		case MMDrawerSideNone:
+			return self.center;
+		case MMDrawerSideLeft:
+			return self.left;
+		case MMDrawerSideRight:
+			return self.right;
+		default:
+			return self.center;
+			break;
+	}
 }
 
-- (NSString *)componentId {
-	return _center.componentId;
+- (RNNRootViewController *)getLeafViewController {
+	return [self.center getLeafViewController];
+}
+
+- (void)mergeOptions:(RNNOptions *)options {
+	[self.center.getLeafViewController mergeOptions:options];
 }
 
 @end

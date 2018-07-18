@@ -4,24 +4,27 @@ import * as renderer from 'react-test-renderer';
 import { ComponentWrapper } from './ComponentWrapper';
 import { Store } from './Store';
 
-declare module 'react-test-renderer' {
-  interface ReactTestInstance {
-    [P: string]: any;
-  }
-}
-
 describe('ComponentWrapper', () => {
-  let store;
   const componentName = 'example.MyComponent';
-  let childRef;
+  let store;
+  let myComponentProps;
+  const componentEventsObserver = { unmounted: jest.fn() };
 
-  class MyComponent extends React.Component {
+  class MyComponent extends React.Component<any, any> {
+    static options = {
+      title: 'MyComponentTitle'
+    };
+
     render() {
-      return <Text>{'Hello, World!'}</Text>;
+      myComponentProps = this.props;
+      if (this.props.renderCount) {
+        this.props.renderCount();
+      }
+      return <Text>{this.props.text || 'Hello, World!'}</Text>;
     }
   }
 
-  class TestParent extends React.Component<any, { propsFromState: {} }> {
+  class TestParent extends React.Component<any, any> {
     private ChildClass;
 
     constructor(props) {
@@ -33,7 +36,6 @@ describe('ComponentWrapper', () => {
     render() {
       return (
         <this.ChildClass
-          ref={(r) => childRef = r}
           componentId='component1'
           {...this.state.propsFromState}
         />
@@ -46,7 +48,7 @@ describe('ComponentWrapper', () => {
   });
 
   it('must have componentId as prop', () => {
-    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
+    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store, componentEventsObserver);
     const orig = console.error;
     console.error = (a) => a;
     expect(() => {
@@ -56,141 +58,80 @@ describe('ComponentWrapper', () => {
   });
 
   it('wraps the component', () => {
-    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
+    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store, componentEventsObserver);
     expect(NavigationComponent).not.toBeInstanceOf(MyComponent);
     const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
     expect(tree.toJSON()!.children).toEqual(['Hello, World!']);
-    expect(tree.getInstance()!.originalComponentRef).toBeInstanceOf(MyComponent);
   });
 
   it('injects props from wrapper into original component', () => {
-    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
-    const tree = renderer.create(<NavigationComponent componentId={'component1'} myProp={'yo'} />);
-    expect(tree.getInstance()!.originalComponentRef.props.myProp).toEqual('yo');
+    const renderCount = jest.fn();
+    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store, componentEventsObserver);
+    const tree = renderer.create(<NavigationComponent componentId={'component1'} text={'yo'} renderCount={renderCount} />);
+    expect(tree.toJSON()!.children).toEqual(['yo']);
+    expect(renderCount).toHaveBeenCalledTimes(1);
   });
 
-  it('updates props from wrapper into original component', () => {
-    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
+  it('updates props from wrapper into original component on state change', () => {
+    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store, componentEventsObserver);
     const tree = renderer.create(<TestParent ChildClass={NavigationComponent} />);
-    expect(childRef.props.foo).toEqual(undefined);
-    tree.getInstance()!.setState({ propsFromState: { foo: 'yo' } });
-    expect(childRef.props.foo).toEqual('yo');
+    expect(myComponentProps.foo).toEqual(undefined);
+    (tree.getInstance() as any).setState({ propsFromState: { foo: 'yo' } });
+    expect(myComponentProps.foo).toEqual('yo');
   });
 
   it('pulls props from the store and injects them into the inner component', () => {
-    store.setPropsForComponentId('component123', { numberProp: 1, stringProp: 'hello', objectProp: { a: 2 } });
-    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
-    const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
-    const originalComponentProps = tree.getInstance()!.originalComponentRef.props;
-    expect(originalComponentProps).toEqual({ componentId: 'component123', numberProp: 1, stringProp: 'hello', objectProp: { a: 2 } });
+    store.setPropsForId('component123', { numberProp: 1, stringProp: 'hello', objectProp: { a: 2 } });
+    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store, componentEventsObserver);
+    renderer.create(<NavigationComponent componentId={'component123'} />);
+    expect(myComponentProps).toEqual({ componentId: 'component123', numberProp: 1, stringProp: 'hello', objectProp: { a: 2 } });
   });
 
   it('updates props from store into inner component', () => {
-    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
+    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store, componentEventsObserver);
     const tree = renderer.create(<TestParent ChildClass={NavigationComponent} />);
-    store.setPropsForComponentId('component1', { myProp: 'hello' });
-    expect(childRef.originalComponentRef.props.foo).toEqual(undefined);
-    expect(childRef.originalComponentRef.props.myProp).toEqual(undefined);
-    tree.getInstance()!.setState({ propsFromState: { foo: 'yo' } });
-    expect(childRef.originalComponentRef.props.foo).toEqual('yo');
-    expect(childRef.originalComponentRef.props.myProp).toEqual('hello');
+    store.setPropsForId('component1', { myProp: 'hello' });
+    expect(myComponentProps.foo).toEqual(undefined);
+    expect(myComponentProps.myProp).toEqual(undefined);
+    (tree.getInstance() as any).setState({ propsFromState: { foo: 'yo' } });
+    expect(myComponentProps.foo).toEqual('yo');
+    expect(myComponentProps.myProp).toEqual('hello');
   });
 
   it('protects id from change', () => {
-    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
+    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store, componentEventsObserver);
     const tree = renderer.create(<TestParent ChildClass={NavigationComponent} />);
-    expect(childRef.originalComponentRef.props.componentId).toEqual('component1');
-    tree.getInstance()!.setState({ propsFromState: { id: 'ERROR' } });
-    expect(childRef.originalComponentRef.props.componentId).toEqual('component1');
+    expect(myComponentProps.componentId).toEqual('component1');
+    (tree.getInstance() as any).setState({ propsFromState: { id: 'ERROR' } });
+    expect(myComponentProps.componentId).toEqual('component1');
   });
 
   it('assignes key by id', () => {
-    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
+    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store, componentEventsObserver);
     const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
-    expect(tree.getInstance()!.originalComponentRef.props.componentId).toEqual('component1');
-    expect(tree.getInstance()!.originalComponentRef._reactInternalInstance.key).toEqual('component1');
+    expect(myComponentProps.componentId).toEqual('component1');
+    expect((tree.getInstance() as any)._reactInternalInstance.child.key).toEqual('component1');
   });
 
-  it('saves self ref into store', () => {
-    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
-    const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
-    expect(store.getRefForComponentId('component1')).toBeDefined();
-    expect(store.getRefForComponentId('component1')).toBe(tree.getInstance());
-  });
-
-  it('cleans ref from store on unMount', () => {
-    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
-    const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
-    expect(store.getRefForComponentId('component1')).toBeDefined();
+  it('cleans props from store on unMount', () => {
+    store.setPropsForId('component123', { foo: 'bar' });
+    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store, componentEventsObserver);
+    const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
+    expect(store.getPropsForId('component123')).toEqual({ foo: 'bar' });
     tree.unmount();
-    expect(store.getRefForComponentId('component1')).toBeUndefined();
+    expect(store.getPropsForId('component123')).toEqual({});
   });
 
-  it('holds ref to OriginalComponent', () => {
-    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
-    const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
-    expect(tree.getInstance()!.originalComponentRef).toBeDefined();
-    expect(tree.getInstance()!.originalComponentRef).toBeInstanceOf(MyComponent);
+  it(`merges static members from wrapped component`, () => {
+    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store, componentEventsObserver) as any;
+    expect(NavigationComponent.options).toEqual({ title: 'MyComponentTitle' });
   });
 
-  it('cleans ref to internal component on unount', () => {
-    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
-    const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
-    const instance = tree.getInstance()!;
-    expect(instance.originalComponentRef).toBeInstanceOf(React.Component);
+  it(`calls unmounted on componentEventsObserver`, () => {
+    const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store, componentEventsObserver);
+    const tree = renderer.create(<NavigationComponent componentId={'component123'} />);
+    expect(componentEventsObserver.unmounted).not.toHaveBeenCalled();
     tree.unmount();
-    expect(instance.originalComponentRef).toBeFalsy();
-  });
-
-  describe('component lifecycle', () => {
-    const didAppearCallback = jest.fn();
-    const didDisappearCallback = jest.fn();
-    const onNavigationButtonPressedCallback = jest.fn();
-
-    class MyLifecycleComponent extends MyComponent {
-      didAppear() {
-        didAppearCallback();
-      }
-
-      didDisappear() {
-        didDisappearCallback();
-      }
-
-      onNavigationButtonPressed() {
-        onNavigationButtonPressedCallback();
-      }
-    }
-
-    it('didAppear, didDisappear and onNavigationButtonPressed are optional', () => {
-      const NavigationComponent = ComponentWrapper.wrap(componentName, MyComponent, store);
-      const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
-      expect(() => tree.getInstance()!.didAppear()).not.toThrow();
-      expect(() => tree.getInstance()!.didDisappear()).not.toThrow();
-      expect(() => tree.getInstance()!.onNavigationButtonPressed()).not.toThrow();
-    });
-
-    it('calls didAppear on OriginalComponent', () => {
-      const NavigationComponent = ComponentWrapper.wrap(componentName, MyLifecycleComponent, store);
-      const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
-      expect(didAppearCallback).toHaveBeenCalledTimes(0);
-      tree.getInstance()!.didAppear();
-      expect(didAppearCallback).toHaveBeenCalledTimes(1);
-    });
-
-    it('calls didDisappear on OriginalComponent', () => {
-      const NavigationComponent = ComponentWrapper.wrap(componentName, MyLifecycleComponent, store);
-      const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
-      expect(didDisappearCallback).toHaveBeenCalledTimes(0);
-      tree.getInstance()!.didDisappear();
-      expect(didDisappearCallback).toHaveBeenCalledTimes(1);
-    });
-
-    it('calls onNavigationButtonPressed on OriginalComponent', () => {
-      const NavigationComponent = ComponentWrapper.wrap(componentName, MyLifecycleComponent, store);
-      const tree = renderer.create(<NavigationComponent componentId={'component1'} />);
-      expect(onNavigationButtonPressedCallback).toHaveBeenCalledTimes(0);
-      tree.getInstance()!.onNavigationButtonPressed();
-      expect(onNavigationButtonPressedCallback).toHaveBeenCalledTimes(1);
-    });
+    expect(componentEventsObserver.unmounted).toHaveBeenCalledTimes(1);
   });
 });

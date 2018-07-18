@@ -1,5 +1,7 @@
 package com.reactnativenavigation.parse;
 
+import android.support.annotation.CheckResult;
+
 import com.reactnativenavigation.parse.params.Orientation;
 
 import org.json.JSONArray;
@@ -48,16 +50,20 @@ public class OrientationOptions {
         }
     }
 
-    public void mergeWith(OrientationOptions other) {
-        if (other.hasValue()) orientations = other.orientations;
-    }
-
-    private boolean hasValue() {
+    public boolean hasValue() {
         return !orientations.isEmpty();
     }
 
-    public void mergeWithDefault(OrientationOptions defaultOptions) {
+    @CheckResult
+    public OrientationOptions copy() {
+        OrientationOptions result = new OrientationOptions();
+        result.orientations = new ArrayList<>(orientations);
+        return result;
+    }
+
+    public OrientationOptions mergeWithDefault(OrientationOptions defaultOptions) {
         if (!hasValue()) orientations = defaultOptions.orientations;
+        return this;
     }
 
     @Override

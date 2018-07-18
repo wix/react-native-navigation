@@ -8,30 +8,30 @@ describe('top level api', () => {
     await device.relaunchApp();
   });
 
-  it('shows welcome screen', async () => {
+  test('shows welcome screen', async () => {
     await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
-  it('switch to tab based app, passProps and functions', async () => {
+  test('switch to tab based app, passProps and functions', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementByLabel('This is tab 1')).toBeVisible();
     await expect(elementByLabel('Hello from a function!')).toBeVisible();
   });
 
-  it(':ios: switch to tabs with side menus', async () => {
+  test(':ios: switch to tabs with side menus', async () => {
     await elementById(testIDs.TAB_BASED_APP_SIDE_BUTTON).tap();
     await elementById(testIDs.CENTERED_TEXT_HEADER).swipe('right');
     await expect(elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON)).toBeVisible();
   });
 
-  it('screen lifecycle', async () => {
+  test('screen lifecycle', async () => {
     await elementById(testIDs.PUSH_LIFECYCLE_BUTTON).tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
     await elementById(testIDs.PUSH_TO_TEST_DID_DISAPPEAR_BUTTON).tap();
     await expect(elementByLabel('didDisappear')).toBeVisible();
   });
 
-  it('unmount is called on pop', async () => {
+  test('unmount is called on pop', async () => {
     await elementById(testIDs.PUSH_LIFECYCLE_BUTTON).tap();
     await expect(elementByLabel('didAppear')).toBeVisible();
     await elementById(testIDs.POP_BUTTON).tap();

@@ -1,29 +1,31 @@
 package com.reactnativenavigation.viewcontrollers.toptabs;
 
 import android.app.Activity;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.NavigationOptionsListener;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.ViewVisibilityListenerAdapter;
 import com.reactnativenavigation.views.Component;
-import com.reactnativenavigation.views.TopTabsLayoutCreator;
-import com.reactnativenavigation.views.TopTabsViewPager;
+import com.reactnativenavigation.views.toptabs.TopTabsLayoutCreator;
+import com.reactnativenavigation.views.toptabs.TopTabsViewPager;
 
 import java.util.Collection;
 import java.util.List;
 
-public class TopTabsController extends ParentController<TopTabsViewPager> implements NavigationOptionsListener {
+public class TopTabsController extends ParentController<TopTabsViewPager> {
 
     private List<ViewController> tabs;
     private TopTabsLayoutCreator viewCreator;
 
-    public TopTabsController(Activity activity, String id, List<ViewController> tabs, TopTabsLayoutCreator viewCreator, Options options) {
-        super(activity, id, options);
+    public TopTabsController(Activity activity, ChildControllersRegistry childRegistry, String id, List<ViewController> tabs, TopTabsLayoutCreator viewCreator, Options options, OptionsPresenter presenter) {
+        super(activity, childRegistry, id, presenter, options);
         this.viewCreator = viewCreator;
         this.tabs = tabs;
         for (ViewController tab : tabs) {
@@ -35,6 +37,11 @@ public class TopTabsController extends ParentController<TopTabsViewPager> implem
                 }
             });
         }
+    }
+
+    @Override
+    protected ViewController getCurrentChild() {
+        return tabs.get(getView().getCurrentItem());
     }
 
     @NonNull
@@ -52,7 +59,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> implem
 
     @Override
     public void onViewAppeared() {
-        applyOptions(options);
+        super.onViewAppeared();
         applyOnParentController(parentController -> ((ParentController) parentController).setupTopTabsWithViewPager(getView()));
         performOnCurrentTab(ViewController::onViewAppeared);
     }
@@ -64,6 +71,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> implem
 
     @Override
     public void onViewDisappear() {
+        super.onViewDisappear();
         performOnCurrentTab(ViewController::onViewDisappear);
         applyOnParentController(parentController -> ((ParentController) parentController).clearTopTabs());
     }
@@ -75,22 +83,20 @@ public class TopTabsController extends ParentController<TopTabsViewPager> implem
 
     @Override
     public void applyOptions(Options options) {
+        super.applyOptions(options);
         getView().applyOptions(options);
     }
 
     @Override
-    public void applyOptions(Options options, Component childComponent) {
-        super.applyOptions(options, childComponent);
-        applyOnParentController(parentController -> {
-                Options opt = this.options.copy();
-                ((ParentController) parentController).applyOptions(opt.clearTopTabOptions().clearTopTabsOptions(), childComponent);
-            }
-        );
+    public void applyChildOptions(Options options, Component child) {
+        super.applyChildOptions(options, child);
+        applyOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(this.options.copy(), child));
     }
 
-    @Override
-    public void mergeOptions(Options options) {
-
+    @CallSuper
+    public void mergeChildOptions(Options options, Component child) {
+        super.mergeChildOptions(options, child);
+        applyOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(options.copy(), child));
     }
 
     public void switchToTab(int index) {

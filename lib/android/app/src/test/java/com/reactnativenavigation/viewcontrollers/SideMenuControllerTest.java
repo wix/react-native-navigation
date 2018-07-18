@@ -7,6 +7,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleComponentViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 
 import org.junit.Test;
 
@@ -15,16 +16,19 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 public class SideMenuControllerTest extends BaseTest {
     private SideMenuController uut;
     private Activity activity;
+    private ChildControllersRegistry childRegistry;
 
     @Override
     public void beforeEach() {
         activity = newActivity();
-        uut = new SideMenuController(activity, "sideMenu", new Options());
+        childRegistry = new ChildControllersRegistry();
+        OptionsPresenter presenter = new OptionsPresenter(activity, new Options());
+        uut = new SideMenuController(activity, childRegistry, "sideMenu", new Options(), presenter);
     }
 
     @Test
-    public void mergeOptions_openLeftSideMenu() throws Exception {
-        uut.setLeftController(new SimpleComponentViewController(activity, "left", new Options()));
+    public void mergeOptions_openLeftSideMenu() {
+        uut.setLeftController(new SimpleComponentViewController(activity, childRegistry, "left", new Options()));
 
         Options options = new Options();
         options.sideMenuRootOptions.left.visible = new Bool(true);
@@ -34,8 +38,8 @@ public class SideMenuControllerTest extends BaseTest {
     }
 
     @Test
-    public void mergeOptions_openRightSideMenu() throws Exception {
-        uut.setRightController(new SimpleComponentViewController(activity, "right", new Options()));
+    public void mergeOptions_openRightSideMenu() {
+        uut.setRightController(new SimpleComponentViewController(activity, childRegistry, "right", new Options()));
 
         Options options = new Options();
         options.sideMenuRootOptions.right.visible = new Bool(true);
@@ -45,7 +49,7 @@ public class SideMenuControllerTest extends BaseTest {
     }
 
     @Test
-    public void mergeOptions_optionsAreClearedAfterMerge() throws Exception {
+    public void mergeOptions_optionsAreClearedAfterMerge() {
         Options initialOptions = uut.options;
         Options options = new Options();
         uut.mergeOptions(options);

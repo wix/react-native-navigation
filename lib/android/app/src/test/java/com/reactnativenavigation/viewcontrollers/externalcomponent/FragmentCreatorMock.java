@@ -6,13 +6,14 @@ import android.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
 import android.widget.FrameLayout;
 
+import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.R;
 
 import org.json.JSONObject;
 
 public class FragmentCreatorMock implements ExternalComponentCreator {
     @Override
-    public ExternalComponent create(FragmentActivity activity, JSONObject props) {
+    public ExternalComponent create(FragmentActivity activity, ReactInstanceManager reactInstanceManager, JSONObject props) {
         return createContent(activity);
     }
 

@@ -1,7 +1,5 @@
 #import "ReactNativeNavigation.h"
 
-#import <UIKit/UIKit.h>
-#import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 
 #import "RNNBridgeManager.h"
@@ -21,6 +19,23 @@
 	[[ReactNativeNavigation sharedInstance] bootstrap:jsCodeLocation launchOptions:launchOptions];
 }
 
++(void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RNNBridgeManagerDelegate>)delegate {
+	[[ReactNativeNavigation sharedInstance] bootstrap:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate];
+}
+
++ (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback {
+	[[ReactNativeNavigation sharedInstance].bridgeManager registerExternalComponent:name callback:callback];
+}
+
++ (RCTBridge *)getBridge {
+	return [[ReactNativeNavigation sharedInstance].bridgeManager bridge];
+}
+
++ (UIViewController *)findViewController:(NSString *)componentId {
+    RNNStore *store = [[ReactNativeNavigation sharedInstance].bridgeManager store];
+    return [store findComponentForId:componentId];
+}
+
 # pragma mark - instance
 
 + (instancetype) sharedInstance {
@@ -36,7 +51,11 @@
 }
 
 -(void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions {
-	self.bridgeManager = [[RNNBridgeManager alloc] initWithJsCodeLocation:jsCodeLocation launchOptions:launchOptions];
+	[self bootstrap:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:nil];
+}
+
+-(void)bootstrap:(NSURL *)jsCodeLocation launchOptions:(NSDictionary *)launchOptions bridgeManagerDelegate:(id<RNNBridgeManagerDelegate>)delegate {
+	self.bridgeManager = [[RNNBridgeManager alloc] initWithJsCodeLocation:jsCodeLocation launchOptions:launchOptions bridgeManagerDelegate:delegate];
 	[RNNSplashScreen show];
 }
 

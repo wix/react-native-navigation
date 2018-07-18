@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class FabOptions implements DEFAULT_VALUES {
+public class FabOptions {
 
     public static FabOptions parse(JSONObject json) {
         FabOptions options = new FabOptions();
@@ -126,5 +126,9 @@ public class FabOptions implements DEFAULT_VALUES {
         if (!size.hasValue()) {
             size = defaultOptions.size;
         }
+    }
+
+    public boolean hasValue() {
+        return id.hasValue() || icon.hasValue();
     }
 }

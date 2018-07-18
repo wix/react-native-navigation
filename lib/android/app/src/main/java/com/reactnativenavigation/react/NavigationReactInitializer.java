@@ -1,5 +1,7 @@
 package com.reactnativenavigation.react;
 
+import android.support.annotation.NonNull;
+
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.ReactContext;
 import com.reactnativenavigation.NavigationActivity;
@@ -46,13 +48,15 @@ public class NavigationReactInitializer implements ReactInstanceManager.ReactIns
 		if (shouldCreateContext()) {
 			reactInstanceManager.createReactContextInBackground();
 		} else if (waitingForAppLaunchEvent) {
-			emitAppLaunched();
+            if (reactInstanceManager.getCurrentReactContext() != null) {
+			    emitAppLaunched(reactInstanceManager.getCurrentReactContext());
+            }
 		}
 	}
 
-	private void emitAppLaunched() {
+	private void emitAppLaunched(@NonNull ReactContext context) {
 		waitingForAppLaunchEvent = false;
-		new NavigationEvent(reactInstanceManager.getCurrentReactContext()).appLaunched();
+		new EventEmitter(context).appLaunched();
 	}
 
 	private boolean shouldCreateContext() {
@@ -61,6 +65,6 @@ public class NavigationReactInitializer implements ReactInstanceManager.ReactIns
 
 	@Override
 	public void onReactContextInitialized(final ReactContext context) {
-		emitAppLaunched();
+        emitAppLaunched(context);
 	}
 }

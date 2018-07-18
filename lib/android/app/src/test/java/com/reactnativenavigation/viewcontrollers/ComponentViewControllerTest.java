@@ -3,9 +3,11 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.TestComponentLayout;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.views.StackLayout;
 
 import org.junit.Test;
@@ -25,19 +27,20 @@ public class ComponentViewControllerTest extends BaseTest {
         super.beforeEach();
         Activity activity = newActivity();
         view = spy(new TestComponentLayout(activity, new TestReactView(activity)));
-        ParentController<StackLayout> parentController = new StackController(activity, "stack", new Options());
-        uut = new ComponentViewController(activity, "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options());
+        ParentController<StackLayout> parentController = TestUtils.newStackController(activity).build();
+        OptionsPresenter presenter = new OptionsPresenter(activity, new Options());
+        uut = new ComponentViewController(activity, new ChildControllersRegistry(), "componentId1", "componentName", (activity1, componentId, componentName) -> view, new Options(), presenter);
         uut.setParentController(parentController);
         parentController.ensureViewIsCreated();
     }
 
     @Test
-    public void createsViewFromComponentViewCreator() throws Exception {
+    public void createsViewFromComponentViewCreator() {
         assertThat(uut.getView()).isSameAs(view);
     }
 
     @Test
-    public void componentViewDestroyedOnDestroy() throws Exception {
+    public void componentViewDestroyedOnDestroy() {
         uut.ensureViewIsCreated();
         verify(view, times(0)).destroy();
         uut.onViewAppeared();
@@ -46,7 +49,7 @@ public class ComponentViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void lifecycleMethodsSentToComponentView() throws Exception {
+    public void lifecycleMethodsSentToComponentView() {
         uut.ensureViewIsCreated();
         verify(view, times(0)).sendComponentStart();
         verify(view, times(0)).sendComponentStop();
@@ -59,7 +62,7 @@ public class ComponentViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void isViewShownOnlyIfComponentViewIsReady() throws Exception {
+    public void isViewShownOnlyIfComponentViewIsReady() {
         assertThat(uut.isViewShown()).isFalse();
         uut.ensureViewIsCreated();
         when(view.asView().isShown()).thenReturn(true);
@@ -69,7 +72,7 @@ public class ComponentViewControllerTest extends BaseTest {
     }
 
     @Test
-    public void onNavigationButtonPressInvokedOnReactComponent() throws Exception {
+    public void onNavigationButtonPressInvokedOnReactComponent() {
         uut.ensureViewIsCreated();
         uut.sendOnNavigationButtonPressed("btn1");
         verify(view, times(1)).sendOnNavigationButtonPressed("btn1");

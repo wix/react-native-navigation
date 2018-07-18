@@ -12,8 +12,10 @@ class OrientationDetectScreen extends Component {
 
     this.detectHorizontal = this.detectHorizontal.bind(this);
     this.state = { horizontal: false };
-    Navigation.setOptions(this.props.componentId, {
-      orientation: props.orientation
+    Navigation.mergeOptions(this.props.componentId, {
+      layout: {
+        orientation: props.orientation
+      }
     });
   }
 
@@ -41,7 +43,8 @@ const styles = {
   root: {
     flexGrow: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'white'
   },
   h1: {
     fontSize: 24,

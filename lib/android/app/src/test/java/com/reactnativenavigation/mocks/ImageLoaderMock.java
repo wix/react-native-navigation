@@ -9,8 +9,11 @@ import com.reactnativenavigation.utils.ImageLoader;
 
 import org.mockito.Mockito;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 
 public class ImageLoaderMock {
@@ -40,10 +43,18 @@ public class ImageLoaderMock {
         ImageLoader imageLoader = Mockito.mock(ImageLoader.class);
         doAnswer(
                 invocation -> {
-                    ((ImageLoader.ImageLoadingListener) invocation.getArguments()[2]).onComplete(mockDrawable);
+                    int urlCount = ((Collection) invocation.getArguments()[1]).size();
+                    List<Drawable> drawables = Collections.nCopies(urlCount, mockDrawable);
+                    ((ImageLoader.ImagesLoadingListener) invocation.getArguments()[2]).onComplete(drawables);
                     return null;
                 }
-        ).when(imageLoader).loadIcon(any(), anyString(), any());
+        ).when(imageLoader).loadIcons(any(), any(), any());
+        doAnswer(
+                invocation -> {
+                    ((ImageLoader.ImagesLoadingListener) invocation.getArguments()[2]).onComplete(mockDrawable);
+                    return null;
+                }
+        ).when(imageLoader).loadIcon(any(), any(), any());
         return imageLoader;
     }
 }

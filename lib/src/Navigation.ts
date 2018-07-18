@@ -6,46 +6,51 @@ import { ComponentRegistry } from './components/ComponentRegistry';
 import { Commands } from './commands/Commands';
 import { LayoutTreeParser } from './commands/LayoutTreeParser';
 import { LayoutTreeCrawler } from './commands/LayoutTreeCrawler';
-import { PublicEventsRegistry } from './events/PublicEventsRegistry';
+import { EventsRegistry } from './events/EventsRegistry';
 import { ComponentProvider } from 'react-native';
 import { Element } from './adapters/Element';
-import { PrivateEventsListener } from './events/PrivateEventsListener';
+import { CommandsObserver } from './events/CommandsObserver';
+import { Constants } from './adapters/Constants';
+import { ComponentType } from 'react';
+import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 
 export class Navigation {
-  public readonly Element;
-
-  private readonly store;
-  private readonly nativeEventsReceiver;
-  private readonly uniqueIdProvider;
-  private readonly componentRegistry;
-  private readonly layoutTreeParser;
-  private readonly layoutTreeCrawler;
-  private readonly nativeCommandsSender;
-  private readonly commands;
-  private readonly publicEventsRegistry;
+  public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
+  public readonly store: Store;
+  private readonly nativeEventsReceiver: NativeEventsReceiver;
+  private readonly uniqueIdProvider: UniqueIdProvider;
+  private readonly componentRegistry: ComponentRegistry;
+  private readonly layoutTreeParser: LayoutTreeParser;
+  private readonly layoutTreeCrawler: LayoutTreeCrawler;
+  private readonly nativeCommandsSender: NativeCommandsSender;
+  private readonly commands: Commands;
+  private readonly eventsRegistry: EventsRegistry;
+  private readonly commandsObserver: CommandsObserver;
+  private readonly componentEventsObserver: ComponentEventsObserver;
 
   constructor() {
     this.Element = Element;
-
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
-    this.componentRegistry = new ComponentRegistry(this.store);
+    this.componentEventsObserver = new ComponentEventsObserver(this.nativeEventsReceiver);
+    this.componentRegistry = new ComponentRegistry(this.store, this.componentEventsObserver);
     this.layoutTreeParser = new LayoutTreeParser();
     this.layoutTreeCrawler = new LayoutTreeCrawler(this.uniqueIdProvider, this.store);
     this.nativeCommandsSender = new NativeCommandsSender();
-    this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler);
-    this.publicEventsRegistry = new PublicEventsRegistry(this.nativeEventsReceiver);
+    this.commandsObserver = new CommandsObserver();
+    this.commands = new Commands(this.nativeCommandsSender, this.layoutTreeParser, this.layoutTreeCrawler, this.commandsObserver, this.uniqueIdProvider);
+    this.eventsRegistry = new EventsRegistry(this.nativeEventsReceiver, this.commandsObserver, this.componentEventsObserver);
 
-    new PrivateEventsListener(this.nativeEventsReceiver, this.store).listenAndHandlePrivateEvents();
+    this.componentEventsObserver.registerOnceForAllComponentEvents();
   }
 
   /**
    * Every navigation component in your app must be registered with a unique name.
    * The component itself is a traditional React component extending React.Component.
    */
-  public registerComponent(componentName: string, getComponentClassFunc: ComponentProvider) {
-    this.componentRegistry.registerComponent(componentName, getComponentClassFunc);
+  public registerComponent(componentName: string, getComponentClassFunc: ComponentProvider): ComponentType<any> {
+    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc);
   }
 
   /**
@@ -65,8 +70,8 @@ export class Navigation {
   /**
    * Change a component's navigation options
    */
-  public setOptions(componentId: string, options): void {
-    this.commands.setOptions(componentId, options);
+  public mergeOptions(componentId: string, options): void {
+    this.commands.mergeOptions(componentId, options);
   }
 
   /**
@@ -100,7 +105,7 @@ export class Navigation {
   /**
    * Pop a component from the stack, regardless of it's position.
    */
-  public pop(componentId: string, params): Promise<any> {
+  public pop(componentId: string, params?): Promise<any> {
     return this.commands.pop(componentId, params);
   }
 
@@ -119,6 +124,13 @@ export class Navigation {
   }
 
   /**
+   * Sets new root component to stack.
+   */
+  public setStackRoot(componentId: string, layout): Promise<any> {
+    return this.commands.setStackRoot(componentId, layout);
+  }
+
+  /**
    * Show overlay on top of the entire app
    */
   public showOverlay(layout): Promise<any> {
@@ -133,9 +145,23 @@ export class Navigation {
   }
 
   /**
+   * Resolves arguments passed on launch
+   */
+  public getLaunchArgs(): Promise<any> {
+    return this.commands.getLaunchArgs();
+  }
+
+  /**
    * Obtain the events registry instance
    */
-  public events(): PublicEventsRegistry {
-    return this.publicEventsRegistry;
+  public events(): EventsRegistry {
+    return this.eventsRegistry;
+  }
+
+  /**
+   * Constants coming from native
+   */
+  public async constants(): Promise<any> {
+    return await Constants.get();
   }
 }

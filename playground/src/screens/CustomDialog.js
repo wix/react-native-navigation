@@ -7,6 +7,11 @@ const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
 class CustomDialog extends PureComponent {
+  static get options() {
+    return {
+      statusBarBackgroundColor: 'green'
+    };
+  }
 
   render() {
     return (

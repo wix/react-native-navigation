@@ -75,10 +75,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "playgroundTests.xctest"
-               BlueprintName = "playgroundTests"
-               ReferencedContainer = "container:playground.xcodeproj">
+               BlueprintIdentifier = "7B49FEBA1E95090800DEB3EA"
+               BuildableName = "ReactNativeNavigationTests.xctest"
+               BlueprintName = "ReactNativeNavigationTests"
+               ReferencedContainer = "container:../../lib/ios/ReactNativeNavigation.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

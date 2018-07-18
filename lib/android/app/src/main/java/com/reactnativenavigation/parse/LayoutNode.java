@@ -35,7 +35,7 @@ public class LayoutNode {
 		this.children = children;
 	}
 
-    JSONObject getNavigationOptions() {
+    JSONObject getOptions() {
 	    return data.optJSONObject("options");
     }
 }

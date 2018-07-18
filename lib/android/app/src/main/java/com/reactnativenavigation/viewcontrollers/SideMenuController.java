@@ -3,11 +3,12 @@ package com.reactnativenavigation.viewcontrollers;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.LayoutParams;
 import android.view.Gravity;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.NavigationOptionsListener;
+import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.SideMenuOptionsPresenter;
 import com.reactnativenavigation.views.Component;
 
@@ -15,19 +16,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.widget.ListPopupWindow.WRAP_CONTENT;
 
-public class SideMenuController extends ParentController<DrawerLayout> implements NavigationOptionsListener {
+public class SideMenuController extends ParentController<DrawerLayout> {
 
 	private ViewController centerController;
 	private ViewController leftController;
 	private ViewController rightController;
 
-	public SideMenuController(final Activity activity, final String id, Options initialOptions) {
-		super(activity, id, initialOptions);
+	public SideMenuController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions, OptionsPresenter presenter) {
+		super(activity, childRegistry, id, presenter, initialOptions);
 	}
 
-	@NonNull
+    @Override
+    protected ViewController getCurrentChild() {
+	    if (getView().isDrawerOpen(Gravity.LEFT)) {
+            return leftController;
+        } else if (getView().isDrawerOpen(Gravity.RIGHT)) {
+            return rightController;
+        }
+        return centerController;
+    }
+
+    @NonNull
 	@Override
 	protected DrawerLayout createView() {
         return new DrawerLayout(getActivity());
@@ -49,18 +59,26 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
 	}
 
     @Override
-    public void applyOptions(Options options, Component childComponent) {
-        super.applyOptions(options, childComponent);
+    public void applyChildOptions(Options options, Component child) {
+        super.applyChildOptions(options, child);
         applyOnParentController(parentController ->
-                ((ParentController) parentController).applyOptions(this.options, childComponent)
+                ((ParentController) parentController).applyChildOptions(this.options, child)
+        );
+    }
+
+    @Override
+    public void mergeChildOptions(Options options, Component child) {
+        super.mergeChildOptions(options, child);
+        new SideMenuOptionsPresenter(getView()).present(options.sideMenuRootOptions);
+        applyOnParentController(parentController ->
+                ((ParentController) parentController).mergeChildOptions(options.copy().clearSideMenuOptions(), child)
         );
     }
 
     @Override
     public void mergeOptions(Options options) {
-        this.options = this.options.mergeWith(options);
+        super.mergeOptions(options);
         new SideMenuOptionsPresenter(getView()).present(this.options.sideMenuRootOptions);
-        this.options = this.options.copy().clearSideMenuOptions();
     }
 
     public void setCenterController(ViewController centerController) {
@@ -69,21 +87,13 @@ public class SideMenuController extends ParentController<DrawerLayout> implement
 		getView().addView(childView);
 	}
 
-	public void setLeftController(ViewController leftController) {
-		this.leftController = leftController;
-		View childView = leftController.getView();
-		DrawerLayout.LayoutParams lp = new DrawerLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-		lp.gravity = Gravity.LEFT;
-		childView.setLayoutParams(lp);
-		getView().addView(childView);
+	public void setLeftController(ViewController controller) {
+		this.leftController = controller;
+        getView().addView(controller.getView(), new LayoutParams(MATCH_PARENT, MATCH_PARENT, Gravity.LEFT));
 	}
 
-	public void setRightController(ViewController rightController) {
-		this.rightController = rightController;
-		View childView = rightController.getView();
-		DrawerLayout.LayoutParams lp = new DrawerLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-		lp.gravity = Gravity.RIGHT;
-		childView.setLayoutParams(lp);
-		getView().addView(childView);
+	public void setRightController(ViewController controller) {
+		this.rightController = controller;
+        getView().addView(controller.getView(), new LayoutParams(MATCH_PARENT, MATCH_PARENT, Gravity.RIGHT));
 	}
 }

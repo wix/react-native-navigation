@@ -20,9 +20,7 @@
 -(instancetype) initWithChild:(UIViewController<RNNRootViewProtocol>*)child type:(RNNSideMenuChildType)type {
 	self = [super init];
 	
-	self.child = child;
-	[self addChildViewController:self.child];
-	
+	self.child = child;	
 	[self addChildViewController:self.child];
 	[self.child.view setFrame:self.view.bounds];
 	[self.view addSubview:self.child.view];
@@ -33,16 +31,12 @@
 	return self;
 }
 
-- (BOOL)isCustomTransitioned {
-	return NO;
+- (RNNRootViewController *)getLeafViewController {
+	return [self.child getLeafViewController];
 }
 
-- (BOOL)isAnimated {
-	return YES;
-}
-
-- (NSString *)componentId {
-	return _child.componentId;
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	return self.child.preferredStatusBarStyle;
 }
 
 @end

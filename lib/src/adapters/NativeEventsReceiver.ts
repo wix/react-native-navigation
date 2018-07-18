@@ -1,33 +1,59 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
+import { EventSubscription } from '../interfaces/EventSubscription';
+import {
+  ComponentDidAppearEvent,
+  ComponentDidDisappearEvent,
+  NavigationButtonPressedEvent,
+  SearchBarUpdatedEvent,
+  SearchBarCancelPressedEvent
+} from '../interfaces/ComponentEvents';
+import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
 
 export class NativeEventsReceiver {
   private emitter;
-
   constructor() {
-    this.emitter = new NativeEventEmitter(NativeModules.RNNEventEmitter);
+    try {
+      this.emitter = new NativeEventEmitter(NativeModules.RNNEventEmitter);
+    } catch (e) {
+      this.emitter = {
+        addListener: () => {
+          return {
+            remove: () => undefined
+          };
+        }
+      };
+    }
   }
 
-  registerComponentDidAppear(callback) {
-    this.emitter.addListener('RNN.componentDidAppear', callback);
+  public registerAppLaunchedListener(callback: () => void): EventSubscription {
+    return this.emitter.addListener('RNN.AppLaunched', callback);
   }
 
-  registerComponentDidDisappear(callback) {
-    this.emitter.addListener('RNN.componentDidDisappear', callback);
+  public registerComponentDidAppearListener(callback: (event: ComponentDidAppearEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.ComponentDidAppear', callback);
   }
 
-  registerAppLaunched(callback) {
-    this.emitter.addListener('RNN.appLaunched', callback);
+  public registerComponentDidDisappearListener(callback: (event: ComponentDidDisappearEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.ComponentDidDisappear', callback);
   }
 
-  registerNavigationCommands(callback) {
-    this.emitter.addListener('RNN.navigationCommands', callback);
+  public registerNavigationButtonPressedListener(callback: (event: NavigationButtonPressedEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.NavigationButtonPressed', callback);
   }
 
-  registerComponentLifecycle(callback) {
-    this.emitter.addListener('RNN.componentLifecycle', callback);
+  public registerSearchBarUpdatedListener(callback: (event: SearchBarUpdatedEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.SearchBarUpdated', callback);
   }
 
-  registerNavigationButtonPressed(callback) {
-    this.emitter.addListener('RNN.navigationButtonPressed', callback);
+  public registerSearchBarCancelPressedListener(callback: (event: SearchBarCancelPressedEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.SearchBarCancelPressed', callback);
+  }
+
+  public registerCommandCompletedListener(callback: (data: CommandCompletedEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.CommandCompleted', callback);
+  }
+
+  public registerBottomTabSelectedListener(callback: (data: BottomTabSelectedEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.BottomTabSelected', callback);
   }
 }

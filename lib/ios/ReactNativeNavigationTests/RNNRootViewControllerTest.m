@@ -41,53 +41,61 @@
 	self.pageName = @"somename";
 	self.componentId = @"cntId";
 	self.emitter = nil;
-	self.options = [RNNNavigationOptions new];
+	self.options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withComponentId:self.componentId rootViewCreator:self.creator eventEmitter:self.emitter isExternalComponent:NO];
 }
 
 -(void)testTopBarBackgroundColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.topBar.backgroundColor = inputColor;
+	self.options.topBar.background.color = inputColor;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	
+
 	XCTAssertTrue([self.uut.navigationController.navigationBar.barTintColor isEqual:expectedColor]);
 }
 
 -(void)testTopBarBackgroundColorWithoutNavigationController{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.topBar.backgroundColor = inputColor;
-	
+	self.options.topBar.background.color = inputColor;
+
 	XCTAssertNoThrow([self.uut viewWillAppear:false]);
 }
 
 - (void)testStatusBarHidden_default {
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
+
+	XCTAssertFalse([self.uut prefersStatusBarHidden]);
+}
+
+- (void)testStatusBarVisible_false {
+	self.options.statusBar.visible = @(0);
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+
+	XCTAssertTrue([self.uut prefersStatusBarHidden]);
+}
+
+- (void)testStatusBarVisible_true {
+	self.options.statusBar.visible = @(1);
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
 	
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
 }
 
-- (void)testStatusBarHidden_true {
-	self.options.statusBarHidden = @(1);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-	
-	XCTAssertTrue([self.uut prefersStatusBarHidden]);
-}
-
 - (void)testStatusBarHideWithTopBar_false {
-	self.options.statusBarHideWithTopBar = @(0);
+	self.options.statusBar.hideWithTopBar = @(0);
 	self.options.topBar.visible = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
 }
 
 - (void)testStatusBarHideWithTopBar_true {
-	self.options.statusBarHideWithTopBar = @(1);
+	self.options.statusBar.hideWithTopBar = @(1);
 	self.options.topBar.visible = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
@@ -95,43 +103,34 @@
 	XCTAssertTrue([self.uut prefersStatusBarHidden]);
 }
 
-
-- (void)testStatusBarHidden_false {
-	self.options.statusBarHidden = @(0);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-	
-	XCTAssertFalse([self.uut prefersStatusBarHidden]);
-}
-
 -(void)testTitle_string{
 	NSString* title =@"some title";
-	self.options.topBar.title = title;
+	self.options.topBar.title.text = title;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	
+
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue([self.uut.navigationItem.title isEqual:title]);
 }
 
 -(void)testTitle_default{
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	
+
 	[self.uut viewWillAppear:false];
 	XCTAssertNil(self.uut.navigationItem.title);
 }
 
 -(void)testTopBarTextColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.topBar.textColor = inputColor;
+	self.options.topBar.title.color = inputColor;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
 }
 
--(void)testScreenBackgroundColor_validColor{
+-(void)testbackgroundColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.screenBackgroundColor = inputColor;
+	self.options.layout.backgroundColor = inputColor;
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	XCTAssertTrue([self.uut.view.backgroundColor isEqual:expectedColor]);
@@ -156,7 +155,7 @@
 -(void)testTopBarTextFontFamily_validFont{
 	NSString* inputFont = @"HelveticaNeue";
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	self.options.topBar.textFontFamily = inputFont;
+	self.options.topBar.title.fontFamily = inputFont;
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:20];
 	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
@@ -198,7 +197,7 @@
 	[vc setViewControllers:controllers];
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue([self.uut.tabBarItem.badgeValue isEqualToString:tabBadgeInput]);
-	
+
 }
 
 -(void)testTopBarTransparent_BOOL_True {
@@ -222,12 +221,84 @@
 
 
 -(void)testStoreOriginalTopBarImages {
-	
+
 }
+
+
+-(void)testTopBarLargeTitle_default {
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
+}
+-(void)testTopBarLargeTitle_true {
+	self.options.topBar.largeTitle.visible = @(1);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
+}
+-(void)testTopBarLargeTitle_false {
+	self.options.topBar.largeTitle.visible  = @(0);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	
+	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
+}
+
+
+-(void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withoutTextColor {
+	NSNumber* topBarTextFontSizeInput = @(15);
+	self.options.topBar.largeTitle.fontSize = topBarTextFontSizeInput;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	UIFont* expectedFont = [UIFont systemFontOfSize:15];
+	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+}
+
+-(void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withTextColor {
+	NSNumber* topBarTextFontSizeInput = @(15);
+	NSNumber* inputColor = @(0xFFFF0000);
+	self.options.topBar.largeTitle.fontSize = topBarTextFontSizeInput;
+	self.options.topBar.largeTitle.color = inputColor;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	UIFont* expectedFont = [UIFont systemFontOfSize:15];
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+}
+
+-(void)testTopBarLargeTitleFontSize_withTextFontFamily_withTextColor {
+	NSNumber* topBarTextFontSizeInput = @(15);
+	NSNumber* inputColor = @(0xFFFF0000);
+	NSString* inputFont = @"HelveticaNeue";
+	self.options.topBar.largeTitle.fontSize = topBarTextFontSizeInput;
+	self.options.topBar.largeTitle.color = inputColor;
+	self.options.topBar.largeTitle.fontFamily = inputFont;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
+	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSColor"] isEqual:expectedColor]);
+}
+
+-(void)testTopBarLargeTitleFontSize_withTextFontFamily_withoutTextColor {
+	NSNumber* topBarTextFontSizeInput = @(15);
+	NSString* inputFont = @"HelveticaNeue";
+	self.options.topBar.largeTitle.fontSize = topBarTextFontSizeInput;
+	self.options.topBar.largeTitle.fontFamily = inputFont;
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
+	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
+}
+
 
 -(void)testTopBarTextFontSize_withoutTextFontFamily_withoutTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
-	self.options.topBar.textFontSize = topBarTextFontSizeInput;
+	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
@@ -237,8 +308,8 @@
 -(void)testTopBarTextFontSize_withoutTextFontFamily_withTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.topBar.textFontSize = topBarTextFontSizeInput;
-	self.options.topBar.textColor = inputColor;
+	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
+	self.options.topBar.title.color = inputColor;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
@@ -251,9 +322,9 @@
 	NSNumber* topBarTextFontSizeInput = @(15);
 	NSNumber* inputColor = @(0xFFFF0000);
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.topBar.textFontSize = topBarTextFontSizeInput;
-	self.options.topBar.textColor = inputColor;
-	self.options.topBar.textFontFamily = inputFont;
+	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
+	self.options.topBar.title.color = inputColor;
+	self.options.topBar.title.fontFamily = inputFont;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
@@ -265,8 +336,8 @@
 -(void)testTopBarTextFontSize_withTextFontFamily_withoutTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.topBar.textFontSize = topBarTextFontSizeInput;
-	self.options.topBar.textFontFamily = inputFont;
+	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
+	self.options.topBar.title.fontFamily = inputFont;
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
@@ -277,13 +348,13 @@
 -(void)testTopBarTextFontFamily_invalidFont{
 	NSString* inputFont = @"HelveticaNeueeeee";
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	self.options.topBar.textFontFamily = inputFont;
+	self.options.topBar.title.fontFamily = inputFont;
 	//	XCTAssertThrows([self.uut viewWillAppear:false]);
 }
 
 -(void)testOrientation_portrait {
 	NSArray* supportedOrientations = @[@"portrait"];
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskPortrait;
@@ -292,7 +363,7 @@
 
 -(void)testOrientation_portraitString {
 	NSString* supportedOrientation = @"portrait";
-	self.options.orientation = supportedOrientation;
+	self.options.layout.orientation = supportedOrientation;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait);
@@ -301,7 +372,7 @@
 
 -(void)testOrientation_portraitAndLandscape {
 	NSArray* supportedOrientations = @[@"portrait", @"landscape"];
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscape);
@@ -310,7 +381,7 @@
 
 -(void)testOrientation_all {
 	NSArray* supportedOrientations = @[@"all"];
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskAll;
@@ -319,7 +390,7 @@
 
 -(void)testOrientation_default {
 	NSString* supportedOrientations = @"default";
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused UINavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
@@ -329,51 +400,51 @@
 
 -(void)testOrientationTabsController_portrait {
 	NSArray* supportedOrientations = @[@"portrait"];
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
-	
+
 	[controllers addObject:self.uut];
 	[vc setViewControllers:controllers];
 	[self.uut viewWillAppear:false];
-	
+
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskPortrait;
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
 }
 
 -(void)testOrientationTabsController_portraitAndLandscape {
 	NSArray* supportedOrientations = @[@"portrait", @"landscape"];
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
-	
+
 	[controllers addObject:self.uut];
 	[vc setViewControllers:controllers];
 	[self.uut viewWillAppear:false];
-	
+
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscape);
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
 }
 
 -(void)testOrientationTabsController_all {
 	NSArray* supportedOrientations = @[@"all"];
-	self.options.orientation = supportedOrientations;
+	self.options.layout.orientation = supportedOrientations;
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
-	
+
 	[controllers addObject:self.uut];
 	[vc setViewControllers:controllers];
 	[self.uut viewWillAppear:false];
-	
+
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskAll;
 	XCTAssertTrue(self.uut.tabBarController.supportedInterfaceOrientations == expectedOrientation);
 }
 
 -(void)testRightButtonsWithTitle_withoutStyle {
-	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test"}];
+	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"text": @"test"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
 	NSString* expectedTitle = @"test";
@@ -384,27 +455,27 @@
 
 -(void)testRightButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
-	
-	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"title": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+
+	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"text": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
 	NSString* expectedTitle = @"test";
 	XCTAssertTrue([button.buttonId isEqualToString:expectedButtonId]);
 	XCTAssertTrue([button.title isEqualToString:expectedTitle]);
 	XCTAssertFalse(button.enabled);
-	
+
 	//TODO: Determine how to tests buttonColor,buttonFontSize and buttonFontWeight?
 }
 
 
 -(void)testLeftButtonsWithTitle_withoutStyle {
-	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test"}];
+	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"text": @"test"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
 	NSString* expectedTitle = @"test";
@@ -415,18 +486,18 @@
 
 -(void)testLeftButtonsWithTitle_withStyle {
 	NSNumber* inputColor = @(0xFFFF0000);
-	
-	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"title": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
+
+	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"text": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
 	NSString* expectedButtonId = @"testId";
 	NSString* expectedTitle = @"test";
 	XCTAssertTrue([button.buttonId isEqualToString:expectedButtonId]);
 	XCTAssertTrue([button.title isEqualToString:expectedTitle]);
 	XCTAssertFalse(button.enabled);
-	
+
 	//TODO: Determine how to tests buttonColor,buttonFontSize and buttonFontWeight?
 }
 
@@ -448,7 +519,7 @@
 
 -(void)testStatusBarBlurOn {
 	NSNumber* statusBarBlurInput = @(1);
-	self.options.statusBarBlur = statusBarBlurInput;
+	self.options.statusBar.blur = statusBarBlurInput;
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	XCTAssertNotNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
@@ -456,7 +527,7 @@
 
 -(void)testStatusBarBlurOff {
 	NSNumber* statusBarBlurInput = @(0);
-	self.options.statusBarBlur = statusBarBlurInput;
+	self.options.statusBar.blur = statusBarBlurInput;
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
 	XCTAssertNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
@@ -492,26 +563,6 @@
 	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
 }
 
--(void)testTopBarLargeTitle_default {
-	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-	
-	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
-}
--(void)testTopBarLargeTitle_true {
-	self.options.topBar.largeTitle = @(1);
-	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-	
-	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
-}
--(void)testTopBarLargeTitle_false {
-	self.options.topBar.largeTitle  = @(0);
-	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
-	[self.uut viewWillAppear:false];
-	
-	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
-}
 -(void)testTopBarBlur_false {
 	NSNumber* topBarBlurInput = @(0);
 	self.options.topBar.blur = topBarBlurInput;
@@ -533,6 +584,7 @@
 	self.options.backgroundImage = backgroundImage;
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
+
 	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:backgroundImage]);
 }
 
@@ -548,7 +600,7 @@
 	self.options.topBar.drawBehind = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertTrue(self.uut.edgesForExtendedLayout & UIRectEdgeTop);
 }
 
@@ -556,7 +608,7 @@
 	self.options.topBar.drawBehind = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertFalse(self.uut.edgesForExtendedLayout & UIRectEdgeTop);
 }
 
@@ -564,7 +616,7 @@
 	self.options.bottomTabs.drawBehind = @(1);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertTrue(self.uut.edgesForExtendedLayout & UIRectEdgeBottom);
 }
 
@@ -572,7 +624,7 @@
 	self.options.bottomTabs.drawBehind = @(0);
 	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
 	[self.uut viewWillAppear:false];
-	
+
 	XCTAssertFalse(self.uut.edgesForExtendedLayout & UIRectEdgeBottom);
 }
 
@@ -619,25 +671,10 @@
 	XCTAssertTrue([self.uut.tabBarController.tabBar.barTintColor isEqual:expectedColor]);
 }
 
--(void)testTabBarSelectedColor_validColor{
-	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.bottomTabs.tabColor = inputColor;
-	[self.uut embedInTabBarController];
-	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([self.uut.tabBarController.tabBar.unselectedItemTintColor isEqual:expectedColor]);
-}
-
--(void)testTabBarUnselectedColor_validColor{
-	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.bottomTabs.selectedTabColor = inputColor;
-	[self.uut embedInTabBarController];
-	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([self.uut.tabBarController.tabBar.tintColor isEqual:expectedColor]);
-}
-
 -(void)testTabBarTextFontFamily_validFont{
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.bottomTabs.fontFamily = inputFont;
+	self.options.bottomTab.fontFamily = inputFont;
+	self.options.bottomTab.text = @"Tab 1";
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:10];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
@@ -645,7 +682,8 @@
 }
 
 -(void)testTabBarTextFontSize_withoutTextFontFamily_withoutTextColor {
-	self.options.bottomTabs.fontSize = @(15);
+	self.options.bottomTab.fontSize = @(15);
+	self.options.bottomTab.text = @"Tab 1";
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
@@ -653,7 +691,8 @@
 }
 
 -(void)testTabBarTextFontSize_withoutTextFontFamily {
-	self.options.bottomTabs.fontSize = @(15);
+	self.options.bottomTab.fontSize = @(15);
+	self.options.bottomTab.text = @"Tab 1";
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
@@ -662,8 +701,9 @@
 
 -(void)testTabBarTextFontSize_withTextFontFamily_withTextColor {
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.bottomTabs.fontSize = @(15);
-	self.options.bottomTabs.fontFamily = inputFont;
+	self.options.bottomTab.text = @"Tab 1";
+	self.options.bottomTab.fontSize = @(15);
+	self.options.bottomTab.fontFamily = inputFont;
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
@@ -672,8 +712,9 @@
 
 -(void)testTabBarTextFontSize_withTextFontFamily_withoutTextColor {
 	NSString* inputFont = @"HelveticaNeue";
-	self.options.bottomTabs.fontSize = @(15);
-	self.options.bottomTabs.fontFamily = inputFont;
+	self.options.bottomTab.text = @"Tab 1";
+	self.options.bottomTab.fontSize = @(15);
+	self.options.bottomTab.fontFamily = inputFont;
 	[self.uut embedInTabBarController];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];

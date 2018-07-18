@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "RCTBridge.h"
+#import <React/RCTBridge.h>
 #import "MMDrawerController.h"
 #import "RCCDrawerProtocol.h"
 

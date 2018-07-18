@@ -7,9 +7,6 @@ export enum LayoutType {
   SideMenuLeft = 'SideMenuLeft',
   SideMenuRight = 'SideMenuRight',
   TopTabs = 'TopTabs',
-  ExternalComponent = 'ExternalComponent'
-}
-
-export function isLayoutType(name: string): boolean {
-  return !!LayoutType[name];
+  ExternalComponent = 'ExternalComponent',
+  SplitView = 'SplitView'
 }

@@ -8,18 +8,18 @@ describe('Store', () => {
   });
 
   it('initial state', () => {
-    expect(uut.getPropsForComponentId('component1')).toEqual({});
+    expect(uut.getPropsForId('component1')).toEqual({});
   });
 
-  it('holds props by componentId', () => {
-    uut.setPropsForComponentId('component1', { a: 1, b: 2 });
-    expect(uut.getPropsForComponentId('component1')).toEqual({ a: 1, b: 2 });
+  it('holds props by id', () => {
+    uut.setPropsForId('component1', { a: 1, b: 2 });
+    expect(uut.getPropsForId('component1')).toEqual({ a: 1, b: 2 });
   });
 
-  it('defensive for invalid componentId and props', () => {
-    uut.setPropsForComponentId('component1', undefined);
-    uut.setPropsForComponentId(undefined, undefined);
-    expect(uut.getPropsForComponentId('component1')).toEqual({});
+  it('defensive for invalid Id and props', () => {
+    uut.setPropsForId('component1', undefined);
+    uut.setPropsForId(undefined, undefined);
+    expect(uut.getPropsForId('component1')).toEqual({});
   });
 
   it('holds original components classes by componentName', () => {
@@ -30,20 +30,11 @@ describe('Store', () => {
     expect(uut.getOriginalComponentClassForName('example.mycomponent')).toEqual(MyComponent);
   });
 
-  it('holds component refs by id', () => {
-    const ref = {};
-    uut.setRefForComponentId('refUniqueId', ref);
-    expect(uut.getRefForComponentId('other')).toBeUndefined();
-    expect(uut.getRefForComponentId('refUniqueId')).toBe(ref);
-  });
-
-  it('clean by id', () => {
-    uut.setRefForComponentId('refUniqueId', {});
-    uut.setPropsForComponentId('refUniqueId', { foo: 'bar' });
+  it('clean by component id', () => {
+    uut.setPropsForId('refUniqueId', { foo: 'bar' });
 
     uut.cleanId('refUniqueId');
 
-    expect(uut.getRefForComponentId('refUniqueId')).toBeUndefined();
-    expect(uut.getPropsForComponentId('refUniqueId')).toEqual({});
+    expect(uut.getPropsForId('refUniqueId')).toEqual({});
   });
 });

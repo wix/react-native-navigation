@@ -15,6 +15,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	
 	if (self.visible) {
 		[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:![self.visible boolValue] animated:[self.animate boolValue]];
+	} else {
+		[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:NO animated:NO];
 	}
 	
 	if (self.testID) {
@@ -23,41 +25,30 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	
 	if (self.drawBehind) {
 		if ([self.drawBehind boolValue]) {
+			[viewController setExtendedLayoutIncludesOpaqueBars:YES];
 			viewController.edgesForExtendedLayout |= UIRectEdgeBottom;
 		} else {
+			[viewController setExtendedLayoutIncludesOpaqueBars:NO];
 			viewController.edgesForExtendedLayout &= ~UIRectEdgeBottom;
 		}
 	}
 	
 	if (self.backgroundColor) {
 		viewController.tabBarController.tabBar.barTintColor = [RCTConvert UIColor:self.backgroundColor];
+	} else {
+		viewController.tabBarController.tabBar.barTintColor = nil;
 	}
 	
 	if (self.translucent) {
 		viewController.tabBarController.tabBar.translucent = [self.translucent boolValue];
+	} else {
+		viewController.tabBarController.tabBar.translucent = NO;
 	}
 	
 	if (self.hideShadow) {
 		viewController.tabBarController.tabBar.clipsToBounds = [self.hideShadow boolValue];
 	}
-	
-	if (self.tabBarTextFont) {
-		NSMutableDictionary* tabBarTitleTextAttributes = [NSMutableDictionary new];
-		tabBarTitleTextAttributes[NSFontAttributeName] = self.tabBarTextFont;
-		
-		for (UITabBarItem* item in viewController.tabBarController.tabBar.items) {
-			[item setTitleTextAttributes:tabBarTitleTextAttributes forState:UIControlStateNormal];
-		}
-	}
-	
-	if (self.tabColor) {
-		viewController.tabBarController.tabBar.unselectedItemTintColor = [RCTConvert UIColor:self.tabColor];
-	}
-	
-	if (self.selectedTabColor) {
-		viewController.tabBarController.tabBar.tintColor = [RCTConvert UIColor:self.selectedTabColor];
-	}
-	
+
 	[self resetOptions];
 }
 

@@ -1,7 +1,8 @@
 const React = require('react');
 const { Component } = require('react');
-const { View, Text } = require('react-native');
+const { View, Text, TouchableOpacity } = require('react-native');
 const { Navigation } = require('react-native-navigation');
+const testIDs = require('../testIDs');
 
 class StaticLifecycleOverlay extends Component {
   constructor(props) {
@@ -10,18 +11,52 @@ class StaticLifecycleOverlay extends Component {
       text: 'nothing yet',
       events: []
     };
-    Navigation.events().componentLifecycle(({ event, componentName, componentId }) => {
+    this.listeners = [];
+    this.listeners.push(Navigation.events().registerComponentDidAppearListener((event) => {
+      event.event = 'componentDidAppear';
       this.setState({
-        events: [...this.state.events, { event, componentName, componentId }]
+        events: [...this.state.events, { ...event }]
       });
-    });
+    }));
+    this.listeners.push(Navigation.events().registerComponentDidDisappearListener((event) => {
+      event.event = 'componentDidDisappear';
+      this.setState({
+        events: [...this.state.events, { ...event }]
+      });
+    }));
+    this.listeners.push(Navigation.events().registerCommandCompletedListener(({ commandId }) => {
+      this.setState({
+        events: [...this.state.events, { event: 'commandCompleted', commandId }]
+      });
+    }));
+    this.listeners.push(Navigation.events().registerNavigationButtonPressedListener(({ componentId, buttonId }) => {
+      this.setState({
+        events: [...this.state.events, { event: 'navigationButtonPressed', buttonId, componentId }]
+      });
+    }));
+  }
+
+  componentWillUnmount() {
+    this.listeners.forEach(listener => listener.remove());
+    this.listeners = [];
+    alert('Overlay Unmounted');
+  }
+
+  renderEvent(event) {
+    if (event.commandId) {
+      return <Text style={styles.h2}>{`${event.commandId}`}</Text>;
+    } else if (event.componentName) {
+      return <Text style={styles.h2}>{`${event.event} | ${event.componentName}`}</Text>;
+    } else {
+      return <Text style={styles.h2}>{`${event.event} | ${event.buttonId}`}</Text>;
+    }
   }
 
   render() {
-    const events = this.state.events.map((event) =>
+    const events = this.state.events.map((event, idx) =>
       (
-        <View key={event.componentId}>
-          <Text style={styles.h2}>{`${event.event} | ${event.componentName}`}</Text>
+        <View key={`${event.componentId}${idx}`}>
+          {this.renderEvent(event)}
         </View>
       ));
     return (
@@ -30,7 +65,19 @@ class StaticLifecycleOverlay extends Component {
         <View style={styles.events}>
           {events}
         </View>
+        {this.renderDismissButton()}
       </View>
+    );
+  }
+
+  renderDismissButton = () => {
+    return (
+      <TouchableOpacity
+        style={styles.dismissBtn}
+        onPress={() => Navigation.dismissOverlay(this.props.componentId)}
+      >
+        <Text testID={testIDs.DISMISS_BUTTON} style={{ color: 'red', alignSelf: 'center' }}>X</Text>
+      </TouchableOpacity>
     );
   }
 }
@@ -45,6 +92,13 @@ const styles = {
     height: 150,
     backgroundColor: '#c1d5e0ae',
     flexDirection: 'column'
+  },
+  dismissBtn: {
+    position: 'absolute',
+    width: 35,
+    height: 35,
+    backgroundColor: 'white',
+    justifyContent: 'center'
   },
   events: {
     flexDirection: 'column',

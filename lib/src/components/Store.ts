@@ -1,42 +1,26 @@
 import * as _ from 'lodash';
 
 export class Store {
-  private propsByComponentId: {};
-  private componentsByName: {};
-  private refsById: {};
+  private componentsByName = {};
+  private propsById = {};
 
-  constructor() {
-    this.propsByComponentId = {};
-    this.componentsByName = {};
-    this.refsById = {};
+  setPropsForId(componentId: string, props) {
+    _.set(this.propsById, componentId, props);
   }
 
-  setPropsForComponentId(componentId, props) {
-    _.set(this.propsByComponentId, componentId, props);
+  getPropsForId(componentId: string) {
+    return _.get(this.propsById, componentId, {});
   }
 
-  getPropsForComponentId(componentId) {
-    return _.get(this.propsByComponentId, componentId, {});
-  }
-
-  setOriginalComponentClassForName(componentName, ComponentClass) {
+  setOriginalComponentClassForName(componentName: string, ComponentClass) {
     _.set(this.componentsByName, componentName, ComponentClass);
   }
 
-  getOriginalComponentClassForName(componentName) {
+  getOriginalComponentClassForName(componentName: string) {
     return _.get(this.componentsByName, componentName);
   }
 
-  setRefForComponentId(id, ref) {
-    _.set(this.refsById, id, ref);
-  }
-
-  getRefForComponentId(id) {
-    return _.get(this.refsById, id);
-  }
-
-  cleanId(id) {
-    _.unset(this.refsById, id);
-    _.unset(this.propsByComponentId, id);
+  cleanId(id: string) {
+    _.unset(this.propsById, id);
   }
 }

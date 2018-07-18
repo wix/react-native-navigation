@@ -24,6 +24,7 @@
     "url": "https://github.com/wix/react-native-navigation.git"
   },
   "main": "lib/dist/index.js",
+  "typings": "lib/dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./lib/dist && tsc",
     "xcode": "open playground/ios/playground.xcodeproj",
@@ -40,11 +41,12 @@
     "test-e2e-android": "node ./scripts/test-e2e --android",
     "pretest-e2e-ios": "npm run build",
     "test-e2e-ios": "node ./scripts/test-e2e --ios",
+    "test-e2e-ios-multi": "npm run test-e2e-ios -- --multi",
     "test-all": "node ./scripts/test-all",
     "prerelease": "npm run build",
     "release": "node ./scripts/release",
     "local-docs": "node ./scripts/local-docs",
-    "gen-docs": "./tsn.sh ./scripts/gen-docs"
+    "gen-docs": "ts-node ./scripts/gen-docs/Main"
   },
   "peerDependencies": {
     "react": "*",
@@ -53,19 +55,18 @@
   "dependencies": {
     "lodash": "4.x.x",
     "prop-types": "15.x.x",
-    "tslib": "1.x.x",
+    "react-lifecycles-compat": "2.0.0",
+    "hoist-non-react-statics": "2.x.x",
     "@types/react": "16.x.x",
-    "@types/react-native": "0.49.x",
+    "@types/react-native": "0.51.x",
     "@types/lodash": "4.x.x",
     "@types/prop-types": "15.x.x",
     "@types/react-test-renderer": "16.x.x",
-    "@types/jest": "22.x.x",
-    "@types/node": "9.x.x"
+    "@types/jest": "22.x.x"
   },
   "devDependencies": {
     "detox": "7.x.x",
     "jest": "22.x.x",
-    "mocha": "4.x.x",
     "react": "16.2.0",
     "react-native": "0.51.x",
     "react-redux": "5.x.x",
@@ -75,10 +76,10 @@
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "tslint": "5.x.x",
-    "typescript": "2.x.x",
-    "ts-node": "5.x.x",
+    "typescript": "2.9.x",
     "typedoc": "0.x.x",
-    "handlebars": "4.x.x"
+    "handlebars": "4.x.x",
+    "ts-node": "5.x.x"
   },
   "babel": {
     "env": {
@@ -101,7 +102,8 @@
       "integration/**/*.js",
       "!lib/dist/index.js",
       "!lib/dist/Navigation.js",
-      "!lib/dist/adapters/**/*"
+      "!lib/dist/adapters/**/*",
+      "!lib/dist/interfaces/**/*"
     ],
     "resetMocks": true,
     "resetModules": true,
@@ -112,12 +114,17 @@
         "lines": 100,
         "statements": 100
       }
-    }
+    },
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "html"
+    ]
   },
   "detox": {
-    "test-runner": "mocha",
+    "test-runner": "jest",
     "specs": "e2e",
-    "runner-config": "e2e/mocha.opts",
     "configurations": {
       "ios.sim.debug": {
         "binaryPath": "playground/ios/DerivedData/playground/Build/Products/Debug-iphonesimulator/playground.app",
@@ -133,15 +140,15 @@
       },
       "android.emu.debug": {
         "binaryPath": "playground/android/app/build/outputs/apk/debug/app-debug.apk",
-        "build": "cd playground/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug",
+        "build": "cd playground/android && ./gradlew app:assembleDebug app:assembleAndroidTest -DtestBuildType=debug",
         "type": "android.emulator",
-        "name": "Nexus_5X_API_26"
+        "name": "Pixel_2_API_26"
       },
       "android.emu.release": {
         "binaryPath": "playground/android/app/build/outputs/apk/release/app-release.apk",
-        "build": "cd playground/android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release",
+        "build": "cd playground/android && ./gradlew app:assembleRelease app:assembleAndroidTest -DtestBuildType=release",
         "type": "android.emulator",
-        "name": "Nexus_5X_API_26"
+        "name": "Pixel_2_API_26"
       }
     }
   }
