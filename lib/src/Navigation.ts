@@ -105,7 +105,7 @@ export class Navigation {
   /**
    * Pop a component from the stack, regardless of it's position.
    */
-  public pop(componentId: string, params): Promise<any> {
+  public pop(componentId: string, params?): Promise<any> {
     return this.commands.pop(componentId, params);
   }
 

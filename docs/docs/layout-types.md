@@ -1,4 +1,4 @@
-# Layout Types
+# Layouts
 
 The possibilities of the RNN layout API are wide open in terms of what you can construct with it: stacks, tabs and drawers in many combinations.
 
@@ -48,7 +48,7 @@ const bottomTabs = {
         children: [],
         options: {
           bottomTab: {
-            title: 'Tab 1',
+            text: 'Tab 1',
             icon: require('../images/one.png')
           }
         }
@@ -59,7 +59,7 @@ const bottomTabs = {
         name: 'secondTabScreen',
         options: {
           bottomTab: {
-            title: 'Tab 2',
+            text: 'Tab 2',
             icon: require('../images/two.png')
           }
         }
@@ -68,6 +68,59 @@ const bottomTabs = {
   ],
   options: {}
 }
+```
+
+### Selecting tabs programmatically
+
+The selected index is a style property which can be updated using the `mergeOptions` command. In order to update the BottomTabs options, Pass the BottomTabs `componentId` or the `componentId` of one of its children.
+
+?>We'll use the following BottomTabs layout to demonstrate programmatic tab selection.
+
+```js
+const bottomTabs = {
+  id: 'BottomTabsId',
+  children: [
+    {
+      component: {
+        name: 'FirstScreen',
+        options: { ... }
+      }
+    },
+    {
+      component: {
+        id: 'SecondScreenId',
+        name: 'SecondScreen',
+        options: { ... }
+      }
+    }
+  ]
+}
+```
+
+#### selecting a tab by index
+
+The following `mergeOptions` command will select the second tab. We're passing the id of our BottomTabs, but we could also use the id of any of the child components, for example `SecondScreenId`.
+
+```js
+Navigation.mergeOptions('BottomTabsId', {
+  bottomTabs: {
+    currentTabIndex: 1
+  }
+});
+```
+
+#### selecting a tab by componentId
+
+Tabs can also be selected by componentId. This is particularly useful in cases where you don't know in which tab a screen is contained.
+
+For example, if invoked from one of the child components;`SecondScreen` or `FirstScreen`, the following merge command will select the tab containing the child.
+
+```js
+Navigation.mergeOptions(this.props.componentId, {
+  bottomTabs: {
+    currentTabId: this.props.componentId
+  }
+});
 ```
 
 ## sideMenu
@@ -112,9 +165,9 @@ const splitView = {
 }
 ```
 
-# Layout Examples
+## Layout Examples
 
-## Single page app with two side menus:
+### Single page app with two side menus:
 
 ```js
 Navigation.setRoot({
@@ -146,7 +199,7 @@ Navigation.setRoot({
 });
 ```
 
-## Tab based app (with passProps example):
+### Tab based app (with passProps example):
 
 ```js
 Navigation.setRoot({
@@ -176,7 +229,7 @@ Navigation.setRoot({
 });
 ```
 
-## Stack based app (with options example, initialised with 2 screens):
+### Stack based app (with options example, initialised with 2 screens):
 
 ```js
 Navigation.setRoot({

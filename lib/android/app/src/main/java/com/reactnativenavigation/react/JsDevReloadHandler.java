@@ -7,13 +7,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.KeyEvent;
 
-import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener;
 import com.facebook.react.devsupport.interfaces.DevSupportManager;
 import com.reactnativenavigation.utils.UiUtils;
 
-import javax.annotation.Nullable;
-
-public class JsDevReloadHandler implements DevBundleDownloadListener {
+public class JsDevReloadHandler extends JsDevReloadHandlerFacade {
     private static final String RELOAD_BROADCAST = "com.reactnativenavigation.broadcast.RELOAD";
 
     public interface ReloadListener {
@@ -38,16 +35,6 @@ public class JsDevReloadHandler implements DevBundleDownloadListener {
     @Override
     public void onSuccess() {
         UiUtils.runOnMainThread(reloadListener::onReload);
-    }
-
-    @Override
-    public void onProgress(@Nullable String status, @Nullable Integer done, @Nullable Integer total) {
-
-    }
-
-    @Override
-    public void onFailure(Exception cause) {
-
     }
 
     public void setReloadListener(ReloadListener listener) {
