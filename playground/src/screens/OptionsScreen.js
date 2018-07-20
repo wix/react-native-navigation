@@ -130,7 +130,7 @@ class OptionsScreen extends Component {
         <Button title='Top Bar Transparent' onPress={this.onClickTopBarTransparent} />
         <Button title='Top Bar Opaque' onPress={this.onClickTopBarOpaque} />
         <Button title='scrollView Screen' testID={testIDs.SCROLLVIEW_SCREEN_BUTTON} onPress={this.onClickScrollViewScreen} />
-        <Button title='Custom Transition' testID={testIDs.CUSTOM_TRANSITION_BUTTON} onPress={this.onClickCustomTranstition} />
+        <Button title='Custom Transition' testID={testIDs.CUSTOM_TRANSITION_BUTTON} onPress={this.onClickCustomTransition} />
         {Platform.OS === 'android' && <Button title='Hide fab' testID={testIDs.HIDE_FAB} onPress={this.onClickFab} />}
         <Button title='Show overlay' testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
         <Button title='Show touch through overlay' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
@@ -207,7 +207,7 @@ class OptionsScreen extends Component {
     });
   }
 
-  onClickCustomTranstition = () => {
+  onClickCustomTransition = () => {
     Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.CustomTransitionOrigin'
