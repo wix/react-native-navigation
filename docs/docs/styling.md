@@ -70,7 +70,7 @@ Navigation.mergeOptions(this.props.componentId, {
   modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popOver', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
   topBar: {
     visible: true,
-    animate: false, // Controls wether TopBar visibility changes should be animated
+    animate: false, // Controls whether TopBar visibility changes should be animated
     hideOnScroll: true,
     buttonColor: 'black',
     drawBehind: false,
@@ -115,7 +115,7 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   bottomTabs: {
     visible: true,
-    animate: false, // Controls wether BottomTabs visibility changes should be animated
+    animate: false, // Controls whether BottomTabs visibility changes should be animated
     currentTabIndex: 0,
     currentTabId: 'currentTabId',
     testID: 'bottomTabsTestID',

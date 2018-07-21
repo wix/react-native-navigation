@@ -15,6 +15,11 @@ const FAB = 'fab';
 const TOPBAR_HEIGHT = 67;
 
 class OptionsScreen extends Component {
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
   static get options() {
     return {
       statusBar: {
@@ -137,8 +142,8 @@ class OptionsScreen extends Component {
     );
   }
 
-  onNavigationButtonPressed(id) {
-    if (id === BUTTON_ONE) {
+  navigationButtonPressed({buttonId}) {
+    if (buttonId === BUTTON_ONE) {
       Navigation.mergeOptions(this.props.componentId, {
         topBar: {
           rightButtons: [{
@@ -155,7 +160,7 @@ class OptionsScreen extends Component {
           leftButtons: []
         }
       });
-    } else if (id === BUTTON_TWO) {
+    } else if (buttonId === BUTTON_TWO) {
       Navigation.mergeOptions(this.props.componentId, {
         topBar: {
           rightButtons: [{
@@ -173,7 +178,7 @@ class OptionsScreen extends Component {
           }]
         }
       });
-    } else if (id === BUTTON_LEFT) {
+    } else if (buttonId === BUTTON_LEFT) {
       Navigation.pop(this.props.componentId);
     }
   }

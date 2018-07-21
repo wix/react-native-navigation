@@ -129,13 +129,12 @@ public class Navigator extends ParentController {
     public void push(final String fromId, final ViewController viewController, CommandListener listener) {
         ViewController from = findControllerById(fromId);
         if (from != null) {
-            from.performOnParentStack(stack -> ((StackController) stack).push(viewController, listener));
+            from.performOnParentStack(
+                    stack -> ((StackController) stack).push(viewController, listener),
+                    () -> rejectPush(fromId, viewController, listener)
+            );
         } else {
-            listener.onError("Could not push component: " +
-                             viewController.getId() +
-                             ". Stack with id " +
-                             fromId +
-                             " was not found.");
+            rejectPush(fromId, viewController, listener);
         }
     }
 
@@ -203,5 +202,13 @@ public class Navigator extends ParentController {
     public ViewController findControllerById(String id) {
         ViewController controllerById = super.findControllerById(id);
         return controllerById != null ? controllerById : modalStack.findControllerById(id);
+    }
+
+    private void rejectPush(String fromId, ViewController viewController, CommandListener listener) {
+        listener.onError("Could not push component: " +
+                         viewController.getId() +
+                         ". Stack with id " +
+                         fromId +
+                         " was not found.");
     }
 }

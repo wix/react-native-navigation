@@ -118,7 +118,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 	@CallSuper
     protected void clearOptions() {
 	    applyOnParentController(parent -> ((ParentController) parent).clearOptions());
-        options = initialOptions.copy();
+        options = initialOptions.copy().clearOneTimeOptions();
     }
 
     public void setupTopTabsWithViewPager(ViewPager viewPager) {

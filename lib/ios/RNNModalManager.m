@@ -14,15 +14,23 @@
 }
 
 -(void)showModalAfterLoad:(NSDictionary*)notif {
-	UIViewController<RNNRootViewProtocol>* topVC = (UIViewController<RNNRootViewProtocol>*)[self topPresentedVC];
+	UIViewController* topVC = [self topPresentedVC];
 	topVC.definesPresentationContext = YES;
-	RNNNavigationOptions* options = topVC.getLeafViewController.options;
-
-	if (options.animations.showModal.hasCustomAnimation) {
-		self.toVC.transitioningDelegate = topVC;
-	}
+	BOOL animated = true;
 	
-	[topVC presentViewController:self.toVC animated:options.animations.showModal.enable completion:^{
+	if ([topVC conformsToProtocol:@protocol(RNNRootViewProtocol)]) {
+		UIViewController<RNNRootViewProtocol> *navigationTopVC = (UIViewController<RNNRootViewProtocol>*)topVC;
+		RNNNavigationOptions* options = navigationTopVC.getLeafViewController.options;
+		if (options.animations.showModal.hasCustomAnimation) {
+			self.toVC.transitioningDelegate = navigationTopVC;
+		}
+		
+		animated = options.animations.showModal.enable;
+	}
+
+	
+	
+	[topVC presentViewController:self.toVC animated:animated completion:^{
 		if (_completionBlock) {
 			_completionBlock();
 			_completionBlock = nil;
