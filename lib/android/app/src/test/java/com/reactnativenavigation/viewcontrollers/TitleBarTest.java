@@ -66,7 +66,7 @@ public class TitleBarTest extends BaseTest {
 
         textButton = new Button();
         textButton.id = "textButton";
-        textButton.title = new Text("Btn");
+        textButton.text = new Text("Btn");
 
         customButton = new Button();
         customButton.id = "customBtn";
@@ -78,7 +78,7 @@ public class TitleBarTest extends BaseTest {
     public void setButton_setsTextButton() {
         uut.setRightButtons(rightButtons(textButton));
         uut.setLeftButtons(leftButton(leftButton));
-        assertThat(uut.getMenu().getItem(0).getTitle()).isEqualTo(textButton.title.get());
+        assertThat(uut.getMenu().getItem(0).getTitle()).isEqualTo(textButton.text.get());
     }
 
     @Test
@@ -141,7 +141,7 @@ public class TitleBarTest extends BaseTest {
     public void setRightButtons_buttonsAreAddedInReverseOrderToMatchOrderOnIOs() {
         uut.setLeftButtons(new ArrayList<>());
         uut.setRightButtons(rightButtons(textButton, customButton));
-        assertThat(uut.getMenu().getItem(1).getTitle()).isEqualTo(textButton.title.get());
+        assertThat(uut.getMenu().getItem(1).getTitle()).isEqualTo(textButton.text.get());
     }
 
     @Test

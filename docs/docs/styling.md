@@ -70,15 +70,15 @@ Navigation.mergeOptions(this.props.componentId, {
   modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popOver', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
   topBar: {
     visible: true,
-    animate: false, // Controls wether TopBar visibility changes should be animated
+    animate: false, // Controls whether TopBar visibility changes should be animated
     hideOnScroll: true,
     buttonColor: 'black',
     drawBehind: false,
     testID: 'topBar',
-    largeTitle: true, // iOS 11+ Large Title
     searchBar: true, // iOS 11+ native UISearchBar inside topBar
     searchBarHiddenWhenScrolling: true,
     searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
+    // iOS 11+ Large Title
     largeTitle: {
       visible: true,
       fontSize: 30,
@@ -115,7 +115,7 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   bottomTabs: {
     visible: true,
-    animate: false, // Controls wether BottomTabs visibility changes should be animated
+    animate: false, // Controls whether BottomTabs visibility changes should be animated
     currentTabIndex: 0,
     currentTabId: 'currentTabId',
     testID: 'bottomTabsTestID',
@@ -224,7 +224,9 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   bottomTabs: {
     titleDisplayMode: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' // Sets the title state for each tab.
-  }
+  },
+  bottomTab: {
+    selectedFontSize: 19 // Selected tab font size in sp
 }
 ```
 

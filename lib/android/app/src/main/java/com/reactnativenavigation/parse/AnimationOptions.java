@@ -26,7 +26,6 @@ public class AnimationOptions {
         AnimationOptions options = new AnimationOptions();
         if (json == null) return options;
 
-        options.hasValue = true;
         for (Iterator<String> it = json.keys(); it.hasNext(); ) {
             String key = it.next();
             switch (key) {
@@ -36,6 +35,9 @@ public class AnimationOptions {
                 case "enable":
                     options.enable = BoolParser.parse(json, key);
                     break;
+                case "waitForRender":
+                    options.waitForRender = BoolParser.parse(json, key);
+                    break;
                 default:
                     options.valueOptions.add(ValueAnimationOptions.parse(json.optJSONObject(key), getAnimProp(key)));
             }
@@ -44,30 +46,27 @@ public class AnimationOptions {
         return options;
     }
 
-    private boolean hasValue = false;
-
     public Text id = new NullText();
     public Bool enable = new NullBool();
+    public Bool waitForRender = new NullBool();
     private HashSet<ValueAnimationOptions> valueOptions = new HashSet<>();
 
     void mergeWith(AnimationOptions other) {
-        if (other.hasValue()) {
-            hasValue = true;
-            id = other.id;
-            valueOptions = other.valueOptions;
-        }
+        if (other.id.hasValue()) id = other.id;
+        if (other.enable.hasValue()) enable = other.enable;
+        if (other.waitForRender.hasValue()) waitForRender = other.waitForRender;
+        if (!other.valueOptions.isEmpty()) valueOptions = other.valueOptions;
     }
 
     void mergeWithDefault(AnimationOptions defaultOptions) {
-        if (defaultOptions.hasValue()) {
-            hasValue = true;
-            id = defaultOptions.id;
-            valueOptions = defaultOptions.valueOptions;
-        }
+        if (!id.hasValue()) id = defaultOptions.id;
+        if (!enable.hasValue()) enable = defaultOptions.enable;
+        if (!waitForRender.hasValue()) waitForRender = defaultOptions.waitForRender;
+        if (valueOptions.isEmpty()) valueOptions = defaultOptions.valueOptions;
     }
 
     public boolean hasValue() {
-        return hasValue;
+        return id.hasValue() || enable.hasValue() || waitForRender.hasValue();
     }
 
     public AnimatorSet getAnimation(View view) {
@@ -75,7 +74,7 @@ public class AnimationOptions {
     }
 
     public AnimatorSet getAnimation(View view, AnimatorSet defaultAnimation) {
-        if (!hasValue()) return defaultAnimation;
+        if (!hasAnimation()) return defaultAnimation;
         AnimatorSet animationSet = new AnimatorSet();
         List<Animator> animators = new ArrayList<>();
         for (ValueAnimationOptions options : valueOptions) {
@@ -105,5 +104,9 @@ public class AnimationOptions {
                 return View.ROTATION;
         }
         throw new IllegalArgumentException("This animation is not supported: " + key);
+    }
+
+    public boolean hasAnimation() {
+        return !valueOptions.isEmpty();
     }
 }

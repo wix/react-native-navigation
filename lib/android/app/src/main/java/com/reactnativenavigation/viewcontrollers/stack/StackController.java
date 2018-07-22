@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
@@ -89,14 +90,12 @@ public class StackController extends ParentController<StackLayout> {
                         child
                 )
         );
-        animator.setOptions(options.animations);
     }
 
     @Override
     public void mergeChildOptions(Options options, Component child) {
         super.mergeChildOptions(options, child);
         presenter.mergeChildOptions(options, child);
-        animator.mergeOptions(options.animations);
         if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
             fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
         }
@@ -130,17 +129,22 @@ public class StackController extends ParentController<StackLayout> {
         child.setParentController(this);
         stack.push(child.getId(), child);
         backButtonHelper.addToPushedChild(this, child);
-        ViewGroup childView = child.getView();
-        childView.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        presenter.applyLayoutParamsOptions(resolveCurrentOptions(), childView);
-        getView().addView(childView);
+        Options resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
+        addChildToStack(child, child.getView(), resolvedOptions);
 
         if (toRemove != null) {
-            if (child.options.animations.push.enable.isTrueOrUndefined()) {
-                animator.push(child.getView(), () -> {
-                    getView().removeView(toRemove.getView());
-                    listener.onSuccess(child.getId());
-                });
+            if (resolvedOptions.animations.push.enable.isTrueOrUndefined()) {
+                if (resolvedOptions.animations.push.waitForRender.isTrue()) {
+                    child.setOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.push, () -> {
+                        getView().removeView(toRemove.getView());
+                        listener.onSuccess(child.getId());
+                    }));
+                } else {
+                    animator.push(child.getView(), resolvedOptions.animations.push, () -> {
+                        getView().removeView(toRemove.getView());
+                        listener.onSuccess(child.getId());
+                    });
+                }
             } else {
                 getView().removeView(toRemove.getView());
                 listener.onSuccess(child.getId());
@@ -148,6 +152,13 @@ public class StackController extends ParentController<StackLayout> {
         } else {
             listener.onSuccess(child.getId());
         }
+    }
+
+    private void addChildToStack(ViewController child, View view, Options resolvedOptions) {
+        view.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
+        presenter.applyLayoutParamsOptions(resolvedOptions, view);
+        getView().addView(view);
     }
 
     public void setRoot(ViewController child, CommandListener listener) {
@@ -181,16 +192,16 @@ public class StackController extends ParentController<StackLayout> {
         final ViewController appearing = stack.peek();
         disappearing.onViewWillDisappear();
         appearing.onViewWillAppear();
+        Options resolvedOptions = resolveCurrentOptions();
         ViewGroup appearingView = appearing.getView();
         if (appearingView.getLayoutParams() == null) {
             appearingView.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-            Options options = resolveCurrentOptions();
-            presenter.applyLayoutParamsOptions(options, appearingView);
+            presenter.applyLayoutParamsOptions(resolvedOptions, appearingView);
         }
         getView().addView(appearingView, 0);
         presenter.onChildWillAppear(appearing.options, disappearing.options);
         if (disappearing.options.animations.pop.enable.isTrueOrUndefined()) {
-            animator.pop(disappearing.getView(), () -> finishPopping(disappearing, listener));
+            animator.pop(disappearing.getView(), resolvedOptions.animations.pop, () -> finishPopping(disappearing, listener));
         } else {
             finishPopping(disappearing, listener);
         }

@@ -23,7 +23,7 @@ describe('ComponentRegistry', () => {
   beforeEach(() => {
     store = new Store();
     mockRegistry = AppRegistry.registerComponent = jest.fn(AppRegistry.registerComponent);
-    uut = new ComponentRegistry(store);
+    uut = new ComponentRegistry(store, {} as any);
   });
 
   it('registers component component by componentName into AppRegistry', () => {

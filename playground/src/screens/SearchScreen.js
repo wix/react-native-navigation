@@ -38,6 +38,7 @@ class SearchControllerScreen extends Component {
     this.state = {
       query: ''
     };
+    Navigation.events().bindComponent(this);
   }
 
   filteredData() {
@@ -98,8 +99,8 @@ class SearchControllerScreen extends Component {
     );
   }
 
-  onSearchBarUpdated(query, isFocused) {
-    this.setState({ query, isFocused });
+  searchBarUpdated({text, isFocused}) {
+    this.setState({ query: text, isFocused });
   }
 }
 

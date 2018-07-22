@@ -58,7 +58,7 @@
     "react-lifecycles-compat": "2.0.0",
     "hoist-non-react-statics": "2.x.x",
     "@types/react": "16.x.x",
-    "@types/react-native": "0.51.1",
+    "@types/react-native": "0.51.x",
     "@types/lodash": "4.x.x",
     "@types/prop-types": "15.x.x",
     "@types/react-test-renderer": "16.x.x",
@@ -76,7 +76,7 @@
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "tslint": "5.x.x",
-    "typescript": "2.7.x",
+    "typescript": "2.9.x",
     "typedoc": "0.x.x",
     "handlebars": "4.x.x",
     "ts-node": "5.x.x"

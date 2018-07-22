@@ -1,4 +1,3 @@
-import * as Handlebars from 'handlebars';
 import * as Typedoc from 'typedoc';
 
 export interface PropertyContext {
@@ -16,6 +15,7 @@ export interface MethodContext {
   arguments: ArgumentContext[];
   returnType: string;
   source: string;
+  line: number;
   comment?: string;
 }
 
@@ -42,16 +42,28 @@ export class ClassParser {
 
   private parseMethods(reflection: Typedoc.DeclarationReflection): MethodContext[] {
     const methodReflections = reflection.getChildrenByKind(Typedoc.ReflectionKind.Method);
+    const methods = methodReflections.map((m) => this.parseMethod(m))
+      .filter((m) => !m.source.includes('/node_modules/'))
+      .sort((a, b) => a.line - b.line);
+    return methods;
+  }
 
-    methodReflections.sort((a, b) => a.sources[0].line - b.sources[0].line);
-
-    return methodReflections.map((methodReflection) => ({
-      name: methodReflection.name,
-      arguments: this.parseArguments(methodReflection.signatures[0].parameters || []),
-      returnType: methodReflection.signatures[0].type.toString(),
-      source: `${this.sourceLinkPrefix}/${methodReflection.sources[0].fileName}#L${methodReflection.sources[0].line}`,
-      comment: methodReflection.signatures[0].comment ? methodReflection.signatures[0].comment.shortText : ''
-    }));
+  private parseMethod(methodReflection: Typedoc.DeclarationReflection) {
+    const name = methodReflection.name;
+    const line = methodReflection.sources[0].line;
+    const fileName = methodReflection.sources[0].fileName;
+    const source = `${this.sourceLinkPrefix}/${fileName}#L${line}`;
+    const comment = methodReflection.signatures[0].comment ? methodReflection.signatures[0].comment.shortText : '';
+    const args = this.parseArguments(methodReflection.signatures[0].parameters || []);
+    const returnType = methodReflection.signatures[0].type.toString();
+    return {
+      name,
+      arguments: args,
+      returnType,
+      source,
+      line,
+      comment
+    };
   }
 
   private parseArguments(parameters: Typedoc.ParameterReflection[]): ArgumentContext[] {

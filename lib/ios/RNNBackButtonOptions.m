@@ -3,8 +3,8 @@
 @implementation RNNBackButtonOptions
 
 - (void)applyOn:(UIViewController *)viewController {
-	if (self.image) {
-		UIImage *image = self.image ? [RCTConvert UIImage:self.image] : nil;
+	if (self.icon) {
+		UIImage *image = self.icon ? [RCTConvert UIImage:self.icon] : nil;
 		[viewController.navigationController.navigationBar setBackIndicatorImage:image];
 		[viewController.navigationController.navigationBar setBackIndicatorTransitionMaskImage:image];
 	}

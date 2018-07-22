@@ -35,7 +35,8 @@
 
 -(void)setButtons:(NSArray*)buttons side:(NSString*)side animated:(BOOL)animated {
 	NSMutableArray *barButtonItems = [NSMutableArray new];
-	for (NSDictionary *button in buttons) {
+	NSArray* resolvedButtons = [self resolveButtons:buttons];
+	for (NSDictionary *button in resolvedButtons) {
 		RNNUIBarButtonItem* barButtonItem = [self buildButton:button];
 		if(barButtonItem) {
 			[barButtonItems addObject:barButtonItem];
@@ -53,9 +54,17 @@
 	}
 }
 
+- (NSArray *)resolveButtons:(id)buttons {
+	if ([buttons isKindOfClass:[NSArray class]]) {
+		return buttons;
+	} else {
+		return @[buttons];
+	}
+}
+
 -(RNNUIBarButtonItem*)buildButton: (NSDictionary*)dictionary {
 	NSString* buttonId = dictionary[@"id"];
-	NSString* title = dictionary[@"title"];
+	NSString* title = dictionary[@"text"];
 	NSDictionary* component = dictionary[@"component"];
 	
 	if (!buttonId) {
@@ -114,13 +123,17 @@
 	
 	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:_defaultButtonStyle.fontSize];
 	NSString* fontFamily = [self fontFamily:dictionary[@"fontFamily"] defaultFontFamily:_defaultButtonStyle.fontFamily];
+	UIFont *font = nil;
 	if (fontFamily) {
-		[textAttributes setObject:[UIFont fontWithName:fontFamily size:[fontSize floatValue]] forKey:NSFontAttributeName];
-	} else{
-		[textAttributes setObject:[UIFont systemFontOfSize:[fontSize floatValue]] forKey:NSFontAttributeName];
+		font = [UIFont fontWithName:fontFamily size:[fontSize floatValue]];
+	} else {
+		font = [UIFont systemFontOfSize:[fontSize floatValue]];
 	}
+	[textAttributes setObject:font forKey:NSFontAttributeName];
+	[disabledTextAttributes setObject:font forKey:NSFontAttributeName];
 	
 	[barButtonItem setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
+	[barButtonItem setTitleTextAttributes:textAttributes forState:UIControlStateHighlighted];
 	[barButtonItem setTitleTextAttributes:disabledTextAttributes forState:UIControlStateDisabled];
 	
 	NSString *testID = dictionary[@"testID"];

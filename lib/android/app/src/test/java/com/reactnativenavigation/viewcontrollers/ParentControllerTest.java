@@ -27,6 +27,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ParentControllerTest extends BaseTest {
 
@@ -181,5 +182,47 @@ public class ParentControllerTest extends BaseTest {
         SimpleViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", options));
         uut.applyChildOptions(options, child1.getView());
         verify(presenter, times(0)).applyRootOptions(uut.getView(), options);
+    }
+
+    @Test
+    public void resolveCurrentOptions_returnOptionsIfNoChildren() {
+        assertThat(uut.getChildControllers().size()).isZero();
+        assertThat(uut.resolveCurrentOptions()).isEqualTo(uut.options);
+    }
+
+    @Test
+    public void resolveCurrentOptions_mergesWithCurrentChild() {
+        ViewController child1 = Mockito.mock(ViewController.class);
+        when(child1.getView()).thenReturn(new FrameLayout(activity));
+        Options copiedChildOptions = spy(new Options());
+        Options childOptions = spy(new Options() {
+            @Override
+            public Options copy() {
+                return copiedChildOptions;
+            }
+        });
+        when(child1.resolveCurrentOptions()).thenReturn(childOptions);
+
+        children.add(child1);
+
+        uut.ensureViewIsCreated();
+        assertThat(uut.getCurrentChild()).isEqualTo(child1);
+        uut.resolveCurrentOptions();
+        verify(child1).resolveCurrentOptions();
+        verify(copiedChildOptions).mergeWith(uut.options);
+    }
+
+    @Test
+    public void resolveCurrentOptions_withDefaultOptions() {
+        SimpleViewController child1 = new SimpleViewController(activity, childRegistry, "child1", new Options());
+        children.add(child1);
+        uut.ensureViewIsCreated();
+
+        Options defaultOptions = new Options();
+        Options currentOptions = spy(new Options());
+        ParentController spy = spy(uut);
+        Mockito.when(spy.resolveCurrentOptions()).thenReturn(currentOptions);
+        spy.resolveCurrentOptions(defaultOptions);
+        verify(currentOptions).withDefaultOptions(defaultOptions);
     }
 }

@@ -15,6 +15,11 @@ const FAB = 'fab';
 const TOPBAR_HEIGHT = 67;
 
 class OptionsScreen extends Component {
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
   static get options() {
     return {
       statusBar: {
@@ -75,19 +80,19 @@ class OptionsScreen extends Component {
           {
             id: BUTTON_ONE,
             testID: BUTTON_ONE,
-            title: 'One',
+            text: 'One',
             fontFamily: 'HelveticaNeue-Italic',
             fontSize: 28,
             color: 'red'
           }
         ],
-        leftButtons: [{
+        leftButtons: {
           id: BUTTON_LEFT,
           testID: BUTTON_LEFT,
           icon: require('../../img/navicon_add.png'),
-          title: 'Left',
+          text: 'Left',
           color: 'purple'
-        }]
+        }
       },
       fab: {
         id: FAB,
@@ -137,14 +142,14 @@ class OptionsScreen extends Component {
     );
   }
 
-  onNavigationButtonPressed(id) {
-    if (id === BUTTON_ONE) {
+  navigationButtonPressed({buttonId}) {
+    if (buttonId === BUTTON_ONE) {
       Navigation.mergeOptions(this.props.componentId, {
         topBar: {
           rightButtons: [{
             id: BUTTON_TWO,
             testID: BUTTON_TWO,
-            title: 'Two',
+            text: 'Two',
             icon: require('../../img/navicon_add.png'),
             disableIconTint: true,
             showAsAction: 'ifRoom',
@@ -155,25 +160,25 @@ class OptionsScreen extends Component {
           leftButtons: []
         }
       });
-    } else if (id === BUTTON_TWO) {
+    } else if (buttonId === BUTTON_TWO) {
       Navigation.mergeOptions(this.props.componentId, {
         topBar: {
           rightButtons: [{
             id: BUTTON_ONE,
             testID: BUTTON_ONE,
-            title: 'One',
+            text: 'One',
             color: 'red'
           }],
           leftButtons: [{
             id: BUTTON_LEFT,
             testID: BUTTON_LEFT,
             icon: require('../../img/navicon_add.png'),
-            title: 'Left',
+            text: 'Left',
             color: 'purple'
           }]
         }
       });
-    } else if (id === BUTTON_LEFT) {
+    } else if (buttonId === BUTTON_LEFT) {
       Navigation.pop(this.props.componentId);
     }
   }

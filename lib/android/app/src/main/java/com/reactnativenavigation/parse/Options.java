@@ -139,8 +139,9 @@ public class Options {
         return this;
     }
 
-    public void clearOneTimeOptions() {
+    public Options clearOneTimeOptions() {
         bottomTabsOptions.currentTabId = new NullText();
         bottomTabsOptions.currentTabIndex = new NullNumber();
+        return this;
     }
 }

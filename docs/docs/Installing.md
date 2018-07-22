@@ -138,7 +138,7 @@ zipStorePath=wrapper/dists
 ### 5. Update `gradle.properties` and disable incremental resource processing
 
 ```diff
-+# Disable incremental resource processing as it broke relase build
++# Disable incremental resource processing as it broke release build
 +android.enableAapt2=false
 ```
 

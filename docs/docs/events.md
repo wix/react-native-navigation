@@ -11,10 +11,15 @@ Navigation.events().registerAppLaunchedListener(() => {
 ```
 
 ## componentDidAppear
-Called each time this component appears on screen (attached to the view heirarchy)
+Called each time this component appears on screen (attached to the view hierarchy)
 
 ```js
 class MyComponent extends Component {
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
   componentDidAppear() {
 
   }
@@ -24,7 +29,7 @@ class MyComponent extends Component {
 This event can be observed globally as well:
 
 ```js
-Navigation.events().registerComponentDidAppearListener((componentId, componentName) => {
+Navigation.events().registerComponentDidAppearListener(({ componentId, componentName }) => {
 
 });
 ```
@@ -38,7 +43,12 @@ Called each time this component disappears from screen (detached from the view h
 
 ```js
 class MyComponent extends Component {
-  componentDidAppear() {
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
+  componentDidDisappear() {
 
   }
 }
@@ -47,7 +57,7 @@ class MyComponent extends Component {
 This event can be observed globally as well:
 
 ```js
-Navigation.events().registerComponentDidDisappearListener((componentId, componentName) => {
+Navigation.events().registerComponentDidDisappearListener(({ componentId, componentName }) => {
 
 });
 ```
@@ -60,7 +70,7 @@ Navigation.events().registerComponentDidDisappearListener((componentId, componen
 The `commandListener` is called whenever a *Navigation command* (i.e push, pop, showModal etc) is invoked.
 
 ```js
-Navigation.events().registerCommandListener((name, params) => {
+Navigation.events().registerCommandListener(({ name, params }) => {
 
 });
 ```
@@ -73,7 +83,7 @@ Navigation.events().registerCommandListener((name, params) => {
 Invoked when a command finishes executing in native. If the command contains animations, for example pushed screen animation,) the listener is invoked after the animation ends.
 
 ```js
-Navigation.events().registerCommandCompletedListener((commandId, completionTime, params) => {
+Navigation.events().registerCommandCompletedListener(({ commandId, completionTime, params }) => {
 
 });
 ```
@@ -83,43 +93,59 @@ Navigation.events().registerCommandCompletedListener((commandId, completionTime,
 |**commandId** | Id of the completed command|
 |**completionTime**|Timestamp when the command, and consecutive animations, completed.|
 
-## registerNativeEventListener
+## registerBottomTabSelectedListener
+Invoked when a BottomTab is selected by the user.
 
-The nativeEvent listener is used to track various events that originate in the native aspect of the app, primarily UI events.
+```js
+Navigation.events().registerBottomTabSelectedListener(({ selectedTabIndex, unselectedTabIndex }) => {
 
-### bottomTabSelected event
-This event is emitted whenever a BottomTab is selected by the user
+});
+```
 
-|Parameter|Description|
-|:-:|:--|
-|**name**|`bottomTabSelected`|
-|**params**|`unselectedTabIndex`: The index of the previously selected tab<br>`selectedTabIndex`: The index of the newly selected tab|
+|       Parameter         | Description |
+|:--------------------:|:-----|
+|**selectedTabIndex** | The index of the newly selected tab|
+|**unselectedTabIndex**|The index of the previously selected tab|
 
-### buttonPressed event
-This event is emitted whenever a TopBat button is pressed by the user
-
-|Parameter|Description|
-|:-:|:--|
-|**name**|`buttonPressed`|
-|**params**|`componentId`: `componentId` of the layout element the pressed button is bound to<br>`buttonId`: `id` of the pressed button|
-
-## onNavigationButtonPressed
-Called when a TopBar button is pressed.
+## navigationButtonPressed event
+This event is emitted whenever a TopBar button is pressed by the user.
 
 ```js
 class MyComponent extends Component {
-  onNavigationButtonPressed(buttonId) {
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+  
+  navigationButtonPressed({ buttonId }) {
 
   }
 }
 ```
+
+This event can be observed globally as well:
+
+```js
+Navigation.events().registerNavigationButtonPressedListener(({ buttonId }) => {
+
+});
+```
+
+|Parameter|Description|
+|:-:|:--|
+|**buttonId**|`buttonId`: `id` of the pressed button|
 
 ## onSearchBarUpdated (iOS 11+ only)
 Called when a SearchBar from NavigationBar gets updated.
 
 ```js
 class MyComponent extends Component {
-  onSearchBarUpdated(query, isFocused) {
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
+  onSearchBarUpdated({ query, isFocused }) {
 
   }
 }
@@ -130,6 +156,11 @@ Called when the cancel button on the SearchBar from NavigationBar gets pressed.
 
 ```js
 class MyComponent extends Component {
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+
   onSearchBarCancelPressed() {
 
   }

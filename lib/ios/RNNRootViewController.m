@@ -60,7 +60,6 @@
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	[self.options applyOn:self];
-	[self optionsUpdated];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -97,6 +96,10 @@
 	} else {
 		readyBlock();
 	}
+}
+
+- (UIViewController *)getLeafViewController {
+	return self;
 }
 
 - (void)onReactViewReady:(RNNReactViewReadyCompletionBlock)readyBlock {
@@ -289,11 +292,11 @@
 
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
 	if (self.previewController) {
-		RNNRootViewController * vc = (RNNRootViewController*) self.previewController;
-		[_eventEmitter sendOnNavigationEvent:@"previewContext" params:@{
-																		@"previewComponentId": vc.componentId,
-																		@"componentId": self.componentId
-																		}];
+//		RNNRootViewController * vc = (RNNRootViewController*) self.previewController;
+//		[_eventEmitter sendOnNavigationEvent:@"previewContext" params:@{
+//																		@"previewComponentId": vc.componentId,
+//																		@"componentId": self.componentId
+//																		}];
 	}
 	return self.previewController;
 }
@@ -301,15 +304,15 @@
 
 - (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
 	RNNRootViewController * vc = (RNNRootViewController*) self.previewController;
-	NSDictionary * params = @{
-							  @"previewComponentId": vc.componentId,
-							  @"componentId": self.componentId
-							  };
+//	NSDictionary * params = @{
+//							  @"previewComponentId": vc.componentId,
+//							  @"componentId": self.componentId
+//							  };
 	if (vc.options.preview.commit) {
-		[_eventEmitter sendOnNavigationEvent:@"previewCommit" params:params];
+//		[_eventEmitter sendOnNavigationEvent:@"previewCommit" params:params];
 		[self.navigationController pushViewController:vc animated:false];
 	} else {
-		[_eventEmitter sendOnNavigationEvent:@"previewDismissed" params:params];
+//		[_eventEmitter sendOnNavigationEvent:@"previewDismissed" params:params];
 	}
 }
 

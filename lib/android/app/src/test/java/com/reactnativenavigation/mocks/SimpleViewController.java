@@ -78,6 +78,11 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         }
 
         @Override
+        public boolean isRendered() {
+            return getChildCount() >= 1;
+        }
+
+        @Override
         public boolean isReady() {
             return false;
         }

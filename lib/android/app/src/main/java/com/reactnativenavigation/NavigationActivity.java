@@ -19,6 +19,7 @@ import com.reactnativenavigation.react.ReactGateway;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.Navigator;
+import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 
 public class NavigationActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity, JsDevReloadHandler.ReloadListener {
     @Nullable
@@ -29,7 +30,7 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        navigator = new Navigator(this, new ChildControllersRegistry(), new OverlayManager());
+        navigator = new Navigator(this, new ChildControllersRegistry(), new ModalStack(this), new OverlayManager());
         getReactGateway().onActivityCreated(this);
         navigator.getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         setContentView(navigator.getView());

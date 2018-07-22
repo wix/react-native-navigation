@@ -1,6 +1,6 @@
 
 #import "RNNStore.h"
-#import "RNNRootViewController.h"
+
 @interface RNNStore ()
 
 @end

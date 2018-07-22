@@ -14,9 +14,7 @@
 
 -(void)sendOnNavigationButtonPressed:(NSString*)componentId buttonId:(NSString*)buttonId;
 
--(void)sendOnNavigationEvent:(NSString *)commandName params:(NSDictionary*)params;
-
--(void)sendOnNavigationCommand:(NSString *)commandName params:(NSDictionary*)params;
+-(void)sendBottomTabSelected:(NSNumber *)selectedTabIndex unselected:(NSNumber*)unselectedTabIndex;
 
 -(void)sendOnNavigationCommandCompletion:(NSString *)commandName params:(NSDictionary*)params;
 
