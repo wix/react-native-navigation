@@ -145,7 +145,7 @@ class MyComponent extends Component {
     Navigation.events().bindComponent(this);
   }
 
-  searchBarUpdated({ query, isFocused }) {
+  searchBarUpdated({ text, isFocused }) {
 
   }
 }
