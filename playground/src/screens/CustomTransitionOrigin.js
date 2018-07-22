@@ -59,6 +59,11 @@ class CustomTransitionOrigin extends Component {
       component: {
         name: 'navigation.playground.CustomTransitionDestination',
         options: {
+          animations: {
+            push: {
+              waitForRender: true
+            }
+          },
           customTransition: {
             animations: [
               { type: 'sharedElement', fromId: 'title1', toId: 'title2', startDelay: 0, springVelocity: 0.2, duration: 0.5 },

@@ -14,7 +14,7 @@ class CustomTransitionDestination extends Component {
     return {
       topBar: {
         title: {
-          text: 'ye babyyyyyy',
+          text: 'Shared Element Transition',
           fontFamily: 'HelveticaNeue-Italic'
         },
         backButton: {
