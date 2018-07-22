@@ -6,6 +6,7 @@
 	NSMutableDictionary* _overlayDict;
 	RNNStore* _store;
 	RNNOverlayWindow *_overlayWindow;
+	UIWindow *_previousWindow;
 }
 
 - (instancetype)initWithStore:(RNNStore *)store {
@@ -19,6 +20,7 @@
 
 - (void)showOverlay:(RNNRootViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {
 	[self cacheOverlay:viewController];
+	_previousWindow = [UIApplication sharedApplication].keyWindow;
 	_overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	[_overlayWindow setWindowLevel:UIWindowLevelNormal];
 	[_overlayWindow setRootViewController:viewController];
@@ -30,6 +32,7 @@
 - (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
 	RNNRootViewController* viewController = [_overlayDict objectForKey:componentId];
 	if (viewController) {
+		[self detachOverlayWindow];
 		[self removeCachedOverlay:viewController];
 		completion();
 	} else {
@@ -44,12 +47,15 @@
 }
 
 - (void)removeCachedOverlay:(RNNRootViewController*)viewController {
-	[_overlayWindow setRootViewController:nil];
-	[_overlayWindow resignKeyWindow];
-	_overlayWindow = nil;
-	
 	[_overlayDict removeObjectForKey:viewController.componentId];
 	[_store removeComponent:viewController.componentId];
+}
+
+- (void)detachOverlayWindow {
+	[_overlayWindow setRootViewController:nil];
+	_overlayWindow = nil;
+	[_previousWindow makeKeyAndVisible];
+	_previousWindow = nil;
 }
 
 @end
