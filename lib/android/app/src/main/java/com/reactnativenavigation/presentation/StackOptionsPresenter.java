@@ -73,7 +73,7 @@ public class StackOptionsPresenter {
 
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
         topBar.setHeight(options.height.get(LayoutParams.WRAP_CONTENT));
-        topBar.setElevation(options.elevation);
+        topBar.setElevation(options.elevation.get(4d));
 
         topBar.setTitleHeight(options.title.height.get(LayoutParams.WRAP_CONTENT));
         topBar.setTitle(options.title.text.get(""));
@@ -172,7 +172,7 @@ public class StackOptionsPresenter {
 
     private void mergeTopBarOptions(TopBarOptions options, AnimationsOptions animationsOptions, Component component) {
         if (options.height.hasValue()) topBar.setHeight(options.height.get());
-        if (options.elevation.hasValue()) topBar.setElevation(options.elevation);
+        if (options.elevation.hasValue()) topBar.setElevation(options.elevation.get());
 
         if (options.title.height.hasValue()) topBar.setTitleHeight(options.title.height.get());
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
