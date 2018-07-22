@@ -3,6 +3,11 @@
   "extends": [
     "tslint:recommended"
   ],
+  "linterOptions": {
+    "exclude": [
+      "**/*.test.tsx"
+    ]
+  },
   "jsRules": {
     "no-console": [false],
     "quotemark": [

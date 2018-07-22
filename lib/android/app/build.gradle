@@ -54,6 +54,9 @@ android {
         reactNative55 {
             dimension "RNN.reactNativeVersion"
         }
+        reactNative56 {
+            dimension "RNN.reactNativeVersion"
+        }
     }
 }
 

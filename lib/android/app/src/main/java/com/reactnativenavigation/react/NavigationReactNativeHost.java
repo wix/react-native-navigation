@@ -25,7 +25,7 @@ public class NavigationReactNativeHost extends ReactNativeHost implements Bundle
 
     private final boolean isDebug;
     private final List<ReactPackage> additionalReactPackages;
-    private @Nullable DevBundleDownloadListener bundleListener;
+    private @Nullable NavigationDevBundleDownloadListener bundleListener;
     private final DevBundleDownloadListener bundleListenerMediator = new DevBundleDownloadListenerAdapter() {
         @Override
         public void onSuccess() {
@@ -48,7 +48,7 @@ public class NavigationReactNativeHost extends ReactNativeHost implements Bundle
     }
 
     @Override
-    public void setBundleLoaderListener(DevBundleDownloadListener listener) {
+    public void setBundleLoaderListener(NavigationDevBundleDownloadListener listener) {
         bundleListener = listener;
     }
 

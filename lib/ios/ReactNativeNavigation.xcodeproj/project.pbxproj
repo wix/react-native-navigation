@@ -1243,6 +1243,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
@@ -1259,6 +1260,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";

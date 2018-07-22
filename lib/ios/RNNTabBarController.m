@@ -41,6 +41,11 @@
 	}
 }
 
+- (void)setSelectedIndex:(NSUInteger)selectedIndex {
+	_currentTabIndex = selectedIndex;
+	[super setSelectedIndex:selectedIndex];
+}
+
 - (void)mergeOptions:(RNNOptions *)options {
 	[self.getLeafViewController mergeOptions:options];
 }
