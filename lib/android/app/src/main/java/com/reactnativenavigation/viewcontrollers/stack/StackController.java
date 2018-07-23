@@ -135,7 +135,7 @@ public class StackController extends ParentController<StackLayout> {
         if (toRemove != null) {
             if (resolvedOptions.animations.push.enable.isTrueOrUndefined()) {
                 if (resolvedOptions.animations.push.waitForRender.isTrue()) {
-                    child.setOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.push, toRemove.getElements(), child.getElements(), () -> {
+                    child.setOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.push, resolvedOptions.transitions, toRemove.getElements(), child.getElements(), () -> {
                         getView().removeView(toRemove.getView());
                         listener.onSuccess(child.getId());
                     }));

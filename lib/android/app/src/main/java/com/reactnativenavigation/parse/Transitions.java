@@ -6,11 +6,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransitionSet {
-    public List<Transition> transitions = new ArrayList<>();
+public class Transitions {
+    private List<Transition> transitions = new ArrayList<>();
 
-    public static TransitionSet parse(JSONObject json) {
-        TransitionSet result = new TransitionSet();
+    public List<Transition> get() {
+        return transitions;
+    }
+
+    public static Transitions parse(JSONObject json) {
+        Transitions result = new Transitions();
         if (json != null && json.has("animations")) {
             JSONArray animations = json.optJSONArray("animations");
             for (int i = 0; i < animations.length(); i++) {
@@ -24,11 +28,11 @@ public class TransitionSet {
         return !transitions.isEmpty();
     }
 
-    void mergeWith(final TransitionSet other) {
+    void mergeWith(final Transitions other) {
         if (other.hasValue()) transitions = other.transitions;
     }
 
-    void mergeWithDefault(TransitionSet defaultOptions) {
+    void mergeWithDefault(Transitions defaultOptions) {
         if (!hasValue()) transitions = defaultOptions.transitions;
     }
 }
