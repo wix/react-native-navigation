@@ -174,6 +174,7 @@ Navigation.mergeOptions(this.props.componentId, {
   backgroundImage: require('background.png'),
   rootBackgroundImage: require('rootBackground.png'),
   topBar: {
+    barStyle: 'default' | 'black',
     translucent: true,
     transparent: false,
     noBorder: false,
@@ -190,6 +191,7 @@ Navigation.mergeOptions(this.props.componentId, {
     },
   },
   bottomTabs: {
+    barStyle: 'default' | 'black',
     translucent: true,
     hideShadow: false
   },

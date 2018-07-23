@@ -10,6 +10,4 @@
 - (void)showOverlay:(UIViewController*)viewController completion:(RNNTransitionCompletionBlock)completion;
 - (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject;
 
-@property (nonatomic, retain) RNNOverlayWindow *overlayWindow;
-
 @end

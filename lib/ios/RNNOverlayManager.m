@@ -4,14 +4,14 @@
 
 @implementation RNNOverlayManager {
 	NSMutableDictionary* _overlayDict;
+	NSMutableDictionary* _overlayWindows;
 	RNNStore* _store;
-	RNNOverlayWindow *_overlayWindow;
-	UIWindow *_previousWindow;
 }
 
 - (instancetype)initWithStore:(RNNStore *)store {
 	self = [super init];
 	_overlayDict = [[NSMutableDictionary alloc] init];
+	_overlayWindows = [[NSMutableDictionary alloc] init];
 	_store = store;
 	return self;
 }
@@ -20,11 +20,11 @@
 
 - (void)showOverlay:(RNNRootViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {
 	[self cacheOverlay:viewController];
-	_previousWindow = [UIApplication sharedApplication].keyWindow;
-	_overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	[_overlayWindow setWindowLevel:UIWindowLevelNormal];
-	[_overlayWindow setRootViewController:viewController];
-	[_overlayWindow makeKeyAndVisible];
+	UIWindow* overlayWindow = [[RNNOverlayWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	[_overlayWindows setObject:overlayWindow forKey:viewController.componentId];
+	[overlayWindow setWindowLevel:UIWindowLevelNormal];
+	[overlayWindow setRootViewController:viewController];
+	[overlayWindow setHidden:NO];
 	
 	completion();
 }
@@ -32,7 +32,7 @@
 - (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
 	RNNRootViewController* viewController = [_overlayDict objectForKey:componentId];
 	if (viewController) {
-		[self detachOverlayWindow];
+		[self detachOverlayWindow:componentId];
 		[self removeCachedOverlay:viewController];
 		completion();
 	} else {
@@ -51,11 +51,11 @@
 	[_store removeComponent:viewController.componentId];
 }
 
-- (void)detachOverlayWindow {
-	[_overlayWindow setRootViewController:nil];
-	_overlayWindow = nil;
-	[_previousWindow makeKeyAndVisible];
-	_previousWindow = nil;
+- (void)detachOverlayWindow:(NSString *)componentId {
+	UIWindow* overlayWindow = [_overlayWindows objectForKey:componentId];
+	[overlayWindow setHidden:YES];
+	[overlayWindow setRootViewController:nil];
+	overlayWindow = nil;
 }
 
 @end

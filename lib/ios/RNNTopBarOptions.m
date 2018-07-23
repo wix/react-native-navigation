@@ -120,6 +120,12 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		disableTopBarTransparent();
 	}
 	
+	if (self.barStyle) {
+		viewController.navigationController.navigationBar.barStyle = [RCTConvert UIBarStyle:self.barStyle];
+	} else {
+		viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+	}
+
 	if (self.translucent) {
 		viewController.navigationController.navigationBar.translucent = [self.translucent boolValue];
 	} else {
