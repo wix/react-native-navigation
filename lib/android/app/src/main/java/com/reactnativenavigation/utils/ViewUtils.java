@@ -3,6 +3,9 @@ package com.reactnativenavigation.utils;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+
+import com.reactnativenavigation.react.ReactView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,5 +81,22 @@ public class ViewUtils {
     public static int getPreferredHeight(View view) {
         if (view.getLayoutParams() == null) return 0;
         return view.getLayoutParams().height < 0 ? view.getHeight() : view.getLayoutParams().height;
+    }
+
+    public static void performOnParentReactView(View child, Task<ReactView> task) {
+        ReactView parent = findParentReactView(child.getParent());
+        if (parent != null) {
+            task.run(parent);
+        }
+    }
+
+    private static ReactView findParentReactView(ViewParent parent) {
+        if (parent == null) {
+            return null;
+        }
+        if (parent instanceof ReactView) {
+            return (ReactView) parent;
+        }
+        return findParentReactView(parent.getParent());
     }
 }

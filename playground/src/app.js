@@ -155,6 +155,7 @@ function start() {
             {
               component: {
                 name: 'navigation.playground.WelcomeScreen'
+                // name: 'navigation.playground.CustomTransitionOrigin'
               }
             }
           ]

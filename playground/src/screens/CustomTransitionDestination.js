@@ -23,6 +23,17 @@ class CustomTransitionDestination extends Component {
         largeTitle: {
           visible: false
         }
+      },
+      animations: {
+        pop: {
+          content: {
+            alpha: {
+              from: 1,
+              to: 0,
+              duration: 250
+            }
+          }
+        }
       }
     };
   }

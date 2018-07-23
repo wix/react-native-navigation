@@ -14,6 +14,7 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.views.element.Element;
 
 @SuppressLint("ViewConstructor")
 public class ReactView extends ReactRootView implements IReactView {
@@ -105,5 +106,13 @@ public class ReactView extends ReactRootView implements IReactView {
     @RestrictTo(RestrictTo.Scope.TESTS)
     public String getComponentName() {
         return componentName;
+    }
+
+    public void registerElement(Element element) {
+
+    }
+
+    public void unregisterElement(Element view) {
+
     }
 }
