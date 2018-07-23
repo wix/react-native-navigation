@@ -46,6 +46,9 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 			viewController.navigationItem.searchController = search;
 			// enable it back if needed on componentDidAppear
 			viewController.navigationItem.hidesSearchBarWhenScrolling = NO;
+			
+			// Fixes #3450, otherwise, UIKit will infer the presentation context to be the root most view controller
+			viewController.definesPresentationContext = YES;
 		}
 	}
 	
