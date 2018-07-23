@@ -16,6 +16,8 @@ import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.views.element.Element;
 
+import java.util.ArrayList;
+
 @SuppressLint("ViewConstructor")
 public class ReactView extends ReactRootView implements IReactView {
 
@@ -24,6 +26,7 @@ public class ReactView extends ReactRootView implements IReactView {
 	private final String componentName;
 	private boolean isAttachedToReactInstance = false;
     private final JSTouchDispatcher jsTouchDispatcher;
+    private ArrayList<Element> elements = new ArrayList<>();
 
     public ReactView(final Context context, ReactInstanceManager reactInstanceManager, String componentId, String componentName) {
 		super(context);
@@ -109,10 +112,14 @@ public class ReactView extends ReactRootView implements IReactView {
     }
 
     public void registerElement(Element element) {
-
+        elements.add(element);
     }
 
-    public void unregisterElement(Element view) {
+    public void unregisterElement(Element element) {
+        elements.remove(element);
+    }
 
+    public ArrayList<Element> getElements() {
+        return elements;
     }
 }

@@ -6,20 +6,33 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
+import com.reactnativenavigation.views.element.Element;
+import com.reactnativenavigation.views.element.ElementTransitionManager;
+
+import java.util.Collections;
+import java.util.List;
 
 @SuppressWarnings("ResourceType")
 public class NavigationAnimator extends BaseAnimator {
 
-    public NavigationAnimator(Context context) {
+    private final ElementTransitionManager transitionManager;
+
+    public NavigationAnimator(Context context, ElementTransitionManager transitionManager) {
         super(context);
+        this.transitionManager = transitionManager;
     }
 
-    public void push(View view, NestedAnimationsOptions push, Runnable onAnimationEnd) {
+    public void push(ViewGroup view, NestedAnimationsOptions animation, Runnable onAnimationEnd) {
+        push(view, animation, Collections.EMPTY_LIST, Collections.EMPTY_LIST, onAnimationEnd);
+    }
+
+    public void push(ViewGroup view, NestedAnimationsOptions animation, List<Element> fromElements, List<Element> toElements, Runnable onAnimationEnd) {
         view.setVisibility(View.INVISIBLE);
-        AnimatorSet set = push.content.getAnimation(view, getDefaultPushAnimation(view));
+        AnimatorSet set = animation.content.getAnimation(view, getDefaultPushAnimation(view));
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {

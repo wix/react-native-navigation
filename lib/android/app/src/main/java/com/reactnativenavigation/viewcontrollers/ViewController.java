@@ -15,12 +15,17 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.presentation.FabOptionsPresenter;
+import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.element.Element;
+
+import java.util.Collections;
+import java.util.List;
 
 public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener {
 
@@ -263,5 +268,9 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     void applyOnController(ViewController controller, Task<ViewController> task) {
         if (controller != null) task.run(controller);
+    }
+
+    public List<Element> getElements() {
+        return getView() instanceof ReactView ? ((ReactView) view).getElements() : Collections.EMPTY_LIST;
     }
 }
