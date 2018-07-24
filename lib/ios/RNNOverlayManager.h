@@ -5,9 +5,7 @@
 
 @interface RNNOverlayManager : NSObject
 
-- (instancetype)initWithStore:(RNNStore*)store;
-
-- (void)showOverlay:(UIViewController*)viewController completion:(RNNTransitionCompletionBlock)completion;
-- (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject;
+- (void)showOverlay:(UIViewController*)viewController;
+- (void)dismissOverlay:(UIViewController*)viewController;
 
 @end

@@ -7,7 +7,7 @@
 #import "RNNSplitViewController.h"
 #import "RNNElementFinder.h"
 #import "React/RCTUIManager.h"
-
+#import "RNNErrorHandler.h"
 
 static NSString* const setRoot	= @"setRoot";
 static NSString* const setStackRoot	= @"setStackRoot";
@@ -40,7 +40,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	_eventEmitter = eventEmitter;
 	_modalManager = [[RNNModalManager alloc] initWithStore:_store];
 	_stackManager = [[RNNNavigationStackManager alloc] init];
-	_overlayManager = [[RNNOverlayManager alloc] initWithStore:_store];
+	_overlayManager = [[RNNOverlayManager alloc] init];
 	return self;
 }
 
@@ -249,19 +249,21 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 
 	UIViewController<RNNRootViewProtocol>* overlayVC = [_controllerFactory createOverlay:layout];
-	[_overlayManager showOverlay:overlayVC completion:^{
-		[_eventEmitter sendOnNavigationCommandCompletion:showOverlay params:@{@"layout": layout}];
-		completion();
-	}];
+	[_overlayManager showOverlay:overlayVC];
+	[_eventEmitter sendOnNavigationCommandCompletion:showOverlay params:@{@"layout": layout}];
+	completion();
 }
 
 - (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
 	[self assertReady];
-
-	[_overlayManager dismissOverlay:componentId completion:^{
-		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
+	UIViewController* viewController = [_store findComponentForId:componentId];
+	if (viewController) {
+		[_overlayManager dismissOverlay:viewController];
+		[_eventEmitter sendOnNavigationCommandCompletion:dismissOverlay params:@{@"componentId": componentId}];
 		completion();
-	} rejection:reject];
+	} else {
+		[RNNErrorHandler reject:reject withErrorCode:1010 errorDescription:@"ComponentId not found"];
+	}
 }
 
 #pragma mark - private
