@@ -42,48 +42,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3DBE0CF41F3B181A0099AA32"
-               BuildableName = "libfishhook.a"
-               BlueprintName = "fishhook"
-               ReferencedContainer = "container:../../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3C86DF451ADF2C930047B81A"
-               BuildableName = "libRCTWebSocket.a"
-               BlueprintName = "RCTWebSocket"
-               ReferencedContainer = "container:../../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D8AFADBC1BEE6F3F00A4592D"
-               BuildableName = "libReactNativeNavigation.a"
-               BlueprintName = "ReactNativeNavigation"
-               ReferencedContainer = "container:../../lib/ios/ReactNativeNavigation.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
                BuildableName = "playground.app"
                BlueprintName = "playground"
@@ -110,8 +68,19 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      language = ""
       shouldUseLaunchSchemeArgsEnv = "NO">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7B49FEBA1E95090800DEB3EA"
+               BuildableName = "ReactNativeNavigationTests.xctest"
+               BlueprintName = "ReactNativeNavigationTests"
+               ReferencedContainer = "container:../../lib/ios/ReactNativeNavigation.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
@@ -136,6 +105,7 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
