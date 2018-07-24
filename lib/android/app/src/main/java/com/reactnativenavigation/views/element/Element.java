@@ -5,7 +5,17 @@ import android.support.annotation.NonNull;
 import android.widget.FrameLayout;
 
 public class Element extends FrameLayout {
+    private String elementId;
+
     public Element(@NonNull Context context) {
         super(context);
+    }
+
+    public String getElementId() {
+        return elementId;
+    }
+
+    public void setElementId(String elementId) {
+        this.elementId = elementId;
     }
 }

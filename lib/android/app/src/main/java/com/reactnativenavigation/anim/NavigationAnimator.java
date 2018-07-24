@@ -34,7 +34,7 @@ public class NavigationAnimator extends BaseAnimator {
     public void push(ViewGroup view, NestedAnimationsOptions animation, Transitions transitions, List<Element> fromElements, List<Element> toElements, Runnable onAnimationEnd) {
         view.setVisibility(View.INVISIBLE);
         AnimatorSet set = animation.content.getAnimation(view, getDefaultPushAnimation(view));
-        set.getChildAnimations().addAll(transitionManager.createElementTransitions(transitions, fromElements, toElements));
+        set.getChildAnimations().addAll(transitionManager.createTransitions(transitions, fromElements, toElements));
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {

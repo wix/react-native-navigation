@@ -35,8 +35,8 @@ public class ElementViewManager extends ViewGroupManager<Element> {
     }
 
     @ReactProp(name = "elementId")
-    public void setElementId(Element element, String key) {
-
+    public void setElementId(Element element, String id) {
+        element.setElementId(id);
     }
 
     @Override

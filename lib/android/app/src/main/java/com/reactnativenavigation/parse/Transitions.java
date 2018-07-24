@@ -1,5 +1,7 @@
 package com.reactnativenavigation.parse;
 
+import android.support.annotation.RestrictTo;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,6 +13,15 @@ public class Transitions {
 
     public List<Transition> get() {
         return transitions;
+    }
+
+    public Transitions() {
+
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public Transitions(List<Transition> transitions) {
+        this.transitions = transitions;
     }
 
     public static Transitions parse(JSONObject json) {
