@@ -17,14 +17,17 @@ import static com.reactnativenavigation.utils.CollectionUtils.map;
 public class ElementTransitionManager {
 
     private final TransitionValidator validator;
+    private final TransitionAnimatorCreator animatorCreator;
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    public ElementTransitionManager(TransitionValidator validator) {
+    public ElementTransitionManager(TransitionValidator validator, TransitionAnimatorCreator animatorCreator) {
         this.validator = validator;
+        this.animatorCreator = animatorCreator;
     }
 
     public ElementTransitionManager() {
         validator = new TransitionValidator();
+        animatorCreator = new TransitionAnimatorCreator();
     }
 
     public Collection<? extends Animator> createTransitions(Transitions transitions, List<Element> fromElements, List<Element> toElements) {
@@ -35,6 +38,6 @@ public class ElementTransitionManager {
         List<Transition> validTransitions = filter(transitions.get(), (t) -> validator.validate(t, from, to));
         if (validTransitions.isEmpty()) return Collections.EMPTY_LIST;
 
-        return null;
+        return animatorCreator.create(validTransitions, from, to);
     }
 }

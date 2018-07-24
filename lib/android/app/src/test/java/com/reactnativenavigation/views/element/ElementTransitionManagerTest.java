@@ -16,6 +16,10 @@ import java.util.Collection;
 import java.util.Collections;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 public class ElementTransitionManagerTest extends BaseTest {
     private static final int DURATION = 250;
@@ -24,13 +28,17 @@ public class ElementTransitionManagerTest extends BaseTest {
     private Transition invalidTransition;
     private Element from1;
     private Element to1;
+    private TransitionValidator validator;
+    private TransitionAnimatorCreator animatorCreator;
 
     @Override
     public void beforeEach() {
-        uut = new ElementTransitionManager();
+        validator = spy(new TransitionValidator());
+        animatorCreator = spy(new TransitionAnimatorCreator());
+        uut = new ElementTransitionManager(validator, animatorCreator);
         Activity activity = newActivity();
         from1 = new Element(activity); from1.setElementId("from1Id");
-        to1 = new Element(activity); from1.setElementId("to1Id");
+        to1 = new Element(activity); to1.setElementId("to1Id");
         validTransition = createTransition(from1.getElementId(), to1.getElementId());
         invalidTransition = createTransition(from1.getElementId(), "nonexistentElement");
     }
@@ -75,16 +83,17 @@ public class ElementTransitionManagerTest extends BaseTest {
                 Collections.singletonList(from1),
                 Collections.singletonList(to1)
         );
+        verify(validator).validate(eq(invalidTransition), any(), any());
         assertThat(result).isEmpty();
     }
 
     @Test
-    public void createElementTransitions_createsAnimatorsForValidTransitions() {
-        Collection<? extends Animator> result = uut.createTransitions(
+    public void createElementTransitions_delegatesAnimatorCreationToCreator() {
+        uut.createTransitions(
                 new Transitions(Arrays.asList(validTransition, invalidTransition)),
                 Collections.singletonList(from1),
                 Collections.singletonList(to1)
         );
-        assertThat(result.size()).isOne();
+        verify(animatorCreator).create(any(), any(), any());
     }
 }
