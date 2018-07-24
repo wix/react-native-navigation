@@ -2,6 +2,7 @@ const React = require('react');
 const { Component } = require('react');
 const PropTypes = require('prop-types');
 const { Platform, ColorPropType, StyleSheet, TouchableNativeFeedback, TouchableOpacity, View, Text } = require('react-native');
+const { Navigation } = require('react-native-navigation');
 
 class Button extends Component {
 
@@ -47,8 +48,13 @@ class Button extends Component {
 
     const formattedTitle =
       Platform.OS === 'android' ? title.toUpperCase() : title;
-    const Touchable =
+    let Touchable =
       Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+
+    if (typeof onPressIn === 'function') {
+      Touchable = Navigation.TouchablePreview;
+    }
+
     return (
       <Touchable
         accessibilityComponentType='button'
