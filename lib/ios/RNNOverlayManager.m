@@ -30,6 +30,7 @@
 
 - (void)detachOverlayWindow:(UIWindow *)overlayWindow {
 	[overlayWindow setHidden:YES];
+	[overlayWindow setRootViewController:nil];
 	[_overlayWindows removeObject:overlayWindow];
 }
 
