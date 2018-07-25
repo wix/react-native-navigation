@@ -7,15 +7,16 @@ import android.view.View;
 
 import com.reactnativenavigation.parse.Transition;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.element.Element;
 
 public class YAnimator extends PropertyAnimatorCreator {
 
     private final int dy;
 
-    public YAnimator(View from, View to) {
+    public YAnimator(Element from, Element to) {
         super(from, to);
-        final Point fromXy = ViewUtils.getLocationOnScreen(from);
-        final Point toXy = ViewUtils.getLocationOnScreen(to);
+        final Point fromXy = ViewUtils.getLocationOnScreen(from.getChild());
+        final Point toXy = ViewUtils.getLocationOnScreen(to.getChild());
         dy = fromXy.y - toXy.y;
     }
 
@@ -26,7 +27,7 @@ public class YAnimator extends PropertyAnimatorCreator {
 
     @Override
     public Animator create(Transition transition) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(to, View.TRANSLATION_Y, dy, 0);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(to.getChild(), View.TRANSLATION_Y, dy, 0);
         animator.setDuration(transition.duration.get());
         return animator;
     }

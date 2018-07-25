@@ -1,9 +1,9 @@
 package com.reactnativenavigation.views.element;
 
 import android.animation.Animator;
-import android.view.View;
 
 import com.reactnativenavigation.parse.Transition;
+import com.reactnativenavigation.views.element.animators.MatrixAnimator;
 import com.reactnativenavigation.views.element.animators.PropertyAnimatorCreator;
 import com.reactnativenavigation.views.element.animators.XAnimator;
 import com.reactnativenavigation.views.element.animators.YAnimator;
@@ -28,16 +28,17 @@ public class TransitionAnimatorCreator {
 
     protected Collection<? extends Animator> create(Transition transition, Element from, Element to) {
         Collection<Animator> animators = new ArrayList<>();
-        for (PropertyAnimatorCreator creator : getAnimators(from.getChild(), to.getChild())) {
+        for (PropertyAnimatorCreator creator : getAnimators(from, to)) {
             if (creator.shouldAnimateProperty()) animators.add(creator.create(transition));
         }
         return animators;
     }
 
-    protected List<PropertyAnimatorCreator> getAnimators(View from, View to) {
+    protected List<PropertyAnimatorCreator> getAnimators(Element from, Element to) {
         return Arrays.asList(
                 new XAnimator(from, to),
-                new YAnimator(from, to)
+                new YAnimator(from, to),
+                new MatrixAnimator(from, to)
         );
     }
 }

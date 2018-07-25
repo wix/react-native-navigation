@@ -1,16 +1,16 @@
 package com.reactnativenavigation.views.element.animators;
 
 import android.animation.Animator;
-import android.view.View;
 
 import com.reactnativenavigation.parse.Transition;
+import com.reactnativenavigation.views.element.Element;
 
 public abstract class PropertyAnimatorCreator {
 
-    protected View from;
-    protected View to;
+    protected Element from;
+    protected Element to;
 
-    PropertyAnimatorCreator(View from, View to) {
+    PropertyAnimatorCreator(Element from, Element to) {
         this.from = from;
         this.to = to;
     }
