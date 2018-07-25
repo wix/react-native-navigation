@@ -10,7 +10,7 @@ public enum LaunchArgs {
     private Bundle launchArgs;
 
     public void set(Intent intent) {
-        if (intent != null && intent.getExtras() != null && launchArgs != null) {
+        if (intent != null && intent.getExtras() != null && launchArgs == null) {
             this.launchArgs = intent.getExtras();
         }
     }

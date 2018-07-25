@@ -13,7 +13,7 @@
 -(UIWindow*)getAppWindow;
 -(void)setAppStyle:(NSDictionary*)appStyle;
 -(NSDictionary*)getAppStyle;
--(NSDictionary*)getInitialProps;
+-(NSDictionary*)getLaunchArgs;
 
 -(void)registerController:(UIViewController*)controller componentId:(NSString*)componentId componentType:(NSString*)componentType;
 -(id)getControllerWithId:(NSString*)componentId componentType:(NSString*)componentType;
