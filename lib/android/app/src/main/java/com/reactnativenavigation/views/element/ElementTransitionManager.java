@@ -31,7 +31,7 @@ public class ElementTransitionManager {
         animatorCreator = new TransitionAnimatorCreator();
     }
 
-    public Collection<? extends Animator> createTransitions(Transitions transitions, List<Element> fromElements, List<Element> toElements) {
+    public Collection<Animator> createTransitions(Transitions transitions, List<Element> fromElements, List<Element> toElements) {
         if (!transitions.hasValue() || fromElements.isEmpty() || toElements.isEmpty()) return Collections.EMPTY_LIST;
         Map<String, Element> from = map(fromElements, Element::getElementId);
         Map<String, Element> to = map(toElements, Element::getElementId);

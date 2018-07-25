@@ -5,7 +5,6 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,9 +14,10 @@ import com.reactnativenavigation.parse.Transitions;
 import com.reactnativenavigation.views.element.Element;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import static com.reactnativenavigation.utils.CollectionUtils.merge;
 
 @SuppressWarnings("ResourceType")
 public class NavigationAnimator extends BaseAnimator {
@@ -36,8 +36,7 @@ public class NavigationAnimator extends BaseAnimator {
     public void push(ViewGroup view, NestedAnimationsOptions animation, Transitions transitions, List<Element> fromElements, List<Element> toElements, Runnable onAnimationEnd) {
         view.setAlpha(0);
         AnimatorSet set = animation.content.getAnimation(view, getDefaultPushAnimation(view));
-        Collection<? extends Animator> createdTransitions = transitionManager.createTransitions(transitions, fromElements, toElements);
-        set.getChildAnimations().addAll(createdTransitions);
+        set.playTogether(merge(set.getChildAnimations(), transitionManager.createTransitions(transitions, fromElements, toElements)));
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {

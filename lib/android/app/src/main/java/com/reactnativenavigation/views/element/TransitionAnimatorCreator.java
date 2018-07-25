@@ -6,6 +6,7 @@ import android.view.View;
 import com.reactnativenavigation.parse.Transition;
 import com.reactnativenavigation.views.element.animators.PropertyAnimatorCreator;
 import com.reactnativenavigation.views.element.animators.XAnimator;
+import com.reactnativenavigation.views.element.animators.YAnimator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 public class TransitionAnimatorCreator {
 
-    public Collection<? extends Animator> create(List<Transition> transitions, Map<String, Element> from, Map<String, Element> to) {
+    public Collection<Animator> create(List<Transition> transitions, Map<String, Element> from, Map<String, Element> to) {
         if (transitions.isEmpty()) return Collections.EMPTY_LIST;
         List<Animator> animators = new ArrayList<>();
         for (Transition transition : transitions) {
@@ -35,7 +36,8 @@ public class TransitionAnimatorCreator {
 
     protected List<PropertyAnimatorCreator> getAnimators(View from, View to) {
         return Arrays.asList(
-            new XAnimator(from, to)
+                new XAnimator(from, to),
+                new YAnimator(from, to)
         );
     }
 }

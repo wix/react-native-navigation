@@ -34,4 +34,10 @@ public class CollectionUtils {
         }
         return result;
     }
+
+    public static <T> List<T> merge(Collection<T> a, Collection<T> b) {
+        List<T> result = new ArrayList<>(a);
+        result.addAll(b);
+        return result;
+    }
 }
