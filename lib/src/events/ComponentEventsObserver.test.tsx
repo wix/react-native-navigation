@@ -177,6 +177,7 @@ describe('ComponentEventsObserver', () => {
     expect(mockEventsReceiver.registerNavigationButtonPressedListener).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerSearchBarUpdatedListener).not.toHaveBeenCalled();
     expect(mockEventsReceiver.registerSearchBarCancelPressedListener).not.toHaveBeenCalled();
+    expect(mockEventsReceiver.registerPreviewCompletedListener).not.toHaveBeenCalled();
     uut.registerOnceForAllComponentEvents();
     uut.registerOnceForAllComponentEvents();
     uut.registerOnceForAllComponentEvents();
@@ -186,5 +187,6 @@ describe('ComponentEventsObserver', () => {
     expect(mockEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerSearchBarUpdatedListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(1);
+    expect(mockEventsReceiver.registerPreviewCompletedListener).toHaveBeenCalledTimes(1);
   });
 });

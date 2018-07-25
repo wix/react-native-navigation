@@ -31,6 +31,7 @@ export class ComponentEventsObserver {
     this.nativeEventsReceiver.registerComponentDidDisappearListener(this.notifyComponentDidDisappear);
     this.nativeEventsReceiver.registerNavigationButtonPressedListener(this.notifyNavigationButtonPressed);
     this.nativeEventsReceiver.registerSearchBarUpdatedListener(this.notifySearchBarUpdated);
+    this.nativeEventsReceiver.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
     this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
   }
 
