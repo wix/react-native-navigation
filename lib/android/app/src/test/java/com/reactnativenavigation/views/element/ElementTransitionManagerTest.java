@@ -2,19 +2,24 @@ package com.reactnativenavigation.views.element;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.parse.Transition;
 import com.reactnativenavigation.parse.Transitions;
-import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
+import com.reactnativenavigation.views.element.animators.PropertyAnimatorCreator;
 
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
+import static com.reactnativenavigation.views.element.TransitionTestUtils.createElement;
+import static com.reactnativenavigation.views.element.TransitionTestUtils.createTransition;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -22,7 +27,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 public class ElementTransitionManagerTest extends BaseTest {
-    private static final int DURATION = 250;
     private ElementTransitionManager uut;
     private Transition validTransition;
     private Transition invalidTransition;
@@ -34,21 +38,18 @@ public class ElementTransitionManagerTest extends BaseTest {
     @Override
     public void beforeEach() {
         validator = spy(new TransitionValidator());
-        animatorCreator = spy(new TransitionAnimatorCreator());
+        animatorCreator = spy(new TransitionAnimatorCreator() {
+            @Override
+            protected List<PropertyAnimatorCreator> getAnimators(View from, View to) {
+                return Collections.EMPTY_LIST;
+            }
+        });
         uut = new ElementTransitionManager(validator, animatorCreator);
         Activity activity = newActivity();
-        from1 = new Element(activity); from1.setElementId("from1Id");
-        to1 = new Element(activity); to1.setElementId("to1Id");
-        validTransition = createTransition(from1.getElementId(), to1.getElementId());
-        invalidTransition = createTransition(from1.getElementId(), "nonexistentElement");
-    }
-
-    private Transition createTransition(String fromId, String toId) {
-        Transition transition = new Transition();
-        transition.duration = new Number(DURATION);
-        transition.fromId = new Text(fromId);
-        transition.toId = new Text(toId);
-        return transition;
+        from1 = createElement(activity, "from1Id");
+        to1 = createElement(activity, "to1Id");
+        validTransition = createTransition(from1, to1);
+        invalidTransition = createTransition(from1, to1); invalidTransition.toId = new Text("nonexistentElement");
     }
 
     @Test
@@ -94,6 +95,6 @@ public class ElementTransitionManagerTest extends BaseTest {
                 Collections.singletonList(from1),
                 Collections.singletonList(to1)
         );
-        verify(animatorCreator).create(any(), any(), any());
+        verify(animatorCreator).create(any(List.class), any(Map.class), any(Map.class));
     }
 }

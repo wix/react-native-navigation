@@ -2,6 +2,7 @@ package com.reactnativenavigation.views.element;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.widget.FrameLayout;
 
 public class Element extends FrameLayout {
@@ -17,5 +18,9 @@ public class Element extends FrameLayout {
 
     public void setElementId(String elementId) {
         this.elementId = elementId;
+    }
+
+    public View getChild() {
+        return getChildAt(0);
     }
 }

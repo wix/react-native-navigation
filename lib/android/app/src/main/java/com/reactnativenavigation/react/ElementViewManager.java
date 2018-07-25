@@ -28,10 +28,9 @@ public class ElementViewManager extends ViewGroupManager<Element> {
     }
 
     @Override
-    public void onDropViewInstance(Element view) {
-        super.onDropViewInstance(view);
-        Log.d("ElementViewManager", "onDropViewInstance:" + (view.getParent() != null));
-        unregister(view);
+    public void onDropViewInstance(Element element) {
+        super.onDropViewInstance(element);
+        unregister(element);
     }
 
     @ReactProp(name = "elementId")
@@ -46,16 +45,11 @@ public class ElementViewManager extends ViewGroupManager<Element> {
 
     private void register(Element element) {
         UiUtils.runOnPreDrawOnce(element, () -> {
-            Log.i("ElementViewManager", "createViewInstance:" + (element.getParent() != null));
-            ViewUtils.performOnParentReactView(element, (parent) -> {
-                parent.registerElement(element);
-            });
+            ViewUtils.performOnParentReactView(element, (parent) -> parent.registerElement(element));
         });
     }
 
     private void unregister(Element element) {
-        ViewUtils.performOnParentReactView(element, (parent) -> {
-            parent.unregisterElement(element);
-        });
+        ViewUtils.performOnParentReactView(element, (parent) -> parent.unregisterElement(element));
     }
 }

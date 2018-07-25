@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.parse.Transition;
 import com.reactnativenavigation.parse.params.NullNumber;
+import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 
@@ -42,6 +43,28 @@ public class TransitionValidatorTest extends BaseTest {
         transition.fromId = new Text(fromId);
         transition.toId = new Text(toId);
         return transition;
+    }
+
+    @Test
+    public void validate_falseIfNullToId() {
+        transition.toId = new NullText();
+        boolean result = uut.validate(
+                transition,
+                map(Collections.singletonList(from1), Element::getElementId),
+                map(Collections.singletonList(from1), Element::getElementId)
+        );
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void validate_falseIfNullFromId() {
+        transition.fromId = new NullText();
+        boolean result = uut.validate(
+                transition,
+                map(Collections.singletonList(from1), Element::getElementId),
+                map(Collections.singletonList(from1), Element::getElementId)
+        );
+        assertThat(result).isFalse();
     }
 
     @Test

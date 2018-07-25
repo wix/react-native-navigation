@@ -17,6 +17,7 @@ import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.views.element.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("ViewConstructor")
 public class ReactView extends ReactRootView implements IReactView {
@@ -119,7 +120,8 @@ public class ReactView extends ReactRootView implements IReactView {
         elements.remove(element);
     }
 
-    public ArrayList<Element> getElements() {
+    @Override
+    public List<Element> getElements() {
         return elements;
     }
 }

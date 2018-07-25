@@ -1,5 +1,6 @@
 package com.reactnativenavigation.utils;
 
+import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,5 +99,11 @@ public class ViewUtils {
             return (ReactView) parent;
         }
         return findParentReactView(parent.getParent());
+    }
+
+    public static Point getLocationOnScreen(View view) {
+        int[] xy = new int[2];
+        view.getLocationOnScreen(xy);
+        return new Point(xy[0], xy[1]);
     }
 }
