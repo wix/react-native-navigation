@@ -13,6 +13,7 @@ describe('ComponentEventsObserver', () => {
   const navigationButtonPressedFn = jest.fn();
   const searchBarUpdatedFn = jest.fn();
   const searchBarCancelPressedFn = jest.fn();
+  const previewCompletedFn = jest.fn();
   let subscription;
 
   class SimpleScreen extends React.Component<any, any> {
@@ -55,6 +56,10 @@ describe('ComponentEventsObserver', () => {
       searchBarCancelPressedFn(event);
     }
 
+    previewCompleted(event) {
+      previewCompletedFn(event);
+    }
+
     render() {
       return 'Hello';
     }
@@ -92,6 +97,10 @@ describe('ComponentEventsObserver', () => {
     uut.notifySearchBarCancelPressed({ componentId: 'myCompId' });
     expect(searchBarCancelPressedFn).toHaveBeenCalledTimes(1);
     expect(searchBarCancelPressedFn).toHaveBeenCalledWith({ componentId: 'myCompId' });
+
+    uut.notifyPreviewCompleted({ componentId: 'myCompId' });
+    expect(previewCompletedFn).toHaveBeenCalledTimes(1);
+    expect(previewCompletedFn).toHaveBeenCalledWith({ componentId: 'myCompId' });
 
     tree.unmount();
     expect(willUnmountFn).toHaveBeenCalledTimes(1);

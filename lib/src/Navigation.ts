@@ -13,7 +13,7 @@ import { CommandsObserver } from './events/CommandsObserver';
 import { Constants } from './adapters/Constants';
 import { ComponentType } from 'react';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
-import { TouchablePreview, Props as TouchablePreviewProps } from './components/TouchablePreview';
+import { TouchablePreview, Props as TouchablePreviewProps } from './adapters/TouchablePreview';
 
 export class Navigation {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
