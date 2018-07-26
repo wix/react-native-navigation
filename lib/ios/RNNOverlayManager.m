@@ -1,9 +1,7 @@
 #import "RNNOverlayManager.h"
 #import "RNNOverlayWindow.h"
 
-@implementation RNNOverlayManager {
-	NSMutableArray* _overlayWindows;
-}
+@implementation RNNOverlayManager
 
 - (instancetype)init {
 	self = [super init];

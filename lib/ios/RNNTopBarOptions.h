@@ -27,7 +27,8 @@
 @property (nonatomic, strong) RNNSubtitleOptions* subtitle;
 @property (nonatomic, strong) RNNBackgroundOptions* background;
 @property (nonatomic, strong) RNNBackButtonOptions* backButton;
-@property (nonatomic, strong) RNNButtonOptions* button;
+@property (nonatomic, strong) RNNButtonOptions* leftButtonStyle;
+@property (nonatomic, strong) RNNButtonOptions* rightButtonStyle;
 @property (nonatomic, strong) NSNumber* searchBar;
 @property (nonatomic, strong) NSNumber* searchBarHiddenWhenScrolling;
 @property (nonatomic, strong) NSString* searchBarPlaceholder;

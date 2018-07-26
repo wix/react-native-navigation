@@ -7,7 +7,7 @@
 
 -(instancetype)initWithViewController:(RNNRootViewController*)viewController;
 
--(void)applyLeftButtons:(NSArray*)leftButtons rightButtons:(NSArray*)rightButtons defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle;
+-(void)applyLeftButtons:(NSArray*)leftButtons rightButtons:(NSArray*)rightButtons defaultLeftButtonStyle:(RNNButtonOptions *)defaultLeftButtonStyle defaultRightButtonStyle:(RNNButtonOptions *)defaultRightButtonStyle;
 
 @end
 
