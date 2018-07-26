@@ -40,7 +40,7 @@ public class ElementTransitionManagerTest extends BaseTest {
         validator = spy(new TransitionValidator());
         animatorCreator = spy(new TransitionAnimatorCreator() {
             @Override
-            protected List<PropertyAnimatorCreator> getAnimators(View from, View to) {
+            protected List<PropertyAnimatorCreator> getAnimators(Element from, Element to) {
                 return Collections.EMPTY_LIST;
             }
         });

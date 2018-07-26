@@ -41,7 +41,7 @@ public class TransitionAnimatorCreatorTest extends BaseTest {
         when(animator3.shouldAnimateProperty()).thenReturn(false);
         uut = new TransitionAnimatorCreator() {
             @Override
-            protected List<PropertyAnimatorCreator> getAnimators(View from, View to) {
+            protected List<PropertyAnimatorCreator> getAnimators(Element from, Element to) {
                 return Arrays.asList(animator1, animator2, animator3);
             }
         };
