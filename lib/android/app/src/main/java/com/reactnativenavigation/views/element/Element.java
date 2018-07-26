@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.drawee.drawable.ScalingUtils;
@@ -42,5 +43,11 @@ public class Element extends FrameLayout {
             ((ScalingUtils.InterpolatingScaleType) hierarchy.getActualImageScaleType()).setValue(value);
             getChild().invalidate();
         }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        ((ViewGroup) getParent()).setClipChildren(false);
     }
 }

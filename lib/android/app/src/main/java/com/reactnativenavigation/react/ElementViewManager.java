@@ -1,13 +1,12 @@
 package com.reactnativenavigation.react;
 
-import android.util.Log;
-
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.element.Element;
+
+import static com.reactnativenavigation.utils.UiUtils.runOnPreDrawOnce;
+import static com.reactnativenavigation.utils.ViewUtils.performOnParentReactView;
 
 public class ElementViewManager extends ViewGroupManager<Element> {
 
@@ -44,12 +43,10 @@ public class ElementViewManager extends ViewGroupManager<Element> {
     }
 
     private void register(Element element) {
-        UiUtils.runOnPreDrawOnce(element, () -> {
-            ViewUtils.performOnParentReactView(element, (parent) -> parent.registerElement(element));
-        });
+        runOnPreDrawOnce(element, () -> performOnParentReactView(element, (parent) -> parent.registerElement(element)));
     }
 
     private void unregister(Element element) {
-        ViewUtils.performOnParentReactView(element, (parent) -> parent.unregisterElement(element));
+        performOnParentReactView(element, (parent) -> parent.unregisterElement(element));
     }
 }
