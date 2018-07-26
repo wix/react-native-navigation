@@ -39,6 +39,12 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		viewController.tabBarController.tabBar.barTintColor = nil;
 	}
 	
+	if (self.barStyle) {
+		viewController.tabBarController.tabBar.barStyle = [RCTConvert UIBarStyle:self.barStyle];
+	} else {
+		viewController.tabBarController.tabBar.barStyle = UIBarStyleDefault;
+	}
+
 	if (self.translucent) {
 		viewController.tabBarController.tabBar.translucent = [self.translucent boolValue];
 	} else {

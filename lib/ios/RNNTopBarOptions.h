@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSNumber* visible;
 @property (nonatomic, strong) NSNumber* hideOnScroll;
 @property (nonatomic, strong) NSNumber* buttonColor;
+@property (nonatomic, strong) NSString* barStyle;
 @property (nonatomic, strong) NSNumber* translucent;
 @property (nonatomic, strong) NSNumber* transparent;
 @property (nonatomic, strong) NSNumber* drawBehind;
@@ -26,7 +27,8 @@
 @property (nonatomic, strong) RNNSubtitleOptions* subtitle;
 @property (nonatomic, strong) RNNBackgroundOptions* background;
 @property (nonatomic, strong) RNNBackButtonOptions* backButton;
-@property (nonatomic, strong) RNNButtonOptions* button;
+@property (nonatomic, strong) RNNButtonOptions* leftButtonStyle;
+@property (nonatomic, strong) RNNButtonOptions* rightButtonStyle;
 @property (nonatomic, strong) NSNumber* searchBar;
 @property (nonatomic, strong) NSNumber* searchBarHiddenWhenScrolling;
 @property (nonatomic, strong) NSString* searchBarPlaceholder;

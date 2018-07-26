@@ -7,6 +7,7 @@ const {
   View,
   Button,
   Text,
+  TouchableOpacity,
   Platform
 } = require('react-native');
 
@@ -26,7 +27,6 @@ class SearchControllerScreen extends Component {
           visible: true
         },
         searchBar: true,
-        searchBarHiddenWhenScrolling: true,
         translucent: true,
         searchBarPlaceholder: 'Start Typing'
       }
@@ -63,6 +63,25 @@ class SearchControllerScreen extends Component {
     return text;
   }
 
+  onItemPressed = () => {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'navigation.playground.PushedScreen',
+        options: {
+          topBar: {
+            title: {
+              text: 'PushedScreen'
+            },
+            largeTitle: {
+              visible: true
+            },
+            translucent: true,
+          }
+        }
+      },
+    });
+  }
+
   render() {
     return (
       <FlatList
@@ -70,11 +89,11 @@ class SearchControllerScreen extends Component {
         data={this.filteredData()}
         contentContainerStyle={styles.contentContainer}
         renderItem={({ item }) => (
-          <View style={styles.row}>
+          <TouchableOpacity style={styles.row} onPress={this.onItemPressed}>
             <Text style={styles.rowText} testID={testIDs.SEARCH_RESULT_ITEM}>
               {this.highlight(item.key, this.state.query)}
             </Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     );

@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.reactnativenavigation.BuildConfig;
+import com.reactnativenavigation.R;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
@@ -29,7 +30,6 @@ import com.reactnativenavigation.parse.BackButton;
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
-import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -63,6 +63,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     public TopBar(final Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener onClickListener, StackLayout parentView, ImageLoader imageLoader) {
         super(context);
+        context.setTheme(R.style.TopBar);
         this.imageLoader = imageLoader;
         collapsingBehavior = new TopBarCollapseBehavior(this);
         this.topBarBackgroundViewController = topBarBackgroundViewController;
@@ -225,11 +226,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setRightButtons(rightButtons);
     }
 
-    public void setElevation(Fraction elevation) {
-        if (elevation.hasValue() &&
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-            getElevation() != elevation.get().floatValue()) {
-            setElevation(UiUtils.dpToPx(getContext(), elevation.get().floatValue()));
+    public void setElevation(Double elevation) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+                getElevation() != elevation.floatValue()) {
+            setElevation(UiUtils.dpToPx(getContext(), elevation.floatValue()));
         }
     }
 
