@@ -14,17 +14,16 @@ import com.reactnativenavigation.parse.Transition;
 import com.reactnativenavigation.views.element.Element;
 
 import static com.reactnativenavigation.utils.ViewUtils.areDimensionsEqual;
-import static com.reactnativenavigation.utils.ViewUtils.instanceOf;
 
-public class MatrixAnimator extends PropertyAnimatorCreator {
+public class MatrixAnimator extends PropertyAnimatorCreator<ReactImageView> {
 
     public MatrixAnimator(Element from, Element to) {
         super(from, to);
     }
 
     @Override
-    public boolean shouldAnimateProperty() {
-        return instanceOf(ReactImageView.class, from.getChild(), to.getChild()) && !areDimensionsEqual(from.getChild(), to.getChild());
+    public boolean shouldAnimateProperty(ReactImageView fromChild, ReactImageView toChild) {
+        return !areDimensionsEqual(from.getChild(), to.getChild());
     }
 
     @Override

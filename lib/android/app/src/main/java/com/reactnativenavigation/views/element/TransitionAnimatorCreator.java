@@ -5,6 +5,7 @@ import android.animation.Animator;
 import com.reactnativenavigation.parse.Transition;
 import com.reactnativenavigation.views.element.animators.MatrixAnimator;
 import com.reactnativenavigation.views.element.animators.PropertyAnimatorCreator;
+import com.reactnativenavigation.views.element.animators.TextColorAnimator;
 import com.reactnativenavigation.views.element.animators.XAnimator;
 import com.reactnativenavigation.views.element.animators.YAnimator;
 
@@ -38,7 +39,8 @@ public class TransitionAnimatorCreator {
         return Arrays.asList(
                 new XAnimator(from, to),
                 new YAnimator(from, to),
-                new MatrixAnimator(from, to)
+                new MatrixAnimator(from, to),
+                new TextColorAnimator(from, to)
         );
     }
 }

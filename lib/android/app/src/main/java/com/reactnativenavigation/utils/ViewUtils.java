@@ -107,13 +107,6 @@ public class ViewUtils {
         return new Point(xy[0], xy[1]);
     }
 
-    public static boolean instanceOf(Class clazz, View... views) {
-        for (View view : views) {
-            if (!view.getClass().isAssignableFrom(clazz)) return false;
-        }
-        return true;
-    }
-
     public static boolean areDimensionsEqual(View a, View b) {
         return a.getWidth() == b.getWidth() && a.getHeight() == b.getHeight();
     }

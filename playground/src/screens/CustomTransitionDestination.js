@@ -72,7 +72,7 @@ class CustomTransitionDestination extends Component {
 
         <TouchableOpacity testID={'shared_image2'} onPress={this.pop}>
           <Navigation.Element elementId={'title2'}>
-            <Text style={styles.h1}>{`Custom Transition Screen`}</Text>
+            <Text style={[{color: 'red'}, styles.h1]}>{`Custom Transition Screen`}</Text>
           </Navigation.Element>
         </TouchableOpacity>
         <Navigation.Element elementId={'customDestinationParagraph'}>

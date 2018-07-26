@@ -9,7 +9,7 @@ import com.reactnativenavigation.parse.Transition;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.element.Element;
 
-public class XAnimator extends PropertyAnimatorCreator {
+public class XAnimator extends PropertyAnimatorCreator<View> {
 
     private final int dx;
 
@@ -21,14 +21,14 @@ public class XAnimator extends PropertyAnimatorCreator {
     }
 
     @Override
-    public boolean shouldAnimateProperty() {
+    public boolean shouldAnimateProperty(View fromChild, View toChild) {
         return dx != 0;
     }
 
     @Override
     public Animator create(Transition transition) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(to.getChild(), View.TRANSLATION_X, dx, 0);
-        animator.setDuration(transition.duration.get());
-        return animator;
+        return ObjectAnimator
+                .ofFloat(to.getChild(), View.TRANSLATION_X, dx, 0)
+                .setDuration(transition.duration.get());
     }
 }
