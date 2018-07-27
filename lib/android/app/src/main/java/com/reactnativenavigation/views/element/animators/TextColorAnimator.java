@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator;
 import android.widget.TextView;
 
 import com.facebook.react.views.text.ReactTextView;
-import com.reactnativenavigation.parse.Transition;
 import com.reactnativenavigation.utils.ColorUtils;
 import com.reactnativenavigation.utils.TextViewUtils;
 import com.reactnativenavigation.views.element.Element;
@@ -24,13 +23,13 @@ public class TextColorAnimator extends PropertyAnimatorCreator<ReactTextView> {
     }
 
     @Override
-    public Animator create(Transition transition) {
+    public Animator create() {
         return ObjectAnimator.ofObject(
                 to,
                 "textColor",
                 new LabColorEvaluator(),
                 ColorUtils.colorToLAB(TextViewUtils.getTextColor((TextView) from.getChild())),
                 ColorUtils.colorToLAB(TextViewUtils.getTextColor((TextView) to.getChild()))
-        ).setDuration(transition.duration.get());
+        );
     }
 }

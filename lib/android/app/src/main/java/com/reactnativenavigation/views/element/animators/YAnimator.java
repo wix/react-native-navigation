@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator;
 import android.graphics.Point;
 import android.view.View;
 
-import com.reactnativenavigation.parse.Transition;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.element.Element;
 
@@ -26,9 +25,7 @@ public class YAnimator extends PropertyAnimatorCreator<View> {
     }
 
     @Override
-    public Animator create(Transition transition) {
-        return ObjectAnimator
-                .ofFloat(to.getChild(), View.TRANSLATION_Y, dy, 0)
-                .setDuration(transition.duration.get());
+    public Animator create() {
+        return ObjectAnimator.ofFloat(to.getChild(), View.TRANSLATION_Y, dy, 0);
     }
 }

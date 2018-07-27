@@ -10,7 +10,6 @@ import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.DraweeView;
 import com.facebook.react.views.image.ReactImageView;
-import com.reactnativenavigation.parse.Transition;
 import com.reactnativenavigation.views.element.Element;
 
 import static com.reactnativenavigation.utils.ViewUtils.areDimensionsEqual;
@@ -27,10 +26,9 @@ public class MatrixAnimator extends PropertyAnimatorCreator<ReactImageView> {
     }
 
     @Override
-    public Animator create(Transition transition) {
+    public Animator create() {
         AnimatorSet set = new AnimatorSet();
         set.playTogether(clipBoundsAnimator(), imageTransformAnimator());
-        set.setDuration(transition.duration.get());
         return set;
     }
 
