@@ -42,6 +42,8 @@
 
 	@end
 	```
+	
+For apps created with `create-react-native-app`, change `jsBundleURLForBundleRoot:@"index.ios"` to `jsBundleURLForBundleRoot:@"index"`.
 
 ## Android
 
