@@ -2,6 +2,7 @@ package com.reactnativenavigation.playground;
 
 import android.support.annotation.Nullable;
 
+import com.entria.views.RNViewOverflowPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.uimanager.UIImplementationProvider;
@@ -9,6 +10,7 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
 import com.reactnativenavigation.react.SyncUiImplementation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainApplication extends NavigationApplication {
@@ -42,6 +44,8 @@ public class MainApplication extends NavigationApplication {
     @Nullable
     @Override
     public List<ReactPackage> createAdditionalReactPackages() {
-        return null;
+        List<ReactPackage> packages = new ArrayList<>();
+        packages.add(new RNViewOverflowPackage());
+        return packages;
     }
 }

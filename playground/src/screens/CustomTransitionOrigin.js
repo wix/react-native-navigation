@@ -2,7 +2,7 @@ const React = require('react');
 const { Component } = require('react');
 const { View, Text, Image, TouchableOpacity } = require('react-native');
 const { Navigation } = require('react-native-navigation');
-
+import ViewOverflow from 'react-native-view-overflow';
 class CustomTransitionOrigin extends Component {
   constructor(props) {
     super(props);
@@ -26,31 +26,39 @@ class CustomTransitionOrigin extends Component {
     return (
       <View style={styles.root}>
         <Navigation.Element elementId='title1'>
-          <Text style={[{color: 'black'}, styles.h1]}>Custom Transition Screen</Text>
+          <Text style={[styles.h1, {color: 'black', fontSize: 8}]}>Custom Transition Screen</Text>
         </Navigation.Element>
+        
         <View style={{ flex: 1, justifyContent: 'flex-start' }}>
           <TouchableOpacity testID='shared_image1' activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
             <Navigation.Element resizeMode='cover' elementId='image1'>
               <Image resizeMode='cover' style={styles.gyroImage} source={require('../../img/400.jpeg')} />
             </Navigation.Element>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
-            <Navigation.Element elementId='image2'>
-              <Image style={styles.gyroImage} source={require('../../img/2048.jpeg')} />
-            </Navigation.Element>
+
+          <TouchableOpacity style={{overflow: 'visible'}}activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
+            <View style={{width: 100, height: 100, marginTop: 10, marginBottom: 30}}>
+              <Navigation.Element elementId='image2'style={{zIndex: 1}}>
+                <Image style={styles.gyroImage} source={require('../../img/2048.jpeg')} />
+              </Navigation.Element>
+              <ViewOverflow>
+                <View style={{width: 100, height: 100, marginLeft: 10, marginTop: -90, backgroundColor: 'purple'}} />
+              </ViewOverflow>
+            </View>
           </TouchableOpacity>
+
           <TouchableOpacity activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
             <Navigation.Element elementId='image3'>
               <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
             </Navigation.Element>
           </TouchableOpacity>
+
           <TouchableOpacity activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
             <Navigation.Element elementId='image4'>
               <Image style={styles.gyroImage} source={require('../../img/Icon-87.png')} />
             </Navigation.Element>
           </TouchableOpacity>
         </View>
-
       </View>
     );
   }
@@ -96,7 +104,6 @@ const styles = {
     backgroundColor: '#f5fcff'
   },
   h1: {
-
     fontSize: 24,
     textAlign: 'center',
     marginTop: 100

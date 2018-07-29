@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.graphics.Point;
 import android.view.View;
 
+import com.facebook.react.views.text.ReactTextView;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.element.Element;
 
@@ -21,7 +22,7 @@ public class XAnimator extends PropertyAnimatorCreator<View> {
 
     @Override
     public boolean shouldAnimateProperty(View fromChild, View toChild) {
-        return dx != 0;
+        return dx != 0 && !ViewUtils.instanceOf(ReactTextView.class, fromChild, toChild);
     }
 
     @Override

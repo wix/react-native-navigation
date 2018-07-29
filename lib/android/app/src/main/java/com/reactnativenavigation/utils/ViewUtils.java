@@ -110,4 +110,11 @@ public class ViewUtils {
     public static boolean areDimensionsEqual(View a, View b) {
         return a.getWidth() == b.getWidth() && a.getHeight() == b.getHeight();
     }
+
+    public static boolean instanceOf(Class clazz, View... views) {
+        for (View view : views) {
+            if (!view.getClass().isAssignableFrom(clazz)) return false;
+        }
+        return true;
+    }
 }

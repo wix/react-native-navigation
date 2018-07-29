@@ -7,22 +7,24 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.SpannedString;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.DraweeView;
+import com.reactnativenavigation.utils.TextViewUtils;
 import com.reactnativenavigation.utils.UiUtils;
 
 import static com.reactnativenavigation.utils.ColorUtils.labToColor;
-import static com.reactnativenavigation.utils.TextViewUtils.setSpanColor;
+import static com.reactnativenavigation.utils.TextViewUtils.setColor;
 
 public class Element extends FrameLayout {
     private String elementId;
     @Nullable private SpannableString spannableText;
+    private float originalTextSize;
 
     public Element(@NonNull Context context) {
         super(context);
@@ -48,6 +50,8 @@ public class Element extends FrameLayout {
                 SpannedString spannedText = new SpannedString(((TextView) child).getText());
                 spannableText = new SpannableString(spannedText);
                 ((TextView) child).setText(spannableText);
+
+                originalTextSize = TextViewUtils.getTextSize((TextView) child);
             }
         });
     }
@@ -69,8 +73,22 @@ public class Element extends FrameLayout {
     @Keep
     public void setTextColor(double[] color) {
         if (spannableText != null) {
-            setSpanColor(spannableText, labToColor(color));
+            setColor(spannableText, labToColor(color));
             ((TextView) getChild()).setText(spannableText);
+        }
+    }
+
+    @Keep
+    public void setTextSize(float size) {
+        if (spannableText != null) {
+            Log.d("Element", "setTextSize: " + size);
+//            ((ReactTextView) getChild()).setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+
+//            ((ReactTextView) getChild()).updateView();
+//            TextViewUtils.setAbsoluteTextSize(spannableText, size);
+            TextViewUtils.setRelativeTextSize(spannableText, size);
+            ((TextView) getChild()).setText(spannableText);
+//            getChild().invalidate();
         }
     }
 }
