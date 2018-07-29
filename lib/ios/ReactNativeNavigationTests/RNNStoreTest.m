@@ -87,6 +87,27 @@
 	XCTAssertNil([self.store findComponentForId:@"cntId1"]);
 }
 
+- (void)testGetExternalComponentShouldRetrunSavedComponent {
+	UIViewController* testVC = [UIViewController new];
+	NSString *externalComponentId = @"extId1";
+	[self.store registerExternalComponent:externalComponentId callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
+		return testVC;
+	}];
+	
+	UIViewController* savedComponent = [self.store getExternalComponent:externalComponentId props:nil bridge:nil];
+	XCTAssertEqual(testVC, savedComponent);
+}
+
+- (void)testComponentKeyForInstance_UknownComponentShouldReturnNil {
+	id result = [self.store componentKeyForInstance:[UIViewController new]];
+	XCTAssertNil(result);
+}
+
+-(void)testCleanStore {
+	[self.store clean];
+	XCTAssertFalse(self.store.pendingModalIdsToDismiss.count);
+	XCTAssertFalse(self.store.isReadyToReceiveCommands);
+}
 
 #pragma mark - private
 
