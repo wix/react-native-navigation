@@ -28,7 +28,7 @@ class CustomTransitionOrigin extends Component {
         <Navigation.Element elementId='title1'>
           <Text style={[styles.h1, {color: 'black', fontSize: 8}]}>Custom Transition Screen</Text>
         </Navigation.Element>
-        
+
         <View style={{ flex: 1, justifyContent: 'flex-start' }}>
           <TouchableOpacity testID='shared_image1' activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
             <Navigation.Element resizeMode='cover' elementId='image1'>
