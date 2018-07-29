@@ -123,6 +123,18 @@ Navigation.mergeOptions(this.props.componentId, {
 });
 ```
 
+### Updating options for a specific tab
+Updating (merging) tab specific options is done using the `mergeOptions` command. `mergeOptions` expects a `componentId` as first argument, therefore in order to update a specific tab we'll need to pass a `componentId` of a child of that specific tab.
+For example, Using the layout specified above, To update the `badge` property of the second tab we'll call `mergeOptions` with `SecondScreenId`.
+
+```js
+Navigation.mergeOptions('SecondScreenId', {
+  bottomTab: {
+    badge: 'New'
+  }
+});
+```
+
 ## sideMenu
 
 Expect center, left and right layouts
