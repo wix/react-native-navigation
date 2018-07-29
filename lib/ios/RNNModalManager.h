@@ -7,7 +7,7 @@
 @property (nonatomic, strong) UIViewController<RNNRootViewProtocol>* toVC;
 
 -(instancetype)initWithStore:(RNNStore*)store;
--(void)showModal:(UIViewController*)viewController completion:(RNNTransitionCompletionBlock)completion;
+-(void)showModal:(UIViewController*)viewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion;
 -(void)dismissModal:(NSString*)componentId;
 -(void)dismissAllModals;
 

@@ -178,14 +178,12 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 -(void) popTo:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
-
+	
 	[_stackManager popTo:vc animated:vc.options.animations.pop.enable completion:^(NSArray *poppedViewControllers) {
 		[_eventEmitter sendOnNavigationCommandCompletion:popTo params:@{@"componentId": componentId}];
 		[self removePopedViewControllers:poppedViewControllers];
 		completion();
-	} rejection:^(NSString *code, NSString *message, NSError *error) {
-		
-	}];
+	} rejection:rejection];
 }
 
 -(void) popToRoot:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
@@ -211,7 +209,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 
 	UIViewController<RNNRootViewProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
-	[_modalManager showModal:newVc completion:^{
+	[_modalManager showModal:newVc animated:newVc.getLeafViewController.options.animations.showModal.enable completion:^{
 		[_eventEmitter sendOnNavigationCommandCompletion:showModal params:@{@"layout": layout}];
 		completion();
 	}];

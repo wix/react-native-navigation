@@ -127,7 +127,7 @@ public class StackOptionsPresenter {
     private void applyButtons(TopBarButtons buttons) {
         topBar.setLeftButtons(buttons.left);
         topBar.setRightButtons(buttons.right);
-        if (buttons.back.visible.isTrue()) topBar.setBackButton(buttons.back);
+        if (buttons.back.visible.isTrue() && !buttons.hasLeftButtons()) topBar.setBackButton(buttons.back);
     }
 
     private void applyTopTabsOptions(TopTabsOptions options) {

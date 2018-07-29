@@ -8,4 +8,6 @@
 - (void)showOverlay:(UIViewController*)viewController;
 - (void)dismissOverlay:(UIViewController*)viewController;
 
+@property (nonatomic, retain) NSMutableArray* overlayWindows;
+
 @end
