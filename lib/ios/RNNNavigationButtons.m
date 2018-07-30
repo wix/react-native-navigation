@@ -8,7 +8,8 @@
 @property (weak, nonatomic) RNNRootViewController* viewController;
 @property (strong, nonatomic) NSArray* rightButtons;
 @property (strong, nonatomic) NSArray* leftButtons;
-@property (strong, nonatomic) RNNButtonOptions* defaultButtonStyle;
+@property (strong, nonatomic) RNNButtonOptions* defaultLeftButtonStyle;
+@property (strong, nonatomic) RNNButtonOptions* defaultRightButtonStyle;
 
 @end
 
@@ -22,22 +23,23 @@
 	return self;
 }
 
--(void)applyLeftButtons:(NSArray*)leftButtons rightButtons:(NSArray*)rightButtons defaultButtonStyle:(RNNButtonOptions *)defaultButtonStyle {
-	_defaultButtonStyle = defaultButtonStyle;
+- (void)applyLeftButtons:(NSArray *)leftButtons rightButtons:(NSArray *)rightButtons defaultLeftButtonStyle:(RNNButtonOptions *)defaultLeftButtonStyle defaultRightButtonStyle:(RNNButtonOptions *)defaultRightButtonStyle {
+	_defaultLeftButtonStyle = defaultLeftButtonStyle;
+	_defaultRightButtonStyle = defaultRightButtonStyle;
 	if (leftButtons) {
-		[self setButtons:leftButtons side:@"left" animated:NO];
+		[self setButtons:leftButtons side:@"left" animated:NO defaultStyle:_defaultLeftButtonStyle];
 	}
 	
 	if (rightButtons) {
-		[self setButtons:rightButtons side:@"right" animated:NO];
+		[self setButtons:rightButtons side:@"right" animated:NO defaultStyle:_defaultRightButtonStyle];
 	}
 }
 
--(void)setButtons:(NSArray*)buttons side:(NSString*)side animated:(BOOL)animated {
+-(void)setButtons:(NSArray*)buttons side:(NSString*)side animated:(BOOL)animated defaultStyle:(RNNButtonOptions *)defaultStyle {
 	NSMutableArray *barButtonItems = [NSMutableArray new];
 	NSArray* resolvedButtons = [self resolveButtons:buttons];
 	for (NSDictionary *button in resolvedButtons) {
-		RNNUIBarButtonItem* barButtonItem = [self buildButton:button];
+		RNNUIBarButtonItem* barButtonItem = [self buildButton:button defaultStyle:defaultStyle];
 		if(barButtonItem) {
 			[barButtonItems addObject:barButtonItem];
 		}
@@ -62,9 +64,9 @@
 	}
 }
 
--(RNNUIBarButtonItem*)buildButton: (NSDictionary*)dictionary {
+-(RNNUIBarButtonItem*)buildButton: (NSDictionary*)dictionary defaultStyle:(RNNButtonOptions *)defaultStyle {
 	NSString* buttonId = dictionary[@"id"];
-	NSString* title = dictionary[@"text"];
+	NSString* title = [self getValue:dictionary[@"text"] withDefault:defaultStyle.text];
 	NSDictionary* component = dictionary[@"component"];
 	
 	if (!buttonId) {
@@ -72,7 +74,7 @@
 	}
 	
 	UIImage* iconImage = nil;
-	id icon = dictionary[@"icon"];
+	id icon = [self getValue:dictionary[@"icon"] withDefault:defaultStyle.icon];
 	if (icon) {
 		iconImage = [RCTConvert UIImage:icon];
 	}
@@ -97,32 +99,28 @@
 	barButtonItem.target = self;
 	barButtonItem.action = @selector(onButtonPress:);
 	
-	NSNumber *enabled = dictionary[@"enabled"];
+	NSNumber *enabled = [self getValue:dictionary[@"enabled"] withDefault:defaultStyle.enabled];
 	BOOL enabledBool = enabled ? [enabled boolValue] : YES;
 	[barButtonItem setEnabled:enabledBool];
-	
-	NSNumber *disableIconTintString = dictionary[@"disableIconTint"];
-	BOOL disableIconTint = disableIconTintString ? [disableIconTintString boolValue] : NO;
-	if (disableIconTint) {
-		[barButtonItem setImage:[barButtonItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-	}
 	
 	NSMutableDictionary* textAttributes = [[NSMutableDictionary alloc] init];
 	NSMutableDictionary* disabledTextAttributes = [[NSMutableDictionary alloc] init];
 	
-	UIColor* color = [self color:dictionary[@"color"] defaultColor:_defaultButtonStyle.color];
+	UIColor* color = [self color:dictionary[@"color"] defaultColor:defaultStyle.color];
 	if (color) {
 		[textAttributes setObject:color forKey:NSForegroundColorAttributeName];
+		[barButtonItem setImage:[iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+		[barButtonItem setTintColor:color];
 	}
 	
-	UIColor* disabledColor = [self color:dictionary[@"disabledColor"] defaultColor:_defaultButtonStyle.disabledColor];;
+	UIColor* disabledColor = [self color:dictionary[@"disabledColor"] defaultColor:defaultStyle.disabledColor];;
 	if (disabledColor) {
 		UIColor *color = disabledColor;
 		[disabledTextAttributes setObject:color forKey:NSForegroundColorAttributeName];
 	}
 	
-	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:_defaultButtonStyle.fontSize];
-	NSString* fontFamily = [self fontFamily:dictionary[@"fontFamily"] defaultFontFamily:_defaultButtonStyle.fontFamily];
+	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:defaultStyle.fontSize];
+	NSString* fontFamily = [self fontFamily:dictionary[@"fontFamily"] defaultFontFamily:defaultStyle.fontFamily];
 	UIFont *font = nil;
 	if (fontFamily) {
 		font = [UIFont fontWithName:fontFamily size:[fontSize floatValue]];
@@ -171,6 +169,10 @@
 	} else {
 		return defaultFontFamily;
 	}
+}
+
+- (id)getValue:(id)value withDefault:(id)defaultValue {
+	return value ? value : defaultValue;
 }
 
 -(void)onButtonPress:(RNNUIBarButtonItem*)barButtonItem {

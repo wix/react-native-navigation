@@ -52,7 +52,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
 
     protected boolean isRoot() {
         return getParentController() == null &&
-               !(this instanceof Navigator) &&
+                !(this instanceof Navigator) &&
                 getView().getParent() != null;
     }
 }

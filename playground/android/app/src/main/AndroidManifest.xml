@@ -12,6 +12,7 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/app_name"
             android:launchMode="singleTask">
             <intent-filter>

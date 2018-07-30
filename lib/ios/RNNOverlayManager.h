@@ -5,9 +5,9 @@
 
 @interface RNNOverlayManager : NSObject
 
-- (instancetype)initWithStore:(RNNStore*)store;
+- (void)showOverlay:(UIViewController*)viewController;
+- (void)dismissOverlay:(UIViewController*)viewController;
 
-- (void)showOverlay:(UIViewController*)viewController completion:(RNNTransitionCompletionBlock)completion;
-- (void)dismissOverlay:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject;
+@property (nonatomic, retain) NSMutableArray* overlayWindows;
 
 @end
