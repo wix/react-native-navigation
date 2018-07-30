@@ -103,8 +103,9 @@ public class OptionsPresenter {
     }
 
     private void setDrawBehindStatusBar(View view, StatusBarOptions statusBar) {
-        ((MarginLayoutParams) view.getLayoutParams()).topMargin = statusBar.drawBehind.isFalseOrUndefined() ?
-                UiUtils.getStatusBarHeight(activity) :
-                0;
+        if (statusBar.visible.isFalse()) {
+            ((MarginLayoutParams) view.getLayoutParams()).topMargin = statusBar.drawBehind.isTrue() ?
+                    0 : UiUtils.getStatusBarHeight(activity);
+        }
     }
 }
