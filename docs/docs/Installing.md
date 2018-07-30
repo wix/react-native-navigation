@@ -34,7 +34,7 @@
 
 	- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 	{
-		NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+		NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 		[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
 		
 		return YES;
@@ -43,7 +43,7 @@
 	@end
 	```
 	
-For apps created with `create-react-native-app`, change `jsBundleURLForBundleRoot:@"index.ios"` to `jsBundleURLForBundleRoot:@"index"`.
+For React Native v0.48 and below, change `jsBundleURLForBundleRoot:@"index"` to `jsBundleURLForBundleRoot:@"index.ios"`.
 
 ## Android
 
