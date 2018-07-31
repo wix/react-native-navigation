@@ -15,9 +15,11 @@ import { ComponentType } from 'react';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
 import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
+import { TouchablePreview, Props as TouchablePreviewProps } from './adapters/TouchablePreview';
 
 export class Navigation {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
+  public readonly TouchablePreview: React.ComponentType<TouchablePreviewProps>;
   public readonly store: Store;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly uniqueIdProvider: UniqueIdProvider;
@@ -32,6 +34,7 @@ export class Navigation {
 
   constructor() {
     this.Element = Element;
+    this.TouchablePreview = TouchablePreview;
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();
