@@ -2,6 +2,7 @@ const React = require('react');
 const { Component } = require('react');
 const { View, TouchableOpacity, Image, Text } = require('react-native');
 const { Navigation } = require('react-native-navigation');
+import ViewOverflow from 'react-native-view-overflow';
 
 class CustomTransitionDestination extends Component {
   constructor(props) {
@@ -65,9 +66,17 @@ class CustomTransitionDestination extends Component {
           <Navigation.Element resizeMode={'contain'} elementId={'customDestinationImage'}>
             <Image resizeMode={'contain'} style={{ width: 300, height: 300 }} source={require('../../img/400.jpeg')} />
           </Navigation.Element>
-          <Navigation.Element elementId={'customDestinationImage2'}>
-            <Image style={{ width: 100, height: 100 }} source={require('../../img/2048.jpeg')} />
-          </Navigation.Element>
+          
+          <View style={{ width: 120, height: 120, margin: 15, alignItems: 'center', justifyContent: 'center' }}>
+            <Navigation.Element elementId={'customDestinationImage2'} style={{ width: 100, height: 100, zIndex: 1 }}>
+              <Image resizeMode={'contain'} style={{ width: 100, height: 100 }} source={require('../../img/2048.jpeg')} />
+            </Navigation.Element>
+            <ViewOverflow>
+              <Navigation.Element elementId='image2bgDestination' style={{ width: 120, height: 120, marginTop: -110 }}>
+                <View style={{ width: 120, height: 120, backgroundColor: 'purple' }} />
+              </Navigation.Element>
+            </ViewOverflow>
+          </View>
         </View>
 
         <TouchableOpacity testID={'shared_image2'} onPress={this.pop}>

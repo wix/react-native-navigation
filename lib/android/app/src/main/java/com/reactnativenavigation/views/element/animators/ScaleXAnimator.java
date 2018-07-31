@@ -24,7 +24,7 @@ public class ScaleXAnimator extends PropertyAnimatorCreator<ViewGroup> {
                 to.getChild(),
                 View.SCALE_X,
                 ((float) from.getChild().getWidth()) / to.getChild().getWidth(),
-                0
+                1
         );
     }
 }

@@ -24,7 +24,7 @@ public class ScaleYAnimator extends PropertyAnimatorCreator<ViewGroup> {
                 to.getChild(),
                 View.SCALE_Y,
                 ((float) from.getChild().getHeight()) / to.getChild().getHeight(),
-                0
+                1
         );
     }
 }

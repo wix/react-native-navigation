@@ -31,6 +31,7 @@ public abstract class PropertyAnimatorCreator<T> {
     public Animator create(Transition transition) {
         Animator animator = create().setDuration(transition.duration.get());
         animator.addListener(new AnimatorListenerAdapter() {
+            private final boolean originalClipChildren = ((ViewGroup) to.getParent()).getClipChildren();
             @Override
             public void onAnimationStart(Animator animation) {
                 ((ViewGroup) to.getParent()).setClipChildren(false);
@@ -38,7 +39,7 @@ public abstract class PropertyAnimatorCreator<T> {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                ((ViewGroup) to.getParent()).setClipChildren(true);
+                ((ViewGroup) to.getParent()).setClipChildren(originalClipChildren);
             }
         });
         return animator;

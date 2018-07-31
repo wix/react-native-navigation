@@ -26,7 +26,7 @@ class CustomTransitionOrigin extends Component {
     return (
       <View style={styles.root}>
         <Navigation.Element elementId='title1'>
-          <Text style={[styles.h1, {color: 'black', fontSize: 8}]}>Custom Transition Screen</Text>
+          <Text style={[styles.h1, { color: 'black' }]}>Custom Transition Screen</Text>
         </Navigation.Element>
 
         <View style={{ flex: 1, justifyContent: 'flex-start' }}>
@@ -36,13 +36,15 @@ class CustomTransitionOrigin extends Component {
             </Navigation.Element>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{overflow: 'visible'}}activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
-            <View style={{width: 100, height: 100, marginTop: 10, marginBottom: 30}}>
-              <Navigation.Element elementId='image2'style={{zIndex: 1}}>
+          <TouchableOpacity style={{ width: 110 }} activeOpacity={0.5} onPress={this.onClickNavigationIcon}>
+            <View style={{ width: 100, height: 100, marginTop: 10, marginBottom: 30 }}>
+              <Navigation.Element elementId='image2' style={{ zIndex: 1 }}>
                 <Image style={styles.gyroImage} source={require('../../img/2048.jpeg')} />
               </Navigation.Element>
               <ViewOverflow>
-                <View style={{width: 100, height: 100, marginLeft: 10, marginTop: -90, backgroundColor: 'purple'}} />
+                <Navigation.Element elementId='image2bg' style={{ width: 100, height: 100, marginLeft: 10, marginTop: -90 }}>
+                  <View style={{ width: 100, height: 100, backgroundColor: 'purple' }} />
+                </Navigation.Element>
               </ViewOverflow>
             </View>
           </TouchableOpacity>
@@ -82,8 +84,11 @@ class CustomTransitionOrigin extends Component {
           customTransition: {
             animations: [
               { type: 'sharedElement', fromId: 'title1', toId: 'title2', startDelay: 0, springVelocity: 0.2, duration: 0.5 },
-              { type: 'sharedElement', fromId: 'image1', toId: 'customDestinationImage', startDelay: 0, springVelocity: 0.9,
-              springDamping: 0.9, duration: 0.8, interactivePop: true },
+              {
+                type: 'sharedElement', fromId: 'image1', toId: 'customDestinationImage', startDelay: 0, springVelocity: 0.9,
+                springDamping: 0.9, duration: 0.8, interactivePop: true
+              },
+              { type: 'sharedElement', fromId: 'image2bg', toId: 'image2bgDestination', startDelay: 0, duration: 0.5 },
               { type: 'sharedElement', fromId: 'image2', toId: 'customDestinationImage2', startDelay: 0, duration: 0.8 },
               { fromId: 'image4', x: { to: 50 }, y: { to: 50 }, endAlpha: 0, startDelay: 0, duration: 0.8, springVelocity: 0.5 },
               { fromId: 'customDestinationParagraph', startY: 50, startAlpha: 0, endAlpha: 1, startDelay: 0, duration: 0.8 }
