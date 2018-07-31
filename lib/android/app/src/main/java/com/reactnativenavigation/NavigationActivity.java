@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.View;
 
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
@@ -32,7 +31,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onCreate(savedInstanceState);
         navigator = new Navigator(this, new ChildControllersRegistry(), new ModalStack(this), new OverlayManager());
         getReactGateway().onActivityCreated(this);
-        navigator.getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         setContentView(navigator.getView());
     }
 
