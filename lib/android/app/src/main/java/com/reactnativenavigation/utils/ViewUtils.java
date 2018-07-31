@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.facebook.react.views.view.ReactViewBackgroundDrawable;
 import com.reactnativenavigation.react.ReactView;
 
 import java.util.ArrayList;
@@ -116,5 +117,12 @@ public class ViewUtils {
             if (!view.getClass().isAssignableFrom(clazz)) return false;
         }
         return true;
+    }
+
+    public static int getBackgroundColor(View view) {
+        if (view.getBackground() instanceof ReactViewBackgroundDrawable) {
+            return ((ReactViewBackgroundDrawable) view.getBackground()).getColor();
+        }
+        throw new RuntimeException(view.getBackground().getClass().getSimpleName() + " is not ReactViewBackgroundDrawable");
     }
 }

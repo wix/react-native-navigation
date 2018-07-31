@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.DraweeView;
+import com.facebook.react.views.view.ReactViewBackgroundDrawable;
 import com.reactnativenavigation.utils.TextViewUtils;
 import com.reactnativenavigation.utils.UiUtils;
 
@@ -68,6 +69,11 @@ public class Element extends FrameLayout {
             ((ScalingUtils.InterpolatingScaleType) hierarchy.getActualImageScaleType()).setValue(value);
             getChild().invalidate();
         }
+    }
+
+    @Keep
+    public void setBackgroundColor(double[] color) {
+        ((ReactViewBackgroundDrawable) getChild().getBackground()).setColor(labToColor(color));
     }
 
     @Keep

@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.element;
 import android.animation.Animator;
 
 import com.reactnativenavigation.parse.Transition;
+import com.reactnativenavigation.views.element.animators.BackgroundColorAnimator;
 import com.reactnativenavigation.views.element.animators.MatrixAnimator;
 import com.reactnativenavigation.views.element.animators.PropertyAnimatorCreator;
 import com.reactnativenavigation.views.element.animators.ScaleXAnimator;
@@ -44,7 +45,8 @@ public class TransitionAnimatorCreator {
                 new MatrixAnimator(from, to),
                 new ScaleXAnimator(from, to),
                 new ScaleYAnimator(from, to),
-                new TextColorAnimator(from, to)
+                new TextColorAnimator(from, to),
+                new BackgroundColorAnimator(from, to)
 //                new TextChangeAnimator(from, to)
 //                new TextSizeAnimator(from, to)
         );

@@ -73,7 +73,7 @@ class CustomTransitionDestination extends Component {
             </Navigation.Element>
             <ViewOverflow>
               <Navigation.Element elementId='image2bgDestination' style={{ width: 120, height: 120, marginTop: -110 }}>
-                <View style={{ width: 120, height: 120, backgroundColor: 'purple' }} />
+                <View style={{ width: 120, height: 120, backgroundColor: 'yellow' }} />
               </Navigation.Element>
             </ViewOverflow>
           </View>
