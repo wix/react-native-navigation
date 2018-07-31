@@ -2,6 +2,7 @@ package com.reactnativenavigation.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntRange;
 import android.view.View;
 
@@ -27,6 +28,11 @@ public class BottomTabs extends AHBottomNavigation {
 
     public void setBadge(int bottomTabIndex, String badge) {
         setNotification(badge, bottomTabIndex);
+    }
+
+    public void setBadgeColor(@ColorInt Integer color) {
+        if (color == null) return;
+        setNotificationBackgroundColor(color);
     }
 
     @Override

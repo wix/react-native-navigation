@@ -7,5 +7,6 @@
 @property (nonatomic, strong) NSString* title;
 @property (nonatomic, strong) NSString* transition;
 @property (nonatomic, strong) NSNumber* showTitle;
+@property (nonatomic, strong) NSNumber* color;
 
 @end

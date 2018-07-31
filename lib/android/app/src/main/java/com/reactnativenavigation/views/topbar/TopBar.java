@@ -279,16 +279,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         animator.hide(options, onAnimationEnd);
     }
 
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (visibility == View.GONE) {
-            this.parentView.removeView(this);
-        } else if (visibility == View.VISIBLE && this.getParent() == null) {
-            this.parentView.addView(this);
-        }
-    }
-
     public void clear() {
         topBarBackgroundViewController.destroy();
         topBarBackgroundViewController = new TopBarBackgroundViewController(topBarBackgroundViewController);
