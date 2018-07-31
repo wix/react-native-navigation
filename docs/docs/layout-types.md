@@ -22,7 +22,7 @@ const component = {
 ## stack
 
 Support children layouts of any kind.
-A stack can be initialised with more then one screen, in which case the last screen will be presented at the top of the stack.
+A stack can be initialised with more than one screen, in which case the last screen will be presented at the top of the stack.
 
 ```js
 const stack = {
@@ -119,6 +119,18 @@ For example, if invoked from one of the child components;`SecondScreen` or `Firs
 Navigation.mergeOptions(this.props.componentId, {
   bottomTabs: {
     currentTabId: this.props.componentId
+  }
+});
+```
+
+### Updating options for a specific tab
+Updating (merging) tab specific options is done using the `mergeOptions` command. `mergeOptions` expects a `componentId` as first argument, therefore in order to update a specific tab we'll need to pass a `componentId` of a child of that specific tab.
+For example, Using the layout specified above, To update the `badge` property of the second tab we'll call `mergeOptions` with `SecondScreenId`.
+
+```js
+Navigation.mergeOptions('SecondScreenId', {
+  bottomTab: {
+    badge: 'New'
   }
 });
 ```

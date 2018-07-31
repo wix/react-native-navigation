@@ -125,6 +125,7 @@ Navigation.mergeOptions(this.props.componentId, {
   bottomTab: {
     text: 'Tab 1',
     badge: '2',
+    badgeColor: 'red',
     testID: 'bottomTabTestID',
     icon: require('tab.png'),
     iconColor: 'red',

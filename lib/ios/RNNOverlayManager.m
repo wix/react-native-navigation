@@ -1,9 +1,7 @@
 #import "RNNOverlayManager.h"
 #import "RNNOverlayWindow.h"
 
-@implementation RNNOverlayManager {
-	NSMutableArray* _overlayWindows;
-}
+@implementation RNNOverlayManager
 
 - (instancetype)init {
 	self = [super init];
@@ -18,7 +16,7 @@
 	[_overlayWindows addObject:overlayWindow];
 	[overlayWindow setWindowLevel:UIWindowLevelNormal];
 	[overlayWindow setRootViewController:viewController];
-	[overlayWindow setHidden:NO];
+	[overlayWindow makeKeyAndVisible];
 }
 
 - (void)dismissOverlay:(UIViewController*)viewController {
@@ -31,7 +29,19 @@
 - (void)detachOverlayWindow:(UIWindow *)overlayWindow {
 	[overlayWindow setHidden:YES];
 	[overlayWindow setRootViewController:nil];
+	[overlayWindow resignKeyWindow];
+	[self assignKeyWindow];
 	[_overlayWindows removeObject:overlayWindow];
+}
+
+- (void)assignKeyWindow {
+	NSArray* windows = [[[UIApplication sharedApplication].windows reverseObjectEnumerator] allObjects];
+	for (UIWindow* window in windows) {
+		if (window.rootViewController) {
+			[window makeKeyAndVisible];
+			return;
+		}
+	}
 }
 
 - (UIWindow *)findWindowByRootViewController:(UIViewController *)viewController {

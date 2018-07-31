@@ -10,7 +10,7 @@
 	}
 	
 	NSDictionary* fontAttributes = [self fontAttributes];
-	
+
 	if (fontAttributes.allKeys.count > 0) {
 		viewController.navigationController.navigationBar.titleTextAttributes = fontAttributes;
 	}
@@ -31,7 +31,7 @@
 			if (self.fontSize) {
 				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.fontFamily size:[self.fontSize floatValue]];
 			} else {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.fontFamily size:20];
+				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.fontFamily size:17];
 			}
 		} else if (self.fontSize) {
 			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.fontSize floatValue]];

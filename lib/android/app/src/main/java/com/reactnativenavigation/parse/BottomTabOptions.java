@@ -29,6 +29,7 @@ public class BottomTabOptions {
         options.iconColor = ColorParser.parse(json, "iconColor");
         options.selectedIconColor = ColorParser.parse(json, "selectedIconColor");
         options.badge = TextParser.parse(json, "badge");
+        options.badgeColor = ColorParser.parse(json, "badgeColor");
         options.testId = TextParser.parse(json, "testID");
         options.fontFamily = typefaceManager.getTypeFace(json.optString("fontFamily", ""));
         options.fontSize = NumberParser.parse(json, "fontSize");
@@ -44,6 +45,7 @@ public class BottomTabOptions {
     public Color selectedIconColor = new NullColor();
     public Text testId = new NullText();
     public Text badge = new NullText();
+    public Color badgeColor = new NullColor();
     public Number fontSize = new NullNumber();
     public Number selectedFontSize = new NullNumber();
     @Nullable public Typeface fontFamily;
@@ -57,6 +59,7 @@ public class BottomTabOptions {
         if (other.iconColor.hasValue()) iconColor = other.iconColor;
         if (other.selectedIconColor.hasValue()) selectedIconColor = other.selectedIconColor;
         if (other.badge.hasValue()) badge = other.badge;
+        if (other.badgeColor.hasValue()) badgeColor = other.badgeColor;
         if (other.testId.hasValue()) testId = other.testId;
         if (other.fontSize.hasValue()) fontSize = other.fontSize;
         if (other.selectedFontSize.hasValue()) selectedFontSize = other.selectedFontSize;
@@ -71,6 +74,7 @@ public class BottomTabOptions {
         if (!iconColor.hasValue()) iconColor = defaultOptions.iconColor;
         if (!selectedIconColor.hasValue()) selectedIconColor = defaultOptions.selectedIconColor;
         if (!badge.hasValue()) badge = defaultOptions.badge;
+        if (!badgeColor.hasValue()) badgeColor = defaultOptions.badgeColor;
         if (!fontSize.hasValue()) fontSize = defaultOptions.fontSize;
         if (!selectedFontSize.hasValue()) selectedFontSize = defaultOptions.selectedFontSize;
         if (fontFamily == null) fontFamily = defaultOptions.fontFamily;
