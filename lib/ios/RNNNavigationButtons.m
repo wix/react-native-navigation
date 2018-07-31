@@ -109,7 +109,7 @@
 	UIColor* color = [self color:dictionary[@"color"] defaultColor:defaultStyle.color];
 	if (color) {
 		[textAttributes setObject:color forKey:NSForegroundColorAttributeName];
-		[barButtonItem setImage:[iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+		[barButtonItem setImage:iconImage];
 		[barButtonItem setTintColor:color];
 	}
 	
