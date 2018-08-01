@@ -1,13 +1,16 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.parse.SideMenuOptions;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.SideMenuOptionsPresenter;
 import com.reactnativenavigation.views.Component;
@@ -87,13 +90,33 @@ public class SideMenuController extends ParentController<DrawerLayout> {
 		getView().addView(childView);
 	}
 
-	public void setLeftController(ViewController controller) {
-		this.leftController = controller;
-        getView().addView(controller.getView(), new LayoutParams(MATCH_PARENT, MATCH_PARENT, Gravity.LEFT));
-	}
+    public void setLeftController(ViewController controller) {
+        this.leftController = controller;
+        int height = this.getHeight(options.sideMenuRootOptions.left);
+        int width = this.getWidth(options.sideMenuRootOptions.left);
+        getView().addView(controller.getView(), new LayoutParams(width, height, Gravity.LEFT));
+    }
 
-	public void setRightController(ViewController controller) {
-		this.rightController = controller;
-        getView().addView(controller.getView(), new LayoutParams(MATCH_PARENT, MATCH_PARENT, Gravity.RIGHT));
-	}
+    public void setRightController(ViewController controller) {
+        this.rightController = controller;
+        int height = this.getHeight(options.sideMenuRootOptions.right);
+        int width = this.getWidth(options.sideMenuRootOptions.right);
+        getView().addView(controller.getView(), new LayoutParams(width, height, Gravity.RIGHT));
+    }
+
+    protected int getWidth(SideMenuOptions sideMenuOptions) {
+        int width = MATCH_PARENT;
+        if (sideMenuOptions.width.hasValue()) {
+            width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sideMenuOptions.width.get(), Resources.getSystem().getDisplayMetrics());
+        }
+        return width;
+    }
+
+    protected int getHeight(SideMenuOptions sideMenuOptions) {
+        int height = MATCH_PARENT;
+        if (sideMenuOptions.height.hasValue()) {
+            height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sideMenuOptions.height.get(), Resources.getSystem().getDisplayMetrics());
+        }
+        return height;
+    }
 }
