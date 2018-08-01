@@ -20,7 +20,7 @@ public class TextViewUtils {
         return spans.length == 0 ? Color.WHITE : spans[0].getForegroundColor();
     }
 
-    public static int getTextSize(TextView view) {
+    public static float getTextSize(TextView view) {
         SpannedString text = new SpannedString(view.getText());
         AbsoluteSizeSpan[] spans = text.getSpans(0, text.length(), AbsoluteSizeSpan.class);
         return spans.length == 0 ? -1 : spans[0].getSize();

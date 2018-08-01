@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.facebook.react.views.text.ReactTextView;
 import com.reactnativenavigation.views.element.Element;
-import com.shazam.android.widget.text.reflow.ReflowTextAnimatorHelper;
+import com.reactnativenavigation.views.element.animators.reflow.ReflowTextAnimatorHelper;
 
 import static com.reactnativenavigation.utils.TextViewUtils.getTextSize;
 
@@ -22,14 +22,9 @@ public class TextChangeAnimator extends PropertyAnimatorCreator<ReactTextView> {
 
     @Override
     public Animator create() {
-        return new ReflowTextAnimatorHelper.Builder((TextView) from.getChild(), (TextView) to.getChild())
+        return new ReflowTextAnimatorHelper
+                .Builder((TextView) from.getChild(), (TextView) to.getChild())
+                .debug(true)
                 .buildAnimator();
-
-//        return ObjectAnimator.ofFloat(
-//                to,
-//                "textSize",
-//                TextViewUtils.getTextSize((TextView) from.getChild()),
-//                TextViewUtils.getTextSize((TextView) to.getChild())
-//        ).setDuration(transition.duration.get());
     }
 }
