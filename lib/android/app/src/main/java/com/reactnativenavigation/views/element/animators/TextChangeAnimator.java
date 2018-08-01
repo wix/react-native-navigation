@@ -24,7 +24,7 @@ public class TextChangeAnimator extends PropertyAnimatorCreator<ReactTextView> {
     public Animator create() {
         return new ReflowTextAnimatorHelper
                 .Builder((TextView) from.getChild(), (TextView) to.getChild())
-                .debug(true)
+                .calculateDuration(false)
                 .buildAnimator();
     }
 }

@@ -8,7 +8,7 @@ import com.reactnativenavigation.views.element.animators.MatrixAnimator;
 import com.reactnativenavigation.views.element.animators.PropertyAnimatorCreator;
 import com.reactnativenavigation.views.element.animators.ScaleXAnimator;
 import com.reactnativenavigation.views.element.animators.ScaleYAnimator;
-import com.reactnativenavigation.views.element.animators.TextColorAnimator;
+import com.reactnativenavigation.views.element.animators.TextChangeAnimator;
 import com.reactnativenavigation.views.element.animators.XAnimator;
 import com.reactnativenavigation.views.element.animators.YAnimator;
 
@@ -45,10 +45,8 @@ public class TransitionAnimatorCreator {
                 new MatrixAnimator(from, to),
                 new ScaleXAnimator(from, to),
                 new ScaleYAnimator(from, to),
-                new TextColorAnimator(from, to),
-                new BackgroundColorAnimator(from, to)
-//                new TextChangeAnimator(from, to)
-//                new TextSizeAnimator(from, to)
+                new BackgroundColorAnimator(from, to),
+                new TextChangeAnimator(from, to)
         );
     }
 }
