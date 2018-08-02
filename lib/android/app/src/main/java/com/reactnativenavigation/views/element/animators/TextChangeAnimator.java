@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.facebook.react.views.text.ReactTextView;
 import com.reactnativenavigation.views.element.Element;
-import com.reactnativenavigation.views.element.animators.reflow.ReflowTextAnimatorHelper;
+import com.shazam.android.widget.text.reflow.ReflowTextAnimatorHelper;
 
 import static com.reactnativenavigation.utils.TextViewUtils.getTextSize;
 
