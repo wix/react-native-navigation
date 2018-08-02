@@ -84,7 +84,7 @@ public class BottomTabsOptionsPresenter {
             int tabIndex = bottomTabFinder.findByControllerId(options.currentTabId.get());
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
         }
-        if (options.visible.isTrueOrUndefined()) {
+        if (options.visible.isTrue()) {
             if (options.animate.isTrueOrUndefined()) {
                 animator.show(animations);
             } else {
