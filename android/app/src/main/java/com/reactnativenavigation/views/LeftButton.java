@@ -52,6 +52,9 @@ class LeftButton extends MaterialMenuDrawable implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        if (isRunning()) {
+            return;
+        }
         if (isBackButton()) {
             handleBackButtonClick();
         } else if (isSideMenuButton()) {
