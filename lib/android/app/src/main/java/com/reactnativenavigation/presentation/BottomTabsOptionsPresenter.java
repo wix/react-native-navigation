@@ -1,8 +1,10 @@
 package com.reactnativenavigation.presentation;
 
+import android.graphics.Color;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation.TitleState;
 import com.reactnativenavigation.anim.BottomTabsAnimator;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.BottomTabsOptions;
@@ -50,11 +52,52 @@ public class BottomTabsOptionsPresenter {
         applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
     }
 
-    public void presentChildOptions(Options options, Component child) {
+    public void applyChildOptions(Options options, Component child) {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
         applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
         int tabIndex = bottomTabFinder.findByComponent(child);
         applyDrawBehind(withDefaultOptions.bottomTabsOptions, tabIndex);
+    }
+
+    public void mergeChildOptions(Options options, Component child) {
+        Options withDefault = options.copy().withDefaultOptions(defaultOptions);
+        mergeBottomTabsOptions(withDefault.bottomTabsOptions, withDefault.animations);
+        int tabIndex = bottomTabFinder.findByComponent(child);
+        mergeDrawBehind(withDefault.bottomTabsOptions, tabIndex);
+    }
+
+    private void mergeBottomTabsOptions(BottomTabsOptions options, AnimationsOptions animations) {
+        if (options.titleDisplayMode.hasValue()) {
+            bottomTabs.setTitleState(options.titleDisplayMode.toState());
+        }
+        if (options.backgroundColor.hasValue()) {
+            bottomTabs.setBackgroundColor(options.backgroundColor.get());
+        }
+        if (options.currentTabIndex.hasValue()) {
+            int tabIndex = options.currentTabIndex.get();
+            if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
+        }
+        if (options.testId.hasValue()) {
+            bottomTabs.setTag(options.testId.get());
+        }
+        if (options.currentTabId.hasValue()) {
+            int tabIndex = bottomTabFinder.findByControllerId(options.currentTabId.get());
+            if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
+        }
+        if (options.visible.isTrueOrUndefined()) {
+            if (options.animate.isTrueOrUndefined()) {
+                animator.show(animations);
+            } else {
+                bottomTabs.restoreBottomNavigation(false);
+            }
+        }
+        if (options.visible.isFalse()) {
+            if (options.animate.isTrueOrUndefined()) {
+                animator.hide(animations);
+            } else {
+                bottomTabs.hideBottomNavigation(false);
+            }
+        }
     }
 
     private void applyDrawBehind(BottomTabsOptions options, int tabIndex) {
@@ -72,20 +115,29 @@ public class BottomTabsOptionsPresenter {
         }
     }
 
+    private void mergeDrawBehind(BottomTabsOptions options, int tabIndex) {
+        ViewGroup tab = tabs.get(tabIndex).getView();
+        MarginLayoutParams lp = (MarginLayoutParams) tab.getLayoutParams();
+        if (options.drawBehind.isTrue()) {
+            lp.bottomMargin = 0;
+        }
+        if (options.visible.isTrue() && options.drawBehind.isFalse()) {
+            if (bottomTabs.getHeight() == 0) {
+                UiUtils.runOnPreDrawOnce(bottomTabs, () -> lp.bottomMargin = bottomTabs.getHeight());
+            } else {
+                lp.bottomMargin = bottomTabs.getHeight();
+            }
+        }
+    }
+
     private void applyBottomTabsOptions(BottomTabsOptions options, AnimationsOptions animationsOptions) {
-        if (options.titleDisplayMode.hasValue()) {
-            bottomTabs.setTitleState(options.titleDisplayMode.toState());
-        }
-        if (options.backgroundColor.hasValue()) {
-            bottomTabs.setBackgroundColor(options.backgroundColor.get());
-        }
+        bottomTabs.setTitleState(options.titleDisplayMode.get(TitleState.SHOW_WHEN_ACTIVE));
+        bottomTabs.setBackgroundColor(options.backgroundColor.get(Color.WHITE));
         if (options.currentTabIndex.hasValue()) {
             int tabIndex = options.currentTabIndex.get();
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
         }
-        if (options.testId.hasValue()) {
-            bottomTabs.setTag(options.testId.get());
-        }
+        if (options.testId.hasValue()) bottomTabs.setTag(options.testId.get());
         if (options.currentTabId.hasValue()) {
             int tabIndex = bottomTabFinder.findByControllerId(options.currentTabId.get());
             if (tabIndex >= 0) tabSelector.selectTab(tabIndex);
