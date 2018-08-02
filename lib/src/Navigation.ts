@@ -60,8 +60,8 @@ export class Navigation {
    * Utility helper function like registerComponent,
    * wraps the provided component with a react-redux Provider with the passed redux store
    */
-  public registerComponentWithRedux(componentName: string, getComponentClassFunc: ComponentProvider, reduxStore: any): ComponentType<any> {
-    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, reduxStore);
+  public registerComponentWithRedux(componentName: string, getComponentClassFunc: ComponentProvider, ReduxProvider: any, reduxStore: any): ComponentType<any> {
+    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, ReduxProvider, reduxStore);
   }
 
   /**
