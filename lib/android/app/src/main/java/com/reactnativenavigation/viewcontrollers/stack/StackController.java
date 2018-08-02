@@ -158,7 +158,7 @@ public class StackController extends ParentController<StackLayout> {
         view.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
         presenter.applyLayoutParamsOptions(resolvedOptions, view);
-        getView().addView(view);
+        getView().addView(view, getView().getChildCount() - 1);
     }
 
     public void setRoot(ViewController child, CommandListener listener) {
@@ -312,7 +312,7 @@ public class StackController extends ParentController<StackLayout> {
         child.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         Options options = resolveCurrentOptions();
         presenter.applyLayoutParamsOptions(options, child);
-        stackLayout.addView(child);
+        stackLayout.addView(child, 0);
     }
 
     private void onNavigationButtonPressed(String buttonId) {

@@ -46,10 +46,13 @@
 		if (self.badge != nil && ![self.badge isEqual:[NSNull null]]) {
 			badge = [RCTConvert NSString:self.badge];
 		}
+		UITabBarItem *tabBarItem = viewController.tabBarItem;
 		if (viewController.navigationController) {
-			viewController.navigationController.tabBarItem.badgeValue = badge;
-		} else {
-			viewController.tabBarItem.badgeValue = badge;
+			tabBarItem = viewController.navigationController.tabBarItem;
+		}
+		tabBarItem.badgeValue = badge;
+		if (self.badgeColor) {
+			tabBarItem.badgeColor = [RCTConvert UIColor:self.badgeColor];
 		}
 	}
 	

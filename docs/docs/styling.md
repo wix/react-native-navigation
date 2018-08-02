@@ -125,6 +125,7 @@ Navigation.mergeOptions(this.props.componentId, {
   bottomTab: {
     text: 'Tab 1',
     badge: '2',
+    badgeColor: 'red',
     testID: 'bottomTabTestID',
     icon: require('tab.png'),
     iconColor: 'red',
@@ -148,7 +149,7 @@ Navigation.mergeOptions(this.props.componentId, {
     interceptTouchOutside: true
   },
   preview: {
-    elementId: 'PreviewId',
+    reactTag: 0, // result from findNodeHandle(ref)
     width: 100,
     height: 100,
     commit: false,

@@ -11,7 +11,6 @@
     "types": [
       "jest",
       "lodash",
-      "prop-types",
       "react",
       "react-native",
       "react-test-renderer"

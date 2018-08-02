@@ -7,7 +7,8 @@ import {
   ComponentDidDisappearEvent,
   NavigationButtonPressedEvent,
   SearchBarUpdatedEvent,
-  SearchBarCancelPressedEvent
+  SearchBarCancelPressedEvent,
+  PreviewCompletedEvent
 } from '../interfaces/ComponentEvents';
 import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
 
@@ -44,6 +45,10 @@ export class EventsRegistry {
 
   public registerSearchBarCancelPressedListener(callback: (event: SearchBarCancelPressedEvent) => void): EventSubscription {
     return this.nativeEventsReceiver.registerSearchBarCancelPressedListener(callback);
+  }
+
+  public registerPreviewCompletedListener(callback: (event: PreviewCompletedEvent) => void): EventSubscription {
+    return this.nativeEventsReceiver.registerPreviewCompletedListener(callback);
   }
 
   public registerCommandListener(callback: (name: string, params: any) => void): EventSubscription {
