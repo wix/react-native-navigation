@@ -17,7 +17,7 @@ Title font size
 ```js
 topBar: {
   title: {
-    fontSize: 'red'
+    fontSize: 18
   }
 }
 ```
