@@ -4,7 +4,7 @@
 
 `registerAppLaunchedListener(callback: function): EventSubscription`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L17)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L18)
 
 ---
 
@@ -12,7 +12,7 @@
 
 `registerComponentDidAppearListener(callback: function): EventSubscription`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L21)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L22)
 
 ---
 
@@ -20,7 +20,7 @@
 
 `registerComponentDidDisappearListener(callback: function): EventSubscription`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L25)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L26)
 
 ---
 
@@ -28,7 +28,7 @@
 
 `registerCommandCompletedListener(callback: function): EventSubscription`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L29)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L30)
 
 ---
 
@@ -36,7 +36,7 @@
 
 `registerBottomTabSelectedListener(callback: function): EventSubscription`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L33)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L34)
 
 ---
 
@@ -44,7 +44,7 @@
 
 `registerNavigationButtonPressedListener(callback: function): EventSubscription`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L37)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L38)
 
 ---
 
@@ -52,7 +52,7 @@
 
 `registerSearchBarUpdatedListener(callback: function): EventSubscription`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L41)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L42)
 
 ---
 
@@ -60,7 +60,15 @@
 
 `registerSearchBarCancelPressedListener(callback: function): EventSubscription`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L45)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L46)
+
+---
+
+## registerPreviewCompletedListener
+
+`registerPreviewCompletedListener(callback: function): EventSubscription`
+
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L50)
 
 ---
 
@@ -68,7 +76,7 @@
 
 `registerCommandListener(callback: function): EventSubscription`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L49)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L54)
 
 ---
 
@@ -76,7 +84,7 @@
 
 `bindComponent(component: Component<any>): EventSubscription`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L53)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/events/EventsRegistry.ts#L58)
 
 ---
 

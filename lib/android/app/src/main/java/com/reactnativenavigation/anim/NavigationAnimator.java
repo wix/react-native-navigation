@@ -6,24 +6,41 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
+import com.reactnativenavigation.parse.Transitions;
+import com.reactnativenavigation.views.element.Element;
+import com.reactnativenavigation.views.element.ElementTransitionManager;
+
+import java.util.Collections;
+import java.util.List;
+
+import static com.reactnativenavigation.utils.CollectionUtils.merge;
 
 @SuppressWarnings("ResourceType")
 public class NavigationAnimator extends BaseAnimator {
 
-    public NavigationAnimator(Context context) {
+    private final ElementTransitionManager transitionManager;
+
+    public NavigationAnimator(Context context, ElementTransitionManager transitionManager) {
         super(context);
+        this.transitionManager = transitionManager;
     }
 
-    public void push(View view, NestedAnimationsOptions push, Runnable onAnimationEnd) {
-        view.setVisibility(View.INVISIBLE);
-        AnimatorSet set = push.content.getAnimation(view, getDefaultPushAnimation(view));
+    public void push(ViewGroup view, NestedAnimationsOptions animation, Runnable onAnimationEnd) {
+        push(view, animation, new Transitions(), Collections.EMPTY_LIST, Collections.EMPTY_LIST, onAnimationEnd);
+    }
+
+    public void push(ViewGroup view, NestedAnimationsOptions animation, Transitions transitions, List<Element> fromElements, List<Element> toElements, Runnable onAnimationEnd) {
+        view.setAlpha(0);
+        AnimatorSet set = animation.content.getAnimation(view, getDefaultPushAnimation(view));
+        set.playTogether(merge(set.getChildAnimations(), transitionManager.createTransitions(transitions, fromElements, toElements)));
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                view.setVisibility(View.VISIBLE);
+                view.setAlpha(1);
             }
 
             @Override

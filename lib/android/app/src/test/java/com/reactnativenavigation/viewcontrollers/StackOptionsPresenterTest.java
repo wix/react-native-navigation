@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.graphics.Typeface;
+import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TestComponentLayout;
@@ -16,10 +17,12 @@ import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.StackOptionsPresenter;
+import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.json.JSONObject;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 
@@ -140,6 +143,17 @@ public class StackOptionsPresenterTest extends BaseTest {
         uut.mergeChildOptions(options, child);
 
         verify(topBar, times(1)).setTopTabFontFamily(1, Typeface.DEFAULT_BOLD);
+    }
+
+    @Test
+    public void applyLayoutParamsOptions() {
+        Options options = new Options();
+        options.topBar.visible = new Bool(false);
+        options.topBar.animate = new Bool(false);
+        View view = Mockito.mock(View.class, Mockito.withSettings().extraInterfaces(Component.class));
+
+        uut.applyLayoutParamsOptions(options, view);
+        verify(topBar).hide();
     }
 
     private void assertTopBarOptions(Options options, int t) {

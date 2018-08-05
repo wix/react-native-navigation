@@ -4,22 +4,23 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.react.ReactView;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ChildController;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.topbar.TopBar;
 
+import org.mockito.Mockito;
+
 public class SimpleViewController extends ChildController<SimpleViewController.SimpleView> {
 
-    private SimpleView simpleView;
 
     public SimpleViewController(Activity activity, ChildControllersRegistry childRegistry, String id, Options options) {
         this(activity, childRegistry, id, new OptionsPresenter(activity, new Options()), options);
@@ -31,13 +32,12 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
     @Override
     protected SimpleView createView() {
-        simpleView = new SimpleView(getActivity());
-        return simpleView;
+        return new SimpleView(getActivity());
     }
 
     @Override
     public void sendOnNavigationButtonPressed(String buttonId) {
-        simpleView.sendOnNavigationButtonPressed(buttonId);
+        getView().sendOnNavigationButtonPressed(buttonId);
     }
 
     @Override
@@ -51,10 +51,10 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         super.mergeOptions(options);
     }
 
-    public static class SimpleView extends FrameLayout implements ReactComponent {
+    public static class SimpleView extends ReactView implements ReactComponent {
 
         public SimpleView(@NonNull Context context) {
-            super(context);
+            super(context, Mockito.mock(ReactInstanceManager.class), "compId", "compName");
         }
 
         @Override
@@ -88,8 +88,8 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         }
 
         @Override
-        public View asView() {
-            return null;
+        public ReactView asView() {
+            return this;
         }
 
         @Override

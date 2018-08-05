@@ -47,14 +47,15 @@ public class StackOptionsPresenter {
     }
 
     public void applyLayoutParamsOptions(Options options, View view) {
-        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         if (view instanceof Component) {
-            if (withDefaultOptions.topBar.drawBehind.isTrue() && !withDefaultOptions.layout.topMargin.hasValue()) {
+            if (withDefault.topBar.drawBehind.isTrue() && !withDefault.layout.topMargin.hasValue()) {
                 ((Component) view).drawBehindTopBar();
             } else if (options.topBar.drawBehind.isFalseOrUndefined()) {
                 ((Component) view).drawBelowTopBar(topBar);
             }
         }
+        applyTopBarVisibility(withDefault.topBar, withDefault.animations, options);
     }
 
     public void applyChildOptions(Options options, Component child) {
@@ -95,7 +96,22 @@ public class StackOptionsPresenter {
         topBar.setBackgroundColor(options.background.color.get(Color.WHITE));
         topBar.setBackgroundComponent(options.background.component);
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
+        applyTopBarVisibility(options, animationOptions, componentOptions);
+        if (options.drawBehind.isTrue() && !componentOptions.layout.topMargin.hasValue()) {
+            component.drawBehindTopBar();
+        } else if (options.drawBehind.isFalseOrUndefined()) {
+            component.drawBelowTopBar(topBar);
+        }
+        if (options.hideOnScroll.isTrue()) {
+            if (component instanceof IReactView) {
+                topBar.enableCollapse(((IReactView) component).getScrollEventListener());
+            }
+        } else if (options.hideOnScroll.isFalseOrUndefined()) {
+            topBar.disableCollapse();
+        }
+    }
 
+    private void applyTopBarVisibility(TopBarOptions options, AnimationsOptions animationOptions, Options componentOptions) {
         if (options.visible.isFalse()) {
             if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enable.isTrueOrUndefined()) {
                 topBar.hideAnimate(animationOptions.pop.topBar);
@@ -109,18 +125,6 @@ public class StackOptionsPresenter {
             } else {
                 topBar.show();
             }
-        }
-        if (options.drawBehind.isTrue() && !componentOptions.layout.topMargin.hasValue()) {
-            component.drawBehindTopBar();
-        } else if (options.drawBehind.isFalseOrUndefined()) {
-            component.drawBelowTopBar(topBar);
-        }
-        if (options.hideOnScroll.isTrue()) {
-            if (component instanceof IReactView) {
-                topBar.enableCollapse(((IReactView) component).getScrollEventListener());
-            }
-        } else if (options.hideOnScroll.isFalseOrUndefined()) {
-            topBar.disableCollapse();
         }
     }
 
