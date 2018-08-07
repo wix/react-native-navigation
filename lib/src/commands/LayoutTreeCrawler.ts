@@ -63,7 +63,7 @@ export class LayoutTreeCrawler {
       this._normalizeButtons(passedOptions.topBar.leftButtons, (buttons, style) => {
         passedOptions.topBar.leftButtons = buttons;
 
-        if (staticOptions.topBar && buttons) {
+        if (staticOptions.topBar) {
           this._applyButtonsStyle(staticOptions.topBar.leftButtons, style);
         }
       });
@@ -71,7 +71,7 @@ export class LayoutTreeCrawler {
       this._normalizeButtons(passedOptions.topBar.rightButtons, (buttons, style) => {
         passedOptions.topBar.rightButtons = buttons;
 
-        if (staticOptions.topBar && buttons) {
+        if (staticOptions.topBar) {
           this._applyButtonsStyle(staticOptions.topBar.rightButtons, style);
         }
       });
@@ -87,9 +87,11 @@ export class LayoutTreeCrawler {
   }
 
   _applyButtonsStyle(buttons, style) {
-    buttons.forEach((button) => {
-      _.merge(button, style);
-    });
+    if (buttons) {
+      buttons.forEach((button) => {
+        _.merge(button, style);
+      });
+    }
   }
 
   _assertKnownLayoutType(type) {
