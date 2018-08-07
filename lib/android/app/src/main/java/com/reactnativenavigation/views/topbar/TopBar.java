@@ -54,8 +54,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private TopBarAnimator animator;
     private TopTabs topTabs;
     private FrameLayout root;
-    private LinearLayout content;
-    private StackLayout parentView;
     private TopBarBackgroundViewController topBarBackgroundViewController;
     private View border;
     private ImageLoader imageLoader;
@@ -66,7 +64,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         this.imageLoader = imageLoader;
         collapsingBehavior = new TopBarCollapseBehavior(this);
         this.topBarBackgroundViewController = topBarBackgroundViewController;
-        this.parentView = parentView;
         topTabs = new TopTabs(getContext());
         animator = new TopBarAnimator(this, parentView.getStackId());
         createLayout(buttonCreator, titleBarReactViewCreator, onClickListener);
@@ -77,7 +74,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar = createTitleBar(getContext(), buttonCreator, titleBarReactViewCreator, onClickListener, imageLoader);
         topTabs = createTopTabs();
         border = createBorder();
-        content = createContentLayout();
+        LinearLayout content = createContentLayout();
 
         root = new FrameLayout(getContext());
         root.setId(CompatUtils.generateViewId());

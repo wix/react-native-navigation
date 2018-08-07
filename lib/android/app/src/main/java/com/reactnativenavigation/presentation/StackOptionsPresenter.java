@@ -66,7 +66,7 @@ public class StackOptionsPresenter {
     public void applyChildOptions(Options options, Component child) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefault.layout.orientation);
-        applyButtons(withDefault.topBar.buttons, withDefault.topBar.rightButtonColor, withDefault.topBar.leftButtonColor);
+        applyButtons(withDefault.topBar, withDefault.topBar.rightButtonColor, withDefault.topBar.leftButtonColor);
         applyTopBarOptions(withDefault.topBar, withDefault.animations, child, options);
         applyTopTabsOptions(withDefault.topTabs);
         applyTopTabOptions(withDefault.topTabOptions);
@@ -133,12 +133,12 @@ public class StackOptionsPresenter {
         }
     }
 
-    private void applyButtons(TopBarButtons buttons, com.reactnativenavigation.parse.params.Color rightButtonColor, com.reactnativenavigation.parse.params.Color leftButtonColor) {
-        List<Button> rightButtons = mergeButtonsWithColor(buttons.right, rightButtonColor);
-        List<Button> leftButtons = mergeButtonsWithColor(buttons.left, leftButtonColor);
+    private void applyButtons(TopBarOptions options, com.reactnativenavigation.parse.params.Color rightButtonColor, com.reactnativenavigation.parse.params.Color leftButtonColor) {
+        List<Button> rightButtons = mergeButtonsWithColor(options.buttons.right, rightButtonColor);
+        List<Button> leftButtons = mergeButtonsWithColor(options.buttons.left, leftButtonColor);
         topBar.setRightButtons(rightButtons);
         topBar.setLeftButtons(leftButtons);
-        if (buttons.back.visible.isTrue() && !buttons.hasLeftButtons()) topBar.setBackButton(buttons.back);
+        if (options.buttons.back.visible.isTrue() && !options.buttons.hasLeftButtons()) topBar.setBackButton(options.buttons.back);
     }
 
     private void applyTopTabsOptions(TopTabsOptions options) {
@@ -162,10 +162,10 @@ public class StackOptionsPresenter {
         }
     }
 
-    public void mergeChildOptions(Options options, Component child) {
+    public void mergeChildOptions(Options options, Options resolvedOptions, Component child) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         mergeOrientation(options.layout.orientation);
-        mergeButtons(options.topBar.buttons, withDefault.topBar.rightButtonColor, withDefault.topBar.leftButtonColor);
+        mergeButtons(options.topBar.buttons, withDefault.topBar, withDefault.topBar.rightButtonColor, withDefault.topBar.leftButtonColor);
         mergeTopBarOptions(options.topBar, options.animations, child);
         mergeTopTabsOptions(options.topTabs);
         mergeTopTabOptions(options.topTabOptions);
@@ -175,12 +175,16 @@ public class StackOptionsPresenter {
         if (orientationOptions.hasValue()) applyOrientation(orientationOptions);
     }
 
-    private void mergeButtons(TopBarButtons buttons, com.reactnativenavigation.parse.params.Color rightButtonColor, com.reactnativenavigation.parse.params.Color leftButtonColor) {
-        List<Button> rightButtons = mergeButtonsWithColor(buttons.right, rightButtonColor);
-        List<Button> leftButtons = mergeButtonsWithColor(buttons.left, leftButtonColor);
+    private void mergeButtons(TopBarButtons buttons, TopBarOptions resolvedOptions, com.reactnativenavigation.parse.params.Color rightButtonColor, com.reactnativenavigation.parse.params.Color leftButtonColor) {
+        List<Button> rightButtons = mergeButtonsWithColor(buttons.right, getColor(resolvedOptions.rightButtonColor, rightButtonColor));
+        List<Button> leftButtons = mergeButtonsWithColor(buttons.left, getColor(resolvedOptions.leftButtonColor, leftButtonColor));
         if (buttons.right != null) topBar.setRightButtons(rightButtons);
         if (buttons.left != null) topBar.setLeftButtons(leftButtons);
         if (buttons.back.hasValue()) topBar.setBackButton(buttons.back);
+    }
+
+    private com.reactnativenavigation.parse.params.Color getColor(com.reactnativenavigation.parse.params.Color a, com.reactnativenavigation.parse.params.Color b) {
+        return a.hasValue() ? a : b;
     }
 
     @Nullable

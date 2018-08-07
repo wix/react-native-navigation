@@ -67,6 +67,12 @@ public class TopBarOptions {
     public Color rightButtonColor = new NullColor();
     public Color leftButtonColor = new NullColor();
 
+    public TopBarOptions copy() {
+        TopBarOptions result = new TopBarOptions();
+        result.mergeWith(this);
+        return result;
+    }
+
     void mergeWith(final TopBarOptions other) {
         title.mergeWith(other.title);
         subtitle.mergeWith(other.subtitle);
@@ -88,7 +94,7 @@ public class TopBarOptions {
         validate();
     }
 
-    void mergeWithDefault(TopBarOptions defaultOptions) {
+    public TopBarOptions mergeWithDefault(TopBarOptions defaultOptions) {
         title.mergeWithDefault(defaultOptions.title);
         subtitle.mergeWithDefault(defaultOptions.subtitle);
         background.mergeWithDefault(defaultOptions.background);
@@ -107,6 +113,7 @@ public class TopBarOptions {
         if (!leftButtonColor.hasValue()) leftButtonColor = defaultOptions.leftButtonColor;
 
         validate();
+        return this;
     }
 
     public void validate() {

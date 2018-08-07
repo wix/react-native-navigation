@@ -42,6 +42,7 @@ import static org.mockito.Mockito.when;
 
 public class StackOptionsPresenterTest extends BaseTest {
 
+    private static final Options EMPTY_OPTIONS = new Options();
     private StackOptionsPresenter uut;
     private TestComponentLayout child;
     private Activity activity;
@@ -59,35 +60,35 @@ public class StackOptionsPresenterTest extends BaseTest {
     @Test
     public void mergeOrientation() throws Exception {
         Options options = new Options();
-        uut.mergeChildOptions(options, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
         verify(uut, times(0)).applyOrientation(any());
 
         JSONObject orientation = new JSONObject().put("orientation", "landscape");
         options.layout.orientation = OrientationOptions.parse(orientation);
-        uut.mergeChildOptions(options, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
         verify(uut, times(1)).applyOrientation(options.layout.orientation);
     }
 
     @Test
     public void mergeButtons() {
         Options options = new Options();
-        uut.mergeChildOptions(options, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
         verify(topBar, times(0)).setRightButtons(any());
         verify(topBar, times(0)).setLeftButtons(any());
 
         options.topBar.buttons.right = new ArrayList<>();
-        uut.mergeChildOptions(options, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
         verify(topBar, times(1)).setRightButtons(any());
 
         options.topBar.buttons.left = new ArrayList<>();
-        uut.mergeChildOptions(options, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
         verify(topBar, times(1)).setLeftButtons(any());
     }
 
     @Test
     public void mergeTopBarOptions() {
         Options options = new Options();
-        uut.mergeChildOptions(options, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
         assertTopBarOptions(options, 0);
 
         TitleOptions title = new TitleOptions();
@@ -109,19 +110,20 @@ public class StackOptionsPresenterTest extends BaseTest {
         options.topBar.drawBehind = new Bool(false);
         options.topBar.hideOnScroll = new Bool(false);
         options.topBar.validate();
-        uut.mergeChildOptions(options, child);
+
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
 
         assertTopBarOptions(options, 1);
 
         options.topBar.drawBehind = new Bool(true);
-        uut.mergeChildOptions(options, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
         verify(child, times(1)).drawBehindTopBar();
     }
 
     @Test
     public void mergeTopTabsOptions() {
         Options options = new Options();
-        uut.mergeChildOptions(options, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
         verify(topBar, times(0)).applyTopTabsColors(any(), any());
         verify(topBar, times(0)).applyTopTabsFontSize(any());
         verify(topBar, times(0)).setTopTabsVisible(anyBoolean());
@@ -130,7 +132,7 @@ public class StackOptionsPresenterTest extends BaseTest {
         options.topTabs.unselectedTabColor = new Color(1);
         options.topTabs.fontSize = new Number(1);
         options.topTabs.visible = new Bool(true);
-        uut.mergeChildOptions(options, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
         verify(topBar, times(1)).applyTopTabsColors(options.topTabs.selectedTabColor, options.topTabs.unselectedTabColor);
         verify(topBar, times(1)).applyTopTabsFontSize(options.topTabs.fontSize);
         verify(topBar, times(1)).setTopTabsVisible(anyBoolean());
@@ -139,13 +141,13 @@ public class StackOptionsPresenterTest extends BaseTest {
     @Test
     public void mergeTopTabOptions() {
         Options options = new Options();
-        uut.mergeChildOptions(options, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
 
         verify(topBar, times(0)).setTopTabFontFamily(anyInt(), any());
 
         options.topTabOptions.tabIndex = 1;
         options.topTabOptions.fontFamily = Typeface.DEFAULT_BOLD;
-        uut.mergeChildOptions(options, child);
+        uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
 
         verify(topBar, times(1)).setTopTabFontFamily(1, Typeface.DEFAULT_BOLD);
     }
@@ -193,14 +195,78 @@ public class StackOptionsPresenterTest extends BaseTest {
         uut.applyChildOptions(options, child);
         ArgumentCaptor<List<Button>> rightCaptor = ArgumentCaptor.forClass(List.class);
         verify(topBar).setRightButtons(rightCaptor.capture());
-        assertThat(rightCaptor.getValue().get(0).color).isEqualTo(options.topBar.rightButtonColor);
-        assertThat(rightCaptor.getValue().get(1).color).isEqualTo(options.topBar.rightButtonColor);
+        assertThat(rightCaptor.getValue().get(0).color.get()).isEqualTo(options.topBar.rightButtonColor.get());
+        assertThat(rightCaptor.getValue().get(1).color.get()).isEqualTo(options.topBar.rightButtonColor.get());
         assertThat(rightCaptor.getValue().get(0)).isNotEqualTo(rightButton1);
         assertThat(rightCaptor.getValue().get(1)).isNotEqualTo(rightButton2);
 
         ArgumentCaptor<List<Button>> leftCaptor = ArgumentCaptor.forClass(List.class);
         verify(topBar).setLeftButtons(leftCaptor.capture());
         assertThat(leftCaptor.getValue().get(0).color).isEqualTo(options.topBar.leftButtonColor);
+        assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
+    }
+
+    @Test
+    public void mergeChildOptions_buttonColorIsResolvedFromAppliedOptions() {
+        Options appliedOptions = new Options();
+        appliedOptions.topBar.rightButtonColor = new Color(10);
+        appliedOptions.topBar.leftButtonColor = new Color(100);
+
+        Options options2 = new Options();
+        Button rightButton1 = new Button();
+        Button rightButton2 = new Button();
+        Button leftButton = new Button();
+
+        options2.topBar.buttons.right = new ArrayList<>();
+        options2.topBar.buttons.right.add(rightButton1);
+        options2.topBar.buttons.right.add(rightButton2);
+
+        options2.topBar.buttons.left = new ArrayList<>();
+        options2.topBar.buttons.left.add(leftButton);
+
+        uut.mergeChildOptions(options2, appliedOptions, child);
+        ArgumentCaptor<List<Button>> rightCaptor = ArgumentCaptor.forClass(List.class);
+        verify(topBar, times(1)).setRightButtons(rightCaptor.capture());
+        assertThat(rightCaptor.getValue().get(0).color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get());
+        assertThat(rightCaptor.getValue().get(1).color.get()).isEqualTo(appliedOptions.topBar.rightButtonColor.get());
+        assertThat(rightCaptor.getValue().get(0)).isNotEqualTo(rightButton1);
+        assertThat(rightCaptor.getValue().get(1)).isNotEqualTo(rightButton2);
+
+        ArgumentCaptor<List<Button>> leftCaptor = ArgumentCaptor.forClass(List.class);
+        verify(topBar, times(1)).setLeftButtons(leftCaptor.capture());
+        assertThat(leftCaptor.getValue().get(0).color.get()).isEqualTo(appliedOptions.topBar.leftButtonColor.get());
+        assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
+    }
+
+    @Test
+    public void mergeChildOptions_buttonColorIsResolvedFromMergedOptions() {
+        Options resolvedOptions = new Options();
+        resolvedOptions.topBar.rightButtonColor = new Color(10);
+        resolvedOptions.topBar.leftButtonColor = new Color(100);
+
+        Options options2 = new Options();
+        Button rightButton1 = new Button();
+        Button rightButton2 = new Button();
+        Button leftButton = new Button();
+
+        options2.topBar.buttons.right = new ArrayList<>();
+        options2.topBar.buttons.right.add(rightButton1);
+        options2.topBar.buttons.right.add(rightButton2);
+
+        options2.topBar.buttons.left = new ArrayList<>();
+        options2.topBar.buttons.left.add(leftButton);
+
+        uut.mergeChildOptions(options2, resolvedOptions, child);
+        ArgumentCaptor<List<Button>> rightCaptor = ArgumentCaptor.forClass(List.class);
+        verify(topBar).setRightButtons(rightCaptor.capture());
+        assertThat(rightCaptor.getValue().get(0).color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get());
+        assertThat(rightCaptor.getValue().get(1).color.get()).isEqualTo(resolvedOptions.topBar.rightButtonColor.get());
+        assertThat(rightCaptor.getValue().get(0)).isNotEqualTo(rightButton1);
+        assertThat(rightCaptor.getValue().get(1)).isNotEqualTo(rightButton2);
+
+        ArgumentCaptor<List<Button>> leftCaptor = ArgumentCaptor.forClass(List.class);
+        verify(topBar).setLeftButtons(leftCaptor.capture());
+        assertThat(leftCaptor.getValue().get(0).color.get()).isEqualTo(resolvedOptions.topBar.leftButtonColor.get());
         assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
     }
 
