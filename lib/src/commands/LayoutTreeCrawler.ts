@@ -87,7 +87,7 @@ export class LayoutTreeCrawler {
   }
 
   _applyButtonsStyle(buttons, style) {
-    if (_.isArray(buttons)) {
+    if (buttons) {
       buttons.forEach((button) => {
         _.merge(button, style);
       });
