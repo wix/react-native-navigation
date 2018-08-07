@@ -39,7 +39,13 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
     private TopBarButtonController.OnClickListener onPressListener;
     private Drawable icon;
 
-    public TopBarButtonController(Activity activity, NavigationIconResolver navigationIconResolver, ImageLoader imageLoader, ButtonOptionsPresenter optionsPresenter, Button button, ReactViewCreator viewCreator, OnClickListener onClickListener) {
+    public TopBarButtonController(Activity activity,
+                                  NavigationIconResolver navigationIconResolver,
+                                  ImageLoader imageLoader,
+                                  ButtonOptionsPresenter optionsPresenter,
+                                  Button button,
+                                  ReactViewCreator viewCreator,
+                                  OnClickListener onClickListener) {
         super(activity, button.id, new Options());
         this.navigationIconResolver = navigationIconResolver;
         this.imageLoader = imageLoader;

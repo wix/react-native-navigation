@@ -12,6 +12,7 @@ import com.reactnativenavigation.parse.OrientationOptions;
 import com.reactnativenavigation.parse.SubtitleOptions;
 import com.reactnativenavigation.parse.TitleOptions;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
@@ -22,10 +23,13 @@ import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.json.JSONObject;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyDouble;
@@ -168,6 +172,36 @@ public class StackOptionsPresenterTest extends BaseTest {
         uut.mergeChildOptions(childOptions, child);
 
         verify(topBar, times(0)).setBackgroundColor(anyInt());
+    }
+
+    public void applyButtons_buttonColorIsMergedToButtons() {
+        Options options = new Options();
+        Button rightButton1 = new Button();
+        Button rightButton2 = new Button();
+        Button leftButton = new Button();
+
+        options.topBar.rightButtonColor = new Color(10);
+        options.topBar.leftButtonColor = new Color(100);
+
+        options.topBar.buttons.right = new ArrayList<>();
+        options.topBar.buttons.right.add(rightButton1);
+        options.topBar.buttons.right.add(rightButton2);
+
+        options.topBar.buttons.left = new ArrayList<>();
+        options.topBar.buttons.left.add(leftButton);
+
+        uut.applyChildOptions(options, child);
+        ArgumentCaptor<List<Button>> rightCaptor = ArgumentCaptor.forClass(List.class);
+        verify(topBar).setRightButtons(rightCaptor.capture());
+        assertThat(rightCaptor.getValue().get(0).color).isEqualTo(options.topBar.rightButtonColor);
+        assertThat(rightCaptor.getValue().get(1).color).isEqualTo(options.topBar.rightButtonColor);
+        assertThat(rightCaptor.getValue().get(0)).isNotEqualTo(rightButton1);
+        assertThat(rightCaptor.getValue().get(1)).isNotEqualTo(rightButton2);
+
+        ArgumentCaptor<List<Button>> leftCaptor = ArgumentCaptor.forClass(List.class);
+        verify(topBar).setLeftButtons(leftCaptor.capture());
+        assertThat(leftCaptor.getValue().get(0).color).isEqualTo(options.topBar.leftButtonColor);
+        assertThat(leftCaptor.getValue().get(0)).isNotEqualTo(leftButton);
     }
 
     private void assertTopBarOptions(Options options, int t) {
