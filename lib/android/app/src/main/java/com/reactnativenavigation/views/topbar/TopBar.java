@@ -34,7 +34,6 @@ import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
@@ -187,7 +186,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     public void setBackgroundComponent(Component component) {
         if (component.hasValue()) {
             topBarBackgroundViewController.setComponent(component);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, ViewUtils.getPreferredHeight(this));
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
             root.addView(topBarBackgroundViewController.getView(), 0, lp);
         }
     }
