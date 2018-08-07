@@ -11,6 +11,7 @@ import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
+import com.reactnativenavigation.views.element.ElementTransitionManager;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class StackControllerBuilder {
     public StackControllerBuilder(Activity activity) {
         this.activity = activity;
         presenter = new OptionsPresenter(activity, new Options());
-        animator = new NavigationAnimator(activity);
+        animator = new NavigationAnimator(activity, new ElementTransitionManager());
     }
 
     public StackControllerBuilder setChildren(List<ViewController> children) {

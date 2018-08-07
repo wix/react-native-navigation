@@ -137,10 +137,14 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   sideMenu: {
     left: {
+      width: 260,
+      height: 270,
       visible: false,
       enabled: true
     },
     right: {
+      width: 260,
+      height: 270,
       visible: false,
       enabled: true
     }

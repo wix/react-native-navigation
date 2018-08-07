@@ -25,7 +25,6 @@ export class ReflectionsReader {
     this.typedocApp = new Application({ ...OPTIONS, ...tsconfig.compilerOptions });
   }
 
-  // just class modules, TODO: extract interfaces and types to their own modules, generate docs for interfaces and types
   public read(rootPath: string): Reflections {
     const expandedFiles = this.typedocApp.expandInputFiles([rootPath]);
     const projectReflection = this.typedocApp.convert(expandedFiles);

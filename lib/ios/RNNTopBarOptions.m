@@ -149,6 +149,13 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		viewController.navigationController.navigationBar.accessibilityIdentifier = self.testID;
 	}
 	
+	if (self.buttonColor) {
+		UIColor* buttonColor = [RCTConvert UIColor:self.buttonColor];
+		viewController.navigationController.navigationBar.tintColor = buttonColor;
+	} else {
+		viewController.navigationController.navigationBar.tintColor = nil;
+	}
+	
 	if (self.rightButtons || self.leftButtons) {
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
 		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons defaultLeftButtonStyle:self.leftButtonStyle defaultRightButtonStyle:self.rightButtonStyle];

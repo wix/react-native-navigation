@@ -28,6 +28,7 @@ public class Options {
         result.modal = ModalOptions.parse(json);
         result.statusBar = StatusBarOptions.parse(json.optJSONObject("statusBar"));
         result.layout = LayoutOptions.parse(json.optJSONObject("layout"));
+        result.transitions = Transitions.parse(json.optJSONObject("customTransition"));
 
         return result;
     }
@@ -44,6 +45,7 @@ public class Options {
     @NonNull public ModalOptions modal = new ModalOptions();
     @NonNull public StatusBarOptions statusBar = new StatusBarOptions();
     @NonNull public LayoutOptions layout = new LayoutOptions();
+    @NonNull public Transitions transitions = new Transitions();
 
     void setTopTabIndex(int i) {
         topTabOptions.tabIndex = i;
@@ -64,6 +66,7 @@ public class Options {
         result.modal.mergeWith(modal);
         result.statusBar.mergeWith(statusBar);
         result.layout.mergeWith(layout);
+        result.transitions.mergeWith(transitions);
         return result;
     }
 
@@ -81,6 +84,7 @@ public class Options {
         result.modal.mergeWith(other.modal);
         result.statusBar.mergeWith(other.statusBar);
         result.layout.mergeWith(other.layout);
+        result.transitions.mergeWith(transitions);
         return result;
     }
 
@@ -96,6 +100,7 @@ public class Options {
         modal.mergeWithDefault(defaultOptions.modal);
         statusBar.mergeWithDefault(defaultOptions.statusBar);
         layout.mergeWithDefault(defaultOptions.layout);
+        transitions.mergeWithDefault(defaultOptions.transitions);
         return this;
     }
 

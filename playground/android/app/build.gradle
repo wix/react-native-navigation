@@ -63,6 +63,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
     implementation project(':react-native-navigation')
+    implementation project(':react-native-view-overflow')
 
     androidTestImplementation(project(':detox'))
     androidTestImplementation 'junit:junit:4.12'

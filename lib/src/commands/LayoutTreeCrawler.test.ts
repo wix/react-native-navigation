@@ -104,6 +104,136 @@ describe('LayoutTreeCrawler', () => {
     });
   });
 
+  it('Components: extract button style from passedOptions buttons array and merge it to all buttons', () => {
+    const MyComponent = class {
+      static get options() {
+        return {
+          topBar: {
+            leftButtons: [{
+              id: 'id'
+            }, {
+              id: 'id2'
+            }],
+            rightButtons: [{
+              id: 'id3'
+            }]
+          }
+        };
+      }
+    };
+
+    const passedOptions = {
+      topBar: {
+        leftButtons: {
+          font: 'Helvetica'
+        },
+        rightButtons: []
+      }
+    };
+
+    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: passedOptions } };
+    store.setOriginalComponentClassForName('theComponentName', MyComponent);
+
+    uut.crawl(node);
+
+    expect(node.data.options).toEqual({
+      topBar: {
+        leftButtons: [{
+          id: 'id',
+          font: 'Helvetica'
+        }, {
+          id: 'id2',
+          font: 'Helvetica'
+        }],
+        rightButtons: [{
+          id: 'id3'
+        }]
+      }
+    });
+  });
+
+  it('Components: empty buttons array should not affect static buttons', () => {
+    const MyComponent = class {
+      static get options() {
+        return {
+          topBar: {}
+        };
+      }
+    };
+
+    const passedOptions = {
+      topBar: {}
+    };
+
+    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: passedOptions } };
+    store.setOriginalComponentClassForName('theComponentName', MyComponent);
+
+    uut.crawl(node);
+
+    expect(node.data.options).toEqual({
+      topBar: {}
+    });
+  });
+
+  it('Components: static options with no topBar should not crash', () => {
+    const MyComponent = class {
+      static get options() {
+        return {
+
+        };
+      }
+    };
+
+    const passedOptions = {
+      topBar: {}
+    };
+
+    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: passedOptions } };
+    store.setOriginalComponentClassForName('theComponentName', MyComponent);
+
+    uut.crawl(node);
+
+    expect(node.data.options).toEqual({
+      topBar: {}
+    });
+  });
+
+  it('Components: undefined passed buttons should not affect static buttons', () => {
+    const MyComponent = class {
+      static get options() {
+        return {
+          topBar: {
+            leftButtons: [{
+              id: 'id'
+            }],
+            rightButtons: [{
+              id: 'id2'
+            }]
+          }
+        };
+      }
+    };
+
+    const passedOptions = {
+      topBar: {}
+    };
+
+    const node = { type: LayoutType.Component, data: { name: 'theComponentName', options: passedOptions } };
+    store.setOriginalComponentClassForName('theComponentName', MyComponent);
+
+    uut.crawl(node);
+
+    expect(node.data.options).toEqual({
+      topBar: {
+        leftButtons: [{
+          id: 'id'
+        }],
+        rightButtons: [{
+          id: 'id2'
+        }]
+      }
+    });
+  });
   it('Component: deepClones options', () => {
     const theStyle = {};
     const MyComponent = class {
