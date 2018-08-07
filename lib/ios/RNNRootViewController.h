@@ -7,7 +7,6 @@
 #import "RNNAnimator.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
-typedef void (^PreviewCallback)(UIViewController *vc);
 
 @interface RNNRootViewController : UIViewController	<UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
 
@@ -17,7 +16,7 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 @property (nonatomic) id<RNNRootViewCreator> creator;
 @property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) UIViewController* previewController;
-@property (nonatomic, copy) PreviewCallback previewCallback;
+
 
 - (instancetype)initWithName:(NSString*)name
 				withOptions:(RNNNavigationOptions*)options

@@ -166,19 +166,3 @@ class MyComponent extends Component {
   }
 }
 ```
-
-## previewCompleted (iOS 11.4+ only)
-Called when preview peek is completed
-
-```js
-class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-    Navigation.events().bindComponent(this);
-  }
-
-  previewCompleted({ previewComponentId }) {
-
-  }
-}
-```

@@ -33,35 +33,3 @@ Navigation.push(this.props.componentId, {
   }
 });
 ```
-
-## Peek and Pop (iOS 11.4+)
-
-react-native-navigation supports the [Peek and pop](
-https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/Adopting3DTouchOniPhone/#//apple_ref/doc/uid/TP40016543-CH1-SW3) feature in iOS 11.4 and newer.
-
-This works by passing a ref a componentent you would want to transform into a peek view. We have included a handly component to handle all the touches and ref for you.
-
-```jsx
-const handlePress ({ reactTag }) => {
-  Navigation.push(this.props.componentId, {
-    component {
-      name: 'previewed.screen',
-      options: {
-        preview: {
-          reactTag,
-        },
-      },
-    },
-  });
-};
-
-const Button = (
-  <Navigation.TouchablePreview
-    touchableComponent={TouchableHighlight}
-    onPress={handlePress}
-    onPressIn={handlePress}
-  >
-    <Text>My button</Text>
-  </Navigation.TouchablePreview>
-);
-```

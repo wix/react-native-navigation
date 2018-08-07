@@ -79,7 +79,11 @@ class PushedScreen extends Component {
         <Text testID={testIDs.PUSHED_SCREEN_HEADER} style={styles.h1}>{`Pushed Screen`}</Text>
         <Text style={styles.h2}>{`Stack Position: ${stackPosition}`}</Text>
         <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
-        {Platform.OS === 'ios' && <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPress={this.onClickPush} onPressIn={this.onClickShowPreview} title='Push Preview' />}
+        {Platform.OS === 'ios' && (
+          <Navigation.Element elementId='PreviewElement'>
+            <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPress={this.onClickPush} onPressIn={this.onClickShowPreview} title='Push Preview' />
+          </Navigation.Element>
+        )}
         <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
         <Button title='Pop Previous' testID={testIDs.POP_PREVIOUS_BUTTON} onPress={this.onClickPopPrevious} />
         <Button title='Pop To Root' testID={testIDs.POP_TO_ROOT} onPress={this.onClickPopToRoot} />
@@ -91,7 +95,7 @@ class PushedScreen extends Component {
     );
   }
 
-  onClickShowPreview = async ({ reactTag }) => {
+  onClickShowPreview = async () => {
     await Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.PushedScreen',
@@ -111,7 +115,7 @@ class PushedScreen extends Component {
             }
           },
           preview: {
-            reactTag,
+            elementId: 'PreviewElement',
             height: 400,
             commit: true,
             actions: [{

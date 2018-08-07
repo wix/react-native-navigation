@@ -22,8 +22,3 @@ export interface SearchBarUpdatedEvent extends ComponentEvent {
 export interface SearchBarCancelPressedEvent extends ComponentEvent {
   componentName?: string;
 }
-
-export interface PreviewCompletedEvent extends ComponentEvent {
-  componentName?: string;
-  previewComponentId?: string;
-}

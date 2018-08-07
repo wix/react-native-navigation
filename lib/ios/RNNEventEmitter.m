@@ -16,7 +16,6 @@ static NSString* const ComponentDidDisappear	= @"RNN.ComponentDidDisappear";
 static NSString* const NavigationButtonPressed	= @"RNN.NavigationButtonPressed";
 static NSString* const SearchBarUpdated 		= @"RNN.SearchBarUpdated";
 static NSString* const SearchBarCancelPressed 	= @"RNN.SearchBarCancelPressed";
-static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
 
 -(NSArray<NSString *> *)supportedEvents {
 	return @[AppLaunched,
@@ -26,8 +25,7 @@ static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
 			 ComponentDidDisappear,
 			 NavigationButtonPressed,
 			 SearchBarUpdated,
-			 SearchBarCancelPressed,
-			 PreviewCompleted];
+			 SearchBarCancelPressed];
 }
 
 # pragma mark public
@@ -90,13 +88,6 @@ static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
 	[self send:SearchBarCancelPressed body:@{
 											@"componentId": componentId
 											}];
-}
-
-- (void)sendOnPreviewCompleted:(NSString *)componentId previewComponentId:(NSString *)previewComponentId {
-	[self send:PreviewCompleted body:@{
-											 @"componentId": componentId,
-											 @"previewComponentId": previewComponentId
-											 }];
 }
 
 - (void)addListener:(NSString *)eventName {

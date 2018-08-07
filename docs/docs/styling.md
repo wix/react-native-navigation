@@ -153,7 +153,7 @@ Navigation.mergeOptions(this.props.componentId, {
     interceptTouchOutside: true
   },
   preview: {
-    reactTag: 0, // result from findNodeHandle(ref)
+    elementId: 'PreviewId',
     width: 100,
     height: 100,
     commit: false,

@@ -2,8 +2,6 @@ import * as _ from 'lodash';
 import { CommandsObserver } from '../events/CommandsObserver';
 import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
-import { Options } from '../interfaces/Options';
-import { Layout, LayoutRoot } from '../interfaces/Layout';
 
 export class Commands {
   constructor(
@@ -14,7 +12,7 @@ export class Commands {
     private readonly uniqueIdProvider: UniqueIdProvider) {
   }
 
-  public setRoot(simpleApi: LayoutRoot) {
+  public setRoot(simpleApi) {
     const input = _.cloneDeep(simpleApi);
     const root = this.layoutTreeParser.parse(input.root);
     this.layoutTreeCrawler.crawl(root);
@@ -37,7 +35,7 @@ export class Commands {
     return result;
   }
 
-  public setDefaultOptions(options: Options) {
+  public setDefaultOptions(options) {
     const input = _.cloneDeep(options);
     this.layoutTreeCrawler.processOptions(input);
 
@@ -45,7 +43,7 @@ export class Commands {
     this.commandsObserver.notify('setDefaultOptions', { options });
   }
 
-  public mergeOptions(componentId: string, options: Options) {
+  public mergeOptions(componentId, options) {
     const input = _.cloneDeep(options);
     this.layoutTreeCrawler.processOptions(input);
 
@@ -53,7 +51,7 @@ export class Commands {
     this.commandsObserver.notify('mergeOptions', { componentId, options });
   }
 
-  public showModal(simpleApi: Layout) {
+  public showModal(simpleApi) {
     const input = _.cloneDeep(simpleApi);
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);
@@ -64,7 +62,7 @@ export class Commands {
     return result;
   }
 
-  public dismissModal(componentId: string) {
+  public dismissModal(componentId) {
     const commandId = this.uniqueIdProvider.generate('dismissModal');
     const result = this.nativeCommandsSender.dismissModal(commandId, componentId);
     this.commandsObserver.notify('dismissModal', { commandId, componentId });
@@ -78,7 +76,7 @@ export class Commands {
     return result;
   }
 
-  public push(componentId: string, simpleApi: Layout) {
+  public push(componentId, simpleApi) {
     const input = _.cloneDeep(simpleApi);
 
     const layout = this.layoutTreeParser.parse(input);
@@ -90,28 +88,28 @@ export class Commands {
     return result;
   }
 
-  public pop(componentId: string, options: Options) {
+  public pop(componentId, options) {
     const commandId = this.uniqueIdProvider.generate('pop');
     const result = this.nativeCommandsSender.pop(commandId, componentId, options);
     this.commandsObserver.notify('pop', { commandId, componentId, options });
     return result;
   }
 
-  public popTo(componentId: string) {
+  public popTo(componentId) {
     const commandId = this.uniqueIdProvider.generate('popTo');
     const result = this.nativeCommandsSender.popTo(commandId, componentId);
     this.commandsObserver.notify('popTo', { commandId, componentId });
     return result;
   }
 
-  public popToRoot(componentId: string) {
+  public popToRoot(componentId) {
     const commandId = this.uniqueIdProvider.generate('popToRoot');
     const result = this.nativeCommandsSender.popToRoot(commandId, componentId);
     this.commandsObserver.notify('popToRoot', { commandId, componentId });
     return result;
   }
 
-  public setStackRoot(componentId: string, simpleApi: Layout) {
+  public setStackRoot(componentId, simpleApi) {
     const input = _.cloneDeep(simpleApi);
 
     const layout = this.layoutTreeParser.parse(input);
@@ -123,7 +121,7 @@ export class Commands {
     return result;
   }
 
-  public showOverlay(simpleApi: Layout) {
+  public showOverlay(simpleApi) {
     const input = _.cloneDeep(simpleApi);
 
     const layout = this.layoutTreeParser.parse(input);
@@ -135,7 +133,7 @@ export class Commands {
     return result;
   }
 
-  public dismissOverlay(componentId: string) {
+  public dismissOverlay(componentId) {
     const commandId = this.uniqueIdProvider.generate('dismissOverlay');
     const result = this.nativeCommandsSender.dismissOverlay(commandId, componentId);
     this.commandsObserver.notify('dismissOverlay', { commandId, componentId });

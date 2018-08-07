@@ -22,8 +22,6 @@
 
 @implementation RNNRootViewController
 
-@synthesize previewCallback;
-
 -(instancetype)initWithName:(NSString*)name
 				withOptions:(RNNNavigationOptions*)options
 			withComponentId:(NSString*)componentId
@@ -288,13 +286,28 @@
 }
 
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
+	if (self.previewController) {
+//		RNNRootViewController * vc = (RNNRootViewController*) self.previewController;
+//		[_eventEmitter sendOnNavigationEvent:@"previewContext" params:@{
+//																		@"previewComponentId": vc.componentId,
+//																		@"componentId": self.componentId
+//																		}];
+	}
 	return self.previewController;
 }
 
 
 - (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
-	if (self.previewCallback) {
-		self.previewCallback(self);
+	RNNRootViewController * vc = (RNNRootViewController*) self.previewController;
+//	NSDictionary * params = @{
+//							  @"previewComponentId": vc.componentId,
+//							  @"componentId": self.componentId
+//							  };
+	if (vc.options.preview.commit) {
+//		[_eventEmitter sendOnNavigationEvent:@"previewCommit" params:params];
+		[self.navigationController pushViewController:vc animated:false];
+	} else {
+//		[_eventEmitter sendOnNavigationEvent:@"previewDismissed" params:params];
 	}
 }
 

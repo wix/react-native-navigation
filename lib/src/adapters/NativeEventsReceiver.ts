@@ -5,8 +5,7 @@ import {
   ComponentDidDisappearEvent,
   NavigationButtonPressedEvent,
   SearchBarUpdatedEvent,
-  SearchBarCancelPressedEvent,
-  PreviewCompletedEvent
+  SearchBarCancelPressedEvent
 } from '../interfaces/ComponentEvents';
 import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
 
@@ -48,10 +47,6 @@ export class NativeEventsReceiver {
 
   public registerSearchBarCancelPressedListener(callback: (event: SearchBarCancelPressedEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.SearchBarCancelPressed', callback);
-  }
-
-  public registerPreviewCompletedListener(callback: (event: PreviewCompletedEvent) => void): EventSubscription {
-    return this.emitter.addListener('RNN.PreviewCompleted', callback);
   }
 
   public registerCommandCompletedListener(callback: (data: CommandCompletedEvent) => void): EventSubscription {

@@ -74,13 +74,6 @@ describe('EventsRegistry', () => {
     expect(mockNativeEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledWith(cb);
   });
 
-  it('delegates previewCompleted to nativeEventsReceiver', () => {
-    const cb = jest.fn();
-    uut.registerPreviewCompletedListener(cb);
-    expect(mockNativeEventsReceiver.registerPreviewCompletedListener).toHaveBeenCalledTimes(1);
-    expect(mockNativeEventsReceiver.registerPreviewCompletedListener).toHaveBeenCalledWith(cb);
-  });
-
   it('delegates registerCommandListener to commandObserver', () => {
     const cb = jest.fn();
     const result = uut.registerCommandListener(cb);

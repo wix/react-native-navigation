@@ -98,26 +98,16 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNRootViewController *newVc = (RNNRootViewController *)[_controllerFactory createLayoutAndSaveToStore:layout];
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	
-	if ([newVc.options.preview.reactTag floatValue] > 0) {
+	if (newVc.options.preview.elementId) {
 		UIViewController* vc = [_store findComponentForId:componentId];
 
 		if([vc isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController* rootVc = (RNNRootViewController*)vc;
 			rootVc.previewController = newVc;
-			rootVc.previewCallback = ^(UIViewController *vcc) {
-				RNNRootViewController* rvc  = (RNNRootViewController*)vcc;
-				[self->_eventEmitter sendOnPreviewCompleted:componentId previewComponentId:newVc.componentId];
-				if ([newVc.options.preview.commit floatValue] > 0) {
-					[CATransaction begin];
-					[CATransaction setCompletionBlock:^{
-						[self->_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
-						completion();
-					}];
-					[rvc.navigationController pushViewController:newVc animated:YES];
-					[CATransaction commit];
-				}
-			};
-			
+
+			RNNElementFinder* elementFinder = [[RNNElementFinder alloc] initWithFromVC:vc];
+			RNNElementView* elementView = [elementFinder findElementForId:newVc.options.preview.elementId];
+
 			CGSize size = CGSizeMake(rootVc.view.frame.size.width, rootVc.view.frame.size.height);
 			
 			if (newVc.options.preview.width) {
@@ -132,10 +122,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 				newVc.preferredContentSize = size;
 			}
 
-			RCTExecuteOnMainQueue(^{
-				UIView *view = [[ReactNativeNavigation getBridge].uiManager viewForReactTag:newVc.options.preview.reactTag];
-				[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:view];
-			});
+			[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:elementView];
 		}
 	} else {
 		id animationDelegate = (newVc.options.animations.push.hasCustomAnimation || newVc.isCustomTransitioned) ? newVc : nil;

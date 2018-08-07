@@ -22,6 +22,4 @@
 
 -(void)sendOnSearchBarCancelPressed:(NSString *)componentId;
 
--(void)sendOnPreviewCompleted:(NSString *)componentId previewComponentId:(NSString *)previewComponentId;
-
 @end

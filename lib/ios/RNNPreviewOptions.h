@@ -2,7 +2,7 @@
 
 @interface RNNPreviewOptions : RNNOptions
 
-@property (nonatomic, strong) NSNumber* reactTag;
+@property (nonatomic, strong) NSString* elementId;
 @property (nonatomic, strong) NSNumber* width;
 @property (nonatomic, strong) NSNumber* height;
 @property (nonatomic, strong) NSNumber* commit;
