@@ -270,7 +270,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     @Override
     public void setSideMenuEnabled(boolean enabled, Side side) {
         if (sideMenu != null) {
-            sideMenu.setDrawerLockMode(enabled ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED, side.gravity);
+            sideMenu.setEnabled(enabled, side);
         }
     }
 
