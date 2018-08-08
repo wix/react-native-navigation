@@ -19,7 +19,8 @@ class PushedScreen extends Component {
           id: 'singleBtn',
           text: 'single',
           testID: testIDs.TOP_BAR_BUTTON
-        }
+        },
+        rightButtonColor: 'red',
       },
       layout: {
         backgroundColor: '#f5fcff'
