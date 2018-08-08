@@ -66,7 +66,7 @@ public class StackOptionsPresenter {
     public void applyChildOptions(Options options, Component child) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefault.layout.orientation);
-        applyButtons(withDefault.topBar, withDefault.topBar.rightButtonColor, withDefault.topBar.leftButtonColor);
+        applyButtons(withDefault.topBar, withDefault.topBar.rightButtonColor, withDefault.topBar.leftButtonColor, withDefault.topBar.rightButtonDisabledColor, withDefault.topBar.leftButtonDisabledColor);
         applyTopBarOptions(withDefault.topBar, withDefault.animations, child, options);
         applyTopTabsOptions(withDefault.topTabs);
         applyTopTabOptions(withDefault.topTabOptions);
@@ -133,9 +133,9 @@ public class StackOptionsPresenter {
         }
     }
 
-    private void applyButtons(TopBarOptions options, com.reactnativenavigation.parse.params.Color rightButtonColor, com.reactnativenavigation.parse.params.Color leftButtonColor) {
-        List<Button> rightButtons = mergeButtonsWithColor(options.buttons.right, rightButtonColor);
-        List<Button> leftButtons = mergeButtonsWithColor(options.buttons.left, leftButtonColor);
+    private void applyButtons(TopBarOptions options, com.reactnativenavigation.parse.params.Color rightButtonColor, com.reactnativenavigation.parse.params.Color leftButtonColor, com.reactnativenavigation.parse.params.Color rightButtonDIsabledColor, com.reactnativenavigation.parse.params.Color leftButtonDisabledColor) {
+        List<Button> rightButtons = mergeButtonsWithColor(options.buttons.right, rightButtonColor, rightButtonDIsabledColor);
+        List<Button> leftButtons = mergeButtonsWithColor(options.buttons.left, leftButtonColor, leftButtonDisabledColor);
         topBar.setRightButtons(rightButtons);
         topBar.setLeftButtons(leftButtons);
         if (options.buttons.back.visible.isTrue() && !options.buttons.hasLeftButtons()) topBar.setBackButton(options.buttons.back);
@@ -165,7 +165,7 @@ public class StackOptionsPresenter {
     public void mergeChildOptions(Options options, Options resolvedOptions, Component child) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         mergeOrientation(options.layout.orientation);
-        mergeButtons(options.topBar.buttons, withDefault.topBar, withDefault.topBar.rightButtonColor, withDefault.topBar.leftButtonColor);
+        mergeButtons(options.topBar.buttons, resolvedOptions.topBar.copy().mergeWithDefault(defaultOptions.topBar), withDefault.topBar.rightButtonColor, withDefault.topBar.leftButtonColor, withDefault.topBar.rightButtonDisabledColor, withDefault.topBar.leftButtonDisabledColor);
         mergeTopBarOptions(options.topBar, options.animations, child);
         mergeTopTabsOptions(options.topTabs);
         mergeTopTabOptions(options.topTabOptions);
@@ -175,9 +175,15 @@ public class StackOptionsPresenter {
         if (orientationOptions.hasValue()) applyOrientation(orientationOptions);
     }
 
-    private void mergeButtons(TopBarButtons buttons, TopBarOptions resolvedOptions, com.reactnativenavigation.parse.params.Color rightButtonColor, com.reactnativenavigation.parse.params.Color leftButtonColor) {
-        List<Button> rightButtons = mergeButtonsWithColor(buttons.right, getColor(resolvedOptions.rightButtonColor, rightButtonColor));
-        List<Button> leftButtons = mergeButtonsWithColor(buttons.left, getColor(resolvedOptions.leftButtonColor, leftButtonColor));
+    private void mergeButtons(TopBarButtons buttons, TopBarOptions resolvedOptions, com.reactnativenavigation.parse.params.Color rightButtonColor, com.reactnativenavigation.parse.params.Color leftButtonColor, com.reactnativenavigation.parse.params.Color rightButtonDisabledColor, com.reactnativenavigation.parse.params.Color leftButtonDisabledColor) {
+        List<Button> rightButtons = mergeButtonsWithColor(buttons.right,
+                getColor(resolvedOptions.rightButtonColor, rightButtonColor),
+                getColor(resolvedOptions.rightButtonDisabledColor, rightButtonDisabledColor)
+        );
+        List<Button> leftButtons = mergeButtonsWithColor(buttons.left,
+                getColor(resolvedOptions.leftButtonColor, leftButtonColor),
+                getColor(resolvedOptions.leftButtonDisabledColor, leftButtonDisabledColor)
+        );
         if (buttons.right != null) topBar.setRightButtons(rightButtons);
         if (buttons.left != null) topBar.setLeftButtons(leftButtons);
         if (buttons.back.hasValue()) topBar.setBackButton(buttons.back);
@@ -188,13 +194,14 @@ public class StackOptionsPresenter {
     }
 
     @Nullable
-    private List<Button> mergeButtonsWithColor(List<Button> buttons, com.reactnativenavigation.parse.params.Color buttonColor) {
+    private List<Button> mergeButtonsWithColor(List<Button> buttons, com.reactnativenavigation.parse.params.Color buttonColor, com.reactnativenavigation.parse.params.Color disabledColor) {
         List<Button> result = null;
         if (buttons != null) {
             result = new ArrayList<>();
             for (Button button : buttons) {
                 Button copy = button.copy();
                 if (!button.color.hasValue()) copy.color = buttonColor;
+                if (!button.disabledColor.hasValue()) copy.disabledColor = disabledColor;
                 result.add(copy);
             }
         }

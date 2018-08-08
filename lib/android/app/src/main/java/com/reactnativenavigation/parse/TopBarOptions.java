@@ -64,8 +64,11 @@ public class TopBarOptions {
     public Fraction borderHeight = new NullFraction();
     public Color borderColor = new NullColor();
 
+    // Deprecated
     public Color rightButtonColor = new NullColor();
     public Color leftButtonColor = new NullColor();
+    public Color rightButtonDisabledColor = new NullColor();
+    public Color leftButtonDisabledColor = new NullColor();
 
     public TopBarOptions copy() {
         TopBarOptions result = new TopBarOptions();
@@ -90,6 +93,8 @@ public class TopBarOptions {
 
         if (other.rightButtonColor.hasValue()) rightButtonColor = other.rightButtonColor;
         if (other.leftButtonColor.hasValue()) leftButtonColor = other.leftButtonColor;
+        if (other.rightButtonDisabledColor.hasValue()) rightButtonDisabledColor = other.rightButtonDisabledColor;
+        if (other.leftButtonDisabledColor.hasValue()) leftButtonDisabledColor = other.leftButtonDisabledColor;
 
         validate();
     }
@@ -111,6 +116,8 @@ public class TopBarOptions {
 
         if (!rightButtonColor.hasValue()) rightButtonColor = defaultOptions.rightButtonColor;
         if (!leftButtonColor.hasValue()) leftButtonColor = defaultOptions.leftButtonColor;
+        if (!rightButtonDisabledColor.hasValue()) rightButtonDisabledColor = defaultOptions.rightButtonDisabledColor;
+        if (!leftButtonDisabledColor.hasValue()) leftButtonDisabledColor = defaultOptions.leftButtonDisabledColor;
 
         validate();
         return this;
