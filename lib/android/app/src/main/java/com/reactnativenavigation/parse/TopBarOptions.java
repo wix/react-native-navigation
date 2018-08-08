@@ -95,7 +95,7 @@ public class TopBarOptions {
         validate();
     }
 
-    private void validate() {
+    public void validate() {
         if (title.component.hasValue() && (title.text.hasValue() || subtitle.text.hasValue())) {
             if (BuildConfig.DEBUG) Log.w("RNN", "A screen can't use both text and component - clearing text.");
             title.text = new NullText();

@@ -60,10 +60,9 @@ public class BottomTabsOptionsPresenter {
     }
 
     public void mergeChildOptions(Options options, Component child) {
-        Options withDefault = options.copy().withDefaultOptions(defaultOptions);
-        mergeBottomTabsOptions(withDefault.bottomTabsOptions, withDefault.animations);
+        mergeBottomTabsOptions(options.bottomTabsOptions, options.animations);
         int tabIndex = bottomTabFinder.findByComponent(child);
-        mergeDrawBehind(withDefault.bottomTabsOptions, tabIndex);
+        mergeDrawBehind(options.bottomTabsOptions, tabIndex);
     }
 
     private void mergeBottomTabsOptions(BottomTabsOptions options, AnimationsOptions animations) {
