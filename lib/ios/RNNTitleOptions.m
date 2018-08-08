@@ -10,9 +10,11 @@
 	}
 	
 	NSDictionary* fontAttributes = [self fontAttributes];
-	
-	viewController.navigationController.navigationBar.titleTextAttributes = fontAttributes;
 
+	if (fontAttributes.allKeys.count > 0) {
+		viewController.navigationController.navigationBar.titleTextAttributes = fontAttributes;
+	}
+	
 	if (self.subtitle.text) {
 		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] init:viewController title:self.text subtitle:self.subtitle.text titleImageData:nil isSetSubtitle:NO];
 		[titleViewHelper setup:self];
@@ -29,7 +31,7 @@
 			if (self.fontSize) {
 				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.fontFamily size:[self.fontSize floatValue]];
 			} else {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.fontFamily size:20];
+				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.fontFamily size:17];
 			}
 		} else if (self.fontSize) {
 			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.fontSize floatValue]];

@@ -47,14 +47,15 @@ public class StackOptionsPresenter {
     }
 
     public void applyLayoutParamsOptions(Options options, View view) {
-        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+        Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         if (view instanceof Component) {
-            if (withDefaultOptions.topBar.drawBehind.isTrue() && !withDefaultOptions.layout.topMargin.hasValue()) {
+            if (withDefault.topBar.drawBehind.isTrue() && !withDefault.layout.topMargin.hasValue()) {
                 ((Component) view).drawBehindTopBar();
             } else if (options.topBar.drawBehind.isFalseOrUndefined()) {
                 ((Component) view).drawBelowTopBar(topBar);
             }
         }
+        applyTopBarVisibility(withDefault.topBar, withDefault.animations, options);
     }
 
     public void applyChildOptions(Options options, Component child) {
@@ -73,7 +74,7 @@ public class StackOptionsPresenter {
 
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
         topBar.setHeight(options.height.get(LayoutParams.WRAP_CONTENT));
-        topBar.setElevation(options.elevation);
+        topBar.setElevation(options.elevation.get(4d));
 
         topBar.setTitleHeight(options.title.height.get(LayoutParams.WRAP_CONTENT));
         topBar.setTitle(options.title.text.get(""));
@@ -95,21 +96,7 @@ public class StackOptionsPresenter {
         topBar.setBackgroundColor(options.background.color.get(Color.WHITE));
         topBar.setBackgroundComponent(options.background.component);
         if (options.testId.hasValue()) topBar.setTestId(options.testId.get());
-
-        if (options.visible.isFalse()) {
-            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enable.isTrueOrUndefined()) {
-                topBar.hideAnimate(animationOptions.pop.topBar);
-            } else {
-                topBar.hide();
-            }
-        }
-        if (options.visible.isTrueOrUndefined()) {
-            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enable.isTrueOrUndefined()) {
-                topBar.showAnimate(animationOptions.push.topBar);
-            } else {
-                topBar.show();
-            }
-        }
+        applyTopBarVisibility(options, animationOptions, componentOptions);
         if (options.drawBehind.isTrue() && !componentOptions.layout.topMargin.hasValue()) {
             component.drawBehindTopBar();
         } else if (options.drawBehind.isFalseOrUndefined()) {
@@ -124,10 +111,27 @@ public class StackOptionsPresenter {
         }
     }
 
+    private void applyTopBarVisibility(TopBarOptions options, AnimationsOptions animationOptions, Options componentOptions) {
+        if (options.visible.isFalse()) {
+            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enable.isTrueOrUndefined()) {
+                topBar.hideAnimate(animationOptions.pop.topBar);
+            } else {
+                topBar.hide();
+            }
+        }
+        if (options.visible.isTrueOrUndefined()) {
+            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enable.isTrueOrUndefined()) {
+                topBar.showAnimate(animationOptions.push.topBar);
+            } else {
+                topBar.show();
+            }
+        }
+    }
+
     private void applyButtons(TopBarButtons buttons) {
         topBar.setLeftButtons(buttons.left);
         topBar.setRightButtons(buttons.right);
-        if (buttons.back.visible.isTrue()) topBar.setBackButton(buttons.back);
+        if (buttons.back.visible.isTrue() && !buttons.hasLeftButtons()) topBar.setBackButton(buttons.back);
     }
 
     private void applyTopTabsOptions(TopTabsOptions options) {
@@ -172,7 +176,7 @@ public class StackOptionsPresenter {
 
     private void mergeTopBarOptions(TopBarOptions options, AnimationsOptions animationsOptions, Component component) {
         if (options.height.hasValue()) topBar.setHeight(options.height.get());
-        if (options.elevation.hasValue()) topBar.setElevation(options.elevation);
+        if (options.elevation.hasValue()) topBar.setElevation(options.elevation.get());
 
         if (options.title.height.hasValue()) topBar.setTitleHeight(options.title.height.get());
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());

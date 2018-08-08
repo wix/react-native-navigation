@@ -11,6 +11,7 @@
 
 @property (nonatomic, strong) NSNumber* tabColor;
 @property (nonatomic, strong) NSNumber* selectedTabColor;
+@property (nonatomic, strong) NSString* barStyle;
 @property (nonatomic, strong) NSNumber* translucent;
 @property (nonatomic, strong) NSNumber* hideShadow;
 @property (nonatomic, strong) NSNumber* backgroundColor;

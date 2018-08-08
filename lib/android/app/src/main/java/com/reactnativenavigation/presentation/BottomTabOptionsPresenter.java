@@ -41,6 +41,7 @@ public class BottomTabOptionsPresenter {
         for (int i = 0; i < tabs.size(); i++) {
             BottomTabOptions tab = tabs.get(i).options.copy().withDefaultOptions(defaultOptions).bottomTabOptions;
             bottomTabs.setBadge(i, tab.badge.get(""));
+            bottomTabs.setBadgeColor(tab.badgeColor.get(null));
             bottomTabs.setTitleTypeface(i, tab.fontFamily);
             bottomTabs.setIconActiveColor(i, tab.selectedIconColor.get(null));
             bottomTabs.setIconInactiveColor(i, tab.iconColor.get(null));
@@ -55,6 +56,7 @@ public class BottomTabOptionsPresenter {
         BottomTabOptions withDefaultOptions = options.withDefaultOptions(defaultOptions).bottomTabOptions;
         int index = bottomTabFinder.findByComponent(child);
         if (withDefaultOptions.badge.hasValue()) bottomTabs.setBadge(index, withDefaultOptions.badge.get());
+        if (withDefaultOptions.badgeColor.hasValue()) bottomTabs.setBadgeColor(withDefaultOptions.badgeColor.get());
         if (withDefaultOptions.fontFamily != null) bottomTabs.setTitleTypeface(index, withDefaultOptions.fontFamily);
         if (withDefaultOptions.selectedIconColor.hasValue()) bottomTabs.setIconActiveColor(index, withDefaultOptions.selectedIconColor.get());
         if (withDefaultOptions.iconColor.hasValue()) bottomTabs.setIconInactiveColor(index, withDefaultOptions.iconColor.get());

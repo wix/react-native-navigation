@@ -88,7 +88,6 @@ public class NavigatorTest extends BaseTest {
         child3 = new SimpleViewController(activity, childRegistry, "child3", tabOptions);
         child4 = new SimpleViewController(activity, childRegistry, "child4", tabOptions);
         child5 = new SimpleViewController(activity, childRegistry, "child5", tabOptions);
-        activity.setContentView(uut.getView());
 
         activityController.visible();
     }
@@ -106,8 +105,14 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void setRoot_setContentViewWhenFirstRootIsSet() {
+        assertThat(uut.view).isNull();
+        uut.setRoot(child1, new CommandListenerAdapter());
+        assertThat(uut.view).isNotNull();
+    }
+
+    @Test
     public void setRoot_AddsChildControllerView() {
-        assertThat(uut.getContentLayout().getChildCount()).isZero();
         uut.setRoot(child1, new CommandListenerAdapter());
         assertIsChild(uut.getContentLayout(), child1.getView());
     }

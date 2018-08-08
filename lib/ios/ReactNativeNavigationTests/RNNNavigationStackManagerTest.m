@@ -5,7 +5,6 @@
 
 @interface RNNNavigationStackManagerTest : XCTestCase
 
-@property (nonatomic, strong) RNNStore *store;
 @property (nonatomic, strong) UINavigationController *nvc;
 @property (nonatomic, strong) UIViewController *vc1;
 @property (nonatomic, strong) UIViewController *vc2;
@@ -18,7 +17,6 @@
 
 - (void)setUp {
     [super setUp];
-	self.store = [RNNStore new];
 	
 	self.nvc = [[UINavigationController alloc] init];
 	self.vc1 = [RNNRootViewController new];

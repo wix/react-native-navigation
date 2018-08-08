@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Button {
-    public String id;
+    @Nullable public String id;
     public Text text = new NullText();
     public Bool enabled = new NullBool();
     public Bool disableIconTint = new NullBool();
@@ -103,6 +103,21 @@ public class Button {
             default:
                 return new Number(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
+    }
+
+    public void mergeWith(Button other) {
+        if (other.text.hasValue()) text = other.text;
+        if (other.enabled.hasValue()) enabled = other.enabled;
+        if (other.disableIconTint.hasValue()) disableIconTint = other.disableIconTint;
+        if (other.color.hasValue()) color = other.color;
+        if (other.disabledColor.hasValue()) disabledColor = other.disabledColor;
+        if (other.fontSize.hasValue()) fontSize = other.fontSize;
+        if (other.fontFamily != null) fontFamily = other.fontFamily;
+        if (other.fontWeight.hasValue()) fontWeight = other.fontWeight;
+        if (other.testId.hasValue()) testId = other.testId;
+        if (other.component.hasValue()) component = other.component;
+        if (other.showAsAction.hasValue()) showAsAction = other.showAsAction;
+        if (other.icon.hasValue()) icon = other.icon;
     }
 
     public void mergeWithDefault(Button defaultOptions) {

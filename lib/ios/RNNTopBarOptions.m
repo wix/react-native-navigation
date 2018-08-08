@@ -47,8 +47,11 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 				search.searchBar.placeholder = self.searchBarPlaceholder;
 			}
 			viewController.navigationItem.searchController = search;
-			// enable it back if needed on componentDidAppear
-			viewController.navigationItem.hidesSearchBarWhenScrolling = NO;
+			
+			viewController.navigationItem.hidesSearchBarWhenScrolling = [self.searchBarHiddenWhenScrolling boolValue];
+			
+			// Fixes #3450, otherwise, UIKit will infer the presentation context to be the root most view controller
+			viewController.definesPresentationContext = YES;
 		}
 	}
 	
@@ -62,13 +65,6 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		viewController.navigationController.hidesBarsOnSwipe = [self.hideOnScroll boolValue];
 	} else {
 		viewController.navigationController.hidesBarsOnSwipe = NO;
-	}
-	
-	if (self.buttonColor) {
-		UIColor* buttonColor = [RCTConvert UIColor:self.buttonColor];
-		viewController.navigationController.navigationBar.tintColor = buttonColor;
-	} else {
-		viewController.navigationController.navigationBar.tintColor = nil;
 	}
 	
 	if ([self.blur boolValue]) {
@@ -120,6 +116,12 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		disableTopBarTransparent();
 	}
 	
+	if (self.barStyle) {
+		viewController.navigationController.navigationBar.barStyle = [RCTConvert UIBarStyle:self.barStyle];
+	} else {
+		viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+	}
+
 	if (self.translucent) {
 		viewController.navigationController.navigationBar.translucent = [self.translucent boolValue];
 	} else {
@@ -150,9 +152,40 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		viewController.navigationController.navigationBar.accessibilityIdentifier = self.testID;
 	}
 	
+	if (self.buttonColor) {
+		UIColor* buttonColor = [RCTConvert UIColor:self.buttonColor];
+		viewController.navigationController.navigationBar.tintColor = buttonColor;
+	} else {
+		viewController.navigationController.navigationBar.tintColor = nil;
+	}
+	
 	if (self.rightButtons || self.leftButtons) {
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
-		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons defaultButtonStyle:_button];
+		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons defaultLeftButtonStyle:self.leftButtonStyle defaultRightButtonStyle:self.rightButtonStyle];
+	}
+}
+
+- (void)setLeftButtons:(id)leftButtons {
+	if ([leftButtons isKindOfClass:[NSArray class]]) {
+		_leftButtons = leftButtons;
+	} else if ([leftButtons isKindOfClass:[NSDictionary class]]) {
+		if (leftButtons[@"id"]) {
+			_leftButtons = @[leftButtons];
+		} else {
+			[_leftButtonStyle mergeWith:leftButtons];
+		}
+	}
+}
+
+- (void)setRightButtons:(id)rightButtons {
+	if ([rightButtons isKindOfClass:[NSArray class]]) {
+		_rightButtons = rightButtons;
+	} else if ([rightButtons isKindOfClass:[NSDictionary class]]) {
+		if (rightButtons[@"id"]) {
+			_rightButtons = @[rightButtons];
+		} else {
+			[_rightButtonStyle mergeWith:rightButtons];
+		}
 	}
 }
 

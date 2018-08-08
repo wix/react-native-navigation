@@ -29,13 +29,17 @@ typedef void (^RNNAnimationBlock)(void);
 - (void)popTo:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection; {
 	__block NSArray* poppedVCs;
 	
-	[self performAnimationBlock:^{
-		poppedVCs = [viewController.navigationController popToViewController:viewController animated:animated];
-	} completion:^{
-		if (completion) {
-			completion(poppedVCs);
-		}
-	}];
+	if ([viewController.navigationController.childViewControllers containsObject:viewController]) {
+		[self performAnimationBlock:^{
+			poppedVCs = [viewController.navigationController popToViewController:viewController animated:animated];
+		} completion:^{
+			if (completion) {
+				completion(poppedVCs);
+			}
+		}];
+	} else {
+		[RNNErrorHandler reject:rejection withErrorCode:1011 errorDescription:@"component not found in stack"];
+	}
 }
 
 - (void)popToRoot:(UIViewController*)viewController animated:(BOOL)animated completion:(RNNPopCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {

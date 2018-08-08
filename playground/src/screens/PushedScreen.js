@@ -50,7 +50,7 @@ class PushedScreen extends Component {
 
   componentDidMount() {
     this.listeners.push(
-      this.subscription = Navigation.events().registerComponentDidAppearListener((event) => {
+      Navigation.events().registerComponentDidAppearListener((event) => {
         if (this.state.previewComponentId === event.componentId) {
           this.setState({ disabled: event.type === 'ComponentDidAppear' });
         }
@@ -69,7 +69,6 @@ class PushedScreen extends Component {
   }
 
   componentWillUnmount() {
-    this.subscription.remove();
     this.listeners.forEach(listener => listener.remove && listener.remove());
   }
 

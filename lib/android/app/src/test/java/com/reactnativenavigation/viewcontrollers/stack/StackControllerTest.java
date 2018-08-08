@@ -100,7 +100,7 @@ public class StackControllerTest extends BaseTest {
         StackController uut = createStack(Arrays.asList(child1, child2, child3, child4));
         assertThat(uut.getChildControllers().size()).isEqualTo(4);
         assertThat(uut.getView().getChildCount()).isEqualTo(2);
-        assertThat(uut.getView().getChildAt(1)).isEqualTo(child4.getView());
+        assertThat(uut.getView().getChildAt(0)).isEqualTo(child4.getView());
     }
 
     @Test
@@ -707,7 +707,7 @@ public class StackControllerTest extends BaseTest {
         parent.ensureViewIsCreated();
         parent.push(uut, new CommandListenerAdapter());
         uut.onViewAppeared();
-        assertThat(parent.getView().getChildAt(1)).isEqualTo(uut.getView());
+        assertThat(parent.getView().getChildAt(0)).isEqualTo(uut.getView());
     }
 
     @Test

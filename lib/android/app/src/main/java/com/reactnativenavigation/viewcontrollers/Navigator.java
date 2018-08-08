@@ -17,6 +17,7 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
+import com.reactnativenavigation.views.element.ElementTransitionManager;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -104,10 +105,13 @@ public class Navigator extends ParentController {
 
     public void setRoot(final ViewController viewController, CommandListener commandListener) {
         destroyRoot();
+        if (view == null) {
+            getActivity().setContentView(getView());
+        }
         root = viewController;
         contentLayout.addView(viewController.getView());
         if (viewController.options.animations.startApp.hasAnimation()) {
-            new NavigationAnimator(viewController.getActivity())
+            new NavigationAnimator(viewController.getActivity(), new ElementTransitionManager())
                     .animateStartApp(viewController.getView(), viewController.options.animations.startApp, new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {

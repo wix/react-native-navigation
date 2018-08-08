@@ -135,7 +135,7 @@ Navigation.events().registerNavigationButtonPressedListener(({ buttonId }) => {
 |:-:|:--|
 |**buttonId**|`buttonId`: `id` of the pressed button|
 
-## onSearchBarUpdated (iOS 11+ only)
+## searchBarUpdated (iOS 11+ only)
 Called when a SearchBar from NavigationBar gets updated.
 
 ```js
@@ -145,13 +145,13 @@ class MyComponent extends Component {
     Navigation.events().bindComponent(this);
   }
 
-  onSearchBarUpdated({ query, isFocused }) {
+  searchBarUpdated({ text, isFocused }) {
 
   }
 }
 ```
 
-## onSearchBarCancelPressed (iOS 11+ only)
+## searchBarCancelPressed (iOS 11+ only)
 Called when the cancel button on the SearchBar from NavigationBar gets pressed.
 
 ```js
@@ -161,7 +161,7 @@ class MyComponent extends Component {
     Navigation.events().bindComponent(this);
   }
 
-  onSearchBarCancelPressed() {
+  searchBarCancelPressed() {
 
   }
 }

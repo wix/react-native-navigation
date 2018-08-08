@@ -33,9 +33,20 @@ public class TopBarButtons {
     @Nullable public ArrayList<Button> right;
 
     void mergeWith(TopBarButtons other) {
-        if (other.left != null) left = other.left;
+        if (other.left != null) left = mergeLeftButton(other.left);
         if (other.right != null) right = other.right;
         back.mergeWith(other.back);
+    }
+
+    private ArrayList<Button> mergeLeftButton(ArrayList<Button> other) {
+        if (!other.isEmpty() && !CollectionUtils.isNullOrEmpty(left)) {
+            Button otherLeft = other.get(0);
+            if (otherLeft.id == null) {
+                left.get(0).mergeWith(otherLeft);
+                return left;
+            }
+        }
+        return other;
     }
 
     void mergeWithDefault(TopBarButtons defaultOptions) {
@@ -54,5 +65,9 @@ public class TopBarButtons {
             }
         }
         back.mergeWithDefault(defaultOptions.back);
+    }
+
+    public boolean hasLeftButtons() {
+        return !CollectionUtils.isNullOrEmpty(left) && left.get(0).id != null;
     }
 }
