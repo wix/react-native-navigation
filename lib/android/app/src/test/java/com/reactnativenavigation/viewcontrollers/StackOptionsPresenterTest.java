@@ -171,7 +171,7 @@ public class StackOptionsPresenterTest extends BaseTest {
 
         Options childOptions = new Options();
         childOptions.topBar.title.text = new Text("someText");
-        uut.mergeChildOptions(childOptions, child);
+        uut.mergeChildOptions(childOptions, EMPTY_OPTIONS, child);
 
         verify(topBar, times(0)).setBackgroundColor(anyInt());
     }
