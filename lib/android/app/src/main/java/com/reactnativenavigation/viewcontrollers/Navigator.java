@@ -105,6 +105,9 @@ public class Navigator extends ParentController {
 
     public void setRoot(final ViewController viewController, CommandListener commandListener) {
         destroyRoot();
+        if (view == null) {
+            getActivity().setContentView(getView());
+        }
         root = viewController;
         contentLayout.addView(viewController.getView());
         if (viewController.options.animations.startApp.hasAnimation()) {

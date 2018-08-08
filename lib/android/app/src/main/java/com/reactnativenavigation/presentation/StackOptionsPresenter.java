@@ -156,12 +156,11 @@ public class StackOptionsPresenter {
     }
 
     public void mergeChildOptions(Options options, Component child) {
-        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
-        mergeOrientation(withDefaultOptions.layout.orientation);
-        mergeButtons(withDefaultOptions.topBar.buttons);
-        mergeTopBarOptions(withDefaultOptions.topBar, withDefaultOptions.animations, child);
-        mergeTopTabsOptions(withDefaultOptions.topTabs);
-        mergeTopTabOptions(withDefaultOptions.topTabOptions);
+        mergeOrientation(options.layout.orientation);
+        mergeButtons(options.topBar.buttons);
+        mergeTopBarOptions(options.topBar, options.animations, child);
+        mergeTopTabsOptions(options.topTabs);
+        mergeTopTabOptions(options.topTabOptions);
     }
 
     private void mergeOrientation(OrientationOptions orientationOptions) {

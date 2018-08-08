@@ -104,6 +104,7 @@ public class StackOptionsPresenterTest extends BaseTest {
         options.topBar.visible = new Bool(false);
         options.topBar.drawBehind = new Bool(false);
         options.topBar.hideOnScroll = new Bool(false);
+        options.topBar.validate();
         uut.mergeChildOptions(options, child);
 
         assertTopBarOptions(options, 1);
@@ -154,6 +155,19 @@ public class StackOptionsPresenterTest extends BaseTest {
 
         uut.applyLayoutParamsOptions(options, view);
         verify(topBar).hide();
+    }
+
+    @Test
+    public void mergeOptions_defaultOptionsAreNotApplied() {
+        Options defaultOptions = new Options();
+        defaultOptions.topBar.background.color = new Color(10);
+        uut.setDefaultOptions(defaultOptions);
+
+        Options childOptions = new Options();
+        childOptions.topBar.title.text = new Text("someText");
+        uut.mergeChildOptions(childOptions, child);
+
+        verify(topBar, times(0)).setBackgroundColor(anyInt());
     }
 
     private void assertTopBarOptions(Options options, int t) {

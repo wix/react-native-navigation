@@ -31,7 +31,6 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         super.onCreate(savedInstanceState);
         navigator = new Navigator(this, new ChildControllersRegistry(), new ModalStack(this), new OverlayManager());
         getReactGateway().onActivityCreated(this);
-        setContentView(navigator.getView());
     }
 
     @Override
