@@ -15,6 +15,8 @@
 @property (nonatomic, strong) NSNumber* hideOnScroll;
 @property (nonatomic, strong) NSNumber* leftButtonColor;
 @property (nonatomic, strong) NSNumber* rightButtonColor;
+@property (nonatomic, strong) NSNumber* leftButtonDisabledColor;
+@property (nonatomic, strong) NSNumber* rightButtonDisabledColor;
 @property (nonatomic, strong) NSString* barStyle;
 @property (nonatomic, strong) NSNumber* translucent;
 @property (nonatomic, strong) NSNumber* transparent;

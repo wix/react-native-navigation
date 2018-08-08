@@ -160,6 +160,10 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		_leftButtonStyle.color = self.leftButtonColor;
 	}
 	
+	if (self.leftButtonDisabledColor) {
+		_leftButtonStyle.disabledColor = self.leftButtonDisabledColor;
+	}
+	
 	if ([leftButtons isKindOfClass:[NSArray class]]) {
 		_leftButtons = leftButtons;
 	} else if ([leftButtons isKindOfClass:[NSDictionary class]]) {
@@ -174,6 +178,10 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 - (void)setRightButtons:(id)rightButtons {
 	if (self.rightButtonColor) {
 		_rightButtonStyle.color = self.rightButtonColor;
+	}
+	
+	if (self.rightButtonDisabledColor) {
+		_rightButtonStyle.disabledColor = self.rightButtonDisabledColor;
 	}
 	
 	if ([rightButtons isKindOfClass:[NSArray class]]) {
