@@ -142,7 +142,7 @@ Now that you've specified the RNN flavor you need to compile acording to the ins
 ```
 
 
-2. Alternatively, explicitly ignore unwanted flavors in your project's root `build.gradle`. (Note: As more build variants come available in the future, you will need to adjust this list. While this option lets you keep the CLI command ```react-native run-android``` it comes at a cost of future upkeep.)
+2. Alternatively, explicitly ignore unwanted flavors in your project's root `build.gradle`. (Note: As more build variants come available in the future, you will need to adjust this list. While this option lets you keep the CLI command `react-native run-android` it comes at a cost of future upkeep.)
 ```diff
 +subprojects { subproject ->
 +    afterEvaluate {
