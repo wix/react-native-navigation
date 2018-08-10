@@ -53,7 +53,7 @@
 include ':react-native-navigation'
 project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/lib/android/app/')
 ```
-## 2. Updating Gradle build files.
+### 2. Updating Gradle build files.
 
 > react-native-navigation supports multiple React Native versions. Target the React Native version required by your project by specifying the RNN build flavor you require.
 ><br><br>Available options:
@@ -135,31 +135,32 @@ dependencies {
 Now that you've specified the RNN flavor you need to compile acording to the installed React Native version, you need to ignore the other flavors RNN provides.
 
 1. **The preferable option**: Use the configuration specified in the `app` module. The RNN flavor you would like to build is specified in `app/build.gradle` - therefore in order to compile only that flavor, instead of building your entire project using `./gradlew assembleDebug`, you should instruct gradle to build the app module: `./gradlew app:asembleDebug`. The easiest way is to add a package.json command to build and install your debug Android APK since the RN-CLI run-android command will no longer be of use.
-```
-"scripts": {
-  "run-android": "cd ./android && ./gradlew app:assembleDebug && ./gradlew installDebug"
-}
-```
+	```
+	"scripts": {
+	  "run-android": "cd ./android && ./gradlew app:assembleDebug && ./gradlew installDebug"
+	}
+	```
 
 
 2. Alternatively, explicitly ignore unwanted flavors in your project's root `build.gradle`. (Note: As more build variants come available in the future, you will need to adjust this list. While this option lets you keep the CLI command ```react-native run-android``` it comes at a cost of future upkeep.)
-```diff
-+subprojects { subproject ->
-+    afterEvaluate {
-+        if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
-+            android {
-+                variantFilter { variant ->
-+                    def names = variant.flavors*.name
-+                    if (names.contains("reactNative51") || names.contains("reactNative55")) { // <- See note above for further instruction regarding compatibility with other React Native versions
-+                        // Gradle ignores any variants that satisfy the conditions above.
-+                        setIgnore(true)
-+                    }
-+                }
-+            }
-+        }
-+    }
-+}
-```
+
+	```diff
+	+subprojects { subproject ->
+	+    afterEvaluate {
+	+        if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
+	+            android {
+	+                variantFilter { variant ->
+	+                    def names = variant.flavors*.name
+	+                    if (names.contains("reactNative51") || names.contains("reactNative55")) { // <- See note above for further instruction regarding compatibility with other React Native versions
+	+                        // Gradle ignores any variants that satisfy the conditions above.
+	+                        setIgnore(true)
+	+                    }
+	+                }
+	+            }
+	+        }
+	+    }
+	+}
+	```
 
 ### 3. Make sure you're using the new gradle plugin, edit `android/gradle/wrapper/gradle-wrapper.properties`
 
