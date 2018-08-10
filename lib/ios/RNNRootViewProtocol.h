@@ -6,6 +6,7 @@
 @optional
 
 - (void)performOnRotation:(void (^)(void))block;
+- (void)applyTabBarItem;
 
 @required
 - (RNNRootViewController *)getLeafViewController;

@@ -107,16 +107,16 @@
 	NSMutableDictionary* disabledTextAttributes = [[NSMutableDictionary alloc] init];
 	
 	UIColor* color = [self color:dictionary[@"color"] defaultColor:defaultStyle.color];
+	UIColor* disabledColor = [self color:dictionary[@"disabledColor"] defaultColor:defaultStyle.disabledColor];
+	if (!enabledBool && disabledColor) {
+		color = disabledColor;
+		[disabledTextAttributes setObject:disabledColor forKey:NSForegroundColorAttributeName];
+	}
+	
 	if (color) {
 		[textAttributes setObject:color forKey:NSForegroundColorAttributeName];
 		[barButtonItem setImage:iconImage];
 		[barButtonItem setTintColor:color];
-	}
-	
-	UIColor* disabledColor = [self color:dictionary[@"disabledColor"] defaultColor:defaultStyle.disabledColor];;
-	if (disabledColor) {
-		UIColor *color = disabledColor;
-		[disabledTextAttributes setObject:color forKey:NSForegroundColorAttributeName];
 	}
 	
 	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:defaultStyle.fontSize];

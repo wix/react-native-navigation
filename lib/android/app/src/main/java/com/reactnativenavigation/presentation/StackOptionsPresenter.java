@@ -3,6 +3,7 @@ package com.reactnativenavigation.presentation;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
@@ -13,15 +14,20 @@ import com.reactnativenavigation.parse.TopBarButtons;
 import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
+import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.topbar.TopBar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StackOptionsPresenter {
     private static final int DEFAULT_TITLE_COLOR = Color.BLACK;
     private static final int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
+    private static final double DEFAULT_ELEVATION = 4d;
     private final double defaultTitleFontSize;
     private final double defaultSubtitleFontSize;
 
@@ -59,12 +65,12 @@ public class StackOptionsPresenter {
     }
 
     public void applyChildOptions(Options options, Component child) {
-        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
-        applyOrientation(withDefaultOptions.layout.orientation);
-        applyButtons(withDefaultOptions.topBar.buttons);
-        applyTopBarOptions(withDefaultOptions.topBar, withDefaultOptions.animations, child, options);
-        applyTopTabsOptions(withDefaultOptions.topTabs);
-        applyTopTabOptions(withDefaultOptions.topTabOptions);
+        Options withDefault = options.copy().withDefaultOptions(defaultOptions);
+        applyOrientation(withDefault.layout.orientation);
+        applyButtons(withDefault.topBar, withDefault.topBar.rightButtonColor, withDefault.topBar.leftButtonColor, withDefault.topBar.rightButtonDisabledColor, withDefault.topBar.leftButtonDisabledColor);
+        applyTopBarOptions(withDefault.topBar, withDefault.animations, child, options);
+        applyTopTabsOptions(withDefault.topTabs);
+        applyTopTabOptions(withDefault.topTabOptions);
     }
 
     public void applyOrientation(OrientationOptions options) {
@@ -74,7 +80,7 @@ public class StackOptionsPresenter {
 
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
         topBar.setHeight(options.height.get(LayoutParams.WRAP_CONTENT));
-        topBar.setElevation(options.elevation.get(4d));
+        topBar.setElevation(options.elevation.get(DEFAULT_ELEVATION));
 
         topBar.setTitleHeight(options.title.height.get(LayoutParams.WRAP_CONTENT));
         topBar.setTitle(options.title.text.get(""));
@@ -128,10 +134,12 @@ public class StackOptionsPresenter {
         }
     }
 
-    private void applyButtons(TopBarButtons buttons) {
-        topBar.setLeftButtons(buttons.left);
-        topBar.setRightButtons(buttons.right);
-        if (buttons.back.visible.isTrue() && !buttons.hasLeftButtons()) topBar.setBackButton(buttons.back);
+    private void applyButtons(TopBarOptions options, com.reactnativenavigation.parse.params.Color rightButtonColor, com.reactnativenavigation.parse.params.Color leftButtonColor, com.reactnativenavigation.parse.params.Color rightButtonDisabledColor, com.reactnativenavigation.parse.params.Color leftButtonDisabledColor) {
+        List<Button> rightButtons = mergeButtonsWithColor(options.buttons.right, rightButtonColor, rightButtonDisabledColor);
+        List<Button> leftButtons = mergeButtonsWithColor(options.buttons.left, leftButtonColor, leftButtonDisabledColor);
+        topBar.setRightButtons(rightButtons);
+        topBar.setLeftButtons(leftButtons);
+        if (options.buttons.back.visible.isTrue() && !options.buttons.hasLeftButtons()) topBar.setBackButton(options.buttons.back);
     }
 
     private void applyTopTabsOptions(TopTabsOptions options) {
@@ -155,9 +163,15 @@ public class StackOptionsPresenter {
         }
     }
 
-    public void mergeChildOptions(Options options, Component child) {
+    public void mergeChildOptions(Options options, Options childOptions, Component child) {
+        TopBarOptions topBar = options.copy().mergeWith(childOptions).withDefaultOptions(defaultOptions).topBar;
         mergeOrientation(options.layout.orientation);
-        mergeButtons(options.topBar.buttons);
+        mergeButtons(options.topBar.buttons,
+                topBar.rightButtonColor,
+                topBar.leftButtonColor,
+                topBar.rightButtonDisabledColor,
+                topBar.leftButtonDisabledColor
+        );
         mergeTopBarOptions(options.topBar, options.animations, child);
         mergeTopTabsOptions(options.topTabs);
         mergeTopTabOptions(options.topTabOptions);
@@ -167,10 +181,27 @@ public class StackOptionsPresenter {
         if (orientationOptions.hasValue()) applyOrientation(orientationOptions);
     }
 
-    private void mergeButtons(TopBarButtons buttons) {
-        if (buttons.left != null) topBar.setLeftButtons(buttons.left);
-        if (buttons.right != null) topBar.setRightButtons(buttons.right);
+    private void mergeButtons(TopBarButtons buttons, com.reactnativenavigation.parse.params.Color rightButtonColor, com.reactnativenavigation.parse.params.Color leftButtonColor, com.reactnativenavigation.parse.params.Color rightButtonDisabledColor, com.reactnativenavigation.parse.params.Color leftButtonDisabledColor) {
+        List<Button> rightButtons = mergeButtonsWithColor(buttons.right, rightButtonColor, rightButtonDisabledColor);
+        List<Button> leftButtons = mergeButtonsWithColor(buttons.left, leftButtonColor, leftButtonDisabledColor);
+        if (buttons.right != null) topBar.setRightButtons(rightButtons);
+        if (buttons.left != null) topBar.setLeftButtons(leftButtons);
         if (buttons.back.hasValue()) topBar.setBackButton(buttons.back);
+    }
+
+    @Nullable
+    private List<Button> mergeButtonsWithColor(List<Button> buttons, com.reactnativenavigation.parse.params.Color buttonColor, com.reactnativenavigation.parse.params.Color disabledColor) {
+        List<Button> result = null;
+        if (buttons != null) {
+            result = new ArrayList<>();
+            for (Button button : buttons) {
+                Button copy = button.copy();
+                if (!button.color.hasValue()) copy.color = buttonColor;
+                if (!button.disabledColor.hasValue()) copy.disabledColor = disabledColor;
+                result.add(copy);
+            }
+        }
+        return result;
     }
 
     private void mergeTopBarOptions(TopBarOptions options, AnimationsOptions animationsOptions, Component component) {

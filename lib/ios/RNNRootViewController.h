@@ -26,7 +26,6 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 			   eventEmitter:(RNNEventEmitter*)eventEmitter
 		  isExternalComponent:(BOOL)isExternalComponent;
 
-- (void)applyTabBarItem;
 - (void)applyTopTabsOptions;
 - (BOOL)isCustomViewController;
 - (BOOL)isCustomTransitioned;
