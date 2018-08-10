@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.facebook.react.views.imagehelper.ResourceDrawableIdHelper;
+import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.NavigationApplication;
 
 import java.io.FileNotFoundException;
@@ -62,7 +63,7 @@ public class ImageLoader {
         } else {
             drawable = loadResource(source);
 
-            if (drawable == null) {
+            if (drawable == null || BuildConfig.DEBUG) {
                 drawable = readJsDevImage(context, source);
             }
         }
