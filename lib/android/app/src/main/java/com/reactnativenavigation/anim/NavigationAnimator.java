@@ -14,6 +14,7 @@ import com.reactnativenavigation.parse.Transitions;
 import com.reactnativenavigation.views.element.Element;
 import com.reactnativenavigation.views.element.ElementTransitionManager;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,8 +36,10 @@ public class NavigationAnimator extends BaseAnimator {
 
     public void push(ViewGroup view, NestedAnimationsOptions animation, Transitions transitions, List<Element> fromElements, List<Element> toElements, Runnable onAnimationEnd) {
         view.setAlpha(0);
-        AnimatorSet set = animation.content.getAnimation(view, getDefaultPushAnimation(view));
-        set.playTogether(merge(set.getChildAnimations(), transitionManager.createTransitions(transitions, fromElements, toElements)));
+        AnimatorSet push = animation.content.getAnimation(view, getDefaultPushAnimation(view));
+        AnimatorSet set = new AnimatorSet();
+        Collection<Animator> elementTransitions = transitionManager.createTransitions(transitions, fromElements, toElements);
+        set.playTogether(merge(push.getChildAnimations(), elementTransitions));
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {

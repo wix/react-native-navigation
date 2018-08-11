@@ -95,7 +95,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void mergeChildOptions(Options options, Component child) {
         super.mergeChildOptions(options, child);
-        presenter.mergeChildOptions(options, child);
+        presenter.mergeChildOptions(options, resolveCurrentOptions(), child);
         if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
             fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
         }

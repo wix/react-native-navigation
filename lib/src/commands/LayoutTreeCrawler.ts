@@ -54,44 +54,7 @@ export class LayoutTreeCrawler {
     const clazz = this.store.getOriginalComponentClassForName(node.data.name) || {};
     const staticOptions = _.cloneDeep(clazz.options) || {};
     const passedOptions = node.data.options || {};
-    this._mergeButtonsStyles(passedOptions, staticOptions);
     node.data.options = _.merge({}, staticOptions, passedOptions);
-  }
-
-  _mergeButtonsStyles(passedOptions, staticOptions) {
-    if (passedOptions.topBar) {
-      this._normalizeButtons(passedOptions.topBar.leftButtons, (buttons, style) => {
-        passedOptions.topBar.leftButtons = buttons;
-
-        if (staticOptions.topBar) {
-          this._applyButtonsStyle(staticOptions.topBar.leftButtons, style);
-        }
-      });
-
-      this._normalizeButtons(passedOptions.topBar.rightButtons, (buttons, style) => {
-        passedOptions.topBar.rightButtons = buttons;
-
-        if (staticOptions.topBar) {
-          this._applyButtonsStyle(staticOptions.topBar.rightButtons, style);
-        }
-      });
-    }
-  }
-
-  _normalizeButtons(buttons, callback) {
-    if (_.isPlainObject(buttons)) {
-      callback([], buttons);
-    } else {
-      callback(buttons);
-    }
-  }
-
-  _applyButtonsStyle(buttons, style) {
-    if (_.isArray(buttons)) {
-      buttons.forEach((button) => {
-        _.merge(button, style);
-      });
-    }
   }
 
   _assertKnownLayoutType(type) {

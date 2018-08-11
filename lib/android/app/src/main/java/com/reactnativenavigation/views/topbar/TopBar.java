@@ -34,7 +34,6 @@ import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
@@ -55,8 +54,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private TopBarAnimator animator;
     private TopTabs topTabs;
     private FrameLayout root;
-    private LinearLayout content;
-    private StackLayout parentView;
     private TopBarBackgroundViewController topBarBackgroundViewController;
     private View border;
     private ImageLoader imageLoader;
@@ -67,7 +64,6 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         this.imageLoader = imageLoader;
         collapsingBehavior = new TopBarCollapseBehavior(this);
         this.topBarBackgroundViewController = topBarBackgroundViewController;
-        this.parentView = parentView;
         topTabs = new TopTabs(getContext());
         animator = new TopBarAnimator(this, parentView.getStackId());
         createLayout(buttonCreator, titleBarReactViewCreator, onClickListener);
@@ -78,7 +74,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar = createTitleBar(getContext(), buttonCreator, titleBarReactViewCreator, onClickListener, imageLoader);
         topTabs = createTopTabs();
         border = createBorder();
-        content = createContentLayout();
+        LinearLayout content = createContentLayout();
 
         root = new FrameLayout(getContext());
         root.setId(CompatUtils.generateViewId());
@@ -187,7 +183,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     public void setBackgroundComponent(Component component) {
         if (component.hasValue()) {
             topBarBackgroundViewController.setComponent(component);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, ViewUtils.getPreferredHeight(this));
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
             root.addView(topBarBackgroundViewController.getView(), 0, lp);
         }
     }

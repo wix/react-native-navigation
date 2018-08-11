@@ -4,6 +4,15 @@
 
 @implementation RNNNavigationController
 
+- (instancetype)initWithOptions:(RNNNavigationOptions *)options {
+	self = [super init];
+	if (self) {
+		_options = options;
+	}
+	
+	return self;
+}
+
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.viewControllers.lastObject.supportedInterfaceOrientations;
 }
@@ -42,6 +51,13 @@
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
 	return self.topViewController;
+}
+
+- (void)applyTabBarItem {
+	[self.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.options.defaultOptions).bottomTab overrideOptions:NO];
+	[self.options.bottomTab applyOn:self];
+	[self.getLeafViewController.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.getLeafViewController.options.defaultOptions).bottomTab overrideOptions:NO];
+	[self.getLeafViewController.options.bottomTab applyOn:self];
 }
 
 @end

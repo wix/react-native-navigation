@@ -149,13 +149,6 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		viewController.navigationController.navigationBar.accessibilityIdentifier = self.testID;
 	}
 	
-	if (self.buttonColor) {
-		UIColor* buttonColor = [RCTConvert UIColor:self.buttonColor];
-		viewController.navigationController.navigationBar.tintColor = buttonColor;
-	} else {
-		viewController.navigationController.navigationBar.tintColor = nil;
-	}
-	
 	if (self.rightButtons || self.leftButtons) {
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
 		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons defaultLeftButtonStyle:self.leftButtonStyle defaultRightButtonStyle:self.rightButtonStyle];
@@ -163,6 +156,14 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 }
 
 - (void)setLeftButtons:(id)leftButtons {
+	if (self.leftButtonColor) {
+		_leftButtonStyle.color = self.leftButtonColor;
+	}
+	
+	if (self.leftButtonDisabledColor) {
+		_leftButtonStyle.disabledColor = self.leftButtonDisabledColor;
+	}
+	
 	if ([leftButtons isKindOfClass:[NSArray class]]) {
 		_leftButtons = leftButtons;
 	} else if ([leftButtons isKindOfClass:[NSDictionary class]]) {
@@ -175,6 +176,14 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 }
 
 - (void)setRightButtons:(id)rightButtons {
+	if (self.rightButtonColor) {
+		_rightButtonStyle.color = self.rightButtonColor;
+	}
+	
+	if (self.rightButtonDisabledColor) {
+		_rightButtonStyle.disabledColor = self.rightButtonDisabledColor;
+	}
+	
 	if ([rightButtons isKindOfClass:[NSArray class]]) {
 		_rightButtons = rightButtons;
 	} else if ([rightButtons isKindOfClass:[NSDictionary class]]) {
