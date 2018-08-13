@@ -1478,6 +1478,9 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
         if([self isPointContainedWithinNavigationRect:point]){
             possibleOpenGestureModes |= MMOpenDrawerGestureModePanningNavigationBar;
         }
+        if([self isPointContainedWithinCenterViewContentRect:point]){
+            possibleOpenGestureModes |= MMOpenDrawerGestureModePanningCenterView;
+        }
         if([self isPointContainedWithinLeftBezelRect:point] &&
            self.leftDrawerViewController){
             possibleOpenGestureModes |= MMOpenDrawerGestureModeBezelPanningCenterView;
