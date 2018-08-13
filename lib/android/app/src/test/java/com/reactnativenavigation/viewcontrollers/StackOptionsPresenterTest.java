@@ -176,6 +176,7 @@ public class StackOptionsPresenterTest extends BaseTest {
         verify(topBar, times(0)).setBackgroundColor(anyInt());
     }
 
+    @Test
     public void applyButtons_buttonColorIsMergedToButtons() {
         Options options = new Options();
         Button rightButton1 = new Button();
