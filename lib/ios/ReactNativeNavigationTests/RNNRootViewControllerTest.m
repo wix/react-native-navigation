@@ -157,7 +157,7 @@
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	self.options.topBar.title.fontFamily = inputFont;
 	[self.uut viewWillAppear:false];
-	UIFont* expectedFont = [UIFont fontWithName:inputFont size:20];
+	UIFont* expectedFont = [UIFont fontWithName:inputFont size:17];
 	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 }
 
@@ -167,15 +167,6 @@
 	self.options.topBar.hideOnScroll = hideOnScrollInput;
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue(self.uut.navigationController.hidesBarsOnSwipe);
-}
-
--(void)testTopBarButtonColor {
-	NSNumber* inputColor = @(0xFFFF0000);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	self.options.topBar.buttonColor = inputColor;
-	[self.uut viewWillAppear:false];
-	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
-	XCTAssertTrue([self.uut.navigationController.navigationBar.tintColor isEqual:expectedColor]);
 }
 
 -(void)testTopBarTranslucent {

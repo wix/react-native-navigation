@@ -44,8 +44,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 				search.searchBar.placeholder = self.searchBarPlaceholder;
 			}
 			viewController.navigationItem.searchController = search;
-			// enable it back if needed on componentDidAppear
-			viewController.navigationItem.hidesSearchBarWhenScrolling = NO;
+			
+			viewController.navigationItem.hidesSearchBarWhenScrolling = [self.searchBarHiddenWhenScrolling boolValue];
 			
 			// Fixes #3450, otherwise, UIKit will infer the presentation context to be the root most view controller
 			viewController.definesPresentationContext = YES;
@@ -62,13 +62,6 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		viewController.navigationController.hidesBarsOnSwipe = [self.hideOnScroll boolValue];
 	} else {
 		viewController.navigationController.hidesBarsOnSwipe = NO;
-	}
-	
-	if (self.buttonColor) {
-		UIColor* buttonColor = [RCTConvert UIColor:self.buttonColor];
-		viewController.navigationController.navigationBar.tintColor = buttonColor;
-	} else {
-		viewController.navigationController.navigationBar.tintColor = nil;
 	}
 	
 	if ([self.blur boolValue]) {
@@ -163,6 +156,14 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 }
 
 - (void)setLeftButtons:(id)leftButtons {
+	if (self.leftButtonColor) {
+		_leftButtonStyle.color = self.leftButtonColor;
+	}
+	
+	if (self.leftButtonDisabledColor) {
+		_leftButtonStyle.disabledColor = self.leftButtonDisabledColor;
+	}
+	
 	if ([leftButtons isKindOfClass:[NSArray class]]) {
 		_leftButtons = leftButtons;
 	} else if ([leftButtons isKindOfClass:[NSDictionary class]]) {
@@ -175,6 +176,14 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 }
 
 - (void)setRightButtons:(id)rightButtons {
+	if (self.rightButtonColor) {
+		_rightButtonStyle.color = self.rightButtonColor;
+	}
+	
+	if (self.rightButtonDisabledColor) {
+		_rightButtonStyle.disabledColor = self.rightButtonDisabledColor;
+	}
+	
 	if ([rightButtons isKindOfClass:[NSArray class]]) {
 		_rightButtons = rightButtons;
 	} else if ([rightButtons isKindOfClass:[NSDictionary class]]) {

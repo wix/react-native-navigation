@@ -125,6 +125,7 @@ Navigation.mergeOptions(this.props.componentId, {
   bottomTab: {
     text: 'Tab 1',
     badge: '2',
+    badgeColor: 'red',
     testID: 'bottomTabTestID',
     icon: require('tab.png'),
     iconColor: 'red',
@@ -136,10 +137,14 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   sideMenu: {
     left: {
+      width: 260,
+      height: 270,
       visible: false,
       enabled: true
     },
     right: {
+      width: 260,
+      height: 270,
       visible: false,
       enabled: true
     }

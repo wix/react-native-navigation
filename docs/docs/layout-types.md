@@ -22,7 +22,7 @@ const component = {
 ## stack
 
 Support children layouts of any kind.
-A stack can be initialised with more then one screen, in which case the last screen will be presented at the top of the stack.
+A stack can be initialised with more than one screen, in which case the last screen will be presented at the top of the stack.
 
 ```js
 const stack = {

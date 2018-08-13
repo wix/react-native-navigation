@@ -2,6 +2,7 @@
 #import "RNNUIBarButtonItem.h"
 #import <React/RCTConvert.h>
 #import "RCTHelpers.h"
+#import "UIImage+tint.h"
 
 @interface RNNNavigationButtons()
 
@@ -107,16 +108,15 @@
 	NSMutableDictionary* disabledTextAttributes = [[NSMutableDictionary alloc] init];
 	
 	UIColor* color = [self color:dictionary[@"color"] defaultColor:defaultStyle.color];
-	if (color) {
-		[textAttributes setObject:color forKey:NSForegroundColorAttributeName];
-		[barButtonItem setImage:[iconImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-		[barButtonItem setTintColor:color];
+	UIColor* disabledColor = [self color:dictionary[@"disabledColor"] defaultColor:defaultStyle.disabledColor];
+	if (!enabledBool && disabledColor) {
+		color = disabledColor;
+		[disabledTextAttributes setObject:disabledColor forKey:NSForegroundColorAttributeName];
 	}
 	
-	UIColor* disabledColor = [self color:dictionary[@"disabledColor"] defaultColor:defaultStyle.disabledColor];;
-	if (disabledColor) {
-		UIColor *color = disabledColor;
-		[disabledTextAttributes setObject:color forKey:NSForegroundColorAttributeName];
+	if (color) {
+		[textAttributes setObject:color forKey:NSForegroundColorAttributeName];
+		[barButtonItem setImage:[[iconImage withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 	}
 	
 	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:defaultStyle.fontSize];
@@ -149,7 +149,7 @@
 	} else if (defaultColor) {
 		return [RCTConvert UIColor:defaultColor];
 	}
-		
+	
 	return nil;
 }
 

@@ -21,9 +21,13 @@
 	}
 	
 	if (self.style || self.visible) {
-		[UIView animateWithDuration:[self statusBarAnimationDuration] animations:^{
+		if (self.animate) {
+			[UIView animateWithDuration:[self statusBarAnimationDuration] animations:^{
+				[viewController setNeedsStatusBarAppearanceUpdate];
+			}];
+		} else {
 			[viewController setNeedsStatusBarAppearanceUpdate];
-		}];
+		}
 	}
 }
 

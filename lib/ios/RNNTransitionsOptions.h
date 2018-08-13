@@ -8,5 +8,6 @@
 @property (nonatomic, strong) RNNScreenTransition* pop;
 @property (nonatomic, strong) RNNScreenTransition* showModal;
 @property (nonatomic, strong) RNNScreenTransition* dismissModal;
+@property (nonatomic, strong) RNNScreenTransition* setStackRoot;
 
 @end

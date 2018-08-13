@@ -24,7 +24,7 @@ class WelcomeScreen extends Component {
         },
         drawBehind: true,
         visible: false,
-        animate: true
+        animate: false
       }
     };
   }

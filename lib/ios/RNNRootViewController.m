@@ -65,11 +65,6 @@
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[self.eventEmitter sendComponentDidAppear:self.componentId componentName:self.componentName];
-	if (@available(iOS 11.0, *)) {
-		if (self.navigationItem.searchController && [self.options.topBar.searchBarHiddenWhenScrolling boolValue]) {
-			self.navigationItem.hidesSearchBarWhenScrolling = YES;
-		}
-	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

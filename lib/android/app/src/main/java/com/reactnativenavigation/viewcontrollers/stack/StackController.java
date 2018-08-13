@@ -95,7 +95,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void mergeChildOptions(Options options, Component child) {
         super.mergeChildOptions(options, child);
-        presenter.mergeChildOptions(options, child);
+        presenter.mergeChildOptions(options, resolveCurrentOptions(), child);
         if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
             fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
         }
@@ -135,7 +135,8 @@ public class StackController extends ParentController<StackLayout> {
         if (toRemove != null) {
             if (resolvedOptions.animations.push.enable.isTrueOrUndefined()) {
                 if (resolvedOptions.animations.push.waitForRender.isTrue()) {
-                    child.setOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.push, () -> {
+                    child.getView().setAlpha(0);
+                    child.setOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.push, resolvedOptions.transitions, toRemove.getElements(), child.getElements(), () -> {
                         getView().removeView(toRemove.getView());
                         listener.onSuccess(child.getId());
                     }));
@@ -158,7 +159,7 @@ public class StackController extends ParentController<StackLayout> {
         view.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         child.setWaitForRender(resolvedOptions.animations.push.waitForRender);
         presenter.applyLayoutParamsOptions(resolvedOptions, view);
-        getView().addView(view);
+        getView().addView(view, getView().getChildCount() - 1);
     }
 
     public void setRoot(ViewController child, CommandListener listener) {
@@ -312,7 +313,7 @@ public class StackController extends ParentController<StackLayout> {
         child.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         Options options = resolveCurrentOptions();
         presenter.applyLayoutParamsOptions(options, child);
-        stackLayout.addView(child);
+        stackLayout.addView(child, 0);
     }
 
     private void onNavigationButtonPressed(String buttonId) {
