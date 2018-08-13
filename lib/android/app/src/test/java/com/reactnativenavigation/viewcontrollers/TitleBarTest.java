@@ -154,6 +154,7 @@ public class TitleBarTest extends BaseTest {
         Component component = new Component();
         component.name = new Text(name);
         component.alignment = alignment;
+        component.componentId = new Text("compId");
         return component;
     }
 
