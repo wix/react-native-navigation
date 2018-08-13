@@ -6,13 +6,12 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.BackButton;
-import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Color;
 import com.reactnativenavigation.utils.ButtonOptionsPresenter;
@@ -20,7 +19,6 @@ import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
-import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
 
@@ -29,24 +27,21 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-
 @SuppressLint("ViewConstructor")
 public class TitleBar extends Toolbar {
+    public static final int DEFAULT_LEFT_MARGIN = 16;
+
     private final ReactViewCreator buttonCreator;
-    private TitleBarReactViewController reactViewController;
-    private final TitleBarReactViewCreator reactViewCreator;
     private final TopBarButtonController.OnClickListener onClickListener;
     private final List<TopBarButtonController> rightButtonControllers = new ArrayList<>();
     private TopBarButtonController leftButtonController;
     private ImageLoader imageLoader;
+    private View component;
 
-    public TitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener, ImageLoader imageLoader) {
+    public TitleBar(Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener, ImageLoader imageLoader) {
         super(context);
         this.buttonCreator = buttonCreator;
-        this.reactViewCreator = reactViewCreator;
         this.imageLoader = imageLoader;
-        reactViewController = new TitleBarReactViewController((Activity) context, reactViewCreator);
         this.onClickListener = onClickListener;
         getMenu();
         setContentDescription("titleBar");
@@ -66,11 +61,11 @@ public class TitleBar extends Toolbar {
         if (color.hasValue()) setTitleTextColor(color.get());
     }
 
-    public void setComponent(Component component) {
+    public void setComponent(View component) {
         clearTitle();
         clearSubtitle();
-        reactViewController.setComponent(component);
-        addView(reactViewController.getView(), getComponentLayoutParams(component));
+        this.component = component;
+        addView(component);
     }
 
     public void setBackgroundColor(Color color) {
@@ -116,7 +111,7 @@ public class TitleBar extends Toolbar {
             } else if (leftButtonController != null) {
                 view.setX(getContentInsetStartWithNavigation());
             } else {
-                view.setX(UiUtils.dpToPx(getContext(), 16));
+                view.setX(UiUtils.dpToPx(getContext(), DEFAULT_LEFT_MARGIN));
             }
         });
     }
@@ -150,8 +145,10 @@ public class TitleBar extends Toolbar {
     }
 
     private void clearComponent() {
-        reactViewController.destroy();
-        reactViewController = new TitleBarReactViewController((Activity) getContext(), reactViewCreator);
+        if (component != null) {
+            removeView(component);
+            component = null;
+        }
     }
 
     private void clearLeftButton() {
@@ -211,14 +208,6 @@ public class TitleBar extends Toolbar {
                 buttonCreator,
                 onClickListener
         );
-    }
-
-    public Toolbar.LayoutParams getComponentLayoutParams(Component component) {
-        LayoutParams lp = new LayoutParams(MATCH_PARENT, getHeight());
-        if (component.alignment == Alignment.Center) {
-            lp.gravity = Gravity.CENTER;
-        }
-        return lp;
     }
 
     public void setHeight(int height) {

@@ -26,7 +26,6 @@ import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
-import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import java.util.Collection;
@@ -40,17 +39,15 @@ public class StackController extends ParentController<StackLayout> {
     private final IdStack<ViewController> stack = new IdStack<>();
     private final NavigationAnimator animator;
     private final ReactViewCreator topBarButtonCreator;
-    private final TitleBarReactViewCreator titleBarReactViewCreator;
     private TopBarBackgroundViewController topBarBackgroundViewController;
     private TopBarController topBarController;
     private BackButtonHelper backButtonHelper;
     private final StackOptionsPresenter presenter;
 
-    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, ReactViewCreator topBarButtonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackOptionsPresenter stackPresenter, OptionsPresenter presenter) {
+    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, ReactViewCreator topBarButtonCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackOptionsPresenter stackPresenter, OptionsPresenter presenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.topBarController = topBarController;
         this.topBarButtonCreator = topBarButtonCreator;
-        this.titleBarReactViewCreator = titleBarReactViewCreator;
         this.topBarBackgroundViewController = topBarBackgroundViewController;
         this.animator = animator;
         this.backButtonHelper = backButtonHelper;
@@ -79,7 +76,7 @@ public class StackController extends ParentController<StackLayout> {
         if (child instanceof ReactComponent) {
             fabOptionsPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child, getView());
         }
-        applyOnParentController(parentController ->
+        performOnParentController(parentController ->
                 ((ParentController) parentController).applyChildOptions(
                         this.options.copy()
                                 .clearTopBarOptions()
@@ -99,7 +96,7 @@ public class StackController extends ParentController<StackLayout> {
         if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
             fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
         }
-        applyOnParentController(parentController ->
+        performOnParentController(parentController ->
                 ((ParentController) parentController).mergeChildOptions(
                         options.copy()
                                 .clearTopBarOptions()
@@ -122,6 +119,12 @@ public class StackController extends ParentController<StackLayout> {
     public void clearOptions() {
         super.clearOptions();
         topBarController.clear();
+    }
+
+    @Override
+    public void onChildDestroyed(Component child) {
+        super.onChildDestroyed(child);
+        presenter.onChildDestroyed(child);
     }
 
     public void push(ViewController child, CommandListener listener) {
@@ -296,7 +299,6 @@ public class StackController extends ParentController<StackLayout> {
     protected StackLayout createView() {
         StackLayout stackLayout = new StackLayout(getActivity(),
                 topBarButtonCreator,
-                titleBarReactViewCreator,
                 topBarBackgroundViewController,
                 topBarController,
                 this::onNavigationButtonPressed,
