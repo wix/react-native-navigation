@@ -41,13 +41,19 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
     }
 
     @Override
+    public void destroy() {
+        if (!isDestroyed()) performOnParentController(parent -> parent.onChildDestroyed(getView()));
+        super.destroy();
+    }
+
+    @Override
     public String toString() {
         return "SimpleViewController " + getId();
     }
 
     @Override
     public void mergeOptions(Options options) {
-        applyOnParentController(parentController -> parentController.mergeChildOptions(options, getView()));
+        performOnParentController(parentController -> parentController.mergeChildOptions(options, getView()));
         super.mergeOptions(options);
     }
 

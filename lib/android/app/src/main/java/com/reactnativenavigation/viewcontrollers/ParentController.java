@@ -117,7 +117,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
 	@CallSuper
     protected void clearOptions() {
-	    applyOnParentController(parent -> ((ParentController) parent).clearOptions());
+	    performOnParentController(parent -> ((ParentController) parent).clearOptions());
         options = initialOptions.copy().clearOneTimeOptions();
     }
 
@@ -132,5 +132,9 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     @Override
     public boolean isRendered() {
         return getCurrentChild() != null && getCurrentChild().isRendered();
+    }
+
+    public void onChildDestroyed(Component child) {
+
     }
 }

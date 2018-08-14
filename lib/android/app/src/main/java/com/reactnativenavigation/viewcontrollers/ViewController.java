@@ -101,7 +101,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     @CallSuper
     public void mergeOptions(Options options) {
         this.options = this.options.mergeWith(options);
-        applyOptions(this.options);
+        if (view != null) applyOptions(this.options);
         this.options.clearOneTimeOptions();
     }
 
@@ -118,7 +118,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return activity;
     }
 
-    protected void applyOnParentController(Task<ParentController> task) {
+    protected void performOnParentController(Task<ParentController> task) {
         if (parentController != null) task.run(parentController);
     }
 
@@ -193,7 +193,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     public void onViewAppeared() {
         isShown = true;
         applyOptions(options);
-        applyOnParentController(parentController -> {
+        performOnParentController(parentController -> {
             parentController.clearOptions();
             if (getView() instanceof Component) parentController.applyChildOptions(options, (Component) getView());
         });
@@ -232,6 +232,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             view = null;
             isDestroyed = true;
         }
+    }
+
+    protected boolean isDestroyed() {
+        return isDestroyed;
     }
 
     @Override
