@@ -60,6 +60,12 @@ public abstract class BaseTest {
         }
     }
 
+    protected void disablePopAnimation(ViewController... controllers) {
+        for (ViewController controller : controllers) {
+            controller.options.animations.pop.enable = new Bool(false);
+        }
+    }
+
     protected void disableShowModalAnimation(ViewController... modals) {
         for (ViewController modal : modals) {
             modal.options.animations.showModal.enable = new Bool(false);

@@ -10,6 +10,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Color;
@@ -282,7 +283,7 @@ public class BottomTabsControllerTest extends BaseTest {
         return TestUtils.newStackController(activity)
                 .setId(id)
                 .setInitialOptions(tabOptions)
-                .setStackPresenter(new StackOptionsPresenter(activity, new Options()))
+                .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new Options()))
                 .build();
     }
 
