@@ -146,17 +146,14 @@
         UIImage *iconImage = nil;
         id icon = tabItemLayout[@"props"][@"icon"];
         if (icon) {
-            iconImage = [RCTConvert UIImage:icon];
-            if (buttonColor) {
-                iconImage = [[self image:iconImage withColor:buttonColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-            }
+            iconImage = [[RCTConvert UIImage:icon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         }
         UIImage *iconImageSelected = nil;
         id selectedIcon = tabItemLayout[@"props"][@"selectedIcon"];
         if (selectedIcon) {
-            iconImageSelected = [RCTConvert UIImage:selectedIcon];
+            iconImageSelected = [[RCTConvert UIImage:selectedIcon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         } else {
-            iconImageSelected = [RCTConvert UIImage:icon];
+            iconImageSelected = [[RCTConvert UIImage:icon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         }
         
         viewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:iconImage tag:0];
