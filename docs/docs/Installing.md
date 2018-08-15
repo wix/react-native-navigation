@@ -271,7 +271,7 @@ Now we need to instruct gradle how to build that flavor. To do so here two solut
 }
 ```
 
-No run `npm run android` to build your application
+Now run `npm run android` to build your application
 
 #### 8.2 Ignore other RNN flavors
 
