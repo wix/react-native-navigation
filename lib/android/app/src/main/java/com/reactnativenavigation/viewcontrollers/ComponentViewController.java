@@ -63,8 +63,14 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void mergeOptions(Options options) {
-        applyOnParentController(parentController -> parentController.mergeChildOptions(options, getView()));
+        performOnParentController(parentController -> parentController.mergeChildOptions(options, getView()));
         super.mergeOptions(options);
+    }
+
+    @Override
+    public void destroy() {
+        if (!isDestroyed()) performOnParentController(parent -> parent.onChildDestroyed(getView()));
+        super.destroy();
     }
 
     ReactComponent getComponent() {

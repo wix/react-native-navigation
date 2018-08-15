@@ -60,7 +60,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     @Override
     public void onViewAppeared() {
         super.onViewAppeared();
-        applyOnParentController(parentController -> ((ParentController) parentController).setupTopTabsWithViewPager(getView()));
+        performOnParentController(parentController -> ((ParentController) parentController).setupTopTabsWithViewPager(getView()));
         performOnCurrentTab(ViewController::onViewAppeared);
     }
 
@@ -73,7 +73,7 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     public void onViewDisappear() {
         super.onViewDisappear();
         performOnCurrentTab(ViewController::onViewDisappear);
-        applyOnParentController(parentController -> ((ParentController) parentController).clearTopTabs());
+        performOnParentController(parentController -> ((ParentController) parentController).clearTopTabs());
     }
 
     @Override
@@ -90,13 +90,13 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     @Override
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
-        applyOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(this.options.copy(), child));
+        performOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(this.options.copy(), child));
     }
 
     @CallSuper
     public void mergeChildOptions(Options options, Component child) {
         super.mergeChildOptions(options, child);
-        applyOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(options.copy(), child));
+        performOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(options.copy(), child));
     }
 
     public void switchToTab(int index) {
