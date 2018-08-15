@@ -2,6 +2,7 @@
 #import "RNNUIBarButtonItem.h"
 #import <React/RCTConvert.h>
 #import "RCTHelpers.h"
+#import "UIImage+tint.h"
 
 @interface RNNNavigationButtons()
 
@@ -115,8 +116,7 @@
 	
 	if (color) {
 		[textAttributes setObject:color forKey:NSForegroundColorAttributeName];
-		[barButtonItem setImage:iconImage];
-		[barButtonItem setTintColor:color];
+		[barButtonItem setImage:[[iconImage withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 	}
 	
 	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:defaultStyle.fontSize];
@@ -149,7 +149,7 @@
 	} else if (defaultColor) {
 		return [RCTConvert UIColor:defaultColor];
 	}
-		
+	
 	return nil;
 }
 

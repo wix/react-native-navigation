@@ -1,12 +1,15 @@
 package com.reactnativenavigation.presentation;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
+import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.OrientationOptions;
@@ -17,11 +20,15 @@ import com.reactnativenavigation.parse.TopTabsOptions;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StackOptionsPresenter {
     private static final int DEFAULT_TITLE_COLOR = Color.BLACK;
@@ -30,14 +37,19 @@ public class StackOptionsPresenter {
     private static final double DEFAULT_ELEVATION = 4d;
     private final double defaultTitleFontSize;
     private final double defaultSubtitleFontSize;
+    private final Activity activity;
 
     private TopBar topBar;
+    private TitleBarReactViewCreator titleViewCreator;
     private Options defaultOptions;
+    private Map<Component, TitleBarReactViewController> titleComponentViewControllers = new HashMap<>();
 
-    public StackOptionsPresenter(Context context, Options defaultOptions) {
-        defaultTitleFontSize = UiUtils.dpToSp(context, 18);
-        defaultSubtitleFontSize = UiUtils.dpToSp(context, 14);
+    public StackOptionsPresenter(Activity activity, TitleBarReactViewCreator titleViewCreator, Options defaultOptions) {
+        this.activity = activity;
+        this.titleViewCreator = titleViewCreator;
         this.defaultOptions = defaultOptions;
+        defaultTitleFontSize = UiUtils.dpToSp(activity, 18);
+        defaultSubtitleFontSize = UiUtils.dpToSp(activity, 14);
     }
 
     public void setDefaultOptions(Options defaultOptions) {
@@ -78,13 +90,32 @@ public class StackOptionsPresenter {
         ((Activity) topBar.getContext()).setRequestedOrientation(withDefaultOptions.getValue());
     }
 
+    public void onChildDestroyed(Component child) {
+        TitleBarReactViewController removed = titleComponentViewControllers.remove(child);
+        if (removed != null) {
+            removed.destroy();
+        }
+    }
+
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
         topBar.setHeight(options.height.get(LayoutParams.WRAP_CONTENT));
         topBar.setElevation(options.elevation.get(DEFAULT_ELEVATION));
 
         topBar.setTitleHeight(options.title.height.get(LayoutParams.WRAP_CONTENT));
         topBar.setTitle(options.title.text.get(""));
-        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component);
+
+        if (options.title.component.hasValue()) {
+            if (titleComponentViewControllers.containsKey(component)) {
+                topBar.setTitleComponent(titleComponentViewControllers.get(component).getView());
+            } else {
+                TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator);
+                titleComponentViewControllers.put(component, controller);
+                controller.setComponent(options.title.component);
+                controller.getView().setLayoutParams(getComponentLayoutParams(options.title.component));
+                topBar.setTitleComponent(controller.getView());
+            }
+        }
+
         topBar.setTitleFontSize(options.title.fontSize.get(defaultTitleFontSize));
         topBar.setTitleTextColor(options.title.color.get(DEFAULT_TITLE_COLOR));
         topBar.setTitleTypeface(options.title.fontFamily);
@@ -210,7 +241,19 @@ public class StackOptionsPresenter {
 
         if (options.title.height.hasValue()) topBar.setTitleHeight(options.title.height.get());
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
-        if (options.title.component.hasValue()) topBar.setTitleComponent(options.title.component);
+
+        if (options.title.component.hasValue()) {
+            if (titleComponentViewControllers.containsKey(component)) {
+                topBar.setTitleComponent(titleComponentViewControllers.get(component).getView());
+            } else {
+                TitleBarReactViewController controller = new TitleBarReactViewController(activity, titleViewCreator);
+                titleComponentViewControllers.put(component, controller);
+                controller.setComponent(options.title.component);
+                controller.getView().setLayoutParams(getComponentLayoutParams(options.title.component));
+                topBar.setTitleComponent(controller.getView());
+            }
+        }
+
         if (options.title.color.hasValue()) topBar.setTitleTextColor(options.title.color.get());
         if (options.title.fontSize.hasValue()) topBar.setTitleFontSize(options.title.fontSize.get());
         if (options.title.fontFamily != null) topBar.setTitleTypeface(options.title.fontFamily);
@@ -261,5 +304,14 @@ public class StackOptionsPresenter {
 
     private void mergeTopTabOptions(TopTabOptions topTabOptions) {
         if (topTabOptions.fontFamily != null) topBar.setTopTabFontFamily(topTabOptions.tabIndex, topTabOptions.fontFamily);
+    }
+
+    private LayoutParams getComponentLayoutParams(com.reactnativenavigation.parse.Component component) {
+        return new Toolbar.LayoutParams(component.alignment == Alignment.Center ? Gravity.CENTER : Gravity.START);
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public Map<Component, TitleBarReactViewController> getTitleComponents() {
+        return titleComponentViewControllers;
     }
 }

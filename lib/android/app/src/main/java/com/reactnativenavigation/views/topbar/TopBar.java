@@ -39,7 +39,6 @@ import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.titlebar.TitleBar;
-import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 import com.reactnativenavigation.views.toptabs.TopTabs;
 
 import java.util.List;
@@ -58,7 +57,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private View border;
     private ImageLoader imageLoader;
 
-    public TopBar(final Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener onClickListener, StackLayout parentView, ImageLoader imageLoader) {
+    public TopBar(final Context context, ReactViewCreator buttonCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener onClickListener, StackLayout parentView, ImageLoader imageLoader) {
         super(context);
         context.setTheme(R.style.TopBar);
         this.imageLoader = imageLoader;
@@ -66,12 +65,12 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         this.topBarBackgroundViewController = topBarBackgroundViewController;
         topTabs = new TopTabs(getContext());
         animator = new TopBarAnimator(this, parentView.getStackId());
-        createLayout(buttonCreator, titleBarReactViewCreator, onClickListener);
+        createLayout(buttonCreator, onClickListener);
     }
 
-    private void createLayout(ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarButtonController.OnClickListener onClickListener) {
+    private void createLayout(ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener) {
         setId(CompatUtils.generateViewId());
-        titleBar = createTitleBar(getContext(), buttonCreator, titleBarReactViewCreator, onClickListener, imageLoader);
+        titleBar = createTitleBar(getContext(), buttonCreator, onClickListener, imageLoader);
         topTabs = createTopTabs();
         border = createBorder();
         LinearLayout content = createContentLayout();
@@ -111,8 +110,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return border;
     }
 
-    protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator reactViewCreator, TopBarButtonController.OnClickListener onClickListener, ImageLoader imageLoader) {
-        TitleBar titleBar = new TitleBar(context, buttonCreator, reactViewCreator, onClickListener, imageLoader);
+    protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener, ImageLoader imageLoader) {
+        TitleBar titleBar = new TitleBar(context, buttonCreator, onClickListener, imageLoader);
         titleBar.setId(CompatUtils.generateViewId());
         return titleBar;
     }
@@ -176,7 +175,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setTitleAlignment(alignment);
     }
 
-    public void setTitleComponent(Component component) {
+    public void setTitleComponent(View component) {
         titleBar.setComponent(component);
     }
 

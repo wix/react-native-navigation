@@ -41,9 +41,9 @@ public class BackButtonHelperTest extends BaseTest {
     }
 
     @Test
-    public void addToChild_doesNotAddIfStackContainsOneChild() {
-        uut.addToPushedChild(stack, child1);
-        verify(child1, times(0)).mergeOptions(any());
+    public void addToChild() {
+        uut.addToPushedChild(child1);
+        verify(child1).mergeOptions(any());
     }
 
     @Test
