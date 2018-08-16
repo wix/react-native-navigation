@@ -17,6 +17,10 @@
 																	target:nil
 																	action:nil];
 		
+		if(self.color) {
+			backItem.tintColor = [RCTConvert UIColor:self.color];
+		}
+		
 		viewController.navigationItem.backBarButtonItem = backItem;
 	}
 	
