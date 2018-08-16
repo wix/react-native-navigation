@@ -13,12 +13,6 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		[(RNNTabBarController*)viewController.tabBarController setSelectedIndexByComponentID:self.currentTabId];
 	}
 	
-	if (self.visible) {
-		[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:![self.visible boolValue] animated:[self.animate boolValue]];
-	} else {
-		[((RNNTabBarController *)viewController.tabBarController) setTabBarHidden:NO animated:NO];
-	}
-	
 	if (self.testID) {
 		viewController.tabBarController.tabBar.accessibilityIdentifier = self.testID;
 	}

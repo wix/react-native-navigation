@@ -55,9 +55,9 @@
 	}
 }
 
--(void)dismissModal:(NSString *)componentId {
+- (void)dismissModal:(NSString *)componentId completion:(RNNTransitionCompletionBlock)completion {
 	[[_store pendingModalIdsToDismiss] addObject:componentId];
-	[self removePendingNextModalIfOnTop];
+	[self removePendingNextModalIfOnTop:completion];
 }
 
 -(void)dismissAllModals {
@@ -69,7 +69,7 @@
 #pragma mark - private
 
 
--(void)removePendingNextModalIfOnTop {
+-(void)removePendingNextModalIfOnTop:(RNNTransitionCompletionBlock)completion {
 	NSString *componentId = [[_store pendingModalIdsToDismiss] lastObject];
 	UIViewController<RNNRootViewProtocol> *modalToDismiss = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
 	RNNNavigationOptions* options = modalToDismiss.getLeafViewController.options;
@@ -88,7 +88,12 @@
 		[modalToDismiss dismissViewControllerAnimated:options.animations.dismissModal.enable completion:^{
 			[[_store pendingModalIdsToDismiss] removeObject:componentId];
 			[_store removeComponent:componentId];
-			[self removePendingNextModalIfOnTop];
+			
+			if (completion) {
+				completion();
+			}
+			
+			[self removePendingNextModalIfOnTop:nil];
 		}];
 	}
 }
