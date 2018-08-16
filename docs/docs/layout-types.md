@@ -137,7 +137,7 @@ Navigation.mergeOptions('SecondScreenId', {
 
 ## sideMenu
 
-Expect center, left and right layouts
+Expect center, left and right layouts. center: { stack: ... } is required to have a topBar in center screen of a sideMenu app.
 
 ```js
 const sideMenu = {
@@ -145,7 +145,12 @@ const sideMenu = {
     component: {}
   },
   center: {
-    stack: {}
+    stack: {
+      options: {},
+      children: [{
+        component: {}
+      }]
+    }
   },
   right: {
     component: {}
