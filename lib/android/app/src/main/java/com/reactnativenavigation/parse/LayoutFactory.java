@@ -162,13 +162,11 @@ public class LayoutFactory {
                 .setChildren(createChildren(node.children))
                 .setChildRegistry(childRegistry)
                 .setTopBarButtonCreator(new TitleBarButtonCreator(reactInstanceManager))
-                .setTitleBarReactViewCreator(new TitleBarReactViewCreator(reactInstanceManager))
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreator(reactInstanceManager)))
                 .setTopBarController(new TopBarController())
                 .setId(node.id)
                 .setInitialOptions(parse(typefaceManager, node.getOptions()))
-                .setOptionsPresenter(new OptionsPresenter(activity, defaultOptions))
-                .setStackPresenter(new StackOptionsPresenter(activity, defaultOptions))
+                .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreator(reactInstanceManager), defaultOptions))
                 .build();
 	}
 

@@ -10,16 +10,11 @@
 		[viewController.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
 		
 		UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:nil action:nil];
-		viewController.navigationItem.backBarButtonItem = backItem;
+		[self setBackItem:backItem onViewController:viewController];
 	} else {
 		NSString *title;
-
-		if(self.title) {
-			title = self.title;
-		} else {
-			title = viewController.navigationItem.title;
-		}
-
+		
+		title = self.title ? self.title : viewController.navigationItem.title;
 		UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:title
 																	 style:UIBarButtonItemStylePlain
 																	target:nil
@@ -33,24 +28,21 @@
 			NSNumber* fontSize = self.fontSize;
 			NSString* fontFamily = self.fontFamily;
 			NSMutableDictionary* textAttributes = [[NSMutableDictionary alloc] init];
-			UIFont *font = nil;
+			UIFont *font;
 
 			if (!fontSize) {
 				fontSize = [[NSNumber alloc] initWithInt: 18];
 			}
-
-			if (fontFamily) {
-				font = [UIFont fontWithName:fontFamily size:[fontSize floatValue]];
-			} else {
-				font = [UIFont systemFontOfSize:[fontSize floatValue]];
-			}
+			font = fontFamily ? 
+				[UIFont fontWithName:fontFamily size:[fontSize floatValue]] : 
+				[UIFont systemFontOfSize:[fontSize floatValue]];
 			[textAttributes setObject:font forKey:NSFontAttributeName];
 
 			[backItem setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
 			[backItem setTitleTextAttributes:textAttributes forState:UIControlStateHighlighted];
 		}
 		
-		viewController.navigationItem.backBarButtonItem = backItem;
+		[self setBackItem:backItem onViewController:viewController];
 	}
 	
 	if (self.visible) {
@@ -59,6 +51,14 @@
 	
 	if (self.showTitle && ![self.showTitle boolValue]) {
 		self.title = @"";
+	}
+}
+
+- (void)setBackItem:(UIBarButtonItem *)backItem onViewController:(UIViewController *)viewController {
+	UINavigationController* nvc = viewController.navigationController;
+	if (nvc.viewControllers.count >= 2) {
+		UIViewController* lastViewControllerInStack = nvc.viewControllers[nvc.viewControllers.count - 2];
+		lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 	}
 }
 
