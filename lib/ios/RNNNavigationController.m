@@ -30,6 +30,14 @@
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
+	if (self.viewControllers.count > 1) {
+		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
+		if ([controller isKindOfClass:[RNNRootViewController class]]) {
+			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
+			[rnnController.options applyOn:rnnController];
+		}
+	}
+	
 	return [super popViewControllerAnimated:animated];
 }
 

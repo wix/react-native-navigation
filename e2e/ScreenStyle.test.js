@@ -57,18 +57,26 @@ describe('screen style', () => {
     await expect(element(by.text('TeSt'))).toBeVisible();
   });
 
-  test('hide Tab Bar', async () => {
+  test(':android: hide Tab Bar', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
     await elementById(testIDs.HIDE_BOTTOM_TABS_BUTTON).tap();
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeNotVisible();
   });
 
-  test('show Tab Bar', async () => {
+  test(':android: show Tab Bar', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await elementById(testIDs.HIDE_BOTTOM_TABS_BUTTON).tap();
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeNotVisible();
     await elementById(testIDs.SHOW_BOTTOM_TABS_BUTTON).tap();
+    await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
+  });
+
+  test('hide Tab Bar on push', async () => {
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await elementById(testIDs.HIDE_BOTTOM_TABS_ON_PUSH_BUTTON).tap();
+    await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeNotVisible();
+    await elementById(testIDs.POP_BUTTON).tap();
     await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
   });
 

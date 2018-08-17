@@ -118,7 +118,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	} else {
 		viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
 	}
-
+	
 	if (self.translucent) {
 		viewController.navigationController.navigationBar.translucent = [self.translucent boolValue];
 	} else {
@@ -155,35 +155,27 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	}
 }
 
-- (void)setLeftButtons:(id)leftButtons {
-	if (self.leftButtonColor) {
-		_leftButtonStyle.color = self.leftButtonColor;
-	}
-	
-	if (self.leftButtonDisabledColor) {
-		_leftButtonStyle.disabledColor = self.leftButtonDisabledColor;
-	}
-	
-	if ([leftButtons isKindOfClass:[NSArray class]]) {
-		_leftButtons = leftButtons;
-	} else if ([leftButtons isKindOfClass:[NSDictionary class]]) {
-		if (leftButtons[@"id"]) {
-			_leftButtons = @[leftButtons];
-		} else {
-			[_leftButtonStyle mergeWith:leftButtons];
-		}
-	}
+- (void)setRightButtonColor:(NSNumber *)rightButtonColor {
+	_rightButtonColor = rightButtonColor;
+	_rightButtonStyle.color = rightButtonColor;
+}
+
+- (void)setRightButtonDisabledColor:(NSNumber *)rightButtonDisabledColor {
+	_rightButtonDisabledColor = rightButtonDisabledColor;
+	_rightButtonStyle.disabledColor = rightButtonDisabledColor;
+}
+
+- (void)setLeftButtonColor:(NSNumber *)leftButtonColor {
+	_leftButtonColor = leftButtonColor;
+	_leftButtonStyle.color = leftButtonColor;
+}
+
+- (void)setLeftButtonDisabledColor:(NSNumber *)leftButtonDisabledColor {
+	_leftButtonDisabledColor = leftButtonDisabledColor;
+	_leftButtonStyle.disabledColor = leftButtonDisabledColor;
 }
 
 - (void)setRightButtons:(id)rightButtons {
-	if (self.rightButtonColor) {
-		_rightButtonStyle.color = self.rightButtonColor;
-	}
-	
-	if (self.rightButtonDisabledColor) {
-		_rightButtonStyle.disabledColor = self.rightButtonDisabledColor;
-	}
-	
 	if ([rightButtons isKindOfClass:[NSArray class]]) {
 		_rightButtons = rightButtons;
 	} else if ([rightButtons isKindOfClass:[NSDictionary class]]) {
@@ -191,6 +183,18 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 			_rightButtons = @[rightButtons];
 		} else {
 			[_rightButtonStyle mergeWith:rightButtons];
+		}
+	}
+}
+
+- (void)setLeftButtons:(id)leftButtons {
+	if ([leftButtons isKindOfClass:[NSArray class]]) {
+		_leftButtons = leftButtons;
+	} else if ([leftButtons isKindOfClass:[NSDictionary class]]) {
+		if (leftButtons[@"id"]) {
+			_leftButtons = @[leftButtons];
+		} else {
+			[_leftButtonStyle mergeWith:leftButtons];
 		}
 	}
 }

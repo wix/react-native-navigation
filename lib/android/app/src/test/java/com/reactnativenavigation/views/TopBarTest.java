@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.TopBarAnimator;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
-import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarBackgroundViewCreatorMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.AnimationOptions;
@@ -35,7 +34,6 @@ public class TopBarTest extends BaseTest {
 
     private TopBar uut;
     private TopBarAnimator animator;
-    private ArrayList<Button> leftButton;
     private ArrayList<Button> rightButtons;
     private TopBarButtonController.OnClickListener onClickListener;
 
@@ -50,22 +48,12 @@ public class TopBarTest extends BaseTest {
         });
         Activity activity = newActivity();
         TopBarBackgroundViewController topBarBackgroundViewController = new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock());
-        StackLayout parent = new StackLayout(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), topBarBackgroundViewController, new TopBarController(), this.onClickListener, null);
-        uut = new TopBar(activity, new TopBarButtonCreatorMock(), new TitleBarReactViewCreatorMock(), topBarBackgroundViewController, this.onClickListener, parent, ImageLoaderMock.mock());
+        StackLayout parent = new StackLayout(activity, new TopBarButtonCreatorMock(), topBarBackgroundViewController, new TopBarController(), this.onClickListener, null);
+        uut = new TopBar(activity, new TopBarButtonCreatorMock(), topBarBackgroundViewController, this.onClickListener, parent, ImageLoaderMock.mock());
         animator = spy(new TopBarAnimator(uut));
         uut.setAnimator(animator);
-        leftButton = createLeftButton();
         rightButtons = createRightButtons();
         parent.addView(uut);
-    }
-
-    private ArrayList<Button> createLeftButton() {
-        ArrayList<Button> result = new ArrayList<>();
-        Button leftButton = new Button();
-        leftButton.id = "leftButton";
-        leftButton.text = new Text("");
-        result.add(spy(leftButton));
-        return result;
     }
 
     private ArrayList<Button> createRightButtons() {
