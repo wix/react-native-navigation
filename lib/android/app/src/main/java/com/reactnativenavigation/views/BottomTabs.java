@@ -6,6 +6,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.IntRange;
 import android.view.View;
 import android.graphics.drawable.Drawable;
+import android.graphics.Canvas;
 import android.widget.ImageView;
 
 import java.util.List;
