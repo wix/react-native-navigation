@@ -60,6 +60,10 @@ public class BottomTabs extends AHBottomNavigation {
         }
     }
 
+    protected void onDraw(Canvas canvas){
+        setSelectedIcon(getCurrentItem());
+    }
+
     @Override
     public void setCurrentItem(@IntRange(from = 0) int position) {
         super.setCurrentItem(position);
