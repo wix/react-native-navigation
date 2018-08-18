@@ -28,6 +28,9 @@ import com.reactnativenavigation.views.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -127,6 +130,8 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 			throw new RuntimeException("Too many tabs!");
 		}
         List<String> icons = new ArrayList<>();
+        List<String> selectedIcons = new ArrayList<>();
+        Map<String, Integer> selectedIconsMap = new HashMap<String, Integer>();
         List<BottomTabOptions> bottomTabOptionsList = new ArrayList<>();
         for (int i = 0; i < tabs.size(); i++) {
             tabs.get(i).setParentController(this);
@@ -136,7 +141,24 @@ public class BottomTabsController extends ParentController implements AHBottomNa
             }
             bottomTabOptionsList.add(tabOptions);
             icons.add(tabOptions.icon.get());
+            if (tabOptions.selectedIcon.hasValue()) {
+                selectedIcons.add(tabOptions.selectedIcon.get());
+                selectedIconsMap.put("tab" + i, selectedIcons.size() - 1);
+            }
         }
+
+        imageLoader.loadIcons(getActivity(), selectedIcons, new ImageLoadingListenerAdapter() {
+
+            @Override
+            public void onComplete(@NonNull List<Drawable> drawables) {
+                bottomTabs.setSelectedDrawables(drawables, selectedIconsMap);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                error.printStackTrace();
+            }
+        });
 
         imageLoader.loadIcons(getActivity(), icons, new ImageLoadingListenerAdapter() {
 
@@ -188,6 +210,7 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         getCurrentView().setVisibility(View.INVISIBLE);
         bottomTabs.setCurrentItem(newIndex, false);
         getCurrentView().setVisibility(View.VISIBLE);
+        bottomTabs.setSelectedIcon(newIndex);
     }
 
     @NonNull
