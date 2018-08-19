@@ -279,6 +279,8 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void handleBack_DelegatesToRoot() {
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
+
         ViewController root = spy(child1);
         uut.setRoot(root, new CommandListenerAdapter());
         when(root.handleBack(any(CommandListener.class))).thenReturn(true);
