@@ -4,6 +4,7 @@
 #import "RNNAnimator.h"
 #import "RNNCustomTitleView.h"
 #import "RNNPushAnimation.h"
+#import "RNNReactRootView.h"
 
 @interface RNNRootViewController() {
 	UIView* _customTitleView;
@@ -137,14 +138,16 @@
 - (void)setCustomNavigationTitleView {
 	if (!_customTitleView) {
 		if (self.options.topBar.title.component.name) {
-			RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
-			
-			_customTitleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.options.topBar.title.component.alignment];
-			reactView.backgroundColor = UIColor.clearColor;
-			_customTitleView.backgroundColor = UIColor.clearColor;
-			self.navigationItem.titleView = _customTitleView;
-		} if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
-			self.navigationItem.title = nil;
+			__weak RNNReactRootView *reactView = (RNNReactRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
+			[reactView setAlignment:self.options.topBar.title.component.alignment];
+			[reactView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
+				if ([self.options.topBar.title.component.alignment isEqualToString:@"center"]) {
+					[reactView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
+				}
+			}];
+			[reactView setFrame:self.navigationController.navigationBar.frame];
+			_customTitleView = reactView;
+			self.navigationItem.titleView = reactView;
 		}
 	} else if (_customTitleView && _customTitleView.superview == nil) {
 		if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
