@@ -48,16 +48,18 @@ public abstract class SplashActivity extends AppCompatActivity {
                 return;
             }
 
-            if( getIntent() != null) {
-                boolean isPush = getIntent().getBooleanExtra("push", false);
+            boolean isPush = getIntent() != null && getIntent().getBooleanExtra("push", false);
 
-                if( isPush ) {
-                    NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
-                }
+            if(isPush) {
+                NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
             }
 
             if (NavigationApplication.instance.clearHostOnActivityDestroy(this)) {
                 overridePendingTransition(0, 0);
+
+                if(isPush) {
+                    finish();
+                }
             }
             return;
         }
