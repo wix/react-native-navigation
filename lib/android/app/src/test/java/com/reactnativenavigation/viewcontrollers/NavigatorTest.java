@@ -100,7 +100,8 @@ public class NavigatorTest extends BaseTest {
         uut.setRoot(spy, new CommandListenerAdapter());
         Options defaultOptions = new Options();
         uut.setDefaultOptions(defaultOptions);
-        verify(spy, times(1)).setDefaultOptions(defaultOptions);
+
+        verify(spy).setDefaultOptions(defaultOptions);
         verify(modalStack).setDefaultOptions(defaultOptions);
     }
 

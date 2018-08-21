@@ -128,6 +128,9 @@ this.props.navigator.handleDeepLink({
 
 Set options dynamically for component.
 
+WARNING! this is called after the component has been rendered at least once.
+If you want the options to apply as soon as the screen is created, use `static options(passProps){...}` or pass the options as part of the push/modal etc command.
+
 ```js
 Navigation.mergeOptions(this.props.componentId, {
   topBar: {
