@@ -257,7 +257,7 @@
     {
       NSObject *badge = actionParams[@"badge"];
       
-      if (badge == nil || [badge isEqual:[NSNull null]])
+      if (badge == nil || [badge isEqual:[NSNull null]] || [badge isEqual:@0])
       {
         viewController.tabBarItem.badgeValue = nil;
       }
