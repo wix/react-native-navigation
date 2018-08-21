@@ -348,8 +348,17 @@
 }
 
 +(void)sendTabEvent:(NSString *)event controller:(UIViewController*)viewController body:(NSDictionary*)body{
-    if ([viewController.view isKindOfClass:[RCTRootView class]]){
-        RCTRootView *rootView = (RCTRootView *)viewController.view;
+    
+    UIView *theView = viewController.view;
+    if ([viewController isKindOfClass:[RCCViewController class]]){
+        RCCViewController *rccvc = (RCCViewController *)viewController;
+        if (rccvc.rootView != nil) {
+            theView = rccvc.rootView;
+        }
+    }
+    
+    if ([theView isKindOfClass:[RCTRootView class]]){
+        RCTRootView *rootView = (RCTRootView *)theView;
         
         if (rootView.appProperties && rootView.appProperties[@"navigatorEventID"]) {
             NSString *navigatorID = rootView.appProperties[@"navigatorID"];
