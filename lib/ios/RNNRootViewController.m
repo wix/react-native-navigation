@@ -368,6 +368,8 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self.view];
 	self.view = nil;
 	self.navigationItem.titleView = nil;
+	self.navigationItem.rightBarButtonItems = nil;
+	self.navigationItem.leftBarButtonItems = nil;
 	_customTopBar = nil;
 	_customTitleView = nil;
 	_customTopBarBackground = nil;
