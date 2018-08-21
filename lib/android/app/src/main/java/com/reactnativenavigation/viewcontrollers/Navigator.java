@@ -33,11 +33,9 @@ public class Navigator extends ParentController {
 
     @Override
     public void setDefaultOptions(Options defaultOptions) {
+        super.setDefaultOptions(defaultOptions);
         this.defaultOptions = defaultOptions;
-        if (root != null) {
-            root.setDefaultOptions(defaultOptions);
-            modalStack.setDefaultOptions(defaultOptions);
-        }
+        modalStack.setDefaultOptions(defaultOptions);
     }
 
     public Options getDefaultOptions() {
@@ -72,6 +70,7 @@ public class Navigator extends ParentController {
 
     @Override
     public boolean handleBack(CommandListener listener) {
+        if (modalStack.isEmpty() && root == null) return false;
         if (modalStack.isEmpty()) return root.handleBack(listener);
         return modalStack.handleBack(listener, root);
     }

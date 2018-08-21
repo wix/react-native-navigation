@@ -30,6 +30,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     @Override
     public void setDefaultOptions(Options defaultOptions) {
+	    super.setDefaultOptions(defaultOptions);
         Collection<? extends ViewController> children = getChildControllers();
         if (!CollectionUtils.isNullOrEmpty(children)) {
             for (ViewController child : children) {

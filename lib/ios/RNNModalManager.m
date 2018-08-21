@@ -3,7 +3,7 @@
 
 @implementation RNNModalManager {
 	RNNStore *_store;
-	RNNTransitionCompletionBlock _completionBlock;
+	RNNTransitionWithComponentIdCompletionBlock _completionBlock;
 }
 
 
@@ -27,14 +27,14 @@
 	
 	[topVC presentViewController:self.toVC animated:animated completion:^{
 		if (_completionBlock) {
-			_completionBlock();
+			_completionBlock(self.toVC.getLeafViewController.componentId);
 			_completionBlock = nil;
 		}
 		self.toVC = nil;
 	}];
 }
 
--(void)showModal:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion {
+-(void)showModal:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
 	self.toVC = (UIViewController<RNNRootViewProtocol>*)viewController;
 	RNNNavigationOptions* options = self.toVC.getLeafViewController.options;
 
