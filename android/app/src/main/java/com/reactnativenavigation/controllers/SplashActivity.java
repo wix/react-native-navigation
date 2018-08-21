@@ -48,13 +48,17 @@ public abstract class SplashActivity extends AppCompatActivity {
                 return;
             }
 
-            boolean isPush = getIntent() != null && getIntent().getBooleanExtra("push", false);
+            //  push notification을 통해서 진입한 경우
+            boolean isPushNotification = getIntent() != null && getIntent().getBooleanExtra("push", false);
 
-            if(isPush) {
+            //  진입 경로가 push notification or deeplink인 경우
+            boolean isExtras = getIntent() != null && getIntent().getExtras() != null;
+
+            if(isPushNotification || !isExtras) {
                 NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
             }
 
-            if (isPush && NavigationApplication.instance.clearHostOnActivityDestroy(this)) {
+            if (isExtras && NavigationApplication.instance.clearHostOnActivityDestroy(this)) {
                 overridePendingTransition(0, 0);
                 finish();
             }
