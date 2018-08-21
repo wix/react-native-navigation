@@ -160,18 +160,19 @@ Specify `topTab` in the screen object you use when starting your app:
 ```js
 Navigation.startSingleScreenApp({
     screen: {
-    screen: 'example.collapsingReactViewTopTabsScreen',
-    title: 'Collapsing React TopTabs View',
-    topTabs: [
-      {
-        screenId: 'example.ListScreen',
-        icon: require('../img/list.png')
-      },
-      {
-        screenId: 'example.secondTabScreen',
-        icon: require('../img/list.png')
-      }
-    ]
+        screen: 'example.collapsingReactViewTopTabsScreen',
+        title: 'Collapsing React TopTabs View',
+        topTabs: [
+          {
+            screenId: 'example.ListScreen',
+            icon: require('../img/list.png')
+          },
+          {
+            screenId: 'example.secondTabScreen',
+            icon: require('../img/list.png')
+          }
+        ]
+    }
 });
 ```
 ## Shared Element Transition
@@ -307,18 +308,17 @@ To disable the cross-fade animation, set `animated: false` when pushing the seco
 ## Compatibility with HeadlessJs
 In most cases, `Navigation.startSingleScreenApp()` or `Navigation.startTabBasedApp` are called from global context. If the bundle is parsed when the app is not running, this will result in the app opening even though the developer had no intent to open the app.
 
-`Navigation.startSingleScreenApp()` or `Navigation.startTabBasedApp` are called from global context since RNN assums react context isn't created when the app is launched. When a background task completes, react context is put into a **paused state** and not destroyed. Therefore we should also handle the use case where our app is opened when react context is created , and the bundle has already been parsed. We do that by listening to `RNN.AppLaunched` event.
+`Navigation.startSingleScreenApp()` or `Navigation.startTabBasedApp` are called from global context since RNN assumes react context isn't created when the app is launched. When a background task completes, react context is put into a **paused state** and not destroyed. Therefore we should also handle the use case where our app is opened when react context is created , and the bundle has already been parsed. We do that by listening to `RNN.AppLaunched` event.
 
 ```js
 import {Navigation, NativeEventsReceiver} from 'react-native-navigation';
 
-Promise.resolve(Navigation.isAppLaunched())
+Navigation.isAppLaunched()
   .then(appLaunched => {
     if (appLaunched) {
       startApp(); // App is launched -> show UI
-    } else {
-      new NativeEventsReceiver().appLaunched(startApp); // App hasn't been launched yet -> show the UI only when needed.
     }
+    new NativeEventsReceiver().appLaunched(startApp); // App hasn't been launched yet -> show the UI only when needed.
   });
 
 function startApp() {

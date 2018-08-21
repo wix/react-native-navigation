@@ -4,11 +4,14 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.layouts.Layout;
@@ -24,6 +27,7 @@ import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.ModalAnimationFactory;
 import com.reactnativenavigation.screens.NavigationType;
+import com.reactnativenavigation.utils.NavigationBar;
 import com.reactnativenavigation.utils.StatusBar;
 
 import java.util.List;
@@ -103,6 +107,10 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
         return layout.getCurrentlyVisibleScreenId();
     }
 
+    String getCurrentlyVisibleEventId() {
+        return layout.getCurrentScreen().getNavigatorEventId();
+    }
+
     interface OnModalDismissedListener {
         void onModalDismissed(Modal modal);
     }
@@ -115,13 +123,24 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
         createContent();
         setAnimation(screenParams);
         setStatusBarStyle(screenParams.styleParams);
+        setNavigationBarStyle(screenParams.styleParams);
+        setDrawUnderStatusBar(screenParams.styleParams);
     }
 
     private void setStatusBarStyle(StyleParams styleParams) {
         Window window = getWindow();
         if (window == null) return;
-        StatusBar.setColor(window, styleParams.statusBarColor);
         StatusBar.setTextColorScheme(window.getDecorView(), styleParams.statusBarTextColorScheme);
+    }
+
+    private void setDrawUnderStatusBar(StyleParams styleParams) {
+        Window window = getWindow();
+        if (window == null) return;
+        StatusBar.displayOverScreen(window.getDecorView(), styleParams.drawUnderStatusBar);
+    }
+
+    private void setNavigationBarStyle(StyleParams styleParams) {
+        NavigationBar.setColor(getWindow(), styleParams.navigationBarColor);
     }
 
     public AppCompatActivity getActivity() {
@@ -155,8 +174,14 @@ class Modal extends Dialog implements DialogInterface.OnDismissListener, ScreenS
     }
 
     @Override
-    public void push(ScreenParams params) {
-        layout.push(params);
+    public boolean onKeyUp(int keyCode, @NonNull KeyEvent event) {
+        NavigationApplication.instance.getActivityCallbacks().onKeyUp(keyCode, event);
+        return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    public void push(ScreenParams params, Promise onPushComplete) {
+        layout.push(params, onPushComplete);
     }
 
     @Override

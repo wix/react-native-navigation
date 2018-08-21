@@ -1,13 +1,9 @@
 package com.reactnativenavigation.screens;
 
 import android.animation.LayoutTransition;
-import android.annotation.TargetApi;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
 import android.widget.RelativeLayout;
 
 import com.facebook.react.bridge.Callback;
@@ -28,6 +24,7 @@ import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.StyleParamsParser;
+import com.reactnativenavigation.utils.NavigationBar;
 import com.reactnativenavigation.utils.StatusBar;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
@@ -65,6 +62,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         createViews();
         EventBus.instance.register(this);
         sharedElements = new SharedElements();
+        setDrawUnderStatusBar(styleParams.drawUnderStatusBar);
     }
 
     public void registerSharedElement(SharedElementTransition toView, String key) {
@@ -109,6 +107,7 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         setStatusBarHidden(styleParams.statusBarHidden);
         setStatusBarTextColorScheme(styleParams.statusBarTextColorScheme);
         setNavigationBarColor(styleParams.navigationBarColor);
+        setDrawUnderStatusBar(styleParams.drawUnderStatusBar);
         topBar.setStyle(styleParams);
         if (styleParams.screenBackgroundColor.hasColor()) {
             setBackgroundColor(styleParams.screenBackgroundColor.getColor());
@@ -177,20 +176,16 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         StatusBar.setHidden(((NavigationActivity) activity).getScreenWindow(), statusBarHidden);
     }
 
+    private void setDrawUnderStatusBar(boolean drawUnderStatusBar) {
+        StatusBar.displayOverScreen(this, drawUnderStatusBar);
+    }
+
     private void setStatusBarTextColorScheme(StatusBarTextColorScheme textColorScheme) {
         StatusBar.setTextColorScheme(this, textColorScheme);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void setNavigationBarColor(StyleParams.Color navigationBarColor) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
-
-        final Window window = ((NavigationActivity) activity).getScreenWindow();
-        if (navigationBarColor.hasColor()) {
-            window.setNavigationBarColor(navigationBarColor.getColor());
-        } else {
-            window.setNavigationBarColor(Color.BLACK);
-        }
+        NavigationBar.setColor(((NavigationActivity) activity).getScreenWindow(), navigationBarColor);
     }
 
     public abstract void unmountReactView();
