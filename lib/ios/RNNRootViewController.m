@@ -7,7 +7,7 @@
 #import "RNNReactRootView.h"
 
 @interface RNNRootViewController() {
-	UIView* _customTitleView;
+	RNNReactRootView* _customTitleView;
 	UIView* _customTopBar;
 	UIView* _customTopBarBackground;
 }
@@ -138,16 +138,18 @@
 - (void)setCustomNavigationTitleView {
 	if (!_customTitleView) {
 		if (self.options.topBar.title.component.name) {
-			__weak RNNReactRootView *reactView = (RNNReactRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
-			[reactView setAlignment:self.options.topBar.title.component.alignment];
-			[reactView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
-				if ([self.options.topBar.title.component.alignment isEqualToString:@"center"]) {
-					[reactView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
+			_customTitleView = (RNNReactRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
+			_customTitleView.backgroundColor = UIColor.clearColor;
+			[_customTitleView setAlignment:self.options.topBar.title.component.alignment];
+			BOOL isCenter = [self.options.topBar.title.component.alignment isEqualToString:@"center"];
+			__weak RNNReactRootView *weakTitleView = _customTitleView;
+			[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
+				if (isCenter) {
+					[weakTitleView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
 				}
 			}];
-			[reactView setFrame:self.navigationController.navigationBar.frame];
-			_customTitleView = reactView;
-			self.navigationItem.titleView = reactView;
+			[_customTitleView setFrame:self.navigationController.navigationBar.frame];
+			self.navigationItem.titleView = _customTitleView;
 		}
 	} else if (_customTitleView && _customTitleView.superview == nil) {
 		if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
