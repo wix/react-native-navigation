@@ -23,13 +23,27 @@ class Navigator {
     this.navigatorEventHandler = null;
     this.navigatorEventHandlers = [];
     this.navigatorEventSubscription = null;
+    this.lastScreen = {screen: undefined};
+  }
+
+  isSameScreen(params) {
+    if (params.screen != this.lastScreen.screen) {
+      this.lastScreen = {screen: params.screen}
+      return false;
+    } else {
+      return true;
+    }
   }
 
   push(params = {}) {
+    if(this.isSameScreen({screen: params.screen})) {
+      return;
+    }
     return NavigationSpecific.push(this, params);
   }
 
   pop(params = {}) {
+    this.lastScreen = {screen: undefined}
     return NavigationSpecific.pop(this, params);
   }
 
@@ -180,6 +194,10 @@ class Navigator {
   onNavigatorEvent(event) {
     if (this.navigatorEventHandler) {
       this.navigatorEventHandler(event);
+    }
+    if(event.id == 'didAppear'){
+      //if we not reset it, we cannot push same screen again
+      this.lastScreen = {screen: undefined}
     }
     this.navigatorEventHandlers.forEach(handler => handler(event));
   }
