@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -11,7 +12,7 @@ import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
@@ -71,7 +72,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         uut.addToMenu(getTitleBar(), 0);
 
         assertThat(getTitleBar().getMenu().size()).isOne();
-        verify(optionsPresenter, times(1)).tint(any(), eq(android.graphics.Color.RED));
+        verify(optionsPresenter, times(1)).tint(any(), eq(Color.RED));
     }
 
     @Test
@@ -79,16 +80,16 @@ public class TopBarButtonControllerTest extends BaseTest {
         setIconButton(false);
         uut.addToMenu(getTitleBar(), 0);
 
-        verify(optionsPresenter, times(1)).tint(any(), eq(android.graphics.Color.LTGRAY));
+        verify(optionsPresenter, times(1)).tint(any(), eq(Color.LTGRAY));
     }
 
     @Test
     public void setIconColor_disabledColor() {
         setIconButton(false);
-        button.disabledColor = new Color(android.graphics.Color.BLACK);
+        button.disabledColor = new Colour(Color.BLACK);
         uut.addToMenu(getTitleBar(), 0);
 
-        verify(optionsPresenter, times(1)).tint(any(), eq(android.graphics.Color.BLACK));
+        verify(optionsPresenter, times(1)).tint(any(), eq(Color.BLACK));
     }
 
     @Test
@@ -128,7 +129,7 @@ public class TopBarButtonControllerTest extends BaseTest {
 
         clearMenu();
         button.enabled = new Bool(true);
-        button.color = new Color(android.graphics.Color.RED);
+        button.color = new Colour(android.graphics.Color.RED);
         uut.addToMenu(getTitleBar(), 0);
         dispatchPreDraw(getTitleBar());
         verify(optionsPresenter, times(1)).setEnabledColor(any());
@@ -144,13 +145,13 @@ public class TopBarButtonControllerTest extends BaseTest {
         button.enabled = new Bool(false);
         uut.addToMenu(getTitleBar(), 0);
         dispatchPreDraw(getTitleBar());
-        verify(optionsPresenter, times(1)).setDisabledColor(any(), eq(android.graphics.Color.LTGRAY));
+        verify(optionsPresenter, times(1)).setDisabledColor(any(), eq(Color.LTGRAY));
 
         clearMenu();
-        button.disabledColor = new Color(android.graphics.Color.BLACK);
+        button.disabledColor = new Colour(android.graphics.Color.BLACK);
         uut.addToMenu(getTitleBar(), 0);
         dispatchPreDraw(getTitleBar());
-        verify(optionsPresenter, times(1)).setDisabledColor(any(), eq(android.graphics.Color.BLACK));
+        verify(optionsPresenter, times(1)).setDisabledColor(any(), eq(Color.BLACK));
     }
 
     private Toolbar getTitleBar() {
@@ -167,7 +168,7 @@ public class TopBarButtonControllerTest extends BaseTest {
     private void setIconButton(boolean enabled) {
         button.id = "btn1";
         button.icon = new Text("someIcon");
-        button.color = new Color(android.graphics.Color.RED);
+        button.color = new Colour(Color.RED);
         button.component.name = new NullText();
         button.component.componentId = new NullText();
         button.enabled = new Bool(enabled);

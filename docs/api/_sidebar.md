@@ -4,7 +4,6 @@
 - [Element](/api/Element)
 - [NativeCommandsSender](/api/NativeCommandsSender)
 - [NativeEventsReceiver](/api/NativeEventsReceiver)
-- [TouchablePreview](/api/TouchablePreview)
 - [UniqueIdProvider](/api/UniqueIdProvider)
 - [Commands](/api/Commands)
 - [LayoutTreeCrawler](/api/LayoutTreeCrawler)
@@ -18,3 +17,4 @@
 - [EventsRegistry](/api/EventsRegistry)
 - [EventSubscription](/api/EventSubscription)
 - [LayoutType](/api/LayoutType)
+- [OptionsModalPresentationStyle](/api/OptionsModalPresentationStyle)

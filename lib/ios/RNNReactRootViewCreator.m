@@ -1,14 +1,6 @@
 
 #import "RNNReactRootViewCreator.h"
-#import <React/RCTRootView.h>
-
-@interface RNNReactRootView : RCTRootView
-
-@end
-
-@implementation RNNReactRootView
-
-@end
+#import "RNNReactRootView.h"
 
 @implementation RNNReactRootViewCreator {
 	RCTBridge *_bridge;

@@ -34,6 +34,11 @@ class StaticLifecycleOverlay extends Component {
         events: [...this.state.events, { event: 'navigationButtonPressed', buttonId, componentId }]
       });
     }));
+    this.listeners.push(Navigation.events().registerModalDismissedListener(({ componentId }) => {
+      this.setState({
+        events: [...this.state.events, { event: 'modalDismissed', componentId }]
+      });
+    }));
   }
 
   componentWillUnmount() {
@@ -47,8 +52,10 @@ class StaticLifecycleOverlay extends Component {
       return <Text style={styles.h2}>{`${event.commandId}`}</Text>;
     } else if (event.componentName) {
       return <Text style={styles.h2}>{`${event.event} | ${event.componentName}`}</Text>;
-    } else {
+    } else if (event.buttonId) {
       return <Text style={styles.h2}>{`${event.event} | ${event.buttonId}`}</Text>;
+    } else {
+      return <Text style={styles.h2}>{`${event.event} | ${event.componentId}`}</Text>;
     }
   }
 

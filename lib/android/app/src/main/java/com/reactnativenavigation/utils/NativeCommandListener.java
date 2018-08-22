@@ -21,7 +21,7 @@ public class NativeCommandListener extends CommandListenerAdapter {
     @Override
     public void onSuccess(String childId) {
         if (promise != null) promise.resolve(childId);
-        eventEmitter.emitCommandCompletedEvent(commandId, now.now());
+        eventEmitter.emitCommandCompleted(commandId, now.now());
     }
 
     @Override

@@ -19,6 +19,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.SubtitleOptions;
 import com.reactnativenavigation.parse.TopBarBackgroundOptions;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.OptionsPresenter;
@@ -142,7 +143,7 @@ public class OptionsApplyingTest extends BaseTest {
         uut.onViewAppeared();
 
         Options opts = new Options();
-        opts.topBar.background.color = new com.reactnativenavigation.parse.params.Color(Color.RED);
+        opts.topBar.background.color = new Colour(Color.RED);
         uut.mergeOptions(opts);
 
         assertThat(((ColorDrawable) stackController.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
@@ -156,7 +157,7 @@ public class OptionsApplyingTest extends BaseTest {
             public void onSuccess(String childId) {
                 Options opts = new Options();
                 opts.topBar.title.text = new Text("the title");
-                opts.topBar.title.color = new com.reactnativenavigation.parse.params.Color(Color.RED);
+                opts.topBar.title.color = new Colour(Color.RED);
                 uut.mergeOptions(opts);
 
                 assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);

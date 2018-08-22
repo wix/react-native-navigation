@@ -8,12 +8,14 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.EmptyStackException;
 
@@ -56,6 +58,7 @@ public class ModalStackTest extends BaseTest {
         presenter = spy(new ModalPresenter(animator));
         uut = new ModalStack(presenter);
         uut.setContentLayout(activityContentView);
+        uut.setEventEmitter(Mockito.mock(EventEmitter.class));
         modal1 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_1, new Options()));
         modal2 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_2, new Options()));
         modal3 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_3, new Options()));

@@ -24,6 +24,9 @@ class PushedScreen extends Component {
       },
       layout: {
         backgroundColor: '#f5fcff'
+      },
+      bottomTabs: {
+        visible: false
       }
     };
   }

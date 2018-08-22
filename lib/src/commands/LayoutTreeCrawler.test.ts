@@ -67,6 +67,32 @@ describe('LayoutTreeCrawler', () => {
     expect(node.data.options).toEqual(theStyle);
   });
 
+  it('Components: passes passProps to the static options function to be used by the user', () => {
+    const MyComponent = class {
+      static options(passProps) {
+        return { foo: passProps.bar.baz.value };
+      }
+    };
+
+    const node: any = { type: LayoutType.Component, data: { name: 'theComponentName', passProps: { bar: { baz: { value: 'hello' } } } } };
+    store.setOriginalComponentClassForName('theComponentName', MyComponent);
+    uut.crawl(node);
+    expect(node.data.options).toEqual({ foo: 'hello' });
+  });
+
+  it('Components: passProps in the static options is optional', () => {
+    const MyComponent = class {
+      static options(passProps) {
+        return { foo: passProps };
+      }
+    };
+
+    const node: any = { type: LayoutType.Component, data: { name: 'theComponentName' } };
+    store.setOriginalComponentClassForName('theComponentName', MyComponent);
+    uut.crawl(node);
+    expect(node.data.options).toEqual({ foo: {} });
+  });
+
   it('Components: merges options from component class static property with passed options, favoring passed options', () => {
     const theStyle = {
       bazz: 123,

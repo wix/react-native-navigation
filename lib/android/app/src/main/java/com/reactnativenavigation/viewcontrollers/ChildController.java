@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.support.annotation.CallSuper;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
@@ -21,6 +22,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     @Override
+    @CallSuper
     public void setDefaultOptions(Options defaultOptions) {
         presenter.setDefaultOptions(defaultOptions);
     }

@@ -14,6 +14,10 @@ export interface NavigationButtonPressedEvent extends ComponentEvent {
   buttonId: string;
 }
 
+export interface ModalDismissedEvent extends ComponentEvent {
+  componentId: string;
+}
+
 export interface SearchBarUpdatedEvent extends ComponentEvent {
   text: string;
   isFocused: boolean;

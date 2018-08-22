@@ -14,6 +14,7 @@ describe('ComponentEventsObserver', () => {
   const searchBarUpdatedFn = jest.fn();
   const searchBarCancelPressedFn = jest.fn();
   const previewCompletedFn = jest.fn();
+  const modalDismissedFn = jest.fn();
   let subscription;
 
   class SimpleScreen extends React.Component<any, any> {
@@ -46,6 +47,10 @@ describe('ComponentEventsObserver', () => {
 
     navigationButtonPressed(event) {
       navigationButtonPressedFn(event);
+    }
+
+    modalDismissed(event) {
+      modalDismissedFn(event);
     }
 
     searchBarUpdated(event) {
@@ -89,6 +94,10 @@ describe('ComponentEventsObserver', () => {
     uut.notifyNavigationButtonPressed({ componentId: 'myCompId', buttonId: 'myButtonId' });
     expect(navigationButtonPressedFn).toHaveBeenCalledTimes(1);
     expect(navigationButtonPressedFn).toHaveBeenCalledWith({ buttonId: 'myButtonId', componentId: 'myCompId' });
+
+    uut.notifyModalDismissed({ componentId: 'myCompId' });
+    expect(modalDismissedFn).toHaveBeenCalledTimes(1);
+    expect(modalDismissedFn).toHaveBeenLastCalledWith({ componentId: 'myCompId' })
 
     uut.notifySearchBarUpdated({ componentId: 'myCompId', text: 'theText', isFocused: true });
     expect(searchBarUpdatedFn).toHaveBeenCalledTimes(1);

@@ -14,12 +14,11 @@ public class EventEmitter {
 	private static final String ComponentDidAppear      = "RNN.ComponentDidAppear";
 	private static final String ComponentDidDisappear   = "RNN.ComponentDidDisappear";
 	private static final String NavigationButtonPressed = "RNN.NavigationButtonPressed";
-	private static final String SearchBarUpdated        = "RNN.SearchBarUpdated";
-	private static final String SearchBarCancelPressed  = "RNN.SearchBarCancelPressed";
+    private static final String ModalDismissed          = "RNN.ModalDismissed";
 
 	private final RCTDeviceEventEmitter emitter;
 
-	EventEmitter(ReactContext reactContext) {
+	public EventEmitter(ReactContext reactContext) {
 		this.emitter = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
 	}
 
@@ -55,12 +54,18 @@ public class EventEmitter {
 		emit(BottomTabSelected, event);
 	}
 
-	public void emitCommandCompletedEvent(String commandId, long completionTime) {
+	public void emitCommandCompleted(String commandId, long completionTime) {
 		WritableMap event = Arguments.createMap();
 		event.putString("commandId", commandId);
 		event.putDouble("completionTime", completionTime);
 		emit(CommandCompleted, event);
 	}
+
+    public void emitModalDismissed(String id) {
+        WritableMap event = Arguments.createMap();
+        event.putString("componentId", id);
+        emit(ModalDismissed, event);
+    }
 
 	private void emit(String eventName) {
 		emit(eventName, Arguments.createMap());
