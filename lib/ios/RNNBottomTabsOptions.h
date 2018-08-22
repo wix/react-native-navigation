@@ -3,7 +3,6 @@
 @interface RNNBottomTabsOptions : RNNOptions
 
 @property (nonatomic, strong) NSNumber* visible;
-@property (nonatomic, strong) NSNumber* animate;
 @property (nonatomic, strong) NSNumber* currentTabIndex;
 @property (nonatomic, strong) NSString* testID;
 @property (nonatomic, strong) NSNumber* drawBehind;

@@ -7,8 +7,6 @@
 @interface RNNNavigationButtons()
 
 @property (weak, nonatomic) RNNRootViewController* viewController;
-@property (strong, nonatomic) NSArray* rightButtons;
-@property (strong, nonatomic) NSArray* leftButtons;
 @property (strong, nonatomic) RNNButtonOptions* defaultLeftButtonStyle;
 @property (strong, nonatomic) RNNButtonOptions* defaultRightButtonStyle;
 
@@ -47,13 +45,11 @@
 	}
 	
 	if ([side isEqualToString:@"left"]) {
-		self.leftButtons = barButtonItems;
-		[self.viewController.navigationItem setLeftBarButtonItems:self.leftButtons animated:animated];
+		[self.viewController.navigationItem setLeftBarButtonItems:barButtonItems animated:animated];
 	}
 	
 	if ([side isEqualToString:@"right"]) {
-		self.rightButtons = barButtonItems;
-		[self.viewController.navigationItem setRightBarButtonItems:self.rightButtons animated:animated];
+		[self.viewController.navigationItem setRightBarButtonItems:barButtonItems animated:animated];
 	}
 }
 

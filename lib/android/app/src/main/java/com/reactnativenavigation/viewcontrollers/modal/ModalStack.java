@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
@@ -124,5 +125,9 @@ public class ModalStack {
             }
         }
         return null;
+    }
+
+    public void setEventEmitter(EventEmitter eventEmitter) {
+        presenter.setEventEmitter(eventEmitter);
     }
 }

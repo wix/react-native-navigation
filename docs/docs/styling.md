@@ -1,12 +1,12 @@
 # Styling Options
 
-You can style the navigator appearance and behavior by passing an `options` object. This object can be passed when the screen is originally created; can be defined per-screen by setting `static get options()` on the screen component; and can be overridden when a screen is pushed.
+You can style the navigator appearance and behavior by passing an `options` object. This object can be passed when the screen is originally created; can be defined per-screen by setting `static options(passProps)` on the screen component; and can be overridden when a screen is pushed, dynamically (after the screen was already rendered at least once) using `mergeOptions()`.
 
-The easiest way to style your screen is by adding `static get options()` to your screen React component definition.
+The easiest way to style your screen is by adding `static options(passProps)` to your screen React component definition. `passProps` is the same passProps you can specify as part of the push/modal or other command operation.
 
 ```js
 export default class StyledScreen extends Component {
-  static get options() {
+  static options(passProps) {
     return {
       topBar: {
         title: {
@@ -43,7 +43,7 @@ Navigation.setDefaultOptions({
 ```
 
 ## Setting styles dynamically
-Use the `mergeOptions` method to change a screen's style dynamically.
+Use the `mergeOptions` method to change a screen's style dynamically. WARNING! these options will be applied on an already rendered screen, after it has been rendered at least once.
 
 ```js
 Navigation.mergeOptions(this.props.componentId, {

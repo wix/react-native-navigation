@@ -22,8 +22,8 @@ public class Button {
     public Bool enabled = new NullBool();
     public Bool disableIconTint = new NullBool();
     public Number showAsAction = new NullNumber();
-    public Color color = new NullColor();
-    public Color disabledColor = new NullColor();
+    public Colour color = new NullColor();
+    public Colour disabledColor = new NullColor();
     public Number fontSize = new NullNumber();
     private Text fontWeight = new NullText();
     @Nullable public Typeface fontFamily;

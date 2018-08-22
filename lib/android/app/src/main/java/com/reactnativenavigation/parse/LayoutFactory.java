@@ -167,6 +167,7 @@ public class LayoutFactory {
                 .setId(node.id)
                 .setInitialOptions(parse(typefaceManager, node.getOptions()))
                 .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreator(reactInstanceManager), defaultOptions))
+                .setPresenter(new OptionsPresenter(activity, defaultOptions))
                 .build();
 	}
 

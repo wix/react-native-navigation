@@ -67,6 +67,7 @@ public class NavigatorTest extends BaseTest {
         activityController = newActivityController(TestActivity.class);
         activity = activityController.create().get();
         modalStack = spy(new ModalStack(activity));
+        modalStack.setEventEmitter(Mockito.mock(EventEmitter.class));
         uut = new Navigator(activity, childRegistry, modalStack, overlayManager);
         activity.setNavigator(uut);
 
@@ -100,7 +101,8 @@ public class NavigatorTest extends BaseTest {
         uut.setRoot(spy, new CommandListenerAdapter());
         Options defaultOptions = new Options();
         uut.setDefaultOptions(defaultOptions);
-        verify(spy, times(1)).setDefaultOptions(defaultOptions);
+
+        verify(spy).setDefaultOptions(defaultOptions);
         verify(modalStack).setDefaultOptions(defaultOptions);
     }
 
@@ -279,6 +281,8 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void handleBack_DelegatesToRoot() {
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
+
         ViewController root = spy(child1);
         uut.setRoot(root, new CommandListenerAdapter());
         when(root.handleBack(any(CommandListener.class))).thenReturn(true);

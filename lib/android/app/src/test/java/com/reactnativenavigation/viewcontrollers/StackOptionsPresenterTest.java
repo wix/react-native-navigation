@@ -18,7 +18,7 @@ import com.reactnativenavigation.parse.SubtitleOptions;
 import com.reactnativenavigation.parse.TitleOptions;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Button;
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
@@ -154,15 +154,15 @@ public class StackOptionsPresenterTest extends BaseTest {
         title.text = new Text("abc");
         title.component.name = new Text("someComponent");
         title.component.componentId = new Text("compId");
-        title.color = new Color(0);
+        title.color = new Colour(0);
         title.fontSize = new Fraction(1.0f);
         title.fontFamily = Typeface.DEFAULT_BOLD;
         options.topBar.title = title;
         SubtitleOptions subtitleOptions = new SubtitleOptions();
         subtitleOptions.text = new Text("Sub");
-        subtitleOptions.color = new Color(1);
+        subtitleOptions.color = new Colour(1);
         options.topBar.subtitle = subtitleOptions;
-        options.topBar.background.color = new Color(0);
+        options.topBar.background.color = new Colour(0);
         options.topBar.testId = new Text("test123");
         options.topBar.animate = new Bool(false);
         options.topBar.visible = new Bool(false);
@@ -187,8 +187,8 @@ public class StackOptionsPresenterTest extends BaseTest {
         verify(topBar, times(0)).applyTopTabsFontSize(any());
         verify(topBar, times(0)).setTopTabsVisible(anyBoolean());
 
-        options.topTabs.selectedTabColor = new Color(1);
-        options.topTabs.unselectedTabColor = new Color(1);
+        options.topTabs.selectedTabColor = new Colour(1);
+        options.topTabs.unselectedTabColor = new Colour(1);
         options.topTabs.fontSize = new Number(1);
         options.topTabs.visible = new Bool(true);
         uut.mergeChildOptions(options, EMPTY_OPTIONS, child);
@@ -225,7 +225,7 @@ public class StackOptionsPresenterTest extends BaseTest {
     @Test
     public void mergeOptions_defaultOptionsAreNotApplied() {
         Options defaultOptions = new Options();
-        defaultOptions.topBar.background.color = new Color(10);
+        defaultOptions.topBar.background.color = new Colour(10);
         uut.setDefaultOptions(defaultOptions);
 
         Options childOptions = new Options();
@@ -242,8 +242,8 @@ public class StackOptionsPresenterTest extends BaseTest {
         Button rightButton2 = new Button();
         Button leftButton = new Button();
 
-        options.topBar.rightButtonColor = new Color(10);
-        options.topBar.leftButtonColor = new Color(100);
+        options.topBar.rightButtonColor = new Colour(10);
+        options.topBar.leftButtonColor = new Colour(100);
 
         options.topBar.buttons.right = new ArrayList<>();
         options.topBar.buttons.right.add(rightButton1);
@@ -269,8 +269,8 @@ public class StackOptionsPresenterTest extends BaseTest {
     @Test
     public void mergeChildOptions_buttonColorIsResolvedFromAppliedOptions() {
         Options appliedOptions = new Options();
-        appliedOptions.topBar.rightButtonColor = new Color(10);
-        appliedOptions.topBar.leftButtonColor = new Color(100);
+        appliedOptions.topBar.rightButtonColor = new Colour(10);
+        appliedOptions.topBar.leftButtonColor = new Colour(100);
 
         Options options2 = new Options();
         Button rightButton1 = new Button();
@@ -301,8 +301,8 @@ public class StackOptionsPresenterTest extends BaseTest {
     @Test
     public void mergeChildOptions_buttonColorIsResolvedFromMergedOptions() {
         Options resolvedOptions = new Options();
-        resolvedOptions.topBar.rightButtonColor = new Color(10);
-        resolvedOptions.topBar.leftButtonColor = new Color(100);
+        resolvedOptions.topBar.rightButtonColor = new Colour(10);
+        resolvedOptions.topBar.leftButtonColor = new Colour(100);
 
         Options options2 = new Options();
         Button rightButton1 = new Button();

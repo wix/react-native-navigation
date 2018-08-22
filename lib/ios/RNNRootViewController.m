@@ -4,11 +4,13 @@
 #import "RNNAnimator.h"
 #import "RNNCustomTitleView.h"
 #import "RNNPushAnimation.h"
+#import "RNNReactRootView.h"
 
 @interface RNNRootViewController() {
-	UIView* _customTitleView;
+	RNNReactRootView* _customTitleView;
 	UIView* _customTopBar;
 	UIView* _customTopBarBackground;
+	BOOL _isBeingPresented;
 }
 
 @property (nonatomic, strong) NSString* componentName;
@@ -59,6 +61,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
+	_isBeingPresented = YES;
 	[self.options applyOn:self];
 }
 
@@ -69,6 +72,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
+	_isBeingPresented = NO;
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
@@ -135,16 +139,24 @@
 }
 
 - (void)setCustomNavigationTitleView {
-	if (!_customTitleView) {
+	if (!_customTitleView && _isBeingPresented) {
 		if (self.options.topBar.title.component.name) {
-			RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
-			
-			_customTitleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.options.topBar.title.component.alignment];
-			reactView.backgroundColor = UIColor.clearColor;
+			_customTitleView = (RNNReactRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
 			_customTitleView.backgroundColor = UIColor.clearColor;
+			[_customTitleView setAlignment:self.options.topBar.title.component.alignment];
+			BOOL isCenter = [self.options.topBar.title.component.alignment isEqualToString:@"center"];
+			__weak RNNReactRootView *weakTitleView = _customTitleView;
+			CGRect frame = self.navigationController.navigationBar.bounds;
+			[_customTitleView setFrame:frame];
+			[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
+				if (isCenter) {
+					[weakTitleView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
+				} else {
+					[weakTitleView setFrame:frame];
+				}
+			}];
+			
 			self.navigationItem.titleView = _customTitleView;
-		} if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
-			self.navigationItem.title = nil;
 		}
 	} else if (_customTitleView && _customTitleView.superview == nil) {
 		if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
@@ -287,11 +299,11 @@
 
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
 	if (self.previewController) {
-//		RNNRootViewController * vc = (RNNRootViewController*) self.previewController;
-//		[_eventEmitter sendOnNavigationEvent:@"previewContext" params:@{
-//																		@"previewComponentId": vc.componentId,
-//																		@"componentId": self.componentId
-//																		}];
+		//		RNNRootViewController * vc = (RNNRootViewController*) self.previewController;
+		//		[_eventEmitter sendOnNavigationEvent:@"previewContext" params:@{
+		//																		@"previewComponentId": vc.componentId,
+		//																		@"componentId": self.componentId
+		//																		}];
 	}
 	return self.previewController;
 }
@@ -299,15 +311,15 @@
 
 - (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
 	RNNRootViewController * vc = (RNNRootViewController*) self.previewController;
-//	NSDictionary * params = @{
-//							  @"previewComponentId": vc.componentId,
-//							  @"componentId": self.componentId
-//							  };
+	//	NSDictionary * params = @{
+	//							  @"previewComponentId": vc.componentId,
+	//							  @"componentId": self.componentId
+	//							  };
 	if (vc.options.preview.commit) {
-//		[_eventEmitter sendOnNavigationEvent:@"previewCommit" params:params];
+		//		[_eventEmitter sendOnNavigationEvent:@"previewCommit" params:params];
 		[self.navigationController pushViewController:vc animated:false];
 	} else {
-//		[_eventEmitter sendOnNavigationEvent:@"previewDismissed" params:params];
+		//		[_eventEmitter sendOnNavigationEvent:@"previewDismissed" params:params];
 	}
 }
 
@@ -367,6 +379,12 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self.view];
 	self.view = nil;
+	self.navigationItem.titleView = nil;
+	self.navigationItem.rightBarButtonItems = nil;
+	self.navigationItem.leftBarButtonItems = nil;
+	_customTopBar = nil;
+	_customTitleView = nil;
+	_customTopBarBackground = nil;
 }
 
 @end

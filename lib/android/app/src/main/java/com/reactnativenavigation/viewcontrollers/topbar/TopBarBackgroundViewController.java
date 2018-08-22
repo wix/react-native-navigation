@@ -1,6 +1,8 @@
 package com.reactnativenavigation.viewcontrollers.topbar;
 
 import android.app.Activity;
+import android.view.View;
+import android.view.ViewManager;
 
 import com.reactnativenavigation.parse.Component;
 import com.reactnativenavigation.parse.Options;
@@ -39,6 +41,11 @@ public class TopBarBackgroundViewController extends ViewController<TopBarBackgro
     public void onViewDisappear() {
         view.sendComponentStop();
         super.onViewDisappear();
+    }
+
+    @Override
+    protected void onYellowBoxAdded(View yellowBox) {
+        ((ViewManager) yellowBox.getParent()).removeView(yellowBox);
     }
 
     @Override
