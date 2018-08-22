@@ -15,6 +15,7 @@ const NavigationSpecific = {
   resetTo: platformSpecific.navigatorResetTo
 };
 
+const lastScreen = {screen: undefined};
 class Navigator {
   constructor(navigatorID, navigatorEventID, screenInstanceID) {
     this.navigatorID = navigatorID;
@@ -23,12 +24,11 @@ class Navigator {
     this.navigatorEventHandler = null;
     this.navigatorEventHandlers = [];
     this.navigatorEventSubscription = null;
-    this.lastScreen = {screen: undefined};
   }
 
   isSameScreen(params) {
-    if (params.screen != this.lastScreen.screen) {
-      this.lastScreen = {screen: params.screen}
+    if (params.screen != lastScreen.screen) {
+      lastScreen = {screen: params.screen}
       return false;
     } else {
       return true;
@@ -43,7 +43,6 @@ class Navigator {
   }
 
   pop(params = {}) {
-    this.lastScreen = {screen: undefined}
     return NavigationSpecific.pop(this, params);
   }
 
@@ -195,10 +194,6 @@ class Navigator {
     if (this.navigatorEventHandler) {
       this.navigatorEventHandler(event);
     }
-    if(event.id == 'didAppear'){
-      //if we not reset it, we cannot push same screen again
-      this.lastScreen = {screen: undefined}
-    }
     this.navigatorEventHandlers.forEach(handler => handler(event));
   }
 
@@ -236,6 +231,7 @@ class Screen extends Component {
 
   componentWillUnmount() {
     if (this.navigator) {
+      lastScreen = {screen: undefined}
       this.navigator.cleanup();
       this.navigator = undefined;
     }
