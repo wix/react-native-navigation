@@ -54,7 +54,7 @@ public class ScreenParamsParser extends Parser {
         result.fabParams = ButtonParser.parseFab(params, result.navigationParams.navigatorEventId, result.navigationParams.screenInstanceId);
 
         result.tabLabel = getTabLabel(params);
-        result.tabIcon = new TabIconParser(params).parse();
+        result.tabIcon = getTabIcon(params);
 
         result.animateScreenTransitions = new AnimationParser(params).parse();
         result.sharedElementsTransitions = getSharedElementsTransitions(params);
@@ -77,11 +77,7 @@ public class ScreenParamsParser extends Parser {
     }
 
     private static Drawable getTabIcon(Bundle params) {
-        Drawable tabIcon = null;
-        if (hasKey(params, "icon")) {
-            tabIcon = ImageLoader.loadImage(params.getString("icon"));
-        }
-        return tabIcon;
+        return new TabIconParser(params).parse();
     }
 
     private static String getTabLabel(Bundle params) {
