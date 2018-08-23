@@ -86,11 +86,6 @@ public class ModalPresenter {
 
     private void onDismissEnd(ViewController toDismiss, CommandListener listener) {
         toDismiss.destroy();
-        eventEmitter.emitModalDismissed(toDismiss.getId());
         listener.onSuccess(toDismiss.getId());
-    }
-
-    public void setEventEmitter(EventEmitter eventEmitter) {
-        this.eventEmitter = eventEmitter;
     }
 }

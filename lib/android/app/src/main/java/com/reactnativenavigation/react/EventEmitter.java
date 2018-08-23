@@ -61,9 +61,10 @@ public class EventEmitter {
 		emit(CommandCompleted, event);
 	}
 
-    public void emitModalDismissed(String id) {
+    public void emitModalDismissed(String id, int modalsDismissed) {
         WritableMap event = Arguments.createMap();
         event.putString("componentId", id);
+        event.putInt("modalsDismissed", modalsDismissed);
         emit(ModalDismissed, event);
     }
 
