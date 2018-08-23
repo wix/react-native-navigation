@@ -54,6 +54,10 @@
 		if (self.badgeColor) {
 			tabBarItem.badgeColor = [RCTConvert UIColor:self.badgeColor];
 		}
+		
+		if ([self.badge isEqualToString:@""]) {
+			tabBarItem.badgeValue = nil;
+		}
 	}
 	
 	if (self.visible) {

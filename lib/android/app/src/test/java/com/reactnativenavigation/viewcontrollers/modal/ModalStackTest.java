@@ -87,10 +87,11 @@ public class ModalStackTest extends BaseTest {
     @Test
     public void dismissModal() {
         uut.showModal(modal1, rootController, new CommandListenerAdapter());
-        CommandListener listener = new CommandListenerAdapter();
+        CommandListener listener = spy(new CommandListenerAdapter());
         uut.dismissModal(modal1.getId(), rootController, listener);
         assertThat(findModal(modal1.getId())).isNull();
-        verify(presenter, times(1)).dismissTopModal(modal1, rootController, listener);
+        verify(presenter, times(1)).dismissTopModal(eq(modal1), eq(rootController), any());
+        verify(listener).onSuccess(modal1.getId());
     }
 
     @SuppressWarnings("Convert2Lambda")
@@ -162,7 +163,8 @@ public class ModalStackTest extends BaseTest {
         ViewGroup view2 = modal2.getView();
         CommandListener listener = spy(new CommandListenerAdapter());
         uut.dismissAllModals(listener, rootController);
-        verify(presenter, times(1)).dismissTopModal(modal2, rootController, listener);
+        verify(presenter, times(1)).dismissTopModal(eq(modal2), eq(rootController), any());
+        verify(listener).onSuccess(modal2.getId());
         verify(animator, times(0)).dismiss(eq(view1), eq(modal1.options.animations.dismissModal), any());
         verify(animator, times(1)).dismiss(eq(view2), eq(modal2.options.animations.dismissModal), any());
         assertThat(uut.size()).isEqualTo(0);

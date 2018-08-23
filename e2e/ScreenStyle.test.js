@@ -115,6 +115,14 @@ describe('screen style', () => {
     await expect(elementByLabel(`Two`)).toExist();
   });
 
+  test(':ios: pass props to custom button component should exist after screen rerender', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await expect(elementByLabel(`Two`)).toExist();
+    await elementById(testIDs.SCROLLVIEW_SCREEN_BUTTON).tap();
+    await elementById(testIDs.POP_BUTTON).tap();
+    await expect(elementByLabel(`Two`)).toExist();
+  });
+
   test('tab bar items visibility', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementById(testIDs.FIRST_TAB_BAR_BUTTON)).toBeVisible();

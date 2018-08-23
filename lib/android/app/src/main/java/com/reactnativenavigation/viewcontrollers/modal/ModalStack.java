@@ -8,6 +8,7 @@ import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
+import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
 import java.util.ArrayList;
@@ -19,6 +20,11 @@ import javax.annotation.Nullable;
 public class ModalStack {
     private List<ViewController> modals = new ArrayList<>();
     private final ModalPresenter presenter;
+    private EventEmitter eventEmitter;
+
+    public void setEventEmitter(EventEmitter eventEmitter) {
+        this.eventEmitter = eventEmitter;
+    }
 
     public ModalStack(Activity activity) {
         this.presenter = new ModalPresenter(new ModalAnimator(activity));
@@ -49,10 +55,17 @@ public class ModalStack {
             boolean isTop = isTop(toDismiss);
             modals.remove(toDismiss);
             ViewController toAdd = isEmpty() ? root : isTop ? get(size() - 1) : null;
+            CommandListenerAdapter onDismiss = new CommandListenerAdapter(listener) {
+                @Override
+                public void onSuccess(String childId) {
+                    super.onSuccess(childId);
+                    eventEmitter.emitModalDismissed(toDismiss.getId(), 1);
+                }
+            };
             if (isTop) {
-                presenter.dismissTopModal(toDismiss, toAdd, listener);
+                presenter.dismissTopModal(toDismiss, toAdd, onDismiss);
             } else {
-                presenter.dismissModal(toDismiss, listener);
+                presenter.dismissModal(toDismiss, onDismiss);
             }
         } else {
             listener.onError("Nothing to dismiss");
@@ -65,9 +78,18 @@ public class ModalStack {
             return;
         }
 
+        String topModalId = peek().getId();
+        int modalsDismissed = size();
+
         while (!modals.isEmpty()) {
             if (modals.size() == 1) {
-                dismissModal(modals.get(0).getId(), root, listener);
+                dismissModal(modals.get(0).getId(), root, new CommandListenerAdapter(listener) {
+                    @Override
+                    public void onSuccess(String childId) {
+                        super.onSuccess(childId);
+                        eventEmitter.emitModalDismissed(topModalId, modalsDismissed);
+                    }
+                });
             } else {
                 modals.get(0).destroy();
                 modals.remove(0);
@@ -125,9 +147,5 @@ public class ModalStack {
             }
         }
         return null;
-    }
-
-    public void setEventEmitter(EventEmitter eventEmitter) {
-        presenter.setEventEmitter(eventEmitter);
     }
 }

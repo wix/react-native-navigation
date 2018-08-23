@@ -10,7 +10,6 @@ import com.reactnativenavigation.parse.AnimationOptions;
 import com.reactnativenavigation.parse.ModalPresentationStyle;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildController;
@@ -20,7 +19,6 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -56,7 +54,6 @@ public class ModalPresenterTest extends BaseTest {
         uut.setContentLayout(contentLayout);
         modal1 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_1, new Options()));
         modal2 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_2, new Options()));
-        uut.setEventEmitter(Mockito.mock(EventEmitter.class));
     }
 
     @Test
