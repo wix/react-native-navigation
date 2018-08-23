@@ -67,4 +67,8 @@ public class ReactGateway {
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         host.getReactInstanceManager().onActivityResult(activity, requestCode, resultCode, data);
     }
+
+	public void onNewIntent(Intent intent) {
+	    host.getReactInstanceManager().onNewIntent(intent);
+    }
 }

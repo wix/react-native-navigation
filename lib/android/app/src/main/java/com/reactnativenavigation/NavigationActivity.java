@@ -105,4 +105,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public void onReload() {
         navigator.destroyViews();
     }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        getReactGateway().onNewIntent(intent);
+    }
 }
