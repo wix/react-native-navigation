@@ -15,6 +15,7 @@ const NavigationSpecific = {
   resetTo: platformSpecific.navigatorResetTo
 };
 
+const lastScreen = {screen: undefined};
 class Navigator {
   constructor(navigatorID, navigatorEventID, screenInstanceID) {
     this.navigatorID = navigatorID;
@@ -25,7 +26,19 @@ class Navigator {
     this.navigatorEventSubscription = null;
   }
 
+  isSameScreen(params) {
+    if (params.screen != lastScreen.screen) {
+      lastScreen = {screen: params.screen}
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   push(params = {}) {
+    if(this.isSameScreen({screen: params.screen})) {
+      return;
+    }
     return NavigationSpecific.push(this, params);
   }
 
@@ -218,6 +231,7 @@ class Screen extends Component {
 
   componentWillUnmount() {
     if (this.navigator) {
+      lastScreen = {screen: undefined}
       this.navigator.cleanup();
       this.navigator = undefined;
     }
