@@ -2,10 +2,12 @@ package com.reactnativenavigation.params.parsers;
 
 import android.os.Bundle;
 
+import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.react.ImageLoader;
+import com.reactnativenavigation.react.ResourceDrawableIdHelper;
 
 import java.util.List;
 
@@ -23,7 +25,12 @@ public class TitleBarButtonParamsParser extends Parser {
         TitleBarButtonParams result = new TitleBarButtonParams();
         result.label = bundle.getString("title");
         if (hasKey(bundle, "icon")) {
-            result.icon = ImageLoader.loadImage(bundle.getString("icon"));
+            String uri = bundle.getString("icon");
+            if (uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("file://")) {
+                result.icon = ImageLoader.loadImage(uri);
+            } else {
+                result.icon = ResourceDrawableIdHelper.instance.getResourceDrawable(NavigationApplication.instance, uri);
+            }
         }
         result.color = getColor(bundle, "color", AppStyle.appStyle.titleBarButtonColor);
         result.disabledColor = getColor(bundle, "titleBarDisabledButtonColor", AppStyle.appStyle.titleBarDisabledButtonColor);
