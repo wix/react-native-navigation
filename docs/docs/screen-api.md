@@ -60,7 +60,11 @@ Navigation.setStackRoot(this.props.componentId, {
           text: 'Root screen'
         },
         options: {
-          animated: true // Will animate root change same as push
+          animations: {
+            setStackRoot: {
+              enable: true
+            }
+          }
         }
       }
 });
