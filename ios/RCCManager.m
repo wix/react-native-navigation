@@ -109,7 +109,11 @@
     
     NSMutableDictionary *componentsDic = self.modulesRegistry[componentType];
     if (componentsDic != nil) {
-        component = componentsDic[componentId];
+        if ([componentType isEqualToString:@"NavigationControllerIOS"]) {
+            component = [[componentsDic allValues] lastObject];
+        } else {
+            component = componentsDic[componentId];
+        }
     }
     
     return component;
