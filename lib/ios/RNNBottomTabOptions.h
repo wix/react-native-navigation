@@ -8,6 +8,7 @@
 @property (nonatomic, strong) NSDictionary* badgeColor;
 @property (nonatomic, strong) NSString* testID;
 @property (nonatomic, strong) NSNumber* visible;
+@property (nonatomic, strong) NSNumber* disableNativeTransition;
 @property (nonatomic, strong) NSDictionary* icon;
 @property (nonatomic, strong) NSDictionary* selectedIcon;
 @property (nonatomic, strong) NSDictionary* iconColor;

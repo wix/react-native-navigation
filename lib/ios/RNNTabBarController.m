@@ -60,6 +60,19 @@
 
 #pragma mark UITabBarControllerDelegate
 
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
+	
+	if ([[[(RNNRootViewController *)viewController options] bottomTab] disableNativeTransition])
+	{
+		NSUInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
+		[_eventEmitter sendBottomTabSelected:@(selectedIndex) unselected:@(_currentTabIndex)];
+		_currentTabIndex = selectedIndex;
+		
+		return NO;
+	}
+	return YES;
+}
+
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	[_eventEmitter sendBottomTabSelected:@(tabBarController.selectedIndex) unselected:@(_currentTabIndex)];
 	_currentTabIndex = tabBarController.selectedIndex;
