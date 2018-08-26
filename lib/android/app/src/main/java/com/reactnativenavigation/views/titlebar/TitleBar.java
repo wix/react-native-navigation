@@ -1,7 +1,6 @@
 package com.reactnativenavigation.views.titlebar;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.Toolbar;
@@ -11,18 +10,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.reactnativenavigation.parse.Alignment;
-import com.reactnativenavigation.parse.BackButton;
-import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
-import com.reactnativenavigation.utils.ButtonOptionsPresenter;
-import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
-import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
-import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
+import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -31,18 +23,11 @@ import javax.annotation.Nullable;
 public class TitleBar extends Toolbar {
     public static final int DEFAULT_LEFT_MARGIN = 16;
 
-    private final ReactViewCreator buttonCreator;
-    private final TopBarButtonController.OnClickListener onClickListener;
-    private final List<TopBarButtonController> rightButtonControllers = new ArrayList<>();
-    private TopBarButtonController leftButtonController;
-    private ImageLoader imageLoader;
+    private TitleBarButtonController leftButtonController;
     private View component;
 
-    public TitleBar(Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener, ImageLoader imageLoader) {
+    public TitleBar(Context context) {
         super(context);
-        this.buttonCreator = buttonCreator;
-        this.imageLoader = imageLoader;
-        this.onClickListener = onClickListener;
         getMenu();
         setContentDescription("titleBar");
     }
@@ -160,18 +145,14 @@ public class TitleBar extends Toolbar {
     }
 
     private void clearRightButtons() {
-        for (TopBarButtonController button : rightButtonControllers) {
-            button.destroy();
-        }
-        rightButtonControllers.clear();
         if (getMenu().size() > 0) getMenu().clear();
     }
 
-    public void setBackButton(BackButton button) {
+    public void setBackButton(TitleBarButtonController button) {
         setLeftButton(button);
     }
 
-    public void setLeftButtons(List<Button> leftButtons) {
+    public void setLeftButtons(List<TitleBarButtonController> leftButtons) {
         if (leftButtons == null) return;
         if (leftButtons.isEmpty()) {
             clearLeftButton();
@@ -183,31 +164,17 @@ public class TitleBar extends Toolbar {
         setLeftButton(leftButtons.get(0));
     }
 
-    private void setLeftButton(final Button button) {
-        TopBarButtonController controller = createButtonController(button);
-        leftButtonController = controller;
-        controller.applyNavigationIcon(this);
+    private void setLeftButton(TitleBarButtonController button) {
+        leftButtonController = button;
+        button.applyNavigationIcon(this);
     }
 
-    public void setRightButtons(List<Button> rightButtons) {
+    public void setRightButtons(List<TitleBarButtonController> rightButtons) {
         if (rightButtons == null) return;
         clearRightButtons();
         for (int i = 0; i < rightButtons.size(); i++) {
-            TopBarButtonController controller = createButtonController(rightButtons.get(i));
-            rightButtonControllers.add(controller);
-            controller.addToMenu(this, rightButtons.size() - i - 1);
+            rightButtons.get(i).addToMenu(this, rightButtons.size() - i - 1);
         }
-    }
-
-    public TopBarButtonController createButtonController(Button button) {
-        return new TopBarButtonController((Activity) getContext(),
-                new NavigationIconResolver(getContext(), imageLoader),
-                imageLoader,
-                new ButtonOptionsPresenter(this, button),
-                button,
-                buttonCreator,
-                onClickListener
-        );
     }
 
     public void setHeight(int height) {

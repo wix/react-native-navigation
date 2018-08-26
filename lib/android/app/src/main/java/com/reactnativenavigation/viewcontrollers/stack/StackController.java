@@ -52,6 +52,7 @@ public class StackController extends ParentController<StackLayout> {
         this.animator = animator;
         this.backButtonHelper = backButtonHelper;
         this.presenter = stackPresenter;
+        stackPresenter.setButtonOnClickListener(this::onNavigationButtonPressed);
         for (ViewController child : children) {
             stack.push(child.getId(), child);
             child.setParentController(this);
@@ -298,10 +299,8 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     protected StackLayout createView() {
         StackLayout stackLayout = new StackLayout(getActivity(),
-                topBarButtonCreator,
                 topBarBackgroundViewController,
                 topBarController,
-                this::onNavigationButtonPressed,
                 getId()
         );
         presenter.bindView(topBarController.getView());

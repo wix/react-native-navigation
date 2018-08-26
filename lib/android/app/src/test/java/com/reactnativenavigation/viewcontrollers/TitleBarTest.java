@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
-import com.reactnativenavigation.mocks.ImageLoaderMock;
-import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.react.ReactView;
+import com.reactnativenavigation.utils.CollectionUtils;
 import com.reactnativenavigation.views.titlebar.TitleBar;
 
 import org.junit.Test;
@@ -21,9 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.reactnativenavigation.utils.TitleBarHelper.createButtonController;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class TitleBarTest extends BaseTest {
@@ -32,23 +31,15 @@ public class TitleBarTest extends BaseTest {
     private Button leftButton;
     private Button textButton;
     private Button customButton;
-    private Map<String, TopBarButtonController> buttonControllers;
+    private Map<String, TitleBarButtonController> buttonControllers;
     private Activity activity;
 
     @Override
     public void beforeEach() {
-        final TopBarButtonCreatorMock buttonCreator = new TopBarButtonCreatorMock();
         activity = newActivity();
         createButtons();
         buttonControllers = new HashMap<>();
-        uut = spy(new TitleBar(activity, buttonCreator, buttonId -> {}, ImageLoaderMock.mock()) {
-            @Override
-            public TopBarButtonController createButtonController(Button button) {
-                TopBarButtonController controller = spy(super.createButtonController(button));
-                buttonControllers.put(button.id, controller);
-                return controller;
-            }
-        });
+        uut = spy(new TitleBar(activity));
     }
 
     private void createButtons() {
@@ -81,41 +72,11 @@ public class TitleBarTest extends BaseTest {
     }
 
     @Test
-    public void destroy_destroysButtonControllers() {
-        uut.setLeftButtons(leftButton(leftButton));
-        uut.setRightButtons(rightButtons(customButton, textButton));
-        uut.clear();
-        for (TopBarButtonController controller : buttonControllers.values()) {
-            verify(controller, times(1)).destroy();
-        }
-    }
-
-    @Test
-    public void setRightButtons_destroysRightButtons() {
-        uut.setRightButtons(rightButtons(customButton));
-        uut.setLeftButtons(leftButton(leftButton));
-        uut.setRightButtons(rightButtons(textButton));
-        verify(buttonControllers.get(customButton.id), times(1)).destroy();
-    }
-
-    @Test
-    public void setRightButtons_onlyDestroysRightButtons() {
-        uut.setLeftButtons(leftButton(leftButton));
-        uut.setRightButtons(rightButtons(customButton));
-        uut.setLeftButtons(null);
-        uut.setRightButtons(rightButtons(textButton));
-        verify(buttonControllers.get(leftButton.id), times(0)).destroy();
-    }
-
-    @Test
     public void setRightButtons_emptyButtonsListClearsRightButtons() {
         uut.setLeftButtons(new ArrayList<>());
         uut.setRightButtons(rightButtons(customButton, textButton));
         uut.setLeftButtons(new ArrayList<>());
         uut.setRightButtons(new ArrayList<>());
-        for (TopBarButtonController controller : buttonControllers.values()) {
-            verify(controller, times(1)).destroy();
-        }
         assertThat(uut.getMenu().size()).isEqualTo(0);
     }
 
@@ -123,9 +84,11 @@ public class TitleBarTest extends BaseTest {
     public void setLeftButtons_emptyButtonsListClearsLeftButton() {
         uut.setLeftButtons(leftButton(leftButton));
         uut.setRightButtons(rightButtons(customButton));
+        assertThat(uut.getNavigationIcon()).isNotNull();
+
         uut.setLeftButtons(new ArrayList<>());
         uut.setRightButtons(rightButtons(textButton));
-        verify(buttonControllers.get(leftButton.id), times(1)).destroy();
+        assertThat(uut.getNavigationIcon()).isNull();
     }
 
     @Test
@@ -155,11 +118,11 @@ public class TitleBarTest extends BaseTest {
         verify(uut).removeView(title);
     }
 
-    private List<Button> leftButton(Button leftButton) {
-        return Collections.singletonList(leftButton);
+    private List<TitleBarButtonController> leftButton(Button leftButton) {
+        return Collections.singletonList(createButtonController(activity, uut, leftButton));
     }
 
-    private List<Button> rightButtons(Button... buttons) {
-        return Arrays.asList(buttons);
+    private List<TitleBarButtonController> rightButtons(Button... buttons) {
+        return CollectionUtils.map(Arrays.asList(buttons), button -> createButtonController(activity, uut, button));
     }
 }

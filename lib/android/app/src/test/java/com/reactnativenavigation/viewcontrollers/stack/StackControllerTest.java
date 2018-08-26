@@ -16,16 +16,14 @@ import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.NestedAnimationsOptions;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
+import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
-import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
-import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
@@ -76,7 +74,7 @@ public class StackControllerTest extends BaseTest {
         backButtonHelper = spy(new BackButtonHelper());
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
-        presenter = spy(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new Options()));
+        presenter = spy(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), ImageLoaderMock.mock(), new Options()));
         child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
         child2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
         child3 = spy(new SimpleViewController(activity, childRegistry, "child3", new Options()));
@@ -130,10 +128,7 @@ public class StackControllerTest extends BaseTest {
         disablePushAnimation(child1, child2);
         uut.push(child1, new CommandListenerAdapter());
 
-        Button leftButton = new Button();
-        leftButton.id = "someButton";
-        leftButton.icon = new Text("icon.png");
-        child2.options.topBar.buttons.left = new ArrayList<>(Collections.singleton(leftButton));
+        child2.options.topBar.buttons.left = new ArrayList<>(Collections.singleton(TitleBarHelper.iconButton("someButton", "icon.png")));
 
         uut.push(child2, new CommandListenerAdapter());
         child2.onViewAppeared();
@@ -238,7 +233,7 @@ public class StackControllerTest extends BaseTest {
                         .setTopBarController(new TopBarController())
                         .setId("uut")
                         .setInitialOptions(new Options())
-                        .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new Options()))
+                        .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new Options()))
                         .build();
         uut.ensureViewIsCreated();
         uut.push(child1, new CommandListenerAdapter());
@@ -763,7 +758,7 @@ public class StackControllerTest extends BaseTest {
                         .setTopBarController(new TopBarController())
                         .setId("stack")
                         .setInitialOptions(new Options())
-                        .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new Options()))
+                        .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new Options()))
                         .build());
         Options optionsToMerge = new Options();
         Component component = mock(Component.class);
@@ -779,7 +774,7 @@ public class StackControllerTest extends BaseTest {
                         .setTopBarController(new TopBarController())
                         .setId("stack")
                         .setInitialOptions(new Options())
-                        .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new Options()))
+                        .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new Options()))
                         .build();
         ParentController parentController = Mockito.mock(ParentController.class);
         uut.setParentController(parentController);
@@ -856,8 +851,8 @@ public class StackControllerTest extends BaseTest {
     private void createTopBarController() {
         topBarController = spy(new TopBarController() {
             @Override
-            protected TopBar createTopBar(Context context, ReactViewCreator buttonCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener topBarButtonClickListener, StackLayout stackLayout, ImageLoader imageLoader) {
-                TopBar spy = spy(super.createTopBar(context, buttonCreator, topBarBackgroundViewController, topBarButtonClickListener, stackLayout, ImageLoaderMock.mock()));
+            protected TopBar createTopBar(Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout stackLayout) {
+                TopBar spy = spy(super.createTopBar(context, topBarBackgroundViewController, stackLayout));
                 spy.layout(0, 0, 1000, 100);
                 return spy;
             }

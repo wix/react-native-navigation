@@ -69,9 +69,8 @@ public class OptionsApplyingTest extends BaseTest {
         );
         TopBarController topBarController = new TopBarController() {
             @Override
-            protected TopBar createTopBar(Context context, ReactViewCreator buttonCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener topBarButtonClickListener, StackLayout stackLayout, ImageLoader imageLoader) {
-                topBar =
-                        spy(super.createTopBar(context, buttonCreator, topBarBackgroundViewController, topBarButtonClickListener, stackLayout, imageLoader));
+            protected TopBar createTopBar(Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout stackLayout) {
+                topBar = spy(super.createTopBar(context, topBarBackgroundViewController, stackLayout));
                 return topBar;
             }
         };
@@ -104,7 +103,7 @@ public class OptionsApplyingTest extends BaseTest {
                         .setTopBarController(new TopBarController())
                         .setId("stackId")
                         .setInitialOptions(new Options())
-                        .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new Options()))
+                        .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new Options()))
                         .build();
         stackController.ensureViewIsCreated();
         stackController.push(uut, new CommandListenerAdapter());
