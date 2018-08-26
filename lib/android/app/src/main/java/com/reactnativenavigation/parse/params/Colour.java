@@ -2,9 +2,9 @@ package com.reactnativenavigation.parse.params;
 
 import android.support.annotation.ColorInt;
 
-public class Color extends Param<Integer>{
+public class Colour extends Param<Integer>{
 
-    public Color(@ColorInt int color) {
+    public Colour(@ColorInt int color) {
         super(color);
     }
 

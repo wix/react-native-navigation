@@ -1,6 +1,6 @@
 package com.reactnativenavigation.parse;
 
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.parsers.ColorParser;
 
@@ -15,13 +15,13 @@ public class TopBarBackgroundOptions {
         options.component = Component.parse(json.optJSONObject("component"));
 
         if (options.component.hasValue()) {
-            options.color = new Color(android.graphics.Color.TRANSPARENT);
+            options.color = new Colour(android.graphics.Color.TRANSPARENT);
         }
 
         return options;
     }
 
-    public Color color = new NullColor();
+    public Colour color = new NullColor();
     public Component component = new Component();
 
     void mergeWith(final TopBarBackgroundOptions other) {

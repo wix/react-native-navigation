@@ -6,7 +6,8 @@ import {
   NavigationButtonPressedEvent,
   SearchBarUpdatedEvent,
   SearchBarCancelPressedEvent,
-  ComponentEvent
+  ComponentEvent,
+  ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 
@@ -18,6 +19,7 @@ export class ComponentEventsObserver {
     this.notifyComponentDidAppear = this.notifyComponentDidAppear.bind(this);
     this.notifyComponentDidDisappear = this.notifyComponentDidDisappear.bind(this);
     this.notifyNavigationButtonPressed = this.notifyNavigationButtonPressed.bind(this);
+    this.notifyModalDismissed = this.notifyModalDismissed.bind(this);
     this.notifySearchBarUpdated = this.notifySearchBarUpdated.bind(this);
     this.notifySearchBarCancelPressed = this.notifySearchBarCancelPressed.bind(this);
   }
@@ -28,6 +30,7 @@ export class ComponentEventsObserver {
     this.nativeEventsReceiver.registerComponentDidAppearListener(this.notifyComponentDidAppear);
     this.nativeEventsReceiver.registerComponentDidDisappearListener(this.notifyComponentDidDisappear);
     this.nativeEventsReceiver.registerNavigationButtonPressedListener(this.notifyNavigationButtonPressed);
+    this.nativeEventsReceiver.registerModalDismissedListener(this.notifyModalDismissed);
     this.nativeEventsReceiver.registerSearchBarUpdatedListener(this.notifySearchBarUpdated);
     this.nativeEventsReceiver.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
   }
@@ -60,6 +63,10 @@ export class ComponentEventsObserver {
 
   notifyNavigationButtonPressed(event: NavigationButtonPressedEvent) {
     this.triggerOnAllListenersByComponentId(event, 'navigationButtonPressed');
+  }
+
+  notifyModalDismissed(event: ModalDismissedEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'modalDismissed');
   }
 
   notifySearchBarUpdated(event: SearchBarUpdatedEvent) {

@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -83,6 +85,11 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
     public boolean onMenuItemClick(MenuItem item) {
         onPressListener.onPress(button.id);
         return true;
+    }
+
+    @Override
+    protected void onYellowBoxAdded(View yellowBox) {
+        ((ViewManager) yellowBox.getParent()).removeView(yellowBox);
     }
 
     public void applyNavigationIcon(Toolbar toolbar) {

@@ -153,6 +153,9 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
 		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons defaultLeftButtonStyle:self.leftButtonStyle defaultRightButtonStyle:self.rightButtonStyle];
 	}
+	
+	self.rightButtons = nil;
+	self.leftButtons = nil;
 }
 
 - (void)setRightButtonColor:(NSNumber *)rightButtonColor {
@@ -184,6 +187,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		} else {
 			[_rightButtonStyle mergeWith:rightButtons];
 		}
+	} else {
+		_rightButtons = rightButtons;
 	}
 }
 
@@ -196,6 +201,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		} else {
 			[_leftButtonStyle mergeWith:leftButtons];
 		}
+	} else {
+		_leftButtons = leftButtons;
 	}
 }
 

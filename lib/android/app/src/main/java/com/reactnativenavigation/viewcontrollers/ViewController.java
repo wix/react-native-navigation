@@ -27,7 +27,7 @@ import com.reactnativenavigation.views.element.Element;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener {
+public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener, ViewGroup.OnHierarchyChangeListener {
 
     private Runnable onAppearedListener;
     private boolean appearEventPosted;
@@ -155,6 +155,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
                 throw new RuntimeException("Tried to create view after it has already been destroyed");
             }
             view = createView();
+            view.setOnHierarchyChangeListener(this);
             view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         }
         return view;
@@ -226,6 +227,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         }
         if (view != null) {
             view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            view.setOnHierarchyChangeListener(null);
             if (view.getParent() instanceof ViewGroup) {
                 ((ViewManager) view.getParent()).removeView(view);
             }
@@ -251,6 +253,24 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
                 onViewDisappear();
             }
         }
+    }
+
+    @Override
+    public void onChildViewAdded(View parent, View child) {
+        if (parent instanceof ViewGroup &&
+            child instanceof ViewGroup &&
+            YellowBoxHelper.isYellowBox((ViewGroup) parent, (ViewGroup) child)) {
+            onYellowBoxAdded(child);
+        }
+    }
+
+    @Override
+    public void onChildViewRemoved(View view, View view1) {
+
+    }
+
+    protected void onYellowBoxAdded(View yellowBox) {
+
     }
 
     void runOnPreDraw(Task<T> task) {

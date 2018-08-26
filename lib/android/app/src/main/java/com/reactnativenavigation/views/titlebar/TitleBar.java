@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.BackButton;
 import com.reactnativenavigation.parse.params.Button;
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.utils.ButtonOptionsPresenter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
@@ -57,7 +57,7 @@ public class TitleBar extends Toolbar {
         return super.getTitle() == null ? "" : (String) super.getTitle();
     }
 
-    public void setTitleTextColor(Color color) {
+    public void setTitleTextColor(Colour color) {
         if (color.hasValue()) setTitleTextColor(color.get());
     }
 
@@ -68,7 +68,7 @@ public class TitleBar extends Toolbar {
         addView(component);
     }
 
-    public void setBackgroundColor(Color color) {
+    public void setBackgroundColor(Colour color) {
         if (color.hasValue()) setBackgroundColor(color.get());
     }
 
