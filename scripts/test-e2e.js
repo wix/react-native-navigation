@@ -21,5 +21,5 @@ function run() {
     if (!skipBuild) {
         exec.execSync(`detox build --configuration ${configuration}`);
     }
-    exec.execSync(`detox test --configuration ${configuration} --platform ${platform} ${cleanup} ${headless$} ${!android ? `-w ${workers}` : ``}`);
+    exec.execSync(`detox test --configuration ${configuration} --platform ${platform} ${cleanup} ${headless$} ${!android ? `-w ${workers}` : ``}`); //--loglevel trace
 }
