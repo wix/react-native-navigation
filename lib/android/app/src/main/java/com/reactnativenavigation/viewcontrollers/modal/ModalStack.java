@@ -58,8 +58,8 @@ public class ModalStack {
             CommandListenerAdapter onDismiss = new CommandListenerAdapter(listener) {
                 @Override
                 public void onSuccess(String childId) {
-                    super.onSuccess(childId);
                     eventEmitter.emitModalDismissed(toDismiss.getId(), 1);
+                    super.onSuccess(childId);
                 }
             };
             if (isTop) {
@@ -86,8 +86,8 @@ public class ModalStack {
                 dismissModal(modals.get(0).getId(), root, new CommandListenerAdapter(listener) {
                     @Override
                     public void onSuccess(String childId) {
-                        super.onSuccess(childId);
                         eventEmitter.emitModalDismissed(topModalId, modalsDismissed);
+                        super.onSuccess(childId);
                     }
                 });
             } else {

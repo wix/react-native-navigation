@@ -55,7 +55,7 @@
 			tabBarItem.badgeColor = [RCTConvert UIColor:self.badgeColor];
 		}
 		
-		if ([self.badge isEqualToString:@""]) {
+		if ([self.badge isEqual:[NSNull null]] || [self.badge isEqualToString:@""]) {
 			tabBarItem.badgeValue = nil;
 		}
 	}
@@ -107,7 +107,7 @@
 	
 	selectedAttributes[NSFontAttributeName] = [self tabBarTextFont];
 	[tabItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
-
+	
 	
 	NSMutableDictionary* normalAttributes = [NSMutableDictionary dictionaryWithDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal]];
 	if (self.textColor) {

@@ -90,12 +90,12 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
     @Override
-    public void mergeChildOptions(Options options, Component child) {
-        super.mergeChildOptions(options, child);
+    public void mergeChildOptions(Options options, ViewController childController, Component child) {
+        super.mergeChildOptions(options, childController, child);
         presenter.mergeChildOptions(options, child);
         tabPresenter.mergeChildOptions(options, child);
         performOnParentController(parentController ->
-                ((ParentController) parentController).mergeChildOptions(options.copy().clearBottomTabsOptions(), child)
+                ((ParentController) parentController).mergeChildOptions(options.copy().clearBottomTabsOptions(), childController, child)
         );
     }
 

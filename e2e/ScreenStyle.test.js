@@ -115,7 +115,7 @@ describe('screen style', () => {
     await expect(elementByLabel(`Two`)).toExist();
   });
 
-  test(':ios: pass props to custom button component should exist after screen rerender', async () => {
+  test('pass props to custom button component should exist after push pop', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementByLabel(`Two`)).toExist();
     await elementById(testIDs.SCROLLVIEW_SCREEN_BUTTON).tap();
