@@ -348,6 +348,10 @@
 	return actions;
 }
 
+-(void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem {
+	[self.eventEmitter sendOnNavigationButtonPressed:self.componentId buttonId:barButtonItem.buttonId];
+}
+
 /**
  *	fix for #877, #878
  */
