@@ -5,7 +5,7 @@ import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver.mock';
 
 describe('ComponentEventsObserver', () => {
   const mockEventsReceiver = new NativeEventsReceiver();
-  const uut = new ComponentEventsObserver(mockEventsReceiver);
+  let uut;
   const didAppearFn = jest.fn();
   const didDisappearFn = jest.fn();
   const didMountFn = jest.fn();
@@ -64,6 +64,10 @@ describe('ComponentEventsObserver', () => {
       return 'Hello';
     }
   }
+
+  beforeEach(() => {
+    uut = new ComponentEventsObserver(mockEventsReceiver);
+  });
 
   it(`bindComponent expects a component with componentId`, () => {
     const tree = renderer.create(<SimpleScreen />);
@@ -186,5 +190,30 @@ describe('ComponentEventsObserver', () => {
     expect(mockEventsReceiver.registerNavigationButtonPressedListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerSearchBarUpdatedListener).toHaveBeenCalledTimes(1);
     expect(mockEventsReceiver.registerSearchBarCancelPressedListener).toHaveBeenCalledTimes(1);
+  });
+
+  it(`warn when button event is not getting handled`, () => {
+    const tree1 = renderer.create(<SimpleScreen componentId={'myCompId'} />);
+    const instance1 = tree1.getInstance() as any;
+    console.warn = jest.fn();
+    uut.bindComponent(instance1);
+
+    uut.notifyNavigationButtonPressed({ componentId: 'myCompId', buttonId: 'myButtonId' });
+
+    expect(console.warn).toHaveBeenCalledTimes(1);
+    expect(console.warn).toHaveBeenCalledWith(`navigationButtonPressed for button 'myButtonId' was not handled`);
+  });
+
+  it(`doesn't warn when button event is getting handled`, () => {
+    const tree1 = renderer.create(<SimpleScreen componentId={'myCompId'} />);
+    const instance1 = tree1.getInstance() as any;
+    console.warn = jest.fn();
+    
+    instance1.navigationButtonPressed = jest.fn();
+    uut.bindComponent(instance1);
+
+    uut.notifyNavigationButtonPressed({ componentId: 'myCompId', buttonId: 'myButtonId' });
+
+    expect(console.warn).toHaveBeenCalledTimes(0);
   });
 });

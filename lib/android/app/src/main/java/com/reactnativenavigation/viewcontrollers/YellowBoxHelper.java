@@ -10,9 +10,11 @@ import com.reactnativenavigation.utils.ViewUtils;
 public class YellowBoxHelper {
     private final static int YELLOW_BOX_COLOR = -218449360;
 
-    public static boolean isYellowBox(ViewGroup parent, ViewGroup child) {
-        return parent.getChildCount() > 1 &&
-               !ViewUtils.findChildrenByClassRecursive(child, View.class, YellowBackgroundMather()).isEmpty();
+    public boolean isYellowBox(View parent, View child) {
+        return parent instanceof ViewGroup &&
+               child instanceof ViewGroup &&
+                ((ViewGroup) parent).getChildCount() > 1 &&
+               !ViewUtils.findChildrenByClassRecursive(((ViewGroup) child), View.class, YellowBackgroundMather()).isEmpty();
     }
 
     @NonNull

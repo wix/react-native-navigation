@@ -13,7 +13,7 @@ import org.json.JSONObject;
 public class BackButton extends Button {
     public static BackButton parse(JSONObject json) {
         BackButton result = new BackButton();
-        if (json == null) return result;
+        if (json == null || json.toString().equals("{}")) return result;
 
         result.hasValue = true;
         result.visible = BoolParser.parse(json, "visible");

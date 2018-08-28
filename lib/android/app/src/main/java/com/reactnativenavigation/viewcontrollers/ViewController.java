@@ -50,6 +50,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     private final Activity activity;
     private final String id;
+    private YellowBoxDelegate yellowBoxDelegate;
     protected T view;
     @Nullable private ParentController<T> parentController;
     private boolean isShown;
@@ -57,9 +58,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
     protected FabOptionsPresenter fabOptionsPresenter;
 
-    public ViewController(Activity activity, String id, Options initialOptions) {
+    public ViewController(Activity activity, String id, YellowBoxDelegate yellowBoxDelegate, Options initialOptions) {
         this.activity = activity;
         this.id = id;
+        this.yellowBoxDelegate = yellowBoxDelegate;
         fabOptionsPresenter = new FabOptionsPresenter();
         this.initialOptions = initialOptions;
         options = initialOptions.copy();
@@ -222,6 +224,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             isShown = false;
             onViewDisappear();
         }
+        yellowBoxDelegate.destroy();
         if (view instanceof Destroyable) {
             ((Destroyable) view).destroy();
         }
@@ -257,19 +260,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     @Override
     public void onChildViewAdded(View parent, View child) {
-        if (parent instanceof ViewGroup &&
-            child instanceof ViewGroup &&
-            YellowBoxHelper.isYellowBox((ViewGroup) parent, (ViewGroup) child)) {
-            onYellowBoxAdded(child);
-        }
+        yellowBoxDelegate.onChildViewAdded(parent, child);
     }
 
     @Override
     public void onChildViewRemoved(View view, View view1) {
-
-    }
-
-    protected void onYellowBoxAdded(View yellowBox) {
 
     }
 

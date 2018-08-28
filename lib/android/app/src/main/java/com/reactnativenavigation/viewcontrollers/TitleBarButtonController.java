@@ -9,8 +9,6 @@ import android.support.annotation.RestrictTo;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -58,7 +56,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
                                     Button button,
                                     ReactViewCreator viewCreator,
                                     OnClickListener onClickListener) {
-        super(activity, button.id, new Options());
+        super(activity, button.id, new YellowBoxDelegate(), new Options());
         this.navigationIconResolver = navigationIconResolver;
         this.imageLoader = imageLoader;
         this.optionsPresenter = optionsPresenter;
@@ -95,11 +93,6 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     public boolean onMenuItemClick(MenuItem item) {
         onPressListener.onPress(button.id);
         return true;
-    }
-
-    @Override
-    protected void onYellowBoxAdded(View yellowBox) {
-        ((ViewManager) yellowBox.getParent()).removeView(yellowBox);
     }
 
     public void applyNavigationIcon(Toolbar toolbar) {
