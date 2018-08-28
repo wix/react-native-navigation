@@ -94,8 +94,8 @@ public class TopTabsController extends ParentController<TopTabsViewPager> {
     }
 
     @CallSuper
-    public void mergeChildOptions(Options options, Component child) {
-        super.mergeChildOptions(options, child);
+    public void mergeChildOptions(Options options, ViewController childController, Component child) {
+        super.mergeChildOptions(options, childController, child);
         performOnParentController(parentController -> ((ParentController) parentController).applyChildOptions(options.copy(), child));
     }
 

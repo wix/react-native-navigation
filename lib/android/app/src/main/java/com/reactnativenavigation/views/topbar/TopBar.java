@@ -26,16 +26,12 @@ import com.reactnativenavigation.anim.TopBarCollapseBehavior;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationOptions;
-import com.reactnativenavigation.parse.BackButton;
 import com.reactnativenavigation.parse.Component;
-import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.utils.CompatUtils;
-import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
-import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
-import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.views.StackLayout;
 import com.reactnativenavigation.views.titlebar.TitleBar;
@@ -55,29 +51,27 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     private FrameLayout root;
     private TopBarBackgroundViewController topBarBackgroundViewController;
     private View border;
-    private ImageLoader imageLoader;
 
-    public TopBar(final Context context, ReactViewCreator buttonCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener onClickListener, StackLayout parentView, ImageLoader imageLoader) {
+    public TopBar(final Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout parentView) {
         super(context);
         context.setTheme(R.style.TopBar);
-        this.imageLoader = imageLoader;
         collapsingBehavior = new TopBarCollapseBehavior(this);
         this.topBarBackgroundViewController = topBarBackgroundViewController;
         topTabs = new TopTabs(getContext());
         animator = new TopBarAnimator(this, parentView.getStackId());
-        createLayout(buttonCreator, onClickListener);
+        createLayout();
     }
 
-    private void createLayout(ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener) {
+    private void createLayout() {
         setId(CompatUtils.generateViewId());
-        titleBar = createTitleBar(getContext(), buttonCreator, onClickListener, imageLoader);
+        titleBar = createTitleBar(getContext());
         topTabs = createTopTabs();
         border = createBorder();
         LinearLayout content = createContentLayout();
 
         root = new FrameLayout(getContext());
         root.setId(CompatUtils.generateViewId());
-        content.addView(titleBar);
+        content.addView(titleBar, MATCH_PARENT, WRAP_CONTENT);
         content.addView(topTabs);
         root.addView(content);
         root.addView(border);
@@ -110,8 +104,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         return border;
     }
 
-    protected TitleBar createTitleBar(Context context, ReactViewCreator buttonCreator, TopBarButtonController.OnClickListener onClickListener, ImageLoader imageLoader) {
-        TitleBar titleBar = new TitleBar(context, buttonCreator, onClickListener, imageLoader);
+    protected TitleBar createTitleBar(Context context) {
+        TitleBar titleBar = new TitleBar(context);
         titleBar.setId(CompatUtils.generateViewId());
         return titleBar;
     }
@@ -209,15 +203,15 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         topTabs.setLayoutParams(topTabs.getLayoutParams());
     }
 
-    public void setBackButton(BackButton backButton) {
+    public void setBackButton(TitleBarButtonController backButton) {
         titleBar.setBackButton(backButton);
     }
 
-    public void setLeftButtons(List<Button> leftButtons) {
+    public void setLeftButtons(List<TitleBarButtonController> leftButtons) {
         titleBar.setLeftButtons(leftButtons);
     }
 
-    public void setRightButtons(List<Button> rightButtons) {
+    public void setRightButtons(List<TitleBarButtonController> rightButtons) {
         titleBar.setRightButtons(rightButtons);
     }
 
