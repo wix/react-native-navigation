@@ -17,7 +17,7 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     public ChildController(Activity activity, ChildControllersRegistry childRegistry, String id, OptionsPresenter presenter, Options initialOptions) {
-        super(activity, id, initialOptions);
+        super(activity, id, new NoOpYellowBoxDelegate(), initialOptions);
         this.presenter = presenter;
         this.childRegistry = childRegistry;
     }

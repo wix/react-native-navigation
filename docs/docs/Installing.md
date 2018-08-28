@@ -256,9 +256,9 @@ android {
 }
 ```
 
-RNN only support react-native 0.51 (`"reactNative51"`), 0.55 (`"reactNative55"`), and O.56 (`"reactNative56"`),
+RNN only support react-native 0.51 (`"reactNative51"`), 0.55 (`"reactNative55"`), and 0.56 (`"reactNative56"`),
 
-Now we need to instruct gradle how to build that flavor. To do so here two solutions :
+Now we need to instruct gradle how to build that flavor. To do so here two solutions:
 
 #### 8.1 Build app with gradle command 
 
@@ -271,7 +271,7 @@ Now we need to instruct gradle how to build that flavor. To do so here two solut
 }
 ```
 
-No run `npm run android` to build your application
+Now run `npm run android` to build your application
 
 #### 8.2 Ignore other RNN flavors
 
