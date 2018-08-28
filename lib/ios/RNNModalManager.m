@@ -95,6 +95,12 @@
 			
 			[self removePendingNextModalIfOnTop:nil];
 		}];
+	} else {
+		[modalToDismiss.view removeFromSuperview];
+		modalToDismiss.view = nil;
+		if (completion) {
+			completion();
+		}
 	}
 }
 

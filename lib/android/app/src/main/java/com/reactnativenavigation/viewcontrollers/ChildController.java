@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.views.Component;
 
 public abstract class ChildController<T extends ViewGroup> extends ViewController<T>  {
     final OptionsPresenter presenter;
@@ -50,6 +51,14 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
         if (isRoot()) {
             presenter.applyRootOptions(getView(), options);
         }
+    }
+
+    @Override
+    public void destroy() {
+        if (!isDestroyed() && getView() instanceof Component) {
+            performOnParentController(parent -> parent.onChildDestroyed((Component) getView()));
+        }
+        super.destroy();
     }
 
     protected boolean isRoot() {

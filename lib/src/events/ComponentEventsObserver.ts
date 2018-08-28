@@ -62,7 +62,11 @@ export class ComponentEventsObserver {
   }
 
   notifyNavigationButtonPressed(event: NavigationButtonPressedEvent) {
-    this.triggerOnAllListenersByComponentId(event, 'navigationButtonPressed');
+    const listenersTriggered = this.triggerOnAllListenersByComponentId(event, 'navigationButtonPressed');
+    if (listenersTriggered === 0) {
+      // tslint:disable-next-line:no-console
+      console.warn(`navigationButtonPressed for button '${event.buttonId}' was not handled`);
+    }
   }
 
   notifyModalDismissed(event: ModalDismissedEvent) {
@@ -78,10 +82,14 @@ export class ComponentEventsObserver {
   }
 
   private triggerOnAllListenersByComponentId(event: ComponentEvent, method: string) {
+    let listenersTriggered = 0;
     _.forEach(this.listeners[event.componentId], (component) => {
       if (_.isObject(component) && _.isFunction(component[method])) {
         component[method](event);
+        listenersTriggered++;
       }
     });
+
+    return listenersTriggered;
   }
 }
