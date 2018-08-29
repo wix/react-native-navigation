@@ -1,4 +1,5 @@
 const Utils = require('./Utils');
+const Android = require('./AndroidUtils');
 const testIDs = require('../playground/src/testIDs');
 
 const { elementById, elementByLabel } = Utils;
@@ -115,7 +116,7 @@ describe('screen style', () => {
     await expect(elementByLabel(`Two`)).toExist();
   });
 
-  test(':ios: pass props to custom button component should exist after screen rerender', async () => {
+  test('pass props to custom button component should exist after push pop', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementByLabel(`Two`)).toExist();
     await elementById(testIDs.SCROLLVIEW_SCREEN_BUTTON).tap();
@@ -174,5 +175,12 @@ describe('screen style', () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
     await expect(elementById(testIDs.TOP_BAR_BUTTON)).toBeVisible();
+  });
+
+  test(':android: Popping screen with yellow box in button, title and background components should not crash', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.SHOW_YELLOW_BOX).tap();
+    Android.pressBack();
+    await expect(elementByLabel('React Native Navigation!')).toBeVisible();
   });
 });

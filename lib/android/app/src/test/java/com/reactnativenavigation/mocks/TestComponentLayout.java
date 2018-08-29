@@ -7,10 +7,10 @@ import android.view.View;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.viewcontrollers.IReactView;
-import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.views.ComponentLayout;
 
-public class TestComponentLayout extends ComponentLayout implements TopBarButtonController.OnClickListener {
+public class TestComponentLayout extends ComponentLayout implements TitleBarButtonController.OnClickListener {
 
     private IReactView reactView;
 

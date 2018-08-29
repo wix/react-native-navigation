@@ -166,7 +166,7 @@ public class LayoutFactory {
                 .setTopBarController(new TopBarController())
                 .setId(node.id)
                 .setInitialOptions(parse(typefaceManager, node.getOptions()))
-                .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreator(reactInstanceManager), defaultOptions))
+                .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreator(reactInstanceManager), new TitleBarButtonCreator(reactInstanceManager), new ImageLoader(), defaultOptions))
                 .setPresenter(new OptionsPresenter(activity, defaultOptions))
                 .build();
 	}

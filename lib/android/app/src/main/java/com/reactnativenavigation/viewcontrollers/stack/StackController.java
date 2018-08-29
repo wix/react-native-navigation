@@ -52,6 +52,7 @@ public class StackController extends ParentController<StackLayout> {
         this.animator = animator;
         this.backButtonHelper = backButtonHelper;
         this.presenter = stackPresenter;
+        stackPresenter.setButtonOnClickListener(this::onNavigationButtonPressed);
         for (ViewController child : children) {
             stack.push(child.getId(), child);
             child.setParentController(this);
@@ -90,11 +91,13 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
-    public void mergeChildOptions(Options options, Component child) {
-        super.mergeChildOptions(options, child);
-        presenter.mergeChildOptions(options, resolveCurrentOptions(), child);
-        if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
-            fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
+    public void mergeChildOptions(Options options, ViewController childController, Component child) {
+        super.mergeChildOptions(options, childController, child);
+        if (childController.isViewShown()) {
+            presenter.mergeChildOptions(options, resolveCurrentOptions(), child);
+            if (options.fabOptions.hasValue() && child instanceof ReactComponent) {
+                fabOptionsPresenter.mergeOptions(options.fabOptions, (ReactComponent) child, getView());
+            }
         }
         performOnParentController(parentController ->
                 ((ParentController) parentController).mergeChildOptions(
@@ -104,6 +107,7 @@ public class StackController extends ParentController<StackLayout> {
                                 .clearFabOptions()
                                 .clearTopTabOptions()
                                 .clearTopTabsOptions(),
+                        childController,
                         child
                 )
         );
@@ -298,10 +302,8 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     protected StackLayout createView() {
         StackLayout stackLayout = new StackLayout(getActivity(),
-                topBarButtonCreator,
                 topBarBackgroundViewController,
                 topBarController,
-                this::onNavigationButtonPressed,
                 getId()
         );
         presenter.bindView(topBarController.getView());

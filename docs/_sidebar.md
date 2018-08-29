@@ -3,7 +3,7 @@
   - [Installing](/docs/Installing)
   - [Working Locally](/docs/WorkingLocally)
   - [Usage](/docs/Usage)
-  - [Showcases](/docs/Showcases)
+  - [Showcases](/docs/showcases)
 - Guide
   - [Top Level](/docs/top-level-api)
   - [Screen](/docs/screen-api)

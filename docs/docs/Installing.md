@@ -34,7 +34,7 @@
 
 	- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 	{
-		NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+		NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 		[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
 		
 		return YES;
@@ -256,9 +256,9 @@ android {
 }
 ```
 
-RNN only support react-native 0.51 (`"reactNative51"`), 0.55 (`"reactNative55"`), and O.56 (`"reactNative56"`),
+RNN only support react-native 0.51 (`"reactNative51"`), 0.55 (`"reactNative55"`), and 0.56 (`"reactNative56"`),
 
-Now we need to instruct gradle how to build that flavor. To do so here two solutions :
+Now we need to instruct gradle how to build that flavor. To do so here two solutions:
 
 #### 8.1 Build app with gradle command 
 
