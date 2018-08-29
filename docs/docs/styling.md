@@ -75,16 +75,6 @@ Navigation.mergeOptions(this.props.componentId, {
     buttonColor: 'black',
     drawBehind: false,
     testID: 'topBar',
-    searchBar: true, // iOS 11+ native UISearchBar inside topBar
-    searchBarHiddenWhenScrolling: true,
-    searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
-    // iOS 11+ Large Title
-    largeTitle: {
-      visible: true,
-      fontSize: 30,
-      color: 'red',
-      fontFamily: 'Helvetica'
-    },
     title: {
       text: 'Title',
       fontSize: 14,
@@ -187,6 +177,9 @@ Navigation.mergeOptions(this.props.componentId, {
       title: 'Back',
       showTitle: false
     },
+    searchBar: true, // iOS 11+ native UISearchBar inside topBar
+    searchBarHiddenWhenScrolling: true,
+    searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
     largeTitle: {
       visible: true,
       fontSize: 30,
