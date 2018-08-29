@@ -1,5 +1,6 @@
 #import "RNNSideMenuSideOptions.h"
 #import "RNNSideMenuController.h"
+#import "MMDrawerVisualState.h"
 
 @implementation RNNSideMenuSideOptions
 
