@@ -104,7 +104,7 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     }
 
     @CallSuper
-    public void mergeChildOptions(Options options, Component child) {
+    public void mergeChildOptions(Options options, ViewController childController, Component child) {
 
     }
 

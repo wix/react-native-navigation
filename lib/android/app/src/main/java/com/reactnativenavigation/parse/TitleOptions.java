@@ -3,7 +3,7 @@ package com.reactnativenavigation.parse;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.params.NullFraction;
@@ -35,7 +35,7 @@ public class TitleOptions {
     }
 
     public Text text = new NullText();
-    public Color color = new NullColor();
+    public Colour color = new NullColor();
     public Fraction fontSize = new NullFraction();
     public Alignment alignment = Alignment.Default;
     @Nullable public Typeface fontFamily;

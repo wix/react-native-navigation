@@ -27,7 +27,7 @@ import com.reactnativenavigation.views.element.Element;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener {
+public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener, ViewGroup.OnHierarchyChangeListener {
 
     private Runnable onAppearedListener;
     private boolean appearEventPosted;
@@ -50,6 +50,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     private final Activity activity;
     private final String id;
+    private YellowBoxDelegate yellowBoxDelegate;
     protected T view;
     @Nullable private ParentController<T> parentController;
     private boolean isShown;
@@ -57,9 +58,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
     protected FabOptionsPresenter fabOptionsPresenter;
 
-    public ViewController(Activity activity, String id, Options initialOptions) {
+    public ViewController(Activity activity, String id, YellowBoxDelegate yellowBoxDelegate, Options initialOptions) {
         this.activity = activity;
         this.id = id;
+        this.yellowBoxDelegate = yellowBoxDelegate;
         fabOptionsPresenter = new FabOptionsPresenter();
         this.initialOptions = initialOptions;
         options = initialOptions.copy();
@@ -155,6 +157,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
                 throw new RuntimeException("Tried to create view after it has already been destroyed");
             }
             view = createView();
+            view.setOnHierarchyChangeListener(this);
             view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         }
         return view;
@@ -221,11 +224,13 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             isShown = false;
             onViewDisappear();
         }
+        yellowBoxDelegate.destroy();
         if (view instanceof Destroyable) {
             ((Destroyable) view).destroy();
         }
         if (view != null) {
             view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            view.setOnHierarchyChangeListener(null);
             if (view.getParent() instanceof ViewGroup) {
                 ((ViewManager) view.getParent()).removeView(view);
             }
@@ -253,13 +258,23 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         }
     }
 
+    @Override
+    public void onChildViewAdded(View parent, View child) {
+        yellowBoxDelegate.onChildViewAdded(parent, child);
+    }
+
+    @Override
+    public void onChildViewRemoved(View view, View view1) {
+
+    }
+
     void runOnPreDraw(Task<T> task) {
         UiUtils.runOnPreDrawOnce(getView(), () -> task.run(getView()));
     }
 
     public abstract void sendOnNavigationButtonPressed(String buttonId);
 
-    protected boolean isViewShown() {
+    public boolean isViewShown() {
         return !isDestroyed &&
                getView().isShown() &&
                view != null &&

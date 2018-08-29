@@ -14,6 +14,7 @@ static NSString* const BottomTabSelected		= @"RNN.BottomTabSelected";
 static NSString* const ComponentDidAppear		= @"RNN.ComponentDidAppear";
 static NSString* const ComponentDidDisappear	= @"RNN.ComponentDidDisappear";
 static NSString* const NavigationButtonPressed	= @"RNN.NavigationButtonPressed";
+static NSString* const ModalDismissed	        = @"RNN.ModalDismissed";
 static NSString* const SearchBarUpdated 		= @"RNN.SearchBarUpdated";
 static NSString* const SearchBarCancelPressed 	= @"RNN.SearchBarCancelPressed";
 
@@ -24,6 +25,7 @@ static NSString* const SearchBarCancelPressed 	= @"RNN.SearchBarCancelPressed";
 			 ComponentDidAppear,
 			 ComponentDidDisappear,
 			 NavigationButtonPressed,
+			 ModalDismissed,
 			 SearchBarUpdated,
 			 SearchBarCancelPressed];
 }

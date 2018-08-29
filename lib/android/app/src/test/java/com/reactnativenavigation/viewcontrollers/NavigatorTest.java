@@ -67,6 +67,7 @@ public class NavigatorTest extends BaseTest {
         activityController = newActivityController(TestActivity.class);
         activity = activityController.create().get();
         modalStack = spy(new ModalStack(activity));
+        modalStack.setEventEmitter(Mockito.mock(EventEmitter.class));
         uut = new Navigator(activity, childRegistry, modalStack, overlayManager);
         activity.setNavigator(uut);
 

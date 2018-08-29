@@ -12,6 +12,7 @@ import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.OverlayManager;
+import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
@@ -213,5 +214,9 @@ public class Navigator extends ParentController {
                          ". Stack with id " +
                          fromId +
                          " was not found.");
+    }
+
+    public void setEventEmitter(EventEmitter eventEmitter) {
+        modalStack.setEventEmitter(eventEmitter);
     }
 }

@@ -19,6 +19,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.SubtitleOptions;
 import com.reactnativenavigation.parse.TopBarBackgroundOptions;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.OptionsPresenter;
@@ -65,12 +66,16 @@ public class OptionsApplyingTest extends BaseTest {
                 (activity1, componentId, componentName) -> view,
                 initialNavigationOptions,
                 new OptionsPresenter(activity, new Options())
-        );
+        ) {
+            @Override
+            public boolean isViewShown() {
+                return true;
+            }
+        };
         TopBarController topBarController = new TopBarController() {
             @Override
-            protected TopBar createTopBar(Context context, ReactViewCreator buttonCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener topBarButtonClickListener, StackLayout stackLayout, ImageLoader imageLoader) {
-                topBar =
-                        spy(super.createTopBar(context, buttonCreator, topBarBackgroundViewController, topBarButtonClickListener, stackLayout, imageLoader));
+            protected TopBar createTopBar(Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout stackLayout) {
+                topBar = spy(super.createTopBar(context, topBarBackgroundViewController, stackLayout));
                 return topBar;
             }
         };
@@ -103,7 +108,7 @@ public class OptionsApplyingTest extends BaseTest {
                         .setTopBarController(new TopBarController())
                         .setId("stackId")
                         .setInitialOptions(new Options())
-                        .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new Options()))
+                        .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new Options()))
                         .build();
         stackController.ensureViewIsCreated();
         stackController.push(uut, new CommandListenerAdapter());
@@ -142,7 +147,7 @@ public class OptionsApplyingTest extends BaseTest {
         uut.onViewAppeared();
 
         Options opts = new Options();
-        opts.topBar.background.color = new com.reactnativenavigation.parse.params.Color(Color.RED);
+        opts.topBar.background.color = new Colour(Color.RED);
         uut.mergeOptions(opts);
 
         assertThat(((ColorDrawable) stackController.getTopBar().getBackground()).getColor()).isEqualTo(Color.RED);
@@ -156,7 +161,7 @@ public class OptionsApplyingTest extends BaseTest {
             public void onSuccess(String childId) {
                 Options opts = new Options();
                 opts.topBar.title.text = new Text("the title");
-                opts.topBar.title.color = new com.reactnativenavigation.parse.params.Color(Color.RED);
+                opts.topBar.title.color = new Colour(Color.RED);
                 uut.mergeOptions(opts);
 
                 assertThat(stackController.getTopBar().getTitleTextView()).isNotEqualTo(null);

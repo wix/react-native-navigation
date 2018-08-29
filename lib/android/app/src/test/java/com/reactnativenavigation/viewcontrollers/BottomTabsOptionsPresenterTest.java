@@ -6,7 +6,7 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
 import com.reactnativenavigation.views.BottomTabs;
@@ -46,7 +46,7 @@ public class BottomTabsOptionsPresenterTest extends BaseTest {
         uut.setDefaultOptions(defaultOptions);
 
         Options options = new Options();
-        options.bottomTabsOptions.backgroundColor = new Color(10);
+        options.bottomTabsOptions.backgroundColor = new Colour(10);
         uut.mergeChildOptions(options, (Component) tabs.get(0).getView());
         verify(bottomTabs).setBackgroundColor(options.bottomTabsOptions.backgroundColor.get());
         verifyNoMoreInteractions(bottomTabs);

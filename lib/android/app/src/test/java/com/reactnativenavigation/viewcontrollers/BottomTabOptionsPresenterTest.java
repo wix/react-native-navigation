@@ -1,11 +1,12 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.graphics.Color;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
 import com.reactnativenavigation.views.BottomTabs;
@@ -81,16 +82,16 @@ public class BottomTabOptionsPresenterTest extends BaseTest {
     private Options createTab1Options() {
         Options options = new Options();
         options.bottomTabOptions.badge = new Text("tab1badge");
-        options.bottomTabOptions.iconColor = new Color(android.graphics.Color.RED);
-        options.bottomTabOptions.selectedIconColor = new Color(android.graphics.Color.RED);
+        options.bottomTabOptions.iconColor = new Colour(Color.RED);
+        options.bottomTabOptions.selectedIconColor = new Colour(Color.RED);
         return options;
     }
 
     private Options createTab2Options() {
         Options options = new Options();
         options.bottomTabOptions.badge = new Text("tab2badge");
-        options.bottomTabOptions.iconColor = new Color(android.graphics.Color.RED);
-        options.bottomTabOptions.selectedIconColor = new Color(android.graphics.Color.RED);
+        options.bottomTabOptions.iconColor = new Colour(Color.RED);
+        options.bottomTabOptions.selectedIconColor = new Colour(Color.RED);
         return options;
     }
 }
