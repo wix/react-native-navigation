@@ -34,7 +34,7 @@
 
 	- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 	{
-		NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+		NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 		[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
 		
 		return YES;
@@ -246,7 +246,7 @@ import java.util.List;
 
 ### 8 RNN and React Native version
 
-react-native-navigation supports multiple React Native versions. Target the React Native version required by your project by specifying the RNN build flavor in `app/build.gradle`.
+react-native-navigation supports multiple React Native versions. Target the React Native version required by your project by specifying the RNN build flavor in `android/app/build.gradle`.
 
 ```diff
 android {
