@@ -6,7 +6,7 @@
 
 [![NPM Version](https://img.shields.io/npm/v/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
 [![NPM Downloads](https://img.shields.io/npm/dm/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
-[![Build Status](https://jenkins-oss.wixpress.com/buildStatus/icon?job=react-native-navigation-master)](https://jenkins-oss.wixpress.com/job/react-native-navigation-master/)
+[![Build Status](https://img.shields.io/jenkins/s/http/jenkins-oss.wixpress.com:8080/job/react-native-navigation-master.svg)](https://jenkins-oss.wixpress.com/job/react-native-navigation-master/)
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 
 ## Important
