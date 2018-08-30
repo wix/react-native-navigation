@@ -1,7 +1,10 @@
 #import "RNNReactRootView.h"
 #import "RCTHelpers.h"
+#import <React/RCTUIManager.h>
 
-@implementation RNNReactRootView
+@implementation RNNReactRootView {
+	RCTBridge* _bridge;
+};
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties {
 	self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
@@ -37,6 +40,11 @@
 	} else {
 		self.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
 	}
+}
+
+- (void)layoutSubviews {
+	[super layoutSubviews];
+	[_bridge.uiManager setSize:self.bounds.size forView:self];
 }
 
 @end

@@ -19,6 +19,7 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -137,6 +138,14 @@ public class ModalPresenterTest extends BaseTest {
     }
 
     @Test
+    public void showModal_rejectIfContentIsNull() {
+        uut.setContentLayout(null);
+        CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
+        uut.showModal(modal1, modal2, listener);
+        verify(listener).onError(any());
+    }
+
+    @Test
     public void dismissModal_animatesByDefault() {
         disableShowModalAnimation(modal1);
 
@@ -209,5 +218,21 @@ public class ModalPresenterTest extends BaseTest {
         uut.showModal(modal1, root, new CommandListenerAdapter());
         assertThat(root.getView().getParent()).isNotNull();
         verify(root, times(0)).onViewDisappear();
+    }
+
+    @Test
+    public void dismissTopModal_rejectIfContentIsNull() {
+        uut.setContentLayout(null);
+        CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
+        uut.dismissTopModal(modal1, modal2, listener);
+        verify(listener).onError(any());
+    }
+
+    @Test
+    public void dismissModal_rejectIfContentIsNull() {
+        uut.setContentLayout(null);
+        CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
+        uut.dismissModal(modal1, listener);
+        verify(listener).onError(any());
     }
 }
