@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -26,7 +27,7 @@ import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 import java.util.Collections;
 import java.util.List;
 
-public class TopBarButtonController extends ViewController<TitleBarReactButtonView> implements MenuItem.OnMenuItemClickListener {
+public class TitleBarButtonController extends ViewController<TitleBarReactButtonView> implements MenuItem.OnMenuItemClickListener {
     public interface OnClickListener {
         void onPress(String buttonId);
     }
@@ -36,17 +37,26 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
     private ButtonOptionsPresenter optionsPresenter;
     private final Button button;
     private final ReactViewCreator viewCreator;
-    private TopBarButtonController.OnClickListener onPressListener;
+    private TitleBarButtonController.OnClickListener onPressListener;
     private Drawable icon;
 
-    public TopBarButtonController(Activity activity,
-                                  NavigationIconResolver navigationIconResolver,
-                                  ImageLoader imageLoader,
-                                  ButtonOptionsPresenter optionsPresenter,
-                                  Button button,
-                                  ReactViewCreator viewCreator,
-                                  OnClickListener onClickListener) {
-        super(activity, button.id, new Options());
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public Button getButton() {
+        return button;
+    }
+
+    public String getButtonInstanceId() {
+        return button.instanceId;
+    }
+
+    public TitleBarButtonController(Activity activity,
+                                    NavigationIconResolver navigationIconResolver,
+                                    ImageLoader imageLoader,
+                                    ButtonOptionsPresenter optionsPresenter,
+                                    Button button,
+                                    ReactViewCreator viewCreator,
+                                    OnClickListener onClickListener) {
+        super(activity, button.id, new YellowBoxDelegate(), new Options());
         this.navigationIconResolver = navigationIconResolver;
         this.imageLoader = imageLoader;
         this.optionsPresenter = optionsPresenter;
@@ -117,7 +127,7 @@ public class TopBarButtonController extends ViewController<TitleBarReactButtonVi
                     @Override
                     public void onComplete(@NonNull List<Drawable> icons) {
                         Drawable icon = icons.get(0);
-                        TopBarButtonController.this.icon = icon;
+                        TitleBarButtonController.this.icon = icon;
                         setIconColor(icon);
                         menuItem.setIcon(icon);
                     }

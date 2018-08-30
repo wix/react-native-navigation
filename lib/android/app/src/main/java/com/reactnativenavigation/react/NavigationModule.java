@@ -61,6 +61,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	public void setRoot(String commandId, ReadableMap rawLayoutTree, Promise promise) {
 		final LayoutNode layoutTree = LayoutNodeParser.parse(JSONParser.parse(rawLayoutTree).optJSONObject("root"));
 		handle(() -> {
+            navigator().setEventEmitter(eventEmitter);
             final ViewController viewController = newLayoutFactory().create(layoutTree);
             navigator().setRoot(viewController, new NativeCommandListener(commandId, promise, eventEmitter, now));
         });

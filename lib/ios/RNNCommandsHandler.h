@@ -24,7 +24,7 @@
 
 -(void)setStackRoot:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection;
 
--(void)showModal:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion;
+-(void)showModal:(NSDictionary*)layout completion:(RNNTransitionWithComponentIdCompletionBlock)completion;
 
 -(void)dismissModal:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion;
 

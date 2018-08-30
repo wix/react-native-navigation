@@ -58,8 +58,12 @@ public class OptionsPresenter {
         if (options.layout.backgroundColor.hasValue()) {
             view.setBackgroundColor(options.layout.backgroundColor.get());
         }
-        if (options.layout.topMargin.hasValue()) {
-            ((MarginLayoutParams) view.getLayoutParams()).topMargin = options.layout.topMargin.get();
+        applyTopMargin(view, options);
+    }
+
+    private void applyTopMargin(View view, Options options) {
+        if (view.getLayoutParams() instanceof MarginLayoutParams && options.layout.topMargin.hasValue()) {
+            ((MarginLayoutParams) view.getLayoutParams()).topMargin = options.layout.topMargin.get(0);
         }
     }
 

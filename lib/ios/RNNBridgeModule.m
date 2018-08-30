@@ -68,8 +68,8 @@ RCT_EXPORT_METHOD(popToRoot:(NSString*)commandId componentId:(NSString*)componen
 }
 
 RCT_EXPORT_METHOD(showModal:(NSString*)commandId layout:(NSDictionary*)layout resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-	[_commandsHandler showModal:layout completion:^{
-		resolve(nil);
+	[_commandsHandler showModal:layout completion:^(NSString *componentId) {
+		resolve(componentId);
 	}];
 }
 

@@ -46,6 +46,11 @@ public class StackControllerBuilder {
         return this;
     }
 
+    public StackControllerBuilder setPresenter(OptionsPresenter presenter) {
+        this.presenter = presenter;
+        return this;
+    }
+
     public StackControllerBuilder setChildRegistry(ChildControllersRegistry childRegistry) {
         this.childRegistry = childRegistry;
         return this;

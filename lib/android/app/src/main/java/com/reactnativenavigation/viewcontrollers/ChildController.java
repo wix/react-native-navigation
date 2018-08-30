@@ -1,10 +1,12 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.support.annotation.CallSuper;
 import android.view.ViewGroup;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.views.Component;
 
 public abstract class ChildController<T extends ViewGroup> extends ViewController<T>  {
     final OptionsPresenter presenter;
@@ -15,12 +17,13 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     }
 
     public ChildController(Activity activity, ChildControllersRegistry childRegistry, String id, OptionsPresenter presenter, Options initialOptions) {
-        super(activity, id, initialOptions);
+        super(activity, id, new NoOpYellowBoxDelegate(), initialOptions);
         this.presenter = presenter;
         this.childRegistry = childRegistry;
     }
 
     @Override
+    @CallSuper
     public void setDefaultOptions(Options defaultOptions) {
         presenter.setDefaultOptions(defaultOptions);
     }
@@ -48,6 +51,14 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
         if (isRoot()) {
             presenter.applyRootOptions(getView(), options);
         }
+    }
+
+    @Override
+    public void destroy() {
+        if (!isDestroyed() && getView() instanceof Component) {
+            performOnParentController(parent -> parent.onChildDestroyed((Component) getView()));
+        }
+        super.destroy();
     }
 
     protected boolean isRoot() {

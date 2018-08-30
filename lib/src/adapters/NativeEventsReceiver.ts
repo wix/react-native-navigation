@@ -5,7 +5,8 @@ import {
   ComponentDidDisappearEvent,
   NavigationButtonPressedEvent,
   SearchBarUpdatedEvent,
-  SearchBarCancelPressedEvent
+  SearchBarCancelPressedEvent,
+  ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
 import { CommandCompletedEvent, BottomTabSelectedEvent } from '../interfaces/Events';
 
@@ -39,6 +40,10 @@ export class NativeEventsReceiver {
 
   public registerNavigationButtonPressedListener(callback: (event: NavigationButtonPressedEvent) => void): EventSubscription {
     return this.emitter.addListener('RNN.NavigationButtonPressed', callback);
+  }
+
+  public registerModalDismissedListener(callback: (event: ModalDismissedEvent) => void): EventSubscription {
+    return this.emitter.addListener('RNN.ModalDismissed', callback);
   }
 
   public registerSearchBarUpdatedListener(callback: (event: SearchBarUpdatedEvent) => void): EventSubscription {
