@@ -49,14 +49,22 @@ export class Navigation {
    * Every navigation component in your app must be registered with a unique name.
    * The component itself is a traditional React component extending React.Component.
    */
+  
+  /**
+   * registerComponent accepts optional args: ReduxProvider, reduxStore.
+   * It wraps the provided component with a react-redux/mobx-react Provider with the passed redux/mobx store
+   * and injects the store to the component as props.store
+   * Optional: wrap the passed component with a customProviderHOC instead of passing ReduxProvider, reduxStore in case you wish to expose parts of your store to the component or handle it yourself
+   */
+  
+  public registerComponent(componentName: string, getComponentClassFunc: ComponentProvider, ReduxProvider: any, reduxStore: any): ComponentType<any> {
+    return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, ReduxProvider, reduxStore);
+  }
 
   /**
-   * Utility helper function like registerComponent,
-   * wraps the provided component with a react-redux/mobx-react Provider with the passed redux/mobx store
-   * and injects the store to the component as props.store
-   * Optional: wrap the passed component with a customProviderHOC instead of passing ReduxProvider, reduxStore
+   * For backward compatibility
    */
-  public registerComponent(componentName: string, getComponentClassFunc: ComponentProvider, ReduxProvider: any, reduxStore: any): ComponentType<any> {
+  public registerComponentWithRedux(componentName: string, getComponentClassFunc: ComponentProvider, ReduxProvider: any, reduxStore: any): ComponentType<any> {
     return this.componentRegistry.registerComponent(componentName, getComponentClassFunc, ReduxProvider, reduxStore);
   }
 
