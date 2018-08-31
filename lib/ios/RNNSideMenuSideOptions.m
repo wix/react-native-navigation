@@ -16,6 +16,7 @@
 				default:
 					break;
 			}
+			sideMenuController.sideMenu.openDrawerGestureModeMask = [self.enabled boolValue] ? MMOpenDrawerGestureModeAll : MMOpenDrawerGestureModeNone;
 		}
 		
 		if (self.visible) {
