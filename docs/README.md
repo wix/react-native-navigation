@@ -100,6 +100,7 @@ v2 is written in Test Driven Development. We have a test for every feature inclu
 | blur               |    ✅     |      [Contribute](/docs/WorkingLocally.md)       |
 | custom component          |✅     |✅|
 | background component          |✅     |✅|
+| background clipToBounds      |    ✅     |     /iOS Specific       |
 | subtitleColor            |   ✅      |✅|
 | subtitleFontFamily      |✅|✅|
 | largeTitle (iOS 11)      |    ✅     |     /iOS Specific       |

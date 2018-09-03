@@ -185,6 +185,11 @@ export interface  OptionsTopBarBackground {
    */
   color?: Color;
   /**
+   * Clip the top bar background to bounds if set to true.
+   * #### (iOS specific)
+   */
+  clipToBounds?: boolean;
+  /**
    * Set a custom component for the Top Bar background
    */
   component?: {
