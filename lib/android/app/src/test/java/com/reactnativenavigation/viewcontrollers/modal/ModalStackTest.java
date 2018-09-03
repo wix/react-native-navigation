@@ -57,7 +57,7 @@ public class ModalStackTest extends BaseTest {
         animator = spy(new ModalAnimatorMock(activity));
         presenter = spy(new ModalPresenter(animator));
         uut = new ModalStack(presenter);
-        uut.setContentLayout(activityContentView);
+        uut.setModalsContainer(activityContentView);
         uut.setEventEmitter(Mockito.mock(EventEmitter.class));
         modal1 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_1, new Options()));
         modal2 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_2, new Options()));

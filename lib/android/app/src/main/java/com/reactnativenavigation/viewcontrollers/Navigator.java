@@ -25,10 +25,12 @@ import java.util.Collections;
 public class Navigator extends ParentController {
 
     private final ModalStack modalStack;
-    private ViewController root;
-    private FrameLayout rootLayout;
-    private ViewGroup contentLayout;
     private final OverlayManager overlayManager;
+    private ViewController root;
+    private final FrameLayout rootLayout;
+    private final FrameLayout modalsLayout;
+    private final FrameLayout overlaysLayout;
+    private ViewGroup contentLayout;
     private Options defaultOptions = new Options();
 
     @Override
@@ -42,6 +44,9 @@ public class Navigator extends ParentController {
         return defaultOptions;
     }
 
+    public FrameLayout getRootLayout() {
+        return rootLayout;
+    }
 
     public void setEventEmitter(EventEmitter eventEmitter) {
         modalStack.setEventEmitter(eventEmitter);
@@ -49,23 +54,24 @@ public class Navigator extends ParentController {
 
     public void setContentLayout(ViewGroup contentLayout) {
         this.contentLayout = contentLayout;
-        modalStack.setContentLayout(contentLayout);
+        contentLayout.addView(rootLayout);
+        contentLayout.addView(modalsLayout);
+        contentLayout.addView(overlaysLayout);
     }
 
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager) {
         super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new OptionsPresenter(activity, new Options()), new Options());
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
-    }
-
-    public FrameLayout getContentLayout() {
-        return rootLayout;
+        rootLayout = new FrameLayout(getActivity());
+        modalsLayout = new FrameLayout(getActivity());
+        overlaysLayout = new FrameLayout(getActivity());
+        modalStack.setModalsContainer(modalsLayout);
     }
 
     @NonNull
     @Override
     protected ViewGroup createView() {
-        rootLayout = new FrameLayout(getActivity());
         return rootLayout;
     }
 
@@ -111,9 +117,9 @@ public class Navigator extends ParentController {
 
     public void setRoot(final ViewController viewController, CommandListener commandListener) {
         destroyRoot();
-        if (!hasRoot()) {
+        if (isRootNotCreated()) {
             removePreviousContentView();
-            contentLayout.addView(getView(), 0);
+            getView();
         }
         root = viewController;
         rootLayout.addView(viewController.getView());
@@ -131,9 +137,7 @@ public class Navigator extends ParentController {
     }
 
     private void removePreviousContentView() {
-        if (contentLayout.getChildCount() - modalStack.size() == 1) {
-            contentLayout.removeViewAt(0);
-        }
+        contentLayout.removeViewAt(0);
     }
 
     public void mergeOptions(final String componentId, Options options) {
@@ -199,7 +203,7 @@ public class Navigator extends ParentController {
     }
 
     public void dismissModal(final String componentId, CommandListener listener) {
-        if (!hasRoot() && modalStack.size() == 1) {
+        if (isRootNotCreated() && modalStack.size() == 1) {
             listener.onError("Can not dismiss modal if root is not set and only one modal is displayed.");
             return;
         }
@@ -211,7 +215,7 @@ public class Navigator extends ParentController {
     }
 
     public void showOverlay(ViewController overlay, CommandListener listener) {
-        overlayManager.show(rootLayout, overlay, listener);
+        overlayManager.show(overlaysLayout, overlay, listener);
     }
 
     public void dismissOverlay(final String componentId, CommandListener listener) {
@@ -233,7 +237,7 @@ public class Navigator extends ParentController {
                          " was not found.");
     }
 
-    private boolean hasRoot() {
-        return view != null;
+    private boolean isRootNotCreated() {
+        return view == null;
     }
 }

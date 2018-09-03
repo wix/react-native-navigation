@@ -35,8 +35,8 @@ public class ModalStack {
         this.presenter = presenter;
     }
 
-    public void setContentLayout(ViewGroup contentLayout) {
-        presenter.setContentLayout(contentLayout);
+    public void setModalsContainer(ViewGroup modalsLayout) {
+        presenter.setModalsContainer(modalsLayout);
     }
 
     public void setDefaultOptions(Options defaultOptions) {

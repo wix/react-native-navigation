@@ -113,26 +113,25 @@ public class NavigatorTest extends BaseTest {
     public void setRoot_clearsSplashLayout() {
         disableModalAnimations(child1);
 
-        activity.setContentView(new View(activity));
-
-        uut.showOverlay(child3, new CommandListenerAdapter());
-        uut.showModal(child1, new CommandListenerAdapter());
-        uut.setRoot(child2, new CommandListenerAdapter());
         FrameLayout content = activity.findViewById(android.R.id.content);
-        assertThat(content.getChildCount()).isEqualTo(2);
+        assertThat(content.getChildCount()).isEqualTo(4); // 3 frame layouts and the default splash layout
+
+        uut.setRoot(child2, new CommandListenerAdapter());
+
+        assertThat(content.getChildCount()).isEqualTo(3);
     }
 
     @Test
     public void setRoot_AddsChildControllerView() {
         uut.setRoot(child1, new CommandListenerAdapter());
-        assertIsChild(uut.getContentLayout(), child1.getView());
+        assertIsChild(uut.getRootLayout(), child1.getView());
     }
 
     @Test
     public void setRoot_ReplacesExistingChildControllerViews() {
         uut.setRoot(child1, new CommandListenerAdapter());
         uut.setRoot(child2, new CommandListenerAdapter());
-        assertIsChild(uut.getContentLayout(), child2.getView());
+        assertIsChild(uut.getRootLayout(), child2.getView());
     }
 
     @Test
