@@ -40,6 +40,13 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     }
 
     @Override
+    public void onNewIntent(Intent intent) {
+        if (!getReactGateway().onNewIntent(intent)) {
+            super.onNewIntent(intent);
+        }
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         getReactGateway().onActivityPaused(this);

@@ -51,7 +51,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private final Activity activity;
     private final String id;
     private YellowBoxDelegate yellowBoxDelegate;
-    protected T view;
+    @Nullable protected T view;
     @Nullable private ParentController<T> parentController;
     private boolean isShown;
     private boolean isDestroyed;
@@ -164,10 +164,12 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     public void detachView() {
+        if (view == null || view.getParent() == null) return;
         ((ViewManager) view.getParent()).removeView(view);
     }
 
     public void attachView(ViewGroup parent, int index) {
+        if (view == null) return;
         if (view.getParent() == null) parent.addView(view, index);
     }
 
@@ -294,6 +296,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     public List<Element> getElements() {
-        return getView() instanceof IReactView ? ((IReactView) view).getElements() : Collections.EMPTY_LIST;
+        return getView() instanceof IReactView && view != null? ((IReactView) view).getElements() : Collections.EMPTY_LIST;
     }
 }

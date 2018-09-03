@@ -86,7 +86,7 @@ describe('screen style', () => {
     await elementById(testIDs.SHOW_LEFT_SIDE_MENU_BUTTON).tap();
     await expect(elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON)).toBeVisible();
     await elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON).tap();
-    await expect(elementById(testIDs.CENTERED_TEXT_HEADER)).toBeVisible();
+    await expect(elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON)).toBeNotVisible();
   });
 
   test('side menu visibility - right', async () => {
@@ -94,7 +94,7 @@ describe('screen style', () => {
     await elementById(testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON).tap();
     await expect(elementById(testIDs.HIDE_RIGHT_SIDE_MENU_BUTTON)).toBeVisible();
     await elementById(testIDs.HIDE_RIGHT_SIDE_MENU_BUTTON).tap();
-    await expect(elementById(testIDs.CENTERED_TEXT_HEADER)).toBeVisible();
+    await expect(elementById(testIDs.HIDE_RIGHT_SIDE_MENU_BUTTON)).toBeNotVisible();
   });
 
   test('set right buttons', async () => {
