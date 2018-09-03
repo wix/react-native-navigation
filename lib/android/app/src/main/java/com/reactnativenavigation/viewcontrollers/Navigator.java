@@ -14,7 +14,6 @@ import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
@@ -28,7 +27,7 @@ public class Navigator extends ParentController {
     private final ModalStack modalStack;
     private ViewController root;
     private FrameLayout rootLayout;
-    private FrameLayout contentLayout;
+    private ViewGroup contentLayout;
     private final OverlayManager overlayManager;
     private Options defaultOptions = new Options();
 
@@ -43,6 +42,16 @@ public class Navigator extends ParentController {
         return defaultOptions;
     }
 
+
+    public void setEventEmitter(EventEmitter eventEmitter) {
+        modalStack.setEventEmitter(eventEmitter);
+    }
+
+    public void setContentLayout(ViewGroup contentLayout) {
+        this.contentLayout = contentLayout;
+        modalStack.setContentLayout(contentLayout);
+    }
+
     public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager) {
         super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new OptionsPresenter(activity, new Options()), new Options());
         this.modalStack = modalStack;
@@ -50,16 +59,13 @@ public class Navigator extends ParentController {
     }
 
     public FrameLayout getContentLayout() {
-        return contentLayout;
+        return rootLayout;
     }
 
     @NonNull
     @Override
     protected ViewGroup createView() {
         rootLayout = new FrameLayout(getActivity());
-        contentLayout = new FrameLayout(getActivity());
-        rootLayout.addView(contentLayout);
-        modalStack.setContentLayout(contentLayout);
         return rootLayout;
     }
 
@@ -88,7 +94,7 @@ public class Navigator extends ParentController {
     }
 
     public void destroyViews() {
-        modalStack.dismissAllModals(new CommandListenerAdapter(), root);
+        modalStack.destroy();
         overlayManager.destroy();
         destroyRoot();
     }
@@ -105,11 +111,12 @@ public class Navigator extends ParentController {
 
     public void setRoot(final ViewController viewController, CommandListener commandListener) {
         destroyRoot();
-        if (view == null) {
-            getActivity().setContentView(getView());
+        if (!hasRoot()) {
+            removePreviousContentView();
+            contentLayout.addView(getView(), 0);
         }
         root = viewController;
-        contentLayout.addView(viewController.getView());
+        rootLayout.addView(viewController.getView());
         if (viewController.options.animations.startApp.hasAnimation()) {
             new NavigationAnimator(viewController.getActivity(), new ElementTransitionManager())
                     .animateStartApp(viewController.getView(), viewController.options.animations.startApp, new AnimatorListenerAdapter() {
@@ -120,6 +127,12 @@ public class Navigator extends ParentController {
                     });
         } else {
             commandListener.onSuccess(viewController.getId());
+        }
+    }
+
+    private void removePreviousContentView() {
+        if (contentLayout.getChildCount() - modalStack.size() == 1) {
+            contentLayout.removeViewAt(0);
         }
     }
 
@@ -186,6 +199,10 @@ public class Navigator extends ParentController {
     }
 
     public void dismissModal(final String componentId, CommandListener listener) {
+        if (!hasRoot() && modalStack.size() == 1) {
+            listener.onError("Can not dismiss modal if root is not set and only one modal is displayed.");
+            return;
+        }
         modalStack.dismissModal(componentId, root, listener);
     }
 
@@ -216,7 +233,7 @@ public class Navigator extends ParentController {
                          " was not found.");
     }
 
-    public void setEventEmitter(EventEmitter eventEmitter) {
-        modalStack.setEventEmitter(eventEmitter);
+    private boolean hasRoot() {
+        return view != null;
     }
 }

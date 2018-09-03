@@ -9,16 +9,14 @@ import android.view.ViewGroup;
 import com.reactnativenavigation.anim.ModalAnimator;
 import com.reactnativenavigation.parse.ModalPresentationStyle;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 
 public class ModalPresenter {
 
-    @Nullable private ViewGroup content;
+    private ViewGroup content;
     private ModalAnimator animator;
     private Options defaultOptions = new Options();
-    private EventEmitter eventEmitter;
 
     ModalPresenter(ModalAnimator animator) {
         this.animator = animator;
@@ -34,7 +32,7 @@ public class ModalPresenter {
 
     public void showModal(ViewController toAdd, ViewController toRemove, CommandListener listener) {
         if (content == null) {
-            listener.onError("Could not show modal before setRoot is called");
+            listener.onError("Can not show modal before activity is created");
             return;
         }
         Options options = toAdd.resolveCurrentOptions(defaultOptions);
@@ -64,8 +62,8 @@ public class ModalPresenter {
         });
     }
 
-    private void onShowModalEnd(ViewController toAdd, ViewController toRemove, CommandListener listener) {
-        if (toAdd.options.modal.presentationStyle != ModalPresentationStyle.OverCurrentContext) {
+    private void onShowModalEnd(ViewController toAdd, @Nullable ViewController toRemove, CommandListener listener) {
+        if (toRemove != null && toAdd.options.modal.presentationStyle != ModalPresentationStyle.OverCurrentContext) {
             toRemove.detachView();
         }
         listener.onSuccess(toAdd.getId());
@@ -73,7 +71,7 @@ public class ModalPresenter {
 
     public void dismissTopModal(ViewController toDismiss, @NonNull ViewController toAdd, CommandListener listener) {
         if (content == null) {
-            listener.onError("Could not dismiss modal before setRoot is called");
+            listener.onError("Can not dismiss modal before activity is created");
             return;
         }
         toAdd.attachView(content, 0);
@@ -82,7 +80,7 @@ public class ModalPresenter {
 
     public void dismissModal(ViewController toDismiss, CommandListener listener) {
         if (content == null) {
-            listener.onError("Could not dismiss modal before setRoot is called");
+            listener.onError("Can not dismiss modal before activity is created");
             return;
         }
         if (toDismiss.options.animations.dismissModal.enable.isTrueOrUndefined()) {

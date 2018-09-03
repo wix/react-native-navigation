@@ -1,7 +1,9 @@
 package com.reactnativenavigation.viewcontrollers;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestActivity;
@@ -91,6 +93,7 @@ public class NavigatorTest extends BaseTest {
         child5 = new SimpleViewController(activity, childRegistry, "child5", tabOptions);
 
         activityController.visible();
+        activityController.postCreate(Bundle.EMPTY);
     }
 
     @Test
@@ -107,10 +110,16 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void setRoot_setContentViewWhenFirstRootIsSet() {
-        assertThat(uut.view).isNull();
-        uut.setRoot(child1, new CommandListenerAdapter());
-        assertThat(uut.view).isNotNull();
+    public void setRoot_clearsSplashLayout() {
+        disableModalAnimations(child1);
+
+        activity.setContentView(new View(activity));
+
+        uut.showOverlay(child3, new CommandListenerAdapter());
+        uut.showModal(child1, new CommandListenerAdapter());
+        uut.setRoot(child2, new CommandListenerAdapter());
+        FrameLayout content = activity.findViewById(android.R.id.content);
+        assertThat(content.getChildCount()).isEqualTo(2);
     }
 
     @Test
@@ -467,6 +476,23 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void dismissModal_rejectIfRootIsNotSetAndSingleModalIsDisplayed() {
+        disableModalAnimations(child1, child2);
+        uut.showModal(child1, new CommandListenerAdapter());
+        uut.showModal(child2, new CommandListenerAdapter());
+
+        CommandListenerAdapter listener1 = spy(new CommandListenerAdapter());
+        uut.dismissModal(child2.getId(), listener1);
+        verify(listener1).onSuccess(any());
+        assertThat(child2.isDestroyed()).isTrue();
+
+        CommandListenerAdapter listener2 = spy(new CommandListenerAdapter());
+        uut.dismissModal(child1.getId(), listener2);
+        verify(listener2).onError(any());
+        assertThat(child1.isDestroyed()).isFalse();
+    }
+
+    @Test
     public void dismissAllModals_onViewAppearedInvokedOnRoot() {
         disablePushAnimation(child2);
         disableShowModalAnimation(child1);
@@ -507,6 +533,16 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void handleBack_falseIfRootIsNotSetAndSingleModalIsDisplayed() {
+        disableShowModalAnimation(child1, child2, child3);
+        uut.showModal(child1, new CommandListenerAdapter());
+        uut.showModal(child2, new CommandListenerAdapter());
+
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
+    }
+
+    @Test
     public void destroy_destroyedRoot() {
         disablePushAnimation(child1);
 
@@ -527,7 +563,6 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void destroyViews() {
-        disableShowModalAnimation(child1);
         uut.setRoot(parentController, new CommandListenerAdapter());
         uut.showModal(child1, new CommandListenerAdapter());
         uut.showOverlay(child2, new CommandListenerAdapter());

@@ -59,6 +59,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         TopTabsLayoutCreator layoutCreator = Mockito.mock(TopTabsLayoutCreator.class);
         Mockito.when(layoutCreator.create()).thenReturn(topTabsLayout);
         OptionsPresenter presenter = new OptionsPresenter(activity, new Options());
+        options.topBar.buttons.back.visible = new Bool(false);
         uut = spy(new TopTabsController(activity, childRegistry, "componentId", tabControllers, layoutCreator, options, presenter));
         tabControllers.forEach(viewController -> viewController.setParentController(uut));
 

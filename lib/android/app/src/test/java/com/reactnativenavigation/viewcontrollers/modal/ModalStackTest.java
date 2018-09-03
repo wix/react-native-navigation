@@ -268,7 +268,26 @@ public class ModalStackTest extends BaseTest {
         verify(presenter).setDefaultOptions(defaultOptions);
     }
 
+    @Test
+    public void destroy() {
+        showModalsWithoutAnimation(modal1, modal2);
+        uut.destroy();
+        verify(modal1).destroy();
+        verify(modal2).destroy();
+    }
+
     private ViewController findModal(String id) {
         return uut.findControllerById(id);
+    }
+
+    private void showModalsWithoutAnimation(ViewController... modals) {
+        for (ViewController modal : modals) {
+            showModalWithoutAnimation(modal);
+        }
+    }
+
+    private void showModalWithoutAnimation(ViewController modal) {
+        disableShowModalAnimation(modal);
+        uut.showModal(modal, rootController, new CommandListenerAdapter());
     }
 }
