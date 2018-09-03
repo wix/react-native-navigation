@@ -6,7 +6,7 @@
 
 [![NPM Version](https://img.shields.io/npm/v/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
 [![NPM Downloads](https://img.shields.io/npm/dm/react-native-navigation.svg?style=flat)](https://www.npmjs.com/package/react-native-navigation)
-[![Build Status](https://jenkins-oss.wixpress.com/buildStatus/icon?job=react-native-navigation-master)](https://jenkins-oss.wixpress.com/job/react-native-navigation-master/)
+[![Build Status](https://img.shields.io/jenkins/s/http/jenkins-oss.wixpress.com:8080/job/react-native-navigation-master.svg)](https://jenkins-oss.wixpress.com/job/react-native-navigation-master/)
 [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 
 ## Important
@@ -16,7 +16,9 @@ We are currently in late stages of development of [v2](https://github.com/wix/re
 * [v2 Documentation](https://wix.github.io/react-native-navigation/v2/#/)
 <br><br>Have any questions regarding v2? Join us in [Discord](https://discord.gg/DhkZjq2) #v2 channel.
 
-<br><br>Latest stable version is `1.1.x` and is published to npm under tag `latest`. It supports react-native >= 0.48.
+<br><br>Latest stable version is `1.1.x` and is published to npm under tag `latest`.
+Version 1.1.483 supports react-native >= 0.48 up to react-native 0.56
+Version 1.1.484 supports react-native >= 0.57 
 >⚠️Since we're focusing our efforts on v2, we are not accepting pull requests for v1 and are not addresing issues for v1.
 
 ### tl;dr
