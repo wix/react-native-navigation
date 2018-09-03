@@ -106,6 +106,8 @@ lib/ios/xcuserdata/
 ## Other
 *.moved-aside
 *.xcuserstate
+.github/
+docs/
 
 ## Obj-C/Swift specific
 *.hmap
