@@ -62,8 +62,10 @@
 }
 
 - (void)dismissModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {
-	[_pendingModalIdsToDismiss addObject:viewController];
-	[self removePendingNextModalIfOnTop:completion];
+	if (viewController) {
+		[_pendingModalIdsToDismiss addObject:viewController];
+		[self removePendingNextModalIfOnTop:completion];
+	}
 }
 
 -(void)dismissAllModals {

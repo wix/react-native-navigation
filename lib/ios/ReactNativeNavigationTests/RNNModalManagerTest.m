@@ -88,6 +88,14 @@
 	XCTAssertTrue(_modalDismissedCount == 2);
 }
 
+- (void)testDismissNilModal_doesntCrash {
+	_modalManager.delegate = self;
+	[_modalManager dismissModal:nil completion:nil];
+	
+	XCTAssertTrue(_modalDismissedCount == 0);
+}
+
+
 #pragma mark RNNModalManagerDelegate
 
 - (void)dismissedMultipleModals:(NSArray *)viewControllers {
