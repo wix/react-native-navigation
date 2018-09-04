@@ -70,6 +70,8 @@
 	[skipMethods addObject:@"assertReady"];
 	[skipMethods addObject:@"removePopedViewControllers:"];
 	[skipMethods addObject:@".cxx_destruct"];
+	[skipMethods addObject:@"dismissedModal:"];
+	[skipMethods addObject:@"dismissedMultipleModals:"];
 
 	NSMutableArray* result = [NSMutableArray new];
 
