@@ -149,7 +149,9 @@ public class StackController extends ParentController<StackLayout> {
                     }));
                 } else {
                     animator.push(child.getView(), resolvedOptions.animations.push, () -> {
-                        getView().removeView(toRemove.getView());
+                        if (!toRemove.equals(peek())) {
+                            getView().removeView(toRemove.getView());
+                        }
                         listener.onSuccess(child.getId());
                     });
                 }
@@ -206,7 +208,9 @@ public class StackController extends ParentController<StackLayout> {
             appearingView.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
             presenter.applyLayoutParamsOptions(resolvedOptions, appearingView);
         }
-        getView().addView(appearingView, 0);
+        if (appearingView.getParent() == null) {
+            getView().addView(appearingView, 0);
+        }
         presenter.onChildWillAppear(appearing.options, disappearing.options);
         if (disappearing.options.animations.pop.enable.isTrueOrUndefined()) {
             animator.pop(disappearing.getView(), resolvedOptions.animations.pop, () -> finishPopping(disappearing, listener));
@@ -216,7 +220,6 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     private void finishPopping(ViewController disappearing, CommandListener listener) {
-        getView().removeView(disappearing.getView());
         disappearing.destroy();
         listener.onSuccess(disappearing.getId());
     }

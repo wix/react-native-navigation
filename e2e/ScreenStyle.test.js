@@ -124,6 +124,13 @@ describe('screen style', () => {
     await expect(elementByLabel(`Two`)).toExist();
   });
 
+  test('custom button is tapable', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await expect(elementByLabel(`Two`)).toExist();
+    await elementByLabel(`Two`).tap();
+    await expect(elementByLabel(`Thanks for that :)`)).toExist();
+  });
+
   test('tab bar items visibility', async () => {
     await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
     await expect(elementById(testIDs.FIRST_TAB_BAR_BUTTON)).toBeVisible();

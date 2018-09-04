@@ -1,21 +1,42 @@
-//
-//  RNNReactView.m
-//  ReactNativeNavigation
-//
-//  Created by Yogev Ben David on 04/09/2018.
-//  Copyright © 2018 Wix. All rights reserved.
-//
-
 #import "RNNReactView.h"
+#import "RCTHelpers.h"
 
 @implementation RNNReactView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (instancetype)initWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties {
+	self = [super initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
+	
+#ifdef DEBUG
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentDidAppear:) name:RCTContentDidAppearNotification object:nil];
+#endif
+	
+	return self;
 }
-*/
+
+- (void)contentDidAppear:(NSNotification *)notification {
+	if ([((RNNReactView *)notification.object).moduleName isEqualToString:self.moduleName]) {
+		[RCTHelpers removeYellowBox:self];
+		[[NSNotificationCenter defaultCenter] removeObserver:self];
+	}
+}
+
+- (void)setRootViewDidChangeIntrinsicSize:(void (^)(CGSize))rootViewDidChangeIntrinsicSize {
+	_rootViewDidChangeIntrinsicSize = rootViewDidChangeIntrinsicSize;
+	self.delegate = self;
+}
+
+- (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
+	if (_rootViewDidChangeIntrinsicSize) {
+		_rootViewDidChangeIntrinsicSize(rootView.intrinsicContentSize);
+	}
+}
+
+- (void)setAlignment:(NSString *)alignment {
+	if ([alignment isEqualToString:@"fill"]) {
+		self.sizeFlexibility = RCTRootViewSizeFlexibilityNone;
+	} else {
+		self.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
+	}
+}
 
 @end

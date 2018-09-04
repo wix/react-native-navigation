@@ -1,13 +1,12 @@
-
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
 #import "RNNCustomTitleView.h"
 #import "RNNPushAnimation.h"
-#import "RNNReactRootView.h"
+#import "RNNReactView.h"
 
 @interface RNNRootViewController() {
-	RNNReactRootView* _customTitleView;
+	RNNReactView* _customTitleView;
 	UIView* _customTopBar;
 	UIView* _customTopBarBackground;
 	BOOL _isBeingPresented;
@@ -141,11 +140,11 @@
 - (void)setCustomNavigationTitleView {
 	if (!_customTitleView && _isBeingPresented) {
 		if (self.options.topBar.title.component.name) {
-			_customTitleView = (RNNReactRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
+			_customTitleView = (RNNReactView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
 			_customTitleView.backgroundColor = UIColor.clearColor;
 			[_customTitleView setAlignment:self.options.topBar.title.component.alignment];
 			BOOL isCenter = [self.options.topBar.title.component.alignment isEqualToString:@"center"];
-			__weak RNNReactRootView *weakTitleView = _customTitleView;
+			__weak RNNReactView *weakTitleView = _customTitleView;
 			CGRect frame = self.navigationController.navigationBar.bounds;
 			[_customTitleView setFrame:frame];
 			[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {

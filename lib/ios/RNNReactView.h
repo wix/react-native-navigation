@@ -1,13 +1,10 @@
-//
-//  RNNReactView.h
-//  ReactNativeNavigation
-//
-//  Created by Yogev Ben David on 04/09/2018.
-//  Copyright © 2018 Wix. All rights reserved.
-//
+#import <React/RCTRootView.h>
+#import <React/RCTRootViewDelegate.h>
 
-#import "RCTRootView.h"
+@interface RNNReactView : RCTRootView <RCTRootViewDelegate>
 
-@interface RNNReactView : RCTRootView
+@property (nonatomic, copy) void (^rootViewDidChangeIntrinsicSize)(CGSize intrinsicSize);
+
+- (void)setAlignment:(NSString *)alignment;
 
 @end
