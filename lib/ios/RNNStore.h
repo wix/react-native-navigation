@@ -23,8 +23,6 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, N
 -(void) setReadyToReceiveCommands:(BOOL)isReady;
 -(BOOL) isReadyToReceiveCommands;
 
--(NSMutableArray*) pendingModalIdsToDismiss;
-
 -(void) clean;
 
 @end

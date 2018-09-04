@@ -140,7 +140,7 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.ensureViewIsCreated();
         assertThat(uut.getSelectedIndex()).isZero();
 
-        uut.onTabSelected(0, false);
+        uut.onTabSelected(0, true);
 
         assertThat(uut.getSelectedIndex()).isEqualTo(0);
         assertThat(((ViewController) ((List) uut.getChildControllers()).get(0)).getView().getParent()).isNotNull();
