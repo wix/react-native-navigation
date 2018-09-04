@@ -239,6 +239,7 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   bottomTab: {
     selectedFontSize: 19 // Selected tab font size in sp
+  }
 }
 ```
 
