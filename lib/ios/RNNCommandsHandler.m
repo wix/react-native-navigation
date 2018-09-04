@@ -24,6 +24,10 @@ static NSString* const dismissOverlay	= @"dismissOverlay";
 static NSString* const mergeOptions	= @"mergeOptions";
 static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
+@interface RNNCommandsHandler() <RNNModalManagerDelegate>
+
+@end
+
 @implementation RNNCommandsHandler {
 	RNNControllerFactory *_controllerFactory;
 	RNNStore *_store;
@@ -38,7 +42,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	_store = store;
 	_controllerFactory = controllerFactory;
 	_eventEmitter = eventEmitter;
-	_modalManager = [[RNNModalManager alloc] initWithStore:_store];
+	_modalManager = [[RNNModalManager alloc] init];
+	_modalManager.delegate = self;
 	_stackManager = [[RNNNavigationStackManager alloc] init];
 	_overlayManager = [[RNNOverlayManager alloc] init];
 	return self;
@@ -222,8 +227,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[CATransaction setCompletionBlock:^{
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
 	}];
-	
-	[_modalManager dismissModal:componentId completion:completion];
+	UIViewController<RNNRootViewProtocol> *modalToDismiss = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
+	[_modalManager dismissModal:modalToDismiss completion:completion];
 	
 	[CATransaction commit];
 }
@@ -277,6 +282,18 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 								 reason:@"Bridge not yet loaded! Send commands after Navigation.events().onAppLaunched() has been called."
 							   userInfo:nil]
 		 raise];
+	}
+}
+
+#pragma mark - RNNModalManagerDelegate
+
+- (void)dismissedModal:(UIViewController *)viewController {
+	[_eventEmitter sendModalsDismissedEvent:((RNNRootViewController *)viewController).componentId numberOfModalsDismissed:@(1)];
+}
+
+- (void)dismissedMultipleModals:(NSArray *)viewControllers {
+	if (viewControllers && viewControllers.count) {
+		[_eventEmitter sendModalsDismissedEvent:((RNNRootViewController *)viewControllers.lastObject).componentId numberOfModalsDismissed:@(viewControllers.count)];
 	}
 }
 
