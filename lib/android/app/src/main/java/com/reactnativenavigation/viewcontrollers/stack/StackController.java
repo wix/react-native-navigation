@@ -19,7 +19,6 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.IdStack;
 import com.reactnativenavigation.viewcontrollers.ParentController;
-import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
@@ -38,16 +37,14 @@ public class StackController extends ParentController<StackLayout> {
 
     private final IdStack<ViewController> stack = new IdStack<>();
     private final NavigationAnimator animator;
-    private final ReactViewCreator topBarButtonCreator;
     private TopBarBackgroundViewController topBarBackgroundViewController;
     private TopBarController topBarController;
     private BackButtonHelper backButtonHelper;
     private final StackOptionsPresenter presenter;
 
-    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, ReactViewCreator topBarButtonCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackOptionsPresenter stackPresenter, OptionsPresenter presenter) {
+    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackOptionsPresenter stackPresenter, OptionsPresenter presenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.topBarController = topBarController;
-        this.topBarButtonCreator = topBarButtonCreator;
         this.topBarBackgroundViewController = topBarBackgroundViewController;
         this.animator = animator;
         this.backButtonHelper = backButtonHelper;
@@ -222,15 +219,6 @@ public class StackController extends ParentController<StackLayout> {
     private void finishPopping(ViewController disappearing, CommandListener listener) {
         disappearing.destroy();
         listener.onSuccess(disappearing.getId());
-    }
-
-    public void popSpecific(ViewController childController, CommandListener listener) {
-        if (stack.isTop(childController.getId())) {
-            pop(listener);
-        } else {
-            removeAndDestroyController(childController);
-            listener.onSuccess(childController.getId());
-        }
     }
 
     public void popTo(final ViewController viewController, CommandListener listener) {

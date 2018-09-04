@@ -24,6 +24,7 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
@@ -217,20 +218,16 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void popSpecific() {
-        disablePushAnimation(child1, child2, child3, child4);
-        StackController stack1 = newStack(); stack1.ensureViewIsCreated();
-        StackController stack2 = newStack(); stack2.ensureViewIsCreated();
-        stack1.push(child1, new CommandListenerAdapter());
-        stack2.push(child2, new CommandListenerAdapter());
-        stack2.push(child3, new CommandListenerAdapter());
-        stack2.push(child4, new CommandListenerAdapter());
-        BottomTabsController bottomTabsController = newTabs(Arrays.asList(stack1, stack2));
-        uut.setRoot(bottomTabsController, new CommandListenerAdapter());
+    public void pop_byStackId() {
+        disablePushAnimation(child1, child2);
+        disablePopAnimation(child2, child1);
+        StackController stack = newStack(); stack.ensureViewIsCreated();
+        uut.setRoot(stack, new CommandListenerAdapter());
+        stack.push(child1, new CommandListenerAdapter());
+        stack.push(child2, new CommandListenerAdapter());
 
-        uut.popSpecific(child2.getId(), new CommandListenerAdapter());
-
-        assertThat(stack2.getChildControllers()).containsOnly(child4, child3);
+        uut.pop(stack.getId(), new CommandListenerAdapter());
+        assertThat(stack.getChildControllers()).containsOnly(child1);
     }
 
     @Test
@@ -434,8 +431,8 @@ public class NavigatorTest extends BaseTest {
                 assertThat(spy.getChildControllers().size()).isEqualTo(1);
             }
         };
-        uut.popSpecific("child2", listener);
-        verify(spy, times(1)).popSpecific(child2, listener);
+        uut.pop("child2", listener);
+        verify(spy, times(1)).pop(listener);
     }
 
     @Test
@@ -472,6 +469,18 @@ public class NavigatorTest extends BaseTest {
         assertThat(parentController.getView().getParent()).isNotNull();
 
         verify(parentVisibilityListener, times(2)).onViewAppeared(parentController.getView());
+    }
+
+    @Test
+    public void dismissModal_reattachedToRoot() {
+        disableModalAnimations(child1);
+
+        uut.setRoot(parentController, new CommandListenerAdapter());
+        assertThat(ViewUtils.isChildOf(uut.getRootLayout(), parentController.getView()));
+        uut.showModal(child1, new CommandListenerAdapter());
+
+        uut.dismissModal(child1.getId(), new CommandListenerAdapter());
+        assertThat(ViewUtils.isChildOf(uut.getRootLayout(), parentController.getView()));
     }
 
     @Test
