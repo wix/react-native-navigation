@@ -34,6 +34,7 @@ import com.reactnativenavigation.views.topbar.TopBar;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -242,7 +243,7 @@ public class StackOptionsPresenter {
 
     private List<TitleBarButtonController> getOrCreateButtonControllers(@Nullable Map<String, TitleBarButtonController> currentButtons, @Nullable List<Button> buttons) {
         if (buttons == null) return null;
-        Map<String, TitleBarButtonController> result = new HashMap<>();
+        Map<String, TitleBarButtonController> result = new LinkedHashMap<>();
         for (Button b : buttons) {
             result.put(b.instanceId, currentButtons != null && currentButtons.containsKey(b.instanceId) ? currentButtons.get(b.instanceId) : createButtonController(b));
         }

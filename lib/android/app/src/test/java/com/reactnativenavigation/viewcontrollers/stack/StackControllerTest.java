@@ -30,6 +30,7 @@ import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.ReactComponent;
 import com.reactnativenavigation.views.StackLayout;
+import com.reactnativenavigation.views.element.ElementTransitionManager;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import org.assertj.core.api.iterable.Extractor;
@@ -71,9 +72,9 @@ public class StackControllerTest extends BaseTest {
     @Override
     public void beforeEach() {
         super.beforeEach();
-        animator = Mockito.mock(NavigationAnimator.class);
         backButtonHelper = spy(new BackButtonHelper());
         activity = newActivity();
+        animator = spy(new NavigationAnimator(activity, Mockito.mock(ElementTransitionManager.class)));
         childRegistry = new ChildControllersRegistry();
         presenter = spy(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), ImageLoaderMock.mock(), new Options()));
         child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
@@ -166,6 +167,24 @@ public class StackControllerTest extends BaseTest {
         uut.push(child2, new CommandListenerAdapter());
         verify(child2).setOnAppearedListener(any());
         verify(animator, times(0)).push(eq(child1.getView()), eq(child1.options.animations.push), any());
+    }
+
+    @Test
+    public void push_backPressedDuringPushAnimationDestroysPushedScreenImmediately() {
+        disablePushAnimation(child1);
+        uut.push(child1, new CommandListenerAdapter());
+
+        CommandListenerAdapter pushListener = spy(new CommandListenerAdapter());
+        uut.push(child2, pushListener);
+        CommandListenerAdapter backListener = spy(new CommandListenerAdapter());
+        uut.handleBack(backListener);
+        assertThat(uut.size()).isOne();
+        assertThat(child1.getView().getParent()).isEqualTo(uut.getView());
+        assertThat(child2.isDestroyed()).isTrue();
+
+        InOrder inOrder = inOrder(pushListener, backListener);
+        inOrder.verify(pushListener).onSuccess(any());
+        inOrder.verify(backListener).onSuccess(any());
     }
 
     @Test

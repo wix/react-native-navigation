@@ -6,6 +6,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -20,10 +21,12 @@ import java.util.ArrayList;
 
 public class ButtonOptionsPresenter {
     private final Toolbar toolbar;
+    private final ActionMenuView actionMenuView;
     private Button button;
 
     public ButtonOptionsPresenter(Toolbar toolbar, Button button) {
         this.toolbar = toolbar;
+        actionMenuView = ViewUtils.findChildrenByClass(toolbar, ActionMenuView.class).get(0);
         this.button = button;
     }
 
@@ -77,7 +80,7 @@ public class ButtonOptionsPresenter {
     private ArrayList<View> findActualTextViewInMenu() {
         ArrayList<View> outViews = new ArrayList<>();
         if (button.text.hasValue()) {
-            toolbar.findViewsWithText(outViews, button.text.get(), View.FIND_VIEWS_WITH_TEXT);
+            actionMenuView.findViewsWithText(outViews, button.text.get(), View.FIND_VIEWS_WITH_TEXT);
         }
         return outViews;
     }

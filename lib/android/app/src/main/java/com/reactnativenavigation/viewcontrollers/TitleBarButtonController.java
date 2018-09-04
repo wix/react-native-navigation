@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -115,7 +116,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     public void addToMenu(Toolbar toolbar, int position) {
-        MenuItem menuItem = toolbar.getMenu().add(0, position, position, button.text.get(""));
+        MenuItem menuItem = toolbar.getMenu().add(Menu.NONE, position, position, button.text.get(""));
         if (button.showAsAction.hasValue()) menuItem.setShowAsAction(button.showAsAction.get());
         menuItem.setEnabled(button.enabled.isTrueOrUndefined());
         menuItem.setOnMenuItemClickListener(this);

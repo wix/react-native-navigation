@@ -16,7 +16,9 @@ import com.reactnativenavigation.views.element.ElementTransitionManager;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.reactnativenavigation.utils.CollectionUtils.merge;
 
@@ -24,6 +26,7 @@ import static com.reactnativenavigation.utils.CollectionUtils.merge;
 public class NavigationAnimator extends BaseAnimator {
 
     private final ElementTransitionManager transitionManager;
+    private Map<View, Animator> runningPushAnimations = new HashMap<>();
 
     public NavigationAnimator(Context context, ElementTransitionManager transitionManager) {
         super(context);
@@ -41,25 +44,50 @@ public class NavigationAnimator extends BaseAnimator {
         Collection<Animator> elementTransitions = transitionManager.createTransitions(transitions, fromElements, toElements);
         set.playTogether(merge(push.getChildAnimations(), elementTransitions));
         set.addListener(new AnimatorListenerAdapter() {
+            private boolean isCancelled;
+
             @Override
             public void onAnimationStart(Animator animation) {
                 view.setAlpha(1);
             }
 
             @Override
-            public void onAnimationEnd(Animator animation) {
+            public void onAnimationCancel(Animator animation) {
+                isCancelled = true;
+                runningPushAnimations.remove(view);
                 onAnimationEnd.run();
             }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (!isCancelled) {
+                    runningPushAnimations.remove(view);
+                    onAnimationEnd.run();
+                }
+            }
         });
+        runningPushAnimations.put(view, set);
         set.start();
     }
 
     public void pop(View view, NestedAnimationsOptions pop, Runnable onAnimationEnd) {
+        if (runningPushAnimations.containsKey(view)) {
+            runningPushAnimations.get(view).cancel();
+            onAnimationEnd.run();
+            return;
+        }
         AnimatorSet set = pop.content.getAnimation(view, getDefaultPopAnimation(view));
         set.addListener(new AnimatorListenerAdapter() {
+            private boolean cancelled;
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                this.cancelled = true;
+            }
+
             @Override
             public void onAnimationEnd(Animator animation) {
-                onAnimationEnd.run();
+                if (!cancelled) onAnimationEnd.run();
             }
         });
         set.start();

@@ -57,7 +57,7 @@ public class ModalStackTest extends BaseTest {
         animator = spy(new ModalAnimatorMock(activity));
         presenter = spy(new ModalPresenter(animator));
         uut = new ModalStack(presenter);
-        uut.setContentLayout(activityContentView);
+        uut.setModalsContainer(activityContentView);
         uut.setEventEmitter(Mockito.mock(EventEmitter.class));
         modal1 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_1, new Options()));
         modal2 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_2, new Options()));
@@ -268,7 +268,26 @@ public class ModalStackTest extends BaseTest {
         verify(presenter).setDefaultOptions(defaultOptions);
     }
 
+    @Test
+    public void destroy() {
+        showModalsWithoutAnimation(modal1, modal2);
+        uut.destroy();
+        verify(modal1).destroy();
+        verify(modal2).destroy();
+    }
+
     private ViewController findModal(String id) {
         return uut.findControllerById(id);
+    }
+
+    private void showModalsWithoutAnimation(ViewController... modals) {
+        for (ViewController modal : modals) {
+            showModalWithoutAnimation(modal);
+        }
+    }
+
+    private void showModalWithoutAnimation(ViewController modal) {
+        disableShowModalAnimation(modal);
+        uut.showModal(modal, rootController, new CommandListenerAdapter());
     }
 }

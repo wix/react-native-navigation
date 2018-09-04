@@ -1,6 +1,7 @@
 package com.reactnativenavigation.presentation;
 
 import android.graphics.Color;
+import android.support.annotation.IntRange;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 
@@ -53,16 +54,18 @@ public class BottomTabsOptionsPresenter {
     }
 
     public void applyChildOptions(Options options, Component child) {
-        Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
-        applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
         int tabIndex = bottomTabFinder.findByComponent(child);
-        applyDrawBehind(withDefaultOptions.bottomTabsOptions, tabIndex);
+        if (tabIndex >= 0) {
+            Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
+            applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
+            applyDrawBehind(withDefaultOptions.bottomTabsOptions, tabIndex);
+        }
     }
 
     public void mergeChildOptions(Options options, Component child) {
         mergeBottomTabsOptions(options.bottomTabsOptions, options.animations);
         int tabIndex = bottomTabFinder.findByComponent(child);
-        mergeDrawBehind(options.bottomTabsOptions, tabIndex);
+        if (tabIndex >= 0) mergeDrawBehind(options.bottomTabsOptions, tabIndex);
     }
 
     private void mergeBottomTabsOptions(BottomTabsOptions options, AnimationsOptions animations) {
@@ -99,7 +102,7 @@ public class BottomTabsOptionsPresenter {
         }
     }
 
-    private void applyDrawBehind(BottomTabsOptions options, int tabIndex) {
+    private void applyDrawBehind(BottomTabsOptions options, @IntRange(from = 0) int tabIndex) {
         ViewGroup tab = tabs.get(tabIndex).getView();
         MarginLayoutParams lp = (MarginLayoutParams) tab.getLayoutParams();
         if (options.drawBehind.isTrue()) {
