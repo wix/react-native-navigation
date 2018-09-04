@@ -2,12 +2,14 @@ package com.reactnativenavigation;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
 
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
@@ -29,8 +31,15 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        addDefaultSplashLayout();
         navigator = new Navigator(this, new ChildControllersRegistry(), new ModalStack(this), new OverlayManager());
         getReactGateway().onActivityCreated(this);
+    }
+
+    @Override
+    public void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        navigator.setContentLayout(findViewById(android.R.id.content));
     }
 
     @Override
@@ -111,5 +120,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onReload() {
         navigator.destroyViews();
+    }
+
+    private void addDefaultSplashLayout() {
+        View view = new View(this);
+        view.setBackgroundColor(Color.WHITE);
+        setContentView(view);
     }
 }

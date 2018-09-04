@@ -187,6 +187,18 @@ Navigation.mergeOptions(this.props.componentId, {
       fontFamily: 'Helvetica'
     },
   },
+  sideMenu: {
+    left: {
+      shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
+      animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
+      animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
+    },
+    right: {
+      shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
+      animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
+      animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
+    }
+  }
   bottomTabs: {
     barStyle: 'default' | 'black',
     translucent: true,

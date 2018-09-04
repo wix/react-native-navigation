@@ -52,7 +52,7 @@ public class ModalPresenterTest extends BaseTest {
 
         animator = spy(new ModalAnimator(activity));
         uut = new ModalPresenter(animator);
-        uut.setContentLayout(contentLayout);
+        uut.setModalsContainer(contentLayout);
         modal1 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_1, new Options()));
         modal2 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_2, new Options()));
     }
@@ -139,7 +139,7 @@ public class ModalPresenterTest extends BaseTest {
 
     @Test
     public void showModal_rejectIfContentIsNull() {
-        uut.setContentLayout(null);
+        uut.setModalsContainer(null);
         CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
         uut.showModal(modal1, modal2, listener);
         verify(listener).onError(any());
@@ -165,7 +165,7 @@ public class ModalPresenterTest extends BaseTest {
     public void dismissModal_previousViewIsAddedAtIndex0() {
         modal2.ensureViewIsCreated();
         FrameLayout spy = spy(new FrameLayout(newActivity()));
-        uut.setContentLayout(spy);
+        uut.setModalsContainer(spy);
         uut.dismissTopModal(modal1, modal2, new CommandListenerAdapter());
         verify(spy, times(1)).addView(modal2.getView(), 0);
     }
@@ -222,7 +222,7 @@ public class ModalPresenterTest extends BaseTest {
 
     @Test
     public void dismissTopModal_rejectIfContentIsNull() {
-        uut.setContentLayout(null);
+        uut.setModalsContainer(null);
         CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
         uut.dismissTopModal(modal1, modal2, listener);
         verify(listener).onError(any());
@@ -230,7 +230,7 @@ public class ModalPresenterTest extends BaseTest {
 
     @Test
     public void dismissModal_rejectIfContentIsNull() {
-        uut.setContentLayout(null);
+        uut.setModalsContainer(null);
         CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
         uut.dismissModal(modal1, listener);
         verify(listener).onError(any());

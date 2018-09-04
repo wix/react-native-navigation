@@ -58,6 +58,10 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
     protected FabOptionsPresenter fabOptionsPresenter;
 
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
     public ViewController(Activity activity, String id, YellowBoxDelegate yellowBoxDelegate, Options initialOptions) {
         this.activity = activity;
         this.id = id;
@@ -239,10 +243,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             view = null;
             isDestroyed = true;
         }
-    }
-
-    protected boolean isDestroyed() {
-        return isDestroyed;
     }
 
     @Override

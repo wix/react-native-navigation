@@ -35,8 +35,8 @@ public class ModalStack {
         this.presenter = presenter;
     }
 
-    public void setContentLayout(ViewGroup contentLayout) {
-        presenter.setContentLayout(contentLayout);
+    public void setModalsContainer(ViewGroup modalsLayout) {
+        presenter.setModalsContainer(modalsLayout);
     }
 
     public void setDefaultOptions(Options defaultOptions) {
@@ -49,12 +49,12 @@ public class ModalStack {
         presenter.showModal(viewController, toRemove, listener);
     }
 
-    public void dismissModal(String componentId, ViewController root, CommandListener listener) {
+    public boolean dismissModal(String componentId, @Nullable ViewController root, CommandListener listener) {
         ViewController toDismiss = findModalByComponentId(componentId);
         if (toDismiss != null) {
             boolean isTop = isTop(toDismiss);
             modals.remove(toDismiss);
-            ViewController toAdd = isEmpty() ? root : isTop ? get(size() - 1) : null;
+            @Nullable ViewController toAdd = isEmpty() ? root : isTop ? get(size() - 1) : null;
             CommandListenerAdapter onDismiss = new CommandListenerAdapter(listener) {
                 @Override
                 public void onSuccess(String childId) {
@@ -63,12 +63,18 @@ public class ModalStack {
                 }
             };
             if (isTop) {
+                if (toAdd == null) {
+                    listener.onError("Could not dismiss modal");
+                    return false;
+                }
                 presenter.dismissTopModal(toDismiss, toAdd, onDismiss);
             } else {
                 presenter.dismissModal(toDismiss, onDismiss);
             }
+            return true;
         } else {
             listener.onError("Nothing to dismiss");
+            return false;
         }
     }
 
@@ -102,8 +108,7 @@ public class ModalStack {
         if (peek().handleBack(listener)) {
             return true;
         }
-        dismissModal(peek().getId(), root, listener);
-        return true;
+        return dismissModal(peek().getId(), root, listener);
     }
 
     public ViewController peek() {
@@ -147,5 +152,12 @@ public class ModalStack {
             }
         }
         return null;
+    }
+
+    public void destroy() {
+        for (ViewController modal : modals) {
+            modal.destroy();
+        }
+        modals.clear();
     }
 }
