@@ -149,7 +149,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return false;
     }
 
-    void performOnParentStack(Task accept, Runnable reject) {
+    void performOnParentStack(Task<StackController> accept, Runnable reject) {
         if (!performOnParentStack(accept)) {
             reject.run();
         }

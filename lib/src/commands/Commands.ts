@@ -62,16 +62,16 @@ export class Commands {
     return result;
   }
 
-  public dismissModal(componentId) {
+  public dismissModal(componentId, mergeOptions) {
     const commandId = this.uniqueIdProvider.generate('dismissModal');
-    const result = this.nativeCommandsSender.dismissModal(commandId, componentId);
-    this.commandsObserver.notify('dismissModal', { commandId, componentId });
+    const result = this.nativeCommandsSender.dismissModal(commandId, componentId, mergeOptions);
+    this.commandsObserver.notify('dismissModal', { commandId, componentId, mergeOptions});
     return result;
   }
 
-  public dismissAllModals() {
+  public dismissAllModals(mergeOptions) {
     const commandId = this.uniqueIdProvider.generate('dismissAllModals');
-    const result = this.nativeCommandsSender.dismissAllModals(commandId);
+    const result = this.nativeCommandsSender.dismissAllModals(commandId, mergeOptions);
     this.commandsObserver.notify('dismissAllModals', { commandId });
     return result;
   }
@@ -88,24 +88,24 @@ export class Commands {
     return result;
   }
 
-  public pop(componentId, options) {
+  public pop(componentId, mergeOptions) {
     const commandId = this.uniqueIdProvider.generate('pop');
-    const result = this.nativeCommandsSender.pop(commandId, componentId, options);
-    this.commandsObserver.notify('pop', { commandId, componentId, options });
+    const result = this.nativeCommandsSender.pop(commandId, componentId, mergeOptions);
+    this.commandsObserver.notify('pop', { commandId, componentId, mergeOptions });
     return result;
   }
 
-  public popTo(componentId) {
+  public popTo(componentId, mergeOptions) {
     const commandId = this.uniqueIdProvider.generate('popTo');
-    const result = this.nativeCommandsSender.popTo(commandId, componentId);
-    this.commandsObserver.notify('popTo', { commandId, componentId });
+    const result = this.nativeCommandsSender.popTo(commandId, componentId, mergeOptions);
+    this.commandsObserver.notify('popTo', { commandId, componentId, mergeOptions });
     return result;
   }
 
-  public popToRoot(componentId) {
+  public popToRoot(componentId, mergeOptions) {
     const commandId = this.uniqueIdProvider.generate('popToRoot');
-    const result = this.nativeCommandsSender.popToRoot(commandId, componentId);
-    this.commandsObserver.notify('popToRoot', { commandId, componentId });
+    const result = this.nativeCommandsSender.popToRoot(commandId, componentId, mergeOptions);
+    this.commandsObserver.notify('popToRoot', { commandId, componentId, mergeOptions });
     return result;
   }
 
