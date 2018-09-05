@@ -1,6 +1,7 @@
 package com.reactnativenavigation.react;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
@@ -73,7 +74,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
 	@ReactMethod
-	public void mergeOptions(String onComponentId, ReadableMap options) {
+	public void mergeOptions(String onComponentId, @Nullable ReadableMap options) {
 		handle(() -> navigator().mergeOptions(onComponentId, parse(options)));
 	}
 
@@ -96,17 +97,17 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
 	@ReactMethod
-	public void pop(String commandId, String componentId, ReadableMap mergeOptions, Promise promise) {
+	public void pop(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
 		handle(() -> navigator().pop(componentId, parse(mergeOptions), new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	@ReactMethod
-	public void popTo(String commandId, String componentId, ReadableMap mergeOptions, Promise promise) {
+	public void popTo(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
 		handle(() -> navigator().popTo(componentId, parse(mergeOptions), new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	@ReactMethod
-	public void popToRoot(String commandId, String componentId, ReadableMap mergeOptions, Promise promise) {
+	public void popToRoot(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
 		handle(() -> navigator().popToRoot(componentId, parse(mergeOptions), new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
@@ -120,7 +121,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
-	public void dismissModal(String commandId, String componentId, ReadableMap mergeOptions, Promise promise) {
+	public void dismissModal(String commandId, String componentId, @Nullable ReadableMap mergeOptions, Promise promise) {
 		handle(() -> {
             navigator().mergeOptions(componentId, parse(mergeOptions));
             navigator().dismissModal(componentId, new NativeCommandListener(commandId, promise, eventEmitter, now));
@@ -128,7 +129,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 	}
 
     @ReactMethod
-	public void dismissAllModals(String commandId, ReadableMap mergeOptions, Promise promise) {
+	public void dismissAllModals(String commandId, @Nullable ReadableMap mergeOptions, Promise promise) {
 		handle(() -> navigator().dismissAllModals(parse(mergeOptions), new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
@@ -161,8 +162,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         );
 	}
 
-    private Options parse(ReadableMap mergeOptions) {
-        return Options.parse(new TypefaceLoader(activity()), JSONParser.parse(mergeOptions));
+    private  Options parse(@Nullable ReadableMap mergeOptions) {
+        return mergeOptions == null ? Options.EMPTY : Options.parse(new TypefaceLoader(activity()), JSONParser.parse(mergeOptions));
     }
 
 	private Map<String, ExternalComponentCreator> externalComponentCreator() {

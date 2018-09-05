@@ -202,9 +202,9 @@ describe('Commands', () => {
 
   describe('dismissModal', () => {
     it('sends command to native', () => {
-      uut.dismissModal('myUniqueId');
+      uut.dismissModal('myUniqueId', {});
       expect(mockCommandsSender.dismissModal).toHaveBeenCalledTimes(1);
-      expect(mockCommandsSender.dismissModal).toHaveBeenCalledWith('dismissModal+UNIQUE_ID', 'myUniqueId');
+      expect(mockCommandsSender.dismissModal).toHaveBeenCalledWith('dismissModal+UNIQUE_ID', 'myUniqueId', {});
     });
 
     it('returns a promise with the id', async () => {
@@ -216,9 +216,9 @@ describe('Commands', () => {
 
   describe('dismissAllModals', () => {
     it('sends command to native', () => {
-      uut.dismissAllModals();
+      uut.dismissAllModals({});
       expect(mockCommandsSender.dismissAllModals).toHaveBeenCalledTimes(1);
-      expect(mockCommandsSender.dismissAllModals).toHaveBeenCalledWith('dismissAllModals+UNIQUE_ID');
+      expect(mockCommandsSender.dismissAllModals).toHaveBeenCalledWith('dismissAllModals+UNIQUE_ID', {});
     });
 
     it('returns a promise with the id', async () => {
@@ -285,9 +285,9 @@ describe('Commands', () => {
 
   describe('popTo', () => {
     it('pops all components until the passed Id is top', () => {
-      uut.popTo('theComponentId');
+      uut.popTo('theComponentId', {});
       expect(mockCommandsSender.popTo).toHaveBeenCalledTimes(1);
-      expect(mockCommandsSender.popTo).toHaveBeenCalledWith('popTo+UNIQUE_ID', 'theComponentId');
+      expect(mockCommandsSender.popTo).toHaveBeenCalledWith('popTo+UNIQUE_ID', 'theComponentId', {});
     });
 
     it('returns a promise that resolves to targetId', async () => {
@@ -299,9 +299,9 @@ describe('Commands', () => {
 
   describe('popToRoot', () => {
     it('pops all components to root', () => {
-      uut.popToRoot('theComponentId');
+      uut.popToRoot('theComponentId', {});
       expect(mockCommandsSender.popToRoot).toHaveBeenCalledTimes(1);
-      expect(mockCommandsSender.popToRoot).toHaveBeenCalledWith('popToRoot+UNIQUE_ID', 'theComponentId');
+      expect(mockCommandsSender.popToRoot).toHaveBeenCalledWith('popToRoot+UNIQUE_ID', 'theComponentId', {});
     });
 
     it('returns a promise that resolves to targetId', async () => {
@@ -428,12 +428,12 @@ describe('Commands', () => {
         setDefaultOptions: [{}],
         mergeOptions: ['id', {}],
         showModal: [{}],
-        dismissModal: ['id'],
-        dismissAllModals: [],
+        dismissModal: ['id', {}],
+        dismissAllModals: [{}],
         push: ['id', {}],
         pop: ['id', {}],
-        popTo: ['id'],
-        popToRoot: ['id'],
+        popTo: ['id', {}],
+        popToRoot: ['id', {}],
         setStackRoot: ['id', {}],
         showOverlay: [{}],
         dismissOverlay: ['id'],
@@ -444,12 +444,12 @@ describe('Commands', () => {
         setDefaultOptions: { options: {} },
         mergeOptions: { componentId: 'id', options: {} },
         showModal: { commandId: 'showModal+UNIQUE_ID', layout: 'parsed' },
-        dismissModal: { commandId: 'dismissModal+UNIQUE_ID', componentId: 'id' },
-        dismissAllModals: { commandId: 'dismissAllModals+UNIQUE_ID' },
+        dismissModal: { commandId: 'dismissModal+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
+        dismissAllModals: { commandId: 'dismissAllModals+UNIQUE_ID', mergeOptions: {} },
         push: { commandId: 'push+UNIQUE_ID', componentId: 'id', layout: 'parsed' },
-        pop: { commandId: 'pop+UNIQUE_ID', componentId: 'id', options: {} },
-        popTo: { commandId: 'popTo+UNIQUE_ID', componentId: 'id' },
-        popToRoot: { commandId: 'popToRoot+UNIQUE_ID', componentId: 'id' },
+        pop: { commandId: 'pop+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
+        popTo: { commandId: 'popTo+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
+        popToRoot: { commandId: 'popToRoot+UNIQUE_ID', componentId: 'id', mergeOptions: {} },
         setStackRoot: { commandId: 'setStackRoot+UNIQUE_ID', componentId: 'id', layout: 'parsed' },
         showOverlay: { commandId: 'showOverlay+UNIQUE_ID', layout: 'parsed' },
         dismissOverlay: { commandId: 'dismissOverlay+UNIQUE_ID', componentId: 'id' },

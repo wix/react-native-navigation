@@ -432,7 +432,7 @@ public class NavigatorTest extends BaseTest {
             }
         };
         uut.pop("child2", Options.EMPTY, listener);
-        verify(spy, times(1)).pop(listener);
+        verify(spy, times(1)).pop(Options.EMPTY, listener);
     }
 
     @Test
