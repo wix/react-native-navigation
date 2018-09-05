@@ -425,23 +425,6 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
-    public void pop_specificWhenTopIsRegularPop() {
-        uut.push(child1, new CommandListenerAdapter());
-        uut.push(child2, new CommandListenerAdapter() {
-            @Override
-            public void onSuccess(String childId) {
-                uut.popSpecific(child2, new CommandListenerAdapter() {
-                    @Override
-                    public void onSuccess(String childId) {
-                        assertContainsOnlyId(child1.getId());
-                        assertIsChild(uut.getView(), child1.getView());
-                    }
-                });
-            }
-        });
-    }
-
-    @Test
     public void pop_appearingChildHasCorrectLayoutParams() {
         child2.options.animations.pop.enable = new Bool(false);
         child1.options.topBar.drawBehind = new Bool(false);
@@ -458,16 +441,6 @@ public class StackControllerTest extends BaseTest {
         assertThat(((ViewGroup.MarginLayoutParams) child1.getView().getLayoutParams()).topMargin).isEqualTo(uut
                 .getTopBar()
                 .getHeight());
-    }
-
-    @Test
-    public void popSpecific_deepInStack() {
-        uut.push(child1, new CommandListenerAdapter());
-        uut.push(child2, new CommandListenerAdapter());
-        assertIsChild(uut.getView(), child2.getView());
-        uut.popSpecific(child1, new CommandListenerAdapter());
-        assertContainsOnlyId(child2.getId());
-        assertIsChild(uut.getView(), child2.getView());
     }
 
     @Test
@@ -685,20 +658,6 @@ public class StackControllerTest extends BaseTest {
                 assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
             }
         });
-    }
-
-    @Test
-    public void popSpecific_CallsDestroyOnPoppedChild() {
-        child1 = spy(child1);
-        child2 = spy(child2);
-        child3 = spy(child3);
-        uut.push(child1, new CommandListenerAdapter());
-        uut.push(child2, new CommandListenerAdapter());
-        uut.push(child3, new CommandListenerAdapter());
-
-        verify(child2, times(0)).destroy();
-        uut.popSpecific(child2, new CommandListenerAdapter());
-        verify(child2, times(1)).destroy();
     }
 
     @Test

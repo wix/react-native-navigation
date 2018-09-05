@@ -98,8 +98,8 @@ public class NavigationModule extends ReactContextBaseJavaModule {
     }
 
 	@ReactMethod
-	public void pop(String commandId, String onComponentId, ReadableMap options, Promise promise) {
-		handle(() -> navigator().popSpecific(onComponentId, new NativeCommandListener(commandId, promise, eventEmitter, now)));
+	public void pop(String commandId, String componentId, ReadableMap options, Promise promise) {
+		handle(() -> navigator().pop(componentId, new NativeCommandListener(commandId, promise, eventEmitter, now)));
 	}
 
 	@ReactMethod
