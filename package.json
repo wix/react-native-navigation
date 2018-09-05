@@ -53,7 +53,7 @@
     "react-native": "*"
   },
   "dependencies": {
-    "hoist-non-react-statics": "2.x.x",
+    "hoist-non-react-statics": "3.x.x",
     "lodash": "4.x.x",
     "prop-types": "15.x.x",
     "react-lifecycles-compat": "2.0.0"
