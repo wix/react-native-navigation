@@ -68,7 +68,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	UIViewController<RNNRootViewProtocol>* vc = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
-	if ([vc conformsToProtocol:@protocol(RNNRootViewProtocol)]) {
+	if ([vc conformsToProtocol:@protocol(RNNRootViewProtocol)] || [vc isKindOfClass:[RNNRootViewController class]]) {
 		[vc.getLeafViewController.options mergeWith:options];
 		[CATransaction begin];
 		[CATransaction setCompletionBlock:completion];
