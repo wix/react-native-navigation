@@ -192,9 +192,13 @@
 			
 			_customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 			[self.navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
-			self.navigationController.navigationBar.clipsToBounds = YES;
 		} else if (self.navigationController.navigationBar.subviews.count && [[self.navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
 			[[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
+		}
+		
+		if (self.options.topBar.background.clipToBounds) {
+			self.navigationController.navigationBar.clipsToBounds = YES;
+		} else {
 			self.navigationController.navigationBar.clipsToBounds = NO;
 		}
 	} if (_customTopBarBackground && _customTopBarBackground.superview == nil) {

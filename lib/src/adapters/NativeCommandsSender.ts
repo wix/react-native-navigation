@@ -22,15 +22,15 @@ export class NativeCommandsSender {
     return this.nativeCommandsModule.push(commandId, onComponentId, layout);
   }
 
-  pop(commandId: string, componentId: string, options: object) {
+  pop(commandId: string, componentId: string, options?: object) {
     return this.nativeCommandsModule.pop(commandId, componentId, options);
   }
 
-  popTo(commandId: string, componentId: string, options: object) {
+  popTo(commandId: string, componentId: string, options?: object) {
     return this.nativeCommandsModule.popTo(commandId, componentId, options);
   }
 
-  popToRoot(commandId: string, componentId: string, options: object) {
+  popToRoot(commandId: string, componentId: string, options?: object) {
     return this.nativeCommandsModule.popToRoot(commandId, componentId, options);
   }
 
@@ -42,11 +42,11 @@ export class NativeCommandsSender {
     return this.nativeCommandsModule.showModal(commandId, layout);
   }
 
-  dismissModal(commandId: string, componentId: string, options: object) {
+  dismissModal(commandId: string, componentId: string, options?: object) {
     return this.nativeCommandsModule.dismissModal(commandId, componentId, options);
   }
 
-  dismissAllModals(commandId: string, options: object) {
+  dismissAllModals(commandId: string, options?: object) {
     return this.nativeCommandsModule.dismissAllModals(commandId, options);
   }
 

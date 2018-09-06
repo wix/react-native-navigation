@@ -2,6 +2,8 @@ import * as _ from 'lodash';
 import { CommandsObserver } from '../events/CommandsObserver';
 import { NativeCommandsSender } from '../adapters/NativeCommandsSender';
 import { UniqueIdProvider } from '../adapters/UniqueIdProvider';
+import { Options } from '../interfaces/Options';
+import { Layout, LayoutRoot } from '../interfaces/Layout';
 
 export class Commands {
   constructor(
@@ -12,7 +14,7 @@ export class Commands {
     private readonly uniqueIdProvider: UniqueIdProvider) {
   }
 
-  public setRoot(simpleApi) {
+  public setRoot(simpleApi: LayoutRoot) {
     const input = _.cloneDeep(simpleApi);
     const root = this.layoutTreeParser.parse(input.root);
     this.layoutTreeCrawler.crawl(root);
@@ -35,7 +37,7 @@ export class Commands {
     return result;
   }
 
-  public setDefaultOptions(options) {
+  public setDefaultOptions(options: Options) {
     const input = _.cloneDeep(options);
     this.layoutTreeCrawler.processOptions(input);
 
@@ -43,7 +45,7 @@ export class Commands {
     this.commandsObserver.notify('setDefaultOptions', { options });
   }
 
-  public mergeOptions(componentId, options) {
+  public mergeOptions(componentId: string, options: Options) {
     const input = _.cloneDeep(options);
     this.layoutTreeCrawler.processOptions(input);
 
@@ -51,7 +53,7 @@ export class Commands {
     this.commandsObserver.notify('mergeOptions', { componentId, options });
   }
 
-  public showModal(simpleApi) {
+  public showModal(simpleApi: Layout) {
     const input = _.cloneDeep(simpleApi);
     const layout = this.layoutTreeParser.parse(input);
     this.layoutTreeCrawler.crawl(layout);
@@ -62,21 +64,21 @@ export class Commands {
     return result;
   }
 
-  public dismissModal(componentId, mergeOptions?) {
+  public dismissModal(componentId, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate('dismissModal');
     const result = this.nativeCommandsSender.dismissModal(commandId, componentId, mergeOptions);
     this.commandsObserver.notify('dismissModal', { commandId, componentId, mergeOptions});
     return result;
   }
 
-  public dismissAllModals(mergeOptions?) {
+  public dismissAllModals(mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate('dismissAllModals');
     const result = this.nativeCommandsSender.dismissAllModals(commandId, mergeOptions);
     this.commandsObserver.notify('dismissAllModals', { commandId, mergeOptions });
     return result;
   }
 
-  public push(componentId, simpleApi) {
+  public push(componentId: string, simpleApi: Layout) {
     const input = _.cloneDeep(simpleApi);
 
     const layout = this.layoutTreeParser.parse(input);
@@ -88,28 +90,28 @@ export class Commands {
     return result;
   }
 
-  public pop(componentId, mergeOptions?) {
+  public pop(componentId: string, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate('pop');
     const result = this.nativeCommandsSender.pop(commandId, componentId, mergeOptions);
     this.commandsObserver.notify('pop', { commandId, componentId, mergeOptions });
     return result;
   }
 
-  public popTo(componentId, mergeOptions?) {
+  public popTo(componentId: string, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate('popTo');
     const result = this.nativeCommandsSender.popTo(commandId, componentId, mergeOptions);
     this.commandsObserver.notify('popTo', { commandId, componentId, mergeOptions });
     return result;
   }
 
-  public popToRoot(componentId, mergeOptions?) {
+  public popToRoot(componentId: string, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate('popToRoot');
     const result = this.nativeCommandsSender.popToRoot(commandId, componentId, mergeOptions);
     this.commandsObserver.notify('popToRoot', { commandId, componentId, mergeOptions });
     return result;
   }
 
-  public setStackRoot(componentId, simpleApi) {
+  public setStackRoot(componentId: string, simpleApi: Layout) {
     const input = _.cloneDeep(simpleApi);
 
     const layout = this.layoutTreeParser.parse(input);
@@ -121,7 +123,7 @@ export class Commands {
     return result;
   }
 
-  public showOverlay(simpleApi) {
+  public showOverlay(simpleApi: Layout) {
     const input = _.cloneDeep(simpleApi);
 
     const layout = this.layoutTreeParser.parse(input);
@@ -133,7 +135,7 @@ export class Commands {
     return result;
   }
 
-  public dismissOverlay(componentId) {
+  public dismissOverlay(componentId: string) {
     const commandId = this.uniqueIdProvider.generate('dismissOverlay');
     const result = this.nativeCommandsSender.dismissOverlay(commandId, componentId);
     this.commandsObserver.notify('dismissOverlay', { commandId, componentId });

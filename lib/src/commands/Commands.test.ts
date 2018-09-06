@@ -54,7 +54,7 @@ describe('Commands', () => {
 
     it('deep clones input to avoid mutation errors', () => {
       const obj = {};
-      uut.setRoot({ root: { component: { name: 'bla', inner: obj } } });
+      uut.setRoot({ root: { component: { name: 'bla', inner: obj } as any } });
       expect(mockCommandsSender.setRoot.mock.calls[0][1].root.data.inner).not.toBe(obj);
     });
 
@@ -137,12 +137,12 @@ describe('Commands', () => {
   describe('mergeOptions', () => {
     it('deep clones input to avoid mutation errors', () => {
       const obj = { title: 'test' };
-      uut.mergeOptions('theComponentId', obj);
+      uut.mergeOptions('theComponentId', obj as any);
       expect(mockCommandsSender.mergeOptions.mock.calls[0][1]).not.toBe(obj);
     });
 
     it('passes options for component', () => {
-      uut.mergeOptions('theComponentId', { title: '1' });
+      uut.mergeOptions('theComponentId', { title: '1' } as any);
       expect(mockCommandsSender.mergeOptions).toHaveBeenCalledTimes(1);
       expect(mockCommandsSender.mergeOptions).toHaveBeenCalledWith('theComponentId', { title: '1' });
     });
@@ -151,7 +151,7 @@ describe('Commands', () => {
   describe('setDefaultOptions', () => {
     it('deep clones input to avoid mutation errors', () => {
       const obj = { title: 'test' };
-      uut.setDefaultOptions(obj);
+      uut.setDefaultOptions(obj as any);
       expect(mockCommandsSender.setDefaultOptions.mock.calls[0][0]).not.toBe(obj);
     });
   });
@@ -177,7 +177,7 @@ describe('Commands', () => {
 
     it('deep clones input to avoid mutation errors', () => {
       const obj = {};
-      uut.showModal({ component: { name: 'name', inner: obj } });
+      uut.showModal({ component: { name: 'name', inner: obj } as any });
       expect(mockCommandsSender.showModal.mock.calls[0][1].data.inner).not.toBe(obj);
     });
 
@@ -271,7 +271,7 @@ describe('Commands', () => {
           duration: 0.8
         }
       };
-      uut.pop('theComponentId', options);
+      uut.pop('theComponentId', options as any);
       expect(mockCommandsSender.pop).toHaveBeenCalledTimes(1);
       expect(mockCommandsSender.pop).toHaveBeenCalledWith('pop+UNIQUE_ID', 'theComponentId', options);
     });
@@ -348,7 +348,7 @@ describe('Commands', () => {
 
     it('deep clones input to avoid mutation errors', () => {
       const obj = {};
-      uut.showOverlay({ component: { name: 'name', inner: obj } });
+      uut.showOverlay({ component: { name: 'name', inner: obj } as any });
       expect(mockCommandsSender.showOverlay.mock.calls[0][1].data.inner).not.toBe(obj);
     });
 
