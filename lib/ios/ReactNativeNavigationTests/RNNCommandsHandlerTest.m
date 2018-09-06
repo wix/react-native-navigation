@@ -121,7 +121,7 @@
 	[self.store setReadyToReceiveCommands:true];
 	XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
 
-	[self.uut pop:@"vc3" options:nil completion:^{
+	[self.uut pop:@"vc3" mergeOptions:nil completion:^{
 		XCTAssertNil([self.store findComponentForId:@"vc3"]);
 		XCTAssertNotNil([self.store findComponentForId:@"vc2"]);
 		XCTAssertNotNil([self.store findComponentForId:@"vc1"]);
@@ -137,7 +137,7 @@
 	[self.store setReadyToReceiveCommands:true];
 	XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
 	_nvc.willReturnVCs = @[self.vc2, self.vc3];
-	[self.uut popTo:@"vc1" completion:^{
+	[self.uut popTo:@"vc1" mergeOptions:nil completion:^{
 		XCTAssertNil([self.store findComponentForId:@"vc2"]);
 		XCTAssertNil([self.store findComponentForId:@"vc3"]);
 		XCTAssertNotNil([self.store findComponentForId:@"vc1"]);
@@ -151,7 +151,7 @@
 	[self.store setReadyToReceiveCommands:true];
 	_nvc.willReturnVCs = @[self.vc2, self.vc3];
 	XCTestExpectation *expectation = [self expectationWithDescription:@"Testing Async Method"];
-	[self.uut popToRoot:@"vc3" completion:^{
+	[self.uut popToRoot:@"vc3" mergeOptions:nil completion:^{
 		XCTAssertNil([self.store findComponentForId:@"vc2"]);
 		XCTAssertNil([self.store findComponentForId:@"vc3"]);
 		XCTAssertNotNil([self.store findComponentForId:@"vc1"]);

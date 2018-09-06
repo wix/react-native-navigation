@@ -68,9 +68,9 @@
 	}
 }
 
--(void)dismissAllModals {
+-(void)dismissAllModalsAnimated:(BOOL)animated {
 	UIViewController *root = UIApplication.sharedApplication.delegate.window.rootViewController;
-	[root dismissViewControllerAnimated:YES completion:nil];
+	[root dismissViewControllerAnimated:animated completion:nil];
 	[_delegate dismissedMultipleModals:_presentedModals];
 	[_pendingModalIdsToDismiss removeAllObjects];
 	[_presentedModals removeAllObjects];

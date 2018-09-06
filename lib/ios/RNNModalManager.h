@@ -16,6 +16,6 @@
 
 - (void)showModal:(UIViewController*)viewController animated:(BOOL)animated completion:(RNNTransitionWithComponentIdCompletionBlock)completion;
 - (void)dismissModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion;
-- (void)dismissAllModals;
+- (void)dismissAllModalsAnimated:(BOOL)animated;
 
 @end
