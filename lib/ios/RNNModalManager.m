@@ -34,7 +34,7 @@
 			_completionBlock = nil;
 		}
 		
-		[_presentedModals addObject:self.toVC.getLeafViewController];
+		[_presentedModals addObject:self.toVC.navigationController ? self.toVC.navigationController : self.toVC];
 		
 		self.toVC = nil;
 	}];
@@ -119,7 +119,7 @@
 }
 
 - (void)dismissedModal:(UIViewController *)viewController {
-	[_presentedModals removeObject:viewController];
+	[_presentedModals removeObject:viewController.navigationController ? viewController.navigationController : viewController];
 	[_delegate dismissedModal:viewController];
 }
 

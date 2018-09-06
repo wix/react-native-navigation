@@ -50,11 +50,12 @@ public class NavigationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
     public void getConstants(Promise promise) {
+        ReactApplicationContext ctx = getReactApplicationContext();
         WritableMap constants = Arguments.createMap();
-        constants.putString(Constants.BACK_BUTTON_JS_KEY, Constants.BACK_BUTTON_ID);
-        constants.putDouble(Constants.STATUS_BAR_HEIGHT_KEY, UiUtils.getStatusBarHeight(getReactApplicationContext()));
-        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY, UiUtils.getToolBarHeight(getReactApplicationContext()));
-        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY, UiUtils.dpToPx(getReactApplicationContext(), Constants.BOTTOM_TABS_HEIGHT));
+        constants.putString(Constants.BACK_BUTTON_JS_KEY,    Constants.BACK_BUTTON_ID);
+        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY,    Constants.BOTTOM_TABS_HEIGHT);
+        constants.putDouble(Constants.STATUS_BAR_HEIGHT_KEY, UiUtils.pxToDp(ctx, UiUtils.getStatusBarHeight(ctx)));
+        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY,    UiUtils.pxToDp(ctx, UiUtils.getToolBarHeight(ctx)));
         promise.resolve(constants);
     }
 
