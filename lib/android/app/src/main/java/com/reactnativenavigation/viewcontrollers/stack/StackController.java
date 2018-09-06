@@ -53,6 +53,7 @@ public class StackController extends ParentController<StackLayout> {
         for (ViewController child : children) {
             stack.push(child.getId(), child);
             child.setParentController(this);
+            if (size() > 1) backButtonHelper.addToPushedChild(child);
         }
     }
 

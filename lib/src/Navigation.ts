@@ -13,6 +13,8 @@ import { CommandsObserver } from './events/CommandsObserver';
 import { Constants } from './adapters/Constants';
 import { ComponentType } from 'react';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
+import { LayoutRoot, Layout } from './interfaces/Layout';
+import { Options } from './interfaces/Options';
 
 export class Navigation {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
@@ -64,28 +66,28 @@ export class Navigation {
   /**
    * Reset the app to a new layout
    */
-  public setRoot(layout): Promise<any> {
+  public setRoot(layout: LayoutRoot): Promise<any> {
     return this.commands.setRoot(layout);
   }
 
   /**
    * Set default options to all screens. Useful for declaring a consistent style across the app.
    */
-  public setDefaultOptions(options): void {
+  public setDefaultOptions(options: Options): void {
     this.commands.setDefaultOptions(options);
   }
 
   /**
    * Change a component's navigation options
    */
-  public mergeOptions(componentId: string, options): void {
+  public mergeOptions(componentId: string, options: Options): void {
     this.commands.mergeOptions(componentId, options);
   }
 
   /**
    * Show a screen as a modal.
    */
-  public showModal(layout): Promise<any> {
+  public showModal(layout: Layout): Promise<any> {
     return this.commands.showModal(layout);
   }
 
@@ -106,7 +108,7 @@ export class Navigation {
   /**
    * Push a new layout into this screen's navigation stack.
    */
-  public push(componentId: string, layout): Promise<any> {
+  public push(componentId: string, layout: Layout): Promise<any> {
     return this.commands.push(componentId, layout);
   }
 
@@ -134,14 +136,14 @@ export class Navigation {
   /**
    * Sets new root component to stack.
    */
-  public setStackRoot(componentId: string, layout): Promise<any> {
+  public setStackRoot(componentId: string, layout: Layout): Promise<any> {
     return this.commands.setStackRoot(componentId, layout);
   }
 
   /**
    * Show overlay on top of the entire app
    */
-  public showOverlay(layout): Promise<any> {
+  public showOverlay(layout: Layout): Promise<any> {
     return this.commands.showOverlay(layout);
   }
 
