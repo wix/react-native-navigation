@@ -54,7 +54,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)setRoot:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
-	[_modalManager dismissAllModals];
+	[_modalManager dismissAllModalsAnimated:NO];
 	
 	UIViewController *vc = [_controllerFactory createLayoutAndSaveToStore:layout[@"root"]];
 	
@@ -153,11 +153,11 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	} rejection:rejection];
 }
 
-- (void)pop:(NSString*)componentId options:(NSDictionary*)optionsDict completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+- (void)pop:(NSString*)componentId mergeOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	
 	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
-	[vc.options mergeWith:optionsDict];
+	[vc.options mergeWith:options];
 	
 	UINavigationController *nvc = vc.navigationController;
 	
@@ -182,9 +182,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}];
 }
 
-- (void)popTo:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+- (void)popTo:(NSString*)componentId mergeOptions:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
+	[vc.options mergeWith:options];
 	
 	[_stackManager popTo:vc animated:vc.options.animations.pop.enable completion:^(NSArray *poppedViewControllers) {
 		[_eventEmitter sendOnNavigationCommandCompletion:popTo params:@{@"componentId": componentId}];
@@ -193,9 +194,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	} rejection:rejection];
 }
 
--(void) popToRoot:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+- (void)popToRoot:(NSString*)componentId mergeOptions:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
-	RNNRootViewController *newVc = (RNNRootViewController*)[_store findComponentForId:componentId];
+	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
+	[vc.options mergeWith:options];
 	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
@@ -203,7 +205,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		completion();
 	}];
 	
-	[_stackManager popToRoot:newVc animated:newVc.options.animations.pop.enable completion:^(NSArray *poppedViewControllers) {
+	[_stackManager popToRoot:vc animated:vc.options.animations.pop.enable completion:^(NSArray *poppedViewControllers) {
 		[self removePopedViewControllers:poppedViewControllers];
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
@@ -222,7 +224,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}];
 }
 
-- (void)dismissModal:(NSString*)componentId completion:(RNNTransitionCompletionBlock)completion {
+- (void)dismissModal:(NSString*)componentId mergeOptions:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
 	[CATransaction begin];
@@ -230,6 +232,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
 	}];
 	UIViewController<RNNRootViewProtocol> *modalToDismiss = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
+	[modalToDismiss.getLeafViewController.options mergeWith:options];
+	
 	[self removePopedViewControllers:modalToDismiss.navigationController.viewControllers];
 	
 	[_modalManager dismissModal:modalToDismiss completion:completion];
@@ -237,7 +241,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[CATransaction commit];
 }
 
-- (void)dismissAllModalsWithCompletion:(RNNTransitionCompletionBlock)completion {
+- (void)dismissAllModals:(NSDictionary *)mergeOptions completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
 	[CATransaction begin];
@@ -245,8 +249,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissAllModals params:@{}];
 		completion();
 	}];
-	
-	[_modalManager dismissAllModals];
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
+	[_modalManager dismissAllModalsAnimated:options.animations.dismissModal.enable];
 	
 	[CATransaction commit];
 }

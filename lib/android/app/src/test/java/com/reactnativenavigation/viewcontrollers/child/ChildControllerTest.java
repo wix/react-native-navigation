@@ -11,6 +11,7 @@ import com.reactnativenavigation.viewcontrollers.ParentController;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -63,5 +64,11 @@ public class ChildControllerTest extends BaseTest {
         Options options = new Options();
         uut.mergeOptions(options);
         verify(presenter).mergeOptions(uut.getView(), options);
+    }
+
+    @Test
+    public void mergeOptions_emptyOptionsAreIgnored() {
+        uut.mergeOptions(Options.EMPTY);
+        verify(presenter, times(0)).mergeOptions(any(), any());
     }
 }

@@ -227,7 +227,7 @@ public class StackControllerTest extends BaseTest {
             @Override
             public void onSuccess(String childId) {
                 assertContainsOnlyId(child2.getId(), child1.getId());
-                uut.pop(new CommandListenerAdapter());
+                uut.pop(Options.EMPTY, new CommandListenerAdapter());
                 assertContainsOnlyId(child1.getId());
             }
         });
@@ -239,7 +239,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child2, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                uut.pop(new CommandListenerAdapter());
+                uut.pop(Options.EMPTY, new CommandListenerAdapter());
                 verify(uut, times(1)).applyChildOptions(uut.options, eq((ReactComponent) child1.getView()));
             }
         });
@@ -260,7 +260,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child2, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                uut.pop(new CommandListenerAdapter() {
+                uut.pop(Options.EMPTY, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
                         verify(presenter, times(1)).onChildWillAppear(child1.options, child2.options);
@@ -312,11 +312,11 @@ public class StackControllerTest extends BaseTest {
     @Test
     public void popDoesNothingWhenZeroOrOneChild() {
         assertThat(uut.isEmpty()).isTrue();
-        uut.pop(new CommandListenerAdapter());
+        uut.pop(Options.EMPTY, new CommandListenerAdapter());
         assertThat(uut.isEmpty()).isTrue();
 
         uut.push(child1, new CommandListenerAdapter());
-        uut.pop(new CommandListenerAdapter());
+        uut.pop(Options.EMPTY, new CommandListenerAdapter());
         assertContainsOnlyId(child1.getId());
     }
 
@@ -417,7 +417,7 @@ public class StackControllerTest extends BaseTest {
             public void onSuccess(String childId) {
                 assertIsChild(uut.getView(), child2View);
                 assertNotChildOf(uut.getView(), child1View);
-                uut.pop(new CommandListenerAdapter());
+                uut.pop(Options.EMPTY, new CommandListenerAdapter());
                 assertNotChildOf(uut.getView(), child2View);
                 assertIsChild(uut.getView(), child1View);
             }
@@ -433,7 +433,7 @@ public class StackControllerTest extends BaseTest {
         uut.ensureViewIsCreated();
 
         assertThat(child2.getView().getParent()).isEqualTo(uut.getView());
-        uut.pop(new CommandListenerAdapter());
+        uut.pop(Options.EMPTY, new CommandListenerAdapter());
         assertThat(child1.getView().getParent()).isEqualTo(uut.getView());
 
         assertThat(child1.getView().getLayoutParams().width).isEqualTo(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -453,7 +453,7 @@ public class StackControllerTest extends BaseTest {
                 assertThat(uut.size()).isEqualTo(3);
                 assertThat(uut.peek()).isEqualTo(child3);
 
-                uut.popTo(child1, new CommandListenerAdapter());
+                uut.popTo(child1, Options.EMPTY, new CommandListenerAdapter());
 
                 assertThat(uut.size()).isEqualTo(1);
                 assertThat(uut.peek()).isEqualTo(child1);
@@ -462,11 +462,26 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void popTo_optionsAreMergedOnTopChild() {
+        disablePushAnimation(child1, child2);
+        uut.push(child1, new CommandListenerAdapter());
+
+        Options mergeOptions = new Options();
+        uut.popTo(child2, mergeOptions, new CommandListenerAdapter());
+        uut.popTo(child1, mergeOptions, new CommandListenerAdapter());
+        verify(child1, times(0)).mergeOptions(mergeOptions);
+
+        uut.push(child2, new CommandListenerAdapter());
+        uut.popTo(child1, mergeOptions, new CommandListenerAdapter());
+        verify(child2).mergeOptions(mergeOptions);
+    }
+
+    @Test
     public void popTo_NotAChildOfThisStack_DoesNothing() {
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child3, new CommandListenerAdapter());
         assertThat(uut.size()).isEqualTo(2);
-        uut.popTo(child2, new CommandListenerAdapter());
+        uut.popTo(child2, Options.EMPTY, new CommandListenerAdapter());
         assertThat(uut.size()).isEqualTo(2);
     }
 
@@ -478,7 +493,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child4, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                uut.popTo(child2, new CommandListenerAdapter() {
+                uut.popTo(child2, Options.EMPTY, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
                         verify(animator, times(0)).pop(eq(child1.getView()), any(), any());
@@ -503,7 +518,7 @@ public class StackControllerTest extends BaseTest {
                 assertThat(uut.size()).isEqualTo(3);
                 assertThat(uut.peek()).isEqualTo(child3);
 
-                uut.popToRoot(new CommandListenerAdapter() {
+                uut.popToRoot(Options.EMPTY, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
                         assertThat(uut.size()).isEqualTo(1);
@@ -524,7 +539,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child3, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                uut.popToRoot(new CommandListenerAdapter() {
+                uut.popToRoot(Options.EMPTY, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
                         verify(animator, times(1)).pop(eq(child3.getView()), eq(child3.options.animations.pop), any());
@@ -544,7 +559,7 @@ public class StackControllerTest extends BaseTest {
         uut.push(child2, new CommandListenerAdapter());
         uut.push(child3, new CommandListenerAdapter());
 
-        uut.popToRoot(new CommandListenerAdapter() {
+        uut.popToRoot(Options.EMPTY, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 verify(child1, times(0)).destroy();
@@ -558,9 +573,21 @@ public class StackControllerTest extends BaseTest {
     public void popToRoot_EmptyStackDoesNothing() {
         assertThat(uut.isEmpty()).isTrue();
         CommandListenerAdapter listener = spy(new CommandListenerAdapter());
-        uut.popToRoot(listener);
+        uut.popToRoot(Options.EMPTY, listener);
         assertThat(uut.isEmpty()).isTrue();
         verify(listener, times(1)).onError(any());
+    }
+
+    @Test
+    public void popToRoot_optionsAreMergedOnTopChild() {
+        disablePushAnimation(child1, child2);
+        uut.push(child1, new CommandListenerAdapter());
+        uut.push(child2, new CommandListenerAdapter());
+
+        Options mergeOptions = new Options();
+        uut.popToRoot(mergeOptions, new CommandListenerAdapter());
+        verify(child2).mergeOptions(mergeOptions);
+        verify(child1, times(0)).mergeOptions(mergeOptions);
     }
 
     @Test
@@ -591,7 +618,7 @@ public class StackControllerTest extends BaseTest {
             @Override
             public void onSuccess(String childId) {
                 verify(child3, times(0)).destroy();
-                uut.pop(new CommandListenerAdapter());
+                uut.pop(Options.EMPTY, new CommandListenerAdapter());
                 verify(child3, times(1)).destroy();
             }
         });
@@ -605,7 +632,7 @@ public class StackControllerTest extends BaseTest {
         child2 = spy(child2);
         uut.push(child1, new CommandListenerAdapter());
         uut.push(child2, new CommandListenerAdapter());
-        uut.pop(new CommandListenerAdapter());
+        uut.pop(Options.EMPTY, new CommandListenerAdapter());
         verify(child1, times(1)).onViewWillAppear();
         verify(child2, times(1)).onViewWillDisappear();
     }
@@ -625,7 +652,7 @@ public class StackControllerTest extends BaseTest {
                 uut.push(child2, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
-                        uut.pop(new CommandListenerAdapter() {
+                        uut.pop(Options.EMPTY, new CommandListenerAdapter() {
                             @Override
                             public void onSuccess(String childId) {
                                 verify(uut.getTopBar(), times(1)).hideAnimate(child2.options.animations.pop.topBar);
@@ -653,7 +680,7 @@ public class StackControllerTest extends BaseTest {
                 uut.push(child2, new CommandListenerAdapter());
                 assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.VISIBLE);
 
-                uut.pop(new CommandListenerAdapter());
+                uut.pop(Options.EMPTY, new CommandListenerAdapter());
                 verify(uut.getTopBar(), times(0)).hideAnimate(child2.options.animations.pop.topBar);
                 assertThat(uut.getTopBar().getVisibility()).isEqualTo(View.GONE);
             }
@@ -673,7 +700,7 @@ public class StackControllerTest extends BaseTest {
                 verify(child2, times(0)).destroy();
                 verify(child3, times(0)).destroy();
 
-                uut.popTo(child1, new CommandListenerAdapter() {
+                uut.popTo(child1, Options.EMPTY, new CommandListenerAdapter() {
                     @Override
                     public void onSuccess(String childId) {
                         verify(child2, times(1)).destroy();

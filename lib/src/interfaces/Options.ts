@@ -11,20 +11,20 @@ export interface OptionsSplitView {
    * Master view display mode
    * @default 'auto'
    */
-  displayMode: 'auto' | 'visible' | 'hidden' | 'overlay';
+  displayMode?: 'auto' | 'visible' | 'hidden' | 'overlay';
   /**
    * Master view side. Leading is left. Trailing is right.
    * @default 'leading'
    */
-  primaryEdge: 'leading' | 'trailing';
+  primaryEdge?: 'leading' | 'trailing';
   /**
    * Set the minimum width of master view
    */
-  minWidth: number;
+  minWidth?: number;
   /**
    * Set the maximum width of master view
    */
-  maxWidth: number;
+  maxWidth?: number;
 }
 
 export interface OptionsStatusBar {
@@ -156,7 +156,7 @@ export interface OptionsTopBarBackButton {
   /**
    * Image to show as the back button
    */
-  icon: ImageRequireSource;
+  icon?: ImageRequireSource;
   /**
    * Weither the back button is visible or not
    * @default true
@@ -231,7 +231,7 @@ export interface OptionsTopBarButton {
   /**
    * Set testID for reference in E2E tests
    */
-  testID: string;
+  testID?: string;
 }
 
 export interface OptionsTopBar {
@@ -555,11 +555,11 @@ export interface OptionsAnimationPropertyConfig {
   /**
    * Animate from this value, ex. 0
    */
-  from: number;
+  from?: number;
   /**
    * Animate to this value, ex. 1
    */
-  to: number;
+  to?: number;
   /**
    * Animation duration
    * @default 300

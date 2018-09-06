@@ -232,7 +232,7 @@ public class TopTabsViewControllerTest extends BaseTest {
         uut.onViewAppeared();
 
         assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isTrue();
-        stackController.pop(new CommandListenerAdapter() {
+        stackController.pop(Options.EMPTY, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
                 assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();

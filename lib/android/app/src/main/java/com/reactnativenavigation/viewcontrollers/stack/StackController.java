@@ -189,7 +189,7 @@ public class StackController extends ParentController<StackLayout> {
         }
     }
 
-    public void pop(CommandListener listener) {
+    public void pop(Options mergeOptions, CommandListener listener) {
         if (!canPop()) {
             listener.onError("Nothing to pop");
             return;
@@ -197,6 +197,7 @@ public class StackController extends ParentController<StackLayout> {
 
         final ViewController disappearing = stack.pop();
         final ViewController appearing = stack.peek();
+        disappearing.mergeOptions(mergeOptions);
         disappearing.onViewWillDisappear();
         appearing.onViewWillAppear();
         Options resolvedOptions = resolveCurrentOptions();
@@ -221,8 +222,8 @@ public class StackController extends ParentController<StackLayout> {
         listener.onSuccess(disappearing.getId());
     }
 
-    public void popTo(final ViewController viewController, CommandListener listener) {
-        if (!stack.containsId(viewController.getId())) {
+    public void popTo(ViewController viewController, Options mergeOptions, CommandListener listener) {
+        if (!stack.containsId(viewController.getId()) || peek().equals(viewController)) {
             listener.onError("Nothing to pop");
             return;
         }
@@ -238,10 +239,10 @@ public class StackController extends ParentController<StackLayout> {
             currentControlId = iterator.next();
         }
 
-        pop(listener);
+        pop(mergeOptions, listener);
     }
 
-    public void popToRoot(CommandListener listener) {
+    public void popToRoot(Options mergeOptions, CommandListener listener) {
         if (!canPop()) {
             listener.onError("Nothing to pop");
             return;
@@ -255,7 +256,7 @@ public class StackController extends ParentController<StackLayout> {
             }
         }
 
-        pop(listener);
+        pop(mergeOptions, listener);
     }
 
     private void removeAndDestroyController(ViewController controller) {
@@ -278,7 +279,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public boolean handleBack(CommandListener listener) {
         if (canPop()) {
-            pop(listener);
+            pop(Options.EMPTY, listener);
             return true;
         }
         return false;
@@ -313,7 +314,7 @@ public class StackController extends ParentController<StackLayout> {
 
     private void onNavigationButtonPressed(String buttonId) {
         if (Constants.BACK_BUTTON_ID.equals(buttonId)) {
-            pop(new CommandListenerAdapter());
+            pop(Options.EMPTY, new CommandListenerAdapter());
         } else {
             sendOnNavigationButtonPressed(buttonId);
         }

@@ -48,7 +48,7 @@
 	[_modalManager showModal:_vc3 animated:NO completion:nil];
 	
 	_modalManager.delegate = self;
-	[_modalManager dismissAllModals];
+	[_modalManager dismissAllModalsAnimated:NO];
 	
 	XCTAssertTrue(_modalDismissedCount == 3);
 }
@@ -75,7 +75,7 @@
 	XCTAssertTrue(_modalDismissedCount == 1);
 }
 
-- (void)testDismissAllModalsAfterDismissingPreviousModal_InvokeDelegateWithCorrectParameters {
+- (void)testDismissAllModals_AfterDismissingPreviousModal_InvokeDelegateWithCorrectParameters {
 	[_modalManager showModal:_vc1 animated:NO completion:nil];
 	[_modalManager showModal:_vc2 animated:NO completion:nil];
 	[_modalManager showModal:_vc3 animated:NO completion:nil];
@@ -84,11 +84,11 @@
 	[_modalManager dismissModal:_vc2 completion:nil];
 	
 	XCTAssertTrue(_modalDismissedCount == 1);
-	[_modalManager dismissAllModals];
+	[_modalManager dismissAllModalsAnimated:NO];
 	XCTAssertTrue(_modalDismissedCount == 2);
 }
 
-- (void)testDismissNilModal_doesntCrash {
+- (void)testDismissModal_DismissNilModalDoesntCrash {
 	_modalManager.delegate = self;
 	[_modalManager dismissModal:nil completion:nil];
 	

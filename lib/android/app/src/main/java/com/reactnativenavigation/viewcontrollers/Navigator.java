@@ -156,18 +156,18 @@ public class Navigator extends ParentController {
         applyOnStack(id, listener, stack -> stack.setRoot(viewController, listener));
     }
 
-    public void pop(String id, CommandListener listener) {
-        applyOnStack(id, listener, stack -> stack.pop(listener));
+    public void pop(String id, Options mergeOptions, CommandListener listener) {
+        applyOnStack(id, listener, stack -> stack.pop(mergeOptions, listener));
     }
 
-    public void popToRoot(final String id, CommandListener listener) {
-        applyOnStack(id, listener, stack -> stack.popToRoot(listener));
+    public void popToRoot(final String id, Options mergeOptions, CommandListener listener) {
+        applyOnStack(id, listener, stack -> stack.popToRoot(mergeOptions, listener));
     }
 
-    public void popTo(final String id, CommandListener listener) {
+    public void popTo(final String id, Options mergeOptions, CommandListener listener) {
         ViewController target = findControllerById(id);
         if (target != null) {
-            target.performOnParentStack(stack -> ((StackController) stack).popTo(target, listener));
+            target.performOnParentStack(stack -> ((StackController) stack).popTo(target, mergeOptions, listener));
         } else {
             listener.onError("Failed to execute stack command. Stack by " + id + " not found.");
         }
@@ -185,8 +185,8 @@ public class Navigator extends ParentController {
         modalStack.dismissModal(componentId, root, listener);
     }
 
-    public void dismissAllModals(CommandListener listener) {
-        modalStack.dismissAllModals(listener, root);
+    public void dismissAllModals(Options mergeOptions, CommandListener listener) {
+        modalStack.dismissAllModals(root, mergeOptions, listener);
     }
 
     public void showOverlay(ViewController overlay, CommandListener listener) {
