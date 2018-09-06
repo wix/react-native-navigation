@@ -68,7 +68,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	UIViewController* vc = [_store findComponentForId:componentId];
-	if([vc isKindOfClass:[RNNRootViewController class]]) {
+	if ([vc isKindOfClass:[RNNRootViewController class]]) {
 		RNNRootViewController* rootVc = (RNNRootViewController*)vc;
 		[rootVc.options mergeWith:options];
 		[CATransaction begin];
@@ -77,9 +77,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		[rootVc.options applyOn:vc];
 		
 		[CATransaction commit];
-	}
-	
-	if ([vc isKindOfClass:[RNNSplitViewController class]]) {
+	} else if ([vc isKindOfClass:[RNNSplitViewController class]]) {
 		RNNSplitViewController* splitVc = (RNNSplitViewController*)vc;
 		[splitVc.options mergeWith:options];
 		[CATransaction begin];
@@ -87,6 +85,13 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		
 		[splitVc.options applyOn:vc];
 		
+		[CATransaction commit];
+	} else {
+		UIViewController<RNNRootViewProtocol>* rootVc = (UIViewController<RNNRootViewProtocol>*)vc;
+		[rootVc.getLeafViewController.options mergeWith:options];
+		[CATransaction begin];
+		[CATransaction setCompletionBlock:completion];
+		[rootVc.getLeafViewController.options applyOn:rootVc.getLeafViewController];
 		[CATransaction commit];
 	}
 	
