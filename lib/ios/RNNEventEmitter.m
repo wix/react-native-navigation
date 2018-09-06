@@ -92,6 +92,13 @@ static NSString* const SearchBarCancelPressed 	= @"RNN.SearchBarCancelPressed";
 											}];
 }
 
+- (void)sendModalsDismissedEvent:(NSString *)componentId numberOfModalsDismissed:(NSNumber *)modalsDismissed {
+	[self send:ModalDismissed body:@{
+											 @"componentId": componentId,
+											 @"modalsDismissed": modalsDismissed
+											 }];
+}
+
 - (void)addListener:(NSString *)eventName {
 	[super addListener:eventName];
 	if ([eventName isEqualToString:AppLaunched]) {

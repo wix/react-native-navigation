@@ -10,6 +10,7 @@ import com.reactnativenavigation.utils.TypefaceLoader;
 import org.json.JSONObject;
 
 public class Options {
+    public static final Options EMPTY = new Options();
 
     @NonNull
     public static Options parse(TypefaceLoader typefaceManager, JSONObject json) {

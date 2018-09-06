@@ -49,7 +49,7 @@ public class ViewUtils {
         return ret;
     }
 
-    public static <T> List<T> findChildrenByClass(ViewGroup root, Class clazz) {
+    public static <T> List<T> findChildrenByClass(ViewGroup root, Class<T> clazz) {
         return findChildrenByClass(root, clazz, child -> true);
     }
 
