@@ -86,7 +86,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		[splitVc.options applyOn:vc];
 		
 		[CATransaction commit];
-	} else {
+	} else if ([vc conformsToProtocol:@protocol(RNNRootViewProtocol)]) {
 		UIViewController<RNNRootViewProtocol>* rootVc = (UIViewController<RNNRootViewProtocol>*)vc;
 		[rootVc.getLeafViewController.options mergeWith:options];
 		[CATransaction begin];
