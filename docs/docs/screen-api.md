@@ -25,7 +25,7 @@ Navigation.push(this.props.componentId, {
 });
 ```
 
-## pop(componentId)
+## pop(componentId, mergeOptions?)
 
 Pop the top screen from this screen's navigation stack.
 
@@ -33,14 +33,14 @@ Pop the top screen from this screen's navigation stack.
 Navigation.pop(this.props.componentId);
 ```
 
-## popToRoot(componentId)
+## popToRoot(componentId, mergeOptions?)
 
 Pop all the screens until the root from this screen's navigation stack.
 
 ```js
 Navigation.popToRoot(this.props.componentId);
 ```
-## popTo(componentId)
+## popTo(componentId, mergeOptions?)
 
 Pop the stack to a given component.
 
@@ -96,7 +96,7 @@ Navigation.showModal({
 });
 ```
 
-## dismissModal(componentId)
+## dismissModal(componentId, mergeOptions?)
 
 Dismiss the current modal.
 
@@ -104,7 +104,7 @@ Dismiss the current modal.
 Navigation.dismissModal(this.props.componentId);
 ```
 
-## dismissAllModals()
+## dismissAllModals(mergeOptions?)
 
 Dismiss all the current modals at the same time.
 
