@@ -99,6 +99,13 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void constructor_backButtonIsAddedToChild() {
+        createStack(Arrays.asList(child1, child2, child3));
+        assertThat(child2.options.topBar.buttons.back.visible.get(false)).isTrue();
+        assertThat(child3.options.topBar.buttons.back.visible.get(false)).isTrue();
+    }
+
+    @Test
     public void createView_currentChildIsAdded() {
         StackController uut = createStack(Arrays.asList(child1, child2, child3, child4));
         assertThat(uut.getChildControllers().size()).isEqualTo(4);
