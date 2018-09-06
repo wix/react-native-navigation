@@ -64,14 +64,14 @@ export class Commands {
     return result;
   }
 
-  public dismissModal(componentId, mergeOptions: Options) {
+  public dismissModal(componentId, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate('dismissModal');
     const result = this.nativeCommandsSender.dismissModal(commandId, componentId, mergeOptions);
     this.commandsObserver.notify('dismissModal', { commandId, componentId, mergeOptions});
     return result;
   }
 
-  public dismissAllModals(mergeOptions: Options) {
+  public dismissAllModals(mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate('dismissAllModals');
     const result = this.nativeCommandsSender.dismissAllModals(commandId, mergeOptions);
     this.commandsObserver.notify('dismissAllModals', { commandId, mergeOptions });
@@ -90,21 +90,21 @@ export class Commands {
     return result;
   }
 
-  public pop(componentId: string, mergeOptions: Options) {
+  public pop(componentId: string, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate('pop');
     const result = this.nativeCommandsSender.pop(commandId, componentId, mergeOptions);
     this.commandsObserver.notify('pop', { commandId, componentId, mergeOptions });
     return result;
   }
 
-  public popTo(componentId: string, mergeOptions: Options) {
+  public popTo(componentId: string, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate('popTo');
     const result = this.nativeCommandsSender.popTo(commandId, componentId, mergeOptions);
     this.commandsObserver.notify('popTo', { commandId, componentId, mergeOptions });
     return result;
   }
 
-  public popToRoot(componentId: string, mergeOptions: Options) {
+  public popToRoot(componentId: string, mergeOptions?: Options) {
     const commandId = this.uniqueIdProvider.generate('popToRoot');
     const result = this.nativeCommandsSender.popToRoot(commandId, componentId, mergeOptions);
     this.commandsObserver.notify('popToRoot', { commandId, componentId, mergeOptions });
