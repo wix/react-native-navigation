@@ -8,7 +8,7 @@ export interface LayoutComponent {
   /**
    * Name of your component
    */
-  name: string;
+  name: string | number;
   /**
    * Styling options
    */
