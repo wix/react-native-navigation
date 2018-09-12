@@ -55,6 +55,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	[_modalManager dismissAllModalsAnimated:NO];
+	[_store removeAllComponents];
 	
 	UIViewController *vc = [_controllerFactory createLayoutAndSaveToStore:layout[@"root"]];
 	

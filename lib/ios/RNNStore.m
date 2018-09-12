@@ -43,6 +43,11 @@
 	}
 }
 
+- (void)removeAllComponents {
+	[_componentStore removeAllObjects];
+}
+
+
 -(void)setReadyToReceiveCommands:(BOOL)isReady {
 	_isReadyToReceiveCommands = isReady;
 }
@@ -53,7 +58,7 @@
 
 -(void)clean {
 	_isReadyToReceiveCommands = false;
-	[_componentStore removeAllObjects];
+	[self removeAllComponents];
 }
 
 -(NSString*)componentKeyForInstance:(UIViewController*)instance {
