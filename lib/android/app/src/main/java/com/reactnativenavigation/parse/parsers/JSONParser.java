@@ -68,18 +68,26 @@ public class JSONParser {
     }
 
     private static Object parseNumber(ReadableMap map, String key) {
-        Double doubleValue = map.getDouble(key);
-        if(doubleValue % 1 == 0){
+        try {
+            Double doubleValue = map.getDouble(key);
+            if(doubleValue % 1 == 0){
+                return map.getInt(key);
+            }
+            return doubleValue;
+        } catch (Exception e) {
             return map.getInt(key);
         }
-        return doubleValue;
     }
 
     private static Object parseNumber(ReadableArray arr, int index) {
-        Double doubleValue = arr.getDouble(index);
-        if(doubleValue % 1 == 0){
+        try {
+            Double doubleValue = arr.getDouble(index);
+            if(doubleValue % 1 == 0){
+                return arr.getInt(index);
+            }
+            return doubleValue;
+        } catch (Exception e) {
             return arr.getInt(index);
         }
-        return doubleValue;
     }
 }
