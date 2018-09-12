@@ -1,6 +1,7 @@
 package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,11 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
+import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
+import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
@@ -137,7 +140,7 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.ensureViewIsCreated();
         assertThat(uut.getSelectedIndex()).isZero();
 
-        uut.onTabSelected(0, false);
+        uut.onTabSelected(0, true);
 
         assertThat(uut.getSelectedIndex()).isEqualTo(0);
         assertThat(((ViewController) ((List) uut.getChildControllers()).get(0)).getView().getParent()).isNotNull();
@@ -156,7 +159,7 @@ public class BottomTabsControllerTest extends BaseTest {
     @Test
     public void applyOptions_bottomTabsOptionsAreClearedAfterApply() {
         Options options = new Options();
-        options.bottomTabsOptions.backgroundColor = new Color(android.graphics.Color.RED);
+        options.bottomTabsOptions.backgroundColor = new Colour(Color.RED);
         child1.mergeOptions(options);
         uut.ensureViewIsCreated();
 
@@ -282,7 +285,7 @@ public class BottomTabsControllerTest extends BaseTest {
         return TestUtils.newStackController(activity)
                 .setId(id)
                 .setInitialOptions(tabOptions)
-                .setStackPresenter(new StackOptionsPresenter(activity, new Options()))
+                .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new Options()))
                 .build();
     }
 

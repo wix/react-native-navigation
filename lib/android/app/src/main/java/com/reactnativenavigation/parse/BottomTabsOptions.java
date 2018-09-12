@@ -1,7 +1,7 @@
 package com.reactnativenavigation.parse;
 
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.params.NullNumber;
@@ -34,7 +34,7 @@ public class BottomTabsOptions {
 		return options;
 	}
 
-    public Color backgroundColor = new NullColor();
+    public Colour backgroundColor = new NullColor();
 	public Bool visible = new NullBool();
     public Bool drawBehind = new NullBool();
 	public Bool animate = new NullBool();

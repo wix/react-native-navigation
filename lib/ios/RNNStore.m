@@ -7,7 +7,6 @@
 
 @implementation RNNStore {
 	NSMapTable* _componentStore;
-	NSMutableArray* _pendingModalIdsToDismiss;
 	NSMutableDictionary* _externalComponentCreators;
 	BOOL _isReadyToReceiveCommands;
 }
@@ -16,7 +15,6 @@
 	self = [super init];
 	_isReadyToReceiveCommands = false;
 	_componentStore = [NSMapTable strongToWeakObjectsMapTable];
-	_pendingModalIdsToDismiss = [NSMutableArray new];
 	_externalComponentCreators = [NSMutableDictionary new];
 	return self;
 }
@@ -45,6 +43,11 @@
 	}
 }
 
+- (void)removeAllComponents {
+	[_componentStore removeAllObjects];
+}
+
+
 -(void)setReadyToReceiveCommands:(BOOL)isReady {
 	_isReadyToReceiveCommands = isReady;
 }
@@ -53,14 +56,9 @@
 	return _isReadyToReceiveCommands;
 }
 
--(NSMutableArray *)pendingModalIdsToDismiss {
-	return _pendingModalIdsToDismiss;
-}
-
 -(void)clean {
 	_isReadyToReceiveCommands = false;
-	[_pendingModalIdsToDismiss removeAllObjects];
-	[_componentStore removeAllObjects];
+	[self removeAllComponents];
 }
 
 -(NSString*)componentKeyForInstance:(UIViewController*)instance {

@@ -12,14 +12,17 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
-import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
+import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
+import com.reactnativenavigation.views.element.Element;
 import com.reactnativenavigation.views.topbar.TopBar;
 import com.reactnativenavigation.views.touch.OverlayTouchDelegate;
+
+import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 @SuppressLint("ViewConstructor")
-public class ComponentLayout extends FrameLayout implements ReactComponent, TopBarButtonController.OnClickListener {
+public class ComponentLayout extends FrameLayout implements ReactComponent, TitleBarButtonController.OnClickListener {
 
     private IReactView reactView;
     private final OverlayTouchDelegate touchDelegate;
@@ -102,6 +105,11 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, TopB
     @Override
     public boolean isRendered() {
         return reactView.isRendered();
+    }
+
+    @Override
+    public List<Element> getElements() {
+        return reactView.getElements();
     }
 
     @Override

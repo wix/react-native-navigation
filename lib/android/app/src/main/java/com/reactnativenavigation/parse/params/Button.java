@@ -9,6 +9,7 @@ import com.reactnativenavigation.parse.parsers.BoolParser;
 import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.NumberParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
+import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONArray;
@@ -17,13 +18,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Button {
+    public String instanceId = "btn" + CompatUtils.generateViewId();
+
     @Nullable public String id;
     public Text text = new NullText();
     public Bool enabled = new NullBool();
     public Bool disableIconTint = new NullBool();
     public Number showAsAction = new NullNumber();
-    public Color color = new NullColor();
-    public Color disabledColor = new NullColor();
+    public Colour color = new NullColor();
+    public Colour disabledColor = new NullColor();
     public Number fontSize = new NullNumber();
     private Text fontWeight = new NullText();
     @Nullable public Typeface fontFamily;
@@ -31,7 +34,7 @@ public class Button {
     public Text testId = new NullText();
     public Component component = new Component();
 
-    protected static Button parseJson(JSONObject json, TypefaceLoader typefaceManager) {
+    private static Button parseJson(JSONObject json, TypefaceLoader typefaceManager) {
         Button button = new Button();
         button.id = json.optString("id");
         button.text = TextParser.parse(json, "text");
@@ -78,6 +81,12 @@ public class Button {
         return buttons;
     }
 
+    public Button copy() {
+        Button button = new Button();
+        button.mergeWith(this);
+        return button;
+    }
+
     public boolean hasComponent() {
         return component.hasValue();
     }
@@ -118,6 +127,8 @@ public class Button {
         if (other.component.hasValue()) component = other.component;
         if (other.showAsAction.hasValue()) showAsAction = other.showAsAction;
         if (other.icon.hasValue()) icon = other.icon;
+        if (other.id != null) id = other.id;
+        if (other.instanceId != null) instanceId = other.instanceId;
     }
 
     public void mergeWithDefault(Button defaultOptions) {

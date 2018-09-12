@@ -22,4 +22,6 @@
 
 -(void)sendOnSearchBarCancelPressed:(NSString *)componentId;
 
+- (void)sendModalsDismissedEvent:(NSString *)componentId numberOfModalsDismissed:(NSNumber *)modalsDismissed;
+
 @end

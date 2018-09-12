@@ -19,10 +19,14 @@ class PushedScreen extends Component {
           id: 'singleBtn',
           text: 'single',
           testID: testIDs.TOP_BAR_BUTTON
-        }
+        },
+        rightButtonColor: 'red',
       },
       layout: {
         backgroundColor: '#f5fcff'
+      },
+      bottomTabs: {
+        visible: false
       }
     };
   }
@@ -176,7 +180,11 @@ class PushedScreen extends Component {
           previousScreenIds: _.concat([], this.props.previousScreenIds || [], this.props.componentId)
         },
         options: {
-          animated: true,
+          animations: {
+            setStackRoot: {
+              enable: false
+            }
+          },
           topBar: {
             title: {
               text: `Pushed ${this.getStackPosition() + 1}`

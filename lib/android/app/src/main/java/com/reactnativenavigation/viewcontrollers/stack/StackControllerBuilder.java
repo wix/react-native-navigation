@@ -11,7 +11,7 @@ import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
-import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
+import com.reactnativenavigation.views.element.ElementTransitionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,6 @@ public class StackControllerBuilder {
     private Activity activity;
     private ChildControllersRegistry childRegistry;
     private ReactViewCreator topBarButtonCreator;
-    private TitleBarReactViewCreator titleBarReactViewCreator;
     private TopBarBackgroundViewController topBarBackgroundViewController;
     private TopBarController topBarController;
     private String id;
@@ -34,7 +33,7 @@ public class StackControllerBuilder {
     public StackControllerBuilder(Activity activity) {
         this.activity = activity;
         presenter = new OptionsPresenter(activity, new Options());
-        animator = new NavigationAnimator(activity);
+        animator = new NavigationAnimator(activity, new ElementTransitionManager());
     }
 
     public StackControllerBuilder setChildren(List<ViewController> children) {
@@ -42,13 +41,13 @@ public class StackControllerBuilder {
         return this;
     }
 
-    public StackControllerBuilder setOptionsPresenter(OptionsPresenter presenter) {
-        this.presenter = presenter;
+    public StackControllerBuilder setStackPresenter(StackOptionsPresenter stackPresenter) {
+        this.stackPresenter = stackPresenter;
         return this;
     }
 
-    public StackControllerBuilder setStackPresenter(StackOptionsPresenter stackPresenter) {
-        this.stackPresenter = stackPresenter;
+    public StackControllerBuilder setPresenter(OptionsPresenter presenter) {
+        this.presenter = presenter;
         return this;
     }
 
@@ -59,11 +58,6 @@ public class StackControllerBuilder {
 
     public StackControllerBuilder setTopBarButtonCreator(ReactViewCreator topBarButtonCreator) {
         this.topBarButtonCreator = topBarButtonCreator;
-        return this;
-    }
-
-    public StackControllerBuilder setTitleBarReactViewCreator(TitleBarReactViewCreator titleBarReactViewCreator) {
-        this.titleBarReactViewCreator = titleBarReactViewCreator;
         return this;
     }
 
@@ -101,8 +95,6 @@ public class StackControllerBuilder {
         return new StackController(activity,
                 children,
                 childRegistry,
-                topBarButtonCreator,
-                titleBarReactViewCreator,
                 topBarBackgroundViewController,
                 topBarController,
                 animator,

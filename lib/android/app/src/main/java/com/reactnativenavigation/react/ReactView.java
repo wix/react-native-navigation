@@ -14,6 +14,10 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.views.element.Element;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("ViewConstructor")
 public class ReactView extends ReactRootView implements IReactView {
@@ -23,6 +27,7 @@ public class ReactView extends ReactRootView implements IReactView {
 	private final String componentName;
 	private boolean isAttachedToReactInstance = false;
     private final JSTouchDispatcher jsTouchDispatcher;
+    private ArrayList<Element> elements = new ArrayList<>();
 
     public ReactView(final Context context, ReactInstanceManager reactInstanceManager, String componentId, String componentName) {
 		super(context);
@@ -105,5 +110,18 @@ public class ReactView extends ReactRootView implements IReactView {
     @RestrictTo(RestrictTo.Scope.TESTS)
     public String getComponentName() {
         return componentName;
+    }
+
+    public void registerElement(Element element) {
+        elements.add(element);
+    }
+
+    public void unregisterElement(Element element) {
+        elements.remove(element);
+    }
+
+    @Override
+    public List<Element> getElements() {
+        return elements;
     }
 }

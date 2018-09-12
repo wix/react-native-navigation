@@ -1,12 +1,12 @@
 # Styling Options
 
-You can style the navigator appearance and behavior by passing an `options` object. This object can be passed when the screen is originally created; can be defined per-screen by setting `static get options()` on the screen component; and can be overridden when a screen is pushed.
+You can style the navigator appearance and behavior by passing an `options` object. This object can be passed when the screen is originally created; can be defined per-screen by setting `static options(passProps)` on the screen component; and can be overridden when a screen is pushed, dynamically (after the screen was already rendered at least once) using `mergeOptions()`.
 
-The easiest way to style your screen is by adding `static get options()` to your screen React component definition.
+The easiest way to style your screen is by adding `static options(passProps)` to your screen React component definition. `passProps` is the same passProps you can specify as part of the push/modal or other command operation.
 
 ```js
 export default class StyledScreen extends Component {
-  static get options() {
+  static options(passProps) {
     return {
       topBar: {
         title: {
@@ -43,7 +43,7 @@ Navigation.setDefaultOptions({
 ```
 
 ## Setting styles dynamically
-Use the `mergeOptions` method to change a screen's style dynamically.
+Use the `mergeOptions` method to change a screen's style dynamically. WARNING! these options will be applied on an already rendered screen, after it has been rendered at least once.
 
 ```js
 Navigation.mergeOptions(this.props.componentId, {
@@ -75,16 +75,6 @@ Navigation.mergeOptions(this.props.componentId, {
     buttonColor: 'black',
     drawBehind: false,
     testID: 'topBar',
-    searchBar: true, // iOS 11+ native UISearchBar inside topBar
-    searchBarHiddenWhenScrolling: true,
-    searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
-    // iOS 11+ Large Title
-    largeTitle: {
-      visible: true,
-      fontSize: 30,
-      color: 'red',
-      fontFamily: 'Helvetica'
-    },
     title: {
       text: 'Title',
       fontSize: 14,
@@ -125,6 +115,7 @@ Navigation.mergeOptions(this.props.componentId, {
   bottomTab: {
     text: 'Tab 1',
     badge: '2',
+    badgeColor: 'red',
     testID: 'bottomTabTestID',
     icon: require('tab.png'),
     iconColor: 'red',
@@ -136,10 +127,14 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   sideMenu: {
     left: {
+      width: 260,
+      height: 270,
       visible: false,
       enabled: true
     },
     right: {
+      width: 260,
+      height: 270,
       visible: false,
       enabled: true
     }
@@ -182,6 +177,9 @@ Navigation.mergeOptions(this.props.componentId, {
       title: 'Back',
       showTitle: false
     },
+    searchBar: true, // iOS 11+ native UISearchBar inside topBar
+    searchBarHiddenWhenScrolling: true,
+    searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
     largeTitle: {
       visible: true,
       fontSize: 30,
@@ -189,6 +187,18 @@ Navigation.mergeOptions(this.props.componentId, {
       fontFamily: 'Helvetica'
     },
   },
+  sideMenu: {
+    left: {
+      shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
+      animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
+      animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
+    },
+    right: {
+      shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
+      animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
+      animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
+    }
+  }
   bottomTabs: {
     barStyle: 'default' | 'black',
     translucent: true,
@@ -213,13 +223,15 @@ Navigation.mergeOptions(this.props.componentId, {
     visible: false
   },
   layout: {
-    topMargin: Navigation.constants().statusBarHeight // Set the layout's top margin
+    topMargin: Navigation.constants().statusBarHeight, // Set the layout's top margin
+    orientation: ['portrait', 'landscape'] | ['sensorLandscape'] // An array of supported orientations
   },
   topBar: {
     height: 70, // TopBar height in dp
     borderColor: 'red',
     borderHeight: 1.3,
     elevation: 1.5, // TopBar elevation in dp
+    topMargin: 24, // top margin in dp
     title: {
       height: 70 // TitleBar height in dp
     }
@@ -229,6 +241,7 @@ Navigation.mergeOptions(this.props.componentId, {
   },
   bottomTab: {
     selectedFontSize: 19 // Selected tab font size in sp
+  }
 }
 ```
 

@@ -50,7 +50,7 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
     }
 
     @Override
-    protected boolean isViewShown() {
+    public boolean isViewShown() {
         return super.isViewShown() && view.isReady();
     }
 
@@ -63,7 +63,8 @@ public class ComponentViewController extends ChildController<ComponentLayout> {
 
     @Override
     public void mergeOptions(Options options) {
-        applyOnParentController(parentController -> parentController.mergeChildOptions(options, getView()));
+        if (options == Options.EMPTY) return;
+        performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
         super.mergeOptions(options);
     }
 

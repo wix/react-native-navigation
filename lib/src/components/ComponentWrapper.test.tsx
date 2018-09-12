@@ -134,4 +134,33 @@ describe('ComponentWrapper', () => {
     tree.unmount();
     expect(componentEventsObserver.unmounted).toHaveBeenCalledTimes(1);
   });
+
+  describe(`register with redux store`, () => {
+    class MyReduxComp extends React.Component<any> {
+      static get options() {
+        return { foo: 123 };
+      }
+      render() {
+        return (
+          <Text>{this.props.txt}</Text>
+        );
+      }
+    }
+    function mapStateToProps(state) {
+      return {
+        txt: state.txt
+      };
+    }
+    const ConnectedComp = require('react-redux').connect(mapStateToProps)(MyReduxComp);
+    const ReduxProvider = require('react-redux').Provider;
+    const initialState = { txt: 'it just works' };
+    const reduxStore = require('redux').createStore((state = initialState) => state);
+
+    it(`wraps the component with a react-redux provider with passed store`, () => {
+      const NavigationComponent = ComponentWrapper.wrap(componentName, ConnectedComp, store, componentEventsObserver, ReduxProvider, reduxStore);
+      const tree = renderer.create(<NavigationComponent componentId={'theCompId'} />);
+      expect(tree.toJSON()!.children).toEqual(['it just works']);
+      expect((NavigationComponent as any).options).toEqual({ foo: 123 });
+    });
+  });
 });

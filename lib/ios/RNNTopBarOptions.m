@@ -44,8 +44,8 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 				search.searchBar.placeholder = self.searchBarPlaceholder;
 			}
 			viewController.navigationItem.searchController = search;
-			// enable it back if needed on componentDidAppear
-			viewController.navigationItem.hidesSearchBarWhenScrolling = NO;
+			
+			viewController.navigationItem.hidesSearchBarWhenScrolling = [self.searchBarHiddenWhenScrolling boolValue];
 			
 			// Fixes #3450, otherwise, UIKit will infer the presentation context to be the root most view controller
 			viewController.definesPresentationContext = YES;
@@ -62,13 +62,6 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		viewController.navigationController.hidesBarsOnSwipe = [self.hideOnScroll boolValue];
 	} else {
 		viewController.navigationController.hidesBarsOnSwipe = NO;
-	}
-	
-	if (self.buttonColor) {
-		UIColor* buttonColor = [RCTConvert UIColor:self.buttonColor];
-		viewController.navigationController.navigationBar.tintColor = buttonColor;
-	} else {
-		viewController.navigationController.navigationBar.tintColor = nil;
 	}
 	
 	if ([self.blur boolValue]) {
@@ -125,7 +118,7 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 	} else {
 		viewController.navigationController.navigationBar.barStyle = UIBarStyleDefault;
 	}
-
+	
 	if (self.translucent) {
 		viewController.navigationController.navigationBar.translucent = [self.translucent boolValue];
 	} else {
@@ -160,18 +153,29 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
 		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons defaultLeftButtonStyle:self.leftButtonStyle defaultRightButtonStyle:self.rightButtonStyle];
 	}
+	
+	self.rightButtons = nil;
+	self.leftButtons = nil;
 }
 
-- (void)setLeftButtons:(id)leftButtons {
-	if ([leftButtons isKindOfClass:[NSArray class]]) {
-		_leftButtons = leftButtons;
-	} else if ([leftButtons isKindOfClass:[NSDictionary class]]) {
-		if (leftButtons[@"id"]) {
-			_leftButtons = @[leftButtons];
-		} else {
-			[_leftButtonStyle mergeWith:leftButtons];
-		}
-	}
+- (void)setRightButtonColor:(NSNumber *)rightButtonColor {
+	_rightButtonColor = rightButtonColor;
+	_rightButtonStyle.color = rightButtonColor;
+}
+
+- (void)setRightButtonDisabledColor:(NSNumber *)rightButtonDisabledColor {
+	_rightButtonDisabledColor = rightButtonDisabledColor;
+	_rightButtonStyle.disabledColor = rightButtonDisabledColor;
+}
+
+- (void)setLeftButtonColor:(NSNumber *)leftButtonColor {
+	_leftButtonColor = leftButtonColor;
+	_leftButtonStyle.color = leftButtonColor;
+}
+
+- (void)setLeftButtonDisabledColor:(NSNumber *)leftButtonDisabledColor {
+	_leftButtonDisabledColor = leftButtonDisabledColor;
+	_leftButtonStyle.disabledColor = leftButtonDisabledColor;
 }
 
 - (void)setRightButtons:(id)rightButtons {
@@ -183,6 +187,22 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		} else {
 			[_rightButtonStyle mergeWith:rightButtons];
 		}
+	} else {
+		_rightButtons = rightButtons;
+	}
+}
+
+- (void)setLeftButtons:(id)leftButtons {
+	if ([leftButtons isKindOfClass:[NSArray class]]) {
+		_leftButtons = leftButtons;
+	} else if ([leftButtons isKindOfClass:[NSDictionary class]]) {
+		if (leftButtons[@"id"]) {
+			_leftButtons = @[leftButtons];
+		} else {
+			[_leftButtonStyle mergeWith:leftButtons];
+		}
+	} else {
+		_leftButtons = leftButtons;
 	}
 }
 

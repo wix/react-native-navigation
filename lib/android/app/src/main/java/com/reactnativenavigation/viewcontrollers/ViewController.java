@@ -18,13 +18,19 @@ import com.reactnativenavigation.presentation.FabOptionsPresenter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.StringUtils;
 import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.utils.UiThread;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.Component;
+import com.reactnativenavigation.views.element.Element;
 
-public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener {
+import java.util.Collections;
+import java.util.List;
+
+public abstract class ViewController<T extends ViewGroup> implements ViewTreeObserver.OnGlobalLayoutListener, ViewGroup.OnHierarchyChangeListener {
 
     private Runnable onAppearedListener;
+    private boolean appearEventPosted;
     private Bool waitForRender = new NullBool();
 
     public interface ViewVisibilityListener {
@@ -44,16 +50,22 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     private final Activity activity;
     private final String id;
-    protected T view;
+    private YellowBoxDelegate yellowBoxDelegate;
+    @Nullable protected T view;
     @Nullable private ParentController<T> parentController;
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
     protected FabOptionsPresenter fabOptionsPresenter;
 
-    public ViewController(Activity activity, String id, Options initialOptions) {
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
+    public ViewController(Activity activity, String id, YellowBoxDelegate yellowBoxDelegate, Options initialOptions) {
         this.activity = activity;
         this.id = id;
+        this.yellowBoxDelegate = yellowBoxDelegate;
         fabOptionsPresenter = new FabOptionsPresenter();
         this.initialOptions = initialOptions;
         options = initialOptions.copy();
@@ -95,7 +107,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     @CallSuper
     public void mergeOptions(Options options) {
         this.options = this.options.mergeWith(options);
-        applyOptions(this.options);
+        if (view != null) applyOptions(this.options);
         this.options.clearOneTimeOptions();
     }
 
@@ -112,7 +124,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         return activity;
     }
 
-    protected void applyOnParentController(Task<ParentController> task) {
+    protected void performOnParentController(Task<ParentController> task) {
         if (parentController != null) task.run(parentController);
     }
 
@@ -125,21 +137,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.parentController = parentController;
     }
 
-    boolean performOnParentStack(Task<StackController> task) {
+    void performOnParentStack(Task<StackController> task) {
         if (parentController instanceof StackController) {
             task.run((StackController) parentController);
-            return true;
-        }
-        if (this instanceof StackController) {
+        } else if (this instanceof StackController) {
             task.run((StackController) this);
-            return true;
-        }
-        return false;
-    }
-
-    void performOnParentStack(Task accept, Runnable reject) {
-        if (!performOnParentStack(accept)) {
-            reject.run();
         }
     }
 
@@ -149,16 +151,19 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
                 throw new RuntimeException("Tried to create view after it has already been destroyed");
             }
             view = createView();
+            view.setOnHierarchyChangeListener(this);
             view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         }
         return view;
     }
 
     public void detachView() {
+        if (view == null || view.getParent() == null) return;
         ((ViewManager) view.getParent()).removeView(view);
     }
 
     public void attachView(ViewGroup parent, int index) {
+        if (view == null) return;
         if (view.getParent() == null) parent.addView(view, index);
     }
 
@@ -187,13 +192,16 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     public void onViewAppeared() {
         isShown = true;
         applyOptions(options);
-        applyOnParentController(parentController -> {
+        performOnParentController(parentController -> {
             parentController.clearOptions();
             if (getView() instanceof Component) parentController.applyChildOptions(options, (Component) getView());
         });
-        if (onAppearedListener != null) {
-            onAppearedListener.run();
-            onAppearedListener = null;
+        if (onAppearedListener != null && !appearEventPosted) {
+            appearEventPosted = true;
+            UiThread.post(() -> {
+                onAppearedListener.run();
+                onAppearedListener = null;
+            });
         }
     }
 
@@ -212,11 +220,13 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
             isShown = false;
             onViewDisappear();
         }
+        yellowBoxDelegate.destroy();
         if (view instanceof Destroyable) {
             ((Destroyable) view).destroy();
         }
         if (view != null) {
             view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            view.setOnHierarchyChangeListener(null);
             if (view.getParent() instanceof ViewGroup) {
                 ((ViewManager) view.getParent()).removeView(view);
             }
@@ -240,13 +250,23 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         }
     }
 
+    @Override
+    public void onChildViewAdded(View parent, View child) {
+        yellowBoxDelegate.onChildViewAdded(parent, child);
+    }
+
+    @Override
+    public void onChildViewRemoved(View view, View view1) {
+
+    }
+
     void runOnPreDraw(Task<T> task) {
         UiUtils.runOnPreDrawOnce(getView(), () -> task.run(getView()));
     }
 
     public abstract void sendOnNavigationButtonPressed(String buttonId);
 
-    protected boolean isViewShown() {
+    public boolean isViewShown() {
         return !isDestroyed &&
                getView().isShown() &&
                view != null &&
@@ -263,5 +283,9 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
 
     void applyOnController(ViewController controller, Task<ViewController> task) {
         if (controller != null) task.run(controller);
+    }
+
+    public List<Element> getElements() {
+        return getView() instanceof IReactView && view != null? ((IReactView) view).getElements() : Collections.EMPTY_LIST;
     }
 }

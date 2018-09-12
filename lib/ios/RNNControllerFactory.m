@@ -125,9 +125,9 @@
 
 
 - (UIViewController<RNNRootViewProtocol> *)createStack:(RNNLayoutNode*)node {
-	RNNNavigationController* vc = [[RNNNavigationController alloc] init];
-	[vc setComponentId:node.nodeId];
 	RNNNavigationOptions* options = [self createOptions:node.data[@"options"]];
+	RNNNavigationController* vc = [[RNNNavigationController alloc] initWithOptions:options];
+	[vc setComponentId:node.nodeId];
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary* child in node.children) {
 		[controllers addObject:[self fromTree:child]];
@@ -145,8 +145,7 @@
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
 		UIViewController<RNNRootViewProtocol>* childVc = [self fromTree:child];
-		RNNRootViewController* rootView = (RNNRootViewController *)[childVc getLeafViewController];
-		[rootView applyTabBarItem];
+		[childVc applyTabBarItem];
 		
 		[controllers addObject:childVc];
 	}

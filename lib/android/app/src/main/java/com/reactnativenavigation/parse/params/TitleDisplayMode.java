@@ -32,6 +32,10 @@ public enum TitleDisplayMode {
         return state != null;
     }
 
+    public TitleState get(@NonNull TitleState defaultValue) {
+        return state == null ? defaultValue : state;
+    }
+
     @NonNull
     public TitleState toState() {
         if (state == null) throw new RuntimeException("TitleDisplayMode is undefined");

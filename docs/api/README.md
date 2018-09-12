@@ -17,3 +17,4 @@
 - [EventsRegistry](/api/EventsRegistry)
 - [EventSubscription](/api/EventSubscription)
 - [LayoutType](/api/LayoutType)
+- [OptionsModalPresentationStyle](/api/OptionsModalPresentationStyle)

@@ -1,12 +1,13 @@
 package com.reactnativenavigation.viewcontrollers.button;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.parse.params.Button;
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -63,7 +64,7 @@ public class NavigationIconResolverTest extends BaseTest {
         Button button = new Button();
         button.id = "iconBtnId";
         button.icon = new Text(ICON_URI);
-        button.color = new Color(android.graphics.Color.RED);
+        button.color = new Colour(Color.RED);
         return button;
     }
 

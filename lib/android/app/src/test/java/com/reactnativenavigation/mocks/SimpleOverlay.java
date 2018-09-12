@@ -8,6 +8,10 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.views.element.Element;
+
+import java.util.Collections;
+import java.util.List;
 
 public class SimpleOverlay extends RelativeLayout implements IReactView {
     public SimpleOverlay(Context context) {
@@ -60,5 +64,10 @@ public class SimpleOverlay extends RelativeLayout implements IReactView {
     @Override
     public boolean isRendered() {
         return getChildCount() >= 1;
+    }
+
+    @Override
+    public List<Element> getElements() {
+        return Collections.EMPTY_LIST;
     }
 }

@@ -130,13 +130,14 @@ class OptionsScreen extends Component {
         <Button title='Top Bar Transparent' onPress={this.onClickTopBarTransparent} />
         <Button title='Top Bar Opaque' onPress={this.onClickTopBarOpaque} />
         <Button title='scrollView Screen' testID={testIDs.SCROLLVIEW_SCREEN_BUTTON} onPress={this.onClickScrollViewScreen} />
-        <Button title='Custom Transition' testID={testIDs.CUSTOM_TRANSITION_BUTTON} onPress={this.onClickCustomTranstition} />
+        <Button title='Custom Transition' testID={testIDs.CUSTOM_TRANSITION_BUTTON} onPress={this.onClickCustomTransition} />
         {Platform.OS === 'android' && <Button title='Hide fab' testID={testIDs.HIDE_FAB} onPress={this.onClickFab} />}
         <Button title='Show overlay' testID={testIDs.SHOW_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(true)} />
         <Button title='Show touch through overlay' testID={testIDs.SHOW_TOUCH_THROUGH_OVERLAY_BUTTON} onPress={() => this.onClickShowOverlay(false)} />
         <Button title='Push Default Options Screen' testID={testIDs.PUSH_DEFAULT_OPTIONS_BUTTON} onPress={this.onClickPushDefaultOptionsScreen} />
         <Button title='Show TopBar react view' testID={testIDs.SHOW_TOPBAR_REACT_VIEW} onPress={this.onShowTopBarReactView} />
         {Platform.OS === 'android' && <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onPush} />}
+        <Button title='Show Yellow Box' testID={testIDs.SHOW_YELLOW_BOX} onPress={() => console.warn('Yellow Box')} />
         <Text style={styles.footer}>{`this.props.containerId = ${this.props.containerId}`}</Text>
       </View>
     );
@@ -207,7 +208,7 @@ class OptionsScreen extends Component {
     });
   }
 
-  onClickCustomTranstition = () => {
+  onClickCustomTransition = () => {
     Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.CustomTransitionOrigin'

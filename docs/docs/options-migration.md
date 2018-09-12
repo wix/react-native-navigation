@@ -17,7 +17,7 @@ Title font size
 ```js
 topBar: {
   title: {
-    fontSize: 'red'
+    fontSize: 18
   }
 }
 ```
@@ -59,6 +59,20 @@ topBar: {
       name: 'example.CustomTopBarTitle'
     }
   }
+}
+```
+
+## navBarClipToBounds
+Restrict the navbar background color to the navbar, and do not flow behind the status bar.
+
+```js
+topBar: {
+  background: {
+    component: {
+      name: 'example.CustomTopBarBackground',
+      clipToBounds: true
+    }
+  },
 }
 ```
 
@@ -169,7 +183,7 @@ Navigation.mergeOptions(this.props.componentId, {
   }
 });
 ```
-On **iOS**, BottomTab visibility can be changed only when pushing screens. This means that if you'd like to hide BottomTabs when pushing a screen, You'll need to set the property to `false` in the options passed to the `push` command or via the `static get options() {}` api.
+On **iOS**, BottomTab visibility can be changed only when pushing screens. This means that if you'd like to hide BottomTabs when pushing a screen, You'll need to set the property to `false` in the options passed to the `push` command or via the `static options(passProps) {}` api.
 
 ## statusBarHidden
 StatusBar visibility

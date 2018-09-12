@@ -4,6 +4,15 @@
 
 @implementation RNNNavigationController
 
+- (instancetype)initWithOptions:(RNNNavigationOptions *)options {
+	self = [super init];
+	if (self) {
+		_options = options;
+	}
+	
+	return self;
+}
+
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.viewControllers.lastObject.supportedInterfaceOrientations;
 }
@@ -21,6 +30,14 @@
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
+	if (self.viewControllers.count > 1) {
+		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
+		if ([controller isKindOfClass:[RNNRootViewController class]]) {
+			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
+			[rnnController.options applyOn:rnnController];
+		}
+	}
+	
 	return [super popViewControllerAnimated:animated];
 }
 
@@ -42,6 +59,13 @@
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
 	return self.topViewController;
+}
+
+- (void)applyTabBarItem {
+	[self.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.options.defaultOptions).bottomTab overrideOptions:NO];
+	[self.options.bottomTab applyOn:self];
+	[self.getLeafViewController.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.getLeafViewController.options.defaultOptions).bottomTab overrideOptions:NO];
+	[self.getLeafViewController.options.bottomTab applyOn:self];
 }
 
 @end

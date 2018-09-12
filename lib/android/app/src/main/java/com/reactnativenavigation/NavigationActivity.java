@@ -2,6 +2,7 @@ package com.reactnativenavigation;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,16 +31,28 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        addDefaultSplashLayout();
         navigator = new Navigator(this, new ChildControllersRegistry(), new ModalStack(this), new OverlayManager());
         getReactGateway().onActivityCreated(this);
-        navigator.getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        setContentView(navigator.getView());
+    }
+
+    @Override
+    public void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        navigator.setContentLayout(findViewById(android.R.id.content));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         getReactGateway().onActivityResumed(this);
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        if (!getReactGateway().onNewIntent(intent)) {
+            super.onNewIntent(intent);
+        }
     }
 
     @Override
@@ -107,5 +120,11 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     @Override
     public void onReload() {
         navigator.destroyViews();
+    }
+
+    private void addDefaultSplashLayout() {
+        View view = new View(this);
+        view.setBackgroundColor(Color.WHITE);
+        setContentView(view);
     }
 }

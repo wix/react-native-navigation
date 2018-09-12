@@ -10,13 +10,10 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
-import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
-import com.reactnativenavigation.viewcontrollers.TopBarButtonController;
 import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarBackgroundViewController;
 import com.reactnativenavigation.viewcontrollers.topbar.TopBarController;
 import com.reactnativenavigation.views.StackLayout;
-import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 public class TestUtils {
@@ -25,17 +22,16 @@ public class TestUtils {
                 .setId("stack")
                 .setChildRegistry(new ChildControllersRegistry())
                 .setTopBarButtonCreator(new TopBarButtonCreatorMock())
-                .setTitleBarReactViewCreator(new TitleBarReactViewCreatorMock())
                 .setTopBarBackgroundViewController(new TopBarBackgroundViewController(activity, new TopBarBackgroundViewCreatorMock()))
                 .setTopBarController(new TopBarController() {
                     @Override
-                    protected TopBar createTopBar(Context context, ReactViewCreator buttonCreator, TitleBarReactViewCreator titleBarReactViewCreator, TopBarBackgroundViewController topBarBackgroundViewController, TopBarButtonController.OnClickListener topBarButtonClickListener, StackLayout stackLayout, ImageLoader imageLoader) {
-                        TopBar topBar = super.createTopBar(context, buttonCreator, titleBarReactViewCreator, topBarBackgroundViewController, topBarButtonClickListener, stackLayout, imageLoader);
+                    protected TopBar createTopBar(Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout stackLayout) {
+                        TopBar topBar = super.createTopBar(context, topBarBackgroundViewController, stackLayout);
                         topBar.layout(0, 0, 1000, 100);
                         return topBar;
                     }
                 })
-                .setStackPresenter(new StackOptionsPresenter(activity, new Options()))
+                .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new Options())                )
                 .setInitialOptions(new Options());
     }
 }
