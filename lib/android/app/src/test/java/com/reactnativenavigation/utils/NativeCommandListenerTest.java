@@ -39,7 +39,7 @@ public class NativeCommandListenerTest extends BaseTest {
     @Test
     public void onSuccess_emitsNavigationEvent() {
         uut.onSuccess(CHILD_ID);
-        verify(eventEmitter, times(1)).emitCommandCompletedEvent(COMMAND_ID, NOW);
+        verify(eventEmitter, times(1)).emitCommandCompleted(COMMAND_ID, NOW);
     }
 
     @Test

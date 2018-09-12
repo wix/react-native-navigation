@@ -1,7 +1,6 @@
 package com.reactnativenavigation.views.element;
 
 import android.app.Activity;
-import android.view.View;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.parse.Transition;
@@ -13,7 +12,7 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.reactnativenavigation.utils.CollectionUtils.map;
+import static com.reactnativenavigation.utils.CollectionUtils.keyBy;
 import static com.reactnativenavigation.views.element.TransitionTestUtils.createElement;
 import static com.reactnativenavigation.views.element.TransitionTestUtils.createTransition;
 import static org.mockito.Mockito.spy;
@@ -56,8 +55,8 @@ public class TransitionAnimatorCreatorTest extends BaseTest {
         TransitionAnimatorCreator spy = spy(uut);
         spy.create(
                 Arrays.asList(t1, t2),
-                map(Arrays.asList(e1, e3), Element::getElementId),
-                map(Arrays.asList(e2, e4), Element::getElementId)
+                keyBy(Arrays.asList(e1, e3), Element::getElementId),
+                keyBy(Arrays.asList(e2, e4), Element::getElementId)
         );
         verify(spy).create(t1, e1, e2);
         verify(spy).create(t2, e3, e4);
@@ -68,8 +67,8 @@ public class TransitionAnimatorCreatorTest extends BaseTest {
         List<Transition> transitions = Arrays.asList(t1, t2);
         uut.create(
                 transitions,
-                map(Arrays.asList(e1, e3), Element::getElementId),
-                map(Arrays.asList(e2, e4), Element::getElementId)
+                keyBy(Arrays.asList(e1, e3), Element::getElementId),
+                keyBy(Arrays.asList(e2, e4), Element::getElementId)
         );
         verify(animator1, times(2)).shouldAnimateProperty();
         verify(animator2, times(2)).shouldAnimateProperty();

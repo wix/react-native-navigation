@@ -2,7 +2,7 @@ package com.reactnativenavigation.parse;
 
 
 import com.reactnativenavigation.parse.params.Bool;
-import com.reactnativenavigation.parse.params.Color;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullBool;
 import com.reactnativenavigation.parse.params.NullColor;
 import com.reactnativenavigation.parse.params.NullText;
@@ -45,9 +45,9 @@ public class FabOptions {
     }
 
     public Text id = new NullText();
-    public Color backgroundColor = new NullColor();
-    public Color clickColor = new NullColor();
-    public Color rippleColor = new NullColor();
+    public Colour backgroundColor = new NullColor();
+    public Colour clickColor = new NullColor();
+    public Colour rippleColor = new NullColor();
     public Text icon = new NullText();
     public Bool visible = new NullBool();
     public ArrayList<FabOptions> actionsArray = new ArrayList<>();

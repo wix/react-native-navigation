@@ -103,7 +103,7 @@ public class FloatingActionButtonTest extends BaseTest {
         stackController.push(childFab, new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
-        stackController.pop(new CommandListenerAdapter());
+        stackController.pop(Options.EMPTY, new CommandListenerAdapter());
         childNoFab.onViewAppeared();
         assertThat(hasFab()).isFalse();
     }
@@ -115,7 +115,7 @@ public class FloatingActionButtonTest extends BaseTest {
         stackController.push(childNoFab, new CommandListenerAdapter());
         childNoFab.onViewAppeared();
         assertThat(hasFab()).isFalse();
-        stackController.pop(new CommandListenerAdapter());
+        stackController.pop(Options.EMPTY, new CommandListenerAdapter());
         childFab.onViewAppeared();
         assertThat(hasFab()).isTrue();
     }

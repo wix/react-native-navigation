@@ -18,6 +18,8 @@ import com.reactnativenavigation.BuildConfig;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.CompatUtils;
 
+import static com.reactnativenavigation.utils.ObjectUtils.perform;
+
 @SuppressLint("ViewConstructor")
 public class BottomTabs extends AHBottomNavigation {
     
@@ -31,10 +33,11 @@ public class BottomTabs extends AHBottomNavigation {
     }
 
     public void setTabTestId(int index, Text testId) {
-        if (!testId.hasValue()) return;
-        View view = getViewAtPosition(index);
-        view.setTag(testId.get());
-        if (BuildConfig.DEBUG) view.setContentDescription(testId.get());
+        if (!testId.hasValue() ) return;
+        perform(getViewAtPosition(index), view -> {
+            view.setTag(testId.get());
+            if (BuildConfig.DEBUG) view.setContentDescription(testId.get());
+        });
     }
 
     public void setBadge(int bottomTabIndex, String badge) {

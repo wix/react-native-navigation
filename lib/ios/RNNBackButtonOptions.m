@@ -4,6 +4,10 @@
 @implementation RNNBackButtonOptions
 
 - (void)applyOn:(UIViewController *)viewController {
+	if (self.showTitle && ![self.showTitle boolValue]) {
+		self.title = @"";
+	}
+	
 	if (self.icon) {
 		UIImage *image = self.tintedIcon;
 		[viewController.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
@@ -22,10 +26,6 @@
 	
 	if (self.visible) {
 		viewController.navigationItem.hidesBackButton = ![self.visible boolValue];
-	}
-	
-	if (self.showTitle && ![self.showTitle boolValue]) {
-		self.title = @"";
 	}
 }
 

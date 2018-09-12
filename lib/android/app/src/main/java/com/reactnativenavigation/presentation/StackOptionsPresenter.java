@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
 
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationsOptions;
@@ -18,17 +19,29 @@ import com.reactnativenavigation.parse.TopBarOptions;
 import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
 import com.reactnativenavigation.parse.params.Button;
+import com.reactnativenavigation.parse.params.Colour;
+import com.reactnativenavigation.utils.ButtonOptionsPresenter;
+import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
+import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
+import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
+import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.reactnativenavigation.utils.CollectionUtils.forEach;
+import static com.reactnativenavigation.utils.CollectionUtils.keyBy;
+import static com.reactnativenavigation.utils.CollectionUtils.merge;
 
 public class StackOptionsPresenter {
     private static final int DEFAULT_TITLE_COLOR = Color.BLACK;
@@ -40,13 +53,20 @@ public class StackOptionsPresenter {
     private final Activity activity;
 
     private TopBar topBar;
-    private TitleBarReactViewCreator titleViewCreator;
+    private final TitleBarReactViewCreator titleViewCreator;
+    private TitleBarButtonController.OnClickListener onClickListener;
+    private final ImageLoader imageLoader;
+    private final ReactViewCreator buttonCreator;
     private Options defaultOptions;
     private Map<Component, TitleBarReactViewController> titleComponentViewControllers = new HashMap<>();
+    private Map<Component, Map<String, TitleBarButtonController>> componentRightButtons = new HashMap<>();
+    private Map<Component, Map<String, TitleBarButtonController>> componentLeftButtons = new HashMap<>();
 
-    public StackOptionsPresenter(Activity activity, TitleBarReactViewCreator titleViewCreator, Options defaultOptions) {
+    public StackOptionsPresenter(Activity activity, TitleBarReactViewCreator titleViewCreator, ReactViewCreator buttonCreator, ImageLoader imageLoader, Options defaultOptions) {
         this.activity = activity;
         this.titleViewCreator = titleViewCreator;
+        this.buttonCreator = buttonCreator;
+        this.imageLoader = imageLoader;
         this.defaultOptions = defaultOptions;
         defaultTitleFontSize = UiUtils.dpToSp(activity, 18);
         defaultSubtitleFontSize = UiUtils.dpToSp(activity, 14);
@@ -56,8 +76,28 @@ public class StackOptionsPresenter {
         this.defaultOptions = defaultOptions;
     }
 
+    public void setButtonOnClickListener(TitleBarButtonController.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
     public Options getDefaultOptions() {
         return defaultOptions;
+    }
+
+    public List<TitleBarButtonController> getComponentButtons(Component child) {
+        return merge(getRightButtons(child), getLeftButtons(child), Collections.EMPTY_LIST);
+    }
+
+    public List<TitleBarButtonController> getComponentButtons(Component child, List<TitleBarButtonController> defaultValue) {
+        return merge(getRightButtons(child), getLeftButtons(child), defaultValue);
+    }
+
+    private List<TitleBarButtonController> getRightButtons(Component child) {
+        return componentRightButtons.containsKey(child) ? new ArrayList<>(componentRightButtons.get(child).values()) : null;
+    }
+
+    private List<TitleBarButtonController> getLeftButtons(Component child) {
+        return componentLeftButtons.containsKey(child) ? new ArrayList<>(componentLeftButtons.get(child).values()) : null;
     }
 
     public void bindView(TopBar topBar) {
@@ -79,7 +119,7 @@ public class StackOptionsPresenter {
     public void applyChildOptions(Options options, Component child) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefault.layout.orientation);
-        applyButtons(withDefault.topBar, withDefault.topBar.rightButtonColor, withDefault.topBar.leftButtonColor, withDefault.topBar.rightButtonDisabledColor, withDefault.topBar.leftButtonDisabledColor);
+        applyButtons(withDefault.topBar, child);
         applyTopBarOptions(withDefault.topBar, withDefault.animations, child, options);
         applyTopTabsOptions(withDefault.topTabs);
         applyTopTabOptions(withDefault.topTabOptions);
@@ -95,11 +135,26 @@ public class StackOptionsPresenter {
         if (removed != null) {
             removed.destroy();
         }
+        destroyButtons(componentRightButtons.get(child));
+        destroyButtons(componentLeftButtons.get(child));
+        componentRightButtons.remove(child);
+        componentLeftButtons.remove(child);
+    }
+
+    private void destroyButtons(Map<String, TitleBarButtonController> buttons) {
+        if (buttons != null) {
+            for (TitleBarButtonController button : buttons.values()) {
+                button.destroy();
+            }
+        }
     }
 
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
         topBar.setHeight(options.height.get(LayoutParams.WRAP_CONTENT));
         topBar.setElevation(options.elevation.get(DEFAULT_ELEVATION));
+        if (topBar.getLayoutParams() instanceof MarginLayoutParams) {
+            ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, options.topMargin.get(0));
+        }
 
         topBar.setTitleHeight(options.title.height.get(LayoutParams.WRAP_CONTENT));
         topBar.setTitle(options.title.text.get(""));
@@ -165,12 +220,49 @@ public class StackOptionsPresenter {
         }
     }
 
-    private void applyButtons(TopBarOptions options, com.reactnativenavigation.parse.params.Color rightButtonColor, com.reactnativenavigation.parse.params.Color leftButtonColor, com.reactnativenavigation.parse.params.Color rightButtonDisabledColor, com.reactnativenavigation.parse.params.Color leftButtonDisabledColor) {
-        List<Button> rightButtons = mergeButtonsWithColor(options.buttons.right, rightButtonColor, rightButtonDisabledColor);
-        List<Button> leftButtons = mergeButtonsWithColor(options.buttons.left, leftButtonColor, leftButtonDisabledColor);
-        topBar.setRightButtons(rightButtons);
-        topBar.setLeftButtons(leftButtons);
-        if (options.buttons.back.visible.isTrue() && !options.buttons.hasLeftButtons()) topBar.setBackButton(options.buttons.back);
+    private void applyButtons(TopBarOptions options, Component child) {
+        List<Button> rightButtons = mergeButtonsWithColor(options.buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
+        List<Button> leftButtons = mergeButtonsWithColor(options.buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
+
+        if (rightButtons != null) {
+            List<TitleBarButtonController> rightButtonControllers = getOrCreateButtonControllers(componentRightButtons.get(child), rightButtons);
+            componentRightButtons.put(child, keyBy(rightButtonControllers, TitleBarButtonController::getButtonInstanceId));
+            topBar.setRightButtons(rightButtonControllers);
+        } else {
+            topBar.setRightButtons(null);
+        }
+
+        if (leftButtons != null) {
+            List<TitleBarButtonController> leftButtonControllers = getOrCreateButtonControllers(componentLeftButtons.get(child), leftButtons);
+            componentLeftButtons.put(child, keyBy(leftButtonControllers, TitleBarButtonController::getButtonInstanceId));
+            topBar.setLeftButtons(leftButtonControllers);
+        } else {
+            topBar.setLeftButtons(null);
+        }
+
+        if (options.buttons.back.visible.isTrue() && !options.buttons.hasLeftButtons()) {
+            topBar.setBackButton(createButtonController(options.buttons.back));
+        }
+    }
+
+    private List<TitleBarButtonController> getOrCreateButtonControllers(@Nullable Map<String, TitleBarButtonController> currentButtons, @Nullable List<Button> buttons) {
+        if (buttons == null) return null;
+        Map<String, TitleBarButtonController> result = new LinkedHashMap<>();
+        for (Button b : buttons) {
+            result.put(b.instanceId, currentButtons != null && currentButtons.containsKey(b.instanceId) ? currentButtons.get(b.instanceId) : createButtonController(b));
+        }
+        return new ArrayList<>(result.values());
+    }
+
+    private TitleBarButtonController createButtonController(Button button) {
+        return new TitleBarButtonController(activity,
+                new NavigationIconResolver(activity, imageLoader),
+                imageLoader,
+                new ButtonOptionsPresenter(topBar.getTitleBar(), button),
+                button,
+                buttonCreator,
+                onClickListener
+        );
     }
 
     private void applyTopTabsOptions(TopTabsOptions options) {
@@ -194,34 +286,42 @@ public class StackOptionsPresenter {
         }
     }
 
-    public void mergeChildOptions(Options options, Options childOptions, Component child) {
-        TopBarOptions topBar = options.copy().mergeWith(childOptions).withDefaultOptions(defaultOptions).topBar;
-        mergeOrientation(options.layout.orientation);
-        mergeButtons(options.topBar.buttons,
-                topBar.rightButtonColor,
-                topBar.leftButtonColor,
-                topBar.rightButtonDisabledColor,
-                topBar.leftButtonDisabledColor
-        );
-        mergeTopBarOptions(options.topBar, options.animations, child);
-        mergeTopTabsOptions(options.topTabs);
-        mergeTopTabOptions(options.topTabOptions);
+    public void mergeChildOptions(Options toMerge, Options resolvedOptions, Component child) {
+        TopBarOptions topBar = toMerge.copy().mergeWith(resolvedOptions).withDefaultOptions(defaultOptions).topBar;
+        mergeOrientation(toMerge.layout.orientation);
+        mergeButtons(topBar, toMerge.topBar.buttons, child);
+        mergeTopBarOptions(toMerge.topBar, toMerge.animations, child);
+        mergeTopTabsOptions(toMerge.topTabs);
+        mergeTopTabOptions(toMerge.topTabOptions);
     }
 
     private void mergeOrientation(OrientationOptions orientationOptions) {
         if (orientationOptions.hasValue()) applyOrientation(orientationOptions);
     }
 
-    private void mergeButtons(TopBarButtons buttons, com.reactnativenavigation.parse.params.Color rightButtonColor, com.reactnativenavigation.parse.params.Color leftButtonColor, com.reactnativenavigation.parse.params.Color rightButtonDisabledColor, com.reactnativenavigation.parse.params.Color leftButtonDisabledColor) {
-        List<Button> rightButtons = mergeButtonsWithColor(buttons.right, rightButtonColor, rightButtonDisabledColor);
-        List<Button> leftButtons = mergeButtonsWithColor(buttons.left, leftButtonColor, leftButtonDisabledColor);
-        if (buttons.right != null) topBar.setRightButtons(rightButtons);
-        if (buttons.left != null) topBar.setLeftButtons(leftButtons);
-        if (buttons.back.hasValue()) topBar.setBackButton(buttons.back);
+    private void mergeButtons(TopBarOptions options, TopBarButtons buttons, Component child) {
+        List<Button> rightButtons = mergeButtonsWithColor(buttons.right, options.rightButtonColor, options.rightButtonDisabledColor);
+        List<Button> leftButtons = mergeButtonsWithColor(buttons.left, options.leftButtonColor, options.leftButtonDisabledColor);
+
+        List<TitleBarButtonController> rightButtonControllers = getOrCreateButtonControllers(componentRightButtons.get(child), rightButtons);
+        List<TitleBarButtonController> leftButtonControllers = getOrCreateButtonControllers(componentLeftButtons.get(child), leftButtons);
+
+        if (rightButtonControllers != null) {
+            Map previousRightButtons = componentRightButtons.put(child, keyBy(rightButtonControllers, TitleBarButtonController::getButtonInstanceId));
+            if (previousRightButtons != null) forEach(previousRightButtons.values(), TitleBarButtonController::destroy);
+        }
+        if (leftButtonControllers != null) {
+            Map previousLeftButtons = componentLeftButtons.put(child, keyBy(leftButtonControllers, TitleBarButtonController::getButtonInstanceId));
+            if (previousLeftButtons != null) forEach(previousLeftButtons.values(), TitleBarButtonController::destroy);
+        }
+
+        if (buttons.right != null) topBar.setRightButtons(rightButtonControllers);
+        if (buttons.left != null) topBar.setLeftButtons(leftButtonControllers);
+        if (buttons.back.hasValue()) topBar.setBackButton(createButtonController(buttons.back));
     }
 
     @Nullable
-    private List<Button> mergeButtonsWithColor(List<Button> buttons, com.reactnativenavigation.parse.params.Color buttonColor, com.reactnativenavigation.parse.params.Color disabledColor) {
+    private List<Button> mergeButtonsWithColor(List<Button> buttons, Colour buttonColor, Colour disabledColor) {
         List<Button> result = null;
         if (buttons != null) {
             result = new ArrayList<>();
@@ -238,6 +338,9 @@ public class StackOptionsPresenter {
     private void mergeTopBarOptions(TopBarOptions options, AnimationsOptions animationsOptions, Component component) {
         if (options.height.hasValue()) topBar.setHeight(options.height.get());
         if (options.elevation.hasValue()) topBar.setElevation(options.elevation.get());
+        if (options.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
+            ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, options.topMargin.get());
+        }
 
         if (options.title.height.hasValue()) topBar.setTitleHeight(options.title.height.get());
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());
@@ -307,7 +410,7 @@ public class StackOptionsPresenter {
     }
 
     private LayoutParams getComponentLayoutParams(com.reactnativenavigation.parse.Component component) {
-        return new Toolbar.LayoutParams(component.alignment == Alignment.Center ? Gravity.CENTER : Gravity.START);
+        return new Toolbar.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, component.alignment == Alignment.Center ? Gravity.CENTER : Gravity.START);
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)

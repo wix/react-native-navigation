@@ -1,11 +1,13 @@
 package com.reactnativenavigation.parse;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.TypefaceLoaderMock;
 import com.reactnativenavigation.parse.params.Bool;
+import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.NullText;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
@@ -269,7 +271,7 @@ public class OptionsTest extends BaseTest {
     @Test
     public void clear_bottomTabsOptions() {
         Options uut = new Options();
-        uut.bottomTabsOptions.backgroundColor = new com.reactnativenavigation.parse.params.Color(android.graphics.Color.RED);
+        uut.bottomTabsOptions.backgroundColor = new Colour(Color.RED);
         uut.clearBottomTabsOptions();
         assertThat(uut.bottomTabsOptions.backgroundColor.hasValue()).isFalse();
     }
