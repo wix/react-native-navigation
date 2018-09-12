@@ -15,6 +15,12 @@ const NavigationSpecific = {
   resetTo: platformSpecific.navigatorResetTo
 };
 
+const screens = [];
+
+export const screenAppeared = () => {
+  return screens.pop();
+};
+
 class Navigator {
   constructor(navigatorID, navigatorEventID, screenInstanceID) {
     this.navigatorID = navigatorID;
@@ -26,6 +32,12 @@ class Navigator {
   }
 
   push(params = {}) {
+    if (params.screen === screens[screens.length - 1]) {
+      return;
+    }
+
+    screens.push(params.screen);
+
     return NavigationSpecific.push(this, params);
   }
 
@@ -42,6 +54,12 @@ class Navigator {
   }
 
   showModal(params = {}) {
+    if (params.screen === screens[screens.length - 1]) {
+      return;
+    }
+
+    screens.push(params.screen);
+
     return Navigation.showModal(params);
   }
 
@@ -50,6 +68,8 @@ class Navigator {
   }
 
   dismissModal(params = {}) {
+    screens.pop();
+
     return Navigation.dismissModal(params);
   }
 

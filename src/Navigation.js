@@ -2,7 +2,7 @@
 import React from 'react';
 import {AppRegistry} from 'react-native';
 import platformSpecific from './deprecated/platformSpecificDeprecated';
-import {Screen} from './Screen';
+import {Screen, screenAppeared} from './Screen';
 
 import PropRegistry from './PropRegistry';
 
@@ -186,6 +186,10 @@ async function getLaunchArgs() {
   return await platformSpecific.getLaunchArgs();
 }
 
+function screenDidAppear() {
+  return screenAppeared();
+}
+
 export default {
   getRegisteredScreen,
   getCurrentlyVisibleScreenId,
@@ -205,5 +209,6 @@ export default {
   handleDeepLink: handleDeepLink,
   isAppLaunched: isAppLaunched,
   isRootLaunched: isRootLaunched,
-  getLaunchArgs
+  getLaunchArgs,
+  screenDidAppear
 };
