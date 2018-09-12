@@ -2,7 +2,6 @@
 #import "RNNRootViewController.h"
 
 @implementation RNNModalManager {
-	RNNTransitionWithComponentIdCompletionBlock _completionBlock;
 	NSMutableArray* _pendingModalIdsToDismiss;
 	NSMutableArray* _presentedModals;
 }
@@ -16,49 +15,29 @@
 	return self;
 }
 
--(void)showModal:(BOOL)animated {
+-(void)showModal:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
+	[self showModal:viewController animated:animated hasCustomAnimation:NO completion:completion];
+}
+
+-(void)showModal:(UIViewController *)viewController animated:(BOOL)animated hasCustomAnimation:(BOOL)hasCustomAnimation completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
+	if (!viewController) {
+		@throw [NSException exceptionWithName:@"ShowUnknownModal" reason:@"showModal called with nil viewController" userInfo:nil];
+	}
+	
 	UIViewController* topVC = [self topPresentedVC];
 	topVC.definesPresentationContext = YES;
 	
-	if ([topVC conformsToProtocol:@protocol(RNNRootViewProtocol)]) {
-		UIViewController<RNNRootViewProtocol> *navigationTopVC = (UIViewController<RNNRootViewProtocol>*)topVC;
-		RNNNavigationOptions* options = navigationTopVC.getLeafViewController.options;
-		if (options.animations.showModal.hasCustomAnimation) {
-			self.toVC.transitioningDelegate = navigationTopVC;
-		}
+	if (hasCustomAnimation) {
+		viewController.transitioningDelegate = (UIViewController<UIViewControllerTransitioningDelegate>*)topVC;
 	}
 	
-	[topVC presentViewController:self.toVC animated:animated completion:^{
-		if (_completionBlock) {
-			_completionBlock(self.toVC.getLeafViewController.componentId);
-			_completionBlock = nil;
+	[topVC presentViewController:viewController animated:animated completion:^{
+		if (completion) {
+			completion(nil);
 		}
 		
-		[_presentedModals addObject:self.toVC.navigationController ? self.toVC.navigationController : self.toVC];
-		
-		self.toVC = nil;
+		[_presentedModals addObject:viewController.navigationController ? viewController.navigationController : viewController];
 	}];
-}
-
--(void)showModal:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
-	self.toVC = (UIViewController<RNNRootViewProtocol>*)viewController;
-	RNNNavigationOptions* options = self.toVC.getLeafViewController.options;
-
-	_completionBlock = completion;
-	
-    if ([self.toVC respondsToSelector:@selector(applyModalOptions)]) {
-        [self.toVC.getLeafViewController applyModalOptions];
-    }
-    
-    if ([self.toVC respondsToSelector:@selector(isCustomViewController)] &&
-        [self.toVC.getLeafViewController isCustomViewController]
-    ) {
-		[self showModal:animated];
-	} else {
-		[self.toVC.getLeafViewController waitForReactViewRender:options.animations.showModal.waitForRender perform:^{
-			[self showModal:animated];
-		}];
-	}
 }
 
 - (void)dismissModal:(UIViewController *)viewController completion:(RNNTransitionCompletionBlock)completion {

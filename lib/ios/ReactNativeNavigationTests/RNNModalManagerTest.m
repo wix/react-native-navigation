@@ -2,24 +2,24 @@
 #import "RNNModalManager.h"
 
 @interface MockViewController : UIViewController
+
+@property CGFloat presentViewControllerCalls;
+
 @end
 @implementation MockViewController
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion {
+	_presentViewControllerCalls++;
 	completion();
 }
 
 @end
 
 @interface MockModalManager : RNNModalManager
+@property (nonatomic, strong) MockViewController* topPresentedVC;
 @end
+
 @implementation MockModalManager
-
--(UIViewController*)topPresentedVC {
-	MockViewController* vc = [MockViewController new];
-	return vc;
-}
-
 @end
 
 @interface RNNModalManagerTest : XCTestCase <RNNModalManagerDelegate> {
@@ -41,7 +41,9 @@
 	_vc2 = [RNNRootViewController new];
 	_vc3 = [RNNRootViewController new];
 	_modalManager = [[MockModalManager alloc] init];
+	_modalManager.topPresentedVC = [MockViewController new];
 }
+
 - (void)testDismissMultipleModalsInvokeDelegateWithCorrectParameters {
 	[_modalManager showModal:_vc1 animated:NO completion:nil];
 	[_modalManager showModal:_vc2 animated:NO completion:nil];
@@ -95,6 +97,14 @@
 	XCTAssertTrue(_modalDismissedCount == 0);
 }
 
+- (void)testShowModal_NilModalThrows {
+	XCTAssertThrows([_modalManager showModal:nil animated:NO completion:nil]);
+}
+
+- (void)testShowModal_CallPresentViewController {
+	[_modalManager showModal:_vc1 animated:NO completion:nil];
+	XCTAssertTrue(_modalManager.topPresentedVC.presentViewControllerCalls == 1);
+}
 
 #pragma mark RNNModalManagerDelegate
 

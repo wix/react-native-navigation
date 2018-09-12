@@ -203,9 +203,16 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	UIViewController<RNNRootViewProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
-	[_modalManager showModal:newVc animated:newVc.getLeafViewController.options.animations.showModal.enable completion:^(NSString *componentId) {
-		[_eventEmitter sendOnNavigationCommandCompletion:showModal params:@{@"layout": layout}];
-		completion(componentId);
+	
+	if ([newVc respondsToSelector:@selector(applyModalOptions)]) {
+		[newVc.getLeafViewController applyModalOptions];
+	}
+	
+	[newVc.getLeafViewController waitForReactViewRender:newVc.getLeafViewController.options.animations.showModal.waitForRender perform:^{
+		[_modalManager showModal:newVc animated:newVc.getLeafViewController.options.animations.showModal.enable hasCustomAnimation:newVc.getLeafViewController.options.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
+			[_eventEmitter sendOnNavigationCommandCompletion:showModal params:@{@"layout": layout}];
+			completion(componentId);
+		}];
 	}];
 }
 

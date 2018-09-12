@@ -89,7 +89,7 @@
 }
 
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	if (wait) {
+	if (wait && !_isExternalComponent) {
 		[self onReactViewReady:readyBlock];
 	} else {
 		readyBlock();
