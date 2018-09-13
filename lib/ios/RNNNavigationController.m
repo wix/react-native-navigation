@@ -4,10 +4,10 @@
 
 @implementation RNNNavigationController
 
-- (instancetype)initWithOptions:(RNNNavigationOptions *)options {
+- (instancetype)initWithParentInfo:(RNNParentInfo *)parentInfo {
 	self = [super init];
 	if (self) {
-		_options = options;
+		_parentInfo = parentInfo;
 	}
 	
 	return self;
@@ -34,7 +34,7 @@
 		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
 		if ([controller isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
-			[rnnController.options applyOn:rnnController];
+			[rnnController.parentInfo.options applyOn:rnnController];
 		}
 	}
 	
@@ -42,15 +42,15 @@
 }
 
 - (NSString *)componentId {
-	return _componentId ? _componentId : self.getLeafViewController.componentId;
+	return self.parentInfo.componentId ? self.parentInfo.componentId : self.getLeafViewController.parentInfo.componentId;
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.options.animations.showModal isDismiss:NO];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.parentInfo.options.animations.showModal isDismiss:NO];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.options.animations.dismissModal isDismiss:YES];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.parentInfo.options.animations.dismissModal isDismiss:YES];
 }
 
 - (UIViewController *)getLeafViewController {
@@ -61,11 +61,5 @@
 	return self.topViewController;
 }
 
-- (void)applyTabBarItem {
-	[self.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.options.defaultOptions).bottomTab overrideOptions:NO];
-	[self.options.bottomTab applyOn:self];
-	[self.getLeafViewController.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.getLeafViewController.options.defaultOptions).bottomTab overrideOptions:NO];
-	[self.getLeafViewController.options.bottomTab applyOn:self];
-}
 
 @end

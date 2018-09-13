@@ -9,4 +9,6 @@
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID;
 
+@property (nonatomic, retain) RNNParentInfo* parentInfo;
+
 @end

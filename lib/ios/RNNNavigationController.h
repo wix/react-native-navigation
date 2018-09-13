@@ -3,9 +3,9 @@
 
 @interface RNNNavigationController : UINavigationController <RNNRootViewProtocol>
 
-- (instancetype)initWithOptions:(RNNNavigationOptions *)options;
+- (instancetype)initWithParentInfo:(RNNParentInfo *)parentInfo;
 
-@property (nonatomic, strong) NSString* componentId;
-@property (nonatomic, strong) RNNNavigationOptions* options;
+@property (nonatomic, retain) RNNParentInfo* parentInfo;
+
 
 @end

@@ -70,17 +70,17 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	UIViewController<RNNRootViewProtocol>* vc = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
 	if ([vc conformsToProtocol:@protocol(RNNRootViewProtocol)] || [vc isKindOfClass:[RNNRootViewController class]]) {
-		[vc.getLeafViewController.options mergeWith:options];
+		[vc.getLeafViewController.parentInfo.options mergeWith:options];
 		[CATransaction begin];
 		[CATransaction setCompletionBlock:completion];
-		[vc.getLeafViewController.options applyOn:vc.getLeafViewController];
+		[vc.getLeafViewController.parentInfo.options applyOn:vc.getLeafViewController];
 		[CATransaction commit];
 	}
 }
 
 - (void)setDefaultOptions:(NSDictionary*)optionsDict completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	[_controllerFactory setDefaultOptionsDict:optionsDict];
+	[_controllerFactory.optionsManager setDefaultOptionsDict:optionsDict];
 }
 
 - (void)push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
@@ -89,7 +89,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNRootViewController *newVc = (RNNRootViewController *)[_controllerFactory createLayoutAndSaveToStore:layout];
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	
-	if (newVc.options.preview.elementId) {
+	if (newVc.parentInfo.options.preview.elementId) {
 		UIViewController* vc = [_store findComponentForId:componentId];
 		
 		if([vc isKindOfClass:[RNNRootViewController class]]) {
@@ -97,28 +97,28 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			rootVc.previewController = newVc;
 			
 			RNNElementFinder* elementFinder = [[RNNElementFinder alloc] initWithFromVC:vc];
-			RNNElementView* elementView = [elementFinder findElementForId:newVc.options.preview.elementId];
+			RNNElementView* elementView = [elementFinder findElementForId:newVc.parentInfo.options.preview.elementId];
 			
 			CGSize size = CGSizeMake(rootVc.view.frame.size.width, rootVc.view.frame.size.height);
 			
-			if (newVc.options.preview.width) {
-				size.width = [newVc.options.preview.width floatValue];
+			if (newVc.parentInfo.options.preview.width) {
+				size.width = [newVc.parentInfo.options.preview.width floatValue];
 			}
 			
-			if (newVc.options.preview.height) {
-				size.height = [newVc.options.preview.height floatValue];
+			if (newVc.parentInfo.options.preview.height) {
+				size.height = [newVc.parentInfo.options.preview.height floatValue];
 			}
 			
-			if (newVc.options.preview.width || newVc.options.preview.height) {
+			if (newVc.parentInfo.options.preview.width || newVc.parentInfo.options.preview.height) {
 				newVc.preferredContentSize = size;
 			}
 			
 			[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:elementView];
 		}
 	} else {
-		id animationDelegate = (newVc.options.animations.push.hasCustomAnimation || newVc.isCustomTransitioned) ? newVc : nil;
-		[newVc waitForReactViewRender:(newVc.options.animations.push.waitForRender || animationDelegate) perform:^{
-			[_stackManager push:newVc onTop:fromVC animated:newVc.options.animations.push.enable animationDelegate:animationDelegate completion:^{
+		id animationDelegate = (newVc.parentInfo.options.animations.push.hasCustomAnimation || newVc.isCustomTransitioned) ? newVc : nil;
+		[newVc waitForReactViewRender:(newVc.parentInfo.options.animations.push.waitForRender || animationDelegate) perform:^{
+			[_stackManager push:newVc onTop:fromVC animated:newVc.parentInfo.options.animations.push.enable animationDelegate:animationDelegate completion:^{
 				[_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
 				completion();
 			} rejection:rejection];
@@ -130,7 +130,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	UIViewController<RNNRootViewProtocol> *newVC = [_controllerFactory createLayoutAndSaveToStore:layout];
-	RNNNavigationOptions* options = [newVC getLeafViewController].options;
+	RNNNavigationOptions* options = [newVC getLeafViewController].parentInfo.options;
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
 	[_stackManager setStackRoot:newVC fromViewController:fromVC animated:options.animations.setStackRoot.enable completion:^{
@@ -143,12 +143,12 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
-	[vc.options mergeWith:options];
+	[vc.parentInfo.options mergeWith:options];
 	
 	UINavigationController *nvc = vc.navigationController;
 	
 	if ([nvc topViewController] == vc) {
-		if (vc.options.animations.pop) {
+		if (vc.parentInfo.options.animations.pop) {
 			nvc.delegate = vc;
 		} else {
 			nvc.delegate = nil;
@@ -156,10 +156,10 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	} else {
 		NSMutableArray * vcs = nvc.viewControllers.mutableCopy;
 		[vcs removeObject:vc];
-		[nvc setViewControllers:vcs animated:vc.options.animations.pop.enable];
+		[nvc setViewControllers:vcs animated:vc.parentInfo.options.animations.pop.enable];
 	}
 	
-	[_stackManager pop:vc animated:vc.options.animations.pop.enable completion:^{
+	[_stackManager pop:vc animated:vc.parentInfo.options.animations.pop.enable completion:^{
 		[_store removeComponent:componentId];
 		[_eventEmitter sendOnNavigationCommandCompletion:pop params:@{@"componentId": componentId}];
 		completion();
@@ -171,9 +171,9 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)popTo:(NSString*)componentId mergeOptions:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
-	[vc.options mergeWith:options];
+	[vc.parentInfo.options mergeWith:options];
 	
-	[_stackManager popTo:vc animated:vc.options.animations.pop.enable completion:^(NSArray *poppedViewControllers) {
+	[_stackManager popTo:vc animated:vc.parentInfo.options.animations.pop.enable completion:^(NSArray *poppedViewControllers) {
 		[_eventEmitter sendOnNavigationCommandCompletion:popTo params:@{@"componentId": componentId}];
 		[self removePopedViewControllers:poppedViewControllers];
 		completion();
@@ -183,7 +183,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)popToRoot:(NSString*)componentId mergeOptions:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
-	[vc.options mergeWith:options];
+	[vc.parentInfo.options mergeWith:options];
 	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
@@ -191,7 +191,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		completion();
 	}];
 	
-	[_stackManager popToRoot:vc animated:vc.options.animations.pop.enable completion:^(NSArray *poppedViewControllers) {
+	[_stackManager popToRoot:vc animated:vc.parentInfo.options.animations.pop.enable completion:^(NSArray *poppedViewControllers) {
 		[self removePopedViewControllers:poppedViewControllers];
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
@@ -209,8 +209,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		[newVc.getLeafViewController applyModalOptions];
 	}
 	
-	[newVc.getLeafViewController waitForReactViewRender:newVc.getLeafViewController.options.animations.showModal.waitForRender perform:^{
-		[_modalManager showModal:newVc animated:newVc.getLeafViewController.options.animations.showModal.enable hasCustomAnimation:newVc.getLeafViewController.options.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
+	[newVc.getLeafViewController waitForReactViewRender:newVc.getLeafViewController.parentInfo.options.animations.showModal.waitForRender perform:^{
+		[_modalManager showModal:newVc animated:newVc.getLeafViewController.parentInfo.options.animations.showModal.enable hasCustomAnimation:newVc.getLeafViewController.parentInfo.options.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
 			[_eventEmitter sendOnNavigationCommandCompletion:showModal params:@{@"layout": layout}];
 			completion(componentId);
 		}];
@@ -225,7 +225,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
 	}];
 	UIViewController<RNNRootViewProtocol> *modalToDismiss = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
-	[modalToDismiss.getLeafViewController.options mergeWith:options];
+	[modalToDismiss.getLeafViewController.parentInfo.options mergeWith:options];
 	
 	[self removePopedViewControllers:modalToDismiss.navigationController.viewControllers];
 	
@@ -288,13 +288,13 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 #pragma mark - RNNModalManagerDelegate
 
-- (void)dismissedModal:(UIViewController *)viewController {
-	[_eventEmitter sendModalsDismissedEvent:((RNNRootViewController *)viewController).componentId numberOfModalsDismissed:@(1)];
+- (void)dismissedModal:(UIViewController<RNNRootViewProtocol> *)viewController {
+	[_eventEmitter sendModalsDismissedEvent:viewController.parentInfo.componentId numberOfModalsDismissed:@(1)];
 }
 
 - (void)dismissedMultipleModals:(NSArray *)viewControllers {
 	if (viewControllers && viewControllers.count) {
-		[_eventEmitter sendModalsDismissedEvent:((RNNRootViewController *)viewControllers.lastObject).componentId numberOfModalsDismissed:@(viewControllers.count)];
+		[_eventEmitter sendModalsDismissedEvent:((UIViewController<RNNRootViewProtocol> *)viewControllers.lastObject).parentInfo.componentId numberOfModalsDismissed:@(viewControllers.count)];
 	}
 }
 

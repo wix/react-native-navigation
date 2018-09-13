@@ -95,12 +95,11 @@
 -(void)testDynamicStylesMergeWithStaticStyles {
 	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
 	initialOptions.topBar.title.text = @"the title";
-	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithName:@"name"
-																withOptions:initialOptions
-															withComponentId:@"componentId"
-															rootViewCreator:[[RNNTestRootViewCreator alloc] init]
-															   eventEmitter:nil
-														  isExternalComponent:NO];
+	RNNParentInfo* parentInfo = [RNNParentInfo new];
+	parentInfo.options = initialOptions;
+	
+	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithParentInfo:parentInfo rootViewCreator:[[RNNTestRootViewCreator alloc] init] eventEmitter:nil isExternalComponent:NO];
+	
 	UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);

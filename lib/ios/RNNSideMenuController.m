@@ -93,8 +93,5 @@
 	return [self.center getLeafViewController];
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.center.getLeafViewController mergeOptions:options];
-}
 
 @end

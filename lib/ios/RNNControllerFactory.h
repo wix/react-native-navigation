@@ -5,6 +5,7 @@
 #import "RNNStore.h"
 #import "RNNEventEmitter.h"
 #import "RNNRootViewProtocol.h"
+#import "RNNOptionsManager.h"
 
 @interface RNNControllerFactory : NSObject
 
@@ -17,7 +18,7 @@
 
 - (UIViewController<RNNRootViewProtocol> *)createOverlay:(NSDictionary*)layout;
 
-@property (nonatomic, strong) NSDictionary* defaultOptionsDict;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
+@property (nonatomic, strong) RNNOptionsManager *optionsManager;
 
 @end
