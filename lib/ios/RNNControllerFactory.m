@@ -144,11 +144,8 @@
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
 		UIViewController<RNNRootViewProtocol>* childVc = [self fromTree:child];
-		[childVc.parentInfo.options applyOn:childVc.getLeafViewController];
-//		[childVc.parentInfo.options.bottomTab mergeOptions:((RNNNavigationOptions *)childVc.parentInfo.options.defaultOptions).bottomTab overrideOptions:NO];
-//		[childVc.parentInfo.options.bottomTab applyOn:childVc];
-//		[childVc.getLeafViewController.parentInfo.options.bottomTab mergeOptions:((RNNNavigationOptions *)childVc.getLeafViewController.parentInfo.options.defaultOptions).bottomTab overrideOptions:NO];
-//		[childVc.getLeafViewController.parentInfo.options.bottomTab applyOn:childVc];
+		[childVc.parentInfo.options applyOn:childVc];
+		[childVc.getLeafViewController.parentInfo.options applyOn:childVc.getLeafViewController];
 		
 		[controllers addObject:childVc];
 	}
