@@ -7,8 +7,6 @@
 @interface RNNNavigationButtons()
 
 @property (weak, nonatomic) RNNRootViewController* viewController;
-@property (strong, nonatomic) NSArray* rightButtons;
-@property (strong, nonatomic) NSArray* leftButtons;
 @property (strong, nonatomic) RNNButtonOptions* defaultLeftButtonStyle;
 @property (strong, nonatomic) RNNButtonOptions* defaultRightButtonStyle;
 
@@ -47,13 +45,11 @@
 	}
 	
 	if ([side isEqualToString:@"left"]) {
-		self.leftButtons = barButtonItems;
-		[self.viewController.navigationItem setLeftBarButtonItems:self.leftButtons animated:animated];
+		[self.viewController.navigationItem setLeftBarButtonItems:barButtonItems animated:animated];
 	}
 	
 	if ([side isEqualToString:@"right"]) {
-		self.rightButtons = barButtonItems;
-		[self.viewController.navigationItem setRightBarButtonItems:self.rightButtons animated:animated];
+		[self.viewController.navigationItem setRightBarButtonItems:barButtonItems animated:animated];
 	}
 }
 
@@ -82,7 +78,7 @@
 	
 	RNNUIBarButtonItem *barButtonItem;
 	if (component) {
-		RCTRootView *view = (RCTRootView*)[self.viewController.creator createRootView:component[@"name"] rootViewId:component[@"componentId"]];
+		RCTRootView *view = (RCTRootView*)[self.viewController.creator createCustomReactView:component[@"name"] rootViewId:component[@"componentId"]];
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withCustomView:view];
 	} else if (iconImage) {
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withIcon:iconImage];
@@ -97,7 +93,7 @@
 		return nil;
 	}
 	
-	barButtonItem.target = self;
+	barButtonItem.target = self.viewController;
 	barButtonItem.action = @selector(onButtonPress:);
 	
 	NSNumber *enabled = [self getValue:dictionary[@"enabled"] withDefault:defaultStyle.enabled];
@@ -173,10 +169,6 @@
 
 - (id)getValue:(id)value withDefault:(id)defaultValue {
 	return value ? value : defaultValue;
-}
-
--(void)onButtonPress:(RNNUIBarButtonItem*)barButtonItem {
-	[self.viewController.eventEmitter sendOnNavigationButtonPressed:self.viewController.componentId buttonId:barButtonItem.buttonId];
 }
 
 @end

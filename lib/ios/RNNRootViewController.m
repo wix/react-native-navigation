@@ -1,14 +1,15 @@
-
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
 #import "RNNCustomTitleView.h"
 #import "RNNPushAnimation.h"
+#import "RNNReactView.h"
 
 @interface RNNRootViewController() {
-	UIView* _customTitleView;
+	RNNReactView* _customTitleView;
 	UIView* _customTopBar;
 	UIView* _customTopBarBackground;
+	BOOL _isBeingPresented;
 }
 
 @property (nonatomic, strong) NSString* componentName;
@@ -21,6 +22,8 @@
 @end
 
 @implementation RNNRootViewController
+
+@synthesize previewCallback;
 
 -(instancetype)initWithName:(NSString*)name
 				withOptions:(RNNNavigationOptions*)options
@@ -59,6 +62,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
+	_isBeingPresented = YES;
 	[self.options applyOn:self];
 }
 
@@ -69,6 +73,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
+	_isBeingPresented = NO;
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
@@ -86,7 +91,7 @@
 }
 
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	if (wait) {
+	if (wait && !_isExternalComponent) {
 		[self onReactViewReady:readyBlock];
 	} else {
 		readyBlock();
@@ -135,16 +140,24 @@
 }
 
 - (void)setCustomNavigationTitleView {
-	if (!_customTitleView) {
+	if (!_customTitleView && _isBeingPresented) {
 		if (self.options.topBar.title.component.name) {
-			RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
-			
-			_customTitleView = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:self.options.topBar.title.component.alignment];
-			reactView.backgroundColor = UIColor.clearColor;
+			_customTitleView = (RNNReactView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
 			_customTitleView.backgroundColor = UIColor.clearColor;
+			[_customTitleView setAlignment:self.options.topBar.title.component.alignment];
+			BOOL isCenter = [self.options.topBar.title.component.alignment isEqualToString:@"center"];
+			__weak RNNReactView *weakTitleView = _customTitleView;
+			CGRect frame = self.navigationController.navigationBar.bounds;
+			[_customTitleView setFrame:frame];
+			[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
+				if (isCenter) {
+					[weakTitleView setFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
+				} else {
+					[weakTitleView setFrame:frame];
+				}
+			}];
+			
 			self.navigationItem.titleView = _customTitleView;
-		} if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
-			self.navigationItem.title = nil;
 		}
 	} else if (_customTitleView && _customTitleView.superview == nil) {
 		if ([self.navigationItem.title isKindOfClass:[RNNCustomTitleView class]] && !_customTitleView) {
@@ -181,9 +194,13 @@
 			
 			_customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 			[self.navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
-			self.navigationController.navigationBar.clipsToBounds = YES;
 		} else if (self.navigationController.navigationBar.subviews.count && [[self.navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
 			[[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
+		}
+		
+		if (self.options.topBar.background.clipToBounds) {
+			self.navigationController.navigationBar.clipsToBounds = YES;
+		} else {
 			self.navigationController.navigationBar.clipsToBounds = NO;
 		}
 	} if (_customTopBarBackground && _customTopBarBackground.superview == nil) {
@@ -286,28 +303,13 @@
 }
 
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
-	if (self.previewController) {
-		//		RNNRootViewController * vc = (RNNRootViewController*) self.previewController;
-		//		[_eventEmitter sendOnNavigationEvent:@"previewContext" params:@{
-		//																		@"previewComponentId": vc.componentId,
-		//																		@"componentId": self.componentId
-		//																		}];
-	}
 	return self.previewController;
 }
 
 
 - (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
-	RNNRootViewController * vc = (RNNRootViewController*) self.previewController;
-	//	NSDictionary * params = @{
-	//							  @"previewComponentId": vc.componentId,
-	//							  @"componentId": self.componentId
-	//							  };
-	if (vc.options.preview.commit) {
-		//		[_eventEmitter sendOnNavigationEvent:@"previewCommit" params:params];
-		[self.navigationController pushViewController:vc animated:false];
-	} else {
-		//		[_eventEmitter sendOnNavigationEvent:@"previewDismissed" params:params];
+	if (self.previewCallback) {
+		self.previewCallback(self);
 	}
 }
 
@@ -349,6 +351,10 @@
 	return actions;
 }
 
+-(void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem {
+	[self.eventEmitter sendOnNavigationButtonPressed:self.componentId buttonId:barButtonItem.buttonId];
+}
+
 /**
  *	fix for #877, #878
  */
@@ -368,6 +374,8 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self.view];
 	self.view = nil;
 	self.navigationItem.titleView = nil;
+	self.navigationItem.rightBarButtonItems = nil;
+	self.navigationItem.leftBarButtonItems = nil;
 	_customTopBar = nil;
 	_customTitleView = nil;
 	_customTopBarBackground = nil;

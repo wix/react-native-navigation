@@ -80,4 +80,8 @@ No PR will be accepted without adequate test coverage.
 	```
 		
 	You probably have an old node version which doesn't support async functions. Update your nodejs to 8+.
+* If the bundling fails with an error like `bundling failed: ambiguous resolution`, reset the `rn-packager` cache manually.
+	```
+	node ./node_modules/react-native/local-cli/cli.js start --reset-cache
+	```
 

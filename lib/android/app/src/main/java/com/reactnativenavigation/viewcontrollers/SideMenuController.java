@@ -70,11 +70,11 @@ public class SideMenuController extends ParentController<DrawerLayout> {
     }
 
     @Override
-    public void mergeChildOptions(Options options, Component child) {
-        super.mergeChildOptions(options, child);
+    public void mergeChildOptions(Options options, ViewController childController, Component child) {
+        super.mergeChildOptions(options, childController, child);
         new SideMenuOptionsPresenter(getView()).present(options.sideMenuRootOptions);
         performOnParentController(parentController ->
-                ((ParentController) parentController).mergeChildOptions(options.copy().clearSideMenuOptions(), child)
+                ((ParentController) parentController).mergeChildOptions(options.copy().clearSideMenuOptions(), childController, child)
         );
     }
 

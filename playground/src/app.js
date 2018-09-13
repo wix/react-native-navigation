@@ -22,7 +22,7 @@ if (Platform.OS === 'android') {
 
 function start() {
   registerScreens();
-  Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.events().registerAppLaunchedListener(async () => {
     Navigation.setDefaultOptions({
       bottomTab: {
         iconColor: '#1B4C77',
@@ -146,6 +146,18 @@ function start() {
         }
       }
     });
+
+    // await Navigation.showModal({
+    //   stack: {
+    //     children: [
+    //       {
+    //         component: {
+    //           name: 'navigation.playground.ModalScreen'
+    //         }
+    //       }
+    //     ]
+    //   }
+    // });
 
     Navigation.setRoot({
       root: {

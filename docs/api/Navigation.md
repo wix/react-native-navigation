@@ -5,11 +5,6 @@
 `Element (React.ComponentType<object>)`
 
 ---
-## TouchablePreview
-
-`TouchablePreview (React.ComponentType<TouchablePreviewProps>)`
-
----
 ## store
 
 `store (Store)`
@@ -20,7 +15,7 @@
 
 `registerComponent(componentName: string, getComponentClassFunc: ComponentProvider): ComponentType<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L55)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L52)
 
 Every navigation component in your app must be registered with a unique name.
 The component itself is a traditional React component extending React.Component.
@@ -31,7 +26,7 @@ The component itself is a traditional React component extending React.Component.
 
 `registerComponentWithRedux(componentName: string, getComponentClassFunc: ComponentProvider, ReduxProvider: any, reduxStore: any): ComponentType<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L63)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L60)
 
 Utility helper function like registerComponent,
 wraps the provided component with a react-redux Provider with the passed redux store
@@ -42,7 +37,7 @@ wraps the provided component with a react-redux Provider with the passed redux s
 
 `setRoot(layout: any): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L70)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L67)
 
 Reset the app to a new layout
 
@@ -52,7 +47,7 @@ Reset the app to a new layout
 
 `setDefaultOptions(options: any): void`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L77)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L74)
 
 Set default options to all screens. Useful for declaring a consistent style across the app.
 
@@ -62,7 +57,7 @@ Set default options to all screens. Useful for declaring a consistent style acro
 
 `mergeOptions(componentId: string, options: any): void`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L84)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L81)
 
 Change a component's navigation options
 
@@ -72,7 +67,7 @@ Change a component's navigation options
 
 `showModal(layout: any): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L91)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L88)
 
 Show a screen as a modal.
 
@@ -82,7 +77,7 @@ Show a screen as a modal.
 
 `dismissModal(componentId: string): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L98)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L95)
 
 Dismiss a modal by componentId. The dismissed modal can be anywhere in the stack.
 
@@ -92,7 +87,7 @@ Dismiss a modal by componentId. The dismissed modal can be anywhere in the stack
 
 `dismissAllModals(): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L105)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L102)
 
 Dismiss all Modals
 
@@ -102,7 +97,7 @@ Dismiss all Modals
 
 `push(componentId: string, layout: any): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L112)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L109)
 
 Push a new layout into this screen's navigation stack.
 
@@ -112,7 +107,7 @@ Push a new layout into this screen's navigation stack.
 
 `pop(componentId: string, params: any): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L119)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L116)
 
 Pop a component from the stack, regardless of it's position.
 
@@ -122,7 +117,7 @@ Pop a component from the stack, regardless of it's position.
 
 `popTo(componentId: string): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L126)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L123)
 
 Pop the stack to a given component
 
@@ -132,7 +127,7 @@ Pop the stack to a given component
 
 `popToRoot(componentId: string): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L133)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L130)
 
 Pop the component's stack to root.
 
@@ -142,7 +137,7 @@ Pop the component's stack to root.
 
 `setStackRoot(componentId: string, layout: any): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L140)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L137)
 
 Sets new root component to stack.
 
@@ -152,7 +147,7 @@ Sets new root component to stack.
 
 `showOverlay(layout: any): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L147)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L144)
 
 Show overlay on top of the entire app
 
@@ -162,7 +157,7 @@ Show overlay on top of the entire app
 
 `dismissOverlay(componentId: string): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L154)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L151)
 
 dismiss overlay by componentId
 
@@ -172,7 +167,7 @@ dismiss overlay by componentId
 
 `getLaunchArgs(): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L161)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L158)
 
 Resolves arguments passed on launch
 
@@ -182,7 +177,7 @@ Resolves arguments passed on launch
 
 `events(): EventsRegistry`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L168)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L165)
 
 Obtain the events registry instance
 
@@ -192,7 +187,7 @@ Obtain the events registry instance
 
 `constants(): Promise<any>`
 
-[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L175)
+[source](https://github.com/wix/react-native-navigation/blob/v2/lib/src/Navigation.ts#L172)
 
 Constants coming from native
 

@@ -21,6 +21,10 @@ typedef void (^RNNAnimationBlock)(void);
 }
 
 - (void)pop:(UIViewController *)viewController animated:(BOOL)animated completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)rejection {
+	if (!viewController.view.window) {
+		animated = NO;
+	}
+	
 	[self performAnimationBlock:^{
 		[viewController.navigationController popViewControllerAnimated:animated];
 	} completion:completion];

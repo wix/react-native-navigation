@@ -19,6 +19,7 @@ import com.reactnativenavigation.viewcontrollers.ViewController;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,7 +52,7 @@ public class ModalPresenterTest extends BaseTest {
 
         animator = spy(new ModalAnimator(activity));
         uut = new ModalPresenter(animator);
-        uut.setContentLayout(contentLayout);
+        uut.setModalsContainer(contentLayout);
         modal1 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_1, new Options()));
         modal2 = spy(new SimpleViewController(activity, childRegistry, MODAL_ID_2, new Options()));
     }
@@ -137,6 +138,14 @@ public class ModalPresenterTest extends BaseTest {
     }
 
     @Test
+    public void showModal_rejectIfContentIsNull() {
+        uut.setModalsContainer(null);
+        CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
+        uut.showModal(modal1, modal2, listener);
+        verify(listener).onError(any());
+    }
+
+    @Test
     public void dismissModal_animatesByDefault() {
         disableShowModalAnimation(modal1);
 
@@ -156,7 +165,7 @@ public class ModalPresenterTest extends BaseTest {
     public void dismissModal_previousViewIsAddedAtIndex0() {
         modal2.ensureViewIsCreated();
         FrameLayout spy = spy(new FrameLayout(newActivity()));
-        uut.setContentLayout(spy);
+        uut.setModalsContainer(spy);
         uut.dismissTopModal(modal1, modal2, new CommandListenerAdapter());
         verify(spy, times(1)).addView(modal2.getView(), 0);
     }
@@ -209,5 +218,21 @@ public class ModalPresenterTest extends BaseTest {
         uut.showModal(modal1, root, new CommandListenerAdapter());
         assertThat(root.getView().getParent()).isNotNull();
         verify(root, times(0)).onViewDisappear();
+    }
+
+    @Test
+    public void dismissTopModal_rejectIfContentIsNull() {
+        uut.setModalsContainer(null);
+        CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
+        uut.dismissTopModal(modal1, modal2, listener);
+        verify(listener).onError(any());
+    }
+
+    @Test
+    public void dismissModal_rejectIfContentIsNull() {
+        uut.setModalsContainer(null);
+        CommandListenerAdapter listener = Mockito.mock(CommandListenerAdapter.class);
+        uut.dismissModal(modal1, listener);
+        verify(listener).onError(any());
     }
 }

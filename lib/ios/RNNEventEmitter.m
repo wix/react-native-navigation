@@ -14,8 +14,10 @@ static NSString* const BottomTabSelected		= @"RNN.BottomTabSelected";
 static NSString* const ComponentDidAppear		= @"RNN.ComponentDidAppear";
 static NSString* const ComponentDidDisappear	= @"RNN.ComponentDidDisappear";
 static NSString* const NavigationButtonPressed	= @"RNN.NavigationButtonPressed";
+static NSString* const ModalDismissed	        = @"RNN.ModalDismissed";
 static NSString* const SearchBarUpdated 		= @"RNN.SearchBarUpdated";
 static NSString* const SearchBarCancelPressed 	= @"RNN.SearchBarCancelPressed";
+static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
 
 -(NSArray<NSString *> *)supportedEvents {
 	return @[AppLaunched,
@@ -24,8 +26,10 @@ static NSString* const SearchBarCancelPressed 	= @"RNN.SearchBarCancelPressed";
 			 ComponentDidAppear,
 			 ComponentDidDisappear,
 			 NavigationButtonPressed,
+			 ModalDismissed,
 			 SearchBarUpdated,
-			 SearchBarCancelPressed];
+			 SearchBarCancelPressed,
+			 PreviewCompleted];
 }
 
 # pragma mark public
@@ -88,6 +92,20 @@ static NSString* const SearchBarCancelPressed 	= @"RNN.SearchBarCancelPressed";
 	[self send:SearchBarCancelPressed body:@{
 											@"componentId": componentId
 											}];
+}
+
+- (void)sendOnPreviewCompleted:(NSString *)componentId previewComponentId:(NSString *)previewComponentId {
+	[self send:PreviewCompleted body:@{
+											 @"componentId": componentId,
+											 @"previewComponentId": previewComponentId
+                       }];
+}
+
+- (void)sendModalsDismissedEvent:(NSString *)componentId numberOfModalsDismissed:(NSNumber *)modalsDismissed {
+	[self send:ModalDismissed body:@{
+											 @"componentId": componentId,
+											 @"modalsDismissed": modalsDismissed
+											 }];
 }
 
 - (void)addListener:(NSString *)eventName {
