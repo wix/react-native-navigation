@@ -47,10 +47,17 @@ public abstract class ChildController<T extends ViewGroup> extends ViewControlle
     @Override
     public void applyOptions(Options options) {
         super.applyOptions(options);
-        presenter.present(getView(), options);
+        presenter.applyOptions(getView(), options);
         if (isRoot()) {
             presenter.applyRootOptions(getView(), options);
         }
+    }
+
+    @Override
+    public void mergeOptions(Options options) {
+        if (options == Options.EMPTY) return;
+        presenter.mergeOptions(getView(), options);
+        super.mergeOptions(options);
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
 
 import com.reactnativenavigation.parse.Alignment;
 import com.reactnativenavigation.parse.AnimationsOptions;
@@ -34,6 +35,7 @@ import com.reactnativenavigation.views.topbar.TopBar;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -150,6 +152,9 @@ public class StackOptionsPresenter {
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
         topBar.setHeight(options.height.get(LayoutParams.WRAP_CONTENT));
         topBar.setElevation(options.elevation.get(DEFAULT_ELEVATION));
+        if (topBar.getLayoutParams() instanceof MarginLayoutParams) {
+            ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, options.topMargin.get(0));
+        }
 
         topBar.setTitleHeight(options.title.height.get(LayoutParams.WRAP_CONTENT));
         topBar.setTitle(options.title.text.get(""));
@@ -242,7 +247,7 @@ public class StackOptionsPresenter {
 
     private List<TitleBarButtonController> getOrCreateButtonControllers(@Nullable Map<String, TitleBarButtonController> currentButtons, @Nullable List<Button> buttons) {
         if (buttons == null) return null;
-        Map<String, TitleBarButtonController> result = new HashMap<>();
+        Map<String, TitleBarButtonController> result = new LinkedHashMap<>();
         for (Button b : buttons) {
             result.put(b.instanceId, currentButtons != null && currentButtons.containsKey(b.instanceId) ? currentButtons.get(b.instanceId) : createButtonController(b));
         }
@@ -333,6 +338,9 @@ public class StackOptionsPresenter {
     private void mergeTopBarOptions(TopBarOptions options, AnimationsOptions animationsOptions, Component component) {
         if (options.height.hasValue()) topBar.setHeight(options.height.get());
         if (options.elevation.hasValue()) topBar.setElevation(options.elevation.get());
+        if (options.topMargin.hasValue() && topBar.getLayoutParams() instanceof MarginLayoutParams) {
+            ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, options.topMargin.get());
+        }
 
         if (options.title.height.hasValue()) topBar.setTitleHeight(options.title.height.get());
         if (options.title.text.hasValue()) topBar.setTitle(options.title.text.get());

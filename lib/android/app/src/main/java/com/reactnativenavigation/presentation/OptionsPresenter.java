@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 
 import com.reactnativenavigation.parse.Options;
@@ -29,11 +28,11 @@ public class OptionsPresenter {
         this.defaultOptions = defaultOptions;
     }
 
-    public void applyLayoutOptions(ViewGroup.LayoutParams layoutParams) {
-
+    public void mergeOptions(View view, Options options) {
+        mergeStatusBarOptions(view, options.statusBar);
     }
 
-    public void present(View view, Options options) {
+    public void applyOptions(View view, Options options) {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
         applyOrientation(withDefaultOptions.layout.orientation);
         applyViewOptions(view, withDefaultOptions);
@@ -112,4 +111,48 @@ public class OptionsPresenter {
                     0 : UiUtils.getStatusBarHeight(activity);
         }
     }
+
+
+    private void mergeStatusBarOptions(View view, StatusBarOptions statusBar) {
+        mergeStatusBarBackgroundColor(statusBar);
+        mergeTextColorScheme(statusBar.textColorScheme);
+        mergeStatusBarVisible(view, statusBar.visible, statusBar.drawBehind);
+    }
+
+    private void mergeStatusBarBackgroundColor(StatusBarOptions statusBar) {
+        if (statusBar.backgroundColor.hasValue() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.getWindow().setStatusBarColor(statusBar.backgroundColor.get(Color.BLACK));
+        }
+    }
+
+    private void mergeTextColorScheme(TextColorScheme scheme) {
+        if (!scheme.hasValue() || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
+        final View view = activity.getWindow().getDecorView();
+        if (scheme == TextColorScheme.Dark) {
+            int flags = view.getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            view.setSystemUiVisibility(flags);
+        } else {
+            clearDarkTextColorScheme(view);
+        }
+    }
+
+    private void mergeStatusBarVisible(View view, Bool visible, Bool drawBehind) {
+        if (visible.hasValue()) {
+            int flags = view.getSystemUiVisibility();
+            if (visible.isTrue()) {
+                flags &= ~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN & ~View.SYSTEM_UI_FLAG_FULLSCREEN;
+            } else {
+                flags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN;
+            }
+            view.setSystemUiVisibility(flags);
+        } else if (drawBehind.hasValue()) {
+            if (drawBehind.isTrue()) {
+                view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            } else {
+                view.setSystemUiVisibility(~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            }
+        }
+    }
+
 }
