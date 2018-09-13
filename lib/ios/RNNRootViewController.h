@@ -9,6 +9,7 @@
 #import "RNNParentInfo.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
+typedef void (^PreviewCallback)(UIViewController *vc);
 
 @interface RNNRootViewController : UIViewController	<UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
 
@@ -17,7 +18,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @property (nonatomic) id<RNNRootViewCreator> creator;
 @property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) UIViewController* previewController;
-
+@property (nonatomic, copy) PreviewCallback previewCallback;
 
 - (instancetype)initWithParentInfo:(RNNParentInfo *)parentInfo
 			 rootViewCreator:(id<RNNRootViewCreator>)creator

@@ -7,6 +7,7 @@ import {
   SearchBarUpdatedEvent,
   SearchBarCancelPressedEvent,
   ComponentEvent,
+  PreviewCompletedEvent,
   ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
@@ -22,6 +23,7 @@ export class ComponentEventsObserver {
     this.notifyModalDismissed = this.notifyModalDismissed.bind(this);
     this.notifySearchBarUpdated = this.notifySearchBarUpdated.bind(this);
     this.notifySearchBarCancelPressed = this.notifySearchBarCancelPressed.bind(this);
+    this.notifyPreviewCompleted = this.notifyPreviewCompleted.bind(this);
   }
 
   public registerOnceForAllComponentEvents() {
@@ -33,6 +35,7 @@ export class ComponentEventsObserver {
     this.nativeEventsReceiver.registerModalDismissedListener(this.notifyModalDismissed);
     this.nativeEventsReceiver.registerSearchBarUpdatedListener(this.notifySearchBarUpdated);
     this.nativeEventsReceiver.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
+    this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
   }
 
   public bindComponent(component: React.Component<any>): EventSubscription {
@@ -79,6 +82,10 @@ export class ComponentEventsObserver {
 
   notifySearchBarCancelPressed(event: SearchBarCancelPressedEvent) {
     this.triggerOnAllListenersByComponentId(event, 'searchBarCancelPressed');
+  }
+
+  notifyPreviewCompleted(event: PreviewCompletedEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'previewCompleted');
   }
 
   private triggerOnAllListenersByComponentId(event: ComponentEvent, method: string) {

@@ -89,15 +89,26 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNRootViewController *newVc = (RNNRootViewController *)[_controllerFactory createLayoutAndSaveToStore:layout];
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	
-	if (newVc.parentInfo.options.preview.elementId) {
+	if ([newVc.options.preview.reactTag floatValue] > 0) {
 		UIViewController* vc = [_store findComponentForId:componentId];
 		
 		if([vc isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController* rootVc = (RNNRootViewController*)vc;
 			rootVc.previewController = newVc;
-			
-			RNNElementFinder* elementFinder = [[RNNElementFinder alloc] initWithFromVC:vc];
-			RNNElementView* elementView = [elementFinder findElementForId:newVc.parentInfo.options.preview.elementId];
+
+      rootVc.previewCallback = ^(UIViewController *vcc) {
+				RNNRootViewController* rvc  = (RNNRootViewController*)vcc;
+				[self->_eventEmitter sendOnPreviewCompleted:componentId previewComponentId:newVc.componentId];
+				if ([newVc.options.preview.commit floatValue] > 0) {
+					[CATransaction begin];
+					[CATransaction setCompletionBlock:^{
+						[self->_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
+						completion();
+					}];
+					[rvc.navigationController pushViewController:newVc animated:YES];
+					[CATransaction commit];
+				}
+			};
 			
 			CGSize size = CGSizeMake(rootVc.view.frame.size.width, rootVc.view.frame.size.height);
 			
@@ -112,8 +123,11 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			if (newVc.parentInfo.options.preview.width || newVc.parentInfo.options.preview.height) {
 				newVc.preferredContentSize = size;
 			}
-			
-			[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:elementView];
+      
+			RCTExecuteOnMainQueue(^{
+				UIView *view = [[ReactNativeNavigation getBridge].uiManager viewForReactTag:newVc.options.preview.reactTag];
+				[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:view];
+			});
 		}
 	} else {
 		id animationDelegate = (newVc.parentInfo.options.animations.push.hasCustomAnimation || newVc.isCustomTransitioned) ? newVc : nil;
