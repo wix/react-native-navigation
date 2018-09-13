@@ -89,7 +89,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	RNNRootViewController *newVc = (RNNRootViewController *)[_controllerFactory createLayoutAndSaveToStore:layout];
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	
-	if ([newVc.options.preview.reactTag floatValue] > 0) {
+	if ([newVc.parentInfo.options.preview.reactTag floatValue] > 0) {
 		UIViewController* vc = [_store findComponentForId:componentId];
 		
 		if([vc isKindOfClass:[RNNRootViewController class]]) {
@@ -98,8 +98,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
       rootVc.previewCallback = ^(UIViewController *vcc) {
 				RNNRootViewController* rvc  = (RNNRootViewController*)vcc;
-				[self->_eventEmitter sendOnPreviewCompleted:componentId previewComponentId:newVc.componentId];
-				if ([newVc.options.preview.commit floatValue] > 0) {
+				[self->_eventEmitter sendOnPreviewCompleted:componentId previewComponentId:newVc.parentInfo.componentId];
+				if ([newVc.parentInfo.options.preview.commit floatValue] > 0) {
 					[CATransaction begin];
 					[CATransaction setCompletionBlock:^{
 						[self->_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
@@ -125,7 +125,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			}
       
 			RCTExecuteOnMainQueue(^{
-				UIView *view = [[ReactNativeNavigation getBridge].uiManager viewForReactTag:newVc.options.preview.reactTag];
+				UIView *view = [[ReactNativeNavigation getBridge].uiManager viewForReactTag:newVc.parentInfo.options.preview.reactTag];
 				[rootVc registerForPreviewingWithDelegate:(id)rootVc sourceView:view];
 			});
 		}
