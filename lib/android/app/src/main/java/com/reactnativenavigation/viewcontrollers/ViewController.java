@@ -51,12 +51,16 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     private final Activity activity;
     private final String id;
     private YellowBoxDelegate yellowBoxDelegate;
-    protected T view;
+    @Nullable protected T view;
     @Nullable private ParentController<T> parentController;
     private boolean isShown;
     private boolean isDestroyed;
     private ViewVisibilityListener viewVisibilityListener = new ViewVisibilityListenerAdapter();
     protected FabOptionsPresenter fabOptionsPresenter;
+
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
 
     public ViewController(Activity activity, String id, YellowBoxDelegate yellowBoxDelegate, Options initialOptions) {
         this.activity = activity;
@@ -133,21 +137,11 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         this.parentController = parentController;
     }
 
-    boolean performOnParentStack(Task<StackController> task) {
+    void performOnParentStack(Task<StackController> task) {
         if (parentController instanceof StackController) {
             task.run((StackController) parentController);
-            return true;
-        }
-        if (this instanceof StackController) {
+        } else if (this instanceof StackController) {
             task.run((StackController) this);
-            return true;
-        }
-        return false;
-    }
-
-    void performOnParentStack(Task accept, Runnable reject) {
-        if (!performOnParentStack(accept)) {
-            reject.run();
         }
     }
 
@@ -164,10 +158,12 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     public void detachView() {
+        if (view == null || view.getParent() == null) return;
         ((ViewManager) view.getParent()).removeView(view);
     }
 
     public void attachView(ViewGroup parent, int index) {
+        if (view == null) return;
         if (view.getParent() == null) parent.addView(view, index);
     }
 
@@ -239,10 +235,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
         }
     }
 
-    protected boolean isDestroyed() {
-        return isDestroyed;
-    }
-
     @Override
     public void onGlobalLayout() {
         if (!isShown && isViewShown()) {
@@ -294,6 +286,6 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     public List<Element> getElements() {
-        return getView() instanceof IReactView ? ((IReactView) view).getElements() : Collections.EMPTY_LIST;
+        return getView() instanceof IReactView && view != null? ((IReactView) view).getElements() : Collections.EMPTY_LIST;
     }
 }

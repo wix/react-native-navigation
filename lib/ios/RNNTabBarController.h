@@ -7,7 +7,6 @@
 
 - (instancetype)initWithEventEmitter:(RNNEventEmitter*)eventEmitter;
 
-- (void)setTabBarHidden:(BOOL)hidden animated:(BOOL)animated;
 - (void)setSelectedIndexByComponentID:(NSString *)componentID;
 
 @end

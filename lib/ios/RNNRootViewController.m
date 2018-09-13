@@ -1,13 +1,12 @@
-
 #import "RNNRootViewController.h"
 #import <React/RCTConvert.h>
 #import "RNNAnimator.h"
 #import "RNNCustomTitleView.h"
 #import "RNNPushAnimation.h"
-#import "RNNReactRootView.h"
+#import "RNNReactView.h"
 
 @interface RNNRootViewController() {
-	RNNReactRootView* _customTitleView;
+	RNNReactView* _customTitleView;
 	UIView* _customTopBar;
 	UIView* _customTopBarBackground;
 	BOOL _isBeingPresented;
@@ -92,7 +91,7 @@
 }
 
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	if (wait) {
+	if (wait && !_isExternalComponent) {
 		[self onReactViewReady:readyBlock];
 	} else {
 		readyBlock();
@@ -143,11 +142,11 @@
 - (void)setCustomNavigationTitleView {
 	if (!_customTitleView && _isBeingPresented) {
 		if (self.options.topBar.title.component.name) {
-			_customTitleView = (RNNReactRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
+			_customTitleView = (RNNReactView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
 			_customTitleView.backgroundColor = UIColor.clearColor;
 			[_customTitleView setAlignment:self.options.topBar.title.component.alignment];
 			BOOL isCenter = [self.options.topBar.title.component.alignment isEqualToString:@"center"];
-			__weak RNNReactRootView *weakTitleView = _customTitleView;
+			__weak RNNReactView *weakTitleView = _customTitleView;
 			CGRect frame = self.navigationController.navigationBar.bounds;
 			[_customTitleView setFrame:frame];
 			[_customTitleView setRootViewDidChangeIntrinsicSize:^(CGSize intrinsicContentSize) {
@@ -195,9 +194,13 @@
 			
 			_customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 			[self.navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
-			self.navigationController.navigationBar.clipsToBounds = YES;
 		} else if (self.navigationController.navigationBar.subviews.count && [[self.navigationController.navigationBar.subviews objectAtIndex:1] isKindOfClass:[RNNCustomTitleView class]]) {
 			[[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
+		}
+		
+		if (self.options.topBar.background.clipToBounds) {
+			self.navigationController.navigationBar.clipsToBounds = YES;
+		} else {
 			self.navigationController.navigationBar.clipsToBounds = NO;
 		}
 	} if (_customTopBarBackground && _customTopBarBackground.superview == nil) {

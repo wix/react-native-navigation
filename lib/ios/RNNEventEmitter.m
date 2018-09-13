@@ -98,6 +98,13 @@ static NSString* const PreviewCompleted         = @"RNN.PreviewCompleted";
 	[self send:PreviewCompleted body:@{
 											 @"componentId": componentId,
 											 @"previewComponentId": previewComponentId
+                       }];
+}
+
+- (void)sendModalsDismissedEvent:(NSString *)componentId numberOfModalsDismissed:(NSNumber *)modalsDismissed {
+	[self send:ModalDismissed body:@{
+											 @"componentId": componentId,
+											 @"modalsDismissed": modalsDismissed
 											 }];
 }
 

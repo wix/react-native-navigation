@@ -2,6 +2,7 @@ package com.reactnativenavigation.viewcontrollers;
 
 import android.app.Activity;
 import android.graphics.Typeface;
+import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -494,6 +495,9 @@ public class StackOptionsPresenterTest extends BaseTest {
 
     private TopBar mockTopBar() {
         TopBar topBar = mock(TopBar.class);
+        Toolbar toolbar = new Toolbar(activity);
+        toolbar.addView(new ActionMenuView(activity));
+        when(topBar.getTitleBar()).then(invocation -> toolbar);
         when(topBar.getContext()).then(invocation -> activity);
         return topBar;
     }

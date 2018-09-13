@@ -34,7 +34,7 @@
 
 	- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 	{
-		NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+		NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 		[ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
 		
 		return YES;
@@ -42,6 +42,14 @@
 
 	@end
 	```
+
+3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h": 
+```
+! 'RCTBundleURLProvider.h' file not found
+```
+This is because the `React` scheme is missing from your project. You can verify this by opening the `Product` menu and the `Scheme` submenu. 
+
+To make the `React` scheme available to your project, run `npm install -g react-native-git-upgrade` followed by `react-native-git-upgrade`. Once this is done, you can click back to the menu in Xcode: `Product -> Scheme -> Manage Schemes`, then click '+' to add a new scheme. From the `Target` menu, select "React", and click the checkbox to make the scheme `shared`. This should make the error disappear.
 
 ## Android
 
@@ -238,7 +246,7 @@ import java.util.List;
 
 ### 8 RNN and React Native version
 
-react-native-navigation supports multiple React Native versions. Target the React Native version required by your project by specifying the RNN build flavor in `app/build.gradle`.
+react-native-navigation supports multiple React Native versions. Target the React Native version required by your project by specifying the RNN build flavor in `android/app/build.gradle`.
 
 ```diff
 android {

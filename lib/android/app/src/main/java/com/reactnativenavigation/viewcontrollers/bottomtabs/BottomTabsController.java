@@ -116,8 +116,8 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
     @Override
     public boolean onTabSelected(int index, boolean wasSelected) {
-        if (wasSelected) return false;
         eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
+        if (wasSelected) return false;
         selectTab(index);
         return false;
 	}

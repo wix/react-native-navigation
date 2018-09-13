@@ -5,5 +5,6 @@
 
 @property (nonatomic, strong) NSNumber* color;
 @property (nonatomic, strong) RNNComponentOptions* component;
+@property (nonatomic, strong) NSNumber* clipToBounds; 
 
 @end
