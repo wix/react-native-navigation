@@ -200,14 +200,5 @@
 	XCTAssertEqualObjects(ans, storeAns);
 }
 
-- (void)testCreateOverlay_ComponentLayout {
-	id ans = [self.factory createOverlay:
-			  @{@"id": @"cntId",
-				@"type": @"Component",
-				@"data": @{},
-				@"children": @[]}];
-	XCTAssertTrue([ans isMemberOfClass:[RNNRootViewController class]]);
-}
-
 
 @end

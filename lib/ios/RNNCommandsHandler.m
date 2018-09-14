@@ -265,7 +265,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)showOverlay:(NSDictionary *)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
-	UIViewController<RNNRootViewProtocol>* overlayVC = [_controllerFactory createOverlay:layout];
+	UIViewController<RNNRootViewProtocol>* overlayVC = [_controllerFactory createLayoutAndSaveToStore:layout];
 	[_overlayManager showOverlay:overlayVC];
 	[_eventEmitter sendOnNavigationCommandCompletion:showOverlay params:@{@"layout": layout}];
 	completion();

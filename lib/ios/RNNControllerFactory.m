@@ -193,17 +193,6 @@
 	return sideMenuChild;
 }
 
-- (UIViewController<RNNRootViewProtocol> *)createOverlay:(NSDictionary*)layout {
-	UIViewController<RNNRootViewProtocol> *vc = [self fromTree:layout];
-	__block RCTRootView* rootView = (RCTRootView*)vc.view;
-	
-	rootView.backgroundColor = [UIColor clearColor];
-	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
-	rootView.frame = CGRectMake(0, 0, availableSize.width, availableSize.height);
-	
-	return vc;
-}
-
 - (UIViewController<RNNRootViewProtocol> *)createSplitView:(RNNLayoutNode*)node {
 
 	NSString* componentId = node.nodeId;
