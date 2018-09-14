@@ -1,6 +1,6 @@
-#import "RNNParentInfo.h"
+#import "RNNLayoutInfo.h"
 
-@implementation RNNParentInfo
+@implementation RNNLayoutInfo
 
 - (instancetype)initWithNode:(RNNLayoutNode *)node optionsManager:(RNNOptionsManager *)optionsManager {
 	self = [super init];

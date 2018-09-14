@@ -30,7 +30,7 @@
 @property (nonatomic, strong) NSString* componentId;
 @property (nonatomic, strong) id emitter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
-@property (nonatomic, strong) RNNParentInfo* parentInfo;
+@property (nonatomic, strong) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNRootViewController* uut;
 @end
 
@@ -44,12 +44,12 @@
 	self.emitter = nil;
 	self.options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 	
-	RNNParentInfo* parentInfo = [RNNParentInfo new];
-	parentInfo.componentId = self.componentId;
-	parentInfo.name = self.pageName;
-	parentInfo.options = self.options;
+	RNNLayoutInfo* layoutInfo = [RNNLayoutInfo new];
+	layoutInfo.componentId = self.componentId;
+	layoutInfo.name = self.pageName;
+	layoutInfo.options = self.options;
 	
-	self.uut = [[RNNRootViewController alloc] initWithParentInfo:parentInfo rootViewCreator:self.creator eventEmitter:self.emitter isExternalComponent:NO];
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter isExternalComponent:NO];
 }
 
 -(void)testTopBarBackgroundColor_validColor{

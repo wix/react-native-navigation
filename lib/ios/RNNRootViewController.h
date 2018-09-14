@@ -6,7 +6,7 @@
 #import "RNNNavigationOptions.h"
 #import "RNNAnimator.h"
 #import "RNNUIBarButtonItem.h"
-#import "RNNParentInfo.h"
+#import "RNNLayoutInfo.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 typedef void (^PreviewCallback)(UIViewController *vc);
@@ -14,13 +14,13 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 @interface RNNRootViewController : UIViewController	<UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
 
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
-@property (nonatomic, retain) RNNParentInfo* parentInfo;
+@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic) id<RNNRootViewCreator> creator;
 @property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) UIViewController* previewController;
 @property (nonatomic, copy) PreviewCallback previewCallback;
 
-- (instancetype)initWithParentInfo:(RNNParentInfo *)parentInfo
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 			 rootViewCreator:(id<RNNRootViewCreator>)creator
 				eventEmitter:(RNNEventEmitter*)eventEmitter
 		 isExternalComponent:(BOOL)isExternalComponent;

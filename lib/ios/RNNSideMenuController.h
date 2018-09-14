@@ -18,7 +18,7 @@
 @property (readonly) RNNSideMenuChildVC *right;
 @property (readonly) MMDrawerController *sideMenu;
 
-@property (nonatomic, retain) RNNParentInfo* parentInfo;
+@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 
 -(instancetype)initWithControllers:(NSArray*)controllers;
 

@@ -7,7 +7,7 @@
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
 #import "RNNTopTabsViewController.h"
-#import "RNNParentInfo.h"
+#import "RNNLayoutInfo.h"
 #import "RNNOptionsManager.h"
 
 @implementation RNNControllerFactory {
@@ -96,9 +96,9 @@
 }
 
 - (UIViewController<RNNRootViewProtocol> *)createComponent:(RNNLayoutNode*)node {
-	RNNParentInfo* parentInfo = [[RNNParentInfo alloc] initWithNode:node optionsManager:_optionsManager];
+	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
 
-	RNNRootViewController* component = [[RNNRootViewController alloc] initWithParentInfo:parentInfo rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:NO];
+	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:NO];
 
 	if (!component.isCustomViewController) {
 		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
@@ -108,11 +108,11 @@
 }
 
 - (UIViewController<RNNRootViewProtocol> *)createExternalComponent:(RNNLayoutNode*)node {
-	RNNParentInfo* parentInfo = [[RNNParentInfo alloc] initWithNode:node optionsManager:_optionsManager];
+	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
 
-	UIViewController* externalVC = [_store getExternalComponent:parentInfo.name props:parentInfo.props bridge:_bridge];
+	UIViewController* externalVC = [_store getExternalComponent:layoutInfo bridge:_bridge];
 	
-	RNNRootViewController* component = [[RNNRootViewController alloc] initWithParentInfo:parentInfo rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:YES];
+	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:YES];
 	
 	[component addChildViewController:externalVC];
 	[component.view addSubview:externalVC.view];
@@ -123,9 +123,9 @@
 
 
 - (UIViewController<RNNRootViewProtocol> *)createStack:(RNNLayoutNode*)node {
-	RNNParentInfo* parentInfo = [[RNNParentInfo alloc] initWithNode:node optionsManager:_optionsManager];
+	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
 	
-	RNNNavigationController* vc = [[RNNNavigationController alloc] initWithParentInfo:parentInfo];
+	RNNNavigationController* vc = [[RNNNavigationController alloc] initWithLayoutInfo:layoutInfo];
 
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary* child in node.children) {
@@ -139,13 +139,13 @@
 
 -(UIViewController<RNNRootViewProtocol> *)createTabs:(RNNLayoutNode*)node {
 	RNNTabBarController* vc = [[RNNTabBarController alloc] initWithEventEmitter:_eventEmitter];
-	vc.parentInfo = [[RNNParentInfo alloc] initWithNode:node optionsManager:_optionsManager];
+	vc.layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
 	
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
 		UIViewController<RNNRootViewProtocol>* childVc = [self fromTree:child];
-		[childVc.parentInfo.options applyOn:childVc];
-		[childVc.getLeafViewController.parentInfo.options applyOn:childVc.getLeafViewController];
+		[childVc.layoutInfo.options applyOn:childVc];
+		[childVc.getLeafViewController.layoutInfo.options applyOn:childVc.getLeafViewController];
 		
 		[controllers addObject:childVc];
 	}
@@ -156,7 +156,7 @@
 
 - (UIViewController<RNNRootViewProtocol> *)createTopTabs:(RNNLayoutNode*)node {
 	RNNTopTabsViewController* vc = [[RNNTopTabsViewController alloc] init];
-	vc.parentInfo = [[RNNParentInfo alloc] initWithNode:node optionsManager:_optionsManager];
+	vc.layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
 	
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
@@ -171,7 +171,7 @@
 }
 
 - (UIViewController<RNNRootViewProtocol> *)createSideMenu:(RNNLayoutNode*)node {
-	RNNParentInfo* parentInfo = [[RNNParentInfo alloc] initWithNode:node optionsManager:_optionsManager];
+	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
 
 	NSMutableArray* childrenVCs = [NSMutableArray new];
 	
@@ -180,7 +180,7 @@
 		[childrenVCs addObject:vc];
 	}
 	RNNSideMenuController *sideMenu = [[RNNSideMenuController alloc] initWithControllers:childrenVCs];
-	sideMenu.parentInfo = parentInfo;
+	sideMenu.layoutInfo = layoutInfo;
 	
 	return sideMenu;
 }
@@ -197,15 +197,9 @@
 	UIViewController<RNNRootViewProtocol> *vc = [self fromTree:layout];
 	__block RCTRootView* rootView = (RCTRootView*)vc.view;
 	
-	[vc performOnRotation:^{
-		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
-		[_bridge.uiManager setSize:availableSize forView:rootView];
-	}];
-	
 	rootView.backgroundColor = [UIColor clearColor];
 	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
 	rootView.frame = CGRectMake(0, 0, availableSize.width, availableSize.height);
-	[_bridge.uiManager setAvailableSize:availableSize forRootView:vc.view];
 	
 	return vc;
 }

@@ -3,9 +3,9 @@
 
 @interface RNNNavigationController : UINavigationController <RNNRootViewProtocol>
 
-- (instancetype)initWithParentInfo:(RNNParentInfo *)parentInfo;
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo;
 
-@property (nonatomic, retain) RNNParentInfo* parentInfo;
+@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 
 
 @end

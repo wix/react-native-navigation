@@ -13,7 +13,7 @@
 }
 
 - (void)applyOn:(UIViewController *)viewController {
-	UIViewController* topViewController = [self parentTabController:viewController];
+	UIViewController* topViewController = [self getTabControllerFirstChild:viewController];
 	if (self.text || self.icon || self.selectedIcon) {
 		UITabBarItem* tabItem = topViewController.tabBarItem;
 		
@@ -135,7 +135,7 @@
 	return self.fontSize ? [self.fontSize floatValue] : 10;
 }
 
-- (UIViewController *)parentTabController:(UIViewController *)viewController {
+- (UIViewController *)getTabControllerFirstChild:(UIViewController *)viewController {
 	while (viewController != nil) {
 		if ([viewController.parentViewController isKindOfClass:[UITabBarController class]] || !viewController.parentViewController) {
 			return viewController;

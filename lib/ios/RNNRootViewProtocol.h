@@ -1,6 +1,6 @@
 #import "RNNNavigationOptions.h"
 #import "RNNRootViewController.h"
-#import "RNNParentInfo.h"
+#import "RNNLayoutInfo.h"
 
 @protocol RNNRootViewProtocol <NSObject, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, UISplitViewControllerDelegate>
 
@@ -12,7 +12,7 @@
 
 - (RNNRootViewController *)getLeafViewController;
 
-@property (nonatomic, retain) RNNParentInfo* parentInfo;
+@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 
 @end
 

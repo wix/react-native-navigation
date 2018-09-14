@@ -2,7 +2,7 @@
 #import "RNNOptionsManager.h"
 #import "RNNLayoutNode.h"
 
-@interface RNNParentInfo : NSObject
+@interface RNNLayoutInfo : NSObject
 
 - (instancetype)initWithNode:(RNNLayoutNode *)node optionsManager:(RNNOptionsManager *)optionsManager;
 

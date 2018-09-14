@@ -23,7 +23,7 @@
 	for (id child in self.childViewControllers) {
 		UIViewController<RNNRootViewProtocol>* vc = child;
 
-		if ([vc.parentInfo.componentId isEqualToString:componentID]) {
+		if ([vc.layoutInfo.componentId isEqualToString:componentID]) {
 			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
 		}
 	}
