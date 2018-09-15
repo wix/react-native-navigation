@@ -8,13 +8,20 @@
 
 	if (@available(iOS 11.0, *)) {
 		
-		viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-	
+		BOOL prefersLargeTitles = viewController.navigationController.navigationBar.prefersLargeTitles;
+		BOOL previousValue = prefersLargeTitles;
+		long displayMode = viewController.navigationItem.largeTitleDisplayMode;
 		if ([self.visible boolValue]){
-			viewController.navigationController.navigationBar.prefersLargeTitles = YES;
-			viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
+			prefersLargeTitles = YES;
+			displayMode = UINavigationItemLargeTitleDisplayModeAlways;
 		} else {
-			viewController.navigationController.navigationBar.prefersLargeTitles = NO;
+			prefersLargeTitles = NO;
+			displayMode = UINavigationItemLargeTitleDisplayModeNever;
+		}
+                // only call setters for largeTitles if it's really changed
+		if (prefersLargeTitles != previousValue) {
+			viewController.navigationItem.largeTitleDisplayMode = displayMode;
+			viewController.navigationController.navigationBar.prefersLargeTitles = prefersLargeTitles;
 		}
 		
 		NSDictionary* fontAttributes = [self fontAttributes];
