@@ -4,6 +4,12 @@
 
 @class RNNOptions;
 
+@protocol RNNOptionsDelegate <NSObject>
+
+- (void)optionsUpdated;
+
+@end
+
 @protocol RNNOptionsProtocol <NSObject>
 
 @optional

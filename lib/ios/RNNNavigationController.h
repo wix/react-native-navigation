@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
-#import "RNNRootViewProtocol.h"
+#import "RNNParentProtocol.h"
 
-@interface RNNNavigationController : UINavigationController <RNNRootViewProtocol>
+@interface RNNNavigationController : UINavigationController <RNNParentProtocol>
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo;
 

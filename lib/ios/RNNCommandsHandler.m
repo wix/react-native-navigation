@@ -68,8 +68,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)mergeOptions:(NSString*)componentId options:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
-	UIViewController<RNNRootViewProtocol>* vc = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
-	if ([vc conformsToProtocol:@protocol(RNNRootViewProtocol)] || [vc isKindOfClass:[RNNRootViewController class]]) {
+	UIViewController<RNNParentProtocol>* vc = (UIViewController<RNNParentProtocol>*)[_store findComponentForId:componentId];
+	if ([vc conformsToProtocol:@protocol(RNNParentProtocol)] || [vc isKindOfClass:[RNNRootViewController class]]) {
 		[vc.getLeafViewController.layoutInfo.options mergeWith:options];
 		[CATransaction begin];
 		[CATransaction setCompletionBlock:completion];
@@ -143,7 +143,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)setStackRoot:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	
-	UIViewController<RNNRootViewProtocol> *newVC = [_controllerFactory createLayoutAndSaveToStore:layout];
+	UIViewController<RNNParentProtocol> *newVC = [_controllerFactory createLayoutAndSaveToStore:layout];
 	RNNNavigationOptions* options = [newVC getLeafViewController].layoutInfo.options;
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	__weak typeof(RNNEventEmitter*) weakEventEmitter = _eventEmitter;
@@ -217,11 +217,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)showModal:(NSDictionary*)layout completion:(RNNTransitionWithComponentIdCompletionBlock)completion {
 	[self assertReady];
 	
-	UIViewController<RNNRootViewProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
-	
-	if ([newVc respondsToSelector:@selector(applyModalOptions)]) {
-		[newVc.getLeafViewController applyModalOptions];
-	}
+	UIViewController<RNNParentProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
 	
 	[newVc.getLeafViewController waitForReactViewRender:newVc.getLeafViewController.layoutInfo.options.animations.showModal.waitForRender perform:^{
 		[_modalManager showModal:newVc animated:newVc.getLeafViewController.layoutInfo.options.animations.showModal.enable hasCustomAnimation:newVc.getLeafViewController.layoutInfo.options.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
@@ -238,7 +234,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[CATransaction setCompletionBlock:^{
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
 	}];
-	UIViewController<RNNRootViewProtocol> *modalToDismiss = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
+	UIViewController<RNNParentProtocol> *modalToDismiss = (UIViewController<RNNParentProtocol>*)[_store findComponentForId:componentId];
 	[modalToDismiss.getLeafViewController.layoutInfo.options mergeWith:options];
 	
 	[self removePopedViewControllers:modalToDismiss.navigationController.viewControllers];
@@ -265,7 +261,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)showOverlay:(NSDictionary *)layout completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
-	UIViewController<RNNRootViewProtocol>* overlayVC = [_controllerFactory createLayoutAndSaveToStore:layout];
+	UIViewController<RNNParentProtocol>* overlayVC = [_controllerFactory createLayoutAndSaveToStore:layout];
 	[_overlayManager showOverlay:overlayVC];
 	[_eventEmitter sendOnNavigationCommandCompletion:showOverlay params:@{@"layout": layout}];
 	completion();
@@ -302,13 +298,13 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 #pragma mark - RNNModalManagerDelegate
 
-- (void)dismissedModal:(UIViewController<RNNRootViewProtocol> *)viewController {
+- (void)dismissedModal:(UIViewController<RNNParentProtocol> *)viewController {
 	[_eventEmitter sendModalsDismissedEvent:viewController.layoutInfo.componentId numberOfModalsDismissed:@(1)];
 }
 
 - (void)dismissedMultipleModals:(NSArray *)viewControllers {
 	if (viewControllers && viewControllers.count) {
-		[_eventEmitter sendModalsDismissedEvent:((UIViewController<RNNRootViewProtocol> *)viewControllers.lastObject).layoutInfo.componentId numberOfModalsDismissed:@(viewControllers.count)];
+		[_eventEmitter sendModalsDismissedEvent:((UIViewController<RNNParentProtocol> *)viewControllers.lastObject).layoutInfo.componentId numberOfModalsDismissed:@(viewControllers.count)];
 	}
 }
 

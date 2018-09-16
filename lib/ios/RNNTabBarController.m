@@ -21,7 +21,7 @@
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
 	for (id child in self.childViewControllers) {
-		UIViewController<RNNRootViewProtocol>* vc = child;
+		UIViewController<RNNParentProtocol>* vc = child;
 
 		if ([vc.layoutInfo.componentId isEqualToString:componentID]) {
 			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
@@ -35,11 +35,11 @@
 }
 
 - (UIViewController *)getLeafViewController {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).getLeafViewController;
+	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).getLeafViewController;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).preferredStatusBarStyle;
+	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).preferredStatusBarStyle;
 }
 
 #pragma mark UITabBarControllerDelegate

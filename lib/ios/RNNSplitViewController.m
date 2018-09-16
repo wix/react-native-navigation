@@ -1,10 +1,5 @@
 #import "RNNSplitViewController.h"
 
-@interface RNNSplitViewController()
-@property (nonatomic) BOOL _optionsApplied;
-@property (nonatomic, copy) void (^rotationBlock)(void);
-@end
-
 @implementation RNNSplitViewController
 
 -(instancetype)initWithOptions:(RNNSplitViewOptions*)options

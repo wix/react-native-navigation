@@ -50,27 +50,11 @@
 }
 
 - (UIViewController *)getLeafViewController {
-	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController);
+	return ((UIViewController<RNNParentProtocol>*)self.topViewController);
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
 	return self.topViewController;
-}
-
-- (void)setViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers {
-	[super setViewControllers:viewControllers];
-    for (UIViewController<RNNRootViewProtocol>* viewController in viewControllers) {
-        if ([viewController respondsToSelector:@selector(layoutInfo)]) {
-            [viewController.layoutInfo.options mergeOptions:self.layoutInfo.options overrideOptions:NO];
-        }
-    }
-}
-
-- (void)pushViewController:(UIViewController<RNNRootViewProtocol> *)viewController animated:(BOOL)animated {
-	[super pushViewController:viewController animated:animated];
-    if ([viewController respondsToSelector:@selector(layoutInfo)]) {
-		[viewController.layoutInfo.options mergeOptions:self.layoutInfo.options overrideOptions:NO];
-	}
 }
 
 @end

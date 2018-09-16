@@ -4,6 +4,7 @@
 #import "RNNCustomTitleView.h"
 #import "RNNPushAnimation.h"
 #import "RNNReactView.h"
+#import "RNNParentProtocol.h"
 
 @interface RNNRootViewController() {
 	RNNReactView* _customTitleView;
@@ -12,10 +13,7 @@
 	BOOL _isBeingPresented;
 }
 
-@property (nonatomic) BOOL _statusBarHidden;
 @property (nonatomic) BOOL isExternalComponent;
-@property (nonatomic) BOOL _optionsApplied;
-@property (nonatomic, copy) void (^rotationBlock)(void);
 @property (nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
 
 @end
@@ -33,8 +31,10 @@
 	self.creator = creator;
 	self.isExternalComponent = isExternalComponent;
 	self.layoutInfo = layoutInfo;
+	self.layoutInfo.options.delegate = self;
+	
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.layoutInfo.options.customTransition];
-
+	
 	if (!self.isExternalComponent) {
 		self.view = [creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId];
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -48,10 +48,7 @@
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
 	self.navigationController.delegate = self;
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(orientationDidChange:)
-												 name:UIDeviceOrientationDidChangeNotification
-											   object:nil];
+
 	return self;
 }
 
@@ -76,6 +73,13 @@
 	[self.eventEmitter sendComponentDidDisappear:self.layoutInfo.componentId componentName:self.layoutInfo.name];
 }
 
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if ([self.parentViewController respondsToSelector:@selector(layoutInfo)]) {
+		[self.layoutInfo.options mergeOptions:((id<RNNParentProtocol>)self.parentViewController).layoutInfo.options overrideOptions:NO];
+	}
+	[self.layoutInfo.options applyOn:self];
+}
+
 - (void)reactViewReady {
 	if (_reactViewReadyBlock) {
 		_reactViewReadyBlock();
@@ -84,6 +88,7 @@
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
 }
+
 
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
 	if (wait && !_isExternalComponent) {
@@ -123,11 +128,6 @@
 	[self setCustomNavigationTitleView];
 	[self setCustomNavigationBarView];
 	[self setCustomNavigationComponentBackground];
-}
-
-- (void)applyModalOptions {
-	[self.layoutInfo.options applyOn:self];
-	[self.layoutInfo.options applyModalOptions:self];
 }
 
 - (void)setCustomNavigationTitleView {
@@ -272,16 +272,6 @@
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
 	return [[RNNModalAnimation alloc] initWithScreenTransition:self.layoutInfo.options.animations.dismissModal isDismiss:YES];
-}
-
-- (void)performOnRotation:(void (^)(void))block {
-	_rotationBlock = block;
-}
-
-- (void)orientationDidChange:(NSNotification*)notification {
-	if (_rotationBlock) {
-		_rotationBlock();
-	}
 }
 
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{

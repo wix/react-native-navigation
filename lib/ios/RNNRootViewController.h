@@ -7,11 +7,11 @@
 #import "RNNAnimator.h"
 #import "RNNUIBarButtonItem.h"
 #import "RNNLayoutInfo.h"
+#import "RNNLeafProtocol.h"
 
-typedef void (^RNNReactViewReadyCompletionBlock)(void);
 typedef void (^PreviewCallback)(UIViewController *vc);
 
-@interface RNNRootViewController : UIViewController	<UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
+@interface RNNRootViewController : UIViewController	<RNNLeafProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate, RNNOptionsDelegate>
 
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
@@ -27,9 +27,6 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 
 - (BOOL)isCustomViewController;
 - (BOOL)isCustomTransitioned;
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
-- (void)applyModalOptions;
-- (void)optionsUpdated;
 
 -(void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem;
 
