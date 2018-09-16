@@ -43,6 +43,9 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 			if (self.searchBarPlaceholder) {
 				search.searchBar.placeholder = self.searchBarPlaceholder;
 			}
+			if (self.buttonColor) {
+				search.searchBar.tintColor = [RCTConvert UIColor:self.buttonColor];
+			}
 			viewController.navigationItem.searchController = search;
 			
 			viewController.navigationItem.hidesSearchBarWhenScrolling = [self.searchBarHiddenWhenScrolling boolValue];
