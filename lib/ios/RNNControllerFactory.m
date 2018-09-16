@@ -35,16 +35,16 @@
 	return self;
 }
 
-- (UIViewController<RNNRootViewProtocol> *)createLayoutAndSaveToStore:(NSDictionary*)layout {
+- (UIViewController<RNNParentProtocol> *)createLayoutAndSaveToStore:(NSDictionary*)layout {
 	return [self fromTree:layout];
 }
 
 # pragma mark private
 
-- (UIViewController<RNNRootViewProtocol> *)fromTree:(NSDictionary*)json {
+- (UIViewController<RNNParentProtocol> *)fromTree:(NSDictionary*)json {
 	RNNLayoutNode* node = [RNNLayoutNode create:json];
 	
-	UIViewController<RNNRootViewProtocol> *result;
+	UIViewController<RNNParentProtocol> *result;
 	
 	if (node.isComponent) {
 		result = [self createComponent:node];
@@ -95,7 +95,7 @@
 	return result;
 }
 
-- (UIViewController<RNNRootViewProtocol> *)createComponent:(RNNLayoutNode*)node {
+- (UIViewController<RNNParentProtocol> *)createComponent:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
 
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:NO];
@@ -104,10 +104,10 @@
 		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
 		[_bridge.uiManager setAvailableSize:availableSize forRootView:component.view];
 	}
-	return (UIViewController<RNNRootViewProtocol> *)component;
+	return (UIViewController<RNNParentProtocol> *)component;
 }
 
-- (UIViewController<RNNRootViewProtocol> *)createExternalComponent:(RNNLayoutNode*)node {
+- (UIViewController<RNNParentProtocol> *)createExternalComponent:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
 
 	UIViewController* externalVC = [_store getExternalComponent:layoutInfo bridge:_bridge];
@@ -118,11 +118,11 @@
 	[component.view addSubview:externalVC.view];
 	[externalVC didMoveToParentViewController:component];
 	
-	return (UIViewController<RNNRootViewProtocol> *)component;
+	return (UIViewController<RNNParentProtocol> *)component;
 }
 
 
-- (UIViewController<RNNRootViewProtocol> *)createStack:(RNNLayoutNode*)node {
+- (UIViewController<RNNParentProtocol> *)createStack:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
 	
 	RNNNavigationController* vc = [[RNNNavigationController alloc] initWithLayoutInfo:layoutInfo];
@@ -137,16 +137,13 @@
 	return vc;
 }
 
--(UIViewController<RNNRootViewProtocol> *)createTabs:(RNNLayoutNode*)node {
+-(UIViewController<RNNParentProtocol> *)createTabs:(RNNLayoutNode*)node {
 	RNNTabBarController* vc = [[RNNTabBarController alloc] initWithEventEmitter:_eventEmitter];
 	vc.layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
 	
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
-		UIViewController<RNNRootViewProtocol>* childVc = [self fromTree:child];
-		[childVc.layoutInfo.options applyOn:childVc];
-		[childVc.getLeafViewController.layoutInfo.options applyOn:childVc.getLeafViewController];
-		
+		UIViewController<RNNParentProtocol>* childVc = [self fromTree:child];
 		[controllers addObject:childVc];
 	}
 	[vc setViewControllers:controllers];
@@ -154,7 +151,7 @@
 	return vc;
 }
 
-- (UIViewController<RNNRootViewProtocol> *)createTopTabs:(RNNLayoutNode*)node {
+- (UIViewController<RNNParentProtocol> *)createTopTabs:(RNNLayoutNode*)node {
 	RNNTopTabsViewController* vc = [[RNNTopTabsViewController alloc] init];
 	vc.layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
 	
@@ -170,7 +167,7 @@
 	return vc;
 }
 
-- (UIViewController<RNNRootViewProtocol> *)createSideMenu:(RNNLayoutNode*)node {
+- (UIViewController<RNNParentProtocol> *)createSideMenu:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
 
 	NSMutableArray* childrenVCs = [NSMutableArray new];
@@ -186,14 +183,14 @@
 }
 
 
-- (UIViewController<RNNRootViewProtocol> *)createSideMenuChild:(RNNLayoutNode*)node type:(RNNSideMenuChildType)type {
-	UIViewController<RNNRootViewProtocol>* child = [self fromTree:node.children[0]];
+- (UIViewController<RNNParentProtocol> *)createSideMenuChild:(RNNLayoutNode*)node type:(RNNSideMenuChildType)type {
+	UIViewController<RNNParentProtocol>* child = [self fromTree:node.children[0]];
 	RNNSideMenuChildVC *sideMenuChild = [[RNNSideMenuChildVC alloc] initWithChild: child type:type];
 	
 	return sideMenuChild;
 }
 
-- (UIViewController<RNNRootViewProtocol> *)createSplitView:(RNNLayoutNode*)node {
+- (UIViewController<RNNParentProtocol> *)createSplitView:(RNNLayoutNode*)node {
 
 	NSString* componentId = node.nodeId;
 	

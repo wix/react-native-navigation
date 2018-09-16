@@ -17,6 +17,8 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 
 @interface RNNNavigationOptions : RNNOptions
 
+@property (nonatomic) id<RNNOptionsDelegate> delegate;
+
 @property (nonatomic, strong) RNNTopBarOptions* topBar;
 @property (nonatomic, strong) RNNBottomTabsOptions* bottomTabs;
 @property (nonatomic, strong) RNNBottomTabOptions* bottomTab;
@@ -37,6 +39,5 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) NSString* modalPresentationStyle;
 @property (nonatomic, strong) NSString* modalTransitionStyle;
 
-- (void)applyModalOptions:(UIViewController*)viewController;
 
 @end

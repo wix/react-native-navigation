@@ -1,9 +1,9 @@
 
 #import <UIKit/UIKit.h>
-#import "RNNRootViewProtocol.h"
+#import "RNNParentProtocol.h"
 #import "RNNEventEmitter.h"
 
-@interface RNNTabBarController : UITabBarController <RNNRootViewProtocol, UITabBarControllerDelegate>
+@interface RNNTabBarController : UITabBarController <RNNParentProtocol, UITabBarControllerDelegate>
 
 - (instancetype)initWithEventEmitter:(RNNEventEmitter*)eventEmitter;
 

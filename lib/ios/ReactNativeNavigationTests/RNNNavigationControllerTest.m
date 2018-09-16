@@ -24,27 +24,6 @@
 	_vc3 = [UIViewController new];
 }
 
-- (void)testSetViewControllers_shouldPropogateOptionsToViewController {
-	self.uut.layoutInfo.options.topBar.visible = @(1);
-	[self.uut setViewControllers:@[_vc1]];
-	XCTAssertTrue(_vc1.layoutInfo.options.topBar.visible.boolValue == self.uut.layoutInfo.options.topBar.visible.boolValue);
-}
-
-- (void)testSetViewControllers_externalViewControllerShouldNotCrash {
-	NSArray* viewControllers = @[_vc1, _vc3];
-	XCTAssertNoThrow([self.uut setViewControllers:viewControllers]);
-}
-
-- (void)testPushViewController_shouldPropogateOptionsToViewController {
-	self.uut.layoutInfo.options.topBar.visible = @(1);
-	[self.uut pushViewController:_vc2 animated:NO];
-	XCTAssertTrue(_vc2.layoutInfo.options.topBar.visible.boolValue == self.uut.layoutInfo.options.topBar.visible.boolValue);
-}
-
-- (void)testPushViewController_externalViewControllerShouldNotCrash {
-	XCTAssertNoThrow([self.uut pushViewController:_vc3 animated:NO]);
-}
-
 - (void)testChildViewControllerForStatusBarStyle_shouldReturnTopViewController {
 	XCTAssertTrue(self.uut.childViewControllerForStatusBarStyle == self.uut.topViewController);
 }

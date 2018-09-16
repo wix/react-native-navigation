@@ -42,7 +42,7 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 @implementation RNNNavigationOptions
 
 
--(void)applyOn:(UIViewController<RNNRootViewProtocol> *)viewController {
+- (void)applyOn:(UIViewController<RNNLeafProtocol> *)viewController {
 	[self.topBar applyOn:viewController];
 	[self.bottomTabs applyOn:viewController];
 	[self.topTab applyOn:viewController];
@@ -51,9 +51,13 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 	[self.overlay applyOn:viewController];
 	[self.statusBar applyOn:viewController];
 	[self.layout applyOn:viewController];
+	
+	[self applyModalOptions:viewController];
 	[self applyOtherOptionsOn:viewController];
 	
-	[viewController.getLeafViewController optionsUpdated];
+	if ([self.delegate respondsToSelector:@selector(optionsUpdated)]) {
+		[self.delegate optionsUpdated];
+	}
 }
 
 - (void)applyOtherOptionsOn:(UIViewController*)viewController {
@@ -84,8 +88,6 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 		backgroundImageView.image = [self.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.rootBackgroundImage : [RCTConvert UIImage:self.rootBackgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
-	
-	[self applyModalOptions:viewController];
 }
 
 - (void)applyModalOptions:(UIViewController*)viewController {

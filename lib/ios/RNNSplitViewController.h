@@ -8,9 +8,9 @@
 #import "RNNSplitViewOptions.h"
 #import "RNNAnimator.h"
 #import "RNNTopTabsViewController.h"
-#import "RNNRootViewProtocol.h"
+#import "RNNParentProtocol.h"
 
-@interface RNNSplitViewController : UISplitViewController	<RNNRootViewProtocol>
+@interface RNNSplitViewController : UISplitViewController	<RNNParentProtocol>
 
 @property (nonatomic, strong) RNNSplitViewOptions* options;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;

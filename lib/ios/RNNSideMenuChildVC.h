@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RNNRootViewProtocol.h"
+#import "RNNParentProtocol.h"
 
 typedef NS_ENUM(NSInteger, RNNSideMenuChildType) {
 	RNNSideMenuChildTypeCenter,
@@ -16,13 +16,13 @@ typedef NS_ENUM(NSInteger, RNNSideMenuChildType) {
 };
 
 
-@interface RNNSideMenuChildVC : UIViewController <RNNRootViewProtocol>
+@interface RNNSideMenuChildVC : UIViewController <RNNParentProtocol>
 
 @property (readonly) RNNSideMenuChildType type;
-@property (readonly) UIViewController<RNNRootViewProtocol> *child;
+@property (readonly) UIViewController<RNNParentProtocol> *child;
 
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 
--(instancetype) initWithChild:(UIViewController<RNNRootViewProtocol>*)child type:(RNNSideMenuChildType)type;
+-(instancetype) initWithChild:(UIViewController<RNNParentProtocol>*)child type:(RNNSideMenuChildType)type;
 
 @end
