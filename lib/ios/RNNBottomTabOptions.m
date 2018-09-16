@@ -13,8 +13,9 @@
 }
 
 - (void)applyOn:(UIViewController *)viewController {
+	UIViewController* topViewController = [self getTabControllerFirstChild:viewController];
 	if (self.text || self.icon || self.selectedIcon) {
-		UITabBarItem* tabItem = viewController.tabBarItem;
+		UITabBarItem* tabItem = topViewController.tabBarItem;
 		
 		tabItem.selectedImage = [self getSelectedIconImage];
 		tabItem.image = [self getIconImage];
@@ -38,7 +39,7 @@
 		
 		[self appendTitleAttributes:tabItem];
 		
-		[viewController setTabBarItem:tabItem];
+		[topViewController setTabBarItem:tabItem];
 	}
 	
 	if (self.badge) {
@@ -46,18 +47,19 @@
 		if (self.badge != nil && ![self.badge isEqual:[NSNull null]]) {
 			badge = [RCTConvert NSString:self.badge];
 		}
-		UITabBarItem *tabBarItem = viewController.tabBarItem;
-		if (viewController.navigationController) {
-			tabBarItem = viewController.navigationController.tabBarItem;
-		}
+		UITabBarItem *tabBarItem = topViewController.tabBarItem;
 		tabBarItem.badgeValue = badge;
 		if (self.badgeColor) {
 			tabBarItem.badgeColor = [RCTConvert UIColor:self.badgeColor];
 		}
+		
+		if ([self.badge isEqual:[NSNull null]] || [self.badge isEqualToString:@""]) {
+			tabBarItem.badgeValue = nil;
+		}
 	}
 	
 	if (self.visible) {
-		[viewController.tabBarController setSelectedIndex:[viewController.tabBarController.viewControllers indexOfObject:viewController]];
+		[topViewController.tabBarController setSelectedIndex:[viewController.tabBarController.viewControllers indexOfObject:viewController]];
 	}
 	
 	[self resetOptions];
@@ -103,7 +105,7 @@
 	
 	selectedAttributes[NSFontAttributeName] = [self tabBarTextFont];
 	[tabItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
-
+	
 	
 	NSMutableDictionary* normalAttributes = [NSMutableDictionary dictionaryWithDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal]];
 	if (self.textColor) {
@@ -131,6 +133,18 @@
 
 -(CGFloat)tabBarTextFontSizeValue {
 	return self.fontSize ? [self.fontSize floatValue] : 10;
+}
+
+- (UIViewController *)getTabControllerFirstChild:(UIViewController *)viewController {
+	while (viewController != nil) {
+		if ([viewController.parentViewController isKindOfClass:[UITabBarController class]] || !viewController.parentViewController) {
+			return viewController;
+		}
+		
+		viewController = viewController.parentViewController;
+	}
+	
+	return nil;
 }
 
 -(void)resetOptions {

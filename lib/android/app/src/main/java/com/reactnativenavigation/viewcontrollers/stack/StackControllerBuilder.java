@@ -95,7 +95,6 @@ public class StackControllerBuilder {
         return new StackController(activity,
                 children,
                 childRegistry,
-                topBarButtonCreator,
                 topBarBackgroundViewController,
                 topBarController,
                 animator,

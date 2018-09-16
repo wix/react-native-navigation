@@ -30,6 +30,7 @@
 @property (nonatomic, strong) NSString* componentId;
 @property (nonatomic, strong) id emitter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
+@property (nonatomic, strong) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNRootViewController* uut;
 @end
 
@@ -42,7 +43,13 @@
 	self.componentId = @"cntId";
 	self.emitter = nil;
 	self.options = [[RNNNavigationOptions alloc] initWithDict:@{}];
-	self.uut = [[RNNRootViewController alloc] initWithName:self.pageName withOptions:self.options withComponentId:self.componentId rootViewCreator:self.creator eventEmitter:self.emitter isExternalComponent:NO];
+	
+	RNNLayoutInfo* layoutInfo = [RNNLayoutInfo new];
+	layoutInfo.componentId = self.componentId;
+	layoutInfo.name = self.pageName;
+	layoutInfo.options = self.options;
+	
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter isExternalComponent:NO];
 }
 
 -(void)testTopBarBackgroundColor_validColor{
@@ -710,6 +717,21 @@
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
 	NSDictionary* attributes = [self.uut.tabBarController.tabBar.items.firstObject titleTextAttributesForState:UIControlStateNormal];
 	XCTAssertTrue([attributes[@"NSFont"] isEqual:expectedFont]);
+}
+
+- (void)testTopBarBackgroundClipToBounds_true {
+	self.options.topBar.background.clipToBounds = @(1);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+
+	XCTAssertTrue(self.uut.navigationController.navigationBar.clipsToBounds);
+}
+
+- (void)testTopBarBackgroundClipToBounds_false {
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+
+	XCTAssertFalse(self.uut.navigationController.navigationBar.clipsToBounds);
 }
 
 @end

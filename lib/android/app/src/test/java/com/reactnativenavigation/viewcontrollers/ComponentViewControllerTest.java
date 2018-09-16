@@ -13,6 +13,7 @@ import com.reactnativenavigation.views.StackLayout;
 import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -76,5 +77,12 @@ public class ComponentViewControllerTest extends BaseTest {
         uut.ensureViewIsCreated();
         uut.sendOnNavigationButtonPressed("btn1");
         verify(view, times(1)).sendOnNavigationButtonPressed("btn1");
+    }
+
+    @Test
+    public void mergeOptions_emptyOptionsAreIgnored() {
+        ComponentViewController spy = spy(uut);
+        spy.mergeOptions(Options.EMPTY);
+        verify(spy, times(0)).performOnParentController(any());
     }
 }

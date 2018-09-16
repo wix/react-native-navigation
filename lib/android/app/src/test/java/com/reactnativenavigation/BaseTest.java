@@ -66,6 +66,11 @@ public abstract class BaseTest {
         }
     }
 
+    protected void disableModalAnimations(ViewController... modals) {
+        disableShowModalAnimation(modals);
+        disableDismissModalAnimation(modals);
+    }
+
     protected void disableShowModalAnimation(ViewController... modals) {
         for (ViewController modal : modals) {
             modal.options.animations.showModal.enable = new Bool(false);

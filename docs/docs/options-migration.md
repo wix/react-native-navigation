@@ -62,6 +62,20 @@ topBar: {
 }
 ```
 
+## navBarClipToBounds
+Restrict the navbar background color to the navbar, and do not flow behind the status bar.
+
+```js
+topBar: {
+  background: {
+    component: {
+      name: 'example.CustomTopBarBackground',
+      clipToBounds: true
+    }
+  },
+}
+```
+
 ## navBarComponentAlignment
 Align the React view used as the title
 

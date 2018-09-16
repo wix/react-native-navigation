@@ -43,7 +43,6 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 
 
 -(void)applyOn:(UIViewController<RNNRootViewProtocol> *)viewController {
-	[self mergeOptions:_defaultOptions overrideOptions:NO];
 	[self.topBar applyOn:viewController];
 	[self.bottomTabs applyOn:viewController];
 	[self.topTab applyOn:viewController];

@@ -78,7 +78,7 @@
 	
 	RNNUIBarButtonItem *barButtonItem;
 	if (component) {
-		RCTRootView *view = (RCTRootView*)[self.viewController.creator createRootView:component[@"name"] rootViewId:component[@"componentId"]];
+		RCTRootView *view = (RCTRootView*)[self.viewController.creator createCustomReactView:component[@"name"] rootViewId:component[@"componentId"]];
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withCustomView:view];
 	} else if (iconImage) {
 		barButtonItem = [[RNNUIBarButtonItem alloc] init:buttonId withIcon:iconImage];
@@ -93,7 +93,7 @@
 		return nil;
 	}
 	
-	barButtonItem.target = self;
+	barButtonItem.target = self.viewController;
 	barButtonItem.action = @selector(onButtonPress:);
 	
 	NSNumber *enabled = [self getValue:dictionary[@"enabled"] withDefault:defaultStyle.enabled];
@@ -169,10 +169,6 @@
 
 - (id)getValue:(id)value withDefault:(id)defaultValue {
 	return value ? value : defaultValue;
-}
-
--(void)onButtonPress:(RNNUIBarButtonItem*)barButtonItem {
-	[self.viewController.eventEmitter sendOnNavigationButtonPressed:self.viewController.componentId buttonId:barButtonItem.buttonId];
 }
 
 @end

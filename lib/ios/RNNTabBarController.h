@@ -7,7 +7,8 @@
 
 - (instancetype)initWithEventEmitter:(RNNEventEmitter*)eventEmitter;
 
-- (void)setTabBarHidden:(BOOL)hidden animated:(BOOL)animated;
 - (void)setSelectedIndexByComponentID:(NSString *)componentID;
+
+@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 
 @end

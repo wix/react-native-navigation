@@ -23,17 +23,6 @@ describe('screen stack', () => {
     await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
-  test('pop screen deep in the stack', async () => {
-    await elementById(testIDs.PUSH_BUTTON).tap();
-    await expect(elementByLabel('Stack Position: 1')).toBeVisible();
-    await elementById(testIDs.PUSH_BUTTON).tap();
-    await expect(elementByLabel('Stack Position: 2')).toBeVisible();
-    await elementById(testIDs.POP_PREVIOUS_BUTTON).tap();
-    await expect(elementByLabel('Stack Position: 2')).toBeVisible();
-    await elementById(testIDs.POP_BUTTON).tap();
-    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
-  });
-
   test('pop to specific id', async () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await elementById(testIDs.PUSH_BUTTON).tap();

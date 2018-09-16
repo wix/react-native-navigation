@@ -6,7 +6,9 @@ import {
   NavigationButtonPressedEvent,
   SearchBarUpdatedEvent,
   SearchBarCancelPressedEvent,
-  ComponentEvent
+  ComponentEvent,
+  PreviewCompletedEvent,
+  ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
 
@@ -18,8 +20,10 @@ export class ComponentEventsObserver {
     this.notifyComponentDidAppear = this.notifyComponentDidAppear.bind(this);
     this.notifyComponentDidDisappear = this.notifyComponentDidDisappear.bind(this);
     this.notifyNavigationButtonPressed = this.notifyNavigationButtonPressed.bind(this);
+    this.notifyModalDismissed = this.notifyModalDismissed.bind(this);
     this.notifySearchBarUpdated = this.notifySearchBarUpdated.bind(this);
     this.notifySearchBarCancelPressed = this.notifySearchBarCancelPressed.bind(this);
+    this.notifyPreviewCompleted = this.notifyPreviewCompleted.bind(this);
   }
 
   public registerOnceForAllComponentEvents() {
@@ -28,8 +32,10 @@ export class ComponentEventsObserver {
     this.nativeEventsReceiver.registerComponentDidAppearListener(this.notifyComponentDidAppear);
     this.nativeEventsReceiver.registerComponentDidDisappearListener(this.notifyComponentDidDisappear);
     this.nativeEventsReceiver.registerNavigationButtonPressedListener(this.notifyNavigationButtonPressed);
+    this.nativeEventsReceiver.registerModalDismissedListener(this.notifyModalDismissed);
     this.nativeEventsReceiver.registerSearchBarUpdatedListener(this.notifySearchBarUpdated);
     this.nativeEventsReceiver.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
+    this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
   }
 
   public bindComponent(component: React.Component<any>): EventSubscription {
@@ -59,7 +65,15 @@ export class ComponentEventsObserver {
   }
 
   notifyNavigationButtonPressed(event: NavigationButtonPressedEvent) {
-    this.triggerOnAllListenersByComponentId(event, 'navigationButtonPressed');
+    const listenersTriggered = this.triggerOnAllListenersByComponentId(event, 'navigationButtonPressed');
+    if (listenersTriggered === 0) {
+      // tslint:disable-next-line:no-console
+      console.warn(`navigationButtonPressed for button '${event.buttonId}' was not handled`);
+    }
+  }
+
+  notifyModalDismissed(event: ModalDismissedEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'modalDismissed');
   }
 
   notifySearchBarUpdated(event: SearchBarUpdatedEvent) {
@@ -70,11 +84,19 @@ export class ComponentEventsObserver {
     this.triggerOnAllListenersByComponentId(event, 'searchBarCancelPressed');
   }
 
+  notifyPreviewCompleted(event: PreviewCompletedEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'previewCompleted');
+  }
+
   private triggerOnAllListenersByComponentId(event: ComponentEvent, method: string) {
+    let listenersTriggered = 0;
     _.forEach(this.listeners[event.componentId], (component) => {
       if (_.isObject(component) && _.isFunction(component[method])) {
         component[method](event);
+        listenersTriggered++;
       }
     });
+
+    return listenersTriggered;
   }
 }

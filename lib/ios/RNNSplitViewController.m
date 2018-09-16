@@ -35,8 +35,4 @@
 	readyBlock();
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.options mergeOptions:options];
-}
-
 @end
