@@ -734,11 +734,11 @@
 	XCTAssertFalse(self.uut.navigationController.navigationBar.clipsToBounds);
 }
 
-- (void)testViewWillAppear_shouldMergeOptionsFromParent {
+- (void)testWillMoveToParent_shouldMergeOptionsFromParent {
 	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
 	nav.layoutInfo = [self createLayoutInfo];
 	nav.layoutInfo.options.topBar.visible = @(1);
-	[self.uut viewWillAppear:false];
+	[self.uut willMoveToParentViewController:nav];
 	XCTAssertTrue(nav.layoutInfo.options.topBar.visible.boolValue == self.uut.layoutInfo.options.topBar.visible.boolValue);
 }
 
