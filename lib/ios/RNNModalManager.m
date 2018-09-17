@@ -60,7 +60,7 @@
 
 -(void)removePendingNextModalIfOnTop:(RNNTransitionCompletionBlock)completion {
 	UIViewController<RNNRootViewProtocol> *modalToDismiss = [_pendingModalIdsToDismiss lastObject];
-	RNNNavigationOptions* options = modalToDismiss.getLeafViewController.options;
+	RNNNavigationOptions* options = modalToDismiss.getLeafViewController.layoutInfo.options;
 
 	if(!modalToDismiss) {
 		return;
@@ -88,7 +88,7 @@
 	} else {
 		[modalToDismiss.view removeFromSuperview];
 		modalToDismiss.view = nil;
-		modalToDismiss.getLeafViewController.options.animations.dismissModal.enable = NO;
+		modalToDismiss.getLeafViewController.layoutInfo.options.animations.dismissModal.enable = NO;
 		[self dismissedModal:modalToDismiss];
 		
 		if (completion) {
