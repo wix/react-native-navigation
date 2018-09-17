@@ -1,5 +1,6 @@
 #import <XCTest/XCTest.h>
 #import "RNNNavigationController.h"
+#import "RNNRootViewController.h"
 
 @interface RNNNavigationControllerTest : XCTestCase
 
@@ -11,16 +12,16 @@
 	RNNRootViewController* _vc1;
 	RNNRootViewController* _vc2;
 	UIViewController* _vc3;
+	RNNViewControllerPresenter* _presenter;
 }
 
 - (void)setUp {
     [super setUp];
 	
-	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:[self createLayoutInfo]];
-	_vc1 = [[RNNRootViewController alloc] init];
-	_vc1.layoutInfo = [self createLayoutInfo];
-	_vc2 = [[RNNRootViewController alloc] init];
-	_vc2.layoutInfo = [self createLayoutInfo];
+	_presenter = [[RNNViewControllerPresenter alloc] initWithOptions:[[RNNNavigationOptions alloc] initWithDict:@{}]];
+	self.uut = [[RNNNavigationController alloc] init];
+	_vc1 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil isExternalComponent:NO presenter:_presenter];
+	_vc2 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil isExternalComponent:NO presenter:_presenter];
 	_vc3 = [UIViewController new];
 }
 
@@ -34,14 +35,9 @@
 
 - (void)testPreferredStatusBarStyle_shouldReturnLeafPreferredStatusBarStyle {
 	[self.uut setViewControllers:@[_vc1]];
-	self.uut.getLeafViewController.layoutInfo.options.statusBar.style = @"dark";
+	self.uut.getLeafViewController.presenter.options.statusBar.style = @"light";
 	XCTAssertTrue(self.uut.preferredStatusBarStyle == self.uut.getLeafViewController.preferredStatusBarStyle);
 }
 
-- (RNNLayoutInfo *)createLayoutInfo {
-	RNNLayoutInfo *layoutInfo = [RNNLayoutInfo new];
-	layoutInfo.options = [[RNNNavigationOptions alloc] initWithDict:@{}];
-	return layoutInfo;
-}
 
 @end

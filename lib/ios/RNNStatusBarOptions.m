@@ -1,5 +1,7 @@
 #import "RNNStatusBarOptions.h"
 #define kStatusBarAnimationDuration 0.35
+const NSInteger BLUR_STATUS_TAG = 78264801;
+const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 @implementation RNNStatusBarOptions
 

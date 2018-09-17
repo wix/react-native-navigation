@@ -19,6 +19,7 @@
 @property (readonly) MMDrawerController *sideMenu;
 
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
+@property (nonatomic, retain) RNNBasePresenter* presenter;
 
 -(instancetype)initWithControllers:(NSArray*)controllers;
 

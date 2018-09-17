@@ -31,7 +31,7 @@
 	return self;
 }
 
-- (UIViewController<RNNLeafProtocol> *)getLeafViewController {
+- (UIViewController *)getLeafViewController {
 	return [self.child getLeafViewController];
 }
 

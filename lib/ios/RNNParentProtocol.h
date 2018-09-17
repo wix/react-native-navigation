@@ -1,14 +1,15 @@
-#import "RNNNavigationOptions.h"
-#import "RNNRootViewController.h"
-#import "RNNLayoutInfo.h"
+#import "RNNLayoutProtocol.h"
 #import "RNNLeafProtocol.h"
 
-@protocol RNNParentProtocol <NSObject, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, UISplitViewControllerDelegate>
+@protocol RNNParentProtocol <RNNLayoutProtocol, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, UISplitViewControllerDelegate>
 
 @required
 
 - (UIViewController<RNNLeafProtocol> *)getLeafViewController;
 
-@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
+@optional
+
+- (void)performOnChildWillAppear:(RNNNavigationOptions *)options;
+- (void)performOnChildLoad:(RNNNavigationOptions *)options;
 
 @end

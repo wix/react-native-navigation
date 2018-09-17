@@ -89,7 +89,7 @@
 	}
 }
 
-- (UIViewController<RNNLeafProtocol> *)getLeafViewController {
+- (UIViewController<RNNLayoutProtocol> *)getLeafViewController {
 	return [self.center getLeafViewController];
 }
 
