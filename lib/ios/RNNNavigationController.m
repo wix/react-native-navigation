@@ -59,16 +59,16 @@
 
 - (void)setViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers {
 	[super setViewControllers:viewControllers];
-	for (UIViewController<RNNRootViewProtocol>* viewController in viewControllers) {
-		if (viewController.layoutInfo.options) {
-			[viewController.layoutInfo.options mergeOptions:self.layoutInfo.options overrideOptions:NO];
-		}
-	}
+    for (UIViewController<RNNRootViewProtocol>* viewController in viewControllers) {
+        if ([viewController respondsToSelector:@selector(layoutInfo)]) {
+            [viewController.layoutInfo.options mergeOptions:self.layoutInfo.options overrideOptions:NO];
+        }
+    }
 }
 
 - (void)pushViewController:(UIViewController<RNNRootViewProtocol> *)viewController animated:(BOOL)animated {
 	[super pushViewController:viewController animated:animated];
-	if (viewController.layoutInfo.options) {
+    if ([viewController respondsToSelector:@selector(layoutInfo)]) {
 		[viewController.layoutInfo.options mergeOptions:self.layoutInfo.options overrideOptions:NO];
 	}
 }

@@ -4,7 +4,7 @@
 
 @implementation RNNOptions
 
--(instancetype)	initWithDict:(NSDictionary *)dict {
+- (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
 	[self initializeOptionsPropertiesWithDict:dict];
 	

@@ -98,6 +98,7 @@
 		50570B272061473D006A1B5C /* RNNTitleOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50570B252061473D006A1B5C /* RNNTitleOptions.m */; };
 		50570BEA2063E09B006A1B5C /* RNNTitleViewHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 50570BE82063E09B006A1B5C /* RNNTitleViewHelper.h */; };
 		50570BEB2063E09B006A1B5C /* RNNTitleViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */; };
+		505EDD32214E4BE80071C7DE /* RNNNavigationControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 505EDD31214E4BE80071C7DE /* RNNNavigationControllerTest.m */; };
 		5064495D20DC62B90026709C /* RNNSideMenuSideOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5064495B20DC62B90026709C /* RNNSideMenuSideOptions.h */; };
 		5064495E20DC62B90026709C /* RNNSideMenuSideOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5064495C20DC62B90026709C /* RNNSideMenuSideOptions.m */; };
 		50644A2020E11A720026709C /* Constants.h in Headers */ = {isa = PBXBuildFile; fileRef = 50644A1E20E11A720026709C /* Constants.h */; };
@@ -329,6 +330,7 @@
 		50570B252061473D006A1B5C /* RNNTitleOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTitleOptions.m; sourceTree = "<group>"; };
 		50570BE82063E09B006A1B5C /* RNNTitleViewHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTitleViewHelper.h; sourceTree = "<group>"; };
 		50570BE92063E09B006A1B5C /* RNNTitleViewHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNTitleViewHelper.m; sourceTree = "<group>"; };
+		505EDD31214E4BE80071C7DE /* RNNNavigationControllerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationControllerTest.m; sourceTree = "<group>"; };
 		5064495B20DC62B90026709C /* RNNSideMenuSideOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSideMenuSideOptions.h; sourceTree = "<group>"; };
 		5064495C20DC62B90026709C /* RNNSideMenuSideOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSideMenuSideOptions.m; sourceTree = "<group>"; };
 		50644A1E20E11A720026709C /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -712,6 +714,7 @@
 				7B49FEC91E95098500DEB3EA /* RNNCommandsHandlerTest.m */,
 				7B49FECA1E95098500DEB3EA /* RNNNavigationStackManagerTest.m */,
 				504753772109C13C00FFFBE6 /* RNNOverlayManagerTest.m */,
+				505EDD31214E4BE80071C7DE /* RNNNavigationControllerTest.m */,
 				7B49FEBF1E95090800DEB3EA /* Info.plist */,
 				E83BAD671F2734B500A9F3DD /* RNNNavigationOptionsTest.m */,
 				E83BAD781F27416B00A9F3DD /* RNNRootViewControllerTest.m */,
@@ -1026,6 +1029,7 @@
 				504753782109C13C00FFFBE6 /* RNNOverlayManagerTest.m in Sources */,
 				7B49FECE1E95098500DEB3EA /* RNNCommandsHandlerTest.m in Sources */,
 				E83BAD681F2734B500A9F3DD /* RNNNavigationOptionsTest.m in Sources */,
+				505EDD32214E4BE80071C7DE /* RNNNavigationControllerTest.m in Sources */,
 				7B49FECF1E95098500DEB3EA /* RNNNavigationStackManagerTest.m in Sources */,
 				7B49FECB1E95098500DEB3EA /* RNNControllerFactoryTest.m in Sources */,
 				7B49FECD1E95098500DEB3EA /* RNNModalManagerTest.m in Sources */,
