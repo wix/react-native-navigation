@@ -15,6 +15,14 @@
 	return self;
 }
 
+- (void)performOnChildLoad:(RNNNavigationOptions *)options {
+	[_presenter overrideOptions:options];
+	[_presenter presentOn:self];
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:_presenter.options];
+	}
+}
+
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.selectedViewController.supportedInterfaceOrientations;
 }
@@ -40,6 +48,10 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).preferredStatusBarStyle;
+}
+
+- (void)setViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers {
+	[super setViewControllers:viewControllers];
 }
 
 #pragma mark UITabBarControllerDelegate

@@ -26,8 +26,4 @@
 	return self;
 }
 
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	readyBlock();
-}
-
 @end

@@ -1,10 +1,10 @@
-#import "RNNLayoutInfo.h"
+#import "RNNLayoutProtocol.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
-@protocol RNNLeafProtocol <NSObject>
+@protocol RNNLeafProtocol <RNNLayoutProtocol>
 
-@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
+- (UIViewController<RNNLeafProtocol> *)getLeafViewController;
 
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
 

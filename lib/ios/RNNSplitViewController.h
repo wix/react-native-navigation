@@ -16,6 +16,7 @@
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic, strong) NSString* componentId;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
+@property (nonatomic, retain) RNNBasePresenter* presenter;
 @property (nonatomic) id<RNNRootViewCreator> creator;
 
 -(instancetype)initWithOptions:(RNNSplitViewOptions*)options

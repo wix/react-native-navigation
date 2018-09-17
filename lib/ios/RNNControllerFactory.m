@@ -9,6 +9,9 @@
 #import "RNNTopTabsViewController.h"
 #import "RNNLayoutInfo.h"
 #import "RNNOptionsManager.h"
+#import "RNNViewControllerPresenter.h"
+#import "RNNTabBarPresenter.h"
+#import "RNNRootViewController.h"
 
 @implementation RNNControllerFactory {
 	id<RNNRootViewCreator> _creator;
@@ -96,9 +99,12 @@
 }
 
 - (UIViewController<RNNParentProtocol> *)createComponent:(RNNLayoutNode*)node {
-	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
-
-	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:NO];
+	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
+	
+	RNNNavigationOptions* options = [_optionsManager createOptions:node.data[@"options"]];
+	
+	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] initWithOptions:options];
+	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:NO presenter:presenter];
 
 	if (!component.isCustomViewController) {
 		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
@@ -108,11 +114,12 @@
 }
 
 - (UIViewController<RNNParentProtocol> *)createExternalComponent:(RNNLayoutNode*)node {
-	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
+	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 
 	UIViewController* externalVC = [_store getExternalComponent:layoutInfo bridge:_bridge];
 	
-	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:YES];
+	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
+	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:YES presenter:presenter];
 	
 	[component addChildViewController:externalVC];
 	[component.view addSubview:externalVC.view];
@@ -123,10 +130,11 @@
 
 
 - (UIViewController<RNNParentProtocol> *)createStack:(RNNLayoutNode*)node {
-	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
-	
-	RNNNavigationController* vc = [[RNNNavigationController alloc] initWithLayoutInfo:layoutInfo];
+	RNNNavigationController* vc = [[RNNNavigationController alloc] init];
+	RNNNavigationOptions* options = [_optionsManager createOptions:node.data[@"options"]];
 
+	vc.presenter = [[RNNNavigationControllerPresenter alloc] initWithOptions:options];
+	
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary* child in node.children) {
 		[controllers addObject:[self fromTree:child]];
@@ -139,7 +147,9 @@
 
 -(UIViewController<RNNParentProtocol> *)createTabs:(RNNLayoutNode*)node {
 	RNNTabBarController* vc = [[RNNTabBarController alloc] initWithEventEmitter:_eventEmitter];
-	vc.layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
+	vc.layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
+	RNNNavigationOptions* options = [_optionsManager createOptions:node.data[@"options"]];
+	vc.presenter = [[RNNTabBarPresenter alloc] initWithOptions:options];
 	
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
@@ -153,7 +163,7 @@
 
 - (UIViewController<RNNParentProtocol> *)createTopTabs:(RNNLayoutNode*)node {
 	RNNTopTabsViewController* vc = [[RNNTopTabsViewController alloc] init];
-	vc.layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
+	vc.layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary *child in node.children) {
@@ -168,7 +178,7 @@
 }
 
 - (UIViewController<RNNParentProtocol> *)createSideMenu:(RNNLayoutNode*)node {
-	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node optionsManager:_optionsManager];
+	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 
 	NSMutableArray* childrenVCs = [NSMutableArray new];
 	

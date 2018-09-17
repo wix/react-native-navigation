@@ -2,10 +2,10 @@
 
 @implementation RNNBackgroundOptions
 
-- (void)applyOn:(UIViewController *)viewController {
+- (void)applyOnNavigationController:(UINavigationController *)navigationController {
 	if (self.color && ![self.color isKindOfClass:[NSNull class]]) {
 		UIColor* backgroundColor = [RCTConvert UIColor:self.color];
-		viewController.navigationController.navigationBar.barTintColor = backgroundColor;
+		navigationController.navigationBar.barTintColor = backgroundColor;
 	}
 }
 

@@ -17,6 +17,18 @@
 	[self applyOn:viewController];
 }
 
+- (void)applyOn:(UIViewController *)viewController {
+	
+}
+
+- (void)applyOnNavigationController:(UINavigationController *)navigationController {
+	
+}
+
+- (void)applyOnTabBarController:(UITabBarController *)tabBarController {
+	
+}
+
 -(void)mergeWith:(NSDictionary *)otherOptions {
 	for (id key in otherOptions) {
 		if ([self hasProperty:key]) {

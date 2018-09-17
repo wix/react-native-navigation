@@ -1,17 +1,9 @@
 
 #import "RNNNavigationController.h"
 #import "RNNModalAnimation.h"
+#import "RNNRootViewController.h"
 
 @implementation RNNNavigationController
-
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo {
-	self = [super init];
-	if (self) {
-		_layoutInfo = layoutInfo;
-	}
-	
-	return self;
-}
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.viewControllers.lastObject.supportedInterfaceOrientations;
@@ -34,7 +26,7 @@
 		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
 		if ([controller isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
-			[rnnController.layoutInfo.options applyOn:rnnController];
+			[rnnController.presenter presentOn:rnnController];
 		}
 	}
 	
@@ -42,11 +34,11 @@
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.layoutInfo.options.animations.showModal isDismiss:NO];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.presenter.options.animations.showModal isDismiss:NO];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.layoutInfo.options.animations.dismissModal isDismiss:YES];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.presenter.options.animations.dismissModal isDismiss:YES];
 }
 
 - (UIViewController *)getLeafViewController {
@@ -55,6 +47,28 @@
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
 	return self.topViewController;
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:_presenter.options];
+	}
+}
+
+- (void)performOnChildWillAppear:(RNNNavigationOptions *)options {
+	[_presenter overrideOptions:options];
+	[_presenter presentOn:self];
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:_presenter.options];
+	}
+}
+
+- (void)performOnChildLoad:(RNNNavigationOptions *)options {
+	[_presenter overrideOptions:options];
+	[_presenter presentOn:self];
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:_presenter.options];
+	}
 }
 
 @end
