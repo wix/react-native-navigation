@@ -105,7 +105,6 @@
 
 -(void)testCleanStore {
 	[self.store clean];
-	XCTAssertFalse(self.store.pendingModalIdsToDismiss.count);
 	XCTAssertFalse(self.store.isReadyToReceiveCommands);
 }
 

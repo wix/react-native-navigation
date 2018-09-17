@@ -30,6 +30,22 @@ public class UiUtils {
         });
     }
 
+    public static void runOnMeasured(View view, Runnable task) {
+        if (view.getHeight() > 0 && view.getWidth() > 0) {
+            task.run();
+        } else {
+            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    if (view.getHeight() > 0 && view.getWidth() > 0) {
+                        view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        task.run();
+                    }
+                }
+            });
+        }
+    }
+
 	public static void runOnMainThread(Runnable runnable) {
 		new Handler(Looper.getMainLooper()).post(runnable);
 	}
@@ -60,7 +76,7 @@ public class UiUtils {
         final int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
         statusBarHeight = resourceId > 0 ?
                 resources.getDimensionPixelSize(resourceId) :
-                (int) dpToPx(context, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? STATUS_BAR_HEIGHT_M : STATUS_BAR_HEIGHT_L);
+                dpToPx(context, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? STATUS_BAR_HEIGHT_M : STATUS_BAR_HEIGHT_L);
         return statusBarHeight;
     }
 
@@ -72,13 +88,22 @@ public class UiUtils {
         final int resourceId = resources.getIdentifier("action_bar_size", "dimen", "android");
         toolBarHeight = resourceId > 0 ?
                 resources.getDimensionPixelSize(resourceId) :
-                (int) dpToPx(context, DEFAULT_TOOLBAR_HEIGHT);
+                dpToPx(context, DEFAULT_TOOLBAR_HEIGHT);
         return toolBarHeight;
     }
 
     public static float dpToPx(Context context, float dp) {
         float scale = context.getResources().getDisplayMetrics().density;
         return dp * scale + 0.5f;
+    }
+
+    public static int dpToPx(Context context, int dp) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
+    public static float pxToDp(Context context, float px) {
+        return px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
     public static float dpToSp(Context context, float dp) {

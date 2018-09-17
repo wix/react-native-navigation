@@ -712,4 +712,19 @@
 	XCTAssertTrue([attributes[@"NSFont"] isEqual:expectedFont]);
 }
 
+- (void)testTopBarBackgroundClipToBounds_true {
+	self.options.topBar.background.clipToBounds = @(1);
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+
+	XCTAssertTrue(self.uut.navigationController.navigationBar.clipsToBounds);
+}
+
+- (void)testTopBarBackgroundClipToBounds_false {
+	__unused UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:self.uut];
+	[self.uut viewWillAppear:false];
+
+	XCTAssertFalse(self.uut.navigationController.navigationBar.clipsToBounds);
+}
+
 @end

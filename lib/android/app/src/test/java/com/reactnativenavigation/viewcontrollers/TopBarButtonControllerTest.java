@@ -32,7 +32,7 @@ import static org.mockito.Mockito.verify;
 
 public class TopBarButtonControllerTest extends BaseTest {
 
-    private TopBarButtonController uut;
+    private TitleBarButtonController uut;
     private StackController stackController;
     private Button button;
     private ButtonOptionsPresenter optionsPresenter;
@@ -53,7 +53,7 @@ public class TopBarButtonControllerTest extends BaseTest {
         getTitleBar().layout(0, 0, 1080, 200);
 
         optionsPresenter = spy(new ButtonOptionsPresenter(getTitleBar(), button));
-        uut = new TopBarButtonController(activity, new NavigationIconResolver(activity, ImageLoaderMock.mock()), ImageLoaderMock.mock(), optionsPresenter, button, buttonCreatorMock, (buttonId) -> {});
+        uut = new TitleBarButtonController(activity, new NavigationIconResolver(activity, ImageLoaderMock.mock()), ImageLoaderMock.mock(), optionsPresenter, button, buttonCreatorMock, (buttonId) -> {});
 
         stackController.ensureViewIsCreated();
     }

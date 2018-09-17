@@ -1,4 +1,5 @@
 const Utils = require('./Utils');
+const Android = require('./AndroidUtils');
 const testIDs = require('../playground/src/testIDs');
 
 const { elementById, elementByLabel } = Utils;
@@ -85,7 +86,7 @@ describe('screen style', () => {
     await elementById(testIDs.SHOW_LEFT_SIDE_MENU_BUTTON).tap();
     await expect(elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON)).toBeVisible();
     await elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON).tap();
-    await expect(elementById(testIDs.CENTERED_TEXT_HEADER)).toBeVisible();
+    await expect(elementById(testIDs.HIDE_LEFT_SIDE_MENU_BUTTON)).toBeNotVisible();
   });
 
   test('side menu visibility - right', async () => {
@@ -93,7 +94,7 @@ describe('screen style', () => {
     await elementById(testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON).tap();
     await expect(elementById(testIDs.HIDE_RIGHT_SIDE_MENU_BUTTON)).toBeVisible();
     await elementById(testIDs.HIDE_RIGHT_SIDE_MENU_BUTTON).tap();
-    await expect(elementById(testIDs.CENTERED_TEXT_HEADER)).toBeVisible();
+    await expect(elementById(testIDs.HIDE_RIGHT_SIDE_MENU_BUTTON)).toBeNotVisible();
   });
 
   test('set right buttons', async () => {
@@ -115,12 +116,19 @@ describe('screen style', () => {
     await expect(elementByLabel(`Two`)).toExist();
   });
 
-  test(':ios: pass props to custom button component should exist after screen rerender', async () => {
+  test('pass props to custom button component should exist after push pop', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementByLabel(`Two`)).toExist();
     await elementById(testIDs.SCROLLVIEW_SCREEN_BUTTON).tap();
     await elementById(testIDs.POP_BUTTON).tap();
     await expect(elementByLabel(`Two`)).toExist();
+  });
+
+  test('custom button is tapable', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await expect(elementByLabel(`Two`)).toExist();
+    await elementByLabel(`Two`).tap();
+    await expect(elementByLabel(`Thanks for that :)`)).toExist();
   });
 
   test('tab bar items visibility', async () => {
@@ -174,5 +182,12 @@ describe('screen style', () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementById(testIDs.TOP_BAR_ELEMENT)).toBeVisible();
     await expect(elementById(testIDs.TOP_BAR_BUTTON)).toBeVisible();
+  });
+
+  test(':android: Popping screen with yellow box in button, title and background components should not crash', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.SHOW_YELLOW_BOX).tap();
+    Android.pressBack();
+    await expect(elementByLabel('React Native Navigation!')).toBeVisible();
   });
 });

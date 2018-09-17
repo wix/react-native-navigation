@@ -7,6 +7,7 @@ import {
   SearchBarUpdatedEvent,
   SearchBarCancelPressedEvent,
   ComponentEvent,
+  PreviewCompletedEvent,
   ModalDismissedEvent
 } from '../interfaces/ComponentEvents';
 import { NativeEventsReceiver } from '../adapters/NativeEventsReceiver';
@@ -22,6 +23,7 @@ export class ComponentEventsObserver {
     this.notifyModalDismissed = this.notifyModalDismissed.bind(this);
     this.notifySearchBarUpdated = this.notifySearchBarUpdated.bind(this);
     this.notifySearchBarCancelPressed = this.notifySearchBarCancelPressed.bind(this);
+    this.notifyPreviewCompleted = this.notifyPreviewCompleted.bind(this);
   }
 
   public registerOnceForAllComponentEvents() {
@@ -33,6 +35,7 @@ export class ComponentEventsObserver {
     this.nativeEventsReceiver.registerModalDismissedListener(this.notifyModalDismissed);
     this.nativeEventsReceiver.registerSearchBarUpdatedListener(this.notifySearchBarUpdated);
     this.nativeEventsReceiver.registerSearchBarCancelPressedListener(this.notifySearchBarCancelPressed);
+    this.nativeEventsReceiver.registerPreviewCompletedListener(this.notifyPreviewCompleted);
   }
 
   public bindComponent(component: React.Component<any>): EventSubscription {
@@ -62,7 +65,11 @@ export class ComponentEventsObserver {
   }
 
   notifyNavigationButtonPressed(event: NavigationButtonPressedEvent) {
-    this.triggerOnAllListenersByComponentId(event, 'navigationButtonPressed');
+    const listenersTriggered = this.triggerOnAllListenersByComponentId(event, 'navigationButtonPressed');
+    if (listenersTriggered === 0) {
+      // tslint:disable-next-line:no-console
+      console.warn(`navigationButtonPressed for button '${event.buttonId}' was not handled`);
+    }
   }
 
   notifyModalDismissed(event: ModalDismissedEvent) {
@@ -77,11 +84,19 @@ export class ComponentEventsObserver {
     this.triggerOnAllListenersByComponentId(event, 'searchBarCancelPressed');
   }
 
+  notifyPreviewCompleted(event: PreviewCompletedEvent) {
+    this.triggerOnAllListenersByComponentId(event, 'previewCompleted');
+  }
+
   private triggerOnAllListenersByComponentId(event: ComponentEvent, method: string) {
+    let listenersTriggered = 0;
     _.forEach(this.listeners[event.componentId], (component) => {
       if (_.isObject(component) && _.isFunction(component[method])) {
         component[method](event);
+        listenersTriggered++;
       }
     });
+
+    return listenersTriggered;
   }
 }
