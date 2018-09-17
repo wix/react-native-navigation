@@ -30,11 +30,11 @@
 			   isExternalComponent:(BOOL)isExternalComponent {
 	self = [super init];
 	self.eventEmitter = eventEmitter;
-	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.layoutInfo.options.customTransition];
 	self.creator = creator;
 	self.isExternalComponent = isExternalComponent;
 	self.layoutInfo = layoutInfo;
-	
+	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.layoutInfo.options.customTransition];
+
 	if (!self.isExternalComponent) {
 		self.view = [creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId];
 		[[NSNotificationCenter defaultCenter] addObserver:self
