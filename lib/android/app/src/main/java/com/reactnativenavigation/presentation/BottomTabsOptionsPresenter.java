@@ -158,5 +158,8 @@ public class BottomTabsOptionsPresenter {
                 bottomTabs.hideBottomNavigation(false);
             }
         }
+        if (options.elevation.hasValue()) {
+            bottomTabs.setUseElevation(true, options.elevation.get().floatValue());
+        }
     }
 }

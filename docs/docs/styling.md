@@ -237,6 +237,7 @@ Navigation.mergeOptions(this.props.componentId, {
     }
   },
   bottomTabs: {
+    elevation: 8, // BottomTabs elevation in dp
     titleDisplayMode: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' // Sets the title state for each tab.
   },
   bottomTab: {
