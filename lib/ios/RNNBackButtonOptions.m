@@ -15,36 +15,11 @@
 		
 		UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:nil action:nil];
 		[self setBackItem:backItem onViewController:viewController];
-	} else {
-		NSString *title;
-		
-		title = self.title ? self.title : viewController.navigationItem.title;
-		UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:title
+	} else if (self.title) {
+		UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:self.title
 																	 style:UIBarButtonItemStylePlain
 																	target:nil
 																	action:nil];
-
-		if (self.color) {
-			[backItem setTintColor:[RCTConvert UIColor:self.color]];
-		}
-
-		if(self.fontFamily || self.fontSize) {
-			NSNumber* fontSize = self.fontSize;
-			NSString* fontFamily = self.fontFamily;
-			NSMutableDictionary* textAttributes = [[NSMutableDictionary alloc] init];
-			UIFont *font;
-
-			if (!fontSize) {
-				fontSize = [[NSNumber alloc] initWithInt: 18];
-			}
-			font = fontFamily ? 
-				[UIFont fontWithName:fontFamily size:[fontSize floatValue]] : 
-				[UIFont systemFontOfSize:[fontSize floatValue]];
-			[textAttributes setObject:font forKey:NSFontAttributeName];
-
-			[backItem setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
-			[backItem setTitleTextAttributes:textAttributes forState:UIControlStateHighlighted];
-		}
 		
 		[self setBackItem:backItem onViewController:viewController];
 	}

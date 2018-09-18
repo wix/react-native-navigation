@@ -8,7 +8,5 @@
 @property (nonatomic, strong) NSString* transition;
 @property (nonatomic, strong) NSNumber* showTitle;
 @property (nonatomic, strong) NSNumber* color;
-@property (nonatomic, strong) NSString* fontFamily;
-@property (nonatomic, strong) NSNumber* fontSize;
 
 @end
