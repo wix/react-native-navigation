@@ -9,6 +9,7 @@ import com.reactnativenavigation.parse.parsers.BoolParser;
 import com.reactnativenavigation.parse.parsers.ColorParser;
 import com.reactnativenavigation.parse.parsers.NumberParser;
 import com.reactnativenavigation.parse.parsers.TextParser;
+import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.TypefaceLoader;
 
 import org.json.JSONArray;
@@ -17,13 +18,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Button {
+    public String instanceId = "btn" + CompatUtils.generateViewId();
+
     @Nullable public String id;
     public Text text = new NullText();
     public Bool enabled = new NullBool();
     public Bool disableIconTint = new NullBool();
     public Number showAsAction = new NullNumber();
-    public Color color = new NullColor();
-    public Color disabledColor = new NullColor();
+    public Colour color = new NullColor();
+    public Colour disabledColor = new NullColor();
     public Number fontSize = new NullNumber();
     private Text fontWeight = new NullText();
     @Nullable public Typeface fontFamily;
@@ -125,6 +128,7 @@ public class Button {
         if (other.showAsAction.hasValue()) showAsAction = other.showAsAction;
         if (other.icon.hasValue()) icon = other.icon;
         if (other.id != null) id = other.id;
+        if (other.instanceId != null) instanceId = other.instanceId;
     }
 
     public void mergeWithDefault(Button defaultOptions) {

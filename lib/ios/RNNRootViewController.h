@@ -5,8 +5,10 @@
 #import "RNNEventEmitter.h"
 #import "RNNNavigationOptions.h"
 #import "RNNAnimator.h"
+#import "RNNUIBarButtonItem.h"
 
 typedef void (^RNNReactViewReadyCompletionBlock)(void);
+typedef void (^PreviewCallback)(UIViewController *vc);
 
 @interface RNNRootViewController : UIViewController	<UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
 
@@ -16,14 +18,14 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 @property (nonatomic) id<RNNRootViewCreator> creator;
 @property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) UIViewController* previewController;
-
+@property (nonatomic, copy) PreviewCallback previewCallback;
 
 - (instancetype)initWithName:(NSString*)name
-				withOptions:(RNNNavigationOptions*)options
-			withComponentId:(NSString*)componentId
-			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter
-		  isExternalComponent:(BOOL)isExternalComponent;
+				 withOptions:(RNNNavigationOptions*)options
+			 withComponentId:(NSString*)componentId
+			 rootViewCreator:(id<RNNRootViewCreator>)creator
+				eventEmitter:(RNNEventEmitter*)eventEmitter
+		 isExternalComponent:(BOOL)isExternalComponent;
 
 - (void)applyTopTabsOptions;
 - (BOOL)isCustomViewController;
@@ -32,5 +34,7 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 - (void)mergeOptions:(RNNOptions*)options;
 - (void)applyModalOptions;
 - (void)optionsUpdated;
+
+-(void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem;
 
 @end

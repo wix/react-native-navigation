@@ -20,11 +20,11 @@ The following options can be used to customise buttons.
 
 # Declaring Buttons statically
 
-Buttons can be defined in a screen's static options:
+Buttons can be defined in a screen's options:
 
 ```js
 class MyScreen extends Component {
-  static get options() {
+  static options(passProps) {
     return {
       topBar: {
         leftButtons: [
@@ -70,7 +70,7 @@ Example:
 
 ```js
 class MyScreen extends Component {
-  static get options() {
+  static options(passProps) {
     return {
       topBar: {
         rightButtons: {
