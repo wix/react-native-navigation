@@ -24,9 +24,9 @@
 }
 
 - (void)setBackItem:(UIBarButtonItem *)backItem onViewController:(UIViewController *)viewController {
-	UINavigationController* nvc = viewController.navigationController;
-	if (nvc.viewControllers.count >= 2) {
-		UIViewController* lastViewControllerInStack = nvc.viewControllers[nvc.viewControllers.count - 2];
+	NSArray *viewControllers = viewController.navigationController.viewControllers;
+	if (viewControllers.count >= 2) {
+		UIViewController *lastViewControllerInStack = viewControllers[viewControllers.count - 2];
 	  	backItem.title = self.title ? self.title : lastViewControllerInStack.navigationItem.title;
 		lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 	}
