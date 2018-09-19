@@ -216,8 +216,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setElevation(Double elevation) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                getElevation() != elevation.floatValue()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setElevation(UiUtils.dpToPx(getContext(), elevation.floatValue()));
         }
     }
