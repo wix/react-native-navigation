@@ -4,25 +4,29 @@
 @implementation RNNBackButtonOptions
 
 - (void)applyOn:(UIViewController *)viewController {
-	if (self.showTitle && ![self.showTitle boolValue]) {
-		self.title = @"";
-	}
-	
+  	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+  
 	if (self.icon) {
 		UIImage *image = self.tintedIcon;
 		[viewController.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
 		[viewController.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
 		
-		UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:nil action:nil];
-		[self setBackItem:backItem onViewController:viewController];
-	} else if (self.title) {
-		UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:self.title
-																	 style:UIBarButtonItemStylePlain
-																	target:nil
-																	action:nil];
-		
-		[self setBackItem:backItem onViewController:viewController];
+		backItem.image = image;
 	}
+  
+	if (self.color) {
+	  	[backItem setTintColor:[RCTConvert UIColor:self.color]];
+	}
+  
+	if (self.title) {
+	  	backItem.title = self.title;
+	}
+  
+	if (self.showTitle && ![self.showTitle boolValue]) {
+	  	self.title = @"";
+	}
+  
+  	[self setBackItem:backItem onViewController:viewController];
 	
 	if (self.visible) {
 		viewController.navigationItem.hidesBackButton = ![self.visible boolValue];
@@ -33,6 +37,7 @@
 	UINavigationController* nvc = viewController.navigationController;
 	if (nvc.viewControllers.count >= 2) {
 		UIViewController* lastViewControllerInStack = nvc.viewControllers[nvc.viewControllers.count - 2];
+	  	backItem.title = self.title ? self.title : lastViewControllerInStack.navigationItem.title;
 		lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 	}
 }
