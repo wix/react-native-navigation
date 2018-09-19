@@ -6,12 +6,10 @@
 - (void)applyOn:(UIViewController *)viewController {
   	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
   
-	if (self.icon) {
-		backItem.image = self.tintedIcon;
-	}
+	backItem.image = self.tintedIconIfAvailable;
   
 	if (self.color) {
-	  	[backItem setTintColor:[RCTConvert UIColor:self.color]];
+	  	backItem.tintColor = [RCTConvert UIColor:self.color];
 	}
   
 	if (self.title) {
@@ -38,13 +36,17 @@
 	}
 }
 
-- (UIImage *)tintedIcon {
-	UIImage *image = [RCTConvert UIImage:self.icon];
-	if (self.color) {
-		return [[image withTintColor:[RCTConvert UIColor:self.color]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+- (UIImage *)tintedIconIfAvailable {
+	if (self.icon) {
+		UIImage *image = [RCTConvert UIImage:self.icon];
+		if (self.color) {
+		  return [[image withTintColor:[RCTConvert UIColor:self.color]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+		}
+		
+		return image;
 	}
-	
-	return image;
+  
+  	return nil;
 }
 
 @end
