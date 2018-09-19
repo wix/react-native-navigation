@@ -7,11 +7,7 @@
   	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
   
 	if (self.icon) {
-		UIImage *image = self.tintedIcon;
-		[viewController.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
-		[viewController.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
-		
-		backItem.image = image;
+		backItem.image = self.tintedIcon;
 	}
   
 	if (self.color) {
@@ -43,7 +39,7 @@
 }
 
 - (UIImage *)tintedIcon {
-	UIImage *image = self.icon ? [RCTConvert UIImage:self.icon] : nil;
+	UIImage *image = [RCTConvert UIImage:self.icon];
 	if (self.color) {
 		return [[image withTintColor:[RCTConvert UIColor:self.color]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 	}
