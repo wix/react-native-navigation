@@ -39,11 +39,9 @@
 - (UIImage *)tintedIconIfAvailable {
 	if (self.icon) {
 		UIImage *image = [RCTConvert UIImage:self.icon];
-		if (self.color) {
-		  return [[image withTintColor:[RCTConvert UIColor:self.color]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-		}
-		
-		return image;
+	  	return self.color
+	  		? [[image withTintColor:[RCTConvert UIColor:self.color]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+	  		: image;
 	}
   
   	return nil;
