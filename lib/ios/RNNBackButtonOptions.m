@@ -12,10 +12,6 @@
 	  	backItem.tintColor = [RCTConvert UIColor:self.color];
 	}
   
-	if (self.title) {
-	  	backItem.title = self.title;
-	}
-  
 	if (self.showTitle && ![self.showTitle boolValue]) {
 	  	self.title = @"";
 	}
