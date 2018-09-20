@@ -52,7 +52,7 @@ public abstract class SplashActivity extends AppCompatActivity {
             boolean isPushNotification = getIntent() != null && getIntent().getBooleanExtra("push", false);
 
             //  진입 경로가 push notification or deeplink인 경우
-            boolean isExtras = getIntent() != null && getIntent().getExtras() != null;
+            boolean isExtras = getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().getString("url") != null;
 
             if(isPushNotification || !isExtras) {
                 NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
