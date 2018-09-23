@@ -152,6 +152,10 @@ public class TitleBar extends Toolbar {
         setLeftButton(button);
     }
 
+    public void setOverflowButton(TitleBarButtonController button) {
+        button.applyOverflowIcon(this);
+    }
+
     public void setLeftButtons(List<TitleBarButtonController> leftButtons) {
         if (leftButtons == null) return;
         if (leftButtons.isEmpty()) {

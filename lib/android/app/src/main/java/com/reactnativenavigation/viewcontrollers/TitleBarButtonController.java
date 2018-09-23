@@ -23,6 +23,7 @@ import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
+import com.reactnativenavigation.viewcontrollers.button.OverflowIconResolver;
 import com.reactnativenavigation.views.titlebar.TitleBarReactButtonView;
 
 import java.util.Collections;
@@ -34,6 +35,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     }
 
     private final NavigationIconResolver navigationIconResolver;
+    private final OverflowIconResolver overflowIconResolver;
     private final ImageLoader imageLoader;
     private ButtonOptionsPresenter optionsPresenter;
     private final Button button;
@@ -52,6 +54,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
 
     public TitleBarButtonController(Activity activity,
                                     NavigationIconResolver navigationIconResolver,
+                                    OverflowIconResolver overflowIconResolver,
                                     ImageLoader imageLoader,
                                     ButtonOptionsPresenter optionsPresenter,
                                     Button button,
@@ -59,6 +62,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
                                     OnClickListener onClickListener) {
         super(activity, button.id, new YellowBoxDelegate(), new Options());
         this.navigationIconResolver = navigationIconResolver;
+        this.overflowIconResolver = overflowIconResolver;
         this.imageLoader = imageLoader;
         this.optionsPresenter = optionsPresenter;
         this.button = button;
@@ -102,6 +106,14 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
             toolbar.setNavigationOnClickListener(view -> onPressListener.onPress(button.id));
             toolbar.setNavigationIcon(icon);
             setLeftButtonTestId(toolbar);
+        });
+    }
+
+    public void applyOverflowIcon(Toolbar toolbar) {
+        overflowIconResolver.resolve(button, icon -> {
+            setIconColor(icon);
+            toolbar.setOverflowIcon(icon);
+            // TODO: implement setOverflowButtonTestId()
         });
     }
 

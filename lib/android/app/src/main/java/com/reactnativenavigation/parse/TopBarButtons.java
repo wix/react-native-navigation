@@ -19,6 +19,7 @@ public class TopBarButtons {
         result.right = parseButtons(typefaceLoader, json, "rightButtons");
         result.left = parseButtons(typefaceLoader, json, "leftButtons");
         result.back = BackButton.parse(json.optJSONObject("backButton"));
+        result.overflow = OverflowButton.parse(json.optJSONObject("overflowButton"));
 
         return result;
     }
@@ -31,11 +32,13 @@ public class TopBarButtons {
     public BackButton back = new BackButton();
     @Nullable public ArrayList<Button> left;
     @Nullable public ArrayList<Button> right;
+    public OverflowButton overflow = new OverflowButton();
 
     void mergeWith(TopBarButtons other) {
         if (other.left != null) left = mergeLeftButton(other.left);
         if (other.right != null) right = other.right;
         back.mergeWith(other.back);
+        overflow.mergeWith(other.overflow);
     }
 
     private ArrayList<Button> mergeLeftButton(ArrayList<Button> other) {
@@ -65,6 +68,7 @@ public class TopBarButtons {
             }
         }
         back.mergeWithDefault(defaultOptions.back);
+        overflow.mergeWithDefault(defaultOptions.overflow);
     }
 
     public boolean hasLeftButtons() {

@@ -28,6 +28,7 @@ import com.reactnativenavigation.viewcontrollers.ReactViewCreator;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
 import com.reactnativenavigation.viewcontrollers.TitleBarReactViewController;
 import com.reactnativenavigation.viewcontrollers.button.NavigationIconResolver;
+import com.reactnativenavigation.viewcontrollers.button.OverflowIconResolver;
 import com.reactnativenavigation.views.Component;
 import com.reactnativenavigation.views.titlebar.TitleBarReactViewCreator;
 import com.reactnativenavigation.views.topbar.TopBar;
@@ -256,6 +257,10 @@ public class StackOptionsPresenter {
         if (options.buttons.back.visible.isTrue() && !options.buttons.hasLeftButtons()) {
             topBar.setBackButton(createButtonController(options.buttons.back));
         }
+
+        if (options.buttons.overflow.hasValue()) {
+            topBar.setOverflowButton(createButtonController(options.buttons.overflow));
+        }
     }
 
     private List<TitleBarButtonController> getOrCreateButtonControllers(@Nullable Map<String, TitleBarButtonController> currentButtons, @Nullable List<Button> buttons) {
@@ -270,6 +275,7 @@ public class StackOptionsPresenter {
     private TitleBarButtonController createButtonController(Button button) {
         return new TitleBarButtonController(activity,
                 new NavigationIconResolver(activity, imageLoader),
+                new OverflowIconResolver(activity, imageLoader),
                 imageLoader,
                 new ButtonOptionsPresenter(topBar.getTitleBar(), button),
                 button,
@@ -331,6 +337,7 @@ public class StackOptionsPresenter {
         if (buttons.right != null) topBar.setRightButtons(rightButtonControllers);
         if (buttons.left != null) topBar.setLeftButtons(leftButtonControllers);
         if (buttons.back.hasValue()) topBar.setBackButton(createButtonController(buttons.back));
+        if (buttons.overflow.hasValue()) topBar.setOverflowButton(createButtonController(buttons.overflow));
     }
 
     @Nullable

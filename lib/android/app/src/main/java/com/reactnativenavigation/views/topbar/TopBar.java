@@ -207,6 +207,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
         titleBar.setBackButton(backButton);
     }
 
+    public void setOverflowButton(TitleBarButtonController overflowButton) {
+        titleBar.setOverflowButton(overflowButton);
+    }
+
     public void setLeftButtons(List<TitleBarButtonController> leftButtons) {
         titleBar.setLeftButtons(leftButtons);
     }
