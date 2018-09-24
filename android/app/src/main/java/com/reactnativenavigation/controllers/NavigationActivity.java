@@ -337,7 +337,9 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     public void setScreenStyle(String screenInstanceId, Bundle styleParams) {
         layout.updateScreenStyle(screenInstanceId, styleParams);
-        modalController.updateScreenStyle(screenInstanceId, styleParams);
+        if (styleParams != null) {
+            modalController.updateScreenStyle(screenInstanceId, styleParams);
+        }
     }
 
     public void toggleSideMenuVisible(boolean animated, Side side) {
