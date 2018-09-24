@@ -348,27 +348,6 @@ static const CGFloat kVisibleWidth = 310.0f;
     _rightSidebarViewController = newViewController;
 }
 
-
-#pragma mark - Autorotation Delegates
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    if((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
-       (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
-    {
-        NSLog(@"Portrait");
-    }
-    else if((toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) ||
-            (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight))
-    {
-        NSLog(@"Landscape");
-    }
-    
-    
-}
-
-
 #pragma mark - Helpers
 - (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view
 {
