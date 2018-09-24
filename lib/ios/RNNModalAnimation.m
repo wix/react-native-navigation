@@ -30,8 +30,8 @@
 	
 	
 	[UIView animateWithDuration:[self transitionDuration:transitionContext] delay:self.screenTransition.content.startDelay options:self.screenTransition.content.interpolation animations:^{
-		[_screenTransition.content completeTransitionForView:toViewController.view];
-		[_screenTransition.topBar completeTransitionForView:toViewController.navigationController.navigationBar];
+		[self->_screenTransition.content completeTransitionForView:toViewController.view];
+		[self->_screenTransition.topBar completeTransitionForView:toViewController.navigationController.navigationBar];
 	} completion:^(BOOL finished) {
 		[transitionContext completeTransition:![transitionContext transitionWasCancelled]];
 	}];

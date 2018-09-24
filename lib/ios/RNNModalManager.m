@@ -36,7 +36,7 @@
 			completion(nil);
 		}
 		
-		[_presentedModals addObject:viewController.navigationController ? viewController.navigationController : viewController];
+		[self->_presentedModals addObject:viewController.navigationController ? viewController.navigationController : viewController];
 	}];
 }
 
@@ -74,7 +74,7 @@
 
 	if (modalToDismiss == topPresentedVC || [[topPresentedVC childViewControllers] containsObject:modalToDismiss]) {
 		[modalToDismiss dismissViewControllerAnimated:options.animations.dismissModal.enable completion:^{
-			[_pendingModalIdsToDismiss removeObject:modalToDismiss];
+			[self->_pendingModalIdsToDismiss removeObject:modalToDismiss];
 			if (modalToDismiss.view) {
 				[self dismissedModal:modalToDismiss];
 			}

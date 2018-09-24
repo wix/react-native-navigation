@@ -132,8 +132,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	} else {
 		id animationDelegate = (newVc.options.animations.push.hasCustomAnimation || newVc.isCustomTransitioned) ? newVc : nil;
 		[newVc waitForReactViewRender:(newVc.options.animations.push.waitForRender || animationDelegate) perform:^{
-			[_stackManager push:newVc onTop:fromVC animated:newVc.options.animations.push.enable animationDelegate:animationDelegate completion:^{
-				[_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
+			[self->_stackManager push:newVc onTop:fromVC animated:newVc.options.animations.push.enable animationDelegate:animationDelegate completion:^{
+				[self->_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
 				completion();
 			} rejection:rejection];
 		}];
@@ -174,8 +174,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}
 	
 	[_stackManager pop:vc animated:vc.options.animations.pop.enable completion:^{
-		[_store removeComponent:componentId];
-		[_eventEmitter sendOnNavigationCommandCompletion:pop params:@{@"componentId": componentId}];
+		[self->_store removeComponent:componentId];
+		[self->_eventEmitter sendOnNavigationCommandCompletion:pop params:@{@"componentId": componentId}];
 		completion();
 	} rejection:^(NSString *code, NSString *message, NSError *error) {
 		
@@ -188,7 +188,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[vc.options mergeWith:options];
 	
 	[_stackManager popTo:vc animated:vc.options.animations.pop.enable completion:^(NSArray *poppedViewControllers) {
-		[_eventEmitter sendOnNavigationCommandCompletion:popTo params:@{@"componentId": componentId}];
+		[self->_eventEmitter sendOnNavigationCommandCompletion:popTo params:@{@"componentId": componentId}];
 		[self removePopedViewControllers:poppedViewControllers];
 		completion();
 	} rejection:rejection];
@@ -201,7 +201,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
-		[_eventEmitter sendOnNavigationCommandCompletion:popToRoot params:@{@"componentId": componentId}];
+		[self->_eventEmitter sendOnNavigationCommandCompletion:popToRoot params:@{@"componentId": componentId}];
 		completion();
 	}];
 	
@@ -224,8 +224,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}
 	
 	[newVc.getLeafViewController waitForReactViewRender:newVc.getLeafViewController.options.animations.showModal.waitForRender perform:^{
-		[_modalManager showModal:newVc animated:newVc.getLeafViewController.options.animations.showModal.enable hasCustomAnimation:newVc.getLeafViewController.options.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
-			[_eventEmitter sendOnNavigationCommandCompletion:showModal params:@{@"layout": layout}];
+		[self->_modalManager showModal:newVc animated:newVc.getLeafViewController.options.animations.showModal.enable hasCustomAnimation:newVc.getLeafViewController.options.animations.showModal.hasCustomAnimation completion:^(NSString *componentId) {
+			[self->_eventEmitter sendOnNavigationCommandCompletion:showModal params:@{@"layout": layout}];
 			completion(componentId);
 		}];
 	}];
@@ -236,7 +236,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
-		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
+		[self->_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
 	}];
 	UIViewController<RNNRootViewProtocol> *modalToDismiss = (UIViewController<RNNRootViewProtocol>*)[_store findComponentForId:componentId];
 	[modalToDismiss.getLeafViewController.options mergeWith:options];
@@ -253,7 +253,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
-		[_eventEmitter sendOnNavigationCommandCompletion:dismissAllModals params:@{}];
+		[self->_eventEmitter sendOnNavigationCommandCompletion:dismissAllModals params:@{}];
 		completion();
 	}];
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];

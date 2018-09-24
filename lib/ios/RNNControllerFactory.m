@@ -196,7 +196,7 @@
 	__block RCTRootView* rootView = (RCTRootView*)vc.view;
 	[vc performOnRotation:^{
 		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
-		[_bridge.uiManager setSize:availableSize forView:rootView];
+		[self->_bridge.uiManager setSize:availableSize forView:rootView];
 	}];
 	rootView.backgroundColor = [UIColor clearColor];
 	CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
