@@ -2,6 +2,7 @@ package com.reactnativenavigation.controllers;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.Window;
 
 import com.facebook.react.bridge.Callback;
@@ -191,5 +192,9 @@ class ModalController implements ScreenStackContainer, Modal.OnModalDismissedLis
 
     String getCurrentlyVisibleEventId() {
         return stack.peek().getCurrentlyVisibleEventId();
+    }
+
+    public <T extends View> T findViewById(int id) {
+        return stack.peek().findViewById(id);
     }
 }

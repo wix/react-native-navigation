@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 
 import com.facebook.react.bridge.Callback;
@@ -497,5 +498,17 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
 
     public static void setStartAppPromise(Promise promise) {
         NavigationActivity.startAppPromise = promise;
+    }
+
+    @Override
+    public <T extends View> T findViewById(int id) {
+        T found = null;
+        if(modalController.isShowing()) {
+            found = modalController.findViewById(id);
+        }
+        if(found != null) {
+            return found;
+        }
+        return super.findViewById(id);
     }
 }
