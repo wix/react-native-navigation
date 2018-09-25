@@ -130,7 +130,7 @@ On **Android**, Visibility can be toggled dynamically using the `mergeOptions` c
 
 ```js
 Navigation.mergeOptions(componentId, {
-  bottomTas: visible: false,
+  bottomTabs: visible: false,
   ...Platform.select({ android: { drawBehind: true } })
 });
 ```
@@ -141,7 +141,7 @@ On **both** platforms visibility can be changed when pushing screens into a stac
 Navigation.push(componentId, {
 	component: {
 	  name: 'pushedScreen',
-	  options: { bottomTas: visible: false }
+	  options: { bottomTabs: visible: false }
 	}
   });
 ```
