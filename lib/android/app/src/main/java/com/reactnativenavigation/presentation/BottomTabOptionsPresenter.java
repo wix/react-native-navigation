@@ -53,15 +53,17 @@ public class BottomTabOptionsPresenter {
     }
 
     public void mergeChildOptions(Options options, Component child) {
-        BottomTabOptions withDefaultOptions = options.withDefaultOptions(defaultOptions).bottomTabOptions;
         int index = bottomTabFinder.findByComponent(child);
-        if (withDefaultOptions.badge.hasValue()) bottomTabs.setBadge(index, withDefaultOptions.badge.get());
-        if (withDefaultOptions.badgeColor.hasValue()) bottomTabs.setBadgeColor(withDefaultOptions.badgeColor.get());
-        if (withDefaultOptions.fontFamily != null) bottomTabs.setTitleTypeface(index, withDefaultOptions.fontFamily);
-        if (withDefaultOptions.selectedIconColor.hasValue()) bottomTabs.setIconActiveColor(index, withDefaultOptions.selectedIconColor.get());
-        if (withDefaultOptions.iconColor.hasValue()) bottomTabs.setIconInactiveColor(index, withDefaultOptions.iconColor.get());
-        if (withDefaultOptions.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(index, withDefaultOptions.selectedTextColor.get());
-        if (withDefaultOptions.textColor.hasValue()) bottomTabs.setTitleInactiveColor(index, withDefaultOptions.textColor.get());
+        if (index >= 0) {
+            BottomTabOptions withDefaultOptions = options.withDefaultOptions(defaultOptions).bottomTabOptions;
+            if (withDefaultOptions.badge.hasValue()) bottomTabs.setBadge(index, withDefaultOptions.badge.get());
+            if (withDefaultOptions.badgeColor.hasValue()) bottomTabs.setBadgeColor(withDefaultOptions.badgeColor.get());
+            if (withDefaultOptions.fontFamily != null) bottomTabs.setTitleTypeface(index, withDefaultOptions.fontFamily);
+            if (withDefaultOptions.selectedIconColor.hasValue()) bottomTabs.setIconActiveColor(index, withDefaultOptions.selectedIconColor.get());
+            if (withDefaultOptions.iconColor.hasValue()) bottomTabs.setIconInactiveColor(index, withDefaultOptions.iconColor.get());
+            if (withDefaultOptions.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(index, withDefaultOptions.selectedTextColor.get());
+            if (withDefaultOptions.textColor.hasValue()) bottomTabs.setTitleInactiveColor(index, withDefaultOptions.textColor.get());
+        }
     }
 
     @VisibleForTesting

@@ -411,6 +411,11 @@ export interface OptionsBottomTabs {
    * #### (Android specific)
    */
   titleDisplayMode?: 'alwaysShow' | 'showWhenActive' | 'alwaysHide';
+  /**
+   * Set the elevation of the Bottom Tabs in dp
+   * #### (Android specific)
+   */
+  elevation?: AndroidDensityNumber;
 }
 
 export interface OptionsBottomTab {
