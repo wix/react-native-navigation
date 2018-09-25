@@ -81,6 +81,12 @@ public class BottomTabsController extends ParentController implements AHBottomNa
     }
 
     @Override
+    public void mergeOptions(Options options) {
+        presenter.mergeOptions(options);
+        super.mergeOptions(options);
+    }
+
+    @Override
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(this.options, child);
