@@ -799,69 +799,51 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 
 #pragma mark Rotation
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    //If a rotation begins, we are going to cancel the current gesture and reset transform and anchor points so everything works correctly
-    BOOL gestureInProgress = NO;
-    for(UIGestureRecognizer * gesture in self.view.gestureRecognizers){
-        if(gesture.state == UIGestureRecognizerStateChanged){
-            [gesture setEnabled:NO];
-            [gesture setEnabled:YES];
-            gestureInProgress = YES;
-        }
-        if (gestureInProgress) {
-            [self resetDrawerVisualStateForDrawerSide:self.openSide];
-        }
-    }
-    if ([self needsManualForwardingOfRotationEvents]){
-        for(UIViewController * childViewController in self.childViewControllers){
-            [childViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-        }
-    }
-    
-}
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    //We need to support the shadow path rotation animation
-    //Inspired from here: http://blog.radi.ws/post/8348898129/calayers-shadowpath-and-uiview-autoresizing
-    if(self.showsShadow){
-        CGPathRef oldShadowPath = self.centerContainerView.layer.shadowPath;
-        if(oldShadowPath){
-            CFRetain(oldShadowPath);
-        }
-        
-        [self updateShadowForCenterView];
-        
-        if (oldShadowPath) {
-            [self.centerContainerView.layer addAnimation:((^ {
-                CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
-                transition.fromValue = (__bridge id)oldShadowPath;
-                transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-                transition.duration = duration;
-                return transition;
-            })()) forKey:@"transition"];
-            CFRelease(oldShadowPath);
-        }
-    }
-    
-    if ([self needsManualForwardingOfRotationEvents]){
-        for(UIViewController * childViewController in self.childViewControllers){
-            [childViewController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-        }
-    }
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+	//If a rotation begins, we are going to cancel the current gesture and reset transform and anchor points so everything works correctly
+	BOOL gestureInProgress = NO;
+	for(UIGestureRecognizer * gesture in self.view.gestureRecognizers){
+		if(gesture.state == UIGestureRecognizerStateChanged){
+			[gesture setEnabled:NO];
+			[gesture setEnabled:YES];
+			gestureInProgress = YES;
+		}
+		if (gestureInProgress) {
+			[self resetDrawerVisualStateForDrawerSide:self.openSide];
+		}
+	}
+	
+	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+		//We need to support the shadow path rotation animation
+		//Inspired from here: http://blog.radi.ws/post/8348898129/calayers-shadowpath-and-uiview-autoresizing
+		if(self.showsShadow){
+			CGPathRef oldShadowPath = self.centerContainerView.layer.shadowPath;
+			if(oldShadowPath){
+				CFRetain(oldShadowPath);
+			}
+			
+			[self updateShadowForCenterView];
+			
+			if (oldShadowPath) {
+				[self.centerContainerView.layer addAnimation:((^ {
+					CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
+					transition.fromValue = (__bridge id)oldShadowPath;
+					transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+					return transition;
+				})()) forKey:@"transition"];
+				CFRelease(oldShadowPath);
+			}
+		}
+		
+	} completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+		// didRotateFromInterfaceOrientation goes here (nothing for now)
+		
+	}];
 }
 
 -(BOOL)shouldAutorotate{
-    return YES;
-}
-
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    if ([self needsManualForwardingOfRotationEvents]){
-        for(UIViewController * childViewController in self.childViewControllers){
-            [childViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-        }
-    }
+	return YES;
 }
 
 #pragma mark - Setters
