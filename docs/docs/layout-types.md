@@ -123,6 +123,30 @@ Navigation.mergeOptions(this.props.componentId, {
 });
 ```
 
+### Changing BottomTabs visibility
+The `visible` property can be used to control the BottomTab visibility.
+
+On **Android**, Visibility can be toggled dynamically using the `mergeOptions` command. When hiding BottomTabs, `drawBehind: true` should be specified in order for the screen to render behind the area which was previously allocated to the BottomTabs.
+
+```js
+Navigation.mergeOptions(componentId, {
+  bottomTas: visible: false,
+  ...Platform.select({ android: { drawBehind: true } })
+});
+```
+
+On **both** platforms visibility can be changed when pushing screens into a stack which is a direct child of a `BottomTabs` layout:
+
+```js
+Navigation.push(componentId, {
+	component: {
+	  name: 'pushedScreen',
+	  options: { bottomTas: visible: false }
+	}
+  });
+```
+
+
 ### Updating options for a specific tab
 Updating (merging) tab specific options is done using the `mergeOptions` command. `mergeOptions` expects a `componentId` as first argument, therefore in order to update a specific tab we'll need to pass a `componentId` of a child of that specific tab.
 For example, Using the layout specified above, To update the `badge` property of the second tab we'll call `mergeOptions` with `SecondScreenId`.
