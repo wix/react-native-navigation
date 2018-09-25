@@ -115,6 +115,14 @@ public class StackOptionsPresenter {
         }
     }
 
+    public void mergeOptions(Options options, Component currentChild) {
+        mergeOrientation(options.layout.orientation);
+//        mergeButtons(topBar, withDefault.topBar.buttons, child);
+        mergeTopBarOptions(options.topBar, options.animations, currentChild);
+        mergeTopTabsOptions(options.topTabs);
+        mergeTopTabOptions(options.topTabOptions);
+    }
+
     public void applyInitialChildLayoutOptions(Options options) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         setInitialTopBarVisibility(withDefault.topBar);
