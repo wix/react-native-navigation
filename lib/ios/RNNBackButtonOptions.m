@@ -13,8 +13,12 @@
 
 - (void)applyOnNavigationController:(UINavigationController *)navigationController {
   UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
-  
-	backItem.image = self.tintedIconIfAvailable;
+  	UIImage* tintedIcon = self.tintedIconIfAvailable;
+	if (tintedIcon) {
+		backItem.image = tintedIcon;
+		[viewController.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];	
+		[viewController.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
+	}
   
 	if (self.color) {
 	  	backItem.tintColor = [RCTConvert UIColor:self.color];
