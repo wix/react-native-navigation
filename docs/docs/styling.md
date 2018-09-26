@@ -237,6 +237,7 @@ Navigation.mergeOptions(this.props.componentId, {
     }
   },
   bottomTabs: {
+    elevation: 8, // BottomTabs elevation in dp
     titleDisplayMode: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' // Sets the title state for each tab.
   },
   bottomTab: {
@@ -280,17 +281,11 @@ The following properties can be animated:
 }
 ```
 
-For example, changing the animation used when the app is first launched:
+For example, changing the animation used when the app is first launched (Supported only on Android):
 ```js
 Navigation.setDefaultOptions({
   animations: {
-    startApp: {
-      y: {
-        from: 1000,
-        to: 0,
-        duration: 500,
-        interpolation: 'accelerate',
-      },
+    setRoot: {
       alpha: {
         from: 0,
         to: 1,
@@ -306,7 +301,7 @@ Navigation.setDefaultOptions({
 ## Customizing navigation commands animation
 
 Animations for the following set of commands can be customized
-* startApp
+* setRoot
 * push
 * pop
 * showModal
