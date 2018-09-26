@@ -16,8 +16,8 @@
   	UIImage* tintedIcon = self.tintedIconIfAvailable;
 	if (tintedIcon) {
 		backItem.image = tintedIcon;
-		[viewController.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];	
-		[viewController.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
+		[navigationController.navigationBar setBackIndicatorImage:[UIImage new]];	
+		[navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
 	}
   
 	if (self.color) {
@@ -28,11 +28,11 @@
 	  	self.title = @"";
 	}
   
-  	[self setBackItem:backItem onViewController:viewController];
+  	[self setBackItem:backItem onNavigationController:navigationController];
 }
 
-- (void)setBackItem:(UIBarButtonItem *)backItem onViewController:(UIViewController *)viewController {
-	NSArray *viewControllers = viewController.navigationController.viewControllers;
+- (void)setBackItem:(UIBarButtonItem *)backItem onNavigationController:(UINavigationController *)navigationController {
+	NSArray *viewControllers = navigationController.viewControllers;
 	UIViewController *lastViewControllerInStack = [viewControllers lastObject];
 	backItem.title = self.title ? self.title : lastViewControllerInStack.navigationItem.title;
 	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
