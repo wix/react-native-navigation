@@ -11,13 +11,13 @@
 @interface RNNSideMenuChildVC ()
 
 @property (readwrite) RNNSideMenuChildType type;
-@property (readwrite) UIViewController<RNNRootViewProtocol> *child;
+@property (readwrite) UIViewController<RNNParentProtocol> *child;
 
 @end
 
 @implementation RNNSideMenuChildVC
 
--(instancetype) initWithChild:(UIViewController<RNNRootViewProtocol>*)child type:(RNNSideMenuChildType)type {
+-(instancetype) initWithChild:(UIViewController<RNNParentProtocol>*)child type:(RNNSideMenuChildType)type {
 	self = [super init];
 	
 	self.child = child;	
@@ -31,7 +31,7 @@
 	return self;
 }
 
-- (RNNRootViewController *)getLeafViewController {
+- (UIViewController *)getLeafViewController {
 	return [self.child getLeafViewController];
 }
 

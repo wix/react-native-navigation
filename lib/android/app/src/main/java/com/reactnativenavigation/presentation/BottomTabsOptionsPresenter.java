@@ -48,6 +48,10 @@ public class BottomTabsOptionsPresenter {
         applyDrawBehind(withDefaultOptions.bottomTabsOptions, tabIndex);
     }
 
+    public void mergeOptions(Options options) {
+        mergeBottomTabsOptions(options.bottomTabsOptions, options.animations);
+    }
+
     public void present(Options options) {
         Options withDefaultOptions = options.copy().withDefaultOptions(defaultOptions);
         applyBottomTabsOptions(withDefaultOptions.bottomTabsOptions, withDefaultOptions.animations);
@@ -157,6 +161,9 @@ public class BottomTabsOptionsPresenter {
             } else {
                 bottomTabs.hideBottomNavigation(false);
             }
+        }
+        if (options.elevation.hasValue()) {
+            bottomTabs.setUseElevation(true, options.elevation.get().floatValue());
         }
     }
 }

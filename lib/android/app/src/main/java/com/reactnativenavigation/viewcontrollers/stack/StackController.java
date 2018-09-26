@@ -69,6 +69,12 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     @Override
+    public void mergeOptions(Options options) {
+        presenter.mergeOptions(options, (Component) getCurrentChild().getView());
+        super.mergeOptions(options);
+    }
+
+    @Override
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
         presenter.applyChildOptions(options, child);

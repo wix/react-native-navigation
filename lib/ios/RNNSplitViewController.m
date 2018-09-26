@@ -1,10 +1,5 @@
 #import "RNNSplitViewController.h"
 
-@interface RNNSplitViewController()
-@property (nonatomic) BOOL _optionsApplied;
-@property (nonatomic, copy) void (^rotationBlock)(void);
-@end
-
 @implementation RNNSplitViewController
 
 -(instancetype)initWithOptions:(RNNSplitViewOptions*)options
@@ -29,14 +24,6 @@
 
 - (UIViewController *)getLeafViewController {
 	return self;
-}
-
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	readyBlock();
-}
-
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.options mergeOptions:options];
 }
 
 @end

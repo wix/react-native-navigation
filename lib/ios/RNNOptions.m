@@ -4,7 +4,7 @@
 
 @implementation RNNOptions
 
--(instancetype)	initWithDict:(NSDictionary *)dict {
+- (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
 	[self initializeOptionsPropertiesWithDict:dict];
 	
@@ -17,7 +17,19 @@
 	[self applyOn:viewController];
 }
 
--(void)mergeWith:(NSDictionary *)otherOptions {
+- (void)applyOn:(UIViewController *)viewController {
+	
+}
+
+- (void)applyOnNavigationController:(UINavigationController *)navigationController {
+	
+}
+
+- (void)applyOnTabBarController:(UITabBarController *)tabBarController {
+	
+}
+
+- (void)mergeWith:(NSDictionary *)otherOptions {
 	for (id key in otherOptions) {
 		if ([self hasProperty:key]) {
 			if ([[self valueForKey:key] isKindOfClass:[RNNOptions class]]) {

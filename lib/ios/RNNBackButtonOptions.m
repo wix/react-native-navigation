@@ -4,46 +4,49 @@
 @implementation RNNBackButtonOptions
 
 - (void)applyOn:(UIViewController *)viewController {
-	if (self.showTitle && ![self.showTitle boolValue]) {
-		self.title = @"";
-	}
-	
-	if (self.icon) {
-		UIImage *image = self.tintedIcon;
-		[viewController.navigationController.navigationBar setBackIndicatorImage:[UIImage new]];
-		[viewController.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
-		
-		UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:nil action:nil];
-		[self setBackItem:backItem onViewController:viewController];
-	} else if (self.title) {
-		UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:self.title
-																	 style:UIBarButtonItemStylePlain
-																	target:nil
-																	action:nil];
-		
-		[self setBackItem:backItem onViewController:viewController];
-	}
-	
 	if (self.visible) {
 		viewController.navigationItem.hidesBackButton = ![self.visible boolValue];
 	}
-}
-
-- (void)setBackItem:(UIBarButtonItem *)backItem onViewController:(UIViewController *)viewController {
-	UINavigationController* nvc = viewController.navigationController;
-	if (nvc.viewControllers.count >= 2) {
-		UIViewController* lastViewControllerInStack = nvc.viewControllers[nvc.viewControllers.count - 2];
-		lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
-	}
-}
-
-- (UIImage *)tintedIcon {
-	UIImage *image = self.icon ? [RCTConvert UIImage:self.icon] : nil;
-	if (self.color) {
-		return [[image withTintColor:[RCTConvert UIColor:self.color]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-	}
 	
-	return image;
+	[self applyOnNavigationController:viewController.navigationController];
+}
+
+- (void)applyOnNavigationController:(UINavigationController *)navigationController {
+  UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+  	UIImage* tintedIcon = self.tintedIconIfAvailable;
+	if (tintedIcon) {
+		backItem.image = tintedIcon;
+		[navigationController.navigationBar setBackIndicatorImage:[UIImage new]];	
+		[navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
+	}
+  
+	if (self.color) {
+	  	backItem.tintColor = [RCTConvert UIColor:self.color];
+	}
+  
+	if (self.showTitle && ![self.showTitle boolValue]) {
+	  	self.title = @"";
+	}
+  
+  	[self setBackItem:backItem onNavigationController:navigationController];
+}
+
+- (void)setBackItem:(UIBarButtonItem *)backItem onNavigationController:(UINavigationController *)navigationController {
+	NSArray *viewControllers = navigationController.viewControllers;
+	UIViewController *lastViewControllerInStack = [viewControllers lastObject];
+	backItem.title = self.title ? self.title : lastViewControllerInStack.navigationItem.title;
+	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
+}
+
+- (UIImage *)tintedIconIfAvailable {
+	if (self.icon) {
+		UIImage *image = [RCTConvert UIImage:self.icon];
+	  	return self.color
+	  		? [[image withTintColor:[RCTConvert UIColor:self.color]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+	  		: image;
+	}
+  
+  	return nil;
 }
 
 @end

@@ -233,7 +233,7 @@ class OptionsScreen extends Component {
   }
 
   onClickShowTopBar = () => {
-    Navigation.mergeOptions(this.props.componentId, {
+    Navigation.mergeOptions('TEST', {
       topBar: {
         visible: true,
         animate: true

@@ -173,8 +173,7 @@ export interface OptionsTopBarBackButton {
    */
   showTitle?: boolean;
   /**
-   * Back button icon or text color
-   * #### (Android specific)
+   * Back button icon and text color
    */
   color?: Color;
 }
@@ -411,6 +410,11 @@ export interface OptionsBottomTabs {
    * #### (Android specific)
    */
   titleDisplayMode?: 'alwaysShow' | 'showWhenActive' | 'alwaysHide';
+  /**
+   * Set the elevation of the Bottom Tabs in dp
+   * #### (Android specific)
+   */
+  elevation?: AndroidDensityNumber;
 }
 
 export interface OptionsBottomTab {

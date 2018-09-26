@@ -178,9 +178,10 @@ public class TitleBar extends Toolbar {
     }
 
     public void setHeight(int height) {
-        if (height == getLayoutParams().height) return;
+        int pixelHeight = UiUtils.dpToPx(getContext(), height);
+        if (pixelHeight == getLayoutParams().height) return;
         ViewGroup.LayoutParams lp = getLayoutParams();
-        lp.height = (int) UiUtils.dpToPx(getContext(), height);
+        lp.height = pixelHeight;
         setLayoutParams(lp);
     }
 }

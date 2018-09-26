@@ -55,7 +55,7 @@ public class NavigationModule extends ReactContextBaseJavaModule {
         constants.putString(Constants.BACK_BUTTON_JS_KEY,    Constants.BACK_BUTTON_ID);
         constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY,    Constants.BOTTOM_TABS_HEIGHT);
         constants.putDouble(Constants.STATUS_BAR_HEIGHT_KEY, UiUtils.pxToDp(ctx, UiUtils.getStatusBarHeight(ctx)));
-        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY,    UiUtils.pxToDp(ctx, UiUtils.getToolBarHeight(ctx)));
+        constants.putDouble(Constants.TOP_BAR_HEIGHT_KEY,    UiUtils.pxToDp(ctx, UiUtils.getTopBarHeight(ctx)));
         promise.resolve(constants);
     }
 
