@@ -4,6 +4,7 @@
 #import "RNNCustomTitleView.h"
 #import "RNNPushAnimation.h"
 #import "RNNReactView.h"
+#import "RNNParentProtocol.h"
 
 @interface RNNRootViewController() {
 	RNNReactView* _customTitleView;
@@ -12,11 +13,7 @@
 	BOOL _isBeingPresented;
 }
 
-@property (nonatomic, strong) NSString* componentName;
-@property (nonatomic) BOOL _statusBarHidden;
 @property (nonatomic) BOOL isExternalComponent;
-@property (nonatomic) BOOL _optionsApplied;
-@property (nonatomic, copy) void (^rotationBlock)(void);
 @property (nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
 
 @end
@@ -25,23 +22,23 @@
 
 @synthesize previewCallback;
 
--(instancetype)initWithName:(NSString*)name
-				withOptions:(RNNNavigationOptions*)options
-			withComponentId:(NSString*)componentId
-			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter
-		isExternalComponent:(BOOL)isExternalComponent {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+				   rootViewCreator:(id<RNNRootViewCreator>)creator
+					  eventEmitter:(RNNEventEmitter*)eventEmitter
+			   isExternalComponent:(BOOL)isExternalComponent
+						 presenter:(RNNViewControllerPresenter *)presenter {
 	self = [super init];
-	self.componentId = componentId;
-	self.componentName = name;
-	self.options = options;
 	self.eventEmitter = eventEmitter;
-	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	self.creator = creator;
 	self.isExternalComponent = isExternalComponent;
+	self.layoutInfo = layoutInfo;
+	self.presenter = presenter;
+	self.presenter.delegate = self;
+	
+	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.presenter.options.customTransition];
 	
 	if (!self.isExternalComponent) {
-		self.view = [creator createRootView:self.componentName rootViewId:self.componentId];
+		self.view = [creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(reactViewReady)
 													 name: @"RCTContentDidAppearNotification"
@@ -53,22 +50,22 @@
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
 	self.navigationController.delegate = self;
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(orientationDidChange:)
-												 name:UIDeviceOrientationDidChangeNotification
-											   object:nil];
+
 	return self;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	_isBeingPresented = YES;
-	[self.options applyOn:self];
+	[_presenter presentOn:self];
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:_presenter.options];
+	}
 }
 
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	[self.eventEmitter sendComponentDidAppear:self.componentId componentName:self.componentName];
+	[self.eventEmitter sendComponentDidAppear:self.layoutInfo.componentId componentName:self.layoutInfo.name];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -78,7 +75,13 @@
 
 -(void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
-	[self.eventEmitter sendComponentDidDisappear:self.componentId componentName:self.componentName];
+	[self.eventEmitter sendComponentDidDisappear:self.layoutInfo.componentId componentName:self.layoutInfo.name];
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:_presenter.options];
+	}
 }
 
 - (void)reactViewReady {
@@ -89,6 +92,7 @@
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"RCTContentDidAppearNotification" object:nil];
 }
+
 
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
 	if (wait && !_isExternalComponent) {
@@ -111,17 +115,13 @@
 }
 
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-	[self.eventEmitter sendOnSearchBarUpdated:self.componentId
+	[self.eventEmitter sendOnSearchBarUpdated:self.layoutInfo.componentId
 										 text:searchController.searchBar.text
 									isFocused:searchController.searchBar.isFirstResponder];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-	[self.eventEmitter sendOnSearchBarCancelPressed:self.componentId];
-}
-
-- (void)viewDidLoad {
-	[super viewDidLoad];
+	[self.eventEmitter sendOnSearchBarCancelPressed:self.layoutInfo.componentId];
 }
 
 - (void)optionsUpdated {
@@ -130,22 +130,13 @@
 	[self setCustomNavigationComponentBackground];
 }
 
-- (void)applyModalOptions {
-	[self.options applyOn:self];
-	[self.options applyModalOptions:self];
-}
-
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.options mergeOptions:options overrideOptions:NO];
-}
-
 - (void)setCustomNavigationTitleView {
 	if (!_customTitleView && _isBeingPresented) {
-		if (self.options.topBar.title.component.name) {
-			_customTitleView = (RNNReactView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
+		if (self.presenter.options.topBar.title.component.name) {
+			_customTitleView = (RNNReactView*)[_creator createRootViewFromComponentOptions:self.presenter.options.topBar.title.component];
 			_customTitleView.backgroundColor = UIColor.clearColor;
-			[_customTitleView setAlignment:self.options.topBar.title.component.alignment];
-			BOOL isCenter = [self.options.topBar.title.component.alignment isEqualToString:@"center"];
+			[_customTitleView setAlignment:self.presenter.options.topBar.title.component.alignment];
+			BOOL isCenter = [self.presenter.options.topBar.title.component.alignment isEqualToString:@"center"];
 			__weak RNNReactView *weakTitleView = _customTitleView;
 			CGRect frame = self.navigationController.navigationBar.bounds;
 			[_customTitleView setFrame:frame];
@@ -169,8 +160,8 @@
 
 - (void)setCustomNavigationBarView {
 	if (!_customTopBar) {
-		if (self.options.topBar.component.name) {
-			RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.component];
+		if (self.presenter.options.topBar.component.name) {
+			RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.presenter.options.topBar.component];
 			
 			_customTopBar = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 			reactView.backgroundColor = UIColor.clearColor;
@@ -189,8 +180,8 @@
 
 - (void)setCustomNavigationComponentBackground {
 	if (!_customTopBarBackground) {
-		if (self.options.topBar.background.component.name) {
-			RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.background.component];
+		if (self.presenter.options.topBar.background.component.name) {
+			RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.presenter.options.topBar.background.component];
 			
 			_customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
 			[self.navigationController.navigationBar insertSubview:_customTopBarBackground atIndex:1];
@@ -198,7 +189,7 @@
 			[[self.navigationController.navigationBar.subviews objectAtIndex:1] removeFromSuperview];
 		}
 		
-		if (self.options.topBar.background.clipToBounds) {
+		if (self.presenter.options.topBar.background.clipToBounds) {
 			self.navigationController.navigationBar.clipsToBounds = YES;
 		} else {
 			self.navigationController.navigationBar.clipsToBounds = NO;
@@ -213,7 +204,7 @@
 }
 
 -(BOOL)isCustomTransitioned {
-	return self.options.customTransition.animations != nil;
+	return self.presenter.options.customTransition.animations != nil;
 }
 
 - (BOOL)isCustomViewController {
@@ -221,9 +212,9 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-	if (self.options.statusBar.visible) {
-		return ![self.options.statusBar.visible boolValue];
-	} else if ([self.options.statusBar.hideWithTopBar boolValue]) {
+	if (self.presenter.options.statusBar.visible) {
+		return ![self.presenter.options.statusBar.visible boolValue];
+	} else if ([self.presenter.options.statusBar.hideWithTopBar boolValue]) {
 		return self.navigationController.isNavigationBarHidden;
 	}
 	
@@ -231,7 +222,7 @@
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	if (self.options.statusBar.style && [self.options.statusBar.style isEqualToString:@"light"]) {
+	if (self.presenter.options.statusBar.style && [self.presenter.options.statusBar.style isEqualToString:@"light"]) {
 		return UIStatusBarStyleLightContent;
 	} else {
 		return UIStatusBarStyleDefault;
@@ -239,20 +230,20 @@
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-	return self.options.layout.supportedOrientations;
+	return self.presenter.options.layout.supportedOrientations;
 }
 
 - (BOOL)hidesBottomBarWhenPushed
 {
-	if (self.options.bottomTabs && self.options.bottomTabs.visible) {
-		return ![self.options.bottomTabs.visible boolValue];
+	if (self.presenter.options.bottomTabs && self.presenter.options.bottomTabs.visible) {
+		return ![self.presenter.options.bottomTabs.visible boolValue];
 	}
 	return NO;
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
 	RNNRootViewController* vc =  (RNNRootViewController*)viewController;
-	if (![vc.options.topBar.backButton.transition isEqualToString:@"custom"]){
+	if (![vc.presenter.options.topBar.backButton.transition isEqualToString:@"custom"]){
 		navigationController.delegate = nil;
 	}
 }
@@ -264,10 +255,10 @@
 	{
 		if (self.animator) {
 			return self.animator;
-		} else if (operation == UINavigationControllerOperationPush && self.options.animations.push.hasCustomAnimation) {
-			return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.push];
-		} else if (operation == UINavigationControllerOperationPop && self.options.animations.pop.hasCustomAnimation) {
-			return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.pop];
+		} else if (operation == UINavigationControllerOperationPush && self.presenter.options.animations.push.hasCustomAnimation) {
+			return [[RNNPushAnimation alloc] initWithScreenTransition:self.presenter.options.animations.push];
+		} else if (operation == UINavigationControllerOperationPop && self.presenter.options.animations.pop.hasCustomAnimation) {
+			return [[RNNPushAnimation alloc] initWithScreenTransition:self.presenter.options.animations.pop];
 		} else {
 			return nil;
 		}
@@ -276,30 +267,11 @@
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.showModal isDismiss:NO];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.presenter.options.animations.showModal isDismiss:NO];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.dismissModal isDismiss:YES];
-}
-
--(void)applyTabBarItem {
-	[self.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.options.defaultOptions).bottomTab overrideOptions:NO];
-	[self.options.bottomTab applyOn:self];
-}
-
--(void)applyTopTabsOptions {
-	[self.options.topTab applyOn:self];
-}
-
-- (void)performOnRotation:(void (^)(void))block {
-	_rotationBlock = block;
-}
-
-- (void)orientationDidChange:(NSNotification*)notification {
-	if (_rotationBlock) {
-		_rotationBlock();
-	}
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.presenter.options.animations.dismissModal isDismiss:YES];
 }
 
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
@@ -314,7 +286,7 @@
 }
 
 - (void)onActionPress:(NSString *)id {
-	[_eventEmitter sendOnNavigationButtonPressed:self.componentId buttonId:id];
+	[_eventEmitter sendOnNavigationButtonPressed:self.layoutInfo.componentId buttonId:id];
 }
 
 - (UIPreviewAction *) convertAction:(NSDictionary *)action {
@@ -334,7 +306,7 @@
 
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItems {
 	NSMutableArray *actions = [[NSMutableArray alloc] init];
-	for (NSDictionary *previewAction in self.options.preview.actions) {
+	for (NSDictionary *previewAction in self.presenter.options.preview.actions) {
 		UIPreviewAction *action = [self convertAction:previewAction];
 		NSDictionary *actionActions = previewAction[@"actions"];
 		if (actionActions.count > 0) {
@@ -352,7 +324,7 @@
 }
 
 -(void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem {
-	[self.eventEmitter sendOnNavigationButtonPressed:self.componentId buttonId:barButtonItem.buttonId];
+	[self.eventEmitter sendOnNavigationButtonPressed:self.layoutInfo.componentId buttonId:barButtonItem.buttonId];
 }
 
 /**

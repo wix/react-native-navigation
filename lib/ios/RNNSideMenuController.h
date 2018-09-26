@@ -9,14 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "RNNSideMenuChildVC.h"
 #import "MMDrawerController.h"
-#import "RNNRootViewProtocol.h"
+#import "RNNParentProtocol.h"
 
-@interface RNNSideMenuController : UIViewController <RNNRootViewProtocol>
+@interface RNNSideMenuController : UIViewController <RNNParentProtocol>
 
 @property (readonly) RNNSideMenuChildVC *center;
 @property (readonly) RNNSideMenuChildVC *left;
 @property (readonly) RNNSideMenuChildVC *right;
 @property (readonly) MMDrawerController *sideMenu;
+
+@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
+@property (nonatomic, retain) RNNBasePresenter* presenter;
 
 -(instancetype)initWithControllers:(NSArray*)controllers;
 

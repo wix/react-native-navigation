@@ -4,7 +4,15 @@
 @implementation RNNBackButtonOptions
 
 - (void)applyOn:(UIViewController *)viewController {
-  	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+	if (self.visible) {
+		viewController.navigationItem.hidesBackButton = ![self.visible boolValue];
+	}
+	
+	[self applyOnNavigationController:viewController.navigationController];
+}
+
+- (void)applyOnNavigationController:(UINavigationController *)navigationController {
+  UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
   
 	backItem.image = self.tintedIconIfAvailable;
   
@@ -17,10 +25,6 @@
 	}
   
   	[self setBackItem:backItem onViewController:viewController];
-	
-	if (self.visible) {
-		viewController.navigationItem.hidesBackButton = ![self.visible boolValue];
-	}
 }
 
 - (void)setBackItem:(UIBarButtonItem *)backItem onViewController:(UIViewController *)viewController {

@@ -15,15 +15,22 @@
 	return self;
 }
 
+- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
+	[_presenter presentWithChildOptions:childOptions on:self];
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:childOptions];
+	}
+}
+
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.selectedViewController.supportedInterfaceOrientations;
 }
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
 	for (id child in self.childViewControllers) {
-		RNNRootViewController* vc = child;
+		UIViewController<RNNParentProtocol>* vc = child;
 
-		if ([vc.componentId isEqualToString:componentID]) {
+		if ([vc.layoutInfo.componentId isEqualToString:componentID]) {
 			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
 		}
 	}
@@ -34,16 +41,16 @@
 	[super setSelectedIndex:selectedIndex];
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.getLeafViewController mergeOptions:options];
-}
-
 - (UIViewController *)getLeafViewController {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).getLeafViewController;
+	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).getLeafViewController;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).preferredStatusBarStyle;
+	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).preferredStatusBarStyle;
+}
+
+- (void)setViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers {
+	[super setViewControllers:viewControllers];
 }
 
 #pragma mark UITabBarControllerDelegate
