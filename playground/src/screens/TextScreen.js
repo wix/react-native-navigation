@@ -28,6 +28,7 @@ class TextScreen extends Component {
         <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onClickSetBadge()} />
         <Button title={'Switch To Tab 2'} testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
         <Button title={'Switch To Tab 1 by componentID'} testID={testIDs.SWITCH_FIRST_TAB_BUTTON} onPress={() => this.onClickSwitchToTabByComponentID()} />
+        {/* tslint:disable-next-line:max-line-length */}
         { Platform.OS === 'android' && <Button title='Hide Tab Bar' testID={testIDs.HIDE_BOTTOM_TABS_BUTTON} onPress={() => this.toggleTabBarVisibility(this.props.componentId, false)} /> }
         { Platform.OS === 'android' && <Button title='Show Tab Bar' testID={testIDs.SHOW_BOTTOM_TABS_BUTTON} onPress={() => this.toggleTabBarVisibility('BottomTabs', true)} /> }
         <Button title='Hide Tab Bar on Push' testID={testIDs.HIDE_BOTTOM_TABS_ON_PUSH_BUTTON} onPress={() => this.hideTabBarOnPush()} />

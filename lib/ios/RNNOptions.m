@@ -29,7 +29,7 @@
 	
 }
 
--(void)mergeWith:(NSDictionary *)otherOptions {
+- (void)mergeWith:(NSDictionary *)otherOptions {
 	for (id key in otherOptions) {
 		if ([self hasProperty:key]) {
 			if ([[self valueForKey:key] isKindOfClass:[RNNOptions class]]) {

@@ -55,7 +55,7 @@
 -(void)testTopBarBackgroundColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
 	self.options.topBar.background.color = inputColor;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 
@@ -70,7 +70,7 @@
 }
 
 - (void)testStatusBarHidden_default {
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
@@ -78,7 +78,7 @@
 
 - (void)testStatusBarVisible_false {
 	self.options.statusBar.visible = @(0);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue([self.uut prefersStatusBarHidden]);
@@ -86,7 +86,7 @@
 
 - (void)testStatusBarVisible_true {
 	self.options.statusBar.visible = @(1);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
@@ -95,7 +95,7 @@
 - (void)testStatusBarHideWithTopBar_false {
 	self.options.statusBar.hideWithTopBar = @(0);
 	self.options.topBar.visible = @(0);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
@@ -104,7 +104,7 @@
 - (void)testStatusBarHideWithTopBar_true {
 	self.options.statusBar.hideWithTopBar = @(1);
 	self.options.topBar.visible = @(0);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue([self.uut prefersStatusBarHidden]);
@@ -113,14 +113,14 @@
 -(void)testTitle_string{
 	NSString* title =@"some title";
 	self.options.topBar.title.text = title;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue([self.uut.navigationItem.title isEqual:title]);
 }
 
 -(void)testTitle_default{
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 
 	[self.uut viewWillAppear:false];
 	XCTAssertNil(self.uut.navigationItem.title);
@@ -129,7 +129,7 @@
 -(void)testTopBarTextColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
 	self.options.topBar.title.color = inputColor;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSColor"] isEqual:expectedColor]);
@@ -146,7 +146,7 @@
 -(void)testPopGestureEnabled_true{
 	NSNumber* popGestureEnabled = @(1);
 	self.options.popGesture = popGestureEnabled;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue(self.uut.navigationController.interactivePopGestureRecognizer.enabled);
 }
@@ -154,14 +154,15 @@
 -(void)testPopGestureEnabled_false{
 	NSNumber* popGestureEnabled = @(0);
 	self.options.popGesture = popGestureEnabled;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
+	
 	[self.uut viewWillAppear:false];
 	XCTAssertFalse(self.uut.navigationController.interactivePopGestureRecognizer.enabled);
 }
 
 -(void)testTopBarTextFontFamily_validFont{
 	NSString* inputFont = @"HelveticaNeue";
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	self.options.topBar.title.fontFamily = inputFont;
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:17];
@@ -170,7 +171,7 @@
 
 -(void)testTopBarHideOnScroll_true {
 	NSNumber* hideOnScrollInput = @(1);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	self.options.topBar.hideOnScroll = hideOnScrollInput;
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue(self.uut.navigationController.hidesBarsOnSwipe);
@@ -179,7 +180,7 @@
 -(void)testTopBarTranslucent {
 	NSNumber* topBarTranslucentInput = @(0);
 	self.options.topBar.translucent = topBarTranslucentInput;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertFalse(self.uut.navigationController.navigationBar.translucent);
 }
@@ -201,7 +202,7 @@
 -(void)testTopBarTransparent_BOOL_True {
 	NSNumber* topBarTransparentInput = @(1);
 	self.options.topBar.transparent = topBarTransparentInput;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
 	XCTAssertTrue(transparentView);
@@ -210,7 +211,7 @@
 
 -(void)testTopBarTransparent_BOOL_false {
 	NSNumber* topBarTransparentInput = @(0);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	self.options.topBar.transparent = topBarTransparentInput;
 	[self.uut viewWillAppear:false];
 	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
@@ -224,21 +225,21 @@
 
 
 -(void)testTopBarLargeTitle_default {
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
 }
 -(void)testTopBarLargeTitle_true {
 	self.options.topBar.largeTitle.visible = @(1);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
 }
 -(void)testTopBarLargeTitle_false {
 	self.options.topBar.largeTitle.visible  = @(0);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
@@ -248,7 +249,7 @@
 -(void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withoutTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
 	self.options.topBar.largeTitle.fontSize = topBarTextFontSizeInput;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
 	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
@@ -259,7 +260,7 @@
 	NSNumber* inputColor = @(0xFFFF0000);
 	self.options.topBar.largeTitle.fontSize = topBarTextFontSizeInput;
 	self.options.topBar.largeTitle.color = inputColor;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
@@ -274,7 +275,7 @@
 	self.options.topBar.largeTitle.fontSize = topBarTextFontSizeInput;
 	self.options.topBar.largeTitle.color = inputColor;
 	self.options.topBar.largeTitle.fontFamily = inputFont;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
@@ -287,7 +288,7 @@
 	NSString* inputFont = @"HelveticaNeue";
 	self.options.topBar.largeTitle.fontSize = topBarTextFontSizeInput;
 	self.options.topBar.largeTitle.fontFamily = inputFont;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
 	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
@@ -297,7 +298,7 @@
 -(void)testTopBarTextFontSize_withoutTextFontFamily_withoutTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
 	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
 	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
@@ -308,7 +309,7 @@
 	NSNumber* inputColor = @(0xFFFF0000);
 	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
 	self.options.topBar.title.color = inputColor;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
@@ -323,7 +324,7 @@
 	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
 	self.options.topBar.title.color = inputColor;
 	self.options.topBar.title.fontFamily = inputFont;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
@@ -336,7 +337,7 @@
 	NSString* inputFont = @"HelveticaNeue";
 	self.options.topBar.title.fontSize = topBarTextFontSizeInput;
 	self.options.topBar.title.fontFamily = inputFont;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont fontWithName:inputFont size:15];
 	XCTAssertTrue([self.uut.navigationController.navigationBar.titleTextAttributes[@"NSFont"] isEqual:expectedFont]);
@@ -345,7 +346,7 @@
 // TODO: Currently not passing
 -(void)testTopBarTextFontFamily_invalidFont{
 	NSString* inputFont = @"HelveticaNeueeeee";
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	self.options.topBar.title.fontFamily = inputFont;
 	//	XCTAssertThrows([self.uut viewWillAppear:false]);
 }
@@ -353,7 +354,7 @@
 -(void)testOrientation_portrait {
 	NSArray* supportedOrientations = @[@"portrait"];
 	self.options.layout.orientation = supportedOrientations;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskPortrait;
 	XCTAssertTrue(self.uut.navigationController.supportedInterfaceOrientations == expectedOrientation);
@@ -362,7 +363,7 @@
 -(void)testOrientation_portraitString {
 	NSString* supportedOrientation = @"portrait";
 	self.options.layout.orientation = supportedOrientation;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait);
 	XCTAssertTrue(self.uut.navigationController.supportedInterfaceOrientations == expectedOrientation);
@@ -371,7 +372,7 @@
 -(void)testOrientation_portraitAndLandscape {
 	NSArray* supportedOrientations = @[@"portrait", @"landscape"];
 	self.options.layout.orientation = supportedOrientations;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscape);
 	XCTAssertTrue(self.uut.navigationController.supportedInterfaceOrientations == expectedOrientation);
@@ -380,7 +381,7 @@
 -(void)testOrientation_all {
 	NSArray* supportedOrientations = @[@"all"];
 	self.options.layout.orientation = supportedOrientations;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = UIInterfaceOrientationMaskAll;
 	XCTAssertTrue(self.uut.navigationController.supportedInterfaceOrientations == expectedOrientation);
@@ -389,7 +390,7 @@
 -(void)testOrientation_default {
 	NSString* supportedOrientations = @"default";
 	self.options.layout.orientation = supportedOrientations;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIInterfaceOrientationMask expectedOrientation = [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[UIApplication sharedApplication] keyWindow]];
 	XCTAssertTrue(self.uut.navigationController.supportedInterfaceOrientations == expectedOrientation);
@@ -440,7 +441,7 @@
 
 -(void)testRightButtonsWithTitle_withoutStyle {
 	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"text": @"test"}];
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
@@ -455,7 +456,7 @@
 	NSNumber* inputColor = @(0xFFFF0000);
 
 	self.options.topBar.rightButtons = @[@{@"id": @"testId", @"text": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.rightBarButtonItems objectAtIndex:0];
@@ -471,7 +472,7 @@
 
 -(void)testLeftButtonsWithTitle_withoutStyle {
 	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"text": @"test"}];
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
@@ -486,7 +487,7 @@
 	NSNumber* inputColor = @(0xFFFF0000);
 
 	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"text": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
@@ -502,7 +503,7 @@
 -(void)testTopBarNoBorderOn {
 	NSNumber* topBarNoBorderInput = @(1);
 	self.options.topBar.noBorder = topBarNoBorderInput;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertNotNil(self.uut.navigationController.navigationBar.shadowImage);
 }
@@ -510,7 +511,7 @@
 -(void)testTopBarNoBorderOff {
 	NSNumber* topBarNoBorderInput = @(0);
 	self.options.topBar.noBorder = topBarNoBorderInput;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertNil(self.uut.navigationController.navigationBar.shadowImage);
 }
@@ -518,7 +519,7 @@
 -(void)testStatusBarBlurOn {
 	NSNumber* statusBarBlurInput = @(1);
 	self.options.statusBar.blur = statusBarBlurInput;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertNotNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
 }
@@ -526,13 +527,13 @@
 -(void)testStatusBarBlurOff {
 	NSNumber* statusBarBlurInput = @(0);
 	self.options.statusBar.blur = statusBarBlurInput;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
 }
 
 - (void)testTabBarHidden_default {
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse([self.uut hidesBottomBarWhenPushed]);
@@ -541,7 +542,7 @@
 
 - (void)testTabBarHidden_true {
 	self.options.bottomTabs.visible = @(0);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue([self.uut hidesBottomBarWhenPushed]);
@@ -549,14 +550,14 @@
 
 - (void)testTabBarHidden_false {
 	self.options.bottomTabs.visible = @(1);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse([self.uut hidesBottomBarWhenPushed]);
 }
 
 -(void)testTopBarBlur_default {
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
 }
@@ -564,7 +565,7 @@
 -(void)testTopBarBlur_false {
 	NSNumber* topBarBlurInput = @(0);
 	self.options.topBar.blur = topBarBlurInput;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
 }
@@ -572,7 +573,7 @@
 -(void)testTopBarBlur_true {
 	NSNumber* topBarBlurInput = @(1);
 	self.options.topBar.blur = topBarBlurInput;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertNotNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
 }
@@ -580,7 +581,7 @@
 -(void)testBackgroundImage {
 	UIImage* backgroundImage = [[UIImage alloc] init];
 	self.options.backgroundImage = backgroundImage;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:backgroundImage]);
@@ -589,14 +590,14 @@
 -(void)testRootBackgroundImage {
 	UIImage* rootBackgroundImage = [[UIImage alloc] init];
 	self.options.rootBackgroundImage = rootBackgroundImage;
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue([[(UIImageView*)self.uut.navigationController.view.subviews[0] image] isEqual:rootBackgroundImage]);
 }
 
 -(void)testTopBarDrawUnder_true {
 	self.options.topBar.drawBehind = @(1);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue(self.uut.edgesForExtendedLayout & UIRectEdgeTop);
@@ -604,7 +605,7 @@
 
 -(void)testTopBarDrawUnder_false {
 	self.options.topBar.drawBehind = @(0);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse(self.uut.edgesForExtendedLayout & UIRectEdgeTop);
@@ -612,7 +613,7 @@
 
 -(void)testBottomTabsDrawUnder_true {
 	self.options.bottomTabs.drawBehind = @(1);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue(self.uut.edgesForExtendedLayout & UIRectEdgeBottom);
@@ -620,7 +621,7 @@
 
 -(void)testBottomTabsDrawUnder_false {
 	self.options.bottomTabs.drawBehind = @(0);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse(self.uut.edgesForExtendedLayout & UIRectEdgeBottom);
@@ -721,25 +722,31 @@
 
 - (void)testTopBarBackgroundClipToBounds_true {
 	self.options.topBar.background.clipToBounds = @(1);
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue(self.uut.navigationController.navigationBar.clipsToBounds);
 }
 
 - (void)testTopBarBackgroundClipToBounds_false {
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse(self.uut.navigationController.navigationBar.clipsToBounds);
 }
 
-- (void)testWillMoveToParent_shouldMergeOptionsFromParent {
-	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	nav.presenter.options.topBar.visible = @(1);
+- (void)testWillMoveToParent_shouldPassOptionsToParent {
+	__unused RNNNavigationController* nav = [self createNavigationController];
+	self.uut.presenter.options.topBar.visible = @(0);
 	[self.uut willMoveToParentViewController:nav];
-	XCTAssertTrue(nav.presenter.options.topBar.visible.boolValue == self.uut.presenter.options.topBar.visible.boolValue);
+	XCTAssertTrue(nav.navigationBarHidden);
 }
 
+- (RNNNavigationController *)createNavigationController {
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
+	nav.presenter = [[RNNNavigationControllerPresenter alloc] initWithOptions:[[RNNNavigationOptions alloc] initWithDict:@{}]];
+	
+	return nav;
+}
 
 @end

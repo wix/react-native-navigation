@@ -2,8 +2,8 @@
 
 @implementation RNNNavigationControllerPresenter
 
-- (void)presentOn:(UINavigationController *)navigationController {
-	[self.options applyOnNavigationController:navigationController];
+- (void)present:(RNNOptions *)options on:(UINavigationController *)navigationController {
+	[options applyOnNavigationController:navigationController];
 }
 
 @end

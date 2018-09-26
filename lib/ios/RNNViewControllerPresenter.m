@@ -8,8 +8,6 @@
 	if ([self.delegate respondsToSelector:@selector(optionsUpdated)]) {
 		[self.delegate optionsUpdated];
 	}
-	
-	[super presentOn:viewController];
 }
 
 @end

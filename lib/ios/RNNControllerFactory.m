@@ -115,10 +115,11 @@
 
 - (UIViewController<RNNParentProtocol> *)createExternalComponent:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
+	RNNNavigationOptions* options = [_optionsManager createOptions:node.data[@"options"]];
 
 	UIViewController* externalVC = [_store getExternalComponent:layoutInfo bridge:_bridge];
 	
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
+	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] initWithOptions:options];
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter isExternalComponent:YES presenter:presenter];
 	
 	[component addChildViewController:externalVC];
@@ -134,6 +135,7 @@
 	RNNNavigationOptions* options = [_optionsManager createOptions:node.data[@"options"]];
 
 	vc.presenter = [[RNNNavigationControllerPresenter alloc] initWithOptions:options];
+	vc.layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	
 	NSMutableArray* controllers = [NSMutableArray new];
 	for (NSDictionary* child in node.children) {

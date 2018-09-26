@@ -15,11 +15,10 @@
 	return self;
 }
 
-- (void)performOnChildLoad:(RNNNavigationOptions *)options {
-	[_presenter overrideOptions:options];
-	[_presenter presentOn:self];
+- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
+	[_presenter presentWithChildOptions:childOptions on:self];
 	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:_presenter.options];
+		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:childOptions];
 	}
 }
 
