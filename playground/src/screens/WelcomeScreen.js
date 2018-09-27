@@ -41,11 +41,7 @@ class WelcomeScreen extends Component {
           <Button title='Push Lifecycle Screen' testID={testIDs.PUSH_LIFECYCLE_BUTTON} onPress={this.onClickLifecycleScreen} />
           <Button title='Static Lifecycle Events' testID={testIDs.PUSH_STATIC_LIFECYCLE_BUTTON} onPress={this.onClickShowStaticLifecycleOverlay} />
           <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
-          {Platform.OS === 'ios' && (
-            <Navigation.Element elementId='PreviewElement'>
-              <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPressIn={this.onClickShowPreview} title='Push Preview' />
-            </Navigation.Element>
-          )}
+          {Platform.OS === 'ios' && <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPress={this.onClickPush} onPressIn={this.onClickShowPreview} title='Push Preview' />}
           <Button title='Push Options Screen' testID={testIDs.PUSH_OPTIONS_BUTTON} onPress={this.onClickPushOptionsScreen} />
           <Button title='Push External Component' testID={testIDs.PUSH_EXTERNAL_COMPONENT_BUTTON} onPress={this.onClickPushExternalComponent} />
           {Platform.OS === 'android' && <Button title='Push Top Tabs screen' testID={testIDs.PUSH_TOP_TABS_BUTTON} onPress={this.onClickPushTopTabsScreen} />}
@@ -67,6 +63,7 @@ class WelcomeScreen extends Component {
     Navigation.setRoot({
       root: {
         bottomTabs: {
+          id: 'BottomTabs',
           children: [
             {
               stack: {
@@ -334,7 +331,7 @@ class WelcomeScreen extends Component {
     undefined();
   }
 
-  onClickShowPreview = async () => {
+  onClickShowPreview = async ({ reactTag }) => {
     await Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.PushedScreen',
@@ -344,8 +341,8 @@ class WelcomeScreen extends Component {
               enable: false
             }
           },
-          preview: {
-            elementId: 'PreviewElement',
+          preview: reactTag ? {
+            reactTag,
             height: 300,
             commit: true,
             actions: [{
@@ -360,7 +357,7 @@ class WelcomeScreen extends Component {
                 style: 'destructive'
               }]
             }]
-          }
+          } : undefined,
         }
       }
     });

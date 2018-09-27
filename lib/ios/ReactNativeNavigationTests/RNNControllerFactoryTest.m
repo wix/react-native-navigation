@@ -6,6 +6,7 @@
 #import "RNNSideMenuChildVC.h"
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
+#import "RNNSplitViewController.h"
 
 @interface RNNControllerFactoryTest : XCTestCase
 
@@ -32,13 +33,25 @@
 	XCTAssertThrows([self.factory createLayoutAndSaveToStore:@{}]);
 }
 
-
 - (void)testCreateLayout_ComponentLayout {
 	
 	id ans = [self.factory createLayoutAndSaveToStore:
 			  @{@"id": @"cntId",
 				@"type": @"Component",
 				@"data": @{},
+				@"children": @[]}];
+	XCTAssertTrue([ans isMemberOfClass:[RNNRootViewController class]]);
+}
+
+- (void)testCreateLayout_ExternalComponentLayout {
+	[_store registerExternalComponent:@"externalComponent" callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
+		return [UIViewController new];
+	}];
+	
+	id ans = [self.factory createLayoutAndSaveToStore:
+			  @{@"id": @"cntId",
+				@"type": @"ExternalComponent",
+				@"data": @{@"name": @"externalComponent"},
 				@"children": @[]}];
 	XCTAssertTrue([ans isMemberOfClass:[RNNRootViewController class]]);
 }
@@ -50,6 +63,23 @@
 				@"data": @{},
 				@"children": @[]}];
 	XCTAssertTrue([ans isMemberOfClass:[RNNNavigationController class]]);
+}
+
+- (void)testCreateLayout_SplitViewLayout {
+	id ans = [self.factory createLayoutAndSaveToStore:
+			  @{@"id": @"cntId",
+				@"type": @"SplitView",
+				@"data": @{},
+				@"children": @[
+						@{@"id": @"cntId_2",
+						  @"type": @"Component",
+						  @"data": @{},
+						  @"children": @[]},
+			  @{@"id": @"cntId_3",
+				@"type": @"Component",
+				@"data": @{},
+				@"children": @[]}]}];
+	XCTAssertTrue([ans isMemberOfClass:[RNNSplitViewController class]]);
 }
 
 - (void)testCreateLayout_ComponentStackLayoutRecursive {
@@ -91,10 +121,26 @@
 	UINavigationController *navController = tabBar.childViewControllers[0];
 	XCTAssertTrue(navController.childViewControllers.count == 1);
 	XCTAssertTrue([navController.childViewControllers[0] isMemberOfClass:[RNNRootViewController class]]);
-	
-	
 }
 
+- (void)testCreateLayout_TopTabsLayout {
+	RNNTopTabsViewController* tabBar = (RNNTopTabsViewController*) [self.factory createLayoutAndSaveToStore:
+														  @{
+															@"id": @"cntId",
+															@"type": @"TopTabs",
+															@"data": @{},
+															@"children": @[
+																	@{@"id": @"cntId_2",
+																	  @"type": @"Stack",
+																	  @"data": @{},
+																	  @"children": @[
+																			  @{@"id": @"cntId_3",
+																				@"type": @"Component",
+																				@"data": @{},
+																				@"children": @[]}]}]}];
+	
+	XCTAssertTrue([tabBar isMemberOfClass:[RNNTopTabsViewController class]]);
+}
 
 - (void)testCreateLayout_ComponentSideMenuLayoutCenterLeftRight {
 	RNNSideMenuController *ans = (RNNSideMenuController*) [self.factory createLayoutAndSaveToStore:
@@ -142,9 +188,6 @@
 	XCTAssertTrue([right.child isMemberOfClass:[RNNRootViewController class]]);
 }
 
-
-
-
 - (void)testCreateLayout_addComponentToStore {
 	NSString *componentId = @"cntId";
 	UIViewController *ans = [self.factory createLayoutAndSaveToStore:
@@ -156,7 +199,6 @@
 	UIViewController *storeAns = [self.store findComponentForId:componentId];
 	XCTAssertEqualObjects(ans, storeAns);
 }
-
 
 
 @end

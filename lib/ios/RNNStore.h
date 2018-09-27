@@ -1,7 +1,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "RNNRootViewProtocol.h"
+#import "RNNParentProtocol.h"
 #import "ReactNativeNavigation.h"
 
 typedef void (^RNNTransitionCompletionBlock)(void);
@@ -17,7 +17,7 @@ typedef void (^RNNTransitionRejectionBlock)(NSString *code, NSString *message, N
 - (void)removeAllComponents;
 
 - (void)registerExternalComponent:(NSString *)name callback:(RNNExternalViewCreator)callback;
-- (UIViewController *)getExternalComponent:(NSString *)name props:(NSDictionary*)props bridge:(RCTBridge*)bridge;
+- (UIViewController *)getExternalComponent:(RNNLayoutInfo *)layoutInfo bridge:(RCTBridge *)bridge;
 
 - (NSString*)componentKeyForInstance:(UIViewController*)instance;
 

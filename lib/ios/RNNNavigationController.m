@@ -1,17 +1,9 @@
 
 #import "RNNNavigationController.h"
 #import "RNNModalAnimation.h"
+#import "RNNRootViewController.h"
 
 @implementation RNNNavigationController
-
-- (instancetype)initWithOptions:(RNNNavigationOptions *)options {
-	self = [super init];
-	if (self) {
-		_options = options;
-	}
-	
-	return self;
-}
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.viewControllers.lastObject.supportedInterfaceOrientations;
@@ -34,38 +26,47 @@
 		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
 		if ([controller isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
-			[rnnController.options applyOn:rnnController];
+			[rnnController.presenter presentOn:rnnController];
 		}
 	}
 	
 	return [super popViewControllerAnimated:animated];
 }
 
-- (NSString *)componentId {
-	return _componentId ? _componentId : self.getLeafViewController.componentId;
-}
-
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.options.animations.showModal isDismiss:NO];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.presenter.options.animations.showModal isDismiss:NO];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.options.animations.dismissModal isDismiss:YES];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.presenter.options.animations.dismissModal isDismiss:YES];
 }
 
 - (UIViewController *)getLeafViewController {
-	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController);
+	return ((UIViewController<RNNParentProtocol>*)self.topViewController);
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
 	return self.topViewController;
 }
 
-- (void)applyTabBarItem {
-	[self.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.options.defaultOptions).bottomTab overrideOptions:NO];
-	[self.options.bottomTab applyOn:self];
-	[self.getLeafViewController.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.getLeafViewController.options.defaultOptions).bottomTab overrideOptions:NO];
-	[self.getLeafViewController.options.bottomTab applyOn:self];
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:_presenter.options];
+	}
+}
+
+- (void)performOnChildWillAppear:(RNNNavigationOptions *)childOptions {
+	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:combinedOptions];
+	}
+}
+
+- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
+	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:combinedOptions];
+	}
 }
 
 @end

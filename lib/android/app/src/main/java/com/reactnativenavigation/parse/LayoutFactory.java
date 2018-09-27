@@ -6,13 +6,14 @@ import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
 import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
 import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.SideMenuOptionsPresenter;
 import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.TypefaceLoader;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ComponentViewController;
-import com.reactnativenavigation.viewcontrollers.SideMenuController;
+import com.reactnativenavigation.viewcontrollers.sidemenu.SideMenuController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.externalcomponent.ExternalComponentCreator;
@@ -83,6 +84,7 @@ public class LayoutFactory {
                 childRegistry,
                 node.id,
                 parse(typefaceManager, node.getOptions()),
+                new SideMenuOptionsPresenter(),
                 new OptionsPresenter(activity, defaultOptions)
         );
 		ViewController childControllerCenter = null, childControllerLeft = null, childControllerRight = null;

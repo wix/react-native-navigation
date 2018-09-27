@@ -31,7 +31,7 @@ describe('screen style', () => {
   );
 
   test(
-    'hides Tab Bar when pressing on Hide Top Bar and shows it when pressing on Show Top Bar',
+    'hides TopBar when pressing on Hide TopBar and shows it when pressing on Show TopBar',
     async () => {
       await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
       await elementById(testIDs.HIDE_TOP_BAR_BUTTON).tap();

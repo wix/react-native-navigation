@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.view.ViewParent;
 
 import com.facebook.react.views.view.ReactViewBackgroundDrawable;
@@ -84,7 +85,7 @@ public class ViewUtils {
         return false;
     }
 
-    public static int getPreferredHeight(View view) {
+    public static int getHeight(View view) {
         if (view.getLayoutParams() == null) return 0;
         return view.getLayoutParams().height < 0 ? view.getHeight() : view.getLayoutParams().height;
     }
@@ -128,5 +129,12 @@ public class ViewUtils {
             return ((ReactViewBackgroundDrawable) view.getBackground()).getColor();
         }
         throw new RuntimeException(view.getBackground().getClass().getSimpleName() + " is not ReactViewBackgroundDrawable");
+    }
+
+    public static void removeFromParent(View view) {
+        ViewParent parent = view.getParent();
+        if (parent != null) {
+            ((ViewManager) parent).removeView(view);
+        }
     }
 }

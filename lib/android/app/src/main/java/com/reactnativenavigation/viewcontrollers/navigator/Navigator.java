@@ -1,14 +1,12 @@
-package com.reactnativenavigation.viewcontrollers;
+package com.reactnativenavigation.viewcontrollers.navigator;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.OverlayManager;
@@ -16,9 +14,11 @@ import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.Task;
+import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.ParentController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
-import com.reactnativenavigation.views.element.ElementTransitionManager;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -27,6 +27,7 @@ public class Navigator extends ParentController {
 
     private final ModalStack modalStack;
     private final OverlayManager overlayManager;
+    private final RootPresenter rootPresenter;
     private ViewController root;
     private final FrameLayout rootLayout;
     private final FrameLayout modalsLayout;
@@ -60,14 +61,19 @@ public class Navigator extends ParentController {
         contentLayout.addView(overlaysLayout);
     }
 
-    public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager) {
+    public Navigator(final Activity activity, ChildControllersRegistry childRegistry, ModalStack modalStack, OverlayManager overlayManager, RootPresenter rootPresenter) {
         super(activity, childRegistry,"navigator" + CompatUtils.generateViewId(), new OptionsPresenter(activity, new Options()), new Options());
         this.modalStack = modalStack;
         this.overlayManager = overlayManager;
+        this.rootPresenter = rootPresenter;
         rootLayout = new FrameLayout(getActivity());
         modalsLayout = new FrameLayout(getActivity());
         overlaysLayout = new FrameLayout(getActivity());
+    }
+
+    public void bindViews() {
         modalStack.setModalsContainer(modalsLayout);
+        rootPresenter.setRootContainer(rootLayout);
     }
 
     @NonNull
@@ -123,18 +129,7 @@ public class Navigator extends ParentController {
             getView();
         }
         root = viewController;
-        rootLayout.addView(viewController.getView());
-        if (viewController.options.animations.startApp.hasAnimation()) {
-            new NavigationAnimator(viewController.getActivity(), new ElementTransitionManager())
-                    .animateStartApp(viewController.getView(), viewController.options.animations.startApp, new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            commandListener.onSuccess(viewController.getId());
-                        }
-                    });
-        } else {
-            commandListener.onSuccess(viewController.getId());
-        }
+        rootPresenter.setRoot(root, defaultOptions, commandListener);
     }
 
     private void removePreviousContentView() {
@@ -219,5 +214,10 @@ public class Navigator extends ParentController {
 
     private boolean isRootNotCreated() {
         return view == null;
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    public FrameLayout getModalsLayout() {
+        return modalsLayout;
     }
 }

@@ -21,7 +21,9 @@ import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.TitleBarHelper;
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewHelper;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
 import com.reactnativenavigation.viewcontrollers.ViewController;
@@ -82,7 +84,7 @@ public class StackControllerTest extends BaseTest {
         child3 = spy(new SimpleViewController(activity, childRegistry, "child3", new Options()));
         child4 = spy(new SimpleViewController(activity, childRegistry, "child4", new Options()));
         uut = createStack();
-        uut.ensureViewIsCreated();
+        activity.setContentView(uut.getView());
     }
 
     @Test
@@ -140,9 +142,7 @@ public class StackControllerTest extends BaseTest {
         child2.options.topBar.buttons.left = new ArrayList<>(Collections.singleton(TitleBarHelper.iconButton("someButton", "icon.png")));
 
         uut.push(child2, new CommandListenerAdapter());
-        child2.onViewAppeared();
         assertThat(topBarController.getView().getTitleBar().getNavigationIcon()).isNotNull();
-        verify(topBarController.getView(), times(1)).setLeftButtons(any());
         verify(topBarController.getView(), times(0)).setBackButton(any());
     }
 
@@ -674,6 +674,7 @@ public class StackControllerTest extends BaseTest {
     @Test
     public void pop_doesNotAnimateTopBarIfScreenIsPushedWithoutAnimation() {
         uut.ensureViewIsCreated();
+        disablePushAnimation(child1, child2);
 
         child1.options.topBar.visible = new Bool(false);
         child1.options.topBar.animate = new Bool(false);
@@ -720,6 +721,7 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void stackCanBePushed() {
+        ViewUtils.removeFromParent(uut.getView());
         StackController parent = createStack("someStack");
         parent.ensureViewIsCreated();
         parent.push(uut, new CommandListenerAdapter());
@@ -729,6 +731,7 @@ public class StackControllerTest extends BaseTest {
 
     @Test
     public void applyOptions_applyOnlyOnFirstStack() {
+        ViewUtils.removeFromParent(uut.getView());
         StackController parent = spy(createStack("someStack"));
         parent.ensureViewIsCreated();
         parent.push(uut, new CommandListenerAdapter());
@@ -878,7 +881,7 @@ public class StackControllerTest extends BaseTest {
             @Override
             protected TopBar createTopBar(Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout stackLayout) {
                 TopBar spy = spy(super.createTopBar(context, topBarBackgroundViewController, stackLayout));
-                spy.layout(0, 0, 1000, 100);
+                spy.layout(0, 0, 1000, UiUtils.getTopBarHeight(activity));
                 return spy;
             }
         });

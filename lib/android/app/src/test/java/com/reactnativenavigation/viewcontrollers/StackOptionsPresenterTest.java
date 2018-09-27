@@ -34,7 +34,6 @@ import com.reactnativenavigation.views.topbar.TopBar;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -279,13 +278,12 @@ public class StackOptionsPresenterTest extends BaseTest {
     }
 
     @Test
-    public void applyLayoutParamsOptions() {
+    public void applyInitialChildLayoutOptions() {
         Options options = new Options();
         options.topBar.visible = new Bool(false);
-        options.topBar.animate = new Bool(false);
-        View view = Mockito.mock(View.class, Mockito.withSettings().extraInterfaces(com.reactnativenavigation.views.Component.class));
+        options.topBar.animate = new Bool(true);
 
-        uut.applyLayoutParamsOptions(options, view);
+        uut.applyInitialChildLayoutOptions(options);
         verify(topBar).hide();
     }
 

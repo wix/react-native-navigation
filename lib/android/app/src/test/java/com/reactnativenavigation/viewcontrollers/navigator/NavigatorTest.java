@@ -1,4 +1,4 @@
-package com.reactnativenavigation.viewcontrollers;
+package com.reactnativenavigation.viewcontrollers.navigator;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +25,9 @@ import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.ComponentViewController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
@@ -32,6 +35,7 @@ import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.robolectric.android.controller.ActivityController;
+import org.robolectric.annotation.Config;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,10 +47,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@Config(qualifiers = "xxhdpi")
 public class NavigatorTest extends BaseTest {
     private TestActivity activity;
     private ChildControllersRegistry childRegistry;
     private Navigator uut;
+    private RootPresenter rootPresenter;
     private StackController parentController;
     private SimpleViewController child1;
     private ViewController child2;
@@ -70,8 +76,9 @@ public class NavigatorTest extends BaseTest {
         activityController = newActivityController(TestActivity.class);
         activity = activityController.create().get();
         modalStack = spy(new ModalStack(activity));
+        rootPresenter = spy(new RootPresenter(activity));
         modalStack.setEventEmitter(Mockito.mock(EventEmitter.class));
-        uut = new Navigator(activity, childRegistry, modalStack, overlayManager);
+        uut = new Navigator(activity, childRegistry, modalStack, overlayManager, rootPresenter);
         activity.setNavigator(uut);
 
         parentController = newStack();
@@ -93,8 +100,16 @@ public class NavigatorTest extends BaseTest {
         child4 = new SimpleViewController(activity, childRegistry, "child4", tabOptions);
         child5 = new SimpleViewController(activity, childRegistry, "child5", tabOptions);
 
+        uut.bindViews();
+
         activityController.visible();
         activityController.postCreate(Bundle.EMPTY);
+    }
+
+    @Test
+    public void bindViews() {
+        verify(rootPresenter).setRootContainer(uut.getRootLayout());
+        verify(modalStack).setModalsContainer(uut.getModalsLayout());
     }
 
     @Test
@@ -108,6 +123,13 @@ public class NavigatorTest extends BaseTest {
 
         verify(spy).setDefaultOptions(defaultOptions);
         verify(modalStack).setDefaultOptions(defaultOptions);
+    }
+
+    @Test
+    public void setRoot_delegatesToRootPresenter() {
+        CommandListenerAdapter listener = new CommandListenerAdapter();
+        uut.setRoot(child1, listener);
+        verify(rootPresenter).setRoot(child1, uut.getDefaultOptions(), listener);
     }
 
     @Test
@@ -138,7 +160,7 @@ public class NavigatorTest extends BaseTest {
     @Test
     public void hasUniqueId() {
         assertThat(uut.getId()).startsWith("navigator");
-        assertThat(new Navigator(activity, childRegistry, modalStack, overlayManager).getId()).isNotEqualTo(uut.getId());
+        assertThat(new Navigator(activity, childRegistry, modalStack, overlayManager, rootPresenter).getId()).isNotEqualTo(uut.getId());
     }
 
     @Test
@@ -555,7 +577,7 @@ public class NavigatorTest extends BaseTest {
         disablePushAnimation(child1);
 
         StackController spy = spy(parentController);
-        spy.options.animations.startApp.enable = new Bool(false);
+        spy.options.animations.setRoot.enable = new Bool(false);
         uut.setRoot(spy, new CommandListenerAdapter());
         spy.push(child1, new CommandListenerAdapter());
         activityController.destroy();

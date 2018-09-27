@@ -1,7 +1,6 @@
 package com.reactnativenavigation.anim;
 
 import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
@@ -93,18 +92,18 @@ public class NavigationAnimator extends BaseAnimator {
         set.start();
     }
 
-    public void animateStartApp(View view, AnimationOptions startApp, AnimatorListener listener) {
-        view.setVisibility(View.INVISIBLE);
-        AnimatorSet set = startApp.getAnimation(view);
+    public void setRoot(View root, AnimationOptions setRoot, Runnable onAnimationEnd) {
+        root.setVisibility(View.INVISIBLE);
+        AnimatorSet set = setRoot.getAnimation(root);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                view.setVisibility(View.VISIBLE);
+                root.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                listener.onAnimationEnd(animation);
+                onAnimationEnd.run();
             }
         });
         set.start();

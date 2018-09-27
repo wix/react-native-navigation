@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
+import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.mocks.TestComponentViewCreator;
 import com.reactnativenavigation.mocks.TestReactView;
 import com.reactnativenavigation.parse.Options;
@@ -65,8 +66,6 @@ public class TopTabsViewControllerTest extends BaseTest {
 
         stack = spy(TestUtils.newStackController(activity).build());
         stack.ensureViewIsCreated();
-        stack.push(uut, new CommandListenerAdapter());
-        uut.setParentController(stack);
     }
 
     @NonNull
@@ -209,35 +208,22 @@ public class TopTabsViewControllerTest extends BaseTest {
 
     @Test
     public void applyOptions_tabsAreRemovedAfterViewDisappears() {
-        stack.getView().removeAllViews();
-
-        StackController stackController = spy(TestUtils.newStackController(activity).build());
+        StackController stackController = TestUtils.newStackController(activity).build();
         stackController.ensureViewIsCreated();
-        ComponentViewController first = new ComponentViewController(
-                activity,
-                childRegistry,
-                "firstScreen",
-                "comp1",
-                new TestComponentViewCreator(),
-                new Options(),
-                new OptionsPresenter(activity, new Options())
-        );
-        first.options.animations.push.enable = new Bool(false);
-        uut.options.animations.push.enable = new Bool(false);
+        ViewController first = new SimpleViewController(activity, childRegistry, "first", Options.EMPTY);
+        disablePushAnimation(first, uut);
         stackController.push(first, new CommandListenerAdapter());
         stackController.push(uut, new CommandListenerAdapter());
 
-        first.ensureViewIsCreated();
-        uut.ensureViewIsCreated();
         uut.onViewAppeared();
 
         assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isTrue();
-        stackController.pop(Options.EMPTY, new CommandListenerAdapter() {
-            @Override
-            public void onSuccess(String childId) {
-                assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();
-            }
-        });
+        disablePopAnimation(uut);
+        stackController.pop(Options.EMPTY, new CommandListenerAdapter());
+
+        first.onViewAppeared();
+
+        assertThat(ViewHelper.isVisible(stackController.getTopBar().getTopTabs())).isFalse();
     }
 
     @Test

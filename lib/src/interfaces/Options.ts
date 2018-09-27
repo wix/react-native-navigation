@@ -173,8 +173,7 @@ export interface OptionsTopBarBackButton {
    */
   showTitle?: boolean;
   /**
-   * Back button icon or text color
-   * #### (Android specific)
+   * Back button icon and text color
    */
   color?: Color;
 }
@@ -411,6 +410,11 @@ export interface OptionsBottomTabs {
    * #### (Android specific)
    */
   titleDisplayMode?: 'alwaysShow' | 'showWhenActive' | 'alwaysHide';
+  /**
+   * Set the elevation of the Bottom Tabs in dp
+   * #### (Android specific)
+   */
+  elevation?: AndroidDensityNumber;
 }
 
 export interface OptionsBottomTab {
@@ -640,9 +644,9 @@ export interface OptionsAnimationSeparate {
 
 export interface OptionsAnimations {
   /**
-   * Configure the start app animation
+   * Configure the setRoot animation
    */
-  startApp?: OptionsAnimationProperties;
+  setRoot?: OptionsAnimationProperties;
   /**
    * Configure what animates when a screen is pushed
    */
@@ -703,7 +707,7 @@ export interface Options {
    *
    * Example:
 ```js
-startApp: {
+setRoot: {
   y: {
     from: 1000,
     to: 0,

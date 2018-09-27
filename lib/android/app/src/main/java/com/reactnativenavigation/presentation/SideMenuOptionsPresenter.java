@@ -9,7 +9,7 @@ public class SideMenuOptionsPresenter {
 
     private DrawerLayout sideMenu;
 
-    public SideMenuOptionsPresenter(DrawerLayout sideMenu) {
+    public void bindView(DrawerLayout sideMenu) {
         this.sideMenu = sideMenu;
     }
 
@@ -27,5 +27,17 @@ public class SideMenuOptionsPresenter {
         } else if (options.right.visible.isFalse() && sideMenu.isDrawerOpen(Gravity.RIGHT)){
             sideMenu.closeDrawer(Gravity.RIGHT);
         }
+    }
+
+    public boolean handleBack() {
+        if (sideMenu.isDrawerOpen(Gravity.LEFT)) {
+            sideMenu.closeDrawer(Gravity.LEFT);
+            return true;
+        }
+        if (sideMenu.isDrawerOpen(Gravity.RIGHT)) {
+            sideMenu.closeDrawer(Gravity.RIGHT);
+            return true;
+        }
+        return false;
     }
 }

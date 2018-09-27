@@ -17,6 +17,7 @@ class ComplexLayout extends Component {
         <Text style={styles.h1} testID={testIDs.CENTERED_TEXT_HEADER}>{this.props.text || 'Complex layout screen'}</Text>
         <Button title={'External component in stack'} testID={testIDs.EXTERNAL_COMPONENT_IN_STACK} onPress={() => this.onExternalComponentInStackPressed()} />
         <Button title={'External component in deep stack'} testID={testIDs.EXTERNAL_COMPONENT_IN_DEEP_STACK} onPress={() => this.onExternalComponentInDeepStackPressed()} />
+        <Button title={'Sidemenu layout inside a bottomTab'} testID={testIDs.SIDE_MENU_LAYOUT_INSIDE_BOTTOM_TAB} onPress={() => this.onSideMenuLayoutInsideBottomTabPressed()} />
       </View>
     );
   }
@@ -52,6 +53,61 @@ class ComplexLayout extends Component {
             }
           }
         }]
+      }
+    });
+  }
+
+  onSideMenuLayoutInsideBottomTabPressed() {
+    Navigation.dismissAllModals();
+    Navigation.setRoot({
+      root: {
+        bottomTabs: {
+          children: [
+            {
+              stack: {
+                children: [
+                  {
+                    component: {
+                      name: 'navigation.playground.TextScreen',
+                    },
+                  },
+                ],
+                options: {
+                  bottomTab: {
+                    text: 'Stack',
+                    icon: require('../images/one.png'),
+                  },
+                },
+              },
+            },
+            {
+              sideMenu: {
+                left: {
+                  component: {
+                    name: 'navigation.playground.SideMenuScreen',
+                  },
+                },
+                center: {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          name: 'navigation.playground.TextScreen',
+                        },
+                      },
+                    ],
+                  },
+                },
+                options: {
+                  bottomTab: {
+                    text: 'SideMenu',
+                    icon: require('../images/two.png'),
+                  },
+                },
+              },
+            },
+           ]
+        }
       }
     });
   }

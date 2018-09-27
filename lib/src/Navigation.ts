@@ -13,11 +13,13 @@ import { CommandsObserver } from './events/CommandsObserver';
 import { Constants } from './adapters/Constants';
 import { ComponentType } from 'react';
 import { ComponentEventsObserver } from './events/ComponentEventsObserver';
+import { TouchablePreview } from './adapters/TouchablePreview';
 import { LayoutRoot, Layout } from './interfaces/Layout';
 import { Options } from './interfaces/Options';
 
 export class Navigation {
   public readonly Element: React.ComponentType<{ elementId: any; resizeMode?: any; }>;
+  public readonly TouchablePreview: React.ComponentType<any>;
   public readonly store: Store;
   private readonly nativeEventsReceiver: NativeEventsReceiver;
   private readonly uniqueIdProvider: UniqueIdProvider;
@@ -32,6 +34,7 @@ export class Navigation {
 
   constructor() {
     this.Element = Element;
+    this.TouchablePreview = TouchablePreview;
     this.store = new Store();
     this.nativeEventsReceiver = new NativeEventsReceiver();
     this.uniqueIdProvider = new UniqueIdProvider();

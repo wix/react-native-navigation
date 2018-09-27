@@ -26,6 +26,7 @@ import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.BottomTabs;
@@ -38,6 +39,7 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.reactnativenavigation.TestUtils.hideBackButton;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -80,6 +82,7 @@ public class BottomTabsControllerTest extends BaseTest {
         tabs = createTabs();
         presenter = spy(new BottomTabsOptionsPresenter(tabs, new Options()));
         uut = createBottomTabs();
+        activity.setContentView(uut.getView());
     }
 
     @Test
@@ -158,6 +161,8 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void applyOptions_bottomTabsOptionsAreClearedAfterApply() {
+        ViewUtils.removeFromParent(uut.getView());
+
         Options options = new Options();
         options.bottomTabsOptions.backgroundColor = new Colour(Color.RED);
         child1.mergeOptions(options);
@@ -235,7 +240,9 @@ public class BottomTabsControllerTest extends BaseTest {
 
         SimpleViewController stackChild = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
         SimpleViewController stackChild2 = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
+
         disablePushAnimation(stackChild, stackChild2);
+        hideBackButton(stackChild2);
 
         child4.push(stackChild, new CommandListenerAdapter());
         assertThat(child4.size()).isOne();
@@ -245,17 +252,12 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void deepChildOptionsAreApplied() {
-        BottomTabsController spy = spy(uut);
-        activity.setContentView(spy.getView());
-
         child6.options.topBar.drawBehind = new Bool(false);
         disablePushAnimation(child6);
         child4.push(child6, new CommandListenerAdapter());
         assertThat(child4.size()).isOne();
 
-
-        verify(spy, times(1)).onViewAppeared();
-        assertThat(spy.getSelectedIndex()).isZero();
+        assertThat(uut.getSelectedIndex()).isZero();
         verify(child6, times(0)).onViewAppeared();
         assertThat(child4.getTopBar().getHeight())
                 .isNotZero()
@@ -264,16 +266,14 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void oneTimeOptionsAreAppliedOnce() {
-        initialOptions.bottomTabsOptions.currentTabIndex = new Number(1);
-        BottomTabsController spy = spy(createBottomTabs());
-        spy.onViewAppeared();
+        Options options = new Options();
+        options.bottomTabsOptions.currentTabIndex = new Number(1);
 
-        assertThat(spy.getSelectedIndex()).isOne();
-        spy.selectTab(0);
-        tabs.get(0).onViewAppeared();
-        verify(spy).clearOptions();
-        assertThat(spy.getSelectedIndex()).isZero();
-        assertThat(spy.options.bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
+        assertThat(uut.getSelectedIndex()).isZero();
+        uut.mergeOptions(options);
+        assertThat(uut.getSelectedIndex()).isOne();
+        assertThat(uut.options.bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
+        assertThat(uut.initialOptions.bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
     }
 
     @NonNull
