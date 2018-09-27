@@ -63,6 +63,7 @@ class WelcomeScreen extends Component {
     Navigation.setRoot({
       root: {
         bottomTabs: {
+          id: 'BottomTabs',
           children: [
             {
               stack: {

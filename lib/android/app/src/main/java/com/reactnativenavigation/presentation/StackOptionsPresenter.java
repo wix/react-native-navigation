@@ -115,6 +115,14 @@ public class StackOptionsPresenter {
         }
     }
 
+    public void mergeOptions(Options options, Component currentChild) {
+        mergeOrientation(options.layout.orientation);
+//        mergeButtons(topBar, withDefault.topBar.buttons, child);
+        mergeTopBarOptions(options.topBar, options.animations, currentChild);
+        mergeTopTabsOptions(options.topTabs);
+        mergeTopTabOptions(options.topTabOptions);
+    }
+
     public void applyInitialChildLayoutOptions(Options options) {
         Options withDefault = options.copy().withDefaultOptions(defaultOptions);
         setInitialTopBarVisibility(withDefault.topBar);
@@ -154,13 +162,13 @@ public class StackOptionsPresenter {
     }
 
     private void applyTopBarOptions(TopBarOptions options, AnimationsOptions animationOptions, Component component, Options componentOptions) {
-        topBar.setHeight(options.height.get(LayoutParams.WRAP_CONTENT));
+        topBar.setHeight(options.height.get(UiUtils.getTopBarHeightDp(activity)));
         topBar.setElevation(options.elevation.get(DEFAULT_ELEVATION));
         if (topBar.getLayoutParams() instanceof MarginLayoutParams) {
             ((MarginLayoutParams) topBar.getLayoutParams()).topMargin = UiUtils.dpToPx(activity, options.topMargin.get(0));
         }
 
-        topBar.setTitleHeight(options.title.height.get(LayoutParams.WRAP_CONTENT));
+        topBar.setTitleHeight(options.title.height.get(UiUtils.getTopBarHeightDp(activity)));
         topBar.setTitle(options.title.text.get(""));
 
         if (options.title.component.hasValue()) {

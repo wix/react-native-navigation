@@ -21,9 +21,10 @@
 
 @implementation RNNSideMenuController
 
--(instancetype)initWithControllers:(NSArray*)controllers;
+-(instancetype)initWithControllers:(NSArray*)controllers presenter:(RNNBasePresenter *)presenter
 {
 	self = [super init];
+	self.presenter = presenter;
 	
 	[self setControllers:controllers];
 	
@@ -89,12 +90,29 @@
 	}
 }
 
-- (RNNRootViewController *)getLeafViewController {
+- (UIViewController<RNNLayoutProtocol> *)getLeafViewController {
 	return [self.center getLeafViewController];
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.center.getLeafViewController mergeOptions:options];
+- (void)performOnChildWillAppear:(RNNNavigationOptions *)childOptions {
+	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:combinedOptions];
+	}
 }
+
+- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
+	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
+		if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:combinedOptions];
+	}
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:_presenter.options];
+	}
+}
+
 
 @end

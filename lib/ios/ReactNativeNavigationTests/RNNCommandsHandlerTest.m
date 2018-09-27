@@ -5,8 +5,9 @@
 #import "RNNTestRootViewCreator.h"
 #import "RNNRootViewController.h"
 #import "RNNNavigationStackManager.h"
+#import "RNNNavigationController.h"
 
-@interface MockUINavigationController : UINavigationController
+@interface MockUINavigationController : RNNNavigationController
 @property (nonatomic, strong) NSArray* willReturnVCs;
 @end
 
@@ -95,13 +96,14 @@
 -(void)testDynamicStylesMergeWithStaticStyles {
 	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
 	initialOptions.topBar.title.text = @"the title";
-	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithName:@"name"
-																withOptions:initialOptions
-															withComponentId:@"componentId"
-															rootViewCreator:[[RNNTestRootViewCreator alloc] init]
-															   eventEmitter:nil
-														  isExternalComponent:NO];
-	UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
+	RNNLayoutInfo* layoutInfo = [RNNLayoutInfo new];
+	
+	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] initWithOptions:initialOptions];
+	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:[[RNNTestRootViewCreator alloc] init] eventEmitter:nil isExternalComponent:NO presenter:presenter];
+	
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:vc];
+	nav.presenter = [[RNNNavigationControllerPresenter alloc] initWithOptions:initialOptions];
+	
 	[vc viewWillAppear:false];
 	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
 
@@ -114,6 +116,27 @@
 	[self.uut mergeOptions:@"componentId" options:dictFromJs completion:^{
 		XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
 		XCTAssertTrue([nav.navigationBar.barTintColor isEqual:expectedColor]);
+	}];
+}
+
+- (void)testMergeOptions_shouldOverrideOptions {
+	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
+	initialOptions.topBar.title.text = @"the title";
+	
+	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] initWithOptions:initialOptions];
+	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:[[RNNTestRootViewCreator alloc] init] eventEmitter:nil isExternalComponent:NO presenter:presenter];
+	
+	__unused RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:vc];
+	[vc viewWillAppear:false];
+	XCTAssertTrue([vc.navigationItem.title isEqual:@"the title"]);
+	
+	[self.store setReadyToReceiveCommands:true];
+	[self.store setComponent:vc componentId:@"componentId"];
+	
+	NSDictionary* dictFromJs = @{@"topBar": @{@"title" : @{@"text" : @"new title"}}};
+	
+	[self.uut mergeOptions:@"componentId" options:dictFromJs completion:^{
+		XCTAssertTrue([vc.navigationItem.title isEqual:@"new title"]);
 	}];
 }
 

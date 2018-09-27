@@ -6,34 +6,30 @@
 #import "RNNNavigationOptions.h"
 #import "RNNAnimator.h"
 #import "RNNUIBarButtonItem.h"
+#import "RNNLayoutInfo.h"
+#import "RNNLeafProtocol.h"
+#import "RNNViewControllerPresenter.h"
 
-typedef void (^RNNReactViewReadyCompletionBlock)(void);
 typedef void (^PreviewCallback)(UIViewController *vc);
 
-@interface RNNRootViewController : UIViewController	<UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
+@interface RNNRootViewController : UIViewController	<RNNLeafProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate, RNNPresenterDelegate>
 
-@property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
-@property (nonatomic, strong) NSString* componentId;
+@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
+@property (nonatomic, strong) RNNViewControllerPresenter* presenter;
 @property (nonatomic) id<RNNRootViewCreator> creator;
 @property (nonatomic, strong) RNNAnimator* animator;
 @property (nonatomic, strong) UIViewController* previewController;
 @property (nonatomic, copy) PreviewCallback previewCallback;
 
-- (instancetype)initWithName:(NSString*)name
-				 withOptions:(RNNNavigationOptions*)options
-			 withComponentId:(NSString*)componentId
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 			 rootViewCreator:(id<RNNRootViewCreator>)creator
 				eventEmitter:(RNNEventEmitter*)eventEmitter
-		 isExternalComponent:(BOOL)isExternalComponent;
+		 isExternalComponent:(BOOL)isExternalComponent
+				   presenter:(RNNViewControllerPresenter *)presenter;
 
-- (void)applyTopTabsOptions;
 - (BOOL)isCustomViewController;
 - (BOOL)isCustomTransitioned;
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
-- (void)mergeOptions:(RNNOptions*)options;
-- (void)applyModalOptions;
-- (void)optionsUpdated;
 
 -(void)onButtonPress:(RNNUIBarButtonItem *)barButtonItem;
 

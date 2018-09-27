@@ -71,7 +71,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
         root = new FrameLayout(getContext());
         root.setId(CompatUtils.generateViewId());
-        content.addView(titleBar, MATCH_PARENT, WRAP_CONTENT);
+        content.addView(titleBar, MATCH_PARENT, UiUtils.getTopBarHeight(getContext()));
         content.addView(topTabs);
         root.addView(content);
         root.addView(border);
@@ -111,9 +111,10 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     }
 
     public void setHeight(int height) {
-        if (height == getLayoutParams().height) return;
+        int pixelHeight = UiUtils.dpToPx(getContext(), height);
+        if (pixelHeight == getLayoutParams().height) return;
         ViewGroup.LayoutParams lp = getLayoutParams();
-        lp.height = (int) UiUtils.dpToPx(getContext(), height);
+        lp.height = pixelHeight;
         setLayoutParams(lp);
     }
 

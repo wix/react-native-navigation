@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.interfaces.ScrollEventListener;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
 import com.reactnativenavigation.viewcontrollers.TitleBarButtonController;
@@ -92,12 +91,7 @@ public class ComponentLayout extends FrameLayout implements ReactComponent, Titl
     public void drawBelowTopBar(TopBar topBar) {
         if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-            int topBarHeight = ViewUtils.getPreferredHeight(topBar);
-            if (topBarHeight == 0) {
-                UiUtils.runOnMeasured(topBar, () -> layoutParams.topMargin = topBar.getHeight());
-            } else {
-                layoutParams.topMargin = topBarHeight;
-            }
+            layoutParams.topMargin = ViewUtils.getHeight(topBar);
             setLayoutParams(layoutParams);
         }
     }
