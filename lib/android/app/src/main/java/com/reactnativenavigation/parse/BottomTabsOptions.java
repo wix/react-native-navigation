@@ -70,4 +70,9 @@ public class BottomTabsOptions {
         if (!backgroundColor.hasValue()) backgroundColor = defaultOptions.backgroundColor;
         if (!titleDisplayMode.hasValue()) titleDisplayMode = defaultOptions.titleDisplayMode;
     }
+
+    public void clearOneTimeOptions() {
+        currentTabId = new NullText();
+        currentTabIndex = new NullNumber();
+    }
 }

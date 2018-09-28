@@ -8,7 +8,11 @@
 
 @optional
 - (void)resetOptions;
+
+@required
 - (void)applyOn:(UIViewController *)viewController;
+- (void)applyOnNavigationController:(UINavigationController *)navigationController;
+- (void)applyOnTabBarController:(UITabBarController *)tabBarController;
 
 @end
 

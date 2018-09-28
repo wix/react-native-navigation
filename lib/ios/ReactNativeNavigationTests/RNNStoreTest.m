@@ -89,12 +89,13 @@
 
 - (void)testGetExternalComponentShouldRetrunSavedComponent {
 	UIViewController* testVC = [UIViewController new];
-	NSString *externalComponentId = @"extId1";
-	[self.store registerExternalComponent:externalComponentId callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
+	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] init];
+	layoutInfo.name = @"extId1";
+	[self.store registerExternalComponent:layoutInfo.name callback:^UIViewController *(NSDictionary *props, RCTBridge *bridge) {
 		return testVC;
 	}];
 	
-	UIViewController* savedComponent = [self.store getExternalComponent:externalComponentId props:nil bridge:nil];
+	UIViewController* savedComponent = [self.store getExternalComponent:layoutInfo bridge:nil];
 	XCTAssertEqual(testVC, savedComponent);
 }
 

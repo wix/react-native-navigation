@@ -8,42 +8,17 @@
 #import "RNNSplitViewController.h"
 #import "RNNNavigationButtons.h"
 
-const NSInteger BLUR_STATUS_TAG = 78264801;
-const NSInteger BLUR_TOPBAR_TAG = 78264802;
-const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
-
-@implementation RCTConvert (UIModalPresentationStyle)
-
-RCT_ENUM_CONVERTER(UIModalPresentationStyle,
-				   (@{@"fullScreen": @(UIModalPresentationFullScreen),
-					  @"pageSheet": @(UIModalPresentationPageSheet),
-					  @"formSheet": @(UIModalPresentationFormSheet),
-					  @"currentContext": @(UIModalPresentationCurrentContext),
-					  @"custom": @(UIModalPresentationCustom),
-					  @"overFullScreen": @(UIModalPresentationOverFullScreen),
-					  @"overCurrentContext": @(UIModalPresentationOverCurrentContext),
-					  @"popover": @(UIModalPresentationPopover),
-					  @"none": @(UIModalPresentationNone)
-					  }), UIModalPresentationFullScreen, integerValue)
-
-@end
-
-@implementation RCTConvert (UIModalTransitionStyle)
-
-RCT_ENUM_CONVERTER(UIModalTransitionStyle,
-				   (@{@"coverVertical": @(UIModalTransitionStyleCoverVertical),
-					  @"flipHorizontal": @(UIModalTransitionStyleFlipHorizontal),
-					  @"crossDissolve": @(UIModalTransitionStyleCrossDissolve),
-					  @"partialCurl": @(UIModalTransitionStylePartialCurl)
-					  }), UIModalTransitionStyleCoverVertical, integerValue)
-
-@end
-
 @implementation RNNNavigationOptions
 
+- (RNNNavigationOptions *)combineWithOptions:(RNNOptions *)options {
+	RNNNavigationOptions *navigationOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
+	[navigationOptions mergeOptions:self overrideOptions:YES];
+	[navigationOptions mergeOptions:options overrideOptions:YES];
+	
+	return navigationOptions;
+}
 
--(void)applyOn:(UIViewController<RNNRootViewProtocol> *)viewController {
-	[self mergeOptions:_defaultOptions overrideOptions:NO];
+- (void)applyOn:(UIViewController *)viewController {
 	[self.topBar applyOn:viewController];
 	[self.bottomTabs applyOn:viewController];
 	[self.topTab applyOn:viewController];
@@ -52,17 +27,41 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 	[self.overlay applyOn:viewController];
 	[self.statusBar applyOn:viewController];
 	[self.layout applyOn:viewController];
-	[self applyOtherOptionsOn:viewController];
-	
-	[viewController.getLeafViewController optionsUpdated];
+	[self applyOtherOptions:self on:viewController];
 }
 
-- (void)applyOtherOptionsOn:(UIViewController*)viewController {
-	if (self.popGesture) {
-		viewController.navigationController.interactivePopGestureRecognizer.enabled = [self.popGesture boolValue];
+- (void)applyOnNavigationController:(UINavigationController *)navigationController {
+	[self.topBar applyOnNavigationController:navigationController];
+	[self.statusBar applyOn:navigationController];
+	[self.layout applyOn:navigationController];
+	[self.bottomTab applyOn:navigationController];
+	[self applyOtherOptions:self onNavigationController:navigationController];
+}
+
+- (void)applyOnTabBarController:(UITabBarController *)tabBarController {
+	[self.bottomTabs applyOnTabBarController:tabBarController];
+}
+
+- (void)applyOtherOptions:(RNNNavigationOptions *)options onNavigationController:(UINavigationController*)navigationController {
+	if (options.popGesture) {
+		navigationController.interactivePopGestureRecognizer.enabled = [options.popGesture boolValue];
 	}
 	
-	if (self.backgroundImage) {
+	if (options.rootBackgroundImage) {
+		UIImageView* backgroundImageView = (navigationController.view.subviews.count > 0) ? navigationController.view.subviews[0] : nil;
+		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
+			backgroundImageView = [[UIImageView alloc] initWithFrame:navigationController.view.bounds];
+			[navigationController.view insertSubview:backgroundImageView atIndex:0];
+		}
+		
+		backgroundImageView.layer.masksToBounds = YES;
+		backgroundImageView.image = [options.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)options.rootBackgroundImage : [RCTConvert UIImage:options.rootBackgroundImage];
+		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+	}
+}
+
+- (void)applyOtherOptions:(RNNNavigationOptions *)options on:(UIViewController*)viewController {
+	if (options.backgroundImage) {
 		UIImageView* backgroundImageView = (viewController.view.subviews.count > 0) ? viewController.view.subviews[0] : nil;
 		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
 			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
@@ -70,34 +69,17 @@ RCT_ENUM_CONVERTER(UIModalTransitionStyle,
 		}
 		
 		backgroundImageView.layer.masksToBounds = YES;
-		backgroundImageView.image = [self.backgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.backgroundImage : [RCTConvert UIImage:self.backgroundImage];
+		backgroundImageView.image = [options.backgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)options.backgroundImage : [RCTConvert UIImage:options.backgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
-	
-	if (self.rootBackgroundImage) {
-		UIImageView* backgroundImageView = (viewController.navigationController.view.subviews.count > 0) ? viewController.navigationController.view.subviews[0] : nil;
-		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
-			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
-			[viewController.navigationController.view insertSubview:backgroundImageView atIndex:0];
-		}
-		
-		backgroundImageView.layer.masksToBounds = YES;
-		backgroundImageView.image = [self.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.rootBackgroundImage : [RCTConvert UIImage:self.rootBackgroundImage];
-		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
-	}
-	
-	[self applyModalOptions:viewController];
-}
 
-- (void)applyModalOptions:(UIViewController*)viewController {
-	if (self.modalPresentationStyle) {
-		viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:self.modalPresentationStyle];
+	if (options.modalPresentationStyle) {
+		viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:options.modalPresentationStyle];
 		[viewController.view setBackgroundColor:[UIColor clearColor]];
 	}
-	if (self.modalTransitionStyle) {
-		viewController.modalTransitionStyle = [RCTConvert UIModalTransitionStyle:self.modalTransitionStyle];
+	if (options.modalTransitionStyle) {
+		viewController.modalTransitionStyle = [RCTConvert UIModalTransitionStyle:options.modalTransitionStyle];
 	}
 }
-
 
 @end

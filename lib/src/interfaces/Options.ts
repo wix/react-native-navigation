@@ -173,8 +173,7 @@ export interface OptionsTopBarBackButton {
    */
   showTitle?: boolean;
   /**
-   * Back button icon or text color
-   * #### (Android specific)
+   * Back button icon and text color
    */
   color?: Color;
 }

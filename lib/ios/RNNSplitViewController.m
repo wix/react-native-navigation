@@ -1,10 +1,5 @@
 #import "RNNSplitViewController.h"
 
-@interface RNNSplitViewController()
-@property (nonatomic) BOOL _optionsApplied;
-@property (nonatomic, copy) void (^rotationBlock)(void);
-@end
-
 @implementation RNNSplitViewController
 
 -(instancetype)initWithOptions:(RNNSplitViewOptions*)options
@@ -31,12 +26,18 @@
 	return self;
 }
 
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	readyBlock();
+- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
+	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:combinedOptions];
+	}
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.options mergeOptions:options];
+- (void)performOnChildWillAppear:(RNNNavigationOptions *)childOptions {
+	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
+	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
+		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:combinedOptions];
+	}
 }
 
 @end

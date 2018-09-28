@@ -27,6 +27,20 @@ public class SideMenuOptionsPresenter {
         } else if (options.right.visible.isFalse() && sideMenu.isDrawerOpen(Gravity.RIGHT)){
             sideMenu.closeDrawer(Gravity.RIGHT);
         }
+
+        if (options.left.enabled.isFalse()) {
+            sideMenu.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
+        }
+        else  if (options.left.enabled.isTrue()) {
+            sideMenu.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.LEFT);
+        }
+
+        if (options.right.enabled.isFalse()) {
+            sideMenu.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
+        }
+        else  if (options.right.enabled.isTrue()) {
+            sideMenu.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.RIGHT);
+        }
     }
 
     public boolean handleBack() {

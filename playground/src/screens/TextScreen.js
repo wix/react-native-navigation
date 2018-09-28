@@ -1,11 +1,11 @@
 const React = require('react');
 const { Component } = require('react');
 
-const { View, Text, Button } = require('react-native');
+const { View, Text, Button, Platform } = require('react-native');
 
 const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
-
+const Bounds = require('../components/Bounds');
 class TextScreen extends Component {
   static get options() {
     return {
@@ -21,21 +21,24 @@ class TextScreen extends Component {
 
   render() {
     return (
-      <View style={styles.root}>
-        <Text style={styles.h1} testID={testIDs.CENTERED_TEXT_HEADER}>{this.props.text || 'Text Screen'}</Text>
-        {this.renderTextFromFunctionInProps()}
-        <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
-        <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onClickSetBadge()} />
-        <Button title={'Switch To Tab 2'} testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
-        <Button title={'Switch To Tab 1 by componentID'} testID={testIDs.SWITCH_FIRST_TAB_BUTTON} onPress={() => this.onClickSwitchToTabByComponentID()} />
-        <Button title='Hide Tab Bar' testID={testIDs.HIDE_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(false)} />
-        <Button title='Show Tab Bar' testID={testIDs.SHOW_BOTTOM_TABS_BUTTON} onPress={() => this.hideTabBar(true)} />
-        <Button title='Hide Tab Bar on Push' testID={testIDs.HIDE_BOTTOM_TABS_ON_PUSH_BUTTON} onPress={() => this.hideTabBarOnPush()} />
-        <Button title='Show Left Side Menu' testID={testIDs.SHOW_LEFT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('left')} />
-        <Button title='Show Right Side Menu' testID={testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('right')} />
-        <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
-        <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
-      </View>
+      <Bounds>
+        <View style={styles.root}>
+          <Text style={styles.h1} testID={testIDs.CENTERED_TEXT_HEADER}>{this.props.text || 'Text Screen'}</Text>
+          {this.renderTextFromFunctionInProps()}
+          <Text style={styles.footer}>{`this.props.componentId = ${this.props.componentId}`}</Text>
+          <Button title={'Set Tab Badge'} testID={testIDs.SET_TAB_BADGE_BUTTON} onPress={() => this.onClickSetBadge()} />
+          <Button title={'Switch To Tab 2'} testID={testIDs.SWITCH_SECOND_TAB_BUTTON} onPress={() => this.onClickSwitchToTab()} />
+          <Button title={'Switch To Tab 1 by componentID'} testID={testIDs.SWITCH_FIRST_TAB_BUTTON} onPress={() => this.onClickSwitchToTabByComponentID()} />
+          {/* tslint:disable-next-line:max-line-length */}
+          { Platform.OS === 'android' && <Button title='Hide Tab Bar' testID={testIDs.HIDE_BOTTOM_TABS_BUTTON} onPress={() => this.toggleTabBarVisibility(this.props.componentId, false)} /> }
+          { Platform.OS === 'android' && <Button title='Show Tab Bar' testID={testIDs.SHOW_BOTTOM_TABS_BUTTON} onPress={() => this.toggleTabBarVisibility('BottomTabs', true)} /> }
+          <Button title='Hide Tab Bar on Push' testID={testIDs.HIDE_BOTTOM_TABS_ON_PUSH_BUTTON} onPress={() => this.hideTabBarOnPush()} />
+          <Button title='Show Left Side Menu' testID={testIDs.SHOW_LEFT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('left')} />
+          <Button title='Show Right Side Menu' testID={testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('right')} />
+          <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
+          <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
+        </View>
+      </Bounds>
     );
   }
 
@@ -87,8 +90,8 @@ class TextScreen extends Component {
     });
   }
 
-  hideTabBar(visible) {
-    Navigation.mergeOptions(this.props.componentId, {
+  toggleTabBarVisibility(componentId, visible) {
+    Navigation.mergeOptions(componentId, {
       bottomTabs: {
         visible,
         drawBehind: true,
