@@ -6,7 +6,5 @@
 @required
 
 - (UIViewController<RNNLeafProtocol> *)getLeafViewController;
-- (void)performOnChildWillAppear:(RNNNavigationOptions *)options;
-- (void)performOnChildLoad:(RNNNavigationOptions *)options;
 
 @end

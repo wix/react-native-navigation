@@ -26,7 +26,7 @@
 		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
 		if ([controller isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
-			[rnnController.presenter presentOn:rnnController];
+			[rnnController.presenter present:rnnController.options onViewControllerDidLoad:rnnController];
 		}
 	}
 	
@@ -34,11 +34,11 @@
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.presenter.options.animations.showModal isDismiss:NO];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.options.animations.showModal isDismiss:NO];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.presenter.options.animations.dismissModal isDismiss:YES];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.options.animations.dismissModal isDismiss:YES];
 }
 
 - (UIViewController *)getLeafViewController {
@@ -49,24 +49,17 @@
 	return self.topViewController;
 }
 
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:_presenter.options];
-	}
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	[_presenter present:self.options onViewControllerDidLoad:self];
+}
+//- (void)willMoveToParentViewController:(UIViewController *)parent {
+//	[_presenter present:self.options onViewControllerDidLoad:self];
+//}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[self.presenter present:options onViewControllerWillAppear:self];
 }
 
-- (void)performOnChildWillAppear:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:combinedOptions];
-	}
-}
-
-- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:combinedOptions];
-	}
-}
 
 @end

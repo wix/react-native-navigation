@@ -94,25 +94,12 @@
 	return [self.center getLeafViewController];
 }
 
-- (void)performOnChildWillAppear:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:combinedOptions];
-	}
-}
-
-- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-		if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:combinedOptions];
-	}
-}
-
 - (void)willMoveToParentViewController:(UIViewController *)parent {
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:_presenter.options];
-	}
+	[_presenter present:self.options onViewControllerDidLoad:self];
 }
 
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[self.presenter present:options onViewControllerWillAppear:self];
+}
 
 @end

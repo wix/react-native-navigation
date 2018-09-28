@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, RNNSideMenuChildType) {
 
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, retain) RNNBasePresenter* presenter;
+@property (nonatomic, strong) RNNNavigationOptions* options;
 
 -(instancetype) initWithChild:(UIViewController<RNNParentProtocol>*)child type:(RNNSideMenuChildType)type;
 

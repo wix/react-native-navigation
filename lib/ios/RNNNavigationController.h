@@ -6,5 +6,6 @@
 
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, retain) RNNNavigationControllerPresenter* presenter;
+@property (nonatomic, strong) RNNNavigationOptions* options;
 
 @end

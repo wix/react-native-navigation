@@ -8,7 +8,6 @@
 			   eventEmitter:(RNNEventEmitter*)eventEmitter {
 	self = [super init];
 	self.componentId = componentId;
-	self.options = options;
 	self.eventEmitter = eventEmitter;
 	self.creator = creator;
 
@@ -26,18 +25,12 @@
 	return self;
 }
 
-- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:combinedOptions];
-	}
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_presenter present:self.options onViewControllerDidLoad:self];
 }
 
-- (void)performOnChildWillAppear:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:combinedOptions];
-	}
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[self.presenter present:options onViewControllerWillAppear:self];
 }
 
 @end
