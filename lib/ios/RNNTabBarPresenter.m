@@ -6,4 +6,8 @@
 	[self.options applyOnTabBarController:tabBarController];
 }
 
+- (void)present:(RNNNavigationOptions *)options on:(UITabBarController *)tabBarController {
+	[self.options applyOnTabBarController:tabBarController];
+}
+
 @end

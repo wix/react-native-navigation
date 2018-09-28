@@ -79,6 +79,7 @@
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_presenter presentOn:self];
 	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
 		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:_presenter.options];
 	}
