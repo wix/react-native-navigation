@@ -29,6 +29,9 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (void)applyOn:(UIViewController*)viewController {
+	if (viewController.navigationController.topViewController != viewController) {
+		return;
+	}
 	[self.title applyOn:viewController];
 	[self.largeTitle applyOn:viewController];
 	[self.backButton applyOn:viewController];
