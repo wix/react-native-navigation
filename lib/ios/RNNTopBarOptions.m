@@ -1,6 +1,7 @@
 #import "RNNTopBarOptions.h"
 #import "RNNNavigationButtons.h"
 #import "RNNCustomTitleView.h"
+#import "UIImage+tint.h"
 
 extern const NSInteger BLUR_TOPBAR_TAG;
 const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
@@ -47,6 +48,16 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 			viewController.navigationItem.searchController = search;
 			
 			viewController.navigationItem.hidesSearchBarWhenScrolling = [self.searchBarHiddenWhenScrolling boolValue];
+			
+			if (self.searchBarDarkKeyboard) {
+				search.searchBar.keyboardAppearance = UIKeyboardAppearanceDark;
+			} else {
+				search.searchBar.keyboardAppearance = UIKeyboardAppearanceLight;
+			}
+			
+			if (self.searchBarTintColor) {
+				search.searchBar.tintColor = [RCTConvert UIColor:self.searchBarTintColor];
+			}
 			
 			// Fixes #3450, otherwise, UIKit will infer the presentation context to be the root most view controller
 			viewController.definesPresentationContext = YES;

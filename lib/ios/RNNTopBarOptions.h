@@ -33,7 +33,9 @@
 @property (nonatomic, strong) RNNButtonOptions* leftButtonStyle;
 @property (nonatomic, strong) RNNButtonOptions* rightButtonStyle;
 @property (nonatomic, strong) NSNumber* searchBar;
+@property (nonatomic, strong) NSNumber* searchBarTintColor;
 @property (nonatomic, strong) NSNumber* searchBarHiddenWhenScrolling;
+@property (nonatomic, strong) NSNumber* searchBarDarkKeyboard;
 @property (nonatomic, strong) NSString* searchBarPlaceholder;
 
 @property (nonatomic, strong) RNNComponentOptions* component;
