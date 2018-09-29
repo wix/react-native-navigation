@@ -42,6 +42,8 @@
 
 	@end
 	```
+	
+For React Native v0.48 and below, change `jsBundleURLForBundleRoot:@"index"` to `jsBundleURLForBundleRoot:@"index.ios"`.
 
 3a. If, in Xcode, you see the following error message in `AppDelegate.m` next to `#import "RCTBundleURLProvider.h": 
 ```
