@@ -49,6 +49,11 @@
 	return self.topViewController;
 }
 
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	[_presenter present:self.options onViewControllerDidLoad:self];
+}
+
 - (void)willMoveToParentViewController:(UIViewController *)parent {
 	[_presenter present:self.options onViewControllerDidLoad:self];
 }
