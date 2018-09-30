@@ -89,6 +89,12 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		originalTopBarImages[@"shadowImage"] = shadowImage;
 	}
 	self.originalTopBarImages = originalTopBarImages;
+	
+	if (self.clipToBounds) {
+		navigationController.navigationBar.clipsToBounds = [self.clipToBounds boolValue];
+	} else {
+		navigationController.navigationBar.clipsToBounds = NO;
+	}
 }
 
 @end

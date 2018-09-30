@@ -67,14 +67,14 @@
 - (void)testTopBarBackgroundClipToBounds_true {
 	self.uut.options.topBar.background.clipToBounds = @(1);
 	[self.uut viewDidLoad];
-	
+
 	XCTAssertTrue(self.uut.navigationBar.clipsToBounds);
 }
 
 - (void)testTopBarBackgroundClipToBounds_false {
 	self.uut.options.topBar.background.clipToBounds = @(0);
-	[self.uut viewWillAppear:false];
-	
+	[self.uut viewDidLoad];
+
 	XCTAssertFalse(self.uut.navigationController.navigationBar.clipsToBounds);
 }
 
