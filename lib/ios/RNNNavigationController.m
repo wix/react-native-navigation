@@ -49,13 +49,9 @@
 	return self.topViewController;
 }
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
+- (void)willMoveToParentViewController:(UIViewController *)parent {
 	[_presenter present:self.options onViewControllerDidLoad:self];
 }
-//- (void)willMoveToParentViewController:(UIViewController *)parent {
-//	[_presenter present:self.options onViewControllerDidLoad:self];
-//}
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
 	[self.presenter present:options onViewControllerWillAppear:self];
