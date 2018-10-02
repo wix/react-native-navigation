@@ -100,7 +100,8 @@ class ComplexLayout extends Component {
                 options: {
                   bottomTab: {
                     text: 'SideMenu',
-                    icon: require('../images/two.png')
+                    icon: require('../images/two.png'),
+                    testID: testIDs.SECOND_TAB_BAR_BUTTON
                   }
                 }
               }
