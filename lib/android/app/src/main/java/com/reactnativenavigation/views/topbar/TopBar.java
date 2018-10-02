@@ -2,6 +2,7 @@ package com.reactnativenavigation.views.topbar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.ColorInt;
@@ -97,7 +98,7 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
 
     private View createBorder() {
         View border = new View(getContext());
-        border.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        border.setBackgroundColor(Color.TRANSPARENT);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(MATCH_PARENT, 0);
         lp.gravity = Gravity.BOTTOM;
         border.setLayoutParams(lp);

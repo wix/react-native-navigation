@@ -120,6 +120,25 @@ class WelcomeScreen extends Component {
                   }
                 }
               }
+            },
+            {
+              component: {
+                name: 'navigation.playground.TextScreen',
+                passProps: {
+                  text: 'This is tab 3',
+                  myFunction: () => 'Hello from a function!'
+                },
+                options: {
+                  topBar: {
+                    visible: true
+                  },
+                  bottomTab: {
+                    text: 'Tab 3',
+                    icon: require('../images/one.png'),
+                    selectedIcon: require('../images/one.png')
+                  }
+                }
+              }
             }
           ],
           options: {
