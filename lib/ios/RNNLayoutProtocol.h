@@ -9,7 +9,6 @@
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 
-
 - (void)mergeOptions:(RNNNavigationOptions *)options;
 
 @end

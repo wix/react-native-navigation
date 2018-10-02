@@ -13,7 +13,6 @@
 	BOOL _isBeingPresented;
 }
 
-@property (nonatomic) BOOL isExternalComponent;
 @property (nonatomic, copy) RNNReactViewReadyCompletionBlock reactViewReadyBlock;
 
 @end
@@ -22,21 +21,17 @@
 
 @synthesize previewCallback;
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
-				   rootViewCreator:(id<RNNRootViewCreator>)creator
-					  eventEmitter:(RNNEventEmitter*)eventEmitter
-			   isExternalComponent:(BOOL)isExternalComponent
-						 presenter:(RNNViewControllerPresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo rootViewCreator:(id<RNNRootViewCreator>)creator eventEmitter:(RNNEventEmitter *)eventEmitter presenter:(RNNViewControllerPresenter *)presenter options:(RNNNavigationOptions *)options {
 	self = [super init];
 	self.eventEmitter = eventEmitter;
 	self.creator = creator;
-	self.isExternalComponent = isExternalComponent;
 	self.layoutInfo = layoutInfo;
 	self.presenter = presenter;
+	self.options = options;
 	
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	
-	if (!self.isExternalComponent) {
+	if (self.creator) {
 		self.view = [creator createRootView:self.layoutInfo.name rootViewId:self.layoutInfo.componentId];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(reactViewReady)
@@ -51,6 +46,17 @@
 	self.navigationController.delegate = self;
 
 	return self;
+}
+
+- (instancetype)initExternalComponentWithLayoutInfo:(RNNLayoutInfo *)layoutInfo eventEmitter:(RNNEventEmitter *)eventEmitter presenter:(RNNViewControllerPresenter *)presenter options:(RNNNavigationOptions *)options {
+	self = [self initWithLayoutInfo:layoutInfo rootViewCreator:nil eventEmitter:eventEmitter presenter:presenter options:options];
+	return self;
+}
+
+- (void)bindViewController:(UIViewController *)viewController {
+	[self addChildViewController:viewController];
+	[self.view addSubview:viewController.view];
+	[viewController didMoveToParentViewController:self];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -96,7 +102,7 @@
 
 
 - (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	if (wait && !_isExternalComponent) {
+	if (wait && !self.isExternalViewController) {
 		[self onReactViewReady:readyBlock];
 	} else {
 		readyBlock();
@@ -108,7 +114,7 @@
 }
 
 - (void)onReactViewReady:(RNNReactViewReadyCompletionBlock)readyBlock {
-	if (self.isCustomViewController) {
+	if (self.isExternalViewController) {
 		readyBlock();
 	} else {
 		self.reactViewReadyBlock = readyBlock;
@@ -202,8 +208,8 @@
 	return self.options.customTransition.animations != nil;
 }
 
-- (BOOL)isCustomViewController {
-	return self.isExternalComponent;
+- (BOOL)isExternalViewController {
+	return self.creator;
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -247,17 +253,16 @@
 								  animationControllerForOperation:(UINavigationControllerOperation)operation
 											   fromViewController:(UIViewController*)fromVC
 												 toViewController:(UIViewController*)toVC {
-	{
-		if (self.animator) {
-			return self.animator;
-		} else if (operation == UINavigationControllerOperationPush && self.options.animations.push.hasCustomAnimation) {
-			return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.push];
-		} else if (operation == UINavigationControllerOperationPop && self.options.animations.pop.hasCustomAnimation) {
-			return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.pop];
-		} else {
-			return nil;
-		}
+	if (self.animator) {
+		return self.animator;
+	} else if (operation == UINavigationControllerOperationPush && self.options.animations.push.hasCustomAnimation) {
+		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.push];
+	} else if (operation == UINavigationControllerOperationPop && self.options.animations.pop.hasCustomAnimation) {
+		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.pop];
+	} else {
+		return nil;
 	}
+	
 	return nil;
 }
 

@@ -4,8 +4,10 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 @protocol RNNLeafProtocol <RNNLayoutProtocol>
 
+- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+
 - (UIViewController<RNNLeafProtocol> *)getLeafViewController;
 
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock;
+- (void)bindViewController:(UIViewController *)viewController;
 
 @end

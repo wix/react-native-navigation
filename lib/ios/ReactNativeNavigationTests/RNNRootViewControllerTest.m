@@ -49,8 +49,7 @@
 	layoutInfo.name = self.pageName;
 	
 	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
-	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter isExternalComponent:NO presenter:presenter];
-	self.uut.options = self.options;
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter presenter:presenter options:self.options];
 }
 
 -(void)testTopBarBackgroundColor_validColor{

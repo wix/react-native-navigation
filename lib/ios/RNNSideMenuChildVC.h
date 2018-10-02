@@ -1,11 +1,3 @@
-//
-//  RNNSideMenuChildVC.h
-//  ReactNativeNavigation
-//
-//  Created by Ran Greenberg on 09/02/2017.
-//  Copyright © 2017 Wix. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 #import "RNNParentProtocol.h"
 
@@ -25,6 +17,6 @@ typedef NS_ENUM(NSInteger, RNNSideMenuChildType) {
 @property (nonatomic, retain) RNNBasePresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 
--(instancetype) initWithChild:(UIViewController<RNNParentProtocol>*)child type:(RNNSideMenuChildType)type;
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter type:(RNNSideMenuChildType)type;
 
 @end

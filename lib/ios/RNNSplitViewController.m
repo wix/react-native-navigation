@@ -2,18 +2,22 @@
 
 @implementation RNNSplitViewController
 
--(instancetype)initWithOptions:(RNNSplitViewOptions*)options
-			withComponentId:(NSString*)componentId
-			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter {
 	self = [super init];
-	self.componentId = componentId;
-	self.eventEmitter = eventEmitter;
-	self.creator = creator;
-
+	
+	self.presenter = presenter;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	
 	self.navigationController.delegate = self;
-
+	
 	return self;
+}
+
+- (void)bindChildrenViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
+	[self setViewControllers:viewControllers];
+	UIViewController<UISplitViewControllerDelegate>* masterViewController = viewControllers[0];
+	self.delegate = masterViewController;
 }
 
 -(void)viewWillAppear:(BOOL)animated{

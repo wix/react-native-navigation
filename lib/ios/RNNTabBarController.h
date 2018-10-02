@@ -5,7 +5,7 @@
 
 @interface RNNTabBarController : UITabBarController <RNNParentProtocol, UITabBarControllerDelegate>
 
-- (instancetype)initWithEventEmitter:(RNNEventEmitter*)eventEmitter;
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter eventEmitter:(RNNEventEmitter *)eventEmitter;
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID;
 

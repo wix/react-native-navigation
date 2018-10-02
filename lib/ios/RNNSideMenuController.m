@@ -21,24 +21,28 @@
 
 @implementation RNNSideMenuController
 
--(instancetype)initWithControllers:(NSArray*)controllers presenter:(RNNBasePresenter *)presenter
-{
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter {
 	self = [super init];
-	self.presenter = presenter;
 	
-	[self setControllers:controllers];
+	self.presenter = presenter;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	
+	return self;
+}
+
+- (void)bindChildrenViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
+	[self setControllers:viewControllers];
 	
 	self.sideMenu = [[MMDrawerController alloc] initWithCenterViewController:self.center leftDrawerViewController:self.left rightDrawerViewController:self.right];
 	
 	self.sideMenu.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
 	self.sideMenu.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
-
+	
 	[self addChildViewController:self.sideMenu];
 	[self.sideMenu.view setFrame:self.view.bounds];
 	[self.view addSubview:self.sideMenu.view];
 	[self.view bringSubviewToFront:self.sideMenu.view];
-	
-	return self;
 }
 
 -(void)showSideMenu:(MMDrawerSide)side animated:(BOOL)animated {

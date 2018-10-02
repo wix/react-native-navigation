@@ -5,6 +5,24 @@
 
 @implementation RNNNavigationController
 
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNNavigationControllerPresenter *)presenter {
+	self = [super init];
+
+	self.presenter = presenter;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	
+	return self;
+}
+
+- (void)bindChildrenViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
+	for (UIViewController<RNNLayoutProtocol>* child in viewControllers) {
+		[self.options mergeOptions:child.options overrideOptions:YES];
+	}
+	
+	[self setViewControllers:viewControllers];
+}
+
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.viewControllers.lastObject.supportedInterfaceOrientations;
 }

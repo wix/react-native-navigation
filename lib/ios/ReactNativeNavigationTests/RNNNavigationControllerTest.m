@@ -17,8 +17,8 @@
 - (void)setUp {
     [super setUp];
 	
-	_vc1 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil isExternalComponent:NO presenter:[[RNNViewControllerPresenter alloc] init]];
-	_vc2 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil isExternalComponent:NO presenter:[[RNNViewControllerPresenter alloc] init]];
+	_vc1 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:nil];
+	_vc2 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:nil];
 	_vc3 = [UIViewController new];
 	
 	self.uut = [[RNNNavigationController alloc] initWithRootViewController:_vc1];
