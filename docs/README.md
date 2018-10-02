@@ -14,7 +14,7 @@ We are rebuilding react-native-navigation.
 - [v2 Roadmap](#v2-roadmap)
 - [v1 vs v2 feature comparison](#v1-vs-v2-feature-comparison)
 - [Documentation](https://wix.github.io/react-native-navigation/v2/)
-- [Contributing](/docs/WorkingLocally.md)
+- [Contributing](https://github.com/wix/react-native-navigation/blob/v2/docs/docs/WorkingLocally.md)
 
 ## Why Rebuild react-native-navigation?
 
