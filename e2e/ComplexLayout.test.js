@@ -20,7 +20,7 @@ describe('complex layout', () => {
     await expect(elementByLabel('External component in deep stack')).toBeVisible();
   });
 
-  test(':android: merge options correctly in SideMenu inside BottomTabs layout', async () => {
+  test('merge options correctly in SideMenu inside BottomTabs layout', async () => {
     await elementById(testIDs.COMPLEX_LAYOUT_BUTTON).tap();
     await elementById(testIDs.SIDE_MENU_LAYOUT_INSIDE_BOTTOM_TAB).tap();
     await elementById(testIDs.SECOND_TAB_BAR_BUTTON).tap();
