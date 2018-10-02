@@ -32,7 +32,6 @@
 
 - (void)bindChildViewControllers:(NSArray<UIViewController<RNNParentProtocol> *> *)viewControllers {
 	UIViewController<RNNParentProtocol>* child = viewControllers[0];
-	[self.options mergeOptions:child.options overrideOptions:YES];
 	
 	self.child = child;
 	[self addChildViewController:self.child];

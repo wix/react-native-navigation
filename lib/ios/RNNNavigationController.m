@@ -18,13 +18,6 @@
 	return self;
 }
 
-- (void)bindChildViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
-	[self setViewControllers:viewControllers];
-	for (UIViewController<RNNLayoutProtocol>* child in viewControllers) {
-		[self.options mergeOptions:child.options overrideOptions:YES];
-	}
-}
-
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.viewControllers.lastObject.supportedInterfaceOrientations;
 }
