@@ -105,6 +105,11 @@
 	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
 	RNNRootViewController* component = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:_creator eventEmitter:_eventEmitter presenter:presenter options:options];
 	
+	if (!component.isExternalViewController) {
+		CGSize availableSize = UIApplication.sharedApplication.delegate.window.bounds.size;
+		[_bridge.uiManager setAvailableSize:availableSize forRootView:component.view];
+	}
+	
 	return (UIViewController<RNNParentProtocol> *)component;
 }
 

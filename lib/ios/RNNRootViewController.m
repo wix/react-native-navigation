@@ -209,7 +209,7 @@
 }
 
 - (BOOL)isExternalViewController {
-	return self.creator;
+	return !self.creator;
 }
 
 - (BOOL)prefersStatusBarHidden {
