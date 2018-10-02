@@ -8,30 +8,34 @@
 	RNNEventEmitter *_eventEmitter;
 }
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter eventEmitter:(RNNEventEmitter *)eventEmitter {
-	self = [self initWithLayoutInfo:layoutInfo options:options presenter:presenter];
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+			  childViewControllers:(NSArray *)childViewControllers
+						   options:(RNNNavigationOptions *)options
+				   optionsResolver:(RNNParentOptionsResolver *)optionsResolver
+						 presenter:(RNNBasePresenter *)presenter
+					  eventEmitter:(RNNEventEmitter *)eventEmitter {
+	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options optionsResolver:optionsResolver presenter:presenter];
 	
 	_eventEmitter = eventEmitter;
 	
 	return self;
 }
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+			  childViewControllers:(NSArray *)childViewControllers
+						   options:(RNNNavigationOptions *)options
+				   optionsResolver:(RNNParentOptionsResolver *)optionsResolver
+						 presenter:(RNNBasePresenter *)presenter {
 	self = [super init];
 	
 	self.presenter = presenter;
 	self.options = options;
 	self.layoutInfo = layoutInfo;
+	self.optionsResolver = optionsResolver;
+	
+	[self setViewControllers:childViewControllers];
 	
 	return self;
-}
-
-- (void)bindChildrenViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
-	for (UIViewController<RNNLayoutProtocol>* child in viewControllers) {
-		[self.options mergeOptions:child.options overrideOptions:YES];
-	}
-	
-	[self setViewControllers:viewControllers];
 }
 
 - (instancetype)initWithEventEmitter:(id)eventEmitter {
@@ -69,6 +73,7 @@
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_optionsResolver resolve:self with:self.viewControllers];
 	[_presenter present:self.options onViewControllerDidLoad:self];
 }
 

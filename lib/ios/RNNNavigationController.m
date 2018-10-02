@@ -5,22 +5,24 @@
 
 @implementation RNNNavigationController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNNavigationControllerPresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNNavigationControllerPresenter *)presenter {
 	self = [super init];
 
 	self.presenter = presenter;
 	self.options = options;
+	self.optionsResolver = optionsResolver;
 	self.layoutInfo = layoutInfo;
+	
+	[self setViewControllers:childViewControllers];
 	
 	return self;
 }
 
-- (void)bindChildrenViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
+- (void)bindChildViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
+	[self setViewControllers:viewControllers];
 	for (UIViewController<RNNLayoutProtocol>* child in viewControllers) {
 		[self.options mergeOptions:child.options overrideOptions:YES];
 	}
-	
-	[self setViewControllers:viewControllers];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -73,6 +75,7 @@
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_optionsResolver resolve:self with:self.childViewControllers];
 	[_presenter present:self.options onViewControllerDidLoad:self];
 }
 

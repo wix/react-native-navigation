@@ -10,6 +10,7 @@
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, retain) RNNBasePresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
+@property (nonatomic, strong) RNNParentOptionsResolver* optionsResolver;
 
 - (void)setViewControllers:(NSArray*)viewControllers;
 - (void)viewController:(UIViewController*)vc changedTitle:(NSString*)title;

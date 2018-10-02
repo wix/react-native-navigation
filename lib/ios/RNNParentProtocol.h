@@ -1,13 +1,14 @@
 #import "RNNLayoutProtocol.h"
 #import "RNNLeafProtocol.h"
+#import "RNNParentOptionsResolver.h"
 
 @protocol RNNParentProtocol <RNNLayoutProtocol, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, UISplitViewControllerDelegate>
 
 @required
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter;
+@property (nonatomic, strong) RNNParentOptionsResolver* optionsResolver;
 
-- (void)bindChildrenViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers;
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNBasePresenter *)presenter;
 
 - (UIViewController<RNNLeafProtocol> *)getLeafViewController;
 

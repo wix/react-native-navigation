@@ -13,22 +13,17 @@
 
 @implementation RNNTopTabsViewController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter {
-	self = [super init];
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNBasePresenter *)presenter {
+	self = [self init];
 	
 	self.presenter = presenter;
 	self.options = options;
 	self.layoutInfo = layoutInfo;
+	self.optionsResolver = optionsResolver;
+	
+	[self setViewControllers:childViewControllers];
 	
 	return self;
-}
-
-- (void)bindChildrenViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
-	for (UIViewController<RNNLayoutProtocol>* child in viewControllers) {
-		[self.options mergeOptions:child.options overrideOptions:YES];
-	}
-	
-	[self setViewControllers:viewControllers];
 }
 
 - (instancetype)init {
@@ -91,6 +86,7 @@
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_optionsResolver resolve:self with:_viewControllers];
 	[_presenter present:self.options onViewControllerDidLoad:self];
 }
 

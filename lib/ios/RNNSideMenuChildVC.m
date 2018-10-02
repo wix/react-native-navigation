@@ -9,26 +9,28 @@
 
 @implementation RNNSideMenuChildVC
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter type:(RNNSideMenuChildType)type {
-	self = [self initWithLayoutInfo:layoutInfo options:options presenter:presenter];
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNBasePresenter *)presenter type:(RNNSideMenuChildType)type {
+	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options optionsResolver:optionsResolver presenter:presenter];
 	
 	self.type = type;
 
 	return self;
 }
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNBasePresenter *)presenter {
 	self = [super init];
 	
 	self.presenter = presenter;
 	self.options = options;
 	self.layoutInfo = layoutInfo;
+	self.optionsResolver = optionsResolver;
 	
+	[self bindChildViewControllers:childViewControllers];
 	
 	return self;
 }
 
-- (void)bindChildrenViewControllers:(NSArray<UIViewController<RNNParentProtocol> *> *)viewControllers {
+- (void)bindChildViewControllers:(NSArray<UIViewController<RNNParentProtocol> *> *)viewControllers {
 	UIViewController<RNNParentProtocol>* child = viewControllers[0];
 	[self.options mergeOptions:child.options overrideOptions:YES];
 	
@@ -44,6 +46,7 @@
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_optionsResolver resolve:self with:self.childViewControllers];
 	[_presenter present:self.options onViewControllerDidLoad:self];
 }
 

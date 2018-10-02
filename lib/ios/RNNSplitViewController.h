@@ -15,5 +15,6 @@
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, retain) RNNBasePresenter* presenter;
+@property (nonatomic, strong) RNNParentOptionsResolver* optionsResolver;
 
 @end

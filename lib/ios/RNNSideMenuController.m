@@ -21,17 +21,20 @@
 
 @implementation RNNSideMenuController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNBasePresenter *)presenter {
 	self = [super init];
 	
 	self.presenter = presenter;
 	self.options = options;
 	self.layoutInfo = layoutInfo;
+	self.optionsResolver = optionsResolver;
+	
+	[self bindChildViewControllers:childViewControllers];
 	
 	return self;
 }
 
-- (void)bindChildrenViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
+- (void)bindChildViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
 	[self setControllers:viewControllers];
 	
 	self.sideMenu = [[MMDrawerController alloc] initWithCenterViewController:self.center leftDrawerViewController:self.left rightDrawerViewController:self.right];
@@ -99,6 +102,7 @@
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_optionsResolver resolve:self with:self.childViewControllers];
 	[_presenter present:self.options onViewControllerDidLoad:self];
 }
 
