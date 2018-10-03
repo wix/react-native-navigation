@@ -21,6 +21,7 @@ import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.TitleBarHelper;
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.utils.ViewHelper;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
@@ -880,7 +881,7 @@ public class StackControllerTest extends BaseTest {
             @Override
             protected TopBar createTopBar(Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout stackLayout) {
                 TopBar spy = spy(super.createTopBar(context, topBarBackgroundViewController, stackLayout));
-                spy.layout(0, 0, 1000, 100);
+                spy.layout(0, 0, 1000, UiUtils.getTopBarHeight(activity));
                 return spy;
             }
         });

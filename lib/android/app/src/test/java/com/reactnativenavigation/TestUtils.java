@@ -10,6 +10,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.utils.ImageLoader;
+import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.stack.StackControllerBuilder;
@@ -29,7 +30,7 @@ public class TestUtils {
                     @Override
                     protected TopBar createTopBar(Context context, TopBarBackgroundViewController topBarBackgroundViewController, StackLayout stackLayout) {
                         TopBar topBar = super.createTopBar(context, topBarBackgroundViewController, stackLayout);
-                        topBar.layout(0, 0, 1000, 100);
+                        topBar.layout(0, 0, 1000, UiUtils.getTopBarHeight(context));
                         return topBar;
                     }
                 })

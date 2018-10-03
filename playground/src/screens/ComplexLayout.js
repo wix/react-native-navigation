@@ -7,21 +7,18 @@ const { Navigation } = require('react-native-navigation');
 const testIDs = require('../testIDs');
 
 class ComplexLayout extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <View style={styles.root}>
         <Text style={styles.h1} testID={testIDs.CENTERED_TEXT_HEADER}>{this.props.text || 'Complex layout screen'}</Text>
-        <Button title={'External component in stack'} testID={testIDs.EXTERNAL_COMPONENT_IN_STACK} onPress={() => this.onExternalComponentInStackPressed()} />
-        <Button title={'External component in deep stack'} testID={testIDs.EXTERNAL_COMPONENT_IN_DEEP_STACK} onPress={() => this.onExternalComponentInDeepStackPressed()} />
+        <Button title={'External component in stack'} testID={testIDs.EXTERNAL_COMPONENT_IN_STACK} onPress={this.onExternalComponentInStackPressed} />
+        <Button title={'External component in deep stack'} testID={testIDs.EXTERNAL_COMPONENT_IN_DEEP_STACK} onPress={this.onExternalComponentInDeepStackPressed} />
+        <Button title={'SideMenu layout inside a bottomTab'} testID={testIDs.SIDE_MENU_LAYOUT_INSIDE_BOTTOM_TAB} onPress={this.onSideMenuLayoutInsideBottomTabPressed} />
       </View>
     );
   }
 
-  onExternalComponentInStackPressed() {
+  onExternalComponentInStackPressed = () => {
     Navigation.showModal({
       stack: {
         children: [{
@@ -36,7 +33,7 @@ class ComplexLayout extends Component {
     });
   }
 
-  onExternalComponentInDeepStackPressed() {
+  onExternalComponentInDeepStackPressed = () => {
     Navigation.showModal({
       stack: {
         children: [{
@@ -52,6 +49,75 @@ class ComplexLayout extends Component {
             }
           }
         }]
+      }
+    });
+  }
+
+  onSideMenuLayoutInsideBottomTabPressed = () => {
+    Navigation.dismissAllModals();
+    Navigation.setRoot({
+      root: {
+        bottomTabs: {
+          children: [
+            {
+              stack: {
+                children: [
+                  {
+                    component: {
+                      name: 'navigation.playground.TextScreen',
+                      options: {
+                        topBar: {
+                          animate: false
+                        }
+                      }
+                    }
+                  }
+                ],
+                options: {
+                  bottomTab: {
+                    text: 'Stack',
+                    icon: require('../images/one.png')
+                  }
+                }
+              }
+            },
+            {
+              sideMenu: {
+                left: {
+                  component: {
+                    name: 'navigation.playground.SideMenuScreen',
+                    options: {
+                      topBar: {
+                        animate: false
+                      }
+                    },
+                    passProps: {
+                      side: 'left'
+                    }
+                  }
+                },
+                center: {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          name: 'complexLayout.bottomTabThatOpensSideMenu'
+                        }
+                      }
+                    ]
+                  }
+                },
+                options: {
+                  bottomTab: {
+                    text: 'SideMenu',
+                    icon: require('../images/two.png'),
+                    testID: testIDs.SECOND_TAB_BAR_BUTTON
+                  }
+                }
+              }
+            }
+           ]
+        }
       }
     });
   }

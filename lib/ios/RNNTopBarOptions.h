@@ -18,11 +18,8 @@
 @property (nonatomic, strong) NSNumber* leftButtonDisabledColor;
 @property (nonatomic, strong) NSNumber* rightButtonDisabledColor;
 @property (nonatomic, strong) NSString* barStyle;
-@property (nonatomic, strong) NSNumber* translucent;
-@property (nonatomic, strong) NSNumber* transparent;
 @property (nonatomic, strong) NSNumber* drawBehind;
 @property (nonatomic, strong) NSNumber* noBorder;
-@property (nonatomic, strong) NSNumber* blur;
 @property (nonatomic, strong) NSNumber* animate;
 @property (nonatomic, strong) NSString* testID;
 @property (nonatomic, strong) RNNLargeTitleOptions* largeTitle;

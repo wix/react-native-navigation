@@ -21,23 +21,35 @@
 
 @implementation RNNSideMenuController
 
--(instancetype)initWithControllers:(NSArray*)controllers;
-{
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNBasePresenter *)presenter {
 	self = [super init];
 	
-	[self setControllers:controllers];
+	self.presenter = presenter;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	self.optionsResolver = optionsResolver;
+	
+	[self bindChildViewControllers:childViewControllers];
+	
+	// Fixes #3697
+	[self setExtendedLayoutIncludesOpaqueBars:YES];
+	self.edgesForExtendedLayout |= UIRectEdgeBottom;
+	
+	return self;
+}
+
+- (void)bindChildViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
+	[self setControllers:viewControllers];
 	
 	self.sideMenu = [[MMDrawerController alloc] initWithCenterViewController:self.center leftDrawerViewController:self.left rightDrawerViewController:self.right];
 	
 	self.sideMenu.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
 	self.sideMenu.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
-
+	
 	[self addChildViewController:self.sideMenu];
 	[self.sideMenu.view setFrame:self.view.bounds];
 	[self.view addSubview:self.sideMenu.view];
 	[self.view bringSubviewToFront:self.sideMenu.view];
-	
-	return self;
 }
 
 -(void)showSideMenu:(MMDrawerSide)side animated:(BOOL)animated {
@@ -89,12 +101,18 @@
 	}
 }
 
-- (RNNRootViewController *)getLeafViewController {
+- (UIViewController<RNNLayoutProtocol> *)getLeafViewController {
 	return [self.center getLeafViewController];
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.center.getLeafViewController mergeOptions:options];
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_optionsResolver resolve:self with:self.childViewControllers];
+	[_presenter present:self.options onViewControllerDidLoad:self];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[self.options mergeOptions:options overrideOptions:YES];
+	[self.presenter present:self.options onViewControllerWillAppear:self];
 }
 
 @end

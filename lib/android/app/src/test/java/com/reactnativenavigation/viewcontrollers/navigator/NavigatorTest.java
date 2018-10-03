@@ -35,6 +35,7 @@ import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.robolectric.android.controller.ActivityController;
+import org.robolectric.annotation.Config;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +47,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@Config(qualifiers = "xxhdpi")
 public class NavigatorTest extends BaseTest {
     private TestActivity activity;
     private ChildControllersRegistry childRegistry;

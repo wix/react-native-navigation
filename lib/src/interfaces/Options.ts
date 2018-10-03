@@ -187,8 +187,7 @@ export interface OptionsTopBarBackButton {
    */
   showTitle?: boolean;
   /**
-   * Back button icon or text color
-   * #### (Android specific)
+   * Back button icon and text color
    */
   color?: Color;
 }
@@ -209,6 +208,16 @@ export interface  OptionsTopBarBackground {
   component?: {
     name?: string;
   };
+  /**
+   * Allows the NavBar to be translucent (blurred)
+   * #### (iOS specific)
+   */
+  translucent?: boolean;
+  /**
+   * Enable background blur
+   * #### (iOS specific)
+   */
+  blur?: boolean;
 }
 
 export interface OptionsTopBarButton {
@@ -310,27 +319,11 @@ export interface OptionsTopBar {
    */
   barStyle?: 'default' | 'black';
   /**
-   * Allows the NavBar to be translucent (blurred)
-   * #### (iOS specific)
-   * @requires transparent: false
-   */
-  translucent?: boolean;
-  /**
-   * Allows the NavBar to be transparent
-   * #### (iOS specific)
-   */
-  transparent?: boolean;
-  /**
    * Disable the border on bottom of the navbar
    * #### (iOS specific)
    * @default false
    */
   noBorder?: boolean;
-  /**
-   * Enable background blur
-   * #### (iOS specific)
-   */
-  blur?: boolean;
   /**
    * Show a UISearchBar in the Top Bar
    * #### (iOS 11+ specific)
@@ -412,7 +405,6 @@ export interface OptionsBottomTabs {
   /**
    * Allows the Bottom Tabs to be translucent (blurred)
    * #### (iOS specific)
-   * @requires transparent: false
    */
   translucent?: boolean;
   /**
@@ -425,6 +417,11 @@ export interface OptionsBottomTabs {
    * #### (Android specific)
    */
   titleDisplayMode?: 'alwaysShow' | 'showWhenActive' | 'alwaysHide';
+  /**
+   * Set the elevation of the Bottom Tabs in dp
+   * #### (Android specific)
+   */
+  elevation?: AndroidDensityNumber;
 }
 
 export interface OptionsBottomTab {

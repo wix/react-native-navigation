@@ -1,9 +1,11 @@
 package com.reactnativenavigation.views.element.animators;
 
 import android.animation.Animator;
+import android.graphics.Point;
 import android.widget.TextView;
 
 import com.facebook.react.views.text.ReactTextView;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.element.Element;
 import com.shazam.android.widget.text.reflow.ReflowTextAnimatorHelper;
 
@@ -17,7 +19,10 @@ public class TextChangeAnimator extends PropertyAnimatorCreator<ReactTextView> {
 
     @Override
     protected boolean shouldAnimateProperty(ReactTextView fromChild, ReactTextView toChild) {
-        return getTextSize(fromChild) != getTextSize(toChild);
+        Point fromXy = ViewUtils.getLocationOnScreen(from.getChild());
+        Point toXy = ViewUtils.getLocationOnScreen(to.getChild());
+        return getTextSize(fromChild) != getTextSize(toChild) ||
+               !fromXy.equals(toXy.x, toXy.y);
     }
 
     @Override

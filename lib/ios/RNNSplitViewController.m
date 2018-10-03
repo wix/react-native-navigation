@@ -1,25 +1,26 @@
 #import "RNNSplitViewController.h"
 
-@interface RNNSplitViewController()
-@property (nonatomic) BOOL _optionsApplied;
-@property (nonatomic, copy) void (^rotationBlock)(void);
-@end
-
 @implementation RNNSplitViewController
 
--(instancetype)initWithOptions:(RNNSplitViewOptions*)options
-			withComponentId:(NSString*)componentId
-			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNBasePresenter *)presenter {
 	self = [super init];
-	self.componentId = componentId;
+	
+	self.presenter = presenter;
 	self.options = options;
-	self.eventEmitter = eventEmitter;
-	self.creator = creator;
-
+	self.layoutInfo = layoutInfo;
+	self.optionsResolver = optionsResolver;
+	
 	self.navigationController.delegate = self;
-
+	
+	[self bindChildViewControllers:childViewControllers];
+	
 	return self;
+}
+
+- (void)bindChildViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
+	[self setViewControllers:viewControllers];
+	UIViewController<UISplitViewControllerDelegate>* masterViewController = viewControllers[0];
+	self.delegate = masterViewController;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -31,12 +32,14 @@
 	return self;
 }
 
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	readyBlock();
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_optionsResolver resolve:self with:self.viewControllers];
+	[_presenter present:self.options onViewControllerDidLoad:self];
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.options mergeOptions:options];
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[self.options mergeOptions:options overrideOptions:YES];
+	[self.presenter present:self.options onViewControllerWillAppear:self];
 }
 
 @end
