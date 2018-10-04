@@ -169,10 +169,11 @@ Navigation.mergeOptions(this.props.componentId, {
   rootBackgroundImage: require('rootBackground.png'),
   topBar: {
     barStyle: 'default' | 'black',
-    translucent: true,
-    transparent: false,
+    background: {
+      translucent: true,
+      blur: false
+    }
     noBorder: false,
-    blur: false,
     backButton: {
       title: 'Back',
       showTitle: false

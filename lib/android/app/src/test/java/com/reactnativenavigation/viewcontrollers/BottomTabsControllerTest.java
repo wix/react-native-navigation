@@ -11,8 +11,6 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
-import com.reactnativenavigation.mocks.TopBarButtonCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Colour;
@@ -21,7 +19,6 @@ import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
 import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
 import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -36,8 +33,11 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 import static com.reactnativenavigation.TestUtils.hideBackButton;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -212,6 +212,37 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
+    public void applyChildOptions_resolvedOptionsAreUsed() {
+        Options childOptions = new Options();
+        SimpleViewController pushedScreen = new SimpleViewController(activity, childRegistry, "child4.1", childOptions);
+        disablePushAnimation(pushedScreen);
+        child4 = createStack(pushedScreen);
+
+        tabs = new ArrayList<>(Collections.singletonList(child4));
+
+        initialOptions.bottomTabsOptions.currentTabIndex = new Number(3);
+        Options resolvedOptions = new Options();
+        uut = new BottomTabsController(activity,
+                tabs,
+                childRegistry,
+                eventEmitter,
+                imageLoaderMock,
+                "uut",
+                initialOptions,
+                new OptionsPresenter(activity, new Options()),
+                presenter,
+                new BottomTabOptionsPresenter(activity, tabs, new Options())) {
+            @Override
+            public Options resolveCurrentOptions() {
+                return resolvedOptions;
+            }
+        };
+
+        activity.setContentView(uut.getView());
+        verify(presenter, times(2)).applyChildOptions(eq(resolvedOptions), any());
+    }
+
+    @Test
     public void child_mergeOptions_currentTabIndex() {
         uut.ensureViewIsCreated();
 
@@ -285,7 +316,13 @@ public class BottomTabsControllerTest extends BaseTest {
         return TestUtils.newStackController(activity)
                 .setId(id)
                 .setInitialOptions(tabOptions)
-                .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new Options()))
+                .build();
+    }
+
+    private StackController createStack(ViewController initialChild) {
+        return TestUtils.newStackController(activity)
+                .setInitialOptions(tabOptions)
+                .setChildren(new ArrayList<>(Collections.singleton(initialChild)))
                 .build();
     }
 
@@ -293,7 +330,7 @@ public class BottomTabsControllerTest extends BaseTest {
         return (ViewGroup.MarginLayoutParams) tabs.get(index).getView().getLayoutParams();
     }
 
-    public BottomTabsController createBottomTabs() {
+    private BottomTabsController createBottomTabs() {
         return new BottomTabsController(activity,
                 tabs,
                 childRegistry,

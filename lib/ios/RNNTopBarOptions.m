@@ -2,13 +2,8 @@
 #import "RNNNavigationButtons.h"
 #import "RNNCustomTitleView.h"
 
-extern const NSInteger BLUR_TOPBAR_TAG;
-const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
-
-
 @interface RNNTopBarOptions ()
 
-@property (nonatomic, strong) NSMutableDictionary* originalTopBarImages;
 @property (nonatomic, strong) RNNNavigationButtons* navigationButtons;
 
 @end
@@ -75,7 +70,6 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (void)applyOnNavigationController:(UINavigationController *)navigationController {
-	[self.background applyOnNavigationController:navigationController];
 	if (self.testID) {
 		navigationController.navigationBar.accessibilityIdentifier = self.testID;
 	}
@@ -102,66 +96,13 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		}
 	}
 	
-	if ([self.blur boolValue]) {
-		if (![navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]) {
-			
-			[navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-			navigationController.navigationBar.shadowImage = [UIImage new];
-			UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-			CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-			blur.frame = CGRectMake(0, -1 * statusBarFrame.size.height, navigationController.navigationBar.frame.size.width, navigationController.navigationBar.frame.size.height + statusBarFrame.size.height);
-			blur.userInteractionEnabled = NO;
-			blur.tag = BLUR_TOPBAR_TAG;
-			[navigationController.navigationBar insertSubview:blur atIndex:0];
-			[navigationController.navigationBar sendSubviewToBack:blur];
-		}
-	} else {
-		UIView *blur = [navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG];
-		if (blur) {
-			[navigationController.navigationBar setBackgroundImage: nil forBarMetrics:UIBarMetricsDefault];
-			navigationController.navigationBar.shadowImage = nil;
-			[blur removeFromSuperview];
-		}
-	}
-	
-	void (^disableTopBarTransparent)(void) = ^ {
-		UIView *transparentView = [navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
-		if (transparentView){
-			[transparentView removeFromSuperview];
-			[navigationController.navigationBar setBackgroundImage:self.originalTopBarImages[@"backgroundImage"] forBarMetrics:UIBarMetricsDefault];
-			navigationController.navigationBar.shadowImage = self.originalTopBarImages[@"shadowImage"];
-			self.originalTopBarImages = nil;
-		}
-	};
-	
-	if (self.transparent) {
-		if ([self.transparent boolValue]) {
-			if (![navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG]){
-				[self storeOriginalTopBarImages:navigationController];
-				[navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-				navigationController.navigationBar.shadowImage = [UIImage new];
-				UIView *transparentView = [[UIView alloc] initWithFrame:CGRectZero];
-				transparentView.tag = TOP_BAR_TRANSPARENT_TAG;
-				[navigationController.navigationBar insertSubview:transparentView atIndex:0];
-			}
-		} else {
-			disableTopBarTransparent();
-		}
-	} else {
-		disableTopBarTransparent();
-	}
-	
 	if (self.barStyle) {
 		navigationController.navigationBar.barStyle = [RCTConvert UIBarStyle:self.barStyle];
 	} else {
 		navigationController.navigationBar.barStyle = UIBarStyleDefault;
 	}
 	
-	if (self.translucent) {
-		navigationController.navigationBar.translucent = [self.translucent boolValue];
-	} else {
-		navigationController.navigationBar.translucent = NO;
-	}
+	[self.background applyOnNavigationController:navigationController];
 }
 
 - (void)setRightButtonColor:(NSNumber *)rightButtonColor {
@@ -210,19 +151,6 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	} else {
 		_leftButtons = leftButtons;
 	}
-}
-
--(void)storeOriginalTopBarImages:(UINavigationController *)navigationController {
-	NSMutableDictionary *originalTopBarImages = [@{} mutableCopy];
-	UIImage *bgImage = [navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault];
-	if (bgImage != nil) {
-		originalTopBarImages[@"backgroundImage"] = bgImage;
-	}
-	UIImage *shadowImage = navigationController.navigationBar.shadowImage;
-	if (shadowImage != nil) {
-		originalTopBarImages[@"shadowImage"] = shadowImage;
-	}
-	self.originalTopBarImages = originalTopBarImages;
 }
 
 @end

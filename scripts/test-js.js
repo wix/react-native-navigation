@@ -14,7 +14,7 @@ const dirs = [
 run();
 
 function run() {
-  const paths = _.chain(dirs).map((d) => d === 'e2e' ? `${d}/**/*.[tj]s` : `${d}/**/*.[tj]s*`).join(' ').value();
+  const paths = _.chain(dirs).map((d) => d === 'e2e' ? `${d}/**/*.[tj]s` : `${d}/**/*.[tj]sx?`).join(' ').value();
   exec.execSync(`tslint ${paths} ${fix} --format verbose`);
   assertAllTsFilesInSrc();
   exec.execSync(`jest --coverage`);

@@ -1,58 +1,57 @@
-//
-//  RNNSideMenuChildVC.m
-//  ReactNativeNavigation
-//
-//  Created by Ran Greenberg on 09/02/2017.
-//  Copyright © 2017 Wix. All rights reserved.
-//
-
 #import "RNNSideMenuChildVC.h"
 
 @interface RNNSideMenuChildVC ()
 
 @property (readwrite) RNNSideMenuChildType type;
-@property (readwrite) UIViewController<RNNParentProtocol> *child;
+@property (nonatomic, retain) UIViewController<RNNParentProtocol> *child;
 
 @end
 
 @implementation RNNSideMenuChildVC
 
--(instancetype) initWithChild:(UIViewController<RNNParentProtocol>*)child type:(RNNSideMenuChildType)type {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNBasePresenter *)presenter type:(RNNSideMenuChildType)type {
+	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options optionsResolver:optionsResolver presenter:presenter];
+	
+	self.type = type;
+
+	return self;
+}
+
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNBasePresenter *)presenter {
 	self = [super init];
+	
+	self.presenter = presenter;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	self.optionsResolver = optionsResolver;
+	
+	[self bindChildViewControllers:childViewControllers];
+	
+	return self;
+}
+
+- (void)bindChildViewControllers:(NSArray<UIViewController<RNNParentProtocol> *> *)viewControllers {
+	UIViewController<RNNParentProtocol>* child = viewControllers[0];
 	
 	self.child = child;
 	[self addChildViewController:self.child];
 	[self.child.view setFrame:self.view.bounds];
 	[self.view addSubview:self.child.view];
 	[self.view bringSubviewToFront:self.child.view];
-
-	self.type = type;
-	
-	return self;
 }
 
 - (UIViewController *)getLeafViewController {
 	return [self.child getLeafViewController];
 }
 
-- (void)performOnChildWillAppear:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:combinedOptions];
-	}
-}
-
-- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:combinedOptions];
-	}
-}
-
 - (void)willMoveToParentViewController:(UIViewController *)parent {
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:_presenter.options];
-	}
+	[_optionsResolver resolve:self with:self.childViewControllers];
+	[_presenter present:self.options onViewControllerDidLoad:self];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[self.options mergeOptions:options overrideOptions:YES];
+	[self.presenter present:self.options onViewControllerWillAppear:self];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

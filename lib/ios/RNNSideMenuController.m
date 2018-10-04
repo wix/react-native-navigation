@@ -21,24 +21,35 @@
 
 @implementation RNNSideMenuController
 
--(instancetype)initWithControllers:(NSArray*)controllers presenter:(RNNBasePresenter *)presenter
-{
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNBasePresenter *)presenter {
 	self = [super init];
-	self.presenter = presenter;
 	
-	[self setControllers:controllers];
+	self.presenter = presenter;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	self.optionsResolver = optionsResolver;
+	
+	[self bindChildViewControllers:childViewControllers];
+	
+	// Fixes #3697
+	[self setExtendedLayoutIncludesOpaqueBars:YES];
+	self.edgesForExtendedLayout |= UIRectEdgeBottom;
+	
+	return self;
+}
+
+- (void)bindChildViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
+	[self setControllers:viewControllers];
 	
 	self.sideMenu = [[MMDrawerController alloc] initWithCenterViewController:self.center leftDrawerViewController:self.left rightDrawerViewController:self.right];
 	
 	self.sideMenu.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
 	self.sideMenu.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
-
+	
 	[self addChildViewController:self.sideMenu];
 	[self.sideMenu.view setFrame:self.view.bounds];
 	[self.view addSubview:self.sideMenu.view];
 	[self.view bringSubviewToFront:self.sideMenu.view];
-	
-	return self;
 }
 
 -(void)showSideMenu:(MMDrawerSide)side animated:(BOOL)animated {
@@ -94,25 +105,14 @@
 	return [self.center getLeafViewController];
 }
 
-- (void)performOnChildWillAppear:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:combinedOptions];
-	}
-}
-
-- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-		if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:combinedOptions];
-	}
-}
-
 - (void)willMoveToParentViewController:(UIViewController *)parent {
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:_presenter.options];
-	}
+	[_optionsResolver resolve:self with:self.childViewControllers];
+	[_presenter present:self.options onViewControllerDidLoad:self];
 }
 
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[self.options mergeOptions:options overrideOptions:YES];
+	[self.presenter present:self.options onViewControllerWillAppear:self];
+}
 
 @end

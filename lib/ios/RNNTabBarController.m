@@ -8,25 +8,41 @@
 	RNNEventEmitter *_eventEmitter;
 }
 
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+			  childViewControllers:(NSArray *)childViewControllers
+						   options:(RNNNavigationOptions *)options
+				   optionsResolver:(RNNParentOptionsResolver *)optionsResolver
+						 presenter:(RNNBasePresenter *)presenter
+					  eventEmitter:(RNNEventEmitter *)eventEmitter {
+	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options optionsResolver:optionsResolver presenter:presenter];
+	
+	_eventEmitter = eventEmitter;
+	
+	return self;
+}
+
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+			  childViewControllers:(NSArray *)childViewControllers
+						   options:(RNNNavigationOptions *)options
+				   optionsResolver:(RNNParentOptionsResolver *)optionsResolver
+						 presenter:(RNNBasePresenter *)presenter {
+	self = [super init];
+	
+	self.presenter = presenter;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	self.optionsResolver = optionsResolver;
+	
+	[self setViewControllers:childViewControllers];
+	
+	return self;
+}
+
 - (instancetype)initWithEventEmitter:(id)eventEmitter {
 	self = [super init];
 	_eventEmitter = eventEmitter;
 	self.delegate = self;
 	return self;
-}
-
-- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:combinedOptions];
-	}
-}
-
-- (void)performOnChildWillAppear:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:combinedOptions];
-	}
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -56,8 +72,14 @@
 	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).preferredStatusBarStyle;
 }
 
-- (void)setViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers {
-	[super setViewControllers:viewControllers];
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_optionsResolver resolve:self with:self.viewControllers];
+	[_presenter present:self.options onViewControllerDidLoad:self];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[self.options mergeOptions:options overrideOptions:YES];
+	[self.presenter present:self.options onViewControllerWillAppear:self];
 }
 
 #pragma mark UITabBarControllerDelegate

@@ -38,6 +38,4 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) NSString* modalPresentationStyle;
 @property (nonatomic, strong) NSString* modalTransitionStyle;
 
-- (RNNNavigationOptions *)combineWithOptions:(RNNOptions *)options;
-
 @end

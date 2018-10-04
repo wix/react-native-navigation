@@ -5,8 +5,8 @@
 @implementation RNNSideMenuSideOptions
 
 - (void)applyOnSide:(MMDrawerSide)side viewController:(UIViewController *)viewController {
-	RNNSideMenuController* sideMenuController = (RNNSideMenuController*)UIApplication.sharedApplication.delegate.window.rootViewController;
-	if (sideMenuController && [sideMenuController isKindOfClass:[RNNSideMenuController class]]) {
+	RNNSideMenuController* sideMenuController = [self getParentSideMenuControllerFromChild:viewController];
+	if (sideMenuController) {
 		if (self.enabled) {
 			switch (side) {
 				case MMDrawerSideRight:
@@ -60,6 +60,19 @@
 	}
 
 	[self resetOptions];
+}
+
+- (RNNSideMenuController *)getParentSideMenuControllerFromChild:(UIViewController *)childViewController {
+	UIViewController* vc = childViewController;
+	while (vc) {
+		if ([vc isKindOfClass:[RNNSideMenuController class]]) {
+			return (RNNSideMenuController *)vc;
+		}
+		
+		vc = vc.parentViewController;
+	}
+	
+	return nil;
 }
 
 - (void)resetOptions {

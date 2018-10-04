@@ -48,8 +48,8 @@
 	layoutInfo.componentId = self.componentId;
 	layoutInfo.name = self.pageName;
 	
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] initWithOptions:self.options];
-	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter isExternalComponent:NO presenter:presenter];
+	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
+	self.uut = [[RNNRootViewController alloc] initWithLayoutInfo:layoutInfo rootViewCreator:self.creator eventEmitter:self.emitter presenter:presenter options:self.options];
 }
 
 -(void)testTopBarBackgroundColor_validColor{
@@ -70,7 +70,6 @@
 }
 
 - (void)testStatusBarHidden_default {
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
@@ -78,7 +77,6 @@
 
 - (void)testStatusBarVisible_false {
 	self.options.statusBar.visible = @(0);
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue([self.uut prefersStatusBarHidden]);
@@ -86,7 +84,6 @@
 
 - (void)testStatusBarVisible_true {
 	self.options.statusBar.visible = @(1);
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
@@ -95,7 +92,6 @@
 - (void)testStatusBarHideWithTopBar_false {
 	self.options.statusBar.hideWithTopBar = @(0);
 	self.options.topBar.visible = @(0);
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse([self.uut prefersStatusBarHidden]);
@@ -105,6 +101,7 @@
 	self.options.statusBar.hideWithTopBar = @(1);
 	self.options.topBar.visible = @(0);
 	__unused RNNNavigationController* nav = [self createNavigationController];
+
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue([self.uut prefersStatusBarHidden]);
@@ -113,15 +110,12 @@
 -(void)testTitle_string{
 	NSString* title =@"some title";
 	self.options.topBar.title.text = title;
-	__unused RNNNavigationController* nav = [self createNavigationController];
 
 	[self.uut viewWillAppear:false];
 	XCTAssertTrue([self.uut.navigationItem.title isEqual:title]);
 }
 
 -(void)testTitle_default{
-	__unused RNNNavigationController* nav = [self createNavigationController];
-
 	[self.uut viewWillAppear:false];
 	XCTAssertNil(self.uut.navigationItem.title);
 }
@@ -143,23 +137,6 @@
 	XCTAssertTrue([self.uut.view.backgroundColor isEqual:expectedColor]);
 }
 
--(void)testPopGestureEnabled_true{
-	NSNumber* popGestureEnabled = @(1);
-	self.options.popGesture = popGestureEnabled;
-	__unused RNNNavigationController* nav = [self createNavigationController];
-	[self.uut viewWillAppear:false];
-	XCTAssertTrue(self.uut.navigationController.interactivePopGestureRecognizer.enabled);
-}
-
--(void)testPopGestureEnabled_false{
-	NSNumber* popGestureEnabled = @(0);
-	self.options.popGesture = popGestureEnabled;
-	__unused RNNNavigationController* nav = [self createNavigationController];
-	
-	[self.uut viewWillAppear:false];
-	XCTAssertFalse(self.uut.navigationController.interactivePopGestureRecognizer.enabled);
-}
-
 -(void)testTopBarTextFontFamily_validFont{
 	NSString* inputFont = @"HelveticaNeue";
 	__unused RNNNavigationController* nav = [self createNavigationController];
@@ -179,7 +156,7 @@
 
 -(void)testTopBarTranslucent {
 	NSNumber* topBarTranslucentInput = @(0);
-	self.options.topBar.translucent = topBarTranslucentInput;
+	self.options.topBar.background.translucent = topBarTranslucentInput;
 	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertFalse(self.uut.navigationController.navigationBar.translucent);
@@ -200,8 +177,8 @@
 }
 
 -(void)testTopBarTransparent_BOOL_True {
-	NSNumber* topBarTransparentInput = @(1);
-	self.options.topBar.transparent = topBarTransparentInput;
+	NSNumber* transparentColor = @(0x00000000);
+	self.options.topBar.background.color = transparentColor;
 	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
@@ -210,36 +187,27 @@
 }
 
 -(void)testTopBarTransparent_BOOL_false {
-	NSNumber* topBarTransparentInput = @(0);
+	NSNumber* inputColor = @(0xFFFF0000);
 	__unused RNNNavigationController* nav = [self createNavigationController];
-	self.options.topBar.transparent = topBarTransparentInput;
+	self.options.topBar.background.color = inputColor;
 	[self.uut viewWillAppear:false];
 	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
 	XCTAssertFalse(transparentView);
 }
 
-
--(void)testStoreOriginalTopBarImages {
-
-}
-
-
 -(void)testTopBarLargeTitle_default {
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode,  UINavigationItemLargeTitleDisplayModeNever);
 }
 -(void)testTopBarLargeTitle_true {
 	self.options.topBar.largeTitle.visible = @(1);
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeAlways);
 }
 -(void)testTopBarLargeTitle_false {
 	self.options.topBar.largeTitle.visible  = @(0);
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	
 	XCTAssertEqual(self.uut.navigationItem.largeTitleDisplayMode, UINavigationItemLargeTitleDisplayModeNever);
@@ -252,6 +220,7 @@
 	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
+
 	XCTAssertTrue([self.uut.navigationController.navigationBar.largeTitleTextAttributes[@"NSFont"] isEqual:expectedFont]);
 }
 
@@ -488,6 +457,7 @@
 
 	self.options.topBar.leftButtons = @[@{@"id": @"testId", @"text": @"test", @"enabled": @false, @"buttonColor": inputColor, @"buttonFontSize": @22, @"buttonFontWeight": @"800"}];
 	__unused RNNNavigationController* nav = [self createNavigationController];
+
 	[self.uut viewWillAppear:false];
 
 	RNNUIBarButtonItem* button = (RNNUIBarButtonItem*)[nav.topViewController.navigationItem.leftBarButtonItems objectAtIndex:0];
@@ -519,7 +489,6 @@
 -(void)testStatusBarBlurOn {
 	NSNumber* statusBarBlurInput = @(1);
 	self.options.statusBar.blur = statusBarBlurInput;
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertNotNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
 }
@@ -527,13 +496,11 @@
 -(void)testStatusBarBlurOff {
 	NSNumber* statusBarBlurInput = @(0);
 	self.options.statusBar.blur = statusBarBlurInput;
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertNil([self.uut.view viewWithTag:BLUR_STATUS_TAG]);
 }
 
 - (void)testTabBarHidden_default {
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse([self.uut hidesBottomBarWhenPushed]);
@@ -542,7 +509,6 @@
 
 - (void)testTabBarHidden_true {
 	self.options.bottomTabs.visible = @(0);
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue([self.uut hidesBottomBarWhenPushed]);
@@ -550,7 +516,6 @@
 
 - (void)testTabBarHidden_false {
 	self.options.bottomTabs.visible = @(1);
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse([self.uut hidesBottomBarWhenPushed]);
@@ -564,7 +529,7 @@
 
 -(void)testTopBarBlur_false {
 	NSNumber* topBarBlurInput = @(0);
-	self.options.topBar.blur = topBarBlurInput;
+	self.options.topBar.background.blur = topBarBlurInput;
 	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
@@ -572,7 +537,7 @@
 
 -(void)testTopBarBlur_true {
 	NSNumber* topBarBlurInput = @(1);
-	self.options.topBar.blur = topBarBlurInput;
+	self.options.topBar.background.blur = topBarBlurInput;
 	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	XCTAssertNotNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
@@ -581,23 +546,13 @@
 -(void)testBackgroundImage {
 	UIImage* backgroundImage = [[UIImage alloc] init];
 	self.options.backgroundImage = backgroundImage;
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:backgroundImage]);
 }
 
--(void)testRootBackgroundImage {
-	UIImage* rootBackgroundImage = [[UIImage alloc] init];
-	self.options.rootBackgroundImage = rootBackgroundImage;
-	__unused RNNNavigationController* nav = [self createNavigationController];
-	[self.uut viewWillAppear:false];
-	XCTAssertTrue([[(UIImageView*)self.uut.navigationController.view.subviews[0] image] isEqual:rootBackgroundImage]);
-}
-
 -(void)testTopBarDrawUnder_true {
 	self.options.topBar.drawBehind = @(1);
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue(self.uut.edgesForExtendedLayout & UIRectEdgeTop);
@@ -605,7 +560,6 @@
 
 -(void)testTopBarDrawUnder_false {
 	self.options.topBar.drawBehind = @(0);
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse(self.uut.edgesForExtendedLayout & UIRectEdgeTop);
@@ -613,7 +567,6 @@
 
 -(void)testBottomTabsDrawUnder_true {
 	self.options.bottomTabs.drawBehind = @(1);
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertTrue(self.uut.edgesForExtendedLayout & UIRectEdgeBottom);
@@ -621,7 +574,6 @@
 
 -(void)testBottomTabsDrawUnder_false {
 	self.options.bottomTabs.drawBehind = @(0);
-	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 
 	XCTAssertFalse(self.uut.edgesForExtendedLayout & UIRectEdgeBottom);
@@ -720,31 +672,17 @@
 	XCTAssertTrue([attributes[@"NSFont"] isEqual:expectedFont]);
 }
 
-- (void)testTopBarBackgroundClipToBounds_true {
-	self.options.topBar.background.clipToBounds = @(1);
-	__unused RNNNavigationController* nav = [self createNavigationController];
-	[self.uut viewWillAppear:false];
-
-	XCTAssertTrue(self.uut.navigationController.navigationBar.clipsToBounds);
-}
-
-- (void)testTopBarBackgroundClipToBounds_false {
-	__unused RNNNavigationController* nav = [self createNavigationController];
-	[self.uut viewWillAppear:false];
-
-	XCTAssertFalse(self.uut.navigationController.navigationBar.clipsToBounds);
-}
-
 - (void)testWillMoveToParent_shouldPassOptionsToParent {
 	__unused RNNNavigationController* nav = [self createNavigationController];
-	self.uut.presenter.options.topBar.visible = @(0);
+	self.uut.options.topBar.visible = @(0);
 	[self.uut willMoveToParentViewController:nav];
 	XCTAssertTrue(nav.navigationBarHidden);
 }
 
 - (RNNNavigationController *)createNavigationController {
 	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithRootViewController:self.uut];
-	nav.presenter = [[RNNNavigationControllerPresenter alloc] initWithOptions:[[RNNNavigationOptions alloc] initWithDict:@{}]];
+	nav.options = [[RNNNavigationOptions alloc] initWithDict:@{}];
+	nav.presenter = [[RNNNavigationControllerPresenter alloc] init];
 	
 	return nav;
 }

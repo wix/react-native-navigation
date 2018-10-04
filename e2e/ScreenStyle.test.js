@@ -9,7 +9,7 @@ describe('screen style', () => {
     await device.relaunchApp();
   });
 
-  test('declare a options on component component', async () => {
+  test('declare options on a component', async () => {
     await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
     await expect(elementByLabel('Static Title')).toBeVisible();
   });

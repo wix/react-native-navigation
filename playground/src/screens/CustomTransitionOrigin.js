@@ -18,7 +18,9 @@ class CustomTransitionOrigin extends Component {
         largeTitle: {
           visible: false
         },
-        translucent: true
+        background: {
+          translucent: true
+        }
       }
     };
   }

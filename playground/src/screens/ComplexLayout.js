@@ -64,7 +64,12 @@ class ComplexLayout extends Component {
                 children: [
                   {
                     component: {
-                      name: 'navigation.playground.TextScreen'
+                      name: 'navigation.playground.TextScreen',
+                      options: {
+                        topBar: {
+                          animate: false
+                        }
+                      }
                     }
                   }
                 ],
@@ -81,6 +86,11 @@ class ComplexLayout extends Component {
                 left: {
                   component: {
                     name: 'navigation.playground.SideMenuScreen',
+                    options: {
+                      topBar: {
+                        animate: false
+                      }
+                    },
                     passProps: {
                       side: 'left'
                     }
@@ -100,7 +110,38 @@ class ComplexLayout extends Component {
                 options: {
                   bottomTab: {
                     text: 'SideMenu',
-                    icon: require('../images/two.png')
+                    icon: require('../images/two.png'),
+                    testID: testIDs.SECOND_TAB_BAR_BUTTON
+                  }
+                }
+              }
+            },
+            {
+              sideMenu: {
+                left: {
+                  component: {
+                    name: 'navigation.playground.SideMenuScreen',
+                    passProps: {
+                      side: 'left'
+                    }
+                  }
+                },
+                center: {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          name: 'navigation.playground.FlatListScreen',
+                        }
+                      }
+                    ]
+                  }
+                },
+                options: {
+                  bottomTab: {
+                    text: 'FlatList',
+                    icon: require('../images/three.png'),
+                    testID: testIDs.THIRD_TAB_BAR_BUTTON,
                   }
                 }
               }

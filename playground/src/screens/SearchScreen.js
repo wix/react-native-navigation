@@ -27,7 +27,9 @@ class SearchControllerScreen extends Component {
           visible: true
         },
         searchBar: true,
-        translucent: true,
+        background: {
+          translucent: true
+        },
         searchBarPlaceholder: 'Start Typing'
       }
     };
@@ -75,7 +77,9 @@ class SearchControllerScreen extends Component {
             largeTitle: {
               visible: true
             },
-            translucent: true,
+            background: {
+              translucent: true
+            }
           }
         }
       },
