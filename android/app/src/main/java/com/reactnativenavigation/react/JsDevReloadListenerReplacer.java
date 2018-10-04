@@ -2,6 +2,7 @@ package com.reactnativenavigation.react;
 
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.utils.ReflectionUtils;
+import com.reactnativenavigation.controllers.SplashActivity;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -68,7 +69,13 @@ class JsDevReloadListenerReplacer {
                 listener.onJsDevReload();
             }
 
-            return method.invoke(originalReactHelper, args);
+            Object result = method.invoke(originalReactHelper, args);
+
+            if (methodName.equals("getCurrentActivity") && result == null) {
+                return SplashActivity.instance;
+            }
+
+            return result;
         }
     }
 }

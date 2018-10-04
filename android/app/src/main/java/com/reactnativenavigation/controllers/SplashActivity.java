@@ -15,6 +15,7 @@ import com.reactnativenavigation.utils.CompatUtils;
 
 public abstract class SplashActivity extends AppCompatActivity {
     public static boolean isResumed = false;
+    public static SplashActivity instance = null;
 
     public static void start(Activity activity) {
         Intent intent = activity.getPackageManager().getLaunchIntentForPackage(activity.getPackageName());
@@ -30,6 +31,7 @@ public abstract class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         LaunchArgs.instance.set(getIntent());
         setSplashLayout();
         IntentDataHandler.saveIntentData(getIntent());
@@ -45,8 +47,18 @@ public abstract class SplashActivity extends AppCompatActivity {
                 finish();
                 return;
             }
-            NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
-            if (NavigationApplication.instance.clearHostOnActivityDestroy(this)) {
+
+            //  진입 경로가 push notification인 경우
+            boolean isExtras = getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().getString("url") != null;
+
+            //  진입 경로가 deeplink인 경우
+            boolean isDeeplink = getIntent() != null && getIntent().getData() != null;
+
+            if(!isExtras || !isDeeplink ) {
+                NavigationApplication.instance.getEventEmitter().sendAppLaunchedEvent();
+            }
+
+            if ((isExtras || isDeeplink) && NavigationApplication.instance.clearHostOnActivityDestroy(this)) {
                 overridePendingTransition(0, 0);
                 finish();
             }
