@@ -64,7 +64,12 @@ class ComplexLayout extends Component {
                 children: [
                   {
                     component: {
-                      name: 'navigation.playground.TextScreen'
+                      name: 'navigation.playground.TextScreen',
+                      options: {
+                        topBar: {
+                          animate: false
+                        }
+                      }
                     }
                   }
                 ],
@@ -81,6 +86,11 @@ class ComplexLayout extends Component {
                 left: {
                   component: {
                     name: 'navigation.playground.SideMenuScreen',
+                    options: {
+                      topBar: {
+                        animate: false
+                      }
+                    },
                     passProps: {
                       side: 'left'
                     }

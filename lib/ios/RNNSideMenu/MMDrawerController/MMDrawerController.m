@@ -21,7 +21,6 @@
 
 #import "MMDrawerController.h"
 #import "UIViewController+MMDrawerController.h"
-#import "RNNNavigationOptions.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -478,24 +477,6 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         }
         [self.centerViewController didMoveToParentViewController:self];
     }
-}
-
-- (void)performOnChildWillAppear:(RNNNavigationOptions *)childOptions {
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:childOptions];
-	}
-}
-
-- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:childOptions];
-	}
-}
-
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:nil];
-	}
 }
 
 -(void)setCenterViewController:(UIViewController *)newCenterViewController withCloseAnimation:(BOOL)animated completion:(void(^)(BOOL finished))completion{

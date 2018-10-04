@@ -3,6 +3,4 @@
 
 @interface RNNViewControllerPresenter : RNNBasePresenter
 
-- (void)presentOn:(UIViewController *)viewController;
-
 @end

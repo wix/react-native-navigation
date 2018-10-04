@@ -40,4 +40,12 @@ describe('Overlay', () => {
     await device.setOrientation('landscape');
     await expect(elementById(testIDs.DIALOG_HEADER)).toBeVisible();
   });
+
+  test('setRoot should not remove overlay', async () => {
+    await elementById(testIDs.PUSH_OPTIONS_BUTTON).tap();
+    await elementById(testIDs.SHOW_OVERLAY_BUTTON).tap();
+    await expect(elementById(testIDs.DIALOG_HEADER)).toBeVisible();
+    await elementById(testIDs.SET_ROOT_BUTTON).tap();
+    await expect(elementById(testIDs.DIALOG_HEADER)).toBeVisible();
+  });
 });

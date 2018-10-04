@@ -20,8 +20,8 @@
 
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, retain) RNNBasePresenter* presenter;
-
--(instancetype)initWithControllers:(NSArray*)controllers presenter:(RNNBasePresenter *)presenter;
+@property (nonatomic, strong) RNNNavigationOptions* options;
+@property (nonatomic, strong) RNNParentOptionsResolver* optionsResolver;
 
 -(void)showSideMenu:(MMDrawerSide)side animated:(BOOL)animated;
 -(void)hideSideMenu:(MMDrawerSide)side animated:(BOOL)animated;

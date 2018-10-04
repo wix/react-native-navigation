@@ -119,8 +119,22 @@ export interface OptionsTopBarTitle {
    * Custom component as the title view
    */
   component?: {
+    /**
+     * Component reference id, Auto generated if empty
+     */
+    id?: string;
+    /**
+     * Name of your component
+     */
     name: string;
+    /**
+     * Set component alignment
+     */
     alignment?: 'center' | 'fill';
+    /**
+     * Properties to pass down to the component
+     */
+    passProps?: object;
   };
   /**
    * Top Bar title height in densitiy pixels

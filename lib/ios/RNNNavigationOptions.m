@@ -10,14 +10,6 @@
 
 @implementation RNNNavigationOptions
 
-- (RNNNavigationOptions *)combineWithOptions:(RNNOptions *)options {
-	RNNNavigationOptions *navigationOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
-	[navigationOptions mergeOptions:self overrideOptions:YES];
-	[navigationOptions mergeOptions:options overrideOptions:YES];
-	
-	return navigationOptions;
-}
-
 - (void)applyOn:(UIViewController *)viewController {
 	[self.topBar applyOn:viewController];
 	[self.bottomTabs applyOn:viewController];

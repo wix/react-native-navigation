@@ -76,6 +76,12 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 			self.originalTopBarImages = nil;
 		}
 	}
+
+	if (self.clipToBounds) {
+		navigationController.navigationBar.clipsToBounds = [self.clipToBounds boolValue];
+	} else {
+		navigationController.navigationBar.clipsToBounds = NO;
+	}
 }
 
 - (void)storeOriginalTopBarImages:(UINavigationController *)navigationController {

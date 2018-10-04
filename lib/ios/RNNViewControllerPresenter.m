@@ -2,12 +2,8 @@
 
 @implementation RNNViewControllerPresenter
 
-- (void)presentOn:(UIViewController *)viewController {
-	[self.options applyOn:viewController];
-	
-	if ([self.delegate respondsToSelector:@selector(optionsUpdated)]) {
-		[self.delegate optionsUpdated];
-	}
+- (void)present:(RNNNavigationOptions *)options onViewControllerDidLoad:(UIViewController *)viewController {
+	[options applyOn:viewController];
 }
 
 @end

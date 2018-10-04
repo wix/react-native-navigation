@@ -13,6 +13,19 @@
 
 @implementation RNNTopTabsViewController
 
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNBasePresenter *)presenter {
+	self = [self init];
+	
+	self.presenter = presenter;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	self.optionsResolver = optionsResolver;
+	
+	[self setViewControllers:childViewControllers];
+	
+	return self;
+}
+
 - (instancetype)init {
 	self = [super init];
 	
@@ -57,7 +70,7 @@
 	_viewControllers = viewControllers;
 	for (RNNRootViewController* childVc in viewControllers) {
 		[childVc.view setFrame:_contentView.bounds];
-		[childVc.presenter.options.topTab applyOn:childVc];
+		[childVc.options.topTab applyOn:childVc];
 	}
 	
 	[self setSelectedViewControllerIndex:0];
@@ -72,24 +85,20 @@
     [super viewDidLoad];
 }
 
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_optionsResolver resolve:self with:_viewControllers];
+	[_presenter present:self.options onViewControllerDidLoad:self];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[self.options mergeOptions:options overrideOptions:YES];
+	[self.presenter present:self.options onViewControllerWillAppear:self];
+}
+
 #pragma mark RNNParentProtocol
 
 - (UIViewController *)getLeafViewController {
 	return _currentViewController;
-}
-
-- (void)performOnChildLoad:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildLoad:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildLoad:) withObject:combinedOptions];
-	}
-}
-
-- (void)performOnChildWillAppear:(RNNNavigationOptions *)childOptions {
-	RNNNavigationOptions* combinedOptions = [_presenter presentWithChildOptions:childOptions on:self];
-	if ([self.parentViewController respondsToSelector:@selector(performOnChildWillAppear:)]) {
-		[self.parentViewController performSelector:@selector(performOnChildWillAppear:) withObject:combinedOptions];
-	}
 }
 
 @end
