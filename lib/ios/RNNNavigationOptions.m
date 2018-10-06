@@ -19,7 +19,11 @@
 	[self.overlay applyOn:viewController];
 	[self.statusBar applyOn:viewController];
 	[self.layout applyOn:viewController];
-	[self applyOtherOptions:self on:viewController];
+	
+	[self applyOtherOptionsOn:viewController];
+	
+	[self applyOnNavigationController:viewController.navigationController];
+	[self applyOnTabBarController:viewController.tabBarController];
 }
 
 - (void)applyOnNavigationController:(UINavigationController *)navigationController {
@@ -27,19 +31,19 @@
 	[self.statusBar applyOn:navigationController];
 	[self.layout applyOn:navigationController];
 	[self.bottomTab applyOn:navigationController];
-	[self applyOtherOptions:self onNavigationController:navigationController];
+	[self applyOtherOptionsOnNavigationController:navigationController];
 }
 
 - (void)applyOnTabBarController:(UITabBarController *)tabBarController {
 	[self.bottomTabs applyOnTabBarController:tabBarController];
 }
 
-- (void)applyOtherOptions:(RNNNavigationOptions *)options onNavigationController:(UINavigationController*)navigationController {
-	if (options.popGesture) {
-		navigationController.interactivePopGestureRecognizer.enabled = [options.popGesture boolValue];
+- (void)applyOtherOptionsOnNavigationController:(UINavigationController*)navigationController {
+	if (self.popGesture) {
+		navigationController.interactivePopGestureRecognizer.enabled = [self.popGesture boolValue];
 	}
 	
-	if (options.rootBackgroundImage) {
+	if (self.rootBackgroundImage) {
 		UIImageView* backgroundImageView = (navigationController.view.subviews.count > 0) ? navigationController.view.subviews[0] : nil;
 		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
 			backgroundImageView = [[UIImageView alloc] initWithFrame:navigationController.view.bounds];
@@ -47,13 +51,13 @@
 		}
 		
 		backgroundImageView.layer.masksToBounds = YES;
-		backgroundImageView.image = [options.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)options.rootBackgroundImage : [RCTConvert UIImage:options.rootBackgroundImage];
+		backgroundImageView.image = [self.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.rootBackgroundImage : [RCTConvert UIImage:self.rootBackgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
 }
 
-- (void)applyOtherOptions:(RNNNavigationOptions *)options on:(UIViewController*)viewController {
-	if (options.backgroundImage) {
+- (void)applyOtherOptionsOn:(UIViewController*)viewController {
+	if (self.backgroundImage) {
 		UIImageView* backgroundImageView = (viewController.view.subviews.count > 0) ? viewController.view.subviews[0] : nil;
 		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
 			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
@@ -61,16 +65,16 @@
 		}
 		
 		backgroundImageView.layer.masksToBounds = YES;
-		backgroundImageView.image = [options.backgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)options.backgroundImage : [RCTConvert UIImage:options.backgroundImage];
+		backgroundImageView.image = [self.backgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.backgroundImage : [RCTConvert UIImage:self.backgroundImage];
 		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 	}
 
-	if (options.modalPresentationStyle) {
-		viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:options.modalPresentationStyle];
+	if (self.modalPresentationStyle) {
+		viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:self.modalPresentationStyle];
 		[viewController.view setBackgroundColor:[UIColor clearColor]];
 	}
-	if (options.modalTransitionStyle) {
-		viewController.modalTransitionStyle = [RCTConvert UIModalTransitionStyle:options.modalTransitionStyle];
+	if (self.modalTransitionStyle) {
+		viewController.modalTransitionStyle = [RCTConvert UIModalTransitionStyle:self.modalTransitionStyle];
 	}
 }
 

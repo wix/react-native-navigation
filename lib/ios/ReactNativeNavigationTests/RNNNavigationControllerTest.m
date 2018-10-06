@@ -43,7 +43,7 @@
 	NSNumber* popGestureEnabled = @(0);
 	self.uut.options.popGesture = popGestureEnabled;
 	
-	[self.uut viewDidLoad];
+	[self.uut willMoveToParentViewController:nil];
 
 	XCTAssertFalse(self.uut.interactivePopGestureRecognizer.enabled);
 }
@@ -60,13 +60,13 @@
 - (void)testRootBackgroundImage {
 	UIImage* rootBackgroundImage = [[UIImage alloc] init];
 	self.uut.options.rootBackgroundImage = rootBackgroundImage;
-	[self.uut viewDidLoad];
+	[self.uut willMoveToParentViewController:nil];
 	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:rootBackgroundImage]);
 }
 
 - (void)testTopBarBackgroundClipToBounds_true {
 	self.uut.options.topBar.background.clipToBounds = @(1);
-	[self.uut viewDidLoad];
+	[self.uut willMoveToParentViewController:nil];
 
 	XCTAssertTrue(self.uut.navigationBar.clipsToBounds);
 }

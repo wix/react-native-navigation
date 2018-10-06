@@ -8,11 +8,12 @@
 #import "RNNUIBarButtonItem.h"
 #import "RNNLayoutInfo.h"
 #import "RNNLeafProtocol.h"
+#import "RNNLayoutProtocol.h"
 #import "RNNViewControllerPresenter.h"
 
 typedef void (^PreviewCallback)(UIViewController *vc);
 
-@interface RNNRootViewController : UIViewController	<RNNLeafProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
+@interface RNNRootViewController : UIViewController	<RNNLeafProtocol, RNNLayoutProtocol, UIViewControllerPreviewingDelegate, UISearchResultsUpdating, UISearchBarDelegate, UINavigationControllerDelegate, UISplitViewControllerDelegate>
 
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;

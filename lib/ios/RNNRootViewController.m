@@ -85,9 +85,10 @@
 	[_presenter present:self.options onViewControllerDidLoad:self];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options {
-	[self.options mergeOptions:options overrideOptions:YES];
-	[self.presenter present:self.options onViewControllerWillAppear:self];
+- (void)mergeAndPresentOptions:(RNNNavigationOptions *)newOptions {
+	[self.options mergeOptions:newOptions overrideOptions:YES];
+	[_presenter present:self.options onViewControllerWillAppear:self];
+	
 	[self initReactCustomViews];
 }
 

@@ -21,13 +21,12 @@
 
 @implementation RNNSideMenuController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNBasePresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter {
 	self = [super init];
 	
 	self.presenter = presenter;
 	self.options = options;
 	self.layoutInfo = layoutInfo;
-	self.optionsResolver = optionsResolver;
 	
 	[self bindChildViewControllers:childViewControllers];
 	
@@ -106,13 +105,7 @@
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
-	[_optionsResolver resolve:self with:self.childViewControllers];
 	[_presenter present:self.options onViewControllerDidLoad:self];
-}
-
-- (void)mergeOptions:(RNNNavigationOptions *)options {
-	[self.options mergeOptions:options overrideOptions:YES];
-	[self.presenter present:self.options onViewControllerWillAppear:self];
 }
 
 @end
