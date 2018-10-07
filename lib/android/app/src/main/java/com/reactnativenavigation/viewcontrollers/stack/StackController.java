@@ -77,7 +77,7 @@ public class StackController extends ParentController<StackLayout> {
     @Override
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
-        presenter.applyChildOptions(options, child);
+        presenter.applyChildOptions(resolveCurrentOptions(), child);
         if (child instanceof ReactComponent) {
             fabOptionsPresenter.applyOptions(this.options.fabOptions, (ReactComponent) child, getView());
         }

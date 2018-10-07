@@ -194,7 +194,13 @@ public class ParentControllerTest extends BaseTest {
     public void resolveCurrentOptions_mergesWithCurrentChild() {
         ViewController child1 = Mockito.mock(ViewController.class);
         when(child1.getView()).thenReturn(new FrameLayout(activity));
-        Options childOptions = spy(new Options());
+        Options copiedChildOptions = spy(new Options());
+        Options childOptions = spy(new Options() {
+            @Override
+            public Options copy() {
+                return copiedChildOptions;
+            }
+        });
         when(child1.resolveCurrentOptions()).thenReturn(childOptions);
 
         children.add(child1);
@@ -203,7 +209,7 @@ public class ParentControllerTest extends BaseTest {
         assertThat(uut.getCurrentChild()).isEqualTo(child1);
         uut.resolveCurrentOptions();
         verify(child1).resolveCurrentOptions();
-        verify(childOptions).mergeWith(uut.initialOptions);
+        verify(copiedChildOptions).withDefaultOptions(uut.initialOptions);
     }
 
     @Test

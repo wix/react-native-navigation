@@ -831,6 +831,24 @@ public class StackControllerTest extends BaseTest {
     }
 
     @Test
+    public void applyChildOptions_appliesResolvedOptions() {
+        disablePushAnimation(child1, child2);
+
+        uut.push(child1, new CommandListenerAdapter());
+
+        assertThat(uut.getTopBar().getTitle()).isNullOrEmpty();
+
+        Options uutOptions = new Options();
+        uutOptions.topBar.title.text = new Text("UUT");
+        uut.mergeOptions(uutOptions);
+
+        assertThat(uut.getTopBar().getTitle()).isEqualTo("UUT");
+
+        uut.push(child2, new CommandListenerAdapter());
+        assertThat(uut.getTopBar().getTitle()).isEqualTo("UUT");
+    }
+
+    @Test
     public void mergeChildOptions_presenterDoesNotApplyOptionsIfViewIsNotShown() {
         ViewController vc = mock(ViewController.class);
         when(vc.isViewShown()).thenReturn(false);
