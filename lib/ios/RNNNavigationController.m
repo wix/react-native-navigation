@@ -5,12 +5,11 @@
 
 @implementation RNNNavigationController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options optionsResolver:(RNNParentOptionsResolver *)optionsResolver presenter:(RNNNavigationControllerPresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNNavigationControllerPresenter *)presenter {
 	self = [super init];
 
 	self.presenter = presenter;
 	self.options = options;
-	self.optionsResolver = optionsResolver;
 	self.layoutInfo = layoutInfo;
 	
 	[self setViewControllers:childViewControllers];
@@ -62,19 +61,8 @@
 	return self.topViewController;
 }
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
-	[_presenter present:self.options onViewControllerDidLoad:self];
-}
-
 - (void)willMoveToParentViewController:(UIViewController *)parent {
-	[_optionsResolver resolve:self with:self.childViewControllers];
 	[_presenter present:self.options onViewControllerDidLoad:self];
-}
-
-- (void)mergeOptions:(RNNNavigationOptions *)options {
-	[self.options mergeOptions:options overrideOptions:YES];
-	[self.presenter present:self.options onViewControllerWillAppear:self];
 }
 
 
