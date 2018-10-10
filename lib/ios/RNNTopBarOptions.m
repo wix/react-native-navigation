@@ -1,6 +1,8 @@
 #import "RNNTopBarOptions.h"
 #import "RNNNavigationButtons.h"
 #import "RNNCustomTitleView.h"
+#import "UIViewController+RNNOptions.h"
+#import "UINavigationController+RNNOptions.h"
 
 @interface RNNTopBarOptions ()
 
@@ -10,50 +12,17 @@
 
 @implementation RNNTopBarOptions
 
-- (instancetype)initWithDict:(NSDictionary *)dict {
-	self = [super initWithDict:dict];
-	
-	self.title.subtitle = self.subtitle;
-	
-	return self;
-}
-
-- (void)mergeWith:(NSDictionary *)otherOptions {
-	[super mergeWith:otherOptions];
-	self.title.subtitle = self.subtitle;
-}
-
 - (void)applyOn:(UIViewController*)viewController {
 	[self.title applyOn:viewController];
 	[self.largeTitle applyOn:viewController];
 	[self.backButton applyOn:viewController];
 	
-	if (@available(iOS 11.0, *)) {
-		if ([self.searchBar boolValue] && !viewController.navigationItem.searchController) {
-			UISearchController *search = [[UISearchController alloc]initWithSearchResultsController:nil];
-			search.dimsBackgroundDuringPresentation = NO;
-			if ([viewController conformsToProtocol:@protocol(UISearchResultsUpdating)]) {
-				[search setSearchResultsUpdater:((UIViewController <UISearchResultsUpdating> *) viewController)];
-			}
-			search.searchBar.delegate = (id<UISearchBarDelegate>)viewController;
-			if (self.searchBarPlaceholder) {
-				search.searchBar.placeholder = self.searchBarPlaceholder;
-			}
-			viewController.navigationItem.searchController = search;
-			
-			viewController.navigationItem.hidesSearchBarWhenScrolling = [self.searchBarHiddenWhenScrolling boolValue];
-			
-			// Fixes #3450, otherwise, UIKit will infer the presentation context to be the root most view controller
-			viewController.definesPresentationContext = YES;
-		}
+	if ([self.searchBar boolValue]) {
+		[viewController rnn_setSearchBarWithPlaceholder:self.searchBarPlaceholder];
 	}
 	
 	if (self.drawBehind) {
-		if ([self.drawBehind boolValue]) {
-			viewController.edgesForExtendedLayout |= UIRectEdgeTop;
-		} else {
-			viewController.edgesForExtendedLayout &= ~UIRectEdgeTop;
-		}
+		[viewController rnn_setDrawBehindTopBar:[self.drawBehind boolValue]];
 	}
 	
 	if (self.rightButtons || self.leftButtons) {
@@ -67,29 +36,23 @@
 
 - (void)applyOnNavigationController:(UINavigationController *)navigationController {
 	if (self.testID) {
-		navigationController.navigationBar.accessibilityIdentifier = self.testID;
+		[navigationController rnn_setNavigationBarTestID:self.testID];
 	}
 	
 	if (self.visible) {
-		[navigationController setNavigationBarHidden:![self.visible boolValue] animated:[self.animate boolValue]];
+		[navigationController rnn_setNavigationBarVisible:[self.visible boolValue] animated:self.animate];
 	}
 	
 	if (self.hideOnScroll) {
-		navigationController.hidesBarsOnSwipe = [self.hideOnScroll boolValue];
+		[navigationController rnn_hideBarsOnScroll:[self.hideOnScroll boolValue]];
 	}
 	
 	if (self.noBorder) {
-		if ([self.noBorder boolValue]) {
-			navigationController.navigationBar
-			.shadowImage = [[UIImage alloc] init];
-		} else {
-			navigationController.navigationBar
-			.shadowImage = nil;
-		}
+		[navigationController rnn_setNavigationBarNoBorder:[self.noBorder boolValue]];
 	}
 	
 	if (self.barStyle) {
-		navigationController.navigationBar.barStyle = [RCTConvert UIBarStyle:self.barStyle];
+		[navigationController rnn_setBarStyle:[RCTConvert UIBarStyle:self.barStyle]];
 	}
 	
 	[self.background applyOnNavigationController:navigationController];

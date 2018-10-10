@@ -66,16 +66,16 @@
 	XCTAssertTrue(self.uut.interactivePopGestureRecognizer.enabled);
 }
 
-- (void)testRootBackgroundImage {
-	UIImage* rootBackgroundImage = [[UIImage alloc] init];
-	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
-	options.rootBackgroundImage = rootBackgroundImage;
-	
-	self.uut = [self createNavigationControllerWithOptions:options];
-	[self.uut viewWillAppear:false];
-	
-	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:rootBackgroundImage]);
-}
+//- (void)testRootBackgroundImage {
+//	UIImage* rootBackgroundImage = [[UIImage alloc] init];
+//	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
+//	options.rootBackgroundImage = rootBackgroundImage;
+//	
+//	self.uut = [self createNavigationControllerWithOptions:options];
+//	[self.uut viewWillAppear:false];
+//	
+//	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:rootBackgroundImage]);
+//}
 
 - (void)testTopBarBackgroundClipToBounds_true {
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];

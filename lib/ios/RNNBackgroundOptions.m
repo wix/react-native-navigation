@@ -1,4 +1,5 @@
 #import "RNNBackgroundOptions.h"
+#import "UINavigationController+RNNOptions.h"
 
 extern const NSInteger BLUR_TOPBAR_TAG;
 const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
@@ -13,30 +14,11 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 - (void)applyOnNavigationController:(UINavigationController *)navigationController {
 	if (self.translucent) {
-		navigationController.navigationBar.translucent = [self.translucent boolValue];
+		[navigationController rnn_setNavigationBarTranslucent:[self.translucent boolValue]];
 	}
 	
-	if ([self.blur boolValue]) {
-		if (![navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]) {
-
-			[navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-			navigationController.navigationBar.shadowImage = [UIImage new];
-			UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-			CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-			blur.frame = CGRectMake(0, -1 * statusBarFrame.size.height, navigationController.navigationBar.frame.size.width, navigationController.navigationBar.frame.size.height + statusBarFrame.size.height);
-			blur.userInteractionEnabled = NO;
-			blur.tag = BLUR_TOPBAR_TAG;
-			[navigationController.navigationBar insertSubview:blur atIndex:0];
-			[navigationController.navigationBar sendSubviewToBack:blur];
-		}
-	} else {
-		UIView *blur = [navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG];
-		if (blur) {
-			[navigationController.navigationBar setBackgroundImage: nil forBarMetrics:UIBarMetricsDefault];
-			navigationController.navigationBar.shadowImage = nil;
-			[blur removeFromSuperview];
-		}
-	}
+	[navigationController rnn_setNavigationBarBlur:[self.blur boolValue]];
+	
 	
 	if (self.color && ![self.color isKindOfClass:[NSNull class]]) {
 		UIColor* backgroundColor = [RCTConvert UIColor:self.color];
@@ -76,7 +58,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	}
 
 	if (self.clipToBounds) {
-		navigationController.navigationBar.clipsToBounds = [self.clipToBounds boolValue];
+		[navigationController rnn_setNavigationBarClipsToBounds:[self.clipToBounds boolValue]];
 	}
 }
 

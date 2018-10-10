@@ -18,11 +18,11 @@
 	}
 	
 	if (self.modalPresentationStyle) {
-		[viewController rnn_setModalPresentationStyle:self.modalPresentationStyle];
+		[viewController rnn_setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:self.modalPresentationStyle]];
 	}
 	
 	if (self.modalTransitionStyle) {
-		[viewController rnn_setModalTransitionStyle:self.modalTransitionStyle];
+		[viewController rnn_setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:self.modalTransitionStyle]];
 	}
 }
 

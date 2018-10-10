@@ -1,30 +1,27 @@
 #import "RNNBottomTabsOptions.h"
 #import "RNNTabBarController.h"
+#import "UITabBarController+RNNOptions.h"
+#import "UIViewController+RNNOptions.h"
+
 extern const NSInteger BLUR_TOPBAR_TAG;
 
 @implementation RNNBottomTabsOptions
 
 - (void)applyOn:(UIViewController *)viewController {
 	if (self.currentTabIndex) {
-		[viewController.tabBarController setSelectedIndex:[self.currentTabIndex unsignedIntegerValue]];
+		[viewController.tabBarController rnn_setCurrentTabIndex:[self.currentTabIndex unsignedIntegerValue]];
 	}
 	
 	if (self.currentTabId) {
-		[(RNNTabBarController*)viewController.tabBarController setSelectedIndexByComponentID:self.currentTabId];
+		[viewController.tabBarController rnn_setCurrentTabID:self.currentTabId];
 	}
 	
 	if (self.testID) {
-		viewController.tabBarController.tabBar.accessibilityIdentifier = self.testID;
+		[viewController.tabBarController rnn_setTabBarTestID:self.testID];
 	}
 	
 	if (self.drawBehind) {
-		if ([self.drawBehind boolValue]) {
-			[viewController setExtendedLayoutIncludesOpaqueBars:YES];
-			viewController.edgesForExtendedLayout |= UIRectEdgeBottom;
-		} else {
-			[viewController setExtendedLayoutIncludesOpaqueBars:NO];
-			viewController.edgesForExtendedLayout &= ~UIRectEdgeBottom;
-		}
+		[viewController rnn_setDrawBehindTabBar:[self.drawBehind boolValue]];
 	}
 	
 	[self resetOptions];
@@ -32,19 +29,19 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 
 - (void)applyOnTabBarController:(UITabBarController *)tabBarController {
 	if (self.backgroundColor) {
-		tabBarController.tabBar.barTintColor = [RCTConvert UIColor:self.backgroundColor];
+		[tabBarController rnn_setTabBarBackgroundColor:[RCTConvert UIColor:self.backgroundColor]];
 	}
 	
 	if (self.barStyle) {
-		tabBarController.tabBar.barStyle = [RCTConvert UIBarStyle:self.barStyle];
+		[tabBarController rnn_setTabBarStyle:[RCTConvert UIBarStyle:self.barStyle]];
 	}
 	
 	if (self.translucent) {
-		tabBarController.tabBar.translucent = [self.translucent boolValue];
+		[tabBarController rnn_setTabBarTranslucent:[self.translucent boolValue]];
 	}
 	
 	if (self.hideShadow) {
-		tabBarController.tabBar.clipsToBounds = [self.hideShadow boolValue];
+		[tabBarController rnn_setTabBarHideShadow:[self.hideShadow boolValue]];
 	}
 
 }

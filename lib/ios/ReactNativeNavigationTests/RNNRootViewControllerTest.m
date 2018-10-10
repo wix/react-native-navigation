@@ -543,13 +543,13 @@
 	XCTAssertNotNil([self.uut.navigationController.navigationBar viewWithTag:BLUR_TOPBAR_TAG]);
 }
 
--(void)testBackgroundImage {
-	UIImage* backgroundImage = [[UIImage alloc] init];
-	self.options.backgroundImage = backgroundImage;
-	[self.uut viewWillAppear:false];
-
-	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:backgroundImage]);
-}
+//-(void)testBackgroundImage {
+//	UIImage* backgroundImage = [[UIImage alloc] init];
+//	self.options.backgroundImage = backgroundImage;
+//	[self.uut viewWillAppear:false];
+//
+//	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:backgroundImage]);
+//}
 
 -(void)testTopBarDrawUnder_true {
 	self.options.topBar.drawBehind = @(1);

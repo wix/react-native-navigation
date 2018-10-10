@@ -1,39 +1,16 @@
 #import "RNNTitleOptions.h"
 #import "RNNTitleViewHelper.h"
-
+#import "UIViewController+RNNOptions.h"
+#import "UINavigationController+RNNOptions.h"
 
 @implementation RNNTitleOptions
 
 - (void)applyOn:(UIViewController *)viewController {
 	if (self.text) {
-		viewController.navigationItem.title = self.text;
+		[viewController rnn_setNavigationItemTitle:self.text];
 	}
 	
-	NSDictionary* fontAttributes = [self fontAttributes];
-
-	if (fontAttributes.allKeys.count > 0) {
-		viewController.navigationController.navigationBar.titleTextAttributes = fontAttributes;
-	}
-}
-
-- (NSDictionary *)fontAttributes {
-	NSMutableDictionary* navigationBarTitleTextAttributes = [NSMutableDictionary new];
-	if (self.fontFamily || self.fontSize || self.color) {
-		if (self.color) {
-			navigationBarTitleTextAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:self.color];
-		}
-		if (self.fontFamily){
-			if (self.fontSize) {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.fontFamily size:[self.fontSize floatValue]];
-			} else {
-				navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont fontWithName:self.fontFamily size:17];
-			}
-		} else if (self.fontSize) {
-			navigationBarTitleTextAttributes[NSFontAttributeName] = [UIFont systemFontOfSize:[self.fontSize floatValue]];
-		}
-	}
-	
-	return navigationBarTitleTextAttributes;
+	[viewController.navigationController rnn_setNavigationBarFontFamily:self.fontFamily fontSize:self.fontSize color:[RCTConvert UIColor:self.color]];
 }
 
 - (NSNumber *)fontSize {
