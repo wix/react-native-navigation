@@ -498,4 +498,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public static void setStartAppPromise(Promise promise) {
         NavigationActivity.startAppPromise = promise;
     }
+
+    public Layout getLayout() {
+        return layout;
+    }
 }
