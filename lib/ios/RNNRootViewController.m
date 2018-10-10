@@ -40,7 +40,6 @@
 	[self.presenter bindViewController:self];
 	self.options = options;
 	self.options.delegate = self;
-	self.optionsResolver = [[RNNOptionsResolver alloc] initWithOptions:self.options presenter:self.presenter viewController:self];
 	
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	
@@ -64,11 +63,17 @@
 	[viewController didMoveToParentViewController:self];
 }
 
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if (parent) {
+		[_presenter presentOnWillMoveToParent:self.options];
+	}
+}
+
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	_isBeingPresented = YES;
 	
-	[_optionsResolver childWillAppearWithOptions:self.options];
+	[_presenter presentOnViewWillAppear:self.options];
 	
 	[self initCustomViews];
 }
@@ -83,12 +88,14 @@
 	_isBeingPresented = NO;
 }
 
--(void)viewDidDisappear:(BOOL)animated {
+- (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	[self.eventEmitter sendComponentDidDisappear:self.layoutInfo.componentId componentName:self.layoutInfo.name];
 }
 
-- (void)optionsDidUpdated {
+- (void)optionsDidUpdatedWithOptions:(RNNNavigationOptions *)otherOptions {
+	[_presenter presentOnViewWillAppear:otherOptions];
+	[self.options resetOptions];
 	[self initCustomViews];
 }
 
@@ -143,8 +150,10 @@
 }
 
 - (void)setTitleViewWithSubtitle {
-	RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:self.options.topBar.title viewController:self];
-	[titleViewHelper setup];
+	if (self.options.topBar.subtitle.text) {
+		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:self.options.topBar.title viewController:self];
+		[titleViewHelper setup];
+	}
 }
 
 - (void)setCustomNavigationTitleView {

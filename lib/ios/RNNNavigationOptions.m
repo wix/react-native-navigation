@@ -7,52 +7,52 @@
 #import "RNNRootViewController.h"
 #import "RNNSplitViewController.h"
 #import "RNNNavigationButtons.h"
+#import "UIViewController+RNNOptions.h"
+#import "UINavigationController+RNNOptions.h"
 
 @implementation RNNNavigationOptions
 
 - (void)applyOn:(UIViewController *)viewController {
 	if (self.backgroundImage) {
-		UIImageView* backgroundImageView = (viewController.view.subviews.count > 0) ? viewController.view.subviews[0] : nil;
-		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
-			backgroundImageView = [[UIImageView alloc] initWithFrame:viewController.view.bounds];
-			[viewController.view insertSubview:backgroundImageView atIndex:0];
-		}
-		
-		backgroundImageView.layer.masksToBounds = YES;
-		backgroundImageView.image = [self.backgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.backgroundImage : [RCTConvert UIImage:self.backgroundImage];
-		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+		[viewController rnn_setBackgroundImage:[RCTConvert UIImage:self.backgroundImage]];
 	}
 	
 	if (self.modalPresentationStyle) {
-		viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:self.modalPresentationStyle];
-		[viewController.view setBackgroundColor:[UIColor clearColor]];
+		[viewController rnn_setModalPresentationStyle:self.modalPresentationStyle];
 	}
 	
 	if (self.modalTransitionStyle) {
-		viewController.modalTransitionStyle = [RCTConvert UIModalTransitionStyle:self.modalTransitionStyle];
+		[viewController rnn_setModalTransitionStyle:self.modalTransitionStyle];
 	}
 }
 
 - (void)applyOnNavigationController:(UINavigationController *)navigationController {
 	if (self.popGesture) {
-		navigationController.interactivePopGestureRecognizer.enabled = [self.popGesture boolValue];
+		[navigationController rnn_setInteractivePopGestureEnabled:[self.popGesture boolValue]];
 	}
 	
 	if (self.rootBackgroundImage) {
-		UIImageView* backgroundImageView = (navigationController.view.subviews.count > 0) ? navigationController.view.subviews[0] : nil;
-		if (![backgroundImageView isKindOfClass:[UIImageView class]]) {
-			backgroundImageView = [[UIImageView alloc] initWithFrame:navigationController.view.bounds];
-			[navigationController.view insertSubview:backgroundImageView atIndex:0];
-		}
-		
-		backgroundImageView.layer.masksToBounds = YES;
-		backgroundImageView.image = [self.rootBackgroundImage isKindOfClass:[UIImage class]] ? (UIImage*)self.rootBackgroundImage : [RCTConvert UIImage:self.rootBackgroundImage];
-		[backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+		[navigationController rnn_setRootBackgroundImage:[RCTConvert UIImage:self.rootBackgroundImage]];
 	}
 }
 
 - (void)applyOnTabBarController:(UITabBarController *)tabBarController {
 	[self.bottomTabs applyOnTabBarController:tabBarController];
+}
+
+- (void)applyDefaultOptionsOn:(UIViewController *)viewController {
+	UITabBarController* tabBarController = viewController.tabBarController;
+	UINavigationController* navigationController = viewController.navigationController;
+	
+	[navigationController setNavigationBarHidden:NO animated:NO];
+	navigationController.hidesBarsOnSwipe = NO;
+	navigationController.navigationBar.barStyle = UIBarStyleDefault;
+	navigationController.navigationBar.translucent = NO;
+	navigationController.navigationBar.clipsToBounds = NO;
+	
+	tabBarController.tabBar.barTintColor = nil;
+	tabBarController.tabBar.barStyle = UIBarStyleDefault;
+	tabBarController.tabBar.translucent = NO;
 }
 
 - (void)resetOptions {

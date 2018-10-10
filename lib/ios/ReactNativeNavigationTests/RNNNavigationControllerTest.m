@@ -21,7 +21,7 @@
 	_vc2 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:nil];
 	_vc3 = [UIViewController new];
 	
-	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1] options:[[RNNNavigationOptions alloc] initWithDict:@{}] presenter:[[RNNNavigationControllerPresenter alloc] init]];
+	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1] options:[[RNNNavigationOptions alloc] initWithDict:@{}] presenter:[[RNNViewControllerPresenter alloc] init]];
 }
 
 - (void)testInitWithLayoutInfo_shouldBindPresenter {
@@ -29,7 +29,7 @@
 }
 
 - (void)testInitWithLayoutInfo_shouldSetMultipleViewControllers {
-	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1, _vc2] options:[[RNNNavigationOptions alloc] initWithDict:@{}] presenter:[[RNNNavigationControllerPresenter alloc] init]];
+	self.uut = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1, _vc2] options:[[RNNNavigationOptions alloc] initWithDict:@{}] presenter:[[RNNViewControllerPresenter alloc] init]];
 	XCTAssertTrue(self.uut.viewControllers.count == 2);
 }
 
@@ -52,6 +52,8 @@
 	options.popGesture = popGestureEnabled;
 	
 	self.uut = [self createNavigationControllerWithOptions:options];
+	[self.uut viewWillAppear:false];
+	
 	XCTAssertFalse(self.uut.interactivePopGestureRecognizer.enabled);
 }
 
@@ -70,6 +72,8 @@
 	options.rootBackgroundImage = rootBackgroundImage;
 	
 	self.uut = [self createNavigationControllerWithOptions:options];
+	[self.uut viewWillAppear:false];
+	
 	XCTAssertTrue([[(UIImageView*)self.uut.view.subviews[0] image] isEqual:rootBackgroundImage]);
 }
 
@@ -78,6 +82,8 @@
 	options.topBar.background.clipToBounds = @(1);
 	
 	self.uut = [self createNavigationControllerWithOptions:options];
+	[self.uut viewWillAppear:false];
+	
 	XCTAssertTrue(self.uut.navigationBar.clipsToBounds);
 }
 
@@ -91,7 +97,7 @@
 }
 
 - (RNNNavigationController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {
-	return [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1] options:options presenter:[[RNNNavigationControllerPresenter alloc] init]];
+	return [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1] options:options presenter:[[RNNViewControllerPresenter alloc] init]];
 }
 
 @end

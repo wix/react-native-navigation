@@ -12,7 +12,7 @@
 
 @implementation RNNSideMenuController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNViewControllerPresenter *)presenter {
 	[self setControllers:childViewControllers];
 	self = [super initWithCenterViewController:self.center leftDrawerViewController:self.left rightDrawerViewController:self.right];
 	
@@ -20,18 +20,34 @@
 	[self.presenter bindViewController:self];
 	
 	self.options = options;
+	self.options.delegate = self;
+	
 	self.layoutInfo = layoutInfo;
 	
 	self.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
 	self.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
-	
-	self.optionsResolver = [[RNNOptionsResolver alloc] initWithOptions:self.options presenter:self.presenter viewController:self];
 	
 	// Fixes #3697
 	[self setExtendedLayoutIncludesOpaqueBars:YES];
 	self.edgesForExtendedLayout |= UIRectEdgeBottom;
 	
 	return self;
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if (parent) {
+		[_presenter presentOnWillMoveToParent:self.options];
+	}
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[_presenter presentOnViewWillAppear:self.options];
+}
+
+- (void)optionsDidUpdatedWithOptions:(RNNNavigationOptions *)otherOptions {
+	[_presenter presentOnViewWillAppear:self.options];
+	[self.options resetOptions];
 }
 
 -(void)showSideMenu:(MMDrawerSide)side animated:(BOOL)animated {

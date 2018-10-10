@@ -11,7 +11,7 @@
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 			  childViewControllers:(NSArray *)childViewControllers
 						   options:(RNNNavigationOptions *)options
-						 presenter:(RNNBasePresenter *)presenter
+						 presenter:(RNNViewControllerPresenter *)presenter
 					  eventEmitter:(RNNEventEmitter *)eventEmitter {
 	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options presenter:presenter];
 	
@@ -23,16 +23,16 @@
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 			  childViewControllers:(NSArray *)childViewControllers
 						   options:(RNNNavigationOptions *)options
-						 presenter:(RNNBasePresenter *)presenter {
+						 presenter:(RNNViewControllerPresenter *)presenter {
 	self = [super init];
 	
 	self.options = options;
+	self.options.delegate = self;
+	
 	self.layoutInfo = layoutInfo;
 	
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
-	
-	self.optionsResolver = [[RNNOptionsResolver alloc] initWithOptions:self.options presenter:self.presenter viewController:self];
 	
 	[self setViewControllers:childViewControllers];
 		
@@ -44,6 +44,22 @@
 	_eventEmitter = eventEmitter;
 	self.delegate = self;
 	return self;
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if (parent) {
+		[_presenter presentOnWillMoveToParent:self.options];
+	}
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[_presenter presentOnViewWillAppear:self.options];
+}
+
+- (void)optionsDidUpdatedWithOptions:(RNNNavigationOptions *)otherOptions {
+	[_presenter presentOnViewWillAppear:self.options];
+	[self.options resetOptions];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {

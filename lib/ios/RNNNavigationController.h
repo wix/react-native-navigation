@@ -1,12 +1,11 @@
 #import <UIKit/UIKit.h>
 #import "RNNParentProtocol.h"
-#import "RNNNavigationControllerPresenter.h"
+#import "RNNViewControllerPresenter.h"
 
 @interface RNNNavigationController : UINavigationController <RNNParentProtocol>
 
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
-@property (nonatomic, retain) RNNNavigationControllerPresenter* presenter;
+@property (nonatomic, retain) RNNViewControllerPresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
-@property (nonatomic, strong) RNNOptionsResolver* optionsResolver;
 
 @end

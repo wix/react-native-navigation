@@ -7,7 +7,7 @@
 @protocol RNNOptionsDelegate <NSObject>
 
 @optional
-- (void)optionsDidUpdated;
+- (void)optionsDidUpdatedWithOptions:(RNNOptions *)otherOptions;
 
 @end
 

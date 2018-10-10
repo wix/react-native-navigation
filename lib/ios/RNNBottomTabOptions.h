@@ -12,7 +12,7 @@
 @property (nonatomic, strong) NSDictionary* selectedIcon;
 @property (nonatomic, strong) NSDictionary* iconColor;
 @property (nonatomic, strong) NSDictionary* selectedIconColor;
-@property (nonatomic, strong) NSDictionary* textColor;
+@property (nonatomic, strong) id textColor;
 @property (nonatomic, strong) NSDictionary* selectedTextColor;
 @property (nonatomic, strong) NSString* fontFamily;
 @property (nonatomic, strong) NSNumber* fontSize;

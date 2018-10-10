@@ -8,9 +8,8 @@
 @property (nonatomic, retain) UIView* contentView;
 
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
-@property (nonatomic, retain) RNNBasePresenter* presenter;
+@property (nonatomic, retain) RNNViewControllerPresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
-@property (nonatomic, strong) RNNOptionsResolver* optionsResolver;
 
 - (void)setViewControllers:(NSArray*)viewControllers;
 - (void)viewController:(UIViewController*)vc changedTitle:(NSString*)title;

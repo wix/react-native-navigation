@@ -38,4 +38,7 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) NSString* modalPresentationStyle;
 @property (nonatomic, strong) NSString* modalTransitionStyle;
 
+
+- (void)applyDefaultOptionsOn:(UIViewController *)viewController;
+
 @end

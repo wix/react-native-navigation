@@ -33,4 +33,24 @@
 	XCTAssertNoThrow([options mergeWith:dynamicOptions]);
 }
 
+- (void)test_applyDefaultOptions {
+	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initEmptyOptions];
+	UIViewController* viewController = [UIViewController new];
+	UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	UITabBarController* tabBarController = [[UITabBarController alloc] init];
+	[tabBarController setViewControllers:@[navigationController]];
+	
+	[options applyDefaultOptionsOn:viewController];
+	
+	XCTAssertFalse(navigationController.navigationBar.hidden);
+	XCTAssertFalse(navigationController.navigationBar.translucent);
+	XCTAssertFalse(navigationController.navigationBar.clipsToBounds);
+	XCTAssertFalse(navigationController.hidesBarsOnSwipe);
+	XCTAssertTrue(navigationController.navigationBar.barStyle == UIBarStyleDefault);
+	
+	XCTAssertNil(tabBarController.tabBar.barTintColor);
+	XCTAssertTrue(tabBarController.tabBar.barStyle == UIBarStyleDefault);
+	XCTAssertFalse(tabBarController.tabBar.translucent);
+}
+
 @end

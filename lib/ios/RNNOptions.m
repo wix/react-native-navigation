@@ -56,8 +56,8 @@
 		}
 	}
 	
-	if ([self.delegate respondsToSelector:@selector(optionsDidUpdated)]) {
-		[self.delegate optionsDidUpdated];
+	if ([self.delegate respondsToSelector:@selector(optionsDidUpdatedWithOptions:)]) {
+		[self.delegate optionsDidUpdatedWithOptions:otherOptions];
 	}
 }
 

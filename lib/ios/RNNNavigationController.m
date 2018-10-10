@@ -5,21 +5,37 @@
 
 @implementation RNNNavigationController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNNavigationControllerPresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNViewControllerPresenter *)presenter {
 	UIViewController* rootViewController = childViewControllers.count ? childViewControllers[0] : nil;
 	self = [super initWithRootViewController:rootViewController];
 
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
 	self.options = options;
+	self.options.delegate = self;
+	
 	self.layoutInfo = layoutInfo;
-	self.optionsResolver = [[RNNOptionsResolver alloc] initWithOptions:self.options presenter:self.presenter viewController:self];
 	
 	if (childViewControllers.count > 1) {
 		[self setViewControllers:childViewControllers];
 	}
 	
 	return self;
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if (parent) {
+		[_presenter presentOnWillMoveToParent:self.options];
+	}
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[_presenter presentOnViewWillAppear:self.options];
+}
+
+- (void)optionsDidUpdatedWithOptions:(RNNNavigationOptions *)otherOptions {
+	[_presenter presentOnViewWillAppear:otherOptions];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -43,7 +59,7 @@
 		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
 		if ([controller isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
-			[rnnController.optionsResolver childWillAppearWithOptions:rnnController.options];
+			[rnnController.presenter presentOnViewWillAppear:rnnController.options];
 		}
 	}
 	

@@ -19,7 +19,6 @@ typedef void (^PreviewCallback)(UIViewController *vc);
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNViewControllerPresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
-@property (nonatomic, strong) RNNOptionsResolver* optionsResolver;
 
 @property (nonatomic) id<RNNRootViewCreator> creator;
 @property (nonatomic, strong) RNNAnimator* animator;
