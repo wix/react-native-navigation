@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
+#import <React/RCTRootView.h>
 
 #define GLOBAL_SCREEN_ACTION_COMMAND_TYPE       @"commandType"
 #define GLOBAL_SCREEN_ACTION_TIMESTAMP          @"timestamp"
@@ -23,6 +24,7 @@ extern NSString* const RCCViewControllerCancelReactTouchesNotification;
 @property (nonatomic) NSArray *previewActions;
 @property (nonatomic) BOOL previewCommit;
 @property (nonatomic) id previewContext;
+@property (nonatomic, strong, readonly) RCTRootView *rootView;
 
 + (UIViewController*)controllerWithLayout:(NSDictionary *)layout globalProps:(NSDictionary *)globalProps bridge:(RCTBridge *)bridge;
 
