@@ -2,8 +2,8 @@
 
 @interface RNNComponentOptions : RNNOptions
 
-@property (nonatomic, strong) NSString* name;
-@property (nonatomic, strong) NSString* componentId;
-@property (nonatomic, strong) NSString* alignment;
+@property (nonatomic, strong) String* name;
+@property (nonatomic, strong) String* componentId;
+@property (nonatomic, strong) String* alignment;
 
 @end

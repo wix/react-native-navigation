@@ -1,6 +1,7 @@
 #import "RNNSideMenuController.h"
 #import "RNNSideMenuChildVC.h"
 #import "MMDrawerController.h"
+#import "MMDrawerVisualState.h"
 
 @interface RNNSideMenuController ()
 
@@ -47,7 +48,38 @@
 
 - (void)optionsDidUpdatedWithOptions:(RNNNavigationOptions *)otherOptions {
 	[_presenter presentOnViewWillAppear:self.options];
-	[self.options resetOptions];
+}
+
+- (void)setAnimationType:(NSString *)animationType {
+	MMDrawerControllerDrawerVisualStateBlock animationTypeStateBlock = nil;
+	if ([animationType isEqualToString:@"door"]) animationTypeStateBlock = [MMDrawerVisualState swingingDoorVisualStateBlock];
+	else if ([animationType isEqualToString:@"parallax"]) animationTypeStateBlock = [MMDrawerVisualState parallaxVisualStateBlockWithParallaxFactor:2.0];
+	else if ([animationType isEqualToString:@"slide"]) animationTypeStateBlock = [MMDrawerVisualState slideVisualStateBlock];
+	else if ([animationType isEqualToString:@"slide-and-scale"]) animationTypeStateBlock = [MMDrawerVisualState slideAndScaleVisualStateBlock];
+	
+	if (animationTypeStateBlock) {
+		[self setDrawerVisualStateBlock:animationTypeStateBlock];
+	}
+}
+
+- (void)side:(MMDrawerSide)side width:(NSNumber *)width {
+	switch (side) {
+		case MMDrawerSideRight:
+			self.maximumRightDrawerWidth = width.floatValue;
+			break;
+		case MMDrawerSideLeft:
+			self.maximumLeftDrawerWidth = width.floatValue;
+		default:
+			break;
+	}
+}
+
+- (void)side:(MMDrawerSide)side visible:(BOOL)visible {
+	if (visible) {
+		[self showSideMenu:side animated:YES];
+	} else {
+		[self hideSideMenu:side animated:YES];
+	}
 }
 
 -(void)showSideMenu:(MMDrawerSide)side animated:(BOOL)animated {
@@ -56,6 +88,19 @@
 
 -(void)hideSideMenu:(MMDrawerSide)side animated:(BOOL)animated {
 	[self closeDrawerAnimated:animated completion:nil];
+}
+
+- (void)side:(MMDrawerSide)side enabled:(BOOL)enabled {
+	switch (side) {
+		case MMDrawerSideRight:
+			self.rightSideEnabled = enabled;
+			break;
+		case MMDrawerSideLeft:
+			self.leftSideEnabled = enabled;
+		default:
+			break;
+	}
+	self.openDrawerGestureModeMask = enabled ? MMOpenDrawerGestureModeAll : MMOpenDrawerGestureModeNone;
 }
 
 -(void)setControllers:(NSArray*)controllers {

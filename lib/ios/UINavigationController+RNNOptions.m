@@ -1,5 +1,7 @@
 #import "UINavigationController+RNNOptions.h"
 #import "RNNFontAttributesCreator.h"
+#import "UIImage+tint.h"
+
 const NSInteger BLUR_TOPBAR_TAG = 78264802;
 
 @implementation UINavigationController (RNNOptions)
@@ -54,6 +56,19 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	}
 }
 
+- (void)rnn_setNavigationBarLargeTitleVisible:(BOOL)visible fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize color:(UIColor *)color {
+	if (@available(iOS 11.0, *)) {
+		if (visible){
+			self.navigationBar.prefersLargeTitles = YES;
+		} else {
+			self.navigationBar.prefersLargeTitles = NO;
+		}
+		
+		NSDictionary* fontAttributes = [RNNFontAttributesCreator createFontAttributesWithFontFamily:fontFamily fontSize:fontSize color:color];
+		self.navigationBar.largeTitleTextAttributes = fontAttributes;
+	}
+}
+
 - (void)rnn_setNavigationBarTranslucent:(BOOL)translucent {
 	self.navigationBar.translucent = translucent;
 }
@@ -77,6 +92,25 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 			[blur removeFromSuperview];
 		}
 	}
+}
+
+- (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title {
+	UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+	if (icon) {
+		backItem.image = color
+		? [[icon withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+		: icon;
+		
+		[self.navigationBar setBackIndicatorImage:[UIImage new]];
+		[self.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
+	}
+	
+	UIViewController *lastViewControllerInStack = [self.viewControllers lastObject];
+	if (title) {
+		backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
+	}
+	
+	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }
 
 - (void)rnn_setNavigationBarClipsToBounds:(BOOL)clipsToBounds {

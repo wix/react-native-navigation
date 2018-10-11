@@ -1,78 +1,20 @@
 #import "RNNSideMenuSideOptions.h"
-#import "RNNSideMenuController.h"
-#import "MMDrawerVisualState.h"
 
 @implementation RNNSideMenuSideOptions
 
-- (void)applyOnSide:(MMDrawerSide)side viewController:(UIViewController *)viewController {
-	RNNSideMenuController* sideMenuController = [self getParentSideMenuControllerFromChild:viewController];
-	if (sideMenuController) {
-		if (self.enabled) {
-			switch (side) {
-				case MMDrawerSideRight:
-					sideMenuController.rightSideEnabled = [self.enabled boolValue];
-					break;
-				case MMDrawerSideLeft:
-					sideMenuController.leftSideEnabled = [self.enabled boolValue];
-				default:
-					break;
-			}
-			sideMenuController.openDrawerGestureModeMask = [self.enabled boolValue] ? MMOpenDrawerGestureModeAll : MMOpenDrawerGestureModeNone;
-		}
-
-		if (self.visible) {
-			if (self.visible.boolValue) {
-				[sideMenuController showSideMenu:side animated:YES];
-			} else {
-				[sideMenuController hideSideMenu:side animated:YES];
-			}
-		}
-
-		if (self.shouldStretchDrawer) {
-			sideMenuController.shouldStretchDrawer = self.shouldStretchDrawer.boolValue;
-		}
-
-		if (self.animationVelocity) {
-			sideMenuController.animationVelocity = [self.animationVelocity doubleValue];
-		}
-
-		MMDrawerControllerDrawerVisualStateBlock animationTypeStateBlock = nil;
-		if ([self.animationType isEqualToString:@"door"]) animationTypeStateBlock = [MMDrawerVisualState swingingDoorVisualStateBlock];
-    else if ([self.animationType isEqualToString:@"parallax"]) animationTypeStateBlock = [MMDrawerVisualState parallaxVisualStateBlockWithParallaxFactor:2.0];
-    else if ([self.animationType isEqualToString:@"slide"]) animationTypeStateBlock = [MMDrawerVisualState slideVisualStateBlock];
-    else if ([self.animationType isEqualToString:@"slide-and-scale"]) animationTypeStateBlock = [MMDrawerVisualState slideAndScaleVisualStateBlock];
-
-		if (animationTypeStateBlock) {
-			[sideMenuController setDrawerVisualStateBlock:animationTypeStateBlock];
-		}
-
-		if (self.width) {
-			switch (side) {
-				case MMDrawerSideRight:
-					sideMenuController.maximumRightDrawerWidth = self.width.floatValue;
-					break;
-				case MMDrawerSideLeft:
-					sideMenuController.maximumLeftDrawerWidth = self.width.floatValue;
-				default:
-					break;
-			}
-		}
-	}
-
-	[self resetOptions];
-}
-
-- (RNNSideMenuController *)getParentSideMenuControllerFromChild:(UIViewController *)childViewController {
-	UIViewController* vc = childViewController;
-	while (vc) {
-		if ([vc isKindOfClass:[RNNSideMenuController class]]) {
-			return (RNNSideMenuController *)vc;
-		}
-		
-		vc = vc.parentViewController;
-	}
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super init];
 	
-	return nil;
+	self.visible = [BoolParser parse:dict key:@"visible"];
+	self.enabled = [BoolParser parse:dict key:@"enabled"];
+	self.shouldStretchDrawer = [BoolParser parse:dict key:@"shouldStretchDrawer"];
+	
+	self.width = [NumberParser parse:dict key:@"width"];
+	self.animationVelocity = [NumberParser parse:dict key:@"animationVelocity"];
+	
+	self.animationType = [StringParser parse:dict key:@"animationType"];
+	
+	return self;
 }
 
 - (void)resetOptions {

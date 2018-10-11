@@ -4,14 +4,14 @@
 
 @implementation RNNTabBarItemCreator
 
-+ (UITabBarItem *)updateTabBarItem:(UITabBarItem *)tabItem text:(NSString *)text textColor:(NSDictionary *)textColor selectedTextColor:(NSDictionary *)selectedTextColor icon:(NSDictionary *)icon selectedIcon:(NSDictionary *)selectedIcon iconInsets:(id)iconInsets iconColor:(NSDictionary *)iconColor selectedIconColor:(NSDictionary *)selectedIconColor fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize {
++ (UITabBarItem *)updateTabBarItem:(UITabBarItem *)tabItem bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
+	tabItem.selectedImage = [self getSelectedIconImage:[bottomTabOptions.selectedIcon getWithDefaultValue:nil] selectedIconColor:[bottomTabOptions.selectedIconColor getWithDefaultValue:nil]];
+	tabItem.image = [self getIconImage:[bottomTabOptions.icon getWithDefaultValue:nil] withTint:[bottomTabOptions.iconColor getWithDefaultValue:nil]];
+	tabItem.title = [bottomTabOptions.text getWithDefaultValue:@""];
+	tabItem.tag = bottomTabOptions.tag;
+	tabItem.accessibilityIdentifier = [bottomTabOptions.testID getWithDefaultValue:nil];
 	
-	tabItem.selectedImage = [self getSelectedIconImage:selectedIcon selectedIconColor:selectedIconColor];
-	tabItem.image = [self getIconImage:icon withTint:iconColor];
-	tabItem.title = text;
-//	tabItem.tag = self.tag;
-//	tabItem.accessibilityIdentifier = self.testID;
-	
+	NSDictionary* iconInsets = [bottomTabOptions.iconInsets getWithDefaultValue:nil];
 	if (iconInsets && ![iconInsets isKindOfClass:[NSNull class]]) {
 		id topInset = iconInsets[@"top"];
 		id leftInset = iconInsets[@"left"];
@@ -26,7 +26,9 @@
 		tabItem.imageInsets = UIEdgeInsetsMake(top, left, bottom, right);
 	}
 	
-	[self appendTitleAttributes:tabItem textColor:textColor selectedTextColor:selectedTextColor fontFamily:fontFamily fontSize:fontSize];
+	
+	
+	[self appendTitleAttributes:tabItem textColor:[bottomTabOptions.textColor getWithDefaultValue:nil] selectedTextColor:[bottomTabOptions.selectedTextColor getWithDefaultValue:nil] fontFamily:[bottomTabOptions.fontFamily getWithDefaultValue:nil] fontSize:[bottomTabOptions.fontSize getWithDefaultValue:nil]];
 	
 	return tabItem;
 }

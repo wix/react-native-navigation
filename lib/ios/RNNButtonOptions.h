@@ -2,12 +2,12 @@
 
 @interface RNNButtonOptions : RNNOptions
 
-@property (nonatomic, strong) NSString* fontFamily;
-@property (nonatomic, strong) NSNumber* fontSize;
-@property (nonatomic, strong) NSNumber* color;
-@property (nonatomic, strong) NSNumber* disabledColor;
-@property (nonatomic, strong) NSNumber* icon;
-@property (nonatomic, strong) NSString* text;
-@property (nonatomic, strong) NSNumber* enabled;
+@property (nonatomic, strong) String* fontFamily;
+@property (nonatomic, strong) String* text;
+@property (nonatomic, strong) Number* fontSize;
+@property (nonatomic, strong) Number* color;
+@property (nonatomic, strong) Number* disabledColor;
+@property (nonatomic, strong) Number* icon;
+@property (nonatomic, strong) Bool* enabled;
 
 @end

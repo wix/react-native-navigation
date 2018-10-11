@@ -154,11 +154,12 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	} rejection:rejection];
 }
 
-- (void)pop:(NSString*)componentId mergeOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+- (void)pop:(NSString*)componentId mergeOptions:(NSDictionary*)mergeOptions completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	
 	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
-	[vc.options mergeWith:options];
+	RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
+	[vc.options mergeOptions:options];
 	
 	UINavigationController *nvc = vc.navigationController;
 	
@@ -183,10 +184,11 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}];
 }
 
-- (void)popTo:(NSString*)componentId mergeOptions:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+- (void)popTo:(NSString*)componentId mergeOptions:(NSDictionary *)mergeOptions completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
-	[vc.options mergeWith:options];
+	RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
+	[vc.options mergeOptions:options];
 	
 	[_stackManager popTo:vc animated:vc.options.animations.pop.enable completion:^(NSArray *poppedViewControllers) {
 		[_eventEmitter sendOnNavigationCommandCompletion:popTo params:@{@"componentId": componentId}];
@@ -195,10 +197,11 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	} rejection:rejection];
 }
 
-- (void)popToRoot:(NSString*)componentId mergeOptions:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
+- (void)popToRoot:(NSString*)componentId mergeOptions:(NSDictionary *)mergeOptions completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	RNNRootViewController *vc = (RNNRootViewController*)[_store findComponentForId:componentId];
-	[vc.options mergeWith:options];
+	RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
+	[vc.options mergeOptions:options];
 	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
@@ -228,7 +231,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}];
 }
 
-- (void)dismissModal:(NSString*)componentId mergeOptions:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion {
+- (void)dismissModal:(NSString*)componentId mergeOptions:(NSDictionary *)mergeOptions completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
 	
 	[CATransaction begin];
@@ -236,7 +239,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
 	}];
 	UIViewController<RNNParentProtocol> *modalToDismiss = (UIViewController<RNNParentProtocol>*)[_store findComponentForId:componentId];
-	[modalToDismiss.getLeafViewController.options mergeWith:options];
+	RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
+	[modalToDismiss.getLeafViewController.options mergeOptions:options];
 	
 	[self removePopedViewControllers:modalToDismiss.navigationController.viewControllers];
 	

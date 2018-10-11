@@ -3,13 +3,11 @@
 
 @interface RNNSideMenuSideOptions : RNNOptions
 
-- (void)applyOnSide:(MMDrawerSide)side viewController:(UIViewController *)viewController;
-
-@property (nonatomic, strong) NSNumber* visible;
-@property (nonatomic, strong) NSNumber* enabled;
-@property (nonatomic, strong) NSNumber* width;
-@property (nonatomic, strong) NSNumber* shouldStretchDrawer;
-@property (nonatomic, strong) NSNumber* animationVelocity;
-@property (nonatomic, strong) NSString* animationType;
+@property (nonatomic, strong) Bool* visible;
+@property (nonatomic, strong) Bool* enabled;
+@property (nonatomic, strong) Bool* shouldStretchDrawer;
+@property (nonatomic, strong) Number* width;
+@property (nonatomic, strong) Number* animationVelocity;
+@property (nonatomic, strong) String* animationType;
 
 @end

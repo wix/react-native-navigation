@@ -20,10 +20,16 @@
 
 - (void)rnn_setTabBarItemBadge:(NSString *)badge;
 
+- (void)rnn_setTabBarItemPrefersLargeTitle:(BOOL)prefersLargeTitle;
+
 - (void)rnn_setNavigationItemTitle:(NSString *)title;
 
 - (void)rnn_setStatusBarStyle:(NSString *)style animated:(BOOL)animated;
 
 - (void)rnn_setStatusBarBlur:(BOOL)blur;
+
+- (void)rnn_setBackButtonVisible:(BOOL)visible;
+
+- (void)rnn_setBackgroundColor:(UIColor *)backgroundColor;
 
 @end

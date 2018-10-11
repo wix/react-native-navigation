@@ -96,6 +96,17 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
+- (void)rnn_setTabBarItemPrefersLargeTitle:(BOOL)prefersLargeTitle {
+	if (@available(iOS 11.0, *)) {
+		if (prefersLargeTitle){
+			self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
+		} else {
+			self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+		}
+	}
+}
+
+
 - (void)rnn_setStatusBarBlur:(BOOL)blur {
 	UIView* curBlurView = [self.view viewWithTag:BLUR_STATUS_TAG];
 	if (blur) {
@@ -112,7 +123,13 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	}
 }
 
+- (void)rnn_setBackgroundColor:(UIColor *)backgroundColor {
+	self.view.backgroundColor = backgroundColor;
+}
 
+- (void)rnn_setBackButtonVisible:(BOOL)visible {
+	self.navigationItem.hidesBackButton = !visible;
+}
 
 - (CGFloat)statusBarAnimationDuration:(BOOL)animated {
 	return animated ? kStatusBarAnimationDuration : CGFLOAT_MIN;

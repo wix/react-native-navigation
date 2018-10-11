@@ -13,7 +13,8 @@
 @property (nonatomic, retain) RNNViewControllerPresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 
--(void)showSideMenu:(MMDrawerSide)side animated:(BOOL)animated;
--(void)hideSideMenu:(MMDrawerSide)side animated:(BOOL)animated;
+- (void)side:(MMDrawerSide)side enabled:(BOOL)enabled;
+- (void)side:(MMDrawerSide)side visible:(BOOL)visible;
+- (void)side:(MMDrawerSide)side width:(NSNumber *)width;
 
 @end

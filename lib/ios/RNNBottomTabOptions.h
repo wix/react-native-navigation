@@ -3,20 +3,20 @@
 @interface RNNBottomTabOptions : RNNOptions
 
 @property (nonatomic) NSUInteger tag;
-@property (nonatomic, strong) NSString* text;
-@property (nonatomic, strong) NSString* badge;
-@property (nonatomic, strong) NSDictionary* badgeColor;
-@property (nonatomic, strong) NSString* testID;
-@property (nonatomic, strong) NSNumber* visible;
-@property (nonatomic, strong) NSDictionary* icon;
-@property (nonatomic, strong) NSDictionary* selectedIcon;
-@property (nonatomic, strong) NSDictionary* iconColor;
-@property (nonatomic, strong) NSDictionary* selectedIconColor;
-@property (nonatomic, strong) id textColor;
-@property (nonatomic, strong) NSDictionary* selectedTextColor;
-@property (nonatomic, strong) NSString* fontFamily;
-@property (nonatomic, strong) NSNumber* fontSize;
+@property (nonatomic, strong) String* text;
+@property (nonatomic, strong) String* badge;
+@property (nonatomic, strong) String* fontFamily;
+@property (nonatomic, strong) String* testID;
+@property (nonatomic, strong) Dictionary* badgeColor;
+@property (nonatomic, strong) Dictionary* icon;
+@property (nonatomic, strong) Dictionary* selectedIcon;
+@property (nonatomic, strong) Dictionary* iconColor;
+@property (nonatomic, strong) Dictionary* selectedIconColor;
+@property (nonatomic, strong) Dictionary* selectedTextColor;
+@property (nonatomic, strong) Dictionary* iconInsets;
+@property (nonatomic, strong) Number* textColor;
+@property (nonatomic, strong) Number* fontSize;
+@property (nonatomic, strong) Bool* visible;
 
-@property (nonatomic, strong) NSDictionary* iconInsets;
 
 @end

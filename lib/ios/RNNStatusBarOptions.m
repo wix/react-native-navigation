@@ -3,14 +3,16 @@
 
 @implementation RNNStatusBarOptions
 
-- (void)applyOn:(UIViewController *)viewController {
-	if (self.blur) {
-		[viewController rnn_setStatusBarBlur:[self.blur boolValue]];
-	}
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super init];
 	
-	if (self.style) {
-		[viewController rnn_setStatusBarStyle:self.style animated:[self.animate boolValue]];
-	}
+	self.blur = [BoolParser parse:dict key:@"blur"];
+	self.hideWithTopBar = [BoolParser parse:dict key:@"hideWithTopBar"];
+	self.visible = [BoolParser parse:dict key:@"visible"];
+	self.animate = [BoolParser parse:dict key:@"animate"];
+	self.style = [StringParser parse:dict key:@"style"];
+	
+	return self;
 }
 
 @end

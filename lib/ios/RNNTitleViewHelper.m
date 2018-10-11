@@ -2,6 +2,7 @@
 #import "RNNTitleViewHelper.h"
 #import <React/RCTConvert.h>
 #import "RCTHelpers.h"
+#import "RNNFontAttributesCreator.h"
 
 @implementation RNNTitleView
 
@@ -17,6 +18,7 @@
 
 @property (nonatomic, strong) RNNTitleView *titleView;
 @property (nonatomic, weak) RNNTitleOptions *titleOptions;
+@property (nonatomic, weak) RNNSubtitleOptions *subtitleOptions;
 
 @end
 
@@ -24,13 +26,15 @@
 @implementation RNNTitleViewHelper
 
 - (instancetype)initWithTitleViewOptions:(RNNTitleOptions*)titleOptions
+						subTitleOptions:(RNNSubtitleOptions*)subtitleOptions
 						  viewController:(UIViewController*)viewController {
 	self = [super init];
 	if (self) {
 		self.viewController = viewController;
-		self.title = titleOptions.text;
-		self.subtitle = titleOptions.subtitle.text;
+		self.title = [titleOptions.text getWithDefaultValue:nil];
+		self.subtitle = [subtitleOptions.text getWithDefaultValue:nil];
 		self.titleOptions = titleOptions;
+		self.subtitleOptions = subtitleOptions;
 		
 	}
 	return self;
@@ -91,17 +95,18 @@
 	subtitleLabel.backgroundColor = [UIColor clearColor];
 	subtitleLabel.autoresizingMask = self.titleView.autoresizingMask;
 	
-	[subtitleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.subtitle attributes:_titleOptions.subtitle.fontAttributes]];
+	NSDictionary* fontAttributes = [RNNFontAttributesCreator createFontAttributesWithFontFamily:[_subtitleOptions.fontFamily getWithDefaultValue:nil] fontSize:[_subtitleOptions.fontSize getWithDefaultValue:nil] color:[RCTConvert UIColor:[_subtitleOptions.color getWithDefaultValue:nil]]];
+	[subtitleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.subtitle attributes:fontAttributes]];
 	
 	
-	CGSize labelSize = [subtitleLabel.text sizeWithAttributes:_titleOptions.subtitle.fontAttributes];
+	CGSize labelSize = [subtitleLabel.text sizeWithAttributes:fontAttributes];
 	CGRect labelframe = subtitleLabel.frame;
 	labelframe.size = labelSize;
 	subtitleLabel.frame = labelframe;
 	[subtitleLabel sizeToFit];
 	
-	if (_titleOptions.subtitle.color) {
-		UIColor *color = _titleOptions.subtitle.color != (id)[NSNull null] ? [RCTConvert UIColor:_titleOptions.subtitle.color] : nil;
+	if (_subtitleOptions.color.hasValue) {
+		UIColor *color = [RCTConvert UIColor:_subtitleOptions.color.get];
 		subtitleLabel.textColor = color;
 	}
 	
@@ -124,11 +129,8 @@
 	
 	UIFont *titleFont = [UIFont boldSystemFontOfSize:17.f];
 	
-	id fontSize = _titleOptions.fontSize;
-	if (fontSize) {
-		CGFloat fontSizeFloat = [RCTConvert CGFloat:fontSize];
-		titleFont = [UIFont boldSystemFontOfSize:fontSizeFloat];
-	}
+	CGFloat fontSizeFloat = [RCTConvert CGFloat:[_titleOptions.fontSize getWithDefaultValue:@(17)]];
+	titleFont = [UIFont boldSystemFontOfSize:fontSizeFloat];
 	
 	[titleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.title attributes:_titleOptions.fontAttributes]];
 	
@@ -141,9 +143,8 @@
 		titleLabel.center = self.titleView.center;
 	}
 	
-	id navBarTextColor = _titleOptions.color;
-	if (navBarTextColor) {
-		UIColor *color = navBarTextColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarTextColor] : nil;
+	if (_titleOptions.color.get) {
+		UIColor *color = [RCTConvert UIColor:_titleOptions.color.get];
 		titleLabel.textColor = color;
 	}
 	

@@ -59,7 +59,7 @@
 
 - (void)optionsDidUpdatedWithOptions:(RNNNavigationOptions *)otherOptions {
 	[_presenter presentOnViewWillAppear:self.options];
-	[self.options resetOptions];
+//	[self.options resetOptions];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {

@@ -12,32 +12,29 @@
 
 @implementation RNNNavigationOptions
 
-- (void)applyOn:(UIViewController *)viewController {
-	if (self.backgroundImage) {
-		[viewController rnn_setBackgroundImage:[RCTConvert UIImage:self.backgroundImage]];
-	}
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super init];
 	
-	if (self.modalPresentationStyle) {
-		[viewController rnn_setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:self.modalPresentationStyle]];
-	}
+	self.topBar = [[RNNTopBarOptions alloc] initWithDict:dict[@"topBar"]];
+	self.bottomTabs = [[RNNBottomTabsOptions alloc] initWithDict:dict[@"bottomTabs"]];
+	self.bottomTab = [[RNNBottomTabOptions alloc] initWithDict:dict[@"bottomTab"]];
+	self.topTabs = [[RNNTopTabsOptions alloc] initWithDict:dict[@"topTabs"]];
+	self.topTab = [[RNNTopTabOptions alloc] initWithDict:dict[@"topTab"]];
+	self.sideMenu = [[RNNSideMenuOptions alloc] initWithDict:dict[@"sideMenu"]];
+	self.overlay = [[RNNOverlayOptions alloc] initWithDict:dict[@"overlay"]];
+	self.customTransition = [[RNNAnimationOptions alloc] initWithDict:dict[@"customTransition"]];
+	self.animations = [[RNNTransitionsOptions alloc] initWithDict:dict[@"animations"]];
+	self.statusBar = [[RNNStatusBarOptions alloc] initWithDict:dict[@"statusBar"]];
+	self.preview = [[RNNPreviewOptions alloc] initWithDict:dict[@"preview"]];
+	self.layout = [[RNNLayoutOptions alloc] initWithDict:dict[@"layout"]];
 	
-	if (self.modalTransitionStyle) {
-		[viewController rnn_setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:self.modalTransitionStyle]];
-	}
-}
-
-- (void)applyOnNavigationController:(UINavigationController *)navigationController {
-	if (self.popGesture) {
-		[navigationController rnn_setInteractivePopGestureEnabled:[self.popGesture boolValue]];
-	}
+	self.popGesture = [[Number alloc] initWithValue:dict[@"popGesture"]];
+	self.backgroundImage = [[Dictionary alloc] initWithValue:dict[@"backgroundImage"]];
+	self.rootBackgroundImage = [[Dictionary alloc] initWithValue:dict[@"rootBackgroundImage"]];
+	self.modalPresentationStyle = [[String alloc] initWithValue:dict[@"modalPresentationStyle"]];
+	self.modalTransitionStyle = [[String alloc] initWithValue:dict[@"modalTransitionStyle"]];
 	
-	if (self.rootBackgroundImage) {
-		[navigationController rnn_setRootBackgroundImage:[RCTConvert UIImage:self.rootBackgroundImage]];
-	}
-}
-
-- (void)applyOnTabBarController:(UITabBarController *)tabBarController {
-	[self.bottomTabs applyOnTabBarController:tabBarController];
+	return self;
 }
 
 - (void)applyDefaultOptionsOn:(UIViewController *)viewController {
@@ -55,10 +52,10 @@
 	tabBarController.tabBar.translucent = NO;
 }
 
-- (void)resetOptions {
-	[self.sideMenu resetOptions];
-	[self.bottomTabs resetOptions];
-	[self.bottomTab resetOptions];
-}
+//- (void)resetOptions {
+//	[self.sideMenu resetOptions];
+//	[self.bottomTabs resetOptions];
+//	[self.bottomTab resetOptions];
+//}
 
 @end

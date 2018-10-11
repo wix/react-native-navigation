@@ -95,7 +95,6 @@
 
 - (void)optionsDidUpdatedWithOptions:(RNNNavigationOptions *)otherOptions {
 	[_presenter presentOnViewWillAppear:otherOptions];
-	[self.options resetOptions];
 	[self initCustomViews];
 }
 
@@ -150,19 +149,20 @@
 }
 
 - (void)setTitleViewWithSubtitle {
-	if (self.options.topBar.subtitle.text) {
-		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:self.options.topBar.title viewController:self];
+	if (self.options.topBar.subtitle.text.hasValue) {
+		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:self.options.topBar.title subTitleOptions:self.options.topBar.subtitle viewController:self];
 		[titleViewHelper setup];
 	}
 }
 
 - (void)setCustomNavigationTitleView {
 	if (!_customTitleView && _isBeingPresented) {
-		if (self.options.topBar.title.component.name) {
+		if (self.options.topBar.title.component.name.hasValue) {
 			_customTitleView = (RNNReactView*)[_creator createRootViewFromComponentOptions:self.options.topBar.title.component];
 			_customTitleView.backgroundColor = UIColor.clearColor;
-			[_customTitleView setAlignment:self.options.topBar.title.component.alignment];
-			BOOL isCenter = [self.options.topBar.title.component.alignment isEqualToString:@"center"];
+			NSString* alignment = [self.options.topBar.title.component.alignment getWithDefaultValue:@""];
+			[_customTitleView setAlignment:alignment];
+			BOOL isCenter = [alignment isEqualToString:@"center"];
 			__weak RNNReactView *weakTitleView = _customTitleView;
 			CGRect frame = self.navigationController.navigationBar.bounds;
 			[_customTitleView setFrame:frame];
@@ -186,7 +186,7 @@
 
 - (void)setCustomNavigationBarView {
 	if (!_customTopBar) {
-		if (self.options.topBar.component.name) {
+		if (self.options.topBar.component.name.hasValue) {
 			RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.component];
 			
 			_customTopBar = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
@@ -206,7 +206,7 @@
 
 - (void)setCustomNavigationComponentBackground {
 	if (!_customTopBarBackground) {
-		if (self.options.topBar.background.component.name) {
+		if (self.options.topBar.background.component.name.hasValue) {
 			RCTRootView *reactView = (RCTRootView*)[_creator createRootViewFromComponentOptions:self.options.topBar.background.component];
 			
 			_customTopBarBackground = [[RNNCustomTitleView alloc] initWithFrame:self.navigationController.navigationBar.bounds subView:reactView alignment:@"fill"];
@@ -233,8 +233,8 @@
 
 - (BOOL)prefersStatusBarHidden {
 	if (self.options.statusBar.visible) {
-		return ![self.options.statusBar.visible boolValue];
-	} else if ([self.options.statusBar.hideWithTopBar boolValue]) {
+		return ![self.options.statusBar.visible getWithDefaultValue:@(1)];
+	} else if ([self.options.statusBar.hideWithTopBar getWithDefaultValue:@(0)]) {
 		return self.navigationController.isNavigationBarHidden;
 	}
 	
@@ -242,7 +242,7 @@
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	if (self.options.statusBar.style && [self.options.statusBar.style isEqualToString:@"light"]) {
+	if ([[self.options.statusBar.style getWithDefaultValue:@"default"] isEqualToString:@"light"]) {
 		return UIStatusBarStyleLightContent;
 	} else {
 		return UIStatusBarStyleDefault;
@@ -263,7 +263,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
 	RNNRootViewController* vc =  (RNNRootViewController*)viewController;
-	if (![vc.options.topBar.backButton.transition isEqualToString:@"custom"]){
+	if (![[vc.options.topBar.backButton.transition getWithDefaultValue:@""] isEqualToString:@"custom"]){
 		navigationController.delegate = nil;
 	}
 }

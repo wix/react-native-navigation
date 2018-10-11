@@ -1,20 +1,18 @@
 #import "RNNTitleOptions.h"
-#import "RNNTitleViewHelper.h"
-#import "UIViewController+RNNOptions.h"
-#import "UINavigationController+RNNOptions.h"
 
 @implementation RNNTitleOptions
 
-- (void)applyOn:(UIViewController *)viewController {
-	if (self.text) {
-		[viewController rnn_setNavigationItemTitle:self.text];
-	}
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super init];
 	
-	[viewController.navigationController rnn_setNavigationBarFontFamily:self.fontFamily fontSize:self.fontSize color:[RCTConvert UIColor:self.color]];
-}
-
-- (NSNumber *)fontSize {
-	return _fontSize ? _fontSize : nil;
+	self.text = [StringParser parse:dict key:@"text"];
+	self.fontFamily = [StringParser parse:dict key:@"fontFamily"];
+	self.fontSize = [NumberParser parse:dict key:@"fontSize"];
+	self.color = [NumberParser parse:dict key:@"color"];
+	
+	self.component = [[RNNComponentOptions alloc] initWithDict:dict[@"component"]];
+	
+	return self;
 }
 
 @end

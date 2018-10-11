@@ -6,52 +6,28 @@
 
 @implementation RNNBottomTabOptions
 
--(instancetype)initWithDict:(NSDictionary *)tabItemDict {
+- (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
 	
-	[self mergeWith:tabItemDict];
-	self.tag = [tabItemDict[@"tag"] integerValue];
+	self.text = [StringParser parse:dict key:@"text"];
+	self.badge = [StringParser parse:dict key:@"badge"];
+	self.fontFamily = [StringParser parse:dict key:@"fontFamily"];
+	self.testID = [StringParser parse:dict key:@"testID"];
+	
+	
+	self.badgeColor = [DictionaryParser parse:dict key:@"badgeColor"];
+	self.icon = [DictionaryParser parse:dict key:@"icon"];
+	self.selectedIcon = [DictionaryParser parse:dict key:@"selectedIcon"];
+	self.iconColor = [DictionaryParser parse:dict key:@"iconColor"];
+	self.selectedIconColor = [DictionaryParser parse:dict key:@"selectedIconColor"];
+	self.selectedTextColor = [DictionaryParser parse:dict key:@"selectedTextColor"];
+	self.iconInsets = [DictionaryParser parse:dict key:@"iconInsets"];
+	
+	self.textColor = [NumberParser parse:dict key:@"textColor"];
+	self.fontSize = [NumberParser parse:dict key:@"fontSize"];
+	self.visible = [BoolParser parse:dict key:@"visible"];
 	
 	return self;
-}
-
-- (void)applyOn:(UIViewController *)viewController {
-	UIViewController* topViewController = [self getTabControllerFirstChild:viewController];
-	if (self.text || self.icon || self.selectedIcon) {
-		
-		UITabBarItem* tabItem = [RNNTabBarItemCreator updateTabBarItem:topViewController.tabBarItem text:self.text textColor:self.textColor selectedTextColor:self.selectedTextColor icon:self.icon selectedIcon:self.selectedIcon iconInsets:self.iconInsets iconColor:self.iconColor selectedIconColor:self.selectedIconColor fontFamily:self.fontFamily fontSize:self.fontSize];
-		
-		tabItem.tag = self.tag;
-		tabItem.accessibilityIdentifier = self.testID;
-		
-		[topViewController setTabBarItem:tabItem];
-	}
-	
-	if (self.badge) {
-		[topViewController rnn_setTabBarItemBadge:[RCTConvert NSString:self.badge]];
-	}
-	
-	if (self.badgeColor) {
-		[topViewController rnn_setTabBarItemBadgeColor:[RCTConvert UIColor:self.badgeColor]];
-	}
-	
-	if (self.visible) {
-		[topViewController.tabBarController rnn_setCurrentTabIndex:[viewController.tabBarController.viewControllers indexOfObject:viewController]];
-	}
-	
-	[self resetOptions];
-}
-
-- (UIViewController *)getTabControllerFirstChild:(UIViewController *)viewController {
-	while (viewController != nil) {
-		if ([viewController.parentViewController isKindOfClass:[UITabBarController class]] || !viewController.parentViewController) {
-			return viewController;
-		}
-		
-		viewController = viewController.parentViewController;
-	}
-	
-	return nil;
 }
 
 -(void)resetOptions {
