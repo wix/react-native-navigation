@@ -13,13 +13,13 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.params.LightBoxParams;
-import com.reactnativenavigation.screens.Screen;
 import com.reactnativenavigation.utils.ViewUtils;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -48,14 +48,18 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         }
     }
 
-    private void createContent(final Context context, LightBoxParams params) {
+    private void createContent(final Context context, final LightBoxParams params) {
         lightBox = new RelativeLayout(context);
         lightBox.setAlpha(0);
-        content = new ContentView(context, params.screenId, params.navigationParams);
-        content.setAlpha(0);
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-        lp.addRule(RelativeLayout.CENTER_IN_PARENT, content.getId());
         lightBox.setBackgroundColor(params.backgroundColor.getColor());
+
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+
+        content = new ContentView(context, params.screenId, params.navigationParams);
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT, content.getId());
+        content.setAlpha(0);
         lightBox.addView(content, lp);
 
         if (params.tapBackgroundToDismiss) {
@@ -66,20 +70,29 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
                 }
             });
         }
-
-        content.setOnDisplayListener(new Screen.OnDisplayListener() {
+        content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onDisplay() {
-                content.getLayoutParams().height = content.getChildAt(0).getHeight();
-                content.getLayoutParams().width = content.getChildAt(0).getWidth();
-                content.setBackgroundColor(Color.TRANSPARENT);
-                ViewUtils.runOnPreDraw(content, new Runnable() {
-                    @Override
-                    public void run() {
-                        animateShow();
+            public void onGlobalLayout() {
+                // Note that this may be called multiple times as the lightbox views get built.  We want to hold off
+                // doing anything here until the lightbox screen and its measurements are available.
+                final View lightboxScreen = content.getChildAt(0);
+                if (lightboxScreen != null) {
+                    final int screenHeight = lightboxScreen.getHeight();
+                    final int screenWidth = lightboxScreen.getWidth();
+                    if (screenHeight > 0 && screenWidth > 0) {
+                        content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        content.getLayoutParams().height = screenHeight;
+                        content.getLayoutParams().width = screenWidth;
+                        content.setBackgroundColor(Color.TRANSPARENT);
+                        ViewUtils.runOnPreDraw(content, new Runnable() {
+                            @Override
+                            public void run() {
+                                animateShow();
+                            }
+                        });
 
                     }
-                });
+                }
             }
         });
         setContentView(lightBox, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
@@ -95,7 +108,8 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
         animateHide();
     }
 
-    @Override public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
         if (cancelable) {
             hide();
         }

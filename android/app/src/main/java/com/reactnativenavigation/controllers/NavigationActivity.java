@@ -511,5 +511,8 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
                 }
             }
         });
+
+    public Layout getLayout() {
+        return layout;
     }
 }
