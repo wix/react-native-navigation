@@ -11,6 +11,7 @@ import com.reactnativenavigation.viewcontrollers.ParentController;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -20,12 +21,18 @@ public class ChildControllerTest extends BaseTest {
     private ChildController uut;
     private ChildControllersRegistry childRegistry;
     private OptionsPresenter presenter;
+    private Options resolvedOptions = new Options();
 
     @Override
     public void beforeEach() {
         childRegistry = spy(new ChildControllersRegistry());
         presenter = Mockito.mock(OptionsPresenter.class);
-        uut = new SimpleViewController(newActivity(), childRegistry, "childId", presenter, new Options());
+        uut = new SimpleViewController(newActivity(), childRegistry, "childId", presenter, new Options()) {
+            @Override
+            public Options resolveCurrentOptions() {
+                return resolvedOptions;
+            }
+        };
     }
 
     @Test
@@ -44,10 +51,9 @@ public class ChildControllerTest extends BaseTest {
 
     @Test
     public void applyOptions_applyRootOptionsIfRoot() {
-        addToParent(newActivity(), uut);
-        Options options = new Options();
-        uut.applyOptions(options);
-        verify(presenter, times(1)).applyRootOptions(uut.getView(), options);
+        newActivity().setContentView(uut.getView());
+        verify(presenter).applyOptions(uut.getView(), resolvedOptions);
+        verify(presenter).applyRootOptions(uut.getView(), resolvedOptions);
     }
 
     @Test
@@ -56,5 +62,20 @@ public class ChildControllerTest extends BaseTest {
         uut.setParentController(Mockito.mock(ParentController.class));
         uut.applyOptions(options);
         verify(presenter, times(0)).applyRootOptions(uut.getView(), options);
+    }
+
+    @Test
+    public void mergeOptions() {
+        newActivity().setContentView(uut.getView());
+
+        Options options = new Options();
+        uut.mergeOptions(options);
+        verify(presenter).mergeOptions(uut.getView(), options);
+    }
+
+    @Test
+    public void mergeOptions_emptyOptionsAreIgnored() {
+        uut.mergeOptions(Options.EMPTY);
+        verify(presenter, times(0)).mergeOptions(any(), any());
     }
 }

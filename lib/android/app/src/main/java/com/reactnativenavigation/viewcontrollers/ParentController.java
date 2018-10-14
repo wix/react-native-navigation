@@ -42,11 +42,11 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
     @Override
     @CheckResult
     public Options resolveCurrentOptions() {
-	    if (CollectionUtils.isNullOrEmpty(getChildControllers())) return options;
+	    if (CollectionUtils.isNullOrEmpty(getChildControllers())) return initialOptions;
         return getCurrentChild()
                 .resolveCurrentOptions()
                 .copy()
-                .mergeWith(options);
+                .withDefaultOptions(initialOptions);
     }
 
     @Override
@@ -97,14 +97,14 @@ public abstract class ParentController<T extends ViewGroup> extends ChildControl
 
     @CallSuper
     public void applyChildOptions(Options options, Component child) {
-        this.options = this.options.mergeWith(options);
+        this.options = initialOptions.mergeWith(options);
         if (isRoot()) {
             presenter.applyRootOptions(getView(), options);
         }
     }
 
     @CallSuper
-    public void mergeChildOptions(Options options, Component child) {
+    public void mergeChildOptions(Options options, ViewController childController, Component child) {
 
     }
 

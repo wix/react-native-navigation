@@ -1,14 +1,18 @@
 
 #import "RNNNavigationController.h"
 #import "RNNModalAnimation.h"
+#import "RNNRootViewController.h"
 
 @implementation RNNNavigationController
 
-- (instancetype)initWithOptions:(RNNNavigationOptions *)options {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNNavigationControllerPresenter *)presenter {
 	self = [super init];
-	if (self) {
-		_options = options;
-	}
+
+	self.presenter = presenter;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	
+	[self setViewControllers:childViewControllers];
 	
 	return self;
 }
@@ -34,15 +38,11 @@
 		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
 		if ([controller isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
-			[rnnController.options applyOn:rnnController];
+			[rnnController.presenter present:rnnController.options onViewControllerDidLoad:rnnController];
 		}
 	}
 	
 	return [super popViewControllerAnimated:animated];
-}
-
-- (NSString *)componentId {
-	return _componentId ? _componentId : self.getLeafViewController.componentId;
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
@@ -54,18 +54,16 @@
 }
 
 - (UIViewController *)getLeafViewController {
-	return ((UIViewController<RNNRootViewProtocol>*)self.topViewController);
+	return ((UIViewController<RNNParentProtocol>*)self.topViewController);
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
 	return self.topViewController;
 }
 
-- (void)applyTabBarItem {
-	[self.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.options.defaultOptions).bottomTab overrideOptions:NO];
-	[self.options.bottomTab applyOn:self];
-	[self.getLeafViewController.options.bottomTab mergeOptions:((RNNNavigationOptions *)self.getLeafViewController.options.defaultOptions).bottomTab overrideOptions:NO];
-	[self.getLeafViewController.options.bottomTab applyOn:self];
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_presenter present:self.options onViewControllerDidLoad:self];
 }
+
 
 @end

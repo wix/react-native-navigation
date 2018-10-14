@@ -8,6 +8,33 @@
 	RNNEventEmitter *_eventEmitter;
 }
 
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+			  childViewControllers:(NSArray *)childViewControllers
+						   options:(RNNNavigationOptions *)options
+						 presenter:(RNNBasePresenter *)presenter
+					  eventEmitter:(RNNEventEmitter *)eventEmitter {
+	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options presenter:presenter];
+	
+	_eventEmitter = eventEmitter;
+	
+	return self;
+}
+
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+			  childViewControllers:(NSArray *)childViewControllers
+						   options:(RNNNavigationOptions *)options
+						 presenter:(RNNBasePresenter *)presenter {
+	self = [super init];
+	
+	self.presenter = presenter;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	
+	[self setViewControllers:childViewControllers];
+	
+	return self;
+}
+
 - (instancetype)initWithEventEmitter:(id)eventEmitter {
 	self = [super init];
 	_eventEmitter = eventEmitter;
@@ -19,23 +46,11 @@
 	return self.selectedViewController.supportedInterfaceOrientations;
 }
 
-- (void)setTabBarHidden:(BOOL)hidden animated:(BOOL)animated {
-	CGRect frame = self.tabBar.frame;
-	CGFloat height = frame.size.height;
-	CGFloat offsetY = (hidden ? self.view.frame.size.height : self.view.frame.size.height-height);
-	frame.origin.y = offsetY;
-	NSTimeInterval duration = animated ? kTabBarHiddenDuration : 0.0;
-	
-	[UIView animateWithDuration:duration animations:^{
-		self.tabBar.frame = frame;
-	}];
-}
-
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
 	for (id child in self.childViewControllers) {
-		RNNRootViewController* vc = child;
+		UIViewController<RNNParentProtocol>* vc = child;
 
-		if ([vc.componentId isEqualToString:componentID]) {
+		if ([vc.layoutInfo.componentId isEqualToString:componentID]) {
 			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
 		}
 	}
@@ -46,16 +61,16 @@
 	[super setSelectedIndex:selectedIndex];
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.getLeafViewController mergeOptions:options];
-}
-
 - (UIViewController *)getLeafViewController {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).getLeafViewController;
+	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).getLeafViewController;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).preferredStatusBarStyle;
+	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).preferredStatusBarStyle;
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_presenter present:self.options onViewControllerDidLoad:self];
 }
 
 #pragma mark UITabBarControllerDelegate

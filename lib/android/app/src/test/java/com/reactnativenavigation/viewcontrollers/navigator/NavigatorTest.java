@@ -1,7 +1,9 @@
-package com.reactnativenavigation.viewcontrollers;
+package com.reactnativenavigation.viewcontrollers.navigator;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestActivity;
@@ -22,6 +24,10 @@ import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.CompatUtils;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
+import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
+import com.reactnativenavigation.viewcontrollers.ComponentViewController;
+import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.modal.ModalStack;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
@@ -29,6 +35,7 @@ import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.robolectric.android.controller.ActivityController;
+import org.robolectric.annotation.Config;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,10 +47,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@Config(qualifiers = "xxhdpi")
 public class NavigatorTest extends BaseTest {
     private TestActivity activity;
     private ChildControllersRegistry childRegistry;
     private Navigator uut;
+    private RootPresenter rootPresenter;
     private StackController parentController;
     private SimpleViewController child1;
     private ViewController child2;
@@ -67,8 +76,9 @@ public class NavigatorTest extends BaseTest {
         activityController = newActivityController(TestActivity.class);
         activity = activityController.create().get();
         modalStack = spy(new ModalStack(activity));
+        rootPresenter = spy(new RootPresenter(activity));
         modalStack.setEventEmitter(Mockito.mock(EventEmitter.class));
-        uut = new Navigator(activity, childRegistry, modalStack, overlayManager);
+        uut = new Navigator(activity, childRegistry, modalStack, overlayManager, rootPresenter);
         activity.setNavigator(uut);
 
         parentController = newStack();
@@ -90,7 +100,16 @@ public class NavigatorTest extends BaseTest {
         child4 = new SimpleViewController(activity, childRegistry, "child4", tabOptions);
         child5 = new SimpleViewController(activity, childRegistry, "child5", tabOptions);
 
+        uut.bindViews();
+
         activityController.visible();
+        activityController.postCreate(Bundle.EMPTY);
+    }
+
+    @Test
+    public void bindViews() {
+        verify(rootPresenter).setRootContainer(uut.getRootLayout());
+        verify(modalStack).setModalsContainer(uut.getModalsLayout());
     }
 
     @Test
@@ -107,29 +126,41 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void setRoot_setContentViewWhenFirstRootIsSet() {
-        assertThat(uut.view).isNull();
-        uut.setRoot(child1, new CommandListenerAdapter());
-        assertThat(uut.view).isNotNull();
+    public void setRoot_delegatesToRootPresenter() {
+        CommandListenerAdapter listener = new CommandListenerAdapter();
+        uut.setRoot(child1, listener);
+        verify(rootPresenter).setRoot(child1, uut.getDefaultOptions(), listener);
+    }
+
+    @Test
+    public void setRoot_clearsSplashLayout() {
+        disableModalAnimations(child1);
+
+        FrameLayout content = activity.findViewById(android.R.id.content);
+        assertThat(content.getChildCount()).isEqualTo(4); // 3 frame layouts and the default splash layout
+
+        uut.setRoot(child2, new CommandListenerAdapter());
+
+        assertThat(content.getChildCount()).isEqualTo(3);
     }
 
     @Test
     public void setRoot_AddsChildControllerView() {
         uut.setRoot(child1, new CommandListenerAdapter());
-        assertIsChild(uut.getContentLayout(), child1.getView());
+        assertIsChild(uut.getRootLayout(), child1.getView());
     }
 
     @Test
     public void setRoot_ReplacesExistingChildControllerViews() {
         uut.setRoot(child1, new CommandListenerAdapter());
         uut.setRoot(child2, new CommandListenerAdapter());
-        assertIsChild(uut.getContentLayout(), child2.getView());
+        assertIsChild(uut.getRootLayout(), child2.getView());
     }
 
     @Test
     public void hasUniqueId() {
         assertThat(uut.getId()).startsWith("navigator");
-        assertThat(new Navigator(activity, childRegistry, modalStack, overlayManager).getId()).isNotEqualTo(uut.getId());
+        assertThat(new Navigator(activity, childRegistry, modalStack, overlayManager, rootPresenter).getId()).isNotEqualTo(uut.getId());
     }
 
     @Test
@@ -179,9 +210,9 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void pop_InvalidDoesNothing() {
-        uut.pop("123", new CommandListenerAdapter());
+        uut.pop("123", Options.EMPTY, new CommandListenerAdapter());
         uut.setRoot(child1, new CommandListenerAdapter());
-        uut.pop(child1.getId(), new CommandListenerAdapter());
+        uut.pop(child1.getId(), Options.EMPTY, new CommandListenerAdapter());
         assertThat(uut.getChildControllers()).hasSize(1);
     }
 
@@ -199,7 +230,7 @@ public class NavigatorTest extends BaseTest {
                 stack2.push(child4, new CommandListenerAdapter() {
                             @Override
                             public void onSuccess(String childId) {
-                                uut.pop("child4", new CommandListenerAdapter());
+                                uut.pop("child4", Options.EMPTY, new CommandListenerAdapter());
                                 assertThat(stack2.getChildControllers()).containsOnly(child2, child3);
                             }
                         }
@@ -209,20 +240,16 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
-    public void popSpecific() {
-        disablePushAnimation(child1, child2, child3, child4);
-        StackController stack1 = newStack(); stack1.ensureViewIsCreated();
-        StackController stack2 = newStack(); stack2.ensureViewIsCreated();
-        stack1.push(child1, new CommandListenerAdapter());
-        stack2.push(child2, new CommandListenerAdapter());
-        stack2.push(child3, new CommandListenerAdapter());
-        stack2.push(child4, new CommandListenerAdapter());
-        BottomTabsController bottomTabsController = newTabs(Arrays.asList(stack1, stack2));
-        uut.setRoot(bottomTabsController, new CommandListenerAdapter());
+    public void pop_byStackId() {
+        disablePushAnimation(child1, child2);
+        disablePopAnimation(child2, child1);
+        StackController stack = newStack(); stack.ensureViewIsCreated();
+        uut.setRoot(stack, new CommandListenerAdapter());
+        stack.push(child1, new CommandListenerAdapter());
+        stack.push(child2, new CommandListenerAdapter());
 
-        uut.popSpecific(child2.getId(), new CommandListenerAdapter());
-
-        assertThat(stack2.getChildControllers()).containsOnly(child4, child3);
+        uut.pop(stack.getId(), Options.EMPTY, new CommandListenerAdapter());
+        assertThat(stack.getChildControllers()).containsOnly(child1);
     }
 
     @Test
@@ -239,7 +266,7 @@ public class NavigatorTest extends BaseTest {
         stack2.push(child5, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                uut.popTo(child2.getId(), new CommandListenerAdapter());
+                uut.popTo(child2.getId(), Options.EMPTY, new CommandListenerAdapter());
                 assertThat(stack2.getChildControllers()).containsOnly(child2);
             }
         });
@@ -259,7 +286,7 @@ public class NavigatorTest extends BaseTest {
         stack2.push(child5, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                uut.popToRoot(child3.getId(), new CommandListenerAdapter());
+                uut.popToRoot(child3.getId(), Options.EMPTY, new CommandListenerAdapter());
                 assertThat(stack2.getChildControllers()).containsOnly(child2);
             }
         });
@@ -365,9 +392,9 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void pop_InvalidDoesNothing_Promise() {
-        uut.pop("123", new CommandListenerAdapter());
+        uut.pop("123", Options.EMPTY, new CommandListenerAdapter());
         uut.setRoot(child1, new CommandListenerAdapter());
-        uut.pop(child1.getId(), new CommandListenerAdapter() {
+        uut.pop(child1.getId(), Options.EMPTY, new CommandListenerAdapter() {
             @Override
             public void onError(String reason) {
                 assertThat(uut.getChildControllers()).hasSize(1);
@@ -388,7 +415,7 @@ public class NavigatorTest extends BaseTest {
         stack2.push(child4, new CommandListenerAdapter() {
             @Override
             public void onSuccess(String childId) {
-                uut.pop("child4", new CommandListenerAdapter());
+                uut.pop("child4", Options.EMPTY, new CommandListenerAdapter());
                 assertThat(stack2.getChildControllers()).containsOnly(child2, child3);
             }
         });
@@ -426,8 +453,8 @@ public class NavigatorTest extends BaseTest {
                 assertThat(spy.getChildControllers().size()).isEqualTo(1);
             }
         };
-        uut.popSpecific("child2", listener);
-        verify(spy, times(1)).popSpecific(child2, listener);
+        uut.pop("child2", Options.EMPTY, listener);
+        verify(spy, times(1)).pop(Options.EMPTY, listener);
     }
 
     @Test
@@ -467,11 +494,40 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void dismissModal_reattachedToRoot() {
+        disableModalAnimations(child1);
+
+        uut.setRoot(parentController, new CommandListenerAdapter());
+        assertThat(ViewUtils.isChildOf(uut.getRootLayout(), parentController.getView()));
+        uut.showModal(child1, new CommandListenerAdapter());
+
+        uut.dismissModal(child1.getId(), new CommandListenerAdapter());
+        assertThat(ViewUtils.isChildOf(uut.getRootLayout(), parentController.getView()));
+    }
+
+    @Test
+    public void dismissModal_rejectIfRootIsNotSetAndSingleModalIsDisplayed() {
+        disableModalAnimations(child1, child2);
+        uut.showModal(child1, new CommandListenerAdapter());
+        uut.showModal(child2, new CommandListenerAdapter());
+
+        CommandListenerAdapter listener1 = spy(new CommandListenerAdapter());
+        uut.dismissModal(child2.getId(), listener1);
+        verify(listener1).onSuccess(any());
+        assertThat(child2.isDestroyed()).isTrue();
+
+        CommandListenerAdapter listener2 = spy(new CommandListenerAdapter());
+        uut.dismissModal(child1.getId(), listener2);
+        verify(listener2).onError(any());
+        assertThat(child1.isDestroyed()).isFalse();
+    }
+
+    @Test
     public void dismissAllModals_onViewAppearedInvokedOnRoot() {
         disablePushAnimation(child2);
         disableShowModalAnimation(child1);
 
-        uut.dismissAllModals(new CommandListenerAdapter());
+        uut.dismissAllModals(Options.EMPTY, new CommandListenerAdapter());
         verify(parentVisibilityListener, times(0)).onViewAppeared(parentController.getView());
 
         uut.setRoot(parentController, new CommandListenerAdapter());
@@ -479,7 +535,7 @@ public class NavigatorTest extends BaseTest {
 
         verify(parentVisibilityListener, times(1)).onViewAppeared(parentController.getView());
         uut.showModal(child1, new CommandListenerAdapter());
-        uut.dismissAllModals(new CommandListenerAdapter());
+        uut.dismissAllModals(Options.EMPTY, new CommandListenerAdapter());
 
         verify(parentVisibilityListener, times(2)).onViewAppeared(parentController.getView());
     }
@@ -507,11 +563,21 @@ public class NavigatorTest extends BaseTest {
     }
 
     @Test
+    public void handleBack_falseIfRootIsNotSetAndSingleModalIsDisplayed() {
+        disableShowModalAnimation(child1, child2, child3);
+        uut.showModal(child1, new CommandListenerAdapter());
+        uut.showModal(child2, new CommandListenerAdapter());
+
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isTrue();
+        assertThat(uut.handleBack(new CommandListenerAdapter())).isFalse();
+    }
+
+    @Test
     public void destroy_destroyedRoot() {
         disablePushAnimation(child1);
 
         StackController spy = spy(parentController);
-        spy.options.animations.startApp.enable = new Bool(false);
+        spy.options.animations.setRoot.enable = new Bool(false);
         uut.setRoot(spy, new CommandListenerAdapter());
         spy.push(child1, new CommandListenerAdapter());
         activityController.destroy();
@@ -527,7 +593,6 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void destroyViews() {
-        disableShowModalAnimation(child1);
         uut.setRoot(parentController, new CommandListenerAdapter());
         uut.showModal(child1, new CommandListenerAdapter());
         uut.showOverlay(child2, new CommandListenerAdapter());

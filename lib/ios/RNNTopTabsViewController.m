@@ -1,16 +1,29 @@
 #import "RNNTopTabsViewController.h"
 #import "RNNSegmentedControl.h"
 #import "ReactNativeNavigation.h"
+#import "RNNRootViewController.h"
 
 @interface RNNTopTabsViewController () {
 	NSArray* _viewControllers;
-	UIViewController<RNNRootViewProtocol>* _currentViewController;
+	UIViewController<RNNParentProtocol>* _currentViewController;
 	RNNSegmentedControl* _segmentedControl;
 }
 
 @end
 
 @implementation RNNTopTabsViewController
+
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter {
+	self = [self init];
+	
+	self.presenter = presenter;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	
+	[self setViewControllers:childViewControllers];
+	
+	return self;
+}
 
 - (instancetype)init {
 	self = [super init];
@@ -46,7 +59,7 @@
 }
 
 - (void)setSelectedViewControllerIndex:(NSUInteger)index {
-	UIViewController<RNNRootViewProtocol> *toVC = _viewControllers[index];
+	UIViewController<RNNParentProtocol> *toVC = _viewControllers[index];
 	[_contentView addSubview:toVC.view];
 	[_currentViewController.view removeFromSuperview];
 	_currentViewController = toVC;
@@ -56,7 +69,7 @@
 	_viewControllers = viewControllers;
 	for (RNNRootViewController* childVc in viewControllers) {
 		[childVc.view setFrame:_contentView.bounds];
-		[childVc applyTopTabsOptions];
+		[childVc.options.topTab applyOn:childVc];
 	}
 	
 	[self setSelectedViewControllerIndex:0];
@@ -71,7 +84,12 @@
     [super viewDidLoad];
 }
 
-#pragma mark RNNRootViewProtocol
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	[_presenter present:self.options onViewControllerDidLoad:self];
+}
+
+
+#pragma mark RNNParentProtocol
 
 - (UIViewController *)getLeafViewController {
 	return _currentViewController;

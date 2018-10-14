@@ -78,24 +78,37 @@ public class BottomTabsController extends ParentController implements AHBottomNa
         super.applyOptions(options);
         presenter.present(options);
         tabPresenter.present();
+        this.options.bottomTabsOptions.clearOneTimeOptions();
+        this.initialOptions.bottomTabsOptions.clearOneTimeOptions();
+    }
+
+    @Override
+    public void mergeOptions(Options options) {
+        presenter.mergeOptions(options);
+        super.mergeOptions(options);
     }
 
     @Override
     public void applyChildOptions(Options options, Component child) {
         super.applyChildOptions(options, child);
-        presenter.applyChildOptions(this.options, child);
+        presenter.applyChildOptions(resolveCurrentOptions(), child);
         performOnParentController(parentController ->
-                ((ParentController) parentController).applyChildOptions(this.options.copy().clearBottomTabsOptions().clearBottomTabOptions(), child)
+                ((ParentController) parentController).applyChildOptions(
+                        this.options.copy()
+                                .clearBottomTabsOptions()
+                                .clearBottomTabOptions(),
+                        child
+                )
         );
     }
 
     @Override
-    public void mergeChildOptions(Options options, Component child) {
-        super.mergeChildOptions(options, child);
+    public void mergeChildOptions(Options options, ViewController childController, Component child) {
+        super.mergeChildOptions(options, childController, child);
         presenter.mergeChildOptions(options, child);
         tabPresenter.mergeChildOptions(options, child);
         performOnParentController(parentController ->
-                ((ParentController) parentController).mergeChildOptions(options.copy().clearBottomTabsOptions(), child)
+                ((ParentController) parentController).mergeChildOptions(options.copy().clearBottomTabsOptions(), childController, child)
         );
     }
 
@@ -116,8 +129,8 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 
     @Override
     public boolean onTabSelected(int index, boolean wasSelected) {
-        if (wasSelected) return false;
         eventEmitter.emitBottomTabSelected(bottomTabs.getCurrentItem(), index);
+        if (wasSelected) return false;
         selectTab(index);
         return false;
 	}

@@ -1,6 +1,7 @@
 
 #import "RNNReactRootViewCreator.h"
 #import "RNNReactRootView.h"
+#import "RNNReactView.h"
 
 @implementation RNNReactRootViewCreator {
 	RCTBridge *_bridge;
@@ -26,8 +27,19 @@
 	return view;
 }
 
+- (UIView*)createCustomReactView:(NSString*)name rootViewId:(NSString*)rootViewId {
+	if (!rootViewId) {
+		@throw [NSException exceptionWithName:@"MissingViewId" reason:@"Missing view id" userInfo:nil];
+	}
+	
+	UIView *view = [[RNNReactView alloc] initWithBridge:_bridge
+												 moduleName:name
+										  initialProperties:@{@"componentId": rootViewId}];
+	return view;
+}
+
 -(UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions {
-	return [self createRootView:componentOptions.name rootViewId:componentOptions.componentId];
+	return [self createCustomReactView:componentOptions.name rootViewId:componentOptions.componentId];
 }
 
 @end

@@ -462,7 +462,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     
     _centerViewController = centerViewController;
     
-    [self addChildViewController:self.centerViewController];
+	[self addChildViewController:self.centerViewController];
     [self.centerViewController.view setFrame:self.childControllerContainerView.bounds];
     [self.centerContainerView addSubview:self.centerViewController.view];
     [self.childControllerContainerView bringSubviewToFront:self.centerContainerView];
@@ -911,7 +911,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     
     if(viewController){
         [self addChildViewController:viewController];
-        
+		
         if((self.openSide == drawerSide) &&
            [self.childControllerContainerView.subviews containsObject:self.centerContainerView]){
             [self.childControllerContainerView insertSubview:viewController.view belowSubview:self.centerContainerView];

@@ -187,7 +187,7 @@ public class ParentControllerTest extends BaseTest {
     @Test
     public void resolveCurrentOptions_returnOptionsIfNoChildren() {
         assertThat(uut.getChildControllers().size()).isZero();
-        assertThat(uut.resolveCurrentOptions()).isEqualTo(uut.options);
+        assertThat(uut.resolveCurrentOptions()).isEqualTo(uut.initialOptions);
     }
 
     @Test
@@ -209,7 +209,7 @@ public class ParentControllerTest extends BaseTest {
         assertThat(uut.getCurrentChild()).isEqualTo(child1);
         uut.resolveCurrentOptions();
         verify(child1).resolveCurrentOptions();
-        verify(copiedChildOptions).mergeWith(uut.options);
+        verify(copiedChildOptions).withDefaultOptions(uut.initialOptions);
     }
 
     @Test

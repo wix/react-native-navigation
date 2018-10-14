@@ -11,7 +11,6 @@ import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.TestUtils;
 import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
-import com.reactnativenavigation.mocks.TitleBarReactViewCreatorMock;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Colour;
@@ -20,11 +19,11 @@ import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
 import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
 import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.presentation.StackOptionsPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.OptionHelper;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabsController;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
 import com.reactnativenavigation.views.BottomTabs;
@@ -34,9 +33,13 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
+import static com.reactnativenavigation.TestUtils.hideBackButton;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -79,6 +82,7 @@ public class BottomTabsControllerTest extends BaseTest {
         tabs = createTabs();
         presenter = spy(new BottomTabsOptionsPresenter(tabs, new Options()));
         uut = createBottomTabs();
+        activity.setContentView(uut.getView());
     }
 
     @Test
@@ -139,7 +143,7 @@ public class BottomTabsControllerTest extends BaseTest {
         uut.ensureViewIsCreated();
         assertThat(uut.getSelectedIndex()).isZero();
 
-        uut.onTabSelected(0, false);
+        uut.onTabSelected(0, true);
 
         assertThat(uut.getSelectedIndex()).isEqualTo(0);
         assertThat(((ViewController) ((List) uut.getChildControllers()).get(0)).getView().getParent()).isNotNull();
@@ -157,6 +161,8 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void applyOptions_bottomTabsOptionsAreClearedAfterApply() {
+        ViewUtils.removeFromParent(uut.getView());
+
         Options options = new Options();
         options.bottomTabsOptions.backgroundColor = new Colour(Color.RED);
         child1.mergeOptions(options);
@@ -206,6 +212,37 @@ public class BottomTabsControllerTest extends BaseTest {
     }
 
     @Test
+    public void applyChildOptions_resolvedOptionsAreUsed() {
+        Options childOptions = new Options();
+        SimpleViewController pushedScreen = new SimpleViewController(activity, childRegistry, "child4.1", childOptions);
+        disablePushAnimation(pushedScreen);
+        child4 = createStack(pushedScreen);
+
+        tabs = new ArrayList<>(Collections.singletonList(child4));
+
+        initialOptions.bottomTabsOptions.currentTabIndex = new Number(3);
+        Options resolvedOptions = new Options();
+        uut = new BottomTabsController(activity,
+                tabs,
+                childRegistry,
+                eventEmitter,
+                imageLoaderMock,
+                "uut",
+                initialOptions,
+                new OptionsPresenter(activity, new Options()),
+                presenter,
+                new BottomTabOptionsPresenter(activity, tabs, new Options())) {
+            @Override
+            public Options resolveCurrentOptions() {
+                return resolvedOptions;
+            }
+        };
+
+        activity.setContentView(uut.getView());
+        verify(presenter, times(2)).applyChildOptions(eq(resolvedOptions), any());
+    }
+
+    @Test
     public void child_mergeOptions_currentTabIndex() {
         uut.ensureViewIsCreated();
 
@@ -234,7 +271,9 @@ public class BottomTabsControllerTest extends BaseTest {
 
         SimpleViewController stackChild = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
         SimpleViewController stackChild2 = new SimpleViewController(activity, childRegistry, "stackChild", new Options());
+
         disablePushAnimation(stackChild, stackChild2);
+        hideBackButton(stackChild2);
 
         child4.push(stackChild, new CommandListenerAdapter());
         assertThat(child4.size()).isOne();
@@ -244,17 +283,12 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void deepChildOptionsAreApplied() {
-        BottomTabsController spy = spy(uut);
-        activity.setContentView(spy.getView());
-
         child6.options.topBar.drawBehind = new Bool(false);
         disablePushAnimation(child6);
         child4.push(child6, new CommandListenerAdapter());
         assertThat(child4.size()).isOne();
 
-
-        verify(spy, times(1)).onViewAppeared();
-        assertThat(spy.getSelectedIndex()).isZero();
+        assertThat(uut.getSelectedIndex()).isZero();
         verify(child6, times(0)).onViewAppeared();
         assertThat(child4.getTopBar().getHeight())
                 .isNotZero()
@@ -263,16 +297,14 @@ public class BottomTabsControllerTest extends BaseTest {
 
     @Test
     public void oneTimeOptionsAreAppliedOnce() {
-        initialOptions.bottomTabsOptions.currentTabIndex = new Number(1);
-        BottomTabsController spy = spy(createBottomTabs());
-        spy.onViewAppeared();
+        Options options = new Options();
+        options.bottomTabsOptions.currentTabIndex = new Number(1);
 
-        assertThat(spy.getSelectedIndex()).isOne();
-        spy.selectTab(0);
-        tabs.get(0).onViewAppeared();
-        verify(spy).clearOptions();
-        assertThat(spy.getSelectedIndex()).isZero();
-        assertThat(spy.options.bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
+        assertThat(uut.getSelectedIndex()).isZero();
+        uut.mergeOptions(options);
+        assertThat(uut.getSelectedIndex()).isOne();
+        assertThat(uut.options.bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
+        assertThat(uut.initialOptions.bottomTabsOptions.currentTabIndex.hasValue()).isFalse();
     }
 
     @NonNull
@@ -284,7 +316,13 @@ public class BottomTabsControllerTest extends BaseTest {
         return TestUtils.newStackController(activity)
                 .setId(id)
                 .setInitialOptions(tabOptions)
-                .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new Options()))
+                .build();
+    }
+
+    private StackController createStack(ViewController initialChild) {
+        return TestUtils.newStackController(activity)
+                .setInitialOptions(tabOptions)
+                .setChildren(new ArrayList<>(Collections.singleton(initialChild)))
                 .build();
     }
 
@@ -292,7 +330,7 @@ public class BottomTabsControllerTest extends BaseTest {
         return (ViewGroup.MarginLayoutParams) tabs.get(index).getView().getLayoutParams();
     }
 
-    public BottomTabsController createBottomTabs() {
+    private BottomTabsController createBottomTabs() {
         return new BottomTabsController(activity,
                 tabs,
                 childRegistry,

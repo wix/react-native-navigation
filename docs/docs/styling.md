@@ -75,16 +75,6 @@ Navigation.mergeOptions(this.props.componentId, {
     buttonColor: 'black',
     drawBehind: false,
     testID: 'topBar',
-    searchBar: true, // iOS 11+ native UISearchBar inside topBar
-    searchBarHiddenWhenScrolling: true,
-    searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
-    // iOS 11+ Large Title
-    largeTitle: {
-      visible: true,
-      fontSize: 30,
-      color: 'red',
-      fontFamily: 'Helvetica'
-    },
     title: {
       text: 'Title',
       fontSize: 14,
@@ -153,7 +143,7 @@ Navigation.mergeOptions(this.props.componentId, {
     interceptTouchOutside: true
   },
   preview: {
-    elementId: 'PreviewId',
+    reactTag: 0, // result from findNodeHandle(ref)
     width: 100,
     height: 100,
     commit: false,
@@ -179,14 +169,18 @@ Navigation.mergeOptions(this.props.componentId, {
   rootBackgroundImage: require('rootBackground.png'),
   topBar: {
     barStyle: 'default' | 'black',
-    translucent: true,
-    transparent: false,
+    background: {
+      translucent: true,
+      blur: false
+    }
     noBorder: false,
-    blur: false,
     backButton: {
       title: 'Back',
       showTitle: false
     },
+    searchBar: true, // iOS 11+ native UISearchBar inside topBar
+    searchBarHiddenWhenScrolling: true,
+    searchBarPlaceholder: 'Search', // iOS 11+ SearchBar placeholder
     largeTitle: {
       visible: true,
       fontSize: 30,
@@ -194,6 +188,18 @@ Navigation.mergeOptions(this.props.componentId, {
       fontFamily: 'Helvetica'
     },
   },
+  sideMenu: {
+    left: {
+      shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
+      animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
+      animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
+    },
+    right: {
+      shouldStretchDrawer: false, // defaults to true, when false sideMenu contents not stretched when opened past the width
+      animationVelocity: 2500, // defaults to 840, high number is a faster sideMenu open/close animation
+      animationType: 'parallax' // defaults to none if not provided, options are 'parallax', 'door', 'slide', or 'slide-and-scale'    
+    }
+  }
   bottomTabs: {
     barStyle: 'default' | 'black',
     translucent: true,
@@ -218,22 +224,26 @@ Navigation.mergeOptions(this.props.componentId, {
     visible: false
   },
   layout: {
-    topMargin: Navigation.constants().statusBarHeight // Set the layout's top margin
+    topMargin: Navigation.constants().statusBarHeight, // Set the layout's top margin
+    orientation: ['portrait', 'landscape'] | ['sensorLandscape'] // An array of supported orientations
   },
   topBar: {
     height: 70, // TopBar height in dp
     borderColor: 'red',
     borderHeight: 1.3,
     elevation: 1.5, // TopBar elevation in dp
+    topMargin: 24, // top margin in dp
     title: {
       height: 70 // TitleBar height in dp
     }
   },
   bottomTabs: {
+    elevation: 8, // BottomTabs elevation in dp
     titleDisplayMode: 'alwaysShow' | 'showWhenActive' | 'alwaysHide' // Sets the title state for each tab.
   },
   bottomTab: {
     selectedFontSize: 19 // Selected tab font size in sp
+  }
 }
 ```
 
@@ -272,17 +282,11 @@ The following properties can be animated:
 }
 ```
 
-For example, changing the animation used when the app is first launched:
+For example, changing the animation used when the app is first launched (Supported only on Android):
 ```js
 Navigation.setDefaultOptions({
   animations: {
-    startApp: {
-      y: {
-        from: 1000,
-        to: 0,
-        duration: 500,
-        interpolation: 'accelerate',
-      },
+    setRoot: {
       alpha: {
         from: 0,
         to: 1,
@@ -298,7 +302,7 @@ Navigation.setDefaultOptions({
 ## Customizing navigation commands animation
 
 Animations for the following set of commands can be customized
-* startApp
+* setRoot
 * push
 * pop
 * showModal

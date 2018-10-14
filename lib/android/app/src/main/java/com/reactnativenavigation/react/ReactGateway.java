@@ -46,6 +46,14 @@ public class ReactGateway {
 		jsDevReloadHandler.onActivityResumed(activity);
 	}
 
+    public boolean onNewIntent(Intent intent) {
+        if (getReactNativeHost().hasInstance()) {
+            getReactNativeHost().getReactInstanceManager().onNewIntent(intent);
+            return true;
+        }
+        return false;
+    }
+
 	public void onActivityPaused(NavigationActivity activity) {
 		initializer.onActivityPaused(activity);
 		jsDevReloadHandler.onActivityPaused(activity);

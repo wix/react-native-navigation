@@ -53,7 +53,7 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
 
     @Override
     public void mergeOptions(Options options) {
-        performOnParentController(parentController -> parentController.mergeChildOptions(options, getView()));
+        performOnParentController(parentController -> parentController.mergeChildOptions(options, this, getView()));
         super.mergeOptions(options);
     }
 
@@ -77,8 +77,8 @@ public class SimpleViewController extends ChildController<SimpleViewController.S
         public void drawBelowTopBar(TopBar topBar) {
             if (getLayoutParams() instanceof RelativeLayout.LayoutParams) {
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
-                if (layoutParams.topMargin == ViewUtils.getPreferredHeight(topBar)) return;
-                layoutParams.topMargin = ViewUtils.getPreferredHeight(topBar);
+                if (layoutParams.topMargin == ViewUtils.getHeight(topBar)) return;
+                layoutParams.topMargin = ViewUtils.getHeight(topBar);
 //                setLayoutParams(layoutParams);
             }
         }
