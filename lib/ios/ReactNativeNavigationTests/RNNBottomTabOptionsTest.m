@@ -11,7 +11,7 @@
 
 - (void)setUp {
     [super setUp];
-	self.uut = [[RNNBottomTabOptions alloc] initEmptyOptions];
+//	self.uut = [[RNNBottomTabOptions alloc] initEmptyOptions];
 }
 
 //- (void)test_tabBarTextFontFamily_validFont {

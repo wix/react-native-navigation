@@ -20,7 +20,7 @@
 
 - (void)rnn_setTabBarItemBadge:(NSString *)badge;
 
-- (void)rnn_setTabBarItemPrefersLargeTitle:(BOOL)prefersLargeTitle;
+- (void)rnn_setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle;
 
 - (void)rnn_setNavigationItemTitle:(NSString *)title;
 

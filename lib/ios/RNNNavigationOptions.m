@@ -28,12 +28,17 @@
 	self.preview = [[RNNPreviewOptions alloc] initWithDict:dict[@"preview"]];
 	self.layout = [[RNNLayoutOptions alloc] initWithDict:dict[@"layout"]];
 	
-	self.popGesture = [[Number alloc] initWithValue:dict[@"popGesture"]];
+	self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
 	self.backgroundImage = [[Dictionary alloc] initWithValue:dict[@"backgroundImage"]];
 	self.rootBackgroundImage = [[Dictionary alloc] initWithValue:dict[@"rootBackgroundImage"]];
 	self.modalPresentationStyle = [[String alloc] initWithValue:dict[@"modalPresentationStyle"]];
 	self.modalTransitionStyle = [[String alloc] initWithValue:dict[@"modalTransitionStyle"]];
 	
+	return self;
+}
+
+- (instancetype)initEmptyOptions {
+	self = [self initWithDict:@{}];
 	return self;
 }
 

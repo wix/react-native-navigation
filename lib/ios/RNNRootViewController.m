@@ -232,9 +232,9 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-	if (self.options.statusBar.visible) {
-		return ![self.options.statusBar.visible getWithDefaultValue:@(1)];
-	} else if ([self.options.statusBar.hideWithTopBar getWithDefaultValue:@(0)]) {
+	if (self.options.statusBar.visible.hasValue) {
+		return ![self.options.statusBar.visible get];
+	} else if ([self.options.statusBar.hideWithTopBar getWithDefaultValue:nil]) {
 		return self.navigationController.isNavigationBarHidden;
 	}
 	
@@ -255,8 +255,8 @@
 
 - (BOOL)hidesBottomBarWhenPushed
 {
-	if (self.options.bottomTabs && self.options.bottomTabs.visible) {
-		return ![self.options.bottomTabs.visible boolValue];
+	if (self.options.bottomTabs.visible.hasValue) {
+		return !self.options.bottomTabs.visible.get;
 	}
 	return NO;
 }

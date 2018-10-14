@@ -95,7 +95,7 @@
 
 -(void)testDynamicStylesMergeWithStaticStyles {
 	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
-	initialOptions.topBar.title.text = @"the title";
+	initialOptions.topBar.title.text = [[String alloc] initWithValue:@"the title"];
 	RNNLayoutInfo* layoutInfo = [RNNLayoutInfo new];
 	RNNTestRootViewCreator* creator = [[RNNTestRootViewCreator alloc] init];
 	
@@ -121,7 +121,7 @@
 
 - (void)testMergeOptions_shouldOverrideOptions {
 	RNNNavigationOptions* initialOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
-	initialOptions.topBar.title.text = @"the title";
+	initialOptions.topBar.title.text = [[String alloc] initWithValue:@"the title"];
 	
 	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
 	RNNRootViewController* vc = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:[[RNNTestRootViewCreator alloc] init] eventEmitter:nil presenter:presenter options:initialOptions];

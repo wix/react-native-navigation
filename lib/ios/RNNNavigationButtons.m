@@ -96,15 +96,15 @@
 	barButtonItem.target = self.viewController;
 	barButtonItem.action = @selector(onButtonPress:);
 	
-	NSNumber *enabled = [self getValue:dictionary[@"enabled"] withDefault:defaultStyle.enabled];
+	NSNumber *enabled = [self getValue:dictionary[@"enabled"] withDefault:defaultStyle.enabled.getValue];
 	BOOL enabledBool = enabled ? [enabled boolValue] : YES;
 	[barButtonItem setEnabled:enabledBool];
 	
 	NSMutableDictionary* textAttributes = [[NSMutableDictionary alloc] init];
 	NSMutableDictionary* disabledTextAttributes = [[NSMutableDictionary alloc] init];
 	
-	UIColor* color = [self color:dictionary[@"color"] defaultColor:defaultStyle.color.get];
-	UIColor* disabledColor = [self color:dictionary[@"disabledColor"] defaultColor:defaultStyle.disabledColor.get];
+	UIColor* color = [self color:dictionary[@"color"] defaultColor:[defaultStyle.color getWithDefaultValue:nil]];
+	UIColor* disabledColor = [self color:dictionary[@"disabledColor"] defaultColor:[defaultStyle.disabledColor getWithDefaultValue:nil]];
 	if (!enabledBool && disabledColor) {
 		color = disabledColor;
 		[disabledTextAttributes setObject:disabledColor forKey:NSForegroundColorAttributeName];
@@ -115,8 +115,8 @@
 		[barButtonItem setImage:[[iconImage withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 	}
 	
-	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:defaultStyle.fontSize.get];
-	NSString* fontFamily = [self fontFamily:dictionary[@"fontFamily"] defaultFontFamily:defaultStyle.fontFamily.get];
+	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:[defaultStyle.fontSize getWithDefaultValue:nil]];
+	NSString* fontFamily = [self fontFamily:dictionary[@"fontFamily"] defaultFontFamily:[defaultStyle.fontFamily getWithDefaultValue:nil]];
 	UIFont *font = nil;
 	if (fontFamily) {
 		font = [UIFont fontWithName:fontFamily size:[fontSize floatValue]];

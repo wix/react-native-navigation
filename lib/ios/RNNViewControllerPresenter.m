@@ -5,6 +5,8 @@
 #import "UINavigationController+RNNOptions.h"
 #import "UITabBarController+RNNOptions.h"
 #import "RNNTabBarItemCreator.h"
+#import "RNNNavigationController.h"
+#import "RNNNavigationButtons.h"
 
 @implementation RNNViewControllerPresenter
 
@@ -19,7 +21,7 @@
 - (void)presentOnViewWillAppear:(RNNNavigationOptions *)options {
 	UIViewController* viewController = self.bindedViewController;
 	UITabBarController* tabBarController = viewController.tabBarController;
-	UINavigationController* navigationController = viewController.navigationController;
+	RNNNavigationController* navigationController = (RNNNavigationController *)viewController.navigationController;
 	RNNSideMenuController* sideMenuController = viewController.sideMenuController;
 	
 	if (viewController) {
@@ -57,7 +59,7 @@
 	}
 	
 	if (options.topBar.drawBehind.hasValue) {
-		[viewController rnn_setDrawBehindTopBar:[options.topBar.drawBehind boolValue]];
+		[viewController rnn_setDrawBehindTopBar:options.topBar.drawBehind.get];
 	}
 	
 	if (options.topBar.title.text.hasValue) {
@@ -65,11 +67,11 @@
 	}
 	
 	if (options.topBar.largeTitle.visible.hasValue) {
-		[viewController rnn_setTabBarItemPrefersLargeTitle:options.topBar.largeTitle.visible];
+		[viewController rnn_setTopBarPrefersLargeTitle:options.topBar.largeTitle.visible.get];
 	}
 	
 	if (options.bottomTabs.drawBehind.hasValue) {
-		[viewController rnn_setDrawBehindTabBar:[options.bottomTabs.drawBehind boolValue]];
+		[viewController rnn_setDrawBehindTabBar:options.bottomTabs.drawBehind.get];
 	}
 	
 	if (options.bottomTab.badge.hasValue) {
@@ -97,7 +99,7 @@
 	}
 	
 	if (options.topBar.backButton.visible.hasValue) {
-		[viewController rnn_setBackButtonVisible:[options.topBar.backButton.visible boolValue]];
+		[viewController rnn_setBackButtonVisible:options.topBar.backButton.visible.get];
 	}
 	
 	UIViewController* topViewController = [self getTabControllerFirstChild:viewController];
@@ -108,9 +110,14 @@
 	}
 	
 	[viewController.navigationController rnn_setNavigationBarFontFamily:[options.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.title.fontSize getWithDefaultValue:nil] color:[RCTConvert UIColor:[options.topBar.title.color getWithDefaultValue:nil]]];
+	
+	if (options.topBar.leftButtons || options.topBar.rightButtons) {
+		RNNNavigationButtons* navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
+		[navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:options.topBar.leftButtonStyle defaultRightButtonStyle:options.topBar.rightButtonStyle];
+	}
 }
 
-- (void)present:(RNNNavigationOptions *)options onNavigationController:(UINavigationController *)navigationController {
+- (void)present:(RNNNavigationOptions *)options onNavigationController:(RNNNavigationController *)navigationController {
 	if (options.popGesture.hasValue) {
 		[navigationController rnn_setInteractivePopGestureEnabled:options.popGesture.get];
 	}
@@ -124,20 +131,40 @@
 	}
 	
 	if (options.topBar.visible.hasValue) {
-		[navigationController rnn_setNavigationBarVisible:[options.topBar.visible boolValue] animated:[[options.topBar.animate getWithDefaultValue:(@1)] boolValue]];
+		[navigationController rnn_setNavigationBarVisible:options.topBar.visible.get animated:[options.topBar.animate getWithDefaultValue:(@1)]];
+		[options.topBar.visible consume];
 	}
 	
 	if (options.topBar.hideOnScroll.hasValue) {
-		[navigationController rnn_hideBarsOnScroll:[options.topBar.hideOnScroll boolValue]];
+		[navigationController rnn_hideBarsOnScroll:[options.topBar.hideOnScroll get]];
 	}
 	
 	if (options.topBar.noBorder.hasValue) {
-		[navigationController rnn_setNavigationBarNoBorder:[options.topBar.noBorder boolValue]];
+		[navigationController rnn_setNavigationBarNoBorder:[options.topBar.noBorder get]];
 	}
 	
 	if (options.topBar.barStyle.hasValue) {
 		[navigationController rnn_setBarStyle:[RCTConvert UIBarStyle:options.topBar.barStyle.get]];
 	}
+	
+	if (options.topBar.background.translucent.hasValue) {
+		[navigationController rnn_setNavigationBarTranslucent:[options.topBar.background.translucent get]];
+	}
+	
+	if (options.topBar.background.clipToBounds.hasValue) {
+		[navigationController rnn_setNavigationBarClipsToBounds:[options.topBar.background.clipToBounds get]];
+	}
+	
+	if (options.topBar.background.blur.hasValue) {
+		[navigationController rnn_setNavigationBarBlur:[options.topBar.background.blur get]];
+	}
+	
+	if (options.topBar.background.color.hasValue) {
+		[navigationController setTopBarBackgroundColor:[RCTConvert UIColor:options.topBar.background.color.get]];
+	}
+	
+	[navigationController rnn_setNavigationBarLargeTitleVisible:options.topBar.largeTitle.visible.get fontFamily:[options.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[RCTConvert UIColor:[options.topBar.largeTitle.color getWithDefaultValue:nil]]];
+
 	
 	[navigationController rnn_setBackButtonIcon:[RCTConvert UIImage:[options.topBar.backButton.icon getWithDefaultValue:nil]] withColor:[RCTConvert UIColor:[options.topBar.backButton.color getWithDefaultValue:nil]] title:[options.topBar.backButton.showTitle getWithDefaultValue:nil] ? options.topBar.backButton.title.get : @""];
 }
@@ -168,7 +195,7 @@
 	}
 	
 	if (options.sideMenu.right.shouldStretchDrawer) {
-		sideMenuController.shouldStretchDrawer = options.sideMenu.right.shouldStretchDrawer.boolValue;
+		sideMenuController.shouldStretchDrawer = options.sideMenu.right.shouldStretchDrawer.get;
 	}
 	
 	if (options.sideMenu.right.animationVelocity) {
@@ -176,7 +203,7 @@
 	}
 	
 	if (options.sideMenu.left.shouldStretchDrawer) {
-		sideMenuController.shouldStretchDrawer = options.sideMenu.left.shouldStretchDrawer.boolValue;
+		sideMenuController.shouldStretchDrawer = options.sideMenu.left.shouldStretchDrawer.get;
 	}
 	
 	if (options.sideMenu.left.animationVelocity) {
@@ -207,11 +234,11 @@
 	}
 	
 	if (options.bottomTabs.translucent.hasValue) {
-		[tabBarController rnn_setTabBarTranslucent:[options.bottomTabs.translucent boolValue]];
+		[tabBarController rnn_setTabBarTranslucent:options.bottomTabs.translucent.get];
 	}
 	
 	if (options.bottomTabs.hideShadow.hasValue) {
-		[tabBarController rnn_setTabBarHideShadow:[options.bottomTabs.hideShadow boolValue]];
+		[tabBarController rnn_setTabBarHideShadow:options.bottomTabs.hideShadow.get];
 	}
 }
 

@@ -11,7 +11,7 @@
 
 - (void)setUp {
     [super setUp];
-	self.uut = [[RNNBottomTabsOptions alloc] initEmptyOptions];
+//	self.uut = [[RNNBottomTabsOptions alloc] initEmptyOptions];
 }
 
 //- (void)test_tabBarTranslucent_true {

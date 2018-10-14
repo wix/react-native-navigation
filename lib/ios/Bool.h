@@ -2,6 +2,10 @@
 
 @interface Bool : Param
 
-- (BOOL)boolValue;
+- (BOOL)get;
+
+- (NSNumber *)getValue;
+
+- (BOOL)getWithDefaultValue:(id)value;
 
 @end

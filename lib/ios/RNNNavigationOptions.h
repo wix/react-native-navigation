@@ -33,13 +33,14 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 
 @property (nonatomic, strong) NSMutableDictionary* originalTopBarImages;
 
-@property (nonatomic, strong) Number* popGesture;
+@property (nonatomic, strong) Bool* popGesture;
 @property (nonatomic, strong) Dictionary* backgroundImage;
 @property (nonatomic, strong) Dictionary* rootBackgroundImage;
 @property (nonatomic, strong) String* modalPresentationStyle;
 @property (nonatomic, strong) String* modalTransitionStyle;
 
-
 - (void)applyDefaultOptionsOn:(UIViewController *)viewController;
+
+- (instancetype)initEmptyOptions;
 
 @end

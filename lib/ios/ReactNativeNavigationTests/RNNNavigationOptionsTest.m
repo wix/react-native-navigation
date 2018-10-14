@@ -22,15 +22,18 @@
 
 - (void)testChangeRNNNavigationOptionsDynamically {
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:@{@"topBar": @{@"background" : @{@"color" : @(0xff0000ff)}}}];
-	NSDictionary* dynamicOptions = @{@"topBar": @{@"textColor" : @(0xffff00ff), @"title" : @{@"text": @"hello"}}};
-	[options mergeWith:dynamicOptions];
-	XCTAssertTrue([options.topBar.title.text isEqual:@"hello"]);
+	NSDictionary* dynamicOptionsDict = @{@"topBar": @{@"textColor" : @(0xffff00ff), @"title" : @{@"text": @"hello"}}};
+	RNNNavigationOptions* dynamicOptions = [[RNNNavigationOptions alloc] initWithDict:dynamicOptionsDict];
+	[options mergeOptions:dynamicOptions];
+	
+	XCTAssertTrue([options.topBar.title.text.get isEqual:@"hello"]);
 }
 
 - (void)testChangeRNNNavigationOptionsWithInvalidProperties {
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:@{@"topBar": @{@"background" : @{@"color" : @(0xff0000ff)}}}];
-	NSDictionary* dynamicOptions = @{@"topBar": @{@"titleeeee" : @"hello"}};
-	XCTAssertNoThrow([options mergeWith:dynamicOptions]);
+	NSDictionary* dynamicOptionsDict = @{@"topBar": @{@"titleeeee" : @"hello"}};
+	RNNNavigationOptions* dynamicOptions = [[RNNNavigationOptions alloc] initWithDict:dynamicOptionsDict];
+	XCTAssertNoThrow([options mergeOptions:dynamicOptions]);
 }
 
 - (void)test_applyDefaultOptions {

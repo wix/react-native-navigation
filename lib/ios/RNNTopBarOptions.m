@@ -41,16 +41,16 @@
 	return self;
 }
 
-//- (void)applyOn:(UIViewController*)viewController {
-//	if (self.rightButtons || self.leftButtons) {
-//		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
-//		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons defaultLeftButtonStyle:self.leftButtonStyle defaultRightButtonStyle:self.rightButtonStyle];
-//	}
-//		
-//	self.rightButtons = nil;
-//	self.leftButtons = nil;
-//}
-//
+- (void)applyOn:(UIViewController*)viewController {
+	if (self.rightButtons || self.leftButtons) {
+		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
+		[_navigationButtons applyLeftButtons:self.leftButtons rightButtons:self.rightButtons defaultLeftButtonStyle:self.leftButtonStyle defaultRightButtonStyle:self.rightButtonStyle];
+	}
+	
+	self.rightButtons = nil;
+	self.leftButtons = nil;
+}
+
 //- (void)setRightButtonColor:(NSNumber *)rightButtonColor {
 //	_rightButtonColor = rightButtonColor;
 //	_rightButtonStyle.color = rightButtonColor;
@@ -70,7 +70,7 @@
 //	_leftButtonDisabledColor = leftButtonDisabledColor;
 //	_leftButtonStyle.disabledColor = leftButtonDisabledColor;
 //}
-//
+
 //- (void)setRightButtons:(id)rightButtons {
 //	if ([rightButtons isKindOfClass:[NSArray class]]) {
 //		_rightButtons = rightButtons;

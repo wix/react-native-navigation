@@ -8,4 +8,6 @@
 @property (nonatomic, retain) RNNViewControllerPresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 
+- (void)setTopBarBackgroundColor:(UIColor *)backgroundColor;
+
 @end

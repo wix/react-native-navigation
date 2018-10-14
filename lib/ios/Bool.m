@@ -8,11 +8,20 @@
 
 @implementation Bool
 
-- (BOOL)boolValue {
-	if (self.hasValue) {
+- (BOOL)get {
+	return [self.value boolValue];
+}
+
+- (NSNumber *)getValue {
+	return self.value;
+}
+
+- (BOOL)getWithDefaultValue:(id)value {
+	if (self.value) {
 		return [self.value boolValue];
-	} else
-		return false;
+	} else {
+		return [value boolValue];
+	}
 }
 
 @end
