@@ -436,6 +436,7 @@ export interface OptionsBottomTab {
   /**
    * Set the badge size
    * #### (iOS specific)
+   * For android, create [dimens.xml](https://github.com/aurelhubert/ahbottomnavigation/blob/c4114c23213f0e86216f75b2770964dbc02eebb0/demo/src/main/res/values/dimens.xml) in your project
    */
   badgeSize?: number;
   /**
