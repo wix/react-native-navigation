@@ -434,6 +434,11 @@ export interface OptionsBottomTab {
    */
   badge?: string;
   /**
+   * Set the badge size
+   * #### (iOS specific)
+   */
+  badgeSize?: number;
+  /**
    * Set a testID to reference the tab in E2E tests
    */
   testID?: string;
