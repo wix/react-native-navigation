@@ -21,7 +21,6 @@
 	[self.presenter bindViewController:self];
 	
 	self.options = options;
-	self.options.delegate = self;
 	
 	self.layoutInfo = layoutInfo;
 	
@@ -37,17 +36,21 @@
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
 	if (parent) {
-		[_presenter presentOnWillMoveToParent:self.options];
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.options];
 	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[_presenter presentOnViewWillAppear:self.options];
+	[_presenter applyOptions:self.options];
 }
 
-- (void)optionsDidUpdatedWithOptions:(RNNNavigationOptions *)otherOptions {
-	[_presenter presentOnViewWillAppear:self.options];
+- (UITabBarItem *)tabBarItem {
+	return super.tabBarItem ? super.tabBarItem : self.center.tabBarItem;
+}
+
+- (void)onChildWillAppear:(RNNNavigationOptions *)childOptions {
+	
 }
 
 - (void)setAnimationType:(NSString *)animationType {
@@ -62,13 +65,13 @@
 	}
 }
 
-- (void)side:(MMDrawerSide)side width:(NSNumber *)width {
+- (void)side:(MMDrawerSide)side width:(double)width {
 	switch (side) {
 		case MMDrawerSideRight:
-			self.maximumRightDrawerWidth = width.floatValue;
+			self.maximumRightDrawerWidth = width;
 			break;
 		case MMDrawerSideLeft:
-			self.maximumLeftDrawerWidth = width.floatValue;
+			self.maximumLeftDrawerWidth = width;
 		default:
 			break;
 	}

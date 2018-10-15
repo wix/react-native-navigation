@@ -6,7 +6,7 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
 	
-	self.color = [NumberParser parse:dict key:@"color"];
+	self.color = [ColorParser parse:dict key:@"color"];
 	self.translucent = [BoolParser parse:dict key:@"translucent"];
 	self.blur = [BoolParser parse:dict key:@"blur"];
 	self.clipToBounds = [BoolParser parse:dict key:@"clipToBounds"];

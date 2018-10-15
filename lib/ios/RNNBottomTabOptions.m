@@ -15,15 +15,15 @@
 	self.testID = [StringParser parse:dict key:@"testID"];
 	
 	
-	self.badgeColor = [DictionaryParser parse:dict key:@"badgeColor"];
-	self.icon = [DictionaryParser parse:dict key:@"icon"];
-	self.selectedIcon = [DictionaryParser parse:dict key:@"selectedIcon"];
-	self.iconColor = [DictionaryParser parse:dict key:@"iconColor"];
-	self.selectedIconColor = [DictionaryParser parse:dict key:@"selectedIconColor"];
-	self.selectedTextColor = [DictionaryParser parse:dict key:@"selectedTextColor"];
+	self.badgeColor = [ColorParser parse:dict key:@"badgeColor"];
+	self.icon = [ImageParser parse:dict key:@"icon"];
+	self.selectedIcon = [ImageParser parse:dict key:@"selectedIcon"];
+	self.iconColor = [ColorParser parse:dict key:@"iconColor"];
+	self.selectedIconColor = [ColorParser parse:dict key:@"selectedIconColor"];
+	self.selectedTextColor = [ColorParser parse:dict key:@"selectedTextColor"];
 	self.iconInsets = [DictionaryParser parse:dict key:@"iconInsets"];
 	
-	self.textColor = [NumberParser parse:dict key:@"textColor"];
+	self.textColor = [ColorParser parse:dict key:@"textColor"];
 	self.fontSize = [NumberParser parse:dict key:@"fontSize"];
 	self.visible = [BoolParser parse:dict key:@"visible"];
 	

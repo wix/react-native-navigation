@@ -70,10 +70,10 @@
 		@throw [NSException exceptionWithName:@"NSInvalidArgumentException" reason:[@"button id is not specified " stringByAppendingString:title] userInfo:nil];
 	}
 	
-	UIImage* iconImage = nil;
-	id icon = [self getValue:dictionary[@"icon"] withDefault:defaultStyle.icon];
-	if (icon) {
-		iconImage = [RCTConvert UIImage:icon];
+	UIImage* defaultIcon = [defaultStyle.icon getWithDefaultValue:nil];
+	UIImage* iconImage = [self getValue:dictionary[@"icon"] withDefault:defaultIcon];
+	if (![iconImage isKindOfClass:[UIImage class]]) {
+		iconImage = [RCTConvert UIImage:iconImage];
 	}
 	
 	RNNUIBarButtonItem *barButtonItem;
@@ -139,7 +139,7 @@
 	return barButtonItem;
 }
 
-- (UIColor *)color:(NSNumber *)color defaultColor:(NSNumber *)defaultColor {
+- (UIColor *)color:(UIColor *)color defaultColor:(UIColor *)defaultColor {
 	if (color) {
 		return [RCTConvert UIColor:color];
 	} else if (defaultColor) {

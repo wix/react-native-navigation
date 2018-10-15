@@ -6,6 +6,6 @@
 
 - (NSNumber *)getValue;
 
-- (BOOL)getWithDefaultValue:(id)value;
+- (BOOL)getWithDefaultValue:(BOOL)value;
 
 @end

@@ -6,13 +6,13 @@
 	self = [super init];
 	
 	self.visible = [BoolParser parse:dict key:@"visible"];
-	self.currentTabIndex = [NumberParser parse:dict key:@"currentTabIndex"];
+	self.currentTabIndex = [IntNumberParser parse:dict key:@"currentTabIndex"];
 	self.drawBehind = [BoolParser parse:dict key:@"drawBehind"];
-	self.tabColor = [NumberParser parse:dict key:@"tabColor"];
-	self.selectedTabColor = [NumberParser parse:dict key:@"selectedTabColor"];
+	self.tabColor = [ColorParser parse:dict key:@"tabColor"];
+	self.selectedTabColor = [ColorParser parse:dict key:@"selectedTabColor"];
 	self.translucent = [BoolParser parse:dict key:@"translucent"];
 	self.hideShadow = [BoolParser parse:dict key:@"hideShadow"];
-	self.backgroundColor = [NumberParser parse:dict key:@"backgroundColor"];
+	self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
 	self.fontSize = [NumberParser parse:dict key:@"fontSize"];
 	
 	self.testID = [StringParser parse:dict key:@"testID"];

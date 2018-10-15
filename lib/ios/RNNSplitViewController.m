@@ -18,6 +18,10 @@
 	return self;
 }
 
+- (void)onChildWillAppear:(RNNNavigationOptions *)childOptions {
+	
+}
+
 - (void)bindChildViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
 	[self setViewControllers:viewControllers];
 	UIViewController<UISplitViewControllerDelegate>* masterViewController = viewControllers[0];

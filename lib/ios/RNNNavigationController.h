@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "RNNParentProtocol.h"
 #import "RNNViewControllerPresenter.h"
+#import "UINavigationController+RNNOptions.h"
 
 @interface RNNNavigationController : UINavigationController <RNNParentProtocol>
 

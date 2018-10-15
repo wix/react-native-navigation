@@ -26,6 +26,8 @@
 
 - (void)rnn_setBackButtonIcon:(UIImage *)icon withColor:(UIColor *)color title:(NSString *)title;
 
-- (void)rnn_setNavigationBarLargeTitleVisible:(BOOL)visible fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize color:(UIColor *)color;
+- (void)rnn_setNavigationBarLargeTitleVisible:(BOOL)visible;
+
+- (void)rnn_setNavigationBarLargeTitleFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize color:(UIColor *)color;
 
 @end

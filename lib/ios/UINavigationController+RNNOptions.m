@@ -56,14 +56,18 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	}
 }
 
-- (void)rnn_setNavigationBarLargeTitleVisible:(BOOL)visible fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize color:(UIColor *)color {
+- (void)rnn_setNavigationBarLargeTitleVisible:(BOOL)visible {
 	if (@available(iOS 11.0, *)) {
 		if (visible){
 			self.navigationBar.prefersLargeTitles = YES;
 		} else {
 			self.navigationBar.prefersLargeTitles = NO;
 		}
-		
+	}
+}
+
+- (void)rnn_setNavigationBarLargeTitleFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize color:(UIColor *)color {
+	if (@available(iOS 11.0, *)) {
 		NSDictionary* fontAttributes = [RNNFontAttributesCreator createFontAttributesWithFontFamily:fontFamily fontSize:fontSize color:color];
 		self.navigationBar.largeTitleTextAttributes = fontAttributes;
 	}

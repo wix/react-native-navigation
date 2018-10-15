@@ -5,8 +5,13 @@
 @implementation RNNTabBarItemCreator
 
 + (UITabBarItem *)updateTabBarItem:(UITabBarItem *)tabItem bottomTabOptions:(RNNBottomTabOptions *)bottomTabOptions {
-	tabItem.selectedImage = [self getSelectedIconImage:[bottomTabOptions.selectedIcon getWithDefaultValue:nil] selectedIconColor:[bottomTabOptions.selectedIconColor getWithDefaultValue:nil]];
-	tabItem.image = [self getIconImage:[bottomTabOptions.icon getWithDefaultValue:nil] withTint:[bottomTabOptions.iconColor getWithDefaultValue:nil]];
+	UIImage* icon = [bottomTabOptions.icon getWithDefaultValue:nil];
+	UIImage* selectedIcon = [bottomTabOptions.selectedIcon getWithDefaultValue:icon];
+	UIColor* iconColor = [bottomTabOptions.iconColor getWithDefaultValue:nil];
+	UIColor* selectedIconColor = [bottomTabOptions.selectedIconColor getWithDefaultValue:iconColor];
+	
+	tabItem.image = [self getIconImage:icon withTint:iconColor];
+	tabItem.selectedImage = [self getSelectedIconImage:selectedIcon selectedIconColor:selectedIconColor];
 	tabItem.title = [bottomTabOptions.text getWithDefaultValue:@""];
 	tabItem.tag = bottomTabOptions.tag;
 	tabItem.accessibilityIdentifier = [bottomTabOptions.testID getWithDefaultValue:nil];
@@ -33,36 +38,34 @@
 	return tabItem;
 }
 
-+ (UIImage *)getSelectedIconImage:(NSDictionary *)selectedIcon selectedIconColor:(NSDictionary *)selectedIconColor {
++ (UIImage *)getSelectedIconImage:(UIImage *)selectedIcon selectedIconColor:(UIColor *)selectedIconColor {
 	if (selectedIcon) {
 		if (selectedIconColor) {
-			return [[[RCTConvert UIImage:selectedIcon] withTintColor:[RCTConvert UIColor:selectedIconColor]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+			return [[selectedIcon withTintColor:selectedIconColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 		} else {
-			return [[RCTConvert UIImage:selectedIcon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+			return [selectedIcon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 		}
-	} else {
-		return [self getIconImage:selectedIconColor withTint:selectedIconColor];
 	}
 	
 	return nil;
 }
 
-+ (UIImage *)getIconImage:(NSDictionary *)icon withTint:(NSDictionary *)tintColor {
++ (UIImage *)getIconImage:(UIImage *)icon withTint:(UIColor *)tintColor {
 	if (icon) {
 		if (tintColor) {
-			return [[[RCTConvert UIImage:icon] withTintColor:[RCTConvert UIColor:tintColor]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+			return [[icon withTintColor:tintColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 		} else {
-			return [[RCTConvert UIImage:icon] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+			return [icon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 		}
 	}
 	
 	return nil;
 }
 
-+ (void)appendTitleAttributes:(UITabBarItem *)tabItem textColor:(NSDictionary *)textColor selectedTextColor:(NSDictionary *)selectedTextColor fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize {
++ (void)appendTitleAttributes:(UITabBarItem *)tabItem textColor:(UIColor *)textColor selectedTextColor:(UIColor *)selectedTextColor fontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize {
 	NSMutableDictionary* selectedAttributes = [NSMutableDictionary dictionaryWithDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal]];
 	if (selectedTextColor) {
-		selectedAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:selectedTextColor];
+		selectedAttributes[NSForegroundColorAttributeName] = selectedTextColor;
 	} else {
 		selectedAttributes[NSForegroundColorAttributeName] = [UIColor blackColor];
 	}
@@ -73,7 +76,7 @@
 	
 	NSMutableDictionary* normalAttributes = [NSMutableDictionary dictionaryWithDictionary:[tabItem titleTextAttributesForState:UIControlStateNormal]];
 	if (textColor) {
-		normalAttributes[NSForegroundColorAttributeName] = [RCTConvert UIColor:textColor];
+		normalAttributes[NSForegroundColorAttributeName] = textColor;
 	} else {
 		normalAttributes[NSForegroundColorAttributeName] = [UIColor blackColor];
 	}

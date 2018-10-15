@@ -5,9 +5,9 @@
 @property (nonatomic, strong) String* fontFamily;
 @property (nonatomic, strong) String* text;
 @property (nonatomic, strong) Number* fontSize;
-@property (nonatomic, strong) Number* color;
-@property (nonatomic, strong) Number* disabledColor;
-@property (nonatomic, strong) Number* icon;
+@property (nonatomic, strong) Color* color;
+@property (nonatomic, strong) Color* disabledColor;
+@property (nonatomic, strong) Image* icon;
 @property (nonatomic, strong) Bool* enabled;
 
 @end

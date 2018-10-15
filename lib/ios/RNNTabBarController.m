@@ -27,7 +27,6 @@
 	self = [super init];
 	
 	self.options = options;
-	self.options.delegate = self;
 	
 	self.layoutInfo = layoutInfo;
 	
@@ -48,18 +47,21 @@
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
 	if (parent) {
-		[_presenter presentOnWillMoveToParent:self.options];
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.options];
 	}
+}
+
+- (void)onChildWillAppear:(RNNNavigationOptions *)childOptions {
+	
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[_presenter presentOnViewWillAppear:self.options];
+	[_presenter applyOptions:self.options];
 }
 
-- (void)optionsDidUpdatedWithOptions:(RNNNavigationOptions *)otherOptions {
-	[_presenter presentOnViewWillAppear:self.options];
-//	[self.options resetOptions];
+- (UITabBarItem *)tabBarItem {
+	return super.tabBarItem ? super.tabBarItem : self.viewControllers.lastObject.tabBarItem;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {

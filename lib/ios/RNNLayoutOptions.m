@@ -7,7 +7,7 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
 	
-	self.backgroundColor = [NumberParser parse:dict key:@"backgroundColor"];
+	self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
 	self.orientation = dict[@"orientation"];
 	
 	return self;

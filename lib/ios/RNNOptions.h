@@ -5,19 +5,12 @@
 #import "StringParser.h"
 #import "NumberParser.h"
 #import "DictionaryParser.h"
-
-@class RNNOptions;
-
-@protocol RNNOptionsDelegate <NSObject>
-
-@optional
-- (void)optionsDidUpdatedWithOptions:(RNNOptions *)otherOptions;
-
-@end
+#import "ColorParser.h"
+#import "ImageParser.h"
+#import "IntNumberParser.h"
+#import "DoubleParser.h"
 
 @interface RNNOptions : NSObject
-
-@property (nonatomic, weak) id<RNNOptionsDelegate> delegate;
 
 - (instancetype)initWithDict:(NSDictionary*)dict;
 

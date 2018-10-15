@@ -4,4 +4,8 @@
 
 @interface Number : Param
 
+- (NSNumber *)get;
+
+- (NSNumber *)getWithDefaultValue:(NSNumber *)defaultValue;
+
 @end

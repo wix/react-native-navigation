@@ -95,7 +95,7 @@
 	subtitleLabel.backgroundColor = [UIColor clearColor];
 	subtitleLabel.autoresizingMask = self.titleView.autoresizingMask;
 	
-	NSDictionary* fontAttributes = [RNNFontAttributesCreator createFontAttributesWithFontFamily:[_subtitleOptions.fontFamily getWithDefaultValue:nil] fontSize:[_subtitleOptions.fontSize getWithDefaultValue:nil] color:[RCTConvert UIColor:[_subtitleOptions.color getWithDefaultValue:nil]]];
+	NSDictionary* fontAttributes = [RNNFontAttributesCreator createFontAttributesWithFontFamily:[_subtitleOptions.fontFamily getWithDefaultValue:nil] fontSize:[_subtitleOptions.fontSize getWithDefaultValue:nil] color:[_subtitleOptions.color getWithDefaultValue:nil]];
 	[subtitleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.subtitle attributes:fontAttributes]];
 	
 	
@@ -106,7 +106,7 @@
 	[subtitleLabel sizeToFit];
 	
 	if (_subtitleOptions.color.hasValue) {
-		UIColor *color = [RCTConvert UIColor:_subtitleOptions.color.get];
+		UIColor *color = _subtitleOptions.color.get;
 		subtitleLabel.textColor = color;
 	}
 	
@@ -144,7 +144,7 @@
 	}
 	
 	if (_titleOptions.color.get) {
-		UIColor *color = [RCTConvert UIColor:_titleOptions.color.get];
+		UIColor *color = _titleOptions.color.get;
 		titleLabel.textColor = color;
 	}
 	

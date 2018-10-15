@@ -17,10 +17,10 @@
 	
 	self.visible = [BoolParser parse:dict key:@"visible"];
 	self.hideOnScroll = [BoolParser parse:dict key:@"hideOnScroll"];
-	self.leftButtonColor = [BoolParser parse:dict key:@"leftButtonColor"];
-	self.rightButtonColor = [BoolParser parse:dict key:@"rightButtonColor"];
-	self.leftButtonDisabledColor = [BoolParser parse:dict key:@"leftButtonDisabledColor"];
-	self.rightButtonDisabledColor = [BoolParser parse:dict key:@"rightButtonDisabledColor"];
+	self.leftButtonColor = [ColorParser parse:dict key:@"leftButtonColor"];
+	self.rightButtonColor = [ColorParser parse:dict key:@"rightButtonColor"];
+	self.leftButtonDisabledColor = [ColorParser parse:dict key:@"leftButtonDisabledColor"];
+	self.rightButtonDisabledColor = [ColorParser parse:dict key:@"rightButtonDisabledColor"];
 	self.drawBehind = [BoolParser parse:dict key:@"drawBehind"];
 	self.noBorder = [BoolParser parse:dict key:@"noBorder"];
 	self.animate = [BoolParser parse:dict key:@"animate"];
@@ -36,6 +36,9 @@
 	self.backButton = [[RNNBackButtonOptions alloc] initWithDict:dict[@"backButton"]];
 	self.leftButtonStyle = [[RNNButtonOptions alloc] initWithDict:dict[@"leftButtonStyle"]];
 	self.rightButtonStyle = [[RNNButtonOptions alloc] initWithDict:dict[@"rightButtonStyle"]];
+	
+	self.leftButtons = dict[@"leftButtons"];
+	self.rightButtons = dict[@"rightButtons"];
 	
 
 	return self;

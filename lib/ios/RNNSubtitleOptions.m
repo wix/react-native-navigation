@@ -9,7 +9,7 @@
 	self.alignment = [StringParser parse:dict key:@"alignment"];
 	self.fontFamily = [StringParser parse:dict key:@"fontFamily"];
 	self.fontSize = [NumberParser parse:dict key:@"fontSize"];
-	self.color = [NumberParser parse:dict key:@"color"];
+	self.color = [ColorParser parse:dict key:@"color"];
 	
 	return self;
 }

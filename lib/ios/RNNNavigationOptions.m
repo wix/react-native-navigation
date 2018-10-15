@@ -29,8 +29,9 @@
 	self.layout = [[RNNLayoutOptions alloc] initWithDict:dict[@"layout"]];
 	
 	self.popGesture = [[Bool alloc] initWithValue:dict[@"popGesture"]];
-	self.backgroundImage = [[Dictionary alloc] initWithValue:dict[@"backgroundImage"]];
-	self.rootBackgroundImage = [[Dictionary alloc] initWithValue:dict[@"rootBackgroundImage"]];
+	
+	self.backgroundImage = [ImageParser parse:dict key:@"backgroundImage"];
+	self.rootBackgroundImage = [ImageParser parse:dict key:@"rootBackgroundImage"];
 	self.modalPresentationStyle = [[String alloc] initWithValue:dict[@"modalPresentationStyle"]];
 	self.modalTransitionStyle = [[String alloc] initWithValue:dict[@"modalTransitionStyle"]];
 	

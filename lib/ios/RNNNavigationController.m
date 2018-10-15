@@ -14,36 +14,32 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 @implementation RNNNavigationController
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNViewControllerPresenter *)presenter {
-	UIViewController* rootViewController = childViewControllers.count ? childViewControllers[0] : nil;
-	self = [super initWithRootViewController:rootViewController];
+	self = [super init];
 
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
 	self.options = options;
-	self.options.delegate = self;
 	
 	self.layoutInfo = layoutInfo;
 	
-	if (childViewControllers.count > 1) {
-		[self setViewControllers:childViewControllers];
-	}
+	[self setViewControllers:childViewControllers];
 	
 	return self;
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
 	if (parent) {
-		[_presenter presentOnWillMoveToParent:self.options];
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.options];
 	}
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	[_presenter presentOnViewWillAppear:self.options];
+- (void)onChildWillAppear:(RNNNavigationOptions *)childOptions {
+	[_presenter applyOptions:childOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:childOptions];
 }
 
-- (void)optionsDidUpdatedWithOptions:(RNNNavigationOptions *)otherOptions {
-	[_presenter presentOnViewWillAppear:otherOptions];
+- (UITabBarItem *)tabBarItem {
+	return super.tabBarItem ? super.tabBarItem : self.viewControllers.lastObject.tabBarItem;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -67,7 +63,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		UIViewController *controller = self.viewControllers[self.viewControllers.count - 2];
 		if ([controller isKindOfClass:[RNNRootViewController class]]) {
 			RNNRootViewController *rnnController = (RNNRootViewController *)controller;
-			[rnnController.presenter presentOnViewWillAppear:rnnController.options];
+			[rnnController.presenter applyOptions:rnnController.options];
 		}
 	}
 	

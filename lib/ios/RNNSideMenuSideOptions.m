@@ -7,10 +7,8 @@
 	
 	self.visible = [BoolParser parse:dict key:@"visible"];
 	self.enabled = [BoolParser parse:dict key:@"enabled"];
-	self.shouldStretchDrawer = [BoolParser parse:dict key:@"shouldStretchDrawer"];
 	
-	self.width = [NumberParser parse:dict key:@"width"];
-	self.animationVelocity = [NumberParser parse:dict key:@"animationVelocity"];
+	self.width = [DoubleParser parse:dict key:@"width"];
 	
 	self.animationType = [StringParser parse:dict key:@"animationType"];
 	

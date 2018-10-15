@@ -12,6 +12,7 @@
 #import "RNNViewControllerPresenter.h"
 #import "RNNRootViewController.h"
 #import "UIViewController+SideMenuController.h"
+#import "RNNNavigationControllerPresenter.h"
 
 @implementation RNNControllerFactory {
 	id<RNNRootViewCreator> _creator;
@@ -128,7 +129,7 @@
 
 
 - (UIViewController<RNNParentProtocol> *)createStack:(RNNLayoutNode*)node {
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
+	RNNNavigationControllerPresenter* presenter = [[RNNNavigationControllerPresenter alloc] init];
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [_optionsManager createOptions:node.data[@"options"]];
 	

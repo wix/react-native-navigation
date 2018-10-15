@@ -16,11 +16,11 @@
 	return self.value;
 }
 
-- (BOOL)getWithDefaultValue:(id)value {
+- (BOOL)getWithDefaultValue:(BOOL)defaultValue {
 	if (self.value) {
 		return [self.value boolValue];
 	} else {
-		return [value boolValue];
+		return defaultValue;
 	}
 }
 

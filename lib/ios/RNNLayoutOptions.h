@@ -2,7 +2,7 @@
 
 @interface RNNLayoutOptions : RNNOptions
 
-@property (nonatomic, strong) Number* backgroundColor;
+@property (nonatomic, strong) Color* backgroundColor;
 @property (nonatomic, strong) id orientation;
 
 - (UIInterfaceOrientationMask)supportedOrientations;

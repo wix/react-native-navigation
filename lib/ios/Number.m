@@ -8,4 +8,12 @@
 
 @implementation Number
 
+- (NSNumber *)get {
+	return [super get];
+}
+
+- (NSNumber *)getWithDefaultValue:(NSNumber *)defaultValue {
+	return [super getWithDefaultValue:defaultValue];
+}
+
 @end

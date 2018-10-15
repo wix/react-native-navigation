@@ -14,10 +14,10 @@
 
 @property (nonatomic, strong) Bool* visible;
 @property (nonatomic, strong) Bool* hideOnScroll;
-@property (nonatomic, strong) Bool* leftButtonColor;
-@property (nonatomic, strong) Bool* rightButtonColor;
-@property (nonatomic, strong) Bool* leftButtonDisabledColor;
-@property (nonatomic, strong) Bool* rightButtonDisabledColor;
+@property (nonatomic, strong) Color* leftButtonColor;
+@property (nonatomic, strong) Color* rightButtonColor;
+@property (nonatomic, strong) Color* leftButtonDisabledColor;
+@property (nonatomic, strong) Color* rightButtonDisabledColor;
 @property (nonatomic, strong) Bool* drawBehind;
 @property (nonatomic, strong) Bool* noBorder;
 @property (nonatomic, strong) Bool* animate;

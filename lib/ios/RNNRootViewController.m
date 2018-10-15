@@ -39,7 +39,6 @@
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
 	self.options = options;
-	self.options.delegate = self;
 	
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	
@@ -65,15 +64,20 @@
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
 	if (parent) {
-		[_presenter presentOnWillMoveToParent:self.options];
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.options];
 	}
+}
+
+- (void)onChildWillAppear:(RNNNavigationOptions *)childOptions {
+	
 }
 
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
 	_isBeingPresented = YES;
 	
-	[_presenter presentOnViewWillAppear:self.options];
+	[_presenter applyOptions:self.options];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:self.options];
 	
 	[self initCustomViews];
 }
@@ -91,11 +95,6 @@
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	[self.eventEmitter sendComponentDidDisappear:self.layoutInfo.componentId componentName:self.layoutInfo.name];
-}
-
-- (void)optionsDidUpdatedWithOptions:(RNNNavigationOptions *)otherOptions {
-	[_presenter presentOnViewWillAppear:otherOptions];
-	[self initCustomViews];
 }
 
 - (void)reactViewReady {

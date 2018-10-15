@@ -39,6 +39,10 @@
 	return self;
 }
 
+- (void)onChildWillAppear:(RNNNavigationOptions *)childOptions {
+	
+}
+
 - (void)createTabBar {
 	_segmentedControl = [[RNNSegmentedControl alloc] initWithSectionTitles:@[@"", @"", @""]];
 	_segmentedControl.frame = CGRectMake(0, 0, self.view.bounds.size.width, 50);

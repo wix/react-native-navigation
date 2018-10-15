@@ -34,6 +34,14 @@
 	return self;
 }
 
+- (void)onChildWillAppear:(RNNNavigationOptions *)childOptions {
+	
+}
+
+- (UITabBarItem *)tabBarItem {
+	return super.tabBarItem ? super.tabBarItem : self.child.tabBarItem;
+}
+
 - (void)bindChildViewController:(UIViewController<RNNParentProtocol>*)child {
 	self.child = child;
 	[self addChildViewController:self.child];

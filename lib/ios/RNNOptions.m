@@ -15,16 +15,12 @@
 		if ([value isKindOfClass:[RNNOptions class]]) {
 			[[self valueForKey:prop] mergeOptions:value overrideOptions:override];
 		} else if ([value isKindOfClass:[Param class]]) {
-			if (((Param *)value).hasValue && override) {
+			if ((((Param *)value).hasValue) && (override || !((Param *)[self valueForKey:prop]).hasValue)) {
 				[self setValue:value forKey:prop];
 			}
 		} else if (value && (override || ![self valueForKey:prop])) {
 			[self setValue:value forKey:prop];
 		}
-	}
-	
-	if ([self.delegate respondsToSelector:@selector(optionsDidUpdatedWithOptions:)]) {
-		[self.delegate optionsDidUpdatedWithOptions:otherOptions];
 	}
 }
 
