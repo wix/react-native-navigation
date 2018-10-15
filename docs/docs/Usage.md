@@ -37,6 +37,25 @@ Navigation.events().registerAppLaunchedListener(() => {
 });
 ```
 
+As specified in the [LayoutTypes](./layout-types.md) part of the documentation, we use the layout type `component` here, which renders a React component but does not allow you to navigate to others.
+
+If you want to navigate, use a `stack` layout type:
+```js
+Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.setRoot({
+    root: {
+      stack: {
+        children: [{
+          component: {
+            name: "navigation.playground.WelcomeScreen"
+          }
+        }]
+      }
+    }
+  });
+});
+```
+
 ## Screen Lifecycle
 
 The `componentDidAppear` and `componentDidDisappear` functions are special React Native Navigation lifecycle callbacks that are called on the component when it appears and disappears (after it was bounded using `Navigation.events().bindComponent(this)`). 
@@ -79,7 +98,7 @@ class LifecycleScreenExample extends Component {
     return (
       <View style={styles.root}>
         <Text style={styles.h1}>{`Lifecycle Screen`}</Text>
-	      <Text style={styles.h1}>{this.state.text}</Text>
+        <Text style={styles.h1}>{this.state.text}</Text>
       </View>
     );
   }

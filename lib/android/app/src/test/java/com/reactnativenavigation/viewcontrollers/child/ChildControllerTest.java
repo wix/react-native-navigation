@@ -21,12 +21,18 @@ public class ChildControllerTest extends BaseTest {
     private ChildController uut;
     private ChildControllersRegistry childRegistry;
     private OptionsPresenter presenter;
+    private Options resolvedOptions = new Options();
 
     @Override
     public void beforeEach() {
         childRegistry = spy(new ChildControllersRegistry());
         presenter = Mockito.mock(OptionsPresenter.class);
-        uut = new SimpleViewController(newActivity(), childRegistry, "childId", presenter, new Options());
+        uut = new SimpleViewController(newActivity(), childRegistry, "childId", presenter, new Options()) {
+            @Override
+            public Options resolveCurrentOptions() {
+                return resolvedOptions;
+            }
+        };
     }
 
     @Test
@@ -45,10 +51,9 @@ public class ChildControllerTest extends BaseTest {
 
     @Test
     public void applyOptions_applyRootOptionsIfRoot() {
-        addToParent(newActivity(), uut);
-        Options options = new Options();
-        uut.applyOptions(options);
-        verify(presenter, times(1)).applyRootOptions(uut.getView(), options);
+        newActivity().setContentView(uut.getView());
+        verify(presenter).applyOptions(uut.getView(), resolvedOptions);
+        verify(presenter).applyRootOptions(uut.getView(), resolvedOptions);
     }
 
     @Test
@@ -61,6 +66,8 @@ public class ChildControllerTest extends BaseTest {
 
     @Test
     public void mergeOptions() {
+        newActivity().setContentView(uut.getView());
+
         Options options = new Options();
         uut.mergeOptions(options);
         verify(presenter).mergeOptions(uut.getView(), options);

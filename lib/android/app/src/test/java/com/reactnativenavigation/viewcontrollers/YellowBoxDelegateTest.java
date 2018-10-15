@@ -26,25 +26,26 @@ public class YellowBoxDelegateTest extends BaseTest {
         parent = new FrameLayout(context);
         yellowBoxHelper = Mockito.mock(YellowBoxHelper.class);
         uut = new YellowBoxDelegate(yellowBoxHelper);
+        parent.addView(new View(context)); // We assume view at index 0 is not a yellow box
         parent.addView(yellowBox);
     }
 
     @Test
     public void onYellowBoxAdded_removedFromParent() {
-        uut.onYellowBoxAdded(parent, yellowBox);
+        uut.onYellowBoxAdded(parent);
         assertThat(yellowBox.getParent()).isNull();
     }
 
     @Test
     public void onYellowBoxAdded_storesRefToYellowBoxAndParent() {
-        uut.onYellowBoxAdded(parent, yellowBox);
-        assertThat(uut.getYellowBox()).isEqualTo(yellowBox);
+        uut.onYellowBoxAdded(parent);
+        assertThat(uut.getYellowBoxes()).contains(yellowBox);
         assertThat(uut.getParent()).isEqualTo(parent);
     }
 
     @Test
     public void onReactViewDestroy_yellowBoxIsAddedBackToParent() {
-        uut.onYellowBoxAdded(parent, yellowBox);
+        uut.onYellowBoxAdded(parent);
         uut.destroy();
         assertThat(yellowBox.getParent()).isEqualTo(parent);
     }
@@ -57,10 +58,10 @@ public class YellowBoxDelegateTest extends BaseTest {
 
     @Test
     public void onYellowBoxAdded_notHandledIfDelegateIsDestroyed() {
-        uut.onYellowBoxAdded(parent, yellowBox);
+        uut.onYellowBoxAdded(parent);
         uut.destroy();
 
-        uut.onYellowBoxAdded(parent, yellowBox);
+        uut.onYellowBoxAdded(parent);
         assertThat(yellowBox.getParent()).isEqualTo(parent);
     }
 }
