@@ -71,6 +71,7 @@
 - (void)mergeOptions:(RNNNavigationOptions *)options {
 	[_presenter mergeOptions:options];
 	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
+	
 	[self initCustomViews];
 }
 
