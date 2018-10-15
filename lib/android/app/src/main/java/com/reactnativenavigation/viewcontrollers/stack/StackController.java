@@ -198,6 +198,7 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     public void pop(Options mergeOptions, CommandListener listener) {
+        //dsadsadsa
         if (!canPop()) {
             listener.onError("Nothing to pop");
             return;
