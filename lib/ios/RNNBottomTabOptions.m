@@ -67,6 +67,9 @@
 
 		UIView* badgeDot = [[UIView alloc] initWithFrame:CGRectMake(xOffset + imageHalfWidth, topMargin, badgeSize, badgeSize)];
 		badgeDot.backgroundColor = [RCTConvert UIColor:self.badgeColor];
+		if (badgeDot.backgroundColor == nil) {
+			badgeDot.backgroundColor = UIColor.redColor;
+		}
 		badgeDot.layer.cornerRadius = badgeSize / 2;
 		
 		[topViewController.tabBarController.tabBar addSubview:badgeDot];
