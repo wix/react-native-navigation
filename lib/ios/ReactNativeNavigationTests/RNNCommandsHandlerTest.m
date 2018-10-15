@@ -40,7 +40,7 @@
 	[super setUp];
 //	[self.store setReadyToReceiveCommands:true];
 	self.store = [[RNNStore alloc] init];
-	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:nil eventEmitter:nil];
+	self.uut = [[RNNCommandsHandler alloc] initWithStore:self.store controllerFactory:[[RNNControllerFactory alloc] initWithRootViewCreator:nil store:self.store eventEmitter:nil andBridge:nil] eventEmitter:nil];
 	self.vc1 = [RNNRootViewController new];
 	self.vc2 = [RNNRootViewController new];
 	self.vc3 = [RNNRootViewController new];
