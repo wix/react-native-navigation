@@ -198,18 +198,23 @@ public class StackController extends ParentController<StackLayout> {
     }
 
     public void pop(Options mergeOptions, CommandListener listener) {
-        //dsadsadsa
         if (!canPop()) {
             listener.onError("Nothing to pop");
             return;
         }
 
+        Options resolvedOptions;
+        if (mergeOptions.animations.pop.content.valueOptions.size() <= 0){
+            resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
+        }else{
+            resolvedOptions = mergeOptions;
+        }
+
         final ViewController disappearing = stack.pop();
         final ViewController appearing = stack.peek();
-        disappearing.mergeOptions(mergeOptions);
+        disappearing.mergeOptions(resolvedOptions);
         disappearing.onViewWillDisappear();
         appearing.onViewWillAppear();
-        Options resolvedOptions = resolveCurrentOptions();
         ViewGroup appearingView = appearing.getView();
         if (appearingView.getLayoutParams() == null) {
             appearingView.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
