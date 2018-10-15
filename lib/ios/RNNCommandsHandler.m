@@ -68,7 +68,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	UIViewController<RNNLayoutProtocol>* vc = (UIViewController<RNNLayoutProtocol>*)[_store findComponentForId:componentId];
-	RNNNavigationOptions* newOptions = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
+	RNNNavigationOptions* newOptions = [_controllerFactory.optionsManager createOptions:mergeOptions];
 	if ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] || [vc isKindOfClass:[RNNRootViewController class]]) {
 		[CATransaction begin];
 		[CATransaction setCompletionBlock:completion];

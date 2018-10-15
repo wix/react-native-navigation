@@ -109,7 +109,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 		[self.navigationBar setBackIndicatorTransitionMaskImage:[UIImage new]];
 	}
 	
-	UIViewController *lastViewControllerInStack = [self.viewControllers lastObject];
+	UIViewController *lastViewControllerInStack = self.viewControllers.count > 1 ? [self.viewControllers objectAtIndex:self.viewControllers.count-2] : self.topViewController;
 	if (title) {
 		backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
 	}

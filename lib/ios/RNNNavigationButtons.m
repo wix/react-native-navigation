@@ -141,9 +141,9 @@
 
 - (UIColor *)color:(UIColor *)color defaultColor:(UIColor *)defaultColor {
 	if (color) {
-		return [RCTConvert UIColor:color];
+		return color;
 	} else if (defaultColor) {
-		return [RCTConvert UIColor:defaultColor];
+		return defaultColor;
 	}
 	
 	return nil;
