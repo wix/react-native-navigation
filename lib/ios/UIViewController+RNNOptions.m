@@ -98,7 +98,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 - (void)rnn_setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle {
 	if (@available(iOS 11.0, *)) {
-		if (prefersLargeTitle){
+		if (prefersLargeTitle) {
 			self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
 		} else {
 			self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
