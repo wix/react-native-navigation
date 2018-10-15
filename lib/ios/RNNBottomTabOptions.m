@@ -8,7 +8,6 @@
 	
 	[self mergeWith:tabItemDict];
 	self.tag = [tabItemDict[@"tag"] integerValue];
-	
 	return self;
 }
 
@@ -43,6 +42,35 @@
 	}
 	
 	if (self.badge) {
+		[self setBadgeWithView:topViewController];
+	}
+	
+	if (self.visible) {
+		[topViewController.tabBarController setSelectedIndex:[viewController.tabBarController.viewControllers indexOfObject:viewController]];
+	}
+	
+	[self resetOptions];
+}
+
+- (void)setBadgeWithView:(UIViewController*) topViewController {
+	
+	if (self.badgeSize) {
+		double badgeSize = [self.badgeSize doubleValue];
+		UITabBarItem *tabBarItem = topViewController.tabBarItem;
+		CGFloat topMargin = 5;
+		
+		NSUInteger index = [topViewController.tabBarController.tabBar.items indexOfObject:tabBarItem];
+		NSUInteger tabBarItemCount = topViewController.tabBarController.tabBar.items.count;
+		CGFloat halfItemWidth = CGRectGetWidth(topViewController.view.bounds) / (tabBarItemCount * 2);
+		CGFloat xOffset = halfItemWidth * (index * 2 + 1);
+		CGFloat imageHalfWidth = tabBarItem.selectedImage.size.width / 2;
+
+		UIView* badgeDot = [[UIView alloc] initWithFrame:CGRectMake(xOffset + imageHalfWidth, topMargin, badgeSize, badgeSize)];
+		badgeDot.backgroundColor = [RCTConvert UIColor:self.badgeColor];
+		badgeDot.layer.cornerRadius = badgeSize / 2;
+		
+		[topViewController.tabBarController.tabBar addSubview:badgeDot];
+	} else {
 		NSString *badge = nil;
 		if (self.badge != nil && ![self.badge isEqual:[NSNull null]]) {
 			badge = [RCTConvert NSString:self.badge];
@@ -57,12 +85,6 @@
 			tabBarItem.badgeValue = nil;
 		}
 	}
-	
-	if (self.visible) {
-		[topViewController.tabBarController setSelectedIndex:[viewController.tabBarController.viewControllers indexOfObject:viewController]];
-	}
-	
-	[self resetOptions];
 }
 
 - (UIImage *)getIconImage {
