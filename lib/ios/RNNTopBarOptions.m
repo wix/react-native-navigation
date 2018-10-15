@@ -26,9 +26,9 @@
 	self.animate = [BoolParser parse:dict key:@"animate"];
 	self.searchBar = [BoolParser parse:dict key:@"searchBar"];
 	self.searchBarHiddenWhenScrolling = [BoolParser parse:dict key:@"searchBarHiddenWhenScrolling"];
-	self.testID = [StringParser parse:dict key:@"testID"];
-	self.barStyle = [StringParser parse:dict key:@"barStyle"];
-	self.searchBarPlaceholder = [StringParser parse:dict key:@"searchBarPlaceholder"];
+	self.testID = [TextParser parse:dict key:@"testID"];
+	self.barStyle = [TextParser parse:dict key:@"barStyle"];
+	self.searchBarPlaceholder = [TextParser parse:dict key:@"searchBarPlaceholder"];
 	self.largeTitle = [[RNNLargeTitleOptions alloc] initWithDict:dict[@"largeTitle"]];
 	self.title = [[RNNTitleOptions alloc] initWithDict:dict[@"title"]];
 	self.subtitle = [[RNNSubtitleOptions alloc] initWithDict:dict[@"subtitle"]];

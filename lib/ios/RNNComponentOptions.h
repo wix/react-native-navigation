@@ -2,8 +2,8 @@
 
 @interface RNNComponentOptions : RNNOptions
 
-@property (nonatomic, strong) String* name;
-@property (nonatomic, strong) String* componentId;
-@property (nonatomic, strong) String* alignment;
+@property (nonatomic, strong) Text* name;
+@property (nonatomic, strong) Text* componentId;
+@property (nonatomic, strong) Text* alignment;
 
 @end

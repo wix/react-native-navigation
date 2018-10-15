@@ -1,4 +1,3 @@
-#import <Foundation/Foundation.h>
 #import "RNNTopBarOptions.h"
 #import "RNNBottomTabsOptions.h"
 #import "RNNBottomTabOptions.h"
@@ -31,15 +30,11 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 @property (nonatomic, strong) RNNPreviewOptions* preview;
 @property (nonatomic, strong) RNNLayoutOptions* layout;
 
-@property (nonatomic, strong) NSMutableDictionary* originalTopBarImages;
-
 @property (nonatomic, strong) Bool* popGesture;
 @property (nonatomic, strong) Image* backgroundImage;
 @property (nonatomic, strong) Image* rootBackgroundImage;
-@property (nonatomic, strong) String* modalPresentationStyle;
-@property (nonatomic, strong) String* modalTransitionStyle;
-
-- (void)applyDefaultOptionsOn:(UIViewController *)viewController;
+@property (nonatomic, strong) Text* modalPresentationStyle;
+@property (nonatomic, strong) Text* modalTransitionStyle;
 
 - (instancetype)initEmptyOptions;
 

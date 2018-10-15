@@ -1,4 +1,3 @@
-#import <Foundation/Foundation.h>
 #import "RNNNavigationOptions.h"
 
 @interface RNNOptionsManager : NSObject

@@ -32,10 +32,12 @@
 	
 	if (options.sideMenu.left.enabled.hasValue) {
 		[sideMenuController side:MMDrawerSideLeft enabled:options.sideMenu.left.enabled.get];
+		[options.sideMenu.left.enabled consume];
 	}
 	
 	if (options.sideMenu.right.enabled.hasValue) {
 		[sideMenuController side:MMDrawerSideRight enabled:options.sideMenu.right.enabled.get];
+		[options.sideMenu.right.enabled consume];
 	}
 	
 	if (options.sideMenu.left.visible.hasValue) {

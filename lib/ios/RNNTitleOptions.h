@@ -4,13 +4,13 @@
 
 @interface RNNTitleOptions : RNNOptions
 
-@property (nonatomic, strong) String* text;
+@property (nonatomic, strong) Text* text;
 @property (nonatomic, strong) Number* fontSize;
 @property (nonatomic, strong) Color* color;
-@property (nonatomic, strong) String* fontFamily;
+@property (nonatomic, strong) Text* fontFamily;
 
 @property (nonatomic, strong) RNNComponentOptions* component;
-@property (nonatomic, strong) String* componentAlignment;
+@property (nonatomic, strong) Text* componentAlignment;
 
 @property (nonatomic, strong) NSDictionary* fontAttributes;
 

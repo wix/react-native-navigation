@@ -15,17 +15,12 @@
 	self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
 	self.fontSize = [NumberParser parse:dict key:@"fontSize"];
 	
-	self.testID = [StringParser parse:dict key:@"testID"];
-	self.currentTabId = [StringParser parse:dict key:@"currentTabId"];
-	self.barStyle = [StringParser parse:dict key:@"barStyle"];
-	self.fontFamily = [StringParser parse:dict key:@"fontFamily"];
+	self.testID = [TextParser parse:dict key:@"testID"];
+	self.currentTabId = [TextParser parse:dict key:@"currentTabId"];
+	self.barStyle = [TextParser parse:dict key:@"barStyle"];
+	self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
 	
 	return self;
-}
-
-- (void)resetOptions {
-	self.currentTabId = nil;
-	self.currentTabIndex = nil;
 }
 
 @end

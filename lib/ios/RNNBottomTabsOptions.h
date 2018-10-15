@@ -12,9 +12,9 @@
 @property (nonatomic, strong) Color* backgroundColor;
 @property (nonatomic, strong) Number* fontSize;
 
-@property (nonatomic, strong) String* testID;
-@property (nonatomic, strong) String* currentTabId;
-@property (nonatomic, strong) String* barStyle;
-@property (nonatomic, strong) String* fontFamily;
+@property (nonatomic, strong) Text* testID;
+@property (nonatomic, strong) Text* currentTabId;
+@property (nonatomic, strong) Text* barStyle;
+@property (nonatomic, strong) Text* fontFamily;
 
 @end

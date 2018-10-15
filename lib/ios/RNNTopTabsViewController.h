@@ -1,5 +1,3 @@
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import <React/RCTUIManager.h>
 #import "RNNParentProtocol.h"
 

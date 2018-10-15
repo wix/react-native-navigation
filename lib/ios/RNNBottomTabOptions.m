@@ -9,10 +9,10 @@
 - (instancetype)initWithDict:(NSDictionary *)dict {
 	self = [super init];
 	
-	self.text = [StringParser parse:dict key:@"text"];
-	self.badge = [StringParser parse:dict key:@"badge"];
-	self.fontFamily = [StringParser parse:dict key:@"fontFamily"];
-	self.testID = [StringParser parse:dict key:@"testID"];
+	self.text = [TextParser parse:dict key:@"text"];
+	self.badge = [TextParser parse:dict key:@"badge"];
+	self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
+	self.testID = [TextParser parse:dict key:@"testID"];
 	
 	
 	self.badgeColor = [ColorParser parse:dict key:@"badgeColor"];

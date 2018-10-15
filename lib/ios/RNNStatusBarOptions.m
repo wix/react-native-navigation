@@ -10,7 +10,7 @@
 	self.hideWithTopBar = [BoolParser parse:dict key:@"hideWithTopBar"];
 	self.visible = [BoolParser parse:dict key:@"visible"];
 	self.animate = [BoolParser parse:dict key:@"animate"];
-	self.style = [StringParser parse:dict key:@"style"];
+	self.style = [TextParser parse:dict key:@"style"];
 	
 	return self;
 }

@@ -32,8 +32,8 @@
 	
 	self.backgroundImage = [ImageParser parse:dict key:@"backgroundImage"];
 	self.rootBackgroundImage = [ImageParser parse:dict key:@"rootBackgroundImage"];
-	self.modalPresentationStyle = [[String alloc] initWithValue:dict[@"modalPresentationStyle"]];
-	self.modalTransitionStyle = [[String alloc] initWithValue:dict[@"modalTransitionStyle"]];
+	self.modalPresentationStyle = [[Text alloc] initWithValue:dict[@"modalPresentationStyle"]];
+	self.modalTransitionStyle = [[Text alloc] initWithValue:dict[@"modalTransitionStyle"]];
 	
 	return self;
 }
@@ -43,32 +43,11 @@
 	return self;
 }
 
-- (void)applyDefaultOptionsOn:(UIViewController *)viewController {
-	UITabBarController* tabBarController = viewController.tabBarController;
-	UINavigationController* navigationController = viewController.navigationController;
-	
-	[navigationController setNavigationBarHidden:NO animated:NO];
-	navigationController.hidesBarsOnSwipe = NO;
-	navigationController.navigationBar.barStyle = UIBarStyleDefault;
-	navigationController.navigationBar.translucent = NO;
-	navigationController.navigationBar.clipsToBounds = NO;
-	
-	tabBarController.tabBar.barTintColor = nil;
-	tabBarController.tabBar.barStyle = UIBarStyleDefault;
-	tabBarController.tabBar.translucent = NO;
-}
-
 - (RNNOptions *)copy {
 	RNNNavigationOptions* newOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
 	[newOptions mergeOptions:self overrideOptions:YES];
 	
 	return newOptions;
 }
-
-//- (void)resetOptions {
-//	[self.sideMenu resetOptions];
-//	[self.bottomTabs resetOptions];
-//	[self.bottomTab resetOptions];
-//}
 
 @end

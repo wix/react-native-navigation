@@ -10,14 +10,9 @@
 	
 	self.width = [DoubleParser parse:dict key:@"width"];
 	
-	self.animationType = [StringParser parse:dict key:@"animationType"];
+	self.animationType = [TextParser parse:dict key:@"animationType"];
 	
 	return self;
-}
-
-- (void)resetOptions {
-	self.visible = nil;
-	self.enabled = nil;
 }
 
 @end

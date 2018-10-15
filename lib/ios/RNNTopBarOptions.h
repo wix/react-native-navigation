@@ -23,9 +23,9 @@
 @property (nonatomic, strong) Bool* animate;
 @property (nonatomic, strong) Bool* searchBar;
 @property (nonatomic, strong) Bool* searchBarHiddenWhenScrolling;
-@property (nonatomic, strong) String* testID;
-@property (nonatomic, strong) String* barStyle;
-@property (nonatomic, strong) String* searchBarPlaceholder;
+@property (nonatomic, strong) Text* testID;
+@property (nonatomic, strong) Text* barStyle;
+@property (nonatomic, strong) Text* searchBarPlaceholder;
 @property (nonatomic, strong) RNNLargeTitleOptions* largeTitle;
 @property (nonatomic, strong) RNNTitleOptions* title;
 @property (nonatomic, strong) RNNSubtitleOptions* subtitle;

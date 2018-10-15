@@ -1,12 +1,12 @@
-#import "String.h"
+#import "Text.h"
 
-@interface String()
+@interface Text()
 
 @property (nonatomic, retain) NSString* value;
 
 @end
 
 
-@implementation String
+@implementation Text
 
 @end

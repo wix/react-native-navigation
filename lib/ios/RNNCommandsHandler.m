@@ -72,7 +72,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	if ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] || [vc isKindOfClass:[RNNRootViewController class]]) {
 		[CATransaction begin];
 		[CATransaction setCompletionBlock:completion];
-
+		
+		[vc.options mergeOptions:newOptions overrideOptions:YES];
 		[vc mergeOptions:newOptions];
 
 		[CATransaction commit];

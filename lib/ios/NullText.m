@@ -1,6 +1,6 @@
-#import "NullString.h"
+#import "NullText.h"
 
-@implementation NullString
+@implementation NullText
 
 - (instancetype)init {
 	self = [super initWithValue:nil];

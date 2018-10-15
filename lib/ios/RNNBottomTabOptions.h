@@ -3,10 +3,10 @@
 @interface RNNBottomTabOptions : RNNOptions
 
 @property (nonatomic) NSUInteger tag;
-@property (nonatomic, strong) String* text;
-@property (nonatomic, strong) String* badge;
-@property (nonatomic, strong) String* fontFamily;
-@property (nonatomic, strong) String* testID;
+@property (nonatomic, strong) Text* text;
+@property (nonatomic, strong) Text* badge;
+@property (nonatomic, strong) Text* fontFamily;
+@property (nonatomic, strong) Text* testID;
 @property (nonatomic, strong) Color* badgeColor;
 @property (nonatomic, strong) Image* icon;
 @property (nonatomic, strong) Image* selectedIcon;

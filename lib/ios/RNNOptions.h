@@ -1,8 +1,7 @@
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <React/RCTConvert.h>
 #import "BoolParser.h"
-#import "StringParser.h"
+#import "TextParser.h"
 #import "NumberParser.h"
 #import "DictionaryParser.h"
 #import "ColorParser.h"

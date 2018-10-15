@@ -20,10 +20,12 @@
 	
 	if (options.bottomTabs.currentTabIndex.hasValue) {
 		[tabBarController rnn_setCurrentTabIndex:options.bottomTabs.currentTabIndex.get];
+		[options.bottomTabs.currentTabIndex consume];
 	}
 	
 	if (options.bottomTabs.currentTabId.hasValue) {
 		[tabBarController rnn_setCurrentTabID:options.bottomTabs.currentTabId.get];
+		[options.bottomTabs.currentTabId consume];
 	}
 	
 	if (options.bottomTabs.testID.hasValue) {

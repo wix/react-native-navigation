@@ -1,5 +1,3 @@
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import "RNNNavigationOptions.h"
 
 @interface RNNBasePresenter : NSObject
