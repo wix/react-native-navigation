@@ -11,7 +11,7 @@
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 			  childViewControllers:(NSArray *)childViewControllers
 						   options:(RNNNavigationOptions *)options
-						 presenter:(RNNViewControllerPresenter *)presenter
+						 presenter:(RNNBasePresenter *)presenter
 					  eventEmitter:(RNNEventEmitter *)eventEmitter {
 	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options presenter:presenter];
 	
@@ -52,7 +52,16 @@
 }
 
 - (void)onChildWillAppear:(RNNNavigationOptions *)childOptions {
+	RNNNavigationOptions* resolvedOptions = self.options.copy;
+	[resolvedOptions mergeOptions:childOptions overrideOptions:YES];
 	
+	[_presenter applyOptions:resolvedOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:resolvedOptions];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

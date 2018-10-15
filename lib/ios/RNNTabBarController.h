@@ -4,7 +4,7 @@
 
 @interface RNNTabBarController : UITabBarController <RNNParentProtocol, UITabBarControllerDelegate>
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNViewControllerPresenter *)presenter eventEmitter:(RNNEventEmitter *)eventEmitter;
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter eventEmitter:(RNNEventEmitter *)eventEmitter;
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID;
 

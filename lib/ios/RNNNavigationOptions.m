@@ -58,6 +58,13 @@
 	tabBarController.tabBar.translucent = NO;
 }
 
+- (RNNOptions *)copy {
+	RNNNavigationOptions* newOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
+	[newOptions mergeOptions:self overrideOptions:YES];
+	
+	return newOptions;
+}
+
 //- (void)resetOptions {
 //	[self.sideMenu resetOptions];
 //	[self.bottomTabs resetOptions];

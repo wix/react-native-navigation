@@ -10,8 +10,8 @@
 	
 	[sideMenuController side:MMDrawerSideLeft enabled:[options.sideMenu.left.enabled getWithDefaultValue:YES]];
 	[sideMenuController side:MMDrawerSideRight enabled:[options.sideMenu.right.enabled getWithDefaultValue:YES]];
-	[sideMenuController side:MMDrawerSideLeft visible:[options.sideMenu.left.visible getWithDefaultValue:NO]];
-	[sideMenuController side:MMDrawerSideRight visible:[options.sideMenu.right.visible getWithDefaultValue:NO]];
+//	[sideMenuController side:MMDrawerSideLeft visible:[options.sideMenu.left.visible getWithDefaultValue:NO]];
+//	[sideMenuController side:MMDrawerSideRight visible:[options.sideMenu.right.visible getWithDefaultValue:NO]];
 	
 	[sideMenuController setShouldStretchDrawer:[options.sideMenu.shouldStretchDrawer getWithDefaultValue:YES]];
 	[sideMenuController setAnimationVelocity:[options.sideMenu.animationVelocity getWithDefaultValue:840.0f]];
@@ -40,10 +40,12 @@
 	
 	if (options.sideMenu.left.visible.hasValue) {
 		[sideMenuController side:MMDrawerSideLeft visible:options.sideMenu.left.visible.get];
+		[options.sideMenu.left.visible consume];
 	}
 	
 	if (options.sideMenu.right.visible.hasValue) {
 		[sideMenuController side:MMDrawerSideRight visible:options.sideMenu.right.visible.get];
+		[options.sideMenu.right.visible consume];
 	}
 	
 	if (options.sideMenu.left.width.hasValue) {

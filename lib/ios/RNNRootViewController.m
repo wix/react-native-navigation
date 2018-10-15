@@ -68,8 +68,9 @@
 	}
 }
 
-- (void)onChildWillAppear:(RNNNavigationOptions *)childOptions {
-	
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -233,7 +234,7 @@
 - (BOOL)prefersStatusBarHidden {
 	if (self.options.statusBar.visible.hasValue) {
 		return ![self.options.statusBar.visible get];
-	} else if ([self.options.statusBar.hideWithTopBar getWithDefaultValue:nil]) {
+	} else if ([self.options.statusBar.hideWithTopBar getWithDefaultValue:NO]) {
 		return self.navigationController.isNavigationBarHidden;
 	}
 	

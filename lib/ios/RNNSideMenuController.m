@@ -50,7 +50,16 @@
 }
 
 - (void)onChildWillAppear:(RNNNavigationOptions *)childOptions {
+	RNNNavigationOptions* resolvedOptions = self.options.copy;
+	[resolvedOptions mergeOptions:childOptions overrideOptions:YES];
 	
+	[_presenter applyOptions:resolvedOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:resolvedOptions];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
 }
 
 - (void)setAnimationType:(NSString *)animationType {

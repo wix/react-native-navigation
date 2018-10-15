@@ -6,10 +6,12 @@
 
 @required
 
-@property (nonatomic, retain) RNNViewControllerPresenter* presenter;
+@property (nonatomic, retain) RNNBasePresenter* presenter;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 
 - (UIViewController<RNNLeafProtocol, RNNLayoutProtocol> *)getLeafViewController;
+
+- (void)mergeOptions:(RNNNavigationOptions *)options;
 
 @end

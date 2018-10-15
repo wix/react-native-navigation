@@ -8,6 +8,10 @@
 
 @implementation Color
 
+- (instancetype)initWithValue:(UIColor *)value {
+	return [super initWithValue:value];
+}
+
 - (UIColor *)get {
 	return self.value;
 }

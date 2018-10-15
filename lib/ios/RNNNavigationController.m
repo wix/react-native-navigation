@@ -13,7 +13,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 
 @implementation RNNNavigationController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNViewControllerPresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNNavigationControllerPresenter *)presenter {
 	self = [super init];
 
 	self.presenter = presenter;
@@ -34,8 +34,16 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (void)onChildWillAppear:(RNNNavigationOptions *)childOptions {
-	[_presenter applyOptions:childOptions];
-	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:childOptions];
+	RNNNavigationOptions* resolvedOptions = self.options.copy;
+	[resolvedOptions mergeOptions:childOptions overrideOptions:YES];
+	
+	[_presenter applyOptions:resolvedOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:resolvedOptions];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
 }
 
 - (UITabBarItem *)tabBarItem {

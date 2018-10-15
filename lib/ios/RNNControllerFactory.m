@@ -9,10 +9,12 @@
 #import "RNNTopTabsViewController.h"
 #import "RNNLayoutInfo.h"
 #import "RNNOptionsManager.h"
-#import "RNNViewControllerPresenter.h"
 #import "RNNRootViewController.h"
 #import "UIViewController+SideMenuController.h"
+#import "RNNViewControllerPresenter.h"
 #import "RNNNavigationControllerPresenter.h"
+#import "RNNTabBarPresenter.h"
+#import "RNNSideMenuPresenter.h"
 
 @implementation RNNControllerFactory {
 	id<RNNRootViewCreator> _creator;
@@ -143,7 +145,7 @@
 -(UIViewController<RNNParentProtocol> *)createTabs:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [_optionsManager createOptions:node.data[@"options"]];
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
+	RNNTabBarPresenter* presenter = [[RNNTabBarPresenter alloc] init];
 
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	
@@ -167,7 +169,7 @@
 - (UIViewController<RNNParentProtocol> *)createSideMenu:(RNNLayoutNode*)node {
 	RNNLayoutInfo* layoutInfo = [[RNNLayoutInfo alloc] initWithNode:node];
 	RNNNavigationOptions* options = [_optionsManager createOptions:node.data[@"options"]];
-	RNNViewControllerPresenter* presenter = [[RNNViewControllerPresenter alloc] init];
+	RNNSideMenuPresenter* presenter = [[RNNSideMenuPresenter alloc] init];
 
 	NSArray *childViewControllers = [self extractChildrenViewControllersFromNode:node];
 	

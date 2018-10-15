@@ -3,6 +3,8 @@
 
 @interface Color : Param
 
+- (instancetype)initWithValue:(UIColor *)value;
+
 - (UIColor *)get;
 
 - (UIColor *)getWithDefaultValue:(id)defaultValue;

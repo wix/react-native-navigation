@@ -63,6 +63,8 @@
 	options.popGesture = [[Bool alloc] initWithValue:popGestureEnabled];
 	
 	self.uut = [self createNavigationControllerWithOptions:options];
+	[self.uut onChildWillAppear:nil];
+	
 	XCTAssertTrue(self.uut.interactivePopGestureRecognizer.enabled);
 }
 
@@ -82,7 +84,7 @@
 	options.topBar.background.clipToBounds = [[Bool alloc] initWithValue:@(1)];
 	
 	self.uut = [self createNavigationControllerWithOptions:options];
-	[self.uut viewWillAppear:false];
+	[self.uut onChildWillAppear:nil];
 	
 	XCTAssertTrue(self.uut.navigationBar.clipsToBounds);
 }
@@ -97,7 +99,7 @@
 }
 
 - (RNNNavigationController *)createNavigationControllerWithOptions:(RNNNavigationOptions *)options {
-	return [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1] options:options presenter:[[RNNViewControllerPresenter alloc] init]];
+	return [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[_vc1] options:options presenter:[[RNNNavigationControllerPresenter alloc] init]];
 }
 
 @end

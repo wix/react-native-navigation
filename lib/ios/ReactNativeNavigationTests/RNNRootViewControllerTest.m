@@ -54,7 +54,7 @@
 
 -(void)testTopBarBackgroundColor_validColor{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.topBar.background.color = [[Number alloc] initWithValue:inputColor];
+	self.options.topBar.background.color = [[Color alloc] initWithValue:[RCTConvert UIColor:inputColor]];
 	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
@@ -64,7 +64,7 @@
 
 -(void)testTopBarBackgroundColorWithoutNavigationController{
 	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.topBar.background.color = [[Number alloc] initWithValue:inputColor];
+	self.options.topBar.background.color = [[Color alloc] initWithValue:inputColor];
 
 	XCTAssertNoThrow([self.uut viewWillAppear:false]);
 }
@@ -121,8 +121,8 @@
 }
 
 -(void)testTopBarTextColor_validColor{
-	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.topBar.title.color = [[Number alloc] initWithValue:inputColor];
+	UIColor* inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
+	self.options.topBar.title.color = [[Color alloc] initWithValue:inputColor];
 	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
@@ -130,8 +130,8 @@
 }
 
 -(void)testbackgroundColor_validColor{
-	NSNumber* inputColor = @(0xFFFF0000);
-	self.options.layout.backgroundColor = [[Number alloc] initWithValue:inputColor];
+	UIColor* inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
+	self.options.layout.backgroundColor = [[Color alloc] initWithValue:inputColor];
 	[self.uut viewWillAppear:false];
 	UIColor* expectedColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
 	XCTAssertTrue([self.uut.view.backgroundColor isEqual:expectedColor]);
@@ -177,8 +177,8 @@
 }
 
 -(void)testTopBarTransparent_BOOL_True {
-	NSNumber* transparentColor = @(0x00000000);
-	self.options.topBar.background.color = [[Number alloc] initWithValue:transparentColor];
+	UIColor* transparentColor = [RCTConvert UIColor:@(0x00000000)];
+	self.options.topBar.background.color = [[Color alloc] initWithValue:transparentColor];
 	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
@@ -187,9 +187,9 @@
 }
 
 -(void)testTopBarTransparent_BOOL_false {
-	NSNumber* inputColor = @(0xFFFF0000);
+	UIColor* inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
 	__unused RNNNavigationController* nav = [self createNavigationController];
-	self.options.topBar.background.color = [[Number alloc] initWithValue:inputColor];
+	self.options.topBar.background.color = [[Color alloc] initWithValue:inputColor];
 	[self.uut viewWillAppear:false];
 	UIView* transparentView = [self.uut.navigationController.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
 	XCTAssertFalse(transparentView);
@@ -228,9 +228,9 @@
 
 -(void)testTopBarLargeTitleFontSize_withoutTextFontFamily_withTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
-	NSNumber* inputColor = @(0xFFFF0000);
+	UIColor* inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
 	self.options.topBar.largeTitle.fontSize = [[Number alloc] initWithValue:topBarTextFontSizeInput];
-	self.options.topBar.largeTitle.color = [[Number alloc] initWithValue:inputColor];
+	self.options.topBar.largeTitle.color = [[Color alloc] initWithValue:inputColor];
 	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
@@ -241,10 +241,10 @@
 
 -(void)testTopBarLargeTitleFontSize_withTextFontFamily_withTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
-	NSNumber* inputColor = @(0xFFFF0000);
+	UIColor* inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
 	NSString* inputFont = @"HelveticaNeue";
 	self.options.topBar.largeTitle.fontSize = [[Number alloc] initWithValue:topBarTextFontSizeInput];
-	self.options.topBar.largeTitle.color = [[Number alloc] initWithValue:inputColor];
+	self.options.topBar.largeTitle.color = [[Color alloc] initWithValue:inputColor];
 	self.options.topBar.largeTitle.fontFamily = [[String alloc] initWithValue:inputFont];
 	
 	__unused RNNNavigationController* nav = [self createNavigationController];
@@ -278,9 +278,9 @@
 
 -(void)testTopBarTextFontSize_withoutTextFontFamily_withTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
-	NSNumber* inputColor = @(0xFFFF0000);
+	UIColor* inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
 	self.options.topBar.title.fontSize = [[Number alloc] initWithValue:topBarTextFontSizeInput];
-	self.options.topBar.title.color = [[Number alloc] initWithValue:inputColor];
+	self.options.topBar.title.color = [[Color alloc] initWithValue:inputColor];
 	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
 	UIFont* expectedFont = [UIFont systemFontOfSize:15];
@@ -291,10 +291,10 @@
 
 -(void)testTopBarTextFontSize_withTextFontFamily_withTextColor {
 	NSNumber* topBarTextFontSizeInput = @(15);
-	NSNumber* inputColor = @(0xFFFF0000);
+	UIColor* inputColor = [RCTConvert UIColor:@(0xFFFF0000)];
 	NSString* inputFont = @"HelveticaNeue";
 	self.options.topBar.title.fontSize = [[Number alloc] initWithValue:topBarTextFontSizeInput];
-	self.options.topBar.title.color = [[Number alloc] initWithValue:inputColor];
+	self.options.topBar.title.color = [[Color alloc] initWithValue:inputColor];
 	self.options.topBar.title.fontFamily = [[String alloc] initWithValue:inputFont];
 	__unused RNNNavigationController* nav = [self createNavigationController];
 	[self.uut viewWillAppear:false];
@@ -586,7 +586,7 @@
 
 
 - (RNNNavigationController *)createNavigationController {
-	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[self.uut] options:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[[RNNViewControllerPresenter alloc] init]];
+	RNNNavigationController* nav = [[RNNNavigationController alloc] initWithLayoutInfo:nil childViewControllers:@[self.uut] options:[[RNNNavigationOptions alloc] initEmptyOptions] presenter:[[RNNNavigationControllerPresenter alloc] init]];
 	
 	return nav;
 }
