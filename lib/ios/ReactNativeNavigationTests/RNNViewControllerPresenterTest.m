@@ -21,7 +21,7 @@
 
 - (void)testApplyOptions_backgroundImageDefaultNil {
 	[self.uut applyOptions:self.options];
-	XCTAssertFalse([self.bindedViewController.view.subviews[0] isKindOfClass:[UIImageView class]]);
+	XCTAssertNil(((UIImageView *)self.bindedViewController.view.subviews[0]).image);
 }
 
 - (void)testApplyOptions_topBarPrefersLargeTitleDefaultFalse {
@@ -30,9 +30,9 @@
 	XCTAssertTrue(self.bindedViewController.navigationItem.largeTitleDisplayMode == UINavigationItemLargeTitleDisplayModeNever);
 }
 
-- (void)testApplyOptions_layoutBackgroundColorDefaultWhite {
+- (void)testApplyOptions_layoutBackgroundColorDefaultNil {
 	[self.uut applyOptions:self.options];
-	XCTAssertTrue(self.bindedViewController.view.backgroundColor == [UIColor whiteColor]);
+	XCTAssertNil(self.bindedViewController.view.backgroundColor);
 }
 
 - (void)testApplyOptions_statusBarBlurDefaultFalse {
