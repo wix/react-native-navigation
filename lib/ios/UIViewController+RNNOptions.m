@@ -76,13 +76,54 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 	UITabBarItem *tabBarItem = self.tabBarItem;
 	tabBarItem.badgeValue = badge;
 	
+	NSUInteger tag = tabBarItem.tag * 1000;
+	UIView* customBadgeCircle = (UIView*)[self.tabBarController.tabBar viewWithTag:tag];
+	if (customBadgeCircle) {
+		customBadgeCircle.hidden = false;
+		tabBarItem.badgeValue = nil;
+	}
+	
 	if ([badge isKindOfClass:[NSNull class]] || [badge isEqualToString:@""]) {
 		tabBarItem.badgeValue = nil;
+		if(customBadgeCircle){
+			customBadgeCircle.hidden = true;
+		}
+	}
+}
+
+- (void)rnn_setTabBarItemBadgeSize:(NSNumber *)badgeSize{
+	UITabBarItem *tabBarItem = self.tabBarItem;
+	NSUInteger tag = tabBarItem.tag * 1000;
+	if (badgeSize) {
+		
+		CGFloat badgeSizeFloat = [badgeSize doubleValue];
+		CGFloat topMargin = (double)5;
+		
+		NSUInteger index = [self.tabBarController.tabBar.items indexOfObject:tabBarItem];
+		NSUInteger tabBarItemCount = self.tabBarController.tabBar.items.count;
+		CGFloat halfItemWidth = CGRectGetWidth(self.view.bounds) / (tabBarItemCount * 2);
+		CGFloat xOffset = halfItemWidth * (index * 2 + 1);
+		CGFloat imageHalfWidth = tabBarItem.selectedImage.size.width / 2;
+		
+		UIView* badgeCircle = [[UIView alloc] initWithFrame:CGRectMake(xOffset + imageHalfWidth, topMargin, badgeSizeFloat, badgeSizeFloat)];
+		badgeCircle.layer.cornerRadius = badgeSizeFloat / 2;
+
+		badgeCircle.backgroundColor = UIColor.redColor;
+		badgeCircle.tag = tag;
+		badgeCircle.hidden = true;
+		
+		[self.tabBarController.tabBar addSubview:badgeCircle];
 	}
 }
 
 - (void)rnn_setTabBarItemBadgeColor:(UIColor *)badgeColor {
 	self.tabBarItem.badgeColor = badgeColor;
+	
+	NSUInteger tag = self.tabBarItem.tag * 1000;
+	UIView* customBadgeCircle = (UIView*)[self.tabBarController.tabBar viewWithTag:tag];
+	if (customBadgeCircle) {
+		customBadgeCircle.backgroundColor = badgeColor;
+	}
 }
 
 - (void)rnn_setStatusBarStyle:(NSString *)style animated:(BOOL)animated {

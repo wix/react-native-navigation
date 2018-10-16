@@ -2,6 +2,8 @@
 
 @interface UIViewController (RNNOptions)
 
+//@property (nonatomic, retain) UIView* customBadgeView;
+
 - (void)rnn_setBackgroundImage:(UIImage *)backgroundImage;
 
 - (void)rnn_setModalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle;
@@ -19,6 +21,8 @@
 - (void)rnn_setTabBarItemBadgeColor:(UIColor *)badgeColor;
 
 - (void)rnn_setTabBarItemBadge:(NSString *)badge;
+
+- (void)rnn_setTabBarItemBadgeSize:(NSNumber *)badgeSize;
 
 - (void)rnn_setTopBarPrefersLargeTitle:(BOOL)prefersLargeTitle;
 
