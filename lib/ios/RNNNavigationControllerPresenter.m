@@ -5,9 +5,9 @@
 @implementation RNNNavigationControllerPresenter
 
 - (void)applyOptions:(RNNNavigationOptions *)initialOptions {
-	RNNNavigationOptions* options = (RNNNavigationOptions *)[initialOptions withDefault:self.defaultOptions];
+	[super applyOptions:initialOptions];
+	RNNNavigationOptions* options = [initialOptions withDefault:self.defaultOptions];
 	
-	[super applyOptions:options];
 	
 	RNNNavigationController* navigationController = self.bindedViewController;
 

@@ -11,9 +11,8 @@
 
 
 - (void)applyOptions:(RNNNavigationOptions *)initialOptions {
-	RNNNavigationOptions* options = (RNNNavigationOptions *)[initialOptions withDefault:self.defaultOptions];
-	
-	[super applyOptions:options];
+	[super applyOptions:initialOptions];
+	RNNNavigationOptions* options = [initialOptions withDefault:self.defaultOptions];
 	
 	UIViewController* viewController = self.bindedViewController;
 	[viewController rnn_setBackgroundImage:[options.backgroundImage getWithDefaultValue:nil]];

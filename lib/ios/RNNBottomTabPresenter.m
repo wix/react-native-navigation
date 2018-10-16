@@ -14,7 +14,7 @@
 - (void)applyOptions:(RNNNavigationOptions *)options {
 	UIViewController* viewController = self.bindedViewController;
 	if ((options.bottomTab.text.hasValue || options.bottomTab.icon.hasValue || options.bottomTab.selectedIcon.hasValue)) {
-		RNNNavigationOptions* withDefault = (RNNNavigationOptions *)[(RNNNavigationOptions *)[options copy] withDefault:self.defaultOptions];
+		RNNNavigationOptions* withDefault = (RNNNavigationOptions *)[[options copy] withDefault:self.defaultOptions];
 		UITabBarItem* tabItem = [RNNTabBarItemCreator updateTabBarItem:viewController.tabBarItem bottomTabOptions:withDefault.bottomTab];
 		viewController.tabBarItem = tabItem;
 		[options.bottomTab.text consume];

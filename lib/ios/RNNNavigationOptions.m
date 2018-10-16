@@ -50,4 +50,8 @@
 	return newOptions;
 }
 
+- (RNNNavigationOptions *)withDefault:(RNNNavigationOptions *)defaultOptions {
+	return (RNNNavigationOptions *)[super withDefault:defaultOptions];
+}
+
 @end

@@ -4,9 +4,9 @@
 @implementation RNNSideMenuPresenter
 
 - (void)applyOptions:(RNNNavigationOptions *)initialOptions {
-	RNNNavigationOptions* options = (RNNNavigationOptions *)[initialOptions withDefault:self.defaultOptions];
+	[super applyOptions:initialOptions];
 	
-	[super applyOptions:options];
+	RNNNavigationOptions* options = [initialOptions withDefault:self.defaultOptions];
 	
 	RNNSideMenuController* sideMenuController = self.bindedViewController;
 	

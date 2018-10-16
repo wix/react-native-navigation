@@ -4,14 +4,13 @@
 @implementation RNNTabBarPresenter
 
 - (void)applyOptions:(RNNNavigationOptions *)initialOptions {
-	RNNNavigationOptions* options = (RNNNavigationOptions *)[initialOptions withDefault:self.defaultOptions];
+	[super applyOptions:initialOptions];
 	
-	[super applyOptions:options];
+	RNNNavigationOptions* options = [initialOptions withDefault:self.defaultOptions];
 	
 	UITabBarController* tabBarController = self.bindedViewController;
 	
 	[tabBarController rnn_setTabBarTestID:[options.bottomTabs.testID getWithDefaultValue:nil]];
-	
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {

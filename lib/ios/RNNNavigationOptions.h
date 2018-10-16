@@ -38,4 +38,7 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 
 - (instancetype)initEmptyOptions;
 
+- (RNNNavigationOptions *)withDefault:(RNNNavigationOptions *)defaultOptions;
+
+
 @end

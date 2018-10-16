@@ -152,7 +152,7 @@
 
 - (void)setTitleViewWithSubtitle {
 	if (self.options.topBar.subtitle.text.hasValue) {
-		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:[self.options.topBar.title withDefault:_presenter.defaultOptions.topBar.title] subTitleOptions:[self.options.topBar.subtitle withDefault:_presenter.defaultOptions.topBar.subtitle] viewController:self];
+		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:self.optionsWithDefault.topBar.title subTitleOptions:self.optionsWithDefault.topBar.subtitle viewController:self];
 		[titleViewHelper setup];
 	}
 }
@@ -225,8 +225,12 @@
 	}
 }
 
+- (RNNNavigationOptions *)optionsWithDefault {
+	return (RNNNavigationOptions *)[[self.options copy] withDefault:_presenter.defaultOptions];
+}
+
 -(BOOL)isCustomTransitioned {
-	return self.options.customTransition.animations != nil;
+	return self.optionsWithDefault.customTransition.animations != nil;
 }
 
 - (BOOL)isExternalViewController {
@@ -234,9 +238,9 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-	if (self.options.statusBar.visible.hasValue) {
-		return ![self.options.statusBar.visible get];
-	} else if ([self.options.statusBar.hideWithTopBar getWithDefaultValue:NO]) {
+	if (self.optionsWithDefault.statusBar.visible.hasValue) {
+		return ![self.optionsWithDefault.statusBar.visible get];
+	} else if ([self.optionsWithDefault.statusBar.hideWithTopBar getWithDefaultValue:NO]) {
 		return self.navigationController.isNavigationBarHidden;
 	}
 	
@@ -244,7 +248,7 @@
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	if ([[self.options.statusBar.style getWithDefaultValue:@"default"] isEqualToString:@"light"]) {
+	if ([[self.optionsWithDefault.statusBar.style getWithDefaultValue:@"default"] isEqualToString:@"light"]) {
 		return UIStatusBarStyleLightContent;
 	} else {
 		return UIStatusBarStyleDefault;
@@ -252,20 +256,20 @@
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-	return self.options.layout.supportedOrientations;
+	return self.optionsWithDefault.layout.supportedOrientations;
 }
 
 - (BOOL)hidesBottomBarWhenPushed
 {
-	if (self.options.bottomTabs.visible.hasValue) {
-		return !self.options.bottomTabs.visible.get;
+	if (self.optionsWithDefault.bottomTabs.visible.hasValue) {
+		return !self.optionsWithDefault.bottomTabs.visible.get;
 	}
 	return NO;
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
 	RNNRootViewController* vc =  (RNNRootViewController*)viewController;
-	if (![[vc.options.topBar.backButton.transition getWithDefaultValue:@""] isEqualToString:@"custom"]){
+	if (![[vc.optionsWithDefault.topBar.backButton.transition getWithDefaultValue:@""] isEqualToString:@"custom"]){
 		navigationController.delegate = nil;
 	}
 }
@@ -276,10 +280,10 @@
 												 toViewController:(UIViewController*)toVC {
 	if (self.animator) {
 		return self.animator;
-	} else if (operation == UINavigationControllerOperationPush && self.options.animations.push.hasCustomAnimation) {
-		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.push];
-	} else if (operation == UINavigationControllerOperationPop && self.options.animations.pop.hasCustomAnimation) {
-		return [[RNNPushAnimation alloc] initWithScreenTransition:self.options.animations.pop];
+	} else if (operation == UINavigationControllerOperationPush && self.optionsWithDefault.animations.push.hasCustomAnimation) {
+		return [[RNNPushAnimation alloc] initWithScreenTransition:self.optionsWithDefault.animations.push];
+	} else if (operation == UINavigationControllerOperationPop && self.optionsWithDefault.animations.pop.hasCustomAnimation) {
+		return [[RNNPushAnimation alloc] initWithScreenTransition:self.optionsWithDefault.animations.pop];
 	} else {
 		return nil;
 	}
@@ -288,11 +292,11 @@
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.showModal isDismiss:NO];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.optionsWithDefault.animations.showModal isDismiss:NO];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.options.animations.dismissModal isDismiss:YES];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.optionsWithDefault.animations.dismissModal isDismiss:YES];
 }
 
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
