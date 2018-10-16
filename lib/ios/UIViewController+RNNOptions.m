@@ -18,7 +18,6 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 - (void)rnn_setModalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle {
 	self.modalPresentationStyle = modalPresentationStyle;
-	[self.view setBackgroundColor:[UIColor clearColor]];
 }
 
 - (void)rnn_setModalTransitionStyle:(UIModalTransitionStyle)modalTransitionStyle {

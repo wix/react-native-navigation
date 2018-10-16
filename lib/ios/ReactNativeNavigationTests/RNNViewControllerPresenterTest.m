@@ -30,9 +30,9 @@
 	XCTAssertTrue(self.bindedViewController.navigationItem.largeTitleDisplayMode == UINavigationItemLargeTitleDisplayModeNever);
 }
 
-- (void)testApplyOptions_layoutBackgroundColorDefaultNil {
+- (void)testApplyOptions_layoutBackgroundColorDefaultWhiteColor {
 	[self.uut applyOptions:self.options];
-	XCTAssertNil(self.bindedViewController.view.backgroundColor);
+	XCTAssertEqual(self.bindedViewController.view.backgroundColor, [UIColor whiteColor]);
 }
 
 - (void)testApplyOptions_statusBarBlurDefaultFalse {
