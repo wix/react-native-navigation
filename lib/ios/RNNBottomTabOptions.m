@@ -88,7 +88,7 @@
 		badgeDot.tag = tag;
 		
 		[topViewController.tabBarController.tabBar addSubview:badgeDot];
-	} else if (self.badge) {
+	} else if (badge) {
 		UITabBarItem *tabBarItem = topViewController.tabBarItem;
 		tabBarItem.badgeValue = badge;
 		if (self.badgeColor) {
