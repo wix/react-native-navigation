@@ -49,6 +49,10 @@ extern const NSInteger BLUR_TOPBAR_TAG;
 		viewController.tabBarController.tabBar.clipsToBounds = [self.hideShadow boolValue];
 	}
 
+  if (self.visible) {
+    [viewController.tabBarController.tabBar setHidden:[self.visible boolValue]];
+  }
+
 	[self resetOptions];
 }
 
