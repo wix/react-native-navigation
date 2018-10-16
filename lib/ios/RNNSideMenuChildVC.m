@@ -9,7 +9,7 @@
 
 @implementation RNNSideMenuChildVC
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter type:(RNNSideMenuChildType)type {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNViewControllerPresenter *)presenter type:(RNNSideMenuChildType)type {
 	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options presenter:presenter];
 	
 	self.type = type;
@@ -17,21 +17,42 @@
 	return self;
 }
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNViewControllerPresenter *)presenter {
 	self = [super init];
 	
+	self.child = childViewControllers[0];
+	
 	self.presenter = presenter;
+	[self.presenter bindViewController:self];
+	
+	
 	self.options = options;
 	self.layoutInfo = layoutInfo;
 	
-	[self bindChildViewControllers:childViewControllers];
-	
+	[self bindChildViewController:self.child];
+
 	return self;
 }
 
-- (void)bindChildViewControllers:(NSArray<UIViewController<RNNParentProtocol> *> *)viewControllers {
-	UIViewController<RNNParentProtocol>* child = viewControllers[0];
-	
+- (void)onChildWillAppear {
+	[_presenter applyOptions:self.resolveOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return (RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
+}
+
+- (UITabBarItem *)tabBarItem {
+	return super.tabBarItem ? super.tabBarItem : self.child.tabBarItem;
+}
+
+- (void)bindChildViewController:(UIViewController<RNNParentProtocol>*)child {
 	self.child = child;
 	[self addChildViewController:self.child];
 	[self.child.view setFrame:self.view.bounds];
@@ -39,12 +60,8 @@
 	[self.view bringSubviewToFront:self.child.view];
 }
 
-- (UIViewController *)getLeafViewController {
-	return [self.child getLeafViewController];
-}
-
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-	[_presenter present:self.options onViewControllerDidLoad:self];
+- (UIViewController *)getCurrentChild {
+	return [self.child getCurrentChild];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

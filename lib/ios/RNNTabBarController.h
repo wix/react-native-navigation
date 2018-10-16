@@ -1,4 +1,3 @@
-
 #import <UIKit/UIKit.h>
 #import "RNNParentProtocol.h"
 #import "RNNEventEmitter.h"
@@ -10,7 +9,7 @@
 - (void)setSelectedIndexByComponentID:(NSString *)componentID;
 
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
-@property (nonatomic, retain) RNNBasePresenter* presenter;
+@property (nonatomic, retain) RNNViewControllerPresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 
 @end

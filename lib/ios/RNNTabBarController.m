@@ -23,15 +23,18 @@
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 			  childViewControllers:(NSArray *)childViewControllers
 						   options:(RNNNavigationOptions *)options
-						 presenter:(RNNBasePresenter *)presenter {
+						 presenter:(RNNViewControllerPresenter *)presenter {
 	self = [super init];
 	
-	self.presenter = presenter;
 	self.options = options;
+	
 	self.layoutInfo = layoutInfo;
 	
-	[self setViewControllers:childViewControllers];
+	self.presenter = presenter;
+	[self.presenter bindViewController:self];
 	
+	[self setViewControllers:childViewControllers];
+		
 	return self;
 }
 
@@ -40,6 +43,35 @@
 	_eventEmitter = eventEmitter;
 	self.delegate = self;
 	return self;
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if (parent) {
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.options];
+	}
+}
+
+- (void)onChildWillAppear {
+	[_presenter applyOptions:self.resolveOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return (RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[_presenter applyOptions:self.options];
+}
+
+- (UITabBarItem *)tabBarItem {
+	return super.tabBarItem ? super.tabBarItem : self.viewControllers.lastObject.tabBarItem;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -61,16 +93,12 @@
 	[super setSelectedIndex:selectedIndex];
 }
 
-- (UIViewController *)getLeafViewController {
-	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).getLeafViewController;
+- (UIViewController *)getCurrentChild {
+	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).getCurrentChild;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).preferredStatusBarStyle;
-}
-
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-	[_presenter present:self.options onViewControllerDidLoad:self];
 }
 
 #pragma mark UITabBarControllerDelegate
