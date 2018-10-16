@@ -1,14 +1,17 @@
 #import "RNNBottomTabPresenter.h"
 #import "RNNTabBarItemCreator.h"
 
+@interface RNNBottomTabPresenter()
+
+@property (nonatomic, weak) id bindedViewController;
+@property (nonatomic, retain) RNNNavigationOptions* defaultOptions;
+
+@end
+
 @implementation RNNBottomTabPresenter
 
-- (instancetype)initWithViewController:(UIViewController *)viewController {
-	self = [super init];
-	
-	self.bindedViewController = viewController;
-	
-	return self;
+- (void)bindViewController:(UIViewController *)viewController {
+	_bindedViewController = viewController;
 }
 
 - (void)applyOptions:(RNNNavigationOptions *)options {
@@ -21,6 +24,10 @@
 		[options.bottomTab.icon consume];
 		[options.bottomTab.selectedIcon consume];
 	}
+}
+
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+	_defaultOptions = defaultOptions;
 }
 
 @end

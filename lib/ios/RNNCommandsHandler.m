@@ -8,6 +8,7 @@
 #import "RNNElementFinder.h"
 #import "React/RCTUIManager.h"
 #import "RNNErrorHandler.h"
+#import "RNNDefaultOptionsHelper.h"
 
 static NSString* const setRoot	= @"setRoot";
 static NSString* const setStackRoot	= @"setStackRoot";
@@ -84,6 +85,11 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	RNNNavigationOptions* defaultOptions = [[RNNNavigationOptions alloc] initWithDict:optionsDict];
 	[_controllerFactory setDefaultOptions:defaultOptions];
+	
+	UIViewController *rootViewController = UIApplication.sharedApplication.delegate.window.rootViewController;
+	[RNNDefaultOptionsHelper recrusivelySetDefaultOptions:defaultOptions onRootViewController:rootViewController];
+	
+	completion();
 }
 
 - (void)push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {

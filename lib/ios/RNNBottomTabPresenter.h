@@ -1,7 +1,11 @@
 #import "RNNBasePresenter.h"
 
-@interface RNNBottomTabPresenter : RNNBasePresenter
+@interface RNNBottomTabPresenter : NSObject
 
-- (instancetype)initWithViewController:(UIViewController *)viewController;
+- (void)bindViewController:(UIViewController *)viewController;
+
+- (void)applyOptions:(RNNNavigationOptions *)options;
+
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
 @end

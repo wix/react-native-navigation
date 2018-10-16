@@ -9,9 +9,15 @@
 
 @implementation RNNBasePresenter
 
+- (instancetype)init {
+	self = [super init];
+	self.bottomTabPresenter = [[RNNBottomTabPresenter alloc] init];
+	return self;
+}
+
 - (void)bindViewController:(UIViewController *)bindedViewController {
 	_bindedViewController = bindedViewController;
-	self.bottomTabPresenter = [[RNNBottomTabPresenter alloc] initWithViewController:bindedViewController];
+	[self.bottomTabPresenter bindViewController:bindedViewController];
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
