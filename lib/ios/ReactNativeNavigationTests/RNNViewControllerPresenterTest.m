@@ -32,7 +32,7 @@
 
 - (void)testApplyOptions_layoutBackgroundColorDefaultWhiteColor {
 	[self.uut applyOptions:self.options];
-	XCTAssertEqual(self.bindedViewController.view.backgroundColor, [UIColor whiteColor]);
+	XCTAssertNil(self.bindedViewController.view.backgroundColor);
 }
 
 - (void)testApplyOptions_statusBarBlurDefaultFalse {
