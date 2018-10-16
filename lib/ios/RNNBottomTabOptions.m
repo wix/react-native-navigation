@@ -8,6 +8,9 @@
 	
 	[self mergeWith:tabItemDict];
 	self.tag = [tabItemDict[@"tag"] integerValue];
+	if(self.tag == 0){
+		self.tag = arc4random() %(100)-1;
+	}
 	return self;
 }
 
@@ -35,7 +38,7 @@
 			
 			tabItem.imageInsets = UIEdgeInsetsMake(top, left, bottom, right);
 		}
-		
+			
 		[self appendTitleAttributes:tabItem];
 		
 		[topViewController setTabBarItem:tabItem];
@@ -53,10 +56,21 @@
 }
 
 - (void)setBadgeWithView:(UIViewController*) topViewController {
+	UITabBarItem *tabBarItem = topViewController.tabBarItem;
+	NSUInteger tag = tabBarItem.tag * 1000;
+	for (UIView* subview in topViewController.tabBarController.tabBar.subviews) {
+		if (subview.tag == tag) {
+			[subview removeFromSuperview];
+			break;
+		}
+	}
+	NSString *badge = nil;
+	if (self.badge != nil && ![self.badge isEqual:[NSNull null]] && ![self.badge isEqualToString:@""]) {
+		badge = [RCTConvert NSString:self.badge];
+	}
 	
-	if (self.badgeSize) {
+	if (badge && self.badgeSize) {
 		double badgeSize = [self.badgeSize doubleValue];
-		UITabBarItem *tabBarItem = topViewController.tabBarItem;
 		CGFloat topMargin = 5;
 		
 		NSUInteger index = [topViewController.tabBarController.tabBar.items indexOfObject:tabBarItem];
@@ -71,13 +85,10 @@
 			badgeDot.backgroundColor = UIColor.redColor;
 		}
 		badgeDot.layer.cornerRadius = badgeSize / 2;
+		badgeDot.tag = tag;
 		
 		[topViewController.tabBarController.tabBar addSubview:badgeDot];
-	} else {
-		NSString *badge = nil;
-		if (self.badge != nil && ![self.badge isEqual:[NSNull null]]) {
-			badge = [RCTConvert NSString:self.badge];
-		}
+	} else if (self.badge) {
 		UITabBarItem *tabBarItem = topViewController.tabBarItem;
 		tabBarItem.badgeValue = badge;
 		if (self.badgeColor) {
