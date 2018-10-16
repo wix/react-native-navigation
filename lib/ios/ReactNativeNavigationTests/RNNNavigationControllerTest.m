@@ -63,7 +63,7 @@
 	options.popGesture = [[Bool alloc] initWithValue:popGestureEnabled];
 	
 	self.uut = [self createNavigationControllerWithOptions:options];
-	[self.uut onChildWillAppear:nil];
+	[self.uut onChildWillAppear:nil withDefaultOptions:nil];
 	
 	XCTAssertTrue(self.uut.interactivePopGestureRecognizer.enabled);
 }
@@ -84,7 +84,7 @@
 	options.topBar.background.clipToBounds = [[Bool alloc] initWithValue:@(1)];
 	
 	self.uut = [self createNavigationControllerWithOptions:options];
-	[self.uut onChildWillAppear:nil];
+	[self.uut onChildWillAppear:nil withDefaultOptions:nil];
 	
 	XCTAssertTrue(self.uut.navigationBar.clipsToBounds);
 }
