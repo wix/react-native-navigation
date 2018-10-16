@@ -24,7 +24,7 @@
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:@{@"topBar": @{@"background" : @{@"color" : @(0xff0000ff)}}}];
 	NSDictionary* dynamicOptionsDict = @{@"topBar": @{@"textColor" : @(0xffff00ff), @"title" : @{@"text": @"hello"}}};
 	RNNNavigationOptions* dynamicOptions = [[RNNNavigationOptions alloc] initWithDict:dynamicOptionsDict];
-	[options mergeOptions:dynamicOptions];
+	[options overrideOptions:dynamicOptions];
 	
 	XCTAssertTrue([options.topBar.title.text.get isEqual:@"hello"]);
 }
@@ -33,7 +33,7 @@
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:@{@"topBar": @{@"background" : @{@"color" : @(0xff0000ff)}}}];
 	NSDictionary* dynamicOptionsDict = @{@"topBar": @{@"titleeeee" : @"hello"}};
 	RNNNavigationOptions* dynamicOptions = [[RNNNavigationOptions alloc] initWithDict:dynamicOptionsDict];
-	XCTAssertNoThrow([options mergeOptions:dynamicOptions]);
+	XCTAssertNoThrow([options overrideOptions:dynamicOptions]);
 }
 //
 //- (void)test_applyDefaultOptions {

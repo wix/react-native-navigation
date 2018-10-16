@@ -45,7 +45,7 @@
 
 - (RNNOptions *)copy {
 	RNNNavigationOptions* newOptions = [[RNNNavigationOptions alloc] initWithDict:@{}];
-	[newOptions mergeOptions:self overrideOptions:YES];
+	[newOptions overrideOptions:self];
 	
 	return newOptions;
 }

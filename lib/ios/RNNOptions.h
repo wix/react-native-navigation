@@ -13,8 +13,8 @@
 
 - (instancetype)initWithDict:(NSDictionary*)dict;
 
-- (void)mergeOptions:(RNNOptions *)otherOptions;
-- (void)mergeOptions:(RNNOptions *)otherOptions overrideOptions:(BOOL)override;
+- (RNNOptions *)overrideOptions:(RNNOptions *)otherOptions;
+- (RNNOptions *)mergeOptions:(RNNOptions *)otherOptions;
 
 - (RNNOptions *)withDefault:(RNNOptions *)defaultOptions;
 

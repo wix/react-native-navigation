@@ -33,13 +33,13 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 	}
 }
 
-- (void)onChildWillAppear:(RNNNavigationOptions *)childOptions withDefaultOptions:(RNNNavigationOptions *)defaultOptions {
-	RNNNavigationOptions* resolvedOptions = self.options.copy;
-	[resolvedOptions mergeOptions:childOptions overrideOptions:YES];
-	
-	[_presenter setDefaultOptions:defaultOptions];
-	[_presenter applyOptions:resolvedOptions];
-	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:resolvedOptions withDefaultOptions:defaultOptions];
+- (void)onChildWillAppear {
+	[_presenter applyOptions:self.resolveOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return (RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
@@ -60,11 +60,11 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	return self.getLeafViewController.preferredStatusBarStyle;
+	return self.getCurrentChild.preferredStatusBarStyle;
 }
 
 - (UIModalPresentationStyle)modalPresentationStyle {
-	return self.getLeafViewController.modalPresentationStyle;
+	return self.getCurrentChild.modalPresentationStyle;
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
@@ -80,14 +80,14 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.options.animations.showModal isDismiss:NO];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getCurrentChild.options.animations.showModal isDismiss:NO];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getLeafViewController.options.animations.dismissModal isDismiss:YES];
+	return [[RNNModalAnimation alloc] initWithScreenTransition:self.getCurrentChild.options.animations.dismissModal isDismiss:YES];
 }
 
-- (UIViewController *)getLeafViewController {
+- (UIViewController *)getCurrentChild {
 	return ((UIViewController<RNNParentProtocol>*)self.topViewController);
 }
 

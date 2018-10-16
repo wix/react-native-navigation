@@ -17,7 +17,7 @@
 - (void)setUp {
     [super setUp];
 	
-	_vc1 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:nil];
+	_vc1 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:[[RNNNavigationOptions alloc] initEmptyOptions]];
 	_vc2 = [[RNNRootViewController alloc] initWithLayoutInfo:nil rootViewCreator:nil eventEmitter:nil presenter:[[RNNViewControllerPresenter alloc] init] options:nil];
 	_vc3 = [UIViewController new];
 	
@@ -38,12 +38,12 @@
 }
 
 - (void)testGetLeafViewController_shouldReturnTopViewController {
-	XCTAssertTrue(self.uut.getLeafViewController == self.uut.topViewController);
+	XCTAssertTrue(self.uut.getCurrentChild == self.uut.topViewController);
 }
 
 - (void)testPreferredStatusBarStyle_shouldReturnLeafPreferredStatusBarStyle {
-	self.uut.getLeafViewController.options.statusBar.style = @"light";
-	XCTAssertTrue(self.uut.preferredStatusBarStyle == self.uut.getLeafViewController.preferredStatusBarStyle);
+	self.uut.getCurrentChild.options.statusBar.style = [[Text alloc] initWithValue:@"light"];
+	XCTAssertTrue(self.uut.preferredStatusBarStyle == self.uut.getCurrentChild.preferredStatusBarStyle);
 }
 
 - (void)testPopGestureEnabled_false {
@@ -63,7 +63,7 @@
 	options.popGesture = [[Bool alloc] initWithValue:popGestureEnabled];
 	
 	self.uut = [self createNavigationControllerWithOptions:options];
-	[self.uut onChildWillAppear:nil withDefaultOptions:nil];
+	[self.uut onChildWillAppear];
 	
 	XCTAssertTrue(self.uut.interactivePopGestureRecognizer.enabled);
 }
@@ -84,7 +84,7 @@
 	options.topBar.background.clipToBounds = [[Bool alloc] initWithValue:@(1)];
 	
 	self.uut = [self createNavigationControllerWithOptions:options];
-	[self.uut onChildWillAppear:nil withDefaultOptions:nil];
+	[self.uut onChildWillAppear];
 	
 	XCTAssertTrue(self.uut.navigationBar.clipsToBounds);
 }

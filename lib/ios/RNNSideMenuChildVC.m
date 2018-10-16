@@ -34,13 +34,13 @@
 	return self;
 }
 
-- (void)onChildWillAppear:(RNNNavigationOptions *)childOptions withDefaultOptions:(RNNNavigationOptions *)defaultOptions {
-	RNNNavigationOptions* resolvedOptions = self.options.copy;
-	[resolvedOptions mergeOptions:childOptions overrideOptions:YES];
-	
-	[_presenter setDefaultOptions:defaultOptions];
-	[_presenter applyOptions:resolvedOptions];
-	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:resolvedOptions withDefaultOptions:defaultOptions];
+- (void)onChildWillAppear {
+	[_presenter applyOptions:self.resolveOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return (RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
@@ -60,8 +60,8 @@
 	[self.view bringSubviewToFront:self.child.view];
 }
 
-- (UIViewController *)getLeafViewController {
-	return [self.child getLeafViewController];
+- (UIViewController *)getCurrentChild {
+	return [self.child getCurrentChild];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

@@ -10,8 +10,10 @@
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 
-- (UIViewController<RNNLeafProtocol, RNNLayoutProtocol> *)getLeafViewController;
+- (UIViewController<RNNLeafProtocol, RNNLayoutProtocol> *)getCurrentChild;
 
 - (void)mergeOptions:(RNNNavigationOptions *)options;
+
+- (RNNNavigationOptions *)resolveOptions;
 
 @end

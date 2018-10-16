@@ -40,5 +40,6 @@ extern const NSInteger TOP_BAR_TRANSPARENT_TAG;
 
 - (RNNNavigationOptions *)withDefault:(RNNNavigationOptions *)defaultOptions;
 
+- (RNNNavigationOptions *)copy;
 
 @end

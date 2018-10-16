@@ -9,7 +9,7 @@
 	return self;
 }
 
-- (void)mergeOptions:(RNNOptions *)otherOptions overrideOptions:(BOOL)override {
+- (RNNOptions *)mergeOptions:(RNNOptions *)otherOptions overrideOptions:(BOOL)override {
 	for (id prop in [self objectProperties:otherOptions]) {
 		id value = [otherOptions valueForKey:prop];
 		if ([value isKindOfClass:[RNNOptions class]]) {
@@ -22,10 +22,16 @@
 			[self setValue:value forKey:prop];
 		}
 	}
+	
+	return self;
 }
 
-- (void)mergeOptions:(RNNOptions *)otherOptions {
-	[self mergeOptions:otherOptions overrideOptions:YES];
+- (RNNOptions *)overrideOptions:(RNNOptions *)otherOptions {
+	return [self mergeOptions:otherOptions overrideOptions:YES];
+}
+
+- (RNNOptions *)mergeOptions:(RNNOptions *)otherOptions {
+	return [self mergeOptions:otherOptions overrideOptions:NO];
 }
 
 - (RNNOptions *)withDefault:(RNNOptions *)defaultOptions {

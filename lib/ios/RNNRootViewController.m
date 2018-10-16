@@ -80,9 +80,13 @@
 	_isBeingPresented = YES;
 	
 	[_presenter applyOptions:self.options];
-	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:self.options withDefaultOptions:self.presenter.defaultOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
 	
 	[self initCustomViews];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return self.options;
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -118,7 +122,7 @@
 	}
 }
 
-- (UIViewController *)getLeafViewController {
+- (UIViewController *)getCurrentChild {
 	return self;
 }
 
