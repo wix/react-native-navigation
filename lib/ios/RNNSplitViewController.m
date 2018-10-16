@@ -18,12 +18,13 @@
 	return self;
 }
 
-- (void)onChildWillAppear:(RNNNavigationOptions *)childOptions {
+- (void)onChildWillAppear:(RNNNavigationOptions *)childOptions withDefaultOptions:(RNNNavigationOptions *)defaultOptions {
 	RNNNavigationOptions* resolvedOptions = self.options.copy;
 	[resolvedOptions mergeOptions:childOptions overrideOptions:YES];
 	
+	[_presenter setDefaultOptions:defaultOptions];
 	[_presenter applyOptions:resolvedOptions];
-	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:resolvedOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:resolvedOptions withDefaultOptions:defaultOptions];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {

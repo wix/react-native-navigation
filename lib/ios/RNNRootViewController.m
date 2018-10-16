@@ -80,7 +80,7 @@
 	_isBeingPresented = YES;
 	
 	[_presenter applyOptions:self.options];
-	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:self.options];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear:self.options withDefaultOptions:self.presenter.defaultOptions];
 	
 	[self initCustomViews];
 }
