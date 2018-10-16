@@ -10,7 +10,9 @@
 @implementation RNNViewControllerPresenter
 
 
-- (void)applyOptions:(RNNNavigationOptions *)options {
+- (void)applyOptions:(RNNNavigationOptions *)initialOptions {
+	RNNNavigationOptions* options = (RNNNavigationOptions *)[initialOptions withDefault:self.defaultOptions];
+	
 	[super applyOptions:options];
 	
 	UIViewController* viewController = self.bindedViewController;
@@ -43,6 +45,8 @@
 - (void)mergeOptions:(RNNNavigationOptions *)options {
 	[super mergeOptions:options];
 	
+	RNNNavigationOptions* withDefault = (RNNNavigationOptions *)[options withDefault:self.defaultOptions];
+	
 	UIViewController* viewController = self.bindedViewController;
 	
 	if (options.backgroundImage.hasValue) {
@@ -58,7 +62,7 @@
 	}
 	
 	if (options.topBar.searchBar.hasValue) {
-		[viewController rnn_setSearchBarWithPlaceholder:[options.topBar.searchBarPlaceholder getWithDefaultValue:@""]];
+		[viewController rnn_setSearchBarWithPlaceholder:[withDefault.topBar.searchBarPlaceholder getWithDefaultValue:@""]];
 	}
 	
 	if (options.topBar.drawBehind.hasValue) {
@@ -98,7 +102,7 @@
 	}
 	
 	if (options.statusBar.style.hasValue) {
-		[viewController rnn_setStatusBarStyle:options.statusBar.style.get animated:[options.statusBar.animate getWithDefaultValue:YES]];
+		[viewController rnn_setStatusBarStyle:options.statusBar.style.get animated:[withDefault.statusBar.animate getWithDefaultValue:YES]];
 	}
 	
 	if (options.topBar.backButton.visible.hasValue) {
@@ -107,7 +111,7 @@
 	
 	if (options.topBar.leftButtons || options.topBar.rightButtons) {
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
-		[_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:options.topBar.leftButtonStyle defaultRightButtonStyle:options.topBar.rightButtonStyle];
+		[_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
 	}
 }
 

@@ -17,8 +17,8 @@
 @property (nonatomic, strong) NSString *subtitle;
 
 @property (nonatomic, strong) RNNTitleView *titleView;
-@property (nonatomic, weak) RNNTitleOptions *titleOptions;
-@property (nonatomic, weak) RNNSubtitleOptions *subtitleOptions;
+@property (nonatomic, strong) RNNTitleOptions *titleOptions;
+@property (nonatomic, strong) RNNSubtitleOptions *subtitleOptions;
 
 @end
 
@@ -143,7 +143,7 @@
 		titleLabel.center = self.titleView.center;
 	}
 	
-	if (_titleOptions.color.get) {
+	if (_titleOptions.color.hasValue) {
 		UIColor *color = _titleOptions.color.get;
 		titleLabel.textColor = color;
 	}

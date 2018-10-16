@@ -4,7 +4,9 @@
 
 @implementation RNNNavigationControllerPresenter
 
-- (void)applyOptions:(RNNNavigationOptions *)options {
+- (void)applyOptions:(RNNNavigationOptions *)initialOptions {
+	RNNNavigationOptions* options = (RNNNavigationOptions *)[initialOptions withDefault:self.defaultOptions];
+	
 	[super applyOptions:options];
 	
 	RNNNavigationController* navigationController = self.bindedViewController;
@@ -30,63 +32,64 @@
 	[super mergeOptions:options];
 	
 	RNNNavigationController* navigationController = self.bindedViewController;
+	RNNNavigationOptions* withDefault = (RNNNavigationOptions *)[options withDefault:self.defaultOptions];
 	
 	if (options.popGesture.hasValue) {
-		[navigationController rnn_setInteractivePopGestureEnabled:options.popGesture.get];
+		[navigationController rnn_setInteractivePopGestureEnabled:withDefault.popGesture.get];
 	}
 	
 	if (options.rootBackgroundImage.hasValue) {
-		[navigationController rnn_setRootBackgroundImage:options.rootBackgroundImage.get];
+		[navigationController rnn_setRootBackgroundImage:withDefault.rootBackgroundImage.get];
 	}
 	
 	if (options.topBar.testID.hasValue) {
-		[navigationController rnn_setNavigationBarTestID:options.topBar.testID.get];
+		[navigationController rnn_setNavigationBarTestID:withDefault.topBar.testID.get];
 	}
 	
 	if (options.topBar.visible.hasValue) {
-		[navigationController rnn_setNavigationBarVisible:options.topBar.visible.get animated:[options.topBar.animate getWithDefaultValue:YES]];
+		[navigationController rnn_setNavigationBarVisible:withDefault.topBar.visible.get animated:[withDefault.topBar.animate getWithDefaultValue:YES]];
 	}
 	
 	if (options.topBar.hideOnScroll.hasValue) {
-		[navigationController rnn_hideBarsOnScroll:[options.topBar.hideOnScroll get]];
+		[navigationController rnn_hideBarsOnScroll:[withDefault.topBar.hideOnScroll get]];
 	}
 	
 	if (options.topBar.noBorder.hasValue) {
-		[navigationController rnn_setNavigationBarNoBorder:[options.topBar.noBorder get]];
+		[navigationController rnn_setNavigationBarNoBorder:[withDefault.topBar.noBorder get]];
 	}
 	
 	if (options.topBar.barStyle.hasValue) {
-		[navigationController rnn_setBarStyle:[RCTConvert UIBarStyle:options.topBar.barStyle.get]];
+		[navigationController rnn_setBarStyle:[RCTConvert UIBarStyle:withDefault.topBar.barStyle.get]];
 	}
 	
 	if (options.topBar.background.translucent.hasValue) {
-		[navigationController rnn_setNavigationBarTranslucent:[options.topBar.background.translucent get]];
+		[navigationController rnn_setNavigationBarTranslucent:[withDefault.topBar.background.translucent get]];
 	}
 	
 	if (options.topBar.background.clipToBounds.hasValue) {
-		[navigationController rnn_setNavigationBarClipsToBounds:[options.topBar.background.clipToBounds get]];
+		[navigationController rnn_setNavigationBarClipsToBounds:[withDefault.topBar.background.clipToBounds get]];
 	}
 	
 	if (options.topBar.background.blur.hasValue) {
-		[navigationController rnn_setNavigationBarBlur:[options.topBar.background.blur get]];
+		[navigationController rnn_setNavigationBarBlur:[withDefault.topBar.background.blur get]];
 	}
 	
 	if (options.topBar.background.color.hasValue) {
-		[navigationController setTopBarBackgroundColor:options.topBar.background.color.get];
+		[navigationController setTopBarBackgroundColor:withDefault.topBar.background.color.get];
 	}
 	
 	if (options.topBar.largeTitle.visible.hasValue) {
-		[navigationController rnn_setNavigationBarLargeTitleVisible:options.topBar.largeTitle.visible.get];
+		[navigationController rnn_setNavigationBarLargeTitleVisible:withDefault.topBar.largeTitle.visible.get];
 	}
 	
 	if (options.topBar.backButton.icon.hasValue) {
-		[navigationController rnn_setBackButtonIcon:[options.topBar.backButton.icon getWithDefaultValue:nil] withColor:[options.topBar.backButton.color getWithDefaultValue:nil] title:[options.topBar.backButton.showTitle getWithDefaultValue:nil] ? options.topBar.backButton.title.get : @""];
+		[navigationController rnn_setBackButtonIcon:[withDefault.topBar.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil] title:[withDefault.topBar.backButton.showTitle getWithDefaultValue:nil] ? withDefault.topBar.backButton.title.get : @""];
 
 	}
 	
-	[navigationController rnn_setNavigationBarLargeTitleFontFamily:[options.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[options.topBar.largeTitle.color getWithDefaultValue:nil]];
+	[navigationController rnn_setNavigationBarLargeTitleFontFamily:[withDefault.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[withDefault.topBar.largeTitle.color getWithDefaultValue:nil]];
 	
-	[navigationController rnn_setNavigationBarFontFamily:[options.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.title.fontSize getWithDefaultValue:nil] color:[options.topBar.title.color getWithDefaultValue:nil]];
+	[navigationController rnn_setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:nil]];
 
 }
 

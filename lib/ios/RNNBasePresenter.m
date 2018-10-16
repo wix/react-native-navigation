@@ -18,12 +18,17 @@
 	[self.bottomTabPresenter applyOptions:options];
 }
 
-- (void)applyOptions:(RNNNavigationOptions *)options {
-	[self.bottomTabPresenter applyOptions:options];
+- (void)applyOptions:(RNNNavigationOptions *)initialOptions {
+	[self.bottomTabPresenter applyOptions:initialOptions];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
 	
+}
+
+- (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
+	_defaultOptions = defaultOptions;
+	[self.bottomTabPresenter setDefaultOptions:defaultOptions];
 }
 
 @end

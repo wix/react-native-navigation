@@ -3,15 +3,15 @@
 
 @implementation RNNSideMenuPresenter
 
-- (void)applyOptions:(RNNNavigationOptions *)options {
+- (void)applyOptions:(RNNNavigationOptions *)initialOptions {
+	RNNNavigationOptions* options = (RNNNavigationOptions *)[initialOptions withDefault:self.defaultOptions];
+	
 	[super applyOptions:options];
 	
 	RNNSideMenuController* sideMenuController = self.bindedViewController;
 	
 	[sideMenuController side:MMDrawerSideLeft enabled:[options.sideMenu.left.enabled getWithDefaultValue:YES]];
 	[sideMenuController side:MMDrawerSideRight enabled:[options.sideMenu.right.enabled getWithDefaultValue:YES]];
-//	[sideMenuController side:MMDrawerSideLeft visible:[options.sideMenu.left.visible getWithDefaultValue:NO]];
-//	[sideMenuController side:MMDrawerSideRight visible:[options.sideMenu.right.visible getWithDefaultValue:NO]];
 	
 	[sideMenuController setShouldStretchDrawer:[options.sideMenu.shouldStretchDrawer getWithDefaultValue:YES]];
 	[sideMenuController setAnimationVelocity:[options.sideMenu.animationVelocity getWithDefaultValue:840.0f]];

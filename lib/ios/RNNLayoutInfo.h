@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-#import "RNNOptionsManager.h"
 #import "RNNLayoutNode.h"
 
 @interface RNNLayoutInfo : NSObject

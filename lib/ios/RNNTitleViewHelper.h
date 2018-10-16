@@ -13,8 +13,8 @@
 @interface RNNTitleViewHelper : NSObject
 
 
-- (instancetype)initWithTitleViewOptions:(RNNTitleOptions*)titleOptions
-						 subTitleOptions:(RNNSubtitleOptions*)subtitleOptions
+- (instancetype)initWithTitleViewOptions:(RNNOptions*)titleOptions
+						 subTitleOptions:(RNNOptions*)subtitleOptions
 						  viewController:(UIViewController*)viewController;
 
 -(void)setup;

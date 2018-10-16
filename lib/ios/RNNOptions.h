@@ -16,4 +16,6 @@
 - (void)mergeOptions:(RNNOptions *)otherOptions;
 - (void)mergeOptions:(RNNOptions *)otherOptions overrideOptions:(BOOL)override;
 
+- (RNNOptions *)withDefault:(RNNOptions *)defaultOptions;
+
 @end

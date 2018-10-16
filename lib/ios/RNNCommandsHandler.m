@@ -68,7 +68,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[self assertReady];
 	
 	UIViewController<RNNLayoutProtocol>* vc = (UIViewController<RNNLayoutProtocol>*)[_store findComponentForId:componentId];
-	RNNNavigationOptions* newOptions = [_controllerFactory.optionsManager createOptions:mergeOptions];
+	RNNNavigationOptions* newOptions = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
 	if ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] || [vc isKindOfClass:[RNNRootViewController class]]) {
 		[CATransaction begin];
 		[CATransaction setCompletionBlock:completion];
@@ -82,7 +82,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 
 - (void)setDefaultOptions:(NSDictionary*)optionsDict completion:(RNNTransitionCompletionBlock)completion {
 	[self assertReady];
-	[_controllerFactory.optionsManager setDefaultOptionsDict:optionsDict];
+	RNNNavigationOptions* defaultOptions = [[RNNNavigationOptions alloc] initWithDict:optionsDict];
+	[_controllerFactory setDefaultOptions:defaultOptions];
 }
 
 - (void)push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {

@@ -91,8 +91,6 @@
 		50175CD2207A2AA1004FE91B /* RNNComponentOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50175CD0207A2AA1004FE91B /* RNNComponentOptions.m */; };
 		501CD31F214A5B6900A6E225 /* RNNLayoutInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 501CD31D214A5B6900A6E225 /* RNNLayoutInfo.h */; };
 		501CD320214A5B6900A6E225 /* RNNLayoutInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 501CD31E214A5B6900A6E225 /* RNNLayoutInfo.m */; };
-		501CD323214A5CA900A6E225 /* RNNOptionsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 501CD321214A5CA900A6E225 /* RNNOptionsManager.h */; };
-		501CD324214A5CA900A6E225 /* RNNOptionsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 501CD322214A5CA900A6E225 /* RNNOptionsManager.m */; };
 		501E0217213E7EA3003365C5 /* RNNReactView.h in Headers */ = {isa = PBXBuildFile; fileRef = 501E0215213E7EA3003365C5 /* RNNReactView.h */; };
 		501E0218213E7EA3003365C5 /* RNNReactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 501E0216213E7EA3003365C5 /* RNNReactView.m */; };
 		50220F48212ABDFD004C2B0A /* RNNReactRootView.h in Headers */ = {isa = PBXBuildFile; fileRef = 50220F46212ABDFD004C2B0A /* RNNReactRootView.h */; };
@@ -404,8 +402,6 @@
 		50175CD0207A2AA1004FE91B /* RNNComponentOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNComponentOptions.m; sourceTree = "<group>"; };
 		501CD31D214A5B6900A6E225 /* RNNLayoutInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNLayoutInfo.h; sourceTree = "<group>"; };
 		501CD31E214A5B6900A6E225 /* RNNLayoutInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNLayoutInfo.m; sourceTree = "<group>"; };
-		501CD321214A5CA900A6E225 /* RNNOptionsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNOptionsManager.h; sourceTree = "<group>"; };
-		501CD322214A5CA900A6E225 /* RNNOptionsManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNOptionsManager.m; sourceTree = "<group>"; };
 		501E0215213E7EA3003365C5 /* RNNReactView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNReactView.h; sourceTree = "<group>"; };
 		501E0216213E7EA3003365C5 /* RNNReactView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNReactView.m; sourceTree = "<group>"; };
 		50220F46212ABDFD004C2B0A /* RNNReactRootView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNReactRootView.h; sourceTree = "<group>"; };
@@ -929,8 +925,6 @@
 				261F0E691E6F028A00989DE2 /* RNNNavigationStackManager.m */,
 				50D031322005149000386B3D /* RNNOverlayManager.h */,
 				50D031332005149000386B3D /* RNNOverlayManager.m */,
-				501CD321214A5CA900A6E225 /* RNNOptionsManager.h */,
-				501CD322214A5CA900A6E225 /* RNNOptionsManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -1182,7 +1176,6 @@
 				5038A3B9216DFCFD009280BC /* UITabBarController+RNNOptions.h in Headers */,
 				50644A2020E11A720026709C /* Constants.h in Headers */,
 				5012241E217366D4000F5F98 /* ColorParser.h in Headers */,
-				501CD323214A5CA900A6E225 /* RNNOptionsManager.h in Headers */,
 				E8367B801F7A8A4700675C05 /* VICMAImageView.h in Headers */,
 				263905E61E4CAC950023D7D3 /* RNNSideMenuChildVC.h in Headers */,
 				263905C41E4C6F440023D7D3 /* SidebarFacebookAnimation.h in Headers */,
@@ -1382,7 +1375,6 @@
 				5048862E20BE976D000908DE /* RNNLayoutOptions.m in Sources */,
 				501CD320214A5B6900A6E225 /* RNNLayoutInfo.m in Sources */,
 				7BEF0D191E437684003E96B0 /* RNNRootViewController.m in Sources */,
-				501CD324214A5CA900A6E225 /* RNNOptionsManager.m in Sources */,
 				50415CBB20553B8E00BB682E /* RNNScreenTransition.m in Sources */,
 				263905C31E4C6F440023D7D3 /* SidebarAnimation.m in Sources */,
 				E8A5CD531F464F0400E89D0D /* RNNAnimator.m in Sources */,

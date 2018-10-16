@@ -152,7 +152,7 @@
 
 - (void)setTitleViewWithSubtitle {
 	if (self.options.topBar.subtitle.text.hasValue) {
-		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:self.options.topBar.title subTitleOptions:self.options.topBar.subtitle viewController:self];
+		RNNTitleViewHelper* titleViewHelper = [[RNNTitleViewHelper alloc] initWithTitleViewOptions:[self.options.topBar.title withDefault:_presenter.defaultOptions.topBar.title] subTitleOptions:[self.options.topBar.subtitle withDefault:_presenter.defaultOptions.topBar.subtitle] viewController:self];
 		[titleViewHelper setup];
 	}
 }

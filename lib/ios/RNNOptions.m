@@ -28,6 +28,14 @@
 	[self mergeOptions:otherOptions overrideOptions:YES];
 }
 
+- (RNNOptions *)withDefault:(RNNOptions *)defaultOptions {
+	RNNOptions* newOptions = [[[self class] alloc] initWithDict:@{}];
+	[newOptions mergeOptions:defaultOptions overrideOptions:YES];
+	[newOptions mergeOptions:self overrideOptions:YES];
+	
+	return newOptions;
+}
+
 - (NSArray *)objectProperties:(NSObject *)object {
 	NSMutableArray* properties = [NSMutableArray new];
 	unsigned int count;

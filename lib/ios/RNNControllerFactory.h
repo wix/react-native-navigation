@@ -5,7 +5,6 @@
 #import "RNNStore.h"
 #import "RNNEventEmitter.h"
 #import "RNNParentProtocol.h"
-#import "RNNOptionsManager.h"
 
 @interface RNNControllerFactory : NSObject
 
@@ -17,6 +16,7 @@
 -(UIViewController<RNNParentProtocol, UIViewControllerPreviewingDelegate> *)createLayoutAndSaveToStore:(NSDictionary*)layout;
 
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
-@property (nonatomic, strong) RNNOptionsManager *optionsManager;
+
+@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
 @end
