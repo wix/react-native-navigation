@@ -151,7 +151,8 @@ Navigation.showModal({
   passProps: {}, // simple serializable object that will pass as props to the modal (optional)
   navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
   navigatorButtons: {}, // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
-  animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+  animationType: 'slide-up', // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+  overrideBackPress: false // true / false, (Android only), prevents back button and hardware back button from hiding the dialog on Android, instead the [navigator event](https://wix.github.io/react-native-navigation/#/screen-api?id=setonnavigatoreventcallback) 'backPress' will be sent (optional)
 });
 ```
 
