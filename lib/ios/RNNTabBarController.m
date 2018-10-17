@@ -26,6 +26,7 @@
 						 presenter:(RNNViewControllerPresenter *)presenter {
 	self = [super init];
 	
+	self.delegate = self;
 	self.options = options;
 	
 	self.layoutInfo = layoutInfo;
