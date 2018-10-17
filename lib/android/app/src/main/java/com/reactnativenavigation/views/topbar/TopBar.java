@@ -314,4 +314,8 @@ public class TopBar extends AppBarLayout implements ScrollEventListener.ScrollAw
     public void setBorderColor(int color) {
         border.setBackgroundColor(color);
     }
+
+    public void setOverflowButtonColor(int color) {
+        titleBar.setOverflowButtonColor(color);
+    }
 }

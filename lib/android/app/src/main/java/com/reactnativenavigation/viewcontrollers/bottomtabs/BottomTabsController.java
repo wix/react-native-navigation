@@ -12,8 +12,8 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
-import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabPresenter;
+import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
@@ -39,10 +39,10 @@ public class BottomTabsController extends ParentController implements AHBottomNa
 	private List<ViewController> tabs;
     private EventEmitter eventEmitter;
     private ImageLoader imageLoader;
-    private BottomTabsOptionsPresenter presenter;
-    private BottomTabOptionsPresenter tabPresenter;
+    private BottomTabsPresenter presenter;
+    private BottomTabPresenter tabPresenter;
 
-    public BottomTabsController(Activity activity, List<ViewController> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, OptionsPresenter presenter, BottomTabsOptionsPresenter bottomTabsPresenter, BottomTabOptionsPresenter bottomTabPresenter) {
+    public BottomTabsController(Activity activity, List<ViewController> tabs, ChildControllersRegistry childRegistry, EventEmitter eventEmitter, ImageLoader imageLoader, String id, Options initialOptions, OptionsPresenter presenter, BottomTabsPresenter bottomTabsPresenter, BottomTabPresenter bottomTabPresenter) {
 		super(activity, childRegistry, id, presenter, initialOptions);
         this.tabs = tabs;
         this.eventEmitter = eventEmitter;

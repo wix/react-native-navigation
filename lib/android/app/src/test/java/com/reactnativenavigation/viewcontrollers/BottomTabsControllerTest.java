@@ -16,8 +16,8 @@ import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
-import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabPresenter;
+import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
@@ -64,7 +64,7 @@ public class BottomTabsControllerTest extends BaseTest {
     private EventEmitter eventEmitter;
     private ChildControllersRegistry childRegistry;
     private List<ViewController> tabs;
-    private BottomTabsOptionsPresenter presenter;
+    private BottomTabsPresenter presenter;
 
     @Override
     public void beforeEach() {
@@ -80,7 +80,7 @@ public class BottomTabsControllerTest extends BaseTest {
         child6 = spy(new SimpleViewController(activity, childRegistry, "child6", tabOptions));
         when(child5.handleBack(any())).thenReturn(true);
         tabs = createTabs();
-        presenter = spy(new BottomTabsOptionsPresenter(tabs, new Options()));
+        presenter = spy(new BottomTabsPresenter(tabs, new Options()));
         uut = createBottomTabs();
         activity.setContentView(uut.getView());
     }
@@ -231,7 +231,7 @@ public class BottomTabsControllerTest extends BaseTest {
                 initialOptions,
                 new OptionsPresenter(activity, new Options()),
                 presenter,
-                new BottomTabOptionsPresenter(activity, tabs, new Options())) {
+                new BottomTabPresenter(activity, tabs, new Options())) {
             @Override
             public Options resolveCurrentOptions() {
                 return resolvedOptions;
@@ -340,7 +340,7 @@ public class BottomTabsControllerTest extends BaseTest {
                 initialOptions,
                 new OptionsPresenter(activity, new Options()),
                 presenter,
-                new BottomTabOptionsPresenter(activity, tabs, new Options())) {
+                new BottomTabPresenter(activity, tabs, new Options())) {
             @Override
             public void ensureViewIsCreated() {
                 super.ensureViewIsCreated();
