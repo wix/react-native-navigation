@@ -2,8 +2,6 @@
 
 @interface UIViewController (RNNOptions)
 
-//@property (nonatomic, retain) UIView* customBadgeView;
-
 - (void)rnn_setBackgroundImage:(UIImage *)backgroundImage;
 
 - (void)rnn_setModalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle;
