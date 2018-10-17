@@ -26,7 +26,7 @@ import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.presentation.StackOptionsPresenter;
+import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.utils.TitleBarHelper;
 import com.reactnativenavigation.views.titlebar.TitleBarReactView;
 import com.reactnativenavigation.views.topbar.TopBar;
@@ -51,10 +51,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class StackOptionsPresenterTest extends BaseTest {
+public class StackPresenterTest extends BaseTest {
 
     private static final Options EMPTY_OPTIONS = new Options();
-    private StackOptionsPresenter uut;
+    private StackPresenter uut;
     private TestComponentLayout child;
     private TestComponentLayout otherChild;
     private Activity activity;
@@ -82,7 +82,7 @@ public class StackOptionsPresenterTest extends BaseTest {
                 return spy(super.create(activity, componentId, componentName));
             }
         };
-        uut = spy(new StackOptionsPresenter(activity, titleViewCreator, new TopBarButtonCreatorMock(), ImageLoaderMock.mock(), new Options()));
+        uut = spy(new StackPresenter(activity, titleViewCreator, new TopBarButtonCreatorMock(), ImageLoaderMock.mock(), new Options()));
         topBar = mockTopBar();
         uut.bindView(topBar);
         uut.setButtonOnClickListener(onClickListener);

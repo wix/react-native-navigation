@@ -13,7 +13,7 @@ import com.reactnativenavigation.views.Component;
 
 import java.util.List;
 
-public class BottomTabOptionsPresenter {
+public class BottomTabPresenter {
     private Options defaultOptions;
     private final BottomTabFinder bottomTabFinder;
     private BottomTabs bottomTabs;
@@ -21,7 +21,7 @@ public class BottomTabOptionsPresenter {
     private final int defaultTextColor;
     private final List<ViewController> tabs;
 
-    public BottomTabOptionsPresenter(Context context, List<ViewController> tabs, Options defaultOptions) {
+    public BottomTabPresenter(Context context, List<ViewController> tabs, Options defaultOptions) {
         this.tabs = tabs;
         this.bottomTabFinder = new BottomTabFinder(tabs);
         this.defaultOptions = defaultOptions;

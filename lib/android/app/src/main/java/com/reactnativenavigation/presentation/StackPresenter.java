@@ -43,7 +43,7 @@ import static com.reactnativenavigation.utils.CollectionUtils.forEach;
 import static com.reactnativenavigation.utils.CollectionUtils.keyBy;
 import static com.reactnativenavigation.utils.CollectionUtils.merge;
 
-public class StackOptionsPresenter {
+public class StackPresenter {
     private static final int DEFAULT_TITLE_COLOR = Color.BLACK;
     private static final int DEFAULT_SUBTITLE_COLOR = Color.GRAY;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
@@ -62,7 +62,7 @@ public class StackOptionsPresenter {
     private Map<Component, Map<String, TitleBarButtonController>> componentRightButtons = new HashMap<>();
     private Map<Component, Map<String, TitleBarButtonController>> componentLeftButtons = new HashMap<>();
 
-    public StackOptionsPresenter(Activity activity, TitleBarReactViewCreator titleViewCreator, ReactViewCreator buttonCreator, ImageLoader imageLoader, Options defaultOptions) {
+    public StackPresenter(Activity activity, TitleBarReactViewCreator titleViewCreator, ReactViewCreator buttonCreator, ImageLoader imageLoader, Options defaultOptions) {
         this.activity = activity;
         this.titleViewCreator = titleViewCreator;
         this.buttonCreator = buttonCreator;
@@ -264,6 +264,8 @@ public class StackOptionsPresenter {
         if (options.buttons.back.visible.isTrue() && !options.buttons.hasLeftButtons()) {
             topBar.setBackButton(createButtonController(options.buttons.back));
         }
+
+        topBar.setOverflowButtonColor(options.rightButtonColor.get(Color.BLACK));
     }
 
     private List<TitleBarButtonController> getOrCreateButtonControllers(@Nullable Map<String, TitleBarButtonController> currentButtons, @Nullable List<Button> buttons) {
@@ -339,6 +341,8 @@ public class StackOptionsPresenter {
         if (buttons.right != null) topBar.setRightButtons(rightButtonControllers);
         if (buttons.left != null) topBar.setLeftButtons(leftButtonControllers);
         if (buttons.back.hasValue()) topBar.setBackButton(createButtonController(buttons.back));
+
+        if (options.rightButtonColor.hasValue()) topBar.setOverflowButtonColor(options.rightButtonColor.get());
     }
 
     @Nullable

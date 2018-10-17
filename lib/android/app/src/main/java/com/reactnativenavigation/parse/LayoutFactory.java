@@ -3,11 +3,11 @@ package com.reactnativenavigation.parse;
 import android.app.Activity;
 
 import com.facebook.react.ReactInstanceManager;
-import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
-import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabPresenter;
+import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.SideMenuOptionsPresenter;
-import com.reactnativenavigation.presentation.StackOptionsPresenter;
+import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.TypefaceLoader;
@@ -168,7 +168,7 @@ public class LayoutFactory {
                 .setTopBarController(new TopBarController())
                 .setId(node.id)
                 .setInitialOptions(parse(typefaceManager, node.getOptions()))
-                .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreator(reactInstanceManager), new TitleBarButtonCreator(reactInstanceManager), new ImageLoader(), defaultOptions))
+                .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreator(reactInstanceManager), new TitleBarButtonCreator(reactInstanceManager), new ImageLoader(), defaultOptions))
                 .setPresenter(new OptionsPresenter(activity, defaultOptions))
                 .build();
 	}
@@ -194,8 +194,8 @@ public class LayoutFactory {
                 node.id,
                 parse(typefaceManager, node.getOptions()),
                 new OptionsPresenter(activity, defaultOptions),
-                new BottomTabsOptionsPresenter(tabs, defaultOptions),
-                new BottomTabOptionsPresenter(activity, tabs, defaultOptions));
+                new BottomTabsPresenter(tabs, defaultOptions),
+                new BottomTabPresenter(activity, tabs, defaultOptions));
 	}
 
     private ViewController createTopTabs(LayoutNode node) {

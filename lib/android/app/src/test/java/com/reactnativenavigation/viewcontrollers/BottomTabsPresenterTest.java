@@ -7,7 +7,7 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Colour;
-import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.TabSelector;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.Component;
@@ -22,9 +22,9 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-public class BottomTabsOptionsPresenterTest extends BaseTest {
+public class BottomTabsPresenterTest extends BaseTest {
     private List<ViewController> tabs;
-    private BottomTabsOptionsPresenter uut;
+    private BottomTabsPresenter uut;
     private BottomTabs bottomTabs;
 
     @Override
@@ -34,7 +34,7 @@ public class BottomTabsOptionsPresenterTest extends BaseTest {
         ViewController child1 = spy(new SimpleViewController(activity, childRegistry, "child1", new Options()));
         ViewController child2 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
         tabs = Arrays.asList(child1, child2);
-        uut = new BottomTabsOptionsPresenter(tabs, new Options());
+        uut = new BottomTabsPresenter(tabs, new Options());
         bottomTabs = Mockito.mock(BottomTabs.class);
         uut.bindView(bottomTabs, Mockito.mock(TabSelector.class));
     }

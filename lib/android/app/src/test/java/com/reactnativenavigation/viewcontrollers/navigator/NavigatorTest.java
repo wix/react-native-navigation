@@ -14,8 +14,8 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
-import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabPresenter;
+import com.reactnativenavigation.presentation.BottomTabsPresenter;
 import com.reactnativenavigation.presentation.OptionsPresenter;
 import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.react.EventEmitter;
@@ -346,7 +346,7 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private BottomTabsController newTabs(List<ViewController> tabs) {
-        return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options(), new OptionsPresenter(activity, new Options()), new BottomTabsOptionsPresenter(tabs, new Options()), new BottomTabOptionsPresenter(activity, tabs, new Options()));
+        return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options(), new OptionsPresenter(activity, new Options()), new BottomTabsPresenter(tabs, new Options()), new BottomTabPresenter(activity, tabs, new Options()));
     }
 
     @NonNull
