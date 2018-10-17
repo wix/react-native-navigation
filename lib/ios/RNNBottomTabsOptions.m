@@ -14,6 +14,7 @@
 	self.hideShadow = [BoolParser parse:dict key:@"hideShadow"];
 	self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
 	self.fontSize = [NumberParser parse:dict key:@"fontSize"];
+	self.badgeSize = [NumberParser parse:dict key:@"badgeSize"];
 	
 	self.testID = [TextParser parse:dict key:@"testID"];
 	self.currentTabId = [TextParser parse:dict key:@"currentTabId"];

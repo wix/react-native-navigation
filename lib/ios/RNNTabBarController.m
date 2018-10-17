@@ -35,8 +35,40 @@
 	[self.presenter bindViewController:self];
 	
 	[self setViewControllers:childViewControllers];
-		
+	[self setTabItemBadges];
+	
 	return self;
+}
+
+-(void)setTabItemBadges {
+	if (self.options.bottomTabs.badgeSize.hasValue) {
+		for (UITabBarItem* tabBarItem in self.tabBar.items) {
+			NSInteger tag = tabBarItem.tag;
+			
+			CGFloat badgeSize = [self.options.bottomTabs.badgeSize.get doubleValue];
+			CGFloat topMargin = (double)5;
+			
+			NSUInteger index = [self.tabBar.items indexOfObject:tabBarItem];
+			NSUInteger tabBarItemCount = self.tabBar.items.count;
+			CGFloat halfItemWidth = CGRectGetWidth(self.view.bounds) / (tabBarItemCount * 2);
+			CGFloat xOffset = halfItemWidth * (index * 2 + 1);
+			CGFloat imageHalfWidth = tabBarItem.selectedImage.size.width / 2;
+			
+			UIView* customBadge = [[UIView alloc] initWithFrame:CGRectMake(xOffset + imageHalfWidth, topMargin, badgeSize, badgeSize)];
+			customBadge.layer.cornerRadius = badgeSize / 2;
+			
+			UIColor* badgeColor = tabBarItem.badgeColor;
+			if (badgeColor == nil) {
+				badgeColor = UIColor.redColor;
+			}
+			customBadge.backgroundColor = badgeColor;
+			customBadge.tag = tag * 1000;
+			customBadge.hidden = tabBarItem.badgeValue == nil || [tabBarItem.badgeValue isEqualToString:@""];
+			tabBarItem.badgeValue = nil;
+			
+			[self.tabBar addSubview:customBadge];
+		}
+	}
 }
 
 - (instancetype)initWithEventEmitter:(id)eventEmitter {

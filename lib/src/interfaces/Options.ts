@@ -422,6 +422,12 @@ export interface OptionsBottomTabs {
    * #### (Android specific)
    */
   elevation?: AndroidDensityNumber;
+  /**
+   * Set the badge size
+   * #### (iOS specific)
+   * For Android, create [dimens.xml](https://github.com/aurelhubert/ahbottomnavigation/blob/c4114c23213f0e86216f75b2770964dbc02eebb0/demo/src/main/res/values/dimens.xml) in your project
+   */
+  badgeSize?: number;
 }
 
 export interface OptionsBottomTab {
@@ -433,12 +439,6 @@ export interface OptionsBottomTab {
    * Set the text in a badge that is overlayed over the component
    */
   badge?: string;
-  /**
-   * Set the badge size
-   * #### (iOS specific)
-   * For Android, create [dimens.xml](https://github.com/aurelhubert/ahbottomnavigation/blob/c4114c23213f0e86216f75b2770964dbc02eebb0/demo/src/main/res/values/dimens.xml) in your project
-   */
-  badgeSize?: number;
   /**
    * Set a testID to reference the tab in E2E tests
    */

@@ -16,6 +16,8 @@
 	RNNNavigationOptions* options = [initialOptions withDefault:self.defaultOptions];
 	
 	UIViewController* viewController = self.bindedViewController;
+	viewController.tabBarItem = viewController.tabBarController.tabBar.selectedItem;
+	
 	[viewController rnn_setBackgroundImage:[options.backgroundImage getWithDefaultValue:nil]];
 	[viewController rnn_setModalPresentationStyle:[RCTConvert UIModalPresentationStyle:[options.modalPresentationStyle getWithDefaultValue:@"fullScreen"]]];
 	[viewController rnn_setModalTransitionStyle:[RCTConvert UIModalTransitionStyle:[options.modalTransitionStyle getWithDefaultValue:@"coverVertical"]]];
@@ -23,9 +25,6 @@
 	[viewController rnn_setNavigationItemTitle:[options.topBar.title.text getWithDefaultValue:nil]];
 	[viewController rnn_setTopBarPrefersLargeTitle:[options.topBar.largeTitle.visible getWithDefaultValue:NO]];
 	[viewController rnn_setDrawBehindTabBar:[options.bottomTabs.drawBehind getWithDefaultValue:NO]];
-	[viewController rnn_setTabBarItemBadge:[options.bottomTab.badge getWithDefaultValue:nil]];
-	[viewController rnn_setTabBarItemBadgeColor:[options.bottomTab.badgeColor getWithDefaultValue:nil]];
-	[viewController rnn_setTabBarItemBadgeSize:[options.bottomTab.badgeSize getWithDefaultValue:nil]];
 	[viewController rnn_setStatusBarBlur:[options.statusBar.blur getWithDefaultValue:NO]];
 	[viewController rnn_setStatusBarStyle:[options.statusBar.style getWithDefaultValue:@"default"] animated:[options.statusBar.animate getWithDefaultValue:YES]];
 	[viewController rnn_setBackButtonVisible:[options.topBar.backButton.visible getWithDefaultValue:YES]];
@@ -86,12 +85,6 @@
 	
 	if (options.bottomTab.badge.hasValue) {
 		[viewController rnn_setTabBarItemBadge:options.bottomTab.badge.get];
-
-	}
-	
-	if (options.bottomTab.badgeSize.hasValue) {
-		[viewController rnn_setTabBarItemBadgeSize:options.bottomTab.badgeSize.get];
-
 	}
 	
 	if (options.bottomTab.badgeColor.hasValue) {

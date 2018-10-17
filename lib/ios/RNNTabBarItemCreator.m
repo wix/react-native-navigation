@@ -13,6 +13,8 @@
 	tabItem.image = [self getIconImage:icon withTint:iconColor];
 	tabItem.selectedImage = [self getSelectedIconImage:selectedIcon selectedIconColor:selectedIconColor];
 	tabItem.title = [bottomTabOptions.text getWithDefaultValue:@""];
+	tabItem.badgeValue = [bottomTabOptions.badge getWithDefaultValue:nil];
+	tabItem.badgeColor = [bottomTabOptions.badgeColor getWithDefaultValue:nil];
 	tabItem.tag = bottomTabOptions.tag;
 	if (tabItem.tag == 0) {
 		tabItem.tag = arc4random() %(100)-1;

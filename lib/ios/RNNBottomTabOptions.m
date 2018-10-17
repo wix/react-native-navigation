@@ -11,7 +11,6 @@
 	
 	self.text = [TextParser parse:dict key:@"text"];
 	self.badge = [TextParser parse:dict key:@"badge"];
-	self.badgeSize = [NumberParser parse:dict key:@"badgeSize"];
 	self.fontFamily = [TextParser parse:dict key:@"fontFamily"];
 	self.testID = [TextParser parse:dict key:@"testID"];
 	

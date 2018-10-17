@@ -11,6 +11,7 @@
 @property (nonatomic, strong) Bool* hideShadow;
 @property (nonatomic, strong) Color* backgroundColor;
 @property (nonatomic, strong) Number* fontSize;
+@property (nonatomic, strong) Number* badgeSize;
 
 @property (nonatomic, strong) Text* testID;
 @property (nonatomic, strong) Text* currentTabId;
