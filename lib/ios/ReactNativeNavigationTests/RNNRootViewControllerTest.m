@@ -7,7 +7,7 @@
 #import "RNNNavigationController.h"
 #import "RNNTabBarController.h"
 #import "RNNUIBarButtonItem.h"
-
+#import "RNNTabBarItemCreator.h"
 
 @interface RNNRootViewController (EmbedInTabBar)
 - (void)embedInTabBarController;
@@ -168,6 +168,7 @@
 	__unused RNNTabBarController* vc = [[RNNTabBarController alloc] init];
 	NSMutableArray* controllers = [NSMutableArray new];
 	UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"A Tab" image:nil tag:1];
+	item = [RNNTabBarItemCreator updateTabBarItem:item bottomTabOptions:self.options.bottomTab];
 	[self.uut setTabBarItem:item];
 	[controllers addObject:self.uut];
 	[vc setViewControllers:controllers];
