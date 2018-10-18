@@ -29,6 +29,8 @@
 }
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
+	[super applyOptionsOnWillMoveToParentViewController:options];
+	
 	RNNNavigationController* navigationController = self.bindedViewController;
 	[navigationController rnn_setBackButtonIcon:[options.topBar.backButton.icon getWithDefaultValue:nil] withColor:[options.topBar.backButton.color getWithDefaultValue:nil] title:[options.topBar.backButton.showTitle getWithDefaultValue:YES] ? [options.topBar.backButton.title getWithDefaultValue:nil] : @""];
 }
