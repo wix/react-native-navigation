@@ -99,9 +99,11 @@
 		502CB43A20CBCA180019B2FE /* RNNBridgeManagerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 502CB43920CBCA140019B2FE /* RNNBridgeManagerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		502CB46E20CD1DDA0019B2FE /* RNNBackButtonOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 502CB46C20CD1DDA0019B2FE /* RNNBackButtonOptions.h */; };
 		502CB46F20CD1DDA0019B2FE /* RNNBackButtonOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 502CB46D20CD1DDA0019B2FE /* RNNBackButtonOptions.m */; };
+		502F0E142178CF8200367CC3 /* UIViewController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 502F0E132178CF8200367CC3 /* UIViewController+RNNOptionsTest.m */; };
+		502F0E162178D09600367CC3 /* RNNBottomTabPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 502F0E152178D09600367CC3 /* RNNBottomTabPresenterTest.m */; };
 		5038A374216CDDB6009280BC /* UIViewController+SideMenuController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5038A372216CDDB6009280BC /* UIViewController+SideMenuController.h */; };
 		5038A375216CDDB6009280BC /* UIViewController+SideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5038A373216CDDB6009280BC /* UIViewController+SideMenuController.m */; };
-		5038A377216CF252009280BC /* RNNBottomTabsOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5038A376216CF252009280BC /* RNNBottomTabsOptionsTest.m */; };
+		5038A377216CF252009280BC /* UITabBarController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5038A376216CF252009280BC /* UITabBarController+RNNOptionsTest.m */; };
 		5038A379216D01F6009280BC /* RNNBottomTabOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5038A378216D01F6009280BC /* RNNBottomTabOptionsTest.m */; };
 		5038A3B1216DF41B009280BC /* UIViewController+RNNOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5038A3AF216DF41B009280BC /* UIViewController+RNNOptions.h */; };
 		5038A3B2216DF41B009280BC /* UIViewController+RNNOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5038A3B0216DF41B009280BC /* UIViewController+RNNOptions.m */; };
@@ -415,9 +417,11 @@
 		502CB43920CBCA140019B2FE /* RNNBridgeManagerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBridgeManagerDelegate.h; sourceTree = "<group>"; };
 		502CB46C20CD1DDA0019B2FE /* RNNBackButtonOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBackButtonOptions.h; sourceTree = "<group>"; };
 		502CB46D20CD1DDA0019B2FE /* RNNBackButtonOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBackButtonOptions.m; sourceTree = "<group>"; };
+		502F0E132178CF8200367CC3 /* UIViewController+RNNOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RNNOptionsTest.m"; sourceTree = "<group>"; };
+		502F0E152178D09600367CC3 /* RNNBottomTabPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabPresenterTest.m; sourceTree = "<group>"; };
 		5038A372216CDDB6009280BC /* UIViewController+SideMenuController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SideMenuController.h"; sourceTree = "<group>"; };
 		5038A373216CDDB6009280BC /* UIViewController+SideMenuController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SideMenuController.m"; sourceTree = "<group>"; };
-		5038A376216CF252009280BC /* RNNBottomTabsOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsOptionsTest.m; sourceTree = "<group>"; };
+		5038A376216CF252009280BC /* UITabBarController+RNNOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+RNNOptionsTest.m"; sourceTree = "<group>"; };
 		5038A378216D01F6009280BC /* RNNBottomTabOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabOptionsTest.m; sourceTree = "<group>"; };
 		5038A3AF216DF41B009280BC /* UIViewController+RNNOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RNNOptions.h"; sourceTree = "<group>"; };
 		5038A3B0216DF41B009280BC /* UIViewController+RNNOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RNNOptions.m"; sourceTree = "<group>"; };
@@ -997,7 +1001,7 @@
 				506F630C216A599300AD0D0A /* RNNTabBarControllerTest.m */,
 				506F630E216A5AD700AD0D0A /* RNNViewControllerPresenterTest.m */,
 				509B258E2178BE7A00C83C23 /* RNNNavigationControllerPresenterTest.m */,
-				5038A376216CF252009280BC /* RNNBottomTabsOptionsTest.m */,
+				502F0E152178D09600367CC3 /* RNNBottomTabPresenterTest.m */,
 				5038A378216D01F6009280BC /* RNNBottomTabOptionsTest.m */,
 				7B49FEBF1E95090800DEB3EA /* Info.plist */,
 				E83BAD671F2734B500A9F3DD /* RNNNavigationOptionsTest.m */,
@@ -1005,6 +1009,8 @@
 				E83BAD7A1F27643000A9F3DD /* RNNTestRootViewCreator.h */,
 				E83BAD7B1F27643000A9F3DD /* RNNTestRootViewCreator.m */,
 				E8DA243C1F973C1900CD552B /* RNNTransitionStateHolderTest.m */,
+				502F0E132178CF8200367CC3 /* UIViewController+RNNOptionsTest.m */,
+				5038A376216CF252009280BC /* UITabBarController+RNNOptionsTest.m */,
 				509B247F217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m */,
 			);
 			path = ReactNativeNavigationTests;
@@ -1356,8 +1362,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5038A377216CF252009280BC /* RNNBottomTabsOptionsTest.m in Sources */,
+				502F0E142178CF8200367CC3 /* UIViewController+RNNOptionsTest.m in Sources */,
+				5038A377216CF252009280BC /* UITabBarController+RNNOptionsTest.m in Sources */,
 				E83BAD7C1F27643000A9F3DD /* RNNTestRootViewCreator.m in Sources */,
+				502F0E162178D09600367CC3 /* RNNBottomTabPresenterTest.m in Sources */,
 				504753782109C13C00FFFBE6 /* RNNOverlayManagerTest.m in Sources */,
 				506F630F216A5AD700AD0D0A /* RNNViewControllerPresenterTest.m in Sources */,
 				7B49FECE1E95098500DEB3EA /* RNNCommandsHandlerTest.m in Sources */,
