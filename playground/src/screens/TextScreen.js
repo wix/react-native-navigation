@@ -42,6 +42,14 @@ class TextScreen extends Component {
     );
   }
 
+  onClickSetBadge() {
+    Navigation.mergeOptions(this.props.componentId, {
+      bottomTab: {
+        badge: `TeSt`
+      }
+    });
+  }
+
   onClickPush = async () => {
     await Navigation.push(this.props.componentId, {
       component: {
@@ -61,14 +69,6 @@ class TextScreen extends Component {
     return (
       <Text style={styles.h1}>{this.props.myFunction()}</Text>
     );
-  }
-
-  onClickSetBadge() {
-    Navigation.mergeOptions(this.props.componentId, {
-      bottomTab: {
-        badge: `TeSt`
-      }
-    });
   }
 
   onClickSwitchToTab() {

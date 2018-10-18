@@ -17,7 +17,7 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.utils.ArrayUtils;
-import com.reactnativenavigation.utils.ButtonOptionsPresenter;
+import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.utils.UiUtils;
@@ -35,7 +35,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
 
     private final NavigationIconResolver navigationIconResolver;
     private final ImageLoader imageLoader;
-    private ButtonOptionsPresenter optionsPresenter;
+    private ButtonPresenter optionsPresenter;
     private final Button button;
     private final ReactViewCreator viewCreator;
     private TitleBarButtonController.OnClickListener onPressListener;
@@ -53,7 +53,7 @@ public class TitleBarButtonController extends ViewController<TitleBarReactButton
     public TitleBarButtonController(Activity activity,
                                     NavigationIconResolver navigationIconResolver,
                                     ImageLoader imageLoader,
-                                    ButtonOptionsPresenter optionsPresenter,
+                                    ButtonPresenter optionsPresenter,
                                     Button button,
                                     ReactViewCreator viewCreator,
                                     OnClickListener onClickListener) {

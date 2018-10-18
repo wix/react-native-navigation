@@ -14,12 +14,12 @@ import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.utils.UiUtils;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class OptionsPresenter {
+public class Presenter {
 
     private Activity activity;
     private Options defaultOptions;
 
-    public OptionsPresenter(Activity activity, Options defaultOptions) {
+    public Presenter(Activity activity, Options defaultOptions) {
         this.activity = activity;
         this.defaultOptions = defaultOptions;
     }

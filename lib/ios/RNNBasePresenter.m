@@ -28,7 +28,7 @@
 	[self.bottomTabPresenter applyOptions:initialOptions];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options {
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
 	
 }
 

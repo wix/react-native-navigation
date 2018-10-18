@@ -1,11 +1,15 @@
 package com.reactnativenavigation.presentation;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.ContextCompat;
 
 import com.reactnativenavigation.parse.BottomTabOptions;
 import com.reactnativenavigation.parse.Options;
+import com.reactnativenavigation.utils.ImageLoader;
+import com.reactnativenavigation.utils.ImageLoadingListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ViewController;
 import com.reactnativenavigation.viewcontrollers.bottomtabs.BottomTabFinder;
 import com.reactnativenavigation.views.BottomTabs;
@@ -14,6 +18,8 @@ import com.reactnativenavigation.views.Component;
 import java.util.List;
 
 public class BottomTabPresenter {
+    private final Context context;
+    private ImageLoader imageLoader;
     private Options defaultOptions;
     private final BottomTabFinder bottomTabFinder;
     private BottomTabs bottomTabs;
@@ -21,9 +27,11 @@ public class BottomTabPresenter {
     private final int defaultTextColor;
     private final List<ViewController> tabs;
 
-    public BottomTabPresenter(Context context, List<ViewController> tabs, Options defaultOptions) {
+    public BottomTabPresenter(Context context, List<ViewController> tabs, ImageLoader imageLoader, Options defaultOptions) {
         this.tabs = tabs;
+        this.context = context;
         this.bottomTabFinder = new BottomTabFinder(tabs);
+        this.imageLoader = imageLoader;
         this.defaultOptions = defaultOptions;
         defaultSelectedTextColor = defaultOptions.bottomTabOptions.selectedIconColor.get(ContextCompat.getColor(context, com.aurelhubert.ahbottomnavigation.R.color.colorBottomNavigationAccent));
         defaultTextColor = defaultOptions.bottomTabOptions.iconColor.get(ContextCompat.getColor(context, com.aurelhubert.ahbottomnavigation.R.color.colorBottomNavigationInactive));
@@ -55,14 +63,21 @@ public class BottomTabPresenter {
     public void mergeChildOptions(Options options, Component child) {
         int index = bottomTabFinder.findByComponent(child);
         if (index >= 0) {
-            BottomTabOptions withDefaultOptions = options.withDefaultOptions(defaultOptions).bottomTabOptions;
-            if (withDefaultOptions.badge.hasValue()) bottomTabs.setBadge(index, withDefaultOptions.badge.get());
-            if (withDefaultOptions.badgeColor.hasValue()) bottomTabs.setBadgeColor(withDefaultOptions.badgeColor.get());
-            if (withDefaultOptions.fontFamily != null) bottomTabs.setTitleTypeface(index, withDefaultOptions.fontFamily);
-            if (withDefaultOptions.selectedIconColor.hasValue()) bottomTabs.setIconActiveColor(index, withDefaultOptions.selectedIconColor.get());
-            if (withDefaultOptions.iconColor.hasValue()) bottomTabs.setIconInactiveColor(index, withDefaultOptions.iconColor.get());
-            if (withDefaultOptions.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(index, withDefaultOptions.selectedTextColor.get());
-            if (withDefaultOptions.textColor.hasValue()) bottomTabs.setTitleInactiveColor(index, withDefaultOptions.textColor.get());
+            BottomTabOptions bto = options.bottomTabOptions;
+            if (bto.badge.hasValue()) bottomTabs.setBadge(index, bto.badge.get());
+            if (bto.badgeColor.hasValue()) bottomTabs.setBadgeColor(bto.badgeColor.get());
+            if (bto.fontFamily != null) bottomTabs.setTitleTypeface(index, bto.fontFamily);
+            if (bto.selectedIconColor.hasValue()) bottomTabs.setIconActiveColor(index, bto.selectedIconColor.get());
+            if (bto.iconColor.hasValue()) bottomTabs.setIconInactiveColor(index, bto.iconColor.get());
+            if (bto.selectedTextColor.hasValue()) bottomTabs.setTitleActiveColor(index, bto.selectedTextColor.get());
+            if (bto.textColor.hasValue()) bottomTabs.setTitleInactiveColor(index, bto.textColor.get());
+            if (bto.text.hasValue()) bottomTabs.setText(index, bto.text.get());
+            if (bto.icon.hasValue()) imageLoader.loadIcon(context, bto.icon.get(), new ImageLoadingListenerAdapter() {
+                @Override
+                public void onComplete(@NonNull Drawable drawable) {
+                    bottomTabs.setIcon(index, drawable);
+                }
+            });
         }
     }
 

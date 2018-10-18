@@ -11,8 +11,8 @@ import android.view.View;
 
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.SideMenuOptions;
-import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.presentation.SideMenuOptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
@@ -29,9 +29,9 @@ public class SideMenuController extends ParentController<DrawerLayout> {
 	private ViewController center;
 	private ViewController left;
 	private ViewController right;
-    private SideMenuOptionsPresenter presenter;
+    private SideMenuPresenter presenter;
 
-    public SideMenuController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions, SideMenuOptionsPresenter sideMenuOptionsPresenter, OptionsPresenter presenter) {
+    public SideMenuController(Activity activity, ChildControllersRegistry childRegistry, String id, Options initialOptions, SideMenuPresenter sideMenuOptionsPresenter, Presenter presenter) {
 		super(activity, childRegistry, id, presenter, initialOptions);
         this.presenter = sideMenuOptionsPresenter;
     }

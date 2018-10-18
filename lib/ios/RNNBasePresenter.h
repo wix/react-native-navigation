@@ -12,7 +12,7 @@
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options;
 
-- (void)mergeOptions:(RNNNavigationOptions *)options;
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions;
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 

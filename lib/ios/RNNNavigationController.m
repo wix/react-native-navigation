@@ -43,7 +43,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options {
-	[_presenter mergeOptions:options];
+	[_presenter mergeOptions:options resolvedOptions:self.resolveOptions];
 	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
 }
 

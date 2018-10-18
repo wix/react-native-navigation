@@ -21,7 +21,7 @@ import static android.widget.RelativeLayout.ALIGN_PARENT_TOP;
 import static com.github.clans.fab.FloatingActionButton.SIZE_MINI;
 import static com.github.clans.fab.FloatingActionButton.SIZE_NORMAL;
 
-public class FabOptionsPresenter {
+public class FabPresenter {
     private ViewGroup viewGroup;
     private ReactComponent component;
 

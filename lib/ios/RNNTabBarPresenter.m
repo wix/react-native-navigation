@@ -13,8 +13,8 @@
 	[tabBarController rnn_setTabBarTestID:[options.bottomTabs.testID getWithDefaultValue:nil]];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options {
-	[super mergeOptions:options];
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
+	[super mergeOptions:options resolvedOptions:resolvedOptions];
 	
 	UITabBarController* tabBarController = self.bindedViewController;
 	

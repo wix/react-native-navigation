@@ -25,8 +25,8 @@
 	}
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options {
-	[super mergeOptions:options];
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
+	[super mergeOptions:options resolvedOptions:resolvedOptions];
 	
 	RNNSideMenuController* sideMenuController = self.bindedViewController;
 	

@@ -18,7 +18,7 @@ import com.reactnativenavigation.parse.params.Number;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -229,9 +229,9 @@ public class BottomTabsControllerTest extends BaseTest {
                 imageLoaderMock,
                 "uut",
                 initialOptions,
-                new OptionsPresenter(activity, new Options()),
+                new Presenter(activity, new Options()),
                 presenter,
-                new BottomTabPresenter(activity, tabs, new Options())) {
+                new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options())) {
             @Override
             public Options resolveCurrentOptions() {
                 return resolvedOptions;
@@ -338,9 +338,9 @@ public class BottomTabsControllerTest extends BaseTest {
                 imageLoaderMock,
                 "uut",
                 initialOptions,
-                new OptionsPresenter(activity, new Options()),
+                new Presenter(activity, new Options()),
                 presenter,
-                new BottomTabPresenter(activity, tabs, new Options())) {
+                new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options())) {
             @Override
             public void ensureViewIsCreated() {
                 super.ensureViewIsCreated();
