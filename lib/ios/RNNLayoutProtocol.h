@@ -1,5 +1,5 @@
 #import "RNNLayoutInfo.h"
-#import "RNNBasePresenter.h"
+#import "RNNViewControllerPresenter.h"
 #import "RNNLeafProtocol.h"
 
 @protocol RNNLayoutProtocol <NSObject, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, UISplitViewControllerDelegate>
@@ -10,6 +10,10 @@
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 
-- (UIViewController<RNNLeafProtocol, RNNLayoutProtocol> *)getLeafViewController;
+- (UIViewController<RNNLeafProtocol, RNNLayoutProtocol> *)getCurrentChild;
+
+- (void)mergeOptions:(RNNNavigationOptions *)options;
+
+- (RNNNavigationOptions *)resolveOptions;
 
 @end

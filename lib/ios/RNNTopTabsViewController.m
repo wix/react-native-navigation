@@ -13,10 +13,12 @@
 
 @implementation RNNTopTabsViewController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNViewControllerPresenter *)presenter {
 	self = [self init];
 	
 	self.presenter = presenter;
+	[self.presenter bindViewController:self];
+	
 	self.options = options;
 	self.layoutInfo = layoutInfo;
 	
@@ -35,6 +37,20 @@
 	[self createContentView];
 	
 	return self;
+}
+
+- (void)onChildWillAppear {
+	[_presenter applyOptions:self.resolveOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return (RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
 }
 
 - (void)createTabBar {
@@ -69,7 +85,7 @@
 	_viewControllers = viewControllers;
 	for (RNNRootViewController* childVc in viewControllers) {
 		[childVc.view setFrame:_contentView.bounds];
-		[childVc.options.topTab applyOn:childVc];
+//		[childVc.options.topTab applyOn:childVc];
 	}
 	
 	[self setSelectedViewControllerIndex:0];
@@ -84,14 +100,9 @@
     [super viewDidLoad];
 }
 
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-	[_presenter present:self.options onViewControllerDidLoad:self];
-}
-
-
 #pragma mark RNNParentProtocol
 
-- (UIViewController *)getLeafViewController {
+- (UIViewController *)getCurrentChild {
 	return _currentViewController;
 }
 

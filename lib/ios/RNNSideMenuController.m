@@ -1,34 +1,31 @@
-//
-//  RNNSideMenuController.m
-//  ReactNativeNavigation
-//
-//  Created by Ran Greenberg on 09/02/2017.
-//  Copyright © 2017 Wix. All rights reserved.
-//
-
 #import "RNNSideMenuController.h"
 #import "RNNSideMenuChildVC.h"
 #import "MMDrawerController.h"
+#import "MMDrawerVisualState.h"
 
 @interface RNNSideMenuController ()
 
 @property (readwrite) RNNSideMenuChildVC *center;
 @property (readwrite) RNNSideMenuChildVC *left;
 @property (readwrite) RNNSideMenuChildVC *right;
-@property (readwrite) MMDrawerController *sideMenu;
 
 @end
 
 @implementation RNNSideMenuController
 
-- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter {
-	self = [super init];
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNViewControllerPresenter *)presenter {
+	[self setControllers:childViewControllers];
+	self = [super initWithCenterViewController:self.center leftDrawerViewController:self.left rightDrawerViewController:self.right];
 	
 	self.presenter = presenter;
+	[self.presenter bindViewController:self];
+	
 	self.options = options;
+	
 	self.layoutInfo = layoutInfo;
 	
-	[self bindChildViewControllers:childViewControllers];
+	self.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
+	self.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
 	
 	// Fixes #3697
 	[self setExtendedLayoutIncludesOpaqueBars:YES];
@@ -37,26 +34,86 @@
 	return self;
 }
 
-- (void)bindChildViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
-	[self setControllers:viewControllers];
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if (parent) {
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.options];
+	}
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[_presenter applyOptions:self.options];
+}
+
+- (UITabBarItem *)tabBarItem {
+	return super.tabBarItem ? super.tabBarItem : self.center.tabBarItem;
+}
+
+- (void)onChildWillAppear {
+	[_presenter applyOptions:self.resolveOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return (RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
+}
+
+- (void)setAnimationType:(NSString *)animationType {
+	MMDrawerControllerDrawerVisualStateBlock animationTypeStateBlock = nil;
+	if ([animationType isEqualToString:@"door"]) animationTypeStateBlock = [MMDrawerVisualState swingingDoorVisualStateBlock];
+	else if ([animationType isEqualToString:@"parallax"]) animationTypeStateBlock = [MMDrawerVisualState parallaxVisualStateBlockWithParallaxFactor:2.0];
+	else if ([animationType isEqualToString:@"slide"]) animationTypeStateBlock = [MMDrawerVisualState slideVisualStateBlock];
+	else if ([animationType isEqualToString:@"slide-and-scale"]) animationTypeStateBlock = [MMDrawerVisualState slideAndScaleVisualStateBlock];
 	
-	self.sideMenu = [[MMDrawerController alloc] initWithCenterViewController:self.center leftDrawerViewController:self.left rightDrawerViewController:self.right];
-	
-	self.sideMenu.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
-	self.sideMenu.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
-	
-	[self addChildViewController:self.sideMenu];
-	[self.sideMenu.view setFrame:self.view.bounds];
-	[self.view addSubview:self.sideMenu.view];
-	[self.view bringSubviewToFront:self.sideMenu.view];
+	if (animationTypeStateBlock) {
+		[self setDrawerVisualStateBlock:animationTypeStateBlock];
+	}
+}
+
+- (void)side:(MMDrawerSide)side width:(double)width {
+	switch (side) {
+		case MMDrawerSideRight:
+			self.maximumRightDrawerWidth = width;
+			break;
+		case MMDrawerSideLeft:
+			self.maximumLeftDrawerWidth = width;
+		default:
+			break;
+	}
+}
+
+- (void)side:(MMDrawerSide)side visible:(BOOL)visible {
+	if (visible) {
+		[self showSideMenu:side animated:YES];
+	} else {
+		[self hideSideMenu:side animated:YES];
+	}
 }
 
 -(void)showSideMenu:(MMDrawerSide)side animated:(BOOL)animated {
-	[self.sideMenu openDrawerSide:side animated:animated completion:nil];
+	[self openDrawerSide:side animated:animated completion:nil];
 }
 
 -(void)hideSideMenu:(MMDrawerSide)side animated:(BOOL)animated {
-	[self.sideMenu closeDrawerAnimated:animated completion:nil];
+	[self closeDrawerAnimated:animated completion:nil];
+}
+
+- (void)side:(MMDrawerSide)side enabled:(BOOL)enabled {
+	switch (side) {
+		case MMDrawerSideRight:
+			self.rightSideEnabled = enabled;
+			break;
+		case MMDrawerSideLeft:
+			self.leftSideEnabled = enabled;
+		default:
+			break;
+	}
+	self.openDrawerGestureModeMask = enabled ? MMOpenDrawerGestureModeAll : MMOpenDrawerGestureModeNone;
 }
 
 -(void)setControllers:(NSArray*)controllers {
@@ -87,7 +144,7 @@
 }
 
 - (UIViewController *)openedViewController {
-	switch (self.sideMenu.openSide) {
+	switch (self.openSide) {
 		case MMDrawerSideNone:
 			return self.center;
 		case MMDrawerSideLeft:
@@ -100,12 +157,8 @@
 	}
 }
 
-- (UIViewController<RNNLayoutProtocol> *)getLeafViewController {
-	return [self.center getLeafViewController];
-}
-
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-	[_presenter present:self.options onViewControllerDidLoad:self];
+- (UIViewController<RNNLayoutProtocol> *)getCurrentChild {
+	return [self.center getCurrentChild];
 }
 
 @end

@@ -60,6 +60,9 @@ android {
         reactNative57 {
             dimension "RNN.reactNativeVersion"
         }
+        reactNative57WixFork {
+            dimension "RNN.reactNativeVersion"
+        }
     }
 }
 

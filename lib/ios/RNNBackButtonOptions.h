@@ -2,11 +2,11 @@
 
 @interface RNNBackButtonOptions : RNNOptions
 
-@property (nonatomic, strong) NSDictionary* icon;
-@property (nonatomic, strong) NSNumber* visible;
-@property (nonatomic, strong) NSString* title;
-@property (nonatomic, strong) NSString* transition;
-@property (nonatomic, strong) NSNumber* showTitle;
-@property (nonatomic, strong) NSNumber* color;
+@property (nonatomic, strong) Image* icon;
+@property (nonatomic, strong) Text* title;
+@property (nonatomic, strong) Text* transition;
+@property (nonatomic, strong) Color* color;
+@property (nonatomic, strong) Bool* showTitle;
+@property (nonatomic, strong) Bool* visible;
 
 @end

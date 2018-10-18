@@ -1,4 +1,4 @@
-package com.reactnativenavigation.viewcontrollers;
+    package com.reactnativenavigation.viewcontrollers;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

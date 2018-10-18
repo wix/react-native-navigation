@@ -70,10 +70,10 @@
 		@throw [NSException exceptionWithName:@"NSInvalidArgumentException" reason:[@"button id is not specified " stringByAppendingString:title] userInfo:nil];
 	}
 	
-	UIImage* iconImage = nil;
-	id icon = [self getValue:dictionary[@"icon"] withDefault:defaultStyle.icon];
-	if (icon) {
-		iconImage = [RCTConvert UIImage:icon];
+	UIImage* defaultIcon = [defaultStyle.icon getWithDefaultValue:nil];
+	UIImage* iconImage = [self getValue:dictionary[@"icon"] withDefault:defaultIcon];
+	if (![iconImage isKindOfClass:[UIImage class]]) {
+		iconImage = [RCTConvert UIImage:iconImage];
 	}
 	
 	RNNUIBarButtonItem *barButtonItem;
@@ -96,15 +96,15 @@
 	barButtonItem.target = self.viewController;
 	barButtonItem.action = @selector(onButtonPress:);
 	
-	NSNumber *enabled = [self getValue:dictionary[@"enabled"] withDefault:defaultStyle.enabled];
+	NSNumber *enabled = [self getValue:dictionary[@"enabled"] withDefault:defaultStyle.enabled.getValue];
 	BOOL enabledBool = enabled ? [enabled boolValue] : YES;
 	[barButtonItem setEnabled:enabledBool];
 	
 	NSMutableDictionary* textAttributes = [[NSMutableDictionary alloc] init];
 	NSMutableDictionary* disabledTextAttributes = [[NSMutableDictionary alloc] init];
 	
-	UIColor* color = [self color:dictionary[@"color"] defaultColor:defaultStyle.color];
-	UIColor* disabledColor = [self color:dictionary[@"disabledColor"] defaultColor:defaultStyle.disabledColor];
+	UIColor* color = [self color:[RCTConvert UIColor:dictionary[@"color"]] defaultColor:[defaultStyle.color getWithDefaultValue:nil]];
+	UIColor* disabledColor = [self color:[RCTConvert UIColor:dictionary[@"disabledColor"]] defaultColor:[defaultStyle.disabledColor getWithDefaultValue:nil]];
 	if (!enabledBool && disabledColor) {
 		color = disabledColor;
 		[disabledTextAttributes setObject:disabledColor forKey:NSForegroundColorAttributeName];
@@ -115,8 +115,8 @@
 		[barButtonItem setImage:[[iconImage withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 	}
 	
-	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:defaultStyle.fontSize];
-	NSString* fontFamily = [self fontFamily:dictionary[@"fontFamily"] defaultFontFamily:defaultStyle.fontFamily];
+	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:[defaultStyle.fontSize getWithDefaultValue:nil]];
+	NSString* fontFamily = [self fontFamily:dictionary[@"fontFamily"] defaultFontFamily:[defaultStyle.fontFamily getWithDefaultValue:nil]];
 	UIFont *font = nil;
 	if (fontFamily) {
 		font = [UIFont fontWithName:fontFamily size:[fontSize floatValue]];
@@ -139,11 +139,11 @@
 	return barButtonItem;
 }
 
-- (UIColor *)color:(NSNumber *)color defaultColor:(NSNumber *)defaultColor {
+- (UIColor *)color:(UIColor *)color defaultColor:(UIColor *)defaultColor {
 	if (color) {
-		return [RCTConvert UIColor:color];
+		return color;
 	} else if (defaultColor) {
-		return [RCTConvert UIColor:defaultColor];
+		return defaultColor;
 	}
 	
 	return nil;

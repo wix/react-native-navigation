@@ -8,7 +8,7 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.views.BottomTabs;
 import com.reactnativenavigation.views.Component;
 
@@ -26,10 +26,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-public class BottomTabOptionsPresenterTest extends BaseTest {
+public class BottomTabPresenterTest extends BaseTest {
     private Options tab1Options = createTab1Options();
     private Options tab2Options = createTab2Options();
-    private BottomTabOptionsPresenter uut;
+    private BottomTabPresenter uut;
     private BottomTabs bottomTabs;
     private List<ViewController> tabs;
     private ViewController child3;
@@ -43,7 +43,7 @@ public class BottomTabOptionsPresenterTest extends BaseTest {
         ViewController child2 = spy(new SimpleViewController(activity, childRegistry, "child2", tab2Options));
         child3 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
         tabs = Arrays.asList(child1, child2, child3);
-        uut = new BottomTabOptionsPresenter(activity, tabs, new Options());
+        uut = new BottomTabPresenter(activity, tabs, new Options());
         uut.bindView(bottomTabs);
         uut.setDefaultOptions(new Options());
     }

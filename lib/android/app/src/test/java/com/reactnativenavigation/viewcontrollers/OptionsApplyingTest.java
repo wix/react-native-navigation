@@ -23,7 +23,7 @@ import com.reactnativenavigation.parse.params.Colour;
 import com.reactnativenavigation.parse.params.Fraction;
 import com.reactnativenavigation.parse.params.Text;
 import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.presentation.StackOptionsPresenter;
+import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.viewcontrollers.stack.StackController;
@@ -108,7 +108,7 @@ public class OptionsApplyingTest extends BaseTest {
                         .setTopBarController(new TopBarController())
                         .setId("stackId")
                         .setInitialOptions(new Options())
-                        .setStackPresenter(new StackOptionsPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new Options()))
+                        .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreatorMock(), new TopBarButtonCreatorMock(), new ImageLoader(), new Options()))
                         .build();
         stackController.ensureViewIsCreated();
         stackController.push(uut, new CommandListenerAdapter());

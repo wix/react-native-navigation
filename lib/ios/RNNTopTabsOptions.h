@@ -2,6 +2,6 @@
 
 @interface RNNTopTabsOptions : RNNOptions
 
-@property (nonatomic, strong) NSNumber* backgroundColor;
+@property (nonatomic, strong) Color* backgroundColor;
 
 @end
