@@ -20,7 +20,7 @@ import com.reactnativenavigation.parse.TopTabOptions;
 import com.reactnativenavigation.parse.TopTabsOptions;
 import com.reactnativenavigation.parse.params.Button;
 import com.reactnativenavigation.parse.params.Colour;
-import com.reactnativenavigation.utils.ButtonOptionsPresenter;
+import com.reactnativenavigation.utils.ButtonPresenter;
 import com.reactnativenavigation.utils.ImageLoader;
 import com.reactnativenavigation.utils.UiUtils;
 import com.reactnativenavigation.viewcontrollers.IReactView;
@@ -226,14 +226,14 @@ public class StackPresenter {
 
     private void applyTopBarVisibility(TopBarOptions options, AnimationsOptions animationOptions, Options componentOptions) {
         if (options.visible.isFalse()) {
-            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enable.isTrueOrUndefined()) {
+            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
                 topBar.hideAnimate(animationOptions.pop.topBar);
             } else {
                 topBar.hide();
             }
         }
         if (options.visible.isTrueOrUndefined()) {
-            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enable.isTrueOrUndefined()) {
+            if (options.animate.isTrueOrUndefined() && componentOptions.animations.push.enabled.isTrueOrUndefined()) {
                 topBar.showAnimate(animationOptions.push.topBar);
             } else {
                 topBar.show();
@@ -281,7 +281,7 @@ public class StackPresenter {
         return new TitleBarButtonController(activity,
                 new NavigationIconResolver(activity, imageLoader),
                 imageLoader,
-                new ButtonOptionsPresenter(topBar.getTitleBar(), button),
+                new ButtonPresenter(topBar.getTitleBar(), button),
                 button,
                 buttonCreator,
                 onClickListener
@@ -301,7 +301,7 @@ public class StackPresenter {
 
     public void onChildWillAppear(Options appearing, Options disappearing) {
         if (disappearing.topBar.visible.isTrueOrUndefined() && appearing.topBar.visible.isFalse()) {
-            if (disappearing.topBar.animate.isTrueOrUndefined() && disappearing.animations.pop.enable.isTrueOrUndefined()) {
+            if (disappearing.topBar.animate.isTrueOrUndefined() && disappearing.animations.pop.enabled.isTrueOrUndefined()) {
                 topBar.hideAnimate(disappearing.animations.pop.topBar);
             } else {
                 topBar.hide();

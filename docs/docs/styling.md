@@ -287,6 +287,7 @@ For example, changing the animation used when the app is first launched (Support
 Navigation.setDefaultOptions({
   animations: {
     setRoot: {
+      enabled: 'true' | 'false', // Optional, used to enable/disable the animation
       alpha: {
         from: 0,
         to: 1,
@@ -315,6 +316,7 @@ When *pushing* and *popping* screens to and from a stack, you can control the To
 ```js
 animations: {
   push: {
+    enabled: 'true' | 'false', // Optional, used to enable/disable the animation
     topBar: {
       id: 'TEST', // Optional, id of the TopBar we'd like to animate.
       alpha: {
@@ -334,6 +336,9 @@ animations: {
         to: 1
       }
     }
+  },
+  pop: {
+    ...
   }
 }
 ```

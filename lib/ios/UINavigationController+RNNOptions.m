@@ -112,6 +112,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	UIViewController *lastViewControllerInStack = self.viewControllers.count > 1 ? [self.viewControllers objectAtIndex:self.viewControllers.count-2] : self.topViewController;
 	
 	backItem.title = title ? title : lastViewControllerInStack.navigationItem.title;
+	backItem.tintColor = color;
 	
 	lastViewControllerInStack.navigationItem.backBarButtonItem = backItem;
 }

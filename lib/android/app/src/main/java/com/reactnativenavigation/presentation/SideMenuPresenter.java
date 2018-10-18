@@ -5,7 +5,7 @@ import android.view.Gravity;
 
 import com.reactnativenavigation.parse.SideMenuRootOptions;
 
-public class SideMenuOptionsPresenter {
+public class SideMenuPresenter {
 
     private DrawerLayout sideMenu;
 

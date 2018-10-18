@@ -12,8 +12,8 @@ import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.SideMenuOptions;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Number;
-import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.presentation.SideMenuOptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 
@@ -31,7 +31,7 @@ public class SideMenuControllerTest extends BaseTest {
     private SideMenuController uut;
     private Activity activity;
     private ChildControllersRegistry childRegistry;
-    private SideMenuOptionsPresenter presenter;
+    private SideMenuPresenter presenter;
     private SimpleComponentViewController left;
     private SimpleComponentViewController right;
     private SimpleComponentViewController center;
@@ -40,11 +40,11 @@ public class SideMenuControllerTest extends BaseTest {
     public void beforeEach() {
         activity = newActivity();
         childRegistry = new ChildControllersRegistry();
-        presenter = spy(new SideMenuOptionsPresenter());
+        presenter = spy(new SideMenuPresenter());
         left = new SimpleComponentViewController(activity, childRegistry, "left", new Options());
         right = new SimpleComponentViewController(activity, childRegistry, "right", new Options());
         center = spy(new SimpleComponentViewController(activity, childRegistry, "center", new Options()));
-        uut = new SideMenuController(activity, childRegistry, "sideMenu", new Options(), presenter, new OptionsPresenter(activity, new Options()));
+        uut = new SideMenuController(activity, childRegistry, "sideMenu", new Options(), presenter, new Presenter(activity, new Options()));
         uut.setCenterController(center);
     }
 

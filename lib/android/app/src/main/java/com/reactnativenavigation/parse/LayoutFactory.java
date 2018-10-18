@@ -5,8 +5,8 @@ import android.app.Activity;
 import com.facebook.react.ReactInstanceManager;
 import com.reactnativenavigation.presentation.BottomTabPresenter;
 import com.reactnativenavigation.presentation.BottomTabsPresenter;
-import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.presentation.SideMenuOptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.presentation.SideMenuPresenter;
 import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.ImageLoader;
@@ -84,8 +84,8 @@ public class LayoutFactory {
                 childRegistry,
                 node.id,
                 parse(typefaceManager, node.getOptions()),
-                new SideMenuOptionsPresenter(),
-                new OptionsPresenter(activity, defaultOptions)
+                new SideMenuPresenter(),
+                new Presenter(activity, defaultOptions)
         );
 		ViewController childControllerCenter = null, childControllerLeft = null, childControllerRight = null;
 
@@ -144,7 +144,7 @@ public class LayoutFactory {
                 name,
                 new ComponentViewCreator(reactInstanceManager),
                 parse(typefaceManager, node.getOptions()),
-                new OptionsPresenter(activity, defaultOptions)
+                new Presenter(activity, defaultOptions)
         );
 	}
 
@@ -169,7 +169,7 @@ public class LayoutFactory {
                 .setId(node.id)
                 .setInitialOptions(parse(typefaceManager, node.getOptions()))
                 .setStackPresenter(new StackPresenter(activity, new TitleBarReactViewCreator(reactInstanceManager), new TitleBarButtonCreator(reactInstanceManager), new ImageLoader(), defaultOptions))
-                .setPresenter(new OptionsPresenter(activity, defaultOptions))
+                .setPresenter(new Presenter(activity, defaultOptions))
                 .build();
 	}
 
@@ -193,9 +193,9 @@ public class LayoutFactory {
                 new ImageLoader(),
                 node.id,
                 parse(typefaceManager, node.getOptions()),
-                new OptionsPresenter(activity, defaultOptions),
+                new Presenter(activity, defaultOptions),
                 new BottomTabsPresenter(tabs, defaultOptions),
-                new BottomTabPresenter(activity, tabs, defaultOptions));
+                new BottomTabPresenter(activity, tabs, new ImageLoader(), defaultOptions));
 	}
 
     private ViewController createTopTabs(LayoutNode node) {
@@ -206,6 +206,6 @@ public class LayoutFactory {
             options.setTopTabIndex(i);
             tabs.add(tabController);
         }
-        return new TopTabsController(activity, childRegistry, node.id, tabs, new TopTabsLayoutCreator(activity, tabs), parse(typefaceManager, node.getOptions()), new OptionsPresenter(activity, defaultOptions));
+        return new TopTabsController(activity, childRegistry, node.id, tabs, new TopTabsLayoutCreator(activity, tabs), parse(typefaceManager, node.getOptions()), new Presenter(activity, defaultOptions));
     }
 }

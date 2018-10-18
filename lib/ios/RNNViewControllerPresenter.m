@@ -44,8 +44,8 @@
 	
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options {
-	[super mergeOptions:options];
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
+	[super mergeOptions:options resolvedOptions:resolvedOptions];
 	
 	RNNNavigationOptions* withDefault = (RNNNavigationOptions *)[options withDefault:self.defaultOptions];
 	
@@ -112,8 +112,9 @@
 	}
 	
 	if (options.topBar.leftButtons || options.topBar.rightButtons) {
+		RNNNavigationOptions* buttonsResolvedOptions = (RNNNavigationOptions *)[[resolvedOptions overrideOptions:options] withDefault:self.defaultOptions];
 		_navigationButtons = [[RNNNavigationButtons alloc] initWithViewController:(RNNRootViewController*)viewController];
-		[_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:withDefault.topBar.leftButtonStyle defaultRightButtonStyle:withDefault.topBar.rightButtonStyle];
+		[_navigationButtons applyLeftButtons:options.topBar.leftButtons rightButtons:options.topBar.rightButtons defaultLeftButtonStyle:buttonsResolvedOptions.topBar.leftButtonStyle defaultRightButtonStyle:buttonsResolvedOptions.topBar.rightButtonStyle];
 	}
 }
 

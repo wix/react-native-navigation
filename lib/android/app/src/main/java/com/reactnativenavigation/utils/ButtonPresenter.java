@@ -19,12 +19,12 @@ import com.reactnativenavigation.parse.params.Button;
 
 import java.util.ArrayList;
 
-public class ButtonOptionsPresenter {
+public class ButtonPresenter {
     private final Toolbar toolbar;
     private final ActionMenuView actionMenuView;
     private Button button;
 
-    public ButtonOptionsPresenter(Toolbar toolbar, Button button) {
+    public ButtonPresenter(Toolbar toolbar, Button button) {
         this.toolbar = toolbar;
         actionMenuView = ViewUtils.findChildrenByClass(toolbar, ActionMenuView.class).get(0);
         this.button = button;

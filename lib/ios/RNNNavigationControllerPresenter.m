@@ -29,8 +29,8 @@
 	[navigationController rnn_setNavigationBarFontFamily:[options.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.title.fontSize getWithDefaultValue:nil] color:[options.topBar.title.color getWithDefaultValue:nil]];
 }
 
-- (void)mergeOptions:(RNNNavigationOptions *)options {
-	[super mergeOptions:options];
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
+	[super mergeOptions:options resolvedOptions:resolvedOptions];
 	
 	RNNNavigationController* navigationController = self.bindedViewController;
 	RNNNavigationOptions* withDefault = (RNNNavigationOptions *)[options withDefault:self.defaultOptions];
