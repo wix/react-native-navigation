@@ -50,7 +50,7 @@ public class AnimationOptions {
     public Text id = new NullText();
     public Bool enabled = new NullBool();
     public Bool waitForRender = new NullBool();
-    private HashSet<ValueAnimationOptions> valueOptions = new HashSet<>();
+    public HashSet<ValueAnimationOptions> valueOptions = new HashSet<>();
 
     void mergeWith(AnimationOptions other) {
         if (other.id.hasValue()) id = other.id;

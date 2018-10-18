@@ -203,12 +203,18 @@ public class StackController extends ParentController<StackLayout> {
             return;
         }
 
+        Options resolvedOptions;
+        if (mergeOptions.animations.pop.content.valueOptions.size() <= 0){
+            resolvedOptions = resolveCurrentOptions(presenter.getDefaultOptions());
+        }else{
+            resolvedOptions = mergeOptions;
+        }
+
         final ViewController disappearing = stack.pop();
         final ViewController appearing = stack.peek();
-        disappearing.mergeOptions(mergeOptions);
+        disappearing.mergeOptions(resolvedOptions);
         disappearing.onViewWillDisappear();
         appearing.onViewWillAppear();
-        Options resolvedOptions = resolveCurrentOptions();
         ViewGroup appearingView = appearing.getView();
         if (appearingView.getLayoutParams() == null) {
             appearingView.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
