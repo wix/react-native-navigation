@@ -28,7 +28,7 @@
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
 	[self setViewControllers:childViewControllers];
-		
+	
 	return self;
 }
 
@@ -62,9 +62,9 @@
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
 	for (id child in self.childViewControllers) {
-		UIViewController<RNNParentProtocol>* vc = child;
+		UIViewController<RNNLayoutProtocol>* vc = child;
 
-		if ([vc.layoutInfo.componentId isEqualToString:componentID]) {
+		if ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] && [vc.layoutInfo.componentId isEqualToString:componentID]) {
 			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
 		}
 	}
