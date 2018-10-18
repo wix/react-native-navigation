@@ -1,13 +1,16 @@
 #import "RNNLayoutOptions.h"
 #import <React/RCTConvert.h>
+#import "UIViewController+RNNOptions.h"
 
 @implementation RNNLayoutOptions
 
-- (void)applyOn:(UIViewController *)viewController {
-	if (self.backgroundColor) {
-		UIColor* screenColor = [RCTConvert UIColor:self.backgroundColor];
-		viewController.view.backgroundColor = screenColor;
-	}
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super init];
+	
+	self.backgroundColor = [ColorParser parse:dict key:@"backgroundColor"];
+	self.orientation = dict[@"orientation"];
+	
+	return self;
 }
 
 - (UIInterfaceOrientationMask)supportedOrientations {

@@ -230,9 +230,9 @@ describe('Commands', () => {
 
   describe('push', () => {
     it('deep clones input to avoid mutation errors', () => {
-      const obj = {};
-      uut.push('theComponentId', { component: { name: 'name', passProps: { foo: obj } } });
-      expect(mockCommandsSender.push.mock.calls[0][2].data.passProps.foo).not.toBe(obj);
+      const options = {};
+      uut.push('theComponentId', { component: { name: 'name', options } });
+      expect(mockCommandsSender.push.mock.calls[0][2].data.options).not.toBe(options);
     });
 
     it('resolves with the parsed layout', async () => {

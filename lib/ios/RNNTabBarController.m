@@ -11,10 +11,9 @@
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 			  childViewControllers:(NSArray *)childViewControllers
 						   options:(RNNNavigationOptions *)options
-				   optionsResolver:(RNNParentOptionsResolver *)optionsResolver
 						 presenter:(RNNBasePresenter *)presenter
 					  eventEmitter:(RNNEventEmitter *)eventEmitter {
-	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options optionsResolver:optionsResolver presenter:presenter];
+	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options presenter:presenter];
 	
 	_eventEmitter = eventEmitter;
 	
@@ -24,17 +23,19 @@
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 			  childViewControllers:(NSArray *)childViewControllers
 						   options:(RNNNavigationOptions *)options
-				   optionsResolver:(RNNParentOptionsResolver *)optionsResolver
-						 presenter:(RNNBasePresenter *)presenter {
+						 presenter:(RNNViewControllerPresenter *)presenter {
 	self = [super init];
 	
-	self.presenter = presenter;
+	self.delegate = self;
 	self.options = options;
+	
 	self.layoutInfo = layoutInfo;
-	self.optionsResolver = optionsResolver;
+	
+	self.presenter = presenter;
+	[self.presenter bindViewController:self];
 	
 	[self setViewControllers:childViewControllers];
-	
+		
 	return self;
 }
 
@@ -43,6 +44,35 @@
 	_eventEmitter = eventEmitter;
 	self.delegate = self;
 	return self;
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if (parent) {
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.options];
+	}
+}
+
+- (void)onChildWillAppear {
+	[_presenter applyOptions:self.resolveOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return (RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options resolvedOptions:self.resolveOptions];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[_presenter applyOptions:self.options];
+}
+
+- (UITabBarItem *)tabBarItem {
+	return super.tabBarItem ? super.tabBarItem : self.viewControllers.lastObject.tabBarItem;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -64,22 +94,12 @@
 	[super setSelectedIndex:selectedIndex];
 }
 
-- (UIViewController *)getLeafViewController {
-	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).getLeafViewController;
+- (UIViewController *)getCurrentChild {
+	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).getCurrentChild;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
 	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).preferredStatusBarStyle;
-}
-
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-	[_optionsResolver resolve:self with:self.viewControllers];
-	[_presenter present:self.options onViewControllerDidLoad:self];
-}
-
-- (void)mergeOptions:(RNNNavigationOptions *)options {
-	[self.options mergeOptions:options overrideOptions:YES];
-	[self.presenter present:self.options onViewControllerWillAppear:self];
 }
 
 #pragma mark UITabBarControllerDelegate

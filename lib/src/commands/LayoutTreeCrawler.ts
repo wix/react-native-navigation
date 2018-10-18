@@ -44,6 +44,7 @@ export class LayoutTreeCrawler {
     this._assertComponentDataName(node);
     this._savePropsToStore(node);
     this._applyStaticOptions(node);
+    node.data.passProps = undefined;
   }
 
   _savePropsToStore(node) {

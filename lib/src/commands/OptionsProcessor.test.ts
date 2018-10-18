@@ -96,7 +96,7 @@ describe('navigation options', () => {
 
     // As we can't import external images and we don't want to add an image here
     // I assign the icons to strings (what the require would generally look like)
-    // and expect the value to be resovled, in this case it doesn't find anything and returns null
+    // and expect the value to be resolved, in this case it doesn't find anything and returns null
     expect(options.icon).toEqual(null);
     expect(options.topBar.myIcon).toEqual(null);
     expect(options.image).toEqual(null);
@@ -172,5 +172,39 @@ describe('navigation options', () => {
     uut.processOptions(options);
 
     expect(options.someImage).toEqual(undefined);
+  });
+
+  it('omits passProps when processing options', () => {
+    const passProps = {
+      topBar: {
+        rightButtons: [
+          {
+            passProps: {},
+            id: 'btn1'
+          },
+        ],
+        leftButtons: [
+          {
+            passProps: {},
+            id: 'btn2'
+          }
+        ],
+        title: {
+          component: {
+            passProps: {}
+          }
+        },
+        background: {
+          component: {
+            passProps: {}
+          }
+        }
+      }
+    };
+    uut.processOptions(passProps);
+    expect(passProps.topBar.rightButtons[0].passProps).toBeUndefined();
+    expect(passProps.topBar.leftButtons[0].passProps).toBeUndefined();
+    expect(passProps.topBar.title.component.passProps).toBeUndefined();
+    expect(passProps.topBar.background.component.passProps).toBeUndefined();
   });
 });

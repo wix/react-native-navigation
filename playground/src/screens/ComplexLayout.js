@@ -115,6 +115,36 @@ class ComplexLayout extends Component {
                   }
                 }
               }
+            },
+            {
+              sideMenu: {
+                left: {
+                  component: {
+                    name: 'navigation.playground.SideMenuScreen',
+                    passProps: {
+                      side: 'left'
+                    }
+                  }
+                },
+                center: {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          name: 'navigation.playground.FlatListScreen',
+                        }
+                      }
+                    ]
+                  }
+                },
+                options: {
+                  bottomTab: {
+                    text: 'FlatList',
+                    icon: require('../images/three.png'),
+                    testID: testIDs.THIRD_TAB_BAR_BUTTON,
+                  }
+                }
+              }
             }
            ]
         }
