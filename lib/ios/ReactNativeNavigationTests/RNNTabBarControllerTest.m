@@ -101,7 +101,7 @@
 	RNNNavigationOptions* options = [[RNNNavigationOptions alloc] initWithDict:@{}];
 	RNNTabBarController* uut = [[RNNTabBarController alloc] initWithLayoutInfo:nil childViewControllers:nil options:options presenter:presenterMock];
 	
-	[(RNNTabBarPresenter *)[presenterMock expect] mergeOptions:options];
+	[(RNNTabBarPresenter *)[presenterMock expect] mergeOptions:options resolvedOptions:nil];
 	[uut mergeOptions:options];
 	[presenterMock verify];
 }
@@ -112,7 +112,7 @@
 	RNNTabBarController* uut = [[RNNTabBarController alloc] initWithLayoutInfo:nil childViewControllers:nil options:options presenter:[RNNTabBarPresenter new]];
 	[parentMock addChildViewController:uut];
 	
-	[(RNNTabBarPresenter *)[parentMock expect] mergeOptions:options];
+	[(RNNTabBarController *)[parentMock expect] mergeOptions:options];
 	[uut mergeOptions:options];
 	[parentMock verify];
 }
