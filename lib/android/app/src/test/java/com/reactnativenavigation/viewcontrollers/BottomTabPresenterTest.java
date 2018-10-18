@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 
 import com.reactnativenavigation.BaseTest;
+import com.reactnativenavigation.mocks.ImageLoaderMock;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Colour;
@@ -43,7 +44,7 @@ public class BottomTabPresenterTest extends BaseTest {
         ViewController child2 = spy(new SimpleViewController(activity, childRegistry, "child2", tab2Options));
         child3 = spy(new SimpleViewController(activity, childRegistry, "child2", new Options()));
         tabs = Arrays.asList(child1, child2, child3);
-        uut = new BottomTabPresenter(activity, tabs, new Options());
+        uut = new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options());
         uut.bindView(bottomTabs);
         uut.setDefaultOptions(new Options());
     }
