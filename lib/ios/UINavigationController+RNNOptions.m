@@ -38,6 +38,7 @@ const NSInteger BLUR_TOPBAR_TAG = 78264802;
 	if (noBorder) {
 		self.navigationBar
 		.shadowImage = [[UIImage alloc] init];
+		[self.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
 	} else {
 		self.navigationBar
 		.shadowImage = nil;

@@ -231,7 +231,7 @@ public class BottomTabsControllerTest extends BaseTest {
                 initialOptions,
                 new Presenter(activity, new Options()),
                 presenter,
-                new BottomTabPresenter(activity, tabs, new Options())) {
+                new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options())) {
             @Override
             public Options resolveCurrentOptions() {
                 return resolvedOptions;
@@ -340,7 +340,7 @@ public class BottomTabsControllerTest extends BaseTest {
                 initialOptions,
                 new Presenter(activity, new Options()),
                 presenter,
-                new BottomTabPresenter(activity, tabs, new Options())) {
+                new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options())) {
             @Override
             public void ensureViewIsCreated() {
                 super.ensureViewIsCreated();
