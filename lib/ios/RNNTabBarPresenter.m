@@ -5,12 +5,10 @@
 
 - (void)applyOptions:(RNNNavigationOptions *)initialOptions {
 	[super applyOptions:initialOptions];
-	
+
 	RNNNavigationOptions* options = [initialOptions withDefault:self.defaultOptions];
-	
-	UITabBarController* tabBarController = self.bindedViewController;
-	
-	[tabBarController rnn_setTabBarTestID:[options.bottomTabs.testID getWithDefaultValue:nil]];
+	RNNNavigationOptions* withDefault = (RNNNavigationOptions *)[options withDefault:self.defaultOptions];
+    [self mergeOptions:options resolvedOptions:withDefault];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
