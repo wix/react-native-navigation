@@ -3,7 +3,7 @@ package com.reactnativenavigation.viewcontrollers.child;
 import com.reactnativenavigation.BaseTest;
 import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.viewcontrollers.ChildController;
 import com.reactnativenavigation.viewcontrollers.ChildControllersRegistry;
 import com.reactnativenavigation.viewcontrollers.ParentController;
@@ -20,13 +20,13 @@ public class ChildControllerTest extends BaseTest {
 
     private ChildController uut;
     private ChildControllersRegistry childRegistry;
-    private OptionsPresenter presenter;
+    private Presenter presenter;
     private Options resolvedOptions = new Options();
 
     @Override
     public void beforeEach() {
         childRegistry = spy(new ChildControllersRegistry());
-        presenter = Mockito.mock(OptionsPresenter.class);
+        presenter = Mockito.mock(Presenter.class);
         uut = new SimpleViewController(newActivity(), childRegistry, "childId", presenter, new Options()) {
             @Override
             public Options resolveCurrentOptions() {

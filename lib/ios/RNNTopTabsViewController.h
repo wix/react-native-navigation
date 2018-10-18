@@ -1,5 +1,3 @@
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import <React/RCTUIManager.h>
 #import "RNNParentProtocol.h"
 
@@ -8,7 +6,7 @@
 @property (nonatomic, retain) UIView* contentView;
 
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
-@property (nonatomic, retain) RNNBasePresenter* presenter;
+@property (nonatomic, retain) RNNViewControllerPresenter* presenter;
 @property (nonatomic, strong) RNNNavigationOptions* options;
 
 - (void)setViewControllers:(NSArray*)viewControllers;

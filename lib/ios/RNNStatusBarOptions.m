@@ -1,40 +1,18 @@
 #import "RNNStatusBarOptions.h"
-#define kStatusBarAnimationDuration 0.35
-const NSInteger BLUR_STATUS_TAG = 78264801;
-const NSInteger BLUR_TOPBAR_TAG = 78264802;
+#import "UIViewController+RNNOptions.h"
 
 @implementation RNNStatusBarOptions
 
-- (void)applyOn:(UIViewController *)viewController {
-	if (self.blur) {
-		UIView* curBlurView = [viewController.view viewWithTag:BLUR_STATUS_TAG];
-		if ([self.blur boolValue]) {
-			if (!curBlurView) {
-				UIVisualEffectView *blur = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-				blur.frame = [[UIApplication sharedApplication] statusBarFrame];
-				blur.tag = BLUR_STATUS_TAG;
-				[viewController.view insertSubview:blur atIndex:0];
-			}
-		} else {
-			if (curBlurView) {
-				[curBlurView removeFromSuperview];
-			}
-		}
-	}
+- (instancetype)initWithDict:(NSDictionary *)dict {
+	self = [super init];
 	
-	if (self.style || self.visible) {
-		if (self.animate) {
-			[UIView animateWithDuration:[self statusBarAnimationDuration] animations:^{
-				[viewController setNeedsStatusBarAppearanceUpdate];
-			}];
-		} else {
-			[viewController setNeedsStatusBarAppearanceUpdate];
-		}
-	}
-}
-
-- (CGFloat)statusBarAnimationDuration {
-	return [self.animate boolValue] ? kStatusBarAnimationDuration : CGFLOAT_MIN;
+	self.blur = [BoolParser parse:dict key:@"blur"];
+	self.hideWithTopBar = [BoolParser parse:dict key:@"hideWithTopBar"];
+	self.visible = [BoolParser parse:dict key:@"visible"];
+	self.animate = [BoolParser parse:dict key:@"animate"];
+	self.style = [TextParser parse:dict key:@"style"];
+	
+	return self;
 }
 
 @end

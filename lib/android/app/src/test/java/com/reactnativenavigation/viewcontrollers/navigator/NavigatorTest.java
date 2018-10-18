@@ -14,9 +14,9 @@ import com.reactnativenavigation.mocks.SimpleViewController;
 import com.reactnativenavigation.parse.Options;
 import com.reactnativenavigation.parse.params.Bool;
 import com.reactnativenavigation.parse.params.Text;
-import com.reactnativenavigation.presentation.BottomTabOptionsPresenter;
-import com.reactnativenavigation.presentation.BottomTabsOptionsPresenter;
-import com.reactnativenavigation.presentation.OptionsPresenter;
+import com.reactnativenavigation.presentation.BottomTabPresenter;
+import com.reactnativenavigation.presentation.BottomTabsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
 import com.reactnativenavigation.presentation.OverlayManager;
 import com.reactnativenavigation.react.EventEmitter;
 import com.reactnativenavigation.utils.CommandListener;
@@ -346,7 +346,7 @@ public class NavigatorTest extends BaseTest {
 
     @NonNull
     private BottomTabsController newTabs(List<ViewController> tabs) {
-        return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options(), new OptionsPresenter(activity, new Options()), new BottomTabsOptionsPresenter(tabs, new Options()), new BottomTabOptionsPresenter(activity, tabs, new Options()));
+        return new BottomTabsController(activity, tabs, childRegistry, eventEmitter, imageLoaderMock, "tabsController", new Options(), new Presenter(activity, new Options()), new BottomTabsPresenter(tabs, new Options()), new BottomTabPresenter(activity, tabs, ImageLoaderMock.mock(), new Options()));
     }
 
     @NonNull
@@ -433,8 +433,8 @@ public class NavigatorTest extends BaseTest {
 
     @Test
     public void pushedStackCanBePopped() {
-        child1.options.animations.push.enable = new Bool(false);
-        child2.options.animations.push.enable = new Bool(false);
+        child1.options.animations.push.enabled = new Bool(false);
+        child2.options.animations.push.enabled = new Bool(false);
         StackController spy = spy(parentController);
         StackController parent = newStack();
         parent.ensureViewIsCreated();
@@ -577,7 +577,7 @@ public class NavigatorTest extends BaseTest {
         disablePushAnimation(child1);
 
         StackController spy = spy(parentController);
-        spy.options.animations.setRoot.enable = new Bool(false);
+        spy.options.animations.setRoot.enabled = new Bool(false);
         uut.setRoot(spy, new CommandListenerAdapter());
         spy.push(child1, new CommandListenerAdapter());
         activityController.destroy();

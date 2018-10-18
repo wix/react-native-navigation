@@ -7,4 +7,6 @@
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNBasePresenter *)presenter;
 
+- (void)onChildWillAppear;
+
 @end

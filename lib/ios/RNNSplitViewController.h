@@ -1,4 +1,3 @@
-
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "RNNLayoutNode.h"
@@ -14,6 +13,6 @@
 
 @property (nonatomic, strong) RNNNavigationOptions* options;
 @property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
-@property (nonatomic, retain) RNNBasePresenter* presenter;
+@property (nonatomic, retain) RNNViewControllerPresenter* presenter;
 
 @end

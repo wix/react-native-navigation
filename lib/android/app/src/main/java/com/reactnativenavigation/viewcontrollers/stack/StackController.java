@@ -11,8 +11,8 @@ import android.widget.RelativeLayout;
 
 import com.reactnativenavigation.anim.NavigationAnimator;
 import com.reactnativenavigation.parse.Options;
-import com.reactnativenavigation.presentation.OptionsPresenter;
-import com.reactnativenavigation.presentation.StackOptionsPresenter;
+import com.reactnativenavigation.presentation.Presenter;
+import com.reactnativenavigation.presentation.StackPresenter;
 import com.reactnativenavigation.react.Constants;
 import com.reactnativenavigation.utils.CommandListener;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
@@ -40,9 +40,9 @@ public class StackController extends ParentController<StackLayout> {
     private TopBarBackgroundViewController topBarBackgroundViewController;
     private TopBarController topBarController;
     private BackButtonHelper backButtonHelper;
-    private final StackOptionsPresenter presenter;
+    private final StackPresenter presenter;
 
-    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackOptionsPresenter stackPresenter, OptionsPresenter presenter) {
+    public StackController(Activity activity, List<ViewController> children, ChildControllersRegistry childRegistry, TopBarBackgroundViewController topBarBackgroundViewController, TopBarController topBarController, NavigationAnimator animator, String id, Options initialOptions, BackButtonHelper backButtonHelper, StackPresenter stackPresenter, Presenter presenter) {
         super(activity, childRegistry, id, presenter, initialOptions);
         this.topBarController = topBarController;
         this.topBarBackgroundViewController = topBarBackgroundViewController;
@@ -144,7 +144,7 @@ public class StackController extends ParentController<StackLayout> {
         addChildToStack(child, child.getView(), resolvedOptions);
 
         if (toRemove != null) {
-            if (resolvedOptions.animations.push.enable.isTrueOrUndefined()) {
+            if (resolvedOptions.animations.push.enabled.isTrueOrUndefined()) {
                 if (resolvedOptions.animations.push.waitForRender.isTrue()) {
                     child.getView().setAlpha(0);
                     child.setOnAppearedListener(() -> animator.push(child.getView(), resolvedOptions.animations.push, resolvedOptions.transitions, toRemove.getElements(), child.getElements(), () -> {
@@ -203,11 +203,15 @@ public class StackController extends ParentController<StackLayout> {
             return;
         }
 
+        peek().mergeOptions(mergeOptions);
+        Options disappearingOptions = resolveCurrentOptions();
+
         final ViewController disappearing = stack.pop();
         final ViewController appearing = stack.peek();
-        disappearing.mergeOptions(mergeOptions);
+
         disappearing.onViewWillDisappear();
         appearing.onViewWillAppear();
+
         Options resolvedOptions = resolveCurrentOptions();
         ViewGroup appearingView = appearing.getView();
         if (appearingView.getLayoutParams() == null) {
@@ -218,8 +222,8 @@ public class StackController extends ParentController<StackLayout> {
             getView().addView(appearingView, 0);
         }
         presenter.onChildWillAppear(appearing.options, disappearing.options);
-        if (disappearing.options.animations.pop.enable.isTrueOrUndefined()) {
-            animator.pop(disappearing.getView(), resolvedOptions.animations.pop, () -> finishPopping(disappearing, listener));
+        if (disappearingOptions.animations.pop.enabled.isTrueOrUndefined()) {
+            animator.pop(disappearing.getView(), disappearingOptions.animations.pop, () -> finishPopping(disappearing, listener));
         } else {
             finishPopping(disappearing, listener);
         }

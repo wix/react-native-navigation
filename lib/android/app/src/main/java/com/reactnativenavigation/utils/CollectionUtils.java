@@ -75,6 +75,14 @@ public class CollectionUtils {
         }
     }
 
+    public static @Nullable <T> T first(@Nullable Collection<T> items, Filter<T> by) {
+        if (isNullOrEmpty(items)) return null;
+        for (T item : items) {
+            if (by.filter(item)) return item;
+        }
+        return null;
+    }
+
     private static @NonNull <T> Collection<T> get(@Nullable Collection<T> t) {
         return t == null ? Collections.EMPTY_LIST : t;
     }
