@@ -31,7 +31,6 @@
 	if (hasCustomAnimation) {
 		viewController.transitioningDelegate = (UIViewController<UIViewControllerTransitioningDelegate>*)topVC;
 	}
-
     // Set the UIModalPresentationStyle
     if ([viewController isKindOfClass:[RNNRootViewController class]]) {
         viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:[((RNNRootViewController*)viewController).options.modalPresentationStyle getWithDefaultValue:@"fullScreen"]]; ;
