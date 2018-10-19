@@ -10,7 +10,7 @@ class TextScreen extends Component {
   static get options() {
     return {
       bottomTabs: {
-        drawBehind: false,
+        drawBehind: true,
         testID: testIDs.BOTTOM_TABS_ELEMENT
       },
       topBar: {
