@@ -49,7 +49,7 @@
 }
 
 - (UITabBarItem *)tabBarItem {
-	return super.tabBarItem ? super.tabBarItem : self.child.tabBarItem;
+	return self.child.tabBarItem;
 }
 
 - (void)bindChildViewController:(UIViewController<RNNParentProtocol>*)child {
