@@ -53,7 +53,7 @@
 }
 
 - (UITabBarItem *)tabBarItem {
-	return super.tabBarItem ? super.tabBarItem : self.viewControllers.lastObject.tabBarItem;
+	return self.viewControllers.lastObject.tabBarItem;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {

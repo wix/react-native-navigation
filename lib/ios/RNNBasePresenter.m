@@ -29,7 +29,7 @@
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
-	
+	[self.bottomTabPresenter mergeOptions:options resolvedOptions:resolvedOptions];
 }
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions {
