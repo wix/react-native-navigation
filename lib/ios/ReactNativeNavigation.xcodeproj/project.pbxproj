@@ -63,6 +63,7 @@
 		390AD478200F499D00A8250D /* RNNSwizzles.m in Sources */ = {isa = PBXBuildFile; fileRef = 390AD476200F499D00A8250D /* RNNSwizzles.m */; };
 		4534E72520CB6724009F8185 /* RNNLargeTitleOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4534E72320CB6724009F8185 /* RNNLargeTitleOptions.h */; };
 		4534E72620CB6724009F8185 /* RNNLargeTitleOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4534E72420CB6724009F8185 /* RNNLargeTitleOptions.m */; };
+		501214C9217741A000435148 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 501214C8217741A000435148 /* libOCMock.a */; };
 		501223D72173590F000F5F98 /* RNNNavigationControllerPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 501223D52173590F000F5F98 /* RNNNavigationControllerPresenter.h */; };
 		501223D82173590F000F5F98 /* RNNNavigationControllerPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 501223D62173590F000F5F98 /* RNNNavigationControllerPresenter.m */; };
 		501224062173592D000F5F98 /* RNNTabBarPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 501224042173592D000F5F98 /* RNNTabBarPresenter.h */; };
@@ -98,9 +99,11 @@
 		502CB43A20CBCA180019B2FE /* RNNBridgeManagerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 502CB43920CBCA140019B2FE /* RNNBridgeManagerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		502CB46E20CD1DDA0019B2FE /* RNNBackButtonOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 502CB46C20CD1DDA0019B2FE /* RNNBackButtonOptions.h */; };
 		502CB46F20CD1DDA0019B2FE /* RNNBackButtonOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 502CB46D20CD1DDA0019B2FE /* RNNBackButtonOptions.m */; };
+		502F0E142178CF8200367CC3 /* UIViewController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 502F0E132178CF8200367CC3 /* UIViewController+RNNOptionsTest.m */; };
+		502F0E162178D09600367CC3 /* RNNBottomTabPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 502F0E152178D09600367CC3 /* RNNBottomTabPresenterTest.m */; };
 		5038A374216CDDB6009280BC /* UIViewController+SideMenuController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5038A372216CDDB6009280BC /* UIViewController+SideMenuController.h */; };
 		5038A375216CDDB6009280BC /* UIViewController+SideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5038A373216CDDB6009280BC /* UIViewController+SideMenuController.m */; };
-		5038A377216CF252009280BC /* RNNBottomTabsOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5038A376216CF252009280BC /* RNNBottomTabsOptionsTest.m */; };
+		5038A377216CF252009280BC /* UITabBarController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5038A376216CF252009280BC /* UITabBarController+RNNOptionsTest.m */; };
 		5038A379216D01F6009280BC /* RNNBottomTabOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5038A378216D01F6009280BC /* RNNBottomTabOptionsTest.m */; };
 		5038A3B1216DF41B009280BC /* UIViewController+RNNOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5038A3AF216DF41B009280BC /* UIViewController+RNNOptions.h */; };
 		5038A3B2216DF41B009280BC /* UIViewController+RNNOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5038A3B0216DF41B009280BC /* UIViewController+RNNOptions.m */; };
@@ -204,6 +207,8 @@
 		50887C1620ECC5C200D06111 /* RNNButtonOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50887C1420ECC5C200D06111 /* RNNButtonOptions.m */; };
 		50887CA920F26BFE00D06111 /* RNNOverlayWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 50887CA720F26BFD00D06111 /* RNNOverlayWindow.m */; };
 		50887CAA20F26BFE00D06111 /* RNNOverlayWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 50887CA820F26BFE00D06111 /* RNNOverlayWindow.h */; };
+		509B2480217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 509B247F217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m */; };
+		509B258F2178BE7A00C83C23 /* RNNNavigationControllerPresenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 509B258E2178BE7A00C83C23 /* RNNNavigationControllerPresenterTest.m */; };
 		50A00C37200F84D6000F01A6 /* RNNOverlayOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */; };
 		50A00C38200F84D6000F01A6 /* RNNOverlayOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */; };
 		50BE951220B5A787004F5DF5 /* RNNStatusBarOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 50BE951020B5A787004F5DF5 /* RNNStatusBarOptions.m */; };
@@ -376,6 +381,7 @@
 		390AD476200F499D00A8250D /* RNNSwizzles.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSwizzles.m; sourceTree = "<group>"; };
 		4534E72320CB6724009F8185 /* RNNLargeTitleOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNLargeTitleOptions.h; sourceTree = "<group>"; };
 		4534E72420CB6724009F8185 /* RNNLargeTitleOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNLargeTitleOptions.m; sourceTree = "<group>"; };
+		501214C8217741A000435148 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
 		501223D52173590F000F5F98 /* RNNNavigationControllerPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNNavigationControllerPresenter.h; sourceTree = "<group>"; };
 		501223D62173590F000F5F98 /* RNNNavigationControllerPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationControllerPresenter.m; sourceTree = "<group>"; };
 		501224042173592D000F5F98 /* RNNTabBarPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNTabBarPresenter.h; sourceTree = "<group>"; };
@@ -411,9 +417,11 @@
 		502CB43920CBCA140019B2FE /* RNNBridgeManagerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBridgeManagerDelegate.h; sourceTree = "<group>"; };
 		502CB46C20CD1DDA0019B2FE /* RNNBackButtonOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNBackButtonOptions.h; sourceTree = "<group>"; };
 		502CB46D20CD1DDA0019B2FE /* RNNBackButtonOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBackButtonOptions.m; sourceTree = "<group>"; };
+		502F0E132178CF8200367CC3 /* UIViewController+RNNOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RNNOptionsTest.m"; sourceTree = "<group>"; };
+		502F0E152178D09600367CC3 /* RNNBottomTabPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabPresenterTest.m; sourceTree = "<group>"; };
 		5038A372216CDDB6009280BC /* UIViewController+SideMenuController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SideMenuController.h"; sourceTree = "<group>"; };
 		5038A373216CDDB6009280BC /* UIViewController+SideMenuController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SideMenuController.m"; sourceTree = "<group>"; };
-		5038A376216CF252009280BC /* RNNBottomTabsOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabsOptionsTest.m; sourceTree = "<group>"; };
+		5038A376216CF252009280BC /* UITabBarController+RNNOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+RNNOptionsTest.m"; sourceTree = "<group>"; };
 		5038A378216D01F6009280BC /* RNNBottomTabOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNBottomTabOptionsTest.m; sourceTree = "<group>"; };
 		5038A3AF216DF41B009280BC /* UIViewController+RNNOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RNNOptions.h"; sourceTree = "<group>"; };
 		5038A3B0216DF41B009280BC /* UIViewController+RNNOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RNNOptions.m"; sourceTree = "<group>"; };
@@ -517,6 +525,8 @@
 		50887C1420ECC5C200D06111 /* RNNButtonOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNButtonOptions.m; sourceTree = "<group>"; };
 		50887CA720F26BFD00D06111 /* RNNOverlayWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayWindow.m; sourceTree = "<group>"; };
 		50887CA820F26BFE00D06111 /* RNNOverlayWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNOverlayWindow.h; sourceTree = "<group>"; };
+		509B247F217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+RNNOptionsTest.m"; sourceTree = "<group>"; };
+		509B258E2178BE7A00C83C23 /* RNNNavigationControllerPresenterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNNavigationControllerPresenterTest.m; sourceTree = "<group>"; };
 		50A00C35200F84D6000F01A6 /* RNNOverlayOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNOverlayOptions.h; sourceTree = "<group>"; };
 		50A00C36200F84D6000F01A6 /* RNNOverlayOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNOverlayOptions.m; sourceTree = "<group>"; };
 		50BE951020B5A787004F5DF5 /* RNNStatusBarOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNStatusBarOptions.m; sourceTree = "<group>"; };
@@ -633,6 +643,7 @@
 				7B49FEE91E950A7A00DEB3EA /* libRCTVibration.a in Frameworks */,
 				7B49FEEA1E950A7A00DEB3EA /* libRCTWebSocket.a in Frameworks */,
 				7B49FEEB1E950A7A00DEB3EA /* libReact.a in Frameworks */,
+				501214C9217741A000435148 /* libOCMock.a in Frameworks */,
 				7B49FEEC1E950A7A00DEB3EA /* libyoga.a in Frameworks */,
 				7B49FEC01E95090800DEB3EA /* libReactNativeNavigation.a in Frameworks */,
 			);
@@ -989,7 +1000,8 @@
 				505EDD31214E4BE80071C7DE /* RNNNavigationControllerTest.m */,
 				506F630C216A599300AD0D0A /* RNNTabBarControllerTest.m */,
 				506F630E216A5AD700AD0D0A /* RNNViewControllerPresenterTest.m */,
-				5038A376216CF252009280BC /* RNNBottomTabsOptionsTest.m */,
+				509B258E2178BE7A00C83C23 /* RNNNavigationControllerPresenterTest.m */,
+				502F0E152178D09600367CC3 /* RNNBottomTabPresenterTest.m */,
 				5038A378216D01F6009280BC /* RNNBottomTabOptionsTest.m */,
 				7B49FEBF1E95090800DEB3EA /* Info.plist */,
 				E83BAD671F2734B500A9F3DD /* RNNNavigationOptionsTest.m */,
@@ -997,6 +1009,9 @@
 				E83BAD7A1F27643000A9F3DD /* RNNTestRootViewCreator.h */,
 				E83BAD7B1F27643000A9F3DD /* RNNTestRootViewCreator.m */,
 				E8DA243C1F973C1900CD552B /* RNNTransitionStateHolderTest.m */,
+				502F0E132178CF8200367CC3 /* UIViewController+RNNOptionsTest.m */,
+				5038A376216CF252009280BC /* UITabBarController+RNNOptionsTest.m */,
+				509B247F217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m */,
 			);
 			path = ReactNativeNavigationTests;
 			sourceTree = "<group>";
@@ -1004,6 +1019,7 @@
 		7B49FED01E950A7A00DEB3EA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				501214C8217741A000435148 /* libOCMock.a */,
 				7B49FED11E950A7A00DEB3EA /* libcxxreact.a */,
 				7B49FED21E950A7A00DEB3EA /* libjschelpers.a */,
 				7B49FED31E950A7A00DEB3EA /* libRCTActionSheet.a */,
@@ -1346,8 +1362,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5038A377216CF252009280BC /* RNNBottomTabsOptionsTest.m in Sources */,
+				502F0E142178CF8200367CC3 /* UIViewController+RNNOptionsTest.m in Sources */,
+				5038A377216CF252009280BC /* UITabBarController+RNNOptionsTest.m in Sources */,
 				E83BAD7C1F27643000A9F3DD /* RNNTestRootViewCreator.m in Sources */,
+				502F0E162178D09600367CC3 /* RNNBottomTabPresenterTest.m in Sources */,
 				504753782109C13C00FFFBE6 /* RNNOverlayManagerTest.m in Sources */,
 				506F630F216A5AD700AD0D0A /* RNNViewControllerPresenterTest.m in Sources */,
 				7B49FECE1E95098500DEB3EA /* RNNCommandsHandlerTest.m in Sources */,
@@ -1355,8 +1373,10 @@
 				E83BAD681F2734B500A9F3DD /* RNNNavigationOptionsTest.m in Sources */,
 				505EDD32214E4BE80071C7DE /* RNNNavigationControllerTest.m in Sources */,
 				7B49FECF1E95098500DEB3EA /* RNNNavigationStackManagerTest.m in Sources */,
+				509B2480217873FF00C83C23 /* UINavigationController+RNNOptionsTest.m in Sources */,
 				506F630D216A599300AD0D0A /* RNNTabBarControllerTest.m in Sources */,
 				7B49FECB1E95098500DEB3EA /* RNNControllerFactoryTest.m in Sources */,
+				509B258F2178BE7A00C83C23 /* RNNNavigationControllerPresenterTest.m in Sources */,
 				7B49FECD1E95098500DEB3EA /* RNNModalManagerTest.m in Sources */,
 				E83BAD791F27416B00A9F3DD /* RNNRootViewControllerTest.m in Sources */,
 				E8DA243D1F973C1900CD552B /* RNNTransitionStateHolderTest.m in Sources */,
@@ -1515,9 +1535,18 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/**";
 				INFOPLIST_FILE = ReactNativeNavigationTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"-l\"c++\"",
 					"-ObjC",
@@ -1533,9 +1562,18 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/**";
 				INFOPLIST_FILE = ReactNativeNavigationTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"-l\"c++\"",
 					"-ObjC",
