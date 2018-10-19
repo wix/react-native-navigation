@@ -32,4 +32,6 @@
 
 - (void)rnn_setBackgroundColor:(UIColor *)backgroundColor;
 
+- (BOOL)isModal;
+
 @end

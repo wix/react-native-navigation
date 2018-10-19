@@ -9,6 +9,7 @@
 #import "React/RCTUIManager.h"
 #import "RNNErrorHandler.h"
 #import "RNNDefaultOptionsHelper.h"
+#import "UIViewController+RNNOptions.h"
 
 static NSString* const setRoot	= @"setRoot";
 static NSString* const setStackRoot	= @"setStackRoot";
@@ -188,9 +189,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 		[_store removeComponent:componentId];
 		[_eventEmitter sendOnNavigationCommandCompletion:pop params:@{@"componentId": componentId}];
 		completion();
-	} rejection:^(NSString *code, NSString *message, NSError *error) {
-		
-	}];
+	} rejection:rejection];
 }
 
 - (void)popTo:(NSString*)componentId mergeOptions:(NSDictionary *)mergeOptions completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
@@ -240,18 +239,25 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	}];
 }
 
-- (void)dismissModal:(NSString*)componentId mergeOptions:(NSDictionary *)mergeOptions completion:(RNNTransitionCompletionBlock)completion {
+- (void)dismissModal:(NSString*)componentId mergeOptions:(NSDictionary *)mergeOptions completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
 	[self assertReady];
+	
+	UIViewController<RNNParentProtocol> *modalToDismiss = (UIViewController<RNNParentProtocol>*)[_store findComponentForId:componentId];
+	
+	if (!modalToDismiss.isModal) {
+		[RNNErrorHandler reject:reject withErrorCode:1013 errorDescription:@"component is not a modal"];
+		return;
+	}
+	
+	RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
+	[modalToDismiss.getCurrentChild.options overrideOptions:options];
+	
+	[self removePopedViewControllers:modalToDismiss.navigationController.viewControllers];
 	
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
 		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
 	}];
-	UIViewController<RNNParentProtocol> *modalToDismiss = (UIViewController<RNNParentProtocol>*)[_store findComponentForId:componentId];
-	RNNNavigationOptions *options = [[RNNNavigationOptions alloc] initWithDict:mergeOptions];
-	[modalToDismiss.getCurrentChild.options overrideOptions:options];
-	
-	[self removePopedViewControllers:modalToDismiss.navigationController.viewControllers];
 	
 	[_modalManager dismissModal:modalToDismiss completion:completion];
 	

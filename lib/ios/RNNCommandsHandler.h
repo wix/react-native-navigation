@@ -26,7 +26,7 @@
 
 - (void)showModal:(NSDictionary*)layout completion:(RNNTransitionWithComponentIdCompletionBlock)completion;
 
-- (void)dismissModal:(NSString*)componentId mergeOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion;
+- (void)dismissModal:(NSString*)componentId mergeOptions:(NSDictionary*)options completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject;
 
 - (void)dismissAllModals:(NSDictionary *)options completion:(RNNTransitionCompletionBlock)completion;
 
