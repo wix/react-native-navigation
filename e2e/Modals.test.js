@@ -131,4 +131,11 @@ describe('modal', () => {
     await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
     await expect(elementByLabel('Modal Stack Position: 1')).toBeVisible();
   });
+
+  test('dismiss modal on non-modal component should not deatch component', async () => {
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await elementById(testIDs.DISMISS_MODAL_BUTTON).tap();
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementById(testIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+  });
 });

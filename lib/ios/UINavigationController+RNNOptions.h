@@ -30,4 +30,6 @@
 
 - (void)rnn_setNavigationBarLargeTitleFontFamily:(NSString *)fontFamily fontSize:(NSNumber *)fontSize color:(UIColor *)color;
 
+- (void)rnn_setBackButtonColor:(UIColor *)color;
+
 @end

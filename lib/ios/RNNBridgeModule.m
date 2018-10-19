@@ -76,7 +76,7 @@ RCT_EXPORT_METHOD(showModal:(NSString*)commandId layout:(NSDictionary*)layout re
 RCT_EXPORT_METHOD(dismissModal:(NSString*)commandId componentId:(NSString*)componentId mergeOptions:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
 	[_commandsHandler dismissModal:componentId mergeOptions:options completion:^{
 		resolve(componentId);
-	}];
+	} rejection:reject];
 }
 
 RCT_EXPORT_METHOD(dismissAllModals:(NSString*)commandId mergeOptions:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
