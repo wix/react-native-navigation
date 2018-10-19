@@ -104,7 +104,7 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 			break;
 		}
 	}
-	if (customBadge) {
+	if (customBadge && badgeColor) {
 		customBadge.backgroundColor = badgeColor;
 	}
 }

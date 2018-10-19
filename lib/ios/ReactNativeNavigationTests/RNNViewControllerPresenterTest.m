@@ -1,5 +1,7 @@
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import "RNNViewControllerPresenter.h"
+#import "UIViewController+RNNOptions.h"
 
 @interface RNNViewControllerPresenterTest : XCTestCase
 
@@ -14,7 +16,7 @@
 - (void)setUp {
     [super setUp];
 	self.uut = [[RNNViewControllerPresenter alloc] init];
-	self.bindedViewController = [UIViewController new];
+	self.bindedViewController = [OCMockObject partialMockForObject:[UIViewController new]];
 	[self.uut bindViewController:self.bindedViewController];
 	self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
@@ -48,6 +50,13 @@
 - (void)testApplyOptions_backButtonVisibleDefaultTrue {
 	[self.uut applyOptions:self.options];
 	XCTAssertFalse(self.bindedViewController.navigationItem.hidesBackButton);
+}
+
+- (void)testApplyOptions_drawBehindTabBarTrueWhenVisibleFalse {
+	self.options.bottomTabs.visible = [[Bool alloc] initWithValue:@(0)];
+	[[(id)self.bindedViewController expect] rnn_setDrawBehindTabBar:YES];
+	[self.uut applyOptions:self.options];
+	[(id)self.bindedViewController verify];
 }
 
 @end

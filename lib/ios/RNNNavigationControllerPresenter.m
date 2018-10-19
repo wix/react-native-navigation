@@ -11,7 +11,7 @@
 	
 	
 	RNNNavigationController* navigationController = self.bindedViewController;
-
+	
 	[navigationController rnn_setInteractivePopGestureEnabled:[options.popGesture getWithDefaultValue:YES]];
 	[navigationController rnn_setRootBackgroundImage:[options.rootBackgroundImage getWithDefaultValue:nil]];
 	[navigationController rnn_setNavigationBarTestID:[options.topBar.testID getWithDefaultValue:nil]];
@@ -25,8 +25,14 @@
 	[navigationController setTopBarBackgroundColor:[options.topBar.background.color getWithDefaultValue:nil]];
 	[navigationController rnn_setNavigationBarLargeTitleVisible:[options.topBar.largeTitle.visible getWithDefaultValue:NO]];
 	[navigationController rnn_setNavigationBarLargeTitleFontFamily:[options.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[options.topBar.largeTitle.color getWithDefaultValue:nil]];
-	[navigationController rnn_setBackButtonIcon:[options.topBar.backButton.icon getWithDefaultValue:nil] withColor:[options.topBar.backButton.color getWithDefaultValue:nil] title:[options.topBar.backButton.showTitle getWithDefaultValue:YES] ? [options.topBar.backButton.title getWithDefaultValue:nil] : @""];
 	[navigationController rnn_setNavigationBarFontFamily:[options.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[options.topBar.title.fontSize getWithDefaultValue:nil] color:[options.topBar.title.color getWithDefaultValue:nil]];
+}
+
+- (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options {
+	[super applyOptionsOnWillMoveToParentViewController:options];
+	
+	RNNNavigationController* navigationController = self.bindedViewController;
+	[navigationController rnn_setBackButtonIcon:[options.topBar.backButton.icon getWithDefaultValue:nil] withColor:[options.topBar.backButton.color getWithDefaultValue:nil] title:[options.topBar.backButton.showTitle getWithDefaultValue:YES] ? [options.topBar.backButton.title getWithDefaultValue:nil] : @""];
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
@@ -85,13 +91,13 @@
 	
 	if (options.topBar.backButton.icon.hasValue) {
 		[navigationController rnn_setBackButtonIcon:[withDefault.topBar.backButton.icon getWithDefaultValue:nil] withColor:[withDefault.topBar.backButton.color getWithDefaultValue:nil] title:[withDefault.topBar.backButton.showTitle getWithDefaultValue:YES] ? [withDefault.topBar.backButton.title getWithDefaultValue:nil] : @""];
-
+		
 	}
 	
 	[navigationController rnn_setNavigationBarLargeTitleFontFamily:[withDefault.topBar.largeTitle.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.largeTitle.fontSize getWithDefaultValue:nil] color:[withDefault.topBar.largeTitle.color getWithDefaultValue:nil]];
 	
 	[navigationController rnn_setNavigationBarFontFamily:[withDefault.topBar.title.fontFamily getWithDefaultValue:nil] fontSize:[withDefault.topBar.title.fontSize getWithDefaultValue:nil] color:[withDefault.topBar.title.color getWithDefaultValue:nil]];
-
+	
 }
 
 @end

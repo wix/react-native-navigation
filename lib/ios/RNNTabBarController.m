@@ -1,17 +1,13 @@
-
 #import "RNNTabBarController.h"
-
-#define kTabBarHiddenDuration 0.3
 
 @implementation RNNTabBarController {
 	NSUInteger _currentTabIndex;
-	RNNEventEmitter *_eventEmitter;
 }
 
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 			  childViewControllers:(NSArray *)childViewControllers
 						   options:(RNNNavigationOptions *)options
-						 presenter:(RNNBasePresenter *)presenter
+						 presenter:(RNNTabBarPresenter *)presenter
 					  eventEmitter:(RNNEventEmitter *)eventEmitter {
 	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options presenter:presenter];
 	
@@ -23,17 +19,14 @@
 - (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
 			  childViewControllers:(NSArray *)childViewControllers
 						   options:(RNNNavigationOptions *)options
-						 presenter:(RNNViewControllerPresenter *)presenter {
+						 presenter:(RNNTabBarPresenter *)presenter {
 	self = [super init];
 	
 	self.delegate = self;
 	self.options = options;
-	
 	self.layoutInfo = layoutInfo;
-	
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
-	
 	[self setViewControllers:childViewControllers];
 	[self setTabItemBadges];
 	
@@ -71,13 +64,6 @@
 	}
 }
 
-- (instancetype)initWithEventEmitter:(id)eventEmitter {
-	self = [super init];
-	_eventEmitter = eventEmitter;
-	self.delegate = self;
-	return self;
-}
-
 - (void)willMoveToParentViewController:(UIViewController *)parent {
 	if (parent) {
 		[_presenter applyOptionsOnWillMoveToParentViewController:self.options];
@@ -98,11 +84,6 @@
 	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	[_presenter applyOptions:self.options];
-}
-
 - (UITabBarItem *)tabBarItem {
 	return super.tabBarItem ? super.tabBarItem : self.viewControllers.lastObject.tabBarItem;
 }
@@ -113,9 +94,9 @@
 
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
 	for (id child in self.childViewControllers) {
-		UIViewController<RNNParentProtocol>* vc = child;
+		UIViewController<RNNLayoutProtocol>* vc = child;
 
-		if ([vc.layoutInfo.componentId isEqualToString:componentID]) {
+		if ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] && [vc.layoutInfo.componentId isEqualToString:componentID]) {
 			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
 		}
 	}

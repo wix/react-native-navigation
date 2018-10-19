@@ -263,14 +263,6 @@
 	return self.optionsWithDefault.layout.supportedOrientations;
 }
 
-- (BOOL)hidesBottomBarWhenPushed
-{
-	if (self.optionsWithDefault.bottomTabs.visible.hasValue) {
-		return !self.optionsWithDefault.bottomTabs.visible.get;
-	}
-	return NO;
-}
-
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
 	RNNRootViewController* vc =  (RNNRootViewController*)viewController;
 	if (![[vc.optionsWithDefault.topBar.backButton.transition getWithDefaultValue:@""] isEqualToString:@"custom"]){
