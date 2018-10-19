@@ -1,5 +1,6 @@
 #import "RNNModalManager.h"
 #import "RNNRootViewController.h"
+#import "RCTConvert+Modal.h"
 
 @implementation RNNModalManager {
 	NSMutableArray* _pendingModalIdsToDismiss;
@@ -23,14 +24,19 @@
 	if (!viewController) {
 		@throw [NSException exceptionWithName:@"ShowUnknownModal" reason:@"showModal called with nil viewController" userInfo:nil];
 	}
-	
+
 	UIViewController* topVC = [self topPresentedVC];
 	topVC.definesPresentationContext = YES;
-	
+
 	if (hasCustomAnimation) {
 		viewController.transitioningDelegate = (UIViewController<UIViewControllerTransitioningDelegate>*)topVC;
 	}
-	
+
+    // Set the UIModalPresentationStyle
+    if ([viewController isKindOfClass:[RNNRootViewController class]]) {
+        viewController.modalPresentationStyle = [RCTConvert UIModalPresentationStyle:[((RNNRootViewController*)viewController).options.modalPresentationStyle getWithDefaultValue:@"fullScreen"]]; ;
+    }
+
 	[topVC presentViewController:viewController animated:animated completion:^{
 		if (completion) {
 			completion(nil);
