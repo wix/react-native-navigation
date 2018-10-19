@@ -242,11 +242,6 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)dismissModal:(NSString*)componentId mergeOptions:(NSDictionary *)mergeOptions completion:(RNNTransitionCompletionBlock)completion rejection:(RNNTransitionRejectionBlock)reject {
 	[self assertReady];
 	
-	[CATransaction begin];
-	[CATransaction setCompletionBlock:^{
-		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
-	}];
-	
 	UIViewController<RNNParentProtocol> *modalToDismiss = (UIViewController<RNNParentProtocol>*)[_store findComponentForId:componentId];
 	
 	if (!modalToDismiss.isModal) {
@@ -258,6 +253,11 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 	[modalToDismiss.getCurrentChild.options overrideOptions:options];
 	
 	[self removePopedViewControllers:modalToDismiss.navigationController.viewControllers];
+	
+	[CATransaction begin];
+	[CATransaction setCompletionBlock:^{
+		[_eventEmitter sendOnNavigationCommandCompletion:dismissModal params:@{@"componentId": componentId}];
+	}];
 	
 	[_modalManager dismissModal:modalToDismiss completion:completion];
 	
