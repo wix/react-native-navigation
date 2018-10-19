@@ -96,4 +96,11 @@ describe('screen stack', () => {
     await elementById(testIDs.POP_BUTTON).tap();
     await expect(elementByLabel('This is a side menu center screen tab 1')).toBeVisible();
   });
+
+  test('pop component should not deatch component if can`t pop', async () => {
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await elementById(testIDs.POP_BUTTON).tap();
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementById(testIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+  });
 });

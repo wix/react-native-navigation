@@ -28,6 +28,19 @@
 	[_bindedViewController verify];
 }
 
+- (void)testApplyOptions_shouldSetBackButtonColor_withDefaultValues {
+	[[_bindedViewController expect] rnn_setBackButtonColor:nil];
+	[self.uut applyOptions:self.options];
+	[_bindedViewController verify];
+}
+
+- (void)testApplyOptions_shouldSetBackButtonColor_withColor {
+	self.options.topBar.backButton.color = [[Color alloc] initWithValue:[UIColor redColor]];
+	[[_bindedViewController expect] rnn_setBackButtonColor:[UIColor redColor]];
+	[self.uut applyOptions:self.options];
+	[_bindedViewController verify];
+}
+
 - (void)testApplyOptionsOnWillMoveToParent_shouldSetBackButtonOnBindedViewController_withIcon {
     Image* image = [[Image alloc] initWithValue:[UIImage new]];
     self.options.topBar.backButton.icon = image;

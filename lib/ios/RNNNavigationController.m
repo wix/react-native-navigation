@@ -48,7 +48,7 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 }
 
 - (UITabBarItem *)tabBarItem {
-	return super.tabBarItem ? super.tabBarItem : self.viewControllers.lastObject.tabBarItem;
+	return self.viewControllers.lastObject.tabBarItem;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {

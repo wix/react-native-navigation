@@ -1,5 +1,7 @@
 #import <XCTest/XCTest.h>
 #import "RNNBottomTabPresenter.h"
+#import <OCMock/OCMock.h>
+#import "UIViewController+RNNOptions.h"
 
 @interface RNNBottomTabPresenterTest : XCTestCase
 
@@ -13,6 +15,32 @@
 
 - (void)setUp {
     [super setUp];
+    self.uut = [[RNNBottomTabPresenter alloc] init];
+    self.bindedViewController = [OCMockObject partialMockForObject:[UIViewController new]];
+    [self.uut bindViewController:self.bindedViewController];
+    self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
+}
+
+- (void)testApplyOptions_shouldSetTabBarItemBadgeWithDefault {
+	[[self.bindedViewController expect] rnn_setTabBarItemBadge:nil];
+	[self.uut applyOptions:self.options];
+	[self.bindedViewController verify];
+}
+
+- (void)testApplyOptions_shouldSetTabBarItemBadgeWithValue {
+	self.options.bottomTab.badge = [[Text alloc] initWithValue:@"badge"];
+	[[self.bindedViewController expect] rnn_setTabBarItemBadge:@"badge"];
+	[self.uut applyOptions:self.options];
+	[self.bindedViewController verify];
+}
+
+- (void)testApplyOptions_setTabBarItemBadgeShouldNotCalledOnUITabBarController {
+	self.bindedViewController = [OCMockObject partialMockForObject:[UITabBarController new]];
+	[self.uut bindViewController:self.bindedViewController];
+	self.options.bottomTab.badge = [[Text alloc] initWithValue:@"badge"];
+	[[self.bindedViewController reject] rnn_setTabBarItemBadge:@"badge"];
+	[self.uut applyOptions:self.options];
+	[self.bindedViewController verify];
 }
 
 //- (void)test_tabBarTextFontFamily_validFont {

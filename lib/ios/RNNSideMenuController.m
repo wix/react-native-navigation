@@ -46,7 +46,7 @@
 }
 
 - (UITabBarItem *)tabBarItem {
-	return super.tabBarItem ? super.tabBarItem : self.center.tabBarItem;
+	return self.center.tabBarItem;
 }
 
 - (void)onChildWillAppear {

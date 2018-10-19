@@ -509,14 +509,6 @@
 	XCTAssertFalse([self.uut hidesBottomBarWhenPushed]);
 }
 
-
-- (void)testTabBarHidden_true {
-	self.options.bottomTabs.visible = [[Bool alloc] initWithValue:@(0)];
-	[self.uut viewWillAppear:false];
-
-	XCTAssertTrue([self.uut hidesBottomBarWhenPushed]);
-}
-
 - (void)testTabBarHidden_false {
 	self.options.bottomTabs.visible = [[Bool alloc] initWithValue:@(1)];
 	[self.uut viewWillAppear:false];

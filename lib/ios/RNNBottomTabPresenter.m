@@ -1,5 +1,6 @@
 #import "RNNBottomTabPresenter.h"
 #import "RNNTabBarItemCreator.h"
+#import "UIViewController+RNNOptions.h"
 
 @interface RNNBottomTabPresenter()
 
@@ -23,6 +24,17 @@
 		[options.bottomTab.text consume];
 		[options.bottomTab.icon consume];
 		[options.bottomTab.selectedIcon consume];
+	}
+	
+	if (![viewController isKindOfClass:[UITabBarController class]]) {
+		[viewController rnn_setTabBarItemBadge:[options.bottomTab.badge getWithDefaultValue:nil]];
+	}
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
+	UIViewController* viewController = self.bindedViewController;
+	if (options.bottomTab.badge.hasValue && ![viewController isKindOfClass:[UITabBarController class]]) {
+		[viewController rnn_setTabBarItemBadge:options.bottomTab.badge.get];
 	}
 }
 

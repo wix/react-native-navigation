@@ -37,6 +37,7 @@ class TextScreen extends Component {
           <Button title='Show Right Side Menu' testID={testIDs.SHOW_RIGHT_SIDE_MENU_BUTTON} onPress={() => this.showSideMenu('right')} />
           <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
           <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
+          <Button title='Dismiss modal' testID={testIDs.DISMISS_MODAL_BUTTON} onPress={this.onClickDismissModal} />
         </View>
       </Bounds>
     );
@@ -56,6 +57,10 @@ class TextScreen extends Component {
         name: 'navigation.playground.PushedScreen'
       }
     });
+  }
+
+  onClickDismissModal = () => {
+    Navigation.dismissModal(this.props.componentId);
   }
 
   onClickPop = async () => {

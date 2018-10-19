@@ -8,4 +8,6 @@
 
 - (void)setDefaultOptions:(RNNNavigationOptions *)defaultOptions;
 
+- (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions;
+
 @end
