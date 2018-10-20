@@ -27,6 +27,9 @@
 	UIViewController* topVC = [self topPresentedVC];
 	topVC.definesPresentationContext = YES;
 	
+	UIViewController* topUIVC = [self topUIViewController:viewController];
+	topUIVC.modalPresentationStyle = topVC.modalPresentationStyle;
+	
 	if (hasCustomAnimation) {
 		viewController.transitioningDelegate = (UIViewController<UIViewControllerTransitioningDelegate>*)topVC;
 	}
@@ -115,5 +118,19 @@
 	return [root topViewController] ? [root topViewController] : root;
 }
 
+- (UIViewController *)topUIViewController:(UIViewController *)viewController {
+	if ([viewController isKindOfClass:[UINavigationController class]]) {
+		UINavigationController *navigationController = (UINavigationController *)viewController;
+		return [self topUIViewController:[navigationController.viewControllers lastObject]];
+	}
+	if ([viewController isKindOfClass:[UITabBarController class]]) {
+		UITabBarController *tabController = (UITabBarController *)viewController;
+		return [self topUIViewController:tabController.selectedViewController];
+	}
+	if (viewController.presentedViewController) {
+		return [self topUIViewController:viewController.presentedViewController];
+	}
+	return viewController;
+}
 
 @end
