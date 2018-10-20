@@ -137,7 +137,7 @@ public class Navigator extends ParentController {
     }
 
     public void mergeOptions(final String componentId, Options options) {
-        ViewController target = findControllerById(componentId);
+        ViewController target = findController(componentId);
         if (target != null) {
             target.mergeOptions(options);
         }
@@ -160,7 +160,7 @@ public class Navigator extends ParentController {
     }
 
     public void popTo(final String id, Options mergeOptions, CommandListener listener) {
-        ViewController target = findControllerById(id);
+        ViewController target = findController(id);
         if (target != null) {
             target.performOnParentStack(stack -> ((StackController) stack).popTo(target, mergeOptions, listener));
         } else {
@@ -194,13 +194,13 @@ public class Navigator extends ParentController {
 
     @Nullable
     @Override
-    public ViewController findControllerById(String id) {
-        ViewController controllerById = super.findControllerById(id);
+    public ViewController findController(String id) {
+        ViewController controllerById = super.findController(id);
         return controllerById != null ? controllerById : modalStack.findControllerById(id);
     }
 
     private void applyOnStack(String fromId, CommandListener listener, Task<StackController> task) {
-        ViewController from = findControllerById(fromId);
+        ViewController from = findController(fromId);
         if (from != null) {
             if (from instanceof StackController) {
                 task.run((StackController) from);

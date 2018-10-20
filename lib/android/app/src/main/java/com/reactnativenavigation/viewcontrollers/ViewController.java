@@ -177,7 +177,7 @@ public abstract class ViewController<T extends ViewGroup> implements ViewTreeObs
     }
 
     @Nullable
-    public ViewController findControllerById(String id) {
+    public ViewController findController(String id) {
         return isSameId(id) ? this : null;
     }
 
