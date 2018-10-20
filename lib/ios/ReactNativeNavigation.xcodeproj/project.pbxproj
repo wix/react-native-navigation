@@ -767,8 +767,8 @@
 				263905E51E4CAC950023D7D3 /* RNNSideMenuChildVC.m */,
 				507F43C31FF4F17C00D9425B /* RNNTopTabsViewController.h */,
 				507F43C41FF4F17C00D9425B /* RNNTopTabsViewController.m */,
-				E33AC1FF20B5BA0B0090DB8A /* RNNSplitViewController.m */,
 				E33AC20120B5BA550090DB8A /* RNNSplitViewController.h */,
+				E33AC1FF20B5BA0B0090DB8A /* RNNSplitViewController.m */,
 			);
 			name = "Parent ViewControllers";
 			sourceTree = "<group>";

@@ -7,4 +7,6 @@ typedef void (^RNNReactViewReadyCompletionBlock)(void);
 
 - (void)bindViewController:(UIViewController *)viewController;
 
+- (BOOL)isCustomTransitioned;
+
 @end

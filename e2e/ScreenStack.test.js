@@ -103,4 +103,11 @@ describe('screen stack', () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await expect(elementById(testIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
   });
+
+  test('push bottom tabs', async () => {
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementById(testIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+    await elementById(testIDs.PUSH_BOTTOM_TABS_BUTTON).tap();
+    await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
+  });
 });

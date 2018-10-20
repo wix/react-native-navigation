@@ -204,7 +204,7 @@ public class StackController extends ParentController<StackLayout> {
         }
 
         peek().mergeOptions(mergeOptions);
-        Options disappearingOptions = resolveCurrentOptions();
+        Options disappearingOptions = resolveCurrentOptions(presenter.getDefaultOptions());
 
         final ViewController disappearing = stack.pop();
         final ViewController appearing = stack.peek();

@@ -11,6 +11,27 @@
 
 - (void)setUp {
     [super setUp];
+	self.uut = [UIViewController new];
+}
+
+- (void)test_setTabBarItemBadge_shouldSetValidValue {
+	NSString* badgeValue = @"badge";
+	[self.uut rnn_setTabBarItemBadge:badgeValue];
+	XCTAssertEqual(self.uut.tabBarItem.badgeValue, badgeValue);
+}
+
+- (void)test_setTabBarItemBadge_shouldResetWhenValueIsEmptyString {
+	[self.uut rnn_setTabBarItemBadge:@"badge"];
+	NSString* badgeValue = @"";
+	[self.uut rnn_setTabBarItemBadge:badgeValue];
+	XCTAssertEqual(self.uut.tabBarItem.badgeValue, nil);
+}
+
+- (void)test_setTabBarItemBadge_shouldResetWhenValueIsNullObject {
+	[self.uut rnn_setTabBarItemBadge:@"badge"];
+	NSNull* nullBadgeValue = [NSNull new];
+	[self.uut rnn_setTabBarItemBadge:nullBadgeValue];
+	XCTAssertEqual(self.uut.tabBarItem.badgeValue, nil);
 }
 
 @end

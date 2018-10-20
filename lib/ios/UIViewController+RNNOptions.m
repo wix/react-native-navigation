@@ -74,10 +74,11 @@ const NSInteger BLUR_STATUS_TAG = 78264801;
 
 - (void)rnn_setTabBarItemBadge:(NSString *)badge {
 	UITabBarItem *tabBarItem = self.tabBarItem;
-	tabBarItem.badgeValue = badge;
 	
 	if ([badge isKindOfClass:[NSNull class]] || [badge isEqualToString:@""]) {
 		tabBarItem.badgeValue = nil;
+	} else {
+		tabBarItem.badgeValue = badge;
 	}
 }
 

@@ -26,14 +26,14 @@
 		[options.bottomTab.selectedIcon consume];
 	}
 	
-	if (![viewController isKindOfClass:[UITabBarController class]]) {
+	if ([viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
 		[viewController rnn_setTabBarItemBadge:[options.bottomTab.badge getWithDefaultValue:nil]];
 	}
 }
 
 - (void)mergeOptions:(RNNNavigationOptions *)options resolvedOptions:(RNNNavigationOptions *)resolvedOptions {
 	UIViewController* viewController = self.bindedViewController;
-	if (options.bottomTab.badge.hasValue && ![viewController isKindOfClass:[UITabBarController class]]) {
+	if (options.bottomTab.badge.hasValue && [viewController.parentViewController isKindOfClass:[UITabBarController class]]) {
 		[viewController rnn_setTabBarItemBadge:options.bottomTab.badge.get];
 	}
 }

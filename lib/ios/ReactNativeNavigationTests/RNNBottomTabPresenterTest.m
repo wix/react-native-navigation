@@ -21,13 +21,23 @@
     self.options = [[RNNNavigationOptions alloc] initEmptyOptions];
 }
 
-- (void)testApplyOptions_shouldSetTabBarItemBadgeWithDefault {
+- (void)testApplyOptions_shouldSetTabBarItemBadgeWithDefaultWhenParentIsUITabBarController {
+	UITabBarController* tabBarController = [[UITabBarController alloc] init];
+	[tabBarController setViewControllers:@[self.bindedViewController]];
 	[[self.bindedViewController expect] rnn_setTabBarItemBadge:nil];
 	[self.uut applyOptions:self.options];
 	[self.bindedViewController verify];
 }
 
+- (void)testApplyOptions_shouldSetTabBarItemBadgeOnlyWhenParentIsUITabBarController {
+	[[self.bindedViewController reject] rnn_setTabBarItemBadge:[OCMArg any]];
+	[self.uut applyOptions:self.options];
+	[self.bindedViewController verify];
+}
+
 - (void)testApplyOptions_shouldSetTabBarItemBadgeWithValue {
+	UITabBarController* tabBarController = [[UITabBarController alloc] init];
+	[tabBarController setViewControllers:@[self.bindedViewController]];
 	self.options.bottomTab.badge = [[Text alloc] initWithValue:@"badge"];
 	[[self.bindedViewController expect] rnn_setTabBarItemBadge:@"badge"];
 	[self.uut applyOptions:self.options];

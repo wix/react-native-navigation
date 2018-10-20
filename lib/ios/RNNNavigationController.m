@@ -125,8 +125,8 @@ const NSInteger TOP_BAR_TRANSPARENT_TAG = 78264803;
 		UIView *transparentView = [self.navigationBar viewWithTag:TOP_BAR_TRANSPARENT_TAG];
 		if (transparentView){
 			[transparentView removeFromSuperview];
-			[self.navigationBar setBackgroundImage:self.originalTopBarImages[@"backgroundImage"] forBarMetrics:UIBarMetricsDefault];
-			self.navigationBar.shadowImage = self.originalTopBarImages[@"shadowImage"];
+			[self.navigationBar setBackgroundImage:self.originalTopBarImages[@"backgroundImage"] ? self.originalTopBarImages[@"backgroundImage"] : [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] forBarMetrics:UIBarMetricsDefault];
+			self.navigationBar.shadowImage = self.originalTopBarImages[@"shadowImage"] ? self.originalTopBarImages[@"shadowImage"] : self.navigationBar.shadowImage;
 			self.originalTopBarImages = nil;
 		}
 	}

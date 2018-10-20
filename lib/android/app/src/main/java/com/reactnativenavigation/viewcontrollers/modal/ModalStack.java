@@ -137,7 +137,7 @@ public class ModalStack {
     @Nullable
     private ViewController findModalByComponentId(String componentId) {
         for (ViewController modal : modals) {
-            if (modal.findControllerById(componentId) != null) {
+            if (modal.findController(componentId) != null) {
                 return modal;
             }
         }
@@ -148,7 +148,7 @@ public class ModalStack {
     @Nullable
     public ViewController findControllerById(String componentId) {
         for (ViewController modal : modals) {
-            ViewController controllerById = modal.findControllerById(componentId);
+            ViewController controllerById = modal.findController(componentId);
             if (controllerById != null) {
                 return controllerById;
             }

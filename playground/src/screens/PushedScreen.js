@@ -34,6 +34,7 @@ class PushedScreen extends Component {
       this.simulateLongRunningTask();
     }
     this.onClickPush = this.onClickPush.bind(this);
+    this.onClickPushBottomTabs = this.onClickPushBottomTabs.bind(this);
     this.onClickPop = this.onClickPop.bind(this);
     this.onClickPopPrevious = this.onClickPopPrevious.bind(this);
     this.onClickPopToFirstPosition = this.onClickPopToFirstPosition.bind(this);
@@ -80,6 +81,7 @@ class PushedScreen extends Component {
         <Text testID={testIDs.PUSHED_SCREEN_HEADER} style={styles.h1}>{`Pushed Screen`}</Text>
         <Text style={styles.h2}>{`Stack Position: ${stackPosition}`}</Text>
         <Button title='Push' testID={testIDs.PUSH_BUTTON} onPress={this.onClickPush} />
+        <Button title='Push bottomTabs' testID={testIDs.PUSH_BOTTOM_TABS_BUTTON} onPress={this.onClickPushBottomTabs} />
         {Platform.OS === 'ios' && <Button testID={testIDs.SHOW_PREVIEW_BUTTON} onPress={this.onClickPush} onPressIn={this.onClickShowPreview} title='Push Preview' />}
         <Button title='Pop' testID={testIDs.POP_BUTTON} onPress={this.onClickPop} />
         <Button title='Pop Previous' testID={testIDs.POP_PREVIOUS_BUTTON} onPress={this.onClickPopPrevious} />
@@ -210,6 +212,99 @@ class PushedScreen extends Component {
             push: {
               waitForRender: true
             }
+          }
+        }
+      }
+    });
+  }
+
+  async onClickPushBottomTabs() {
+    await Navigation.push(this.props.componentId, {
+      bottomTabs: {
+        id: 'BottomTabs',
+        children: [
+          {
+            stack: {
+              id: 'TAB1_ID',
+              children: [
+                {
+                  component: {
+                    name: 'navigation.playground.TextScreen',
+                    passProps: {
+                      text: 'This is tab 1',
+                      myFunction: () => 'Hello from a function!'
+                    },
+                    options: {
+                      topBar: {
+                        visible: true,
+                        animate: false,
+                        title: {
+                          text: 'React Native Navigation!'
+                        }
+                      },
+                      bottomTab: {
+                        text: 'Tab 1',
+                        icon: require('../images/one.png'),
+                        selectedIcon: require('../images/one.png'),
+                        testID: testIDs.FIRST_TAB_BAR_BUTTON
+                      }
+                    }
+                  }
+                }
+              ],
+              options: {
+                topBar: {
+                  visible: false
+                }
+              }
+            }
+          },
+          {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: 'navigation.playground.TextScreen',
+                    passProps: {
+                      text: 'This is tab 2'
+                    }
+                  }
+                }
+              ],
+              options: {
+                bottomTab: {
+                  text: 'Tab 2',
+                  icon: require('../images/two.png'),
+                  testID: testIDs.SECOND_TAB_BAR_BUTTON
+                }
+              }
+            }
+          },
+          {
+            component: {
+              name: 'navigation.playground.TextScreen',
+              passProps: {
+                text: 'This is tab 3',
+                myFunction: () => 'Hello from a function!'
+              },
+              options: {
+                topBar: {
+                  visible: true,
+                  animate: false
+                },
+                bottomTab: {
+                  text: 'Tab 3',
+                  icon: require('../images/one.png'),
+                  selectedIcon: require('../images/one.png')
+                }
+              }
+            }
+          }
+        ],
+        options: {
+          bottomTabs: {
+            titleDisplayMode: 'alwaysShow',
+            testID: testIDs.BOTTOM_TABS_ELEMENT
           }
         }
       }

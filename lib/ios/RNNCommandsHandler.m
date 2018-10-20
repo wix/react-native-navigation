@@ -97,7 +97,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 - (void)push:(NSString*)componentId layout:(NSDictionary*)layout completion:(RNNTransitionCompletionBlock)completion rejection:(RCTPromiseRejectBlock)rejection {
 	[self assertReady];
 	
-	RNNRootViewController *newVc = (RNNRootViewController *)[_controllerFactory createLayoutAndSaveToStore:layout];
+	UIViewController<RNNLayoutProtocol> *newVc = [_controllerFactory createLayoutAndSaveToStore:layout];
 	UIViewController *fromVC = [_store findComponentForId:componentId];
 	
 	if ([newVc.options.preview.reactTag floatValue] > 0) {
@@ -107,7 +107,7 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			RNNRootViewController* rootVc = (RNNRootViewController*)vc;
 			rootVc.previewController = newVc;
 
-      rootVc.previewCallback = ^(UIViewController *vcc) {
+      		rootVc.previewCallback = ^(UIViewController *vcc) {
 				RNNRootViewController* rvc  = (RNNRootViewController*)vcc;
 				[self->_eventEmitter sendOnPreviewCompleted:componentId previewComponentId:newVc.layoutInfo.componentId];
 				if ([newVc.options.preview.commit floatValue] > 0) {
@@ -141,8 +141,8 @@ static NSString* const setDefaultOptions	= @"setDefaultOptions";
 			});
 		}
 	} else {
-		id animationDelegate = (newVc.options.animations.push.hasCustomAnimation || newVc.isCustomTransitioned) ? newVc : nil;
-		[newVc waitForReactViewRender:(newVc.options.animations.push.waitForRender || animationDelegate) perform:^{
+		id animationDelegate = (newVc.options.animations.push.hasCustomAnimation || newVc.getCurrentChild.isCustomTransitioned) ? newVc : nil;
+		[newVc.getCurrentChild waitForReactViewRender:(newVc.options.animations.push.waitForRender || animationDelegate) perform:^{
 			[_stackManager push:newVc onTop:fromVC animated:newVc.options.animations.push.enable animationDelegate:animationDelegate completion:^{
 				[_eventEmitter sendOnNavigationCommandCompletion:push params:@{@"componentId": componentId}];
 				completion();

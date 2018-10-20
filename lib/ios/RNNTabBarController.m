@@ -52,10 +52,6 @@
 	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
 }
 
-- (UITabBarItem *)tabBarItem {
-	return self.viewControllers.lastObject.tabBarItem;
-}
-
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.selectedViewController.supportedInterfaceOrientations;
 }
