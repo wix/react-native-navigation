@@ -39,6 +39,7 @@
 	self.presenter = presenter;
 	[self.presenter bindViewController:self];
 	self.options = options;
+	[self.presenter applyOptionsOnInit:self.options];
 	
 	self.animator = [[RNNAnimator alloc] initWithTransitionOptions:self.options.customTransition];
 	
@@ -47,7 +48,7 @@
 												 name:RCTJavaScriptWillStartLoadingNotification
 											   object:nil];
 	self.navigationController.delegate = self;
-
+	
 	return self;
 }
 
