@@ -8,6 +8,8 @@
 
 - (void)bindViewController:(UIViewController *)bindedViewController;
 
+- (void)applyOptionsOnInit:(RNNNavigationOptions *)initialOptions;
+
 - (void)applyOptions:(RNNNavigationOptions *)initialOptions;
 
 - (void)applyOptionsOnWillMoveToParentViewController:(RNNNavigationOptions *)options;

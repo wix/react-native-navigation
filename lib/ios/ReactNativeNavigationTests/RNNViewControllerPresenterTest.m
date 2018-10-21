@@ -59,4 +59,30 @@
 	[(id)self.bindedViewController verify];
 }
 
+- (void)testApplyOptionsOnInit_shouldSetModalPresentetionStyleWithDefault {
+	[[(id)self.bindedViewController expect] rnn_setModalPresentationStyle:UIModalPresentationFullScreen];
+	[self.uut applyOptionsOnInit:self.options];
+	[(id)self.bindedViewController verify];
+}
+
+- (void)testApplyOptionsOnInit_shouldSetModalTransitionStyleWithDefault {
+	[[(id)self.bindedViewController expect] rnn_setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+	[self.uut applyOptionsOnInit:self.options];
+	[(id)self.bindedViewController verify];
+}
+
+- (void)testApplyOptionsOnInit_shouldSetModalPresentetionStyleWithValue {
+	self.options.modalPresentationStyle = [[Text alloc] initWithValue:@"overCurrentContext"];
+	[[(id)self.bindedViewController expect] rnn_setModalPresentationStyle:UIModalPresentationOverCurrentContext];
+	[self.uut applyOptionsOnInit:self.options];
+	[(id)self.bindedViewController verify];
+}
+
+- (void)testApplyOptionsOnInit_shouldSetModalTransitionStyleWithValue {
+	self.options.modalTransitionStyle = [[Text alloc] initWithValue:@"crossDissolve"];
+	[[(id)self.bindedViewController expect] rnn_setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+	[self.uut applyOptionsOnInit:self.options];
+	[(id)self.bindedViewController verify];
+}
+
 @end

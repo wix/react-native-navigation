@@ -13,21 +13,12 @@ public class SideMenuPresenter {
         this.sideMenu = sideMenu;
     }
 
-    public void present(SideMenuRootOptions options) {
-        if (options.left.visible.isTrue()) {
-            sideMenu.openDrawer(Gravity.LEFT);
-
-        } else if (options.left.visible.isFalse() && sideMenu.isDrawerOpen(Gravity.LEFT)) {
-            sideMenu.closeDrawer(Gravity.LEFT);
-        }
-
-        if (options.right.visible.isTrue()) {
-            sideMenu.openDrawer(Gravity.RIGHT);
-
-        } else if (options.right.visible.isFalse() && sideMenu.isDrawerOpen(Gravity.RIGHT)){
-            sideMenu.closeDrawer(Gravity.RIGHT);
-        }
-
+    /**
+     * Called when initializing the sideMenu DrawerLayout.
+     *
+     * @param options Side menu options
+     */
+    public void applyInitialOptions(SideMenuRootOptions options) {
         if (options.left.enabled.isFalse()) {
             sideMenu.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
         }
@@ -40,6 +31,26 @@ public class SideMenuPresenter {
         }
         else  if (options.right.enabled.isTrue()) {
             sideMenu.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.RIGHT);
+        }
+    }
+
+    public void present(SideMenuRootOptions options) {
+        // TODO: Not sure why we call these options when we show the DrawerLayout rather than when initializing it.
+        // TODO: (i.e. `setDrawerLockMode()` is supposed to be called when the DrawerLayout is initialized.
+        applyInitialOptions(options);
+
+        if (options.left.visible.isTrue()) {
+            sideMenu.openDrawer(Gravity.LEFT);
+
+        } else if (options.left.visible.isFalse() && sideMenu.isDrawerOpen(Gravity.LEFT)) {
+            sideMenu.closeDrawer(Gravity.LEFT);
+        }
+
+        if (options.right.visible.isTrue()) {
+            sideMenu.openDrawer(Gravity.RIGHT);
+
+        } else if (options.right.visible.isFalse() && sideMenu.isDrawerOpen(Gravity.RIGHT)){
+            sideMenu.closeDrawer(Gravity.RIGHT);
         }
     }
 
