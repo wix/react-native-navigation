@@ -40,11 +40,6 @@
 	}
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	[_presenter applyOptions:self.options];
-}
-
 - (UITabBarItem *)tabBarItem {
 	return self.center.tabBarItem;
 }

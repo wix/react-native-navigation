@@ -13,8 +13,11 @@
 	[sideMenuController side:MMDrawerSideLeft enabled:[options.sideMenu.left.enabled getWithDefaultValue:YES]];
 	[sideMenuController side:MMDrawerSideRight enabled:[options.sideMenu.right.enabled getWithDefaultValue:YES]];
 	
-	[sideMenuController setShouldStretchDrawer:[options.sideMenu.shouldStretchDrawer getWithDefaultValue:YES]];
-	[sideMenuController setAnimationVelocity:[options.sideMenu.animationVelocity getWithDefaultValue:840.0f]];
+	[sideMenuController setShouldStretchLeftDrawer:[options.sideMenu.left.shouldStretchDrawer getWithDefaultValue:YES]];
+	[sideMenuController setShouldStretchRightDrawer:[options.sideMenu.right.shouldStretchDrawer getWithDefaultValue:YES]];
+	
+	[sideMenuController setAnimationVelocityLeft:[options.sideMenu.left.animationVelocity getWithDefaultValue:840.0f]];
+	[sideMenuController setAnimationVelocityRight:[options.sideMenu.right.animationVelocity getWithDefaultValue:840.0f]];
 	
 	if (options.sideMenu.left.width.hasValue) {
 		[sideMenuController side:MMDrawerSideLeft width:options.sideMenu.left.width.get];
@@ -58,12 +61,20 @@
 		[sideMenuController side:MMDrawerSideRight width:options.sideMenu.right.width.get];
 	}
 	
-	if (options.sideMenu.shouldStretchDrawer.hasValue) {
-		sideMenuController.shouldStretchDrawer = options.sideMenu.shouldStretchDrawer.get;
+	if (options.sideMenu.left.shouldStretchDrawer.hasValue) {
+		sideMenuController.shouldStretchLeftDrawer = options.sideMenu.left.shouldStretchDrawer.get;
 	}
 	
-	if (options.sideMenu.animationVelocity.hasValue) {
-		sideMenuController.animationVelocity = options.sideMenu.animationVelocity.get;
+	if (options.sideMenu.right.shouldStretchDrawer.hasValue) {
+		sideMenuController.shouldStretchRightDrawer = options.sideMenu.right.shouldStretchDrawer.get;
+	}
+	
+	if (options.sideMenu.left.animationVelocity.hasValue) {
+		sideMenuController.animationVelocityLeft = options.sideMenu.left.animationVelocity.get;
+	}
+	
+	if (options.sideMenu.right.animationVelocity.hasValue) {
+		sideMenuController.animationVelocityRight = options.sideMenu.right.animationVelocity.get;
 	}
 }
 
