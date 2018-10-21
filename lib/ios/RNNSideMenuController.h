@@ -1,26 +1,20 @@
-//
-//  RNNSideMenuController.h
-//  ReactNativeNavigation
-//
-//  Created by Ran Greenberg on 09/02/2017.
-//  Copyright © 2017 Wix. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 #import "RNNSideMenuChildVC.h"
 #import "MMDrawerController.h"
-#import "RNNRootViewProtocol.h"
+#import "RNNParentProtocol.h"
 
-@interface RNNSideMenuController : UIViewController <RNNRootViewProtocol>
+@interface RNNSideMenuController : MMDrawerController <RNNParentProtocol>
 
 @property (readonly) RNNSideMenuChildVC *center;
 @property (readonly) RNNSideMenuChildVC *left;
 @property (readonly) RNNSideMenuChildVC *right;
-@property (readonly) MMDrawerController *sideMenu;
 
--(instancetype)initWithControllers:(NSArray*)controllers;
+@property (nonatomic, retain) RNNLayoutInfo* layoutInfo;
+@property (nonatomic, retain) RNNViewControllerPresenter* presenter;
+@property (nonatomic, strong) RNNNavigationOptions* options;
 
--(void)showSideMenu:(MMDrawerSide)side animated:(BOOL)animated;
--(void)hideSideMenu:(MMDrawerSide)side animated:(BOOL)animated;
+- (void)side:(MMDrawerSide)side enabled:(BOOL)enabled;
+- (void)side:(MMDrawerSide)side visible:(BOOL)visible;
+- (void)side:(MMDrawerSide)side width:(double)width;
 
 @end

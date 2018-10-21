@@ -3,7 +3,10 @@
 
 @interface RNNBackgroundOptions : RNNOptions
 
-@property (nonatomic, strong) NSNumber* color;
+@property (nonatomic, strong) Color* color;
+@property (nonatomic, strong) Bool* translucent;
+@property (nonatomic, strong) Bool* blur;
+@property (nonatomic, strong) Bool* clipToBounds;
 @property (nonatomic, strong) RNNComponentOptions* component;
 
 @end

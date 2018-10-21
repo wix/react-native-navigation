@@ -1,42 +1,49 @@
 #import "RNNSplitViewController.h"
 
-@interface RNNSplitViewController()
-@property (nonatomic) BOOL _optionsApplied;
-@property (nonatomic, copy) void (^rotationBlock)(void);
-@end
-
 @implementation RNNSplitViewController
 
--(instancetype)initWithOptions:(RNNSplitViewOptions*)options
-			withComponentId:(NSString*)componentId
-			rootViewCreator:(id<RNNRootViewCreator>)creator
-			   eventEmitter:(RNNEventEmitter*)eventEmitter {
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo childViewControllers:(NSArray *)childViewControllers options:(RNNNavigationOptions *)options presenter:(RNNViewControllerPresenter *)presenter {
 	self = [super init];
-	self.componentId = componentId;
+	
+	self.presenter = presenter;
+	[self.presenter bindViewController:self];
+	
 	self.options = options;
-	self.eventEmitter = eventEmitter;
-	self.creator = creator;
-
+	self.layoutInfo = layoutInfo;
+	
 	self.navigationController.delegate = self;
-
+	
+	[self bindChildViewControllers:childViewControllers];
+	
 	return self;
+}
+
+- (void)onChildWillAppear {
+	[_presenter applyOptions:self.resolveOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return (RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options resolvedOptions:self.resolveOptions];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
+}
+
+- (void)bindChildViewControllers:(NSArray<UIViewController<RNNLayoutProtocol> *> *)viewControllers {
+	[self setViewControllers:viewControllers];
+	UIViewController<UISplitViewControllerDelegate>* masterViewController = viewControllers[0];
+	self.delegate = masterViewController;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
 	[super viewWillAppear:animated];
-	[self.options applyOn:self];
 }
 
-- (UIViewController *)getLeafViewController {
+- (UIViewController *)getCurrentChild {
 	return self;
-}
-
-- (void)waitForReactViewRender:(BOOL)wait perform:(RNNReactViewReadyCompletionBlock)readyBlock {
-	readyBlock();
-}
-
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.options mergeOptions:options];
 }
 
 @end

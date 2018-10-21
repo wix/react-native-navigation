@@ -46,7 +46,7 @@ public class TitleBarHelper {
         return new TitleBarButtonController(activity,
                 new NavigationIconResolver(activity, ImageLoaderMock.mock()),
                 ImageLoaderMock.mock(),
-                new ButtonOptionsPresenter(titleBar, button),
+                new ButtonPresenter(titleBar, button),
                 button,
                 new TopBarButtonCreatorMock(),
                 buttonId -> {}

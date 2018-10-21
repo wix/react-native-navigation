@@ -4,7 +4,7 @@
 #import "RNNRootViewCreator.h"
 #import "RNNStore.h"
 #import "RNNEventEmitter.h"
-#import "RNNRootViewProtocol.h"
+#import "RNNParentProtocol.h"
 
 @interface RNNControllerFactory : NSObject
 
@@ -13,11 +13,10 @@
 						  eventEmitter:(RNNEventEmitter*)eventEmitter
 							 andBridge:(RCTBridge*)bridge;
 
--(UIViewController<RNNRootViewProtocol, UIViewControllerPreviewingDelegate> *)createLayoutAndSaveToStore:(NSDictionary*)layout;
+-(UIViewController<RNNParentProtocol, UIViewControllerPreviewingDelegate> *)createLayoutAndSaveToStore:(NSDictionary*)layout;
 
-- (UIViewController<RNNRootViewProtocol> *)createOverlay:(NSDictionary*)layout;
-
-@property (nonatomic, strong) NSDictionary* defaultOptionsDict;
 @property (nonatomic, strong) RNNEventEmitter *eventEmitter;
+
+@property (nonatomic, strong) RNNNavigationOptions* defaultOptions;
 
 @end

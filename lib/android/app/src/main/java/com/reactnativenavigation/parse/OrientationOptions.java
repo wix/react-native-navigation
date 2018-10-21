@@ -44,6 +44,8 @@ public class OrientationOptions {
                 return orientations.contains(Orientation.Portrait) ? Orientation.PortraitLandscape.orientationCode : Orientation.Landscape.orientationCode;
             case Portrait:
                 return orientations.contains(Orientation.Landscape) ? Orientation.PortraitLandscape.orientationCode : Orientation.Portrait.orientationCode;
+            case SensorLandscape:
+                return Orientation.SensorLandscape.orientationCode;
             default:
             case Default:
                 return Orientation.Default.orientationCode;

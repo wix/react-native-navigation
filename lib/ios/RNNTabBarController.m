@@ -1,41 +1,66 @@
-
 #import "RNNTabBarController.h"
-
-#define kTabBarHiddenDuration 0.3
 
 @implementation RNNTabBarController {
 	NSUInteger _currentTabIndex;
-	RNNEventEmitter *_eventEmitter;
 }
 
-- (instancetype)initWithEventEmitter:(id)eventEmitter {
-	self = [super init];
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+			  childViewControllers:(NSArray *)childViewControllers
+						   options:(RNNNavigationOptions *)options
+						 presenter:(RNNTabBarPresenter *)presenter
+					  eventEmitter:(RNNEventEmitter *)eventEmitter {
+	self = [self initWithLayoutInfo:layoutInfo childViewControllers:childViewControllers options:options presenter:presenter];
+	
 	_eventEmitter = eventEmitter;
-	self.delegate = self;
+	
 	return self;
+}
+
+- (instancetype)initWithLayoutInfo:(RNNLayoutInfo *)layoutInfo
+			  childViewControllers:(NSArray *)childViewControllers
+						   options:(RNNNavigationOptions *)options
+						 presenter:(RNNTabBarPresenter *)presenter {
+	self = [super init];
+	
+	self.delegate = self;
+	self.options = options;
+	self.layoutInfo = layoutInfo;
+	self.presenter = presenter;
+	[self.presenter bindViewController:self];
+	[self setViewControllers:childViewControllers];
+	
+	return self;
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	if (parent) {
+		[_presenter applyOptionsOnWillMoveToParentViewController:self.options];
+	}
+}
+
+- (void)onChildWillAppear {
+	[_presenter applyOptions:self.resolveOptions];
+	[((UIViewController<RNNParentProtocol> *)self.parentViewController) onChildWillAppear];
+}
+
+- (RNNNavigationOptions *)resolveOptions {
+	return (RNNNavigationOptions *)[self.getCurrentChild.resolveOptions.copy mergeOptions:self.options];
+}
+
+- (void)mergeOptions:(RNNNavigationOptions *)options {
+	[_presenter mergeOptions:options resolvedOptions:self.resolveOptions];
+	[((UIViewController<RNNLayoutProtocol> *)self.parentViewController) mergeOptions:options];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	return self.selectedViewController.supportedInterfaceOrientations;
 }
 
-- (void)setTabBarHidden:(BOOL)hidden animated:(BOOL)animated {
-	CGRect frame = self.tabBar.frame;
-	CGFloat height = frame.size.height;
-	CGFloat offsetY = (hidden ? self.view.frame.size.height : self.view.frame.size.height-height);
-	frame.origin.y = offsetY;
-	NSTimeInterval duration = animated ? kTabBarHiddenDuration : 0.0;
-	
-	[UIView animateWithDuration:duration animations:^{
-		self.tabBar.frame = frame;
-	}];
-}
-
 - (void)setSelectedIndexByComponentID:(NSString *)componentID {
 	for (id child in self.childViewControllers) {
-		RNNRootViewController* vc = child;
+		UIViewController<RNNLayoutProtocol>* vc = child;
 
-		if ([vc.componentId isEqualToString:componentID]) {
+		if ([vc conformsToProtocol:@protocol(RNNLayoutProtocol)] && [vc.layoutInfo.componentId isEqualToString:componentID]) {
 			[self setSelectedIndex:[self.childViewControllers indexOfObject:child]];
 		}
 	}
@@ -46,16 +71,12 @@
 	[super setSelectedIndex:selectedIndex];
 }
 
-- (void)mergeOptions:(RNNOptions *)options {
-	[self.getLeafViewController mergeOptions:options];
-}
-
-- (UIViewController *)getLeafViewController {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).getLeafViewController;
+- (UIViewController *)getCurrentChild {
+	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).getCurrentChild;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-	return ((UIViewController<RNNRootViewProtocol>*)self.selectedViewController).preferredStatusBarStyle;
+	return ((UIViewController<RNNParentProtocol>*)self.selectedViewController).preferredStatusBarStyle;
 }
 
 #pragma mark UITabBarControllerDelegate

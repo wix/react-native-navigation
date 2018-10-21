@@ -4,9 +4,11 @@
 
 @protocol RNNRootViewCreator
 
--(UIView*)createRootView:(NSString*)name rootViewId:(NSString*)rootViewId;
+- (UIView*)createRootView:(NSString*)name rootViewId:(NSString*)rootViewId;
 
--(UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions;
+- (UIView*)createRootViewFromComponentOptions:(RNNComponentOptions*)componentOptions;
+
+- (UIView*)createCustomReactView:(NSString*)name rootViewId:(NSString*)rootViewId;
 
 @end
 

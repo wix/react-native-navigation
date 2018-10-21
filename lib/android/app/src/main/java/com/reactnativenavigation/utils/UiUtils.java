@@ -17,7 +17,7 @@ public class UiUtils {
     private static final int DEFAULT_TOOLBAR_HEIGHT = 56;
 
     private static int statusBarHeight = -1;
-    private static int toolBarHeight = -1;
+    private static int topBarHeight = -1;
 
     public static void runOnPreDrawOnce(final View view, final Runnable task) {
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -28,6 +28,22 @@ public class UiUtils {
                 return true;
             }
         });
+    }
+
+    public static void runOnMeasured(View view, Runnable task) {
+        if (view.getHeight() > 0 && view.getWidth() > 0) {
+            task.run();
+        } else {
+            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    if (view.getHeight() > 0 && view.getWidth() > 0) {
+                        view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        task.run();
+                    }
+                }
+            });
+        }
     }
 
 	public static void runOnMainThread(Runnable runnable) {
@@ -60,25 +76,40 @@ public class UiUtils {
         final int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
         statusBarHeight = resourceId > 0 ?
                 resources.getDimensionPixelSize(resourceId) :
-                (int) dpToPx(context, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? STATUS_BAR_HEIGHT_M : STATUS_BAR_HEIGHT_L);
+                dpToPx(context, Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? STATUS_BAR_HEIGHT_M : STATUS_BAR_HEIGHT_L);
         return statusBarHeight;
     }
 
-    public static int getToolBarHeight(Context context) {
-        if (toolBarHeight > 0) {
-            return toolBarHeight;
+    public static int getTopBarHeightDp(Context context) {
+        return (int) UiUtils.pxToDp(context, getTopBarHeight(context));
+    }
+
+    public static int getTopBarHeight(Context context) {
+        if (topBarHeight > 0) {
+            return topBarHeight;
         }
         final Resources resources = context.getResources();
         final int resourceId = resources.getIdentifier("action_bar_size", "dimen", "android");
-        toolBarHeight = resourceId > 0 ?
+        topBarHeight = resourceId > 0 ?
                 resources.getDimensionPixelSize(resourceId) :
-                (int) dpToPx(context, DEFAULT_TOOLBAR_HEIGHT);
-        return toolBarHeight;
+                dpToPx(context, DEFAULT_TOOLBAR_HEIGHT);
+        return topBarHeight;
     }
 
     public static float dpToPx(Context context, float dp) {
-        float scale = context.getResources().getDisplayMetrics().density;
-        return dp * scale + 0.5f;
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        return dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
+    public static int dpToPx(Context context, int dp) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        return (int) (dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
+    public static float pxToDp(Context context, float px) {
+        return px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
     public static float dpToSp(Context context, float dp) {

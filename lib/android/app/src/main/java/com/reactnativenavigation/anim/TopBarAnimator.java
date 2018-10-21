@@ -12,6 +12,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import com.reactnativenavigation.parse.AnimationOptions;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.topbar.TopBar;
 
 import javax.annotation.Nullable;
@@ -41,10 +42,11 @@ public class TopBarAnimator {
     }
 
     public void show(AnimationOptions options) {
+        topBar.setVisibility(View.VISIBLE);
         if (options.hasValue() && (!options.id.hasValue() || options.id.get().equals(stackId))) {
             showAnimator = options.getAnimation(topBar);
         } else {
-            showAnimator = getDefaultShowAnimator(-1 * topBar.getMeasuredHeight(), DECELERATE, DURATION);
+            showAnimator = getDefaultShowAnimator(-1 * ViewUtils.getHeight(topBar), DECELERATE, DURATION);
         }
         show();
     }
@@ -62,6 +64,7 @@ public class TopBarAnimator {
             }
         });
         topBar.resetAnimationOptions();
+        if (isAnimatingHide()) hideAnimator.cancel();
         showAnimator.start();
     }
 
@@ -96,6 +99,7 @@ public class TopBarAnimator {
                 onAnimationEnd.run();
             }
         });
+        if (isAnimatingShow()) showAnimator.cancel();
         hideAnimator.start();
     }
 

@@ -23,17 +23,6 @@ describe('screen stack', () => {
     await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
   });
 
-  test('pop screen deep in the stack', async () => {
-    await elementById(testIDs.PUSH_BUTTON).tap();
-    await expect(elementByLabel('Stack Position: 1')).toBeVisible();
-    await elementById(testIDs.PUSH_BUTTON).tap();
-    await expect(elementByLabel('Stack Position: 2')).toBeVisible();
-    await elementById(testIDs.POP_PREVIOUS_BUTTON).tap();
-    await expect(elementByLabel('Stack Position: 2')).toBeVisible();
-    await elementById(testIDs.POP_BUTTON).tap();
-    await expect(elementById(testIDs.WELCOME_SCREEN_HEADER)).toBeVisible();
-  });
-
   test('pop to specific id', async () => {
     await elementById(testIDs.PUSH_BUTTON).tap();
     await elementById(testIDs.PUSH_BUTTON).tap();
@@ -106,5 +95,19 @@ describe('screen stack', () => {
     await expect(elementByLabel('Text Screen')).toBeVisible();
     await elementById(testIDs.POP_BUTTON).tap();
     await expect(elementByLabel('This is a side menu center screen tab 1')).toBeVisible();
+  });
+
+  test('pop component should not deatch component if can`t pop', async () => {
+    await elementById(testIDs.TAB_BASED_APP_BUTTON).tap();
+    await elementById(testIDs.POP_BUTTON).tap();
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementById(testIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+  });
+
+  test('push bottom tabs', async () => {
+    await elementById(testIDs.PUSH_BUTTON).tap();
+    await expect(elementById(testIDs.PUSHED_SCREEN_HEADER)).toBeVisible();
+    await elementById(testIDs.PUSH_BOTTOM_TABS_BUTTON).tap();
+    await expect(elementById(testIDs.BOTTOM_TABS_ELEMENT)).toBeVisible();
   });
 });
