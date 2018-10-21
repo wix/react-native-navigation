@@ -5,7 +5,7 @@
 1. Install `react-native-navigation` latest stable version.
 
     ```sh
-    yarn add react-native-navigation@latest
+	yarn add react-native-navigation@1.x.x
     ```
 
 2. In Xcode, in Project Navigator (left pane), right-click on the `Libraries` > `Add files to [project name]`. Add `./node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj` ([screenshots](https://facebook.github.io/react-native/docs/0.54/linking-libraries-ios.html#step-1-1))
