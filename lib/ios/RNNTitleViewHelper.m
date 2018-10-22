@@ -132,7 +132,8 @@
 	CGFloat fontSizeFloat = [RCTConvert CGFloat:[_titleOptions.fontSize getWithDefaultValue:@(17)]];
 	titleFont = [UIFont boldSystemFontOfSize:fontSizeFloat];
 	
-	[titleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.title attributes:_titleOptions.fontAttributes]];
+	NSDictionary* fontAttributes = [RNNFontAttributesCreator createFontAttributesWithFontFamily:[_titleOptions.fontFamily getWithDefaultValue:nil] fontSize:[_titleOptions.fontSize getWithDefaultValue:nil] color:[_titleOptions.color getWithDefaultValue:nil]];
+	[titleLabel setAttributedText:[[NSAttributedString alloc] initWithString:self.title attributes:fontAttributes]];
 	
 	CGSize labelSize = [titleLabel.text sizeWithAttributes:@{NSFontAttributeName:titleFont}];
 	CGRect labelframe = titleLabel.frame;
